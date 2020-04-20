@@ -1,0 +1,17 @@
+{
+  "libraryStrings": {
+    "confirmReset": "Ziur zaude diseinua aldatu nahi duzula? Honek aurrebista berrabiaraziko du.",
+    "sameAsSpacing": "Tartearen berdina",
+    "noFrame": "Fotogramarik ez",
+    "uploadError": "Ezin izan da irudia kargatu. Oso litekeena da fitxategia handiegia izatea.",
+    "zoomIn": "Zoom In",
+    "zoomOut": "Handiagotu",
+    "noMoreZoom": "Zoomaren topea",
+    "addImage": "Gehitu irudia",
+    "changeImage": "Aldatu irudia",
+    "imageSettings": "Irudiaren ezarpenak",
+    "close": "Itxi",
+    "imageAltLabel": "Ordezko testua",
+    "imageTitleLabel": "Desplazamendu testua"
+  }
+}

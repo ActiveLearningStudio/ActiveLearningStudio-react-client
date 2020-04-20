@@ -1,0 +1,439 @@
+.resource-activity {
+    padding-left: 25px;
+    .activity-label {
+        margin-bottom: 40px;
+    }
+    .title {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 400;
+        font-size: 24px;
+        color: #2d2d2d;
+        margin-bottom:5px;
+    }
+    .activity-content {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 300;
+        font-size: 16px;
+        margin-bottom: 50px;
+    }
+    .activity-item {
+        width:200px;
+        height: 180px;
+        border:2px solid #ececed;
+        border-radius: 3px;
+        text-align: center;
+        background: url(/images/unselected-radio-icon.png) no-repeat right 15px top 13px;
+        cursor:pointer;
+        .activity-img {
+            width:80px;
+            height:80px;
+            margin:0 auto;
+            margin-top:35px;
+            .overlay-activity-icon {
+                display: none;
+            }
+        }
+        &:hover {
+            .activity-icon {
+                display: none;
+            }
+            .overlay-activity-icon {
+                display: inline;
+            }
+        }
+    }
+}
+
+
+
+.resource-question {
+    padding-left: 25px;
+    .question-label {
+        margin-bottom: 40px;
+    }
+    .title {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 400;
+        font-size: 24px;
+        color: #2d2d2d;
+        margin-bottom:35px;
+    }
+    .activity-item {
+        width:205px;
+        height: 195px;
+        border:2px solid #ececed;
+        border-radius: 3px;
+        text-align: center;
+        background: url(/images/unselected-radio-icon.png) no-repeat right 15px top 13px;
+        cursor:pointer;
+        .activity-img {
+            width:80px;
+            height:80px;
+            margin:0 auto;
+            margin-top:10px;
+            .overlay-activity-icon {
+                display: none;
+            }
+        }
+        &:hover {
+            .activity-icon {
+                display: none;
+            }
+            .overlay-activity-icon {
+                display: inline;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+$selected_color:#084892;
+$filled:#44ca92;
+
+.create-resource-sidebar {
+    height: 500px;
+    border-right: 1px solid #f6f6f6;
+    margin-right: 40px;
+    .select-activity {
+        height: 114px;
+        &.selected{
+            .activity-box {
+                .number-box {
+                    border: 2px solid $selected_color;
+                    span.number {
+                        background: $selected_color;
+                        color: #fff;
+                    }
+                }
+                span.bottom-vertical-line {
+                    background: $selected_color;
+                }
+            }
+            span.name {
+                color:$selected_color;
+            }
+        }
+        &.filled{
+            .activity-box {
+                .number-box {
+                    border: 2px solid $filled;
+                    span.number {
+                        background: $filled;
+                        color: #fff;
+                    }
+                }
+                span.bottom-vertical-line {
+                    background: $filled;
+                }
+            }
+            span.name {
+                color:$filled;
+            }
+        }
+        
+        .activity-box {
+            position:relative;
+            .number-box {
+                display: inline-block;
+                border: 5px solid #efefef;
+                padding: 3px;
+                border-radius: 50%;
+                position: absolute;
+                span.number {
+                    display: inline-block;
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    text-align: center;
+                    color: #efefef;
+                    padding-top: 4px;
+                    font-weight: bold;
+                }
+            }
+            
+            span.bottom-vertical-line {
+                width: 3px;
+                display: inline-block;
+                height: 76px;
+                position: absolute;
+                bottom: -116px;
+                left: 20px;
+                background: #efefef;
+            }
+        }
+        span.name {
+            margin-left:50px;
+            font-size:16px;
+            cursor:pointer;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+            padding-top: 7px;
+            padding-bottom: 10px;
+            display: block;
+        }
+    }
+
+    .select-question {
+        height: 114px;
+        &.selected{
+            .question-box {
+                .number-box {
+                    border: 2px solid $selected_color;
+                    span.number {
+                        background: $selected_color;
+                        color: #fff;
+                    }
+                }
+                span.bottom-vertical-line {
+                    background: $selected_color;
+                }
+                span.top-vertical-line {
+                    background: $selected_color;
+                }
+            }
+            span.name {
+                color:$selected_color;
+            }
+        }
+        &.filled{
+            .question-box {
+                .number-box {
+                    border: 2px solid $filled;
+                    span.number {
+                        background: $filled;
+                        color: #fff;
+                    }
+                }
+                span.bottom-vertical-line {
+                    background: $filled;
+                }
+                span.top-vertical-line {
+                    background: $filled;
+                }
+            }
+            span.name {
+                color:$filled;
+            }
+        }
+        .question-box {
+            position:relative;
+            .number-box {
+                display: inline-block;
+                border: 5px solid #efefef;
+                padding: 3px;
+                border-radius: 50%;
+                position: absolute;
+                span.number {
+                    display: inline-block;
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 50%;
+                    background: #fff;
+                    text-align: center;
+                    color: #efefef;
+                    padding-top: 4px;
+                    font-weight: bold;
+                }
+            }
+            
+            span.top-vertical-line {
+                width: 3px;
+                display: inline-block;
+                height: 38px;
+                position: absolute;
+                top: -38px;
+                left: 20px;
+                background: #efefef;
+            }
+            span.bottom-vertical-line {
+                width: 3px;
+                display: inline-block;
+                height: 76px;
+                position: absolute;
+                bottom: -116px;
+                left: 20px;
+                background: #efefef;
+            }
+        }
+        span.name {
+            margin-left: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            display: block;
+            border-right: 3px solid #084892;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+    }
+    .select-description {
+        height: 114px;
+        &.selected{
+            .description-box {
+                .number-box {
+                    border: 2px solid $selected_color;
+                    span.number {
+                        background: $selected_color;
+                        color: #fff;
+                    }
+                }
+                span.top-vertical-line {
+                    background: $selected_color;
+                }
+            }
+            span.name {
+                color:$selected_color;
+            }
+        }
+        &.filled{
+            .description-box {
+                .number-box {
+                    border: 2px solid $filled;
+                    span.number {
+                        background: $filled;
+                        color: #fff;
+                    }
+                }
+                span.bottom-vertical-line {
+                    background: $filled;
+                }
+            }
+            span.name {
+                color:$filled;
+            }
+        }
+        .description-box {
+            position:relative;
+            .number-box {
+                display: inline-block;
+                border: 5px solid #efefef;
+                padding: 3px;
+                border-radius: 50%;
+                position: absolute;
+                span.number {
+                    display: inline-block;
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 50%;
+                    background: #fff;
+                    text-align: center;
+                    color: #efefef;
+                    padding-top: 4px;
+                    font-weight: bold;
+                }
+            }
+            
+            span.top-vertical-line {
+                width: 3px;
+                display: inline-block;
+                height: 38px;
+                background: #efefef;
+                position: absolute;
+                top: -38px;
+                left: 20px;
+            }
+        }
+        span.name {
+            margin-left:50px;
+            font-size:16px;
+            cursor:pointer;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+            padding-top: 7px;
+            padding-bottom: 10px;
+            display: block;
+        }
+    }
+}
+
+
+
+
+
+
+input[type="radio"]:checked+.activity-item {
+    border: 2px solid #074892;
+    background: url(/images/resource-tickmark.png) no-repeat right 15px top 13px;
+    .activity-icon {
+        display: none;
+    }
+    .overlay-activity-icon {
+        display: inline;
+    }
+    span {
+        color: #074892;
+    }
+}
+.activity-label [type="radio"], .question-label [type="radio"] {
+    display:none;
+}
+
+.activity-item .activity-img {
+    margin-top:25px;
+}
+
+.activity-item .activity-content span {
+    color:#707070;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.add-resource-submit-btn {
+    color: #fff;
+    text-transform: uppercase;
+    border: 0;
+    box-shadow: none;
+    font-size: 16px;
+    border-radius: 3px;
+    /* margin-left: 9px; */
+    cursor: pointer;
+    margin-top: 90px;
+    width: 110px;
+    height: 56px;
+    background:  #2ecf43 ;
+    font-size: 14px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight:600;
+}
+.add-resource-continue-btn {
+    color: #fff;
+    text-transform: uppercase;
+    border: 0;
+    box-shadow: none;
+    font-size: 16px;
+    border-radius: 3px;
+    /* margin-left: 9px; */
+    cursor: pointer;
+    margin-top: 90px;
+    width: 163px;
+    height: 56px;
+    background: url(/images/btn-arrow.png) #2ecf43 no-repeat right 20px top 20px;
+    text-align: left;
+    padding-left: 35px;
+    font-size: 14px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight:600;
+}
+
+.resource-modal  {
+    h1 {
+        color:#165399;
+        text-transform: capitalize;
+        margin:0;
+        font-size:2rem;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 300;
+        .close-resource-btn {
+            float:right;
+            border:0;
+            background:none;
+        }
+    }
+    .modal-content {
+        padding:40px 90px;
+    }
+}

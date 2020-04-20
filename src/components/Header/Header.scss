@@ -1,0 +1,43 @@
+header {
+    background:#fafafa;
+    height: 82px;
+    box-shadow: 4px 5px 8px 0px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index:10;
+    nav {    
+        width:100%;
+    }
+    .header-wrapper {
+        display: flex;
+        padding-right: 45px;
+        .logo{
+            padding-top: 30px;
+            padding-bottom: 30px;
+            width:121px;
+            // float:left;
+            margin-left:34px;
+        }
+        .cross-icon-box {
+            .cross-icon {
+                border-right: 1px solid #dbdbdb;
+                width:82px;
+                height:82px;
+                text-align: center;
+                padding-top:30px;
+            }
+        }
+        .bell-user {
+            margin-top:30px;
+            margin-left:auto;
+            .bell-icon {
+                float:left;
+            }
+            .user-icon {
+                margin-left:45px;
+                float:left;
+            }
+        }
+    }
+
+    
+}

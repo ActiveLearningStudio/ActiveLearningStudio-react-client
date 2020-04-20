@@ -1,0 +1,135 @@
+{
+  "semantics": [
+    {
+      "label": "הקדמה",
+      "description": "הקדמה (100 תווים)"
+    },
+    {
+      "label": "סוג שאלון",
+      "options": [
+        {
+          "label": "שאלון הכולל שאלות מתמטיות"
+        },
+        {
+          "label": "שאלון הכולל משוואה לינאריות"
+        }
+      ]
+    },
+    {
+      "label": "סוג חישוב",
+      "options": [
+        {
+          "label": "חיבור"
+        },
+        {
+          "label": "חיסור"
+        },
+        {
+          "label": "כפל"
+        },
+        {
+          "label": "חילוק"
+        }
+      ]
+    },
+    {
+      "label": "סוג משוואה",
+      "options": [
+        {
+          "label": "בסיסי [ 3x = 12 ]"
+        },
+        {
+          "label": "בינוני [ 4x - 3 = 13 ]"
+        },
+        {
+          "label": "מתקדם [ 5x + 3 = 3x + 15 ]"
+        }
+      ]
+    },
+    {
+      "label": "אפשרות שימוש בשברים",
+      "description": "אפשרות שימוש שברים במשוואות."
+    },
+    {
+      "label": "מספר שאלות מירבי"
+    },
+    {
+      "label": "תרגום ממשק משתמש",
+      "fields": [
+        {
+          "label": "ניקוד במהלך הבוחן",
+          "default": "ניקוד:"
+        },
+        {
+          "label": "זמן",
+          "default": "זמן: @time"
+        },
+        {
+          "label": "כותרת דף התוצאה",
+          "default": "הסתיים!"
+        },
+        {
+          "label": "תווית התחלה",
+          "default": "התחילו!"
+        },
+        {
+          "label": "תווית כפתור התחלה",
+          "default": "התחלה"
+        },
+        {
+          "label": "תווית כפתור ניסיון חוזר",
+          "default": "נסו שוב"
+        },
+        {
+          "label": "Readspeaker text for correct answer",
+          "default": "נכון"
+        },
+        {
+          "label": "Readspeaker text for incorrect answer",
+          "default": "לא נכון. התשובה הנכונה היא :num"
+        },
+        {
+          "label": "Readspeaker label for the timer",
+          "default": "משך בשעות, דקות ושניות."
+        },
+        {
+          "label": "Readspeaker text for question",
+          "default": "כמה זה :arithmetic שווה?"
+        },
+        {
+          "label": "Readspeaker text for equation question",
+          "default": "עבור המשוואה :equation, מהו :item?"
+        },
+        {
+          "label": "Readspeaker text for equation variable",
+          "default": "מהו :item ?"
+        },
+        {
+          "label": "טקסט עבור פעולת חיבור",
+          "default": "ועוד"
+        },
+        {
+          "label": "טקסט עבור פעולת חיסור",
+          "default": "פחות"
+        },
+        {
+          "label": "טקסט עבור פעולת כפל",
+          "default": "כפול"
+        },
+        {
+          "label": "טקסט עבור פעולת חילוק",
+          "default": "לחלק ל"
+        },
+        {
+          "label": "טקסט עבור שיוויון",
+          "default": "שווה"
+        },
+        {
+          "label": "תאור מספר עמוד",
+          "description": "Announces current slide and total number of slides, variables are :num and :total",
+          "default": "עמוד :num מתוך :total"
+        }
+      ]
+    }
+  ]
+}

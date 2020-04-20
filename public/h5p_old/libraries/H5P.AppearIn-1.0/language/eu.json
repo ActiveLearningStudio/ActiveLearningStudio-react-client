@@ -1,0 +1,20 @@
+{
+  "semantics": [
+    {
+      "label": "Gelaren izena",
+      "description": "appear.in gelaren izena"
+    },
+    {
+      "label": "Doitu edukiontzira",
+      "description": "Doitu gela bere edukiontzira, altuera-zabalera %100era etorriko dira."
+    },
+    {
+      "label": "Altuera",
+      "description": "Ezarri txat/solasaldi gelaren altuera"
+    },
+    {
+      "label": "Zabalera",
+      "description": "Ezarri txat/solasaldi gelaren zabalera"
+    }
+  ]
+}
