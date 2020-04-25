@@ -48,16 +48,18 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
             showCreatePlaylistPopup: false
           };
       case CREATE_RESOURCE:
+        // adding resource to newplaylist specific id
+        let newPlaylists = state.playlists;
+        state.playlists.forEach((playlist,i) => {
+            if(playlist.id === action.playlistId){
+              newPlaylists[i] = Object.assign( { 'resources':[] }, newPlaylists[i] );
+              newPlaylists[i].resources.push({id:action._id, title:action.title});
+            }
+        });
+        
             return {
                 ...state,
-                playlists: state.playlists.map((playlist,index) => {
-                        if (index === 0) {
-                          playlist = Object.assign( { 'resources':[] }, playlist );
-                          
-                          playlist["resources"].push({id:action.id, title:action.title});
-                        }
-                        return playlist;
-                      }),
+                playlists: newPlaylists,
                 showCreateResourcePopup:false
                 
             };
