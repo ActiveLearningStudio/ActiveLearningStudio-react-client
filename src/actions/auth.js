@@ -1,7 +1,9 @@
 import axios from "axios";
+import { AUTH_RECEIVE, AUTH_ERROR, AUTH_LOGOUT, AUTH_SIGNUP } from "../constants/actionTypes";
 
-export const login = (displayName, id, role) => ({
-  type: "LOGIN",
+
+export const signup = (displayName, id, role) => ({
+  type: AUTH_SIGNUP,
   displayName,
   id,
   role
@@ -11,7 +13,8 @@ export const startSignup = (displayName, email, password) => {
   return async dispatch => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/users`,
+        // `${process.env.REACT_APP_API_URL}/users`,
+        'api/users',
         {
           displayName,
           email,
@@ -28,7 +31,7 @@ export const startSignup = (displayName, email, password) => {
       localStorage.setItem("auth", JSON.stringify(user));
 
       dispatch(
-        login(response.data.displayName, response.data._id, response.data.role)
+        signup(response.data.displayName, response.data._id, response.data.role)
       );
     } catch (e) {
       throw e.response.data.errors;
@@ -36,30 +39,49 @@ export const startSignup = (displayName, email, password) => {
   };
 };
 
+export const login = (displayName, id, token) => ({
+  type: AUTH_RECEIVE,
+  displayName,
+  id,
+  token
+});
+export const loginError = () => ({
+  type: AUTH_ERROR
+});
+
 export const startLogin = (email, password) => {
   return async dispatch => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/users/login`,
+        // `${process.env.REACT_APP_API_URL}/users/login`,
+        'api/auth/login',
         {
           email,
           password
         }
       );
+      // console.log(response);
+      if(response.success) {
+        const user = {
+          displayName: response.data.payload.user.name,
+          id: response.data.payload.user._id,
+          token: response.headers["x-auth"]
+        };
+        
+        localStorage.setItem("auth", JSON.stringify(user));
+        
+        dispatch(
+          login(user.displayName, user.id, user.token)
+        );
+      }
+      
 
-      const user = {
-        displayName: response.data.displayName,
-        id: response.data._id,
-        token: response.headers["x-auth"],
-        role: response.data.role
-      };
-      console.log(response);
-      localStorage.setItem("auth", JSON.stringify(user));
-
-      dispatch(
-        login(response.data.displayName, response.data._id, response.data.role)
-      );
+      
     } catch (e) {
+      // console.log(e);
+      dispatch(
+        loginError()
+      );
       throw new Error(e.response.data.error);
     }
   };
@@ -71,7 +93,8 @@ export const startLogout = () => {
       const { token } = JSON.parse(localStorage.getItem("auth"));
       localStorage.removeItem("auth");
       await axios.delete(
-        `${process.env.REACT_APP_API_URL}/users/me/token`,
+        // `${process.env.REACT_APP_API_URL}/users/me/token`,
+        'api/users/me/token',
         {
           headers: {
             "x-auth": token
@@ -87,5 +110,5 @@ export const startLogout = () => {
 };
 
 export const logout = () => ({
-  type: "LOGOUT"
+  type: AUTH_LOGOUT
 });
