@@ -3,8 +3,8 @@ import {CREATE_PLAYLIST, DELETE_PLAYLIST, SHOW_CREATE_PLAYLIST_MODAL, HIDE_CREAT
 
 export const createPlaylist = (id, title) => ({
   type: CREATE_PLAYLIST,
-  id:id,
-  title:title
+  id,
+  title
 });
 
 
@@ -12,36 +12,37 @@ export const createPlaylist = (id, title) => ({
 export const createPlaylistAction = (title) => {
   return async dispatch => {
     try {
-//      const response = await axios.post(
-//        `${process.env.REACT_APP_API_URL}/playlist/create`,
-//        {
-//          title
-//        }
-//      );
-
-      let id = 1;
-      //getting last playlist id
-      if(localStorage.getItem("latestPlaylistId")){
-        id = parseInt(localStorage.getItem("latestPlaylistId"))+1;
+     const response = await axios.post(
+      //  `${process.env.REACT_APP_API_URL}/playlist/create`,
+       '/api/playlist',
+       {
+         title
+       }
+     );
+     
+     if(response.data.status == "success") {
+        //getting last playlist id
+        
+        const playlistdata = {
+          id:response.data.data._id,
+          title: response.data.data.title
+        };
+        
+        let plists = [];
+        if(localStorage.getItem("playlists")){
+            plists = JSON.parse(localStorage.getItem("playlists"));
+        }
+        
+        plists.unshift(playlistdata);
+        
+        localStorage.setItem("playlists", JSON.stringify(plists));
+        
+        dispatch(
+          createPlaylist(playlistdata.id, title)
+        );
       }
-      localStorage.setItem("latestPlaylistId", id);
-      const playlistdata = {
-        id:id,
-        title: title
-      };
 
-      let plists = [];
-      if(localStorage.getItem("playlists")){
-          plists = JSON.parse(localStorage.getItem("playlists"));
-      }
-
-      plists.unshift(playlistdata);
       
-      localStorage.setItem("playlists", JSON.stringify(plists));
-
-      dispatch(
-        createPlaylist(id, title)
-      );
     } catch (e) {
       throw new Error(e);
     }
@@ -56,18 +57,28 @@ export const deletePlaylist = (id) => ({
 export const deletePlaylistAction = (id) => {
   return async dispatch => {
     try {
+      const response = await axios.delete(
+        //  `${process.env.REACT_APP_API_URL}/playlist/create`,
+         `/api/playlist/${id}`,
+         {
+           id
+         }
+       );
 
-      let plists = [];
-      if(localStorage.getItem("playlists")){
-        plists = JSON.parse(localStorage.getItem("playlists"));
-      }
-      plists = plists.filter(playlist => {
-        return playlist.id !== id
-      });
-      localStorage.setItem("playlists", JSON.stringify(plists));
-      dispatch(
-        deletePlaylist(id)
-      );
+       if(response.data.status == "success") {
+          let plists = [];
+          if(localStorage.getItem("playlists")){
+            plists = JSON.parse(localStorage.getItem("playlists"));
+          }
+          plists = plists.filter(playlist => {
+            return playlist.id !== id
+          });
+          localStorage.setItem("playlists", JSON.stringify(plists));
+          dispatch(
+            deletePlaylist(id)
+          );
+       }
+      
     } catch (e) {
       throw new Error(e);
     }
