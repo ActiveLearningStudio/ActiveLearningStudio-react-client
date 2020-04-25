@@ -296,3 +296,185 @@ body {
     }
 }
 
+
+
+.login-container {
+    background:#fff;
+    margin-top:105px;
+    max-width: 1202px;
+    margin:105px auto;
+    border-radius: 5px;
+    .login-left {
+        max-width: 650px;
+        padding:92px 75px 65px 92px;
+        float:left;
+        border-right: 1px solid #f4f8fe;
+        h1 {
+            color:#0063d5;
+            font-family: 'Hind Siliguri', sans-serif;
+            font-weight: 300;
+            font-size:36px;
+        }
+        p {
+            font-family: 'Hind Siliguri', sans-serif;
+            font-weight: 300;
+            font-size:18px;
+            color:#000;
+        }
+        .login-form {
+            margin-top:35px;
+        }
+        .username-box {
+            margin-bottom: 25px;
+            .username-icon {
+                background: url(/images/username-icon.png) no-repeat center center;
+                background-color: #000;
+                width:54px;
+                height:54px;
+                border:1px solid #d9dfe8;
+                float:left;
+            }
+            .username {
+                display: block;
+                width:420px;
+                height: 54px;
+                border:1px solid #d9dfe8;
+                background-color: #000;
+                color:#fff;
+                padding:18px;
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+        .password-box {
+            margin-bottom: 35px;
+            .password-icon {
+                background: url(/images/password-icon.png) no-repeat center center;
+                background-color: #000;
+                width:54px;
+                height:54px;
+                border:1px solid #d9dfe8;
+                float:left;
+            }
+            .password {
+                display: block;
+                width:420px;
+                height: 54px;
+                border:1px solid #d9dfe8;
+                background-color: #000;
+                color:#fff;
+                padding:18px;
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+
+        .rememberme-check-box {
+            font-size: 16px;
+            font-family: 'Hind Siliguri', sans-serif;
+            font-weight: 300;
+            color:#333;
+            [type=checkbox]{
+                display:none;
+            }
+            span {
+                background:#374761;
+                width:18px;
+                height: 18px;
+                display: block;
+                float:left;
+                margin-top: 2px;
+                margin-right: 12px;
+                border-radius: 3px;
+              }
+            [type=checkbox]:checked + span {
+                position: relative;
+                display: inline-block;
+                width: 18px;
+                height: 18px;
+            }
+            
+            [type=checkbox]:checked + span::before {
+                position: absolute;
+                left: 2px;
+                bottom: 3px;
+                height: 8px;
+                width: 3px;
+                background-color: #fff;
+                content: "";
+                transform: translateX(5px) rotate(-45deg);
+                transform-origin: left bottom;
+            }
+            
+            [type=checkbox]:checked + span::after {
+                position: absolute;
+                left: 3px;
+                bottom: 4px;
+                height: 3px;
+                width: 12px;
+                background-color: #fff;
+                content: "";
+                transform: translateX(5px) rotate(-45deg);
+                transform-origin: left bottom;
+            }
+            
+        }
+        .forgot-password-box {
+            text-align: right;
+            padding-right: 10px;
+            a {
+                color:#9b9b9b;
+                font-family: 'Hind Siliguri', sans-serif;
+                font-weight: 400;
+            }
+        }
+        .login-submit {
+            background:#0063d5;
+            color:#fff;
+            width:474px;
+            height:56px;
+            font-size:16px;
+        }
+        .create-account-block {
+            margin-top:35px;
+            p {
+                font-size:16px;
+                color:#000;
+                font-family: 'Hind Siliguri', sans-serif;
+                font-weight: 400;
+                a {
+                    font-weight: 500;
+                    color:#000;
+                }
+            }
+        }
+    }
+    .login-right {
+        max-width:460px;
+        padding:130px 75px 92px 70px;
+        float:left;
+
+        .login-right-heading {
+            h2 {
+                margin:45px 0;
+                text-align: center;
+                font-family: 'Hind Siliguri', sans-serif;
+                font-weight: 300;
+                font-size:30px;
+                color:#374761;
+            }
+        }
+        .login-right-text {
+            p {
+                color:#777777;
+                margin:15px 0;
+                text-align: center;
+                font-family: 'Hind Siliguri', sans-serif;
+                font-weight: 300;
+                font-size:20px;
+            }
+        }
+    }
+}
