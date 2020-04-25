@@ -1393,7 +1393,7 @@ class EditorPage extends React.Component {
                   <div className="form-group">
                      <div className="col-md-9 col-md-offset-3">
                         {/* <a href="http://localhost:8082/api/h5p" className="btn btn-default"><i className="fa fa-reply"></i> Cancel</a> */}
-                        <button type="submit" className="add-resource-submit-btn" onClick={() => this.props.createResource(this.props.resource.editor, this.props.resource.editorType)}>Finish</button>
+                        <button type="submit" className="add-resource-submit-btn" onClick={() => this.props.createResourceAction(this.props.resource.currentPlaylistId, this.props.resource.editor, this.props.resource.editorType)}>Finish</button>
                         {/* <input className="btn btn-primary" data-loading-text="Saving..." type="submit" value="Save" /> */}
 
                      </div>
@@ -1414,7 +1414,7 @@ class EditorPage extends React.Component {
 
 
 const mapDispatchToProps = dispatch => ({
-   createResource: (editor, editorType) => dispatch(createResourceAction(editor, editorType)),
+   createResourceAction: (playlistId, editor, editorType) => dispatch(createResourceAction(playlistId, editor, editorType)),
 });
 
 const mapStateToProps = (state) => {
@@ -1424,10 +1424,6 @@ const mapStateToProps = (state) => {
 }
 
 
-// export default connect(
-//    mapStateToProps,
-//    mapDispatchToProps
-// )(EditorPage);
 
 
 export default withRouter(connect(mapStateToProps,
