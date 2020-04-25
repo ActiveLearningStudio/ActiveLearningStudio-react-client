@@ -1,15 +1,16 @@
 import axios from "axios";
 import { SHOW_CREATE_RESOURCE_MODAL, HIDE_CREATE_RESOURCE_MODAL, SHOW_CREATE_RESOURCE_ACTIVITY, SHOW_CREATE_RESOURCE_QUESTION, SHOW_CREATE_RESOURCE_DESCRIPTION, CREATE_RESOURCE } from './../constants/actionTypes';
 
-export const showCreateResourceModal = () => ({
-    type: SHOW_CREATE_RESOURCE_MODAL
+export const showCreateResourceModal = (id) => ({
+    type: SHOW_CREATE_RESOURCE_MODAL,
+    id
 });
 
-export const showCreateResourceModalAction = () => {
+export const showCreateResourceModalAction = (id) => {
     return async dispatch => {
         try {
             dispatch(
-                showCreateResourceModal()
+                showCreateResourceModal(id)
             )
         } catch (e) {
             throw new Error(e);
@@ -91,24 +92,24 @@ export const showCreateResourceDescriptionAction = (editor, editorType) => {
 
 
 
-export const createResource = (id, title, editor, editorType) => ({
+export const createResource = (playlistId, id, title, editor, editorType) => ({
     type:CREATE_RESOURCE,
+    playlistId,
     id,
     title,
     editor,
     editorType
 });
 
-export const createResourceAction = (editor, editorType) => {
-    // console.log((editor));
+export const createResourceAction = (playlistId, editor, editorType) => {
     return async dispatch => {
         try {
-
             const headers = {
                 'Content-Type': 'application/json',
                 'Authorization': 'JWT fefege...'
               };
             const data = {
+                playlistId:playlistId,
                 library: window.h5peditorCopy.getLibrary(),
                 parameters: JSON.stringify(window.h5peditorCopy.getParams()),
                 action: 'create'
@@ -118,21 +119,25 @@ export const createResourceAction = (editor, editorType) => {
                 headers: headers
               })
               .then((response) => {
-                console.log(response)
                 let plists = [];
                 if(localStorage.getItem("playlists")){
                     plists = JSON.parse(localStorage.getItem("playlists"));
                 }
                 let resource = response.data;
                 // console.log(resource);
-                // plists[0].resources = [];
-                plists[0] = Object.assign( { 'resources':[] }, plists[0] );
-                plists[0].resources.push(resource);
-                console.log(plists);
+                
+                
+                plists.forEach((playlist, i)=>{
+                    if(playlist.id === playlistId){
+                        plists[i] = Object.assign( { 'resources':[] }, plists[i] );
+                        plists[i].resources.push(resource);
+                    }
+                });
+                
                 
                 localStorage.setItem("playlists", JSON.stringify(plists));
                 dispatch(
-                    createResource(resource.id, resource.title, editor, editorType)
+                    createResource(playlistId, resource.id, resource.title, editor, editorType)
                 )
               })
               .catch((error) => {
