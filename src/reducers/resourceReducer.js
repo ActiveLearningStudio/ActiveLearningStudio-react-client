@@ -24,7 +24,8 @@ const resourceReducer = (state = defaultResourceState(), action) => {
         case SHOW_CREATE_RESOURCE_MODAL:
             return {
                 ...state,
-                showCreateResourcePopup: true
+                showCreateResourcePopup: true,
+                currentPlaylistId:action.id
             };
         case HIDE_CREATE_RESOURCE_MODAL:
             return {
