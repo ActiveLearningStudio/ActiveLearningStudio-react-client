@@ -13,7 +13,7 @@ import {
 
 
 import Header from "../components/Header/Header";
-import Popup from "../components/Popup/Popup";
+import CreatePlaylistPopup from "../components/CreatePlaylistPopup/CreatePlaylistPopup";
 import Sidebar from "../components/Sidebar/Sidebar";
 
 import { startLogin } from "./../actions/auth";
@@ -71,11 +71,10 @@ export class HomePage extends React.Component {
 
   };
 
-  handleShowCreateResourceModal = async (e) => {
-    e.preventDefault();
+  handleShowCreateResourceModal = (id) => {
     try {
-      await this.props.showCreateResourceModal();
-      this.props.history.push("/playlist/editor/create");
+      this.props.showCreateResourceModalAction(id);
+      this.props.history.push("/playlist/activity/create/"+id);
 
     } catch (e) {
       console.log(e.message);
@@ -108,7 +107,7 @@ export class HomePage extends React.Component {
     try {
       const { title } = this.state;
       
-      await this.props.createPlaylist(title);
+      await this.props.createPlaylistAction(title);
       this.props.history.push("/");
       this.props.hideCreatePlaylistModal();
 
@@ -119,16 +118,10 @@ export class HomePage extends React.Component {
 
   // This function handles delete playlist
   handleDeletePlayList = (id) => {
-    this.props.deletePlaylist(id);
+    this.props.deletePlaylistAction(id);
   }
 
   populateResources(resources) {
-    // var resources = [
-    //   {
-    //     id:1,
-    //     title:"abc"
-    //   }
-    // ];
     
     return (
       resources.map(function(resource) {
@@ -143,6 +136,7 @@ export class HomePage extends React.Component {
   render() {
     const { playlists } = this.props.playlists;
 
+    
 
     const headArray = playlists.map(playlist => (
       <div className="list-wrapper" key={playlist.id}>
@@ -159,8 +153,7 @@ export class HomePage extends React.Component {
               : null
             }
             
-            {/* <Link to="/playlist/editor/create" className="add-resource-to-playlist-btn"> */}
-            <button onClick={this.handleShowCreateResourceModal} className="add-resource-to-playlist-btn">
+            <button onClick={() => this.handleShowCreateResourceModal(playlist.id)} className="add-resource-to-playlist-btn">
               Add new resource
                           </button>
             {/* </Link>  */}
@@ -192,7 +185,7 @@ export class HomePage extends React.Component {
         </div>
 
         {(this.props.playlists.showCreatePlaylistPopup || this.props.openCreatePopup) ?
-          <Popup
+          <CreatePlaylistPopup
             escFunction={this.escFunction.bind(this)}
             handleShowCreatePlaylistModal={this.handleShowCreatePlaylistModal.bind(this)}
             handleHideCreatePlaylistModal={this.handleHideCreatePlaylistModal.bind(this)}
@@ -216,11 +209,11 @@ export class HomePage extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  createPlaylist: (title) => dispatch(createPlaylistAction(title)),
-  deletePlaylist: (id) => dispatch(deletePlaylistAction(id)),
+  createPlaylistAction: (title) => dispatch(createPlaylistAction(title)),
+  deletePlaylistAction: (id) => dispatch(deletePlaylistAction(id)),
   showCreatePlaylistModal: () => dispatch(showCreatePlaylistModalAction()),
   hideCreatePlaylistModal: () => dispatch(hideCreatePlaylistModalAction()),
-  showCreateResourceModal: () => dispatch(showCreateResourceModalAction()),
+  showCreateResourceModalAction: (id) => dispatch(showCreateResourceModalAction(id)),
   hideCreateResourceModal: () => dispatch(hideCreateResourceModalAction())
   //   dispatch({ type: APP_LOAD, payload, token, skipTracking: true })
 });
@@ -234,10 +227,6 @@ const mapStateToProps = (state) => {
 }
 
 
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(HomePage);
 
 
 export default withRouter(connect(mapStateToProps,
