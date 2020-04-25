@@ -60,8 +60,7 @@ export const startLogin = (email, password) => {
           password
         }
       );
-      // console.log(response);
-      if(response.success) {
+      if(response.data.success) {
         const user = {
           displayName: response.data.payload.user.name,
           id: response.data.payload.user._id,
