@@ -18,8 +18,9 @@ import Sidebar from "../components/Sidebar/Sidebar";
 
 import { startLogin } from "./../actions/auth";
 import { createPlaylistAction, deletePlaylistAction, showCreatePlaylistModalAction, hideCreatePlaylistModalAction } from "./../actions/playlist";
-import { showCreateResourceModalAction, hideCreateResourceModalAction } from "./../actions/resource";
+import { showCreateResourceModalAction, hideCreateResourceModalAction, previewResourceAction, hidePreviewResourceModalAction } from "./../actions/resource";
 import NewResourcePage from "./NewResourcePage";
+import PreviewResourcePage from "./PreviewResourcePage";
 
 export class HomePage extends React.Component {
   constructor(props) {
@@ -121,6 +122,10 @@ export class HomePage extends React.Component {
     this.props.deletePlaylistAction(id);
   }
 
+  handlePreviewResource = (id) => {
+    this.props.previewResourceAction(id);
+  }
+
   populateResources(resources) {
     
     return (
@@ -128,9 +133,10 @@ export class HomePage extends React.Component {
         return (
           <div className="playlist-resource" key={resource.id}>
             <h3 className="title">{resource.title}</h3>
+            <button onClick={() => this.handlePreviewResource(resource.id)}>Preview</button>
           </div>
         )
-      })
+      }, this)
     );
   }
   render() {
@@ -202,6 +208,13 @@ export class HomePage extends React.Component {
           : null
         }
 
+      {this.props.resource.showPreviewResourcePopup ?
+          <PreviewResourcePage
+            {...this.props}
+          />
+          : null
+        }
+
       </div>
 
     );
@@ -214,7 +227,9 @@ const mapDispatchToProps = dispatch => ({
   showCreatePlaylistModal: () => dispatch(showCreatePlaylistModalAction()),
   hideCreatePlaylistModal: () => dispatch(hideCreatePlaylistModalAction()),
   showCreateResourceModalAction: (id) => dispatch(showCreateResourceModalAction(id)),
-  hideCreateResourceModal: () => dispatch(hideCreateResourceModalAction())
+  hideCreateResourceModal: () => dispatch(hideCreateResourceModalAction()),
+  previewResourceAction: (id) => dispatch(previewResourceAction(id)),
+  hidePreviewResourceModalAction: () => dispatch(hidePreviewResourceModalAction()),
   //   dispatch({ type: APP_LOAD, payload, token, skipTracking: true })
 });
 
