@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SHOW_CREATE_RESOURCE_MODAL, HIDE_CREATE_RESOURCE_MODAL, SHOW_CREATE_RESOURCE_ACTIVITY, SHOW_CREATE_RESOURCE_QUESTION, SHOW_CREATE_RESOURCE_DESCRIPTION, CREATE_RESOURCE } from './../constants/actionTypes';
+import { SHOW_CREATE_RESOURCE_MODAL, HIDE_CREATE_RESOURCE_MODAL, SHOW_CREATE_RESOURCE_ACTIVITY, SHOW_CREATE_RESOURCE_QUESTION, SHOW_CREATE_RESOURCE_DESCRIPTION, CREATE_RESOURCE, PREVIEW_RESOURCE, HIDE_PREVIEW_PLAYLIST_MODAL } from './../constants/actionTypes';
 
 export const showCreateResourceModal = (id) => ({
     type: SHOW_CREATE_RESOURCE_MODAL,
@@ -152,3 +152,39 @@ export const createResourceAction = (playlistId, editor, editorType) => {
         }
     }
 }
+
+export const previewResource = (id) => ({
+    type:PREVIEW_RESOURCE,
+    id
+});
+
+export const previewResourceAction = (id) => {
+    return async dispatch => {
+        try {   
+            dispatch(
+                previewResource(id)
+            )
+            
+        } catch (e) {
+            throw new Error(e);
+        }
+    }
+}
+
+
+
+export const hidePreviewResourceModal = () => ({
+    type:HIDE_PREVIEW_PLAYLIST_MODAL
+  });
+  
+  export const hidePreviewResourceModalAction = () => {
+    return async dispatch => {
+      try {
+        dispatch(
+          hidePreviewResourceModal()
+        )
+      } catch (e) {
+        throw new Error(e);
+      }
+    }
+  }
