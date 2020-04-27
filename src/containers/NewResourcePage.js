@@ -10,6 +10,7 @@ import ResourceQuestion from '../components/Resource/AddResource/ResourceQuestio
 import ResourceDescription from '../components/Resource/AddResource/ResourceDescription';
 
 import { withRouter } from 'react-router-dom'
+import H5PPreview from "./H5PPreview";
 
 
 const bounceAnimation = keyframes `${slideInRight}`;
@@ -64,7 +65,7 @@ export class NewResourcePage extends React.Component {
                                   </li>
                                 </ul>
                               </div> */}
-                              <div className="col-md-12">
+                              <div className="col-md-12"> 
                               {this.props.resource.isResourceActivity ?  
                                 <ResourceActivity selectQuestionBox={this.props.showCreateResourceQuestion}  />  
                                 : null  
@@ -76,7 +77,8 @@ export class NewResourcePage extends React.Component {
                                 {this.props.resource.isResourceDescription ?  
                                 <ResourceDescription {...this.props} />  
                                 : null  
-                                }  
+                                }
+                                
                               </div>
                               </div>
                             </div>
