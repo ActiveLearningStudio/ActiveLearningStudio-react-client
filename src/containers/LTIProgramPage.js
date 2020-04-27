@@ -19,7 +19,7 @@ export class LTIProgramPage extends React.Component {
   
   render() {
     return (
-      <h1>LTI Program Page</h1>
+      <h1>Program 1</h1>
     );
   }
 }

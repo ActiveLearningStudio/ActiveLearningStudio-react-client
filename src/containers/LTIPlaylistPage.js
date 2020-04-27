@@ -19,7 +19,7 @@ export class LTIPlaylistPage extends React.Component {
   
   render() {
     return (
-      <h1>LTI Playlist Page</h1>
+      <h1>Playlist 1</h1>
     );
   }
 }
