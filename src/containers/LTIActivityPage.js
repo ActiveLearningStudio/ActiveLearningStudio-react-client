@@ -19,7 +19,7 @@ export class LTIActivityPage extends React.Component {
   
   render() {
     return (
-      <h1>Activity 1</h1>
+      <h1>Activity {this.props.match.params.id}</h1>
     );
   }
 }
