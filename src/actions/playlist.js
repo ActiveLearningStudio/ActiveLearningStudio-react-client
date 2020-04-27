@@ -1,5 +1,5 @@
 import axios from "axios";
-import {CREATE_PLAYLIST, DELETE_PLAYLIST, SHOW_CREATE_PLAYLIST_MODAL, HIDE_CREATE_PLAYLIST_MODAL} from './../constants/actionTypes';
+import {CREATE_PLAYLIST, DELETE_PLAYLIST, SHOW_CREATE_PLAYLIST_MODAL, HIDE_CREATE_PLAYLIST_MODAL, HIDE_PREVIEW_PLAYLIST_MODAL} from './../constants/actionTypes';
 
 export const createPlaylist = (id, title) => ({
   type: CREATE_PLAYLIST,
@@ -104,7 +104,7 @@ export const showCreatePlaylistModalAction = () => {
 
 
 export const hideCreatePlaylistModal = () => ({
-  type:HIDE_CREATE_PLAYLIST_MODAL
+  type:HIDE_PREVIEW_PLAYLIST_MODAL
 });
 
 export const hideCreatePlaylistModalAction = () => {
