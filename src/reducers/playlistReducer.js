@@ -53,7 +53,7 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
         state.playlists.forEach((playlist,i) => {
             if(playlist.id === action.playlistId){
               newPlaylists[i] = Object.assign( { 'resources':[] }, newPlaylists[i] );
-              newPlaylists[i].resources.push({id:action._id, title:action.title});
+              newPlaylists[i].resources.push({id:action.id, title:action.title});
             }
         });
         
