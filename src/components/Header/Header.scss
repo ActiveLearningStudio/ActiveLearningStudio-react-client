@@ -1,40 +1,161 @@
 header {
-    background:#fafafa;
-    height: 82px;
-    box-shadow: 4px 5px 8px 0px rgba(0, 0, 0, 0.1);
-    position: relative;
-    z-index:10;
+    .header-wrapper {
+        background:#fafafa;
+        height: 82px;
+        box-shadow: 4px 5px 8px 0px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index:10;
+        // position:fixed;
+        // width: 100%;
+    }
     nav {    
         width:100%;
     }
     .header-wrapper {
         display: flex;
         padding-right: 45px;
+        position: fixed;
+        width: 100%;
         .logo{
-            padding-top: 30px;
-            padding-bottom: 30px;
-            width:121px;
+            padding-top: 18px;
+            padding-bottom: 18px;
             // float:left;
             margin-left:34px;
         }
         .cross-icon-box {
             .cross-icon {
-                border-right: 1px solid #dbdbdb;
-                width:82px;
-                height:82px;
-                text-align: center;
-                padding-top:30px;
+                a {
+                    border-right: 1px solid #dbdbdb;
+                    width:82px;
+                    height:82px;
+                    text-align: center;
+                    padding-top:30px;
+                    display: inline-block;
+                }
             }
         }
         .bell-user {
-            margin-top:30px;
+            margin-top:17px;
             margin-left:auto;
+            #create-project-icon {
+                float: left;
+                position: relative;
+                width: 50px;
+                height: 68px;
+                cursor: pointer;
+                & > a {
+                    display: inline-block;
+                    // background-color: #1069dd;
+                    background:#fff;
+                    color: #607a9b;
+                    width: 53px;
+                    height: 53px;
+                    border: 2px solid #f1f1f1;
+                    font-size: 36px;
+                    border-radius: 32px;
+                    text-align: center;
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+                &.active {
+                    & > a{
+                        background-color: #1069dd;
+                        color:#fff;
+                    }
+                    background: url(/images/dropdown-up-arrow.png) no-repeat bottom 0px center;
+                }
+                .sub-menu {
+                    padding-left:0;
+                    list-style: none;
+                }
+                .create-project-dropdown {
+                    display: none;
+                    position: absolute;
+                    right: -177px;
+                    width: 407px;
+                    z-index: 5;
+                    top: 65px;
+                    border-bottom-left-radius: 8px;
+                    border-bottom-right-radius: 8px;
+                    background-color: #fff;
+                    li {
+                        padding: 30px 36px;
+                        
+                        &:first-child {
+                            border-bottom: 1px solid #ebebeb;
+                            border-top: 1px solid #ebebeb;
+                        }
+                        a{
+                            color:#607a9b;
+                        }
+                    }
+                    .icon {
+                        float:left;
+                        width: 45px;
+                        margin-top: 6px;
+                    }
+                    .description {
+                        float:left;
+                        width: 270px;
+                        margin-left: 15px;
+                        h4 {
+                            font-size:22px;
+                            font-family: 'Open Sans', sans-serif;
+                            font-weight: 300;
+                        }
+                        p{
+                            margin-bottom: 0;
+                            font-size:16px;
+                            font-family: 'Hind Siliguri', sans-serif;
+                            font-weight: 300;
+                            color:#777;
+                        }
+                    }
+                }
+                &.active {
+                    .create-project-dropdown {
+                        display:block;
+                    }  
+                    .submenu-backdrop {
+                        background: #000;
+                        width: 100%;
+                        height: 100%;
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        opacity: .7;
+                        z-index: 1;
+                        top: 82px;
+                    } 
+                }
+            }
             .bell-icon {
+                margin-left:45px;
                 float:left;
+                a {
+                    display: inline-block;
+                    background: url(/images/bell-icon.png) no-repeat center center;
+                    background-color: #fff;
+                    width: 53px;
+                    height: 53px;
+                    border: 2px solid #f1f1f1;
+                    border-radius: 28px;
+                }
             }
             .user-icon {
                 margin-left:45px;
                 float:left;
+                .logout-user {
+                    display: inline-block;
+                    background: url(/images/user-icon.png) no-repeat center center;
+                    background-color: #fff;
+                    width: 53px;
+                    height: 53px;
+                    border: 2px solid #f1f1f1;
+                    border-radius: 28px;
+                    cursor: pointer;
+                }
             }
         }
     }

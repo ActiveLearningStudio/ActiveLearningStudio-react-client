@@ -30,7 +30,7 @@ function ResourceDescription(props) {
               </div>
               <span className="bottom-vertical-line"></span>
             </div>
-            <span className="name">Select Activity</span>
+            <span className="name">Pick Activity Type</span>
           </div>
           <div className="select-question filled">
             <div className="question-box">
@@ -40,7 +40,7 @@ function ResourceDescription(props) {
               </div>
               <span className="bottom-vertical-line"></span>
             </div>
-            <span className="name">Select Question</span>
+            <span className="name">Select Activity</span>
           </div>
           <div className="select-description selected">
             <div className="description-box">
@@ -49,7 +49,7 @@ function ResourceDescription(props) {
                   <span className="number">3</span>
               </div>
             </div>
-            <span className="name">Select description</span>
+            <span className="name">Build Activity</span>
           </div>
           
         </div>

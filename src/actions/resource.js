@@ -92,52 +92,52 @@ export const showCreateResourceDescriptionAction = (editor, editorType) => {
 
 
 
-export const createResource = (playlistId, id, title, editor, editorType) => ({
+export const createResource = (playlistid, resource, editor, editorType) => ({
     type:CREATE_RESOURCE,
-    playlistId,
-    id,
-    title,
+    playlistid,
+    resource,
     editor,
     editorType
 });
 
-export const createResourceAction = (playlistId, editor, editorType) => {
+export const createResourceAction = (playlistid, editor, editorType) => {
     return async dispatch => {
         try {
+            const { token } = JSON.parse(localStorage.getItem("auth"));
             const headers = {
                 'Content-Type': 'application/json',
-                'Authorization': 'JWT fefege...'
+                "Authorization": "Bearer "+ token
               };
             const data = {
-                playlistId:playlistId,
+                playlistid:playlistid,
                 library: window.h5peditorCopy.getLibrary(),
                 parameters: JSON.stringify(window.h5peditorCopy.getParams()),
                 action: 'create'
               };
             
-            const response = await axios.post('http://localhost:8082/api/api/h5p/?api_token=test', data, {
+            const response = await axios.post(global.config.h5pAjaxUrl+'/api/api/h5p/?api_token=test', data, {
                 headers: headers
               })
               .then((response) => {
-                let plists = [];
-                if(localStorage.getItem("playlists")){
-                    plists = JSON.parse(localStorage.getItem("playlists"));
-                }
+                
+                // if(localStorage.getItem("playlists")){
+                //     plists = JSON.parse(localStorage.getItem("playlists"));
+                // }
                 let resource = response.data;
                 // console.log(resource);
                 
+                // let plists = [];
+                // plists.forEach((playlist, i)=>{
+                //     if(playlist.id === playlistid){
+                //         plists[i] = Object.assign( { 'resources':[] }, plists[i] );
+                //         plists[i].resources.push(resource);
+                //     }
+                // });
                 
-                plists.forEach((playlist, i)=>{
-                    if(playlist.id === playlistId){
-                        plists[i] = Object.assign( { 'resources':[] }, plists[i] );
-                        plists[i].resources.push(resource);
-                    }
-                });
                 
-                
-                localStorage.setItem("playlists", JSON.stringify(plists));
+                // localStorage.setItem("playlists", JSON.stringify(plists));
                 dispatch(
-                    createResource(playlistId, resource.id, resource.title, editor, editorType)
+                    createResource(playlistid, resource, editor, editorType)
                 )
               })
               .catch((error) => {

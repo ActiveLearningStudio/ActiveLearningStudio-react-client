@@ -1,5 +1,5 @@
 .resource-activity {
-    padding-left: 25px;
+    // padding-left: 25px;
     .activity-label {
         margin-bottom: 40px;
     }
@@ -47,7 +47,7 @@
 
 
 .resource-question {
-    padding-left: 25px;
+    // padding-left: 25px;
     .question-label {
         margin-bottom: 40px;
     }
@@ -391,7 +391,7 @@ input[type="radio"]:checked+.activity-item {
     border-radius: 3px;
     /* margin-left: 9px; */
     cursor: pointer;
-    margin-top: 90px;
+    margin-top: 30px;
     width: 110px;
     height: 56px;
     background:  #2ecf43 ;
@@ -408,7 +408,7 @@ input[type="radio"]:checked+.activity-item {
     border-radius: 3px;
     /* margin-left: 9px; */
     cursor: pointer;
-    margin-top: 90px;
+    margin-top: 30px;
     width: 163px;
     height: 56px;
     background: url(/images/btn-arrow.png) #2ecf43 no-repeat right 20px top 20px;
@@ -427,13 +427,13 @@ input[type="radio"]:checked+.activity-item {
         font-size:2rem;
         font-family: 'Open Sans', sans-serif;
         font-weight: 300;
-        .close-resource-btn {
+        .close-btn {
             float:right;
             border:0;
             background:none;
         }
     }
     .modal-content {
-        padding:40px 90px;
+        padding:40px 35px;
     }
 }

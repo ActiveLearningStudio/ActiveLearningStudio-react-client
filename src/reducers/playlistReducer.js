@@ -1,4 +1,4 @@
-import { CREATE_PLAYLIST, DELETE_PLAYLIST, SHOW_CREATE_PLAYLIST_MODAL, HIDE_CREATE_PLAYLIST_MODAL, CREATE_RESOURCE } from "../constants/actionTypes";
+import { CREATE_PLAYLIST, DELETE_PLAYLIST, SHOW_CREATE_PLAYLIST_MODAL, HIDE_CREATE_PLAYLIST_MODAL, CREATE_RESOURCE, LOAD_PROJECT_PLAYLISTS } from "../constants/actionTypes";
 
 const defaultPlaylistState = () => {
   if (localStorage.getItem("playlists")) {
@@ -24,14 +24,15 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
       return {
         ...state,
         playlists: [
-          {id:action.id, title:action.title},
+          action.playlistdata,
           ...state.playlists
         ]
       };
 
       case DELETE_PLAYLIST:
+        console.log(state);
         let newPlaylist = state.playlists.filter(playlist => {
-          return playlist.id !== action.id
+          return playlist._id !== action.id
         });
         return {
           ...state,
@@ -49,11 +50,13 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
           };
       case CREATE_RESOURCE:
         // adding resource to newplaylist specific id
+        console.log(state.playlists)
+        console.log(action);
         let newPlaylists = state.playlists;
         state.playlists.forEach((playlist,i) => {
-            if(playlist.id === action.playlistId){
+            if(playlist._id === action.playlistid){
               newPlaylists[i] = Object.assign( { 'resources':[] }, newPlaylists[i] );
-              newPlaylists[i].resources.push({id:action.id, title:action.title});
+              newPlaylists[i].resources.push({_id:action.resource.id, h5p_content_id:action.resource.h5p_content_id, title:action.resource.title});
             }
         });
         
@@ -63,6 +66,11 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
                 showCreateResourcePopup:false
                 
             };
+      case LOAD_PROJECT_PLAYLISTS:
+        return {
+          ...state,
+          playlists: action.playlists
+        };
     default:
       return state;
   }

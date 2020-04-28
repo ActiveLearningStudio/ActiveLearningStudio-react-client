@@ -20,7 +20,7 @@ const BouncyDiv = styled.div`
   animation: 0.5s ${bounceAnimation};
 `;
 
-export class NewResourcePage extends React.Component {
+export class NewProjectPage extends React.Component {
   constructor(props) {
     super(props);
     
@@ -30,9 +30,13 @@ export class NewResourcePage extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     //show activity content
-    this.props.showCreateResourceActivity();
+    
   }
 
+  
+  
+  
+  
   
 
   render() {
@@ -46,8 +50,8 @@ export class NewResourcePage extends React.Component {
                         
                           <div className="modal-title">
                             <h1>
-                              Create New Resource
-                              <button type="button" className="close-btn" data-dismiss="modal" onClick={this.props.handleHideCreateResourceModal}>x</button>
+                              Create New Project
+                              <button type="button" className="close-btn" data-dismiss="modal" onClick={this.props.handleCloseProjectModal}>x</button>
                             </h1>
                             
                             <hr />
@@ -55,18 +59,7 @@ export class NewResourcePage extends React.Component {
                           <div className="modal-body">
                             <div className='row'>
                               <div className="col-md-12"> 
-                              {this.props.resource.isResourceActivity ?  
-                                <ResourceActivity selectQuestionBox={this.props.showCreateResourceQuestion}  />  
-                                : null  
-                                }  
-                                {this.props.resource.isResourceQuestion ?  
-                                <ResourceQuestion  selectDescriptionBox={this.props.showCreateResourceDescription}  />  
-                                : null  
-                                }  
-                                {this.props.resource.isResourceDescription ?  
-                                <ResourceDescription {...this.props} />  
-                                : null  
-                                }
+                              <CreateProjectPopup {...this.props} />
                                 
                               </div>
                             </div>
@@ -81,15 +74,12 @@ export class NewResourcePage extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  showCreateResourceActivity: () => dispatch(showCreateResourceActivityAction()),
-  showCreateResourceQuestion: () => dispatch(showCreateResourceQuestionAction()),
-  showCreateResourceDescription: (editor, editorType) => dispatch(showCreateResourceDescriptionAction(editor, editorType)),
+  
 });
 
 const mapStateToProps =(state) => {
-  // console.log(state);
   return {
-    resource: state.resource
+    
   };
 }
 
@@ -97,7 +87,7 @@ const mapStateToProps =(state) => {
 // export default connect(
 //   mapStateToProps,
 //   mapDispatchToProps
-// )(NewResourcePage);
+// )(NewProjectPage);
 
 export default withRouter(connect(mapStateToProps,
-  mapDispatchToProps)(NewResourcePage));
+  mapDispatchToProps)(NewProjectPage));

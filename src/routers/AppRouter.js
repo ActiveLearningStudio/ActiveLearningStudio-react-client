@@ -13,18 +13,25 @@ import H5PPreview from "../containers/H5PPreview";
 import { LTIActivityPage } from "../containers/LTIActivityPage";
 import { LTIPlaylistPage } from "../containers/LTIPlaylistPage";
 import { LTIProgramPage } from "../containers/LTIProgramPage";
+import  ProjectsPage  from "../containers/ProjectsPage";
 
 const history = createBrowserHistory();
 
 const AppRouter = () => (
   <Router history={history}>
     <Switch>
-      <PrivateRoute path="/" exact component={HomePage} />
-      <Route path="/playlist/create" render={(props) => <HomePage {...props} openCreatePopup={true} />} />
+      <PrivateRoute path="/" exact component={ProjectsPage} />
+      <Route path="/project/create" render={(props) => <ProjectsPage {...props} showCreateProjectPopup={true} />} />
+      <Route path="/project/:projectid" exact component={HomePage} />
+      <Route path="/project/:projectid/playlist/create" render={(props) => <HomePage {...props} openCreatePopup={true} />} />
+      <Route path="/project/:projectid/playlist/:playlistid/activity/create" exact render={(props) => <HomePage {...props} openCreateResourcePopup={true} />} />
+
+      
+      
+      
       <Route path="/lti-activity/:id/:launchid" exact component={LTIActivityPage} />
       <Route path="/lti-playlist/:id/:launchid" exact component={LTIPlaylistPage} />
       <Route path="/lti-program/:id/:launchid" exact component={LTIProgramPage} />
-      <Route path="/playlist/activity/create/:id" exact component={HomePage} />
       <Route path="/tiny" exact component={TinyEditor} />
       <Route path="/h5p-preview" exact component={H5PPreview} />
       <PublicRoute path="/login" component={LoginPage} />

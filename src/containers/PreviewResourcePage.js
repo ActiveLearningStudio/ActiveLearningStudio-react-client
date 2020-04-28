@@ -43,7 +43,7 @@ export class NewResourcePage extends React.Component {
                             <div className="modal-title">
                               <h1>
                                 Preview Resource
-                                <button type="button" className="close-resource-btn" data-dismiss="modal" onClick={this.props.hidePreviewResourceModalAction}>x</button>
+                                <button type="button" className="close-btn" data-dismiss="modal" onClick={this.props.hidePreviewResourceModalAction}>x</button>
                               </h1>
                               
                               <hr />

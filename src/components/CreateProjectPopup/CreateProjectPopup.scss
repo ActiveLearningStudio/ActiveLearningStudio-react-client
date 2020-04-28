@@ -1,0 +1,77 @@
+.create-program-wrapper {
+    h1 {
+        color: #165399;
+        text-transform: capitalize;
+        margin: 0;
+        font-size: 2rem;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 300;
+    }
+    .create-playlist-form {
+        h2 {
+            color:#565656;
+            font-size: 18px;
+            font-family: 'Hind Siliguri', sans-serif;
+            font-weight: 400;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        .project-name {
+            input {
+                width:100%;
+                border: 1px solid #d9dfe8;
+                border-left: 3px solid #d9dfe8;
+                height: 54px;
+                padding-left: 15px;
+            }
+        }
+        .project-description {
+            textarea {
+                width:100%;
+                border: 1px solid #d9dfe8;
+                border-left: 3px solid #d9dfe8;
+                height: 54px;
+                padding: 15px;
+                height:200px;
+                border-radius: 0;
+            }
+        }
+        .upload-thumbnail {
+            input {
+                width:100%;
+                border: 1px solid #d9dfe8;
+                border-left: 3px solid #d9dfe8;
+                height: 54px;
+                padding-left: 15px;
+                padding-top: 12px;
+            }
+        }
+        .create-projct-template-wrapper {
+            margin-top:25px;
+            .create-project-submit-btn {
+                background: #2ecf43;
+                color:#fff;
+                font-family: 'Open Sans', sans-serif;
+                font-weight: 500;
+                text-transform: uppercase;
+                border:0;
+                padding: 10px 15px;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+            .project-template-btn {
+                background: url(/images/project-template-icon.png) #fff no-repeat 8px 10px;
+                font-family: 'Open Sans', sans-serif;
+                font-weight: 500;
+                text-transform: uppercase;
+                padding: 10px 15px;
+                cursor: pointer;
+                border: 0;
+                float: right;
+                padding-left: 35px;
+                border: 1px solid #d9dfe8;
+                border-radius: 5px;
+            }
+        }
+    }
+}

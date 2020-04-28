@@ -144,7 +144,7 @@ function ResourceQuestion(props) {
               </div>
               <span className="bottom-vertical-line"></span>
             </div>
-            <span className="name">Select Activity</span>
+            <span className="name">Pick Activity Type</span>
           </div>
           <div className="select-question selected">
             <div className="question-box">
@@ -154,7 +154,7 @@ function ResourceQuestion(props) {
               </div>
               <span className="bottom-vertical-line"></span>
             </div>
-            <span className="name">Select Question</span>
+            <span className="name">Select Activity</span>
           </div>
           <div className="select-description">
             <div className="description-box">
@@ -163,7 +163,7 @@ function ResourceQuestion(props) {
                   <span className="number">3</span>
               </div>
             </div>
-            <span className="name" onClick={()=>{props.selectDescriptionBox(defaultEditor, defaultEditorType)}}>Select description</span>
+            <span className="name" onClick={()=>{props.selectDescriptionBox(defaultEditor, defaultEditorType)}}>Build Activity</span>
           </div>
           
         </div>
@@ -171,12 +171,18 @@ function ResourceQuestion(props) {
       <div className="col-md-9">
         <div className="resource-question">
           <FadeDiv>
-              <h2 className="title">Select kind of question you want to create?</h2>
+              <div className="row">
+                <div className="col-md-12">
+                  <h2 className="title">Select kind of question you want to create?</h2>
+                </div>
+              </div>
               <div className="row">
                 {questionsContent}
               </div>
+              <div className="col-md-12">
+                <button onClick={()=>{props.selectDescriptionBox(defaultEditor, defaultEditorType)}} className="add-resource-continue-btn">Continue</button>
+              </div>
               
-              <button onClick={()=>{props.selectDescriptionBox(defaultEditor, defaultEditorType)}} className="add-resource-continue-btn">Continue</button>
           </FadeDiv>
       </div>
       </div>

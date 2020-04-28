@@ -53,7 +53,7 @@ class EditorPage extends React.Component {
          'Content-Type': 'application/json',
          'Authorization': 'JWT fefege...'
        }
-      axios.get('http://localhost:8082/api/api/h5p/'+previewResourceId, {
+      axios.get(global.config.h5pAjaxUrl+'/api/api/h5p/'+previewResourceId, {
         headers: headers
       })
       .then((response) => {
@@ -276,7 +276,7 @@ class EditorPage extends React.Component {
       parameters: JSON.stringify(window.h5peditorCopy.getParams()),
       action: 'create'
     }
-    axios.post('http://localhost:8082/api/api/h5p/?api_token=test', data, {
+    axios.post(global.config.h5pAjaxUrl+'/api/api/h5p/?api_token=test', data, {
         headers: headers
       })
       .then((response) => {
@@ -327,7 +327,7 @@ class EditorPage extends React.Component {
 
 
 const mapDispatchToProps = dispatch => ({
-   createResourceAction: (playlistId, editor, editorType) => dispatch(createResourceAction(playlistId, editor, editorType)),
+   createResourceAction: (playlistid, editor, editorType) => dispatch(createResourceAction(playlistid, editor, editorType)),
 });
 
 const mapStateToProps = (state) => {

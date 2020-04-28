@@ -1,21 +1,21 @@
 import axios from "axios";
-import {CREATE_PLAYLIST, DELETE_PLAYLIST, SHOW_CREATE_PLAYLIST_MODAL, HIDE_CREATE_PLAYLIST_MODAL, HIDE_PREVIEW_PLAYLIST_MODAL} from './../constants/actionTypes';
+import {CREATE_PLAYLIST, DELETE_PLAYLIST, SHOW_CREATE_PLAYLIST_MODAL, HIDE_CREATE_PLAYLIST_MODAL, HIDE_PREVIEW_PLAYLIST_MODA, LOAD_PROJECT_PLAYLISTSL, LOAD_PROJECT_PLAYLISTS, HIDE_PREVIEW_PLAYLIST_MODAL} from './../constants/actionTypes';
 
-export const createPlaylist = (id, title) => ({
+export const createPlaylist = (playlistdata) => ({
   type: CREATE_PLAYLIST,
-  id,
-  title
+  playlistdata
 });
 
 
 
-export const createPlaylistAction = (title) => {
+export const createPlaylistAction = (projectid, title) => {
   return async dispatch => {
     try {
      const response = await axios.post(
       //  `${process.env.REACT_APP_API_URL}/playlist/create`,
        '/api/playlist',
        {
+         projectid,
          title
        }
      );
@@ -24,21 +24,22 @@ export const createPlaylistAction = (title) => {
         //getting last playlist id
         
         const playlistdata = {
-          id:response.data.data._id,
-          title: response.data.data.title
+          _id:response.data.data._id,
+          title: response.data.data.title,
+          projectid: response.data.data.projectid
         };
         
         let plists = [];
-        if(localStorage.getItem("playlists")){
-            plists = JSON.parse(localStorage.getItem("playlists"));
-        }
+        // if(localStorage.getItem("playlists")){
+        //     plists = JSON.parse(localStorage.getItem("playlists"));
+        // }
         
-        plists.unshift(playlistdata);
+        // plists.unshift(playlistdata);
         
-        localStorage.setItem("playlists", JSON.stringify(plists));
+        // localStorage.setItem("playlists", JSON.stringify(plists));
         
         dispatch(
-          createPlaylist(playlistdata.id, title)
+          createPlaylist(playlistdata)
         );
       }
 
@@ -67,13 +68,13 @@ export const deletePlaylistAction = (id) => {
 
        if(response.data.status == "success") {
           let plists = [];
-          if(localStorage.getItem("playlists")){
-            plists = JSON.parse(localStorage.getItem("playlists"));
-          }
-          plists = plists.filter(playlist => {
-            return playlist.id !== id
-          });
-          localStorage.setItem("playlists", JSON.stringify(plists));
+          // if(localStorage.getItem("playlists")){
+          //   plists = JSON.parse(localStorage.getItem("playlists"));
+          // }
+          // plists = plists.filter(playlist => {
+          //   return playlist.id !== id
+          // });
+          // localStorage.setItem("playlists", JSON.stringify(plists));
           dispatch(
             deletePlaylist(id)
           );
@@ -104,7 +105,7 @@ export const showCreatePlaylistModalAction = () => {
 
 
 export const hideCreatePlaylistModal = () => ({
-  type:HIDE_PREVIEW_PLAYLIST_MODAL
+  type:HIDE_CREATE_PLAYLIST_MODAL
 });
 
 export const hideCreatePlaylistModalAction = () => {
@@ -118,3 +119,50 @@ export const hideCreatePlaylistModalAction = () => {
     }
   }
 }
+
+
+
+
+
+export const loadProjectPlaylists = (playlists) => ({
+  type: LOAD_PROJECT_PLAYLISTS,
+  playlists
+});
+
+
+
+export const loadProjectPlaylistsAction = (projectid) => {
+  return async dispatch => {
+    try {
+      const { token } = JSON.parse(localStorage.getItem("auth"));
+     const response = await axios.post(
+      //  `${process.env.REACT_APP_API_URL}/playlist/create`,
+       '/api/project-playlists',
+       {
+         projectid
+       },
+       {
+          headers: {
+            "Authorization": "Bearer "+token
+          }
+        }
+     );
+     
+     if(response.data.status == "success") {
+        let playlists = [];
+        playlists = response.data.data.playlists;
+        
+        
+        dispatch(
+          loadProjectPlaylists(playlists)
+        );
+      }
+
+      
+    } catch (e) {
+      throw new Error(e);
+    }
+  };
+};
+
+

@@ -17,8 +17,9 @@ import CreatePlaylistPopup from "../components/CreatePlaylistPopup/CreatePlaylis
 import Sidebar from "../components/Sidebar/Sidebar";
 
 import { startLogin } from "./../actions/auth";
-import { createPlaylistAction, deletePlaylistAction, showCreatePlaylistModalAction, hideCreatePlaylistModalAction } from "./../actions/playlist";
-import { showCreateResourceModalAction, hideCreateResourceModalAction, previewResourceAction, hidePreviewResourceModalAction } from "./../actions/resource";
+import { createPlaylistAction, deletePlaylistAction, showCreatePlaylistModalAction, hideCreatePlaylistModalAction, loadProjectPlaylistsAction } from "./../actions/playlist";
+import { createResourceAction, showCreateResourceModalAction, hideCreateResourceModalAction, previewResourceAction, hidePreviewResourceModalAction } from "./../actions/resource";
+import { showCreateProjectModalAction, showCreateProjectSubmenuAction } from "./../actions/project";
 import NewResourcePage from "./NewResourcePage";
 import PreviewResourcePage from "./PreviewResourcePage";
 
@@ -47,7 +48,7 @@ export class HomePage extends React.Component {
   escFunction(event) {
     if (event.keyCode === 27) {
       this.props.hideCreatePlaylistModal();
-      this.props.history.push("/");
+      // this.props.history.push("/");
     }
   }
 
@@ -57,13 +58,14 @@ export class HomePage extends React.Component {
   componentDidMount() {
     //scroll to top
     window.scrollTo(0, 0);
+    this.props.loadProjectPlaylistsAction(this.props.match.params.projectid);
   }
 
   handleShowCreatePlaylistModal = async (e) => {
     e.preventDefault();
     try {
       await this.props.showCreatePlaylistModal();
-      this.props.history.push("/playlist/create");
+      this.props.history.push("/project/"+this.props.match.params.projectid+"/playlist/create");
 
       
     } catch (e) {
@@ -72,10 +74,10 @@ export class HomePage extends React.Component {
 
   };
 
-  handleShowCreateResourceModal = (id) => {
+  handleShowCreateResourceModal = (playlist) => {
     try {
-      this.props.showCreateResourceModalAction(id);
-      this.props.history.push("/playlist/activity/create/"+id);
+      this.props.showCreateResourceModalAction(playlist._id);
+      this.props.history.push("/project/"+this.props.match.params.projectid+"/playlist/"+playlist._id+"/activity/create");
 
     } catch (e) {
       console.log(e.message);
@@ -91,13 +93,26 @@ export class HomePage extends React.Component {
     e.preventDefault();
     try {
       await this.props.hideCreatePlaylistModal();
-      this.props.history.push("/");
+      this.props.history.push("/project/"+this.props.match.params.projectid);
 
       
     } catch (e) {
       console.log(e.message);
     }
   };
+
+  handleHideCreateResourceModal = async (e) => {
+    e.preventDefault();
+    try {
+      await this.props.hideCreateResourceModal();
+      this.props.history.push("/project/"+this.props.match.params.projectid);
+      
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  
 
 
   onPlaylistTitleChange = e => {
@@ -108,9 +123,9 @@ export class HomePage extends React.Component {
     try {
       const { title } = this.state;
       
-      await this.props.createPlaylistAction(title);
-      this.props.history.push("/");
-      this.props.hideCreatePlaylistModal();
+      await this.props.createPlaylistAction(this.props.match.params.projectid, title);
+      this.props.history.push("/project/"+this.props.match.params.projectid);
+      // this.props.hideCreatePlaylistModal();
 
     } catch (e) {
       console.log(e.message);
@@ -131,25 +146,51 @@ export class HomePage extends React.Component {
     return (
       resources.map(function(resource) {
         return (
-          <div className="playlist-resource" key={resource.id}>
+          <div className="playlist-resource" key={resource._id}>
             <h3 className="title">{resource.title}</h3>
-            <button onClick={() => this.handlePreviewResource(resource.id)}>Preview</button>
+            <div className="activity-options">
+              <div className="options-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div className="options">
+                <button className="preview-btn" onClick={() => this.handlePreviewResource(resource.h5p_content_id)}>Preview</button>
+              {/* <button className="edit-btn">Edit</button>
+              <button className="delete-btn">Delete</button> */}
+              </div>
+            </div>
+            
           </div>
         )
       }, this)
     );
   }
+
+  
+
+  handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType) => {
+    try {
+      
+      await this.props.createResourceAction(currentPlaylistId, editor, editorType)
+      this.props.history.push("/project/"+this.props.match.params.projectid);
+      // this.props.hideCreatePlaylistModal();
+
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
   render() {
     const { playlists } = this.props.playlists;
 
     
 
     const headArray = playlists.map(playlist => (
-      <div className="list-wrapper" key={playlist.id}>
+      <div className="list-wrapper" key={playlist._id}>
         <div className="list">
           <div className="list-header">
             <h2 className="list-header-name">{playlist.title}
-              <button className="remove-playlist-btn" onClick={() => this.handleDeletePlayList(playlist.id)}>x</button>
+              <button className="remove-playlist-btn" onClick={() => this.handleDeletePlayList(playlist._id)}>x</button>
             </h2>
             
           </div>
@@ -159,7 +200,7 @@ export class HomePage extends React.Component {
               : null
             }
             
-            <button onClick={() => this.handleShowCreateResourceModal(playlist.id)} className="add-resource-to-playlist-btn">
+            <button onClick={() => this.handleShowCreateResourceModal(playlist)} className="add-resource-to-playlist-btn">
               Add new resource
                           </button>
             {/* </Link>  */}
@@ -169,12 +210,12 @@ export class HomePage extends React.Component {
     ));
     return (
       <div>
-        <Header />
-        <div className="row ">
-          <div className="col-md-2">
+        <Header {...this.props} />
+        <div className="main-content-wrapper">
+          <div className="sidebar-wrapper">
             <Sidebar />
           </div>
-          <div className="col-md-10">
+          <div className="content-wrapper">
             <div className="content">
               <div className="playlist-search">
                 <input type="text" name="search" className="search" placeholder="Search..." />
@@ -190,7 +231,7 @@ export class HomePage extends React.Component {
           </div>
         </div>
 
-        {(this.props.playlists.showCreatePlaylistPopup || this.props.openCreatePopup) ?
+        {(this.props.openCreatePopup) ?
           <CreatePlaylistPopup
             escFunction={this.escFunction.bind(this)}
             handleShowCreatePlaylistModal={this.handleShowCreatePlaylistModal.bind(this)}
@@ -201,9 +242,11 @@ export class HomePage extends React.Component {
           : null
         }
 
-        {this.props.resource.showCreateResourcePopup ?
+        {this.props.openCreateResourcePopup ?
           <NewResourcePage
             {...this.props}
+            handleHideCreateResourceModal = {this.handleHideCreateResourceModal}
+            handleCreateResourceSubmit = {this.handleCreateResourceSubmit}
           />
           : null
         }
@@ -222,7 +265,7 @@ export class HomePage extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  createPlaylistAction: (title) => dispatch(createPlaylistAction(title)),
+  createPlaylistAction: (projectid, title) => dispatch(createPlaylistAction(projectid, title)),
   deletePlaylistAction: (id) => dispatch(deletePlaylistAction(id)),
   showCreatePlaylistModal: () => dispatch(showCreatePlaylistModalAction()),
   hideCreatePlaylistModal: () => dispatch(hideCreatePlaylistModalAction()),
@@ -230,14 +273,18 @@ const mapDispatchToProps = dispatch => ({
   hideCreateResourceModal: () => dispatch(hideCreateResourceModalAction()),
   previewResourceAction: (id) => dispatch(previewResourceAction(id)),
   hidePreviewResourceModalAction: () => dispatch(hidePreviewResourceModalAction()),
-  //   dispatch({ type: APP_LOAD, payload, token, skipTracking: true })
+  showCreateProjectSubmenuAction: () => dispatch(showCreateProjectSubmenuAction()),
+  showCreateProjectModalAction: () => dispatch(showCreateProjectModalAction()),
+  loadProjectPlaylistsAction: (projectid) => dispatch(loadProjectPlaylistsAction(projectid)),
+  createResourceAction: (playlistid, editor, editorType) => dispatch(createResourceAction(playlistid, editor, editorType)),
 });
 
 const mapStateToProps = (state) => {
   // console.log(state);
   return {
     playlists: state.playlist,
-    resource: state.resource
+    resource: state.resource,
+    project: state.project
   };
 }
 

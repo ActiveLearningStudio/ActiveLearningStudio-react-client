@@ -7,8 +7,11 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import { logout } from "../../actions/auth";
 
-function Header() {
+
+
+function Header(props) {
   return (
     <header>
       <div className="header-wrapper">
@@ -25,15 +28,55 @@ function Header() {
           </Link>
         </div>
         <div className="bell-user">
+          <div id="create-project-icon" className={props.project.showCreateProjectSubmenu ? 'active': null} onClick={()=>props.showCreateProjectSubmenuAction()}>
+              <a>
+                +
+              </a>
+              <ul className="create-project-dropdown sub-menu">
+                <li>
+                  <Link to="/project/create">
+                    <div className="icon">
+                      <img src="/images/create-project-icon.png" />
+                    </div>
+                    <div className="description">
+                      <div>
+                        <h4>Create a New Project</h4>
+                      </div>
+                      <div>
+                        <p>Lorem ipsum dolor sit amet, tetur adipiscing elit. Nullam ac sapien in erat commodo molestie.</p>
+                      </div>
+                    </div>
+                    <div className="clearfix"></div>
+                  </Link>
+                </li>
+                <li>
+                  <a href="#">
+                  <div className="icon">
+                      <img src="/images/create-team-icon.png" />
+                    </div>
+                    <div className="description">
+                      <div>
+                        <h4>Create Team</h4>
+                      </div>
+                      <div>
+                        <p>Lorem ipsum dolor sit amet, tetur adipiscing elit. Nullam ac sapien in erat commodo molestie.</p>
+                      </div>
+                    </div>
+                    <div className="clearfix"></div>
+                  </a>
+                </li>
+              </ul>
+              <div className="submenu-backdrop active"></div>
+            </div>
             <div className="bell-icon">
               <Link to="/">
-                <img src="/images/bell-icon.png" alt="Bell icon" />
+                
               </Link>
             </div>
             <div className="user-icon">
-              <Link to="/">
-                <img src="/images/user-icon.png" alt="User icon" />
-              </Link>
+              <button  className="logout-user">
+                
+              </button>
             </div>
         </div>
       </div>

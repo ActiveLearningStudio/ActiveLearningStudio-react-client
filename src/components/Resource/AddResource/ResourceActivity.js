@@ -78,7 +78,7 @@ function ResourceActivity(props) {
               </div>
               <span className="bottom-vertical-line"></span>
             </div>
-            <span className="name">Select Activity</span>
+            <span className="name">Pick Activity Type</span>
           </div>
           <div className="select-question">
             <div className="question-box">
@@ -88,7 +88,7 @@ function ResourceActivity(props) {
               </div>
               <span className="bottom-vertical-line"></span>
             </div>
-            <span className="name" onClick={props.selectQuestionBox}>Select Question</span>
+            <span className="name" onClick={props.selectQuestionBox}>Select Activity</span>
           </div>
           <div className="select-description">
             <div className="description-box">
@@ -97,7 +97,7 @@ function ResourceActivity(props) {
                   <span className="number">3</span>
               </div>
             </div>
-            <span className="name">Select description</span>
+            <span className="name">Build Activity</span>
           </div>
           
         </div>
@@ -105,16 +105,22 @@ function ResourceActivity(props) {
       <div className="col-md-9">
         <div className="resource-activity">
           <FaceDiv>
-              <h2 className="title">Select kind of activity you want to create?</h2>
-              <div className="activity-content">
-                <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-                </p>
+            <div className="row">
+              <div className="col-md-12">
+                <h2 className="title">Select kind of activity you want to create?</h2>
+                <div className="activity-content">
+                  <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                  </p>
+                </div>
               </div>
+            </div>
+              
               <div className="row">
                 {activitiesContent}
-
-                <button onClick={props.selectQuestionBox} className="add-resource-continue-btn">Continue</button>
+                <div className="col-md-12">
+                  <button onClick={props.selectQuestionBox} className="add-resource-continue-btn">Continue</button>
+                </div>
               </div>
           </FaceDiv>
       </div>

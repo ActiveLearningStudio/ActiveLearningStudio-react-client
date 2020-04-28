@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 import { withRouter } from 'react-router-dom';
 
-import { createResourceAction } from "./../actions/resource";
+
 
 
 class EditorPage extends React.Component {
@@ -13,7 +13,7 @@ class EditorPage extends React.Component {
 
    constructor(props) {
       super(props);
-
+      
       
       this.h5pLib = props.resource.editor; //"H5P.Audio 1.4";
 
@@ -24,15 +24,15 @@ class EditorPage extends React.Component {
       // console.log(this.state);
       // this.h5pLib = "H5P.MultiChoice 1.14";
       window.H5PIntegration = {
-         "baseUrl": "http://localhost",
+         "baseUrl": global.config.h5pBaseUrl,
          "url": "/storage/h5p",
          "postUserStatistics": true,
          "ajax": {
-            "setFinished": "http://localhost:8082/api/ajax/finish",
-            "contentUserData": "http://localhost:8082/api/ajax/content-user-data/?content_id=:contentId&data_type=:dataType&sub_content_id=:subContentId"
+            "setFinished": global.config.h5pAjaxUrl+"/api/ajax/finish",
+            "contentUserData": global.config.h5pAjaxUrl+"/api/ajax/content-user-data/?content_id=:contentId&data_type=:dataType&sub_content_id=:subContentId"
          },
          "saveFreq": false,
-         "siteUrl": "http://localhost",
+         "siteUrl": global.config.h5pBaseUrl,
          "l10n": {
             "H5P": {
                "fullscreen": "Fullscreen",
@@ -79,7 +79,7 @@ class EditorPage extends React.Component {
                "width": 50,
                "height": 50
             },
-            "ajaxPath": "http://localhost:8082/api/ajax/",
+            "ajaxPath": global.config.h5pAjaxUrl+"/api/ajax/",
             "libraryUrl": "/h5p/h5p-editor/",
             "copyrightSemantics": {
                "name": "copyright",
@@ -1159,7 +1159,7 @@ class EditorPage extends React.Component {
                   //   console.log(h5peditor.getParams());
 
                   //   $.ajax({
-                  //           url:"http://localhost:8082/api/api/h5p/?api_token=test",
+                  //           url:global.config.h5pAjaxUrl+"/api/api/h5p/?api_token=test",
                   //           data: JSON.stringify({
                   //               library: h5peditor.getLibrary(),
                   //               parameters: JSON.stringify(h5peditor.getParams()),
@@ -1259,7 +1259,7 @@ class EditorPage extends React.Component {
       parameters: JSON.stringify(window.h5peditorCopy.getParams()),
       action: 'create'
     }
-    axios.post('http://localhost:8082/api/api/h5p/?api_token=test', data, {
+    axios.post(global.config.h5pAjaxUrl+'/api/api/h5p/?api_token=test', data, {
         headers: headers
       })
       .then((response) => {
@@ -1269,7 +1269,7 @@ class EditorPage extends React.Component {
         console.log(error);
       });
       // $.ajax({
-      //    url: "http://localhost:8082/api/api/h5p/?api_token=test",
+      //    url: global.config.h5pAjaxUrl+"/api/api/h5p/?api_token=test",
       //    data: JSON.stringify({
       //       library: h5peditor.getLibrary(),
       //       parameters: JSON.stringify(h5peditor.getParams()),
@@ -1295,7 +1295,7 @@ class EditorPage extends React.Component {
    render() {
       return (
          <div>
-            <form method="POST" action="http://localhost:8082/api/h5p" accept-charset="UTF-8" className="form-horizontal"  /*enctype="multipart/form-data"*/ id="laravel-h5p-form">
+            <form method="POST" action={global.config.h5pAjaxUrl+"/api/h5p"} accept-charset="UTF-8" className="form-horizontal"  /*enctype="multipart/form-data"*/ id="laravel-h5p-form">
                <input name="_token" type="hidden" value="B6TFsmFD5TLZaWCAYZ91ly0D2We0xjLAtRmBJzQT" />
                <input type="hidden" name="library" id="laravel-h5p-library" value={this.h5pLib} />
                <input type="hidden" name="parameters" id="laravel-h5p-parameters" value="{&quot;params&quot;:{},&quot;metadata&quot;:{}}" />
@@ -1392,8 +1392,7 @@ class EditorPage extends React.Component {
 
                   <div className="form-group">
                      <div className="col-md-9 col-md-offset-3">
-                        {/* <a href="http://localhost:8082/api/h5p" className="btn btn-default"><i className="fa fa-reply"></i> Cancel</a> */}
-                        <button type="submit" className="add-resource-submit-btn" onClick={() => this.props.createResourceAction(this.props.resource.currentPlaylistId, this.props.resource.editor, this.props.resource.editorType)}>Finish</button>
+                        <button type="submit" className="add-resource-submit-btn" onClick={() => this.props.handleCreateResourceSubmit(this.props.resource.currentPlaylistId, this.props.resource.editor, this.props.resource.editorType)}>Finish</button>
                         {/* <input className="btn btn-primary" data-loading-text="Saving..." type="submit" value="Save" /> */}
 
                      </div>
@@ -1414,7 +1413,7 @@ class EditorPage extends React.Component {
 
 
 const mapDispatchToProps = dispatch => ({
-   createResourceAction: (playlistId, editor, editorType) => dispatch(createResourceAction(playlistId, editor, editorType)),
+   
 });
 
 const mapStateToProps = (state) => {
