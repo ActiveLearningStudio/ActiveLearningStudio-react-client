@@ -16,6 +16,32 @@ header {
         padding-right: 45px;
         position: fixed;
         width: 100%;
+        .search {
+            float: left;
+            margin-right: 2rem;
+            background-color: #efefef;
+            border-color: #efefef;
+            height: 3.125rem;
+            border-radius: 3rem;
+            padding-left: 1rem;
+            input {
+                background-color: #efefef;
+                border-color: #efefef;
+                height: 3.125rem;
+                border-radius: 3rem;
+            }
+            .navbar-search-btn {
+                position: relative;
+                top: 0;
+                left: 0;
+                border: 0;
+                outline: 0;
+                background-color: transparent;
+                color: #808080;
+                font-size: 1.3rem;
+                padding: .5625rem .75rem .5625rem 1.25rem;
+            }
+        }
         .logo{
             padding-top: 18px;
             padding-bottom: 18px;
