@@ -27,6 +27,9 @@ function Header(props) {
             <img src="/images/logo.png" className="img-responsive" alt="Curriki Logo" />
           </Link>
         </div>
+        <div className="search-bar">
+          <input type="text" name="search" placeholder="Search existing content" />
+        </div>
         <div className="bell-user">
           <div id="create-project-icon" className={props.project.showCreateProjectSubmenu ? 'active': null} onClick={()=>props.showCreateProjectSubmenuAction()}>
               <a>

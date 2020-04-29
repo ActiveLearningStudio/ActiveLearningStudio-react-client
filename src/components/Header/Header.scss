@@ -22,6 +22,27 @@ header {
             // float:left;
             margin-left:34px;
         }
+        .search-bar {
+            margin-left: auto;
+            padding-top: 18px;
+            margin-right: 50px;
+            input {
+                background: #fff;
+                font-size: 14px;
+                font-family: 'Open Sans', sans-serif;
+                font-weight: 400;
+                border: 1px solid #b7b7b7;
+                height: 53px;
+                border-radius: 35px;
+                width: 325px;
+                background: url(/images/header-search-icon.png) no-repeat center right 20px;
+                padding-left:25px;
+                &:focus {
+                    box-shadow:none;
+                    outline:0;
+                }
+            }
+        }
         .cross-icon-box {
             .cross-icon {
                 a {
@@ -36,7 +57,7 @@ header {
         }
         .bell-user {
             margin-top:17px;
-            margin-left:auto;
+            // margin-left:auto;
             #create-project-icon {
                 float: left;
                 position: relative;

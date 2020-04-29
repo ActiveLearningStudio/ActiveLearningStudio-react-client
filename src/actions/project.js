@@ -63,7 +63,7 @@ export const createProject = (projectdata) => ({
 
 
 
-export const createProjectAction = (name, description) => {
+export const createProjectAction = (name, description, thumb_url) => {
   return async dispatch => {
     try {
       //get auth token
@@ -74,7 +74,8 @@ export const createProjectAction = (name, description) => {
        '/api/project',
        {
          name,
-         description
+         description,
+         thumb_url
        },
        {
         headers: {
@@ -90,6 +91,7 @@ export const createProjectAction = (name, description) => {
         const projectdata = {
           _id:response.data.data._id,
           name: response.data.data.name,
+          thumb_url: response.data.data.thumb_url,
           userid: response.data.data.userid
         };
         dispatch(

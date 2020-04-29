@@ -20,12 +20,12 @@ const history = createBrowserHistory();
 const AppRouter = () => (
   <Router history={history}>
     <Switch>
-      <PrivateRoute path="/" exact component={ProjectsPage} />
+      <Route path="/" exact component={ProjectsPage} />
       <Route path="/project/create" render={(props) => <ProjectsPage {...props} showCreateProjectPopup={true} />} />
       <Route path="/project/:projectid" exact component={HomePage} />
       <Route path="/project/:projectid/playlist/create" render={(props) => <HomePage {...props} openCreatePopup={true} />} />
       <Route path="/project/:projectid/playlist/:playlistid/activity/create" exact render={(props) => <HomePage {...props} openCreateResourcePopup={true} />} />
-
+      <Route path="/activities/:activityid" render={(props) => <HomePage {...props} />} />
       
       
       

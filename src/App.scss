@@ -74,7 +74,7 @@ body {
     }
 }
 .content {
-    // padding:40px;
+    margin-top:50px;
 }
 
 .modal {
@@ -211,6 +211,7 @@ body {
         background:none;
         background:url(/images/search-icon.png) no-repeat 0px 4px;
         padding-left:25px;
+        margin-left: 28px;
         &:focus {
             border:0;
             box-shadow:none;
@@ -546,7 +547,16 @@ body {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     margin-top: 25px;
     .program-thumb {
-        
+        height: 240px;
+        overflow: hidden;
+        img {
+            min-width: 100%;
+            height: auto;
+            margin: auto;
+            display: block;
+            min-height: 100%;
+        }
+    
     }
     .program-content {
         padding: 25px 50px;

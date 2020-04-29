@@ -134,11 +134,13 @@ export class ProjectsPage extends React.Component {
     this.setState({ description: e.target.value });
   };
 
+
   handleCreateProjectSubmit = async (e) => {
     e.preventDefault();
     try {
       const { name, description } = this.state;
-      await this.props.createProjectAction(name, description);
+      var thumb_url = this.textInput.value;
+      await this.props.createProjectAction(name, description, thumb_url);
       this.props.history.push("/");
 
       
@@ -166,7 +168,7 @@ export class ProjectsPage extends React.Component {
         <div className="program-tile">
           <div className="program-thumb">
             <Link to={"/project/"+project._id}>
-              <img src="/images/program-thumb.png" className="img-fluid" />
+              <img src={project.thumb_url} className="img-fluid" />
             </Link>
           </div>
           <div className="program-content">
@@ -231,6 +233,8 @@ export class ProjectsPage extends React.Component {
             onProjectDescriptionChange = {this.onProjectDescriptionChange}
             handleCreateProjectSubmit = {this.handleCreateProjectSubmit}
             handleCloseProjectModal = {this.handleCloseProjectModal}
+            onThumbUrlChange = {this.onThumbUrlChange}
+            inputRef={(input) => this.textInput = input} 
           />
           : null
         }
@@ -243,7 +247,7 @@ export class ProjectsPage extends React.Component {
 const mapDispatchToProps = dispatch => ({
   showCreateProjectModalAction: () => dispatch(showCreateProjectModalAction()),
   loadMyProjectsAction: () =>dispatch(loadMyProjectsAction()),
-  createProjectAction: (name, description) =>dispatch(createProjectAction(name, description)),
+  createProjectAction: (name, description, thumb_url) =>dispatch(createProjectAction(name, description, thumb_url)),
   // hideCreateProjectModalAction: () => dispatch(hideCreateProjectModalAction()),
   showCreateProjectSubmenuAction: () => dispatch(showCreateProjectSubmenuAction())
 
