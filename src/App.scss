@@ -559,8 +559,9 @@ body {
     
     }
     .program-content {
-        padding: 25px 50px;
+        padding: 25px 20px;
         h3 {
+            margin-top:15px;
             a {
                 color:#607a9b;
                 font-size:26px;
@@ -570,6 +571,12 @@ body {
                     text-decoration:none;
                 }
             }
+        }
+        i {
+            font-size:20px;
+        }
+        button {
+            box-shadow: none;
         }
         .program-creator {
             color:#aaa;

@@ -52,7 +52,7 @@ const ProjectPreviewModal = (props) => {
 							<div className="col-4">
 								<div className="row">
 									<div className="col">
-										<img src="/images/program-thumb.png" className="img-fluid project-preview-thumbnail" />
+										<img src={props.project.thumb_url} className="img-fluid project-preview-thumbnail" />
 									</div>
 								</div>
 								<div className="row mt-4">
