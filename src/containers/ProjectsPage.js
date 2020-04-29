@@ -22,6 +22,9 @@ import { showCreateProjectSubmenuAction, showCreateProjectModalAction, hideCreat
 import NewResourcePage from "./NewResourcePage";
 import { NewProjectPage } from "./NewProjectPage";
 
+import ProjectCard from "../components/ProjectCard";
+import ProjectPreviewModal from "../components/ProjectPreviewModal";
+
 export class ProjectsPage extends React.Component {
   constructor(props) {
     super(props);
@@ -159,45 +162,12 @@ export class ProjectsPage extends React.Component {
   };
 
   render() {
-    // alert(JSON.stringify(this.props.project));
     const { projects } = this.props.project;
-    console.log((projects));
 
-    const projectsArray = projects.map(project => (
-      <div className="col-md-3" key={project._id}>
-        <div className="program-tile">
-          <div className="program-thumb">
-            <Link to={"/project/"+project._id}>
-              <img src={project.thumb_url} className="img-fluid" />
-            </Link>
-          </div>
-          <div className="program-content">
-            <h3 className="program-title">
-              <Link to={"/project/"+project._id}>
-                {project.name}
-              </Link>
-            </h3>
-            <div className="program-creator">
-              <span>Created by <Link to="/">Leo</Link></span>
-            </div>
-            <div className="lessons-duration">
-              <div className="lessons">
-                <span className="icon"></span><span>Lesson: 07</span>
-              </div>
-              <div className="duration">
-                <span className="icon"></span><span>Duration: 4 Hr</span>
-              </div>
-            </div>
-            <div className="go-to-playlist">
-              <Link to={"/project/"+project._id}>
-                <img src="/images/program-playlist-arrow.png" alt="Go to Playlist" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
+
+    const projectCards = projects.map(project => (
+      <ProjectCard key={project._id} project={project} showPreview={(this.props.showPreview == project._id)}/>
     ));
-      console.log(this.props);
     return (
       <div>
         <Header {...this.props} />
@@ -212,16 +182,13 @@ export class ProjectsPage extends React.Component {
                   <div className="program-search">
                     <input type="text" name="search" className="search" placeholder="Search..." />
                   </div>
-
                   <div className="program-page-title">
                     <h1>My Projects</h1>
                   </div>
                 </div>
               </div>
-              
               <div className="row">
-                
-                {projectsArray}
+                {projectCards}
               </div>
             </div>
           </div>
