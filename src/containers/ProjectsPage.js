@@ -23,6 +23,7 @@ import NewResourcePage from "./NewResourcePage";
 import { NewProjectPage } from "./NewProjectPage";
 
 import ProjectCard from "../components/ProjectCard";
+import ProjectPreviewModal from "../components/ProjectPreviewModal";
 
 export class ProjectsPage extends React.Component {
   constructor(props) {
@@ -160,9 +161,10 @@ export class ProjectsPage extends React.Component {
 
   render() {
     const { projects } = this.props.project;
+    console.log(this.props);
 
-    const testProjects = projects.map(project => (
-      <ProjectCard project={project}/>
+    const projectCards = projects.map(project => (
+      <ProjectCard key={project._id} project={project} showPreview={(this.props.showPreview == project._id)}/>
     ));
     return (
       <div>
@@ -184,7 +186,7 @@ export class ProjectsPage extends React.Component {
                 </div>
               </div>
               <div className="row">
-                {testProjects}
+                {projectCards}
               </div>
             </div>
           </div>

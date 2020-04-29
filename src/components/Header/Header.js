@@ -30,7 +30,7 @@ function Header(props) {
         <div className="bell-user">
           <div className="search form-inline">
             <input type="text" className="form-control" placeholder="Search existing content"/>
-            <button className="btn navbar-search-btn"><i class="fa fa-search"></i></button>
+            <button className="btn navbar-search-btn"><i className="fa fa-search"></i></button>
           </div>
           <div id="create-project-icon" className={props.project.showCreateProjectSubmenu ? 'active': null} onClick={()=>props.showCreateProjectSubmenuAction()}>
               <a>
