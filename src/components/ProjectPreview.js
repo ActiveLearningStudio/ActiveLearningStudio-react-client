@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./ProjectPreviewModal.scss";
 
+
 const ProjectPreview = (props) => {
 	var currentProject = {
 		'name':'',
@@ -9,13 +10,13 @@ const ProjectPreview = (props) => {
 		'thumb_url':'',
 		'playlists':[]
 	};
-	// alert(props.match.params.projectid);
+	
 	props.project.projects.forEach((project, i) => {
 		if( project._id == props.match.params.projectid ){
 			currentProject = project;
 		};
 	});
-	// alert(currentProject);
+	
 	if(currentProject != null ){
 		var playlists = currentProject.playlists.map(playlist => {
 			if(playlist.activities.length > 0){
@@ -24,14 +25,14 @@ const ProjectPreview = (props) => {
 						<div className="item">
 							<div className="icon-box mb-2 justify-content-center align-items-center ">
 								{/* <i className="fa fa-check active"></i> */}
-								<a href="http://learn.curriki.org/activities/265">
-								<img className="activity-image-thumb img-fluid img-radius-all" src="http://learn.curriki.org/storage/lesson_thumbnails/VDiZoNsO7hHW6iBrU2lF2pYP55KFNmJD84AJpgq0.png" width="50" height="50" alt="Introduction to Avengers: The Story of Globalization" />
-							</a>
+								<Link to={"/resource/preview/" + activity.mysqlid}>
+									<img className="activity-image-thumb img-fluid img-radius-all" src="http://learn.curriki.org/storage/lesson_thumbnails/VDiZoNsO7hHW6iBrU2lF2pYP55KFNmJD84AJpgq0.png" width="50" height="50" alt="Introduction to Avengers: The Story of Globalization" />
+								</Link>
 							</div>
 							<p>
-								<a href="http://learn.curriki.org/activities/265">
+								<Link to={"/resource/preview/" + activity.mysqlid}>
 									{activity.title}
-								</a>
+								</Link>
 							</p>
 						</div>
 						
