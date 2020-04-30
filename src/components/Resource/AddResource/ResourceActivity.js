@@ -22,9 +22,9 @@ const FaceDiv = styled.div`
 const activities = [
   {
     id:1,
-    title:'Games',
-    icon: '/images/games-icon.png',
-    overlayIcon:'/images/games-icon-overlay.png'
+    title:'Interactive',
+    icon: '/images/course-presentation.png',
+    overlayIcon:'/images/course-presentation-overlay.png'
   },
   {
     id:2,
