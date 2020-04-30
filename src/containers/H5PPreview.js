@@ -45,8 +45,8 @@ class EditorPage extends React.Component {
       //   script.async = false;
       //   document.body.appendChild(script);
 
-
-      var previewResourceId = this.props.resource.previewResourceId;
+      //var previewResourceId = this.props.resource.previewResourceId;
+      var previewResourceId = this.props.resourceid;
       
 
       const headers = {

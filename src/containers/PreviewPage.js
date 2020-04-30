@@ -25,9 +25,10 @@ import { NewProjectPage } from "./NewProjectPage";
 import ProjectCard from "../components/ProjectCard";
 import ProjectPreviewModal from "../components/ProjectPreviewModal";
 import ProjectPreview from "../components/ProjectPreview";
+import ResourcePreview from "../components/ResourcePreview";
 
 
-export class ProjectPreviewPage extends React.Component {
+export class PreviewPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -165,9 +166,12 @@ export class ProjectPreviewPage extends React.Component {
 
   render() {
     const { projects } = this.props.project;
-    // alert(this.props.match.params.projectid);
 
-    console.log(this.props);
+    if (this.props.previewType == 'resource')
+      var content = (<ResourcePreview resourceid={this.props.match.params.resourceid} />);
+    else 
+      var content = (<ProjectPreview {...this.props} key={this.props.match.params.projectid} project={this.props.project }/>);
+
     return (
       <div>
         <Header {...this.props} />
@@ -177,7 +181,7 @@ export class ProjectPreviewPage extends React.Component {
           </div>
           <div className="content-wrapper">
             <div className="content">
-            <ProjectPreview {...this.props} key={this.props.match.params.projectid} project={this.props.project }/>
+              {content}
             </div>
             </div>
           </div>
@@ -206,4 +210,4 @@ const mapStateToProps = (state) => {
 
 
 export default withRouter(connect(mapStateToProps,
-  mapDispatchToProps)(ProjectPreviewPage))
+  mapDispatchToProps)(PreviewPage))

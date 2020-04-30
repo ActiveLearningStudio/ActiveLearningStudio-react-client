@@ -1,6 +1,34 @@
 import axios from "axios";
-import { SHOW_CREATE_PROJECT_MODAL, SHOW_CREATE_PROJECT_SUBMENU, HIDE_CREATE_PROJECT_MODAL, CREATE_PROJECT, LOAD_MY_PROJECTS } from "../constants/actionTypes";
+import { 
+  SHOW_CREATE_PROJECT_MODAL, 
+  SHOW_CREATE_PROJECT_SUBMENU, 
+  HIDE_CREATE_PROJECT_MODAL, 
+  CREATE_PROJECT, 
+  LOAD_MY_PROJECTS,
+  LOAD_PROJECT
+} from "../constants/actionTypes";
 
+// Loads a specific project
+export const loadProject = (project) => ({
+  type:LOAD_PROJECT,
+  project: project
+});
+
+export const loadProjectAction = (projectId) => {
+  return async dispatch => {
+    const { token } = JSON.parse(localStorage.getItem("auth"));
+    const response = await axios.post(
+      '/api/loadproject',
+      { projectId },
+      { headers: { "Authorization": "Bearer "+token } }
+    );
+
+    if(response.data.status == "success")
+      dispatch( loadProject(response.data.data.project) );
+  };
+};
+
+//
 
 export const showCreateProjectSubmenu = () => ({
   type:SHOW_CREATE_PROJECT_SUBMENU

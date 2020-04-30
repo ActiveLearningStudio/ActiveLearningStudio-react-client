@@ -1,4 +1,11 @@
-import { SHOW_CREATE_PROJECT_SUBMENU, SHOW_CREATE_PROJECT_MODAL, CREATE_PROJECT, LOAD_MY_PROJECTS, HIDE_CREATE_PROJECT_MODAL } from "../constants/actionTypes";
+import { 
+  SHOW_CREATE_PROJECT_SUBMENU, 
+  SHOW_CREATE_PROJECT_MODAL, 
+  CREATE_PROJECT, 
+  LOAD_MY_PROJECTS, 
+  LOAD_PROJECT, 
+  HIDE_CREATE_PROJECT_MODAL 
+} from "../constants/actionTypes";
 
 
 const defaultProgramState = () => {
@@ -13,6 +20,7 @@ const defaultProgramState = () => {
   } else {
     return {
         'projects':[],
+        selectedProject: null,
         showCreateProjectSubmenu:false,
         showCreateProjectPopup:false
     };
@@ -50,6 +58,12 @@ const projectReducer = (state = defaultProgramState(), action) => {
         ...state,
         projects: action.projects
       };
+    case LOAD_PROJECT:
+      return {
+        ...state,
+        selectedProject: action.project
+      };
+
     default:
       return state;
   }

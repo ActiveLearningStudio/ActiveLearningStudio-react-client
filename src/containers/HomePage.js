@@ -19,9 +19,15 @@ import Sidebar from "../components/Sidebar/Sidebar";
 import { startLogin } from "./../actions/auth";
 import { createPlaylistAction, deletePlaylistAction, showCreatePlaylistModalAction, hideCreatePlaylistModalAction, loadProjectPlaylistsAction } from "./../actions/playlist";
 import { createResourceAction, showCreateResourceModalAction, hideCreateResourceModalAction, previewResourceAction, hidePreviewResourceModalAction } from "./../actions/resource";
-import { showCreateProjectModalAction, showCreateProjectSubmenuAction } from "./../actions/project";
+import {
+  showCreateProjectModalAction, 
+  showCreateProjectSubmenuAction,
+  loadProjectAction
+} from "./../actions/project";
 import NewResourcePage from "./NewResourcePage";
 import PreviewResourcePage from "./PreviewResourcePage";
+
+import ResourceCard from "../components/ResourceCard";
 
 export class HomePage extends React.Component {
   constructor(props) {
@@ -59,6 +65,7 @@ export class HomePage extends React.Component {
     //scroll to top
     window.scrollTo(0, 0);
     this.props.loadProjectPlaylistsAction(this.props.match.params.projectid);
+    this.props.loadProjectAction(this.props.match.params.projectid);
   }
 
   handleShowCreatePlaylistModal = async (e) => {
@@ -141,35 +148,11 @@ export class HomePage extends React.Component {
     this.props.previewResourceAction(id);
   }
 
-  populateResources(resources) {
-    
-    return (
-      resources.map(function(resource) {
-        console.log(resource);
-        return (
-          <div className="playlist-resource" key={resource.id}>
-            <h3 className="title">{resource.title}</h3>
-            <div className="activity-options">
-              <div className="options-icon">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-              <div className="options">
-              <button className="preview-btn" onClick={() => this.handlePreviewResource(resource.id)}>Preview</button>
-              {/* <Link className="preview-btn" to={"/activities/"+resource._id}>Preview</Link> */}
-              {/* <button className="edit-btn">Edit</button>
-              <button className="delete-btn">Delete</button> */}
-              </div>
-            </div>
-            
-          </div>
-        )
-      }, this)
-    );
+  populateResources = (resources) => {
+    return resources.map(resource => (
+        <ResourceCard key={resource._id} resource={resource} />
+    ));
   }
-
-  
 
   handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType) => {
     try {
@@ -182,13 +165,11 @@ export class HomePage extends React.Component {
       console.log(e.message);
     }
   };
+
   render() {
     const { playlists } = this.props.playlists;
-
-    
-
     const headArray = playlists.map(playlist => (
-      <div className="list-wrapper" key={playlist._id}>
+      <div className="list-wrapper" key={playlist.id}>
         <div className="list">
           <div className="list-header">
             <h2 className="list-header-name">{playlist.title}
@@ -210,6 +191,7 @@ export class HomePage extends React.Component {
         </div>
       </div>
     ));
+
     return (
       <div>
         <Header {...this.props} />
@@ -219,8 +201,10 @@ export class HomePage extends React.Component {
           </div>
           <div className="content-wrapper">
             <div className="content">
-              <div className="playlist-search">
-                <input type="text" name="search" className="search" placeholder="Search..." />
+              <div className="row">
+                <div className="col">
+                  <h1>{(this.props.project.selectedProject) ? this.props.project.selectedProject.name : ''}</h1>
+                </div>
               </div>
               <button onClick={this.handleShowCreatePlaylistModal} className="create-playlist-btn">
                 Create New Playlist
@@ -279,10 +263,10 @@ const mapDispatchToProps = dispatch => ({
   showCreateProjectModalAction: () => dispatch(showCreateProjectModalAction()),
   loadProjectPlaylistsAction: (projectid) => dispatch(loadProjectPlaylistsAction(projectid)),
   createResourceAction: (playlistid, editor, editorType) => dispatch(createResourceAction(playlistid, editor, editorType)),
+  loadProjectAction: (projectid) => dispatch(loadProjectAction(projectid)),
 });
 
 const mapStateToProps = (state) => {
-  // console.log(state);
   return {
     playlists: state.playlist,
     resource: state.resource,
@@ -290,8 +274,4 @@ const mapStateToProps = (state) => {
   };
 }
 
-
-
-
-export default withRouter(connect(mapStateToProps,
-  mapDispatchToProps)(HomePage))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomePage))

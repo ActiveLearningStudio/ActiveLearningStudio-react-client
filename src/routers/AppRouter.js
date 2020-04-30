@@ -14,7 +14,7 @@ import { LTIActivityPage } from "../containers/LTIActivityPage";
 import { LTIPlaylistPage } from "../containers/LTIPlaylistPage";
 import { LTIProgramPage } from "../containers/LTIProgramPage";
 import  ProjectsPage  from "../containers/ProjectsPage";
-import  ProjectPreviewPage  from "../containers/ProjectPreviewPage";
+import  PreviewPage  from "../containers/PreviewPage";
 
 const history = createBrowserHistory();
 
@@ -24,7 +24,9 @@ const AppRouter = () => (
 
       <PrivateRoute path="/" exact component={ProjectsPage} />
       <Route path="/project/preview/:projectid" render={(props) => <ProjectsPage {...props} showPreview={props.match.params.projectid} />} />
-      <Route path="/project/preview2/:projectid" render={(props) => <ProjectPreviewPage {...props} />} />
+      <Route path="/project/preview2/:projectid" render={(props) => <PreviewPage {...props} />} />
+
+      <Route path="/resource/preview/:resourceid" render={(props) => <PreviewPage {...props} previewType="resource" />} />
 
       <Route path="/project/create" render={(props) => <ProjectsPage {...props} showCreateProjectPopup={true} />} />
       <Route path="/project/:projectid" exact component={HomePage} />
