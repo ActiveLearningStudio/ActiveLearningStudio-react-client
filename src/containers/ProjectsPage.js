@@ -18,7 +18,7 @@ import Sidebar from "../components/Sidebar/Sidebar";
 
 import { startLogin } from "../actions/auth";
 import { createPlaylistAction, deletePlaylistAction, showCreatePlaylistModalAction, hideCreatePlaylistModalAction } from "../actions/playlist";
-import { showCreateProjectSubmenuAction, showCreateProjectModalAction, hideCreateProjectModalAction, createProjectAction, loadMyProjectsAction} from "../actions/project";
+import { deleteProjectAction, showCreateProjectSubmenuAction, showCreateProjectModalAction, hideCreateProjectModalAction, createProjectAction, loadMyProjectsAction} from "../actions/project";
 import NewResourcePage from "./NewResourcePage";
 import { NewProjectPage } from "./NewProjectPage";
 
@@ -161,12 +161,20 @@ export class ProjectsPage extends React.Component {
     }
   };
 
+  handleDeleteProject = (projectid) => {
+    this.props.deleteProjectAction(projectid);
+  }
+
   render() {
     const { projects } = this.props.project;
 
 
     const projectCards = projects.map(project => (
-      <ProjectCard key={project._id} project={project} showPreview={(this.props.showPreview == project._id)}/>
+      <ProjectCard
+        key={project._id}
+        project={project}
+        handleDeleteProject = {this.handleDeleteProject}
+        showPreview={(this.props.showPreview == project._id)}/>
     ));
     return (
       <div>
@@ -213,7 +221,9 @@ const mapDispatchToProps = dispatch => ({
   loadMyProjectsAction: () =>dispatch(loadMyProjectsAction()),
   createProjectAction: (name, description, thumb_url) =>dispatch(createProjectAction(name, description, thumb_url)),
   // hideCreateProjectModalAction: () => dispatch(hideCreateProjectModalAction()),
-  showCreateProjectSubmenuAction: () => dispatch(showCreateProjectSubmenuAction())
+  showCreateProjectSubmenuAction: () => dispatch(showCreateProjectSubmenuAction()),
+  deleteProjectAction: (projectid) => dispatch(deleteProjectAction(projectid)),
+  
 
 });
 

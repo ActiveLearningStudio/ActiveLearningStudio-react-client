@@ -39,7 +39,6 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
       };
 
       case DELETE_PLAYLIST:
-        console.log(state);
         let newPlaylist = state.playlists.filter(playlist => {
           return playlist._id !== action.id
         });

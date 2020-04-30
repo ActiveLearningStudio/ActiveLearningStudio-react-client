@@ -33,7 +33,8 @@ const ProjectCard = (props) => (
 					<Link className="dropdown-item" to={"/project/preview2/"+props.project._id}><i className="fa fa-eye" aria-hidden="true"></i> Preview</Link>
 		            <a className="dropdown-item" href="#"><i className="fa fa-pencil" aria-hidden="true"></i> Edit</a>
 		            <a className="dropdown-item" href="#"><i className="fa fa-share" aria-hidden="true"></i> Send To</a>
-		            <a className="dropdown-item" href="#"><i className="fa fa-times-circle-o" aria-hidden="true"></i> Delete</a>
+		            {/* <a className="dropdown-item" href="#"><i className="fa fa-times-circle-o" aria-hidden="true"></i> Delete</a> */}
+					<a className="dropdown-item" onClick={() => props.handleDeleteProject(props.project._id)}><i className="fa fa-times-circle-o" aria-hidden="true"></i> Delete</a>
 		          </div>
 		        </div>
 		      </div>

@@ -4,7 +4,8 @@ import {
   CREATE_PROJECT, 
   LOAD_MY_PROJECTS, 
   LOAD_PROJECT, 
-  HIDE_CREATE_PROJECT_MODAL 
+  HIDE_CREATE_PROJECT_MODAL, 
+  DELETE_PROJECT
 } from "../constants/actionTypes";
 
 
@@ -62,6 +63,14 @@ const projectReducer = (state = defaultProgramState(), action) => {
       return {
         ...state,
         selectedProject: action.project
+      };
+    case DELETE_PROJECT:
+      let newProjects = state.projects.filter(project => {
+        return project._id !== action.projectid
+      });
+      return {
+        ...state,
+        projects: newProjects
       };
 
     default:
