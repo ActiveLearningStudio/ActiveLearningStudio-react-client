@@ -559,7 +559,8 @@ body {
     
     }
     .program-content {
-        padding: 25px 20px;
+        padding: 10px 5px;
+        min-height: 225px;
         h3 {
             margin-top:15px;
             a {
@@ -586,7 +587,10 @@ body {
             }
         }
         .lessons-duration {
-            margin-top: 15px;
+            margin-top: 5px;
+             p{
+                 text-align: justify;
+             }
             .lessons {
                 display: inline-block;
                 .icon {
@@ -614,8 +618,11 @@ body {
             }
         }
         .go-to-playlist {
-            text-align:right;
+            text-align: right;
             margin-top: 25px;
+            position: absolute;
+            bottom: 30px;
+            right: 50px
         }
     }
 }

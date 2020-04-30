@@ -39,13 +39,17 @@ const ProjectCard = (props) => (
 		      </div>
 		    </div>
 		    <div className="lessons-duration">
+				<div className="row">
+					<div className="col-md-12">
+					<p>{ props.project.description && props.project.description.length > 130   ? props.project.description.substring(0, 130)+" ..." : props.project.description}</p>
+					</div>
+				</div>
 		      {/* <div className="lessons">
 		        <span className="icon"></span><span>Lesson: 07</span>
 		      </div>
 		      <div className="duration">
 		        <span className="icon"></span><span>Duration: 4 Hr</span>
 		      </div> */}
-			  <p>{typeof props.project.description !== "undefined" && props.project.description.toString().length > 30 ? props.project.description.substring(0, 30)+" ..." : props.project.description}</p>
 		    </div>
 		    <div className="go-to-playlist">
 		      <Link to={"/project/"+props.project._id}>
