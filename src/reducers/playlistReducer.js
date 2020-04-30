@@ -33,8 +33,8 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
       return {
         ...state,
         playlists: [
-          action.playlistdata,
-          ...state.playlists
+          ...state.playlists,
+          action.playlistdata
         ]
       };
 

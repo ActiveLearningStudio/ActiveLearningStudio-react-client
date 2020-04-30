@@ -187,6 +187,15 @@ body {
 }
 
 .list-header-name {
+    i {
+        font-size:20px;
+    }
+    button {
+        &:focus {
+            box-shadow: none;
+        }
+        
+    }
     border-radius: 3px;
     box-shadow: none;
     font-weight: 700;
@@ -242,8 +251,14 @@ body {
         background: #fff;
         border-left: 3px solid #074892;
         margin: 15px;
-        padding: 15px;
+        padding-top: 15px;
         min-height: 120px;
+        i {
+            font-size:20px;
+        }
+        button {
+            box-shadow: none;
+        }
         .title {
             color:#000;
             font-family: 'Open Sans', sans-serif;
@@ -254,6 +269,12 @@ body {
         .activity-options {
             float:right;
             cursor:pointer;
+            button {
+                padding: 0;
+                height: auto;
+                vertical-align: top;
+                line-height: 0;
+            }
             span {
                 border:2px solid #dbdbdb;
                 display:block;
