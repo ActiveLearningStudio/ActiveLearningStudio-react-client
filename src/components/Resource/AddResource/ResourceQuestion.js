@@ -19,59 +19,51 @@ const FadeDiv = styled.div`
 
 const questions = [
   {
-    text:'H5P.InteractiveVideo',
+    text:'Interactive Video',
     h5pLib:'H5P.InteractiveVideo 1.21',
     type:'h5p',
-    icon: '/images/multimedia-icon.png',
-    overlayIcon:'/images/multimedia-icon-overlay.png',
+    icon: '/images/interactive-video.png',
+    overlayIcon:'/images/interactive-video-overlay.png',
     description:"Create vertically stacked expandable items"
   },
   {
     text:'Flash Cards',
     h5pLib:'H5P.Flashcards 1.5',
     type:'h5p',
-    icon: '/images/multimedia-icon.png',
-    overlayIcon:'/images/multimedia-icon-overlay.png',
+    icon: '/images/flash-cards.png',
+    overlayIcon:'/images/flash-cards-overlay.png',
     description:"Create vertically stacked expandable items"
   },
   {
     text:'Drag and Drop',
     h5pLib:'H5P.DragQuestion 1.13',
     type:'h5p',
-    icon: '/images/multimedia-icon.png',
-    overlayIcon:'/images/multimedia-icon-overlay.png',
+    icon: '/images/drag-and-drop.png',
+    overlayIcon:'/images/drag-and-drop-overlay.png',
     description:"Create vertically stacked expandable items"
   },
   {
     text:'Timeline',
     h5pLib:'H5P.Timeline 1.1',
     type:'h5p',
-    icon: '/images/multimedia-icon.png',
-    overlayIcon:'/images/multimedia-icon-overlay.png',
-    description:"Create vertically stacked expandable items"
-  },
-  {
-    text:'Drag and Drop',
-    h5pLib:'H5P.DragQuestion 1.13',
-    type:'h5p',
-    icon: '/images/multimedia-icon.png',
-    overlayIcon:'/images/multimedia-icon-overlay.png',
+    icon: '/images/timeline.png',
+    overlayIcon:'/images/timeline-overlay.png',
     description:"Create vertically stacked expandable items"
   },
   {
     text:'Accordion',
     h5pLib:'H5P.Accordion 1.0',
     type:'h5p',
-    icon: '/images/multimedia-icon.png',
-    overlayIcon:'/images/multimedia-icon-overlay.png',
+    icon: '/images/accordion.png',
+    overlayIcon:'/images/accordion-overlay.png',
     description:"Create vertically stacked expandable items"
   },
   {
     text:'Interactive Presentation',
     h5pLib:'H5P.CoursePresentation 1.21',
     type:'h5p',
-    icon: '/images/multimedia-icon.png',
-    overlayIcon:'/images/multimedia-icon-overlay.png',
+    icon: '/images/course-presentation.png',
+    overlayIcon:'/images/course-presentation-overlay.png',
     description:"Create vertically stacked expandable items"
   }
   
