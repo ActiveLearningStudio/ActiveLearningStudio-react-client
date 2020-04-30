@@ -2,6 +2,8 @@
     // padding-left: 25px;
     .activity-label {
         margin-bottom: 40px;
+        display: block;
+        width: 100%;
     }
     .title {
         font-family: 'Open Sans', sans-serif;
@@ -17,7 +19,7 @@
         margin-bottom: 50px;
     }
     .activity-item {
-        width:200px;
+        // width:200px;
         height: 180px;
         border:2px solid #ececed;
         border-radius: 3px;
@@ -59,8 +61,8 @@
         margin-bottom:35px;
     }
     .activity-item {
-        width:205px;
-        height: 195px;
+        // width:230px;
+        height: 230px;
         border:2px solid #ececed;
         border-radius: 3px;
         text-align: center;
