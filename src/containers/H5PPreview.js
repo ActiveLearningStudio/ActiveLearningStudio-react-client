@@ -53,11 +53,12 @@ class EditorPage extends React.Component {
          'Content-Type': 'application/json',
          'Authorization': 'JWT fefege...'
        }
-      axios.get(global.config.h5pAjaxUrl+'/api/api/h5p/'+previewResourceId, {
+      
+      
+      axios.get(global.config.h5pAjaxUrl+'/api/h5p/'+previewResourceId, {
         headers: headers
       })
       .then((response) => {
-         console.log("========================");
          window.H5PIntegration = response.data.settings;
 
          var iframe = document.createElement('iframe');

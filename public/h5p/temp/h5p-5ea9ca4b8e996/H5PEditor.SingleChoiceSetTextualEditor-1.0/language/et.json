@@ -1,0 +1,7 @@
+{
+  "libraryStrings": {
+    "helpText": "Loo küsimuste ja vastuste plokid nii, et iga plokk on eraldatud tühja joonega. Iga ploki esimene rida on küsimus, teised read sisaldavad vastuseid. Esimene vastus on õige vastus",
+    "example": "2 + 2 = ?\n4\n6\n8\n\n3 + 3= ?\n6\n9\n0\n\n",
+    "warning": "Hoiatus! Kui muudad ülesandeid tekstitöötluses, siis kogu teksti formateering (sh reavahetused) eemaldatakse."
+  }
+}

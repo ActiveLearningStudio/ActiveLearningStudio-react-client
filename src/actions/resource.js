@@ -114,31 +114,39 @@ export const createResourceAction = (playlistid, editor, editorType) => {
                 parameters: JSON.stringify(window.h5peditorCopy.getParams()),
                 action: 'create'
               };
-            
-            const response = await axios.post(global.config.h5pAjaxUrl+'/api/api/h5p/?api_token=test', data, {
+            // insert into mysql
+            const response = await axios.post(global.config.h5pAjaxUrl+'/api/h5p/?api_token=test', data, {
                 headers: headers
               })
               .then((response) => {
                 
-                // if(localStorage.getItem("playlists")){
-                //     plists = JSON.parse(localStorage.getItem("playlists"));
-                // }
                 let resource = response.data;
-                // console.log(resource);
                 
-                // let plists = [];
-                // plists.forEach((playlist, i)=>{
-                //     if(playlist.id === playlistid){
-                //         plists[i] = Object.assign( { 'resources':[] }, plists[i] );
-                //         plists[i].resources.push(resource);
-                //     }
-                // });
-                
-                
-                // localStorage.setItem("playlists", JSON.stringify(plists));
-                dispatch(
-                    createResource(playlistid, resource, editor, editorType)
-                )
+                //insert into mongodb
+                axios.post(global.config.laravelAPIUrl+'/activity',
+                 {
+                     mysqlid: resource.id,
+                     playlistid:playlistid,
+                     action: 'create'
+                 }, {
+                    headers: headers
+                })
+                .then((response) => {
+                    
+                    resource.id = response.data.data._id;
+                    resource.mysqlid = response.data.data.mysqlid;
+                    // resource.title = response.data.data._id;
+                    
+                    dispatch(
+                        createResource(playlistid, resource, editor, editorType)
+                    )
+                })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+                // dispatch(
+                //     createResource(playlistid, resource, editor, editorType)
+                // )
               })
               .catch((error) => {
                 console.log(error);

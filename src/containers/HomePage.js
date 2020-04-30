@@ -145,8 +145,9 @@ export class HomePage extends React.Component {
     
     return (
       resources.map(function(resource) {
+        console.log(resource);
         return (
-          <div className="playlist-resource" key={resource._id}>
+          <div className="playlist-resource" key={resource.id}>
             <h3 className="title">{resource.title}</h3>
             <div className="activity-options">
               <div className="options-icon">
@@ -155,7 +156,7 @@ export class HomePage extends React.Component {
                 <span></span>
               </div>
               <div className="options">
-              <button className="preview-btn" onClick={() => this.handlePreviewResource(resource.h5p_content_id)}>Preview</button>
+              <button className="preview-btn" onClick={() => this.handlePreviewResource(resource.id)}>Preview</button>
               {/* <Link className="preview-btn" to={"/activities/"+resource._id}>Preview</Link> */}
               {/* <button className="edit-btn">Edit</button>
               <button className="delete-btn">Delete</button> */}

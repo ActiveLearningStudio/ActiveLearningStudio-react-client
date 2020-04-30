@@ -651,3 +651,13 @@ body {
         // flex-grow: 100;
     }
 }
+
+
+.h5p-content-wrap {
+    .h5p-iframe-wrapper {
+        & >iframe {
+            width:100%;
+            height:450px;
+        }
+    }
+}

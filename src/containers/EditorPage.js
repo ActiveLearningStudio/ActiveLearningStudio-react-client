@@ -23,13 +23,265 @@ class EditorPage extends React.Component {
    componentDidMount() {
       // console.log(this.state);
       // this.h5pLib = "H5P.MultiChoice 1.14";
+
+      /* New Code */
+      
+      
+      /*
+      const headers = {
+         'Content-Type': 'application/json',
+         'Authorization': 'JWT fefege...'
+       }
+      axios.get(global.config.h5pExternalAjaxUrl+'/h5p/create', {
+        headers: headers
+      })
+      .then((response) => {
+         console.log("========================");
+         window.H5PIntegration = response.data.settings;
+         console.log(window.H5PIntegration);
+         console.log("========================");
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-core/js/jquery.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-core/js/h5p.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-core/js/h5p-event-dispatcher.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-core/js/h5p-x-api-event.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-core/js/h5p-x-api.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-core/js/h5p-content-type.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-core/js/h5p-confirmation-dialog.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-core/js/h5p-action-bar.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-core/js/request-queue.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-editor.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         
+
+         var script = document.createElement("script");
+         script.src = "/h5p/laravel-h5p/js/laravel-h5p-editor.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5p-hub-client.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-semantic-structure.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-library-selector.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-fullscreen-bar.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-form.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-text.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-html.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-number.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-textarea.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-file-uploader.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-file.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-image.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-image-popup.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-av.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-group.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-boolean.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-list.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-list-editor.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-library.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-library-list-cache.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-select.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-selector-hub.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-selector-legacy.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-dimensions.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-coordinates.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-none.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-metadata.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-metadata-author-widget.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-metadata-changelog-widget.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-pre-save.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/ckeditor/ckeditor.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/language/en.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+
+
+
+
+
+
+         // }) ;
+         script.onload = () => this.scriptLoaded();
+      });
+      */
+      /* New Code end */
+
+      
       window.H5PIntegration = {
          "baseUrl": global.config.h5pBaseUrl,
          "url": "/storage/h5p",
          "postUserStatistics": true,
          "ajax": {
-            "setFinished": global.config.h5pAjaxUrl+"/api/ajax/finish",
-            "contentUserData": global.config.h5pAjaxUrl+"/api/ajax/content-user-data/?content_id=:contentId&data_type=:dataType&sub_content_id=:subContentId"
+            "setFinished": global.config.h5pAjaxUrl+"/ajax/finish",
+            "contentUserData": global.config.h5pAjaxUrl+"/ajax/content-user-data/?content_id=:contentId&data_type=:dataType&sub_content_id=:subContentId"
          },
          "saveFreq": false,
          "siteUrl": global.config.h5pBaseUrl,
@@ -73,13 +325,13 @@ class EditorPage extends React.Component {
             "mail": "localuser@local.com"
          },
          "editor": {
-            "filesPath": "/h5p/editor",
+            "filesPath": "/h5papi/storage/h5p/editor",
             "fileIcon": {
                "path": "/h5p/h5p-editor/images/binary-file.png",
                "width": 50,
                "height": 50
             },
-            "ajaxPath": global.config.h5pAjaxUrl+"/api/ajax/",
+            "ajaxPath": global.config.h5pAjaxUrl+"/ajax/",
             "libraryUrl": "/h5p/h5p-editor/",
             "copyrightSemantics": {
                "name": "copyright",
@@ -786,61 +1038,6 @@ class EditorPage extends React.Component {
             ]
          }
       };
-
-      let scripts = [
-         // { src: "/h5p/core/js/jquery.js" },
-         // { src: "/h5p/core/js/h5p.js" },
-
-         // { src: "/h5p/core/js/h5p-event-dispatcher.js"} ,
-         // { src: "/h5p/core/js/h5p-x-api-event.js"} ,
-         // { src: "/h5p/core/js/h5p-x-api.js"} ,
-         // { src: "/h5p/core/js/h5p-content-type.js"} ,
-         // { src: "/h5p/core/js/h5p-confirmation-dialog.js"} ,
-         // { src: "/h5p/core/js/h5p-action-bar.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-editor.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor.js"} ,
-         // { src: "/h5p/editor/language/en.js"} ,
-         // { src: "/h5p/editor/scripts/h5p-hub-client.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-semantic-structure.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-library-selector.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-form.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-text.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-html.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-number.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-textarea.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-file-uploader.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-file.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-image.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-image-popup.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-av.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-group.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-boolean.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-list.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-list-editor.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-library.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-library-list-cache.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-select.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-selector-hub.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-selector-legacy.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-dimensions.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-coordinates.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-none.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-metadata.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-metadata-author-widget.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-metadata-changelog-widget.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-pre-save.js"} ,
-         // { src: "/h5p/editor/ckeditor/ckeditor.js"}
-      ]
-      //Append the script element on each iteration
-      // scripts.map(item => { 
-      //     const script = document.createElement("script")
-      //     script.src = item.src
-      //     script.async = true
-      //     // script.onload = () => ;
-      //     document.body.appendChild(script)
-      // }) ;
-
-      // scripts.map(item => { 
       var script = document.createElement("script");
       script.src = "/h5p/h5p-core/js/jquery.js";
       script.async = false;
@@ -891,10 +1088,7 @@ class EditorPage extends React.Component {
       script.async = false;
       document.body.appendChild(script);
 
-      //   var script = document.createElement("script");
-      //   script.src = "/h5p/laravel-h5p/js/laravel-h5p.js";
-      //   script.async = false;
-      //   document.body.appendChild(script);
+      
 
       var script = document.createElement("script");
       script.src = "/h5p/laravel-h5p/js/laravel-h5p-editor.js";
@@ -1067,6 +1261,7 @@ class EditorPage extends React.Component {
       document.body.appendChild(script);
 
 
+      
 
 
 
@@ -1074,6 +1269,7 @@ class EditorPage extends React.Component {
 
       // }) ;
       script.onload = () => this.scriptLoaded();
+      
 
    }
 
@@ -1159,7 +1355,7 @@ class EditorPage extends React.Component {
                   //   console.log(h5peditor.getParams());
 
                   //   $.ajax({
-                  //           url:global.config.h5pAjaxUrl+"/api/api/h5p/?api_token=test",
+                  //           url:global.config.h5pAjaxUrl+"/h5p/?api_token=test",
                   //           data: JSON.stringify({
                   //               library: h5peditor.getLibrary(),
                   //               parameters: JSON.stringify(h5peditor.getParams()),
@@ -1259,7 +1455,7 @@ class EditorPage extends React.Component {
       parameters: JSON.stringify(window.h5peditorCopy.getParams()),
       action: 'create'
     }
-    axios.post(global.config.h5pAjaxUrl+'/api/api/h5p/?api_token=test', data, {
+    axios.post(global.config.h5pAjaxUrl+'/h5p/?api_token=test', data, {
         headers: headers
       })
       .then((response) => {
@@ -1269,7 +1465,7 @@ class EditorPage extends React.Component {
         console.log(error);
       });
       // $.ajax({
-      //    url: global.config.h5pAjaxUrl+"/api/api/h5p/?api_token=test",
+      //    url: global.config.h5pAjaxUrl+"/h5p/?api_token=test",
       //    data: JSON.stringify({
       //       library: h5peditor.getLibrary(),
       //       parameters: JSON.stringify(h5peditor.getParams()),
@@ -1295,7 +1491,7 @@ class EditorPage extends React.Component {
    render() {
       return (
          <div>
-            <form method="POST" action={global.config.h5pAjaxUrl+"/api/h5p"} accept-charset="UTF-8" className="form-horizontal"  /*enctype="multipart/form-data"*/ id="laravel-h5p-form">
+            <form method="POST" action={global.config.h5pAjaxUrl+"/h5p"} accept-charset="UTF-8" className="form-horizontal"  /*enctype="multipart/form-data"*/ id="laravel-h5p-form">
                <input name="_token" type="hidden" value="B6TFsmFD5TLZaWCAYZ91ly0D2We0xjLAtRmBJzQT" />
                <input type="hidden" name="library" id="laravel-h5p-library" value={this.h5pLib} />
                <input type="hidden" name="parameters" id="laravel-h5p-parameters" value="{&quot;params&quot;:{},&quot;metadata&quot;:{}}" />
