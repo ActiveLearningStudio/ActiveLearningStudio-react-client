@@ -107,10 +107,10 @@ function ResourceActivity(props) {
           <FaceDiv>
             <div className="row">
               <div className="col-md-12">
-                <h2 className="title">Select kind of activity you want to create?</h2>
+                <h2 className="title">Select the type of activity you want to create?</h2>
                 <div className="activity-content">
                   <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                    Create memorable learning experiences from one of the activity types below:
                   </p>
                 </div>
               </div>
