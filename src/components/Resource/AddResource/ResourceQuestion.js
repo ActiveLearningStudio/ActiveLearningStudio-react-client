@@ -24,7 +24,7 @@ const questions = [
     type:'h5p',
     icon: '/images/interactive-video.png',
     overlayIcon:'/images/interactive-video-overlay.png',
-    description:"Create vertically stacked expandable items"
+    description:"Create videos enriched with interactions"
   },
   {
     text:'Flash Cards',
@@ -32,7 +32,7 @@ const questions = [
     type:'h5p',
     icon: '/images/flash-cards.png',
     overlayIcon:'/images/flash-cards-overlay.png',
-    description:"Create vertically stacked expandable items"
+    description:"Create stylish and modern flash cards"
   },
   {
     text:'Drag and Drop',
@@ -40,7 +40,7 @@ const questions = [
     type:'h5p',
     icon: '/images/drag-and-drop.png',
     overlayIcon:'/images/drag-and-drop-overlay.png',
-    description:"Create vertically stacked expandable items"
+    description:"Create drag and drop tasks with images"
   },
   {
     text:'Timeline',
@@ -48,7 +48,7 @@ const questions = [
     type:'h5p',
     icon: '/images/timeline.png',
     overlayIcon:'/images/timeline-overlay.png',
-    description:"Create vertically stacked expandable items"
+    description:"Create a timeline of events with multimedia"
   },
   {
     text:'Accordion',
@@ -64,7 +64,7 @@ const questions = [
     type:'h5p',
     icon: '/images/course-presentation.png',
     overlayIcon:'/images/course-presentation-overlay.png',
-    description:"Create vertically stacked expandable items"
+    description:"Create a presenstation with interactive slides"
   }
   
   
@@ -213,7 +213,7 @@ function ResourceQuestion(props) {
           <FadeDiv>
               <div className="row">
                 <div className="col-md-12">
-                  <h2 className="title">Select kind of question you want to create?</h2>
+                  <h2 className="title">Select the activity you want to build from the options below:</h2>
                 </div>
               </div>
               <div className="row">
