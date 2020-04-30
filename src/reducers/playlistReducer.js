@@ -1,4 +1,12 @@
-import { CREATE_PLAYLIST, DELETE_PLAYLIST, SHOW_CREATE_PLAYLIST_MODAL, HIDE_CREATE_PLAYLIST_MODAL, CREATE_RESOURCE, LOAD_PROJECT_PLAYLISTS } from "../constants/actionTypes";
+import { 
+  CREATE_PLAYLIST,
+  DELETE_PLAYLIST,
+  SHOW_CREATE_PLAYLIST_MODAL,
+  HIDE_CREATE_PLAYLIST_MODAL,
+  CREATE_RESOURCE,
+  LOAD_PROJECT_PLAYLISTS,
+  LOAD_PLAYLIST
+} from "../constants/actionTypes";
 
 const defaultPlaylistState = () => {
   if (localStorage.getItem("playlists")) {
@@ -13,7 +21,8 @@ const defaultPlaylistState = () => {
   } else {
     return {
         'playlists':[],
-        'showCreatePlaylistPopup':false
+        'showCreatePlaylistPopup':false,
+        selectedPlaylist: null,
     };
   }
 };
@@ -70,6 +79,12 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
         return {
           ...state,
           playlists: action.playlists
+        };
+
+      case LOAD_PLAYLIST:
+        return {
+          ...state,
+          selectedPlaylist: action.playlist
         };
     default:
       return state;

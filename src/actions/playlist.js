@@ -1,5 +1,35 @@
 import axios from "axios";
-import {CREATE_PLAYLIST, DELETE_PLAYLIST, SHOW_CREATE_PLAYLIST_MODAL, HIDE_CREATE_PLAYLIST_MODAL, HIDE_PREVIEW_PLAYLIST_MODA, LOAD_PROJECT_PLAYLISTSL, LOAD_PROJECT_PLAYLISTS, HIDE_PREVIEW_PLAYLIST_MODAL} from './../constants/actionTypes';
+import {
+  CREATE_PLAYLIST, 
+  DELETE_PLAYLIST, 
+  SHOW_CREATE_PLAYLIST_MODAL, 
+  HIDE_CREATE_PLAYLIST_MODAL, 
+  HIDE_PREVIEW_PLAYLIST_MODA, 
+  LOAD_PROJECT_PLAYLISTSL, 
+  LOAD_PROJECT_PLAYLISTS,
+  HIDE_PREVIEW_PLAYLIST_MODAL,
+  LOAD_PLAYLIST
+} from './../constants/actionTypes';
+
+export const loadPlaylist = (playlist) => ({
+  type: LOAD_PLAYLIST,
+  playlist: playlist
+});
+
+export const loadPlaylistAction = (playlistId) => {
+  console.log(playlistId);
+  return async dispatch => {
+    const { token } = JSON.parse(localStorage.getItem("auth"));
+    const response = await axios.post(
+      '/api/loadplaylist',
+      { playlistId },
+      { headers: { "Authorization": "Bearer "+token } }
+    );
+
+    if(response.data.status == "success")
+      dispatch( loadPlaylist(response.data.data.playlist) );
+  };
+};
 
 export const createPlaylist = (playlistdata) => ({
   type: CREATE_PLAYLIST,

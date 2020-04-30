@@ -26,6 +26,7 @@ import ProjectCard from "../components/ProjectCard";
 import ProjectPreviewModal from "../components/ProjectPreviewModal";
 import ProjectPreview from "../components/ProjectPreview";
 import ResourcePreview from "../components/ResourcePreview";
+import PlaylistPreview from "../components/PlaylistPreview";
 
 
 export class PreviewPage extends React.Component {
@@ -169,6 +170,8 @@ export class PreviewPage extends React.Component {
 
     if (this.props.previewType == 'resource')
       var content = (<ResourcePreview resourceid={this.props.match.params.resourceid} />);
+    else if (this.props.previewType == 'playlist')
+      var content = (<PlaylistPreview playlistid={this.props.match.params.playlistid} />);
     else 
       var content = (<ProjectPreview {...this.props} key={this.props.match.params.projectid} project={this.props.project }/>);
 

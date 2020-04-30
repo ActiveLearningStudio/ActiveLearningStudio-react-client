@@ -29,6 +29,8 @@ import PreviewResourcePage from "./PreviewResourcePage";
 
 import ResourceCard from "../components/ResourceCard";
 
+import "./HomePage.scss";
+
 export class HomePage extends React.Component {
   constructor(props) {
     super(props);
@@ -169,11 +171,24 @@ export class HomePage extends React.Component {
   render() {
     const { playlists } = this.props.playlists;
     const headArray = playlists.map(playlist => (
-      <div className="list-wrapper" key={playlist.id}>
+      <div className="list-wrapper" key={playlist._id}>
         <div className="list">
           <div className="list-header">
             <h2 className="list-header-name">{playlist.title}
-              <button className="remove-playlist-btn" onClick={() => this.handleDeletePlayList(playlist._id)}>x</button>
+
+              <div className="dropdown pull-right playlist-dropdown">
+                <button className="btn project-dropdown-btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
+                </button>
+                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <Link className="dropdown-item" to={"/playlist/preview/"+playlist._id}><i className="fa fa-eye" aria-hidden="true"></i> Preview</Link>
+                  <a className="dropdown-item" href="#"><i className="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+                  <a className="dropdown-item" href="#"><i className="fa fa-share" aria-hidden="true"></i> Send To</a>
+                  <a className="dropdown-item" onClick={() => this.handleDeletePlayList(playlist._id)}><i className="fa fa-times-circle-o" aria-hidden="true"></i> Delete</a>
+                </div>
+              </div>
+
+
             </h2>
             
           </div>

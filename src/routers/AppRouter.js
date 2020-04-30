@@ -27,6 +27,7 @@ const AppRouter = () => (
       <Route path="/project/preview2/:projectid" render={(props) => <PreviewPage {...props} />} />
 
       <Route path="/resource/preview/:resourceid" render={(props) => <PreviewPage {...props} previewType="resource" />} />
+      <Route path="/playlist/preview/:playlistid" render={(props) => <PreviewPage {...props} previewType="playlist" />} />
 
       <Route path="/project/create" render={(props) => <ProjectsPage {...props} showCreateProjectPopup={true} />} />
       <Route path="/project/:projectid" exact component={HomePage} />
