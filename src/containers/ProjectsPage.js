@@ -178,10 +178,7 @@ export class ProjectsPage extends React.Component {
           <div className="content-wrapper">
             <div className="content">
               <div className="row">
-                <div className="col-md-12">
-                  <div className="program-search">
-                    <input type="text" name="search" className="search" placeholder="Search..." />
-                  </div>
+                <div className="col-md-12">                  
                   <div className="program-page-title">
                     <h1>My Projects</h1>
                   </div>
