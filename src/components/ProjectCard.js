@@ -20,9 +20,9 @@ const ProjectCard = (props) => (
 		            {props.project.name}
 		          </Link>
 		        </h3>
-		        <div className="program-creator">
+		        {/* <div className="program-creator">
 		          <span>Created by <Link to="/">Leo</Link></span>
-		        </div>
+		        </div> */}
 		      </div>
 		      <div className="col-md-2">
 		        <div className="dropdown pull-right">
@@ -39,12 +39,13 @@ const ProjectCard = (props) => (
 		      </div>
 		    </div>
 		    <div className="lessons-duration">
-		      <div className="lessons">
+		      {/* <div className="lessons">
 		        <span className="icon"></span><span>Lesson: 07</span>
 		      </div>
 		      <div className="duration">
 		        <span className="icon"></span><span>Duration: 4 Hr</span>
-		      </div>
+		      </div> */}
+			  <p>{typeof props.project.description !== "undefined" && props.project.description.toString().length > 30 ? props.project.description.substring(0, 30)+" ..." : props.project.description}</p>
 		    </div>
 		    <div className="go-to-playlist">
 		      <Link to={"/project/"+props.project._id}>
