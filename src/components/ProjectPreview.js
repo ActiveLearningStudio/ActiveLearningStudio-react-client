@@ -23,25 +23,27 @@ const ProjectPreview = (props) => {
 			if(playlist.activities.length > 0){
 				var activities = playlist.activities.map(activity => {
 					return (
-						<div className="col">
+						<div className="col-md-3">
 							<ActivityPreviewCard activity={activity} key={activity._id}/>
 						</div>						
 					)
 				});
 			} else {
 				var activities = (
-					<div className="alert alert-info" role="alert">
-		  				No activities defined for this playlist.
+					<div className="col-md-12">
+						<div className="alert alert-info" role="alert">
+							No activities defined for this playlist.
+						</div>
 					</div>
 				);
 			}
 
 			return (
 				<div className="row" key={playlist._id}>
-					<div className="col">
+					<div className="col-md-12">
 						<div className="row">
-							<div className="col">
-								<h4>{playlist.title}</h4>
+							<div className="col-md-12">
+								<h4 className="playlist-title">{playlist.title}</h4>
 							</div>
 						</div>
 						<div className="row">
@@ -53,8 +55,10 @@ const ProjectPreview = (props) => {
 		});
 	} else {
 		var playlists = (
-			<div className="alert alert-info" role="alert">
-  				No playlists defined for this project.
+			<div className="col-md-12">
+				<div className="alert alert-info" role="alert">
+  					No playlists defined for this project.
+				</div>
 			</div>
 		);
 	}
@@ -64,27 +68,21 @@ const ProjectPreview = (props) => {
 	<div className="row">
 		<div className="container">
 			<div className="row">
-				<div className="col-3">
-					<div className="row">
-						<div className="col">
-							<Link to={"/project/"+currentProject._id}>
-								<img src={currentProject.thumb_url} className="img-fluid project-preview-thumbnail" />
-							</Link>
-						</div>
-					</div>
-					<div className="row mt-4">
-						<div className="col">
-							<h2>{currentProject.name}</h2>
-							<p>{currentProject.description}</p>
-						</div>
+				<div className="col-md-2">
+					<div className="">
+						<Link to={"/project/"+currentProject._id}>
+							<img src={currentProject.thumb_url} className="img-fluid project-preview-thumbnail" />
+						</Link>
+						<h2>{currentProject.name}</h2>
+						<p>{currentProject.description}</p>
 					</div>
 				</div>
-				<div className="col-9">
-					<div className="card">
-						<div className="card-header">
+				<div className="col-md-10">
+					<div className="playlist-preview-wrapper">
+						<div className="preview-header">
 							Playlists
 						</div>
-						<div className="card-body">
+						<div className="playlist-preview-content">
 							{playlists}
 						</div>
 					</div>

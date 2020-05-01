@@ -9,8 +9,10 @@ const ProjectPreviewModal = (props) => {
 				var activities = playlist.activities.map(activity => (<p>this is an activity</p>));
 			} else {
 				var activities = (
-					<div className="alert alert-info" role="alert">
-		  				No activities defined for this playlist.
+					<div className="col-md-12">
+						<div className="alert alert-info" role="alert">
+							No activities defined for this playlist.
+						</div>
 					</div>
 				);
 			}
@@ -26,8 +28,10 @@ const ProjectPreviewModal = (props) => {
 		});
 	} else {
 		var playlists = (
-			<div className="alert alert-info" role="alert">
-  				No playlists defined for this project.
+			<div className="col-md-12">
+				<div className="alert alert-info" role="alert">
+					No playlists defined for this project.
+				</div>
 			</div>
 		);
 	}

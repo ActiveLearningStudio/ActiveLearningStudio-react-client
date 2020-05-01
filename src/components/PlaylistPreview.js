@@ -24,10 +24,10 @@ export class PlaylistPreview extends React.Component {
     const playlist = this.props.playlist.selectedPlaylist;
 
     if(playlist.activities.length == 0){
-      var activities = (<div className="alert alert-info" role="alert">No activities defined for this playlist.</div>);
+      var activities = (<div className="col-md-12"><div className="alert alert-info" role="alert">No activities defined for this playlist.</div></div>);
     } else {
       var activities = playlist.activities.map(activity => (
-        <div className="col">
+        <div className="col-md-3">
           <ActivityPreviewCard activity={activity} key={activity._id}/>
         </div>
       ));
@@ -35,18 +35,12 @@ export class PlaylistPreview extends React.Component {
     
     return (
       <div className="container">
-        <div className="row">
-          <div className="col">
-            <div className="card">
-              <div className="card-header plist-title">
-                {playlist.title}
-              </div>
-              <div className="row">
-                {activities}
-              </div>
+        <div className="playlist-preview-wrapper">
+          <div class="preview-header">{playlist.title}</div>
+            <div className="row">
+              {activities}
             </div>
           </div>
-        </div>
       </div>
 
     );
