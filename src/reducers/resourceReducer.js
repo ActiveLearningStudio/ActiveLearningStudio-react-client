@@ -1,4 +1,4 @@
-import { SHOW_CREATE_RESOURCE_MODAL, HIDE_CREATE_RESOURCE_MODAL, SHOW_CREATE_RESOURCE_ACTIVITY, SHOW_CREATE_RESOURCE_QUESTION, SHOW_CREATE_RESOURCE_DESCRIPTION, CREATE_RESOURCE, PREVIEW_RESOURCE, HIDE_PREVIEW_PLAYLIST_MODAL } from "../constants/actionTypes";
+import { SHOW_CREATE_RESOURCE_MODAL, HIDE_CREATE_RESOURCE_MODAL, SHOW_CREATE_RESOURCE_ACTIVITY, SHOW_CREATE_RESOURCE_QUESTION, SHOW_CREATE_RESOURCE_DESCRIPTION, CREATE_RESOURCE, PREVIEW_RESOURCE, HIDE_PREVIEW_PLAYLIST_MODAL, DELETE_RESOURCE } from "../constants/actionTypes";
 
 const defaultResourceState = () => {
     if (localStorage.getItem("resources")) {
@@ -71,6 +71,7 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                 ...state,
                 showPreviewResourcePopup:false
             }
+            
         default:
             return state;
     }

@@ -5,7 +5,8 @@ import {
   HIDE_CREATE_PLAYLIST_MODAL,
   CREATE_RESOURCE,
   LOAD_PROJECT_PLAYLISTS,
-  LOAD_PLAYLIST
+  LOAD_PLAYLIST,
+  DELETE_RESOURCE
 } from "../constants/actionTypes";
 
 const defaultPlaylistState = () => {
@@ -74,6 +75,25 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
                 showCreateResourcePopup:false
                 
             };
+      case DELETE_RESOURCE:
+        
+        let plists = [];
+        state.playlists.forEach((playlist,i) => {
+          let newResources = playlist.resources.filter(res => {
+            return res._id !== action.resourceid
+          });
+          var p = null;
+          p = playlist;
+          p.resources = newResources;
+          plists.push(p);
+        });
+        
+        return {
+          ...state,
+          playlists: plists,
+          showCreateResourcePopup:false
+          
+      };
       case LOAD_PROJECT_PLAYLISTS:
         return {
           ...state,

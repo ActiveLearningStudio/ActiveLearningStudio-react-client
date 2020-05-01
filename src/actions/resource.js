@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SHOW_CREATE_RESOURCE_MODAL, HIDE_CREATE_RESOURCE_MODAL, SHOW_CREATE_RESOURCE_ACTIVITY, SHOW_CREATE_RESOURCE_QUESTION, SHOW_CREATE_RESOURCE_DESCRIPTION, CREATE_RESOURCE, PREVIEW_RESOURCE, HIDE_PREVIEW_PLAYLIST_MODAL } from './../constants/actionTypes';
+import { SHOW_CREATE_RESOURCE_MODAL, HIDE_CREATE_RESOURCE_MODAL, SHOW_CREATE_RESOURCE_ACTIVITY, SHOW_CREATE_RESOURCE_QUESTION, SHOW_CREATE_RESOURCE_DESCRIPTION, CREATE_RESOURCE, PREVIEW_RESOURCE, HIDE_PREVIEW_PLAYLIST_MODAL, DELETE_RESOURCE } from './../constants/actionTypes';
 
 export const showCreateResourceModal = (id) => ({
     type: SHOW_CREATE_RESOURCE_MODAL,
@@ -196,3 +196,36 @@ export const hidePreviewResourceModal = () => ({
       }
     }
   }
+
+
+  
+
+
+export const deleteResource = (resourceid) => ({
+    type:DELETE_RESOURCE,
+    resourceid
+  }); 
+  
+  export const deleteResourceAction = (resourceid) => {
+    return async dispatch => {
+      try {
+        const response = await axios.delete(
+          //  `${process.env.REACT_APP_API_URL}/playlist/create`,
+           `/api/activity/${resourceid}`,
+           {
+            resourceid
+           }
+         );
+  
+         if(response.data.status == "success") {
+            dispatch(
+                deleteResource(resourceid)
+            );
+         }
+        
+      } catch (e) {
+        throw new Error(e);
+      }
+    }
+  }
+  

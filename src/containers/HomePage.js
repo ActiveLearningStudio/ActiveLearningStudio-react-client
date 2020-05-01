@@ -18,7 +18,7 @@ import Sidebar from "../components/Sidebar/Sidebar";
 
 import { startLogin } from "./../actions/auth";
 import { createPlaylistAction, deletePlaylistAction, showCreatePlaylistModalAction, hideCreatePlaylistModalAction, loadProjectPlaylistsAction } from "./../actions/playlist";
-import { createResourceAction, showCreateResourceModalAction, hideCreateResourceModalAction, previewResourceAction, hidePreviewResourceModalAction } from "./../actions/resource";
+import { deleteResourceAction, createResourceAction, showCreateResourceModalAction, hideCreateResourceModalAction, previewResourceAction, hidePreviewResourceModalAction } from "./../actions/resource";
 import {
   showCreateProjectModalAction, 
   showCreateProjectSubmenuAction,
@@ -150,9 +150,15 @@ export class HomePage extends React.Component {
     this.props.previewResourceAction(id);
   }
 
+  handleDeleteResource = (resourceid) => {
+    this.props.deleteResourceAction(resourceid);
+  }
+
   populateResources = (resources) => {
     return resources.map(resource => (
-        <ResourceCard key={resource._id} resource={resource} />
+        <ResourceCard key={resource._id} 
+        resource={resource}
+        handleDeleteResource = {this.handleDeleteResource} />
     ));
   }
 
@@ -279,6 +285,8 @@ const mapDispatchToProps = dispatch => ({
   loadProjectPlaylistsAction: (projectid) => dispatch(loadProjectPlaylistsAction(projectid)),
   createResourceAction: (playlistid, editor, editorType) => dispatch(createResourceAction(playlistid, editor, editorType)),
   loadProjectAction: (projectid) => dispatch(loadProjectAction(projectid)),
+  deleteResourceAction: (resourceid) => dispatch(deleteResourceAction(resourceid)),
+  
 });
 
 const mapStateToProps = (state) => {
