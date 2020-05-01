@@ -689,3 +689,22 @@ body {
         }
     }
 }
+
+.preview-box {
+    float:left;
+    img {
+        width:100%;
+    }
+    p {
+        margin-left: 23px;
+        margin-right: 10px;
+        a {
+            color:#000;
+        }
+    }
+}
+
+.plist-title {
+    font-size: 25px;
+    font-weight: bold;
+}
