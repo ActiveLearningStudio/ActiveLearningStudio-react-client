@@ -696,6 +696,7 @@ body {
     border-radius:3px;
     padding: 10px;
     margin: 15px 0;
+    min-height: 340px;  
     img {
         width:100%;
     }
@@ -744,4 +745,10 @@ body {
         margin-top: 20px;
         margin-bottom: 20px;
     }
+}
+
+.next-prev-link {
+    font-size: 35px;
+    display: inline-block;
+    margin: 0 8px;
 }

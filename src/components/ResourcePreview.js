@@ -16,25 +16,33 @@ export class ResourcePreview extends React.Component {
 
 	render() {
 		if(this.props.resource.nextResourceId)
-			var next = (<Link to={"/resource/preview/"+this.props.resource.nextResourceId} className="pull-left"><i className="fa fa-chevron-circle-right" aria-hidden="true"></i></Link>)
+			var next = (<Link to={"/resource/preview/"+this.props.resource.nextResourceId} className="next-prev-link"><i className="fa fa-chevron-circle-right" aria-hidden="true"></i></Link>)
 		else
 			var next = "";
 
 		if(this.props.resource.previousResourceId)
-			var previous = (<Link to={"/resource/preview/"+this.props.resource.previousResourceId} className="pull-right"><i className="fa fa-chevron-circle-left" aria-hidden="true"></i></Link>)
+			var previous = (<Link to={"/resource/preview/"+this.props.resource.previousResourceId} className="next-prev-link"><i className="fa fa-chevron-circle-left" aria-hidden="true"></i></Link>)
 		else
 			var previous = "";
 
 		return (
-			<div className="row">
-				<div className="col-1 align-self-center display-1">
-					{previous}
-				</div>
-				<div className="col-10">
-					<H5PPreview {...this.props} resourceid={this.props.resourceid} />
-				</div>
-				<div className="col-1 align-self-center display-1">
-					{next}
+			<div className="container">
+				<div className="row">
+					{/* <div className="col-1 align-self-center display-1">
+						
+					</div> */}
+					<div className="row">
+						<div className="col-md-12">
+							{previous}{next}
+						</div>
+					</div>
+					<div className="col-md-12">
+					
+						<H5PPreview {...this.props} resourceid={this.props.resourceid} />
+					</div>
+					{/* <div className="col-1 align-self-center display-1">
+						
+					</div> */}
 				</div>
 			</div>
 		);
