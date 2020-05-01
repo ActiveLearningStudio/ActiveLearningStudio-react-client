@@ -136,9 +136,9 @@ class EditorPage extends React.Component {
          
          
          
-         console.log(window.H5PIntegration);
-        console.log(response);
-        console.log("========================");
+         //console.log(window.H5PIntegration);
+        //console.log(response);
+        //console.log("========================");
       })
       .catch((error) => {
         console.log(error);

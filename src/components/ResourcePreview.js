@@ -1,8 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
+import { connect } from "react-redux";
+import { loadResourceAction } from "../actions/resource";
 import H5PPreview from "../containers/H5PPreview";
 
-export class PreviewPage extends React.Component {
+export class ResourcePreview extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -12,24 +15,31 @@ export class PreviewPage extends React.Component {
 	}
 
 	render() {
-		console.log(this.props);
+		if(this.props.resource.nextResourceId)
+			var next = (<Link to={"/resource/preview/"+this.props.resource.nextResourceId} className="pull-left"><i className="fa fa-chevron-circle-right" aria-hidden="true"></i></Link>)
+		else
+			var next = "";
+
+		if(this.props.resource.previousResourceId)
+			var previous = (<Link to={"/resource/preview/"+this.props.resource.previousResourceId} className="pull-right"><i className="fa fa-chevron-circle-left" aria-hidden="true"></i></Link>)
+		else
+			var previous = "";
+
 		return (
 			<div className="row">
 				<div className="col-1 align-self-center display-1">
-					<Link to="/" className="pull-right"><i className="fa fa-chevron-circle-left" aria-hidden="true"></i></Link>
+					{previous}
 				</div>
 				<div className="col-10">
 					<H5PPreview {...this.props} resourceid={this.props.resourceid} />
 				</div>
 				<div className="col-1 align-self-center display-1">
-					<Link to="/" className="pull-left"><i className="fa fa-chevron-circle-right" aria-hidden="true"></i></Link>
+					{next}
 				</div>
 			</div>
 		);
 	}
 }
-
-export default ResourcePreview;
 
 const mapDispatchToProps = dispatch => ({
   loadResourceAction: (resourceid) => dispatch(loadResourceAction(resourceid)),
@@ -41,8 +51,4 @@ const mapStateToProps = (state) => {
   };
 }
 
-
-
-
-export default withRouter(connect(mapStateToProps,
-  mapDispatchToProps)(PreviewPage))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ResourcePreview))

@@ -12,11 +12,14 @@ import {
     DELETE_RESOURCE
 } from './../constants/actionTypes';
 
-export const loadResource = (resource) => ({
+export const loadResource = (resource, previous, next) => ({
   type: LOAD_RESOURCE,
-  resource: resource
+  resource: resource,
+  previousResourceId: previous,
+  nextResourceId: next,
 });
 
+// Returns the requested resource along the next and previous one in the playlist
 export const loadResourceAction = (resourceId) => {
   return async dispatch => {
     const { token } = JSON.parse(localStorage.getItem("auth"));
@@ -26,8 +29,10 @@ export const loadResourceAction = (resourceId) => {
       { headers: { "Authorization": "Bearer "+token } }
     );
 
-    if(response.data.status == "success")
-      dispatch( loadResource(response.data.data.resource) );
+    if(response.data.status == "success"){
+        const data = response.data.data;
+        dispatch( loadResource(data.resource, data.previousResourceId, data.nextResourceId) );
+    }
   };
 };
 

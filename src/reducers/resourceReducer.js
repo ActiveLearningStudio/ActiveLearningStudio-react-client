@@ -87,7 +87,9 @@ const resourceReducer = (state = defaultResourceState(), action) => {
         case LOAD_RESOURCE:
             return {
                 ...state,
-                selectedResource: action.resource
+                selectedResource: action.resource,
+                previousResourceId: action.previousResourceId,
+                nextResourceId: action.nextResourceId,
             }
         default:
             return state;

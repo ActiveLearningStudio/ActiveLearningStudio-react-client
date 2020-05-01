@@ -167,7 +167,7 @@ export class PreviewPage extends React.Component {
 
   render() {
     const { projects } = this.props.project;
-  console.log(this.props);
+
     if (this.props.previewType == 'resource')
       var content = (<ResourcePreview resourceid={this.props.match.params.resourceid} />);
     else if (this.props.previewType == 'playlist')
