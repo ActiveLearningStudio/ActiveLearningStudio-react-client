@@ -190,6 +190,7 @@ export class HomePage extends React.Component {
                   <Link className="dropdown-item" to={"/playlist/preview/"+playlist._id}><i className="fa fa-eye" aria-hidden="true"></i> Preview</Link>
                   <a className="dropdown-item" href="#"><i className="fa fa-pencil" aria-hidden="true"></i> Edit</a>
                   <a className="dropdown-item" href="#"><i className="fa fa-share" aria-hidden="true"></i> Send To</a>
+                  <a className="dropdown-item" href="#" onClick={(e) => { e.preventDefault(); window.open("/api/download/project/123"); }}><i className="fa fa-cloud-download" aria-hidden="true"></i> Executable</a>
                   <a className="dropdown-item" onClick={() => this.handleDeletePlayList(playlist._id)}><i className="fa fa-times-circle-o" aria-hidden="true"></i> Delete</a>
                 </div>
               </div>

@@ -5,7 +5,6 @@ import "./ProjectCard.scss";
 
 const ProjectCard = (props) => (
 	<div className="col-md-3">
-		
 		<div className="program-tile">
 		  <div className="program-thumb">
 		    <Link to={"/project/"+props.project._id}>
@@ -20,9 +19,6 @@ const ProjectCard = (props) => (
 		            {props.project.name}
 		          </Link>
 		        </h3>
-		        {/* <div className="program-creator">
-		          <span>Created by <Link to="/">Leo</Link></span>
-		        </div> */}
 		      </div>
 		      <div className="col-md-2">
 		        <div className="dropdown pull-right">
@@ -33,7 +29,7 @@ const ProjectCard = (props) => (
 					<Link className="dropdown-item" to={"/project/preview2/"+props.project._id}><i className="fa fa-eye" aria-hidden="true"></i> Preview</Link>
 		            <a className="dropdown-item" href="#"><i className="fa fa-pencil" aria-hidden="true"></i> Edit</a>
 		            <a className="dropdown-item" href="#"><i className="fa fa-share" aria-hidden="true"></i> Send To</a>
-		            {/* <a className="dropdown-item" href="#"><i className="fa fa-times-circle-o" aria-hidden="true"></i> Delete</a> */}
+		            <a className="dropdown-item" href="#" onClick={(e) => { e.preventDefault(); window.open("/api/download/project/"+props.project._id); }}><i className="fa fa-cloud-download" aria-hidden="true"></i> Executable</a>
 					<a className="dropdown-item" onClick={() => props.handleDeleteProject(props.project._id)}><i className="fa fa-times-circle-o" aria-hidden="true"></i> Delete</a>
 		          </div>
 		        </div>
@@ -45,12 +41,6 @@ const ProjectCard = (props) => (
 					<p>{ props.project.description && props.project.description.length > 130   ? props.project.description.substring(0, 130)+" ..." : props.project.description}</p>
 					</div>
 				</div>
-		      {/* <div className="lessons">
-		        <span className="icon"></span><span>Lesson: 07</span>
-		      </div>
-		      <div className="duration">
-		        <span className="icon"></span><span>Duration: 4 Hr</span>
-		      </div> */}
 		    </div>
 		    <div className="go-to-playlist">
 		      <Link to={"/project/"+props.project._id}>
