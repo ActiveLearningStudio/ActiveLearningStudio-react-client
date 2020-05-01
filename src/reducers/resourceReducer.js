@@ -7,7 +7,8 @@ import {
     CREATE_RESOURCE, 
     PREVIEW_RESOURCE, 
     HIDE_PREVIEW_PLAYLIST_MODAL,
-    LOAD_RESOURCE
+    LOAD_RESOURCE,
+    DELETE_RESOURCE
 } from "../constants/actionTypes";
 
 const defaultResourceState = () => {
