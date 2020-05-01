@@ -703,6 +703,9 @@ body {
     }
     img {
         width:100%;
+        max-width: 150px;
+        margin: 0 auto;
+        display: block;
     }
     h5 {
         margin-left: 23px;
