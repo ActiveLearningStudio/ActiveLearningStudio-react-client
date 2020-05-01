@@ -17,7 +17,6 @@ export const loadPlaylist = (playlist) => ({
 });
 
 export const loadPlaylistAction = (playlistId) => {
-  console.log(playlistId);
   return async dispatch => {
     const { token } = JSON.parse(localStorage.getItem("auth"));
     const response = await axios.post(
