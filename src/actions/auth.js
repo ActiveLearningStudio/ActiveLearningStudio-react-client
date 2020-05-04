@@ -14,7 +14,7 @@ export const startSignup = (displayName, email, password) => {
     try {
       const response = await axios.post(
         // `${process.env.REACT_APP_API_URL}/users`,
-        'api/users',
+        global.config.laravelAPIUrl +'/users',
         {
           displayName,
           email,
@@ -54,7 +54,7 @@ export const startLogin = (email, password) => {
     try {
       const response = await axios.post(
         // `${process.env.REACT_APP_API_URL}/users/login`,
-        'api/auth/login',
+        global.config.laravelAPIUrl + '/auth/login',
         {
           email,
           password
@@ -93,7 +93,7 @@ export const startLogout = () => {
       localStorage.removeItem("auth");
       await axios.delete(
         // `${process.env.REACT_APP_API_URL}/users/me/token`,
-        'api/users/me/token',
+        global.config.laravelAPIUrl +'/users/me/token',
         {
           headers: {
             "x-auth": token

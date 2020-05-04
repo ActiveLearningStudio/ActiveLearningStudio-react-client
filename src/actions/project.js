@@ -150,7 +150,7 @@ export const loadMyProjectsAction = () => {
       const { token } = JSON.parse(localStorage.getItem("auth"));
      const response = await axios.post(
       //  `${process.env.REACT_APP_API_URL}/playlist/create`,
-       '/api/myprojects',
+       global.config.laravelAPIUrl+'/myprojects',
        {},
        {
           headers: {

@@ -51,7 +51,7 @@ export class NewProjectPage extends React.Component {
         }
     }
     return axios.post(
-      'api/post-upload-image',
+      global.config.laravelAPIUrl +'/post-upload-image',
       formData,
       config
     )
