@@ -16,22 +16,22 @@ import Header from "../components/Header/Header";
 import CreatePlaylistPopup from "../components/CreatePlaylistPopup/CreatePlaylistPopup";
 import Sidebar from "../components/Sidebar/Sidebar";
 
-import { startLogin } from "./../actions/auth";
-import { createPlaylistAction, deletePlaylistAction, showCreatePlaylistModalAction, hideCreatePlaylistModalAction, loadProjectPlaylistsAction } from "./../actions/playlist";
-import { deleteResourceAction, createResourceAction, showCreateResourceModalAction, hideCreateResourceModalAction, previewResourceAction, hidePreviewResourceModalAction } from "./../actions/resource";
+import { startLogin } from "../actions/auth";
+import { createPlaylistAction, deletePlaylistAction, showCreatePlaylistModalAction, hideCreatePlaylistModalAction, loadProjectPlaylistsAction } from "../actions/playlist";
+import { deleteResourceAction, createResourceAction, showCreateResourceModalAction, hideCreateResourceModalAction, previewResourceAction, hidePreviewResourceModalAction } from "../actions/resource";
 import {
   showCreateProjectModalAction, 
   showCreateProjectSubmenuAction,
   loadProjectAction
-} from "./../actions/project";
+} from "../actions/project";
 import NewResourcePage from "./NewResourcePage";
 import PreviewResourcePage from "./PreviewResourcePage";
 
 import ResourceCard from "../components/ResourceCard";
 
-import "./HomePage.scss";
+import "./PlaylistsPage.scss";
 
-export class HomePage extends React.Component {
+export class PlaylistsPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -302,4 +302,4 @@ const mapStateToProps = (state) => {
   };
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomePage))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PlaylistsPage))

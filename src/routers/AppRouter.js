@@ -5,7 +5,7 @@ import {createBrowserHistory} from "history";
 import PublicRoute from "./PublicRoute";
 import LoginPage from "./../containers/LoginPage";
 
-import HomePage from "./../containers/HomePage";
+import PlaylistsPage from "../containers/PlaylistsPage";
 import EditorPage from "./../containers/EditorPage";
 import { TinyEditor } from "../containers/TinyEditor";
 import PrivateRoute from "./PrivateRoute";
@@ -23,17 +23,17 @@ const AppRouter = () => (
     <Switch>
 
       <PrivateRoute path="/" exact component={ProjectsPage} />
-      <Route path="/project/preview/:projectid" render={(props) => <ProjectsPage {...props} showPreview={props.match.params.projectid} />} />
-      <Route path="/project/preview2/:projectid" render={(props) => <PreviewPage {...props} />} />
+      <PrivateRoute path="/project/preview/:projectid" render={(props) => <ProjectsPage {...props} showPreview={props.match.params.projectid} />} />
+      <PrivateRoute path="/project/preview2/:projectid" render={(props) => <PreviewPage {...props} />} />
 
-      <Route path="/resource/preview/:resourceid" render={(props) => <PreviewPage {...props} key={props.match.params.resourceid} previewType="resource" />} />
-      <Route path="/playlist/preview/:playlistid" render={(props) => <PreviewPage {...props} previewType="playlist" />} />
+      <PrivateRoute path="/resource/preview/:resourceid" render={(props) => <PreviewPage {...props} key={props.match.params.resourceid} previewType="resource" />} />
+      <PrivateRoute path="/playlist/preview/:playlistid" render={(props) => <PreviewPage {...props} previewType="playlist" />} />
 
-      <Route path="/project/create" render={(props) => <ProjectsPage {...props} showCreateProjectPopup={true} />} />
-      <Route path="/project/:projectid" exact component={HomePage} />
-      <Route path="/project/:projectid/playlist/create" render={(props) => <HomePage {...props} openCreatePopup={true} />} />
-      <Route path="/project/:projectid/playlist/:playlistid/activity/create" exact render={(props) => <HomePage {...props} openCreateResourcePopup={true} />} />
-      <Route path="/activities/:activityid" render={(props) => <HomePage {...props} />} />
+      <PrivateRoute path="/project/create" render={(props) => <ProjectsPage {...props} showCreateProjectPopup={true} />} />
+      <PrivateRoute path="/project/:projectid" exact component={PlaylistsPage} />
+      <PrivateRoute path="/project/:projectid/playlist/create" render={(props) => <PlaylistsPage {...props} openCreatePopup={true} />} />
+      <PrivateRoute path="/project/:projectid/playlist/:playlistid/activity/create" exact render={(props) => <PlaylistsPage {...props} openCreateResourcePopup={true} />} />
+      <PrivateRoute path="/activities/:activityid" render={(props) => <PlaylistsPage {...props} />} />
       
       
       
