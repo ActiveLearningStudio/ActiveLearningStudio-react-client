@@ -1,5 +1,11 @@
 import React from "react";
-import "./Header.scss"
+import "./Header.scss";
+import { useHistory } from "react-router-dom";
+
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+
+import {AUTH_LOGOUT} from './../../constants/actionTypes'
 
 import {
   BrowserRouter as Router,
@@ -11,7 +17,10 @@ import { logout } from "../../actions/auth";
 
 
 
+
 function Header(props) {
+  const state = useSelector(state => state);
+  const dispatch = useDispatch();
   return (
     <header>
       <div className="header-wrapper">
@@ -77,8 +86,16 @@ function Header(props) {
               </Link>
             </div>
             <div className="user-icon">
-              <button  className="logout-user">
+              <button>
                 
+              </button>
+            </div>
+            <div className="logout-icon">
+              <button onClick={() =>
+                    dispatch({
+                      type: AUTH_LOGOUT
+                    })}>
+                <i className="fa fa-sign-out"></i>
               </button>
             </div>
         </div>

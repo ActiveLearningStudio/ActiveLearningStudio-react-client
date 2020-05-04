@@ -193,9 +193,23 @@ header {
             .user-icon {
                 margin-left:45px;
                 float:left;
-                .logout-user {
+                button {
                     display: inline-block;
                     background: url(/images/user-icon.png) no-repeat center center;
+                    background-color: #fff;
+                    width: 53px;
+                    height: 53px;
+                    border: 2px solid #f1f1f1;
+                    border-radius: 28px;
+                    cursor: pointer;
+                }
+            }
+            .logout-icon {
+                margin-left:45px;
+                float:left;
+                button {
+                    display: inline-block;
+                    // background: url(/images/user-icon.png) no-repeat center center;
                     background-color: #fff;
                     width: 53px;
                     height: 53px;

@@ -130,45 +130,6 @@ export class LoginPage extends React.Component {
             </div>
             <div className="clearfix"></div>
           </div>
-          
-
-            {/* <div className="container mt-4">
-                <div className="row">
-                  <div className="container col-lg-5">
-                    <h3 className="mb-3 text-center">Sign In</h3>
-                    {this.renderError()}
-                    <form onSubmit={this.onSubmit}>
-                      <div className="form-group">
-                        <label htmlFor="email">Email</label>
-                        <input
-                          className="form-control"
-                          type="text"
-                          name="email"
-                          onChange={this.onEmailChange}
-                          autoFocus
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="password">Password</label>
-                        <input
-                          className="form-control"
-                          type="password"
-                          name="password"
-                          onChange={this.onPasswordChange}
-                        />
-                      </div>
-                      <div className="form-group">
-                        <button
-                          className="btn btn-primary btn-block"
-                          disabled={this.isDisabled()}
-                        >
-                          Login
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-      </div> */}
         </div>
       
     );
@@ -184,10 +145,7 @@ const mapStateToProps = (state) => {
     errorMessage: state.auth.errorMessage,
   };
 };
-// export default connect(
-//   null,
-//   mapDispatchToProps
-// )(LoginPage);
+
 
 
 export default withRouter(connect(mapStateToProps,
