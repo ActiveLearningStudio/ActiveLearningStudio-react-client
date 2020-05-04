@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, HashRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Router, Route, Switch } from "react-router-dom";
 import {createBrowserHistory} from "history";
 
 import PublicRoute from "./PublicRoute";

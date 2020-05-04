@@ -10,6 +10,7 @@
     "@tinymce/tinymce-react": "^3.5.0",
     "apollo-boost": "^0.4.7",
     "axios": "^0.19.2",
+    "express": "^4.17.1",
     "font-awesome": "^4.7.0",
     "graphql": "^14.6.0",
     "node-sass": "^4.13.1",
@@ -29,6 +30,7 @@
     "start:dev": "react-scripts start",
     "start": "node server/server.js",
     "build": "react-scripts build",
+    "start:prod":"node server.js",
     "test": "react-scripts test",
     "eject": "npm run build",
     "heroku-postbuild": "npm run build"
