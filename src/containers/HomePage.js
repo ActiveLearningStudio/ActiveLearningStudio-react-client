@@ -143,7 +143,9 @@ export class HomePage extends React.Component {
 
   // This function handles delete playlist
   handleDeletePlayList = (id) => {
-    this.props.deletePlaylistAction(id);
+    if(confirm("Are you Sure?")){
+      this.props.deletePlaylistAction(id);
+    }
   }
 
   handlePreviewResource = (id) => {
@@ -151,7 +153,9 @@ export class HomePage extends React.Component {
   }
 
   handleDeleteResource = (resourceid) => {
-    this.props.deleteResourceAction(resourceid);
+    if(confirm("Are you Sure?")){
+      this.props.deleteResourceAction(resourceid);
+    }
   }
 
   populateResources = (resources) => {
