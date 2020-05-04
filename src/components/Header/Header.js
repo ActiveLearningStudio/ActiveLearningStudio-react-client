@@ -13,7 +13,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import { logout } from "../../actions/auth";
+import { startLogoutAction } from "../../actions/auth";
 
 import {showCreateProjectSubmenuAction} from './../../actions/project'
 
@@ -92,20 +92,13 @@ function Header(props) {
               </button>
             </div>
             <div className="logout-icon">
-              <button onClick={() =>
-                    dispatch({
-                      type: AUTH_LOGOUT
-                    })}>
+              <button onClick={props.startLogoutAction}>
                 <i className="fa fa-sign-out"></i>
               </button>
             </div>
         </div>
       </div>
-        <nav>
-            {/* <Link to="/">
-                <img src="/images/header.png" className="img-responsive header" />
-            </Link> */}
-	      </nav>
+        
     </header>
   );
 }
@@ -116,7 +109,8 @@ function Header(props) {
 
 const mapDispatchToProps = dispatch => {
   return {
-    showCreateProjectSubmenuAction: () => dispatch(showCreateProjectSubmenuAction())
+    showCreateProjectSubmenuAction: () => dispatch(showCreateProjectSubmenuAction()),
+    startLogoutAction: () => dispatch(startLogoutAction())
   };
 };
 

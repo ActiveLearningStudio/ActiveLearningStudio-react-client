@@ -86,20 +86,24 @@ export const startLogin = (email, password) => {
   };
 };
 
-export const startLogout = () => {
+export const logout = () => ({
+  type: AUTH_LOGOUT
+});
+
+export const startLogoutAction = () => {
   return async dispatch => {
     try {
-      const { token } = JSON.parse(localStorage.getItem("auth"));
+      // const { token } = JSON.parse(localStorage.getItem("auth"));
       localStorage.removeItem("auth");
-      await axios.delete(
-        // `${process.env.REACT_APP_API_URL}/users/me/token`,
-        global.config.laravelAPIUrl +'/users/me/token',
-        {
-          headers: {
-            "x-auth": token
-          }
-        }
-      );
+      // await axios.delete(
+      //   // `${process.env.REACT_APP_API_URL}/users/me/token`,
+      //   global.config.laravelAPIUrl +'/users/me/token',
+      //   {
+      //     headers: {
+      //       "x-auth": token
+      //     }
+      //   }
+      // );
       dispatch(logout());
     } catch (e) {
       localStorage.removeItem("auth");
@@ -108,6 +112,4 @@ export const startLogout = () => {
   };
 };
 
-export const logout = () => ({
-  type: AUTH_LOGOUT
-});
+
