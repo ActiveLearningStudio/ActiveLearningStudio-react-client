@@ -23,17 +23,15 @@ const AppRouter = () => (
     <Switch>
 
       <PrivateRoute path="/" exact component={ProjectsPage} />
-      <Route path="/project/preview/:projectid" render={(props) => <ProjectsPage {...props} showPreview={props.match.params.projectid} />} />
-      <Route path="/project/preview2/:projectid" render={(props) => <PreviewPage {...props} />} />
+      <PrivateRoute path="/project/preview2/:projectid" component={PreviewPage} />
+      <PrivateRoute path="/resource/preview/:resourceid" component={PreviewPage}  previewType="resource" />
+      <PrivateRoute path="/playlist/preview/:playlistid" component={PreviewPage}  previewType="playlist" />
 
-      <Route path="/resource/preview/:resourceid" render={(props) => <PreviewPage {...props} key={props.match.params.resourceid} previewType="resource" />} />
-      <Route path="/playlist/preview/:playlistid" render={(props) => <PreviewPage {...props} previewType="playlist" />} />
-
-      <Route path="/project/create" render={(props) => <ProjectsPage {...props} showCreateProjectPopup={true} />} />
-      <Route path="/project/:projectid" exact component={PlaylistsPage} />
-      <Route path="/project/:projectid/playlist/create" render={(props) => <PlaylistsPage {...props} openCreatePopup={true} />} />
-      <Route path="/project/:projectid/playlist/:playlistid/activity/create" exact render={(props) => <PlaylistsPage {...props} openCreateResourcePopup={true} />} />
-      <Route path="/activities/:activityid" render={(props) => <PlaylistsPage {...props} />} />
+      <PrivateRoute path="/project/create" component={ProjectsPage} showCreateProjectPopup={true} />
+      <PrivateRoute path="/project/:projectid" exact component={PlaylistsPage} />
+      <PrivateRoute path="/project/:projectid/playlist/create" component={PlaylistsPage} openCreatePopup={true} />
+      <PrivateRoute path="/project/:projectid/playlist/:playlistid/activity/create" exact component={PlaylistsPage}  openCreateResourcePopup={true} />
+      <PrivateRoute path="/activities/:activityid" component={PlaylistsPage} />
       
       
       

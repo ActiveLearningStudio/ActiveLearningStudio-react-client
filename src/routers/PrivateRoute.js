@@ -9,10 +9,19 @@ const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => (
     {...rest}
     render={props =>
       {
+        let id = '';
+        if(props.match.params.resourceid){
+          id = props.match.params.resourceid;
+        } else {
+          if(props.match.params.playlistid){
+            id = props.match.params.playlistid;
+          }
+        }
+        
         return (
           isAuthenticated ? (
             <div>
-              <Component {...props} />
+              <Component {...props} {...rest} key={id} />
             </div>
           ) : (
             <Redirect to="/login" />
