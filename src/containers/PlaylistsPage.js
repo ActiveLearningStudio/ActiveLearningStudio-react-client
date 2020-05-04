@@ -21,7 +21,6 @@ import { createPlaylistAction, deletePlaylistAction, showCreatePlaylistModalActi
 import { deleteResourceAction, createResourceAction, showCreateResourceModalAction, hideCreateResourceModalAction, previewResourceAction, hidePreviewResourceModalAction } from "../actions/resource";
 import {
   showCreateProjectModalAction, 
-  showCreateProjectSubmenuAction,
   loadProjectAction
 } from "../actions/project";
 import NewResourcePage from "./NewResourcePage";
@@ -285,7 +284,6 @@ const mapDispatchToProps = dispatch => ({
   hideCreateResourceModal: () => dispatch(hideCreateResourceModalAction()),
   previewResourceAction: (id) => dispatch(previewResourceAction(id)),
   hidePreviewResourceModalAction: () => dispatch(hidePreviewResourceModalAction()),
-  showCreateProjectSubmenuAction: () => dispatch(showCreateProjectSubmenuAction()),
   showCreateProjectModalAction: () => dispatch(showCreateProjectModalAction()),
   loadProjectPlaylistsAction: (projectid) => dispatch(loadProjectPlaylistsAction(projectid)),
   createResourceAction: (playlistid, editor, editorType) => dispatch(createResourceAction(playlistid, editor, editorType)),

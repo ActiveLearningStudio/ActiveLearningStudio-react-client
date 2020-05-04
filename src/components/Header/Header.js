@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-
+import { connect } from "react-redux";
 import {AUTH_LOGOUT} from './../../constants/actionTypes'
 
 import {
@@ -15,6 +15,7 @@ import {
 } from "react-router-dom";
 import { logout } from "../../actions/auth";
 
+import {showCreateProjectSubmenuAction} from './../../actions/project'
 
 
 
@@ -109,4 +110,17 @@ function Header(props) {
   );
 }
 
-export default Header;
+// export default Header;
+
+
+
+const mapDispatchToProps = dispatch => {
+  return {
+    showCreateProjectSubmenuAction: () => dispatch(showCreateProjectSubmenuAction())
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Header);

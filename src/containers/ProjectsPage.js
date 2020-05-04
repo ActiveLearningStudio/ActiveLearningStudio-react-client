@@ -18,7 +18,7 @@ import Sidebar from "../components/Sidebar/Sidebar";
 
 import { startLogin } from "../actions/auth";
 import { createPlaylistAction, deletePlaylistAction, showCreatePlaylistModalAction, hideCreatePlaylistModalAction } from "../actions/playlist";
-import { deleteProjectAction, showCreateProjectSubmenuAction, showCreateProjectModalAction, hideCreateProjectModalAction, createProjectAction, loadMyProjectsAction} from "../actions/project";
+import { deleteProjectAction, showCreateProjectModalAction, hideCreateProjectModalAction, createProjectAction, loadMyProjectsAction} from "../actions/project";
 import NewResourcePage from "./NewResourcePage";
 import { NewProjectPage } from "./NewProjectPage";
 
@@ -224,7 +224,6 @@ const mapDispatchToProps = dispatch => ({
   loadMyProjectsAction: () =>dispatch(loadMyProjectsAction()),
   createProjectAction: (name, description, thumb_url) =>dispatch(createProjectAction(name, description, thumb_url)),
   // hideCreateProjectModalAction: () => dispatch(hideCreateProjectModalAction()),
-  showCreateProjectSubmenuAction: () => dispatch(showCreateProjectSubmenuAction()),
   deleteProjectAction: (projectid) => dispatch(deleteProjectAction(projectid)),
   
 
