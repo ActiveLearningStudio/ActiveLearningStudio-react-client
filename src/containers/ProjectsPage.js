@@ -18,9 +18,12 @@ import Sidebar from "../components/Sidebar/Sidebar";
 
 import { startLogin } from "../actions/auth";
 import { createPlaylistAction, deletePlaylistAction, showCreatePlaylistModalAction, hideCreatePlaylistModalAction } from "../actions/playlist";
-import { showCreateProjectSubmenuAction, showCreateProjectModalAction, hideCreateProjectModalAction, createProjectAction, loadMyProjectsAction} from "../actions/project";
+import { deleteProjectAction, showCreateProjectSubmenuAction, showCreateProjectModalAction, hideCreateProjectModalAction, createProjectAction, loadMyProjectsAction} from "../actions/project";
 import NewResourcePage from "./NewResourcePage";
 import { NewProjectPage } from "./NewProjectPage";
+
+import ProjectCard from "../components/ProjectCard";
+import ProjectPreviewModal from "../components/ProjectPreviewModal";
 
 export class ProjectsPage extends React.Component {
   constructor(props) {
@@ -134,11 +137,13 @@ export class ProjectsPage extends React.Component {
     this.setState({ description: e.target.value });
   };
 
+
   handleCreateProjectSubmit = async (e) => {
     e.preventDefault();
     try {
       const { name, description } = this.state;
-      await this.props.createProjectAction(name, description);
+      var thumb_url = this.textInput.value;
+      await this.props.createProjectAction(name, description, thumb_url);
       this.props.history.push("/");
 
       
@@ -156,46 +161,21 @@ export class ProjectsPage extends React.Component {
     }
   };
 
-  render() {
-    // alert(JSON.stringify(this.props.project));
-    const { projects } = this.props.project;
-    console.log((projects));
+  handleDeleteProject = (projectid) => {
+    this.props.deleteProjectAction(projectid);
+  }
 
-    const projectsArray = projects.map(project => (
-      <div className="col-md-3" key={project._id}>
-        <div className="program-tile">
-          <div className="program-thumb">
-            <Link to={"/project/"+project._id}>
-              <img src="/images/program-thumb.png" className="img-fluid" />
-            </Link>
-          </div>
-          <div className="program-content">
-            <h3 className="program-title">
-              <Link to={"/project/"+project._id}>
-                {project.name}
-              </Link>
-            </h3>
-            <div className="program-creator">
-              <span>Created by <Link to="/">Leo</Link></span>
-            </div>
-            <div className="lessons-duration">
-              <div className="lessons">
-                <span className="icon"></span><span>Lesson: 07</span>
-              </div>
-              <div className="duration">
-                <span className="icon"></span><span>Duration: 4 Hr</span>
-              </div>
-            </div>
-            <div className="go-to-playlist">
-              <Link to={"/project/"+project._id}>
-                <img src="/images/program-playlist-arrow.png" alt="Go to Playlist" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
+  render() {
+    const { projects } = this.props.project;
+
+
+    const projectCards = projects.map(project => (
+      <ProjectCard
+        key={project._id}
+        project={project}
+        handleDeleteProject = {this.handleDeleteProject}
+        showPreview={(this.props.showPreview == project._id)}/>
     ));
-      console.log(this.props);
     return (
       <div>
         <Header {...this.props} />
@@ -206,20 +186,14 @@ export class ProjectsPage extends React.Component {
           <div className="content-wrapper">
             <div className="content">
               <div className="row">
-                <div className="col-md-12">
-                  <div className="program-search">
-                    <input type="text" name="search" className="search" placeholder="Search..." />
-                  </div>
-
+                <div className="col-md-12">                  
                   <div className="program-page-title">
                     <h1>My Projects</h1>
                   </div>
                 </div>
               </div>
-              
               <div className="row">
-                
-                {projectsArray}
+                {projectCards}
               </div>
             </div>
           </div>
@@ -231,6 +205,8 @@ export class ProjectsPage extends React.Component {
             onProjectDescriptionChange = {this.onProjectDescriptionChange}
             handleCreateProjectSubmit = {this.handleCreateProjectSubmit}
             handleCloseProjectModal = {this.handleCloseProjectModal}
+            onThumbUrlChange = {this.onThumbUrlChange}
+            inputRef={(input) => this.textInput = input} 
           />
           : null
         }
@@ -243,9 +219,11 @@ export class ProjectsPage extends React.Component {
 const mapDispatchToProps = dispatch => ({
   showCreateProjectModalAction: () => dispatch(showCreateProjectModalAction()),
   loadMyProjectsAction: () =>dispatch(loadMyProjectsAction()),
-  createProjectAction: (name, description) =>dispatch(createProjectAction(name, description)),
+  createProjectAction: (name, description, thumb_url) =>dispatch(createProjectAction(name, description, thumb_url)),
   // hideCreateProjectModalAction: () => dispatch(hideCreateProjectModalAction()),
-  showCreateProjectSubmenuAction: () => dispatch(showCreateProjectSubmenuAction())
+  showCreateProjectSubmenuAction: () => dispatch(showCreateProjectSubmenuAction()),
+  deleteProjectAction: (projectid) => dispatch(deleteProjectAction(projectid)),
+  
 
 });
 

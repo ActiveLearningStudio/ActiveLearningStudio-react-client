@@ -125,7 +125,7 @@ export class LoginPage extends React.Component {
                 <h2>Powering the World's Best Learning Experiences</h2>
               </div>
               <div className="login-right-text">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac sapien in erat commodo molestie.</p>
+                
               </div>
             </div>
             <div className="clearfix"></div>

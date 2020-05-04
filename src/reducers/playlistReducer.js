@@ -1,4 +1,13 @@
-import { CREATE_PLAYLIST, DELETE_PLAYLIST, SHOW_CREATE_PLAYLIST_MODAL, HIDE_CREATE_PLAYLIST_MODAL, CREATE_RESOURCE, LOAD_PROJECT_PLAYLISTS } from "../constants/actionTypes";
+import { 
+  CREATE_PLAYLIST,
+  DELETE_PLAYLIST,
+  SHOW_CREATE_PLAYLIST_MODAL,
+  HIDE_CREATE_PLAYLIST_MODAL,
+  CREATE_RESOURCE,
+  LOAD_PROJECT_PLAYLISTS,
+  LOAD_PLAYLIST,
+  DELETE_RESOURCE
+} from "../constants/actionTypes";
 
 const defaultPlaylistState = () => {
   if (localStorage.getItem("playlists")) {
@@ -13,7 +22,8 @@ const defaultPlaylistState = () => {
   } else {
     return {
         'playlists':[],
-        'showCreatePlaylistPopup':false
+        'showCreatePlaylistPopup':false,
+        selectedPlaylist: null,
     };
   }
 };
@@ -24,13 +34,12 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
       return {
         ...state,
         playlists: [
-          action.playlistdata,
-          ...state.playlists
+          ...state.playlists,
+          action.playlistdata
         ]
       };
 
       case DELETE_PLAYLIST:
-        console.log(state);
         let newPlaylist = state.playlists.filter(playlist => {
           return playlist._id !== action.id
         });
@@ -50,13 +59,13 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
           };
       case CREATE_RESOURCE:
         // adding resource to newplaylist specific id
-        console.log(state.playlists)
-        console.log(action);
+        // console.log(state.playlists)
+        // console.log(action);
         let newPlaylists = state.playlists;
         state.playlists.forEach((playlist,i) => {
             if(playlist._id === action.playlistid){
               newPlaylists[i] = Object.assign( { 'resources':[] }, newPlaylists[i] );
-              newPlaylists[i].resources.push({_id:action.resource.id, h5p_content_id:action.resource.h5p_content_id, title:action.resource.title});
+              newPlaylists[i].resources.push({_id:action.resource.id, id:action.resource.mysqlid, title:action.resource.title});
             }
         });
         
@@ -66,10 +75,35 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
                 showCreateResourcePopup:false
                 
             };
+      case DELETE_RESOURCE:
+        
+        let plists = [];
+        state.playlists.forEach((playlist,i) => {
+          let newResources = playlist.resources.filter(res => {
+            return res._id !== action.resourceid
+          });
+          var p = null;
+          p = playlist;
+          p.resources = newResources;
+          plists.push(p);
+        });
+        
+        return {
+          ...state,
+          playlists: plists,
+          showCreateResourcePopup:false
+          
+      };
       case LOAD_PROJECT_PLAYLISTS:
         return {
           ...state,
           playlists: action.playlists
+        };
+
+      case LOAD_PLAYLIST:
+        return {
+          ...state,
+          selectedPlaylist: action.playlist
         };
     default:
       return state;

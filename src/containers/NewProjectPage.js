@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import { connect } from "react-redux";
 import { slideInRight } from 'react-animations';
 
@@ -24,7 +25,11 @@ export class NewProjectPage extends React.Component {
   constructor(props) {
     super(props);
     
+    this.state = {
+      thumbUrl:''
+    }
 
+    this.uploadThumbnail = this.uploadThumbnail.bind(this);
   }
 
   componentDidMount() {
@@ -36,7 +41,27 @@ export class NewProjectPage extends React.Component {
   
   
   
-  
+  uploadThumbnail(e){
+    
+    const formData = new FormData();
+    formData.append('uploads',e.target.files[0])
+    const config = {
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+    }
+    return axios.post(
+      'api/post-upload-image',
+      formData,
+      config
+    )
+    .then((response) => {
+      this.setState({thumbUrl:response.data.data.guid});
+      console.log(response.data);
+    })
+    
+    
+  }
   
 
   render() {
@@ -59,9 +84,13 @@ export class NewProjectPage extends React.Component {
                           <div className="modal-body">
                             <div className='row'>
                               <div className="col-md-12"> 
-                              <CreateProjectPopup {...this.props} />
+                              <CreateProjectPopup 
+                              {...this.props}
+                              uploadThumbnail = {this.uploadThumbnail}
+                              thumbUrl = {this.state.thumbUrl} />
                                 
                               </div>
+                              
                             </div>
                           </div>
                       </BouncyDiv>

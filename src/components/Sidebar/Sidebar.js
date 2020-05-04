@@ -17,7 +17,7 @@ function Sidebar() {
           <li>
             <Link to="/">
                 <span className="sidebar-icon my-resources-icon"></span>
-                My resources
+                My Projects
             </Link>
           </li>
           <li>
@@ -27,26 +27,23 @@ function Sidebar() {
             </Link>
             <ul className="sublist team-members">
               <li>
-                <Link to="/">Jitendra Gujar</Link>
+                <Link to="/">Curriki Creators</Link>
               </li>
               <li>
-                <Link to="/">Naina Talvar</Link>
+                <Link to="/">Birdies Creators</Link>
               </li>
             </ul>
-            <div className="add-member">
-              <button>Add new team member</button>
-            </div>
           </li>
           <li>
             <Link to="/">
               <span className="sidebar-icon favorites-icon"></span>
-                Favorite playlist
+                Favorite Playlists
             </Link>
           </li>
           <li>
             <Link to="/">
               <span className="sidebar-icon recent-resource-icon"></span>
-                Recently added resources
+                Recently Added Resources
             </Link>
           </li>
         </ul>

@@ -19,85 +19,125 @@ const FadeDiv = styled.div`
 
 const questions = [
   {
-    text:'Multiple Choice',
-    h5pLib:'H5P.MultiChoice 1.14',
+    text:'Interactive Video',
+    h5pLib:'H5P.InteractiveVideo 1.21',
     type:'h5p',
-    icon: '/images/games-icon.png',
-    overlayIcon:'/images/games-icon-overlay.png',
-    description:"Create vertically stacked expandable items"
+    icon: '/images/interactive-video.png',
+    overlayIcon:'/images/interactive-video-overlay.png',
+    description:"Create videos enriched with interactions"
   },
   {
-    text:'Post',
-    h5pLib:'H5P.TrueFalse 1.6',
-    type:'tinymce',
-    icon: '/images/multimedia-icon.png',
-    overlayIcon:'/images/multimedia-icon-overlay.png',
-    description:"Create vertically stacked expandable items"
-  },
-  {
-    text:'Audio',
-    h5pLib:'H5P.Audio 1.4',
+    text:'Flash Cards',
+    h5pLib:'H5P.Flashcards 1.5',
     type:'h5p',
-    icon: '/images/question-icon.png',
-    overlayIcon:'/images/question-icon-overlay.png',
-    description:"Create vertically stacked expandable items"
-  },
-  {
-    text:'Fill in the Blanks',
-    h5pLib:'H5P.Blanks 1.12',
-    type:'h5p',
-    icon: '/images/share-icon.png',
-    overlayIcon:'/images/share-icon-overlay.png',
-    description:"Create vertically stacked expandable items"
-  },
-  {
-    text:'Dialog Card',
-    h5pLib:'H5P.Dialogcards 1.8',
-    type:'h5p',
-    icon: '/images/games-icon.png',
-    overlayIcon:'/images/games-icon-overlay.png',
-    description:"Create vertically stacked expandable items"
+    icon: '/images/flash-cards.png',
+    overlayIcon:'/images/flash-cards-overlay.png',
+    description:"Create stylish and modern flash cards"
   },
   {
     text:'Drag and Drop',
     h5pLib:'H5P.DragQuestion 1.13',
     type:'h5p',
-    icon: '/images/multimedia-icon.png',
-    overlayIcon:'/images/multimedia-icon-overlay.png',
+    icon: '/images/drag-and-drop.png',
+    overlayIcon:'/images/drag-and-drop-overlay.png',
+    description:"Create drag and drop tasks with images"
+  },
+  {
+    text:'Timeline',
+    h5pLib:'H5P.Timeline 1.1',
+    type:'h5p',
+    icon: '/images/timeline.png',
+    overlayIcon:'/images/timeline-overlay.png',
+    description:"Create a timeline of events with multimedia"
+  },
+  {
+    text:'Accordion',
+    h5pLib:'H5P.Accordion 1.0',
+    type:'h5p',
+    icon: '/images/accordion.png',
+    overlayIcon:'/images/accordion-overlay.png',
     description:"Create vertically stacked expandable items"
   },
   {
-    text:'Drag Text',
-    h5pLib:'H5P.DragText 1.8',
+    text:'Interactive Presentation',
+    h5pLib:'H5P.CoursePresentation 1.21',
     type:'h5p',
-    icon: '/images/question-icon.png',
-    overlayIcon:'/images/question-icon-overlay.png',
-    description:"Create vertically stacked expandable items"
-  },
-  {
-    text:'Mark the words',
-    h5pLib:'H5P.MarkTheWords 1.9',
-    type:'h5p',
-    icon: '/images/share-icon.png',
-    overlayIcon:'/images/share-icon-overlay.png',
-    description:"Create vertically stacked expandable items"
-  },
-  {
-    text:'Question Set',
-    h5pLib:'H5P.QuestionSet 1.17',
-    type:'h5p',
-    icon: '/images/games-icon.png',
-    overlayIcon:'/images/games-icon-overlay.png',
-    description:"Create vertically stacked expandable items"
-  },
-  {
-    text:'True/False',
-    h5pLib:'H5P.TrueFalse 1.6',
-    type:'h5p',
-    icon: '/images/multimedia-icon.png',
-    overlayIcon:'/images/multimedia-icon-overlay.png',
-    description:"Create vertically stacked expandable items"
+    icon: '/images/course-presentation.png',
+    overlayIcon:'/images/course-presentation-overlay.png',
+    description:"Create a presenstation with interactive slides"
   }
+  
+  
+  
+  
+  
+  
+  // {
+  //   text:'Multiple Choice',
+  //   h5pLib:'H5P.MultiChoice 1.14',
+  //   type:'h5p',
+  //   icon: '/images/games-icon.png',
+  //   overlayIcon:'/images/games-icon-overlay.png',
+  //   description:"Create vertically stacked expandable items"
+  // },
+  // {
+  //   text:'Post',
+  //   h5pLib:'H5P.TrueFalse 1.6',
+  //   type:'tinymce',
+  //   icon: '/images/multimedia-icon.png',
+  //   overlayIcon:'/images/multimedia-icon-overlay.png',
+  //   description:"Create vertically stacked expandable items"
+  // },
+  // {
+  //   text:'Audio',
+  //   h5pLib:'H5P.Audio 1.4',
+  //   type:'h5p',
+  //   icon: '/images/question-icon.png',
+  //   overlayIcon:'/images/question-icon-overlay.png',
+  //   description:"Create vertically stacked expandable items"
+  // },
+  // {
+  //   text:'Fill in the Blanks',
+  //   h5pLib:'H5P.Blanks 1.12',
+  //   type:'h5p',
+  //   icon: '/images/share-icon.png',
+  //   overlayIcon:'/images/share-icon-overlay.png',
+  //   description:"Create vertically stacked expandable items"
+  // },
+  // {
+  //   text:'Dialog Card',
+  //   h5pLib:'H5P.Dialogcards 1.8',
+  //   type:'h5p',
+  //   icon: '/images/games-icon.png',
+  //   overlayIcon:'/images/games-icon-overlay.png',
+  //   description:"Create vertically stacked expandable items"
+  // },
+  // {
+  //   text:'Drag Text',
+  //   h5pLib:'H5P.DragText 1.8',
+  //   type:'h5p',
+  //   icon: '/images/question-icon.png',
+  //   overlayIcon:'/images/question-icon-overlay.png',
+  //   description:"Create vertically stacked expandable items"
+  // },
+  // {
+  //   text:'Mark the words',
+  //   h5pLib:'H5P.MarkTheWords 1.9',
+  //   type:'h5p',
+  //   icon: '/images/share-icon.png',
+  //   overlayIcon:'/images/share-icon-overlay.png',
+  //   description:"Create vertically stacked expandable items"
+  // },
+  
+  // {
+  //   text:'True/False',
+  //   h5pLib:'H5P.TrueFalse 1.6',
+  //   type:'h5p',
+  //   icon: '/images/multimedia-icon.png',
+  //   overlayIcon:'/images/multimedia-icon-overlay.png',
+  //   description:"Create vertically stacked expandable items"
+  // },
+  
 
 ];
 
@@ -173,7 +213,7 @@ function ResourceQuestion(props) {
           <FadeDiv>
               <div className="row">
                 <div className="col-md-12">
-                  <h2 className="title">Select kind of question you want to create?</h2>
+                  <h2 className="title">Select the activity you want to build from the options below:</h2>
                 </div>
               </div>
               <div className="row">

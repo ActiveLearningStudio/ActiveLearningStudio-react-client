@@ -46,7 +46,7 @@ export class NewResourcePage extends React.Component {
                         
                           <div className="modal-title">
                             <h1>
-                              Create New Resource
+                              Create New Activity
                               <button type="button" className="close-btn" data-dismiss="modal" onClick={this.props.handleHideCreateResourceModal}>x</button>
                             </h1>
                             

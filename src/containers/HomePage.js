@@ -18,10 +18,18 @@ import Sidebar from "../components/Sidebar/Sidebar";
 
 import { startLogin } from "./../actions/auth";
 import { createPlaylistAction, deletePlaylistAction, showCreatePlaylistModalAction, hideCreatePlaylistModalAction, loadProjectPlaylistsAction } from "./../actions/playlist";
-import { createResourceAction, showCreateResourceModalAction, hideCreateResourceModalAction, previewResourceAction, hidePreviewResourceModalAction } from "./../actions/resource";
-import { showCreateProjectModalAction, showCreateProjectSubmenuAction } from "./../actions/project";
+import { deleteResourceAction, createResourceAction, showCreateResourceModalAction, hideCreateResourceModalAction, previewResourceAction, hidePreviewResourceModalAction } from "./../actions/resource";
+import {
+  showCreateProjectModalAction, 
+  showCreateProjectSubmenuAction,
+  loadProjectAction
+} from "./../actions/project";
 import NewResourcePage from "./NewResourcePage";
 import PreviewResourcePage from "./PreviewResourcePage";
+
+import ResourceCard from "../components/ResourceCard";
+
+import "./HomePage.scss";
 
 export class HomePage extends React.Component {
   constructor(props) {
@@ -59,6 +67,7 @@ export class HomePage extends React.Component {
     //scroll to top
     window.scrollTo(0, 0);
     this.props.loadProjectPlaylistsAction(this.props.match.params.projectid);
+    this.props.loadProjectAction(this.props.match.params.projectid);
   }
 
   handleShowCreatePlaylistModal = async (e) => {
@@ -141,33 +150,17 @@ export class HomePage extends React.Component {
     this.props.previewResourceAction(id);
   }
 
-  populateResources(resources) {
-    
-    return (
-      resources.map(function(resource) {
-        return (
-          <div className="playlist-resource" key={resource._id}>
-            <h3 className="title">{resource.title}</h3>
-            <div className="activity-options">
-              <div className="options-icon">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-              <div className="options">
-                <button className="preview-btn" onClick={() => this.handlePreviewResource(resource.h5p_content_id)}>Preview</button>
-              {/* <button className="edit-btn">Edit</button>
-              <button className="delete-btn">Delete</button> */}
-              </div>
-            </div>
-            
-          </div>
-        )
-      }, this)
-    );
+  handleDeleteResource = (resourceid) => {
+    this.props.deleteResourceAction(resourceid);
   }
 
-  
+  populateResources = (resources) => {
+    return resources.map(resource => (
+        <ResourceCard key={resource._id} 
+        resource={resource}
+        handleDeleteResource = {this.handleDeleteResource} />
+    ));
+  }
 
   handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType) => {
     try {
@@ -180,17 +173,29 @@ export class HomePage extends React.Component {
       console.log(e.message);
     }
   };
+
   render() {
     const { playlists } = this.props.playlists;
-
-    
-
     const headArray = playlists.map(playlist => (
       <div className="list-wrapper" key={playlist._id}>
         <div className="list">
           <div className="list-header">
             <h2 className="list-header-name">{playlist.title}
-              <button className="remove-playlist-btn" onClick={() => this.handleDeletePlayList(playlist._id)}>x</button>
+
+              <div className="dropdown pull-right playlist-dropdown">
+                <button className="btn project-dropdown-btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
+                </button>
+                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <Link className="dropdown-item" to={"/playlist/preview/"+playlist._id}><i className="fa fa-eye" aria-hidden="true"></i> Preview</Link>
+                  <a className="dropdown-item" href="#"><i className="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+                  <a className="dropdown-item" href="#"><i className="fa fa-share" aria-hidden="true"></i> Send To</a>
+                  <a className="dropdown-item" href="#" onClick={(e) => { e.preventDefault(); window.open("/api/download/project/123"); }}><i className="fa fa-cloud-download" aria-hidden="true"></i> Executable</a>
+                  <a className="dropdown-item" onClick={() => this.handleDeletePlayList(playlist._id)}><i className="fa fa-times-circle-o" aria-hidden="true"></i> Delete</a>
+                </div>
+              </div>
+
+
             </h2>
             
           </div>
@@ -208,6 +213,7 @@ export class HomePage extends React.Component {
         </div>
       </div>
     ));
+
     return (
       <div>
         <Header {...this.props} />
@@ -217,8 +223,10 @@ export class HomePage extends React.Component {
           </div>
           <div className="content-wrapper">
             <div className="content">
-              <div className="playlist-search">
-                <input type="text" name="search" className="search" placeholder="Search..." />
+              <div className="row">
+                <div className="col">
+                  <h1>{(this.props.project.selectedProject) ? this.props.project.selectedProject.name : ''}</h1>
+                </div>
               </div>
               <button onClick={this.handleShowCreatePlaylistModal} className="create-playlist-btn">
                 Create New Playlist
@@ -277,10 +285,12 @@ const mapDispatchToProps = dispatch => ({
   showCreateProjectModalAction: () => dispatch(showCreateProjectModalAction()),
   loadProjectPlaylistsAction: (projectid) => dispatch(loadProjectPlaylistsAction(projectid)),
   createResourceAction: (playlistid, editor, editorType) => dispatch(createResourceAction(playlistid, editor, editorType)),
+  loadProjectAction: (projectid) => dispatch(loadProjectAction(projectid)),
+  deleteResourceAction: (resourceid) => dispatch(deleteResourceAction(resourceid)),
+  
 });
 
 const mapStateToProps = (state) => {
-  // console.log(state);
   return {
     playlists: state.playlist,
     resource: state.resource,
@@ -288,8 +298,4 @@ const mapStateToProps = (state) => {
   };
 }
 
-
-
-
-export default withRouter(connect(mapStateToProps,
-  mapDispatchToProps)(HomePage))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomePage))

@@ -1,6 +1,35 @@
 import axios from "axios";
-import { SHOW_CREATE_PROJECT_MODAL, SHOW_CREATE_PROJECT_SUBMENU, HIDE_CREATE_PROJECT_MODAL, CREATE_PROJECT, LOAD_MY_PROJECTS } from "../constants/actionTypes";
+import { 
+  SHOW_CREATE_PROJECT_MODAL, 
+  SHOW_CREATE_PROJECT_SUBMENU, 
+  HIDE_CREATE_PROJECT_MODAL, 
+  CREATE_PROJECT, 
+  LOAD_MY_PROJECTS,
+  LOAD_PROJECT,
+  DELETE_PROJECT
+} from "../constants/actionTypes";
 
+// Loads a specific project
+export const loadProject = (project) => ({
+  type:LOAD_PROJECT,
+  project: project
+});
+
+export const loadProjectAction = (projectId) => {
+  return async dispatch => {
+    const { token } = JSON.parse(localStorage.getItem("auth"));
+    const response = await axios.post(
+      '/api/loadproject',
+      { projectId },
+      { headers: { "Authorization": "Bearer "+token } }
+    );
+
+    if(response.data.status == "success")
+      dispatch( loadProject(response.data.data.project) );
+  };
+};
+
+//
 
 export const showCreateProjectSubmenu = () => ({
   type:SHOW_CREATE_PROJECT_SUBMENU
@@ -63,7 +92,7 @@ export const createProject = (projectdata) => ({
 
 
 
-export const createProjectAction = (name, description) => {
+export const createProjectAction = (name, description, thumb_url) => {
   return async dispatch => {
     try {
       //get auth token
@@ -74,7 +103,8 @@ export const createProjectAction = (name, description) => {
        '/api/project',
        {
          name,
-         description
+         description,
+         thumb_url
        },
        {
         headers: {
@@ -90,6 +120,7 @@ export const createProjectAction = (name, description) => {
         const projectdata = {
           _id:response.data.data._id,
           name: response.data.data.name,
+          thumb_url: response.data.data.thumb_url,
           userid: response.data.data.userid
         };
         dispatch(
@@ -148,3 +179,41 @@ export const loadMyProjectsAction = () => {
 
 
 
+
+
+
+export const deleteProject = (projectid) => ({
+  type:DELETE_PROJECT,
+  projectid
+}); 
+
+export const deleteProjectAction = (projectid) => {
+  return async dispatch => {
+    try {
+      const response = await axios.delete(
+        //  `${process.env.REACT_APP_API_URL}/playlist/create`,
+         `/api/project/${projectid}`,
+         {
+           projectid
+         }
+       );
+
+       if(response.data.status == "success") {
+          // let plists = [];
+          // if(localStorage.getItem("playlists")){
+          //   plists = JSON.parse(localStorage.getItem("playlists"));
+          // }
+          // plists = plists.filter(playlist => {
+          //   return playlist.id !== id
+          // });
+          // localStorage.setItem("playlists", JSON.stringify(plists));
+          dispatch(
+            deleteProject(projectid)
+          );
+       }
+      
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+}

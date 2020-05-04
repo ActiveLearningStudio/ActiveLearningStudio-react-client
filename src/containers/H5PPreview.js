@@ -45,19 +45,20 @@ class EditorPage extends React.Component {
       //   script.async = false;
       //   document.body.appendChild(script);
 
-
-      var previewResourceId = this.props.resource.previewResourceId;
+      //var previewResourceId = this.props.resource.previewResourceId;
+      var previewResourceId = this.props.resourceid;
       
 
       const headers = {
          'Content-Type': 'application/json',
          'Authorization': 'JWT fefege...'
        }
-      axios.get(global.config.h5pAjaxUrl+'/api/api/h5p/'+previewResourceId, {
+      
+      
+      axios.get(global.config.h5pAjaxUrl+'/api/h5p/'+previewResourceId, {
         headers: headers
       })
       .then((response) => {
-         console.log("========================");
          window.H5PIntegration = response.data.settings;
 
          var iframe = document.createElement('iframe');
@@ -135,9 +136,9 @@ class EditorPage extends React.Component {
          
          
          
-         console.log(window.H5PIntegration);
-        console.log(response);
-        console.log("========================");
+         //console.log(window.H5PIntegration);
+        //console.log(response);
+        //console.log("========================");
       })
       .catch((error) => {
         console.log(error);
@@ -312,11 +313,17 @@ class EditorPage extends React.Component {
    render() {
       return (
          <div>
-            <div className="h5p-content-wrap">
-                <div className="h5p-iframe-wrapper">
-                   {/* <iframe id="h5p-iframe-5ea5809137152b00d0750442" className="h5p-iframe" data-content-id="5ea5809137152b00d0750442" src="about:blank" frameBorder="0" scrolling="no"></iframe> */}
-                   </div>
+            <div className="container">
+               <div className="col-md-12">
+                  <div className="h5p-content-wrap">
+                  
+                     <div className="h5p-iframe-wrapper">
+                        {/* <iframe id="h5p-iframe-5ea5809137152b00d0750442" className="h5p-iframe" data-content-id="5ea5809137152b00d0750442" src="about:blank" frameBorder="0" scrolling="no"></iframe> */}
+                     </div>
+                  </div>
+               </div>
             </div>
+            
          </div>
       );
    }

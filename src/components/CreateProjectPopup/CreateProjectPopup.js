@@ -60,10 +60,24 @@ function CreateProjectPopup(props) {
               </label>
             </div>
           </div> */}
-          {/* <div className="upload-thumbnail">
+          <div className="upload-thumbnail">
             <h2>Upload thumbnail</h2>
-            <input type="file" />
-          </div> */}
+            <label>
+              <input type="file" onChange={props.uploadThumbnail} />
+              <span>Upload</span>
+            </label>
+            
+              {
+                props.thumbUrl != "" ?
+                <div className="thumb-display">
+                  <div className="thumb"><img src={props.thumbUrl} /></div>
+                </div>
+                :
+                null
+              }
+              <input type="hidden" name="thumb_url" value={props.thumbUrl} ref={props.inputRef} />
+                
+          </div>
           <div className="project-description">
             <h2>Program Description</h2>
             <textarea onChange={props.onProjectDescriptionChange}></textarea>

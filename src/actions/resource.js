@@ -1,5 +1,40 @@
 import axios from "axios";
-import { SHOW_CREATE_RESOURCE_MODAL, HIDE_CREATE_RESOURCE_MODAL, SHOW_CREATE_RESOURCE_ACTIVITY, SHOW_CREATE_RESOURCE_QUESTION, SHOW_CREATE_RESOURCE_DESCRIPTION, CREATE_RESOURCE, PREVIEW_RESOURCE, HIDE_PREVIEW_PLAYLIST_MODAL } from './../constants/actionTypes';
+import { 
+    SHOW_CREATE_RESOURCE_MODAL, 
+    HIDE_CREATE_RESOURCE_MODAL, 
+    SHOW_CREATE_RESOURCE_ACTIVITY, 
+    SHOW_CREATE_RESOURCE_QUESTION, 
+    SHOW_CREATE_RESOURCE_DESCRIPTION, 
+    CREATE_RESOURCE, 
+    PREVIEW_RESOURCE, 
+    HIDE_PREVIEW_PLAYLIST_MODAL,
+    LOAD_RESOURCE,
+    DELETE_RESOURCE
+} from './../constants/actionTypes';
+
+export const loadResource = (resource, previous, next) => ({
+  type: LOAD_RESOURCE,
+  resource: resource,
+  previousResourceId: previous,
+  nextResourceId: next,
+});
+
+// Returns the requested resource along the next and previous one in the playlist
+export const loadResourceAction = (resourceId) => {
+  return async dispatch => {
+    const { token } = JSON.parse(localStorage.getItem("auth"));
+    const response = await axios.post(
+      '/api/loadresource',
+      { resourceId },
+      { headers: { "Authorization": "Bearer "+token } }
+    );
+
+    if(response.data.status == "success"){
+        const data = response.data.data;
+        dispatch( loadResource(data.resource, data.previousResourceId, data.nextResourceId) );
+    }
+  };
+};
 
 export const showCreateResourceModal = (id) => ({
     type: SHOW_CREATE_RESOURCE_MODAL,
@@ -114,31 +149,39 @@ export const createResourceAction = (playlistid, editor, editorType) => {
                 parameters: JSON.stringify(window.h5peditorCopy.getParams()),
                 action: 'create'
               };
-            
-            const response = await axios.post(global.config.h5pAjaxUrl+'/api/api/h5p/?api_token=test', data, {
+            // insert into mysql
+            const response = await axios.post(global.config.h5pAjaxUrl+'/api/h5p/?api_token=test', data, {
                 headers: headers
               })
               .then((response) => {
                 
-                // if(localStorage.getItem("playlists")){
-                //     plists = JSON.parse(localStorage.getItem("playlists"));
-                // }
                 let resource = response.data;
-                // console.log(resource);
                 
-                // let plists = [];
-                // plists.forEach((playlist, i)=>{
-                //     if(playlist.id === playlistid){
-                //         plists[i] = Object.assign( { 'resources':[] }, plists[i] );
-                //         plists[i].resources.push(resource);
-                //     }
-                // });
-                
-                
-                // localStorage.setItem("playlists", JSON.stringify(plists));
-                dispatch(
-                    createResource(playlistid, resource, editor, editorType)
-                )
+                //insert into mongodb
+                axios.post(global.config.laravelAPIUrl+'/activity',
+                 {
+                     mysqlid: resource.id,
+                     playlistid:playlistid,
+                     action: 'create'
+                 }, {
+                    headers: headers
+                })
+                .then((response) => {
+                    
+                    resource.id = response.data.data._id;
+                    resource.mysqlid = response.data.data.mysqlid;
+                    // resource.title = response.data.data._id;
+                    
+                    dispatch(
+                        createResource(playlistid, resource, editor, editorType)
+                    )
+                })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+                // dispatch(
+                //     createResource(playlistid, resource, editor, editorType)
+                // )
               })
               .catch((error) => {
                 console.log(error);
@@ -188,3 +231,36 @@ export const hidePreviewResourceModal = () => ({
       }
     }
   }
+
+
+  
+
+
+export const deleteResource = (resourceid) => ({
+    type:DELETE_RESOURCE,
+    resourceid
+  }); 
+  
+  export const deleteResourceAction = (resourceid) => {
+    return async dispatch => {
+      try {
+        const response = await axios.delete(
+          //  `${process.env.REACT_APP_API_URL}/playlist/create`,
+           `/api/activity/${resourceid}`,
+           {
+            resourceid
+           }
+         );
+  
+         if(response.data.status == "success") {
+            dispatch(
+                deleteResource(resourceid)
+            );
+         }
+        
+      } catch (e) {
+        throw new Error(e);
+      }
+    }
+  }
+  
