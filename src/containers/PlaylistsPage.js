@@ -222,7 +222,9 @@ export class PlaylistsPage extends React.Component {
         <div>Loading...</div>
       )
     }
+    
     return (
+      
       <div>
         <Header {...this.props} />
         <div className="main-content-wrapper">
@@ -232,8 +234,9 @@ export class PlaylistsPage extends React.Component {
           <div className="content-wrapper">
             <div className="content">
               <div className="row">
-                <div className="col">
-                  <h1>{(this.props.project.selectedProject) ? this.props.project.selectedProject.name : ''}</h1>
+                <div className="col playlist-page-project-title">
+                  <h1>{(this.props.project.selectedProject) ? this.props.project.selectedProject.name : ''}<span><Link class="dropdown-item" to={"/project/preview2/"+this.props.match.params.projectid}><i class="fa fa-eye" aria-hidden="true"></i> Project Preview</Link></span></h1>
+                  
                 </div>
               </div>
               <button onClick={this.handleShowCreatePlaylistModal} className="create-playlist-btn">
