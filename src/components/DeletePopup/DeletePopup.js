@@ -37,8 +37,9 @@ console.log(props);
               <div className="modal-dialog" role="document">
                 <div className="modal-content">
                   <div className="modal-body">
-                  <p>You are about to permanently delete!</p>
-                  <h5><strong>"{props.ui.title}"</strong> {props.ui.deleteType}</h5>
+                  <h5>Delete "{props.ui.title}"?</h5>
+                  <p>You're about to permanently delete this {props.ui.deleteType}</p>
+                  <p>Do you want to continue?</p>
                   </div>
                   <div className="modal-footer">
                   {
