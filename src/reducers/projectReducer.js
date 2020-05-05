@@ -5,15 +5,14 @@ import {
   LOAD_MY_PROJECTS, 
   LOAD_PROJECT, 
   HIDE_CREATE_PROJECT_MODAL, 
-  DELETE_PROJECT
+  DELETE_PROJECT,
+  SHOW_DELETE_PLAYLIST_MODAL
 } from "../constants/actionTypes";
 
 
 const defaultProgramState = () => {
   if (localStorage.getItem("projects")) {
-//      console.log("---");
-//      console.log(localStorage.getItem("playlists"));
-    //  localStorage.clear();
+
         
     return {
         'projects':JSON.parse(localStorage.getItem("projects"))
@@ -41,17 +40,12 @@ const projectReducer = (state = defaultProgramState(), action) => {
         ...state,
         showCreateProjectPopup: true
       };
-    // case HIDE_CREATE_PROJECT_MODAL:
-    //   return {
-    //     ...state,
-    //     showCreateProjectPopup: false
-    //   };
     case CREATE_PROJECT:
       return {
         ...state,
         projects: [
-          action.projectdata,
-          ...state.projects
+          ...state.projects,
+          action.projectdata
         ]
       };
     case LOAD_MY_PROJECTS:

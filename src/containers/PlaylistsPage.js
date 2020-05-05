@@ -18,6 +18,7 @@ import Sidebar from "../components/Sidebar/Sidebar";
 
 import { startLogin } from "../actions/auth";
 import { createPlaylistAction, deletePlaylistAction, showCreatePlaylistModalAction, hideCreatePlaylistModalAction, loadProjectPlaylistsAction } from "../actions/playlist";
+import {showDeletePlaylistPopupAction, hideDeletePlaylistModalAction} from './../actions/ui'
 import { deleteResourceAction, createResourceAction, showCreateResourceModalAction, hideCreateResourceModalAction, previewResourceAction, hidePreviewResourceModalAction } from "../actions/resource";
 import {
   showCreateProjectModalAction, 
@@ -29,7 +30,7 @@ import PreviewResourcePage from "./PreviewResourcePage";
 import ResourceCard from "../components/ResourceCard";
 
 import "./PlaylistsPage.scss";
-
+import DeletePopup from './../components/DeletePopup/DeletePopup'
 export class PlaylistsPage extends React.Component {
   constructor(props) {
     super(props);
@@ -140,28 +141,24 @@ export class PlaylistsPage extends React.Component {
     }
   };
 
-  // This function handles delete playlist
-  handleDeletePlayList = (id) => {
-    if(confirm("Are you Sure?")){
-      this.props.deletePlaylistAction(id);
-    }
+  handleShowDeletePopup = (id, title, deleteType)=> {
+    this.props.showDeletePlaylistPopupAction(id, title, deleteType);
   }
+  
+
+  
 
   handlePreviewResource = (id) => {
     this.props.previewResourceAction(id);
   }
 
-  handleDeleteResource = (resourceid) => {
-    if(confirm("Are you Sure?")){
-      this.props.deleteResourceAction(resourceid);
-    }
-  }
+  
 
   populateResources = (resources) => {
     return resources.map(resource => (
         <ResourceCard key={resource._id} 
         resource={resource}
-        handleDeleteResource = {this.handleDeleteResource} />
+        handleShowDeletePopup = {this.handleShowDeletePopup} />
     ));
   }
 
@@ -179,6 +176,9 @@ export class PlaylistsPage extends React.Component {
 
   render() {
     const { playlists } = this.props.playlists;
+    const { showDeletePlaylistPopup } = this.props.ui;
+
+    
     const headArray = playlists.map(playlist => (
       <div className="list-wrapper" key={playlist._id}>
         <div className="list">
@@ -194,7 +194,7 @@ export class PlaylistsPage extends React.Component {
                   <a className="dropdown-item" href="#"><i className="fa fa-pencil" aria-hidden="true"></i> Edit</a>
                   <a className="dropdown-item" href="#"><i className="fa fa-share" aria-hidden="true"></i> Send To</a>
                   <a className="dropdown-item" href="#" onClick={(e) => { e.preventDefault(); window.open("/api/download/project/123"); }}><i className="fa fa-cloud-download" aria-hidden="true"></i> Executable</a>
-                  <a className="dropdown-item" onClick={() => this.handleDeletePlayList(playlist._id)}><i className="fa fa-times-circle-o" aria-hidden="true"></i> Delete</a>
+                  <a className="dropdown-item" onClick={() => this.handleShowDeletePopup(playlist._id, playlist.title, "Playlist")}><i className="fa fa-times-circle-o" aria-hidden="true"></i> Delete</a>
                 </div>
               </div>
 
@@ -217,6 +217,11 @@ export class PlaylistsPage extends React.Component {
       </div>
     ));
 
+    if(this.props.ui.pageLoading){
+      return (
+        <div>Loading...</div>
+      )
+    }
     return (
       <div>
         <Header {...this.props} />
@@ -269,6 +274,17 @@ export class PlaylistsPage extends React.Component {
           : null
         }
 
+{/* let res = {title:project.name, id: project._id, deleteType:"Project"};
+    res = {res}         */}
+        {showDeletePlaylistPopup ?
+          <DeletePopup
+            res = {this.props.ui}
+            deleteType = 'Playlist'
+            {...this.props}
+          />
+          : null
+        }
+
       </div>
 
     );
@@ -280,6 +296,7 @@ const mapDispatchToProps = dispatch => ({
   deletePlaylistAction: (id) => dispatch(deletePlaylistAction(id)),
   showCreatePlaylistModal: () => dispatch(showCreatePlaylistModalAction()),
   hideCreatePlaylistModal: () => dispatch(hideCreatePlaylistModalAction()),
+  hideDeletePlaylistModalAction: () => dispatch(hideDeletePlaylistModalAction()),
   showCreateResourceModalAction: (id) => dispatch(showCreateResourceModalAction(id)),
   hideCreateResourceModal: () => dispatch(hideCreateResourceModalAction()),
   previewResourceAction: (id) => dispatch(previewResourceAction(id)),
@@ -289,14 +306,15 @@ const mapDispatchToProps = dispatch => ({
   createResourceAction: (playlistid, editor, editorType) => dispatch(createResourceAction(playlistid, editor, editorType)),
   loadProjectAction: (projectid) => dispatch(loadProjectAction(projectid)),
   deleteResourceAction: (resourceid) => dispatch(deleteResourceAction(resourceid)),
-  
+  showDeletePlaylistPopupAction: (id, title, deleteType) => dispatch(showDeletePlaylistPopupAction(id, title, deleteType)),
 });
 
 const mapStateToProps = (state) => {
   return {
     playlists: state.playlist,
     resource: state.resource,
-    project: state.project
+    project: state.project,
+    ui: state.ui
   };
 }
 

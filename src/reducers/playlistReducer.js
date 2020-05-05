@@ -6,14 +6,14 @@ import {
   CREATE_RESOURCE,
   LOAD_PROJECT_PLAYLISTS,
   LOAD_PLAYLIST,
-  DELETE_RESOURCE
+  DELETE_RESOURCE,
+  SHOW_DELETE_PLAYLIST_MODAL,
+  HIDE_DELETE_PLAYLIST_MODAL
 } from "../constants/actionTypes";
 
 const defaultPlaylistState = () => {
   if (localStorage.getItem("playlists")) {
-//      console.log("---");
-//      console.log(localStorage.getItem("playlists"));
-    //  localStorage.clear();
+
         
     return {
         'playlists':JSON.parse(localStorage.getItem("playlists")),
@@ -38,43 +38,45 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
           action.playlistdata
         ]
       };
-
-      case DELETE_PLAYLIST:
-        let newPlaylist = state.playlists.filter(playlist => {
-          return playlist._id !== action.id
-        });
-        return {
-          ...state,
-          playlists: newPlaylist
-        };
-        case SHOW_CREATE_PLAYLIST_MODAL:
+    
+    case DELETE_PLAYLIST:
+      let newPlaylist = state.playlists.filter(playlist => {
+        return playlist._id !== action.id
+      });
+      return {
+        ...state,
+        showDeletePlaylistPopup: false,
+        playlists: newPlaylist
+      };
+    case SHOW_CREATE_PLAYLIST_MODAL:
+      return {
+        ...state,
+        showCreatePlaylistPopup: true
+      };
+    case HIDE_CREATE_PLAYLIST_MODAL:
+      return {
+        ...state,
+        showCreatePlaylistPopup: false
+      };
+    
+    case CREATE_RESOURCE:
+      // adding resource to newplaylist specific id
+      // console.log(state.playlists)
+      // console.log(action);
+      let newPlaylists = state.playlists;
+      state.playlists.forEach((playlist,i) => {
+          if(playlist._id === action.playlistid){
+            newPlaylists[i] = Object.assign( { 'resources':[] }, newPlaylists[i] );
+            newPlaylists[i].resources.push({_id:action.resource.id, id:action.resource.mysqlid, title:action.resource.title});
+          }
+      });
+      
           return {
-            ...state,
-            showCreatePlaylistPopup: true
+              ...state,
+              playlists: newPlaylists,
+              showCreateResourcePopup:false
+              
           };
-        case HIDE_CREATE_PLAYLIST_MODAL:
-          return {
-            ...state,
-            showCreatePlaylistPopup: false
-          };
-      case CREATE_RESOURCE:
-        // adding resource to newplaylist specific id
-        // console.log(state.playlists)
-        // console.log(action);
-        let newPlaylists = state.playlists;
-        state.playlists.forEach((playlist,i) => {
-            if(playlist._id === action.playlistid){
-              newPlaylists[i] = Object.assign( { 'resources':[] }, newPlaylists[i] );
-              newPlaylists[i].resources.push({_id:action.resource.id, id:action.resource.mysqlid, title:action.resource.title});
-            }
-        });
-        
-            return {
-                ...state,
-                playlists: newPlaylists,
-                showCreateResourcePopup:false
-                
-            };
       case DELETE_RESOURCE:
         
         let plists = [];
@@ -91,7 +93,8 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
         return {
           ...state,
           playlists: plists,
-          showCreateResourcePopup:false
+          showCreateResourcePopup:false,
+          showDeletePlaylistPopup: false
           
       };
       case LOAD_PROJECT_PLAYLISTS:

@@ -7,15 +7,12 @@ import {
     CREATE_RESOURCE, 
     PREVIEW_RESOURCE, 
     HIDE_PREVIEW_PLAYLIST_MODAL,
-    LOAD_RESOURCE,
-    DELETE_RESOURCE
+    LOAD_RESOURCE
 } from "../constants/actionTypes";
 
 const defaultResourceState = () => {
     if (localStorage.getItem("resources")) {
-        //      console.log("---");
-        //      console.log(localStorage.getItem("resources"));
-        //  localStorage.clear();
+
 
         return {
             'playlists':JSON.parse(localStorage.getItem("playlists")),

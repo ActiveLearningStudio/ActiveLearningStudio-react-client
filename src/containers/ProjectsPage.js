@@ -17,13 +17,14 @@ import CreatePlaylistPopup from "../components/CreatePlaylistPopup/CreatePlaylis
 import Sidebar from "../components/Sidebar/Sidebar";
 
 import { startLogin } from "../actions/auth";
-import { createPlaylistAction, deletePlaylistAction, showCreatePlaylistModalAction, hideCreatePlaylistModalAction } from "../actions/playlist";
+import { showDeletePlaylistPopupAction, hideDeletePlaylistModalAction } from "../actions/ui";
 import { deleteProjectAction, showCreateProjectModalAction, hideCreateProjectModalAction, createProjectAction, loadMyProjectsAction} from "../actions/project";
 import NewResourcePage from "./NewResourcePage";
 import { NewProjectPage } from "./NewProjectPage";
 
 import ProjectCard from "../components/ProjectCard";
 import ProjectPreviewModal from "../components/ProjectPreviewModal";
+import DeletePopup from "../components/DeletePopup/DeletePopup"
 
 export class ProjectsPage extends React.Component {
   constructor(props) {
@@ -170,15 +171,28 @@ export class ProjectsPage extends React.Component {
 
   render() {
     const { projects } = this.props.project;
+    const { showDeletePlaylistPopup } = this.props.ui;
 
+    
+    
+    
 
-    const projectCards = projects.map(project => (
+    const projectCards = projects.map(project => {
+      let res = {title:project.name, id: project._id, deleteType:"Project"};
+      return (
       <ProjectCard
         key={project._id}
         project={project}
+        res = {res}
         handleDeleteProject = {this.handleDeleteProject}
+        showDeletePlaylistPopupAction = {this.props.showDeletePlaylistPopupAction}
         showPreview={(this.props.showPreview == project._id)}/>
-    ));
+    )});
+    if(this.props.ui.pageLoading){
+      return (
+        <div>Loading...</div>
+      )
+    }
     return (
       <div>
         <Header {...this.props} />
@@ -213,6 +227,16 @@ export class ProjectsPage extends React.Component {
           />
           : null
         }
+        
+        
+        {showDeletePlaylistPopup ?
+          <DeletePopup
+            res = {this.props.project}
+            deleteType = 'Project'
+            {...this.props}
+          />
+          : null
+        }
       </div>
 
     );
@@ -223,15 +247,17 @@ const mapDispatchToProps = dispatch => ({
   showCreateProjectModalAction: () => dispatch(showCreateProjectModalAction()),
   loadMyProjectsAction: () =>dispatch(loadMyProjectsAction()),
   createProjectAction: (name, description, thumb_url) =>dispatch(createProjectAction(name, description, thumb_url)),
-  // hideCreateProjectModalAction: () => dispatch(hideCreateProjectModalAction()),
+  showDeletePlaylistPopupAction: (id, title, deleteType) => dispatch(showDeletePlaylistPopupAction(id, title, deleteType)),
   deleteProjectAction: (projectid) => dispatch(deleteProjectAction(projectid)),
+  hideDeletePlaylistModalAction: () => dispatch(hideDeletePlaylistModalAction()),
   
 
 });
 
 const mapStateToProps = (state) => {
   return {
-    project: state.project
+    project: state.project,
+    ui: state.ui
   };
 }
 

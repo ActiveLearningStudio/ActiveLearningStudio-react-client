@@ -30,7 +30,7 @@
     "start:dev": "react-scripts start",
     "start": "node server/server.js",
     "build": "react-scripts build",
-    "start:prod":"node server.js",
+    "start:prod": "node server.js",
     "test": "react-scripts test",
     "eject": "npm run build",
     "heroku-postbuild": "npm run build"

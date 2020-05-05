@@ -6,7 +6,9 @@ import {
   CREATE_PROJECT, 
   LOAD_MY_PROJECTS,
   LOAD_PROJECT,
-  DELETE_PROJECT
+  DELETE_PROJECT,
+  PAGE_LOADING,
+  PAGE_LOADING_COMPLETE
 } from "../constants/actionTypes";
 
 // Loads a specific project
@@ -147,6 +149,7 @@ export const loadMyProjects = (projects) => ({
 export const loadMyProjectsAction = () => {
   return async dispatch => {
     try {
+      dispatch({type:PAGE_LOADING});
       const { token } = JSON.parse(localStorage.getItem("auth"));
      const response = await axios.post(
       //  `${process.env.REACT_APP_API_URL}/playlist/create`,
@@ -167,10 +170,12 @@ export const loadMyProjectsAction = () => {
         dispatch(
           loadMyProjects(projects)
         );
+        dispatch({type:PAGE_LOADING_COMPLETE});
       }
 
       
     } catch (e) {
+      dispatch({type:PAGE_LOADING_COMPLETE});
       throw new Error(e);
     }
   };
