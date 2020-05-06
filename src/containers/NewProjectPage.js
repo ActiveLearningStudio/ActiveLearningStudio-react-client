@@ -59,9 +59,9 @@ export class NewProjectPage extends React.Component {
                                     this.props.editMode ? 
                                     'Update '
                                     :
-                                    'Create '
+                                    'Create New '
                                   }
-                                  New Project
+                                  Project
                                   <button type="button" className="close-btn" data-dismiss="modal" onClick={this.props.handleCloseProjectModal}>x</button>
                                 </h1>
                                 <hr />
