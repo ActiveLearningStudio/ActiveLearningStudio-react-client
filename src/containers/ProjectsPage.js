@@ -194,7 +194,7 @@ export class ProjectsPage extends React.Component {
     return (
       <>
         <Header {...this.props} />
-        <ReactPlaceholder type='media' showLoadingAnimation customPlaceholder={ProjectsLoading} ready= {false} /* ready={!this.props.ui.pageLoading}*/>
+        <ReactPlaceholder type='media' showLoadingAnimation customPlaceholder={ProjectsLoading} ready={!this.props.ui.pageLoading}>
         
           <div className="main-content-wrapper">
             <div className="sidebar-wrapper">
