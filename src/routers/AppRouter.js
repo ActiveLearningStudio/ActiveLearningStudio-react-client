@@ -1,11 +1,12 @@
 import React from "react";
 import { BrowserRouter, Router, Route, Switch } from "react-router-dom";
 import {createBrowserHistory} from "history";
+import loadable from '@loadable/component'
 
 import PublicRoute from "./PublicRoute";
 import LoginPage from "./../containers/LoginPage";
 
-import PlaylistsPage from "../containers/PlaylistsPage";
+// import PlaylistsPage from "../containers/PlaylistsPage";
 import EditorPage from "./../containers/EditorPage";
 import { TinyEditor } from "../containers/TinyEditor";
 import PrivateRoute from "./PrivateRoute";
@@ -13,10 +14,15 @@ import H5PPreview from "../containers/H5PPreview";
 import { LTIActivityPage } from "../containers/LTIActivityPage";
 import { LTIPlaylistPage } from "../containers/LTIPlaylistPage";
 import { LTIProgramPage } from "../containers/LTIProgramPage";
-import  ProjectsPage  from "../containers/ProjectsPage";
-import  PreviewPage  from "../containers/PreviewPage";
+// import  ProjectsPage  from "../containers/ProjectsPage";
+// import  PreviewPage  from "../containers/PreviewPage";
 
 const history = createBrowserHistory();
+
+const ProjectsPage = loadable(() => import('../containers/ProjectsPage'));
+const PlaylistsPage = loadable(() => import('../containers/PlaylistsPage'));
+const PreviewPage = loadable(() => import('../containers/PreviewPage'));
+
 
 const AppRouter = () => (
   <Router history={history}>
@@ -27,7 +33,9 @@ const AppRouter = () => (
       <PrivateRoute path="/resource/preview/:resourceid" component={PreviewPage}  previewType="resource" />
       <PrivateRoute path="/playlist/preview/:playlistid" component={PreviewPage}  previewType="playlist" />
 
-      <PrivateRoute path="/project/create" component={ProjectsPage} showCreateProjectPopup={true} />
+      <PrivateRoute path="/project/create/:projectid" component={ProjectsPage} showEditProjectPopup={true} editMode={true} />
+      <PrivateRoute path="/project/create" component={ProjectsPage} showCreateProjectPopup={true} editMode={false} />
+      
       <PrivateRoute path="/project/:projectid" exact component={PlaylistsPage} />
       <PrivateRoute path="/project/:projectid/playlist/create" component={PlaylistsPage} openCreatePopup={true} />
       <PrivateRoute path="/project/:projectid/playlist/:playlistid/activity/create" exact component={PlaylistsPage}  openCreateResourcePopup={true} />

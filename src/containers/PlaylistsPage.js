@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import validator from "validator";
+import loadable from '@loadable/component'
 
 import { withRouter } from 'react-router-dom';
 
@@ -179,7 +179,7 @@ export class PlaylistsPage extends React.Component {
     const { showDeletePlaylistPopup } = this.props.ui;
 
     
-    const headArray = playlists.map(playlist => (
+    const playlistsArray = playlists.map(playlist => (
       <div className="list-wrapper" key={playlist._id}>
         <div className="list">
           <div className="list-header">
@@ -222,6 +222,8 @@ export class PlaylistsPage extends React.Component {
         <div>Loading...</div>
       )
     }
+
+    
     
     return (
       
@@ -235,7 +237,7 @@ export class PlaylistsPage extends React.Component {
             <div className="content">
               <div className="row">
                 <div className="col playlist-page-project-title">
-                  <h1>{(this.props.project.selectedProject) ? this.props.project.selectedProject.name : ''}<span><Link class="dropdown-item" to={"/project/preview2/"+this.props.match.params.projectid}><i class="fa fa-eye" aria-hidden="true"></i> Project Preview</Link></span></h1>
+                  <h1>{(this.props.project.selectedProject) ? this.props.project.selectedProject.name : ''}<span><Link className="dropdown-item" to={"/project/preview2/"+this.props.match.params.projectid}><i className="fa fa-eye" aria-hidden="true"></i> Project Preview</Link></span></h1>
                   
                 </div>
               </div>
@@ -243,13 +245,13 @@ export class PlaylistsPage extends React.Component {
                 Create New Playlist
                         </button>
               <div id="board" className="u-fancy-scrollbar js-no-higher-edits js-list-sortable ui-sortable">
-                {headArray}
+                {playlistsArray}
 
               </div>
             </div>
           </div>
         </div>
-
+        
         {(this.props.openCreatePopup) ?
           <CreatePlaylistPopup
             escFunction={this.escFunction.bind(this)}

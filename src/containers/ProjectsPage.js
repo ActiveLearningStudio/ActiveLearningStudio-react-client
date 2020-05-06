@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import validator from "validator";
+import loadable from '@loadable/component'
 
 import { withRouter } from 'react-router-dom';
 
@@ -18,7 +18,7 @@ import Sidebar from "../components/Sidebar/Sidebar";
 
 import { startLogin } from "../actions/auth";
 import { showDeletePlaylistPopupAction, hideDeletePlaylistModalAction } from "../actions/ui";
-import { deleteProjectAction, showCreateProjectModalAction, hideCreateProjectModalAction, createProjectAction, loadMyProjectsAction} from "../actions/project";
+import { deleteProjectAction, showCreateProjectModalAction, loadProjectAction, createProjectAction, loadMyProjectsAction} from "../actions/project";
 import NewResourcePage from "./NewResourcePage";
 import { NewProjectPage } from "./NewProjectPage";
 
@@ -53,6 +53,18 @@ export class ProjectsPage extends React.Component {
     //scroll to top
     window.scrollTo(0, 0);
     this.props.loadMyProjectsAction();
+    
+
+    if(this.props.showEditProjectPopup){
+      this.getProjectData(this.props.match.params.projectid);
+    } else {
+      this.props.showCreateProjectModalAction();
+    }
+  }
+
+  // get the data of project for showing into edit form
+  getProjectData(projectid){
+    this.props.loadProjectAction(projectid);
   }
 
   handleShowCreatePlaylistModal = async (e) => {
@@ -139,19 +151,28 @@ export class ProjectsPage extends React.Component {
   };
 
 
-  handleCreateProjectSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const { name, description } = this.state;
-      var thumb_url = this.textInput.value;
-      await this.props.createProjectAction(name, description, thumb_url);
-      this.props.history.push("/");
+  // handleCreateProjectSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     alert();
+  //     const { name, description } = this.state;
+  //     if(!this.props.editMode){ //create project
+  //       var thumb_url = this.textInput.value;
+  //       await this.props.createProjectAction(name, description, thumb_url);
+  //       this.props.history.push("/");
+  //     } else {
+  //       alert('edit project');
+  //       // var thumb_url = this.textInput.value;
+  //       // await this.props.createProjectAction(name, description, thumb_url);
+  //       // this.props.history.push("/");
+  //     }
+      
 
       
-    } catch (e) {
-      console.log(e.message);
-    }
-  };
+  //   } catch (e) {
+  //     console.log(e.message);
+  //   }
+  // };
 
   handleCloseProjectModal = (e) => {
     e.preventDefault();
@@ -170,6 +191,7 @@ export class ProjectsPage extends React.Component {
   }
 
   render() {
+    
     const { projects } = this.props.project;
     const { showDeletePlaylistPopup } = this.props.ui;
 
@@ -215,12 +237,12 @@ export class ProjectsPage extends React.Component {
             </div>
           </div>
         </div>
-        {this.props.showCreateProjectPopup ?
+        {this.props.showCreateProjectPopup || this.props.showEditProjectPopup ?
           <NewProjectPage
             {...this.props}
             onProjectNameChange={this.onProjectNameChange}
             onProjectDescriptionChange = {this.onProjectDescriptionChange}
-            handleCreateProjectSubmit = {this.handleCreateProjectSubmit}
+            // handleCreateProjectSubmit = {this.handleCreateProjectSubmit}
             handleCloseProjectModal = {this.handleCloseProjectModal}
             onThumbUrlChange = {this.onThumbUrlChange}
             inputRef={(input) => this.textInput = input} 
@@ -250,7 +272,7 @@ const mapDispatchToProps = dispatch => ({
   showDeletePlaylistPopupAction: (id, title, deleteType) => dispatch(showDeletePlaylistPopupAction(id, title, deleteType)),
   deleteProjectAction: (projectid) => dispatch(deleteProjectAction(projectid)),
   hideDeletePlaylistModalAction: () => dispatch(hideDeletePlaylistModalAction()),
-  
+  loadProjectAction: (projectid) => dispatch(loadProjectAction(projectid))
 
 });
 

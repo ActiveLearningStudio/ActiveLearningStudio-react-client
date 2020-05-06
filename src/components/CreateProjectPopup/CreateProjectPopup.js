@@ -1,6 +1,12 @@
 import React, {useEffect, useCallback} from "react";
+import axios from 'axios';
 import { fadeIn } from 'react-animations';
 import styled, { keyframes } from 'styled-components';
+import { connect } from 'react-redux'
+import { Field, reduxForm, formValueSelector } from 'redux-form'
+import { createProjectAction, updateProjectAction, uploadThumbnailAction} from "../../actions/project";
+import { withRouter } from "react-router-dom";
+
 import './CreateProjectPopup.scss'
 
 import {
@@ -16,7 +22,38 @@ const FaceDiv = styled.div`
   animation: 1s ${fadeAnimation};
 `;
 
-function CreateProjectPopup(props) {
+const onSubmit = async (values, dispatch, props) => {
+  try {
+    // console.log(props.inputRef)
+    if(props.editMode) {//update
+      await dispatch(updateProjectAction(props.match.params.projectid, values.projectName, values.description, props.project.thumbUrl));
+    } else { //create
+      await dispatch(createProjectAction(values.projectName, values.description, props.project.thumbUrl));
+    }
+    
+    props.history.push("/");
+  } catch (e) {
+    console.log(e.message);
+  }
+  // this.props.history.push("/");
+  
+}
+
+export const uploadThumb = async (e, props) => {
+  const formData = new FormData();
+  formData.append('uploads',e.target.files[0])
+  console.log(formData);
+
+  try {
+    await props.uploadThumbnailAction(formData);
+  } catch(e){
+    console.log(e);
+  }
+  
+
+}
+let CreateProjectPopup = props => {
+  const { handleSubmit, load, pristine, reset, submitting } = props
   //remoe popup when escape is pressed
   const escFunction = useCallback((event) => {
     if(event.keyCode === 27) {
@@ -29,13 +66,35 @@ function CreateProjectPopup(props) {
       document.removeEventListener("keydown", escFunction, false);
     };
 }, []);
+
   return (
     // <FaceDiv className='popup'>
     <div className="create-program-wrapper">
-        <form className="create-playlist-form" onSubmit={props.handleCreateProjectSubmit}>
+        <form className="create-playlist-form" onSubmit={handleSubmit}>
           <div className="project-name">
             <h2>Enter Project Name</h2>
-            <input type="text" name="projectName" onChange={props.onProjectNameChange} />
+            <Field
+            name="projectName"
+            component="input"
+            type="text"
+             />
+            {/*
+              props.project.selectedProject ?
+
+              <Field
+            name="projectName"
+            component="input"
+            type="text"
+            placeholder="Project Name"
+            value="abc"
+          />
+              // <input type="text" name=""  defaultValue={props.project.selectedProject.name} />
+              :
+              <>
+              </>
+              // <input type="text" name="projectName" onChange={props.onProjectNameChange}  />
+            */}
+            
           </div>
           
           {/* <div className="available-teams">
@@ -63,28 +122,49 @@ function CreateProjectPopup(props) {
           <div className="upload-thumbnail">
             <h2>Upload thumbnail</h2>
             <label>
-              <input type="file" onChange={props.uploadThumbnail} />
+              <input type="file" onChange={(e)=>uploadThumb(e, props)} />
               <span>Upload</span>
             </label>
-            
+            <p></p>
               {
-                props.thumbUrl != "" ?
+                // props.project.selectedProject ?
+                // <div className="thumb-display">
+                //   <div className="thumb"><img src={props.project.selectedProject.thumb_url} /></div>
+                // </div>
+                // :
+                // null
+              }
+
+{
+                props.project.thumbUrl ?
                 <div className="thumb-display">
-                  <div className="thumb"><img src={props.thumbUrl} /></div>
+                  <div className="thumb"><img src={props.project.thumbUrl} /></div>
                 </div>
                 :
                 null
               }
-              <input type="hidden" name="thumb_url" value={props.thumbUrl} ref={props.inputRef} />
-                
+              {/* <input type="hidden" name="thumb_url" value={props.thumbUrl} ref={props.inputRef} /> */}
           </div>
           <div className="project-description">
             <h2>Program Description</h2>
-            <textarea onChange={props.onProjectDescriptionChange}></textarea>
+            <Field name="description" component="textarea"/>
+              
+               {/* <textarea onChange={props.onProjectDescriptionChange}></textarea> */}
+            
+            
           </div>
+          
           <div className="create-projct-template-wrapper">
-            <button type="submit" className="create-project-submit-btn">Create Project</button>
-            <button className="project-template-btn">Start With Template</button>
+            {
+              props.editMode ?
+              <button type="submit" className="create-project-submit-btn">Update Project</button>
+              :
+              <>
+              <button type="submit" className="create-project-submit-btn">Create Project</button>
+              <button className="project-template-btn">Start With Template</button>
+              </>
+            }
+            
           </div>
         </form>
       </div>
@@ -92,4 +172,36 @@ function CreateProjectPopup(props) {
   );
 }
 
-export default CreateProjectPopup;
+
+
+CreateProjectPopup = reduxForm({
+  form: 'createProjectForm',
+  enableReinitialize: true,
+  onSubmit
+})(CreateProjectPopup)
+
+
+const mapDispatchToProps = dispatch => ({
+  createProjectAction: (name, description, thumb_url) =>dispatch(createProjectAction(name, description, thumb_url)),
+  updateProjectAction: (name, description, thumb_url) =>dispatch(updateProjectAction(projectid, name, description, thumb_url)),
+  uploadThumbnailAction: (formData)=> dispatch(uploadThumbnailAction(formData))
+  
+})
+
+const mapStateToProps = (state) => {
+  return {
+    initialValues: {
+      projectName:(state.project.selectedProject)?state.project.selectedProject.name:null,
+      description:(state.project.selectedProject)?state.project.selectedProject.description:null
+    } // pull initial values from account reducer
+  }
+}
+
+CreateProjectPopup = connect(
+  mapStateToProps,
+  mapDispatchToProps               // bind account loading action creator
+)(CreateProjectPopup)
+
+
+
+export default withRouter(CreateProjectPopup);

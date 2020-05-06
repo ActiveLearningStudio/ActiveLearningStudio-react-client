@@ -6,7 +6,8 @@ import {
   LOAD_PROJECT, 
   HIDE_CREATE_PROJECT_MODAL, 
   DELETE_PROJECT,
-  SHOW_DELETE_PLAYLIST_MODAL
+  SHOW_DELETE_PLAYLIST_MODAL,
+  UPLOAD_THUMBNAIL
 } from "../constants/actionTypes";
 
 
@@ -21,6 +22,7 @@ const defaultProgramState = () => {
     return {
         'projects':[],
         selectedProject: null,
+        thumb_url:null,
         showCreateProjectSubmenu:false,
         showCreateProjectPopup:false
     };
@@ -29,7 +31,6 @@ const defaultProgramState = () => {
 
 const projectReducer = (state = defaultProgramState(), action) => {
   switch (action.type) {
-    
     case SHOW_CREATE_PROJECT_SUBMENU:
       return {
         ...state,
@@ -38,7 +39,8 @@ const projectReducer = (state = defaultProgramState(), action) => {
     case SHOW_CREATE_PROJECT_MODAL:
       return {
         ...state,
-        showCreateProjectPopup: true
+        selectedProject:null,
+        thumbUrl:null
       };
     case CREATE_PROJECT:
       return {
@@ -56,7 +58,8 @@ const projectReducer = (state = defaultProgramState(), action) => {
     case LOAD_PROJECT:
       return {
         ...state,
-        selectedProject: action.project
+        selectedProject: action.project,
+        thumbUrl:action.project.thumb_url
       };
     case DELETE_PROJECT:
       let newProjects = state.projects.filter(project => {
@@ -66,6 +69,11 @@ const projectReducer = (state = defaultProgramState(), action) => {
         ...state,
         projects: newProjects
       };
+    case UPLOAD_THUMBNAIL:
+      return {
+        ...state,
+        thumbUrl:action.thumbUrl
+      }
 
     default:
       return state;

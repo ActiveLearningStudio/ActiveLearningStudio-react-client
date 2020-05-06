@@ -47,7 +47,7 @@ export class TinyEditor extends React.Component {
         <div className="post-title">
           <label>
             <span>Title</span>
-            <input type="text" name="title" class="form-control" />
+            <input type="text" name="title" className="form-control" />
           </label>
         </div>
         <div className="post-title">

@@ -38,7 +38,7 @@ console.log(props);
                 <div className="modal-content">
                   <div className="modal-body">
                   <h5>Delete "{props.ui.title}"?</h5>
-                  <p>You're about to permanently delete this {props.ui.deleteType}</p>
+                  <p>You're about to permanently delete this {props.ui.deleteType} and all of its data.</p>
                   <p>Do you want to continue?</p>
                   </div>
                   <div className="modal-footer">
