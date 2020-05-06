@@ -4,7 +4,7 @@ const PlaylistsLoading = (
     <div className='main-content-wrapper'>
       <div className="sidebar-wrapper">
         <aside>
-          <RectShape type='media' style={{width: 300, height: 500}}/>
+          <RectShape type='media' style={{width: "100%", height: 500}}/>
         </aside>
       </div>
       <div className="content-wrapper">
@@ -14,17 +14,17 @@ const PlaylistsLoading = (
                 <div className="list">
                   <div class="list-header">
                     
-                      <RectShape  color='#e4e4e4' type='media'  style={{width: 390, height: 70}}/>
+                      <RectShape  color='#e4e4e4' type='media'  style={{width: "100%", height: 70}}/>
                       
                   </div>
 
                     <div class="list-body">
                       <div className="row">
                         <div className="col-md-12">
-                        <TextRow color='#e4e4e4'style={{width: 350, height: 20}} />
-                        <TextRow color='#e4e4e4'style={{width: 330, height: 20}} />
-                        <TextRow color='#e4e4e4'style={{width: 360, height: 20}} />
-                        <TextRow color='#e4e4e4'style={{width: 310, height: 20}} />
+                          <TextRow color='#e4e4e4'style={{width: "99%", height: 20}} />
+                          <TextRow color='#e4e4e4'style={{width: "93%", height: 20}} />
+                          <TextRow color='#e4e4e4'style={{width: "98%", height: 20}} />
+                          <TextRow color='#e4e4e4'style={{width: "95%", height: 20}} />
                         </div>
                       </div>
                     </div>
