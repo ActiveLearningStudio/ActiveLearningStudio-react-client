@@ -186,7 +186,7 @@ export class PlaylistsPage extends React.Component {
             <h2 className="list-header-name">{playlist.title}
 
               <div className="dropdown pull-right playlist-dropdown">
-                <button className="btn project-dropdown-btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button className="btn playlist-dropdown-btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
                 </button>
                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">

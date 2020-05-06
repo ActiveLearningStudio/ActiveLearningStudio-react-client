@@ -22,6 +22,31 @@ const FaceDiv = styled.div`
   animation: 1s ${fadeAnimation};
 `;
 
+const required = value => value ? undefined : '* Required'
+const maxLength = max => value =>
+  value && value.length > max ? `* Must be ${max} characters or less` : undefined
+const maxLength15 = maxLength(15)
+
+
+const renderProjectNameInput = ({ input, label, type, meta: { touched, error, warning } }) => (
+  <div>
+    <label><h2>{label}</h2></label>
+    <div>
+      <input {...input}  type={type}/>
+      {touched && ((error && <span className="validation-error">{error}</span>) || (warning && <span>{warning}</span>))}
+    </div>
+  </div>
+)
+
+const renderProjectDescriptionInput = ({ input, label, meta: { touched, error, warning } }) => (
+  <div>
+    <label>{label}</label>
+    <div>
+      <textarea {...input} ></textarea>
+      {touched && ((error && <span className="validation-error">{error}</span>) || (warning && <span>{warning}</span>))}
+    </div>
+  </div>
+)
 const onSubmit = async (values, dispatch, props) => {
   try {
     // console.log(props.inputRef)
@@ -41,10 +66,9 @@ const onSubmit = async (values, dispatch, props) => {
 
 export const uploadThumb = async (e, props) => {
   const formData = new FormData();
-  formData.append('uploads',e.target.files[0])
-  console.log(formData);
-
   try {
+    formData.append('uploads',e.target.files[0]);
+    
     await props.uploadThumbnailAction(formData);
   } catch(e){
     console.log(e);
@@ -70,13 +94,14 @@ let CreateProjectPopup = props => {
   return (
     // <FaceDiv className='popup'>
     <div className="create-program-wrapper">
-        <form className="create-playlist-form" onSubmit={handleSubmit}>
+        <form className="create-playlist-form" onSubmit={handleSubmit} autoComplete="off">
           <div className="project-name">
-            <h2>Enter Project Name</h2>
             <Field
             name="projectName"
-            component="input"
+            component={renderProjectNameInput}
             type="text"
+            label="Enter Project Name"
+            validate={[ required, maxLength15 ]}
              />
             {/*
               props.project.selectedProject ?
@@ -147,7 +172,10 @@ let CreateProjectPopup = props => {
           </div>
           <div className="project-description">
             <h2>Program Description</h2>
-            <Field name="description" component="textarea"/>
+            <Field 
+            name="description" 
+            component={renderProjectDescriptionInput}
+            validate={[ required]}/>
               
                {/* <textarea onChange={props.onProjectDescriptionChange}></textarea> */}
             
