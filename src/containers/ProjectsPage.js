@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import loadable from '@loadable/component'
+import ReactPlaceholder from 'react-placeholder';
+import "react-placeholder/lib/reactPlaceholder.css";
 
 import { withRouter } from 'react-router-dom';
 
@@ -25,6 +26,7 @@ import { NewProjectPage } from "./NewProjectPage";
 import ProjectCard from "../components/ProjectCard";
 import ProjectPreviewModal from "../components/ProjectPreviewModal";
 import DeletePopup from "../components/DeletePopup/DeletePopup"
+import ProjectsLoading from "../components/Loading/ProjectsLoading";
 
 export class ProjectsPage extends React.Component {
   constructor(props) {
@@ -151,28 +153,6 @@ export class ProjectsPage extends React.Component {
   };
 
 
-  // handleCreateProjectSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     alert();
-  //     const { name, description } = this.state;
-  //     if(!this.props.editMode){ //create project
-  //       var thumb_url = this.textInput.value;
-  //       await this.props.createProjectAction(name, description, thumb_url);
-  //       this.props.history.push("/");
-  //     } else {
-  //       alert('edit project');
-  //       // var thumb_url = this.textInput.value;
-  //       // await this.props.createProjectAction(name, description, thumb_url);
-  //       // this.props.history.push("/");
-  //     }
-      
-
-      
-  //   } catch (e) {
-  //     console.log(e.message);
-  //   }
-  // };
 
   handleCloseProjectModal = (e) => {
     e.preventDefault();
@@ -210,57 +190,54 @@ export class ProjectsPage extends React.Component {
         showDeletePlaylistPopupAction = {this.props.showDeletePlaylistPopupAction}
         showPreview={(this.props.showPreview == project._id)}/>
     )});
-    if(this.props.ui.pageLoading){
-      return (
-        <div>Loading...</div>
-      )
-    }
+    
     return (
-      <div>
+      <>
         <Header {...this.props} />
-        <div className="main-content-wrapper">
-          <div className="sidebar-wrapper">
-            <Sidebar />
-          </div>
-          <div className="content-wrapper">
-            <div className="content">
-              <div className="row">
-                <div className="col-md-12">                  
-                  <div className="program-page-title">
-                    <h1>My Projects</h1>
+        <ReactPlaceholder type='media' showLoadingAnimation customPlaceholder={ProjectsLoading} ready= {false} /* ready={!this.props.ui.pageLoading}*/>
+        
+          <div className="main-content-wrapper">
+            <div className="sidebar-wrapper">
+              <Sidebar />
+            </div>
+            <div className="content-wrapper">
+              <div className="content">
+                <div className="row">
+                  <div className="col-md-12">                  
+                    <div className="program-page-title">
+                      <h1>My Projects</h1>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="row">
-                {projectCards}
+                <div className="row">
+                  {projectCards}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        {this.props.showCreateProjectPopup || this.props.showEditProjectPopup ?
-          <NewProjectPage
-            {...this.props}
-            onProjectNameChange={this.onProjectNameChange}
-            onProjectDescriptionChange = {this.onProjectDescriptionChange}
-            // handleCreateProjectSubmit = {this.handleCreateProjectSubmit}
-            handleCloseProjectModal = {this.handleCloseProjectModal}
-            onThumbUrlChange = {this.onThumbUrlChange}
-            inputRef={(input) => this.textInput = input} 
-          />
-          : null
-        }
-        
-        
-        {showDeletePlaylistPopup ?
-          <DeletePopup
-            res = {this.props.project}
-            deleteType = 'Project'
-            {...this.props}
-          />
-          : null
-        }
-      </div>
-
+          {this.props.showCreateProjectPopup || this.props.showEditProjectPopup ?
+            <NewProjectPage
+              {...this.props}
+              onProjectNameChange={this.onProjectNameChange}
+              onProjectDescriptionChange = {this.onProjectDescriptionChange}
+              handleCloseProjectModal = {this.handleCloseProjectModal}
+              onThumbUrlChange = {this.onThumbUrlChange}
+              inputRef={(input) => this.textInput = input} 
+            />
+            : null
+          }
+          
+          
+          {showDeletePlaylistPopup ?
+            <DeletePopup
+              res = {this.props.project}
+              deleteType = 'Project'
+              {...this.props}
+            />
+            : null
+          }
+        </ReactPlaceholder>
+      </>
     );
   }
 }

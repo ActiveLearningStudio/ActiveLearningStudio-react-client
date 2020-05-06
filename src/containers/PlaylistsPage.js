@@ -1,7 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import loadable from '@loadable/component'
 
+import ReactPlaceholder from 'react-placeholder';
+import "react-placeholder/lib/reactPlaceholder.css";
 import { withRouter } from 'react-router-dom';
 
 import {
@@ -30,7 +31,11 @@ import PreviewResourcePage from "./PreviewResourcePage";
 import ResourceCard from "../components/ResourceCard";
 
 import "./PlaylistsPage.scss";
-import DeletePopup from './../components/DeletePopup/DeletePopup'
+import DeletePopup from './../components/DeletePopup/DeletePopup';
+
+import PlaylistsLoading from './../components/Loading/PlaylistsLoading'
+
+
 export class PlaylistsPage extends React.Component {
   constructor(props) {
     super(props);
@@ -217,18 +222,15 @@ export class PlaylistsPage extends React.Component {
       </div>
     ));
 
-    if(this.props.ui.pageLoading){
-      return (
-        <div>Loading...</div>
-      )
-    }
+
 
     
     
     return (
-      
-      <div>
-        <Header {...this.props} />
+      <>
+      <Header {...this.props} />
+      <ReactPlaceholder type='media' showLoadingAnimation customPlaceholder={PlaylistsLoading} ready={!this.props.ui.pageLoading}>
+        
         <div className="main-content-wrapper">
           <div className="sidebar-wrapper">
             <Sidebar />
@@ -290,7 +292,8 @@ export class PlaylistsPage extends React.Component {
           : null
         }
 
-      </div>
+      </ReactPlaceholder>
+      </>
 
     );
   }
