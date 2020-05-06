@@ -25,7 +25,7 @@ const FaceDiv = styled.div`
 const required = value => value ? undefined : '* Required'
 const maxLength = max => value =>
   value && value.length > max ? `* Must be ${max} characters or less` : undefined
-const maxLength15 = maxLength(15)
+const maxLength80 = maxLength(80)
 
 
 const renderProjectNameInput = ({ input, label, type, meta: { touched, error, warning } }) => (
@@ -101,7 +101,7 @@ let CreateProjectPopup = props => {
             component={renderProjectNameInput}
             type="text"
             label="Enter Project Name"
-            validate={[ required, maxLength15 ]}
+            validate={[ required, maxLength80 ]}
              />
             {/*
               props.project.selectedProject ?
