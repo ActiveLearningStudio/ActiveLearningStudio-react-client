@@ -100,7 +100,7 @@ let CreateProjectPopup = props => {
             name="projectName"
             component={renderProjectNameInput}
             type="text"
-            label="Enter Project Name"
+            label="Enter Project Name (Up to 80 characters)"
             validate={[ required, maxLength80 ]}
              />
             {/*
