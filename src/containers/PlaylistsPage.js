@@ -18,7 +18,7 @@ import Sidebar from "../components/Sidebar/Sidebar";
 
 import { startLogin } from "../actions/auth";
 import { createPlaylistAction, deletePlaylistAction, showCreatePlaylistModalAction, hideCreatePlaylistModalAction, loadProjectPlaylistsAction } from "../actions/playlist";
-import { deleteResourceAction, createResourceAction, showCreateResourceModalAction, hideCreateResourceModalAction, previewResourceAction, hidePreviewResourceModalAction } from "../actions/resource";
+import { deleteResourceAction, createResourceAction, createResourceByH5PUploadAction, showCreateResourceModalAction, hideCreateResourceModalAction, previewResourceAction, hidePreviewResourceModalAction } from "../actions/resource";
 import {
   showCreateProjectModalAction, 
   loadProjectAction
@@ -165,10 +165,15 @@ export class PlaylistsPage extends React.Component {
     ));
   }
 
-  handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType) => {
-    try {
-      
-      await this.props.createResourceAction(currentPlaylistId, editor, editorType)
+  handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload) => {
+    try {            
+      if(payload.submitAction === 'upload'){
+        payload.event.preventDefault();
+        await this.props.createResourceByH5PUploadAction(currentPlaylistId, editor, editorType, payload);
+      }else{
+        await this.props.createResourceAction(currentPlaylistId, editor, editorType);        
+      }            
+
       this.props.history.push("/project/"+this.props.match.params.projectid);
       // this.props.hideCreatePlaylistModal();
 
@@ -287,6 +292,7 @@ const mapDispatchToProps = dispatch => ({
   showCreateProjectModalAction: () => dispatch(showCreateProjectModalAction()),
   loadProjectPlaylistsAction: (projectid) => dispatch(loadProjectPlaylistsAction(projectid)),
   createResourceAction: (playlistid, editor, editorType) => dispatch(createResourceAction(playlistid, editor, editorType)),
+  createResourceByH5PUploadAction: (playlistid, editor, editorType, payload) => dispatch(createResourceByH5PUploadAction(playlistid, editor, editorType, payload)),
   loadProjectAction: (projectid) => dispatch(loadProjectAction(projectid)),
   deleteResourceAction: (resourceid) => dispatch(deleteResourceAction(resourceid)),
   
