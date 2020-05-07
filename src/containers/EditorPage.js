@@ -16,10 +16,39 @@ class EditorPage extends React.Component {
       
       
       this.h5pLib = props.resource.editor; //"H5P.Audio 1.4";
-
-
-
+      this.state = {submitAction : "create", h5pFile: null};
+      this.onSubmitActionRadioChange = this.onSubmitActionRadioChange.bind(this);
+      this.setH5pFileUpload = this.setH5pFileUpload.bind(this);
+      this.submitResource = this.submitResource.bind(this);
    }
+
+   setH5pFileUpload(e){      
+      this.setState({h5pFile: e.target.files[0]});
+   }
+
+   onSubmitActionRadioChange(e){
+      this.setState({submitAction: e.currentTarget.value});
+   }
+
+   submitResource(event){
+      event.preventDefault();           
+      if(this.state.submitAction === "upload" && this.state.h5pFile === null){
+         alert("Please choose .h5p file");
+      }else if(this.state.submitAction === "upload" && this.state.h5pFile !== null){        
+         let file_arr = this.state.h5pFile.name.split('.');
+         let file_extension = file_arr.length > 0 ? file_arr[file_arr.length-1] : "";
+         if (file_extension !== "h5p") {
+            alert("Invalid File\""+this.state.h5pFile.name+"\". Please choose .h5p file");           
+         }else{
+            let payload = {event, submitAction: this.state.submitAction, h5pFile: this.state.h5pFile};
+            this.props.handleCreateResourceSubmit(this.props.resource.currentPlaylistId, this.props.resource.editor, this.props.resource.editorType, payload);
+         }
+      }else if(this.state.submitAction === "create") {
+         let payload = {event, submitAction: this.state.submitAction, h5pFile: this.state.h5pFile};
+         this.props.handleCreateResourceSubmit(this.props.resource.currentPlaylistId, this.props.resource.editor, this.props.resource.editorType, payload);
+      }
+   }
+
    componentDidMount() {
       // console.log(this.state);
       // this.h5pLib = "H5P.MultiChoice 1.14";
@@ -1514,7 +1543,7 @@ class EditorPage extends React.Component {
                   <div className="form-group laravel-h5p-upload-container">
                      <label for="inputUpload" className="control-label col-md-3">Upload</label>
                      <div className="col-md-9">
-                        <input type="file" name="h5p_file" id="h5p-file" className="laravel-h5p-upload form-control" />
+                        <input type="file" name="h5p_file" id="h5p-file" className="laravel-h5p-upload form-control" onChange={(e) => this.setH5pFileUpload(e)} />
                         <small className="h5p-disable-file-check helper-block">
                            <label className="">
                               <input type="checkbox" name="h5p_disable_file_check" id="h5p-disable-file-check" /> Disable file extension check
@@ -1529,10 +1558,10 @@ class EditorPage extends React.Component {
                      <div className="col-md-6">
 
                         <label className="radio-inline">
-                           <input type="radio" name="action" value="upload" className="laravel-h5p-type" />Upload
+                           <input type="radio" name="action" value="upload" className="laravel-h5p-type" checked={this.state.submitAction === 'upload'} onChange={this.onSubmitActionRadioChange} />Upload
                         </label>
                         <label className="radio-inline">
-                           <input type="radio" name="action" value="create" className="laravel-h5p-type" checked="checked" />create
+                           <input type="radio" name="action" value="create" className="laravel-h5p-type" checked={this.state.submitAction === 'create'} onChange={this.onSubmitActionRadioChange} />Create
                         </label>
 
 
@@ -1588,7 +1617,7 @@ class EditorPage extends React.Component {
 
                   <div className="form-group">
                      <div className="col-md-9 col-md-offset-3">
-                        <button type="submit" className="add-resource-submit-btn" onClick={() => this.props.handleCreateResourceSubmit(this.props.resource.currentPlaylistId, this.props.resource.editor, this.props.resource.editorType)}>Finish</button>
+                        <button type="submit" className="add-resource-submit-btn" onClick={this.submitResource}>Finish</button>
                         {/* <input className="btn btn-primary" data-loading-text="Saving..." type="submit" value="Save" /> */}
 
                      </div>
