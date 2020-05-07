@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import validator from "validator";
+import ReactPlaceholder from 'react-placeholder';
+import "react-placeholder/lib/reactPlaceholder.css";
 
 import { withRouter } from 'react-router-dom';
 
@@ -17,13 +18,15 @@ import CreatePlaylistPopup from "../components/CreatePlaylistPopup/CreatePlaylis
 import Sidebar from "../components/Sidebar/Sidebar";
 
 import { startLogin } from "../actions/auth";
-import { createPlaylistAction, deletePlaylistAction, showCreatePlaylistModalAction, hideCreatePlaylistModalAction } from "../actions/playlist";
-import { deleteProjectAction, showCreateProjectModalAction, hideCreateProjectModalAction, createProjectAction, loadMyProjectsAction} from "../actions/project";
+import { showDeletePlaylistPopupAction, hideDeletePlaylistModalAction } from "../actions/ui";
+import { deleteProjectAction, showCreateProjectModalAction, loadProjectAction, createProjectAction, loadMyProjectsAction} from "../actions/project";
 import NewResourcePage from "./NewResourcePage";
 import { NewProjectPage } from "./NewProjectPage";
 
 import ProjectCard from "../components/ProjectCard";
 import ProjectPreviewModal from "../components/ProjectPreviewModal";
+import DeletePopup from "../components/DeletePopup/DeletePopup"
+import ProjectsLoading from "../components/Loading/ProjectsLoading";
 
 export class ProjectsPage extends React.Component {
   constructor(props) {
@@ -52,6 +55,18 @@ export class ProjectsPage extends React.Component {
     //scroll to top
     window.scrollTo(0, 0);
     this.props.loadMyProjectsAction();
+    
+
+    if(this.props.showEditProjectPopup){
+      this.getProjectData(this.props.match.params.projectid);
+    } else {
+      this.props.showCreateProjectModalAction();
+    }
+  }
+
+  // get the data of project for showing into edit form
+  getProjectData(projectid){
+    this.props.loadProjectAction(projectid);
   }
 
   handleShowCreatePlaylistModal = async (e) => {
@@ -138,19 +153,6 @@ export class ProjectsPage extends React.Component {
   };
 
 
-  handleCreateProjectSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const { name, description } = this.state;
-      var thumb_url = this.textInput.value;
-      await this.props.createProjectAction(name, description, thumb_url);
-      this.props.history.push("/");
-
-      
-    } catch (e) {
-      console.log(e.message);
-    }
-  };
 
   handleCloseProjectModal = (e) => {
     e.preventDefault();
@@ -169,52 +171,73 @@ export class ProjectsPage extends React.Component {
   }
 
   render() {
+    
     const { projects } = this.props.project;
+    const { showDeletePlaylistPopup } = this.props.ui;
 
+    
+    
+    
 
-    const projectCards = projects.map(project => (
+    const projectCards = projects.map(project => {
+      let res = {title:project.name, id: project._id, deleteType:"Project"};
+      return (
       <ProjectCard
         key={project._id}
         project={project}
+        res = {res}
         handleDeleteProject = {this.handleDeleteProject}
+        showDeletePlaylistPopupAction = {this.props.showDeletePlaylistPopupAction}
         showPreview={(this.props.showPreview == project._id)}/>
-    ));
+    )});
+    
     return (
-      <div>
+      <>
         <Header {...this.props} />
-        <div className="main-content-wrapper">
-          <div className="sidebar-wrapper">
-            <Sidebar />
-          </div>
-          <div className="content-wrapper">
-            <div className="content">
-              <div className="row">
-                <div className="col-md-12">                  
-                  <div className="program-page-title">
-                    <h1>My Projects</h1>
+        <ReactPlaceholder type='media' showLoadingAnimation customPlaceholder={ProjectsLoading} ready={!this.props.ui.pageLoading}>
+        
+          <div className="main-content-wrapper">
+            <div className="sidebar-wrapper">
+              <Sidebar />
+            </div>
+            <div className="content-wrapper">
+              <div className="content">
+                <div className="row">
+                  <div className="col-md-12">                  
+                    <div className="program-page-title">
+                      <h1>My Projects</h1>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="row">
-                {projectCards}
+                <div className="row">
+                  {projectCards}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        {this.props.showCreateProjectPopup ?
-          <NewProjectPage
-            {...this.props}
-            onProjectNameChange={this.onProjectNameChange}
-            onProjectDescriptionChange = {this.onProjectDescriptionChange}
-            handleCreateProjectSubmit = {this.handleCreateProjectSubmit}
-            handleCloseProjectModal = {this.handleCloseProjectModal}
-            onThumbUrlChange = {this.onThumbUrlChange}
-            inputRef={(input) => this.textInput = input} 
-          />
-          : null
-        }
-      </div>
-
+          {this.props.showCreateProjectPopup || this.props.showEditProjectPopup ?
+            <NewProjectPage
+              {...this.props}
+              onProjectNameChange={this.onProjectNameChange}
+              onProjectDescriptionChange = {this.onProjectDescriptionChange}
+              handleCloseProjectModal = {this.handleCloseProjectModal}
+              onThumbUrlChange = {this.onThumbUrlChange}
+              inputRef={(input) => this.textInput = input} 
+            />
+            : null
+          }
+          
+          
+          {showDeletePlaylistPopup ?
+            <DeletePopup
+              res = {this.props.project}
+              deleteType = 'Project'
+              {...this.props}
+            />
+            : null
+          }
+        </ReactPlaceholder>
+      </>
     );
   }
 }
@@ -223,15 +246,17 @@ const mapDispatchToProps = dispatch => ({
   showCreateProjectModalAction: () => dispatch(showCreateProjectModalAction()),
   loadMyProjectsAction: () =>dispatch(loadMyProjectsAction()),
   createProjectAction: (name, description, thumb_url) =>dispatch(createProjectAction(name, description, thumb_url)),
-  // hideCreateProjectModalAction: () => dispatch(hideCreateProjectModalAction()),
+  showDeletePlaylistPopupAction: (id, title, deleteType) => dispatch(showDeletePlaylistPopupAction(id, title, deleteType)),
   deleteProjectAction: (projectid) => dispatch(deleteProjectAction(projectid)),
-  
+  hideDeletePlaylistModalAction: () => dispatch(hideDeletePlaylistModalAction()),
+  loadProjectAction: (projectid) => dispatch(loadProjectAction(projectid))
 
 });
 
 const mapStateToProps = (state) => {
   return {
-    project: state.project
+    project: state.project,
+    ui: state.ui
   };
 }
 

@@ -12,10 +12,10 @@ const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => (
         let id = '';
         if(props.match.params.resourceid){
           id = props.match.params.resourceid;
-        } else {
-          if(props.match.params.playlistid){
-            id = props.match.params.playlistid;
-          }
+        } else if(props.match.params.playlistid){
+          id = props.match.params.playlistid;
+        } else if(props.match.params.projectid){
+          id = props.match.params.projectid;
         }
         
         return (

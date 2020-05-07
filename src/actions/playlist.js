@@ -1,4 +1,5 @@
 import axios from "axios";
+import {history} from './../routers/AppRouter';
 import {
   CREATE_PLAYLIST, 
   DELETE_PLAYLIST, 
@@ -8,7 +9,11 @@ import {
   LOAD_PROJECT_PLAYLISTSL, 
   LOAD_PROJECT_PLAYLISTS,
   HIDE_PREVIEW_PLAYLIST_MODAL,
-  LOAD_PLAYLIST
+  LOAD_PLAYLIST,
+  SHOW_DELETE_PLAYLIST_MODAL,
+  HIDE_DELETE_PLAYLIST_MODAL,
+  PAGE_LOADING,
+  PAGE_LOADING_COMPLETE
 } from './../constants/actionTypes';
 
 export const loadPlaylist = (playlist) => ({
@@ -163,6 +168,7 @@ export const loadProjectPlaylists = (playlists) => ({
 export const loadProjectPlaylistsAction = (projectid) => {
   return async dispatch => {
     try {
+      dispatch({type:PAGE_LOADING});
       const { token } = JSON.parse(localStorage.getItem("auth"));
      const response = await axios.post(
       //  `${process.env.REACT_APP_API_URL}/playlist/create`,
@@ -185,13 +191,15 @@ export const loadProjectPlaylistsAction = (projectid) => {
         dispatch(
           loadProjectPlaylists(playlists)
         );
+        dispatch({type:PAGE_LOADING_COMPLETE});
       }
 
       
     } catch (e) {
+      dispatch({type:PAGE_LOADING_COMPLETE});
       throw new Error(e);
+      
     }
   };
 };
-
 

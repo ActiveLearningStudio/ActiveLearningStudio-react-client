@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const ResourceCard = (props) => {
+	console.log(props);
 	return (
 		<div className="playlist-resource" key={props.resource.id}>
 			<div className="row">
@@ -19,7 +20,7 @@ const ResourceCard = (props) => {
 								<a className="dropdown-item" href="#"><i className="fa fa-pencil" aria-hidden="true"></i> Edit</a>
 								<a className="dropdown-item" href="#"><i className="fa fa-share" aria-hidden="true"></i> Send To</a>
 								<a className="dropdown-item" href="#" onClick={(e) => { e.preventDefault(); window.open("/api/download/project/123"); }}><i className="fa fa-cloud-download" aria-hidden="true"></i> Executable</a>
-								<a className="dropdown-item" onClick={() => props.handleDeleteResource(props.resource._id)}><i className="fa fa-times-circle-o" aria-hidden="true"></i> Delete</a>
+								<a className="dropdown-item" onClick={() => props.handleShowDeletePopup(props.resource._id, props.resource.title, 'Activity')}><i className="fa fa-times-circle-o" aria-hidden="true"></i> Delete</a>
 							</div>
 						</div>
 					</div>

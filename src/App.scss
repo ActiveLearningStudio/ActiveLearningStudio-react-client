@@ -244,6 +244,8 @@ body {
 .list-body {
     min-height: 510px;
     background: #f9f9f9;
+    padding-top:10px;
+    padding-bottom:10px;
     .playlist-resource {
         background: #fff;
         border-left: 3px solid #074892;
@@ -337,7 +339,7 @@ body {
     .modal.right .modal-body,
     .modal.left .modal-title,
 	.modal.right .modal-title {
-		padding: 15px 15px 40px;
+		padding: 15px 15px 15px;
 	}
 
 
@@ -767,4 +769,24 @@ body {
     a {
         cursor: pointer;
     }
+}
+
+.playlist-page-project-title {
+    span {
+        a {
+            font-size:16px;
+            display: inline;
+            float:none;
+            margin-left:15px;
+        }
+        
+    }
+}
+
+.validation-error {
+    color:red;
+}
+
+.dropdown-menu {
+    left: -50px !important;
 }

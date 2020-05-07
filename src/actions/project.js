@@ -6,7 +6,11 @@ import {
   CREATE_PROJECT, 
   LOAD_MY_PROJECTS,
   LOAD_PROJECT,
-  DELETE_PROJECT
+  DELETE_PROJECT,
+  PAGE_LOADING,
+  PAGE_LOADING_COMPLETE,
+  UPDATE_PROJECT,
+  UPLOAD_THUMBNAIL
 } from "../constants/actionTypes";
 
 // Loads a specific project
@@ -137,6 +141,60 @@ export const createProjectAction = (name, description, thumb_url) => {
 
 
 
+
+
+export const updateProject = (projectdata) => ({
+  type: UPDATE_PROJECT,
+  projectdata
+});
+
+
+
+export const updateProjectAction = (projectid, name, description, thumb_url) => {
+  return async dispatch => {
+    try {
+      //get auth token
+      const { token } = JSON.parse(localStorage.getItem("auth"));
+
+     const response = await axios.put(
+      //  `${process.env.REACT_APP_API_URL}/playlist/create`,
+       '/api/project/' + projectid,
+       {
+         name,
+         description,
+         thumb_url
+       },
+       {
+        headers: {
+          "Authorization": "Bearer "+ token
+        }
+      }
+     );
+     
+     if(response.data.status == "success") {
+       
+        //getting last project id
+        
+        const projectdata = {
+          _id:response.data.data._id,
+          name: response.data.data.name,
+          thumb_url: response.data.data.thumb_url,
+          userid: response.data.data.userid
+        };
+        dispatch(
+          updateProject(projectdata)
+        );
+      }
+
+      
+    } catch (e) {
+      throw new Error(e);
+    }
+  };
+};
+
+
+
 export const loadMyProjects = (projects) => ({
   type: LOAD_MY_PROJECTS,
   projects
@@ -147,6 +205,7 @@ export const loadMyProjects = (projects) => ({
 export const loadMyProjectsAction = () => {
   return async dispatch => {
     try {
+      dispatch({type:PAGE_LOADING});
       const { token } = JSON.parse(localStorage.getItem("auth"));
      const response = await axios.post(
       //  `${process.env.REACT_APP_API_URL}/playlist/create`,
@@ -167,10 +226,12 @@ export const loadMyProjectsAction = () => {
         dispatch(
           loadMyProjects(projects)
         );
+        dispatch({type:PAGE_LOADING_COMPLETE});
       }
 
       
     } catch (e) {
+      dispatch({type:PAGE_LOADING_COMPLETE});
       throw new Error(e);
     }
   };
@@ -216,4 +277,38 @@ export const deleteProjectAction = (projectid) => {
       throw new Error(e);
     }
   }
+}
+
+export const uploadThumbnail = (thumbUrl) => ({
+  type:UPLOAD_THUMBNAIL,
+  thumbUrl
+}); 
+
+export const uploadThumbnailAction = (formData) => {
+    // console.log(e);
+  // const formData = new FormData();
+  // formData.append('uploads',e.target.files[0])
+  return async dispatch => {
+    try {
+      const config = {
+          headers: {
+              'content-type': 'multipart/form-data'
+          }
+      }
+      return axios.post(
+        global.config.laravelAPIUrl +'/post-upload-image',
+        formData,
+        config
+      )
+      .then((response) => {
+        dispatch(
+          uploadThumbnail(response.data.data.guid)
+        )
+        
+        })
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+  
 }

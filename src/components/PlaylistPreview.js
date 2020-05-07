@@ -36,7 +36,7 @@ export class PlaylistPreview extends React.Component {
     return (
       <div className="container">
         <div className="playlist-preview-wrapper">
-          <div class="preview-header">{playlist.title}</div>
+          <div className="preview-header">{playlist.title}</div>
             <div className="row">
               {activities}
             </div>
