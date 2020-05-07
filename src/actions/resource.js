@@ -196,6 +196,61 @@ export const createResourceAction = (playlistid, editor, editorType) => {
     }
 }
 
+export const createResourceByH5PUploadAction = (playlistid, editor, editorType, payload) => {   
+    return async dispatch => {
+        try {
+            const { token } = JSON.parse(localStorage.getItem("auth"));
+            const formData = new FormData();
+            formData.append('h5p_file',payload.h5pFile);
+            formData.append('action', 'upload');
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data',
+                    "Authorization": "Bearer "+ token
+                }
+            }
+            return axios.post(
+                global.config.h5pAjaxUrl +'/api/h5p',
+                formData,
+                config
+            )
+            .then((response_upload) => {
+                let data_upload = {...response_upload.data};                
+                if(data_upload instanceof Object && "id" in data_upload){                    
+                    //insert into mongodb
+                    axios.post(global.config.laravelAPIUrl+'/activity',
+                        {
+                            mysqlid: data_upload.id,
+                            playlistid:playlistid,
+                            action: 'create'
+                        }, {
+                        headers: {'Content-Type': 'application/json',"Authorization": "Bearer "+ token}})
+                    .then((response_activity) => {
+                        console.log("response_activity === ", response_activity);
+                        
+                        let resource = {...response_activity.data.data};                        
+                        resource.id = response_activity.data.data._id;
+                        resource.mysqlid = response_activity.data.data.mysqlid;
+                        // resource.title = response.data.data._id;                        
+                        dispatch(
+                            createResource(playlistid, resource, editor, editorType)
+                        )
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+
+                }else{
+                    throw new Error(e);
+                }                                
+            });
+            
+        }catch(e){
+            throw new Error(e);
+        }
+    }    
+}
+
 export const previewResource = (id) => ({
     type:PREVIEW_RESOURCE,
     id
