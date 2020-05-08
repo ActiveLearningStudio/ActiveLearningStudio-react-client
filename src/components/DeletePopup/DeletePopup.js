@@ -17,7 +17,6 @@ const FaceDiv = styled.div`
 `;
 
 function Popup(props) {
-  console.log(props);
   //remoe popup when escape is pressed
   const escFunction = useCallback((event) => {
     if(event.keyCode === 27) {
@@ -30,7 +29,7 @@ function Popup(props) {
       document.removeEventListener("keydown", escFunction, false);
     };
 }, []);
-console.log(props);
+
   return (
     <FaceDiv className='popup'>
           <div className="modal fade" id="createPlaylistModal"  role="dialog" aria-labelledby="createPlaylistModalLabel" aria-hidden="true">

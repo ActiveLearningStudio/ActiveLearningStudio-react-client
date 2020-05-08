@@ -1,7 +1,14 @@
 import React from "react";
+import { connect } from "react-redux";
 import { fadeIn } from 'react-animations';
 
 import styled, { keyframes } from 'styled-components';
+
+
+import { Field, reduxForm, formValueSelector } from 'redux-form'
+
+
+import { showSelectActivityAction } from "./../../../actions/resource";
 
 import './AddResource.scss';
 
@@ -9,8 +16,10 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  withRouter 
 } from "react-router-dom";
+import AddResourceSidebar from "./AddResourceSidebar";
 
 const fadeAnimation = keyframes `${fadeIn}`;
 
@@ -48,11 +57,41 @@ const activities = [
 
 const addActiveClass = event => event.target.classList.add('active');
 
-function ResourceActivity(props) {
+const onSubmit = async (values, dispatch, props) => {
+  try {
+    let data = values.activityType;
+    props.showSelectActivityAction(data);
+  } catch (e) {
+    console.log(e.message);
+  }
+
+}
+const required = (value) =>{
+  return value ? undefined : '* Required';
+} 
+
+const renderResourceActivityType = ({ input, label, type, meta: { touched, error, warning } }) => (
+  <>
+      <input {...input} type={type} />
+      {touched && ((error && <span className="validation-error">{error}</span>) || (warning && <span>{warning}</span>))}
+  </>
+)
+
+let ResourceActivityType = (props, showSelectActivityAction)=> {
+  const { handleSubmit, load, pristine, reset, submitting } = props;
   const activitiesContent = activities.map((activity, i)=>(
     <div className="col-md-3" key={i}>
       <label className="activity-label">
-        <input type="radio" name="site_name"  />
+        
+        <Field
+            name="activityType"
+            component={renderResourceActivityType}
+            type="radio"
+            value={""+activity.id}
+            validate={[required]}
+          />
+
+        
         <div className="activity-item">
           <div className="activity-img">
             <img src={activity.icon} className="activity-icon" />
@@ -67,40 +106,11 @@ function ResourceActivity(props) {
       </label>
     </div>
   ));
+  
   return (
     <div className="row">
       <div className="col-md-3">
-        <div className="create-resource-sidebar">
-          <div className="select-activity selected">
-            <div className="activity-box">
-              <div className="number-box ">
-                  <span className="number">1</span>
-              </div>
-              <span className="bottom-vertical-line"></span>
-            </div>
-            <span className="name">Pick Activity Type</span>
-          </div>
-          <div className="select-question">
-            <div className="question-box">
-              <span className="top-vertical-line"></span>
-              <div className="number-box ">
-                  <span className="number">2</span>
-              </div>
-              <span className="bottom-vertical-line"></span>
-            </div>
-            <span className="name" onClick={props.selectQuestionBox}>Select Activity</span>
-          </div>
-          <div className="select-description">
-            <div className="description-box">
-              <span className="top-vertical-line"></span>
-              <div className="number-box ">
-                  <span className="number">3</span>
-              </div>
-            </div>
-            <span className="name">Build Activity</span>
-          </div>
-          
-        </div>
+        <AddResourceSidebar {...props} />
       </div>
       <div className="col-md-9">
         <div className="resource-activity">
@@ -116,12 +126,16 @@ function ResourceActivity(props) {
               </div>
             </div>
               
+              
+            <form className="row meta-form" onSubmit={handleSubmit} autoComplete="off">
+              {activitiesContent}
               <div className="row">
-                {activitiesContent}
                 <div className="col-md-12">
-                  <button onClick={props.selectQuestionBox} className="add-resource-continue-btn">Continue</button>
+                  <button type="submit" className="add-resource-continue-btn">Continue</button>
                 </div>
               </div>
+            </form>
+              
           </FaceDiv>
       </div>
       </div>
@@ -132,4 +146,24 @@ function ResourceActivity(props) {
   );
 }
 
-export default ResourceActivity;
+ResourceActivityType = reduxForm({
+  form: 'createProjectForm',
+  enableReinitialize: true,
+  onSubmit
+})(ResourceActivityType)
+
+const mapDispatchToProps = dispatch => ({
+  showSelectActivityAction: (activityType) => dispatch(showSelectActivityAction(activityType)),
+});
+
+const mapStateToProps =(state) => {
+  return {
+    resource: state.resource
+  };
+}
+
+
+
+
+export default withRouter(connect(mapStateToProps,
+  mapDispatchToProps)(ResourceActivityType));

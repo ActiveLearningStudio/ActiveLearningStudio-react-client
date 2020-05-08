@@ -12,13 +12,13 @@ const PlaylistsLoading = (
           <div id="board" className="u-fancy-scrollbar js-no-higher-edits js-list-sortable ui-sortable">
               <div className="list-wrapper">
                 <div className="list">
-                  <div class="list-header">
+                  <div className="list-header">
                     
                       <RectShape  color='#e4e4e4' type='media'  style={{width: "100%", height: 70}}/>
                       
                   </div>
 
-                    <div class="list-body">
+                    <div className="list-body">
                       <div className="row">
                         <div className="col-md-12">
                           <TextRow color='#e4e4e4'style={{width: "99%", height: 20}} />

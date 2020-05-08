@@ -1,13 +1,14 @@
 import { 
     SHOW_CREATE_RESOURCE_MODAL, 
     HIDE_CREATE_RESOURCE_MODAL, 
-    SHOW_CREATE_RESOURCE_ACTIVITY, 
-    SHOW_CREATE_RESOURCE_QUESTION, 
-    SHOW_CREATE_RESOURCE_DESCRIPTION, 
+    SHOW_RESOURCE_ACTIVITY_TYPE, 
+    SHOW_RESOURCE_SELECT_ACTIVITY, 
+    SHOW_RESOURCE_ACTIVITY_BUILD, 
     CREATE_RESOURCE, 
     PREVIEW_RESOURCE, 
     HIDE_PREVIEW_PLAYLIST_MODAL,
-    LOAD_RESOURCE
+    LOAD_RESOURCE,
+    SHOW_RESOURCE_DESCRIBE_ACTIVITY
 } from "../constants/actionTypes";
 
 const defaultResourceState = () => {
@@ -23,6 +24,10 @@ const defaultResourceState = () => {
         return {
             'playlists':[],
             'showCreateResourcePopup': false,
+            newResource:{
+                activityType:1,
+                activity:''
+            },
             selectedResource: null
         };
     }
@@ -41,28 +46,51 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                 ...state,
                 showCreateResourcePopup: false
             };
-        case SHOW_CREATE_RESOURCE_ACTIVITY:
+        case SHOW_RESOURCE_ACTIVITY_TYPE:
                 return {
                     ...state,
-                    isResourceActivity:true,
-                    isResourceQuestion:false,
-                    isResourceDescription:false
+                    isResourceActivityType:true,
+                    isResourceSelectActivity:false,
+                    isResourceDescribeActivity:false,
+                    isResourceActivityBuild:false,
+                    isActivityTypeFilled:false,
+                    isSelectActivityFilled:false,
+                    isDescribeFilled:false,
                 };
-        case SHOW_CREATE_RESOURCE_QUESTION:
+        case SHOW_RESOURCE_SELECT_ACTIVITY:
             return {
                 ...state,
-                isResourceActivity:false,
-                isResourceQuestion:true,
-                isResourceDescription:false
+                isResourceActivityType:false,
+                isResourceSelectActivity:true,
+                isResourceDescribeActivity:false,
+                isResourceActivityBuild:false,
+                isActivityTypeFilled:true,
+                newResource: {
+                    activityType: action.activityType
+                }
             };
-        case SHOW_CREATE_RESOURCE_DESCRIPTION:
+        case SHOW_RESOURCE_DESCRIBE_ACTIVITY:
             return {
                 ...state,
-                isResourceActivity:false,
-                isResourceQuestion:false,
-                isResourceDescription:true,
-                editor:action.editor,
-                editorType:action.editorType
+                isResourceActivityType:false,
+                isResourceSelectActivity:false,
+                isResourceDescribeActivity:true,
+                isResourceActivityBuild:false,
+                isSelectActivityFilled:true,
+                newResource: {
+                    ...state.newResource,
+                    editor:action.activity,
+                    editorType:'h5p'
+                }
+            };
+        case SHOW_RESOURCE_ACTIVITY_BUILD:
+            return {
+                ...state,
+                isResourceActivityType:false,
+                isResourceSelectActivity:false,
+                isResourceDescribeActivity:false,
+                isResourceActivityBuild:true,
+                isDescribeFilled:true,
             };
         case CREATE_RESOURCE:
             return {

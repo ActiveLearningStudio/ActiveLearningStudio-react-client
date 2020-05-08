@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { slideInRight } from 'react-animations';
 
 import styled, { keyframes } from 'styled-components';
-import { showCreateResourceActivityAction, showCreateResourceQuestionAction, showCreateResourceDescriptionAction } from "./../actions/resource";
+import { showCreateResourceActivityAction, showSelectActivityAction, showBuildActivityAction } from "./../actions/resource";
 
 
 
@@ -68,8 +68,8 @@ export class NewResourcePage extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
   showCreateResourceActivity: () => dispatch(showCreateResourceActivityAction()),
-  showCreateResourceQuestion: () => dispatch(showCreateResourceQuestionAction()),
-  showCreateResourceDescription: (editor, editorType) => dispatch(showCreateResourceDescriptionAction(editor, editorType)),
+  showSelectActivity: () => dispatch(showSelectActivityAction()),
+  showBuildActivity: (editor, editorType) => dispatch(showBuildActivityAction(editor, editorType)),
 });
 
 const mapStateToProps =(state) => {

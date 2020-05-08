@@ -2,14 +2,15 @@ import axios from "axios";
 import { 
     SHOW_CREATE_RESOURCE_MODAL, 
     HIDE_CREATE_RESOURCE_MODAL, 
-    SHOW_CREATE_RESOURCE_ACTIVITY, 
-    SHOW_CREATE_RESOURCE_QUESTION, 
-    SHOW_CREATE_RESOURCE_DESCRIPTION, 
+    SHOW_RESOURCE_ACTIVITY_TYPE, 
+    SHOW_RESOURCE_SELECT_ACTIVITY, 
+    SHOW_RESOURCE_ACTIVITY_BUILD, 
     CREATE_RESOURCE, 
     PREVIEW_RESOURCE, 
     HIDE_PREVIEW_PLAYLIST_MODAL,
     LOAD_RESOURCE,
-    DELETE_RESOURCE
+    DELETE_RESOURCE,
+    SHOW_RESOURCE_DESCRIBE_ACTIVITY
 } from './../constants/actionTypes';
 
 export const loadResource = (resource, previous, next) => ({
@@ -72,7 +73,7 @@ export const hideCreateResourceModalAction = () => {
 
 
 export const showCreateResourceActivity = () => ({
-    type:SHOW_CREATE_RESOURCE_ACTIVITY
+    type:SHOW_RESOURCE_ACTIVITY_TYPE
 });
 
 export const showCreateResourceActivityAction = () => {
@@ -89,15 +90,16 @@ export const showCreateResourceActivityAction = () => {
 
 
 
-export const showCreateResourceQuestion = () => ({
-    type:SHOW_CREATE_RESOURCE_QUESTION
+export const showSelectActivity = (activityType) => ({
+    type:SHOW_RESOURCE_SELECT_ACTIVITY,
+    activityType
 });
 
-export const showCreateResourceQuestionAction = () => {
+export const showSelectActivityAction = (activityType) => {
     return async dispatch => {
         try {
             dispatch(
-                showCreateResourceQuestion()
+                showSelectActivity(activityType)
             )
         } catch (e) {
             throw new Error(e);
@@ -107,23 +109,44 @@ export const showCreateResourceQuestionAction = () => {
 
 
 
-export const showCreateResourceDescription = (editor, editorType) => ({
-    type:SHOW_CREATE_RESOURCE_DESCRIPTION,
+export const showBuildActivity = (editor, editorType) => ({
+    type:SHOW_RESOURCE_ACTIVITY_BUILD,
     editor,
     editorType
 });
 
-export const showCreateResourceDescriptionAction = (editor, editorType) => {
+export const showBuildActivityAction = (editor, editorType) => {
     return async dispatch => {
         try {
             dispatch(
-                showCreateResourceDescription(editor, editorType)
+                showBuildActivity(editor, editorType)
             )
         } catch (e) {
             throw new Error(e);
         }
     }
 }
+
+
+
+export const showDescribeActivity = (activity) => ({
+    type:SHOW_RESOURCE_DESCRIBE_ACTIVITY,
+    activity
+});
+
+export const showDescribeActivityAction = (activity) => {
+    return async dispatch => {
+        try {
+            dispatch(
+                showDescribeActivity(activity)
+            )
+        } catch (e) {
+            throw new Error(e);
+        }
+    }
+}
+
+
 
 
 
@@ -143,6 +166,8 @@ export const createResourceAction = (playlistid, editor, editorType) => {
                 'Content-Type': 'application/json',
                 "Authorization": "Bearer "+ token
               };
+
+            // h5peditorCopy to be taken from h5papi/storage/h5p/laravel-h5p/js/laravel-h5p.js
             const data = {
                 playlistid:playlistid,
                 library: window.h5peditorCopy.getLibrary(),
@@ -226,7 +251,7 @@ export const createResourceByH5PUploadAction = (playlistid, editor, editorType, 
                         }, {
                         headers: {'Content-Type': 'application/json',"Authorization": "Bearer "+ token}})
                     .then((response_activity) => {
-                        console.log("response_activity === ", response_activity);
+                        
                         
                         let resource = {...response_activity.data.data};                        
                         resource.id = response_activity.data.data._id;

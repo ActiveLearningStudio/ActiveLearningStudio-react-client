@@ -61,8 +61,6 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
     
     case CREATE_RESOURCE:
       // adding resource to newplaylist specific id
-      // console.log(state.playlists)
-      // console.log(action);
       let newPlaylists = state.playlists;
       state.playlists.forEach((playlist,i) => {
           if(playlist._id === action.playlistid){

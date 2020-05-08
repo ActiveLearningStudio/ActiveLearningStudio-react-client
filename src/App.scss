@@ -82,7 +82,7 @@ body {
     opacity: 1 !important;
 }
 .resource-modal .modal {
-    padding-top:0 !important;
+    padding:0 !important;
 }
 
 
@@ -316,15 +316,18 @@ body {
 
 .modal.left .modal-dialog,
 	.modal.right .modal-dialog {
-		position: fixed;
-		margin: auto;
-        width: 75%;
+        position: fixed;
         max-width: none;
-		height: 100%;
-		-webkit-transform: translate3d(0%, 0, 0);
-		    -ms-transform: translate3d(0%, 0, 0);
-		     -o-transform: translate3d(0%, 0, 0);
-		        transform: translate3d(0%, 0, 0);
+        height: 100%;
+        transform: translate3d(0%, 0, 0);
+        position: relative;
+        margin-top:0;
+        padding-left: 346px;
+        
+		// -webkit-transform: translate3d(0%, 0, 0);
+		//     -ms-transform: translate3d(0%, 0, 0);
+		//      -o-transform: translate3d(0%, 0, 0);
+		//         transform: translate3d(0%, 0, 0);
 	}
 
 	.modal.left .modal-content,

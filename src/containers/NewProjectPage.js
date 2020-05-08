@@ -4,14 +4,10 @@ import { connect } from "react-redux";
 import { slideInRight } from 'react-animations';
 
 import styled, { keyframes } from 'styled-components';
-import { showCreateResourceActivityAction, showCreateResourceQuestionAction, showCreateResourceDescriptionAction } from "./../actions/resource";
 
-import ResourceActivity from '../components/Resource/AddResource/ResourceActivity';
-import ResourceQuestion from '../components/Resource/AddResource/ResourceQuestion';
-import ResourceDescription from '../components/Resource/AddResource/ResourceDescription';
 
 import { withRouter } from 'react-router-dom'
-import H5PPreview from "./H5PPreview";
+
 import CreateProjectPopup from "../components/CreateProjectPopup/CreateProjectPopup";
 
 
