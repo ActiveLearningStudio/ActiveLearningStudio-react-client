@@ -13,8 +13,31 @@ import {
   SHOW_DELETE_PLAYLIST_MODAL,
   HIDE_DELETE_PLAYLIST_MODAL,
   PAGE_LOADING,
-  PAGE_LOADING_COMPLETE
+  PAGE_LOADING_COMPLETE,
+  SWITCH_ACTIVITIES
 } from './../constants/actionTypes';
+
+export const switchActivities = () => ({
+  type: SWITCH_ACTIVITIES
+});
+
+export const switchActivitiesAction = (project_id, playlist_id, first_id, second_id) => {
+  return async dispatch => {
+    const { token } = JSON.parse(localStorage.getItem("auth"));
+    const response = await axios.post(
+      '/api/switchactivities',
+      { playlist_id, first_id, second_id },
+      { headers: { "Authorization": "Bearer "+token } }
+    );
+
+    if(response.data.status == "success")
+      dispatch( switchActivities() );
+    else if(response.data.status == "error")    
+      console.log('Error: '+response.data.message);
+    
+    dispatch(loadProjectPlaylistsAction(project_id));
+  };
+};
 
 export const loadPlaylist = (playlist) => ({
   type: LOAD_PLAYLIST,
