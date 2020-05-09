@@ -4,14 +4,10 @@ import { connect } from "react-redux";
 import { slideInRight } from 'react-animations';
 
 import styled, { keyframes } from 'styled-components';
-import { showCreateResourceActivityAction, showCreateResourceQuestionAction, showCreateResourceDescriptionAction } from "./../actions/resource";
 
-import ResourceActivity from '../components/Resource/AddResource/ResourceActivity';
-import ResourceQuestion from '../components/Resource/AddResource/ResourceQuestion';
-import ResourceDescription from '../components/Resource/AddResource/ResourceDescription';
 
 import { withRouter } from 'react-router-dom'
-import H5PPreview from "./H5PPreview";
+
 import CreateProjectPopup from "../components/CreateProjectPopup/CreateProjectPopup";
 
 
@@ -25,11 +21,9 @@ export class NewProjectPage extends React.Component {
   constructor(props) {
     super(props);
     
-    this.state = {
-      thumbUrl:''
-    }
+    
 
-    this.uploadThumbnail = this.uploadThumbnail.bind(this);
+    // this.uploadThumbnail = this.uploadThumbnail.bind(this);
   }
 
   componentDidMount() {
@@ -41,27 +35,7 @@ export class NewProjectPage extends React.Component {
   
   
   
-  uploadThumbnail(e){
-    
-    const formData = new FormData();
-    formData.append('uploads',e.target.files[0])
-    const config = {
-        headers: {
-            'content-type': 'multipart/form-data'
-        }
-    }
-    return axios.post(
-      global.config.laravelAPIUrl +'/post-upload-image',
-      formData,
-      config
-    )
-    .then((response) => {
-      this.setState({thumbUrl:response.data.data.guid});
-      console.log(response.data);
-    })
-    
-    
-  }
+  
   
 
   render() {
@@ -74,20 +48,29 @@ export class NewProjectPage extends React.Component {
                       <BouncyDiv className="modal-content">
                         
                           <div className="modal-title">
-                            <h1>
-                              Create New Project
-                              <button type="button" className="close-btn" data-dismiss="modal" onClick={this.props.handleCloseProjectModal}>x</button>
-                            </h1>
+                            <div className="row">
+                              <div className="col-md-12">
+                                <h1>
+                                  {
+                                    this.props.editMode ? 
+                                    'Update '
+                                    :
+                                    'Create New '
+                                  }
+                                  Project
+                                  <button type="button" className="close-btn" data-dismiss="modal" onClick={this.props.handleCloseProjectModal}>x</button>
+                                </h1>
+                                <hr />
+                              </div>
+                            </div>
                             
-                            <hr />
                           </div>
                           <div className="modal-body">
                             <div className='row'>
                               <div className="col-md-12"> 
                               <CreateProjectPopup 
                               {...this.props}
-                              uploadThumbnail = {this.uploadThumbnail}
-                              thumbUrl = {this.state.thumbUrl} />
+                              thumbUrl = {this.props.project.thumbUrl} />
                                 
                               </div>
                               

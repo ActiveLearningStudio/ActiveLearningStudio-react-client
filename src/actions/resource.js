@@ -2,14 +2,15 @@ import axios from "axios";
 import { 
     SHOW_CREATE_RESOURCE_MODAL, 
     HIDE_CREATE_RESOURCE_MODAL, 
-    SHOW_CREATE_RESOURCE_ACTIVITY, 
-    SHOW_CREATE_RESOURCE_QUESTION, 
-    SHOW_CREATE_RESOURCE_DESCRIPTION, 
+    SHOW_RESOURCE_ACTIVITY_TYPE, 
+    SHOW_RESOURCE_SELECT_ACTIVITY, 
+    SHOW_RESOURCE_ACTIVITY_BUILD, 
     CREATE_RESOURCE, 
     PREVIEW_RESOURCE, 
     HIDE_PREVIEW_PLAYLIST_MODAL,
     LOAD_RESOURCE,
-    DELETE_RESOURCE
+    DELETE_RESOURCE,
+    SHOW_RESOURCE_DESCRIBE_ACTIVITY
 } from './../constants/actionTypes';
 
 export const loadResource = (resource, previous, next) => ({
@@ -72,7 +73,7 @@ export const hideCreateResourceModalAction = () => {
 
 
 export const showCreateResourceActivity = () => ({
-    type:SHOW_CREATE_RESOURCE_ACTIVITY
+    type:SHOW_RESOURCE_ACTIVITY_TYPE
 });
 
 export const showCreateResourceActivityAction = () => {
@@ -89,15 +90,16 @@ export const showCreateResourceActivityAction = () => {
 
 
 
-export const showCreateResourceQuestion = () => ({
-    type:SHOW_CREATE_RESOURCE_QUESTION
+export const showSelectActivity = (activityType) => ({
+    type:SHOW_RESOURCE_SELECT_ACTIVITY,
+    activityType
 });
 
-export const showCreateResourceQuestionAction = () => {
+export const showSelectActivityAction = (activityType) => {
     return async dispatch => {
         try {
             dispatch(
-                showCreateResourceQuestion()
+                showSelectActivity(activityType)
             )
         } catch (e) {
             throw new Error(e);
@@ -107,23 +109,44 @@ export const showCreateResourceQuestionAction = () => {
 
 
 
-export const showCreateResourceDescription = (editor, editorType) => ({
-    type:SHOW_CREATE_RESOURCE_DESCRIPTION,
+export const showBuildActivity = (editor, editorType) => ({
+    type:SHOW_RESOURCE_ACTIVITY_BUILD,
     editor,
     editorType
 });
 
-export const showCreateResourceDescriptionAction = (editor, editorType) => {
+export const showBuildActivityAction = (editor, editorType) => {
     return async dispatch => {
         try {
             dispatch(
-                showCreateResourceDescription(editor, editorType)
+                showBuildActivity(editor, editorType)
             )
         } catch (e) {
             throw new Error(e);
         }
     }
 }
+
+
+
+export const showDescribeActivity = (activity) => ({
+    type:SHOW_RESOURCE_DESCRIBE_ACTIVITY,
+    activity
+});
+
+export const showDescribeActivityAction = (activity) => {
+    return async dispatch => {
+        try {
+            dispatch(
+                showDescribeActivity(activity)
+            )
+        } catch (e) {
+            throw new Error(e);
+        }
+    }
+}
+
+
 
 
 
@@ -143,6 +166,8 @@ export const createResourceAction = (playlistid, editor, editorType) => {
                 'Content-Type': 'application/json',
                 "Authorization": "Bearer "+ token
               };
+
+            // h5peditorCopy to be taken from h5papi/storage/h5p/laravel-h5p/js/laravel-h5p.js
             const data = {
                 playlistid:playlistid,
                 library: window.h5peditorCopy.getLibrary(),
@@ -194,6 +219,61 @@ export const createResourceAction = (playlistid, editor, editorType) => {
             throw new Error(e);
         }
     }
+}
+
+export const createResourceByH5PUploadAction = (playlistid, editor, editorType, payload) => {   
+    return async dispatch => {
+        try {
+            const { token } = JSON.parse(localStorage.getItem("auth"));
+            const formData = new FormData();
+            formData.append('h5p_file',payload.h5pFile);
+            formData.append('action', 'upload');
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data',
+                    "Authorization": "Bearer "+ token
+                }
+            }
+            return axios.post(
+                global.config.h5pAjaxUrl +'/api/h5p',
+                formData,
+                config
+            )
+            .then((response_upload) => {
+                let data_upload = {...response_upload.data};                
+                if(data_upload instanceof Object && "id" in data_upload){                    
+                    //insert into mongodb
+                    axios.post(global.config.laravelAPIUrl+'/activity',
+                        {
+                            mysqlid: data_upload.id,
+                            playlistid:playlistid,
+                            action: 'create'
+                        }, {
+                        headers: {'Content-Type': 'application/json',"Authorization": "Bearer "+ token}})
+                    .then((response_activity) => {
+                        
+                        
+                        let resource = {...response_activity.data.data};                        
+                        resource.id = response_activity.data.data._id;
+                        resource.mysqlid = response_activity.data.data.mysqlid;
+                        // resource.title = response.data.data._id;                        
+                        dispatch(
+                            createResource(playlistid, resource, editor, editorType)
+                        )
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+
+                }else{
+                    throw new Error(e);
+                }                                
+            });
+            
+        }catch(e){
+            throw new Error(e);
+        }
+    }    
 }
 
 export const previewResource = (id) => ({

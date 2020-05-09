@@ -17,7 +17,6 @@ const FaceDiv = styled.div`
 `;
 
 function Popup(props) {
-  console.log(props);
   //remoe popup when escape is pressed
   const escFunction = useCallback((event) => {
     if(event.keyCode === 27) {
@@ -30,7 +29,7 @@ function Popup(props) {
       document.removeEventListener("keydown", escFunction, false);
     };
 }, []);
-console.log(props);
+
   return (
     <FaceDiv className='popup'>
           <div className="modal fade" id="createPlaylistModal"  role="dialog" aria-labelledby="createPlaylistModalLabel" aria-hidden="true">
@@ -38,7 +37,7 @@ console.log(props);
                 <div className="modal-content">
                   <div className="modal-body">
                   <h5>Delete "{props.ui.title}"?</h5>
-                  <p>You're about to permanently delete this {props.ui.deleteType}</p>
+                  <p>You're about to permanently delete this {props.ui.deleteType} and all of its data.</p>
                   <p>Do you want to continue?</p>
                   </div>
                   <div className="modal-footer">

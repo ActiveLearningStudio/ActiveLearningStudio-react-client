@@ -3,7 +3,9 @@ import React from 'react';
 import axios from "axios";
 import { connect } from "react-redux";
 
-import { createPlaylist } from "./../actions/playlist";
+import { withRouter } from 'react-router-dom';
+
+
 
 
 class EditorPage extends React.Component {
@@ -11,26 +13,307 @@ class EditorPage extends React.Component {
 
    constructor(props) {
       super(props);
+      
+      
+      this.h5pLib = props.resource.newResource.editor; //"H5P.Audio 1.4";
+      this.state = {submitAction : "create", h5pFile: null};
+      this.onSubmitActionRadioChange = this.onSubmitActionRadioChange.bind(this);
+      this.setH5pFileUpload = this.setH5pFileUpload.bind(this);
+      this.submitResource = this.submitResource.bind(this);
+   }
+
+   setH5pFileUpload(e){      
+      this.setState({h5pFile: e.target.files[0]});
+   }
+
+   onSubmitActionRadioChange(e){
+      this.setState({submitAction: e.currentTarget.value});
+   }
+
+   submitResource(event){
+      event.preventDefault();           
+      if(this.state.submitAction === "upload" && this.state.h5pFile === null){
+         alert("Please choose .h5p file");
+      }else if(this.state.submitAction === "upload" && this.state.h5pFile !== null){        
+         let file_arr = this.state.h5pFile.name.split('.');
+         let file_extension = file_arr.length > 0 ? file_arr[file_arr.length-1] : "";
+         if (file_extension !== "h5p") {
+            alert("Invalid File\""+this.state.h5pFile.name+"\". Please choose .h5p file");           
+         }else{
+            let payload = {event, submitAction: this.state.submitAction, h5pFile: this.state.h5pFile};
+            this.props.handleCreateResourceSubmit(this.props.resource.currentPlaylistId, this.props.resource.newResource.editor, this.props.resource.newResource.editorType, payload);
+         }
+      }else if(this.state.submitAction === "create") {
+         let payload = {event, submitAction: this.state.submitAction, h5pFile: this.state.h5pFile};
+         this.props.handleCreateResourceSubmit(this.props.resource.currentPlaylistId, this.props.resource.newResource.editor, this.props.resource.newResource.editorType, payload);
+      }
+   }
+
+   componentDidMount() {
+      
+      // this.h5pLib = "H5P.MultiChoice 1.14";
+
+      /* New Code */
+      
+      
+      /*
+      const headers = {
+         'Content-Type': 'application/json',
+         'Authorization': 'JWT fefege...'
+       }
+      axios.get(global.config.h5pExternalAjaxUrl+'/h5p/create', {
+        headers: headers
+      })
+      .then((response) => {
+         console.log("========================");
+         window.H5PIntegration = response.data.settings;
+         console.log(window.H5PIntegration);
+         console.log("========================");
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-core/js/jquery.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-core/js/h5p.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-core/js/h5p-event-dispatcher.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-core/js/h5p-x-api-event.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-core/js/h5p-x-api.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-core/js/h5p-content-type.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-core/js/h5p-confirmation-dialog.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-core/js/h5p-action-bar.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-core/js/request-queue.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-editor.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         
+
+         var script = document.createElement("script");
+         script.src = "/h5p/laravel-h5p/js/laravel-h5p-editor.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5p-hub-client.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-semantic-structure.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-library-selector.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-fullscreen-bar.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-form.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-text.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-html.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-number.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-textarea.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-file-uploader.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-file.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-image.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-image-popup.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-av.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-group.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-boolean.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-list.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-list-editor.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-library.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-library-list-cache.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-select.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-selector-hub.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-selector-legacy.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-dimensions.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-coordinates.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-none.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-metadata.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-metadata-author-widget.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-metadata-changelog-widget.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/scripts/h5peditor-pre-save.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/ckeditor/ckeditor.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+         var script = document.createElement("script");
+         script.src = "/h5p/h5p-editor/language/en.js";
+         script.async = false;
+         document.body.appendChild(script);
+
+
+
+
+
+
+
+         // }) ;
+         script.onload = () => this.scriptLoaded();
+      });
+      */
+      /* New Code end */
 
       
-      this.h5pLib = props.resource.editor; //"H5P.Audio 1.4";
-
-
-
-   }
-   componentDidMount() {
-      // console.log(this.state);
-      // this.h5pLib = "H5P.MultiChoice 1.14";
       window.H5PIntegration = {
-         "baseUrl": "http://localhost",
+         "baseUrl": global.config.h5pBaseUrl,
          "url": "/storage/h5p",
          "postUserStatistics": true,
          "ajax": {
-            "setFinished": "http://localhost:9001/ajax/finish",
-            "contentUserData": "http://localhost:9001/ajax/content-user-data/?content_id=:contentId&data_type=:dataType&sub_content_id=:subContentId"
+            "setFinished": global.config.h5pAjaxUrl+"/ajax/finish",
+            "contentUserData": global.config.h5pAjaxUrl+"/ajax/content-user-data/?content_id=:contentId&data_type=:dataType&sub_content_id=:subContentId"
          },
          "saveFreq": false,
-         "siteUrl": "http://localhost",
+         "siteUrl": global.config.h5pBaseUrl,
          "l10n": {
             "H5P": {
                "fullscreen": "Fullscreen",
@@ -71,13 +354,13 @@ class EditorPage extends React.Component {
             "mail": "localuser@local.com"
          },
          "editor": {
-            "filesPath": "/h5p/editor",
+            "filesPath": "/h5papi/storage/h5p/editor",
             "fileIcon": {
                "path": "/h5p/h5p-editor/images/binary-file.png",
                "width": 50,
                "height": 50
             },
-            "ajaxPath": "http://localhost:9001/ajax/",
+            "ajaxPath": global.config.h5pAjaxUrl+"/ajax/",
             "libraryUrl": "/h5p/h5p-editor/",
             "copyrightSemantics": {
                "name": "copyright",
@@ -784,61 +1067,6 @@ class EditorPage extends React.Component {
             ]
          }
       };
-
-      let scripts = [
-         // { src: "/h5p/core/js/jquery.js" },
-         // { src: "/h5p/core/js/h5p.js" },
-
-         // { src: "/h5p/core/js/h5p-event-dispatcher.js"} ,
-         // { src: "/h5p/core/js/h5p-x-api-event.js"} ,
-         // { src: "/h5p/core/js/h5p-x-api.js"} ,
-         // { src: "/h5p/core/js/h5p-content-type.js"} ,
-         // { src: "/h5p/core/js/h5p-confirmation-dialog.js"} ,
-         // { src: "/h5p/core/js/h5p-action-bar.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-editor.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor.js"} ,
-         // { src: "/h5p/editor/language/en.js"} ,
-         // { src: "/h5p/editor/scripts/h5p-hub-client.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-semantic-structure.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-library-selector.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-form.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-text.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-html.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-number.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-textarea.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-file-uploader.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-file.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-image.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-image-popup.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-av.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-group.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-boolean.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-list.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-list-editor.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-library.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-library-list-cache.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-select.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-selector-hub.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-selector-legacy.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-dimensions.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-coordinates.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-none.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-metadata.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-metadata-author-widget.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-metadata-changelog-widget.js"} ,
-         // { src: "/h5p/editor/scripts/h5peditor-pre-save.js"} ,
-         // { src: "/h5p/editor/ckeditor/ckeditor.js"}
-      ]
-      //Append the script element on each iteration
-      // scripts.map(item => { 
-      //     const script = document.createElement("script")
-      //     script.src = item.src
-      //     script.async = true
-      //     // script.onload = () => ;
-      //     document.body.appendChild(script)
-      // }) ;
-
-      // scripts.map(item => { 
       var script = document.createElement("script");
       script.src = "/h5p/h5p-core/js/jquery.js";
       script.async = false;
@@ -889,10 +1117,7 @@ class EditorPage extends React.Component {
       script.async = false;
       document.body.appendChild(script);
 
-      //   var script = document.createElement("script");
-      //   script.src = "/h5p/laravel-h5p/js/laravel-h5p.js";
-      //   script.async = false;
-      //   document.body.appendChild(script);
+      
 
       var script = document.createElement("script");
       script.src = "/h5p/laravel-h5p/js/laravel-h5p-editor.js";
@@ -1065,6 +1290,7 @@ class EditorPage extends React.Component {
       document.body.appendChild(script);
 
 
+      
 
 
 
@@ -1072,6 +1298,7 @@ class EditorPage extends React.Component {
 
       // }) ;
       script.onload = () => this.scriptLoaded();
+      
 
    }
 
@@ -1157,7 +1384,7 @@ class EditorPage extends React.Component {
                   //   console.log(h5peditor.getParams());
 
                   //   $.ajax({
-                  //           url:"http://localhost:9001/api/h5p/?api_token=test",
+                  //           url:global.config.h5pAjaxUrl+"/h5p/?api_token=test",
                   //           data: JSON.stringify({
                   //               library: h5peditor.getLibrary(),
                   //               parameters: JSON.stringify(h5peditor.getParams()),
@@ -1257,7 +1484,7 @@ class EditorPage extends React.Component {
       parameters: JSON.stringify(window.h5peditorCopy.getParams()),
       action: 'create'
     }
-    axios.post('http://localhost:9001/api/h5p/?api_token=test', data, {
+    axios.post(global.config.h5pAjaxUrl+'/h5p/?api_token=test', data, {
         headers: headers
       })
       .then((response) => {
@@ -1267,7 +1494,7 @@ class EditorPage extends React.Component {
         console.log(error);
       });
       // $.ajax({
-      //    url: "http://localhost:9001/api/h5p/?api_token=test",
+      //    url: global.config.h5pAjaxUrl+"/h5p/?api_token=test",
       //    data: JSON.stringify({
       //       library: h5peditor.getLibrary(),
       //       parameters: JSON.stringify(h5peditor.getParams()),
@@ -1293,7 +1520,7 @@ class EditorPage extends React.Component {
    render() {
       return (
          <div>
-            <form method="POST" action="http://localhost:9001/h5p" accept-charset="UTF-8" className="form-horizontal"  /*enctype="multipart/form-data"*/ id="laravel-h5p-form">
+            <form method="POST" action={global.config.h5pAjaxUrl+"/h5p"} accept-charset="UTF-8" className="form-horizontal"  /*enctype="multipart/form-data"*/ id="laravel-h5p-form">
                <input name="_token" type="hidden" value="B6TFsmFD5TLZaWCAYZ91ly0D2We0xjLAtRmBJzQT" />
                <input type="hidden" name="library" id="laravel-h5p-library" value={this.h5pLib} />
                <input type="hidden" name="parameters" id="laravel-h5p-parameters" value="{&quot;params&quot;:{},&quot;metadata&quot;:{}}" />
@@ -1316,7 +1543,7 @@ class EditorPage extends React.Component {
                   <div className="form-group laravel-h5p-upload-container">
                      <label for="inputUpload" className="control-label col-md-3">Upload</label>
                      <div className="col-md-9">
-                        <input type="file" name="h5p_file" id="h5p-file" className="laravel-h5p-upload form-control" />
+                        <input type="file" name="h5p_file" id="h5p-file" className="laravel-h5p-upload form-control" onChange={(e) => this.setH5pFileUpload(e)} />
                         <small className="h5p-disable-file-check helper-block">
                            <label className="">
                               <input type="checkbox" name="h5p_disable_file_check" id="h5p-disable-file-check" /> Disable file extension check
@@ -1331,10 +1558,10 @@ class EditorPage extends React.Component {
                      <div className="col-md-6">
 
                         <label className="radio-inline">
-                           <input type="radio" name="action" value="upload" className="laravel-h5p-type" />Upload
+                           <input type="radio" name="action" value="upload" className="laravel-h5p-type" checked={this.state.submitAction === 'upload'} onChange={this.onSubmitActionRadioChange} />Upload
                         </label>
                         <label className="radio-inline">
-                           <input type="radio" name="action" value="create" className="laravel-h5p-type" checked="checked" />create
+                           <input type="radio" name="action" value="create" className="laravel-h5p-type" checked={this.state.submitAction === 'create'} onChange={this.onSubmitActionRadioChange} />Create
                         </label>
 
 
@@ -1390,8 +1617,7 @@ class EditorPage extends React.Component {
 
                   <div className="form-group">
                      <div className="col-md-9 col-md-offset-3">
-                        {/* <a href="http://localhost:9001/h5p" className="btn btn-default"><i className="fa fa-reply"></i> Cancel</a> */}
-                        <button type="submit" className="add-resource-submit-btn" onClick={this.handleH5PSubmit}>Finish</button>
+                        <button type="submit" className="add-resource-submit-btn" onClick={this.submitResource}>Finish</button>
                         {/* <input className="btn btn-primary" data-loading-text="Saving..." type="submit" value="Save" /> */}
 
                      </div>
@@ -1412,16 +1638,17 @@ class EditorPage extends React.Component {
 
 
 const mapDispatchToProps = dispatch => ({
-   createPlaylist: (title) => dispatch(createPlaylist(title))
+   
 });
 
 const mapStateToProps = (state) => {
    return {
+      resource: state.resource
    };
 }
 
 
-export default connect(
-   mapStateToProps,
-   mapDispatchToProps
-)(EditorPage);
+
+
+export default withRouter(connect(mapStateToProps,
+   mapDispatchToProps)(EditorPage))

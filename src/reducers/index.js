@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-
+import {reducer as formReducer} from 'redux-form'
 import authReducer from './authReducer'
 import playlistReducer from './playlistReducer'
 import resourceReducer from './resourceReducer'
@@ -11,6 +11,7 @@ export default combineReducers({
   project: projectReducer,
   playlist: playlistReducer,
   resource: resourceReducer,
-  ui: uiReducer
+  ui: uiReducer,
+  form:formReducer
 })
 

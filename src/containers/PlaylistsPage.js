@@ -1,5 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
+
+import ReactPlaceholder from 'react-placeholder';
+import "react-placeholder/lib/reactPlaceholder.css";
 import {
   BrowserRouter as Router,
   withRouter,
@@ -36,13 +39,26 @@ import { startLogin } from "../actions/auth";
 
 import Header from "../components/Header/Header";
 import Sidebar from "../components/Sidebar/Sidebar";
-import CreatePlaylistPopup from "../components/CreatePlaylistPopup/CreatePlaylistPopup";
+
+import { startLogin } from "../actions/auth";
+import { createPlaylistAction, deletePlaylistAction, showCreatePlaylistModalAction, hideCreatePlaylistModalAction, loadProjectPlaylistsAction } from "../actions/playlist";
+import {showDeletePlaylistPopupAction, hideDeletePlaylistModalAction} from './../actions/ui'
+import { deleteResourceAction, createResourceAction, createResourceByH5PUploadAction, showCreateResourceModalAction, hideCreateResourceModalAction, previewResourceAction, hidePreviewResourceModalAction } from "../actions/resource";
+import {
+  showCreateProjectModalAction, 
+  loadProjectAction
+} from "../actions/project";
 import NewResourcePage from "./NewResourcePage";
 import PreviewResourcePage from "./PreviewResourcePage";
 import DeletePopup from "./../components/DeletePopup/DeletePopup";
 import PlaylistCard from "../components/Playlist/PlaylistCard";
 
 import "./PlaylistsPage.scss";
+
+import DeletePopup from './../components/DeletePopup/DeletePopup';
+
+import PlaylistsLoading from './../components/Loading/PlaylistsLoading'
+
 
 export class PlaylistsPage extends React.Component {
   constructor(props) {
@@ -150,18 +166,18 @@ export class PlaylistsPage extends React.Component {
     this.props.previewResourceAction(id);
   };
 
-  handleCreateResourceSubmit = async (
-    currentPlaylistId,
-    editor,
-    editorType
-  ) => {
-    try {
-      await this.props.createResourceAction(
-        currentPlaylistId,
-        editor,
-        editorType
-      );
-      this.props.history.push("/project/" + this.props.match.params.projectid);
+  handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload) => {
+    try {            
+      if(payload.submitAction === 'upload'){
+        payload.event.preventDefault();
+        await this.props.createResourceByH5PUploadAction(currentPlaylistId, editor, editorType, payload);
+      }else{
+        await this.props.createResourceAction(currentPlaylistId, editor, editorType);        
+      }            
+
+      this.props.history.push("/project/"+this.props.match.params.projectid);
+      // this.props.hideCreatePlaylistModal();
+
     } catch (e) {
       console.log(e.message);
     }
@@ -171,11 +187,12 @@ export class PlaylistsPage extends React.Component {
     const { playlists } = this.props.playlists;
     const { showDeletePlaylistPopup } = this.props.ui;
 
-    if (this.props.ui.pageLoading) return <div>Loading...</div>;
 
     return (
-      <div>
-        <Header {...this.props} />
+      <>
+      <Header {...this.props} />
+      <ReactPlaceholder type='media' showLoadingAnimation customPlaceholder={PlaylistsLoading} ready={!this.props.ui.pageLoading}>
+        
         <div className="main-content-wrapper">
           <div className="sidebar-wrapper">
             <Sidebar />
@@ -258,8 +275,12 @@ export class PlaylistsPage extends React.Component {
             deleteType="Playlist"
             {...this.props}
           />
-        ) : null}
-      </div>
+          : null
+        }
+
+      </ReactPlaceholder>
+      </>
+
     );
   }
 }
@@ -279,10 +300,9 @@ const mapDispatchToProps = (dispatch) => ({
   hidePreviewResourceModalAction: () =>
     dispatch(hidePreviewResourceModalAction()),
   showCreateProjectModalAction: () => dispatch(showCreateProjectModalAction()),
-  loadProjectPlaylistsAction: (projectid) =>
-    dispatch(loadProjectPlaylistsAction(projectid)),
-  createResourceAction: (playlistid, editor, editorType) =>
-    dispatch(createResourceAction(playlistid, editor, editorType)),
+  loadProjectPlaylistsAction: (projectid) => dispatch(loadProjectPlaylistsAction(projectid)),
+  createResourceAction: (playlistid, editor, editorType) => dispatch(createResourceAction(playlistid, editor, editorType)),
+  createResourceByH5PUploadAction: (playlistid, editor, editorType, payload) => dispatch(createResourceByH5PUploadAction(playlistid, editor, editorType, payload)),
   loadProjectAction: (projectid) => dispatch(loadProjectAction(projectid)),
   deleteResourceAction: (resourceid) =>
     dispatch(deleteResourceAction(resourceid)),

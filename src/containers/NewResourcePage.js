@@ -3,15 +3,16 @@ import { connect } from "react-redux";
 import { slideInRight } from 'react-animations';
 
 import styled, { keyframes } from 'styled-components';
-import { showCreateResourceActivityAction, showCreateResourceQuestionAction, showCreateResourceDescriptionAction } from "./../actions/resource";
+import { showCreateResourceActivityAction } from "./../actions/resource";
 
-import ResourceActivity from '../components/Resource/AddResource/ResourceActivity';
-import ResourceQuestion from '../components/Resource/AddResource/ResourceQuestion';
-import ResourceDescription from '../components/Resource/AddResource/ResourceDescription';
+import ResourceActivityType from '../components/Resource/AddResource/ResourceActivityType';
+import ResourceSelectActivity from '../components/Resource/AddResource/ResourceSelectActivity';
+import ResourceDescribeActivity from '../components/Resource/AddResource/ResourceDescribeActivity';
+import ResourceActivityBuild from '../components/Resource/AddResource/ResourceActivityBuild';
+
 
 import { withRouter } from 'react-router-dom'
-import H5PPreview from "./H5PPreview";
-import CreateProjectPopup from "../components/CreateProjectPopup/CreateProjectPopup";
+
 
 
 const bounceAnimation = keyframes `${slideInRight}`;
@@ -23,8 +24,6 @@ const BouncyDiv = styled.div`
 export class NewResourcePage extends React.Component {
   constructor(props) {
     super(props);
-    
-
   }
 
   componentDidMount() {
@@ -33,17 +32,13 @@ export class NewResourcePage extends React.Component {
     this.props.showCreateResourceActivity();
   }
 
-  
-
   render() {
     return (
     
     <div className="resource-modal">
         <div className="modal fade right" id="createPlaylistModal"  role="dialog" aria-labelledby="createPlaylistModalLabel" aria-hidden="true">
               <div className="modal-dialog" role="document">
-                  
                       <BouncyDiv className="modal-content">
-                        
                           <div className="modal-title">
                             <h1>
                               Create New Activity
@@ -55,19 +50,22 @@ export class NewResourcePage extends React.Component {
                           <div className="modal-body">
                             <div className='row'>
                               <div className="col-md-12"> 
-                              {this.props.resource.isResourceActivity ?  
-                                <ResourceActivity selectQuestionBox={this.props.showCreateResourceQuestion}  />  
+                                { this.props.resource.isResourceActivityType ?  
+                                  <ResourceActivityType {...this.props}  />  
                                 : null  
                                 }  
-                                {this.props.resource.isResourceQuestion ?  
-                                <ResourceQuestion  selectDescriptionBox={this.props.showCreateResourceDescription}  />  
-                                : null  
+                                { this.props.resource.isResourceSelectActivity ?  
+                                  <ResourceSelectActivity  {...this.props}  />  
+                                  : null  
                                 }  
-                                {this.props.resource.isResourceDescription ?  
-                                <ResourceDescription {...this.props} />  
-                                : null  
+                                { this.props.resource.isResourceDescribeActivity ?  
+                                  <ResourceDescribeActivity  selectResourceDescribeActivity={this.props.showResourceDescribeActivity}  />  
+                                  : null  
+                                }  
+                                { this.props.resource.isResourceActivityBuild ?  
+                                  <ResourceActivityBuild {...this.props} />  
+                                  : null  
                                 }
-                                
                               </div>
                             </div>
                           </div>
@@ -82,22 +80,13 @@ export class NewResourcePage extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
   showCreateResourceActivity: () => dispatch(showCreateResourceActivityAction()),
-  showCreateResourceQuestion: () => dispatch(showCreateResourceQuestionAction()),
-  showCreateResourceDescription: (editor, editorType) => dispatch(showCreateResourceDescriptionAction(editor, editorType)),
 });
 
 const mapStateToProps =(state) => {
-  // console.log(state);
   return {
     resource: state.resource
   };
 }
-
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(NewResourcePage);
 
 export default withRouter(connect(mapStateToProps,
   mapDispatchToProps)(NewResourcePage));

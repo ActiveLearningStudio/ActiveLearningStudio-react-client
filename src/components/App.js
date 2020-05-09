@@ -10,20 +10,7 @@ import './../App.scss'
 import AppRouter from './../routers/AppRouter'
 
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
 
-import BookList from './BookList';
-
-import { createStore } from 'redux'
-
-const client = new ApolloClient({
-  uri: 'http://localhost:8101/graphql'
-});
 
 function App() {
   return (
