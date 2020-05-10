@@ -17,42 +17,10 @@ const FaceDiv = styled.div`
 `;
 
 const ResourceActivityBuild = (props) => {
-  console.log(props);
   return (
     <div className="row">
       <div className="col-md-3">
-      <AddResourceSidebar />
-        {/* <div className="create-resource-sidebar">
-          <div className="select-activity filled">
-            <div className="activity-box">
-              <div className="number-box ">
-                  <span className="number">1</span>
-              </div>
-              <span className="bottom-vertical-line"></span>
-            </div>
-            <span className="name">Pick Activity Type</span>
-          </div>
-          <div className="select-question filled">
-            <div className="question-box">
-              <span className="top-vertical-line"></span>
-              <div className="number-box ">
-                  <span className="number">2</span>
-              </div>
-              <span className="bottom-vertical-line"></span>
-            </div>
-            <span className="name">Select Activity</span>
-          </div>
-          <div className="select-description selected">
-            <div className="description-box">
-              <span className="top-vertical-line"></span>
-              <div className="number-box ">
-                  <span className="number">3</span>
-              </div>
-            </div>
-            <span className="name">Build Activity</span>
-          </div>
-          
-        </div> */}
+      <AddResourceSidebar {...props} />
       </div>
       <div className="col-md-9">
         <div className="resource-activity">
@@ -64,6 +32,12 @@ const ResourceActivityBuild = (props) => {
               
               {props.resource.newResource.editorType == 'tinymce' ?  
                 <TinyEditor {...props} />
+                : null  
+                }  
+              
+              
+              {props.editResourcePopup ?  
+                <EditorPage {...props} />
                 : null  
                 }  
               

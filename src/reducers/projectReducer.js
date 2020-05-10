@@ -21,7 +21,9 @@ const defaultProgramState = () => {
   } else {
     return {
         'projects':[],
-        selectedProject: null,
+        selectedProject: {
+          _id:null
+        },
         thumb_url:null,
         showCreateProjectSubmenu:false,
         showCreateProjectPopup:false
@@ -39,7 +41,9 @@ const projectReducer = (state = defaultProgramState(), action) => {
     case SHOW_CREATE_PROJECT_MODAL:
       return {
         ...state,
-        selectedProject:null,
+        selectedProject:{
+          _id:null
+        },
         thumbUrl:null
       };
     case CREATE_PROJECT:

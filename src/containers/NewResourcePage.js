@@ -50,19 +50,26 @@ export class NewResourcePage extends React.Component {
                           <div className="modal-body">
                             <div className='row'>
                               <div className="col-md-12"> 
-                                { this.props.resource.isResourceActivityType ?  
+                              
+                                { this.props.resource.isResourceActivityType && !this.props.editResourcePopup ?  
                                   <ResourceActivityType {...this.props}  />  
                                 : null  
                                 }  
-                                { this.props.resource.isResourceSelectActivity ?  
+                                { this.props.resource.isResourceSelectActivity && !this.props.editResourcePopup  ?  
                                   <ResourceSelectActivity  {...this.props}  />  
                                   : null  
                                 }  
-                                { this.props.resource.isResourceDescribeActivity ?  
+                                { this.props.resource.isResourceDescribeActivity && !this.props.editResourcePopup  ?  
                                   <ResourceDescribeActivity  selectResourceDescribeActivity={this.props.showResourceDescribeActivity}  />  
                                   : null  
                                 }  
-                                { this.props.resource.isResourceActivityBuild ?  
+                                { this.props.resource.isResourceActivityBuild && !this.props.editResourcePopup ?  
+                                  <ResourceActivityBuild {...this.props} />  
+                                  : null  
+                                }
+
+                                {/* Edit Activity */}
+                                { this.props.editResourcePopup ?  
                                   <ResourceActivityBuild {...this.props} />  
                                   : null  
                                 }

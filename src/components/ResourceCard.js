@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 
 const ResourceCard = (props) => {
 	return (
-		<div className="playlist-resource" key={props.resource.id}>
+		<div className="playlist-resource" key={props.res.id}>
 			<div className="row">
 				<div className="col-md-10">
-					<h3 className="title">{props.resource.title}</h3>
+					<h3 className="title">{props.res.title}</h3>
 				</div>
 				<div className="col-md-2">
 					<div className="activity-options">
@@ -15,11 +15,11 @@ const ResourceCard = (props) => {
 								<i className="fa fa-ellipsis-v" aria-hidden="true"></i>
 							</button>
 							<div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-								<Link className="dropdown-item" to={"/resource/preview/"+props.resource.id}><i className="fa fa-eye" aria-hidden="true"></i> Preview</Link>
-								<Link className="dropdown-item" to={"/project/:projectid/playlist/:playlistid/activity/create/"+props.resource._id}><i className="fa fa-pencil" aria-hidden="true"></i> Edit</Link>
+								<Link className="dropdown-item" to={"/resource/preview/"+props.res.id}><i className="fa fa-eye" aria-hidden="true"></i> Preview</Link>
+								<Link className="dropdown-item" to={"/project/"+props.project.selectedProject._id+"/playlist/"+props.plist._id+"/activity/create/"+props.res._id}><i className="fa fa-pencil" aria-hidden="true"></i> Edit</Link>
 								<a className="dropdown-item" href="#"><i className="fa fa-share" aria-hidden="true"></i> Send To</a>
 								<a className="dropdown-item" href="#" onClick={(e) => { e.preventDefault(); window.open("/api/download/project/123"); }}><i className="fa fa-cloud-download" aria-hidden="true"></i> Executable</a>
-								<a className="dropdown-item" onClick={() => props.handleShowDeletePopup(props.resource._id, props.resource.title, 'Activity')}><i className="fa fa-times-circle-o" aria-hidden="true"></i> Delete</a>
+								<a className="dropdown-item" onClick={() => props.handleShowDeletePopup(props.res._id, props.res.title, 'Activity')}><i className="fa fa-times-circle-o" aria-hidden="true"></i> Delete</a>
 							</div>
 						</div>
 					</div>

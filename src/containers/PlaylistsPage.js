@@ -159,11 +159,13 @@ export class PlaylistsPage extends React.Component {
 
   
 
-  populateResources = (resources) => {
-    return resources.map(resource => (
+  populateResources = (playlist) => {
+    return playlist.resources.map(resource => (
         <ResourceCard key={resource._id} 
-        resource={resource}
-        handleShowDeletePopup = {this.handleShowDeletePopup} />
+        res={resource}
+        plist = {playlist}
+        handleShowDeletePopup = {this.handleShowDeletePopup}
+        {...this.props} />
     ));
   }
 
@@ -214,7 +216,7 @@ export class PlaylistsPage extends React.Component {
           </div>
           <div className="list-body">
             {playlist.resources ?
-              this.populateResources(playlist.resources)
+              this.populateResources(playlist)
               : null
             }
             

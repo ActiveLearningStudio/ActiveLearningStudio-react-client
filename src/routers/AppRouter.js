@@ -29,18 +29,18 @@ const AppRouter = () => (
     <Switch>
 
       <PrivateRoute path="/" exact component={ProjectsPage} />
-      <PrivateRoute path="/project/preview2/:projectid" component={PreviewPage} />
-      <PrivateRoute path="/resource/preview/:resourceid" component={PreviewPage}  previewType="resource" />
-      <PrivateRoute path="/playlist/preview/:playlistid" component={PreviewPage}  previewType="playlist" />
+      <PrivateRoute path="/project/preview2/:projectid" exact component={PreviewPage} />
+      <PrivateRoute path="/resource/preview/:resourceid" exact component={PreviewPage}  previewType="resource" />
+      <PrivateRoute path="/playlist/preview/:playlistid" exact component={PreviewPage}  previewType="playlist" />
 
       <PrivateRoute path="/project/create/:projectid" component={ProjectsPage} showEditProjectPopup={true} editMode={true} />
       <PrivateRoute path="/project/create" exact component={ProjectsPage} showCreateProjectPopup={true} editMode={false} />
       
-      <PrivateRoute path="/project/:projectid/playlist/:playlistid/activity/create/:activityid" exact component={PlaylistsPage} openCreateResourcePopup={true} />
+      <PrivateRoute path="/project/:projectid/playlist/:playlistid/activity/create/:activityid" exact component={PlaylistsPage} openCreateResourcePopup={true} editResourcePopup = {true} />
       <PrivateRoute path="/project/:projectid" exact component={PlaylistsPage} />
-      <PrivateRoute path="/project/:projectid/playlist/create" component={PlaylistsPage} openCreatePopup={true} />
+      <PrivateRoute path="/project/:projectid/playlist/create" exact component={PlaylistsPage} openCreatePopup={true} />
       <PrivateRoute path="/project/:projectid/playlist/:playlistid/activity/create" exact component={PlaylistsPage}  openCreateResourcePopup={true} />
-      <PrivateRoute path="/activities/:activityid" component={PlaylistsPage} />
+      <PrivateRoute path="/activities/:activityid" exact component={PlaylistsPage} />
       
       
       
