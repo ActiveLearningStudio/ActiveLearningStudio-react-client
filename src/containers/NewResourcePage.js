@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { slideInRight } from 'react-animations';
 
 import styled, { keyframes } from 'styled-components';
-import { showCreateResourceActivityAction } from "./../actions/resource";
+import { showCreateResourceActivityAction, showBuildActivityAction } from "./../actions/resource";
 
 import ResourceActivityType from '../components/Resource/AddResource/ResourceActivityType';
 import ResourceSelectActivity from '../components/Resource/AddResource/ResourceSelectActivity';
@@ -30,6 +30,10 @@ export class NewResourcePage extends React.Component {
     window.scrollTo(0, 0);
     //show activity content
     this.props.showCreateResourceActivity();
+    if(this.props.editResourcePopup){
+      this.props.showBuildActivityAction('H5P.InteractiveVideo 1.21', 'tinymce');
+    }
+    
   }
 
   render() {
@@ -87,6 +91,7 @@ export class NewResourcePage extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
   showCreateResourceActivity: () => dispatch(showCreateResourceActivityAction()),
+  showBuildActivityAction: (editor, editorType) => dispatch(showBuildActivityAction(editor, editorType)),
 });
 
 const mapStateToProps =(state) => {

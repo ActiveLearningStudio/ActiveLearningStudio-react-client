@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { fadeIn } from 'react-animations';
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import styled, { keyframes } from 'styled-components';
+import DropdownList from 'react-widgets/lib/DropdownList'
+import 'react-widgets/dist/css/react-widgets.css'
 
 import {
   BrowserRouter as Router,
@@ -40,6 +42,19 @@ const renderMetaTitleInput = ({ input, label, type, meta: { touched, error, warn
 
 
 
+const renderMetaEducationLevelInput = ({ input, label, type, meta: { touched, error, warning } }) => (
+  <div>
+    <label><h2>{label}</h2></label>
+    <div>
+      <input {...input} type={type} />
+      {touched && ((error && <span className="validation-error">{error}</span>) || (warning && <span>{warning}</span>))}
+    </div>
+  </div>
+)
+
+
+
+
 const addActiveClass = event => event.target.classList.add('active');
 
 var defaultEditor = 'H5P.MultiChoice 1.14';
@@ -48,6 +63,29 @@ function editorQuestionChange(question) {
   defaultEditor = question.h5pLib;
   defaultEditorType = question.type
 }
+
+
+const subjects = [ { subject: 'Arts', value: 'Arts' },
+  { subject: 'Career & Technical Education', value: 'CareerTechnicalEducation' },
+  { subject: 'Computer Science', value: 'ComputerScience' },
+  { subject: 'Language Arts', value: 'LanguageArts' },
+  { subject: 'Mathematics', value: 'Mathematics' },
+  { subject: 'Science', value: 'Science' },
+  { subject: 'Social Studies', value: 'SocialStudies' },
+];
+
+
+const educationLevels = [ 
+  { name: 'Preschool (Ages 0-4)', value: '1' },
+  { name: 'Kindergarten-Grade 2 (Ages 5-7)', value: '2' },
+  { name: 'Grades 3-5 (Ages 8-10)', value: '3' },
+  { name: 'Grades 6-8 (Ages 11-13)', value: '4' },
+  { name: 'Grades 9-10 (Ages 14-16)', value: '5' },
+  { name: 'Grades 11-12 (Ages 16-18)', value: '6' },
+  { name: 'College & Beyond', value: '7' },
+  { name: 'Professional Development', value: '8' },
+  { name: 'Special Education', value: '9' },
+];
 
 
 const onSubmit = async (values, dispatch, props) => {
@@ -97,7 +135,7 @@ let ResourceDescribeActivity = (props) => {
                     </div>
 
 
-                    <div className="row">
+                    {/* <div className="row">
                       <div className="col-md-12">
                         <div className="upload-thumbnail">
                           <h2>Upload thumbnail</h2>
@@ -107,38 +145,39 @@ let ResourceDescribeActivity = (props) => {
                           </label>
 
 
-                          {/* {
+                           {
                       props.project.thumbUrl ?
                         <div className="thumb-display">
                           <div className="thumb"><img src={props.project.thumbUrl} /></div>
                         </div>
                         :
                         null
-                    } */}
+                    } 
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                     <div className="row">
                       <div className="col-md-6">
                         <div className="meta-subjects">
+                          <label><h2>Subject</h2></label>
                           <Field
-                            name="metaTitle"
-                            component={renderMetaTitleInput}
-                            type="text"
-                            label="Subjects"
-                            validate={[required]}
-                          />
+                            name="metaSubject"
+                            component={DropdownList}
+                            data={subjects}
+                            valueField="value"
+                            textField="subject"/>
                         </div>
                       </div>
                       <div className="col-md-6">
                         <div className="meta-education-levels">
+
+                          <label><h2>Education Level</h2></label>
                           <Field
-                            name="metaTitle"
-                            component={renderMetaTitleInput}
-                            type="text"
-                            label="Education Level"
-                            validate={[required]}
-                          />
+                            name="metaEducationLevels"
+                            component={DropdownList}
+                            data={educationLevels}
+                            valueField="value"
+                            textField="name"/>
                         </div>
                       </div>
                     </div>

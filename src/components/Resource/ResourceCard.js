@@ -111,13 +111,15 @@ export class ResourceCard extends React.Component {
 										></i>{" "}
 										Preview
 									</Link>
-									<a className="dropdown-item" href="#">
+									<Link className="dropdown-item" 
+										// to={"/project/"+this.props.project.selectedProject._id+"/playlist/"+this.props.plist._id+"/activity/create/"+this.props.res._id}>
+										to={"/project/5eb2f847f547990d7d78b2e3/playlist/1/activity/create/"+this.props.resource._id}>
 										<i
 											className="fa fa-pencil"
 											aria-hidden="true"
 										></i>{" "}
 										Edit
-									</a>
+									</Link>
 									<a className="dropdown-item" href="#">
 										<i
 											className="fa fa-share"

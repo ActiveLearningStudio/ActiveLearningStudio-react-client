@@ -26,7 +26,10 @@ const defaultResourceState = () => {
             'showCreateResourcePopup': false,
             newResource:{
                 activityType:1,
-                activity:''
+                activity:'',
+                params: {
+                    data:''
+                }
             },
             selectedResource: null
         };
@@ -91,6 +94,10 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                 isResourceDescribeActivity:false,
                 isResourceActivityBuild:true,
                 isDescribeFilled:true,
+                newResource: {
+                    ...state.newResource,
+                    params:action.params
+                }
             };
         case CREATE_RESOURCE:
             return {

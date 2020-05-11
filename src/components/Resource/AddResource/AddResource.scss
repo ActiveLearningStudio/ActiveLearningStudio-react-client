@@ -494,7 +494,7 @@ input[type="radio"]:checked+.activity-item {
             margin-bottom: 15px;
         }
         .meta-title, .meta-subjects, .meta-education-levels {
-            input {
+            input, .rw-widget-input {
                 width:100%;
                 border: 1px solid #d9dfe8;
                 border-left: 3px solid #d9dfe8;
