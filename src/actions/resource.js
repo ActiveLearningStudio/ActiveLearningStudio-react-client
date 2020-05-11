@@ -119,7 +119,7 @@ export const showBuildActivity = (editor, editorType, params) => ({
 export const showBuildActivityAction = (editor, editorType) => {
     return async dispatch => {
         try {
-            axios.get(global.config.h5pAjaxUrl+'/h5p/content-params/1')
+            axios.get(global.config.h5pAjaxUrl+'/h5p/content-params/47')
             .then((params) => {
                dispatch(
                     showBuildActivity(editor, editorType, params)
@@ -181,7 +181,7 @@ export const editResourceAction = (playlistid, editor, editorType) => {
                 action: 'create'
               };
             // insert into mysql
-            const response = await axios.patch(global.config.h5pAjaxUrl+'/api/h5p/1', data, {
+            const response = await axios.patch(global.config.h5pAjaxUrl+'/api/h5p/47', data, {
                 headers: headers
               })
               .then((response) => {
