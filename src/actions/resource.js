@@ -10,7 +10,10 @@ import {
     HIDE_PREVIEW_PLAYLIST_MODAL,
     LOAD_RESOURCE,
     DELETE_RESOURCE,
-    SHOW_RESOURCE_DESCRIBE_ACTIVITY
+    SHOW_RESOURCE_DESCRIBE_ACTIVITY,
+    SELECT_ACTIVITY_TYPE,
+    SELECT_ACTIVITY,
+    DESCRIBE_ACTIVITY
 } from './../constants/actionTypes';
 
 export const loadResource = (resource, previous, next) => ({
@@ -238,7 +241,8 @@ export const createResource = (playlistid, resource, editor, editorType) => ({
     editorType
 });
 
-export const createResourceAction = (playlistid, editor, editorType) => {
+export const createResourceAction = (playlistid, editor, editorType, metaData) => {
+    alert(metaData);
     return async dispatch => {
         try {
             const { token } = JSON.parse(localStorage.getItem("auth"));
@@ -267,6 +271,7 @@ export const createResourceAction = (playlistid, editor, editorType) => {
                  {
                      mysqlid: resource.id,
                      playlistid:playlistid,
+                     metaData: metaData,
                      action: 'create'
                  }, {
                     headers: headers
@@ -424,3 +429,60 @@ export const deleteResource = (resourceid) => ({
     }
   }
   
+
+
+
+export const onChangeActivityType = (activityTypeId) => {
+    return ({
+    type:SELECT_ACTIVITY_TYPE,
+    activityTypeId
+})};
+
+export const onChangeActivityTypeAction = (e) => {
+    return dispatch => {
+        try {
+            let activityTypeId = e.target.value;
+            dispatch(
+                onChangeActivityType(activityTypeId)
+            )
+        } catch (e) {
+            throw new Error(e);
+        }
+    }
+}
+
+
+export const onChangeActivity = (activity) => ({
+    type:SELECT_ACTIVITY,
+    activity
+});
+
+export const onChangeActivityAction = ( activity, e) => {
+    return dispatch => {
+        try {
+            dispatch(
+                onChangeActivity(activity)
+            )
+        } catch (e) {
+            console.log(e);
+        }
+    }
+}
+
+
+export const onSubmitDescribeActivity = (metaData) => ({
+    type:DESCRIBE_ACTIVITY,
+    metaData
+});
+
+export const onSubmitDescribeActivityAction = ( metaData ) => {
+    return dispatch => {
+        try {
+            dispatch(
+                onSubmitDescribeActivity(metaData)
+            )
+        } catch (e) {
+            console.log(e);
+        }
+    }
+}

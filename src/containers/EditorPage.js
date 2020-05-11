@@ -15,7 +15,7 @@ class EditorPage extends React.Component {
       super(props);
       
       
-      this.h5pLib = props.resource.newResource.editor; //"H5P.Audio 1.4";
+      this.h5pLib = props.resource.newResource.activity.h5pLib; //"H5P.Audio 1.4";
       
       this.state = {
          submitAction : "create",
@@ -41,7 +41,7 @@ class EditorPage extends React.Component {
       
       if(0){
          let payload = {event, submitAction: this.state.submitAction, h5pFile: this.state.h5pFile};
-         this.props.handleEditResourceSubmit(this.props.match.params.playlistid, this.props.resource.newResource.editor, this.props.resource.newResource.editorType, payload);
+         this.props.handleEditResourceSubmit(this.props.match.params.playlistid, this.props.resource.newResource.activity.h5pLib, this.props.resource.newResource.activity.h5pLibType, payload);
       } else if(this.state.submitAction === "upload" && this.state.h5pFile === null){
          alert("Please choose .h5p file");
       } else if(this.state.submitAction === "upload" && this.state.h5pFile !== null){        
@@ -51,12 +51,12 @@ class EditorPage extends React.Component {
             alert("Invalid File\""+this.state.h5pFile.name+"\". Please choose .h5p file");           
          }else{
             let payload = {event, submitAction: this.state.submitAction, h5pFile: this.state.h5pFile};
-            this.props.handleCreateResourceSubmit(this.props.match.params.playlistid, this.props.resource.newResource.editor, this.props.resource.newResource.editorType, payload);
+            this.props.handleCreateResourceSubmit(this.props.match.params.playlistid, this.props.resource.newResource.activity.h5pLib, this.props.resource.newResource.activity.h5pLibType, payload, this.props.resource.newResource.metaData );
          }
       } else if(this.state.submitAction === "create") {
          let payload = {event, submitAction: this.state.submitAction, h5pFile: this.state.h5pFile};
          if(this.props.match.params.playlistid){
-            this.props.handleCreateResourceSubmit(this.props.match.params.playlistid, this.props.resource.newResource.editor, this.props.resource.newResource.editorType, payload);
+            this.props.handleCreateResourceSubmit(this.props.match.params.playlistid, this.props.resource.newResource.activity.h5pLib, this.props.resource.newResource.activity.h5pLibType, payload, this.props.resource.newResource.metaData);
          }
          else {
             alert("Error: Playlistid not present");
@@ -91,10 +91,7 @@ class EditorPage extends React.Component {
          }
       })
       .then((response) => {
-         console.log("========================");
          window.H5PIntegration = response.data.settings;
-         console.log(window.H5PIntegration);
-         console.log("========================");
          
 
          response.data.settings.editor.assets.js.forEach((value) => {

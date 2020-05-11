@@ -14,7 +14,7 @@ import {
   withRouter
 } from "react-router-dom";
 import AddResourceSidebar from "./AddResourceSidebar";
-import { showBuildActivityAction } from "./../../../actions/resource";
+import { showBuildActivityAction, onSubmitDescribeActivityAction } from "./../../../actions/resource";
 
 import './AddResource.scss'
 
@@ -42,40 +42,31 @@ const renderMetaTitleInput = ({ input, label, type, meta: { touched, error, warn
 
 
 
-const renderMetaEducationLevelInput = ({ input, label, type, meta: { touched, error, warning } }) => (
-  <div>
-    <label><h2>{label}</h2></label>
-    <div>
-      <input {...input} type={type} />
-      {touched && ((error && <span className="validation-error">{error}</span>) || (warning && <span>{warning}</span>))}
-    </div>
-  </div>
-)
 
 
 
 
-const addActiveClass = event => event.target.classList.add('active');
+// const addActiveClass = event => event.target.classList.add('active');
 
-var defaultEditor = 'H5P.MultiChoice 1.14';
-var defaultEditorType = 'h5p';
-function editorQuestionChange(question) {
-  defaultEditor = question.h5pLib;
-  defaultEditorType = question.type
-}
+// var defaultEditor = 'H5P.MultiChoice 1.14';
+// var defaultEditorType = 'h5p';
+// function editorQuestionChange(question) {
+//   defaultEditor = question.h5pLib;
+//   defaultEditorType = question.type
+// }
 
 
-const subjects = [ { subject: 'Arts', value: 'Arts' },
-  { subject: 'Career & Technical Education', value: 'CareerTechnicalEducation' },
-  { subject: 'Computer Science', value: 'ComputerScience' },
-  { subject: 'Language Arts', value: 'LanguageArts' },
-  { subject: 'Mathematics', value: 'Mathematics' },
-  { subject: 'Science', value: 'Science' },
-  { subject: 'Social Studies', value: 'SocialStudies' },
+const subjects = [{ subject: 'Arts', value: 'Arts' },
+{ subject: 'Career & Technical Education', value: 'CareerTechnicalEducation' },
+{ subject: 'Computer Science', value: 'ComputerScience' },
+{ subject: 'Language Arts', value: 'LanguageArts' },
+{ subject: 'Mathematics', value: 'Mathematics' },
+{ subject: 'Science', value: 'Science' },
+{ subject: 'Social Studies', value: 'SocialStudies' },
 ];
 
 
-const educationLevels = [ 
+const educationLevels = [
   { name: 'Preschool (Ages 0-4)', value: '1' },
   { name: 'Kindergarten-Grade 2 (Ages 5-7)', value: '2' },
   { name: 'Grades 3-5 (Ages 8-10)', value: '3' },
@@ -90,16 +81,28 @@ const educationLevels = [
 
 const onSubmit = async (values, dispatch, props) => {
   try {
-    props.showBuildActivityAction(defaultEditor, defaultEditorType)
+    console.log(values);
+    console.log(props);
+    alert(props.resource.newResource.activity.h5pLib);
+    alert(props.resource.newResource.activity.type);
+    props.onSubmitDescribeActivityAction(values);
+    props.showBuildActivityAction(props.resource.newResource.activity.h5pLib, props.resource.newResource.activity.type)
   } catch (e) {
     console.log(e.message);
   }
-
 }
 
 
+const renderMetaSubjects = ({ input, ...rest }) =>
+  <DropdownList {...input} {...rest} />
+
+const renderMetaEducationLevelInput = ({ input, ...rest }) =>
+  <DropdownList {...input} {...rest} />
+
+
 let ResourceDescribeActivity = (props) => {
-  const { handleSubmit, load, pristine, reset, submitting } = props;
+  console.log(props);
+  const { handleSubmit, metaSubject, load, pristine, reset, submitting } = props;
   return (
 
     <div className="row">
@@ -135,7 +138,7 @@ let ResourceDescribeActivity = (props) => {
                     </div>
 
 
-                    {/* <div className="row">
+                    <div className="row">
                       <div className="col-md-12">
                         <div className="upload-thumbnail">
                           <h2>Upload thumbnail</h2>
@@ -145,27 +148,27 @@ let ResourceDescribeActivity = (props) => {
                           </label>
 
 
-                           {
+                          {/* {
                       props.project.thumbUrl ?
                         <div className="thumb-display">
                           <div className="thumb"><img src={props.project.thumbUrl} /></div>
                         </div>
                         :
                         null
-                    } 
+                    }  */}
                         </div>
                       </div>
-                    </div> */}
+                    </div>
                     <div className="row">
                       <div className="col-md-6">
                         <div className="meta-subjects">
                           <label><h2>Subject</h2></label>
                           <Field
                             name="metaSubject"
-                            component={DropdownList}
+                            component={renderMetaSubjects}
                             data={subjects}
                             valueField="value"
-                            textField="subject"/>
+                            textField="subject" />
                         </div>
                       </div>
                       <div className="col-md-6">
@@ -174,10 +177,10 @@ let ResourceDescribeActivity = (props) => {
                           <label><h2>Education Level</h2></label>
                           <Field
                             name="metaEducationLevels"
-                            component={DropdownList}
+                            component={renderMetaEducationLevelInput}
                             data={educationLevels}
                             valueField="value"
-                            textField="name"/>
+                            textField="name" />
                         </div>
                       </div>
                     </div>
@@ -200,7 +203,7 @@ let ResourceDescribeActivity = (props) => {
 }
 
 ResourceDescribeActivity = reduxForm({
-  form: 'createProjectForm',
+  form: 'describeActivityForm',
   enableReinitialize: true,
   onSubmit
 })(ResourceDescribeActivity)
@@ -208,6 +211,7 @@ ResourceDescribeActivity = reduxForm({
 
 const mapDispatchToProps = dispatch => ({
   showBuildActivityAction: (editor, editorType) => dispatch(showBuildActivityAction(editor, editorType)),
+  onSubmitDescribeActivityAction: (metaData) => dispatch(onSubmitDescribeActivityAction(metaData))
 });
 
 const mapStateToProps = (state) => {
@@ -215,6 +219,7 @@ const mapStateToProps = (state) => {
     resource: state.resource
   };
 }
+
 
 export default withRouter(connect(mapStateToProps,
   mapDispatchToProps)(ResourceDescribeActivity));

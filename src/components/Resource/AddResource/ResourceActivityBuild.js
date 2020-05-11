@@ -23,7 +23,9 @@ const FaceDiv = styled.div`
 
 
 const ResourceActivityBuild = (props) => {
-
+  console.log('-------------');
+  console.log(props);
+  console.log('-------------');
   return (
     <div className="row">
       <div className="col-md-3">
@@ -32,12 +34,12 @@ const ResourceActivityBuild = (props) => {
       <div className="col-md-9">
         <div className="resource-activity">
           <FaceDiv>
-              {props.resource.newResource.editorType == 'h5p' ?  
+              {props.resource.newResource.activity.type == 'h5p' ?  
                 <EditorPage {...props} />
                 : null  
                }  
               
-              {props.resource.newResource.editorType == 'tinymce' ?  
+              {props.resource.newResource.activity.type == 'tinymce' ?  
                 <TinyEditor {...props} />
                 : null  
                 }  

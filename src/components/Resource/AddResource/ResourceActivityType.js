@@ -55,7 +55,7 @@ const activities = [
   }
 ];
 
-const addActiveClass = event => event.target.classList.add('active');
+
 
 const onSubmit = async (values, dispatch, props) => {
   try {
@@ -88,6 +88,7 @@ let ResourceActivityType = (props, showSelectActivityAction)=> {
             component={renderResourceActivityType}
             type="radio"
             value={""+activity.id}
+            onChange= {props.onChangeActivityTypeAction}
             validate={[required]}
           />
 
@@ -147,7 +148,7 @@ let ResourceActivityType = (props, showSelectActivityAction)=> {
 }
 
 ResourceActivityType = reduxForm({
-  form: 'createProjectForm',
+  form: 'activityTypeForm',
   enableReinitialize: true,
   onSubmit
 })(ResourceActivityType)
