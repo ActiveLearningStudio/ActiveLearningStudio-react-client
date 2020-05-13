@@ -2,17 +2,12 @@ import React from "react";
 import { connect } from "react-redux";
 import validator from "validator";
 
-import { useLocation } from 'react-router-dom'
-import { createPlaylist } from "./../actions/playlist";
+
+import { createPlaylist } from "./../../../../actions/playlist";
 
 import { Editor } from '@tinymce/tinymce-react';
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+
 
 
 

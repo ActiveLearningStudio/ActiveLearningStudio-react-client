@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom';
 import { createResourceAction } from "./../actions/resource";
 
 
-class EditorPage extends React.Component {
+class H5PPreview extends React.Component {
 
 
    constructor(props) {
@@ -307,8 +307,6 @@ class EditorPage extends React.Component {
       // });
 
       return false;
-      alert();
-      return false;
    }
    render() {
       return (
@@ -347,4 +345,4 @@ const mapStateToProps = (state) => {
 
 
 export default withRouter(connect(mapStateToProps,
-   mapDispatchToProps)(EditorPage))
+   mapDispatchToProps)(H5PPreview))

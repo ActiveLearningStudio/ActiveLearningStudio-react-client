@@ -8,7 +8,14 @@ const ProjectCard = (props) => (
 		<div className="program-tile">
 		  <div className="program-thumb">
 		    <Link to={"/project/"+props.project._id}>
-		      <img src={props.project.thumb_url} className="img-fluid" />
+				{
+					props.project.thumb_url ?
+					<div className="project-thumb" style={{ 'background-image': 'url(' + props.project.thumb_url + ')' }}></div>
+					:
+					null
+				}
+			  
+		      {/* <img src={props.project.thumb_url} className="img-fluid" /> */}
 		    </Link>
 		  </div>
 		  <div className="program-content">

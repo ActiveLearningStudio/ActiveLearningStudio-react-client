@@ -69,7 +69,7 @@ export class NewResourcePage extends React.Component {
 const mapDispatchToProps = dispatch => ({
   showCreateResourceActivity: () => dispatch(showCreateResourceActivityAction()),
   showSelectActivity: () => dispatch(showSelectActivityAction()),
-  showBuildActivity: (editor, editorType) => dispatch(showBuildActivityAction(editor, editorType)),
+  showBuildActivity: (editor, editorType, activityid) => dispatch(showBuildActivityAction(editor, editorType, activityid)),
 });
 
 const mapStateToProps =(state) => {

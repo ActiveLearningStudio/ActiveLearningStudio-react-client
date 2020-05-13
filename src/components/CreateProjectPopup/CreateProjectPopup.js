@@ -3,7 +3,7 @@ import { fadeIn } from 'react-animations';
 import styled, { keyframes } from 'styled-components';
 import { connect } from 'react-redux'
 import { Field, reduxForm, formValueSelector } from 'redux-form'
-import { createProjectAction, updateProjectAction, uploadThumbnailAction } from "../../actions/project";
+import { createProjectAction, updateProjectAction, uploadProjectThumbnailAction } from "../../actions/project";
 import { withRouter } from "react-router-dom";
 
 import './CreateProjectPopup.scss'
@@ -66,13 +66,12 @@ export const uploadThumb = async (e, props) => {
   try {
     formData.append('uploads', e.target.files[0]);
 
-    await props.uploadThumbnailAction(formData);
+    await props.uploadProjectThumbnailAction(formData);
   } catch (e) {
     console.log(e);
   }
-
-
 }
+
 let CreateProjectPopup = props => {
   const { handleSubmit, load, pristine, reset, submitting } = props
   //remoe popup when escape is pressed
@@ -108,7 +107,7 @@ let CreateProjectPopup = props => {
         <div className="upload-thumbnail">
           <h2>Upload thumbnail</h2>
           <label>
-            <input type="file" onChange={(e) => uploadThumb(e, props)} />
+            <input type="file" onChange={(e) => uploadThumb(e, props)}  accept="image/x-png,image/jpeg" />
             <span>Upload</span>
           </label>
 
@@ -161,7 +160,7 @@ CreateProjectPopup = reduxForm({
 const mapDispatchToProps = dispatch => ({
   createProjectAction: (name, description, thumb_url) => dispatch(createProjectAction(name, description, thumb_url)),
   updateProjectAction: (name, description, thumb_url) => dispatch(updateProjectAction(projectid, name, description, thumb_url)),
-  uploadThumbnailAction: (formData) => dispatch(uploadThumbnailAction(formData))
+  uploadProjectThumbnailAction: (formData) => dispatch(uploadProjectThumbnailAction(formData))
 
 })
 

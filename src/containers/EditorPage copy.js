@@ -1514,8 +1514,6 @@ class EditorPage extends React.Component {
       // });
 
       return false;
-      alert();
-      return false;
    }
    render() {
       return (

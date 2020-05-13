@@ -33,7 +33,9 @@ import {
   editResourceAction,
   showCreateResourceActivityAction,
   onChangeActivityTypeAction,
-  onChangeActivityAction
+  onChangeActivityAction,
+  uploadResourceThumbnailAction,
+  showBuildActivityAction
 } from "../actions/resource";
 import {
   showCreateProjectModalAction,
@@ -43,13 +45,14 @@ import { startLogin } from "../actions/auth";
 
 import Header from "../components/Header/Header";
 import Sidebar from "../components/Sidebar/Sidebar";
-import NewResourcePage from "./NewResourcePage";
 import PreviewResourcePage from "./PreviewResourcePage";
 import DeletePopup from "./../components/DeletePopup/DeletePopup";
 import PlaylistCard from "../components/Playlist/PlaylistCard";
 import PlaylistsLoading from "./../components/Loading/PlaylistsLoading";
 import CreatePlaylistPopup from "../components/CreatePlaylistPopup/CreatePlaylistPopup";
 import AddResource from '../components/Resource/AddResource'
+import EditResource from '../components/Resource/EditResource'
+
 
 import "./PlaylistsPage.scss";
 
@@ -194,12 +197,20 @@ export class PlaylistsPage extends React.Component {
   handleEditResourceSubmit = async (
     currentPlaylistId,
     editor,
-    editorType) => {
+    editorType,
+    activityid) => {
+      try {
       await this.props.editResourceAction(
         currentPlaylistId,
         editor,
-        editorType
+        editorType,
+        activityid
       );
+      this.props.history.push("/project/" + this.props.match.params.projectid);
+      }
+      catch(e){
+        console.log(e);
+      }
   }
 
   render() {
@@ -209,12 +220,13 @@ export class PlaylistsPage extends React.Component {
     return (
       <>
         <Header {...this.props} />
-        <ReactPlaceholder
+        {/* <ReactPlaceholder
           type="media"
           showLoadingAnimation
           customPlaceholder={PlaylistsLoading}
           ready={!this.props.ui.pageLoading}
-        >
+        > */}
+        <>
           <div className="main-content-wrapper">
             <div className="sidebar-wrapper">
               <Sidebar />
@@ -289,6 +301,16 @@ export class PlaylistsPage extends React.Component {
             />
           ) : null}
 
+          {this.props.openEditResourcePopup ? (
+            <EditResource
+              {...this.props}
+              handleHideCreateResourceModal={this.handleHideCreateResourceModal}
+              handleCreateResourceSubmit={this.handleCreateResourceSubmit}
+              handleEditResourceSubmit = {this.handleEditResourceSubmit}
+            />
+          ) : null}
+
+
           {this.props.resource.showPreviewResourcePopup ? (
             <PreviewResourcePage {...this.props} />
           ) : null}
@@ -299,7 +321,7 @@ export class PlaylistsPage extends React.Component {
               {...this.props}
             />
           ) : null}
-        </ReactPlaceholder>
+        </>
       </>
     );
   }
@@ -324,8 +346,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(loadProjectPlaylistsAction(projectid)),
   createResourceAction: (playlistid, editor, editorType, metaData) =>
     dispatch(createResourceAction(playlistid, editor, editorType, metaData)),
-  editResourceAction: (playlistid, editor, editorType) =>
-    dispatch(editResourceAction(playlistid, editor, editorType)),
+  editResourceAction: (playlistid, editor, editorType, activityid) =>
+    dispatch(editResourceAction(playlistid, editor, editorType, activityid)),
   createResourceByH5PUploadAction: (playlistid, editor, editorType, payload) =>
     dispatch(
       createResourceByH5PUploadAction(playlistid, editor, editorType, payload)
@@ -337,9 +359,10 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(showDeletePlaylistPopupAction(id, title, deleteType)),
 
   showCreateResourceActivity: () => dispatch(showCreateResourceActivityAction()),
-  showBuildActivityAction: (editor, editorType) => dispatch(showBuildActivityAction(editor, editorType)),
+  showBuildActivityAction: (editor, editorType, activityid) => dispatch(showBuildActivityAction(editor, editorType, activityid)),
   onChangeActivityTypeAction: (e) => dispatch(onChangeActivityTypeAction(e)),
-  onChangeActivityAction: (e, activity) => dispatch(onChangeActivityAction(e, activity))
+  onChangeActivityAction: (e, activity) => dispatch(onChangeActivityAction(e, activity)),
+  uploadResourceThumbnailAction: ()=>dispatch(uploadResourceThumbnailAction())
 });
 
 const mapStateToProps = (state) => {

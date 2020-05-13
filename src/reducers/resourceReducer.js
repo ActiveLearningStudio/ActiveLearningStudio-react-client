@@ -11,7 +11,9 @@ import {
     SHOW_RESOURCE_DESCRIBE_ACTIVITY,
     SELECT_ACTIVITY_TYPE,
     SELECT_ACTIVITY,
-    DESCRIBE_ACTIVITY
+    DESCRIBE_ACTIVITY,
+    UPLOAD_RESOURCE_THUMBNAIL,
+    EDIT_RESOURCE
 } from "../constants/actionTypes";
 
 const defaultResourceState = () => {
@@ -28,7 +30,14 @@ const defaultResourceState = () => {
             'playlists': [],
             'showCreateResourcePopup': false,
             newResource: {
-                activity: null,
+                activity: {
+                    type: null
+                },
+                metaData: {
+                    thumbUrl: null
+                }
+            },
+            editResource: {
                 params: {
                     data: ''
                 }
@@ -49,7 +58,12 @@ const resourceReducer = (state = defaultResourceState(), action) => {
         case HIDE_CREATE_RESOURCE_MODAL:
             return {
                 ...state,
-                showCreateResourcePopup: false
+                showCreateResourcePopup: false,
+                editResource: {
+                    params: {
+                        data: ''
+                    }
+                },
             };
         case SHOW_RESOURCE_ACTIVITY_TYPE:
             return {
@@ -93,15 +107,30 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                 isResourceDescribeActivity: false,
                 isResourceActivityBuild: true,
                 isDescribeFilled: true,
-                newResource: {
-                    ...state.newResource,
+                editResource: {
+                    ...state.editResource,
                     params: action.params
                 }
             };
         case CREATE_RESOURCE:
             return {
                 ...state,
-                showCreateResourcePopup: false
+                showCreateResourcePopup: false,
+                editResource: {
+                    params: {
+                        data: ''
+                    }
+                },
+            };
+        case EDIT_RESOURCE:
+            return {
+                ...state,
+                showEditResourcePopup: false,
+                editResource: {
+                    params: {
+                        data: ''
+                    }
+                },
             };
         case PREVIEW_RESOURCE:
             return {
@@ -143,7 +172,21 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                 ...state,
                 newResource: {
                     ...state.newResource,
-                    metaData:action.metaData
+                    metaData: {
+                        ...state.newResource.metaData,
+                        metaContent: action.metaData
+                    }
+                }
+            }
+        case UPLOAD_RESOURCE_THUMBNAIL:
+            return {
+                ...state,
+                newResource: {
+                    ...state.newResource,
+                    metaData: {
+                        ...state.newResource.metaData,
+                        thumbUrl: action.thumbUrl
+                    }
                 }
             }
         default:

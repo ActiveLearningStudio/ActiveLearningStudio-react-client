@@ -14,10 +14,10 @@ import {
   Link,
   withRouter
 } from "react-router-dom";
-import AddResourceSidebar from "./AddResourceSidebar";
+import EditResourceSidebar from "./EditResourceSidebar";
 import { showBuildActivityAction, onSubmitDescribeActivityAction } from "./../../../actions/resource";
 
-import './AddResource.scss'
+
 
 const fadeAnimation = keyframes`${fadeIn}`;
 
@@ -105,7 +105,7 @@ let ResourceDescribeActivity = (props) => {
 
     <div className="row">
       <div className="col-md-3">
-        <AddResourceSidebar {...props} />
+        <EditResourceSidebar {...props} />
       </div>
       <div className="col-md-9">
         <div className="resource-question">

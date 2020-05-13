@@ -214,7 +214,7 @@ export const loadProjectPlaylistsAction = (projectid) => {
         dispatch(
           loadProjectPlaylists(playlists)
         );
-        dispatch({type:PAGE_LOADING_COMPLETE});
+        // dispatch({type:PAGE_LOADING_CO MPLETE});
       }
 
       

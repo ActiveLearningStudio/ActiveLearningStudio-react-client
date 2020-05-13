@@ -23,7 +23,7 @@ export class NewProjectPage extends React.Component {
     
     
 
-    // this.uploadThumbnail = this.uploadThumbnail.bind(this);
+    // this.uploadProjectThumbnail = this.uploadProjectThumbnail.bind(this);
   }
 
   componentDidMount() {

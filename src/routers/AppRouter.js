@@ -7,8 +7,7 @@ import PublicRoute from "./PublicRoute";
 import LoginPage from "./../containers/LoginPage";
 
 // import PlaylistsPage from "../containers/PlaylistsPage";
-import EditorPage from "./../containers/EditorPage";
-import { TinyEditor } from "../containers/TinyEditor";
+
 import PrivateRoute from "./PrivateRoute";
 import H5PPreview from "../containers/H5PPreview";
 import { LTIActivityPage } from "../containers/LTIActivityPage";
@@ -36,7 +35,7 @@ const AppRouter = () => (
       <PrivateRoute path="/project/create/:projectid" component={ProjectsPage} showEditProjectPopup={true} editMode={true} />
       <PrivateRoute path="/project/create" exact component={ProjectsPage} showCreateProjectPopup={true} editMode={false} />
       
-      <PrivateRoute path="/project/:projectid/playlist/:playlistid/activity/create/:activityid" exact component={PlaylistsPage} openCreateResourcePopup={true} editResourcePopup = {true} />
+      <PrivateRoute path="/project/:projectid/playlist/:playlistid/activity/create/:activityid" exact component={PlaylistsPage} openEditResourcePopup={true}/>
       <PrivateRoute path="/project/:projectid" exact component={PlaylistsPage} />
       <PrivateRoute path="/project/:projectid/playlist/create" exact component={PlaylistsPage} openCreatePopup={true} />
       <PrivateRoute path="/project/:projectid/playlist/:playlistid/activity/create" exact component={PlaylistsPage}  openCreateResourcePopup={true} />
@@ -47,7 +46,6 @@ const AppRouter = () => (
       <Route path="/lti-activity/:id/:launchid" exact component={LTIActivityPage} />
       <Route path="/lti-playlist/:id/:launchid" exact component={LTIPlaylistPage} />
       <Route path="/lti-program/:id/:launchid" exact component={LTIProgramPage} />
-      <Route path="/tiny" exact component={TinyEditor} />
       <Route path="/h5p-preview" exact component={H5PPreview} />
       <PublicRoute path="/login" component={LoginPage} />
     </Switch>

@@ -10,7 +10,7 @@ import {
   PAGE_LOADING,
   PAGE_LOADING_COMPLETE,
   UPDATE_PROJECT,
-  UPLOAD_THUMBNAIL
+  UPLOAD_PROJECT_THUMBNAIL
 } from "../constants/actionTypes";
 
 // Loads a specific project
@@ -279,12 +279,12 @@ export const deleteProjectAction = (projectid) => {
   }
 }
 
-export const uploadThumbnail = (thumbUrl) => ({
-  type:UPLOAD_THUMBNAIL,
+export const uploadProjectThumbnail = (thumbUrl) => ({
+  type:UPLOAD_PROJECT_THUMBNAIL,
   thumbUrl
 }); 
 
-export const uploadThumbnailAction = (formData) => {
+export const uploadProjectThumbnailAction = (formData) => {
     // console.log(e);
   // const formData = new FormData();
   // formData.append('uploads',e.target.files[0])
@@ -302,7 +302,7 @@ export const uploadThumbnailAction = (formData) => {
       )
       .then((response) => {
         dispatch(
-          uploadThumbnail(response.data.data.guid)
+          uploadProjectThumbnail(response.data.data.guid)
         )
         
         })
@@ -310,5 +310,4 @@ export const uploadThumbnailAction = (formData) => {
       throw new Error(e);
     }
   }
-  
 }

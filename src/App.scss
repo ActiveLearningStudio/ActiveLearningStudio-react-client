@@ -12,10 +12,10 @@ body {
 .clearfix {
     clear:both;
 }
-.row{
-    margin-left: inherit;
-    margin-right: inherit;
-}
+// .row{
+//     margin-left: inherit;
+//     margin-right: inherit;
+// }
 
 .create-playlist-btn {
     color: #607a9b;
@@ -250,8 +250,14 @@ body {
         background: #fff;
         border-left: 3px solid #074892;
         margin: 15px;
-        padding-top: 15px;
+        padding: 10px;
         min-height: 120px;
+        .activity-thumb{
+            min-height: 50px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: top center;
+        }
         i {
             font-size:20px;
         }
@@ -259,11 +265,15 @@ body {
             box-shadow: none;
         }
         .title {
-            color:#000;
-            font-family: 'Open Sans', sans-serif;
-            font-weight: 600;
-            font-size:14px;
-            float:left;
+            a {
+                word-wrap: break-word;
+                color:#000;
+                font-family: 'Open Sans', sans-serif;
+                font-weight: 600;
+                font-size:14px;
+                float:left;
+            }
+            
         }
         .activity-options {
             float:right;
@@ -572,6 +582,12 @@ body {
     .program-thumb {
         height: 240px;
         overflow: hidden;
+        .project-thumb{
+            min-height:200px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
         img {
             min-width: 100%;
             height: auto;
@@ -775,8 +791,17 @@ body {
 }
 
 .playlist-page-project-title {
+    h1 {
+        margin-top:20px;
+        color:#0963d7;
+        font-size:30px;
+        text-transform: capitalize;
+    }
     span {
+        float: right;
         a {
+            background:#fff;
+            color:#758ba8;
             font-size:16px;
             display: inline;
             float:none;

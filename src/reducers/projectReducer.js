@@ -1,32 +1,32 @@
-import { 
-  SHOW_CREATE_PROJECT_SUBMENU, 
-  SHOW_CREATE_PROJECT_MODAL, 
-  CREATE_PROJECT, 
-  LOAD_MY_PROJECTS, 
-  LOAD_PROJECT, 
-  HIDE_CREATE_PROJECT_MODAL, 
+import {
+  SHOW_CREATE_PROJECT_SUBMENU,
+  SHOW_CREATE_PROJECT_MODAL,
+  CREATE_PROJECT,
+  LOAD_MY_PROJECTS,
+  LOAD_PROJECT,
+  HIDE_CREATE_PROJECT_MODAL,
   DELETE_PROJECT,
   SHOW_DELETE_PLAYLIST_MODAL,
-  UPLOAD_THUMBNAIL
+  UPLOAD_PROJECT_THUMBNAIL
 } from "../constants/actionTypes";
 
 
 const defaultProgramState = () => {
   if (localStorage.getItem("projects")) {
 
-        
+
     return {
-        'projects':JSON.parse(localStorage.getItem("projects"))
+      'projects': JSON.parse(localStorage.getItem("projects"))
     }
   } else {
     return {
-        'projects':[],
-        selectedProject: {
-          _id:null
-        },
-        thumb_url:null,
-        showCreateProjectSubmenu:false,
-        showCreateProjectPopup:false
+      'projects': [],
+      selectedProject: {
+        _id: null
+      },
+      thumb_url: null,
+      showCreateProjectSubmenu: false,
+      showCreateProjectPopup: false
     };
   }
 };
@@ -41,10 +41,10 @@ const projectReducer = (state = defaultProgramState(), action) => {
     case SHOW_CREATE_PROJECT_MODAL:
       return {
         ...state,
-        selectedProject:{
-          _id:null
+        selectedProject: {
+          _id: null
         },
-        thumbUrl:null
+        thumbUrl: null
       };
     case CREATE_PROJECT:
       return {
@@ -63,7 +63,7 @@ const projectReducer = (state = defaultProgramState(), action) => {
       return {
         ...state,
         selectedProject: action.project,
-        thumbUrl:action.project.thumb_url
+        thumbUrl: action.project.thumb_url
       };
     case DELETE_PROJECT:
       let newProjects = state.projects.filter(project => {
@@ -73,10 +73,10 @@ const projectReducer = (state = defaultProgramState(), action) => {
         ...state,
         projects: newProjects
       };
-    case UPLOAD_THUMBNAIL:
+    case UPLOAD_PROJECT_THUMBNAIL:
       return {
         ...state,
-        thumbUrl:action.thumbUrl
+        thumbUrl: action.thumbUrl
       }
 
     default:
