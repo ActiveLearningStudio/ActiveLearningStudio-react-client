@@ -98,39 +98,40 @@ const renderResourceActivityType = ({ input, label, type, meta: { touched, error
 )
 
 
-var defaultEditor = 'H5P.MultiChoice 1.14';
-var defaultEditorType = 'h5p';
-function editorQuestionChange(question){
-  defaultEditor = question.h5pLib;
-  defaultEditorType = question.type
-}
+// var defaultEditor = 'H5P.MultiChoice 1.14';
+// var defaultEditorType = 'h5p';
+// function editorQuestionChange(activity){
+//   defaultEditor = activity.h5pLib;
+//   defaultEditorType = activity.type
+// }
+
 
 
   
 let ResourceSelectActivity = (props) => {
+  console.log(props);
   const { handleSubmit, load, pristine, reset, submitting } = props;
-  const questionsContent = questions.map((question, i)=>(
+  const questionsContent = questions.map((activity, i)=>(
     <div className="col-md-3" key={i}>
       <label className="question-label">
-        {/* <input type="radio" name="editor_question" value={question.h5pLib} onChange={()=>{editorQuestionChange(question)}} /> */}
         <Field
             name="activity"
             component={renderResourceActivityType}
             type="radio"
-            value={question.h5pLib}
-            onChange={() => editorQuestionChange(question)}
+            value={activity.h5pLib}
+            onChange={(e) => props.onChangeActivityAction(activity, e)}
             validate={[required]}
           />
         <div className="activity-item">
           <div className="activity-img">
-            <img src={question.icon} className="activity-icon" />
-            <img src={question.overlayIcon} className="overlay-activity-icon" />
+            <img src={activity.icon} className="activity-icon" />
+            <img src={activity.overlayIcon} className="overlay-activity-icon" />
           </div>
           <div className="activity-content">
             <span>
-              {question.text}
+              {activity.text}
             </span>
-            <p>{question.description}</p>
+            <p>{activity.description}</p>
           </div>
         </div>
       </label>
@@ -168,7 +169,7 @@ let ResourceSelectActivity = (props) => {
 }
 
 ResourceSelectActivity = reduxForm({
-  form: 'createProjectForm',
+  form: 'SelectActivityForm',
   enableReinitialize: true,
   onSubmit
 })(ResourceSelectActivity)

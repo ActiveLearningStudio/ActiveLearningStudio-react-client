@@ -10,7 +10,10 @@ import {
     HIDE_PREVIEW_PLAYLIST_MODAL,
     LOAD_RESOURCE,
     DELETE_RESOURCE,
-    SHOW_RESOURCE_DESCRIBE_ACTIVITY
+    SHOW_RESOURCE_DESCRIBE_ACTIVITY,
+    SELECT_ACTIVITY_TYPE,
+    SELECT_ACTIVITY,
+    DESCRIBE_ACTIVITY
 } from './../constants/actionTypes';
 
 export const loadResource = (resource, previous, next) => ({
@@ -109,18 +112,25 @@ export const showSelectActivityAction = (activityType) => {
 
 
 
-export const showBuildActivity = (editor, editorType) => ({
+export const showBuildActivity = (editor, editorType, params) => ({
     type:SHOW_RESOURCE_ACTIVITY_BUILD,
     editor,
-    editorType
+    editorType,
+    params
 });
 
 export const showBuildActivityAction = (editor, editorType) => {
     return async dispatch => {
         try {
-            dispatch(
-                showBuildActivity(editor, editorType)
-            )
+            axios.get(global.config.h5pAjaxUrl+'/h5p/content-params/47')
+            .then((params) => {
+               dispatch(
+                    showBuildActivity(editor, editorType, params)
+                )
+               
+               
+            });
+            
         } catch (e) {
             throw new Error(e);
         }
@@ -148,6 +158,79 @@ export const showDescribeActivityAction = (activity) => {
 
 
 
+export const editResource = (playlistid, resource, editor, editorType) => ({
+    type:EDIT_RESOURCE,
+    playlistid,
+    resource,
+    editor,
+    editorType
+});
+
+export const editResourceAction = (playlistid, editor, editorType) => {
+    return async dispatch => {
+        try {
+            const { token } = JSON.parse(localStorage.getItem("auth"));
+            const headers = {
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer "+ token
+              };
+
+            // h5peditorCopy to be taken from h5papi/storage/h5p/laravel-h5p/js/laravel-h5p.js
+            // alert(JSON.stringify(window.h5peditorCopy.getParams()));
+            const data = {
+                // playlistid:playlistid,
+                library: window.h5peditorCopy.getLibrary(),
+                parameters: JSON.stringify(window.h5peditorCopy.getParams()),
+                action: 'create'
+              };
+            // insert into mysql
+            const response = await axios.patch(global.config.h5pAjaxUrl+'/api/h5p/47', data, {
+                headers: headers
+              })
+              .then((response) => {
+                
+                let resource = response.data;
+                
+                //insert into mongodb
+                axios.post(global.config.laravelAPIUrl+'/activity',
+                 {
+                     mysqlid: resource.id,
+                     playlistid:playlistid,
+                     action: 'create'
+                 }, {
+                    headers: headers
+                })
+                .then((response) => {
+                    
+                    resource.id = response.data.data._id;
+                    resource.mysqlid = response.data.data.mysqlid;
+                    // resource.title = response.data.data._id;
+                    
+                    dispatch(
+                        createResource(playlistid, resource, editor, editorType)
+                    )
+                })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+                // dispatch(
+                //     createResource(playlistid, resource, editor, editorType)
+                // )
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+
+              
+            
+            
+        } catch (e) {
+            throw new Error(e);
+        }
+    }
+}
+
+
 
 
 export const createResource = (playlistid, resource, editor, editorType) => ({
@@ -158,7 +241,8 @@ export const createResource = (playlistid, resource, editor, editorType) => ({
     editorType
 });
 
-export const createResourceAction = (playlistid, editor, editorType) => {
+export const createResourceAction = (playlistid, editor, editorType, metaData) => {
+    alert(metaData);
     return async dispatch => {
         try {
             const { token } = JSON.parse(localStorage.getItem("auth"));
@@ -187,6 +271,7 @@ export const createResourceAction = (playlistid, editor, editorType) => {
                  {
                      mysqlid: resource.id,
                      playlistid:playlistid,
+                     metaData: metaData,
                      action: 'create'
                  }, {
                     headers: headers
@@ -344,3 +429,60 @@ export const deleteResource = (resourceid) => ({
     }
   }
   
+
+
+
+export const onChangeActivityType = (activityTypeId) => {
+    return ({
+    type:SELECT_ACTIVITY_TYPE,
+    activityTypeId
+})};
+
+export const onChangeActivityTypeAction = (e) => {
+    return dispatch => {
+        try {
+            let activityTypeId = e.target.value;
+            dispatch(
+                onChangeActivityType(activityTypeId)
+            )
+        } catch (e) {
+            throw new Error(e);
+        }
+    }
+}
+
+
+export const onChangeActivity = (activity) => ({
+    type:SELECT_ACTIVITY,
+    activity
+});
+
+export const onChangeActivityAction = ( activity, e) => {
+    return dispatch => {
+        try {
+            dispatch(
+                onChangeActivity(activity)
+            )
+        } catch (e) {
+            console.log(e);
+        }
+    }
+}
+
+
+export const onSubmitDescribeActivity = (metaData) => ({
+    type:DESCRIBE_ACTIVITY,
+    metaData
+});
+
+export const onSubmitDescribeActivityAction = ( metaData ) => {
+    return dispatch => {
+        try {
+            dispatch(
+                onSubmitDescribeActivity(metaData)
+            )
+        } catch (e) {
+            console.log(e);
+        }
+    }
+}

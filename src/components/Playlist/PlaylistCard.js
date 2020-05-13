@@ -58,6 +58,7 @@ export class PlaylistCard extends React.Component {
 
 		return this.props.playlist.resources.map((resource, index) => (
 			<ResourceCard
+				{...this.props}
 				resource={resource}
 				key={resource.id}
 				index={index}

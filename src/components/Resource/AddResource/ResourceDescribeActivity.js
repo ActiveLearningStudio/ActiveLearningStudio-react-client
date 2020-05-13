@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { fadeIn } from 'react-animations';
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 import styled, { keyframes } from 'styled-components';
+import DropdownList from 'react-widgets/lib/DropdownList'
+import 'react-widgets/dist/css/react-widgets.css'
 
 import {
   BrowserRouter as Router,
@@ -12,7 +14,7 @@ import {
   withRouter
 } from "react-router-dom";
 import AddResourceSidebar from "./AddResourceSidebar";
-import { showBuildActivityAction } from "./../../../actions/resource";
+import { showBuildActivityAction, onSubmitDescribeActivityAction } from "./../../../actions/resource";
 
 import './AddResource.scss'
 
@@ -40,28 +42,67 @@ const renderMetaTitleInput = ({ input, label, type, meta: { touched, error, warn
 
 
 
-const addActiveClass = event => event.target.classList.add('active');
 
-var defaultEditor = 'H5P.MultiChoice 1.14';
-var defaultEditorType = 'h5p';
-function editorQuestionChange(question) {
-  defaultEditor = question.h5pLib;
-  defaultEditorType = question.type
-}
+
+
+
+// const addActiveClass = event => event.target.classList.add('active');
+
+// var defaultEditor = 'H5P.MultiChoice 1.14';
+// var defaultEditorType = 'h5p';
+// function editorQuestionChange(question) {
+//   defaultEditor = question.h5pLib;
+//   defaultEditorType = question.type
+// }
+
+
+const subjects = [{ subject: 'Arts', value: 'Arts' },
+{ subject: 'Career & Technical Education', value: 'CareerTechnicalEducation' },
+{ subject: 'Computer Science', value: 'ComputerScience' },
+{ subject: 'Language Arts', value: 'LanguageArts' },
+{ subject: 'Mathematics', value: 'Mathematics' },
+{ subject: 'Science', value: 'Science' },
+{ subject: 'Social Studies', value: 'SocialStudies' },
+];
+
+
+const educationLevels = [
+  { name: 'Preschool (Ages 0-4)', value: '1' },
+  { name: 'Kindergarten-Grade 2 (Ages 5-7)', value: '2' },
+  { name: 'Grades 3-5 (Ages 8-10)', value: '3' },
+  { name: 'Grades 6-8 (Ages 11-13)', value: '4' },
+  { name: 'Grades 9-10 (Ages 14-16)', value: '5' },
+  { name: 'Grades 11-12 (Ages 16-18)', value: '6' },
+  { name: 'College & Beyond', value: '7' },
+  { name: 'Professional Development', value: '8' },
+  { name: 'Special Education', value: '9' },
+];
 
 
 const onSubmit = async (values, dispatch, props) => {
   try {
-    props.showBuildActivityAction(defaultEditor, defaultEditorType)
+    console.log(values);
+    console.log(props);
+    alert(props.resource.newResource.activity.h5pLib);
+    alert(props.resource.newResource.activity.type);
+    props.onSubmitDescribeActivityAction(values);
+    props.showBuildActivityAction(props.resource.newResource.activity.h5pLib, props.resource.newResource.activity.type)
   } catch (e) {
     console.log(e.message);
   }
-
 }
 
 
+const renderMetaSubjects = ({ input, ...rest }) =>
+  <DropdownList {...input} {...rest} />
+
+const renderMetaEducationLevelInput = ({ input, ...rest }) =>
+  <DropdownList {...input} {...rest} />
+
+
 let ResourceDescribeActivity = (props) => {
-  const { handleSubmit, load, pristine, reset, submitting } = props;
+  console.log(props);
+  const { handleSubmit, metaSubject, load, pristine, reset, submitting } = props;
   return (
 
     <div className="row">
@@ -114,31 +155,32 @@ let ResourceDescribeActivity = (props) => {
                         </div>
                         :
                         null
-                    } */}
+                    }  */}
                         </div>
                       </div>
                     </div>
                     <div className="row">
                       <div className="col-md-6">
                         <div className="meta-subjects">
+                          <label><h2>Subject</h2></label>
                           <Field
-                            name="metaTitle"
-                            component={renderMetaTitleInput}
-                            type="text"
-                            label="Subjects"
-                            validate={[required]}
-                          />
+                            name="metaSubject"
+                            component={renderMetaSubjects}
+                            data={subjects}
+                            valueField="value"
+                            textField="subject" />
                         </div>
                       </div>
                       <div className="col-md-6">
                         <div className="meta-education-levels">
+
+                          <label><h2>Education Level</h2></label>
                           <Field
-                            name="metaTitle"
-                            component={renderMetaTitleInput}
-                            type="text"
-                            label="Education Level"
-                            validate={[required]}
-                          />
+                            name="metaEducationLevels"
+                            component={renderMetaEducationLevelInput}
+                            data={educationLevels}
+                            valueField="value"
+                            textField="name" />
                         </div>
                       </div>
                     </div>
@@ -161,7 +203,7 @@ let ResourceDescribeActivity = (props) => {
 }
 
 ResourceDescribeActivity = reduxForm({
-  form: 'createProjectForm',
+  form: 'describeActivityForm',
   enableReinitialize: true,
   onSubmit
 })(ResourceDescribeActivity)
@@ -169,6 +211,7 @@ ResourceDescribeActivity = reduxForm({
 
 const mapDispatchToProps = dispatch => ({
   showBuildActivityAction: (editor, editorType) => dispatch(showBuildActivityAction(editor, editorType)),
+  onSubmitDescribeActivityAction: (metaData) => dispatch(onSubmitDescribeActivityAction(metaData))
 });
 
 const mapStateToProps = (state) => {
@@ -176,6 +219,7 @@ const mapStateToProps = (state) => {
     resource: state.resource
   };
 }
+
 
 export default withRouter(connect(mapStateToProps,
   mapDispatchToProps)(ResourceDescribeActivity));

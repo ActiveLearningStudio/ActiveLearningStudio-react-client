@@ -30,6 +30,10 @@ import {
   previewResourceAction,
   hidePreviewResourceModalAction,
   createResourceByH5PUploadAction,
+  editResourceAction,
+  showCreateResourceActivityAction,
+  onChangeActivityTypeAction,
+  onChangeActivityAction
 } from "../actions/resource";
 import {
   showCreateProjectModalAction,
@@ -44,6 +48,8 @@ import PreviewResourcePage from "./PreviewResourcePage";
 import DeletePopup from "./../components/DeletePopup/DeletePopup";
 import PlaylistCard from "../components/Playlist/PlaylistCard";
 import PlaylistsLoading from "./../components/Loading/PlaylistsLoading";
+import CreatePlaylistPopup from "../components/CreatePlaylistPopup/CreatePlaylistPopup";
+import AddResource from '../components/Resource/AddResource'
 
 import "./PlaylistsPage.scss";
 
@@ -157,7 +163,8 @@ export class PlaylistsPage extends React.Component {
     currentPlaylistId,
     editor,
     editorType,
-    payload
+    payload,
+    metaData
   ) => {
     try {
       if (payload.submitAction === "upload") {
@@ -172,7 +179,8 @@ export class PlaylistsPage extends React.Component {
         await this.props.createResourceAction(
           currentPlaylistId,
           editor,
-          editorType
+          editorType,
+          metaData
         );
       }
 
@@ -183,10 +191,21 @@ export class PlaylistsPage extends React.Component {
     }
   };
 
+  handleEditResourceSubmit = async (
+    currentPlaylistId,
+    editor,
+    editorType) => {
+      await this.props.editResourceAction(
+        currentPlaylistId,
+        editor,
+        editorType
+      );
+  }
+
   render() {
     const { playlists } = this.props.playlists;
     const { showDeletePlaylistPopup } = this.props.ui;
-
+    
     return (
       <>
         <Header {...this.props} />
@@ -262,10 +281,11 @@ export class PlaylistsPage extends React.Component {
           ) : null}
 
           {this.props.openCreateResourcePopup ? (
-            <NewResourcePage
+            <AddResource
               {...this.props}
               handleHideCreateResourceModal={this.handleHideCreateResourceModal}
               handleCreateResourceSubmit={this.handleCreateResourceSubmit}
+              handleEditResourceSubmit = {this.handleEditResourceSubmit}
             />
           ) : null}
 
@@ -302,8 +322,10 @@ const mapDispatchToProps = (dispatch) => ({
   showCreateProjectModalAction: () => dispatch(showCreateProjectModalAction()),
   loadProjectPlaylistsAction: (projectid) =>
     dispatch(loadProjectPlaylistsAction(projectid)),
-  createResourceAction: (playlistid, editor, editorType) =>
-    dispatch(createResourceAction(playlistid, editor, editorType)),
+  createResourceAction: (playlistid, editor, editorType, metaData) =>
+    dispatch(createResourceAction(playlistid, editor, editorType, metaData)),
+  editResourceAction: (playlistid, editor, editorType) =>
+    dispatch(editResourceAction(playlistid, editor, editorType)),
   createResourceByH5PUploadAction: (playlistid, editor, editorType, payload) =>
     dispatch(
       createResourceByH5PUploadAction(playlistid, editor, editorType, payload)
@@ -313,6 +335,11 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(deleteResourceAction(resourceid)),
   showDeletePlaylistPopupAction: (id, title, deleteType) =>
     dispatch(showDeletePlaylistPopupAction(id, title, deleteType)),
+
+  showCreateResourceActivity: () => dispatch(showCreateResourceActivityAction()),
+  showBuildActivityAction: (editor, editorType) => dispatch(showBuildActivityAction(editor, editorType)),
+  onChangeActivityTypeAction: (e) => dispatch(onChangeActivityTypeAction(e)),
+  onChangeActivityAction: (e, activity) => dispatch(onChangeActivityAction(e, activity))
 });
 
 const mapStateToProps = (state) => {

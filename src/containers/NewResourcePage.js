@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { slideInRight } from 'react-animations';
 
 import styled, { keyframes } from 'styled-components';
-import { showCreateResourceActivityAction } from "./../actions/resource";
+import { showCreateResourceActivityAction, showBuildActivityAction } from "./../actions/resource";
 
 import ResourceActivityType from '../components/Resource/AddResource/ResourceActivityType';
 import ResourceSelectActivity from '../components/Resource/AddResource/ResourceSelectActivity';
@@ -30,6 +30,10 @@ export class NewResourcePage extends React.Component {
     window.scrollTo(0, 0);
     //show activity content
     this.props.showCreateResourceActivity();
+    if(this.props.editResourcePopup){
+      this.props.showBuildActivityAction('H5P.InteractiveVideo 1.21', 'tinymce');
+    }
+    
   }
 
   render() {
@@ -50,19 +54,26 @@ export class NewResourcePage extends React.Component {
                           <div className="modal-body">
                             <div className='row'>
                               <div className="col-md-12"> 
-                                { this.props.resource.isResourceActivityType ?  
+                              
+                                { this.props.resource.isResourceActivityType && !this.props.editResourcePopup ?  
                                   <ResourceActivityType {...this.props}  />  
                                 : null  
                                 }  
-                                { this.props.resource.isResourceSelectActivity ?  
+                                { this.props.resource.isResourceSelectActivity && !this.props.editResourcePopup  ?  
                                   <ResourceSelectActivity  {...this.props}  />  
                                   : null  
                                 }  
-                                { this.props.resource.isResourceDescribeActivity ?  
+                                { this.props.resource.isResourceDescribeActivity && !this.props.editResourcePopup  ?  
                                   <ResourceDescribeActivity  selectResourceDescribeActivity={this.props.showResourceDescribeActivity}  />  
                                   : null  
                                 }  
-                                { this.props.resource.isResourceActivityBuild ?  
+                                { this.props.resource.isResourceActivityBuild && !this.props.editResourcePopup ?  
+                                  <ResourceActivityBuild {...this.props} />  
+                                  : null  
+                                }
+
+                                {/* Edit Activity */}
+                                { this.props.editResourcePopup ?  
                                   <ResourceActivityBuild {...this.props} />  
                                   : null  
                                 }
@@ -80,6 +91,7 @@ export class NewResourcePage extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
   showCreateResourceActivity: () => dispatch(showCreateResourceActivityAction()),
+  showBuildActivityAction: (editor, editorType) => dispatch(showBuildActivityAction(editor, editorType)),
 });
 
 const mapStateToProps =(state) => {
