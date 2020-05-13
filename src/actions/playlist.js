@@ -14,28 +14,37 @@ import {
   HIDE_DELETE_PLAYLIST_MODAL,
   PAGE_LOADING,
   PAGE_LOADING_COMPLETE,
-  SWITCH_ACTIVITIES
+  REORDER_PLAYLIST
 } from './../constants/actionTypes';
 
-export const switchActivities = () => ({
-  type: SWITCH_ACTIVITIES
+export const reorderPlaylistActivities = (playlist) => ({
+  type: REORDER_PLAYLIST,
+  playlist: playlist
 });
 
-export const switchActivitiesAction = (project_id, playlist_id, first_id, second_id) => {
+export const reorderPlaylistActivitiesAction = (playlist) => {
   return async dispatch => {
-    const { token } = JSON.parse(localStorage.getItem("auth"));
-    const response = await axios.post(
-      '/api/switchactivities',
-      { playlist_id, first_id, second_id },
-      { headers: { "Authorization": "Bearer "+token } }
-    );
+    // Optimistically dispatching action with new playlist data
+    // to avoid waiting for request to go through
+    dispatch( reorderPlaylistActivities(playlist) );
 
-    if(response.data.status == "success")
-      dispatch( switchActivities() );
-    else if(response.data.status == "error")    
-      console.log('Error: '+response.data.message);
-    
-    dispatch(loadProjectPlaylistsAction(project_id));
+    // Then performing request. If something goes wrong, 
+    // dispatch loadProjectPlaylistsAction to refresh playlists
+    // with fresh server data
+    const { token } = JSON.parse(localStorage.getItem("auth"));
+    const response = axios.post(
+      '/api/reorderplaylist',
+      { playlist },
+      { headers: { "Authorization": "Bearer "+token } }
+    ).then(response => {
+      if(response.data.status == "error"){
+        console.log('Error: '+response.data.message);
+        dispatch(loadProjectPlaylistsAction(playlist.projectid));
+      }
+    }).catch(error => {
+      console.log(error);
+      dispatch(loadProjectPlaylistsAction(playlist.projectid));
+    });
   };
 };
 

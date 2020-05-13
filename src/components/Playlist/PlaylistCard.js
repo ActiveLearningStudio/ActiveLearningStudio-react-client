@@ -1,10 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 import {
 	loadProjectPlaylistsAction,
-	switchActivitiesAction,
+	reorderPlaylistActivitiesAction,
 } from "../../actions/playlist";
 import {
 	showDeletePlaylistPopupAction,
@@ -35,14 +36,16 @@ export class PlaylistCard extends React.Component {
 		this.props.handleCreateResource(this.props.playlist);
 	};
 
-	resourceDropped = (source, destination) => {
-		this.props.switchActivitiesAction(
-			this.props.match.params.projectid,
-			this.props.playlist._id,
-			source,
-			destination
-		);
-	};
+	onDragEnd = (e) => {
+		if(e.destination.index == e.source.index)
+			return;
+
+		let resources = Array.from(this.props.playlist.resources);
+		const [removed] = resources.splice(e.source.index, 1);
+		resources.splice(e.destination.index, 0, removed);
+		const reorderedPlaylist = {...this.props.playlist, resources: resources};
+		this.props.reorderPlaylistActivitiesAction(reorderedPlaylist);
+	}
 
 	renderResources() {
 		if (
@@ -53,19 +56,22 @@ export class PlaylistCard extends React.Component {
 				<div className="alert alert-info m-3">No resources yet.</div>
 			);
 
-		return this.props.playlist.resources.map((resource) => (
+		return this.props.playlist.resources.map((resource, index) => (
 			<ResourceCard
 				{...this.props}
 				resource={resource}
 				key={resource.id}
-				resourceDropped={this.resourceDropped}
+				index={index}
 			/>
 		));
 	}
 
 	render() {
 		return (
-			<div className="list-wrapper" key={this.props.playlist._id}>
+			<div
+				className="list-wrapper"
+				key={this.props.playlist._id}
+			>
 				<div className="list">
 					<div className="list-header">
 						<h2 className="list-header-name">
@@ -145,15 +151,26 @@ export class PlaylistCard extends React.Component {
 							</div>
 						</h2>
 					</div>
-					<div className="list-body">
-						{this.renderResources()}
-						<button
-							onClick={this.handleAddNewResourceClick}
-							className="add-resource-to-playlist-btn"
-						>
-							New Resource
-						</button>
-					</div>
+					<DragDropContext onDragEnd={this.onDragEnd}>
+						<Droppable droppableId={this.props.playlist._id}>
+							{(provided) => (
+								<div
+									className="list-body"
+									{...provided.droppableProps}
+									ref={provided.innerRef}
+								>
+									{this.renderResources()}
+									{provided.placeholder}
+									<button
+										onClick={this.handleAddNewResourceClick}
+										className="add-resource-to-playlist-btn"
+									>
+										New Resource
+									</button>
+								</div>
+							)}
+						</Droppable>
+					</DragDropContext>
 				</div>
 			</div>
 		);
@@ -165,8 +182,10 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch(showDeletePlaylistPopupAction(id, title, deleteType)),
 	hideDeletePlaylistModalAction: () =>
 		dispatch(hideDeletePlaylistModalAction()),
-	switchActivitiesAction: (project_id, playlist_id, source, destination) =>
-		dispatch(switchActivitiesAction(project_id, playlist_id, source, destination)),
+	reorderPlaylistActivitiesAction: (playlist) =>
+		dispatch(
+			reorderPlaylistActivitiesAction(playlist)
+		),
 });
 
 const mapStateToProps = (state) => {
