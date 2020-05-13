@@ -199,40 +199,45 @@ export const editResourceAction = (playlistid, editor, editorType, activityid) =
                 action: 'create'
             };
             // insert into mysql
-            const response = await axios.patch(global.config.h5pAjaxUrl + '/api/h5p/47', data, {
-                headers: headers
-            })
+            axios.get(global.config.laravelAPIUrl + '/activity/' + activityid)
                 .then((response) => {
-
-                    let resource = response.data;
-
-                    //update in mongodb
-                    axios.put(global.config.laravelAPIUrl + '/activity/' + activityid,
-                        {
-                            mysqlid: resource.id,
-                            playlistid: playlistid,
-                            action: 'create'
-                        }, {
+                    axios.patch(global.config.h5pAjaxUrl + '/api/h5p/' + response.data.mysqlid, data, {
                         headers: headers
                     })
                         .then((response) => {
 
-                            resource.id = response.data.data._id;
-                            resource.mysqlid = response.data.data.mysqlid;
-                            // resource.title = response.data.data._id;
+                            let resource = response.data;
 
-                            dispatch(
-                                editResource(playlistid, resource, editor, editorType)
-                            )
+                            //update in mongodb
+                            axios.put(global.config.laravelAPIUrl + '/activity/' + activityid,
+                                {
+                                    mysqlid: resource.id,
+                                    playlistid: playlistid,
+                                    action: 'create'
+                                }, {
+                                headers: headers
+                            })
+                                .then((response) => {
 
+                                    resource.id = response.data.data._id;
+                                    resource.mysqlid = response.data.data.mysqlid;
+                                    // resource.title = response.data.data._id;
+
+                                    dispatch(
+                                        editResource(playlistid, resource, editor, editorType)
+                                    )
+
+                                })
+                                .catch((error) => {
+                                    console.log(error);
+                                });
                         })
                         .catch((error) => {
                             console.log(error);
                         });
-                })
-                .catch((error) => {
-                    console.log(error);
                 });
+
+
 
 
 
