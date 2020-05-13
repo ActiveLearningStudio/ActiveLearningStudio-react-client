@@ -24,7 +24,7 @@ const BouncyDiv = styled.div`
 
 const EditResource = (props) => {
     useEffect(() => {
-        alert('edit resource');
+        // alert('edit resource');
         props.showBuildActivityAction('H5P.InteractiveVideo 1.21', 'h5p', props.match.params.activityid); // show create resource activity wizard
     }, []);
 

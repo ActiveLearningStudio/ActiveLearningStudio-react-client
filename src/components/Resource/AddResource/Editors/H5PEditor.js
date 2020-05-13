@@ -58,12 +58,12 @@ class H5PEditor extends React.Component {
          if(this.props.match.params.playlistid){
             this.props.handleCreateResourceSubmit(this.props.match.params.playlistid, this.props.resource.newResource.activity.h5pLib, this.props.resource.newResource.activity.h5pLibType, payload, this.props.resource.newResource.metaData);
          }
-         else {
-            alert("Error: Playlistid not present");
-            console.log('===========');
-            console.log(this.props);
-            console.log('===========');
-         }
+         // else {
+         //    alert("Error: Playlistid not present");
+         //    console.log('===========');
+         //    console.log(this.props);
+         //    console.log('===========');
+         // }
          
       }
    }

@@ -40,9 +40,28 @@ export class ResourceCard extends React.Component {
 						{...provided.dragHandleProps}
 					>
 						<div className="row">
-							<div className="col-md-10">
+							<div className="col-md-3">
+								<Link
+									to={
+										"/resource/preview/" +
+										this.props.resource.id
+									}>
+									{
+										this.props.resource.metadata ?
+											<div className="activity-thumb" style={{ 'background-image': 'url(' + this.props.resource.metadata.thumb_url + ')' }}></div>
+											: null
+									}
+
+								</Link>
+							</div>
+							<div className="col-md-7">
 								<h3 className="title">
-									{this.props.resource.title}
+									<Link
+										to={
+											"/resource/preview/" +
+											this.props.resource.id
+										}>{this.props.resource.title}
+									</Link>
 								</h3>
 							</div>
 							<div className="col-md-2">

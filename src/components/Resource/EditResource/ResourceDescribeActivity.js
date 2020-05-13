@@ -79,10 +79,10 @@ const educationLevels = [
 
 const onSubmit = async (values, dispatch, props) => {
   try {
-    console.log(values);
-    console.log(props);
-    alert(props.resource.newResource.activity.h5pLib);
-    alert(props.resource.newResource.activity.type);
+    // console.log(values);
+    // console.log(props);
+    // alert(props.resource.newResource.activity.h5pLib);
+    // alert(props.resource.newResource.activity.type);
     props.onSubmitDescribeActivityAction(values);
     props.showBuildActivityAction(props.resource.newResource.activity.h5pLib, props.resource.newResource.activity.type)
   } catch (e) {
