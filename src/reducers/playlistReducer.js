@@ -8,7 +8,8 @@ import {
   LOAD_PLAYLIST,
   DELETE_RESOURCE,
   SHOW_DELETE_PLAYLIST_MODAL,
-  HIDE_DELETE_PLAYLIST_MODAL
+  HIDE_DELETE_PLAYLIST_MODAL,
+  REORDER_PLAYLIST
 } from "../constants/actionTypes";
 
 const defaultPlaylistState = () => {
@@ -106,6 +107,16 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
           ...state,
           selectedPlaylist: action.playlist
         };
+      case REORDER_PLAYLIST:
+        // Find the changed playlist and replace with action.playlist
+        const newReorderedPlaylists = state.playlists.map(playlist => {
+          return (playlist._id === action.playlist._id) ? action.playlist : playlist;
+        });
+        return {
+          ...state,
+          playlists: newReorderedPlaylists
+        }
+
     default:
       return state;
   }
