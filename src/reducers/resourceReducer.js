@@ -121,6 +121,14 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                         data: ''
                     }
                 },
+                newResource: {
+                    activity: {
+                        type: null
+                    },
+                    metaData: {
+                        thumbUrl: null
+                    }
+                }
             };
         case EDIT_RESOURCE:
             return {
