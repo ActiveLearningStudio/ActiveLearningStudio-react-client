@@ -1,3 +1,25 @@
+.resource-modal  {
+    h1 {
+        color:#165399;
+        text-transform: capitalize;
+        margin:0;
+        font-size:2rem;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 300;
+        .close-btn {
+            float:right;
+            border:0;
+            background:none;
+        }
+    }
+    .modal-content {
+        padding:40px 35px;
+    }
+    .modal {
+        padding:0 !important;
+    }
+}
+
 .create-program-wrapper {
     h1 {
         color: #165399;

@@ -112,9 +112,7 @@ export class PlaylistsPage extends React.Component {
     }
   };
 
-  createNewResourceModal = () => {
-    this.showNewResourceModal();
-  };
+  
 
   handleHideCreatePlaylistModal = async (e) => {
     e.preventDefault();

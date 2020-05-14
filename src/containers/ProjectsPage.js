@@ -23,84 +23,17 @@ export class ProjectsPage extends React.Component {
     //scroll to top
     window.scrollTo(0, 0);
     this.props.loadMyProjectsAction();
-    
 
+    
     if(this.props.showEditProjectPopup){
-      this.getProjectData(this.props.match.params.projectid);
+      // loads the data of project for showing into edit form
+      this.props.loadProjectAction(this.props.match.params.projectid);
     } else {
       this.props.showCreateProjectModalAction();
     }
   }
 
-  // get the data of project for showing into edit form
-  getProjectData(projectid){
-    this.props.loadProjectAction(projectid);
-  }
-
-  handleShowCreatePlaylistModal = async (e) => {
-    e.preventDefault();
-    try {
-      await this.props.showCreatePlaylistModal();
-      this.props.history.push("/playlist/create");
-
-      
-    } catch (e) {
-      console.log(e.message);
-    }
-
-  };
-
-  handleShowCreateResourceModal = (id) => {
-    try {
-      this.props.showCreateResourceModalAction(id);
-      this.props.history.push("/playlist/activity/create/"+id);
-
-    } catch (e) {
-      console.log(e.message);
-    }
-
-  };
-
-  createNewResourceModal = () => {
-    this.showNewResourceModal();
-  };
   
-
-  handleHideCreatePlaylistModal = async (e) => {
-    e.preventDefault();
-    try {
-      await this.props.hideCreatePlaylistModal();
-      this.props.history.push("/");
-
-      
-    } catch (e) {
-      console.log(e.message);
-    }
-  };
-
-
-  onPlaylistTitleChange = e => {
-    this.setState({ title: e.target.value });
-  };
-  handleCreatePlaylistSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const { title } = this.state;
-      
-      await this.props.createPlaylistAction(title);
-      this.props.history.push("/");
-      this.props.hideCreatePlaylistModal();
-
-    } catch (e) {
-      console.log(e.message);
-    }
-  };
-
-  // This function handles delete playlist
-  handleDeletePlayList = (id) => {
-    this.props.deletePlaylistAction(id);
-  }
-
   populateResources(resources) {
     
     return (

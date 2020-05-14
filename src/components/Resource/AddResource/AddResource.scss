@@ -463,6 +463,9 @@ input[type="radio"]:checked+.activity-item {
     .modal-content {
         padding:40px 35px;
     }
+    .modal {
+        padding:0 !important;
+    }
 }
 
 .h5peditor-semi-fullscreen {

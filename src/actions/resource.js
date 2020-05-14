@@ -219,7 +219,6 @@ export const editResourceAction = (playlistid, editor, editorType, activityid) =
 
                                     resource.id = response.data.data._id;
                                     resource.mysqlid = response.data.data.mysqlid;
-                                    // resource.title = response.data.data._id;
 
                                     dispatch(
                                         editResource(playlistid, resource, editor, editorType)
@@ -297,7 +296,6 @@ export const createResourceAction = (playlistid, editor, editorType, metaData) =
 
                                 resource.id = response.data.data._id;
                                 resource.mysqlid = response.data.data.mysqlid;
-                                // resource.title = response.data.data._id;
 
                                 dispatch(
                                     createResource(playlistid, resource, editor, editorType)
@@ -362,7 +360,7 @@ export const createResourceByH5PUploadAction = (playlistid, editor, editorType, 
                                 let resource = { ...response_activity.data.data };
                                 resource.id = response_activity.data.data._id;
                                 resource.mysqlid = response_activity.data.data.mysqlid;
-                                // resource.title = response.data.data._id;                        
+
                                 dispatch(
                                     createResource(playlistid, resource, editor, editorType)
                                 )
@@ -431,7 +429,6 @@ export const deleteResourceAction = (resourceid) => {
     return async dispatch => {
         try {
             const response = await axios.delete(
-                //  `${process.env.REACT_APP_API_URL}/playlist/create`,
                 `/api/activity/${resourceid}`,
                 {
                     resourceid
@@ -517,9 +514,6 @@ export const uploadResourceThumbnail = (thumbUrl) => ({
 });
 
 export const uploadResourceThumbnailAction = (formData) => {
-    // console.log(e);
-    // const formData = new FormData();
-    // formData.append('uploads',e.target.files[0])
     return async dispatch => {
         try {
             const config = {

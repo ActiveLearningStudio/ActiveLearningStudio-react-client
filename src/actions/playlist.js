@@ -1,18 +1,12 @@
 import axios from "axios";
-import {history} from './../routers/AppRouter';
+
 import {
-  CREATE_PLAYLIST, 
-  DELETE_PLAYLIST, 
-  SHOW_CREATE_PLAYLIST_MODAL, 
-  HIDE_CREATE_PLAYLIST_MODAL, 
-  HIDE_PREVIEW_PLAYLIST_MODA, 
-  LOAD_PROJECT_PLAYLISTSL, 
+  CREATE_PLAYLIST,
+  DELETE_PLAYLIST,
+  SHOW_CREATE_PLAYLIST_MODAL,
+  HIDE_CREATE_PLAYLIST_MODAL,
   LOAD_PROJECT_PLAYLISTS,
-  HIDE_PREVIEW_PLAYLIST_MODAL,
   LOAD_PLAYLIST,
-  SHOW_DELETE_PLAYLIST_MODAL,
-  HIDE_DELETE_PLAYLIST_MODAL,
-  PAGE_LOADING,
   PAGE_LOADING_COMPLETE,
   REORDER_PLAYLIST,
   REORDER_PLAYLISTS,
@@ -27,7 +21,7 @@ export const reorderPlaylistsAction = (playlists) => {
   return async dispatch => {
     // Optimistically dispatching action with new playlists data
     // to avoid waiting for request to go through
-    dispatch( reorderPlaylists(playlists) );
+    dispatch(reorderPlaylists(playlists));
 
     // Then performing request. If something goes wrong, 
     // dispatch loadProjectPlaylistsAction to refresh playlists
@@ -36,10 +30,10 @@ export const reorderPlaylistsAction = (playlists) => {
     const response = axios.post(
       '/api/reorderprojectplaylists',
       { playlists },
-      { headers: { "Authorization": "Bearer "+token } }
+      { headers: { "Authorization": "Bearer " + token } }
     ).then(response => {
-      if(response.data.status == "error"){
-        console.log('Error: '+response.data.message);
+      if (response.data.status == "error") {
+        console.log('Error: ' + response.data.message);
         dispatch(loadProjectPlaylistsAction(playlists[0].projectid));
       }
     }).catch(error => {
@@ -58,7 +52,7 @@ export const reorderPlaylistActivitiesAction = (playlist) => {
   return async dispatch => {
     // Optimistically dispatching action with new playlist data
     // to avoid waiting for request to go through
-    dispatch( reorderPlaylistActivities(playlist) );
+    dispatch(reorderPlaylistActivities(playlist));
 
     // Then performing request. If something goes wrong, 
     // dispatch loadProjectPlaylistsAction to refresh playlists
@@ -67,10 +61,10 @@ export const reorderPlaylistActivitiesAction = (playlist) => {
     const response = axios.post(
       '/api/reorderplaylist',
       { playlist },
-      { headers: { "Authorization": "Bearer "+token } }
+      { headers: { "Authorization": "Bearer " + token } }
     ).then(response => {
-      if(response.data.status == "error"){
-        console.log('Error: '+response.data.message);
+      if (response.data.status == "error") {
+        console.log('Error: ' + response.data.message);
         dispatch(loadProjectPlaylistsAction(playlist.projectid));
       }
     }).catch(error => {
@@ -91,11 +85,11 @@ export const loadPlaylistAction = (playlistId) => {
     const response = await axios.post(
       '/api/loadplaylist',
       { playlistId },
-      { headers: { "Authorization": "Bearer "+token } }
+      { headers: { "Authorization": "Bearer " + token } }
     );
 
-    if(response.data.status == "success")
-      dispatch( loadPlaylist(response.data.data.playlist) );
+    if (response.data.status == "success")
+      dispatch(loadPlaylist(response.data.data.playlist));
   };
 };
 
@@ -109,39 +103,29 @@ export const createPlaylist = (playlistdata) => ({
 export const createPlaylistAction = (projectid, title) => {
   return async dispatch => {
     try {
-     const response = await axios.post(
-      //  `${process.env.REACT_APP_API_URL}/playlist/create`,
-       '/api/playlist',
-       {
-         projectid,
-         title
-       }
-     );
-     
-     if(response.data.status == "success") {
+      const response = await axios.post(
+        '/api/playlist',
+        {
+          projectid,
+          title
+        }
+      );
+
+      if (response.data.status == "success") {
         //getting last playlist id
-        
+
         const playlistdata = {
-          _id:response.data.data._id,
+          _id: response.data.data._id,
           title: response.data.data.title,
           projectid: response.data.data.projectid
         };
-        
-        let plists = [];
-        // if(localStorage.getItem("playlists")){
-        //     plists = JSON.parse(localStorage.getItem("playlists"));
-        // }
-        
-        // plists.unshift(playlistdata);
-        
-        // localStorage.setItem("playlists", JSON.stringify(plists));
-        
+
         dispatch(
           createPlaylist(playlistdata)
         );
       }
 
-      
+
     } catch (e) {
       throw new Error(e);
     }
@@ -149,35 +133,27 @@ export const createPlaylistAction = (projectid, title) => {
 };
 
 export const deletePlaylist = (id) => ({
-  type:DELETE_PLAYLIST,
+  type: DELETE_PLAYLIST,
   id
-}); 
+});
 
 export const deletePlaylistAction = (id) => {
   return async dispatch => {
     try {
       const response = await axios.delete(
-        //  `${process.env.REACT_APP_API_URL}/playlist/create`,
-         `/api/playlist/${id}`,
-         {
-           id
-         }
-       );
+        `/api/playlist/${id}`,
+        {
+          id
+        }
+      );
 
-       if(response.data.status == "success") {
-          let plists = [];
-          // if(localStorage.getItem("playlists")){
-          //   plists = JSON.parse(localStorage.getItem("playlists"));
-          // }
-          // plists = plists.filter(playlist => {
-          //   return playlist.id !== id
-          // });
-          // localStorage.setItem("playlists", JSON.stringify(plists));
-          dispatch(
-            deletePlaylist(id)
-          );
-       }
-      
+      if (response.data.status == "success") {
+
+        dispatch(
+          deletePlaylist(id)
+        );
+      }
+
     } catch (e) {
       throw new Error(e);
     }
@@ -186,7 +162,7 @@ export const deletePlaylistAction = (id) => {
 
 
 export const showCreatePlaylistModal = () => ({
-  type:SHOW_CREATE_PLAYLIST_MODAL
+  type: SHOW_CREATE_PLAYLIST_MODAL
 });
 
 export const showCreatePlaylistModalAction = () => {
@@ -203,7 +179,7 @@ export const showCreatePlaylistModalAction = () => {
 
 
 export const hideCreatePlaylistModal = () => ({
-  type:HIDE_CREATE_PLAYLIST_MODAL
+  type: HIDE_CREATE_PLAYLIST_MODAL
 });
 
 export const hideCreatePlaylistModalAction = () => {
@@ -234,35 +210,34 @@ export const loadProjectPlaylistsAction = (projectid) => {
     try {
       // dispatch({type:PAGE_LOADING});
       const { token } = JSON.parse(localStorage.getItem("auth"));
-     const response = await axios.post(
-      //  `${process.env.REACT_APP_API_URL}/playlist/create`,
-       '/api/project-playlists',
-       {
-         projectid
-       },
-       {
+      const response = await axios.post(
+        '/api/project-playlists',
+        {
+          projectid
+        },
+        {
           headers: {
-            "Authorization": "Bearer "+token
+            "Authorization": "Bearer " + token
           }
         }
-     );
-     
-     if(response.data.status == "success") {
+      );
+
+      if (response.data.status == "success") {
         let playlists = [];
         playlists = response.data.data.playlists;
-        
-        
+
+
         dispatch(
           loadProjectPlaylists(playlists)
         );
-        // dispatch({type:PAGE_LOADING_CO MPLETE});
+        // dispatch({type:PAGE_LOADING_COMPLETE});
       }
 
-      
+
     } catch (e) {
-      dispatch({type:PAGE_LOADING_COMPLETE});
+      // dispatch({ type: PAGE_LOADING_COMPLETE });
       throw new Error(e);
-      
+
     }
   };
 };

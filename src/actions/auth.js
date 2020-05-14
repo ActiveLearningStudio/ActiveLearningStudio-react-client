@@ -13,7 +13,6 @@ export const startSignup = (displayName, email, password) => {
   return async dispatch => {
     try {
       const response = await axios.post(
-        // `${process.env.REACT_APP_API_URL}/users`,
         global.config.laravelAPIUrl +'/users',
         {
           displayName,
@@ -53,7 +52,6 @@ export const startLogin = (email, password) => {
   return async dispatch => {
     try {
       const response = await axios.post(
-        // `${process.env.REACT_APP_API_URL}/users/login`,
         global.config.laravelAPIUrl + '/auth/login',
         {
           email,
@@ -77,7 +75,6 @@ export const startLogin = (email, password) => {
 
       
     } catch (e) {
-      // console.log(e);
       dispatch(
         loginError()
       );
