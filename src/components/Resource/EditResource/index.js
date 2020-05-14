@@ -1,17 +1,9 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { slideInRight } from 'react-animations';
-
 import styled, { keyframes } from 'styled-components';
-// import { showCreateResourceActivityAction, showBuildActivityAction } from "./actions/resource";
 
-
-import ResourceActivityType from './ResourceActivityType';
-import ResourceSelectActivity from './ResourceSelectActivity';
-import ResourceDescribeActivity from './ResourceDescribeActivity';
 import ResourceActivityBuild from './ResourceActivityBuild';
-
-
 import './../AddResource/AddResource.scss';
 
 

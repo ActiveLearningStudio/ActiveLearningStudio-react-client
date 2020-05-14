@@ -4,10 +4,6 @@ import {createBrowserHistory} from "history";
 import loadable from '@loadable/component'
 
 import PublicRoute from "./PublicRoute";
-import LoginPage from "./../containers/LoginPage";
-
-
-
 import PrivateRoute from "./PrivateRoute";
 
 
@@ -16,6 +12,7 @@ const history = createBrowserHistory();
 const ProjectsPage = loadable(() => import('../containers/ProjectsPage'));
 const PlaylistsPage = loadable(() => import('../containers/PlaylistsPage'));
 const PreviewPage = loadable(() => import('../containers/PreviewPage'));
+const LoginPage = loadable(() => import('../containers/LoginPage'));
 
 
 const AppRouter = () => (

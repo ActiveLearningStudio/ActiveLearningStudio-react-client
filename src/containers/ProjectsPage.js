@@ -5,52 +5,25 @@ import "react-placeholder/lib/reactPlaceholder.css";
 
 import { withRouter } from 'react-router-dom';
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
 
 
 import Header from "../components/Header/Header";
-import CreatePlaylistPopup from "../components/CreatePlaylistPopup/CreatePlaylistPopup";
-import Sidebar from "../components/Sidebar/Sidebar";
 
-import { startLogin } from "../actions/auth";
+import Sidebar from "../components/Sidebar/Sidebar";
 import { showDeletePlaylistPopupAction, hideDeletePlaylistModalAction } from "../actions/ui";
 import { deleteProjectAction, showCreateProjectModalAction, loadProjectAction, createProjectAction, loadMyProjectsAction} from "../actions/project";
 
 import { NewProjectPage } from "./NewProjectPage";
 
 import ProjectCard from "../components/ProjectCard";
-import ProjectPreviewModal from "../components/ProjectPreviewModal";
 import DeletePopup from "../components/DeletePopup/DeletePopup"
 import ProjectsLoading from "../components/Loading/ProjectsLoading";
 
 export class ProjectsPage extends React.Component {
   constructor(props) {
     super(props);
-
-
-
-    
-
-    //binding escape function for modal close
-    // this.escFunction = this.escFunction.bind(this);
-
-
   }
-  escFunction(event) {
-    if (event.keyCode === 27) {
-      this.props.hideCreatePlaylistModal();
-      this.props.history.push("/");
-    }
-  }
-
-
- 
-
+  
   componentDidMount() {
     //scroll to top
     window.scrollTo(0, 0);
