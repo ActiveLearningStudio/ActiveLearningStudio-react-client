@@ -14,8 +14,40 @@ import {
   HIDE_DELETE_PLAYLIST_MODAL,
   PAGE_LOADING,
   PAGE_LOADING_COMPLETE,
-  REORDER_PLAYLIST
+  REORDER_PLAYLIST,
+  REORDER_PLAYLISTS,
 } from './../constants/actionTypes';
+
+export const reorderPlaylists = (playlists) => ({
+  type: REORDER_PLAYLISTS,
+  playlists: playlists
+});
+
+export const reorderPlaylistsAction = (playlists) => {
+  return async dispatch => {
+    // Optimistically dispatching action with new playlists data
+    // to avoid waiting for request to go through
+    dispatch( reorderPlaylists(playlists) );
+
+    // Then performing request. If something goes wrong, 
+    // dispatch loadProjectPlaylistsAction to refresh playlists
+    // with fresh server data
+    const { token } = JSON.parse(localStorage.getItem("auth"));
+    const response = axios.post(
+      '/api/reorderprojectplaylists',
+      { playlists },
+      { headers: { "Authorization": "Bearer "+token } }
+    ).then(response => {
+      if(response.data.status == "error"){
+        console.log('Error: '+response.data.message);
+        dispatch(loadProjectPlaylistsAction(playlists[0].projectid));
+      }
+    }).catch(error => {
+      console.log(error);
+      dispatch(loadProjectPlaylistsAction(playlists[0].projectid));
+    });
+  };
+};
 
 export const reorderPlaylistActivities = (playlist) => ({
   type: REORDER_PLAYLIST,

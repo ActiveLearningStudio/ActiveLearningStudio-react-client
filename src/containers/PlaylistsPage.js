@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import ReactPlaceholder from "react-placeholder";
 import "react-placeholder/lib/reactPlaceholder.css";
 import validator from "validator";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import {
   BrowserRouter as Router,
   withRouter,
@@ -17,6 +18,7 @@ import {
   showCreatePlaylistModalAction,
   hideCreatePlaylistModalAction,
   loadProjectPlaylistsAction,
+  reorderPlaylistsAction
 } from "../actions/playlist";
 import {
   showDeletePlaylistPopupAction,
@@ -35,7 +37,7 @@ import {
   onChangeActivityTypeAction,
   onChangeActivityAction,
   uploadResourceThumbnailAction,
-  showBuildActivityAction
+  showBuildActivityAction,
 } from "../actions/resource";
 import {
   showCreateProjectModalAction,
@@ -50,9 +52,8 @@ import DeletePopup from "./../components/DeletePopup/DeletePopup";
 import PlaylistCard from "../components/Playlist/PlaylistCard";
 import PlaylistsLoading from "./../components/Loading/PlaylistsLoading";
 import CreatePlaylistPopup from "../components/CreatePlaylistPopup/CreatePlaylistPopup";
-import AddResource from '../components/Resource/AddResource'
-import EditResource from '../components/Resource/EditResource'
-
+import AddResource from "../components/Resource/AddResource";
+import EditResource from "../components/Resource/EditResource";
 
 import "./PlaylistsPage.scss";
 
@@ -198,8 +199,9 @@ export class PlaylistsPage extends React.Component {
     currentPlaylistId,
     editor,
     editorType,
-    activityid) => {
-      try {
+    activityid
+  ) => {
+    try {
       await this.props.editResourceAction(
         currentPlaylistId,
         editor,
@@ -207,25 +209,27 @@ export class PlaylistsPage extends React.Component {
         activityid
       );
       this.props.history.push("/project/" + this.props.match.params.projectid);
-      }
-      catch(e){
-        console.log(e);
-      }
-  }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  onDragEnd = (e) => {
+    if (e.destination.index == e.source.index) return;
+
+    let playlists = Array.from(this.props.playlists.playlists);
+    const [removed] = playlists.splice(e.source.index, 1);
+    playlists.splice(e.destination.index, 0, removed);
+    this.props.reorderPlaylistsAction(playlists);
+  };
 
   render() {
     const { playlists } = this.props.playlists;
     const { showDeletePlaylistPopup } = this.props.ui;
-    
+
     return (
       <>
         <Header {...this.props} />
-        {/* <ReactPlaceholder
-          type="media"
-          showLoadingAnimation
-          customPlaceholder={PlaylistsLoading}
-          ready={!this.props.ui.pageLoading}
-        > */}
         <>
           <div className="main-content-wrapper">
             <div className="sidebar-wrapper">
@@ -260,18 +264,31 @@ export class PlaylistsPage extends React.Component {
                 >
                   Create New Playlist
                 </button>
-                <div
-                  id="board"
-                  className="u-fancy-scrollbar js-no-higher-edits js-list-sortable ui-sortable"
-                >
-                  {playlists.map((playlist) => (
-                    <PlaylistCard
-                      key={playlist._id}
-                      playlist={playlist}
-                      handleCreateResource={this.handleShowCreateResourceModal}
-                    />
-                  ))}
-                </div>
+
+                <DragDropContext onDragEnd={this.onDragEnd}>
+                  <Droppable droppableId="project-droppable-id" direction="horizontal">
+                    {(provided) => (
+                      <div
+                        id="board"
+                        className=""
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                      >
+                        {playlists.map((playlist, index) => (
+                          <PlaylistCard
+                            key={playlist._id}
+                            index={index}
+                            playlist={playlist}
+                            handleCreateResource={
+                              this.handleShowCreateResourceModal
+                            }
+                          />
+                        ))}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </DragDropContext>
               </div>
             </div>
           </div>
@@ -297,7 +314,7 @@ export class PlaylistsPage extends React.Component {
               {...this.props}
               handleHideCreateResourceModal={this.handleHideCreateResourceModal}
               handleCreateResourceSubmit={this.handleCreateResourceSubmit}
-              handleEditResourceSubmit = {this.handleEditResourceSubmit}
+              handleEditResourceSubmit={this.handleEditResourceSubmit}
             />
           ) : null}
 
@@ -306,10 +323,9 @@ export class PlaylistsPage extends React.Component {
               {...this.props}
               handleHideCreateResourceModal={this.handleHideCreateResourceModal}
               handleCreateResourceSubmit={this.handleCreateResourceSubmit}
-              handleEditResourceSubmit = {this.handleEditResourceSubmit}
+              handleEditResourceSubmit={this.handleEditResourceSubmit}
             />
           ) : null}
-
 
           {this.props.resource.showPreviewResourcePopup ? (
             <PreviewResourcePage {...this.props} />
@@ -357,12 +373,17 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(deleteResourceAction(resourceid)),
   showDeletePlaylistPopupAction: (id, title, deleteType) =>
     dispatch(showDeletePlaylistPopupAction(id, title, deleteType)),
-
-  showCreateResourceActivity: () => dispatch(showCreateResourceActivityAction()),
-  showBuildActivityAction: (editor, editorType, activityid) => dispatch(showBuildActivityAction(editor, editorType, activityid)),
+  showCreateResourceActivity: () =>
+    dispatch(showCreateResourceActivityAction()),
+  showBuildActivityAction: (editor, editorType, activityid) =>
+    dispatch(showBuildActivityAction(editor, editorType, activityid)),
   onChangeActivityTypeAction: (e) => dispatch(onChangeActivityTypeAction(e)),
-  onChangeActivityAction: (e, activity) => dispatch(onChangeActivityAction(e, activity)),
-  uploadResourceThumbnailAction: ()=>dispatch(uploadResourceThumbnailAction())
+  onChangeActivityAction: (e, activity) =>
+    dispatch(onChangeActivityAction(e, activity)),
+  uploadResourceThumbnailAction: () =>
+    dispatch(uploadResourceThumbnailAction()),
+  reorderPlaylistsAction: (playlist) =>
+    dispatch(reorderPlaylistsAction(playlist))
 });
 
 const mapStateToProps = (state) => {
