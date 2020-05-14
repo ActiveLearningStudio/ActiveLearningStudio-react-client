@@ -232,7 +232,7 @@ export const loadProjectPlaylists = (playlists) => ({
 export const loadProjectPlaylistsAction = (projectid) => {
   return async dispatch => {
     try {
-      dispatch({type:PAGE_LOADING});
+      // dispatch({type:PAGE_LOADING});
       const { token } = JSON.parse(localStorage.getItem("auth"));
      const response = await axios.post(
       //  `${process.env.REACT_APP_API_URL}/playlist/create`,

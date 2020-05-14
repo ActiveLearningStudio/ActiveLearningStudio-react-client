@@ -1,4 +1,4 @@
-import { 
+import {
   CREATE_PLAYLIST,
   DELETE_PLAYLIST,
   SHOW_CREATE_PLAYLIST_MODAL,
@@ -10,25 +10,28 @@ import {
   SHOW_DELETE_PLAYLIST_MODAL,
   HIDE_DELETE_PLAYLIST_MODAL,
   REORDER_PLAYLIST,
-  REORDER_PLAYLISTS
+  REORDER_PLAYLISTS,
+  EDIT_RESOURCE
 } from "../constants/actionTypes";
 
 const defaultPlaylistState = () => {
   if (localStorage.getItem("playlists")) {
 
-        
+
     return {
-        'playlists':JSON.parse(localStorage.getItem("playlists")),
-        'showCreatePlaylistPopup':false
+      'playlists': JSON.parse(localStorage.getItem("playlists")),
+      'showCreatePlaylistPopup': false
     }
   } else {
     return {
-        'playlists':[],
-        'showCreatePlaylistPopup':false,
-        selectedPlaylist: null,
+      'playlists': [],
+      'showCreatePlaylistPopup': false,
+      selectedPlaylist: null,
     };
   }
 };
+
+let newPlaylists = [];
 
 const playlistReducer = (state = defaultPlaylistState(), action) => {
   switch (action.type) {
@@ -40,7 +43,7 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
           action.playlistdata
         ]
       };
-    
+
     case DELETE_PLAYLIST:
       let newPlaylist = state.playlists.filter(playlist => {
         return playlist._id !== action.id
@@ -60,69 +63,84 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
         ...state,
         showCreatePlaylistPopup: false
       };
-    
+
     case CREATE_RESOURCE:
       // adding resource to newplaylist specific id
-      let newPlaylists = state.playlists;
-      state.playlists.forEach((playlist,i) => {
-          if(playlist._id === action.playlistid){
-            newPlaylists[i] = Object.assign( { 'resources':[] }, newPlaylists[i] );
-            newPlaylists[i].resources.push({_id:action.resource.id, id:action.resource.mysqlid, title:action.resource.title});
-          }
+      newPlaylists = state.playlists;
+      state.playlists.forEach((playlist, i) => {
+        if (playlist._id === action.playlistid) {
+          newPlaylists[i] = Object.assign({ 'resources': [] }, newPlaylists[i]);
+          newPlaylists[i].resources.push({ _id: action.resource.id, id: action.resource.mysqlid, title: action.resource.title });
+        }
       });
-      
-          return {
-              ...state,
-              playlists: newPlaylists,
-              showCreateResourcePopup:false
-              
-          };
-      case DELETE_RESOURCE:
-        
-        let plists = [];
-        state.playlists.forEach((playlist,i) => {
-          let newResources = playlist.resources.filter(res => {
-            return res._id !== action.resourceid
-          });
-          var p = null;
-          p = playlist;
-          p.resources = newResources;
-          plists.push(p);
-        });
-        
-        return {
-          ...state,
-          playlists: plists,
-          showCreateResourcePopup:false,
-          showDeletePlaylistPopup: false
-          
+      return {
+        ...state,
+        playlists: newPlaylists,
+        showCreateResourcePopup: false
+
       };
-      case LOAD_PROJECT_PLAYLISTS:
-        return {
-          ...state,
-          playlists: action.playlists
-        };
+    case EDIT_RESOURCE:
+      // adding resource to newplaylist specific id
+      newPlaylists = state.playlists;
+      state.playlists.forEach((playlist, i) => {
+        if (playlist._id === action.playlistid) {
+          newPlaylists[i] = Object.assign({ 'resources': [] }, newPlaylists[i]);
+          console.log(newPlaylists[i].resources);
+          // newPlaylists[i].resources.push({ _id: action.resource.id, id: action.resource.mysqlid, title: action.resource.title });
+        }
+      });
+      return {
+        ...state,
+        playlists: newPlaylists,
+        showCreateResourcePopup: false
 
-      case LOAD_PLAYLIST:
-        return {
-          ...state,
-          selectedPlaylist: action.playlist
-        };
-      case REORDER_PLAYLIST:
-        // Find the changed playlist and replace with action.playlist
-        const newReorderedPlaylists = state.playlists.map(playlist => {
-          return (playlist._id === action.playlist._id) ? action.playlist : playlist;
+      };
+    case DELETE_RESOURCE:
+
+      let plists = [];
+      state.playlists.forEach((playlist, i) => {
+        let newResources = playlist.resources.filter(res => {
+          return res._id !== action.resourceid
         });
-        return {
-          ...state,
-          playlists: newReorderedPlaylists
-        }
+        var p = null;
+        p = playlist;
+        p.resources = newResources;
+        plists.push(p);
+      });
 
-      case REORDER_PLAYLISTS:
-        return {
-          ...state,
-          playlists: action.playlists
-        }
+      return {
+        ...state,
+        playlists: plists,
+        showCreateResourcePopup: false,
+        showDeletePlaylistPopup: false
+
+      };
+    case LOAD_PROJECT_PLAYLISTS:
+      return {
+        ...state,
+        playlists: action.playlists
+      };
+
+    case LOAD_PLAYLIST:
+      return {
+        ...state,
+        selectedPlaylist: action.playlist
+      };
+    case REORDER_PLAYLIST:
+      // Find the changed playlist and replace with action.playlist
+      const newReorderedPlaylists = state.playlists.map(playlist => {
+        return (playlist._id === action.playlist._id) ? action.playlist : playlist;
+      });
+      return {
+        ...state,
+        playlists: newReorderedPlaylists
+      }
+
+    case REORDER_PLAYLISTS:
+      return {
+        ...state,
+        playlists: action.playlists
+      }
 
     default:
       return state;

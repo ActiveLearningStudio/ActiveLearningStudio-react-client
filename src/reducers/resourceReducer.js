@@ -13,7 +13,8 @@ import {
     SELECT_ACTIVITY,
     DESCRIBE_ACTIVITY,
     UPLOAD_RESOURCE_THUMBNAIL,
-    EDIT_RESOURCE
+    EDIT_RESOURCE,
+    RESOURCE_VALIDATION_ERRORS
 } from "../constants/actionTypes";
 
 const defaultResourceState = () => {
@@ -93,11 +94,6 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                 isResourceDescribeActivity: true,
                 isResourceActivityBuild: false,
                 isSelectActivityFilled: true,
-                // newResource: {
-                //     ...state.newResource,
-                //     editor: action.activity,
-                //     editorType: 'h5p'
-                // }
             };
         case SHOW_RESOURCE_ACTIVITY_BUILD:
             return {
@@ -109,7 +105,9 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                 isDescribeFilled: true,
                 editResource: {
                     ...state.editResource,
-                    params: action.params
+                    params: action.params,
+                    editor: action.editor,
+                    editorType: action.editorType
                 }
             };
         case CREATE_RESOURCE:
@@ -196,6 +194,11 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                         thumbUrl: action.thumbUrl
                     }
                 }
+            }
+        case RESOURCE_VALIDATION_ERRORS:
+            return {
+                ...state,
+                showCreateResourcePopup: true
             }
         default:
             return state;

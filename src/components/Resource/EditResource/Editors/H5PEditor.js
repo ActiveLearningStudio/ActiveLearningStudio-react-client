@@ -14,7 +14,7 @@ class H5PEditor extends React.Component {
    constructor(props) {
       super(props);
 
-
+      
       // this.h5pLib = props.resource.newResource.activity.h5pLib; //"H5P.Audio 1.4";
       // this.h5pLib = 'H5P.InteractiveVideo 1.21';
 
@@ -40,7 +40,7 @@ class H5PEditor extends React.Component {
    submitResource(event) {
       event.preventDefault();
 
-   // alert(this.props.match.params.activityid);      
+       
       // let payload = { event, submitAction: this.state.submitAction, h5pFile: this.state.h5pFile };
       this.props.handleEditResourceSubmit(this.props.match.params.playlistid, this.props.resource.editResource.h5pLib, this.props.resource.editResource.h5pLibType, this.props.match.params.activityid);
    }
@@ -124,7 +124,7 @@ class H5PEditor extends React.Component {
                         </div>
                      </div>
                   </div>
-                  <div className="form-group laravel-h5p-upload-container">
+                  {/* <div className="form-group laravel-h5p-upload-container">
                      <label for="inputUpload" className="control-label col-md-3">Upload</label>
                      <div className="col-md-12">
                         <input type="file" name="h5p_file" id="h5p-file" className="laravel-h5p-upload form-control" onChange={(e) => this.setH5pFileUpload(e)} />
@@ -135,15 +135,11 @@ class H5PEditor extends React.Component {
                         </small>
 
                      </div>
-                  </div>
+                  </div> */}
 
-                  <div className="form-group ">
+                  <div className="form-group react-h5-type">
                      <label for="inputAction" className="control-label col-md-3">Method</label>
                      <div className="col-md-6">
-
-                        <label className="radio-inline">
-                           <input type="radio" name="action" value="upload" className="laravel-h5p-type" checked={this.state.submitAction === 'upload'} onChange={this.onSubmitActionRadioChange} />Upload
-                        </label>
                         <label className="radio-inline">
                            <input type="radio" name="action" value="create" className="laravel-h5p-type" checked={this.state.submitAction === 'create'} onChange={this.onSubmitActionRadioChange} />Create
                         </label>

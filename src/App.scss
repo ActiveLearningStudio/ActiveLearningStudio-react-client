@@ -582,6 +582,11 @@ body {
     .program-thumb {
         height: 240px;
         overflow: hidden;
+        a {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
         .project-thumb{
             min-height:200px;
             background-size: contain;
@@ -817,4 +822,8 @@ body {
 
 .dropdown-menu {
     left: -50px !important;
+}
+
+.react-h5-type  {
+    display: none;
 }

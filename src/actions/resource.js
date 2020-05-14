@@ -15,7 +15,8 @@ import {
     SELECT_ACTIVITY,
     DESCRIBE_ACTIVITY,
     UPLOAD_RESOURCE_THUMBNAIL,
-    EDIT_RESOURCE
+    EDIT_RESOURCE,
+    RESOURCE_VALIDATION_ERRORS
 } from './../constants/actionTypes';
 
 export const loadResource = (resource, previous, next) => ({
@@ -121,7 +122,7 @@ export const showBuildActivity = (editor, editorType, params) => ({
     params
 });
 
-export const showBuildActivityAction = (editor, editorType, activityid = null) => {
+export const showBuildActivityAction = (editor = null, editorType = null, activityid = null) => {
     return async dispatch => {
         try {
             if (activityid) {
@@ -129,11 +130,10 @@ export const showBuildActivityAction = (editor, editorType, activityid = null) =
                     .then((response) => {
                         axios.get(global.config.h5pAjaxUrl + '/h5p/content-params/' + response.data.mysqlid)
                             .then((params) => {
+                                let lib = response.data.library_name + " " + response.data.major_version + "." + response.data.minor_version;
                                 dispatch(
-                                    showBuildActivity(editor, editorType, params)
+                                    showBuildActivity(lib, response.data.type, params)
                                 )
-
-
                             });
 
                     });
@@ -191,25 +191,23 @@ export const editResourceAction = (playlistid, editor, editorType, activityid) =
             };
 
             // h5peditorCopy to be taken from h5papi/storage/h5p/laravel-h5p/js/laravel-h5p.js
-            // alert(JSON.stringify(window.h5peditorCopy.getParams()));
             const data = {
-                // playlistid:playlistid,
                 library: window.h5peditorCopy.getLibrary(),
                 parameters: JSON.stringify(window.h5peditorCopy.getParams()),
                 action: 'create'
             };
             // insert into mysql
-            axios.get(global.config.laravelAPIUrl + '/activity/' + activityid)
-                .then((response) => {
-                    axios.patch(global.config.h5pAjaxUrl + '/api/h5p/' + response.data.mysqlid, data, {
+            await axios.get(global.config.laravelAPIUrl + '/activity/' + activityid)
+                .then(async (response) => {
+                    await axios.patch(global.config.h5pAjaxUrl + '/api/h5p/' + response.data.mysqlid, data, {
                         headers: headers
                     })
-                        .then((response) => {
+                        .then(async (response) => {
 
                             let resource = response.data;
 
                             //update in mongodb
-                            axios.put(global.config.laravelAPIUrl + '/activity/' + activityid,
+                            await axios.put(global.config.laravelAPIUrl + '/activity/' + activityid,
                                 {
                                     mysqlid: resource.id,
                                     playlistid: playlistid,
@@ -248,7 +246,9 @@ export const editResourceAction = (playlistid, editor, editorType, activityid) =
     }
 }
 
-
+export const validationErrorsResource = () => ({
+    type:RESOURCE_VALIDATION_ERRORS
+});
 
 
 export const createResource = (playlistid, resource, editor, editorType) => ({
@@ -276,39 +276,41 @@ export const createResourceAction = (playlistid, editor, editorType, metaData) =
                 action: 'create'
             };
             // insert into mysql
-            const response = await axios.post(global.config.h5pAjaxUrl + '/api/h5p/?api_token=test', data, {
+            await axios.post(global.config.h5pAjaxUrl + '/api/h5p/?api_token=test', data, {
                 headers: headers
             })
-                .then((response) => {
+                .then(async (response) => {
+                    if (!response.data.fail) {
+                        let resource = response.data;
 
-                    let resource = response.data;
-
-                    //insert into mongodb
-                    axios.post(global.config.laravelAPIUrl + '/activity',
-                        {
-                            mysqlid: resource.id,
-                            playlistid: playlistid,
-                            metaData: metaData,
-                            action: 'create'
-                        }, {
-                        headers: headers
-                    })
-                        .then((response) => {
-
-                            resource.id = response.data.data._id;
-                            resource.mysqlid = response.data.data.mysqlid;
-                            // resource.title = response.data.data._id;
-
-                            dispatch(
-                                createResource(playlistid, resource, editor, editorType)
-                            )
+                        //insert into mongodb
+                        await axios.post(global.config.laravelAPIUrl + '/activity',
+                            {
+                                mysqlid: resource.id,
+                                playlistid: playlistid,
+                                metaData: metaData,
+                                action: 'create'
+                            }, {
+                            headers: headers
                         })
-                        .catch((error) => {
-                            console.log(error);
-                        });
-                    // dispatch(
-                    //     createResource(playlistid, resource, editor, editorType)
-                    // )
+                            .then((response) => {
+
+                                resource.id = response.data.data._id;
+                                resource.mysqlid = response.data.data.mysqlid;
+                                // resource.title = response.data.data._id;
+                                
+                                dispatch(
+                                    createResource(playlistid, resource, editor, editorType)
+                                )
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
+                    } else {
+                        dispatch(
+                            validationErrorsResource()
+                        )
+                    }
                 })
                 .catch((error) => {
                     console.log(error);

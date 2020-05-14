@@ -186,9 +186,13 @@ export class PlaylistsPage extends React.Component {
           editorType,
           metaData
         );
+        console.log((this.props.resource))
+        if(!this.props.resource.showCreateResourcePopup){
+          this.props.history.push("/project/" + this.props.match.params.projectid);
+        }
       }
-
-      this.props.history.push("/project/" + this.props.match.params.projectid);
+      
+      
       // this.props.hideCreatePlaylistModal();
     } catch (e) {
       console.log(e.message);
@@ -224,9 +228,9 @@ export class PlaylistsPage extends React.Component {
   };
 
   render() {
+    
     const { playlists } = this.props.playlists;
     const { showDeletePlaylistPopup } = this.props.ui;
-
     return (
       <>
         <Header {...this.props} />
