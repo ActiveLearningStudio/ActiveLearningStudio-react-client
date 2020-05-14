@@ -117,7 +117,6 @@ class H5PEditor extends React.Component {
                <fieldset>
 
                   <div id="laravel-h5p-create" className="form-group ">
-                     <label for="inputParameters" className="control-label col-md-3">&nbsp;</label>
                      <div className="col-md-12">
                         <div>
                            <div id="laravel-h5p-editor">Loading...</div>

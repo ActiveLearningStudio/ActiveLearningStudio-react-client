@@ -81,17 +81,8 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
       };
     case EDIT_RESOURCE:
       // adding resource to newplaylist specific id
-      newPlaylists = state.playlists;
-      state.playlists.forEach((playlist, i) => {
-        if (playlist._id === action.playlistid) {
-          newPlaylists[i] = Object.assign({ 'resources': [] }, newPlaylists[i]);
-          console.log(newPlaylists[i].resources);
-          // newPlaylists[i].resources.push({ _id: action.resource.id, id: action.resource.mysqlid, title: action.resource.title });
-        }
-      });
       return {
         ...state,
-        playlists: newPlaylists,
         showCreateResourcePopup: false
 
       };
