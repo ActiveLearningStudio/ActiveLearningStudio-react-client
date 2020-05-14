@@ -46,7 +46,7 @@ export class ResourceCard extends React.Component {
 										<Link
 											to={
 												"/resource/preview/" +
-												this.props.resource.id
+												this.props.resource._id
 											}>
 											<div className="activity-thumb" style={{ 'background-image': 'url(' + this.props.resource.metadata.thumb_url + ')' }}></div>
 										</Link>
@@ -60,7 +60,7 @@ export class ResourceCard extends React.Component {
 									<Link
 										to={
 											"/resource/preview/" +
-											this.props.resource.id
+											this.props.resource._id
 										}>{this.props.resource.title}
 									</Link>
 								</h3>
@@ -89,7 +89,7 @@ export class ResourceCard extends React.Component {
 												className="dropdown-item"
 												to={
 													"/resource/preview/" +
-													this.props.resource.id
+													this.props.resource._id
 												}
 											>
 												<i

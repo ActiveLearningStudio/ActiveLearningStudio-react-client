@@ -79,6 +79,12 @@ export const createProject = (projectdata) => ({
   projectdata
 });
 
+
+//This method sends two different request based on request parameter
+//request parameter can be create / update
+// if request = create it sends request to create a Project
+//if request = update it sends request to udpate the resource
+
 export const createUpdateProject = async (url, request, name, description, thumb_url) => {
   try {
     const { token } = JSON.parse(localStorage.getItem("auth"));
@@ -100,7 +106,7 @@ export const createUpdateProject = async (url, request, name, description, thumb
         data,
         config
       );
-    } else {
+    } else if(request == 'update'){ 
       response = await axios.put(
         url,
         data,
@@ -160,8 +166,6 @@ export const updateProjectAction = (projectid, name, description, thumb_url) => 
     }
   };
 };
-
-
 
 export const loadMyProjects = (projects) => ({
   type: LOAD_MY_PROJECTS,

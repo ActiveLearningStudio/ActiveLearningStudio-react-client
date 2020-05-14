@@ -17,44 +17,46 @@ class H5PPreview extends React.Component {
    }
    componentDidMount() {
       var previewResourceId = this.props.resourceid;
-      
+
 
       const headers = {
          'Content-Type': 'application/json',
          'Authorization': 'JWT fefege...'
-       }
-      
-      
-      axios.get(global.config.h5pAjaxUrl+'/api/h5p/'+previewResourceId, {
-        headers: headers
+      }
+
+
+      axios.get(global.config.laravelAPIUrl + '/loadh5presource/' + previewResourceId, {
+         headers: headers
       })
-      .then((response) => {
-         window.H5PIntegration = response.data.settings;
+         .then((response) => {
+            console.log(response);
+            
+            window.H5PIntegration = response.data.data.h5p.settings;
 
-         var iframe = document.createElement('iframe');
-         iframe.setAttribute("id", "h5p-iframe-"+previewResourceId);
-         iframe.setAttribute("class", "h5p-iframe");
-         iframe.setAttribute("data-content-id", previewResourceId);
-         iframe.setAttribute("src", "about:blank");
-         iframe.setAttribute("frameBorder", "0");
-         iframe.setAttribute("scrolling", "no");
-         document.getElementsByClassName("h5p-iframe-wrapper")[0].appendChild(iframe);
-         
-         response.data.settings.editor.assets.js.forEach((value) => {
+            var iframe = document.createElement('iframe');
+            iframe.setAttribute("id", "h5p-iframe-" + response.data.data.activity.mysqlid);
+            iframe.setAttribute("class", "h5p-iframe");
+            iframe.setAttribute("data-content-id", response.data.data.activity.mysqlid);
+            iframe.setAttribute("src", "about:blank");
+            iframe.setAttribute("frameBorder", "0");
+            iframe.setAttribute("scrolling", "no");
+            document.getElementsByClassName("h5p-iframe-wrapper")[0].appendChild(iframe);
 
-            var script = document.createElement("script");
-            script.src = value;
-            script.async = false;
-            document.body.appendChild(script);
+            response.data.data.h5p.settings.editor.assets.js.forEach((value) => {
+
+               var script = document.createElement("script");
+               script.src = value;
+               script.async = false;
+               document.body.appendChild(script);
+            });
+         })
+         .catch((error) => {
+            console.log(error);
          });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
 
    }
 
-   
+
    render() {
       return (
          <div>
@@ -66,7 +68,7 @@ class H5PPreview extends React.Component {
                   </div>
                </div>
             </div>
-            
+
          </div>
       );
    }

@@ -195,15 +195,10 @@ export const hideCreatePlaylistModalAction = () => {
 }
 
 
-
-
-
 export const loadProjectPlaylists = (playlists) => ({
   type: LOAD_PROJECT_PLAYLISTS,
   playlists
 });
-
-
 
 export const loadProjectPlaylistsAction = (projectid) => {
   return async dispatch => {
