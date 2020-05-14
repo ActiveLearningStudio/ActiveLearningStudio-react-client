@@ -9,7 +9,8 @@ import {
   DELETE_RESOURCE,
   SHOW_DELETE_PLAYLIST_MODAL,
   HIDE_DELETE_PLAYLIST_MODAL,
-  REORDER_PLAYLIST
+  REORDER_PLAYLIST,
+  REORDER_PLAYLISTS
 } from "../constants/actionTypes";
 
 const defaultPlaylistState = () => {
@@ -115,6 +116,12 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
         return {
           ...state,
           playlists: newReorderedPlaylists
+        }
+
+      case REORDER_PLAYLISTS:
+        return {
+          ...state,
+          playlists: action.playlists
         }
 
     default:

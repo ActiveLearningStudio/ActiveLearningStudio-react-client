@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import {
 	loadProjectPlaylistsAction,
@@ -37,15 +37,17 @@ export class PlaylistCard extends React.Component {
 	};
 
 	onDragEnd = (e) => {
-		if(e.destination.index == e.source.index)
-			return;
+		if (e.destination.index == e.source.index) return;
 
 		let resources = Array.from(this.props.playlist.resources);
 		const [removed] = resources.splice(e.source.index, 1);
 		resources.splice(e.destination.index, 0, removed);
-		const reorderedPlaylist = {...this.props.playlist, resources: resources};
+		const reorderedPlaylist = {
+			...this.props.playlist,
+			resources: resources,
+		};
 		this.props.reorderPlaylistActivitiesAction(reorderedPlaylist);
-	}
+	};
 
 	renderResources() {
 		if (
@@ -68,111 +70,134 @@ export class PlaylistCard extends React.Component {
 
 	render() {
 		return (
-			<div
-				className="list-wrapper"
+			<Draggable
 				key={this.props.playlist._id}
+				draggableId={this.props.playlist._id}
+				index={this.props.index}
 			>
-				<div className="list">
-					<div className="list-header">
-						<h2 className="list-header-name">
-							{this.props.playlist.title}
-							<div className="dropdown pull-right playlist-dropdown">
-								<button
-									className="btn project-dropdown-btn"
-									type="button"
-									id="dropdownMenuButton"
-									data-toggle="dropdown"
-									aria-haspopup="true"
-									aria-expanded="false"
-								>
-									<i
-										className="fa fa-ellipsis-v"
-										aria-hidden="true"
-									></i>
-								</button>
-								<div
-									className="dropdown-menu"
-									aria-labelledby="dropdownMenuButton"
-								>
-									<Link
-										className="dropdown-item"
-										to={
-											"/playlist/preview/" +
-											this.props.playlist._id
-										}
-									>
-										<i
-											className="fa fa-eye"
-											aria-hidden="true"
-										></i>{" "}
-										Preview
-									</Link>
-									<a className="dropdown-item" href="#">
-										<i
-											className="fa fa-pencil"
-											aria-hidden="true"
-										></i>{" "}
-										Edit
-									</a>
-									<a className="dropdown-item" href="#">
-										<i
-											className="fa fa-share"
-											aria-hidden="true"
-										></i>{" "}
-										Send To
-									</a>
-									<a
-										className="dropdown-item"
-										href="#"
-										onClick={(e) => {
-											e.preventDefault();
-											window.open(
-												"/api/download/project/123"
-											);
-										}}
-									>
-										<i
-											className="fa fa-cloud-download"
-											aria-hidden="true"
-										></i>{" "}
-										Executable
-									</a>
-									<a
-										className="dropdown-item"
-										onClick={this.handleDelete}
-									>
-										<i
-											className="fa fa-times-circle-o"
-											aria-hidden="true"
-										></i>{" "}
-										Delete
-									</a>
-								</div>
+				{(provided) => (
+					<div
+						className="list-wrapper"
+						ref={provided.innerRef}
+						{...provided.draggableProps}
+					>
+						<div className="list">
+							<div
+								className="list-header"
+								{...provided.dragHandleProps}
+							>
+								<h2 className="list-header-name">
+									{this.props.playlist.title}
+									<div className="dropdown pull-right playlist-dropdown">
+										<button
+											className="btn project-dropdown-btn"
+											type="button"
+											id="dropdownMenuButton"
+											data-toggle="dropdown"
+											aria-haspopup="true"
+											aria-expanded="false"
+										>
+											<i
+												className="fa fa-ellipsis-v"
+												aria-hidden="true"
+											></i>
+										</button>
+										<div
+											className="dropdown-menu"
+											aria-labelledby="dropdownMenuButton"
+										>
+											<Link
+												className="dropdown-item"
+												to={
+													"/playlist/preview/" +
+													this.props.playlist._id
+												}
+											>
+												<i
+													className="fa fa-eye"
+													aria-hidden="true"
+												></i>{" "}
+												Preview
+											</Link>
+											<a
+												className="dropdown-item"
+												href="#"
+											>
+												<i
+													className="fa fa-pencil"
+													aria-hidden="true"
+												></i>{" "}
+												Edit
+											</a>
+											<a
+												className="dropdown-item"
+												href="#"
+											>
+												<i
+													className="fa fa-share"
+													aria-hidden="true"
+												></i>{" "}
+												Send To
+											</a>
+											<a
+												className="dropdown-item"
+												href="#"
+												onClick={(e) => {
+													e.preventDefault();
+													window.open(
+														"/api/download/project/123"
+													);
+												}}
+											>
+												<i
+													className="fa fa-cloud-download"
+													aria-hidden="true"
+												></i>{" "}
+												Executable
+											</a>
+											<a
+												className="dropdown-item"
+												onClick={this.handleDelete}
+											>
+												<i
+													className="fa fa-times-circle-o"
+													aria-hidden="true"
+												></i>{" "}
+												Delete
+											</a>
+										</div>
+									</div>
+								</h2>
 							</div>
-						</h2>
-					</div>
-					<DragDropContext onDragEnd={this.onDragEnd}>
-						<Droppable droppableId={this.props.playlist._id}>
-							{(provided) => (
-								<div
-									className="list-body"
-									{...provided.droppableProps}
-									ref={provided.innerRef}
+							<DragDropContext onDragEnd={this.onDragEnd}>
+								<Droppable
+									droppableId={this.props.playlist._id}
 								>
-									{this.renderResources()}
-									{provided.placeholder}
-									<button
-										onClick={this.handleAddNewResourceClick}
-										className="add-resource-to-playlist-btn"
-									>
-										New Resource
-									</button>
-								</div>
-							)}
-						</Droppable>
-					</DragDropContext>
-				</div>
-			</div>
+									{(provided) => (
+										<div
+											className="list-body"
+											{...provided.droppableProps}
+											ref={provided.innerRef}
+										>
+											{this.renderResources()}
+											{provided.placeholder}
+											<button
+												onClick={
+													this
+														.handleAddNewResourceClick
+												}
+												className="add-resource-to-playlist-btn"
+											>
+												New Resource
+											</button>
+										</div>
+									)}
+								</Droppable>
+							</DragDropContext>
+						</div>
+					</div>
+				)}
+			</Draggable>
 		);
 	}
 }
@@ -183,9 +208,7 @@ const mapDispatchToProps = (dispatch) => ({
 	hideDeletePlaylistModalAction: () =>
 		dispatch(hideDeletePlaylistModalAction()),
 	reorderPlaylistActivitiesAction: (playlist) =>
-		dispatch(
-			reorderPlaylistActivitiesAction(playlist)
-		),
+		dispatch(reorderPlaylistActivitiesAction(playlist)),
 });
 
 const mapStateToProps = (state) => {
