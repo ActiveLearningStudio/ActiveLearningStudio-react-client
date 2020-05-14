@@ -21,8 +21,8 @@ import {
   reorderPlaylistsAction
 } from "../actions/playlist";
 import {
-  showDeletePlaylistPopupAction,
-  hideDeletePlaylistModalAction,
+  showDeletePopupAction,
+  hideDeletePopupAction,
 } from "./../actions/ui";
 import {
   deleteResourceAction,
@@ -154,7 +154,7 @@ export class PlaylistsPage extends React.Component {
   };
 
   handleShowDeletePopup = (id, title, deleteType) => {
-    this.props.showDeletePlaylistPopupAction(id, title, deleteType);
+    this.props.showDeletePopupAction(id, title, deleteType);
   };
 
   handlePreviewResource = (id) => {
@@ -352,8 +352,8 @@ const mapDispatchToProps = (dispatch) => ({
   deletePlaylistAction: (id) => dispatch(deletePlaylistAction(id)),
   showCreatePlaylistModal: () => dispatch(showCreatePlaylistModalAction()),
   hideCreatePlaylistModal: () => dispatch(hideCreatePlaylistModalAction()),
-  hideDeletePlaylistModalAction: () =>
-    dispatch(hideDeletePlaylistModalAction()),
+  hideDeletePopupAction: () =>
+    dispatch(hideDeletePopupAction()),
   showCreateResourceModalAction: (id) =>
     dispatch(showCreateResourceModalAction(id)),
   hideCreateResourceModal: () => dispatch(hideCreateResourceModalAction()),
@@ -374,8 +374,8 @@ const mapDispatchToProps = (dispatch) => ({
   loadProjectAction: (projectid) => dispatch(loadProjectAction(projectid)),
   deleteResourceAction: (resourceid) =>
     dispatch(deleteResourceAction(resourceid)),
-  showDeletePlaylistPopupAction: (id, title, deleteType) =>
-    dispatch(showDeletePlaylistPopupAction(id, title, deleteType)),
+  showDeletePopupAction: (id, title, deleteType) =>
+    dispatch(showDeletePopupAction(id, title, deleteType)),
   showCreateResourceActivity: () =>
     dispatch(showCreateResourceActivityAction()),
   showBuildActivityAction: (editor, editorType, activityid) =>

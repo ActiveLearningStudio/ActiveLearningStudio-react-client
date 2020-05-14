@@ -1,5 +1,5 @@
 import {
-  SHOW_DELETE_PLAYLIST_MODAL, DELETE_PLAYLIST, DELETE_RESOURCE, DELETE_PROJECT, HIDE_DELETE_PLAYLIST_MODAL, PAGE_LOADING_COMPLETE, PAGE_LOADING
+  SHOW_DELETE_POPUP, DELETE_PLAYLIST, DELETE_RESOURCE, DELETE_PROJECT, HIDE_DELETE_POPUP, PAGE_LOADING_COMPLETE, PAGE_LOADING
 } from "../constants/actionTypes";
 
 const defaultUIState = () => {
@@ -12,7 +12,7 @@ const defaultUIState = () => {
 
 const uiReducer = (state = defaultUIState(), action) => {
   switch (action.type) {
-    case SHOW_DELETE_PLAYLIST_MODAL:
+    case SHOW_DELETE_POPUP:
       return {
         ...state,
         showDeletePlaylistPopup: true,
@@ -20,7 +20,7 @@ const uiReducer = (state = defaultUIState(), action) => {
         title: action.title,
         deleteType: action.deleteType
       };
-    case HIDE_DELETE_PLAYLIST_MODAL:
+    case HIDE_DELETE_POPUP:
       return {
         ...state,
         showDeletePlaylistPopup: false

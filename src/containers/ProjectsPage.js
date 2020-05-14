@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import Header from "../components/Header/Header";
 
 import Sidebar from "../components/Sidebar/Sidebar";
-import { showDeletePlaylistPopupAction, hideDeletePlaylistModalAction } from "../actions/ui";
+import { showDeletePopupAction, hideDeletePopupAction } from "../actions/ui";
 import { deleteProjectAction, showCreateProjectModalAction, loadProjectAction, createProjectAction, loadMyProjectsAction} from "../actions/project";
 import { NewProjectPage } from "./NewProjectPage";
 import ProjectCard from "../components/ProjectCard";
@@ -84,7 +84,7 @@ export class ProjectsPage extends React.Component {
         project={project}
         res = {res}
         handleDeleteProject = {this.handleDeleteProject}
-        showDeletePlaylistPopupAction = {this.props.showDeletePlaylistPopupAction}
+        showDeletePopupAction = {this.props.showDeletePopupAction}
         showPreview={(this.props.showPreview == project._id)}/>
     )});
     
@@ -143,9 +143,9 @@ const mapDispatchToProps = dispatch => ({
   showCreateProjectModalAction: () => dispatch(showCreateProjectModalAction()),
   loadMyProjectsAction: () =>dispatch(loadMyProjectsAction()),
   createProjectAction: (name, description, thumb_url) =>dispatch(createProjectAction(name, description, thumb_url)),
-  showDeletePlaylistPopupAction: (id, title, deleteType) => dispatch(showDeletePlaylistPopupAction(id, title, deleteType)),
+  showDeletePopupAction: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
   deleteProjectAction: (projectid) => dispatch(deleteProjectAction(projectid)),
-  hideDeletePlaylistModalAction: () => dispatch(hideDeletePlaylistModalAction()),
+  hideDeletePopupAction: () => dispatch(hideDeletePopupAction()),
   loadProjectAction: (projectid) => dispatch(loadProjectAction(projectid))
 
 });

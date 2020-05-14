@@ -20,7 +20,7 @@ function Popup(props) {
   //remoe popup when escape is pressed
   const escFunction = useCallback((event) => {
     if(event.keyCode === 27) {
-      props.hideDeletePlaylistModalAction(event);
+      props.hideDeletePopupAction(event);
     }
   }, []);
   useEffect(() => {
@@ -60,7 +60,7 @@ function Popup(props) {
                     null
                   }
                     
-                    <button type="button" className="btn btn-sm btn-default" data-dismiss="modal" onClick={props.hideDeletePlaylistModalAction}>Cancel</button>
+                    <button type="button" className="btn btn-sm btn-default" data-dismiss="modal" onClick={props.hideDeletePopupAction}>Cancel</button>
                   </div>
                 </div>
               </div>

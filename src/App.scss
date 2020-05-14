@@ -250,6 +250,13 @@ body {
         margin: 15px;
         padding: 10px;
         min-height: 120px;
+        position:relative;
+        .timestamp {
+            text-align: right;
+            position: absolute;
+            bottom: 0;
+            right: 20px;
+        }
         .activity-thumb{
             min-height: 50px;
             background-size: contain;

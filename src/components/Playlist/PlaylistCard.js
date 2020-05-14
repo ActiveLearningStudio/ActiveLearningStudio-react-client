@@ -8,8 +8,8 @@ import {
 	reorderPlaylistActivitiesAction,
 } from "../../actions/playlist";
 import {
-	showDeletePlaylistPopupAction,
-	hideDeletePlaylistModalAction,
+	showDeletePopupAction,
+	hideDeletePopupAction,
 } from "../../actions/ui";
 import ResourceCard from "../Resource/ResourceCard";
 
@@ -20,7 +20,7 @@ export class PlaylistCard extends React.Component {
 
 	handleDelete = (e) => {
 		e.preventDefault();
-		this.props.showDeletePlaylistPopupAction(
+		this.props.showDeletePopupAction(
 			this.props.playlist._id,
 			this.props.playlist.title,
 			"Playlist"
@@ -203,10 +203,10 @@ export class PlaylistCard extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-	showDeletePlaylistPopupAction: (id, title, deleteType) =>
-		dispatch(showDeletePlaylistPopupAction(id, title, deleteType)),
-	hideDeletePlaylistModalAction: () =>
-		dispatch(hideDeletePlaylistModalAction()),
+	showDeletePopupAction: (id, title, deleteType) =>
+		dispatch(showDeletePopupAction(id, title, deleteType)),
+	hideDeletePopupAction: () =>
+		dispatch(hideDeletePopupAction()),
 	reorderPlaylistActivitiesAction: (playlist) =>
 		dispatch(reorderPlaylistActivitiesAction(playlist)),
 });

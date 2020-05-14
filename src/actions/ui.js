@@ -1,40 +1,38 @@
 import {
-    SHOW_DELETE_PLAYLIST_MODAL, HIDE_DELETE_PLAYLIST_MODAL
-  } from './../constants/actionTypes';
+  SHOW_DELETE_POPUP, HIDE_DELETE_POPUP
+} from './../constants/actionTypes';
 
-export const showDeletePlaylistPopup = (id, title, deleteType) => ({
-    type:SHOW_DELETE_PLAYLIST_MODAL,
-    id,
-    title,
-    deleteType
-  });
-  
-  export const showDeletePlaylistPopupAction = (id, title, deleteType) => {
-    return async dispatch => {
-      try {
-        dispatch(
-          showDeletePlaylistPopup(id, title, deleteType)
-        )
-      } catch (e) {
-        throw new Error(e);
-      }
+export const showDeletePopup = (id, title, deleteType) => ({
+  type: SHOW_DELETE_POPUP,
+  id,
+  title,
+  deleteType
+});
+
+export const showDeletePopupAction = (id, title, deleteType) => {
+  return async dispatch => {
+    try {
+      dispatch(
+        showDeletePopup(id, title, deleteType)
+      )
+    } catch (e) {
+      throw new Error(e);
     }
   }
+}
 
+export const hideDeletePopup = () => ({
+  type: HIDE_DELETE_POPUP
+});
 
-
-export const hideDeletePlaylistModal = () => ({
-    type:HIDE_DELETE_PLAYLIST_MODAL
-  });
-  
-  export const hideDeletePlaylistModalAction = () => {
-    return async dispatch => {
-      try {
-        dispatch(
-          hideDeletePlaylistModal()
-        )
-      } catch (e) {
-        throw new Error(e);
-      }
+export const hideDeletePopupAction = () => {
+  return async dispatch => {
+    try {
+      dispatch(
+        hideDeletePopup()
+      )
+    } catch (e) {
+      throw new Error(e);
     }
   }
+}

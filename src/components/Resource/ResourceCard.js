@@ -4,8 +4,8 @@ import { withRouter, Link } from "react-router-dom";
 import { Draggable } from "react-beautiful-dnd";
 
 import {
-	showDeletePlaylistPopupAction,
-	hideDeletePlaylistModalAction,
+	showDeletePopupAction,
+	hideDeletePopupAction,
 } from "../../actions/ui";
 import "./ResourceCard.scss";
 
@@ -16,8 +16,7 @@ export class ResourceCard extends React.Component {
 
 	handleDelete = (e) => {
 		e.preventDefault();
-		// This function is overloaded. Should redefine it to not be related to playlist
-		this.props.showDeletePlaylistPopupAction(
+		this.props.showDeletePopupAction(
 			this.props.resource._id,
 			this.props.resource.title,
 			"Activity"
@@ -148,6 +147,13 @@ export class ResourceCard extends React.Component {
 								</div>
 							</div>
 						</div>
+						<div className="row timestamp">
+							<div className="col-md-12">
+								<p>
+									{this.props.resource.created_at}
+								</p>
+							</div>
+						</div>
 					</div>
 				)}
 			</Draggable>
@@ -158,10 +164,10 @@ export class ResourceCard extends React.Component {
 const mapDispatchToProps = (dispatch) => ({
 	loadPlaylistAction: (playlistid) =>
 		dispatch(loadPlaylistAction(playlistid)),
-	showDeletePlaylistPopupAction: (id, title, deleteType) =>
-		dispatch(showDeletePlaylistPopupAction(id, title, deleteType)),
-	hideDeletePlaylistModalAction: () =>
-		dispatch(hideDeletePlaylistModalAction()),
+	showDeletePopupAction: (id, title, deleteType) =>
+		dispatch(showDeletePopupAction(id, title, deleteType)),
+	hideDeletePopupAction: () =>
+		dispatch(hideDeletePopupAction()),
 });
 
 const mapStateToProps = (state) => {
