@@ -6,7 +6,7 @@ const ActivityPreviewCard = (props) => {
 	const activity = props.activity;
 	return (
 	    <div className="preview-box">
-	      <Link to={"/resource/preview/" + activity.mysqlid}>
+	      <Link to={"/resource/preview/" + activity._id}>
 	            {activity.library_name == 'H5P.InteractiveVideo' ? <img className="activity-image-thumb img-fluid img-radius-all" src="/images/interactive-video-overlay.png"   />:null }
 	            {activity.library_name == 'H5P.Flashcards' ? <img className="activity-image-thumb img-fluid img-radius-all" src="/images/flash-cards-overlay.png"   />:null }
 	            {activity.library_name == 'H5P.DragQuestion' ? <img className="activity-image-thumb img-fluid img-radius-all" src="/images/drag-and-drop-overlay.png"   />:null }
@@ -16,7 +16,7 @@ const ActivityPreviewCard = (props) => {
 	      </Link>
 	      <div className="preview-box-content">
 	        <h5 className="card-title">
-	          <Link to={"/resource/preview/" + activity.mysqlid}>
+	          <Link to={"/resource/preview/" + activity._id}>
 	            {activity.title}
 	          </Link>
 	        </h5>

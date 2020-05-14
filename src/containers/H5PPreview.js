@@ -25,7 +25,7 @@ class H5PPreview extends React.Component {
       }
 
 
-      axios.get(global.config.laravelAPIUrl + '/loadh5presource/' + previewResourceId, {
+      axios.get(global.config.laravelAPIUrl + '/h5p-resource-settings/' + previewResourceId, {
          headers: headers
       })
          .then((response) => {
