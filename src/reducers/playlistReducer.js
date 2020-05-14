@@ -7,8 +7,6 @@ import {
   LOAD_PROJECT_PLAYLISTS,
   LOAD_PLAYLIST,
   DELETE_RESOURCE,
-  SHOW_DELETE_PLAYLIST_MODAL,
-  HIDE_DELETE_PLAYLIST_MODAL,
   REORDER_PLAYLIST,
   REORDER_PLAYLISTS,
   EDIT_RESOURCE
@@ -16,8 +14,6 @@ import {
 
 const defaultPlaylistState = () => {
   if (localStorage.getItem("playlists")) {
-
-
     return {
       'playlists': JSON.parse(localStorage.getItem("playlists")),
       'showCreatePlaylistPopup': false

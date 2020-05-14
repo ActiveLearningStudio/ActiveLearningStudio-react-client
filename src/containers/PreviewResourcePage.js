@@ -11,7 +11,7 @@ import { withRouter } from 'react-router-dom'
 import H5PPreview from "./H5PPreview";
 
 
-const bounceAnimation = keyframes `${slideInRight}`;
+const bounceAnimation = keyframes`${slideInRight}`;
 
 const BouncyDiv = styled.div`
   animation: 0.5s ${bounceAnimation};
@@ -20,7 +20,7 @@ const BouncyDiv = styled.div`
 export class PreviewResourcePage extends React.Component {
   constructor(props) {
     super(props);
-    
+
 
   }
 
@@ -30,38 +30,38 @@ export class PreviewResourcePage extends React.Component {
     this.props.showCreateResourceActivity();
   }
 
-  
+
 
   render() {
     return (
-    
-    <div className="resource-modal">
-        <div className="modal fade right" id="createPlaylistModal"  role="dialog" aria-labelledby="createPlaylistModalLabel" aria-hidden="true">
-                <div className="modal-dialog" role="document">
-                    
-                        <BouncyDiv className="modal-content">
-                            <div className="modal-title">
-                              <h1>
-                                Preview Resource
+
+      <div className="resource-modal">
+        <div className="modal fade right" id="createPlaylistModal" role="dialog" aria-labelledby="createPlaylistModalLabel" aria-hidden="true">
+          <div className="modal-dialog" role="document">
+
+            <BouncyDiv className="modal-content">
+              <div className="modal-title">
+                <h1>
+                  Preview Resource
                                 <button type="button" className="close-btn" data-dismiss="modal" onClick={this.props.hidePreviewResourceModalAction}>x</button>
-                              </h1>
-                              
-                              <hr />
-                            </div>
-                            <div className="modal-body">
-                              <div className='row'>
-                                <div className="col-md-12">
-                                <H5PPreview {...this.props}  /> 
-                                  
-                                </div>
-                              </div>
-                            </div>
-                        </BouncyDiv>
-                  
+                </h1>
+
+                <hr />
+              </div>
+              <div className="modal-body">
+                <div className='row'>
+                  <div className="col-md-12">
+                    <H5PPreview {...this.props} />
+
+                  </div>
                 </div>
+              </div>
+            </BouncyDiv>
+
           </div>
-    </div>
-    
+        </div>
+      </div>
+
     );
   }
 }
@@ -72,8 +72,7 @@ const mapDispatchToProps = dispatch => ({
   showBuildActivity: (editor, editorType, activityid) => dispatch(showBuildActivityAction(editor, editorType, activityid)),
 });
 
-const mapStateToProps =(state) => {
-  // console.log(state);
+const mapStateToProps = (state) => {
   return {
     resource: state.resource
   };

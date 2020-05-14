@@ -11,7 +11,7 @@ import { withRouter } from 'react-router-dom'
 import CreateProjectPopup from "../components/CreateProjectPopup/CreateProjectPopup";
 
 
-const bounceAnimation = keyframes `${slideInRight}`;
+const bounceAnimation = keyframes`${slideInRight}`;
 
 const BouncyDiv = styled.div`
   animation: 0.5s ${bounceAnimation};
@@ -20,86 +20,67 @@ const BouncyDiv = styled.div`
 export class NewProjectPage extends React.Component {
   constructor(props) {
     super(props);
-    
-    
-
-    // this.uploadProjectThumbnail = this.uploadProjectThumbnail.bind(this);
   }
 
   componentDidMount() {
     window.scrollTo(0, 0);
-    //show activity content
-    
   }
-
-  
-  
-  
-  
-  
-
   render() {
     return (
-    
-    <div className="resource-modal">
-        <div className="modal fade right" id="createPlaylistModal"  role="dialog" aria-labelledby="createPlaylistModalLabel" aria-hidden="true">
-              <div className="modal-dialog" role="document">
-                  
-                      <BouncyDiv className="modal-content">
-                        
-                          <div className="modal-title">
-                            <div className="row">
-                              <div className="col-md-12">
-                                <h1>
-                                  {
-                                    this.props.editMode ? 
-                                    'Update '
-                                    :
-                                    'Create New '
-                                  }
+
+      <div className="resource-modal">
+        <div className="modal fade right" id="createPlaylistModal" role="dialog" aria-labelledby="createPlaylistModalLabel" aria-hidden="true">
+          <div className="modal-dialog" role="document">
+
+            <BouncyDiv className="modal-content">
+
+              <div className="modal-title">
+                <div className="row">
+                  <div className="col-md-12">
+                    <h1>
+                      {
+                        this.props.editMode ?
+                          'Update '
+                          :
+                          'Create New '
+                      }
                                   Project
                                   <button type="button" className="close-btn" data-dismiss="modal" onClick={this.props.handleCloseProjectModal}>x</button>
-                                </h1>
-                                <hr />
-                              </div>
-                            </div>
-                            
-                          </div>
-                          <div className="modal-body">
-                            <div className='row'>
-                              <div className="col-md-12"> 
-                              <CreateProjectPopup 
-                              {...this.props}
-                              thumbUrl = {this.props.project.thumbUrl} />
-                                
-                              </div>
-                              
-                            </div>
-                          </div>
-                      </BouncyDiv>
+                    </h1>
+                    <hr />
+                  </div>
                 </div>
+
+              </div>
+              <div className="modal-body">
+                <div className='row'>
+                  <div className="col-md-12">
+                    <CreateProjectPopup
+                      {...this.props}
+                      thumbUrl={this.props.project.thumbUrl} />
+
+                  </div>
+
+                </div>
+              </div>
+            </BouncyDiv>
           </div>
-    </div>
-    
+        </div>
+      </div>
+
     );
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  
+
 });
 
-const mapStateToProps =(state) => {
+const mapStateToProps = (state) => {
   return {
-    
+
   };
 }
-
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(NewProjectPage);
 
 export default withRouter(connect(mapStateToProps,
   mapDispatchToProps)(NewProjectPage));

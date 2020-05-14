@@ -14,21 +14,6 @@ import PlaylistPreview from "../components/PlaylistPreview";
 export class PreviewPage extends React.Component {
   constructor(props) {
     super(props);
-
-
-
-    
-
-    //binding escape function for modal close
-    // this.escFunction = this.escFunction.bind(this);
-
-
-  }
-  escFunction(event) {
-    if (event.keyCode === 27) {
-      this.props.hideCreatePlaylistModal();
-      this.props.history.push("/");
-    }
   }
 
 

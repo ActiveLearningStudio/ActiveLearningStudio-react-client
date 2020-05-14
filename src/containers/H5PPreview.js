@@ -13,39 +13,9 @@ class H5PPreview extends React.Component {
 
    constructor(props) {
       super(props);
-
-      
       this.h5pLib = props.resource.editor; //"H5P.Audio 1.4";
-
-
-
    }
    componentDidMount() {
-      // console.log(this.state);
-      // this.h5pLib = "H5P.MultiChoice 1.14";
-
-
-      let scripts = [
-         
-      ]
-      //Append the script element on each iteration
-      // scripts.map(item => { 
-      //     const script = document.createElement("script")
-      //     script.src = item.src
-      //     script.async = true
-      //     // script.onload = () => ;
-      //     document.body.appendChild(script)
-      // }) ;
-
-      // scripts.map(item => { 
-      
-
-      //   var script = document.createElement("script");
-      //   script.src = "/h5p/laravel-h5p/js/laravel-h5p.js";
-      //   script.async = false;
-      //   document.body.appendChild(script);
-
-      //var previewResourceId = this.props.resource.previewResourceId;
       var previewResourceId = this.props.resourceid;
       
 
@@ -82,11 +52,6 @@ class H5PPreview extends React.Component {
         console.log(error);
       });
 
-
-
-      // }) ;
-      
-
    }
 
    
@@ -96,7 +61,6 @@ class H5PPreview extends React.Component {
             <div className="container">
                <div className="col-md-12">
                   <div className="h5p-content-wrap">
-                  
                      <div className="h5p-iframe-wrapper">
                      </div>
                   </div>

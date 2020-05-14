@@ -2,7 +2,6 @@ import { AUTH_RECEIVE, AUTH_REQUEST, AUTH_ERROR,  AUTH_LOGOUT } from "../constan
 
 const defaultAuthState = () => {
   if (localStorage.getItem("auth")) {
-//      localStorage.clear();
     return JSON.parse(localStorage.getItem("auth"));
   } else {
     return {};
