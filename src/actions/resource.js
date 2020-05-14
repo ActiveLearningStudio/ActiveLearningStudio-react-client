@@ -247,7 +247,7 @@ export const editResourceAction = (playlistid, editor, editorType, activityid) =
 }
 
 export const validationErrorsResource = () => ({
-    type:RESOURCE_VALIDATION_ERRORS
+    type: RESOURCE_VALIDATION_ERRORS
 });
 
 
@@ -298,7 +298,7 @@ export const createResourceAction = (playlistid, editor, editorType, metaData) =
                                 resource.id = response.data.data._id;
                                 resource.mysqlid = response.data.data.mysqlid;
                                 // resource.title = response.data.data._id;
-                                
+
                                 dispatch(
                                     createResource(playlistid, resource, editor, editorType)
                                 )
@@ -325,7 +325,7 @@ export const createResourceAction = (playlistid, editor, editorType, metaData) =
     }
 }
 
-export const createResourceByH5PUploadAction = (playlistid, editor, editorType, payload) => {
+export const createResourceByH5PUploadAction = (playlistid, editor, editorType, payload, metaData) => {
     return async dispatch => {
         try {
             const { token } = JSON.parse(localStorage.getItem("auth"));
@@ -338,19 +338,20 @@ export const createResourceByH5PUploadAction = (playlistid, editor, editorType, 
                     "Authorization": "Bearer " + token
                 }
             }
-            return axios.post(
+            await axios.post(
                 global.config.h5pAjaxUrl + '/api/h5p',
                 formData,
                 config
             )
-                .then((response_upload) => {
+                .then(async (response_upload) => {
                     let data_upload = { ...response_upload.data };
                     if (data_upload instanceof Object && "id" in data_upload) {
                         //insert into mongodb
-                        axios.post(global.config.laravelAPIUrl + '/activity',
+                        await axios.post(global.config.laravelAPIUrl + '/activity',
                             {
                                 mysqlid: data_upload.id,
                                 playlistid: playlistid,
+                                metaData: metaData,
                                 action: 'create'
                             }, {
                             headers: { 'Content-Type': 'application/json', "Authorization": "Bearer " + token }

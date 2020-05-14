@@ -177,8 +177,10 @@ export class PlaylistsPage extends React.Component {
           currentPlaylistId,
           editor,
           editorType,
-          payload
+          payload,
+          metaData
         );
+        
       } else {
         await this.props.createResourceAction(
           currentPlaylistId,
@@ -186,10 +188,9 @@ export class PlaylistsPage extends React.Component {
           editorType,
           metaData
         );
-        console.log((this.props.resource))
-        if(!this.props.resource.showCreateResourcePopup){
-          this.props.history.push("/project/" + this.props.match.params.projectid);
-        }
+      }
+      if(!this.props.resource.showCreateResourcePopup){
+        this.props.history.push("/project/" + this.props.match.params.projectid);
       }
       
       
@@ -368,9 +369,9 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(createResourceAction(playlistid, editor, editorType, metaData)),
   editResourceAction: (playlistid, editor, editorType, activityid) =>
     dispatch(editResourceAction(playlistid, editor, editorType, activityid)),
-  createResourceByH5PUploadAction: (playlistid, editor, editorType, payload) =>
+  createResourceByH5PUploadAction: (playlistid, editor, editorType, payload, metaData) =>
     dispatch(
-      createResourceByH5PUploadAction(playlistid, editor, editorType, payload)
+      createResourceByH5PUploadAction(playlistid, editor, editorType, payload, metaData)
     ),
   loadProjectAction: (projectid) => dispatch(loadProjectAction(projectid)),
   deleteResourceAction: (resourceid) =>
