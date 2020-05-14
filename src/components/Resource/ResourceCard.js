@@ -150,7 +150,7 @@ export class ResourceCard extends React.Component {
 						<div className="row timestamp">
 							<div className="col-md-12">
 								<p>
-									{this.props.resource.created_at}
+									{new Date(this.props.resource.created_at).toDateString()}
 								</p>
 							</div>
 						</div>

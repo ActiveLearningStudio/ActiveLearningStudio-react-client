@@ -196,49 +196,33 @@ export const editResourceAction = (playlistid, editor, editorType, activityid) =
                 parameters: JSON.stringify(window.h5peditorCopy.getParams()),
                 action: 'create'
             };
-            // insert into mysql
-            await axios.get(global.config.laravelAPIUrl + '/activity/' + activityid)
-                .then(async (response) => {
-                    await axios.patch(global.config.h5pAjaxUrl + '/api/h5p/' + response.data.mysqlid, data, {
-                        headers: headers
-                    })
-                        .then(async (response) => {
 
-                            let resource = response.data;
+            //get activity by _id to find mysqlid
+            const api_response = await axios.get(global.config.laravelAPIUrl + '/activity/' + activityid);
+            console.log(api_response);
 
-                            //update in mongodb
-                            await axios.put(global.config.laravelAPIUrl + '/activity/' + activityid,
-                                {
-                                    mysqlid: resource.id,
-                                    playlistid: playlistid,
-                                    action: 'create'
-                                }, {
-                                headers: headers
-                            })
-                                .then((response) => {
+            // get h5p content
+            const h5p_apiresponse = await axios.patch(global.config.h5pAjaxUrl + '/api/h5p/' + api_response.data.mysqlid, data, {
+                headers: headers
+            });
 
-                                    resource.id = response.data.data._id;
-                                    resource.mysqlid = response.data.data.mysqlid;
+            let resource = h5p_apiresponse.data;
+            // update api and get response back to update state
+            const response = await axios.put(global.config.laravelAPIUrl + '/activity/' + activityid,
+                {
+                    mysqlid: resource.id,
+                    playlistid: playlistid,
+                    action: 'create'
+                }, {
+                headers: headers
+            })
 
-                                    dispatch(
-                                        editResource(playlistid, resource, editor, editorType)
-                                    )
+            resource.id = response.data.data._id;
+            resource.mysqlid = response.data.data.mysqlid;
 
-                                })
-                                .catch((error) => {
-                                    console.log(error);
-                                });
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        });
-                });
-
-
-
-
-
-
+            dispatch(
+                editResource(playlistid, resource, editor, editorType)
+            )
         } catch (e) {
             throw new Error(e);
         }
@@ -274,48 +258,38 @@ export const createResourceAction = (playlistid, editor, editorType, metaData) =
                 parameters: JSON.stringify(window.h5peditorCopy.getParams()),
                 action: 'create'
             };
-            // insert into mysql
-            await axios.post(global.config.h5pAjaxUrl + '/api/h5p/?api_token=test', data, {
+            
+            
+            const inserted_h5p_resource = await axios.post(global.config.h5pAjaxUrl + '/api/h5p/?api_token=test', data, {
                 headers: headers
-            })
-                .then(async (response) => {
-                    if (!response.data.fail) {
-                        let resource = response.data;
+            });
+            
+            
+            if (!inserted_h5p_resource.data.fail) {
+                let resource = inserted_h5p_resource.data;
 
-                        //insert into mongodb
-                        await axios.post(global.config.laravelAPIUrl + '/activity',
-                            {
-                                mysqlid: resource.id,
-                                playlistid: playlistid,
-                                metaData: metaData,
-                                action: 'create'
-                            }, {
-                            headers: headers
-                        })
-                            .then((response) => {
-
-                                resource.id = response.data.data._id;
-                                resource.mysqlid = response.data.data.mysqlid;
-
-                                dispatch(
-                                    createResource(playlistid, resource, editor, editorType)
-                                )
-                            })
-                            .catch((error) => {
-                                console.log(error);
-                            });
-                    } else {
-                        dispatch(
-                            validationErrorsResource()
-                        )
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
+                //insert into mongodb
+                const inserted_resource = await axios.post(global.config.laravelAPIUrl + '/activity',
+                    {
+                        mysqlid: resource.id,
+                        playlistid: playlistid,
+                        metaData: metaData,
+                        action: 'create'
+                    }, {
+                    headers: headers
                 });
 
+                resource.id = inserted_resource.data.data._id;
+                resource.mysqlid = inserted_resource.data.data.mysqlid;
 
-
+                dispatch(
+                    createResource(playlistid, resource, editor, editorType)
+                )
+            } else {
+                dispatch(
+                    validationErrorsResource()
+                )
+            }
 
         } catch (e) {
             throw new Error(e);
@@ -336,44 +310,38 @@ export const createResourceByH5PUploadAction = (playlistid, editor, editorType, 
                     "Authorization": "Bearer " + token
                 }
             }
-            await axios.post(
+
+
+
+            const response_upload = await axios.post(
                 global.config.h5pAjaxUrl + '/api/h5p',
                 formData,
                 config
-            )
-                .then(async (response_upload) => {
-                    let data_upload = { ...response_upload.data };
-                    if (data_upload instanceof Object && "id" in data_upload) {
-                        //insert into mongodb
-                        await axios.post(global.config.laravelAPIUrl + '/activity',
-                            {
-                                mysqlid: data_upload.id,
-                                playlistid: playlistid,
-                                metaData: metaData,
-                                action: 'create'
-                            }, {
-                            headers: { 'Content-Type': 'application/json', "Authorization": "Bearer " + token }
-                        })
-                            .then((response_activity) => {
+            );
 
-
-                                let resource = { ...response_activity.data.data };
-                                resource.id = response_activity.data.data._id;
-                                resource.mysqlid = response_activity.data.data.mysqlid;
-
-                                dispatch(
-                                    createResource(playlistid, resource, editor, editorType)
-                                )
-                            })
-                            .catch((error) => {
-                                console.log(error);
-                            });
-
-                    } else {
-                        throw new Error(e);
-                    }
+            let data_upload = { ...response_upload.data };
+            if (data_upload instanceof Object && "id" in data_upload) {
+                //insert into mongodb
+                const response_activity = await axios.post(global.config.laravelAPIUrl + '/activity',
+                    {
+                        mysqlid: data_upload.id,
+                        playlistid: playlistid,
+                        metaData: metaData,
+                        action: 'create'
+                    }, {
+                    headers: { 'Content-Type': 'application/json', "Authorization": "Bearer " + token }
                 });
+                let resource = { ...response_activity.data.data };
+                resource.id = response_activity.data.data._id;
+                resource.mysqlid = response_activity.data.data.mysqlid;
 
+                dispatch(
+                    createResource(playlistid, resource, editor, editorType)
+                )
+
+            } else {
+                throw new Error(e);
+            }
         } catch (e) {
             throw new Error(e);
         }
