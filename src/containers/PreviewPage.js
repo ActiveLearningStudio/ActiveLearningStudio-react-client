@@ -1,29 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-import validator from "validator";
-
 import { withRouter } from 'react-router-dom';
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
-
-
 import Header from "../components/Header/Header";
-import CreatePlaylistPopup from "../components/CreatePlaylistPopup/CreatePlaylistPopup";
-import Sidebar from "../components/Sidebar/Sidebar";
 
-import { startLogin } from "../actions/auth";
-import { createPlaylistAction, deletePlaylistAction, showCreatePlaylistModalAction, hideCreatePlaylistModalAction } from "../actions/playlist";
-import { showCreateProjectModalAction, hideCreateProjectModalAction, createProjectAction, loadMyProjectsAction} from "../actions/project";
-import NewResourcePage from "./NewResourcePage";
-import { NewProjectPage } from "./NewProjectPage";
+import { showCreateProjectModalAction, createProjectAction, loadMyProjectsAction} from "../actions/project";
 
-import ProjectCard from "../components/ProjectCard";
-import ProjectPreviewModal from "../components/ProjectPreviewModal";
 import ProjectPreview from "../components/ProjectPreview";
 import ResourcePreview from "../components/ResourcePreview";
 import PlaylistPreview from "../components/PlaylistPreview";

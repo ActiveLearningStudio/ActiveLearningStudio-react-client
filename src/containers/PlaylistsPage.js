@@ -43,7 +43,7 @@ import {
   showCreateProjectModalAction,
   loadProjectAction,
 } from "../actions/project";
-import { startLogin } from "../actions/auth";
+
 
 import Header from "../components/Header/Header";
 import Sidebar from "../components/Sidebar/Sidebar";
@@ -55,7 +55,7 @@ import CreatePlaylistPopup from "../components/CreatePlaylistPopup/CreatePlaylis
 import AddResource from "../components/Resource/AddResource";
 import EditResource from "../components/Resource/EditResource";
 
-import "./PlaylistsPage.scss";
+
 
 export class PlaylistsPage extends React.Component {
   constructor(props) {

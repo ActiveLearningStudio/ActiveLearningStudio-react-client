@@ -17,7 +17,7 @@ const BouncyDiv = styled.div`
   animation: 0.5s ${bounceAnimation};
 `;
 
-export class NewResourcePage extends React.Component {
+export class PreviewResourcePage extends React.Component {
   constructor(props) {
     super(props);
     
@@ -80,10 +80,6 @@ const mapStateToProps =(state) => {
 }
 
 
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(NewResourcePage);
 
 export default withRouter(connect(mapStateToProps,
-  mapDispatchToProps)(NewResourcePage));
+  mapDispatchToProps)(PreviewResourcePage));

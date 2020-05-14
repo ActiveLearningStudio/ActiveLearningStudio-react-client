@@ -20,7 +20,7 @@ import Sidebar from "../components/Sidebar/Sidebar";
 import { startLogin } from "../actions/auth";
 import { showDeletePlaylistPopupAction, hideDeletePlaylistModalAction } from "../actions/ui";
 import { deleteProjectAction, showCreateProjectModalAction, loadProjectAction, createProjectAction, loadMyProjectsAction} from "../actions/project";
-import NewResourcePage from "./NewResourcePage";
+
 import { NewProjectPage } from "./NewProjectPage";
 
 import ProjectCard from "../components/ProjectCard";

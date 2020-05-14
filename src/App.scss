@@ -279,10 +279,11 @@ body {
             float:right;
             cursor:pointer;
             button {
-                padding: 0;
+                padding: 0 10px 10px 10px;
                 height: auto;
                 vertical-align: top;
                 line-height: 0;
+                background: #fff;
             }
             span {
                 border:2px solid #dbdbdb;
@@ -826,4 +827,13 @@ body {
 
 .react-h5-type  {
     display: none;
+}
+
+.playlist-dropdown {
+	top:-25px;
+}
+.playlist-dropdown-btn { 
+	background-color: transparent;
+	color: gray;
+	font-size: xx-large;
 }
