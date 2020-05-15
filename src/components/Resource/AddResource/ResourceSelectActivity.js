@@ -24,48 +24,6 @@ const FadeDiv = styled.div`
 
 
 const questions = h5pLibraries;
-// const questions = [
-//   {
-//     text:'Interactive Video',
-//     h5pLib:'H5P.InteractiveVideo 1.21',
-//     type:'h5p',
-//     icon: '/images/h5p-icons/interactive-video.png',
-//     overlayIcon:'/images/h5p-icons/interactive-video.png',
-//     description:"Create videos enriched with interactions"
-//   },
-//   {
-//     text:'Flash Cards',
-//     h5pLib:'H5P.Flashcards 1.5',
-//     type:'h5p',
-//     icon: '/images/h5p-icons/flash-cards.png',
-//     overlayIcon:'/images/h5p-icons/flash-cards.png',
-//     description:"Create stylish and modern flash cards"
-//   },
-//   {
-//     text:'Drag and Drop',
-//     h5pLib:'H5P.DragQuestion 1.13',
-//     type:'h5p',
-//     icon: '/images/h5p-icons/drag-and-drop.png',
-//     overlayIcon:'/images/h5p-icons/drag-and-drop.png',
-//     description:"Create drag and drop tasks with images"
-//   },
-//   {
-//     text:'Timeline',
-//     h5pLib:'H5P.Timeline 1.1',
-//     type:'h5p',
-//     icon: '/images/h5p-icons/timeline.png',
-//     overlayIcon:'/images/h5p-icons/timeline.png',
-//     description:"Create a timeline of events with multimedia"
-//   },
-//   {
-//     text:'Accordion',
-//     h5pLib:'H5P.Accordion 1.0',
-//     type:'h5p',
-//     icon: '/images/h5p-icons/accordion.png',
-//     overlayIcon:'/images/h5p-icons/accordion.png',  
-//     description:"Create vertically stacked expandable items"
-//   }
-// ];
 
 const addActiveClass = event => event.target.classList.add('active');
 

@@ -42,7 +42,7 @@ const h5pLibraries = [
       
         {
           text: 'Advanced Fill The Blanks',
-          h5pLib: 'H5P.AdvancedFillTheBlanks 1.0',
+          h5pLib: 'H5P.AdvancedBlanks 1.0',
           type: 'h5p',
           icon: '/images/h5p-icons/advanced-fill-the-blanks.png',
           overlayIcon: '/images/h5p-icons/advanced-fill-the-blanks.png',
@@ -50,7 +50,7 @@ const h5pLibraries = [
         },
         {
             text: 'Agamotto',
-            h5pLib: 'H5P.Agamotto 1.0',
+            h5pLib: 'H5P.Agamotto 1.5',
             type: 'h5p',
             icon: '/images/h5p-icons/agamotto.png',
             overlayIcon: '/images/h5p-icons/agamotto.png',
@@ -58,7 +58,7 @@ const h5pLibraries = [
         },
         {
             text: 'Arithmetic Quiz',
-            h5pLib: 'H5P.ArithmeticQuiz 1.0',
+            h5pLib: 'H5P.ArithmeticQuiz 1.1',
             type: 'h5p',
             icon: '/images/h5p-icons/arithmetic-quiz.png',
             overlayIcon: '/images/h5p-icons/arithmetic-quiz.png',
@@ -74,7 +74,7 @@ const h5pLibraries = [
         },
         {
             text: 'Branching Scenario',
-            h5pLib: 'H5P.BranchingScenario 1.0',
+            h5pLib: 'H5P.BranchingScenario 1.1',
             type: 'h5p',
             icon: '/images/h5p-icons/branching-scenario.png',
             overlayIcon: '/images/h5p-icons/branching-scenario.png',
@@ -82,7 +82,7 @@ const h5pLibraries = [
         },
         {
             text: 'Chart',
-            h5pLib: 'H5P.Chart 1.0',
+            h5pLib: 'H5P.Chart 1.2',
             type: 'h5p',
             icon: '/images/h5p-icons/chart.png',
             overlayIcon: '/images/h5p-icons/chart.png',
@@ -90,7 +90,7 @@ const h5pLibraries = [
         },
         {
             text: 'Collage',
-            h5pLib: 'H5P.Collage 1.0',
+            h5pLib: 'H5P.Collage 0.3',
             type: 'h5p',
             icon: '/images/h5p-icons/collage.png',
             overlayIcon: '/images/h5p-icons/collage.png',
@@ -98,7 +98,7 @@ const h5pLibraries = [
         },
         {
             text: 'Column',
-            h5pLib: 'H5P.Column 1.0',
+            h5pLib: 'H5P.Column 1.11',
             type: 'h5p',
             icon: '/images/h5p-icons/column.png',
             overlayIcon: '/images/h5p-icons/column.png',
@@ -106,7 +106,7 @@ const h5pLibraries = [
         },
         {
             text: 'Course Presentation',
-            h5pLib: 'H5P.CoursePresentation 1.0',
+            h5pLib: 'H5P.CoursePresentation 1.21',
             type: 'h5p',
             icon: '/images/h5p-icons/course-presentation.png',
             overlayIcon: '/images/h5p-icons/course-presentation.png',
@@ -114,7 +114,7 @@ const h5pLibraries = [
         },
         {
             text: 'Dialog Cards',
-            h5pLib: 'H5P.DialogCards 1.0',
+            h5pLib: 'H5P.DialogCards 1.8',
             type: 'h5p',
             icon: '/images/h5p-icons/dialog-cards.png',
             overlayIcon: '/images/h5p-icons/dialog-cards.png',
@@ -130,7 +130,7 @@ const h5pLibraries = [
         },
         {
             text: 'Documentation Tool',
-            h5pLib: 'H5P.DocumentationTool 1.0',
+            h5pLib: 'H5P.DocumentationTool 1.8',
             type: 'h5p',
             icon: '/images/h5p-icons/documentation-tool.png',
             overlayIcon: '/images/h5p-icons/documentation-tool.png',
@@ -138,7 +138,7 @@ const h5pLibraries = [
         },
         {
             text: 'Drag The Words',
-            h5pLib: 'H5P.DragTheWords 1.0',
+            h5pLib: 'H5P.DragText 1.8',
             type: 'h5p',
             icon: '/images/h5p-icons/drag-the-words.png',
             overlayIcon: '/images/h5p-icons/drag-the-words.png',
@@ -146,7 +146,7 @@ const h5pLibraries = [
         },
         {
             text: 'Essay',
-            h5pLib: 'H5P.Essay 1.0',
+            h5pLib: 'H5P.Essay 1.2',
             type: 'h5p',
             icon: '/images/h5p-icons/essay.png',
             overlayIcon: '/images/h5p-icons/essay.png',
@@ -154,7 +154,7 @@ const h5pLibraries = [
         },
         {
             text: 'Fill In The Blanks',
-            h5pLib: 'H5P.FillInTheBlanks 1.0',
+            h5pLib: 'H5P.Blanks 1.12',
             type: 'h5p',
             icon: '/images/h5p-icons/fill-in-the-blanks.png',
             overlayIcon: '/images/h5p-icons/fill-in-the-blanks.png',
@@ -162,7 +162,7 @@ const h5pLibraries = [
         },
         {
             text: 'Find Multiple Hotspots',
-            h5pLib: 'H5P.FindMultipleHotspots 1.0',
+            h5pLib: 'H5P.ImageHotspotQuestion 1.8',
             type: 'h5p',
             icon: '/images/h5p-icons/find-multiple-hotspots.png',
             overlayIcon: '/images/h5p-icons/find-multiple-hotspots.png',
@@ -170,7 +170,7 @@ const h5pLibraries = [
         },
         {
             text: 'Find The Words',
-            h5pLib: 'H5P.FindTheWords 1.0',
+            h5pLib: 'H5P.FindTheWords 1.4',
             type: 'h5p',
             icon: '/images/h5p-icons/find-the-words.png',
             overlayIcon: '/images/h5p-icons/find-the-words.png',
@@ -178,7 +178,7 @@ const h5pLibraries = [
         },
         {
             text: 'Guess The Answer',
-            h5pLib: 'H5P.GuessTheAnswer 1.0',
+            h5pLib: 'H5P.GuessTheAnswer 1.4',
             type: 'h5p',
             icon: '/images/h5p-icons/guess-the-answer.png',
             overlayIcon: '/images/h5p-icons/guess-the-answer.png',
@@ -186,7 +186,7 @@ const h5pLibraries = [
         },
         {
             text: 'Iframe Embedder',
-            h5pLib: 'H5P.IframeEmbedder 1.0',
+            h5pLib: 'H5P.IFrameEmbed 1.0',
             type: 'h5p',
             icon: '/images/h5p-icons/iframe-embedder.png',
             overlayIcon: '/images/h5p-icons/iframe-embedder.png',
@@ -194,7 +194,7 @@ const h5pLibraries = [
         },
         {
             text: 'Image Hotspot Question',
-            h5pLib: 'H5P.ImageHotspotQuestion 1.0',
+            h5pLib: 'H5P.ImageHotspotQuestion 1.8',
             type: 'h5p',
             icon: '/images/h5p-icons/image-hotspot-question.png',
             overlayIcon: '/images/h5p-icons/image-hotspot-question.png',
@@ -202,7 +202,7 @@ const h5pLibraries = [
         },
         {
             text: 'Image Hotspots',
-            h5pLib: 'H5P.ImageHotspots 1.0',
+            h5pLib: 'H5P.ImageHotspots 1.8',
             type: 'h5p',
             icon: '/images/h5p-icons/image-hotspots.png',
             overlayIcon: '/images/h5p-icons/image-hotspots.png',
@@ -210,7 +210,7 @@ const h5pLibraries = [
         },
         {
             text: 'Image Juxtaposition',
-            h5pLib: 'H5P.ImageJuxtaposition 1.0',
+            h5pLib: 'H5P.ImageJuxtaposition 1.4',
             type: 'h5p',
             icon: '/images/h5p-icons/image-juxtaposition.png',
             overlayIcon: '/images/h5p-icons/image-juxtaposition.png',
@@ -218,7 +218,7 @@ const h5pLibraries = [
         },
         {
             text: 'Image Pairing',
-            h5pLib: 'H5P.ImagePairing 1.0',
+            h5pLib: 'H5P.ImagePair 1.4',
             type: 'h5p',
             icon: '/images/h5p-icons/image-pairing.png',
             overlayIcon: '/images/h5p-icons/image-pairing.png',
@@ -234,15 +234,15 @@ const h5pLibraries = [
         },
         {
             text: 'Impressive Present',
-            h5pLib: 'H5P.ImpressivePresent 1.0',
+            h5pLib: 'H5P.ImpressPresentation 1.0',
             type: 'h5p',
             icon: '/images/h5p-icons/impressive-present.png',
             overlayIcon: '/images/h5p-icons/impressive-present.png',
             description: 'Create a Impressive-Present'
         },
         {
-            text: 'Mage Sequeincing',
-            h5pLib: 'H5P.MageSequeincing 1.0',
+            text: 'Sequeincing',
+            h5pLib: 'H5P.ImageSequencing 1.1',
             type: 'h5p',
             icon: '/images/h5p-icons/mage-sequeincing.png',
             overlayIcon: '/images/h5p-icons/mage-sequeincing.png',
@@ -250,7 +250,7 @@ const h5pLibraries = [
         },
         {
             text: 'Mark The Words',
-            h5pLib: 'H5P.MarkTheWords 1.0',
+            h5pLib: 'H5P.MarkTheWords 1.9',
             type: 'h5p',
             icon: '/images/h5p-icons/mark-the-words.png',
             overlayIcon: '/images/h5p-icons/mark-the-words.png',
@@ -258,7 +258,7 @@ const h5pLibraries = [
         },
         {
             text: 'Memory Game',
-            h5pLib: 'H5P.MemoryGame 1.0',
+            h5pLib: 'H5P.MemoryGame 1.3',
             type: 'h5p',
             icon: '/images/h5p-icons/memory-game.png',
             overlayIcon: '/images/h5p-icons/memory-game.png',
@@ -266,7 +266,7 @@ const h5pLibraries = [
         },
         {
             text: 'Multiple Choice',
-            h5pLib: 'H5P.MultipleChoice 1.0',
+            h5pLib: 'H5P.MultiChoice 1.14',
             type: 'h5p',
             icon: '/images/h5p-icons/multiple-choice.png',
             overlayIcon: '/images/h5p-icons/multiple-choice.png',
@@ -282,15 +282,15 @@ const h5pLibraries = [
         },
         {
             text: 'Questionnaire',
-            h5pLib: 'H5P.Questionnaire 1.0',
+            h5pLib: 'H5P.Questionnaire 1.2',
             type: 'h5p',
             icon: '/images/h5p-icons/questionnaire.png',
             overlayIcon: '/images/h5p-icons/questionnaire.png',
             description: 'Create a Questionnaire'
         },
         {
-            text: 'Quiz',
-            h5pLib: 'H5P.Quiz 1.0',
+            text: 'QuestionSet',
+            h5pLib: 'H5P.QuestionSet 1.17',
             type: 'h5p',
             icon: '/images/h5p-icons/quiz.png',
             overlayIcon: '/images/h5p-icons/quiz.png',
@@ -298,15 +298,15 @@ const h5pLibraries = [
         },
         {
             text: 'Single Choice Set',
-            h5pLib: 'H5P.SingleChoiceSet 1.0',
+            h5pLib: 'H5P.SingleChoiceSet 1.11',
             type: 'h5p',
             icon: '/images/h5p-icons/single-choice-set.png',
             overlayIcon: '/images/h5p-icons/single-choice-set.png',
             description: 'Create a Single Choice Set'
         },
         {
-            text: 'Speak The Words',
-            h5pLib: 'H5P.SpeakTheWords 1.0',
+            text: 'Speak the Words',
+            h5pLib: 'H5P.SpeakTheWords 1.3',
             type: 'h5p',
             icon: '/images/h5p-icons/speak-the-words.png',
             overlayIcon: '/images/h5p-icons/speak-the-words.png',
@@ -314,7 +314,7 @@ const h5pLibraries = [
         },
         {
             text: 'Speak The Words Set',
-            h5pLib: 'H5P.SpeakTheWordsSet 1.0',
+            h5pLib: 'H5P.SpeakTheWords 1.3',
             type: 'h5p',
             icon: '/images/h5p-icons/speak-the-words-set.png',
             overlayIcon: '/images/h5p-icons/speak-the-words-set.png',
@@ -322,7 +322,7 @@ const h5pLibraries = [
         },
         {
             text: 'Summary',
-            h5pLib: 'H5P.Summary 1.0',
+            h5pLib: 'H5P.Summary 1.10',
             type: 'h5p',
             icon: '/images/h5p-icons/summary.png',
             overlayIcon: '/images/h5p-icons/summary.png',
@@ -330,7 +330,7 @@ const h5pLibraries = [
         },
         {
             text: 'True False',
-            h5pLib: 'H5P.TrueFalse 1.0',
+            h5pLib: 'H5P.TrueFalse 1.6',
             type: 'h5p',
             icon: '/images/h5p-icons/true-false.png',
             overlayIcon: '/images/h5p-icons/true-false.png',
@@ -338,7 +338,7 @@ const h5pLibraries = [
         },
         {
             text: 'Virtual Tour',
-            h5pLib: 'H5P.VirtualTour 1.0',
+            h5pLib: 'H5P.ThreeImage 0.3',
             type: 'h5p',
             icon: '/images/h5p-icons/virtual-tour.png',
             overlayIcon: '/images/h5p-icons/virtual-tour.png',
