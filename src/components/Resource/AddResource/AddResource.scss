@@ -52,6 +52,7 @@
     // padding-left: 25px;
     .question-label {
         margin-bottom: 40px;
+        width: 100%;
         .activity-content {
             padding: 5px 10px;
         }
@@ -76,6 +77,10 @@
             height:80px;
             margin:0 auto;
             margin-top:10px;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: contain;
+            margin-bottom: 15px;
             .overlay-activity-icon {
                 display: none;
             }

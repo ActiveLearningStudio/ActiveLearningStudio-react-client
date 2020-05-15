@@ -9,7 +9,8 @@ import {
   DELETE_RESOURCE,
   REORDER_PLAYLIST,
   REORDER_PLAYLISTS,
-  EDIT_RESOURCE
+  EDIT_RESOURCE,
+  LOAD_MY_PROJECTS
 } from "../constants/actionTypes";
 
 const defaultPlaylistState = () => {
@@ -39,6 +40,13 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
           action.playlistdata
         ]
       };
+    //reset playlists to empty when going to projects dashboard 
+    //so that when user clicks to new project it will load to default empty
+    case LOAD_MY_PROJECTS:
+        return {
+          ...state,
+          playlists: []
+        };
 
     case DELETE_PLAYLIST:
       let newPlaylist = state.playlists.filter(playlist => {
