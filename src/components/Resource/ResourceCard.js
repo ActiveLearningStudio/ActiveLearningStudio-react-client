@@ -38,11 +38,11 @@ export class ResourceCard extends React.Component {
 						{...provided.draggableProps}
 						{...provided.dragHandleProps}
 					>
-						<div className="row">
+						<div className="resource-card-wrapper">
 
 							{
 								this.props.resource.metadata && this.props.resource.metadata.thumb_url ?
-									<div className="col-md-3">
+									<div className="activity-thumb-wrapper">
 										<Link
 											to={
 												"/resource/preview/" +
@@ -55,7 +55,7 @@ export class ResourceCard extends React.Component {
 							}
 
 
-							<div className={this.props.resource.metadata && this.props.resource.metadata.thumb_url ? "col-md-7" : "col-md-10"}>
+							<div className={this.props.resource.metadata && this.props.resource.metadata.thumb_url ? "activity-thumb-content" : "activity-thumb-content"}>
 								<h3 className="title">
 									<Link
 										to={
@@ -65,7 +65,7 @@ export class ResourceCard extends React.Component {
 									</Link>
 								</h3>
 							</div>
-							<div className="col-md-2">
+							<div className="activity-options-wrapper">
 								<div className="activity-options">
 									<div className="dropdown pull-right">
 										<button
@@ -146,6 +146,7 @@ export class ResourceCard extends React.Component {
 									</div>
 								</div>
 							</div>
+							<div className="clearfix"></div>
 						</div>
 						<div className="row timestamp">
 							<div className="col-md-12">

@@ -24,8 +24,9 @@ const AppRouter = () => (
       <PrivateRoute path="/resource/preview/:resourceid" exact component={PreviewPage}  previewType="resource" />
       <PrivateRoute path="/playlist/preview/:playlistid" exact component={PreviewPage}  previewType="playlist" />
 
-      <PrivateRoute path="/project/create/:projectid" component={ProjectsPage} showEditProjectPopup={true} editMode={true} />
-      <PrivateRoute path="/project/create" exact component={ProjectsPage} showCreateProjectPopup={true} editMode={false} />
+      <PrivateRoute path="/project/create" exact component={ProjectsPage} id="create-project" showCreateProjectPopup={true} editMode={false} />
+      <PrivateRoute path="/project/create/:projectid" exact component={ProjectsPage} showEditProjectPopup={true} editMode={true} />
+      
       
       <PrivateRoute path="/project/:projectid/playlist/:playlistid/activity/create/:activityid" exact component={PlaylistsPage} openEditResourcePopup={true}/>
       <PrivateRoute path="/project/:projectid" exact component={PlaylistsPage} />

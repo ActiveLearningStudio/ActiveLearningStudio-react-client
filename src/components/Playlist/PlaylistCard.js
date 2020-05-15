@@ -165,21 +165,27 @@ export class PlaylistCard extends React.Component {
 											className="list-body"
 											{...provided.droppableProps}
 											ref={provided.innerRef}
-										>
-											{this.renderResources()}
-											{provided.placeholder}
-											<button
-												onClick={
-													this
-														.handleAddNewResourceClick
-												}
-												className="add-resource-to-playlist-btn"
-											>
-												New Resource
-											</button>
+										>	
+											<div className="playlist-resources">
+												{this.renderResources()}
+												{provided.placeholder}
+											</div>
+											
+											
 										</div>
 									)}
 								</Droppable>
+								<div className="playlist-add-res-button">
+									<button
+										onClick={
+											this
+												.handleAddNewResourceClick
+										}
+										className="add-resource-to-playlist-btn"
+									>
+										New Resource
+									</button>
+								</div>
 						</div>
 					</div>
 				)}

@@ -126,26 +126,18 @@ export const showBuildActivityAction = (editor = null, editorType = null, activi
     return async dispatch => {
         try {
             if (activityid) {
-                axios.get(global.config.laravelAPIUrl + '/activity/' + activityid)
-                    .then((response) => {
-                        axios.get(global.config.h5pAjaxUrl + '/h5p/content-params/' + response.data.mysqlid)
-                            .then((params) => {
-                                let lib = response.data.library_name + " " + response.data.major_version + "." + response.data.minor_version;
-                                dispatch(
-                                    showBuildActivity(lib, response.data.type, params)
-                                )
-                            });
-
-                    });
+                const response = await axios.get(global.config.laravelAPIUrl + '/activity/' + activityid);
+                
+                let lib = response.data.data.library_name + " " + response.data.data.major_version + "." + response.data.data.minor_version;
+                
+                dispatch(
+                    showBuildActivity(lib, response.data.data.type, response.data.data.h5p)
+                )
             } else {
                 dispatch(
                     showBuildActivity(editor, editorType, '')
                 )
             }
-
-
-
-
         } catch (e) {
             throw new Error(e);
         }
@@ -171,8 +163,6 @@ export const showDescribeActivityAction = (activity) => {
     }
 }
 
-
-
 export const editResource = (playlistid, resource, editor, editorType) => ({
     type: EDIT_RESOURCE,
     playlistid,
@@ -197,28 +187,18 @@ export const editResourceAction = (playlistid, editor, editorType, activityid) =
                 action: 'create'
             };
 
-            //get activity by _id to find mysqlid
-            const api_response = await axios.get(global.config.laravelAPIUrl + '/activity/' + activityid);
-            console.log(api_response);
-
-            // get h5p content
-            const h5p_apiresponse = await axios.patch(global.config.h5pAjaxUrl + '/api/h5p/' + api_response.data.mysqlid, data, {
-                headers: headers
-            });
-
-            let resource = h5p_apiresponse.data;
-            // update api and get response back to update state
             const response = await axios.put(global.config.laravelAPIUrl + '/activity/' + activityid,
                 {
-                    mysqlid: resource.id,
                     playlistid: playlistid,
-                    action: 'create'
+                    action: 'create',
+                    data
                 }, {
                 headers: headers
-            })
+            });
+            console.log(response);
 
+            let resource = {};
             resource.id = response.data.data._id;
-            resource.mysqlid = response.data.data.mysqlid;
 
             dispatch(
                 editResource(playlistid, resource, editor, editorType)
@@ -258,13 +238,13 @@ export const createResourceAction = (playlistid, editor, editorType, metaData) =
                 parameters: JSON.stringify(window.h5peditorCopy.getParams()),
                 action: 'create'
             };
-            
-            
+
+
             const inserted_h5p_resource = await axios.post(global.config.h5pAjaxUrl + '/api/h5p/?api_token=test', data, {
                 headers: headers
             });
-            
-            
+
+
             if (!inserted_h5p_resource.data.fail) {
                 let resource = inserted_h5p_resource.data;
 
@@ -386,7 +366,7 @@ export const hidePreviewResourceModalAction = () => {
 
 
 
-
+// runs delete resource ajax
 
 export const deleteResource = (resourceid) => ({
     type: DELETE_RESOURCE,
@@ -416,7 +396,7 @@ export const deleteResourceAction = (resourceid) => {
 }
 
 
-
+// handles the actions when some activity type is switched inside activity type wizard
 
 export const onChangeActivityType = (activityTypeId) => {
     return ({
@@ -438,6 +418,7 @@ export const onChangeActivityTypeAction = (e) => {
     }
 }
 
+// handles the actions when some activity switched inside select activity wizard
 
 export const onChangeActivity = (activity) => ({
     type: SELECT_ACTIVITY,
@@ -456,6 +437,7 @@ export const onChangeActivityAction = (activity, e) => {
     }
 }
 
+// Metadata saving inside state when metadata form is submitted
 
 export const onSubmitDescribeActivity = (metaData) => ({
     type: DESCRIBE_ACTIVITY,
@@ -475,6 +457,7 @@ export const onSubmitDescribeActivityAction = (metaData) => {
 }
 
 
+// uploads the thumbnail of resource
 
 export const uploadResourceThumbnail = (thumbUrl) => ({
     type: UPLOAD_RESOURCE_THUMBNAIL,

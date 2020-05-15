@@ -28,7 +28,7 @@ export class ProjectsPage extends React.Component {
     if(this.props.showEditProjectPopup){
       // loads the data of project for showing into edit form
       this.props.loadProjectAction(this.props.match.params.projectid);
-    } else {
+    } else if(this.props.showCreateProjectPopup) {
       this.props.showCreateProjectModalAction();
     }
   }

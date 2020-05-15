@@ -23,7 +23,6 @@ const FaceDiv = styled.div`
 
 
 const ResourceActivityBuild = (props) => {
-  
   return (
     <div className="row">
       <div className="col-md-3">
@@ -46,7 +45,7 @@ const ResourceActivityBuild = (props) => {
 
             {props.resource.editResource.params.data != '' ?
               <H5PEditor {...props}
-                h5pParams={JSON.stringify(props.resource.editResource.params.data)}
+                h5pParams={JSON.stringify(props.resource.editResource.params)}
                 h5pLib={props.resource.editResource.editor}
               />
               :

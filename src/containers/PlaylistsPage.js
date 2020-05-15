@@ -76,8 +76,14 @@ export class PlaylistsPage extends React.Component {
   componentDidMount() {
     //scroll to top
     window.scrollTo(0, 0);
-    this.props.loadProjectPlaylistsAction(this.props.match.params.projectid);
-    this.props.loadProjectAction(this.props.match.params.projectid);
+    if (this.props.openCreatePopup == true
+      || this.props.openCreateResourcePopup == true
+      || this.props.openEditResourcePopup == true) {
+
+    } else {
+      this.props.loadProjectPlaylistsAction(this.props.match.params.projectid);
+      this.props.loadProjectAction(this.props.match.params.projectid);
+    }
   }
 
   handleShowCreatePlaylistModal = async (e) => {
@@ -97,10 +103,10 @@ export class PlaylistsPage extends React.Component {
       this.props.showCreateResourceModalAction(playlist._id);
       this.props.history.push(
         "/project/" +
-          this.props.match.params.projectid +
-          "/playlist/" +
-          playlist._id +
-          "/activity/create"
+        this.props.match.params.projectid +
+        "/playlist/" +
+        playlist._id +
+        "/activity/create"
       );
     } catch (e) {
       console.log(e.message);
@@ -185,7 +191,6 @@ export class PlaylistsPage extends React.Component {
         );
       }
 
-      // this.props.hideCreatePlaylistModal();
     } catch (e) {
       console.log(e.message);
     }
@@ -298,14 +303,15 @@ export class PlaylistsPage extends React.Component {
                         </Link>
                       </span>
                     </h1>
+                    <button
+                      onClick={this.handleShowCreatePlaylistModal}
+                      className="create-playlist-btn"
+                    >
+                      Create New Playlist
+                </button>
                   </div>
                 </div>
-                <button
-                  onClick={this.handleShowCreatePlaylistModal}
-                  className="create-playlist-btn"
-                >
-                  Create New Playlist
-                </button>
+
 
                 <DragDropContext onDragEnd={this.onDragEnd}>
                   <Droppable

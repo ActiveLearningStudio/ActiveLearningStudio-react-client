@@ -50,7 +50,8 @@ const projectReducer = (state = defaultProgramState(), action) => {
         projects: [
           ...state.projects,
           action.projectdata
-        ]
+        ],
+        thumbUrl: null
       };
     case LOAD_MY_PROJECTS:
       return {

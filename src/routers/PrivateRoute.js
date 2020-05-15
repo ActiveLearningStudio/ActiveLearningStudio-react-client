@@ -4,12 +4,11 @@ import { Route, Redirect, withRouter } from "react-router-dom";
 
 
 
-const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => (
+const PrivateRoute = ({ component: Component, id, isAuthenticated, ...rest }) => (
   <Route
     {...rest}
     render={props =>
       {
-        let id = '';
         if(props.match.params.resourceid){
           id = props.match.params.resourceid;
         } else if(props.match.params.playlistid){
