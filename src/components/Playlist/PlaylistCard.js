@@ -36,19 +36,6 @@ export class PlaylistCard extends React.Component {
 		this.props.handleCreateResource(this.props.playlist);
 	};
 
-	onDragEnd = (e) => {
-		if (e.destination.index == e.source.index) return;
-
-		let resources = Array.from(this.props.playlist.resources);
-		const [removed] = resources.splice(e.source.index, 1);
-		resources.splice(e.destination.index, 0, removed);
-		const reorderedPlaylist = {
-			...this.props.playlist,
-			resources: resources,
-		};
-		this.props.reorderPlaylistActivitiesAction(reorderedPlaylist);
-	};
-
 	renderResources() {
 		if (
 			!this.props.playlist.resources ||
@@ -169,9 +156,9 @@ export class PlaylistCard extends React.Component {
 									</div>
 								</h2>
 							</div>
-							<DragDropContext onDragEnd={this.onDragEnd}>
 								<Droppable
 									droppableId={this.props.playlist._id}
+									type="resource"
 								>
 									{(provided) => (
 										<div
@@ -193,7 +180,6 @@ export class PlaylistCard extends React.Component {
 										</div>
 									)}
 								</Droppable>
-							</DragDropContext>
 						</div>
 					</div>
 				)}

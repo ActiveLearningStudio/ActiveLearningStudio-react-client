@@ -18,12 +18,10 @@ import {
   showCreatePlaylistModalAction,
   hideCreatePlaylistModalAction,
   loadProjectPlaylistsAction,
-  reorderPlaylistsAction
+  reorderPlaylistsAction,
+  reorderPlaylistActivitiesAction,
 } from "../actions/playlist";
-import {
-  showDeletePopupAction,
-  hideDeletePopupAction,
-} from "./../actions/ui";
+import { showDeletePopupAction, hideDeletePopupAction } from "./../actions/ui";
 import {
   deleteResourceAction,
   createResourceAction,
@@ -44,7 +42,6 @@ import {
   loadProjectAction,
 } from "../actions/project";
 
-
 import Header from "../components/Header/Header";
 import Sidebar from "../components/Sidebar/Sidebar";
 import PreviewResourcePage from "./PreviewResourcePage";
@@ -54,8 +51,6 @@ import PlaylistsLoading from "./../components/Loading/PlaylistsLoading";
 import CreatePlaylistPopup from "../components/CreatePlaylistPopup/CreatePlaylistPopup";
 import AddResource from "../components/Resource/AddResource";
 import EditResource from "../components/Resource/EditResource";
-
-
 
 export class PlaylistsPage extends React.Component {
   constructor(props) {
@@ -111,8 +106,6 @@ export class PlaylistsPage extends React.Component {
       console.log(e.message);
     }
   };
-
-  
 
   handleHideCreatePlaylistModal = async (e) => {
     e.preventDefault();
@@ -178,7 +171,6 @@ export class PlaylistsPage extends React.Component {
           payload,
           metaData
         );
-        
       } else {
         await this.props.createResourceAction(
           currentPlaylistId,
@@ -187,11 +179,12 @@ export class PlaylistsPage extends React.Component {
           metaData
         );
       }
-      if(!this.props.resource.showCreateResourcePopup){
-        this.props.history.push("/project/" + this.props.match.params.projectid);
+      if (!this.props.resource.showCreateResourcePopup) {
+        this.props.history.push(
+          "/project/" + this.props.match.params.projectid
+        );
       }
-      
-      
+
       // this.props.hideCreatePlaylistModal();
     } catch (e) {
       console.log(e.message);
@@ -218,16 +211,62 @@ export class PlaylistsPage extends React.Component {
   };
 
   onDragEnd = (e) => {
-    if (e.destination.index == e.source.index) return;
+    if (
+      !e.destination ||
+      (e.destination.index == e.source.index &&
+        e.source.droppableId == e.destination.droppableId)
+    )
+      return;
 
-    let playlists = Array.from(this.props.playlists.playlists);
-    const [removed] = playlists.splice(e.source.index, 1);
-    playlists.splice(e.destination.index, 0, removed);
-    this.props.reorderPlaylistsAction(playlists);
+    if (e.type == "resource") {
+      // resource dropped
+      if (e.source.droppableId == e.destination.droppableId) {
+        // Resource dropped within the same list
+        let playlist = this.props.playlists.playlists.find((pl) => {
+          return pl._id == e.source.droppableId;
+        });
+        let resources = Array.from(playlist.resources);
+        const [removed] = resources.splice(e.source.index, 1);
+        resources.splice(e.destination.index, 0, removed);
+        this.props.reorderPlaylistActivitiesAction({
+          ...playlist,
+          resources: resources,
+        });
+      } else {
+        // Rsc dropped on a different list
+        let sourceList = this.props.playlists.playlists.find((pl) => {
+          return pl._id == e.source.droppableId;
+        });
+        let destinationList = this.props.playlists.playlists.find((pl) => {
+          return pl._id == e.destination.droppableId;
+        });
+        let sourceResources = Array.from(sourceList.resources);
+        let destResources = destinationList.resources
+          ? Array.from(destinationList.resources)
+          : [];
+
+        const [removed] = sourceResources.splice(e.source.index, 1);
+        destResources.splice(e.destination.index, 0, removed);
+
+        this.props.reorderPlaylistActivitiesAction({
+          ...sourceList,
+          resources: sourceResources,
+        });
+        this.props.reorderPlaylistActivitiesAction({
+          ...destinationList,
+          resources: destResources,
+        });
+      }
+    } else {
+      // playlist dropped
+      let playlists = Array.from(this.props.playlists.playlists);
+      const [removed] = playlists.splice(e.source.index, 1);
+      playlists.splice(e.destination.index, 0, removed);
+      this.props.reorderPlaylistsAction(playlists);
+    }
   };
 
   render() {
-    
     const { playlists } = this.props.playlists;
     const { showDeletePlaylistPopup } = this.props.ui;
     return (
@@ -269,7 +308,11 @@ export class PlaylistsPage extends React.Component {
                 </button>
 
                 <DragDropContext onDragEnd={this.onDragEnd}>
-                  <Droppable droppableId="project-droppable-id" direction="horizontal">
+                  <Droppable
+                    droppableId="project-droppable-id"
+                    direction="horizontal"
+                    type="column"
+                  >
                     {(provided) => (
                       <div
                         id="board"
@@ -352,8 +395,7 @@ const mapDispatchToProps = (dispatch) => ({
   deletePlaylistAction: (id) => dispatch(deletePlaylistAction(id)),
   showCreatePlaylistModal: () => dispatch(showCreatePlaylistModalAction()),
   hideCreatePlaylistModal: () => dispatch(hideCreatePlaylistModalAction()),
-  hideDeletePopupAction: () =>
-    dispatch(hideDeletePopupAction()),
+  hideDeletePopupAction: () => dispatch(hideDeletePopupAction()),
   showCreateResourceModalAction: (id) =>
     dispatch(showCreateResourceModalAction(id)),
   hideCreateResourceModal: () => dispatch(hideCreateResourceModalAction()),
@@ -367,9 +409,21 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(createResourceAction(playlistid, editor, editorType, metaData)),
   editResourceAction: (playlistid, editor, editorType, activityid) =>
     dispatch(editResourceAction(playlistid, editor, editorType, activityid)),
-  createResourceByH5PUploadAction: (playlistid, editor, editorType, payload, metaData) =>
+  createResourceByH5PUploadAction: (
+    playlistid,
+    editor,
+    editorType,
+    payload,
+    metaData
+  ) =>
     dispatch(
-      createResourceByH5PUploadAction(playlistid, editor, editorType, payload, metaData)
+      createResourceByH5PUploadAction(
+        playlistid,
+        editor,
+        editorType,
+        payload,
+        metaData
+      )
     ),
   loadProjectAction: (projectid) => dispatch(loadProjectAction(projectid)),
   deleteResourceAction: (resourceid) =>
@@ -386,7 +440,9 @@ const mapDispatchToProps = (dispatch) => ({
   uploadResourceThumbnailAction: () =>
     dispatch(uploadResourceThumbnailAction()),
   reorderPlaylistsAction: (playlist) =>
-    dispatch(reorderPlaylistsAction(playlist))
+    dispatch(reorderPlaylistsAction(playlist)),
+  reorderPlaylistActivitiesAction: (playlist) =>
+    dispatch(reorderPlaylistActivitiesAction(playlist)),
 });
 
 const mapStateToProps = (state) => {

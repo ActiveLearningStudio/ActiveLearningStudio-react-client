@@ -32,7 +32,7 @@ export const reorderPlaylistsAction = (playlists) => {
       { playlists },
       { headers: { "Authorization": "Bearer " + token } }
     ).then(response => {
-      if (response.data.status == "error") {
+      if (response.data.status == "error" || response.status != 200) {
         console.log('Error: ' + response.data.message);
         dispatch(loadProjectPlaylistsAction(playlists[0].projectid));
       }
@@ -63,7 +63,7 @@ export const reorderPlaylistActivitiesAction = (playlist) => {
       { playlist },
       { headers: { "Authorization": "Bearer " + token } }
     ).then(response => {
-      if (response.data.status == "error") {
+      if (response.data.status == "error" || response.status != 200) {
         console.log('Error: ' + response.data.message);
         dispatch(loadProjectPlaylistsAction(playlist.projectid));
       }
