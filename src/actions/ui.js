@@ -9,6 +9,7 @@ export const showDeletePopup = (id, title, deleteType) => ({
   deleteType
 });
 
+//shows the delete popup on activities, project, playlists
 export const showDeletePopupAction = (id, title, deleteType) => {
   return async dispatch => {
     try {
@@ -24,7 +25,7 @@ export const showDeletePopupAction = (id, title, deleteType) => {
 export const hideDeletePopup = () => ({
   type: HIDE_DELETE_POPUP
 });
-
+//hides the delete popup on activities, project, playlists
 export const hideDeletePopupAction = () => {
   return async dispatch => {
     try {

@@ -49,18 +49,20 @@ class H5PEditor extends React.Component {
       // this.setH5PIntegrationVariable();
    }
 
+   //setup h55pintegraion variable for EditResource
    setH5PIntegrationVariable() {
       const { token } = JSON.parse(localStorage.getItem("auth"));
-      axios.get(global.config.h5pAjaxUrl + '/api/h5p/create', {
+      axios.get(global.config.laravelAPIUrl+'/h5p-settings', {
          headers: {
             "Authorization": "Bearer " + token
          }
       })
          .then((response) => {
-            window.H5PIntegration = response.data.settings;
+            
+            window.H5PIntegration = response.data.data.h5p.settings;
 
 
-            response.data.settings.editor.assets.js.forEach((value) => {
+            response.data.data.h5p.settings.editor.assets.js.forEach((value) => {
                var script = document.createElement("script");
                script.src = value;
                script.async = false;
