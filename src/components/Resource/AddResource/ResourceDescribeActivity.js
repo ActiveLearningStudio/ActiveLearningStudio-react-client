@@ -47,7 +47,7 @@ export const uploadThumb = async (e, props) => {
   const formData = new FormData();
   try {
     formData.append('uploads', e.target.files[0]);
-
+    imageValidation = "";
     await props.uploadResourceThumbnailAction(formData);
   } catch (e) {
     console.log(e);
@@ -76,13 +76,16 @@ const educationLevels = [
   { name: 'Special Education', value: '9' },
 ];
 
+var imageValidation = '';
 
 const onSubmit = async (values, dispatch, props) => {
   try {
-    // console.log(values);
-    // console.log(props);
-    // alert(props.resource.newResource.activity.h5pLib);
-    // alert(props.resource.newResource.activity.type);
+
+    //image validation
+    if (!props.resource.newResource.metaData.thumbUrl) {
+      imageValidation = '* Required';
+      return false;
+    }
     props.onSubmitDescribeActivityAction(values);
     props.showBuildActivityAction(props.resource.newResource.activity.h5pLib, props.resource.newResource.activity.type)
   } catch (e) {
@@ -144,16 +147,24 @@ let ResourceDescribeActivity = (props) => {
                             <input type="file" onChange={(e) => uploadThumb(e, props)} accept="image/x-png,image/jpeg" />
                             <span>Upload</span>
                           </label>
+                          <span className="validation-error">
+                            {
+                              imageValidation
+                            }
+                          </span>
 
 
                           {
                             props.resource.newResource.metaData.thumbUrl ?
                               <div className="thumb-display">
+                                <div className="success" style={{ color: 'green', marginBottom: '20px', fontSize: '20px' }}>
+                                  Uploaded Image:
+                                </div>
                                 <div className="thumb"><img src={props.resource.newResource.metaData.thumbUrl} /></div>
                               </div>
                               :
                               null
-                          } 
+                          }
                         </div>
                       </div>
                     </div>

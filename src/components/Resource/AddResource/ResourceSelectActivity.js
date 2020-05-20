@@ -74,7 +74,7 @@ let ResourceSelectActivity = (props) => {
             validate={[required]}
           />
         <div className="activity-item">
-          <div className="activity-img" style={{'background-image':'url('+activity.icon+')'}}>
+          <div className="activity-img" style={{backgroundImage:'url('+activity.icon+')'}}>
             {/* <img src={activity.icon} className="activity-icon" /> */}
             {/* <img src={activity.overlayIcon} className="overlay-activity-icon" /> */}
           </div>

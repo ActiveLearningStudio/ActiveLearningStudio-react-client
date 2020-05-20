@@ -46,8 +46,14 @@ const renderProjectDescriptionInput = ({ input, label, meta: { touched, error, w
     </div>
   </div>
 )
+var imageValidation = '';
+
 const onSubmit = async (values, dispatch, props) => {
   try {
+    if(!props.project.thumbUrl){
+      imageValidation = '* Required';
+      return false;
+    }
     if (props.editMode) {//update
       await dispatch(updateProjectAction(props.match.params.projectid, values.projectName, values.description, props.project.thumbUrl));
     } else { //create
@@ -61,12 +67,16 @@ const onSubmit = async (values, dispatch, props) => {
 
 }
 
+
 export const uploadThumb = async (e, props) => {
   const formData = new FormData();
   try {
     formData.append('uploads', e.target.files[0]);
 
+    imageValidation = "";
     await props.uploadProjectThumbnailAction(formData);
+    
+    
   } catch (e) {
     console.log(e);
   }
@@ -110,11 +120,18 @@ let CreateProjectPopup = props => {
             <input type="file" onChange={(e) => uploadThumb(e, props)}  accept="image/x-png,image/jpeg" />
             <span>Upload</span>
           </label>
-
-
+          <span className="validation-error">
+            {
+              imageValidation
+            }
+          </span>
+            
           {
             props.project.thumbUrl ?
               <div className="thumb-display">
+                <div className = "success" style={{color:'green', marginBottom:'20px', fontSize:'20px'}}>
+                  Uploaded Image: 
+                </div>
                 <div className="thumb"><img src={props.project.thumbUrl} /></div>
               </div>
               :

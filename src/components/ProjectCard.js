@@ -10,7 +10,7 @@ const ProjectCard = (props) => (
 		    <Link to={"/project/"+props.project._id}>
 				{
 					props.project.thumb_url ?
-					<div className="project-thumb" style={{ 'background-image': 'url(' + props.project.thumb_url + ')' }}></div>
+					<div className="project-thumb" style={{ backgroundImage: 'url(' + props.project.thumb_url + ')' }}></div>
 					:
 					null
 				}

@@ -48,7 +48,7 @@ export class ResourceCard extends React.Component {
 												"/resource/preview/" +
 												this.props.resource._id
 											}>
-											<div className="activity-thumb" style={{ 'background-image': 'url(' + this.props.resource.metadata.thumb_url + ')' }}></div>
+											<div className="activity-thumb" style={{ backgroundImage: 'url(' + this.props.resource.metadata.thumb_url + ')' }}></div>
 										</Link>
 									</div>
 									: null
