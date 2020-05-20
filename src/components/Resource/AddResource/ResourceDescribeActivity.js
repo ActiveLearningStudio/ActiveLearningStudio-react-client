@@ -158,7 +158,7 @@ let ResourceDescribeActivity = (props) => {
                             props.resource.newResource.metaData.thumbUrl ?
                               <div className="thumb-display">
                                 <div className="success" style={{ color: 'green', marginBottom: '20px', fontSize: '20px' }}>
-                                  Uploaded Image:
+                                  Image Uploaded:
                                 </div>
                                 <div className="thumb"><img src={props.resource.newResource.metaData.thumbUrl} /></div>
                               </div>
