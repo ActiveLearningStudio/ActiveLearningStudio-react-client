@@ -102,7 +102,7 @@ const renderMetaEducationLevelInput = ({ input, ...rest }) =>
 
 
 let ResourceDescribeActivity = (props) => {
-  console.log(props);
+  console.log(props.resource);
   const { handleSubmit, metaSubject, load, pristine, reset, submitting } = props;
   return (
 

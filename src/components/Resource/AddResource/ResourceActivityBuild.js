@@ -24,7 +24,7 @@ const FaceDiv = styled.div`
 
 
 const ResourceActivityBuild = (props) => {
-
+  console.log(props.resource);
   return (
     <div className="row">
       <div className="col-md-3">

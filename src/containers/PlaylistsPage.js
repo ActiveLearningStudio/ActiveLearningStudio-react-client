@@ -35,6 +35,7 @@ import {
   onChangeActivityTypeAction,
   onChangeActivityAction,
   uploadResourceThumbnailAction,
+  showDescribeActivityAction,
   showBuildActivityAction,
 } from "../actions/resource";
 import {
@@ -312,7 +313,6 @@ export class PlaylistsPage extends React.Component {
                   </div>
                 </div>
 
-
                 <DragDropContext onDragEnd={this.onDragEnd}>
                   <Droppable
                     droppableId="project-droppable-id"
@@ -331,6 +331,8 @@ export class PlaylistsPage extends React.Component {
                             key={playlist._id}
                             index={index}
                             playlist={playlist}
+                            playlistTitleClicked = {playlist.playlistTitleClicked}
+                            title= {playlist.title}
                             handleCreateResource={
                               this.handleShowCreateResourceModal
                             }
@@ -438,9 +440,10 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(showDeletePopupAction(id, title, deleteType)),
   showCreateResourceActivity: () =>
     dispatch(showCreateResourceActivityAction()),
+  showDescribeActivityAction: (activity) => dispatch(showDescribeActivityAction(activity)),
   showBuildActivityAction: (editor, editorType, activityid) =>
     dispatch(showBuildActivityAction(editor, editorType, activityid)),
-  onChangeActivityTypeAction: (e) => dispatch(onChangeActivityTypeAction(e)),
+  onChangeActivityTypeAction: (activityTypeId) => dispatch(onChangeActivityTypeAction(activityTypeId)),
   onChangeActivityAction: (e, activity) =>
     dispatch(onChangeActivityAction(e, activity)),
   uploadResourceThumbnailAction: () =>
@@ -448,7 +451,7 @@ const mapDispatchToProps = (dispatch) => ({
   reorderPlaylistsAction: (playlist) =>
     dispatch(reorderPlaylistsAction(playlist)),
   reorderPlaylistActivitiesAction: (playlist) =>
-    dispatch(reorderPlaylistActivitiesAction(playlist)),
+    dispatch(reorderPlaylistActivitiesAction(playlist))
 });
 
 const mapStateToProps = (state) => {

@@ -4,6 +4,7 @@ import { slideInRight } from 'react-animations';
 import styled, { keyframes } from 'styled-components';
 
 import ResourceActivityBuild from './ResourceActivityBuild';
+import ResourceDescribeActivity from './ResourceDescribeActivity';
 import './../AddResource/AddResource.scss';
 
 
@@ -16,7 +17,8 @@ const BouncyDiv = styled.div`
 
 const EditResource = (props) => {
     useEffect(() => {
-        props.showBuildActivityAction(null, null, props.match.params.activityid); // show create resource activity wizard
+        props.showDescribeActivityAction(1);
+        // props.showBuildActivityAction(null, null, props.match.params.activityid); // show create resource activity wizard
     }, []);
 
     return (
@@ -37,7 +39,16 @@ const EditResource = (props) => {
                                 <div className="col-md-12">
 
                                     {/* Edit Activity */}
-                                    {props.openEditResourcePopup ?
+                                    {/* {props.openEditResourcePopup ?
+                                        <ResourceActivityBuild {...props} />
+                                        : null
+                                    } */}
+
+                                    {props.resource.isResourceDescribeActivity?
+                                        <ResourceDescribeActivity selectResourceDescribeActivity={props.showResourceDescribeActivity} />
+                                        : null
+                                    }
+                                    {props.resource.isResourceActivityBuild ?
                                         <ResourceActivityBuild {...props} />
                                         : null
                                     }

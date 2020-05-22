@@ -405,10 +405,10 @@ export const onChangeActivityType = (activityTypeId) => {
     })
 };
 
-export const onChangeActivityTypeAction = (e) => {
+export const onChangeActivityTypeAction = (activityTypeId) => {
     return dispatch => {
         try {
-            let activityTypeId = e.target.value;
+            // let activityTypeId = activityTypeId;
             dispatch(
                 onChangeActivityType(activityTypeId)
             )
@@ -425,7 +425,7 @@ export const onChangeActivity = (activity) => ({
     activity
 });
 
-export const onChangeActivityAction = (activity, e) => {
+export const onChangeActivityAction = (activity) => {
     return dispatch => {
         try {
             dispatch(

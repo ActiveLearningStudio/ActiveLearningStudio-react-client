@@ -18,7 +18,6 @@ const LoginPage = loadable(() => import('../containers/LoginPage'));
 const AppRouter = () => (
   <Router history={history}>
     <Switch>
-
       <PrivateRoute path="/" exact component={ProjectsPage} />
       <PrivateRoute path="/project/preview2/:projectid" exact component={PreviewPage} />
       <PrivateRoute path="/resource/preview/:resourceid" exact component={PreviewPage}  previewType="resource" />

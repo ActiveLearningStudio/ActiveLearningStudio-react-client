@@ -14,6 +14,7 @@ const EditResourceSidebar = (props) => {
     return (
         <>
             <div className="create-resource-sidebar">
+                
                 {/* <div className={"activity-sidebar-btn first " + (props.resource.isActivityTypeFilled ? ' filled ' : null)+ (props.resource.isResourceActivityType ? ' selected ' : null)}>
                     <div className="btn-box">
                         <div className="number-box ">
@@ -32,23 +33,23 @@ const EditResourceSidebar = (props) => {
                         <span className="bottom-vertical-line"></span>
                     </div>
                     <span className="name" >Select Activity</span>
-                </div>
+                </div> */}
+
                 <div className={"activity-sidebar-btn " + (props.resource.isDescribeFilled ? ' filled ' : null) + (props.resource.isResourceDescribeActivity ? ' selected ' : null)}>
                     <div className="btn-box">
-                        <span className="top-vertical-line"></span>
                         <div className="number-box ">
-                            <span className="number">3</span>
+                            <span className="number">1</span>
                         </div>
                         <span className="bottom-vertical-line"></span>
                     </div>
                     <span className="name" >Describe Activity</span>
-                </div> */}
+                </div>
 
                 <div className={"activity-sidebar-btn selected last " + (props.resource.isResourceActivityBuild ? 'selected' : null)}>
                     <div className="btn-box">
                         {/* <span className="top-vertical-line"></span> */}
                         <div className="number-box ">
-                            <span className="number">1</span>
+                            <span className="number">2</span>
                         </div>
                     </div>
                     <span className="name">Build Activity</span>

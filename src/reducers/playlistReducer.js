@@ -10,7 +10,9 @@ import {
   REORDER_PLAYLIST,
   REORDER_PLAYLISTS,
   EDIT_RESOURCE,
-  LOAD_MY_PROJECTS
+  LOAD_MY_PROJECTS,
+  CHANGE_PLAYLIST_TITLE,
+  CLICK_PLAYLIST_TITLE
 } from "../constants/actionTypes";
 
 const defaultPlaylistState = () => {
@@ -135,6 +137,29 @@ const playlistReducer = (state = defaultPlaylistState(), action) => {
       return {
         ...state,
         playlists: action.playlists
+      }
+    case CHANGE_PLAYLIST_TITLE:
+      let newTitleChangedPlaylists = state.playlists.filter(playlist => {
+        if(playlist._id === action.playlistid){
+          playlist.title = action.title
+          playlist.playlistTitleClicked = false
+        }
+        return playlist;
+      });
+      return {
+        ...state,
+        playlists: newTitleChangedPlaylists
+      }
+    case CLICK_PLAYLIST_TITLE:
+      let newClickTitlePlaylists = state.playlists.filter(playlist => {
+        if(playlist._id === action.playlistid){
+          playlist.playlistTitleClicked = true
+        }
+        return playlist;
+      });
+      return {
+        ...state,
+        playlists: newClickTitlePlaylists
       }
 
     default:

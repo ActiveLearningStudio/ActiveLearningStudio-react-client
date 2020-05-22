@@ -7,9 +7,10 @@ import {
   HIDE_CREATE_PLAYLIST_MODAL,
   LOAD_PROJECT_PLAYLISTS,
   LOAD_PLAYLIST,
-  PAGE_LOADING_COMPLETE,
+  CHANGE_PLAYLIST_TITLE,
   REORDER_PLAYLIST,
   REORDER_PLAYLISTS,
+  CLICK_PLAYLIST_TITLE
 } from './../constants/actionTypes';
 
 export const reorderPlaylists = (playlists) => ({
@@ -237,3 +238,57 @@ export const loadProjectPlaylistsAction = (projectid) => {
   };
 };
 
+
+
+
+export const changePlaylistTitle = (playlistid, title) => ({
+  type: CHANGE_PLAYLIST_TITLE,
+  playlistid,
+  title
+});
+
+export const changePlaylistTitleAction = (e, playlistid) => {
+  return async dispatch => {
+    try {
+      const title =e.target.value;
+      const { token } = JSON.parse(localStorage.getItem("auth"));
+      const response = await axios.put(
+        '/api/playlist/'+playlistid,
+        {
+          title
+        },
+        {
+          headers: {
+            "Authorization": "Bearer " + token
+          }
+        }
+      );
+
+      if (response.data.status == "success") {
+        dispatch(
+          changePlaylistTitle(playlistid, title)
+        );
+      }
+
+
+    } catch (e) {
+      // dispatch({ type: PAGE_LOADING_COMPLETE });
+      throw new Error(e);
+
+    }
+  };
+};
+
+
+export const clickPlaylistTitle = (playlistid) => ({
+  type: CLICK_PLAYLIST_TITLE,
+  playlistid
+});
+
+export const clickPlaylistTitleAction = (playlistid) => {
+  return async dispatch => {
+    dispatch(
+      clickPlaylistTitle(playlistid)
+    );
+  };
+};

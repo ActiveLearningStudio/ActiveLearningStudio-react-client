@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { fadeIn } from 'react-animations';
 import { connect } from "react-redux";
-
+import axios from 'axios';
 import styled, { keyframes } from 'styled-components';
 import { Field, reduxForm, formValueSelector } from 'redux-form'
 
@@ -13,7 +13,7 @@ import {
   withRouter
 } from "react-router-dom";
 import AddResourceSidebar from "./AddResourceSidebar";
-import { showDescribeActivityAction } from "./../../../actions/resource";
+import { showDescribeActivityAction, onChangeActivityAction } from "./../../../actions/resource";
 import h5pLibraries from "../../../constants/h5pLibraries";
 
 const fadeAnimation = keyframes `${fadeIn}`;
@@ -24,8 +24,6 @@ const FadeDiv = styled.div`
 
 
 const questions = h5pLibraries;
-
-const addActiveClass = event => event.target.classList.add('active');
 
 
 const onSubmit = async (values, dispatch, props) => {
@@ -48,21 +46,26 @@ const renderResourceActivityType = ({ input, label, type, meta: { touched, error
   </>
 )
 
-
-// var defaultEditor = 'H5P.MultiChoice 1.14';
-// var defaultEditorType = 'h5p';
-// function editorQuestionChange(activity){
-//   defaultEditor = activity.h5pLib;
-//   defaultEditorType = activity.type
-// }
-
-
-
   
 let ResourceSelectActivity = (props) => {
-  console.log(props);
+  console.log(props.resource.newResource);
+  const [activities, setActivities] = useState([]);
+  useEffect(() => {
+    // get activity types
+    const { token } = JSON.parse(localStorage.getItem("auth"));
+      axios.get(global.config.laravelAPIUrl+'/api/activity-types/items/'+props.resource.newResource.activityTypeId, {
+         headers: {
+            "Authorization": "Bearer "+token
+         }
+      })
+      .then((response) => {
+         setActivities(response.data.data);
+         
+      });
+    
+  }, []);
   const { handleSubmit, load, pristine, reset, submitting } = props;
-  const questionsContent = questions.map((activity, i)=>(
+  const questionsContent = activities.map((activity, i)=>(
     <div className="col-md-3" key={i}>
       <label className="question-label">
         <Field
@@ -74,15 +77,15 @@ let ResourceSelectActivity = (props) => {
             validate={[required]}
           />
         <div className="activity-item">
-          <div className="activity-img" style={{backgroundImage:'url('+activity.icon+')'}}>
+          <div className="activity-img" style={{backgroundImage:'url('+activity.image+')'}}>
             {/* <img src={activity.icon} className="activity-icon" /> */}
             {/* <img src={activity.overlayIcon} className="overlay-activity-icon" /> */}
           </div>
           <div className="activity-content">
             <span>
-              {activity.text}
+              {activity.title}
             </span>
-            <p>{activity.description}</p>
+            <p>{activity.title}</p>
           </div>
         </div>
       </label>
@@ -102,12 +105,12 @@ let ResourceSelectActivity = (props) => {
                   <h2 className="title">Select the activity you want to build from the options below:</h2>
                 </div>
               </div>
-              <div className="row">
+              <div className="">
                 <form className="row meta-form" onSubmit={handleSubmit} autoComplete="off">
                   {questionsContent}
-                  <div className="col-md-12">
+                  {/* <div className="col-md-12">
                     <button type="submit" className="add-resource-continue-btn">Continue</button>
-                  </div>
+                  </div> */}
                 </form>
               </div>
               
@@ -122,12 +125,19 @@ let ResourceSelectActivity = (props) => {
 ResourceSelectActivity = reduxForm({
   form: 'SelectActivityForm',
   enableReinitialize: true,
-  onSubmit
+  onSubmit,
+  onChange: (values, dispatch, props, previousValues, activity) => {
+    let data = values.activity;
+    // props.onChangeActivityAction(data);
+    props.showDescribeActivityAction(data);
+  },
 })(ResourceSelectActivity)
 
 
 const mapDispatchToProps = dispatch => ({
   showDescribeActivityAction: (activity) => dispatch(showDescribeActivityAction(activity)),
+  onChangeActivityAction: (e, activity) =>
+    dispatch(onChangeActivityAction(e, activity)),
 });
 
 const mapStateToProps =(state) => {

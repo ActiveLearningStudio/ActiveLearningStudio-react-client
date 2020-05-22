@@ -4,8 +4,9 @@ import { withRouter, Link } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import {
-	loadProjectPlaylistsAction,
+	changePlaylistTitleAction,
 	reorderPlaylistActivitiesAction,
+	clickPlaylistTitleAction
 } from "../../actions/playlist";
 import {
 	showDeletePopupAction,
@@ -55,7 +56,18 @@ export class PlaylistCard extends React.Component {
 		));
 	}
 
+	async handleClickPlaylistTitle(playlistid){
+		await this.props.clickPlaylistTitleAction(playlistid);
+		this.titleInput.focus();
+	}
+
+	onEnterPress (e){
+		if (e.charCode == 13) {
+			this.titleInput.blur();
+		}
+	}
 	render() {
+		
 		return (
 			<Draggable
 				key={this.props.playlist._id}
@@ -74,7 +86,14 @@ export class PlaylistCard extends React.Component {
 								{...provided.dragHandleProps}
 							>
 								<h2 className="list-header-name">
-									{this.props.playlist.title}
+									<span onClick={(id) => this.handleClickPlaylistTitle(this.props.playlist._id)} style={{cursor:'pointer'}} className={this.props.playlistTitleClicked ? 'hide': 'show'}>{this.props.title}</span>
+									<textarea 
+										ref={(input) => { this.titleInput = input; }} 
+										name="playlist-title" 
+										className={this.props.playlistTitleClicked ? 'show': 'hide'}
+										onBlur={(e, id) => this.props.changePlaylistTitleAction(e, this.props.playlist._id)}
+										onKeyPress={(e) =>this.onEnterPress(e)}
+										>{this.props.title}</textarea>
 									<div className="dropdown pull-right playlist-dropdown">
 										<button
 											className="btn project-dropdown-btn"
@@ -201,6 +220,8 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch(hideDeletePopupAction()),
 	reorderPlaylistActivitiesAction: (playlist) =>
 		dispatch(reorderPlaylistActivitiesAction(playlist)),
+	changePlaylistTitleAction: (e, id) => dispatch(changePlaylistTitleAction(e, id)),
+	clickPlaylistTitleAction: (playlistid) => dispatch(clickPlaylistTitleAction(playlistid))
 });
 
 const mapStateToProps = (state) => {
