@@ -166,7 +166,7 @@ export const showDescribeActivityAction = (activity, activityid = null) => {
                     metadata = response.data.data.metadata;
                 }
                 dispatch(
-                    showDescribeActivity(activity, response.data.data.metadata)
+                    showDescribeActivity(activity, metadata)
                 )
             } else {
                 dispatch(
