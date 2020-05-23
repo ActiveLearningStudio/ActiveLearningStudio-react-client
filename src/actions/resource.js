@@ -157,7 +157,14 @@ export const showDescribeActivityAction = (activity, activityid = null) => {
         try {
             if (activityid) {
                 const response = await axios.get(global.config.laravelAPIUrl + '/activity/' + activityid);
-                
+                let metadata = {
+                    title:'',
+                    subjectid:'',
+                    educationlevelid:''
+                };
+                if(response.data.data.metadata != null){
+                    metadata = response.data.data.metadata;
+                }
                 dispatch(
                     showDescribeActivity(activity, response.data.data.metadata)
                 )
