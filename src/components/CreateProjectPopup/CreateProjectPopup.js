@@ -50,14 +50,14 @@ var imageValidation = '';
 
 const onSubmit = async (values, dispatch, props) => {
   try {
-    if(!props.project.thumbUrl){
+    if(!props.project.thumb_url){
       imageValidation = '* Required';
       return false;
     }
     if (props.editMode) {//update
-      await dispatch(updateProjectAction(props.match.params.projectid, values.projectName, values.description, props.project.thumbUrl));
+      await dispatch(updateProjectAction(props.match.params.projectid, values.projectName, values.description, props.project.thumb_url));
     } else { //create
-      await dispatch(createProjectAction(values.projectName, values.description, props.project.thumbUrl));
+      await dispatch(createProjectAction(values.projectName, values.description, props.project.thumb_url));
     }
 
     props.history.push("/");
@@ -127,12 +127,12 @@ let CreateProjectPopup = props => {
           </span>
             
           {
-            props.project.thumbUrl ?
+            props.project.thumb_url ?
               <div className="thumb-display">
                 <div className = "success" style={{color:'green', marginBottom:'20px', fontSize:'20px'}}>
                   Image Uploaded: 
                 </div>
-                <div className="thumb"><img src={props.project.thumbUrl} /></div>
+                <div className="thumb"><img src={props.project.thumb_url} /></div>
               </div>
               :
               null

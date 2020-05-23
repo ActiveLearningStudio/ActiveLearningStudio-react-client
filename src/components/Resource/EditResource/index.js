@@ -17,7 +17,7 @@ const BouncyDiv = styled.div`
 
 const EditResource = (props) => {
     useEffect(() => {
-        props.showDescribeActivityAction(1);
+        props.showDescribeActivityAction(null, props.match.params.activityid);
         // props.showBuildActivityAction(null, null, props.match.params.activityid); // show create resource activity wizard
     }, []);
 

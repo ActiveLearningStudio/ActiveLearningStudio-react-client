@@ -166,7 +166,7 @@ export class PlaylistsPage extends React.Component {
     editor,
     editorType,
     payload,
-    metaData
+    metadata
   ) => {
     try {
       if (payload.submitAction === "upload") {
@@ -176,14 +176,14 @@ export class PlaylistsPage extends React.Component {
           editor,
           editorType,
           payload,
-          metaData
+          metadata
         );
       } else {
         await this.props.createResourceAction(
           currentPlaylistId,
           editor,
           editorType,
-          metaData
+          metadata
         );
       }
       if (!this.props.resource.showCreateResourcePopup) {
@@ -201,14 +201,16 @@ export class PlaylistsPage extends React.Component {
     currentPlaylistId,
     editor,
     editorType,
-    activityid
+    activityid,
+    metadata
   ) => {
     try {
       await this.props.editResourceAction(
         currentPlaylistId,
         editor,
         editorType,
-        activityid
+        activityid,
+        metadata
       );
       this.props.history.push("/project/" + this.props.match.params.projectid);
     } catch (e) {
@@ -413,16 +415,16 @@ const mapDispatchToProps = (dispatch) => ({
   showCreateProjectModalAction: () => dispatch(showCreateProjectModalAction()),
   loadProjectPlaylistsAction: (projectid) =>
     dispatch(loadProjectPlaylistsAction(projectid)),
-  createResourceAction: (playlistid, editor, editorType, metaData) =>
-    dispatch(createResourceAction(playlistid, editor, editorType, metaData)),
-  editResourceAction: (playlistid, editor, editorType, activityid) =>
-    dispatch(editResourceAction(playlistid, editor, editorType, activityid)),
+  createResourceAction: (playlistid, editor, editorType, metadata) =>
+    dispatch(createResourceAction(playlistid, editor, editorType, metadata)),
+  editResourceAction: (playlistid, editor, editorType, activityid, metadata) =>
+    dispatch(editResourceAction(playlistid, editor, editorType, activityid, metadata)),
   createResourceByH5PUploadAction: (
     playlistid,
     editor,
     editorType,
     payload,
-    metaData
+    metadata
   ) =>
     dispatch(
       createResourceByH5PUploadAction(
@@ -430,7 +432,7 @@ const mapDispatchToProps = (dispatch) => ({
         editor,
         editorType,
         payload,
-        metaData
+        metadata
       )
     ),
   loadProjectAction: (projectid) => dispatch(loadProjectAction(projectid)),
@@ -440,7 +442,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(showDeletePopupAction(id, title, deleteType)),
   showCreateResourceActivity: () =>
     dispatch(showCreateResourceActivityAction()),
-  showDescribeActivityAction: (activity) => dispatch(showDescribeActivityAction(activity)),
+  showDescribeActivityAction: (activity, activityid) => dispatch(showDescribeActivityAction(activity, activityid)),
   showBuildActivityAction: (editor, editorType, activityid) =>
     dispatch(showBuildActivityAction(editor, editorType, activityid)),
   onChangeActivityTypeAction: (activityTypeId) => dispatch(onChangeActivityTypeAction(activityTypeId)),

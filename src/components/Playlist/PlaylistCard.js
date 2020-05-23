@@ -125,7 +125,7 @@ export class PlaylistCard extends React.Component {
 												></i>{" "}
 												Preview
 											</Link>
-											<a
+											{/* <a
 												className="dropdown-item"
 												href="#"
 											>
@@ -134,7 +134,7 @@ export class PlaylistCard extends React.Component {
 													aria-hidden="true"
 												></i>{" "}
 												Edit
-											</a>
+											</a> */}
 											<a
 												className="dropdown-item"
 												href="#"

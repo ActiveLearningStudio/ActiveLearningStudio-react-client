@@ -239,9 +239,9 @@ export const deleteProjectAction = (projectid) => {
   }
 }
 
-export const uploadProjectThumbnail = (thumbUrl) => ({
+export const uploadProjectThumbnail = (thumb_url) => ({
   type: UPLOAD_PROJECT_THUMBNAIL,
-  thumbUrl
+  thumb_url
 });
 
 //uploads project thumbnail

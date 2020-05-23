@@ -109,7 +109,7 @@ const renderResourceActivityType = ({ input, label, type, meta: { touched, error
 
   
 let ResourceSelectActivity = (props) => {
-  console.log(props);
+  // console.log(props);
   const { handleSubmit, load, pristine, reset, submitting } = props;
   const questionsContent = questions.map((activity, i)=>(
     <div className="col-md-3" key={i}>

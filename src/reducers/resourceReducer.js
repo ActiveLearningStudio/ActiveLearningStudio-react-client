@@ -34,13 +34,16 @@ const defaultResourceState = () => {
                 activity: {
                     type: null
                 },
-                metaData: {
-                    thumbUrl: null
+                metadata: {
+                    thumb_url: null
                 }
             },
             editResource: {
                 params: {
                     data: ''
+                },
+                metadata:{
+                    thumb_url: null
                 }
             },
             selectedResource: null
@@ -94,6 +97,13 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                 isResourceDescribeActivity: true,
                 isResourceActivityBuild: false,
                 isSelectActivityFilled: true,
+                editResource: {
+                    ...state.editResource,
+                    params: action.params,
+                    editor: action.editor,
+                    editorType: action.editorType,
+                    metadata:action.metadata
+                }
             };
         case SHOW_RESOURCE_ACTIVITY_BUILD:
             return {
@@ -123,8 +133,8 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                     activity: {
                         type: null
                     },
-                    metaData: {
-                        thumbUrl: null
+                    metadata: {
+                        thumb_url: null
                     }
                 }
             };
@@ -178,9 +188,16 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                 ...state,
                 newResource: {
                     ...state.newResource,
-                    metaData: {
-                        ...state.newResource.metaData,
-                        metaContent: action.metaData
+                    metadata: {
+                        ...state.newResource.metadata,
+                        metaContent: action.metadata
+                    }
+                },
+                editResource: {
+                    ...state.editResource,
+                    metadata: {
+                        ...state.editResource.metadata,
+                        metaContent: action.metadata
                     }
                 }
             }
@@ -189,9 +206,16 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                 ...state,
                 newResource: {
                     ...state.newResource,
-                    metaData: {
-                        ...state.newResource.metaData,
-                        thumbUrl: action.thumbUrl
+                    metadata: {
+                        ...state.newResource.metadata,
+                        thumb_url: action.thumb_url
+                    }
+                },
+                editResource: {
+                    ...state.editResource,
+                    metadata: {
+                        ...state.editResource.metadata,
+                        thumb_url: action.thumb_url
                     }
                 }
             }

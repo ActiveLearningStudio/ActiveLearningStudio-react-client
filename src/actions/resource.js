@@ -146,17 +146,27 @@ export const showBuildActivityAction = (editor = null, editorType = null, activi
 
 
 
-export const showDescribeActivity = (activity) => ({
+export const showDescribeActivity = (activity, metadata = null) => ({
     type: SHOW_RESOURCE_DESCRIBE_ACTIVITY,
-    activity
+    activity,
+    metadata
 });
 
-export const showDescribeActivityAction = (activity) => {
+export const showDescribeActivityAction = (activity, activityid = null) => {
     return async dispatch => {
         try {
-            dispatch(
-                showDescribeActivity(activity)
-            )
+            if (activityid) {
+                const response = await axios.get(global.config.laravelAPIUrl + '/activity/' + activityid);
+                
+                dispatch(
+                    showDescribeActivity(activity, response.data.data.metadata)
+                )
+            } else {
+                dispatch(
+                    showDescribeActivity(activity)
+                )
+            }
+            
         } catch (e) {
             throw new Error(e);
         }
@@ -171,7 +181,7 @@ export const editResource = (playlistid, resource, editor, editorType) => ({
     editorType
 });
 
-export const editResourceAction = (playlistid, editor, editorType, activityid) => {
+export const editResourceAction = (playlistid, editor, editorType, activityid, metadata) => {
     return async dispatch => {
         try {
             const { token } = JSON.parse(localStorage.getItem("auth"));
@@ -190,12 +200,13 @@ export const editResourceAction = (playlistid, editor, editorType, activityid) =
             const response = await axios.put(global.config.laravelAPIUrl + '/activity/' + activityid,
                 {
                     playlistid: playlistid,
+                    metadata:metadata,
                     action: 'create',
                     data
                 }, {
                 headers: headers
             });
-            console.log(response);
+            
 
             let resource = {};
             resource.id = response.data.data._id;
@@ -222,7 +233,7 @@ export const createResource = (playlistid, resource, editor, editorType) => ({
     editorType
 });
 
-export const createResourceAction = (playlistid, editor, editorType, metaData) => {
+export const createResourceAction = (playlistid, editor, editorType, metadata) => {
     return async dispatch => {
         try {
             const { token } = JSON.parse(localStorage.getItem("auth"));
@@ -253,7 +264,7 @@ export const createResourceAction = (playlistid, editor, editorType, metaData) =
                     {
                         mysqlid: resource.id,
                         playlistid: playlistid,
-                        metaData: metaData,
+                        metadata: metadata,
                         action: 'create'
                     }, {
                     headers: headers
@@ -277,7 +288,7 @@ export const createResourceAction = (playlistid, editor, editorType, metaData) =
     }
 }
 
-export const createResourceByH5PUploadAction = (playlistid, editor, editorType, payload, metaData) => {
+export const createResourceByH5PUploadAction = (playlistid, editor, editorType, payload, metadata) => {
     return async dispatch => {
         try {
             const { token } = JSON.parse(localStorage.getItem("auth"));
@@ -306,7 +317,7 @@ export const createResourceByH5PUploadAction = (playlistid, editor, editorType, 
                     {
                         mysqlid: data_upload.id,
                         playlistid: playlistid,
-                        metaData: metaData,
+                        metadata: metadata,
                         action: 'create'
                     }, {
                     headers: { 'Content-Type': 'application/json', "Authorization": "Bearer " + token }
@@ -439,16 +450,16 @@ export const onChangeActivityAction = (activity) => {
 
 // Metadata saving inside state when metadata form is submitted
 
-export const onSubmitDescribeActivity = (metaData) => ({
+export const onSubmitDescribeActivity = (metadata) => ({
     type: DESCRIBE_ACTIVITY,
-    metaData
+    metadata
 });
 
-export const onSubmitDescribeActivityAction = (metaData) => {
+export const onSubmitDescribeActivityAction = (metadata) => {
     return dispatch => {
         try {
             dispatch(
-                onSubmitDescribeActivity(metaData)
+                onSubmitDescribeActivity(metadata)
             )
         } catch (e) {
             console.log(e);
@@ -459,9 +470,9 @@ export const onSubmitDescribeActivityAction = (metaData) => {
 
 // uploads the thumbnail of resource
 
-export const uploadResourceThumbnail = (thumbUrl) => ({
+export const uploadResourceThumbnail = (thumb_url) => ({
     type: UPLOAD_RESOURCE_THUMBNAIL,
-    thumbUrl
+    thumb_url
 });
 
 export const uploadResourceThumbnailAction = (formData) => {

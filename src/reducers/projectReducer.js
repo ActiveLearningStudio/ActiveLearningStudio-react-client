@@ -42,7 +42,7 @@ const projectReducer = (state = defaultProgramState(), action) => {
         selectedProject: {
           _id: null
         },
-        thumbUrl: null
+        thumb_url: null
       };
     case CREATE_PROJECT:
       return {
@@ -51,7 +51,7 @@ const projectReducer = (state = defaultProgramState(), action) => {
           ...state.projects,
           action.projectdata
         ],
-        thumbUrl: null
+        thumb_url: null
       };
     case LOAD_MY_PROJECTS:
       return {
@@ -62,7 +62,7 @@ const projectReducer = (state = defaultProgramState(), action) => {
       return {
         ...state,
         selectedProject: action.project,
-        thumbUrl: action.project.thumb_url
+        thumb_url: action.project.thumb_url
       };
     case DELETE_PROJECT:
       let newProjects = state.projects.filter(project => {
@@ -75,7 +75,7 @@ const projectReducer = (state = defaultProgramState(), action) => {
     case UPLOAD_PROJECT_THUMBNAIL:
       return {
         ...state,
-        thumbUrl: action.thumbUrl
+        thumb_url: action.thumb_url
       }
 
     default:

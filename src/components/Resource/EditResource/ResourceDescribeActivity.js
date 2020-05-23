@@ -43,7 +43,7 @@ const renderMetaTitleInput = ({ input, label, type, meta: { touched, error, warn
 
 
 
-export const uploadThumb = async (e, props) => {
+export const uploadEditThumb = async (e, props) => {
   const formData = new FormData();
   try {
     formData.append('uploads', e.target.files[0]);
@@ -79,12 +79,13 @@ const educationLevels = [
 
 const onSubmit = async (values, dispatch, props) => {
   try {
-    // console.log(values);
+    console.log(values);
     // console.log(props);
     // alert(props.resource.newResource.activity.h5pLib);
     // alert(props.resource.newResource.activity.type);
     props.onSubmitDescribeActivityAction(values);
-    props.showBuildActivityAction(props.resource.newResource.activity.h5pLib, props.resource.newResource.activity.type)
+    props.showBuildActivityAction(null, null, props.match.params.activityid); // show create resource activity wizard
+    // props.showBuildActivityAction(props.resource.newResource.activity.h5pLib, props.resource.newResource.activity.type)
   } catch (e) {
     console.log(e.message);
   }
@@ -99,7 +100,6 @@ const renderMetaEducationLevelInput = ({ input, ...rest }) =>
 
 
 let ResourceDescribeActivity = (props) => {
-  console.log(props);
   const { handleSubmit, metaSubject, load, pristine, reset, submitting } = props;
   return (
 
@@ -141,15 +141,17 @@ let ResourceDescribeActivity = (props) => {
                         <div className="upload-thumbnail">
                           <h2>Upload thumbnail</h2>
                           <label>
-                            <input type="file" onChange={(e) => uploadThumb(e, props)} accept="image/x-png,image/jpeg" />
+                            <input type="file" onChange={(e) => uploadEditThumb(e, props)} accept="image/x-png,image/jpeg" />
                             <span>Upload</span>
                           </label>
 
-
+                      {/* {
+                        JSON.stringify(props.resource.editResource)
+                      } */}
                           {
-                            props.resource.newResource.metaData.thumbUrl ?
+                            props.resource.editResource.metadata.thumb_url ?
                               <div className="thumb-display">
-                                <div className="thumb"><img src={props.resource.newResource.metaData.thumbUrl} /></div>
+                                <div className="thumb"><img src={props.resource.editResource.metadata.thumb_url} /></div>
                               </div>
                               :
                               null
@@ -208,14 +210,19 @@ ResourceDescribeActivity = reduxForm({
 
 
 const mapDispatchToProps = dispatch => ({
-  showBuildActivityAction: (editor, editorType) => dispatch(showBuildActivityAction(editor, editorType)),
-  onSubmitDescribeActivityAction: (metaData) => dispatch(onSubmitDescribeActivityAction(metaData)),
+  showBuildActivityAction: (editor, editorType, activityid) => dispatch(showBuildActivityAction(editor, editorType, activityid)),
+  onSubmitDescribeActivityAction: (metadata) => dispatch(onSubmitDescribeActivityAction(metadata)),
   uploadResourceThumbnailAction: (formData) => dispatch(uploadResourceThumbnailAction(formData))
 });
 
 const mapStateToProps = (state) => {
   return {
-    resource: state.resource
+    resource: state.resource,
+    initialValues: {
+      metaTitle:state.resource.editResource.metadata.title,
+      metaSubject:state.resource.editResource.metadata.subjectid,
+      metaEducationLevels:state.resource.editResource.metadata.educationlevelid
+    }
   };
 }
 
