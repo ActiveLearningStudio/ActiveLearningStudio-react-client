@@ -43,6 +43,9 @@ const defaultResourceState = () => {
                     data: ''
                 },
                 metadata:{
+                    title:null,
+                    subjectid:null,
+                    educationlevelid:null,
                     thumb_url: null
                 }
             },
@@ -66,6 +69,12 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                 editResource: {
                     params: {
                         data: ''
+                    },
+                    metadata:{
+                        title:null,
+                        subjectid:null,
+                        educationlevelid:null,
+                        thumb_url: null
                     }
                 },
             };
