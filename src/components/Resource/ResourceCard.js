@@ -61,7 +61,7 @@ export class ResourceCard extends React.Component {
 										to={
 											"/resource/preview/" +
 											this.props.resource._id
-										}>{(this.props.resource.metadata && this.props.resource.metadata.title != undefined) ? this.props.resource.metadata.title : 'Untitled'}
+										}>{(this.props.resource.metadata && this.props.resource.metadata.title != undefined) ? this.props.resource.metadata.title : this.props.resource.title}
 									</Link>
 								</h3>
 							</div>
