@@ -111,9 +111,9 @@ let ResourceActivityType = (props, showSelectActivityAction)=> {
 
         
         <div className="activity-item">
-          <div className="activity-img">
-            <img src={activity.image} className="activity-icon" />
-            <img src={activity.image} className="overlay-activity-icon" />
+          <div className="activity-img" style={{backgroundImage:'url('+activity.image+')'}}>
+            {/* <img src={activity.image} className="activity-icon" />
+            <img src={activity.image} className="overlay-activity-icon" /> */}
           </div>
           <div className="activity-content">
             <span>
