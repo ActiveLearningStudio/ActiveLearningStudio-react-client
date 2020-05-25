@@ -457,16 +457,17 @@ export const onChangeActivityAction = (activity) => {
 
 // Metadata saving inside state when metadata form is submitted
 
-export const onSubmitDescribeActivity = (metadata) => ({
+export const onSubmitDescribeActivity = (metadata, activityid) => ({
     type: DESCRIBE_ACTIVITY,
-    metadata
+    metadata,
+    activityid
 });
 
-export const onSubmitDescribeActivityAction = (metadata) => {
+export const onSubmitDescribeActivityAction = (metadata, activityid=null) => {
     return dispatch => {
         try {
             dispatch(
-                onSubmitDescribeActivity(metadata)
+                onSubmitDescribeActivity(metadata, activityid)
             )
         } catch (e) {
             console.log(e);

@@ -63,9 +63,21 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                 currentPlaylistId: action.id
             };
         case HIDE_CREATE_RESOURCE_MODAL:
+            
             return {
                 ...state,
                 showCreateResourcePopup: false,
+                newResource: {
+                    params: {
+                        data: ''
+                    },
+                    metadata:{
+                        title:null,
+                        subjectid:null,
+                        educationlevelid:null,
+                        thumb_url: null
+                    }
+                },
                 editResource: {
                     params: {
                         data: ''
@@ -193,23 +205,30 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                 }
             }
         case DESCRIBE_ACTIVITY:
-            return {
-                ...state,
-                newResource: {
-                    ...state.newResource,
-                    metadata: {
-                        ...state.newResource.metadata,
-                        metaContent: action.metadata
+            if(action.activityid != null){
+                return {
+                    ...state,
+                    editResource: {
+                        ...state.editResource,
+                        metadata: {
+                            ...state.editResource.metadata,
+                            metaContent: action.metadata
+                        }
                     }
-                },
-                editResource: {
-                    ...state.editResource,
-                    metadata: {
-                        ...state.editResource.metadata,
-                        metaContent: action.metadata
+                }
+            } else {
+                return {
+                    ...state,
+                    newResource: {
+                        ...state.newResource,
+                        metadata: {
+                            ...state.newResource.metadata,
+                            metaContent: action.metadata
+                        }
                     }
                 }
             }
+            
         case UPLOAD_RESOURCE_THUMBNAIL:
             return {
                 ...state,

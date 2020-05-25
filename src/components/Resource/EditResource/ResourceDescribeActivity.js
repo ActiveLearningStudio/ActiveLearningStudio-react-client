@@ -76,16 +76,16 @@ const educationLevels = [
   { name: 'Special Education', value: '9' },
 ];
 
-
+var imageValidation = '';
 const onSubmit = async (values, dispatch, props) => {
   try {
-    console.log(values);
-    // console.log(props);
-    // alert(props.resource.newResource.activity.h5pLib);
-    // alert(props.resource.newResource.activity.type);
-    props.onSubmitDescribeActivityAction(values);
+    //image validation
+    if (!props.resource.editResource.metadata.thumb_url) {
+      imageValidation = '* Required';
+      return false;
+    }
+    props.onSubmitDescribeActivityAction(values, props.match.params.activityid);
     props.showBuildActivityAction(null, null, props.match.params.activityid); // show create resource activity wizard
-    // props.showBuildActivityAction(props.resource.newResource.activity.h5pLib, props.resource.newResource.activity.type)
   } catch (e) {
     console.log(e.message);
   }
@@ -144,6 +144,11 @@ let ResourceDescribeActivity = (props) => {
                             <input type="file" onChange={(e) => uploadEditThumb(e, props)} accept="image/x-png,image/jpeg" />
                             <span>Upload</span>
                           </label>
+                          <span className="validation-error">
+                            {
+                              imageValidation
+                            }
+                          </span>
 
                       {/* {
                         JSON.stringify(props.resource.editResource)
@@ -151,6 +156,9 @@ let ResourceDescribeActivity = (props) => {
                           {
                             props.resource.editResource.metadata.thumb_url ?
                               <div className="thumb-display">
+                                <div className="success" style={{ color: 'green', marginBottom: '20px', fontSize: '20px' }}>
+                                  Image Uploaded:
+                                </div>
                                 <div className="thumb"><img src={props.resource.editResource.metadata.thumb_url} /></div>
                               </div>
                               :
@@ -211,7 +219,7 @@ ResourceDescribeActivity = reduxForm({
 
 const mapDispatchToProps = dispatch => ({
   showBuildActivityAction: (editor, editorType, activityid) => dispatch(showBuildActivityAction(editor, editorType, activityid)),
-  onSubmitDescribeActivityAction: (metadata) => dispatch(onSubmitDescribeActivityAction(metadata)),
+  onSubmitDescribeActivityAction: (metadata, activityid) => dispatch(onSubmitDescribeActivityAction(metadata, activityid)),
   uploadResourceThumbnailAction: (formData) => dispatch(uploadResourceThumbnailAction(formData))
 });
 
