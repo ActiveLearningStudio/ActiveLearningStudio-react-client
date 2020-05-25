@@ -85,7 +85,7 @@ let ResourceSelectActivity = (props) => {
             <span>
               {activity.title}
             </span>
-            <p>{activity.title}</p>
+            <p>{activity.description}</p>
           </div>
         </div>
       </label>
