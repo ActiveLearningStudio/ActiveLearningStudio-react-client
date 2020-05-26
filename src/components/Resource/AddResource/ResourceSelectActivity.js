@@ -77,7 +77,7 @@ let ResourceSelectActivity = (props) => {
             validate={[required]}
           />
         <div className="activity-item">
-          <div className="activity-img" style={{backgroundImage:'url('+activity.image+')'}}>
+          <div className="activity-img" style={{backgroundImage:'url('+global.config.laravelAPIUrl+activity.image+')'}}>
             {/* <img src={activity.icon} className="activity-icon" /> */}
             {/* <img src={activity.overlayIcon} className="overlay-activity-icon" /> */}
           </div>

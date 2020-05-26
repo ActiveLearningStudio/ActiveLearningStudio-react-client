@@ -111,9 +111,7 @@ let ResourceActivityType = (props, showSelectActivityAction)=> {
 
         
         <div className="activity-item">
-          <div className="activity-img" style={{backgroundImage:'url('+activity.image+')'}}>
-            {/* <img src={activity.image} className="activity-icon" />
-            <img src={activity.image} className="overlay-activity-icon" /> */}
+          <div className="activity-img" style={{backgroundImage:'url('+global.config.laravelAPIUrl+activity.image+')'}}>
           </div>
           <div className="activity-content">
             <span>
