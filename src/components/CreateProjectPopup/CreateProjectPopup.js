@@ -109,8 +109,6 @@ let CreateProjectPopup = props => {
             label="Enter Project Name (Up to 80 characters)"
             validate={[required, maxLength80]}
           />
-
-
         </div>
 
 
@@ -132,7 +130,7 @@ let CreateProjectPopup = props => {
                 <div className = "success" style={{color:'green', marginBottom:'20px', fontSize:'20px'}}>
                   Image Uploaded: 
                 </div>
-                <div className="thumb"><img src={props.project.thumb_url} /></div>
+                <div className="thumb"><img src={global.config.laravelAPIUrl+props.project.thumb_url} /></div>
               </div>
               :
               null

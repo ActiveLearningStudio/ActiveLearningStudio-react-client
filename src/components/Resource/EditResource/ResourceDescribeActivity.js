@@ -149,17 +149,13 @@ let ResourceDescribeActivity = (props) => {
                               imageValidation
                             }
                           </span>
-
-                      {/* {
-                        JSON.stringify(props.resource.editResource)
-                      } */}
                           {
                             props.resource.editResource.metadata.thumb_url ?
                               <div className="thumb-display">
                                 <div className="success" style={{ color: 'green', marginBottom: '20px', fontSize: '20px' }}>
                                   Image Uploaded:
                                 </div>
-                                <div className="thumb"><img src={props.resource.editResource.metadata.thumb_url} /></div>
+                                <div className="thumb"><img src={global.config.laravelAPIUrl+props.resource.editResource.metadata.thumb_url} /></div>
                               </div>
                               :
                               null
