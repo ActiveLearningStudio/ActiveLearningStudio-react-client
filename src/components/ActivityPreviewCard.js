@@ -7,7 +7,7 @@ const ActivityPreviewCard = (props) => {
 	const activity = props.activity;
 	return (
 	    <div className="preview-box">
-	      <Link to={"/resource/preview/" + activity._id} style={{background: 'url('+activity.thumb_url+') no-repeat center center', display:'block', backgroundSize:'cover'}}>
+	      <Link to={"/resource/preview/" + activity._id} style={{background: 'url('+global.config.laravelAPIUrl+activity.thumb_url+') no-repeat center center', display:'block', backgroundSize:'cover'}}>
 			  	
 	            {/* {activity.library_name == 'H5P.InteractiveVideo' ? <img className="activity-image-thumb img-fluid img-radius-all" src="/images/interactive-video-overlay.png"   />:null }
 	            {activity.library_name == 'H5P.Flashcards' ? <img className="activity-image-thumb img-fluid img-radius-all" src="/images/flash-cards-overlay.png"   />:null }

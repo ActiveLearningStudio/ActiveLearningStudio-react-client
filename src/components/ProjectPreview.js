@@ -71,7 +71,7 @@ const ProjectPreview = (props) => {
 			<div className="col-md-2">
 				<div className="">
 					<Link to={"/project/"+currentProject._id}>
-						<img src={currentProject.thumb_url} className="img-fluid project-preview-thumbnail" />
+						<img src={global.config.laravelAPIUrl+currentProject.thumb_url} className="img-fluid project-preview-thumbnail" />
 					</Link>
 					<h2>{currentProject.name}</h2>
 					<p>{currentProject.description}</p>
