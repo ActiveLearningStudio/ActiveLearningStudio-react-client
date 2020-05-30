@@ -34,13 +34,19 @@ const defaultResourceState = () => {
                 activity: {
                     type: null
                 },
-                metaData: {
-                    thumbUrl: null
+                metadata: {
+                    thumb_url: null
                 }
             },
             editResource: {
                 params: {
                     data: ''
+                },
+                metadata:{
+                    title:null,
+                    subjectid:null,
+                    educationlevelid:null,
+                    thumb_url: null
                 }
             },
             selectedResource: null
@@ -57,12 +63,30 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                 currentPlaylistId: action.id
             };
         case HIDE_CREATE_RESOURCE_MODAL:
+            
             return {
                 ...state,
                 showCreateResourcePopup: false,
+                newResource: {
+                    params: {
+                        data: ''
+                    },
+                    metadata:{
+                        title:null,
+                        subjectid:null,
+                        educationlevelid:null,
+                        thumb_url: null
+                    }
+                },
                 editResource: {
                     params: {
                         data: ''
+                    },
+                    metadata:{
+                        title:null,
+                        subjectid:null,
+                        educationlevelid:null,
+                        thumb_url: null
                     }
                 },
             };
@@ -94,6 +118,13 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                 isResourceDescribeActivity: true,
                 isResourceActivityBuild: false,
                 isSelectActivityFilled: true,
+                editResource: {
+                    ...state.editResource,
+                    params: action.params,
+                    editor: action.editor,
+                    editorType: action.editorType,
+                    metadata:action.metadata
+                }
             };
         case SHOW_RESOURCE_ACTIVITY_BUILD:
             return {
@@ -123,8 +154,8 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                     activity: {
                         type: null
                     },
-                    metaData: {
-                        thumbUrl: null
+                    metadata: {
+                        thumb_url: null
                     }
                 }
             };
@@ -174,24 +205,45 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                 }
             }
         case DESCRIBE_ACTIVITY:
-            return {
-                ...state,
-                newResource: {
-                    ...state.newResource,
-                    metaData: {
-                        ...state.newResource.metaData,
-                        metaContent: action.metaData
+            if(action.activityid != null){
+                return {
+                    ...state,
+                    editResource: {
+                        ...state.editResource,
+                        metadata: {
+                            ...state.editResource.metadata,
+                            metaContent: action.metadata
+                        }
+                    }
+                }
+            } else {
+                return {
+                    ...state,
+                    newResource: {
+                        ...state.newResource,
+                        metadata: {
+                            ...state.newResource.metadata,
+                            metaContent: action.metadata
+                        }
                     }
                 }
             }
+            
         case UPLOAD_RESOURCE_THUMBNAIL:
             return {
                 ...state,
                 newResource: {
                     ...state.newResource,
-                    metaData: {
-                        ...state.newResource.metaData,
-                        thumbUrl: action.thumbUrl
+                    metadata: {
+                        ...state.newResource.metadata,
+                        thumb_url: action.thumb_url
+                    }
+                },
+                editResource: {
+                    ...state.editResource,
+                    metadata: {
+                        ...state.editResource.metadata,
+                        thumb_url: action.thumb_url
                     }
                 }
             }

@@ -28,30 +28,25 @@ export class PreviewPage extends React.Component {
 
 
   render() {
-    const { projects } = this.props.project;
-
+    // const { projects } = this.props.project;
+      var content;
     if (this.props.previewType == 'resource')
-      var content = (<ResourcePreview resourceid={this.props.match.params.resourceid} />);
+      content = (<ResourcePreview resourceid={this.props.match.params.resourceid} />);
     else if (this.props.previewType == 'playlist')
-      var content = (<PlaylistPreview playlistid={this.props.match.params.playlistid} />);
+      content = (<PlaylistPreview playlistid={this.props.match.params.playlistid} />);
     else 
-      var content = (<ProjectPreview {...this.props} key={this.props.match.params.projectid} project={this.props.project }/>);
+      content = (<ProjectPreview {...this.props} key={this.props.match.params.projectid} project={this.props.project }/>);
 
     return (
-      <div>
-        <Header {...this.props} />
-        <div className="main-content-wrapper">
-          <div className="sidebar-wrapper">
-            {/* <Sidebar /> */}
-          </div>
-          <div className="content-wrapper">
-            <div className="content">
-              {content}
+        <div>
+            <Header {...this.props} />
+            <div className="sitecontainer">
+                    {/* <div className="sidebar-wrapper">
+                        <Sidebar /> 
+                    </div> */}
+                {content}
             </div>
-            </div>
-          </div>
-      </div>
-
+        </div>
     );
   }
 }
