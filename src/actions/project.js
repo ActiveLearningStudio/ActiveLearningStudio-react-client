@@ -9,8 +9,33 @@ import {
   PAGE_LOADING,
   PAGE_LOADING_COMPLETE,
   UPDATE_PROJECT,
-  UPLOAD_PROJECT_THUMBNAIL
+  UPLOAD_PROJECT_THUMBNAIL,
+  SHARE_PROJECT
 } from "../constants/actionTypes";
+
+// Publishes the project in LEARN
+export const shareProject = (project) => ({
+  type: SHARE_PROJECT,
+  project: project
+});
+
+// Publishes the project in LEARN
+export const shareProjectAction = (projectId) => {
+  return async dispatch => {
+    const { token } = JSON.parse(localStorage.getItem("auth"));
+    const response = axios.post(
+      '/api/shareproject',
+      { projectId },
+      { headers: { "Authorization": "Bearer " + token } }
+    ).then(response => {
+      if (response.data.status == "error" || response.status != 200) {
+        console.log('Error: ' + response.data.message);
+      }
+    }).catch(error => {
+      console.log(error);
+    });
+  };
+};
 
 // Loads a specific project
 export const loadProject = (project) => ({
