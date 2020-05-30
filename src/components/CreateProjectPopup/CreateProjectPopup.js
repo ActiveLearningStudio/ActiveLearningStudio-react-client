@@ -123,7 +123,10 @@ let CreateProjectPopup = props => {
               imageValidation
             }
           </span>
-            
+
+  {
+    props.project.progress
+  }            
           {
             props.project.thumb_url ?
               <div className="thumb-display">

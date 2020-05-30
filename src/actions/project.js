@@ -10,7 +10,8 @@ import {
   PAGE_LOADING_COMPLETE,
   UPDATE_PROJECT,
   UPLOAD_PROJECT_THUMBNAIL,
-  SHARE_PROJECT
+  SHARE_PROJECT,
+  PROJECT_THUMBNAIL_PROGRESS
 } from "../constants/actionTypes";
 
 // Publishes the project in LEARN
@@ -269,6 +270,11 @@ export const uploadProjectThumbnail = (thumb_url) => ({
   thumb_url
 });
 
+export const projectThumbnailProgress = (progress) => ({
+  type: PROJECT_THUMBNAIL_PROGRESS,
+  progress
+});
+
 //uploads project thumbnail
 export const uploadProjectThumbnailAction = (formData) => {
   return async dispatch => {
@@ -278,6 +284,9 @@ export const uploadProjectThumbnailAction = (formData) => {
           'content-type': 'multipart/form-data'
         },
         onUploadProgress: progressEvent => {
+          dispatch(
+            projectThumbnailProgress('Uploaded progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100) + '%')
+          )
           console.log('Uploaded progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100) + '%');
         }
       }

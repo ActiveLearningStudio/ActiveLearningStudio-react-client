@@ -5,7 +5,8 @@ import {
   LOAD_MY_PROJECTS,
   LOAD_PROJECT,
   DELETE_PROJECT,
-  UPLOAD_PROJECT_THUMBNAIL
+  UPLOAD_PROJECT_THUMBNAIL,
+  PROJECT_THUMBNAIL_PROGRESS
 } from "../constants/actionTypes";
 
 
@@ -24,7 +25,8 @@ const defaultProgramState = () => {
       },
       thumb_url: null,
       showCreateProjectSubmenu: false,
-      showCreateProjectPopup: false
+      showCreateProjectPopup: false,
+      progress:null
     };
   }
 };
@@ -76,6 +78,11 @@ const projectReducer = (state = defaultProgramState(), action) => {
       return {
         ...state,
         thumb_url: action.thumb_url
+      }
+    case PROJECT_THUMBNAIL_PROGRESS:
+      return {
+        ...state,
+        progress:action.progress
       }
 
     default:
