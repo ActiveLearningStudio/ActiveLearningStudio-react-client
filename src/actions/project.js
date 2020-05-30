@@ -251,6 +251,9 @@ export const uploadProjectThumbnailAction = (formData) => {
       const config = {
         headers: {
           'content-type': 'multipart/form-data'
+        },
+        onUploadProgress: progressEvent => {
+          console.log('Uploaded progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100) + '%');
         }
       }
       return axios.post(
