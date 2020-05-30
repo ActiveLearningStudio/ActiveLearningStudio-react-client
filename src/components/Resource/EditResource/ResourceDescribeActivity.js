@@ -150,6 +150,12 @@ let ResourceDescribeActivity = (props) => {
                             }
                           </span>
                           {
+                            !props.resource.editResource.metadata.thumb_url ?
+                              props.resource.progress
+                              :
+                              null
+                          }
+                          {
                             props.resource.editResource.metadata.thumb_url ?
                               <div className="thumb-display">
                                 <div className="success" style={{ color: 'green', marginBottom: '20px', fontSize: '20px' }}>

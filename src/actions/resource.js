@@ -16,7 +16,8 @@ import {
     DESCRIBE_ACTIVITY,
     UPLOAD_RESOURCE_THUMBNAIL,
     EDIT_RESOURCE,
-    RESOURCE_VALIDATION_ERRORS
+    RESOURCE_VALIDATION_ERRORS,
+    RESOURCE_THUMBNAIL_PROGRESS
 } from './../constants/actionTypes';
 
 export const loadResource = (resource, previous, next) => ({
@@ -127,9 +128,9 @@ export const showBuildActivityAction = (editor = null, editorType = null, activi
         try {
             if (activityid) {
                 const response = await axios.get(global.config.laravelAPIUrl + '/activity/' + activityid);
-                
+
                 let lib = response.data.data.library_name + " " + response.data.data.major_version + "." + response.data.data.minor_version;
-                
+
                 dispatch(
                     showBuildActivity(lib, response.data.data.type, response.data.data.h5p)
                 )
@@ -158,11 +159,11 @@ export const showDescribeActivityAction = (activity, activityid = null) => {
             if (activityid) {
                 const response = await axios.get(global.config.laravelAPIUrl + '/activity/' + activityid);
                 let metadata = {
-                    title:'',
-                    subjectid:'',
-                    educationlevelid:''
+                    title: '',
+                    subjectid: '',
+                    educationlevelid: ''
                 };
-                if(response.data.data.metadata != null){
+                if (response.data.data.metadata != null) {
                     metadata = response.data.data.metadata;
                 }
                 dispatch(
@@ -173,7 +174,7 @@ export const showDescribeActivityAction = (activity, activityid = null) => {
                     showDescribeActivity(activity)
                 )
             }
-            
+
         } catch (e) {
             throw new Error(e);
         }
@@ -207,13 +208,13 @@ export const editResourceAction = (playlistid, editor, editorType, activityid, m
             const response = await axios.put(global.config.laravelAPIUrl + '/activity/' + activityid,
                 {
                     playlistid: playlistid,
-                    metadata:metadata,
+                    metadata: metadata,
                     action: 'create',
                     data
                 }, {
                 headers: headers
             });
-            
+
 
             let resource = {};
             resource.id = response.data.data._id;
@@ -463,7 +464,7 @@ export const onSubmitDescribeActivity = (metadata, activityid) => ({
     activityid
 });
 
-export const onSubmitDescribeActivityAction = (metadata, activityid=null) => {
+export const onSubmitDescribeActivityAction = (metadata, activityid = null) => {
     return dispatch => {
         try {
             dispatch(
@@ -483,12 +484,22 @@ export const uploadResourceThumbnail = (thumb_url) => ({
     thumb_url
 });
 
+export const resourceThumbnailProgress = (progress) => ({
+    type: RESOURCE_THUMBNAIL_PROGRESS,
+    progress
+});
+
 export const uploadResourceThumbnailAction = (formData) => {
     return async dispatch => {
         try {
             const config = {
                 headers: {
                     'content-type': 'multipart/form-data'
+                },
+                onUploadProgress: progressEvent => {
+                  dispatch(
+                    resourceThumbnailProgress('Uploaded progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100) + '%')
+                  )
                 }
             }
             return axios.post(

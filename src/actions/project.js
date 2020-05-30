@@ -287,7 +287,6 @@ export const uploadProjectThumbnailAction = (formData) => {
           dispatch(
             projectThumbnailProgress('Uploaded progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100) + '%')
           )
-          console.log('Uploaded progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100) + '%');
         }
       }
       return axios.post(

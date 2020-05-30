@@ -153,6 +153,12 @@ let ResourceDescribeActivity = (props) => {
                             }
                           </span>
 
+                          {
+                            !props.resource.newResource.metadata.thumb_url ?
+                              props.resource.progress
+                              :
+                              null
+                          }
 
                           {
                             props.resource.newResource.metadata.thumb_url ?
@@ -160,7 +166,7 @@ let ResourceDescribeActivity = (props) => {
                                 <div className="success" style={{ color: 'green', marginBottom: '20px', fontSize: '20px' }}>
                                   Image Uploaded:
                                 </div>
-                                <div className="thumb"><img src={global.config.laravelAPIUrl+props.resource.newResource.metadata.thumb_url} /></div>
+                                <div className="thumb"><img src={global.config.laravelAPIUrl + props.resource.newResource.metadata.thumb_url} /></div>
                               </div>
                               :
                               null

@@ -50,7 +50,7 @@ var imageValidation = '';
 
 const onSubmit = async (values, dispatch, props) => {
   try {
-    if(!props.project.thumb_url){
+    if (!props.project.thumb_url) {
       imageValidation = '* Required';
       return false;
     }
@@ -75,8 +75,8 @@ export const uploadThumb = async (e, props) => {
 
     imageValidation = "";
     await props.uploadProjectThumbnailAction(formData);
-    
-    
+
+
   } catch (e) {
     console.log(e);
   }
@@ -115,7 +115,7 @@ let CreateProjectPopup = props => {
         <div className="upload-thumbnail">
           <h2>Upload thumbnail</h2>
           <label>
-            <input type="file" onChange={(e) => uploadThumb(e, props)}  accept="image/x-png,image/jpeg" />
+            <input type="file" onChange={(e) => uploadThumb(e, props)} accept="image/x-png,image/jpeg" />
             <span>Upload</span>
           </label>
           <span className="validation-error">
@@ -124,19 +124,19 @@ let CreateProjectPopup = props => {
             }
           </span>
 
-  {
-    !props.project.thumb_url ?
-    props.project.progress
-    :
-    null
-  }            
+          {
+            !props.project.thumb_url ?
+              props.project.progress
+              :
+              null
+          }
           {
             props.project.thumb_url ?
               <div className="thumb-display">
-                <div className = "success" style={{color:'green', marginBottom:'20px', fontSize:'20px'}}>
-                  Image Uploaded: 
+                <div className="success" style={{ color: 'green', marginBottom: '20px', fontSize: '20px' }}>
+                  Image Uploaded:
                 </div>
-                <div className="thumb"><img src={global.config.laravelAPIUrl+props.project.thumb_url} /></div>
+                <div className="thumb"><img src={global.config.laravelAPIUrl + props.project.thumb_url} /></div>
               </div>
               :
               null

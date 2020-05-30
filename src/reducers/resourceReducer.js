@@ -14,7 +14,8 @@ import {
     DESCRIBE_ACTIVITY,
     UPLOAD_RESOURCE_THUMBNAIL,
     EDIT_RESOURCE,
-    RESOURCE_VALIDATION_ERRORS
+    RESOURCE_VALIDATION_ERRORS,
+    RESOURCE_THUMBNAIL_PROGRESS
 } from "../constants/actionTypes";
 
 const defaultResourceState = () => {
@@ -42,10 +43,10 @@ const defaultResourceState = () => {
                 params: {
                     data: ''
                 },
-                metadata:{
-                    title:null,
-                    subjectid:null,
-                    educationlevelid:null,
+                metadata: {
+                    title: null,
+                    subjectid: null,
+                    educationlevelid: null,
                     thumb_url: null
                 }
             },
@@ -63,7 +64,7 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                 currentPlaylistId: action.id
             };
         case HIDE_CREATE_RESOURCE_MODAL:
-            
+
             return {
                 ...state,
                 showCreateResourcePopup: false,
@@ -71,10 +72,10 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                     params: {
                         data: ''
                     },
-                    metadata:{
-                        title:null,
-                        subjectid:null,
-                        educationlevelid:null,
+                    metadata: {
+                        title: null,
+                        subjectid: null,
+                        educationlevelid: null,
                         thumb_url: null
                     }
                 },
@@ -82,10 +83,10 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                     params: {
                         data: ''
                     },
-                    metadata:{
-                        title:null,
-                        subjectid:null,
-                        educationlevelid:null,
+                    metadata: {
+                        title: null,
+                        subjectid: null,
+                        educationlevelid: null,
                         thumb_url: null
                     }
                 },
@@ -123,7 +124,7 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                     params: action.params,
                     editor: action.editor,
                     editorType: action.editorType,
-                    metadata:action.metadata
+                    metadata: action.metadata
                 }
             };
         case SHOW_RESOURCE_ACTIVITY_BUILD:
@@ -205,7 +206,7 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                 }
             }
         case DESCRIBE_ACTIVITY:
-            if(action.activityid != null){
+            if (action.activityid != null) {
                 return {
                     ...state,
                     editResource: {
@@ -228,7 +229,7 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                     }
                 }
             }
-            
+
         case UPLOAD_RESOURCE_THUMBNAIL:
             return {
                 ...state,
@@ -251,6 +252,11 @@ const resourceReducer = (state = defaultResourceState(), action) => {
             return {
                 ...state,
                 showCreateResourcePopup: true
+            }
+        case RESOURCE_THUMBNAIL_PROGRESS:
+            return {
+                ...state,
+                progress: action.progress
             }
         default:
             return state;
