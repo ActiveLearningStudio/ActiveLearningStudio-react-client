@@ -154,10 +154,7 @@ let ResourceDescribeActivity = (props) => {
                           </span>
 
                           {
-                            !props.resource.newResource.metadata.thumb_url ?
                               props.resource.progress
-                              :
-                              null
                           }
 
                           {

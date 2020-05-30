@@ -246,7 +246,8 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                         ...state.editResource.metadata,
                         thumb_url: action.thumb_url
                     }
-                }
+                },
+                progress:null
             }
         case RESOURCE_VALIDATION_ERRORS:
             return {

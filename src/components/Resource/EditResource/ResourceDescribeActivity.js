@@ -149,12 +149,11 @@ let ResourceDescribeActivity = (props) => {
                               imageValidation
                             }
                           </span>
+                          
                           {
-                            !props.resource.editResource.metadata.thumb_url ?
                               props.resource.progress
-                              :
-                              null
                           }
+
                           {
                             props.resource.editResource.metadata.thumb_url ?
                               <div className="thumb-display">
