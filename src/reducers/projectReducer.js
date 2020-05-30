@@ -77,7 +77,8 @@ const projectReducer = (state = defaultProgramState(), action) => {
     case UPLOAD_PROJECT_THUMBNAIL:
       return {
         ...state,
-        thumb_url: action.thumb_url
+        thumb_url: action.thumb_url,
+        progress:null
       }
     case PROJECT_THUMBNAIL_PROGRESS:
       return {

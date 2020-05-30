@@ -125,11 +125,9 @@ let CreateProjectPopup = props => {
           </span>
 
           {
-            !props.project.thumb_url ?
               props.project.progress
-              :
-              null
           }
+          
           {
             props.project.thumb_url ?
               <div className="thumb-display">
