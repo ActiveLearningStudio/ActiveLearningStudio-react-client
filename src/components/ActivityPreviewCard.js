@@ -7,7 +7,7 @@ const ActivityPreviewCard = (props) => {
 	const activity = props.activity;
     return (
         <li>
-            <a href={"/resource/preview/" + activity._id}>
+            <Link href={"/resource/preview/" + activity._id}>
                 <div className="playimg">
                     <Link to={"/resource/preview/" + activity._id}
                         style={{ background: 'url(' + global.config.laravelAPIUrl + activity.thumb_url + ') no-repeat center center', display: 'block', backgroundSize: 'cover' }}>
@@ -16,7 +16,7 @@ const ActivityPreviewCard = (props) => {
                 <div className="plydet">
                     {activity.title}
                 </div>
-            </a>
+            </Link>
         </li>
   	);
 }

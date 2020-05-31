@@ -51,8 +51,8 @@ const ProjectPreview = (props) => {
 				    <div className="accordion_in" key={playlist._id}>
                         <div className="plhead">
                                 {playlist.title}
-                        <a href="" className="seeall">See All <img src="/images/seeall.png" alt="seeall" title=""></img>
-                        </a>
+                        <Link to="" className="seeall">See All <img src="/images/seeall.png" alt="seeall" title=""></img>
+                        </Link>
                         </div>
                         <div className="acc_content">
                             <ul className="playlist_js">
@@ -120,9 +120,9 @@ const ProjectPreview = (props) => {
                     <div className="title_md">Playlists</div>
                 </div>
                 <div className="all_plylist">
-                    <a href="#" className="alltxt">All Playlist
+                    <Link href="#" className="alltxt">All Playlist
                         <img src="/images/arrow.png" alt="arrow" title=""></img>
-                    </a>
+                    </Link>
                     <div className="playlistaccordion">
                         {playlists}
                     </div>

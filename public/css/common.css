@@ -666,9 +666,9 @@ header {
     text-align: left;
 }
 
-.dropdown-menu li:hover>a {
+/* .dropdown-menu li:hover>a {
     color: #ffffff;
-}
+} */
 
 .dropdown-menu li {
     padding: 0;
