@@ -1,3 +1,4 @@
+/* CSS FOR PRoduct TOP */
 .inner_body .container {
     max-width: 1521px;
     margin: 0 auto;
@@ -64,7 +65,6 @@
     border-top-left-radius: 30px;
     border-bottom-left-radius: 30px;
     padding: 8px 0;
-
     background: -moz-linear-gradient(-45deg, rgba(38, 143, 198, 0.87) 0%, rgba(38, 143, 198, 1) 4%, rgba(42, 150, 192, 1) 96%, rgba(42, 150, 192, 0.82) 100%);
     /* FF3.6-15 */
     background: -webkit-linear-gradient(-45deg, rgba(38, 143, 198, 0.87) 0%, rgba(38, 143, 198, 1) 4%, rgba(42, 150, 192, 1) 96%, rgba(42, 150, 192, 0.82) 100%);
@@ -122,6 +122,10 @@
     font-size: 12px;
     color: #343434;
     font-family: 'OpenSans-Semibold';
+}
+
+.usrcmt img {
+    margin-right: 5px;
 }
 
 /* CSS FOR PLAYLIST */
@@ -309,4 +313,95 @@
 
 .playlist-slider-control.prev:before {
     transform: rotate(180deg);
+}
+
+@media(max-width:1400px) {
+    .bar_list li {
+        margin-bottom: 5px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .sce_imgdiv>img {
+        height: 300px;
+    }
+}
+
+@media(max-width:1080px) {
+
+    .sce_imgdiv,
+    .sce_cont {
+        width: 100%;
+    }
+
+    .scne_div {
+        background: #fff;
+    }
+
+    .sce_imgdiv>img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .collapsetogle {
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+    }
+}
+
+@media(max-width:767px) {
+    .all_plylist {
+        padding: 30px;
+    }
+
+    .playlistaccordion {
+        margin-top: 30px;
+    }
+
+    .plytitle_div {
+        padding: 30px 30px 0;
+    }
+
+    .acc_content {
+        padding: 0 0 30px 20px;
+    }
+}
+
+@media(max-width:580px) {
+    .sce_cont {
+        padding: 20px;
+    }
+
+    .plytitle_div {
+        padding: 20px 20px 0;
+    }
+
+    .acc_content {
+        padding: 0 0 20px 20px;
+    }
+
+    .all_plylist {
+        padding: 20px;
+    }
+
+    .title_lg {
+        font-size: 22px;
+    }
+
+    .seeall {
+        position: relative;
+        padding-left: 0;
+        width: 100%;
+        clear: both;
+        display: block;
+        margin-top: 10px;
+    }
+}
+
+@media(max-width:480px) {
+    .title_lg {
+        font-size: 20px;
+    }
 }

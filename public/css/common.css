@@ -186,20 +186,20 @@ html {
 
 @font-face {
     font-family: 'OpenSans-Regular';
-    src: url('fonts/OpenSans-Regular.eot?#iefix') format('embedded-opentype'),
-        url('fonts/OpenSans-Regular.woff') format('woff'),
-        url('fonts/OpenSans-Regular.ttf') format('truetype'),
-        url('fonts/OpenSans-Regular.svg#OpenSans-Regular') format('svg');
+    src: url('/fonts/OpenSans-Regular.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/OpenSans-Regular.woff') format('woff'),
+        url('/fonts/OpenSans-Regular.ttf') format('truetype'),
+        url('/fonts/OpenSans-Regular.svg#OpenSans-Regular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'OpenSans-Semibold';
-    src: url('fonts/OpenSans-Semibold.eot?#iefix') format('embedded-opentype'),
-        url('fonts/OpenSans-Semibold.woff') format('woff'),
-        url('fonts/OpenSans-Semibold.ttf') format('truetype'),
-        url('fonts/OpenSans-Semibold.svg#OpenSans-Semibold') format('svg');
+    src: url('/fonts/OpenSans-Semibold.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/OpenSans-Semibold.woff') format('woff'),
+        url('/fonts/OpenSans-Semibold.ttf') format('truetype'),
+        url('/fonts/OpenSans-Semibold.svg#OpenSans-Semibold') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -207,10 +207,10 @@ html {
 
 @font-face {
     font-family: 'OpenSans-Light';
-    src: url('fonts/OpenSans-Light.eot?#iefix') format('embedded-opentype'),
-        url('fonts/OpenSans-Light.woff') format('woff'),
-        url('fonts/OpenSans-Light.ttf') format('truetype'),
-        url('fonts/OpenSans-Light.svg#OpenSans-Light') format('svg');
+    src: url('/fonts/OpenSans-Light.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/OpenSans-Light.woff') format('woff'),
+        url('/fonts/OpenSans-Light.ttf') format('truetype'),
+        url('/fonts/OpenSans-Light.svg#OpenSans-Light') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -298,7 +298,7 @@ body {
     position: absolute;
     left: auto;
     padding: 0;
-    right: 0;
+    right: 15px;
     margin: 0;
     margin-top: 3px;
     text-align: left;
@@ -341,7 +341,7 @@ body {
     padding-left: 25px;
 }
 
-.top_info li a,
+.top_info>li>a,
 .dropbtn {
     width: 53px;
     height: 53px;
@@ -378,15 +378,15 @@ body {
 }
 
 .tophd_left {
-    padding: 18px 0
+    padding: 15px 0
 }
 
-.top_info li a:hover {
+.top_info > li > a:hover {
     background: #1a73e8;
     border-color: #1a73e8;
 }
 
-.top_info li a:hover img {
+.top_info > li > a:hover img {
     filter: brightness(0) invert(1);
 }
 
@@ -443,11 +443,16 @@ body {
     height: auto;
     line-height: 100%;
     border: 0px;
+    display: block
 }
 
-.navbar_link .top_info {
-    position: relative
+.top_info li .user-dropdown li a:hover {
+    background-color: none
 }
+
+/* .navbar_link .top_info {
+    position: relative
+} */
 
 .menuopen .leftmenu {
     width: 310px;
@@ -635,7 +640,7 @@ header {
     clear: both;
     background: #fff;
     position: relative;
-    z-index: 0;
+    z-index: 1;
 }
 
 .menuoverlay:before {
@@ -657,6 +662,8 @@ header {
     width: 100%;
     border-radius: 0px;
     color: #464646;
+    color: #464646;
+    text-align: left;
 }
 
 .dropdown-menu li:hover>a {
@@ -664,12 +671,17 @@ header {
 }
 
 .dropdown-menu li {
-    padding: 0
+    padding: 0;
+    color: #464646;
+    text-align: left;
 }
 
 
 .tophd_right {
     position: relative;
+    padding: 15px 0;
+    color: #464646;
+    text-align: left;
 }
 
 .notiy_icon {
@@ -768,11 +780,11 @@ header {
 }
 
 .togglebtn span::before {
-    top: -9px;
+    top: -7px;
 }
 
 .togglebtn span::after {
-    top: 9px;
+    top: 7px;
 }
 
 .togglebtn span,
@@ -783,8 +795,8 @@ header {
     -moz-transition: all 0.9s ease-in-out;
     -o-transition: all 0.9s ease-in-out;
     -ms-transition: all 0.9s ease-in-out;
-    width: 35px;
-    height: 3px;
+    width: 25px;
+    height: 2px;
 }
 
 header.head_mobile {
@@ -848,12 +860,16 @@ header.head_mobile {
     margin: 0 auto;
 }
 
+.addtop::after{
+    content: none;
+}
+
 /* ============ start media query ============ */
 
 @media screen and (max-width: 1800px) {
-    .container {
+    /* .container {
         padding: 0 15px;
-    }
+    } */
 }
 
 
@@ -992,19 +1008,12 @@ header.head_mobile {
         width: 100%;
     }
 
-    .navbar_link li:hover .navmenu {
-        display: none;
-        -webkit-transform: none;
-        transform: none;
-        opacity: inherit;
-    }
-
     .navbar_link .navmenu {
         -webkit-transform: none;
         transform: none;
-        display: none;
-        visibility: unset;
-        opacity: unset;
+
+
+
         width: 100%;
         position: relative;
         max-width: 100%;
@@ -1047,7 +1056,7 @@ header.head_mobile {
         width: 275px;
     }
 
-    .top_info li {
+    .top_info>li {
         padding: 0 10px;
     }
 
@@ -1080,10 +1089,12 @@ header.head_mobile {
         background-color: #EEEEEE;
         padding: 15px;
         justify-content: center;
+        border-bottom: 1px solid #d9d9d9;
     }
 
     .top_header {
-        padding: 0
+        padding: 0;
+        box-shadow: none
     }
 
     .tophd_left {
@@ -1097,6 +1108,17 @@ header.head_mobile {
 }
 
 @media(max-width:580px) {
+    .navbar_link li .dropdown-menu {
+        display: none
+    }
+
+    .navbar_link li .dropdown-menu {
+        width: 100%;
+        position: relative;
+        padding-bottom: 0;
+        left: auto;
+    }
+
     .searchblock {
         display: none
     }
@@ -1115,17 +1137,19 @@ header.head_mobile {
 
     .top_info.flexdiv {
         align-items: center;
-        justify-content: center;
+        justify-content: flex-end;
         margin-left: auto;
-        width: calc(100% - 40px);
+        width: calc(100% - 50px);
     }
 
     .top_info.flexdiv li:first-child {
         position: absolute;
         padding: 0;
         top: 0;
-        margin-top: -65px;
-        right: 0;
+        padding: 0 !important;
+        margin-top: -55px;
+        right: 15px;
+        width: auto;
     }
 
     .top_info.flexdiv li:first-child a {
@@ -1150,6 +1174,22 @@ header.head_mobile {
     .top_info li {
         display: inline-flex
     }
+
+    .top_info>li {
+        padding: 0 0 0 2em !important;
+    }
+
+    .top_info.flexdiv li:nth-child(2) {
+        order: 2
+    }
+
+    .top_info.flexdiv li.mobile-links {
+        order: 1
+    }
+
+    .top_info.flexdiv li:nth-child(4) {
+        order: 3
+    }
 }
 
 @media(max-width:480px) {
@@ -1157,12 +1197,9 @@ header.head_mobile {
         padding: 0 5px;
         text-align: center;
         display: inline-flex !important;
-        width: 33%;
         text-align: center;
         justify-content: center;
     }
-
-
 
     .tophd_left {
         width: 180px

@@ -62,7 +62,7 @@ function Header(props) {
                                           <a href="#">
                                             <div className="notifybx">
                                                 <div className="notiy_icon">
-                                                    <img src="images/create-team.png" alt="create-team"></img>
+                                                    <img src="/images/create-team.png" alt="create-team"></img>
                                                 </div>
                                                 <div className="notiy_det">
                                                     <div className="nav_title">Create Team</div>
