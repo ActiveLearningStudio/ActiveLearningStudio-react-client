@@ -115,8 +115,10 @@ export class PlaylistCard extends React.Component {
 											<Link
 												className="dropdown-item"
 												to={
-													"/playlist/preview/" +
-													this.props.playlist._id
+													// "/playlist/preview/" +
+                                                    // this.props.playlist._id
+                                                    "/project/preview2/" +
+													this.props.match.params.projectid
 												}
 											>
 												<i

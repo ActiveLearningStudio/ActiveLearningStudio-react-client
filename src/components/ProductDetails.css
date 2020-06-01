@@ -28,7 +28,8 @@ img {
 }
 
 .sce_imgdiv>a {
-    display: block
+    display: block;
+    text-align: center;
 }
 
 .sce_cont {
@@ -241,7 +242,7 @@ img {
     content: '';
     left: 0px;
     top: 0;
-    background: url(/images/plusblk.png);
+    /* background: url(/images/plusblk.png); */
     width: 15px;
     height: 15px;
 }
