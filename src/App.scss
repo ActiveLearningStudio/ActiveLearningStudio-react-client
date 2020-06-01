@@ -1280,7 +1280,7 @@ body {
     padding: 0;
     right: 15px;
     margin: 0;
-    margin-top: 3px;
+    // margin-top: 3px;
     text-align: left;
     -webkit-transition: all .4s ease-in-out;
     transition: all .4s ease-in-out;
@@ -1845,6 +1845,9 @@ header.head_mobile {
 }
 
 .drp-heading{color: #607A9B;font-size: 26px}
+
+.dropdown-menu li:last-child{border-bottom:0} 
+
 /* ============ start media query ============ */
 
 @media screen and (max-width: 1800px) {

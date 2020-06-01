@@ -10,10 +10,25 @@
     box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.07);
 }
 
+img {
+    max-width: 100%;
+}
+
+.playimg {
+    /* height: 100%; */
+    width: 100%;
+    text-align: center;
+}
+
 .sce_imgdiv {
     position: relative;
     overflow: hidden;
-    width: 356px;
+    height: 100%;
+    width: 355px;
+}
+
+.sce_imgdiv>a {
+    display: block
 }
 
 .sce_cont {
@@ -313,6 +328,11 @@
 
 .playlist-slider-control.prev:before {
     transform: rotate(180deg);
+}
+
+.playimg img{
+    max-height: 100px;
+    margin-bottom: 10px;
 }
 
 @media(max-width:1400px) {
