@@ -57,7 +57,7 @@ export class NewProjectPage extends React.Component {
                   <div className="col-md-12">
                     <CreateProjectPopup
                       {...this.props}
-                      thumbUrl={this.props.project.thumbUrl} />
+                      thumb_url={this.props.project.thumb_url} />
 
                   </div>
 

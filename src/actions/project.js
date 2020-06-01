@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+
     SHOW_CREATE_PROJECT_MODAL,
     SHOW_CREATE_PROJECT_SUBMENU,
     CREATE_PROJECT,
@@ -10,8 +11,34 @@ import {
     PAGE_LOADING_COMPLETE,
     UPDATE_PROJECT,
     UPLOAD_PROJECT_THUMBNAIL,
+    SHARE_PROJECT,
+    PROJECT_THUMBNAIL_PROGRESS,
     SHOW_USER_SUB_MENU
 } from "../constants/actionTypes";
+
+// Publishes the project in LEARN
+export const shareProject = (project) => ({
+  type: SHARE_PROJECT,
+  project: project
+});
+
+// Publishes the project in LEARN
+export const shareProjectAction = (projectId) => {
+  return async dispatch => {
+    const { token } = JSON.parse(localStorage.getItem("auth"));
+    const response = axios.post(
+      '/api/shareproject',
+      { projectId },
+      { headers: { "Authorization": "Bearer " + token } }
+    ).then(response => {
+      if (response.data.status == "error" || response.status != 200) {
+        console.log('Error: ' + response.data.message);
+      }
+    }).catch(error => {
+      console.log(error);
+    });
+  };
+};
 
 // Loads a specific project
 export const loadProject = (project) => ({
@@ -270,8 +297,14 @@ export const deleteProjectAction = (projectid) => {
 }
 
 export const uploadProjectThumbnail = (thumb_url) => ({
-    type: UPLOAD_PROJECT_THUMBNAIL,
-    thumb_url
+  type: UPLOAD_PROJECT_THUMBNAIL,
+  thumb_url
+});
+
+export const projectThumbnailProgress = (progress) => ({
+  type: PROJECT_THUMBNAIL_PROGRESS,
+  progress
+
 });
 
 //uploads project thumbnail
@@ -281,6 +314,11 @@ export const uploadProjectThumbnailAction = (formData) => {
             const config = {
                 headers: {
                     'content-type': 'multipart/form-data'
+                },
+                onUploadProgress: progressEvent => {
+                    dispatch(
+                      projectThumbnailProgress('Uploaded progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100) + '%')
+                    )
                 }
             }
             return axios.post(

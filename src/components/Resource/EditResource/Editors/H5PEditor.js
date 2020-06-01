@@ -42,7 +42,7 @@ class H5PEditor extends React.Component {
 
        
       // let payload = { event, submitAction: this.state.submitAction, h5pFile: this.state.h5pFile };
-      this.props.handleEditResourceSubmit(this.props.match.params.playlistid, this.props.resource.editResource.h5pLib, this.props.resource.editResource.h5pLibType, this.props.match.params.activityid);
+      this.props.handleEditResourceSubmit(this.props.match.params.playlistid, this.props.resource.editResource.h5pLib, this.props.resource.editResource.h5pLibType, this.props.match.params.activityid, this.props.resource.editResource.metadata);
    }
 
    componentDidMount() {

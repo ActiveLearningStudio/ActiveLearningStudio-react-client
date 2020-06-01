@@ -31,6 +31,10 @@
             height:80px;
             margin:0 auto;
             margin-top:35px;
+            background-repeat: no-repeat;
+            background-position: 50%;
+            background-size: contain;
+            margin: 10px auto 15px;
             .overlay-activity-icon {
                 display: none;
             }

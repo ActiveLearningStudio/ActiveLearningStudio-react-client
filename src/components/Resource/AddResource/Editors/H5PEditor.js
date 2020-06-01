@@ -51,12 +51,12 @@ class H5PEditor extends React.Component {
             alert("Invalid File\""+this.state.h5pFile.name+"\". Please choose .h5p file");           
          }else{
             let payload = {event, submitAction: this.state.submitAction, h5pFile: this.state.h5pFile};
-            this.props.handleCreateResourceSubmit(this.props.match.params.playlistid, this.props.resource.newResource.activity.h5pLib, this.props.resource.newResource.activity.h5pLibType, payload, this.props.resource.newResource.metaData );
+            this.props.handleCreateResourceSubmit(this.props.match.params.playlistid, this.props.resource.newResource.activity.h5pLib, this.props.resource.newResource.activity.h5pLibType, payload, this.props.resource.newResource.metadata );
          }
       } else if(this.state.submitAction === "create") {
          let payload = {event, submitAction: this.state.submitAction, h5pFile: this.state.h5pFile};
          if(this.props.match.params.playlistid){
-            this.props.handleCreateResourceSubmit(this.props.match.params.playlistid, this.props.resource.newResource.activity.h5pLib, this.props.resource.newResource.activity.h5pLibType, payload, this.props.resource.newResource.metaData);
+            this.props.handleCreateResourceSubmit(this.props.match.params.playlistid, this.props.resource.newResource.activity.h5pLib, this.props.resource.newResource.activity.h5pLibType, payload, this.props.resource.newResource.metadata);
          }
          // else {
          //    alert("Error: Playlistid not present");

@@ -50,14 +50,14 @@ var imageValidation = '';
 
 const onSubmit = async (values, dispatch, props) => {
   try {
-    if(!props.project.thumbUrl){
+    if (!props.project.thumb_url) {
       imageValidation = '* Required';
       return false;
     }
     if (props.editMode) {//update
-      await dispatch(updateProjectAction(props.match.params.projectid, values.projectName, values.description, props.project.thumbUrl));
+      await dispatch(updateProjectAction(props.match.params.projectid, values.projectName, values.description, props.project.thumb_url));
     } else { //create
-      await dispatch(createProjectAction(values.projectName, values.description, props.project.thumbUrl));
+      await dispatch(createProjectAction(values.projectName, values.description, props.project.thumb_url));
     }
 
     props.history.push("/");
@@ -75,8 +75,8 @@ export const uploadThumb = async (e, props) => {
 
     imageValidation = "";
     await props.uploadProjectThumbnailAction(formData);
-    
-    
+
+
   } catch (e) {
     console.log(e);
   }
@@ -109,15 +109,13 @@ let CreateProjectPopup = props => {
             label="Enter Project Name (Up to 80 characters)"
             validate={[required, maxLength80]}
           />
-
-
         </div>
 
 
         <div className="upload-thumbnail">
           <h2>Upload thumbnail</h2>
           <label>
-            <input type="file" onChange={(e) => uploadThumb(e, props)}  accept="image/x-png,image/jpeg" />
+            <input type="file" onChange={(e) => uploadThumb(e, props)} accept="image/x-png,image/jpeg" />
             <span>Upload</span>
           </label>
           <span className="validation-error">
@@ -125,14 +123,18 @@ let CreateProjectPopup = props => {
               imageValidation
             }
           </span>
-            
+
           {
-            props.project.thumbUrl ?
+              props.project.progress
+          }
+          
+          {
+            props.project.thumb_url ?
               <div className="thumb-display">
-                <div className = "success" style={{color:'green', marginBottom:'20px', fontSize:'20px'}}>
-                  Image Uploaded: 
+                <div className="success" style={{ color: 'green', marginBottom: '20px', fontSize: '20px' }}>
+                  Image Uploaded:
                 </div>
-                <div className="thumb"><img src={props.project.thumbUrl} /></div>
+                <div className="thumb"><img src={global.config.laravelAPIUrl + props.project.thumb_url} /></div>
               </div>
               :
               null

@@ -58,17 +58,24 @@ export const startLogin = (email, password) => {
           password
         }
       );
-      if(response.data.success) {
+      if(response.data.status == 'success') {
+        console.log(response.data.data);
         const user = {
-          displayName: response.data.payload.user.name,
-          id: response.data.payload.user._id,
-          token: response.headers["x-auth"]
+          displayName: response.data.data.payload.user.name,
+          id: response.data.data.payload.user._id,
+          token: response.data.data.token,
+          auth_expiry: response.data.data.payload.exp
         };
+        
         
         localStorage.setItem("auth", JSON.stringify(user));
         
         dispatch(
           login(user.displayName, user.id, user.token)
+        );
+      } else {
+        dispatch(
+          loginError()
         );
       }
       

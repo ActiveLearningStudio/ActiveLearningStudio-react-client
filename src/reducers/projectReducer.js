@@ -1,34 +1,35 @@
 import {
-    SHOW_CREATE_PROJECT_SUBMENU,
-    SHOW_CREATE_PROJECT_MODAL,
-    CREATE_PROJECT,
-    LOAD_MY_PROJECTS,
-    LOAD_PROJECT,
-    DELETE_PROJECT,
-    UPLOAD_PROJECT_THUMBNAIL,
-    SHOW_USER_SUB_MENU
+  SHOW_CREATE_PROJECT_SUBMENU,
+  SHOW_CREATE_PROJECT_MODAL,
+  CREATE_PROJECT,
+  LOAD_MY_PROJECTS,
+  LOAD_PROJECT,
+  DELETE_PROJECT,
+  UPLOAD_PROJECT_THUMBNAIL,
+  PROJECT_THUMBNAIL_PROGRESS,
+  SHOW_USER_SUB_MENU
 } from "../constants/actionTypes";
 
 
 const defaultProgramState = () => {
-    if (localStorage.getItem("projects")) {
+  if (localStorage.getItem("projects")) {
 
 
-        return {
-            'projects': JSON.parse(localStorage.getItem("projects"))
-        }
-    } else {
-        return {
-            'projects': [],
-            selectedProject: {
-                _id: null
-            },
-            thumb_url: null,
-            showCreateProjectSubmenu: false,
-            showCreateProjectPopup: false,
-            showUserSubMenu: false
-        };
+    return {
+      'projects': JSON.parse(localStorage.getItem("projects"))
     }
+  } else {
+    return {
+      'projects': [],
+      selectedProject: {
+        _id: null
+      },
+      thumb_url: null,
+      showCreateProjectSubmenu: false,
+      showCreateProjectPopup: false,
+      showUserSubMenu: false
+    };
+  }
 };
 
 const projectReducer = (state = defaultProgramState(), action) => {
@@ -79,15 +80,22 @@ const projectReducer = (state = defaultProgramState(), action) => {
                 ...state,
                 projects: newProjects
             };
-        case UPLOAD_PROJECT_THUMBNAIL:
-            return {
-                ...state,
-                thumb_url: action.thumb_url
-            }
 
-            default:
-                return state;
-    }
+    case UPLOAD_PROJECT_THUMBNAIL:
+      return {
+        ...state,
+        thumb_url: action.thumb_url,
+        progress: null
+      }
+    case PROJECT_THUMBNAIL_PROGRESS:
+      return {
+        ...state,
+        progress: action.progress
+      }
+
+    default:
+      return state;
+  }
 };
 
 export default projectReducer;

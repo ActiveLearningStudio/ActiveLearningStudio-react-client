@@ -2,7 +2,11 @@ import { AUTH_RECEIVE, AUTH_REQUEST, AUTH_ERROR,  AUTH_LOGOUT } from "../constan
 
 const defaultAuthState = () => {
   if (localStorage.getItem("auth")) {
-    return JSON.parse(localStorage.getItem("auth"));
+    const localAuth = JSON.parse(localStorage.getItem("auth"));
+    if(localAuth.auth_expiry > Math.round(new Date().getTime()/1000)){
+      return JSON.parse(localStorage.getItem("auth"));
+    }
+    return {};
   } else {
     return {};
   }

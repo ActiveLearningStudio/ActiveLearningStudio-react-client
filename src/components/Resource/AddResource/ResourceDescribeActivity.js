@@ -82,7 +82,7 @@ const onSubmit = async (values, dispatch, props) => {
   try {
 
     //image validation
-    if (!props.resource.newResource.metaData.thumbUrl) {
+    if (!props.resource.newResource.metadata.thumb_url) {
       imageValidation = '* Required';
       return false;
     }
@@ -153,14 +153,17 @@ let ResourceDescribeActivity = (props) => {
                             }
                           </span>
 
+                          {
+                              props.resource.progress
+                          }
 
                           {
-                            props.resource.newResource.metaData.thumbUrl ?
+                            props.resource.newResource.metadata.thumb_url ?
                               <div className="thumb-display">
                                 <div className="success" style={{ color: 'green', marginBottom: '20px', fontSize: '20px' }}>
                                   Image Uploaded:
                                 </div>
-                                <div className="thumb"><img src={props.resource.newResource.metaData.thumbUrl} /></div>
+                                <div className="thumb"><img src={global.config.laravelAPIUrl + props.resource.newResource.metadata.thumb_url} /></div>
                               </div>
                               :
                               null
@@ -220,7 +223,7 @@ ResourceDescribeActivity = reduxForm({
 
 const mapDispatchToProps = dispatch => ({
   showBuildActivityAction: (editor, editorType) => dispatch(showBuildActivityAction(editor, editorType)),
-  onSubmitDescribeActivityAction: (metaData) => dispatch(onSubmitDescribeActivityAction(metaData)),
+  onSubmitDescribeActivityAction: (metadata) => dispatch(onSubmitDescribeActivityAction(metadata)),
   uploadResourceThumbnailAction: (formData) => dispatch(uploadResourceThumbnailAction(formData))
 });
 

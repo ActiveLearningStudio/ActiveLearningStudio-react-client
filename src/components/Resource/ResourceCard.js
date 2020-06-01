@@ -48,7 +48,7 @@ export class ResourceCard extends React.Component {
 												"/resource/preview/" +
 												this.props.resource._id
 											}>
-											<div className="activity-thumb" style={{ backgroundImage: 'url(' + this.props.resource.metadata.thumb_url + ')' }}></div>
+											<div className="activity-thumb" style={{ backgroundImage: 'url(' + global.config.laravelAPIUrl+this.props.resource.metadata.thumb_url + ')' }}></div>
 										</Link>
 									</div>
 									: null
@@ -61,7 +61,7 @@ export class ResourceCard extends React.Component {
 										to={
 											"/resource/preview/" +
 											this.props.resource._id
-										}>{this.props.resource.title}
+										}>{(this.props.resource.metadata && this.props.resource.metadata.title != undefined) ? this.props.resource.metadata.title : this.props.resource.title}
 									</Link>
 								</h3>
 							</div>
