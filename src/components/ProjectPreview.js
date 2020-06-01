@@ -120,9 +120,6 @@ const ProjectPreview = (props) => {
                     <div className="title_md">Playlists</div>
                 </div>
                 <div className="all_plylist">
-                    <Link href="#" className="alltxt">All Playlist
-                        <img src="/images/arrow.png" alt="arrow" title=""></img>
-                    </Link>
                     <div className="playlistaccordion">
                         {playlists}
                     </div>
