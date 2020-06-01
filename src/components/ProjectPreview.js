@@ -51,8 +51,8 @@ const ProjectPreview = (props) => {
 				    <div className="accordion_in" key={playlist._id}>
                         <div className="plhead">
                                 {playlist.title}
-                        <Link to="" className="seeall">See All <img src="/images/seeall.png" alt="seeall" title=""></img>
-                        </Link>
+                        {/* <Link to="" className="seeall">See All <img src="/images/seeall.png" alt="seeall" title=""></img>
+                        </Link> */}
                         </div>
                         <div className="acc_content">
                             <ul className="playlist_js">
@@ -82,31 +82,31 @@ const ProjectPreview = (props) => {
                         </Link>
                     </div>
                     <div className="sce_cont">
-                        <div className="collapsetogle"><img src="/images/plusblk.png" alt="plusblk" title=""></img></div>
+                        {/* <div className="collapsetogle"><img src="/images/plusblk.png" alt="plusblk" title=""></img></div> */}
                         <ul className="bar_list flexdiv">
                             <li> 
                                 <div className="title_lg">{currentProject.name}</div>	
                             </li>
                             <li>
-                                <div className="usrcmt"><img src="/images/heart.png" alt="heart" title=""></img>20</div>
+                                {/* <div className="usrcmt"><img src="/images/heart.png" alt="heart" title=""></img>20</div> */}
                             </li>
                             <li>
-                                <div className="usrcmt"><i className="fas fa-user"></i> 02</div>
+                                {/* <div className="usrcmt"><i className="fas fa-user"></i> 02</div> */}
                             </li>
                             
                             <li>
-                                <div className="bar flexdiv">
+                                {/* <div className="bar flexdiv">
                                     <div className="progress_bar"> 30%</div>
                                     <div className="progress_div"></div>
-                                </div>
+                                </div> */}
                             </li>
                         </ul>
                         <ul className="rating flexdiv">
+                            {/* <li><i className="fas fa-star"></i> </li>
                             <li><i className="fas fa-star"></i> </li>
                             <li><i className="fas fa-star"></i> </li>
                             <li><i className="fas fa-star"></i> </li>
-                            <li><i className="fas fa-star"></i> </li>
-                            <li><i className="fas fa-star"></i> </li>
+                            <li><i className="fas fa-star"></i> </li> */}
                         </ul>
                         <p className="expandiv">
                             {currentProject.description}
