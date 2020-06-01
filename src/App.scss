@@ -1843,17 +1843,28 @@ header.head_mobile {
     content: none;
 }
 
-.drp-heading{color: #607A9B;font-size: 26px}
+.drp-heading {
+    color: #607A9B;
+    font-size: 26px
+}
 
-.dropdown-menu li:last-child{border-bottom:0} 
+.dropdown-menu li:last-child {
+    border-bottom: 0
+}
 
-a > li:hover{
+a>li:hover {
     background-color: #e8e7f1;
 }
 
-a:hover{
+a:hover {
     text-decoration: none;
 }
+
+.menuLinks {
+    width: 100%;
+    height: 100%;
+}
+
 /* ============ start media query ============ */
 
 @media screen and (max-width: 1800px) {

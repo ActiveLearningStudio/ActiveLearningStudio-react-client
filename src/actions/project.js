@@ -13,31 +13,38 @@ import {
     UPLOAD_PROJECT_THUMBNAIL,
     SHARE_PROJECT,
     PROJECT_THUMBNAIL_PROGRESS,
-    SHOW_USER_SUB_MENU
+    SHOW_USER_SUB_MENU,
+    CLOSE_MENU
 } from "../constants/actionTypes";
 
 // Publishes the project in LEARN
 export const shareProject = (project) => ({
-  type: SHARE_PROJECT,
-  project: project
+    type: SHARE_PROJECT,
+    project: project
 });
 
 // Publishes the project in LEARN
 export const shareProjectAction = (projectId) => {
-  return async dispatch => {
-    const { token } = JSON.parse(localStorage.getItem("auth"));
-    const response = axios.post(
-      '/api/shareproject',
-      { projectId },
-      { headers: { "Authorization": "Bearer " + token } }
-    ).then(response => {
-      if (response.data.status == "error" || response.status != 200) {
-        console.log('Error: ' + response.data.message);
-      }
-    }).catch(error => {
-      console.log(error);
-    });
-  };
+    return async dispatch => {
+        const {
+            token
+        } = JSON.parse(localStorage.getItem("auth"));
+        const response = axios.post(
+            '/api/shareproject', {
+                projectId
+            }, {
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            }
+        ).then(response => {
+            if (response.data.status == "error" || response.status != 200) {
+                console.log('Error: ' + response.data.message);
+            }
+        }).catch(error => {
+            console.log(error);
+        });
+    };
 };
 
 // Loads a specific project
@@ -79,6 +86,22 @@ export const showCreateProjectSubmenu = () => ({
 export const showUserSubMenu = () => ({
     type: SHOW_USER_SUB_MENU
 })
+
+export const closeMenu = () => ({
+    type: CLOSE_MENU
+})
+
+export const closeMenuAction = () => {
+    return async dispatch => {
+        try {
+            dispatch(
+                closeMenu()
+            )
+        } catch (e) {
+            throw new Error(e);
+        }
+    }
+}
 
 export const showCreateProjectSubmenuAction = () => {
     return async dispatch => {
@@ -297,13 +320,13 @@ export const deleteProjectAction = (projectid) => {
 }
 
 export const uploadProjectThumbnail = (thumb_url) => ({
-  type: UPLOAD_PROJECT_THUMBNAIL,
-  thumb_url
+    type: UPLOAD_PROJECT_THUMBNAIL,
+    thumb_url
 });
 
 export const projectThumbnailProgress = (progress) => ({
-  type: PROJECT_THUMBNAIL_PROGRESS,
-  progress
+    type: PROJECT_THUMBNAIL_PROGRESS,
+    progress
 
 });
 
@@ -317,7 +340,7 @@ export const uploadProjectThumbnailAction = (formData) => {
                 },
                 onUploadProgress: progressEvent => {
                     dispatch(
-                      projectThumbnailProgress('Uploaded progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100) + '%')
+                        projectThumbnailProgress('Uploaded progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100) + '%')
                     )
                 }
             }

@@ -5,14 +5,13 @@ import {
   Link
 } from "react-router-dom";
 import { startLogoutAction } from "../../actions/auth";
-import { showCreateProjectSubmenuAction } from './../../actions/project'
-import { showUserSubMenuAction } from './../../actions/project'
+import { showUserSubMenuAction,closeMenuAction,showCreateProjectSubmenuAction } from './../../actions/project'
 import "./Header.scss";
 
 function Header(props) {
     const createProjNode = useRef();
     const createTeamNode = useRef();
-
+    
     useEffect(() => {
         document.addEventListener("mousedown", handleClick);
     
@@ -22,17 +21,12 @@ function Header(props) {
     }, []);
 
     const handleClick = e => {
+        const { closeMenuAction } = props; 
         if (createProjNode.current.contains(e.target) || createTeamNode.current.contains(e.target)) {
           return;
         }
-        
-        if (props.project.showCreateProjectSubmenu) {
-            props.showCreateProjectSubmenuAction();
-        }
 
-        if (props.project.showUserSubMenu) {
-            props.showUserSubMenuAction();
-        }
+        closeMenuAction();
     };
     
     return (
@@ -58,7 +52,7 @@ function Header(props) {
                                 </Link>
                                 <div className="navmenu dropdown-menu" ref={createProjNode}>
                                     <ul>
-                                        <Link to="/project/create">
+                                        <Link to="/project/create" className="menuLinks">
                                         <li>
                                                 <div className="notifybx">
                                                     <div className="notiy_icon">
@@ -88,13 +82,13 @@ function Header(props) {
                                 </div>
                             </li>
                             <li>
-                                <Link to=""><img src="/images/notification.png" alt="notification" title=""></img> </Link>
+                                <Link to="#"><img src="/images/notification.png" alt="notification" title=""></img> </Link>
                             </li>
                             <li className="mobile-links">
-                                <Link href="#"><img src="/images/search.png" alt="search"></img></Link>
+                                <Link to="#"><img src="/images/search.png" alt="search"></img></Link>
                             </li>
                             <li className={props.project.showUserSubMenu ? "active button-dropdown" : "hide active button-dropdown"}>
-                                <Link href="#" className="dropbtn"> <img src="/images/user.png" alt="user" title=""
+                                <Link to="#" className="dropbtn"> <img src="/images/user.png" alt="user" title=""
                                     onClick={() => props.showUserSubMenuAction()}></img>
                                 </Link>
                                 <div id="myDropdown" className="dropdown-content" ref={createTeamNode}>
@@ -109,23 +103,17 @@ function Header(props) {
                     </div>
                 </div>
             </div>
-
-
-    
-    
         </header>
     );
 }
 
 // export default Header;
-
-
-
 const mapDispatchToProps = dispatch => {
   return {
     showCreateProjectSubmenuAction: () => dispatch(showCreateProjectSubmenuAction()),
     showUserSubMenuAction:()=> dispatch(showUserSubMenuAction()),
-    startLogoutAction: () => dispatch(startLogoutAction())
+    startLogoutAction: () => dispatch(startLogoutAction()),
+    closeMenuAction: () => dispatch(closeMenuAction())
   };
 };
 
