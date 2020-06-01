@@ -64,7 +64,6 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                 currentPlaylistId: action.id
             };
         case HIDE_CREATE_RESOURCE_MODAL:
-
             return {
                 ...state,
                 showCreateResourcePopup: false,
@@ -124,7 +123,7 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                     params: action.params,
                     editor: action.editor,
                     editorType: action.editorType,
-                    metadata: action.metadata
+                    metadata:action.metadata
                 }
             };
         case SHOW_RESOURCE_ACTIVITY_BUILD:
@@ -229,7 +228,6 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                     }
                 }
             }
-
         case UPLOAD_RESOURCE_THUMBNAIL:
             return {
                 ...state,
@@ -237,6 +235,13 @@ const resourceReducer = (state = defaultResourceState(), action) => {
                     ...state.newResource,
                     metadata: {
                         ...state.newResource.metadata,
+                        thumb_url: action.thumb_url
+                    }
+                },
+                editResource: {
+                    ...state.editResource,
+                    metadata: {
+                        ...state.editResource.metadata,
                         thumb_url: action.thumb_url
                     }
                 },

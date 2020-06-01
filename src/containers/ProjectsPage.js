@@ -27,9 +27,13 @@ export class ProjectsPage extends React.Component {
   }
 
   componentDidMount() {
+    
     //scroll to top
     window.scrollTo(0, 0);
-    this.props.loadMyProjectsAction();
+    if(this.props.showCreateProjectPopup == undefined && this.props.showEditProjectPopup == undefined){
+      this.props.loadMyProjectsAction();
+    }
+      
 
     if (this.props.showEditProjectPopup) {
       // loads the data of project for showing into edit form

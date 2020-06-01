@@ -1,7 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ActivityPreviewCard from "./ActivityPreviewCard";
-import "./ProjectPreviewModal.scss";
+// import "./ProjectPreviewModal.scss";
+import "./ProductDetails.css"
+// import {
+//     Accordion,
+//     AccordionItem,
+//     AccordionItemHeading,
+//     AccordionItemButton,
+//     AccordionItemPanel,
+// } from 'react-accessible-accordion';
 
 
 const ProjectPreview = (props) => {
@@ -13,23 +21,24 @@ const ProjectPreview = (props) => {
 	};
 	
 	props.project.projects.forEach((project, i) => {
-		if( project._id == props.match.params.projectid ){
+		if( project._id === props.match.params.projectid ){
 			currentProject = project;
-		};
+		}
 	});
-	
+    
+    var playlists;
+    
 	if(currentProject != null ){
-		var playlists = currentProject.playlists.map(playlist => {
+        playlists = currentProject.playlists.map(playlist => {
+            var activities;
 			if(playlist.activities.length > 0){
-				var activities = playlist.activities.map(activity => {
+				activities = playlist.activities.map(activity => {
 					return (
-						<div className="col-md-3">
-							<ActivityPreviewCard activity={activity} key={activity._id}/>
-						</div>						
+						<ActivityPreviewCard activity={activity} key={activity._id}/>
 					)
 				});
 			} else {
-				var activities = (
+				activities = (
 					<div className="col-md-12">
 						<div className="alert alert-info" role="alert">
 							No activities defined for this playlist.
@@ -38,23 +47,23 @@ const ProjectPreview = (props) => {
 				);
 			}
 
-			return (
-				<div className="row" key={playlist._id}>
-					<div className="col-md-12">
-						<div className="row">
-							<div className="col-md-12">
-								<h4 className="playlist-title">{playlist.title}</h4>
-							</div>
-						</div>
-						<div className="row">
-							{activities}
-						</div>
-					</div>
-				</div>
+            return (
+				    <div className="accordion_in" key={playlist._id}>
+                        <div className="plhead">
+                                {playlist.title}
+                        <Link to="" className="seeall">See All <img src="/images/seeall.png" alt="seeall" title=""></img>
+                        </Link>
+                        </div>
+                        <div className="acc_content">
+                            <ul className="playlist_js">
+                                {activities}
+                            </ul>
+                        </div>
+                    </div>
 			);
-		});
+		})
 	} else {
-		var playlists = (
+		playlists = (
 			<div className="col-md-12">
 				<div className="alert alert-info" role="alert">
   					No playlists defined for this project.
@@ -63,34 +72,65 @@ const ProjectPreview = (props) => {
 		);
 	}
 
-	return (
-		
-	
-	<div className="container">
-		<div className="row">
-			<div className="col-md-2">
-				<div className="">
-					<Link to={"/project/"+currentProject._id}>
-						<img src={global.config.laravelAPIUrl+currentProject.thumb_url} className="img-fluid project-preview-thumbnail" />
-					</Link>
-					<h2>{currentProject.name}</h2>
-					<p>{currentProject.description}</p>
-				</div>
-			</div>
-			<div className="col-md-10">
-				<div className="playlist-preview-wrapper">
-					<div className="preview-header">
-						Playlists
-					</div>
-					<div className="playlist-preview-content">
-						{playlists}
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	);
+    return (
+        <div>
+            <div className="container">
+                <div className="scne_div flex-wrap">
+                    <div className="sce_imgdiv">
+                        <Link to={"/project/"+currentProject._id}>
+                            <img alt="thumbnail" src={global.config.laravelAPIUrl + currentProject.thumb_url}></img>
+                        </Link>
+                    </div>
+                    <div className="sce_cont">
+                        <div className="collapsetogle"><img src="/images/plusblk.png" alt="plusblk" title=""></img></div>
+                        <ul className="bar_list flexdiv">
+                            <li> 
+                                <div className="title_lg">{currentProject.name}</div>	
+                            </li>
+                            <li>
+                                <div className="usrcmt"><img src="/images/heart.png" alt="heart" title=""></img>20</div>
+                            </li>
+                            <li>
+                                <div className="usrcmt"><i className="fas fa-user"></i> 02</div>
+                            </li>
+                            
+                            <li>
+                                <div className="bar flexdiv">
+                                    <div className="progress_bar"> 30%</div>
+                                    <div className="progress_div"></div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul className="rating flexdiv">
+                            <li><i className="fas fa-star"></i> </li>
+                            <li><i className="fas fa-star"></i> </li>
+                            <li><i className="fas fa-star"></i> </li>
+                            <li><i className="fas fa-star"></i> </li>
+                            <li><i className="fas fa-star"></i> </li>
+                        </ul>
+                        <p className="expandiv">
+                            {currentProject.description}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div className="container">
+            <div className="play_listdiv">
+                <div className="plytitle_div">
+                    <div className="title_md">Playlists</div>
+                </div>
+                <div className="all_plylist">
+                    <Link href="#" className="alltxt">All Playlist
+                        <img src="/images/arrow.png" alt="arrow" title=""></img>
+                    </Link>
+                    <div className="playlistaccordion">
+                        {playlists}
+                    </div>
+                </div>
+             </div>
+        </div>
+        </div>
+    );
 }
 
 export default ProjectPreview;
