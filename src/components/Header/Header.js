@@ -26,9 +26,6 @@ function Header(props) {
           return;
         }
         
-        console.log('1 props.project.showCreateProjectSubmenu:' + props.project.showCreateProjectSubmenu);
-        console.log('1 props.project.showUserSubMenu:' + props.project.showUserSubMenu);
-        
         if (props.project.showCreateProjectSubmenu) {
             props.showCreateProjectSubmenuAction();
         }
@@ -61,8 +58,8 @@ function Header(props) {
                                 </Link>
                                 <div className="navmenu dropdown-menu" ref={createProjNode}>
                                     <ul>
+                                        <Link to="/project/create">
                                         <li>
-                                            <Link to="/project/create">
                                                 <div className="notifybx">
                                                     <div className="notiy_icon">
                                                         <img src="/images/create-project-icon.png" alt="create" title="" />
@@ -72,10 +69,10 @@ function Header(props) {
                                                         <p>A project gives you a place to build and organize the amazing learning experiences available in the Active Learning Studio.</p>
                                                     </div>
                                                 </div>
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link to="#">
+                                            </li>
+                                        </Link>
+                                        <Link to="#">
+                                            <li>
                                                 <div className="notifybx">
                                                     <div className="notiy_icon">
                                                         <img src="/images/create-team.png" alt="create-team"></img>
@@ -85,8 +82,8 @@ function Header(props) {
                                                         <p>Increase productivity by making it easy for your group to create memorable learning experiences together.</p>
                                                     </div>
                                                 </div>
-                                            </Link>
-                                        </li>
+                                            </li>
+                                        </Link>
                                     </ul>
                                 </div>
                             </li>
@@ -102,9 +99,9 @@ function Header(props) {
                                 </Link>
                                 <div id="myDropdown" className="dropdown-content" ref={createTeamNode}>
                                     <ul className="dropdown-menu user-dropdown">
-                                        <li>Welcome to User</li>
-                                        <li><Link to="#">My Account</Link></li>
-                                        <li><Link to="#" onClick={props.startLogoutAction}>Logout</Link></li>
+                                        <Link to="#"><li>Welcome to User</li></Link>
+                                        <Link to="#"><li>My Account</li></Link>
+                                        <Link to="#" onClick={props.startLogoutAction}><li>Logout</li></Link>
                                     </ul>
                                 </div>
                             </li>

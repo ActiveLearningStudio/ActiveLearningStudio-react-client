@@ -978,7 +978,6 @@ body {
 }
 
 /* NEW CSS which applies to whole application*/
-@charset "utf-8";
 /* CSS Document */
 
 html {
@@ -1848,6 +1847,13 @@ header.head_mobile {
 
 .dropdown-menu li:last-child{border-bottom:0} 
 
+a > li:hover{
+    background-color: #e8e7f1;
+}
+
+a:hover{
+    text-decoration: none;
+}
 /* ============ start media query ============ */
 
 @media screen and (max-width: 1800px) {
