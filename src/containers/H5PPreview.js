@@ -1,77 +1,93 @@
 import React from 'react';
 
 import axios from "axios";
-import { connect } from "react-redux";
+import {
+    connect
+} from "react-redux";
 
-import { withRouter } from 'react-router-dom';
+import {
+    withRouter
+} from 'react-router-dom';
 
-import { createResourceAction } from "./../actions/resource";
+import {
+    createResourceAction
+} from "./../actions/resource";
 
 
 class H5PPreview extends React.Component {
+    constructor(props) {
+        super(props);
+        this.h5pLib = props.resource.editor; //"H5P.Audio 1.4";
+    }
+
+    componentDidMount() {
+        this.loadResorce(this.props.resourceid);
+    }
+
+    loadResorce(resourceid) {
+        if (resourceid == 0)
+            return;
+        
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'JWT fefege...'
+        }
 
 
-   constructor(props) {
-      super(props);
-      this.h5pLib = props.resource.editor; //"H5P.Audio 1.4";
-   }
-   componentDidMount() {
-      var previewResourceId = this.props.resourceid;
-
-
-      const headers = {
-         'Content-Type': 'application/json',
-         'Authorization': 'JWT fefege...'
-      }
-
-
-      axios.get(global.config.laravelAPIUrl + '/h5p-resource-settings/' + previewResourceId, {
-         headers: headers
-      })
-         .then((response) => {
-            console.log(response);
-            
-            window.H5PIntegration = response.data.data.h5p.settings;
-
-            var iframe = document.createElement('iframe');
-            iframe.setAttribute("id", "h5p-iframe-" + response.data.data.activity.mysqlid);
-            iframe.setAttribute("class", "h5p-iframe");
-            iframe.setAttribute("data-content-id", response.data.data.activity.mysqlid);
-            iframe.setAttribute("src", "about:blank");
-            iframe.setAttribute("frameBorder", "0");
-            iframe.setAttribute("scrolling", "no");
-            document.getElementsByClassName("h5p-iframe-wrapper")[0].appendChild(iframe);
-
-            response.data.data.h5p.settings.editor.assets.js.forEach((value) => {
-
-               var script = document.createElement("script");
-               script.src = value;
-               script.async = false;
-               document.body.appendChild(script);
+        axios.get(global.config.laravelAPIUrl + '/h5p-resource-settings/' + resourceid, {
+                headers: headers
+            })
+            .then((response) => {
+                this.resourceLoaded(response)
+            })
+            .catch((error) => {
+                console.log(error);
             });
-         })
-         .catch((error) => {
-            console.log(error);
-         });
+    }
 
-   }
+    resourceLoaded(response) {
+        console.log(response);
 
+        window.H5PIntegration = response.data.data.h5p.settings;
 
-   render() {
-      return (
-         <div>
-            <div className="container">
-               <div className="col-md-12">
-                  <div className="h5p-content-wrap">
-                     <div className="h5p-iframe-wrapper">
+        var iframe = document.createElement('iframe');
+        iframe.setAttribute("id", "h5p-iframe-" + response.data.data.activity.mysqlid);
+        iframe.setAttribute("class", "h5p-iframe");
+        iframe.setAttribute("data-content-id", response.data.data.activity.mysqlid);
+        iframe.setAttribute("src", "about:blank");
+        iframe.setAttribute("frameBorder", "0");
+        iframe.setAttribute("scrolling", "no");
+        document.getElementsByClassName("h5p-iframe-wrapper")[0].appendChild(iframe);
+
+        response.data.data.h5p.settings.editor.assets.js.forEach((value) => {
+
+            var script = document.createElement("script");
+            script.src = value;
+            script.async = false;
+            document.body.appendChild(script);
+        });
+    }
+
+    componentWillReceiveProps(props) {
+        if(this.props.resourceid != props.resourceid)
+            this.loadResorce(props.resourceid);
+    }
+
+    render() {
+        return (
+            <div>
+               <div className="container">
+                  <div className="col-md-12">
+                     <div className="h5p-content-wrap">
+                        <div className="h5p-iframe-wrapper">
+                        </div>
                      </div>
                   </div>
                </div>
+   
             </div>
-
-         </div>
-      );
-   }
+         );
+    }
 
 }
 
@@ -79,17 +95,17 @@ class H5PPreview extends React.Component {
 
 
 const mapDispatchToProps = dispatch => ({
-   createResourceAction: (playlistid, editor, editorType) => dispatch(createResourceAction(playlistid, editor, editorType)),
+    createResourceAction: (playlistid, editor, editorType) => dispatch(createResourceAction(playlistid, editor, editorType)),
 });
 
 const mapStateToProps = (state) => {
-   return {
-      resource: state.resource
-   };
+    return {
+        resource: state.resource
+    };
 }
 
 
 
 
 export default withRouter(connect(mapStateToProps,
-   mapDispatchToProps)(H5PPreview))
+    mapDispatchToProps)(H5PPreview))
