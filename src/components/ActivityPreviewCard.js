@@ -3,40 +3,32 @@ import React from "react";
 import "./ActivityPreviewCard.scss";
 
 const ActivityPreviewCard = (props) => {
-    const activity = props.activity;
+  const activity = props.activity;
 
-    function onSelect(id) {
-        const {
-            handleSelect
-        } = props;
-        if (handleSelect) {
-            handleSelect(id);
-        }
+  function onSelect(id) {
+    const {
+      handleSelect
+    } = props;
+    if (handleSelect) {
+      handleSelect(id);
     }
+  }
 
-    return (
-        <a href="#" onClick={()=>onSelect(activity._id)}>
-            <li data-attr={activity._id}>
-                <div className="small-thumb">
-                    <img src={ global.config.laravelAPIUrl + activity.thumb_url } alt="thumb"></img>
-                </div>
-                <div className="panel-heading">{activity.title}</div>
-                <div className="list-inline">
-                    <div className="inline-img">
-                        {/* <Link to="#"> */}
-                            <img src="/images/icon-pic.png" alt="icon-pic"></img>
-                        {/* </Link> */}
-                        {/* <Link to="#"> */}
-                            <img src="/images/icon-play.png" alt="icon-play"></img>
-                        {/* </Link>
-                        <Link to="#"> */}
-                            <img src="/images/icon-list.png" alt="icon-list"></img>
-                        {/* </Link> */}
-                    </div>
-                </div>
-            </li>
-        </a>
-    );
+  return (
+    <li onClick={()=>onSelect(activity._id)}>
+        <div className="small-thumb">
+            <img src={ global.config.laravelAPIUrl + activity.thumb_url } alt="thumb"></img>
+        </div>
+        <div className="panel-heading">{activity.title}</div>
+        <div className="list-inline">
+            <div className="inline-img">
+                <img src="/images/icon-pic.png" alt="icon-pic"></img>
+                <img src="/images/icon-play.png" alt="icon-play"></img>
+                <img src="/images/icon-list.png" alt="icon-list"></img>
+            </div>
+        </div>
+    </li>
+  );
 }
 
 export default ActivityPreviewCard;

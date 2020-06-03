@@ -69,8 +69,12 @@ class H5PPreview extends React.Component {
     }
 
     componentWillReceiveProps(props) {
-        if(this.props.resourceid != props.resourceid)
-            this.loadResorce(props.resourceid);
+      if (this.props.resourceid != props.resourceid) {
+        var h5pIFrame = document.getElementsByClassName('h5p-iframe');
+        if(h5pIFrame.length)
+          h5pIFrame[0].remove();
+        this.loadResorce(props.resourceid);
+      }
     }
 
     render() {

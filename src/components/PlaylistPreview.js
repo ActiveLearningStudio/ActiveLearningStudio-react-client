@@ -19,7 +19,7 @@ export class PlaylistPreview extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            resourceid: 0
+            resourceid: this.props.resourceid
         }
     }
 
@@ -50,41 +50,63 @@ export class PlaylistPreview extends React.Component {
             
             if(resourceid == 0)
                 this.state.resourceid = playlist.activities[0]._id;
-        }
+      }
       
-        return (
+      const currentActivity = playlist.activities.filter(f => f._id == resourceid);
+
+      const previousResource = playlist.activities.indexOf(currentActivity) != 0 ? playlist.activities[playlist.activities.indexOf(currentActivity) - 1] : null;
+      const nextResource = playlist.activities.indexOf(currentActivity) != playlist.activities.length -1 ? playlist.activities[playlist.activities.indexOf(currentActivity) + 1] : null;
+      
+      let previousLink = null;
+      if (previousResource) {
+        previousLink = (<Link to="#" className="slide-control prev">
+            <img src="/images/slide-arrow.png" alt="slide-arrow"></img>
+            <div className="hover-control-caption">
+              <img src={global.config.laravelAPIUrl + previousResource.thumb_url} alt="thumb01"></img>
+            <span>{previousResource.title}</span>
+            </div>
+          </Link>);
+      }
+
+      let nextLink = null;
+      if (nextResource) {
+        nextLink = (<Link to="#" className="slide-control next">
+                    <img src="/images/slide-arrow.png" alt="slide-arrow"></img>
+                    <div className="hover-control-caption">
+                        <img src={global.config.laravelAPIUrl + nextResource.thumb_url} alt="thumb01"></img>
+                        <span>{nextResource.title}</span>
+                    </div>
+            </Link>);
+      }
+
+      return (
+        <section className="main-page-content">
+          <div class="container">
+            <ul class="breadcrum">
+                <li><a href="#">My Projects</a></li>
+                <li>{playlist.title}</li>
+            </ul>
+          </div>
             <div className="flex-container wrap">
                 <div className="activity-bg left-vdo">
                     <div className="act-top-hader">
                         <div className="heading-wrapper">
-                            <div className="main-heading"><span>You are Watching:</span>Science of Golf: Why Balls Have Dimples
+                            <div className="main-heading"><span>You are Watching:</span>{playlist.activities && playlist.activities.length ? playlist.activities.filter(a=>a._id == resourceid)[0].title: ''}
                             </div>
-                            <div className="sub-heading"><span>From the playlist:</span>{playlist.title}
+                            <div className="sub-heading"><span>From the playlist:</span>{playlist ? playlist.title : ''}
                             </div>
                         </div>
                     </div>
-                    <div className="right-control vd-controls">
-                        <Link to="#" className="slide-control prev">
-                            <img src="/images/slide-arrow.png" alt="slide-arrow"></img>
-                            <div className="hover-control-caption">
-                                <img src="/images/thumb01.jpg" alt="thumb01"></img>
-                                <span>Physics and Golf Balls</span>
-                            </div>
-                        </Link>
-                        <Link to="#" className="slide-control next">
-                            <img src="/images/slide-arrow.png" alt="slide-arrow"></img>
-                            <div className="hover-control-caption">
-                                <img src="/images/thumb01.jpg" alt="thumb01"></img>
-                                <span>{playlist.title}</span>
-                            </div>
-                        </Link>
-                    </div>
-                    <div className="main-item-wrapper">
+              <div className="right-control vd-controls">
+                  { previousLink }
+                  { nextLink }
+              </div>
+              <div className="main-item-wrapper">
                         <div className="item-container">
                             {/* <img src="/images/video-thumbnail.jpg" alt="video-thumbnail" className=""></img> */}
                             <H5PPreview {...this.state} resourceid={resourceid} />
                             <div className="item-caption-bottom">
-                                {/* <p>item Caption Here.</p> */}
+                                <p>{playlist.activities && playlist.activities.length ? playlist.activities.filter(a=>a._id == resourceid)[0].title: ''}</p> 
                             </div>
                         </div>
                     </div>
@@ -100,7 +122,8 @@ export class PlaylistPreview extends React.Component {
                         { activities }
                     </ul>
                 </div>
-            </div>
+          </div>
+          </section>
         );
     }
 }
