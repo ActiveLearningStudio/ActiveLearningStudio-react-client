@@ -1829,6 +1829,11 @@ header.head_mobile {
 }
 
 /* START MAIN CONTENT CSS */
+
+.pointer-cursor {
+  cursor: pointer;
+}
+
 .sitecontainer {
   width: calc(100% - 290px);
   margin: 129px 0 0 290px;

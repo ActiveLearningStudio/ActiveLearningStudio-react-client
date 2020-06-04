@@ -52,31 +52,51 @@ export class PlaylistPreview extends React.Component {
                 this.state.resourceid = playlist.activities[0]._id;
       }
       
-      const currentActivity = playlist.activities.filter(f => f._id == resourceid);
+      const currentActivity = playlist.activities.filter(f => f._id == resourceid)[0];
 
-      const previousResource = playlist.activities.indexOf(currentActivity) != 0 ? playlist.activities[playlist.activities.indexOf(currentActivity) - 1] : null;
+      const previousResource = playlist.activities.indexOf(currentActivity) >= 1 ? playlist.activities[playlist.activities.indexOf(currentActivity) - 1] : null;
       const nextResource = playlist.activities.indexOf(currentActivity) != playlist.activities.length -1 ? playlist.activities[playlist.activities.indexOf(currentActivity) + 1] : null;
       
       let previousLink = null;
       if (previousResource) {
-        previousLink = (<Link to="#" className="slide-control prev">
+        previousLink = (<a to="#" className="slide-control prev" onClick={()=>this.handleSelect(previousResource._id)}>
             <img src="/images/slide-arrow.png" alt="slide-arrow"></img>
             <div className="hover-control-caption">
               <img src={global.config.laravelAPIUrl + previousResource.thumb_url} alt="thumb01"></img>
             <span>{previousResource.title}</span>
             </div>
-          </Link>);
+          </a>);
+      } else {
+        previousLink = (
+          <a to="#" className="slide-control prev disabled-link">
+            <img src="/images/slide-arrow.png" alt="slide-arrow"></img>
+            <div className="hover-control-caption">
+              <img alt="thumb01"></img>
+               <span></span>
+            </div>
+          </a>
+        )
       }
 
       let nextLink = null;
       if (nextResource) {
-        nextLink = (<Link to="#" className="slide-control next">
+        nextLink = (<a className="slide-control next" onClick={()=>this.handleSelect(nextResource._id)}>
                     <img src="/images/slide-arrow.png" alt="slide-arrow"></img>
-                    <div className="hover-control-caption">
+                    <div className="hover-control-caption pointer-cursor">
                         <img src={global.config.laravelAPIUrl + nextResource.thumb_url} alt="thumb01"></img>
                         <span>{nextResource.title}</span>
                     </div>
-            </Link>);
+            </a>);
+      }else {
+        nextLink = (
+          <a to="#" className="slide-control next disabled-link">
+            <img src="/images/slide-arrow.png" alt="slide-arrow"></img>
+            <div className="hover-control-caption pointer-cursor">
+              <img alt="thumb01"></img>
+               <span></span>
+            </div>
+          </a>
+        )
       }
 
       return (
@@ -98,7 +118,7 @@ export class PlaylistPreview extends React.Component {
                         </div>
                     </div>
               <div className="right-control vd-controls">
-                  { previousLink }
+                  {previousLink}
                   { nextLink }
               </div>
               <div className="main-item-wrapper">
@@ -117,10 +137,12 @@ export class PlaylistPreview extends React.Component {
                     </div>
                     <div className="sidebar-heading">
                         {playlist.title}
-                    </div>
+              </div>
+              <div className="scrollDiv">
                     <ul className="panel-list">
                         { activities }
-                    </ul>
+                </ul>
+                </div>
                 </div>
           </div>
           </section>

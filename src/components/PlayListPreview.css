@@ -6,7 +6,12 @@
   display: -moz-flex;
   display: -webkit-flex;
   display: flex;
+  margin-bottom: 70px;
 
+}
+
+.disabled-link {
+  pointer-events: none;
 }
 
 .wrap {
@@ -30,9 +35,8 @@ img {
   width: 507px;
   padding: 30px 50px;
   background-color: #ffffff;
-  margin-bottom: 70px;
-  overflow-y: scroll;
-  height: 100%;
+  /* margin-bottom: 70px;
+  height: 100%; */
   min-height: 100vh
 }
 
@@ -65,7 +69,7 @@ img {
 
 .left-vdo {
   width: calc(100% - 507px);
-  margin-bottom: 70px;
+  /* margin-bottom: 70px; */
   position: relative
 }
 
@@ -179,7 +183,7 @@ img {
   margin-right: 15px;
   position: absolute;
   left: 20px;
-  top: 20px;
+  top: 5px;
 }
 
 .panel-list li .date {
@@ -274,7 +278,8 @@ img {
 }
 
 .hover-control-caption img {
-  margin-bottom: 15px
+  margin-bottom: 15px;
+  max-width: 70px;
 }
 
 a.tooltip {
@@ -499,7 +504,6 @@ a.tooltip {
   }
 
   .right-sidegolf-info {
-    overflow-y: auto;
     height: auto;
     min-height: auto;
     order: 1
@@ -514,6 +518,8 @@ a.tooltip {
   .main-item-wrapper {
     margin-bottom: 30px;
   }
+
+  .scrollDiv {}
 }
 
 @media(max-width:480px) {

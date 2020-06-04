@@ -335,10 +335,6 @@ img {
   max-height: 100px;
 }
 
-.small-thumb img {
-  margin-top: -12px
-}
-
 @media(max-width:1400px) {
   .bar_list li {
     margin-bottom: 5px;
