@@ -113,7 +113,7 @@ export class PlaylistCard extends React.Component {
 											aria-labelledby="dropdownMenuButton"
 										>
 											<Link
-												className="dropdown-item"
+												className="dropdown-item hidden"
 												to={
 													"/playlist/preview/" +
                                                     this.props.playlist._id

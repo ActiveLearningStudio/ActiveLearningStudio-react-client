@@ -28,9 +28,11 @@ export class PlaylistPreview extends React.Component {
         this.props.loadPlaylistAction(this.props.playlistid);
     }
 
-    handleSelect = (resourceid) => {
-        this.setState({ resourceid: resourceid });
+  handleSelect = (resourceid) => {
+    if (resourceid) {
+      this.setState({ resourceid: resourceid });
     }
+  }
 
     render() {
         if (!this.props.playlist.selectedPlaylist)
@@ -101,10 +103,10 @@ export class PlaylistPreview extends React.Component {
 
       return (
         <section className="main-page-content">
-          <div class="container">
-            <ul class="breadcrum">
-                <li><a href="#">My Projects</a></li>
-                <li>{playlist.title}</li>
+          <div className="container">
+            <ul className="breadcrum">
+              <li><Link to={"/project/"+this.props.playlist.selectedPlaylist.project._id}>{this.props.playlist.selectedPlaylist.project.name}</Link></li>
+              <li>{playlist.title}</li>
             </ul>
           </div>
             <div className="flex-container wrap">
@@ -133,7 +135,7 @@ export class PlaylistPreview extends React.Component {
                 </div>
                 <div className="right-sidegolf-info">
                     <div className="back-header">
-                        <Link to="#" className="link"><img src="/images/right-arrow.png" className="back-arrow"></img>Back to {this.props.playlist.selectedPlaylist.title}</Link>
+                        <Link to={"/project/"+this.props.playlist.selectedPlaylist.project._id} className="link"><img src="/images/right-arrow.png" className="back-arrow"></img>Back to {this.props.playlist.selectedPlaylist.project.name}</Link>
                     </div>
                     <div className="sidebar-heading">
                         {playlist.title}
