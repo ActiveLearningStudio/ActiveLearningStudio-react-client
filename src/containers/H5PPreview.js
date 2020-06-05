@@ -28,27 +28,31 @@ class H5PPreview extends React.Component {
       axios.get(global.config.laravelAPIUrl + '/h5p-resource-settings/' + previewResourceId, {
          headers: headers
       })
-         .then((response) => {
+         .then(async (response) => {
             console.log(response);
             
             window.H5PIntegration = response.data.data.h5p.settings;
 
-            var iframe = document.createElement('iframe');
-            iframe.setAttribute("id", "h5p-iframe-" + response.data.data.activity.mysqlid);
-            iframe.setAttribute("class", "h5p-iframe");
-            iframe.setAttribute("data-content-id", response.data.data.activity.mysqlid);
-            iframe.setAttribute("src", "about:blank");
-            iframe.setAttribute("frameBorder", "0");
-            iframe.setAttribute("scrolling", "no");
-            document.getElementsByClassName("h5p-iframe-wrapper")[0].appendChild(iframe);
+            var h5pWrapper = document.getElementById('curriki-h5p-wrapper');
+            h5pWrapper.innerHTML = response.data.data.h5p.embed_code.trim();
+            
+            await Promise.all(response.data.data.h5p.settings.loadedCss.map((value) => {
+               var link = document.createElement("link");
+               link.href = value;
+               link.type = "text/css";
+               link.rel = "stylesheet";
+               document.head.appendChild(link);
+            }));
 
-            response.data.data.h5p.settings.editor.assets.js.forEach((value) => {
 
-               var script = document.createElement("script");
-               script.src = value;
-               script.async = false;
-               document.body.appendChild(script);
+            var new_scripts = response.data.data.h5p.settings.core.scripts.concat(response.data.data.h5p.settings.loadedJs);
+            new_scripts.map((value) => {
+                  var script = document.createElement("script");
+                  script.src = value;
+                  script.async = false;
+                  document.body.appendChild(script);
             });
+            
          })
          .catch((error) => {
             console.log(error);
@@ -58,14 +62,11 @@ class H5PPreview extends React.Component {
 
 
    render() {
+      // alert();
       return (
          <div>
             <div className="container">
-               <div className="col-md-12">
-                  <div className="h5p-content-wrap">
-                     <div className="h5p-iframe-wrapper">
-                     </div>
-                  </div>
+               <div className="col-md-12" id="curriki-h5p-wrapper">
                </div>
             </div>
 
