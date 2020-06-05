@@ -16,16 +16,11 @@ export class PreviewPage extends React.Component {
     super(props);
   }
 
-
- 
-
   componentDidMount() {
     //scroll to top
     window.scrollTo(0, 0);
     this.props.loadMyProjectsAction();
   }
-
-
 
   render() {
     // const { projects } = this.props.project;
@@ -33,19 +28,14 @@ export class PreviewPage extends React.Component {
     if (this.props.previewType == 'resource')
       content = (<ResourcePreview resourceid={this.props.match.params.resourceid} />);
     else if (this.props.previewType == 'playlist')
-      content = (<PlaylistPreview playlistid={this.props.match.params.playlistid} />);
+      content = (<PlaylistPreview playlistid={this.props.match.params.playlistid} resourceid={this.props.match.params.resourceid} />);
     else 
-      content = (<ProjectPreview {...this.props} key={this.props.match.params.projectid} project={this.props.project }/>);
+      content = (<div className="sitecontainer"><ProjectPreview {...this.props} key={this.props.match.params.projectid} project={this.props.project }/></div>);
 
     return (
         <div>
             <Header {...this.props} />
-            <div className="sitecontainer">
-                    {/* <div className="sidebar-wrapper">
-                        <Sidebar /> 
-                    </div> */}
-                {content}
-            </div>
+            {content}
         </div>
     );
   }

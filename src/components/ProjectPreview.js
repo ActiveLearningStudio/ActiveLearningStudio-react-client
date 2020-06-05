@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import ActivityPreviewCard from "./ActivityPreviewCard";
+import ActivityCard from "./ActivityCard";
 // import "./ProjectPreviewModal.scss";
 import "./ProductDetails.css"
 // import {
@@ -34,7 +34,7 @@ const ProjectPreview = (props) => {
 			if(playlist.activities.length > 0){
 				activities = playlist.activities.map(activity => {
 					return (
-						<ActivityPreviewCard activity={activity} key={activity._id}/>
+						<ActivityCard activity={activity} key={activity._id}/>
 					)
 				});
 			} else {

@@ -88,7 +88,7 @@ export class ResourceCard extends React.Component {
 											<Link
 												className="dropdown-item"
 												to={
-													"/resource/preview/" +
+													"/playlist/preview/" +this.props.playlist._id+"/resource/"+
 													this.props.resource._id
 												}
 											>
