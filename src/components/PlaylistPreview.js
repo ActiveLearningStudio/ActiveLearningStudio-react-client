@@ -28,9 +28,11 @@ export class PlaylistPreview extends React.Component {
         this.props.loadPlaylistAction(this.props.playlistid);
     }
 
-    handleSelect = (resourceid) => {
-        this.setState({ resourceid: resourceid });
+  handleSelect = (resourceid) => {
+    if (resourceid) {
+      this.setState({ resourceid: resourceid });
     }
+  }
 
     render() {
         if (!this.props.playlist.selectedPlaylist)

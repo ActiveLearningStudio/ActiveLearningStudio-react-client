@@ -27,7 +27,7 @@ const ActivityPreviewCard = (props) => {
                 <img src="/images/icon-list.png" alt="icon-list"></img> */}
             </div>
       </div>
-      <div class="date">Thu Apr 30 2020</div>
+      <div class="date">{new Date(activity.created_at).toDateString()}</div>
     </li>
   );
 }
