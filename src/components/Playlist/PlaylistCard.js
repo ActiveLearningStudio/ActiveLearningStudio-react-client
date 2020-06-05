@@ -94,7 +94,7 @@ export class PlaylistCard extends React.Component {
 										onBlur={(e, id) => this.props.changePlaylistTitleAction(e, this.props.playlist._id)}
 										onKeyPress={(e) =>this.onEnterPress(e)}
 										>{this.props.title}</textarea>
-									<div className="dropdown pull-right playlist-dropdown">
+									<div className="dropdown pull-right playlist-dropdown hidden">
 										<button
 											className="btn project-dropdown-btn"
 											type="button"

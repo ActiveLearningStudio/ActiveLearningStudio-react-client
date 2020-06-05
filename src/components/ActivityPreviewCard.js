@@ -22,11 +22,12 @@ const ActivityPreviewCard = (props) => {
         <div className="panel-heading">{activity.title}</div>
         <div className="list-inline">
             <div className="inline-img">
-                <img src="/images/icon-pic.png" alt="icon-pic"></img>
+                {/* <img src="/images/icon-pic.png" alt="icon-pic"></img>
                 <img src="/images/icon-play.png" alt="icon-play"></img>
-                <img src="/images/icon-list.png" alt="icon-list"></img>
+                <img src="/images/icon-list.png" alt="icon-list"></img> */}
             </div>
-        </div>
+      </div>
+      <div class="date">Thu Apr 30 2020</div>
     </li>
   );
 }
