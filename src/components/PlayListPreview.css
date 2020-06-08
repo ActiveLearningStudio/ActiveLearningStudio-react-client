@@ -238,7 +238,7 @@ img {
 
 .hover-control-caption {
   width: 190px;
-  height: 155px;
+  min-height: 155px;
   background-color: #ffffff;
   position: absolute;
   left: 0;
@@ -259,8 +259,7 @@ img {
   -webkit-transform: translate3d(0, 20px, 0);
   transform: translate3d(0, 20px, 0);
   z-index: 1;
-  padding: 0px 10px;
-
+  padding: 10px
 }
 
 .hover-control-caption .imginhover {
@@ -311,8 +310,9 @@ img {
   line-height: 100%;
   color: #090708;
   font-family: 'OpenSans-Semibold';
-  max-width: 90px;
+  line-height: 16px;
   font-size: 14px;
+  padding-top: 10px;
 }
 
 .hover-control-caption img {
