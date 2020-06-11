@@ -54,9 +54,7 @@ export class PreviewPage extends React.Component {
     return (
       <div>
         <Header {...this.props} />
-        <div className="sidebar-wrapper">
-          <Sidebar />
-        </div>
+
         {content}
       </div>
     );
