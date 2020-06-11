@@ -1,15 +1,19 @@
 import React from "react";
 import { connect } from "react-redux";
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 
+import Sidebar from "../components/Sidebar/Sidebar";
 import Header from "../components/Header/Header";
 
-import { showCreateProjectModalAction, createProjectAction, loadMyProjectsAction} from "../actions/project";
+import {
+  showCreateProjectModalAction,
+  createProjectAction,
+  loadMyProjectsAction,
+} from "../actions/project";
 
 import ProjectPreview from "../components/ProjectPreview";
 import ResourcePreview from "../components/ResourcePreview";
 import PlaylistPreview from "../components/PlaylistPreview";
-
 
 export class PreviewPage extends React.Component {
   constructor(props) {
@@ -24,39 +28,55 @@ export class PreviewPage extends React.Component {
 
   render() {
     // const { projects } = this.props.project;
-      var content;
-    if (this.props.previewType == 'resource')
-      content = (<ResourcePreview resourceid={this.props.match.params.resourceid} />);
-    else if (this.props.previewType == 'playlist')
-      content = (<PlaylistPreview playlistid={this.props.match.params.playlistid} resourceid={this.props.match.params.resourceid} />);
-    else 
-      content = (<div className="sitecontainer"><ProjectPreview {...this.props} key={this.props.match.params.projectid} project={this.props.project }/></div>);
+    var content;
+    if (this.props.previewType == "resource")
+      content = (
+        <ResourcePreview resourceid={this.props.match.params.resourceid} />
+      );
+    else if (this.props.previewType == "playlist")
+      content = (
+        <PlaylistPreview
+          playlistid={this.props.match.params.playlistid}
+          resourceid={this.props.match.params.resourceid}
+        />
+      );
+    else
+      content = (
+        <div className="sitecontainer">
+          <ProjectPreview
+            {...this.props}
+            key={this.props.match.params.projectid}
+            project={this.props.project}
+          />
+        </div>
+      );
 
     return (
-        <div>
-            <Header {...this.props} />
-            {content}
+      <div>
+        <Header {...this.props} />
+        <div className="sidebar-wrapper">
+          <Sidebar />
         </div>
+        {content}
+      </div>
     );
   }
 }
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   showCreateProjectModalAction: () => dispatch(showCreateProjectModalAction()),
-  loadMyProjectsAction: () =>dispatch(loadMyProjectsAction()),
-  createProjectAction: (name, description, thumb_url) =>dispatch(createProjectAction(name, description, thumb_url)),
+  loadMyProjectsAction: () => dispatch(loadMyProjectsAction()),
+  createProjectAction: (name, description, thumb_url) =>
+    dispatch(createProjectAction(name, description, thumb_url)),
   // hideCreateProjectModalAction: () => dispatch(hideCreateProjectModalAction()),
-
 });
 
 const mapStateToProps = (state) => {
   return {
-    project: state.project
+    project: state.project,
   };
-}
+};
 
-
-
-
-export default withRouter(connect(mapStateToProps,
-  mapDispatchToProps)(PreviewPage))
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(PreviewPage)
+);
