@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import ReactPlaceholder from "react-placeholder";
 import "react-placeholder/lib/reactPlaceholder.css";
 import validator from "validator";
+
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import {
   BrowserRouter as Router,
@@ -77,10 +78,11 @@ export class PlaylistsPage extends React.Component {
   componentDidMount() {
     //scroll to top
     window.scrollTo(0, 0);
-    if (this.props.openCreatePopup == true
-      || this.props.openCreateResourcePopup == true
-      || this.props.openEditResourcePopup == true) {
-
+    if (
+      this.props.openCreatePopup == true ||
+      this.props.openCreateResourcePopup == true ||
+      this.props.openEditResourcePopup == true
+    ) {
     } else {
       this.props.loadProjectPlaylistsAction(this.props.match.params.projectid);
       this.props.loadProjectAction(this.props.match.params.projectid);
@@ -104,10 +106,10 @@ export class PlaylistsPage extends React.Component {
       this.props.showCreateResourceModalAction(playlist._id);
       this.props.history.push(
         "/project/" +
-        this.props.match.params.projectid +
-        "/playlist/" +
-        playlist._id +
-        "/activity/create"
+          this.props.match.params.projectid +
+          "/playlist/" +
+          playlist._id +
+          "/activity/create"
       );
     } catch (e) {
       console.log(e.message);
@@ -191,7 +193,6 @@ export class PlaylistsPage extends React.Component {
           "/project/" + this.props.match.params.projectid
         );
       }
-
     } catch (e) {
       console.log(e.message);
     }
@@ -288,30 +289,33 @@ export class PlaylistsPage extends React.Component {
             <div className="content-wrapper">
               <div className="content">
                 <div className="row">
-                  <div className="col playlist-page-project-title">
-                    <h1>
-                      {this.props.project.selectedProject
-                        ? this.props.project.selectedProject.name
-                        : ""}
-                      <span>
-                        <Link
-                          className="dropdown-item"
-                          to={
-                            "/project/preview2/" +
-                            this.props.match.params.projectid
-                          }
-                        >
-                          <i className="fa fa-eye" aria-hidden="true"></i>{" "}
-                          Project Preview
-                        </Link>
-                      </span>
-                    </h1>
-                    <button
-                      onClick={this.handleShowCreatePlaylistModal}
-                      className="create-playlist-btn"
-                    >
-                      Create New Playlist
-                </button>
+                  <div className="col playlist-page-project-title project-each-view">
+                    <div className="flex-se">
+                      <h1>
+                        {this.props.project.selectedProject
+                          ? this.props.project.selectedProject.name
+                          : ""}
+                      </h1>
+
+                      <button
+                        onClick={this.handleShowCreatePlaylistModal}
+                        className="create-playlist-btn"
+                      >
+                        <i className="fa fa-plus" /> Create new playlist
+                      </button>
+                    </div>
+                    <span>
+                      <Link
+                        className="dropdown-item"
+                        to={
+                          "/project/preview2/" +
+                          this.props.match.params.projectid
+                        }
+                      >
+                        <i className="fa fa-eye" aria-hidden="true"></i> Project
+                        Preview
+                      </Link>
+                    </span>
                   </div>
                 </div>
 
@@ -324,7 +328,7 @@ export class PlaylistsPage extends React.Component {
                     {(provided) => (
                       <div
                         id="board"
-                        className=""
+                        className="board-custom"
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                       >
@@ -333,8 +337,8 @@ export class PlaylistsPage extends React.Component {
                             key={playlist._id}
                             index={index}
                             playlist={playlist}
-                            playlistTitleClicked = {playlist.playlistTitleClicked}
-                            title= {playlist.title}
+                            playlistTitleClicked={playlist.playlistTitleClicked}
+                            title={playlist.title}
                             handleCreateResource={
                               this.handleShowCreateResourceModal
                             }
@@ -418,7 +422,9 @@ const mapDispatchToProps = (dispatch) => ({
   createResourceAction: (playlistid, editor, editorType, metadata) =>
     dispatch(createResourceAction(playlistid, editor, editorType, metadata)),
   editResourceAction: (playlistid, editor, editorType, activityid, metadata) =>
-    dispatch(editResourceAction(playlistid, editor, editorType, activityid, metadata)),
+    dispatch(
+      editResourceAction(playlistid, editor, editorType, activityid, metadata)
+    ),
   createResourceByH5PUploadAction: (
     playlistid,
     editor,
@@ -442,10 +448,12 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(showDeletePopupAction(id, title, deleteType)),
   showCreateResourceActivity: () =>
     dispatch(showCreateResourceActivityAction()),
-  showDescribeActivityAction: (activity, activityid) => dispatch(showDescribeActivityAction(activity, activityid)),
+  showDescribeActivityAction: (activity, activityid) =>
+    dispatch(showDescribeActivityAction(activity, activityid)),
   showBuildActivityAction: (editor, editorType, activityid) =>
     dispatch(showBuildActivityAction(editor, editorType, activityid)),
-  onChangeActivityTypeAction: (activityTypeId) => dispatch(onChangeActivityTypeAction(activityTypeId)),
+  onChangeActivityTypeAction: (activityTypeId) =>
+    dispatch(onChangeActivityTypeAction(activityTypeId)),
   onChangeActivityAction: (e, activity) =>
     dispatch(onChangeActivityAction(e, activity)),
   uploadResourceThumbnailAction: () =>
@@ -453,7 +461,7 @@ const mapDispatchToProps = (dispatch) => ({
   reorderPlaylistsAction: (playlist) =>
     dispatch(reorderPlaylistsAction(playlist)),
   reorderPlaylistActivitiesAction: (playlist) =>
-    dispatch(reorderPlaylistActivitiesAction(playlist))
+    dispatch(reorderPlaylistActivitiesAction(playlist)),
 });
 
 const mapStateToProps = (state) => {
