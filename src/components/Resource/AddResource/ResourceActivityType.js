@@ -1,32 +1,32 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { fadeIn } from 'react-animations';
+import { fadeIn } from "react-animations";
 import axios from "axios";
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from "styled-components";
 
+import { Field, reduxForm, formValueSelector } from "redux-form";
 
-import { Field, reduxForm, formValueSelector } from 'redux-form'
+import {
+  showSelectActivityAction,
+  onChangeActivityTypeAction,
+} from "./../../../actions/resource";
 
-
-import { showSelectActivityAction, onChangeActivityTypeAction } from "./../../../actions/resource";
-
-import './AddResource.scss';
+import "./AddResource.scss";
 
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link,
-  withRouter 
+  withRouter,
 } from "react-router-dom";
 import AddResourceSidebar from "./AddResourceSidebar";
 
-const fadeAnimation = keyframes `${fadeIn}`;
+const fadeAnimation = keyframes`${fadeIn}`;
 
 const FaceDiv = styled.div`
   animation: 1s ${fadeAnimation};
 `;
-
 
 // const activity_types = [
 //   {
@@ -55,8 +55,6 @@ const FaceDiv = styled.div`
 //   }
 // ];
 
-
-
 const onSubmit = async (values, dispatch, props) => {
   try {
     props.onChangeActivityTypeAction();
@@ -65,128 +63,134 @@ const onSubmit = async (values, dispatch, props) => {
   } catch (e) {
     console.log(e.message);
   }
+};
+const required = (value) => {
+  return value ? undefined : "* Required";
+};
 
-}
-const required = (value) =>{
-  return value ? undefined : '* Required';
-} 
-
-const renderResourceActivityType = ({ input, label, type, meta: { touched, error, warning } }) => (
+const renderResourceActivityType = ({
+  input,
+  label,
+  type,
+  meta: { touched, error, warning },
+}) => (
   <>
-      <input {...input} type={type} />
-      {touched && ((error && <span className="validation-error">{error}</span>) || (warning && <span>{warning}</span>))}
+    <input {...input} type={type} />
+    {touched &&
+      ((error && <span className="validation-error">{error}</span>) ||
+        (warning && <span>{warning}</span>))}
   </>
-)
+);
 
-let ResourceActivityType = (props, showSelectActivityAction)=> {
+let ResourceActivityType = (props, showSelectActivityAction) => {
   const [activity_types, setActivityTypes] = React.useState([]);
   useEffect(() => {
     // get activity types
     const { token } = JSON.parse(localStorage.getItem("auth"));
-      axios.get(global.config.laravelAPIUrl+'/api/activity-types', {
-         headers: {
-            "Authorization": "Bearer "+token
-         }
+    axios
+      .get(global.config.laravelAPIUrl + "/api/activity-types", {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
       })
       .then((response) => {
-         setActivityTypes(response.data.data);
-         
+        setActivityTypes(response.data.data);
       });
-    
   }, []);
   const { handleSubmit, load, pristine, reset, submitting } = props;
-  const activity_typesContent = activity_types.map((activity, i)=>(
+  const activity_typesContent = activity_types.map((activity, i) => (
     <div className="col-md-3" key={i}>
       <label className="activity-label">
-
-        
         <Field
-            name="activityType"
-            component={renderResourceActivityType}
-            type="radio"
-            value={""+activity._id}
-            onChange= {(id) =>props.onChangeActivityTypeAction(activity._id)}
-            validate={[required]}
-          />
+          name="activityType"
+          component={renderResourceActivityType}
+          type="radio"
+          value={"" + activity._id}
+          onChange={(id) => props.onChangeActivityTypeAction(activity._id)}
+          validate={[required]}
+        />
 
-        
         <div className="activity-item">
-          <div className="activity-img" style={{backgroundImage:'url('+global.config.laravelAPIUrl+activity.image+')'}}>
-          </div>
+          <div
+            className="activity-img"
+            style={{
+              backgroundImage:
+                "url(" + global.config.laravelAPIUrl + activity.image + ")",
+            }}
+          ></div>
           <div className="activity-content">
-            <span>
-              {activity.title}
-            </span>
+            <span>{activity.title}</span>
           </div>
         </div>
       </label>
     </div>
   ));
-  
+
   return (
-    <div className="row">
-      <div className="col-md-3">
-        <AddResourceSidebar {...props} />
-      </div>
-      <div className="col-md-9">
-        <div className="resource-activity">
-          <FaceDiv>
-            <div className="row">
-              <div className="col-md-12">
-                <h2 className="title">Select the type of activity you want to create?</h2>
-                <div className="activity-content">
-                  <p>
-                    Create memorable learning experiences from one of the activity types below:
-                  </p>
+    <>
+      <div className="row">
+        <div className="col-md-3">
+          <AddResourceSidebar {...props} />
+        </div>
+        <div className="col-md-9">
+          <div className="resource-activity">
+            <FaceDiv>
+              <div className="row">
+                <div className="col-md-12">
+                  <h2 className="title">Pick Activity Type</h2>
+                  <div className="activity-content">
+                    <p>
+                      Create memorable learning experiences from one of the
+                      activity types below:
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-              
-              
-            <form className="row meta-form" onSubmit={handleSubmit} autoComplete="off">
-              {activity_typesContent}
-              {/* <div className="row">
+
+              <form
+                className="row meta-form"
+                onSubmit={handleSubmit}
+                autoComplete="off"
+              >
+                {activity_typesContent}
                 <div className="col-md-12">
-                  <button type="submit" className="add-resource-continue-btn">Continue</button>
+                  <button type="submit" className="add-resource-continue-btn">
+                    Continue
+                  </button>
                 </div>
-              </div> */}
-            </form>
-              
-          </FaceDiv>
+              </form>
+            </FaceDiv>
+          </div>
+        </div>
       </div>
-      </div>
-    </div>    
-    
-    
-    
+    </>
   );
-}
+};
 
 ResourceActivityType = reduxForm({
-  form: 'activityTypeForm',
+  form: "activityTypeForm",
   enableReinitialize: true,
-  onSubmit,
-  onChange: (values, dispatch, props, previousValues) => {
+  onSubmit: (values, dispatch, props, previousValues) => {
     // props.onChangeActivityTypeAction(values.activityType);
     let data = values.activityType;
     props.showSelectActivityAction(data);
-      // props.submit();
+    // props.submit();
   },
-})(ResourceActivityType)
+})(ResourceActivityType);
 
-const mapDispatchToProps = dispatch => ({
-  showSelectActivityAction: (activityType) => dispatch(showSelectActivityAction(activityType)),
-  onChangeActivityTypeAction: (activityTypeId) => dispatch(onChangeActivityTypeAction(activityTypeId)),
+const mapDispatchToProps = (dispatch) => ({
+  showSelectActivityAction: (activityType) =>
+    dispatch(showSelectActivityAction(activityType)),
+  onChangeActivityTypeAction: (activityTypeId) =>
+    dispatch(onChangeActivityTypeAction(activityTypeId)),
 });
 
-const mapStateToProps =(state) => {
+const mapStateToProps = (state) => {
   return {
-    resource: state.resource
+    resource: state.resource,
   };
-}
+};
 
-
-
-
-export default withRouter(connect(mapStateToProps,
-  mapDispatchToProps)(ResourceActivityType));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(ResourceActivityType)
+);

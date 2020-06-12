@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import { fadeIn } from 'react-animations';
-import { Field, reduxForm, formValueSelector } from 'redux-form'
-import styled, { keyframes } from 'styled-components';
-import DropdownList from 'react-widgets/lib/DropdownList'
-import 'react-widgets/dist/css/react-widgets.css'
+import { fadeIn } from "react-animations";
+import { Field, reduxForm, formValueSelector } from "redux-form";
+import styled, { keyframes } from "styled-components";
+import DropdownList from "react-widgets/lib/DropdownList";
+import "react-widgets/dist/css/react-widgets.css";
 import { uploadResourceThumbnailAction } from "../../../actions/resource";
 
 import {
@@ -12,12 +12,16 @@ import {
   Switch,
   Route,
   Link,
-  withRouter
+  withRouter,
 } from "react-router-dom";
 import AddResourceSidebar from "./AddResourceSidebar";
-import { showBuildActivityAction, onSubmitDescribeActivityAction } from "./../../../actions/resource";
+import {
+  showBuildActivityAction,
+  onSubmitDescribeActivityAction,
+  showSelectActivity,
+} from "./../../../actions/resource";
 
-import './AddResource.scss'
+import "./AddResource.scss";
 
 const fadeAnimation = keyframes`${fadeIn}`;
 
@@ -25,87 +29,106 @@ const FadeDiv = styled.div`
   animation: 0.5s ${fadeAnimation};
 `;
 
-const required = value => value ? undefined : '* Required'
-const maxLength = max => value =>
-  value && value.length > max ? `* Must be ${max} characters or less` : undefined
-const maxLength80 = maxLength(80)
+const required = (value) => (value ? undefined : "* Required");
+const maxLength = (max) => (value) =>
+  value && value.length > max
+    ? `* Must be ${max} characters or less`
+    : undefined;
+const maxLength80 = maxLength(80);
 
-
-const renderMetaTitleInput = ({ input, label, type, meta: { touched, error, warning } }) => (
+const renderMetaTitleInput = ({
+  input,
+  label,
+  type,
+  meta: { touched, error, warning },
+}) => (
   <div>
-    <label><h2>{label}</h2></label>
+    <label>
+      <h2>{label}</h2>
+    </label>
     <div>
       <input {...input} type={type} />
-      {touched && ((error && <span className="validation-error">{error}</span>) || (warning && <span>{warning}</span>))}
+      {touched &&
+        ((error && <span className="validation-error">{error}</span>) ||
+          (warning && <span>{warning}</span>))}
     </div>
   </div>
-)
-
-
+);
 
 export const uploadThumb = async (e, props) => {
   const formData = new FormData();
   try {
-    formData.append('uploads', e.target.files[0]);
+    formData.append("uploads", e.target.files[0]);
     imageValidation = "";
     await props.uploadResourceThumbnailAction(formData);
   } catch (e) {
     console.log(e);
   }
-}
+};
 
-const subjects = [{ subject: 'Arts', value: 'Arts' },
-{ subject: 'Career & Technical Education', value: 'CareerTechnicalEducation' },
-{ subject: 'Computer Science', value: 'ComputerScience' },
-{ subject: 'Language Arts', value: 'LanguageArts' },
-{ subject: 'Mathematics', value: 'Mathematics' },
-{ subject: 'Science', value: 'Science' },
-{ subject: 'Social Studies', value: 'SocialStudies' },
+const subjects = [
+  { subject: "Arts", value: "Arts" },
+  {
+    subject: "Career & Technical Education",
+    value: "CareerTechnicalEducation",
+  },
+  { subject: "Computer Science", value: "ComputerScience" },
+  { subject: "Language Arts", value: "LanguageArts" },
+  { subject: "Mathematics", value: "Mathematics" },
+  { subject: "Science", value: "Science" },
+  { subject: "Social Studies", value: "SocialStudies" },
 ];
-
 
 const educationLevels = [
-  { name: 'Preschool (Ages 0-4)', value: '1' },
-  { name: 'Kindergarten-Grade 2 (Ages 5-7)', value: '2' },
-  { name: 'Grades 3-5 (Ages 8-10)', value: '3' },
-  { name: 'Grades 6-8 (Ages 11-13)', value: '4' },
-  { name: 'Grades 9-10 (Ages 14-16)', value: '5' },
-  { name: 'Grades 11-12 (Ages 16-18)', value: '6' },
-  { name: 'College & Beyond', value: '7' },
-  { name: 'Professional Development', value: '8' },
-  { name: 'Special Education', value: '9' },
+  { name: "Preschool (Ages 0-4)", value: "1" },
+  { name: "Kindergarten-Grade 2 (Ages 5-7)", value: "2" },
+  { name: "Grades 3-5 (Ages 8-10)", value: "3" },
+  { name: "Grades 6-8 (Ages 11-13)", value: "4" },
+  { name: "Grades 9-10 (Ages 14-16)", value: "5" },
+  { name: "Grades 11-12 (Ages 16-18)", value: "6" },
+  { name: "College & Beyond", value: "7" },
+  { name: "Professional Development", value: "8" },
+  { name: "Special Education", value: "9" },
 ];
 
-var imageValidation = '';
+var imageValidation = "";
 
 const onSubmit = async (values, dispatch, props) => {
   try {
-
     //image validation
     if (!props.resource.newResource.metadata.thumb_url) {
-      imageValidation = '* Required';
+      imageValidation = "* Required";
       return false;
     }
     props.onSubmitDescribeActivityAction(values);
-    props.showBuildActivityAction(props.resource.newResource.activity.h5pLib, props.resource.newResource.activity.type)
+    props.showBuildActivityAction(
+      props.resource.newResource.activity.h5pLib,
+      props.resource.newResource.activity.type
+    );
   } catch (e) {
     console.log(e.message);
   }
-}
+};
 
-
-const renderMetaSubjects = ({ input, ...rest }) =>
+const renderMetaSubjects = ({ input, ...rest }) => (
   <DropdownList {...input} {...rest} />
+);
 
-const renderMetaEducationLevelInput = ({ input, ...rest }) =>
+const renderMetaEducationLevelInput = ({ input, ...rest }) => (
   <DropdownList {...input} {...rest} />
-
+);
 
 let ResourceDescribeActivity = (props) => {
   console.log(props.resource);
-  const { handleSubmit, metaSubject, load, pristine, reset, submitting } = props;
+  const {
+    handleSubmit,
+    metaSubject,
+    load,
+    pristine,
+    reset,
+    submitting,
+  } = props;
   return (
-
     <div className="row">
       <div className="col-md-3">
         <AddResourceSidebar {...props} />
@@ -115,13 +138,22 @@ let ResourceDescribeActivity = (props) => {
           <FadeDiv>
             <div className="row">
               <div className="col-md-12">
-                <h2 className="title">Describe Activity:</h2>
+                <h2 className="title">
+                  <div className="back-button" onClick={props.goBacktoActivity}>
+                    <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
+                  </div>
+                  Describe Activity:
+                </h2>
               </div>
             </div>
             <div className="row">
               <div className="col-md-12">
                 <div className="describe-activity-wrapper">
-                  <form className="meta-form" onSubmit={handleSubmit} autoComplete="off">
+                  <form
+                    className="meta-form"
+                    onSubmit={handleSubmit}
+                    autoComplete="off"
+                  >
                     <div className="row">
                       <div className="col-md-12">
                         <div className="meta-title">
@@ -132,107 +164,129 @@ let ResourceDescribeActivity = (props) => {
                             label="Title"
                             validate={[required]}
                           />
-
-
                         </div>
                       </div>
                     </div>
-
 
                     <div className="row">
                       <div className="col-md-12">
                         <div className="upload-thumbnail">
                           <h2>Upload thumbnail</h2>
                           <label>
-                            <input type="file" onChange={(e) => uploadThumb(e, props)} accept="image/x-png,image/jpeg" />
+                            <input
+                              type="file"
+                              onChange={(e) => uploadThumb(e, props)}
+                              accept="image/x-png,image/jpeg"
+                            />
                             <span>Upload</span>
                           </label>
                           <span className="validation-error">
-                            {
-                              imageValidation
-                            }
+                            {imageValidation}
                           </span>
 
-                          {
-                              props.resource.progress
-                          }
+                          {props.resource.progress}
 
-                          {
-                            props.resource.newResource.metadata.thumb_url ?
-                              <div className="thumb-display">
-                                <div className="success" style={{ color: 'green', marginBottom: '20px', fontSize: '20px' }}>
-                                  Image Uploaded:
-                                </div>
-                                <div className="thumb"><img src={global.config.laravelAPIUrl + props.resource.newResource.metadata.thumb_url} /></div>
+                          {props.resource.newResource.metadata.thumb_url ? (
+                            <div className="thumb-display">
+                              <div
+                                className="success"
+                                style={{
+                                  color: "green",
+                                  marginBottom: "20px",
+                                  fontSize: "20px",
+                                }}
+                              >
+                                Image Uploaded:
                               </div>
-                              :
-                              null
-                          }
+                              <div className="thumb">
+                                <img
+                                  src={
+                                    global.config.laravelAPIUrl +
+                                    props.resource.newResource.metadata
+                                      .thumb_url
+                                  }
+                                />
+                              </div>
+                            </div>
+                          ) : null}
                         </div>
                       </div>
                     </div>
                     <div className="row">
                       <div className="col-md-6">
                         <div className="meta-subjects">
-                          <label><h2>Subject</h2></label>
+                          <label>
+                            <h2>Subject</h2>
+                          </label>
                           <Field
                             name="metaSubject"
                             component={renderMetaSubjects}
                             data={subjects}
                             valueField="value"
-                            textField="subject" />
+                            textField="subject"
+                          />
                         </div>
                       </div>
                       <div className="col-md-6">
                         <div className="meta-education-levels">
-
-                          <label><h2>Education Level</h2></label>
+                          <label>
+                            <h2>Education Level</h2>
+                          </label>
                           <Field
                             name="metaEducationLevels"
                             component={renderMetaEducationLevelInput}
                             data={educationLevels}
                             valueField="value"
-                            textField="name" />
+                            textField="name"
+                          />
                         </div>
                       </div>
                     </div>
                     <div className="row">
                       <div className="col-md-12">
-                        <button type="submit" className="add-resource-continue-btn">Continue</button>
+                        <button
+                          type="submit"
+                          className="add-resource-continue-btn"
+                        >
+                          Continue
+                        </button>
                       </div>
                     </div>
                   </form>
                 </div>
               </div>
-
             </div>
           </FadeDiv>
         </div>
       </div>
     </div>
-
   );
-}
+};
 
 ResourceDescribeActivity = reduxForm({
-  form: 'describeActivityForm',
+  form: "describeActivityForm",
   enableReinitialize: true,
-  onSubmit
-})(ResourceDescribeActivity)
+  onSubmit,
+})(ResourceDescribeActivity);
 
-
-const mapDispatchToProps = dispatch => ({
-  showBuildActivityAction: (editor, editorType) => dispatch(showBuildActivityAction(editor, editorType)),
-  onSubmitDescribeActivityAction: (metadata) => dispatch(onSubmitDescribeActivityAction(metadata)),
-  uploadResourceThumbnailAction: (formData) => dispatch(uploadResourceThumbnailAction(formData))
+const mapDispatchToProps = (dispatch) => ({
+  showBuildActivityAction: (editor, editorType) =>
+    dispatch(showBuildActivityAction(editor, editorType)),
+  onSubmitDescribeActivityAction: (metadata) =>
+    dispatch(onSubmitDescribeActivityAction(metadata)),
+  uploadResourceThumbnailAction: (formData) =>
+    dispatch(uploadResourceThumbnailAction(formData)),
+  goBacktoActivity: () => {
+    dispatch(showSelectActivity());
+  },
 });
 
 const mapStateToProps = (state) => {
   return {
-    resource: state.resource
+    resource: state.resource,
   };
-}
+};
 
-
-export default withRouter(connect(mapStateToProps,
-  mapDispatchToProps)(ResourceDescribeActivity));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(ResourceDescribeActivity)
+);
