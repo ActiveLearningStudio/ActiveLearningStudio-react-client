@@ -18,6 +18,7 @@ import {
   onChangeActivityAction,
   showCreateResourceActivity,
 } from "./../../../actions/resource";
+
 import h5pLibraries from "../../../constants/h5pLibraries";
 
 const fadeAnimation = keyframes`${fadeIn}`;
@@ -56,6 +57,13 @@ const renderResourceActivityType = ({
 
 let ResourceSelectActivity = (props) => {
   const [activities, setActivities] = useState([]);
+
+  const searchactivity = (e) => {
+    var dataactivities = activities.filter((data) =>
+      data.title.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setActivities(dataactivities);
+  };
   useEffect(() => {
     // get activity types
     const { token } = JSON.parse(localStorage.getItem("auth"));
@@ -72,6 +80,7 @@ let ResourceSelectActivity = (props) => {
       )
       .then((response) => {
         setActivities(response.data.data);
+        console.log(response.data.data);
       });
   }, []);
   const { handleSubmit, load, pristine, reset, submitting } = props;
@@ -151,6 +160,7 @@ let ResourceSelectActivity = (props) => {
                       clasName=""
                       type="text"
                       placeholder="Search activity"
+                      onChange={searchactivity}
                     />
                     <i className="fa fa-search" />
                   </div>

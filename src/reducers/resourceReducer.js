@@ -54,7 +54,6 @@ const defaultResourceState = () => {
 };
 
 const resourceReducer = (state = defaultResourceState(), action) => {
-  console.log("action", action);
   switch (action.type) {
     case SHOW_CREATE_RESOURCE_MODAL:
       return {

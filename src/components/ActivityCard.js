@@ -4,9 +4,13 @@ import "./ActivityCard.scss";
 
 const ActivityCard = (props) => {
   const activity = props.activity;
+  const playlist_id = props.playlist_id || "";
+
   return (
     <li>
-      <Link to={"/resource/preview/" + activity._id}>
+      <Link
+        to={"/playlist/preview/" + playlist_id + "/resource/" + activity._id}
+      >
         <div
           className="playimg"
           style={{

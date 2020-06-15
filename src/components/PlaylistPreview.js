@@ -150,7 +150,8 @@ export class PlaylistPreview extends React.Component {
             <li>
               <Link
                 to={
-                  "/project/" + this.props.playlist.selectedPlaylist.project._id
+                  "/project/preview2/" +
+                  this.props.playlist.selectedPlaylist.project._id
                 }
               >
                 {this.props.playlist.selectedPlaylist.project.name}
@@ -206,9 +207,23 @@ export class PlaylistPreview extends React.Component {
           </div>
           <div className="right-sidegolf-info">
             <div className="back-header">
+              <div>
+                {" "}
+                <Link
+                  className="gobackbuttonpreview"
+                  to={
+                    "/project/" +
+                    this.props.playlist.selectedPlaylist.project._id
+                  }
+                >
+                  <i className="fa fa-undo" aria-hidden="true"></i>Exit Preview
+                  Mode
+                </Link>
+              </div>
               <Link
                 to={
-                  "/project/" + this.props.playlist.selectedPlaylist.project._id
+                  "/project/preview2/" +
+                  this.props.playlist.selectedPlaylist.project._id
                 }
                 className="link"
               >
