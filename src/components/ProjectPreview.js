@@ -57,8 +57,15 @@ const ProjectPreview = (props) => {
     playlists = currentProject.playlists.map((playlist, counter) => {
       var activities;
       if (playlist.activities.length > 0) {
+        console.log(playlist);
         activities = playlist.activities.map((activity) => {
-          return <ActivityCard activity={activity} key={activity._id} />;
+          return (
+            <ActivityCard
+              activity={activity}
+              playlist_id={playlist._id}
+              key={activity._id}
+            />
+          );
         });
       } else {
         activities = (
@@ -75,9 +82,9 @@ const ProjectPreview = (props) => {
           <button className={counter === 0 ? "active accordion" : " accordion"}>
             <i class="fa fa-plus" />
             {playlist.title}
-            <Link to="">
+            {/* <Link to="">
               See All <i class="fa fa-chevron-right" />{" "}
-            </Link>
+            </Link> */}
           </button>
 
           <div className="panel ">
@@ -124,12 +131,16 @@ const ProjectPreview = (props) => {
             <ul className="bar_list flexdiv">
               <li>
                 <div className="title_lg check">
-                  {currentProject.name}
-                  <div className="w3-border">
+                  <div> {currentProject.name}</div>
+                  {/* <div className="w3-border">
                     <div className="w3-grey" style={{ width: "35%" }}>
                       30%
                     </div>
-                  </div>
+                  </div> */}
+                  <Link to="/" className="gobackbuttonpreview">
+                    <i className="fa fa-undo" aria-hidden="true"></i> Exit
+                    Preview Mode
+                  </Link>
                 </div>
               </li>
               <li>
