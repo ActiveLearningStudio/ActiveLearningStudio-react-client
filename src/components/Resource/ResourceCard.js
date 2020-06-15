@@ -11,6 +11,7 @@ import "./ResourceCard.scss";
 export class ResourceCard extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props);
   }
 
   handleDelete = (e) => {
@@ -40,7 +41,7 @@ export class ResourceCard extends React.Component {
               {this.props.resource.metadata &&
               this.props.resource.metadata.thumb_url ? (
                 <div className="activity-thumb-wrapper">
-                  <Link to={"/resource/preview/" + this.props.resource._id}>
+                  <Link to={"/playlist/preview/" + this.props.resource._id}>
                     <div
                       className="activity-thumb"
                       style={{
@@ -64,7 +65,14 @@ export class ResourceCard extends React.Component {
                 }
               >
                 <div className="title">
-                  <Link to={"/resource/preview/" + this.props.resource._id}>
+                  <Link
+                    to={
+                      "/playlist/preview/" +
+                      this.props.playlist._id +
+                      "/resource/" +
+                      this.props.resource._id
+                    }
+                  >
                     {this.props.resource.metadata &&
                     this.props.resource.metadata.title != undefined
                       ? this.props.resource.metadata.title

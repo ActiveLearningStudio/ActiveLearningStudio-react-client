@@ -1,29 +1,23 @@
 import React, { useEffect, useCallback } from "react";
-import { fadeIn } from 'react-animations';
+import { fadeIn } from "react-animations";
 import { connect } from "react-redux";
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from "styled-components";
 
-import {
-  withRouter
-} from "react-router-dom";
-
+import { withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import EditResourceSidebar from "./EditResourceSidebar";
 import axios from "axios";
 import { showBuildActivityAction } from "./../../../actions/resource";
 import H5PEditor from "./Editors/H5PEditor";
-
-
+import { hideBuildActivity } from "../../../actions/resource";
 const fadeAnimation = keyframes`${fadeIn}`;
 
 const FaceDiv = styled.div`
   animation: 1s ${fadeAnimation};
 `;
 
-
-
-
 const ResourceActivityBuild = (props) => {
-  console.log(props.resource);
+  console.log(props);
   return (
     <div className="row">
       <div className="col-md-3">
@@ -31,6 +25,14 @@ const ResourceActivityBuild = (props) => {
       </div>
       <div className="col-md-9">
         <div className="resource-activity">
+          <div
+            className="back-button"
+            style={{ marginLeft: "15px" }}
+            onClick={props.goBacktoActivity}
+          >
+            <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
+          </div>
+
           <FaceDiv>
             {/* {props.resource.newResource.activity.type == 'h5p' ?  
                 <H5PEditor {...props} />
@@ -42,38 +44,34 @@ const ResourceActivityBuild = (props) => {
                 : null  
                 }   */}
 
-
-
-            {props.resource.editResource.params.data != '' ?
-              <H5PEditor {...props}
+            {props.resource.editResource.params.data != "" ? (
+              <H5PEditor
+                {...props}
                 h5pParams={JSON.stringify(props.resource.editResource.params)}
                 h5pLib={props.resource.editResource.editor}
               />
-              :
+            ) : (
               <h3>Loading...</h3>
-            }
-
-
+            )}
           </FaceDiv>
         </div>
       </div>
     </div>
-
   );
-}
+};
 
-
-
-
-const mapDispatchToProps = dispatch => ({
-
+const mapDispatchToProps = (dispatch) => ({
+  goBacktoActivity: () => {
+    dispatch(hideBuildActivity());
+  },
 });
 
 const mapStateToProps = (state) => {
   return {
-    resource: state.resource
+    resource: state.resource,
   };
-}
+};
 
-export default withRouter(connect(mapStateToProps,
-  mapDispatchToProps)(ResourceActivityBuild));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(ResourceActivityBuild)
+);

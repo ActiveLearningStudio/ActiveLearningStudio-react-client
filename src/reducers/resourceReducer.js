@@ -16,6 +16,7 @@ import {
   EDIT_RESOURCE,
   RESOURCE_VALIDATION_ERRORS,
   RESOURCE_THUMBNAIL_PROGRESS,
+  HIDE_RESOURCE_ACTIVITY_BUILD,
 } from "../constants/actionTypes";
 
 const defaultResourceState = () => {
@@ -138,6 +139,15 @@ const resourceReducer = (state = defaultResourceState(), action) => {
           editor: action.editor,
           editorType: action.editorType,
         },
+      };
+    case HIDE_RESOURCE_ACTIVITY_BUILD:
+      return {
+        ...state,
+        isResourceActivityType: false,
+        isResourceSelectActivity: false,
+        isResourceDescribeActivity: true,
+        isResourceActivityBuild: false,
+        isDescribeFilled: false,
       };
     case CREATE_RESOURCE:
       return {

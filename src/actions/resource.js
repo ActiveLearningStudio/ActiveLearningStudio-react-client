@@ -18,6 +18,7 @@ import {
   EDIT_RESOURCE,
   RESOURCE_VALIDATION_ERRORS,
   RESOURCE_THUMBNAIL_PROGRESS,
+  HIDE_RESOURCE_ACTIVITY_BUILD,
 } from "./../constants/actionTypes";
 
 export const loadResource = (resource, previous, next) => ({
@@ -115,6 +116,10 @@ export const showBuildActivity = (editor, editorType, params) => ({
   editor,
   editorType,
   params,
+});
+
+export const hideBuildActivity = () => ({
+  type: HIDE_RESOURCE_ACTIVITY_BUILD,
 });
 
 export const showBuildActivityAction = (
