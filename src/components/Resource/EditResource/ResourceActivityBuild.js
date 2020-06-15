@@ -30,7 +30,8 @@ const ResourceActivityBuild = (props) => {
             style={{ marginLeft: "15px" }}
             onClick={props.goBacktoActivity}
           >
-            <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
+            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+            Back{" "}
           </div>
 
           <FaceDiv>

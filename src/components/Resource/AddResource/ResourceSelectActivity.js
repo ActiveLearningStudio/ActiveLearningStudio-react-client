@@ -125,7 +125,8 @@ let ResourceSelectActivity = (props) => {
               <div className="col-md-12">
                 <h2 className="title">
                   <div className="back-button" onClick={props.goBacktoActivity}>
-                    <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
+                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                    Back
                   </div>
                   Select the activity you want to build from the options below:
                 </h2>
@@ -135,7 +136,7 @@ let ResourceSelectActivity = (props) => {
               <div className="col-md-12">
                 <div className="shadowbox">
                   <div className="dropdown">
-                    <button
+                    {/* <button
                       className="btn btn-primary dropdown-toggle"
                       type="button"
                       data-toggle="dropdown"
@@ -153,7 +154,7 @@ let ResourceSelectActivity = (props) => {
                       <li>
                         <a href="#"></a>
                       </li>
-                    </ul>
+                    </ul> */}
                   </div>
                   <div className="searchbox">
                     <input

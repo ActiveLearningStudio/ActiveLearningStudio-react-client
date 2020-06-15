@@ -79,7 +79,7 @@ export class ResourceCard extends React.Component {
                       : this.props.resource.title}
                   </Link>
                 </div>
-                <div className="social-icons-tray">
+                {/* <div className="social-icons-tray">
                   <Link to="">
                     <img src={imageplaceholder} alt="" />
                   </Link>
@@ -89,7 +89,7 @@ export class ResourceCard extends React.Component {
                   <Link to="">
                     <img src={list} alt="" />
                   </Link>
-                </div>
+                </div> */}
               </div>
               <div className="activity-options-wrapper">
                 <div className="activity-options">
