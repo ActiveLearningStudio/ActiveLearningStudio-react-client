@@ -57,9 +57,10 @@ const renderResourceActivityType = ({
 
 let ResourceSelectActivity = (props) => {
   const [activities, setActivities] = useState([]);
+  const [Searchactivities, setSearchActivities] = useState([]);
 
   const searchactivity = (e) => {
-    var dataactivities = activities.filter((data) =>
+    var dataactivities = Searchactivities.filter((data) =>
       data.title.toLowerCase().includes(e.target.value.toLowerCase())
     );
     setActivities(dataactivities);
@@ -80,7 +81,7 @@ let ResourceSelectActivity = (props) => {
       )
       .then((response) => {
         setActivities(response.data.data);
-        console.log(response.data.data);
+        setSearchActivities(response.data.data);
       });
   }, []);
   const { handleSubmit, load, pristine, reset, submitting } = props;
@@ -108,7 +109,7 @@ let ResourceSelectActivity = (props) => {
             <span>{activity.title}</span>
             <p>{activity.description}</p>
           </div>
-          <i className="fa fa-star" />
+          {/* <i className="fa fa-star" /> */}
         </div>
       </label>
     </div>
