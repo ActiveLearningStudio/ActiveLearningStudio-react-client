@@ -67,6 +67,9 @@ const resourceReducer = (state = defaultResourceState(), action) => {
         ...state,
         showCreateResourcePopup: false,
         newResource: {
+          activity: {
+            type: null,
+          },
           params: {
             data: "",
           },
