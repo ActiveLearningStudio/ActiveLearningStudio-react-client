@@ -179,11 +179,11 @@ let ResourceSelectActivity = (props) => {
                   <div className="row">{questionsContent}</div>
                 </div>
 
-                <div className="col-md-12">
+                {/* <div className="col-md-12">
                   <button type="submit" className="add-resource-continue-btn">
                     Continue
                   </button>
-                </div>
+                </div> */}
               </form>
             </div>
           </FadeDiv>
@@ -196,7 +196,8 @@ let ResourceSelectActivity = (props) => {
 ResourceSelectActivity = reduxForm({
   form: "SelectActivityForm",
   enableReinitialize: true,
-  onSubmit: (values, dispatch, props, previousValues, activity) => {
+  onSubmit,
+  onChange: (values, dispatch, props, previousValues, activity) => {
     let data = values.activity;
     // props.onChangeActivityAction(data);
     props.showDescribeActivityAction(data);

@@ -153,11 +153,11 @@ let ResourceActivityType = (props, showSelectActivityAction) => {
                 autoComplete="off"
               >
                 {activity_typesContent}
-                <div className="col-md-12">
+                {/* <div className="col-md-12">
                   <button type="submit" className="add-resource-continue-btn">
                     Continue
                   </button>
-                </div>
+                </div> */}
               </form>
             </FaceDiv>
           </div>
@@ -170,7 +170,8 @@ let ResourceActivityType = (props, showSelectActivityAction) => {
 ResourceActivityType = reduxForm({
   form: "activityTypeForm",
   enableReinitialize: true,
-  onSubmit: (values, dispatch, props, previousValues) => {
+  onSubmit,
+  onChange: (values, dispatch, props, previousValues) => {
     // props.onChangeActivityTypeAction(values.activityType);
     let data = values.activityType;
     props.showSelectActivityAction(data);
