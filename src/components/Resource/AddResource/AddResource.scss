@@ -1,27 +1,35 @@
 .resource-activity {
+
   // padding-left: 25px;
   .back-button {
     .fa {
-      color: #ffffff;
-      /* -webkit-text-stroke: 1px white; */
-      cursor: pointer;
-      background: #084892;
-      border-radius: 50%;
-      font-size: 14px;
-      width: 25px;
-      height: 25px;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 10px;
+      margin-right: 5px;
+      -webkit-text-stroke: 1px #084892;
     }
+
+    color: #ffffff;
+    /* -webkit-text-stroke: 1px white; */
+    cursor: pointer;
+    background: #084892;
+    border-radius: 20px;
+    font-size: 14px;
+    width: -moz-fit-content;
+    width: fit-content;
+    height: 30px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    padding: 0px 15px;
   }
+
   .activity-label {
     margin-bottom: 40px;
     display: block;
     width: 100%;
   }
+
   .title {
     text-align: left;
     font-weight: 600;
@@ -33,6 +41,7 @@
     padding-bottom: 25px;
     opacity: 1;
   }
+
   .activity-content {
     p {
       font-weight: 400;
@@ -44,6 +53,7 @@
       padding-bottom: 30px;
     }
   }
+
   .activity-item {
     // width:200px;
     border: 2px solid #e9e9e9;
@@ -53,6 +63,7 @@
     min-height: 183px;
     align-items: center;
     cursor: pointer;
+
     .activity-img {
       padding: 12%;
       margin: 0 auto;
@@ -65,10 +76,12 @@
         display: none;
       }
     }
+
     &:hover {
       .activity-icon {
         display: none;
       }
+
       .overlay-activity-icon {
         display: inline;
       }
@@ -117,9 +130,11 @@
       color: #959595;
       opacity: 1;
       text-align: left;
+
       &:focus {
         box-shadow: 0px 0px 0px transparent;
       }
+
       &:after {
         float: right;
         margin-top: 7px;
@@ -147,6 +162,7 @@
           color: #959595;
         }
       }
+
       i {
         position: absolute;
         right: 14px;
@@ -158,24 +174,31 @@
 
   .back-button {
     .fa {
-      color: #ffffff;
-      /* -webkit-text-stroke: 1px white; */
-      cursor: pointer;
-      background: #084892;
-      border-radius: 50%;
-      font-size: 14px;
-      width: 25px;
-      height: 25px;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 10px;
+      margin-right: 5px;
+      -webkit-text-stroke: 1px #084892;
     }
+
+    color: #ffffff;
+    /* -webkit-text-stroke: 1px white; */
+    cursor: pointer;
+    background: #084892;
+    border-radius: 20px;
+    font-size: 14px;
+    width: -moz-fit-content;
+    width: fit-content;
+    height: 30px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    padding: 0px 15px;
   }
+
   .question-label {
     margin-bottom: 40px;
     width: 100%;
+
     .activity-content {
       p {
         text-align: center;
@@ -187,6 +210,7 @@
         color: #707070;
         padding: 5px 20px 0px;
       }
+
       span {
         font-weight: 600;
         font-size: 17px;
@@ -199,12 +223,14 @@
       }
     }
   }
+
   .title {
     font-weight: 400;
     font-size: 24px;
     color: #2d2d2d;
     margin-bottom: 33px;
   }
+
   .activity-item {
     // width:230px;
     min-height: 220px;
@@ -214,8 +240,7 @@
     border-radius: 3px;
     position: relative;
     text-align: center;
-    background: url(/images/unselected-radio-icon.png) no-repeat right 15px top
-      13px;
+    background: url(/images/unselected-radio-icon.png) no-repeat right 15px top 13px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -228,6 +253,7 @@
       left: 15px;
       color: #f8e700;
     }
+
     .activity-img {
       padding: 12%;
       margin: 0 auto;
@@ -236,14 +262,17 @@
       background-position: center center;
       background-size: contain;
       margin-bottom: 5px;
+
       .overlay-activity-icon {
         display: none;
       }
     }
+
     &:hover {
       .activity-icon {
         display: none;
       }
+
       .overlay-activity-icon {
         display: inline;
       }
@@ -258,45 +287,56 @@ $filled: #44ca92;
   height: 500px;
   border-right: 1px solid #f6f6f6;
   margin-right: 40px;
+
   .activity-sidebar-btn {
     height: 114px;
+
     &.selected {
       .btn-box {
         .number-box {
           border: 2px solid $selected_color;
+
           span.number {
             background: $selected_color;
             color: #fff;
           }
         }
+
         span.bottom-vertical-line {
           background: $selected_color;
         }
+
         span.top-vertical-line {
           background: $selected_color;
         }
       }
+
       span.name {
         color: $selected_color;
         border-right: 3px solid #084892;
       }
     }
+
     &.filled {
       .btn-box {
         .number-box {
           border: 2px solid $filled;
+
           span.number {
             background: $filled;
             color: #fff;
           }
         }
+
         span.top-vertical-line {
           background: $filled;
         }
+
         span.bottom-vertical-line {
           background: $filled;
         }
       }
+
       span.name {
         color: $filled;
       }
@@ -304,12 +344,14 @@ $filled: #44ca92;
 
     .btn-box {
       position: relative;
+
       .number-box {
         display: inline-block;
         border: 5px solid #efefef;
         padding: 3px;
         border-radius: 50%;
         position: absolute;
+
         span.number {
           display: inline-block;
           width: 30px;
@@ -321,6 +363,7 @@ $filled: #44ca92;
           font-weight: bold;
         }
       }
+
       span.top-vertical-line {
         width: 3px;
         display: inline-block;
@@ -341,6 +384,7 @@ $filled: #44ca92;
         background: #efefef;
       }
     }
+
     span.name {
       margin-left: 50px;
       font-size: 16px;
@@ -352,9 +396,11 @@ $filled: #44ca92;
       display: block;
     }
   }
+
   .select-question {
     height: 114px;
   }
+
   .select-description {
     height: 114px;
   }
@@ -531,7 +577,7 @@ $filled: #44ca92;
   // }
 }
 
-input[type="radio"]:checked + .activity-item {
+input[type="radio"]:checked+.activity-item {
   box-shadow: 0px 3px 6px #00000029;
   border: 2px solid #084892;
   border-radius: 4px;
@@ -540,13 +586,16 @@ input[type="radio"]:checked + .activity-item {
   .activity-icon {
     display: none;
   }
+
   .overlay-activity-icon {
     display: inline;
   }
+
   span {
     color: #074892;
   }
 }
+
 .activity-label [type="radio"],
 .question-label [type="radio"] {
   display: none;
@@ -585,6 +634,7 @@ input[type="radio"]:checked + .activity-item {
   font-family: "Open Sans", sans-serif;
   font-weight: 600;
 }
+
 .add-resource-continue-btn {
   color: #fff;
   text-transform: uppercase;
@@ -617,6 +667,7 @@ input[type="radio"]:checked + .activity-item {
     opacity: 1;
     padding-bottom: 20px;
     margin-bottom: 15px;
+
     .close-btn {
       float: right;
       border: 0;
@@ -627,9 +678,11 @@ input[type="radio"]:checked + .activity-item {
       cursor: pointer;
     }
   }
+
   .modal-content {
     padding: 40px 35px;
   }
+
   .modal {
     padding: 0 !important;
   }
@@ -655,6 +708,7 @@ input[type="radio"]:checked + .activity-item {
     font-family: "Open Sans", sans-serif;
     font-weight: 300;
   }
+
   .meta-form {
     h2 {
       color: #565656;
@@ -664,9 +718,11 @@ input[type="radio"]:checked + .activity-item {
       margin-top: 15px;
       margin-bottom: 15px;
     }
+
     .meta-title,
     .meta-subjects,
     .meta-education-levels {
+
       input,
       .rw-widget-input {
         width: 100%;
@@ -685,9 +741,11 @@ input[type="radio"]:checked + .activity-item {
         height: 54px;
         padding-left: 15px;
         cursor: pointer;
+
         input {
           display: none;
         }
+
         span {
           display: block;
           width: 138px;
@@ -703,10 +761,12 @@ input[type="radio"]:checked + .activity-item {
           font-weight: 600;
         }
       }
+
       .thumb-display {
         width: 200px;
         height: 200px;
         overflow: hidden;
+
         img {
           max-width: 100%;
           max-height: 100%;
