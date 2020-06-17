@@ -605,6 +605,14 @@ body {
       opacity: 1
     }
 
+    @media (max-width:767px) {
+
+      h3,
+      h2 {
+        display: none;
+      }
+    }
+
     .login-form {
       margin-top: 35px;
     }
