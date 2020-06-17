@@ -41,7 +41,14 @@ export class ResourceCard extends React.Component {
               {this.props.resource.metadata &&
               this.props.resource.metadata.thumb_url ? (
                 <div className="activity-thumb-wrapper">
-                  <Link to={"/playlist/preview/" + this.props.resource._id}>
+                  <Link
+                    to={
+                      "/playlist/preview/" +
+                      this.props.playlist._id +
+                      "/resource/" +
+                      this.props.resource._id
+                    }
+                  >
                     <div
                       className="activity-thumb"
                       style={{

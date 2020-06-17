@@ -52,6 +52,7 @@ export class NewProjectPage extends React.Component {
                           style={{
                             WebkitTextStroke: "5px #fff",
                             color: "#333",
+                            cursor: "pointer",
                           }}
                         />
                       </button>
