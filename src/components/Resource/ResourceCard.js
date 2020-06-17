@@ -91,7 +91,7 @@ export class ResourceCard extends React.Component {
                   </Link>
                 </div> */}
               </div>
-              <div className="activity-options-wrapper">
+              <div className="activity-options-wrapper check">
                 <div className="activity-options">
                   <div className="dropdown pull-right">
                     <button
