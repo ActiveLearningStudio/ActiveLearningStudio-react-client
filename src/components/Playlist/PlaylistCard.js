@@ -104,7 +104,7 @@ export class PlaylistCard extends React.Component {
                   >
                     {this.props.title}
                   </textarea>
-                  <div className="dropdown pull-right playlist-dropdown">
+                  <div className="dropdown pull-right playlist-dropdown check">
                     <button
                       className="btn project-dropdown-btn"
                       type="button"

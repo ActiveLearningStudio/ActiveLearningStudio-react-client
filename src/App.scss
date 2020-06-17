@@ -491,58 +491,153 @@ body {
   }
 }
 
+.newlogin {
+  overflow: hidden;
+  position: relative;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+
+
+  .headerlogologin {
+    width: 281px;
+    margin-bottom: 30px;
+  }
+
+
+  .bg1 {
+
+
+    position: absolute;
+    bottom: -83px;
+    right: -20%;
+    z-index: -1;
+  }
+
+  .bg2 {
+
+    position: absolute;
+    bottom: -70px;
+    left: -88px;
+    z-index: -1;
+  }
+}
+
 .login-container {
   background: #fff;
-  margin-top: 105px;
-  max-width: 1202px;
-  margin: 105px auto;
+
+  max-width: 580px;
+  margin: 0px auto;
   border-radius: 5px;
+  padding: 40px 60px;
+  position: relative;
+
+  &:after {
+    content: "";
+    content: "";
+    width: 330px;
+    height: 330px;
+    background-color: #EADBF0;
+    position: absolute;
+    border-radius: 50%;
+    top: 20%;
+    z-index: -1;
+    right: -180px;
+
+  }
+
+  &:before {
+    content: "";
+    content: "";
+    width: 200px;
+    height: 200px;
+    background-color: #EADBF0;
+    position: absolute;
+    border-radius: 50%;
+    bottom: -80px;
+    z-index: -1;
+    left: -80px;
+
+  }
+
+  &:before {}
 
   .login-left {
-    max-width: 650px;
-    padding: 92px 75px 65px 92px;
-    float: left;
-    border-right: 1px solid #f4f8fe;
+
+
+
 
     h1 {
-      color: #0063d5;
-      font-family: "Hind Siliguri", sans-serif;
-      font-weight: 300;
-      font-size: 36px;
+
+      font-weight: Bold;
+      font-size: 18px;
+      line-height: 25px;
+      letter-spacing: 0px;
+      color: #0F4392;
+      text-transform: uppercase;
+      opacity: 1;
     }
 
-    p {
-      font-family: "Hind Siliguri", sans-serif;
+    h2 {
+      font-weight: 600;
+      font-size: 22px;
+      line-height: 24px;
+
+      letter-spacing: 0.44px;
+      color: #464646;
+      text-transform: capitalize;
+      opacity: 1;
+      padding: 12px 0px 18px;
+    }
+
+    h3 {
+
+
       font-weight: 300;
-      font-size: 18px;
-      color: #000;
+      font-size: 16px;
+      line-height: 26px;
+
+      letter-spacing: 0px;
+      color: #464646;
+      opacity: 1
     }
 
     .login-form {
       margin-top: 35px;
     }
 
-    .username-box {
-      margin-bottom: 25px;
+    .form-group {
+      position: relative;
 
-      .username-icon {
-        background: url(/images/username-icon.png) no-repeat center center;
-        background-color: #fff;
-        width: 54px;
-        height: 54px;
-        border: 1px solid #d9dfe8;
-        float: left;
+      .fa {
+        position: absolute;
+        top: 17px;
+        left: 16px;
       }
+    }
+
+
+    .username-box {
+      margin-bottom: 15px;
+      position: relative;
+
+
 
       .username {
         display: block;
-        width: 420px;
-        height: 54px;
+        width: 100%;
+        height: 50px;
         border: 1px solid #d9dfe8;
         background-color: #fff;
         color: #000;
-        border-left: none;
+        color: #464646;
+        font-size: 14px;
+
         padding: 18px;
+        padding-left: 40px;
 
         &:focus {
           outline: none;
@@ -551,7 +646,7 @@ body {
     }
 
     .password-box {
-      margin-bottom: 35px;
+      margin-bottom: 15px;
 
       .password-icon {
         background: url(/images/password-icon.png) no-repeat center center;
@@ -564,13 +659,15 @@ body {
 
       .password {
         display: block;
-        width: 420px;
-        height: 54px;
+        width: 100%;
+        height: 50px;
         border: 1px solid #d9dfe8;
-        border-left: none;
+        color: #464646;
+        font-size: 14px;
         background-color: #fff;
         color: #000;
         padding: 18px;
+        padding-left: 40px;
 
         &:focus {
           outline: none;
@@ -579,13 +676,25 @@ body {
     }
 
     .rememberme-check-box {
-      font-size: 16px;
-      font-family: "Hind Siliguri", sans-serif;
-      font-weight: 300;
-      color: #333;
 
-      [type="checkbox"] {
-        display: none;
+      display: flex;
+      justify-content: space-between;
+
+      input {
+        margin-right: 5px;
+      }
+
+
+      a,
+      label {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 26px;
+        font-family: "Hind Siliguri", sans-serif;
+
+        letter-spacing: 0px;
+        color: #464646 !important;
+        opacity: 0.8;
       }
 
       span {
@@ -644,11 +753,21 @@ body {
     }
 
     .login-submit {
-      background: #0063d5;
+      background: #4646C4 0% 0% no-repeat padding-box;
+      opacity: 1;
       color: #fff;
-      width: 474px;
-      height: 56px;
+      width: 100%;
+      height: 50px;
       font-size: 16px;
+      border-color: #4646C4;
+      font-weight: 400;
+      font-size: 19px;
+      line-height: 26px;
+      text-transform: uppercase;
+
+      letter-spacing: 0.76px;
+      color: #FFFFFF;
+      opacity: 1;
     }
 
     .create-account-block {
@@ -1684,25 +1803,33 @@ header {
   width: 60px;
   display: inline-block;
   vertical-align: top;
+  color: #0F4392;
+
+
 }
 
 .notiy_det {
   width: calc(100% - 65px);
   display: inline-block;
+
+
 }
+
 
 .nav_title {
-  font-size: 26px;
-  color: #607a9b;
-  line-height: 100%;
-  padding-bottom: 15px;
-  position: relative;
-  font-family: "OpenSans-Light";
-  font-weight: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 33px;
+
+  letter-spacing: 0px;
+  color: #0F4392;
+  opacity: 1;
 }
 
+
 .navmenu li {
-  padding: 50px 45px;
+  padding: 30px 35px;
+  border-bottom: 1px solid #eee !important;
 }
 
 .navmenu li:not(:last-child) {
@@ -1710,11 +1837,15 @@ header {
 }
 
 .notiy_det p {
-  font-family: "OpenSans-Light";
-  font-size: 16px;
-  color: #777777;
-  line-height: 20px;
-  font-weight: normal;
+
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #464646;
+  opacity: 0.8;
+  padding-top: 12px;
+  ;
+
 }
 
 .notiy_icon i {
@@ -2045,6 +2176,10 @@ a:hover {
     min-width: inherit;
     border: 0;
     padding: 0;
+
+    li {
+      padding: 10px;
+    }
   }
 
   .navbar_link nav>ul>li.has-sub {
@@ -2573,4 +2708,40 @@ a:hover {
 .sce_cont .bar_list.flexdiv li {
   width: 100%;
   margin-bottom: 0px;
+}
+
+.activity-options-wrapper.check,
+.playlist-dropdown.check {
+
+  .dropdown-menu {
+
+    box-shadow: 0px 3px 20px #00000029;
+
+    border: none;
+    min-width: 100px;
+    margin: 0px;
+    padding: 0px;
+
+    a {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 19px;
+      letter-spacing: 0px;
+      color: #464646;
+      padding: 12px 20px;
+      border-bottom: 1px solid #eee;
+
+      &:hover {
+        background-color: #D6D6D6;
+
+      }
+
+      .fa {
+        padding-right: 5px;
+        font-size: 12px;
+        color: #464646;
+      }
+    }
+
+  }
 }

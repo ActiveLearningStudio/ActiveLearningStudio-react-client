@@ -1,11 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import validator from "validator";
-
-
-import { withRouter } from 'react-router-dom';
+import bg from "../images/loginbg.png";
+import bg1 from "../images/loginbg2.png";
+import { withRouter } from "react-router-dom";
 import { startLogin } from "./../actions/auth";
-
+import logo from "./../images/logo.svg";
 export class LoginPage extends React.Component {
   constructor(props) {
     super(props);
@@ -13,27 +13,27 @@ export class LoginPage extends React.Component {
     this.state = {
       email: "",
       password: "",
-      error: ""
+      error: "",
     };
   }
   componentDidMount() {
     window.scrollTo(0, 0);
   }
-  onEmailChange = e => {
+  onEmailChange = (e) => {
     this.setState({ email: e.target.value }, () => {
       !validator.isEmail(this.state.email)
         ? this.setState({ error: "Please  enter a valid email" })
         : this.setState({ error: "" });
     });
   };
-  onPasswordChange = e => {
+  onPasswordChange = (e) => {
     this.setState({ password: e.target.value }, () => {
       validator.isEmpty(this.state.password)
         ? this.setState({ error: "Please enter your password" })
         : this.setState({ error: "" });
     });
   };
-  onSubmit = async e => {
+  onSubmit = async (e) => {
     e.preventDefault();
     try {
       const { email, password } = this.state;
@@ -61,83 +61,80 @@ export class LoginPage extends React.Component {
   };
   render() {
     return (
-        <div>
-          <div className="login-container">
+      <div className="newlogin">
+        <img className="headerlogologin" src={logo} alt="" />
+        <div className="login-container">
           <div className="login-left">
-                <h1>Login to Continue</h1>
-                <p>Welcome to the Active Learning Studio. Sign in with your user name and password to continue creating exciting learning experiences!</p>
-                {this.renderError()}
-                <form onSubmit={this.onSubmit} autoComplete="off" className="login-form">
-                  <div className="form-group username-box">
-                    <span className="username-icon"></span>
-                    <input
-                          className="username"
-                          type="text"
-                          name="email"
-                          placeholder="Username"
-                          onChange={this.onEmailChange}
-                          autoFocus
-                        />
-                  </div>
-                  <div className="forgot-password-box">
-                    <a href="/">Forgot?</a>
-                  </div>
-                  <div className="form-group password-box">
-                    <span className="password-icon"></span>
-                    <input
-                          className="password"
-                          type="password"
-                          name="password"
-                          placeholder="Password"
-                          onChange={this.onPasswordChange}
-                        />
-                  </div>
-                  <div className="form-group rememberme-check-box">
-                    <label>
-                      <input
-                          type="checkbox"
-                          name="rememberme"
-                          onChange={this.onPasswordChange}
-                        />
-                        <span></span>
-                        <strong>Remember Me</strong>
-                      </label>
-                  </div>
-                  <div className="form-group">
-                      <button
-                        className="btn btn-primary login-submit"
-                        disabled={this.isDisabled()}
-                      >
-                        Login
-                      </button>
-                    </div>
-                    <div className="create-account-block">
-                      <p>Don't have an account yet? <a href="/">Sign up</a></p>
-                    </div>
-                </form>
+            <h1>Login to Curriki Studio</h1>
+            <h2>
+              Powering the creation of the world’s most immersive learn
+              experiences
+            </h2>
+            <h3>
+              CurrikiStudio is changing the way learning experiences are
+              designed, created, and delivered to a new generation of learners.
+            </h3>
+            {this.renderError()}
+            <form
+              onSubmit={this.onSubmit}
+              autoComplete="off"
+              className="login-form"
+            >
+              <div className="form-group username-box">
+                <i class="fa fa-user" aria-hidden="true"></i>{" "}
+                <input
+                  className="username"
+                  type="text"
+                  name="email"
+                  placeholder="Username"
+                  onChange={this.onEmailChange}
+                  autoFocus
+                />
               </div>
-              
-            <div className="login-right">
-              <div className="login-logo">
-                <img src="/images/login-logo.png" alt="Login Logo" />
+
+              <div className="form-group password-box">
+                <i class="fa fa-lock" aria-hidden="true"></i>
+                <input
+                  className="password"
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  onChange={this.onPasswordChange}
+                />
               </div>
-              <div className="login-right-heading">
-                <h2>Powering the World's Best Learning Experiences</h2>
+              <div className="form-group rememberme-check-box">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="rememberme"
+                    onChange={this.onPasswordChange}
+                  />
+                  Remember Me
+                </label>
+                <div className="forgot-password-box">
+                  <a href="/">Reset Password</a>
+                </div>
               </div>
-              <div className="login-right-text">
-                
+              <div className="form-group">
+                <button
+                  className="btn btn-primary login-submit"
+                  disabled={this.isDisabled()}
+                >
+                  Login
+                </button>
               </div>
-            </div>
-            <div className="clearfix"></div>
+            </form>
           </div>
         </div>
-      
+        <img src={bg} className="bg1" alt="" />
+        <img src={bg1} className="bg2" alt="" />
+      </div>
     );
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  startLogin: (email, password) => dispatch(startLogin(email, password))
+const mapDispatchToProps = (dispatch) => ({
+  startLogin: (email, password) => dispatch(startLogin(email, password)),
 });
 const mapStateToProps = (state) => {
   return {
@@ -146,7 +143,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-
-
-export default withRouter(connect(mapStateToProps,
-  mapDispatchToProps)(LoginPage))
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(LoginPage)
+);
