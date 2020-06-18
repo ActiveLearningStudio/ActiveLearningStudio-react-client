@@ -156,7 +156,15 @@ function Header(props) {
                 >
                   <ul className="dropdown-menu user-dropdown">
                     <Link to="#">
-                      <li>Welcome to User</li>
+                      <li>
+                        Welcome &nbsp;
+                        <span className="usernamelogin">
+                          {typeof window != "undefined" &&
+                            JSON.parse(window.localStorage.getItem("auth")) &&
+                            JSON.parse(window.localStorage.getItem("auth"))
+                              .displayName}
+                        </span>
+                      </li>
                     </Link>
                     <Link to="#">
                       <li>My Account</li>
