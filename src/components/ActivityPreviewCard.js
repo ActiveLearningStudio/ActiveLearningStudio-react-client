@@ -31,7 +31,7 @@ const ActivityPreviewCard = (props) => {
                 <img src="/images/icon-list.png" alt="icon-list"></img> */}
         </div>
       </div>
-      <div class="date">{new Date(activity.created_at).toDateString()}</div>
+      <div className="date">{new Date(activity.created_at).toDateString()}</div>
     </li>
   );
 };

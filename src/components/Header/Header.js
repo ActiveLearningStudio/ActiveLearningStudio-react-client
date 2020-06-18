@@ -69,7 +69,7 @@ function Header(props) {
                   className="addtop dropdown-toggle"
                   onClick={() => props.showCreateProjectSubmenuAction()}
                 >
-                  <i class="fa fa-plus-circle" aria-hidden="true"></i>{" "}
+                  <i className="fa fa-plus-circle" aria-hidden="true"></i>{" "}
                 </Link>
                 <div className="navmenu dropdown-menu" ref={createProjNode}>
                   <ul>
