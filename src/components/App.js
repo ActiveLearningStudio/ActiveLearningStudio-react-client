@@ -17,7 +17,7 @@ function App() {
   return (
     <div>
       <Helmet>
-          <meta name="description" content="Todos!" />
+          <meta name="description" content="CurrikiStudio" />
           <meta name="theme-color" content="#008f68" />
       </Helmet>
       <AppRouter />
