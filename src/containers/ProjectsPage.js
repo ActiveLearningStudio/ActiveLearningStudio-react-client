@@ -14,7 +14,7 @@ import {
   loadProjectAction,
   createProjectAction,
   loadMyProjectsAction,
-  shareProjectAction
+  shareProjectAction,
 } from "../actions/project";
 import { NewProjectPage } from "./NewProjectPage";
 import ProjectCard from "../components/ProjectCard";
@@ -27,13 +27,14 @@ export class ProjectsPage extends React.Component {
   }
 
   componentDidMount() {
-    
     //scroll to top
     window.scrollTo(0, 0);
-    if(this.props.showCreateProjectPopup == undefined && this.props.showEditProjectPopup == undefined){
+    if (
+      this.props.showCreateProjectPopup == undefined &&
+      this.props.showEditProjectPopup == undefined
+    ) {
       this.props.loadMyProjectsAction();
     }
-      
 
     if (this.props.showEditProjectPopup) {
       // loads the data of project for showing into edit form
