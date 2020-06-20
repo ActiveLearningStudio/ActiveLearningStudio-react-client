@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import validator from "validator";
 import bg from "../images/loginbg.png";
 import bg1 from "../images/loginbg2.png";
 import { withRouter } from "react-router-dom";
-import { startLogin } from "./../actions/auth";
-import logo from "./../images/logo.svg";
+import { startLogin, show_login, show_term } from "./../actions/auth";
+import logo from "../images/logo.svg";
+import terms from "../images/terms.png";
+
+import loader from "../images/loader.svg";
+import pdf from "../pdf/Curriki_Subscription_Agreement.pdf";
 export class LoginPage extends React.Component {
   constructor(props) {
     super(props);
@@ -14,6 +18,10 @@ export class LoginPage extends React.Component {
       email: "",
       password: "",
       error: "",
+      apiLoading: false,
+      terms: false,
+      privacy: false,
+      subsription: false,
     };
   }
   componentDidMount() {
@@ -35,12 +43,26 @@ export class LoginPage extends React.Component {
   };
   onSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const { email, password } = this.state;
+
+      this.setState({ apiLoading: true });
       await this.props.startLogin(email, password);
       this.props.history.push("/");
+      this.setState({ apiLoading: false });
     } catch (e) {
+      this.setState({ apiLoading: false });
       return this.setState({ error: e.message });
+    }
+  };
+
+  onSubmitterms = async (e) => {
+    e.preventDefault();
+    if (this.state.terms && this.state.privacy && this.state.subsription) {
+      alert("accepting");
+    } else {
+      alert("fil all fields");
     }
   };
   isDisabled = () => {
@@ -63,69 +85,161 @@ export class LoginPage extends React.Component {
     return (
       <div className="newlogin">
         <img className="headerlogologin" src={logo} alt="" />
-        <div className="login-container">
-          <div className="login-left">
-            <h1>Login to Curriki Studio</h1>
-            <h2>
-              Powering the creation of the world’s most immersive learn
-              experiences
-            </h2>
-            <h3>
-              CurrikiStudio is changing the way learning experiences are
-              designed, created, and delivered to a new generation of learners.
-            </h3>
-            {this.renderError()}
+        {this.props.showbox.login ? (
+          <div className="login-container">
+            <div className="login-left">
+              <h1>Login to Curriki Studio</h1>
+              <h2>
+                Powering the creation of the world’s most immersive learn
+                experiences
+              </h2>
+              <h3>
+                CurrikiStudio is changing the way learning experiences are
+                designed, created, and delivered to a new generation of
+                learners.
+              </h3>
+              {this.renderError()}
+              <form
+                onSubmit={this.onSubmit}
+                autoComplete="off"
+                className="login-form"
+              >
+                <div className="form-group username-box">
+                  <i class="fa fa-user" aria-hidden="true"></i>{" "}
+                  <input
+                    className="username"
+                    type="text"
+                    name="email"
+                    placeholder="Username"
+                    onChange={this.onEmailChange}
+                    autoFocus
+                  />
+                </div>
+
+                <div className="form-group password-box">
+                  <i class="fa fa-lock" aria-hidden="true"></i>
+                  <input
+                    className="password"
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    onChange={this.onPasswordChange}
+                  />
+                </div>
+                <div className="form-group rememberme-check-box">
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="rememberme"
+                      onChange={this.onPasswordChange}
+                    />
+                    Remember Me
+                  </label>
+                  <div className="forgot-password-box">
+                    <a href="/">Reset Password</a>
+                  </div>
+                </div>
+                <div className="form-group">
+                  <button
+                    className="btn btn-primary login-submit"
+                    disabled={this.isDisabled()}
+                  >
+                    {this.state.apiLoading == true ? (
+                      <img src={loader} alt="" />
+                    ) : (
+                      "Login"
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        ) : (
+          <div className="login-container terms_section">
+            <img src={terms} alt="" />
+            <h1>Free to Create</h1>
             <form
-              onSubmit={this.onSubmit}
+              onSubmit={this.onSubmitterms}
               autoComplete="off"
               className="login-form"
             >
-              <div className="form-group username-box">
-                <i class="fa fa-user" aria-hidden="true"></i>{" "}
-                <input
-                  className="username"
-                  type="text"
-                  name="email"
-                  placeholder="Username"
-                  onChange={this.onEmailChange}
-                  autoFocus
-                />
-              </div>
-
-              <div className="form-group password-box">
-                <i class="fa fa-lock" aria-hidden="true"></i>
-                <input
-                  className="password"
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  onChange={this.onPasswordChange}
-                />
-              </div>
-              <div className="form-group rememberme-check-box">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="rememberme"
-                    onChange={this.onPasswordChange}
-                  />
-                  Remember Me
-                </label>
-                <div className="forgot-password-box">
-                  <a href="/">Reset Password</a>
-                </div>
-              </div>
               <div className="form-group">
-                <button
-                  className="btn btn-primary login-submit"
-                  disabled={this.isDisabled()}
-                >
-                  Login
+                <button className="btn btn-primary login-submit">
+                  {" "}
+                  Accept & Connect
                 </button>
+              </div>
+              <h3>
+                I understand that using the CurrikiStudio online service is
+                subject to the Curriki subscription Agreement, and the Curriki
+                Terms of Services and Privacy Policy.
+              </h3>
+              <h4>
+                I agree to these following terms and have reviewd the
+                agreements.
+              </h4>
+              <div className="form-group checkbox">
+                <div class="checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      value=""
+                      name="terms"
+                      checked={this.state.subsription}
+                      onChange={(e) => {
+                        this.setState({
+                          subsription: !this.state.subsription,
+                        });
+                      }}
+                    />
+                    <a target="_blank" href={pdf}>
+                      {" "}
+                      Subscription Agreement{" "}
+                    </a>
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      value=""
+                      name="terms"
+                      checked={this.state.terms}
+                      onChange={(e) => {
+                        this.setState({
+                          terms: !this.state.terms,
+                        });
+                      }}
+                    />
+                    <a href=""> Terms of Service </a>
+                  </label>
+                </div>
+                <div class="checkbox ">
+                  <label>
+                    <input
+                      type="checkbox"
+                      value=""
+                      name="terms"
+                      checked={this.state.privacy}
+                      onChange={(e) => {
+                        this.setState({
+                          privacy: !this.state.privacy,
+                        });
+                      }}
+                    />
+                    <a
+                      target="_blank"
+                      href="https://www.curriki.org/privacy-policy/"
+                    >
+                      {" "}
+                      Privacy policy{" "}
+                    </a>
+                  </label>
+                </div>
               </div>
             </form>
           </div>
-        </div>
+        )}
         <img src={bg} className="bg1" alt="" />
         <img src={bg1} className="bg2" alt="" />
       </div>
@@ -135,11 +249,14 @@ export class LoginPage extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   startLogin: (email, password) => dispatch(startLogin(email, password)),
+  showLogin: () => dispatch(show_login()),
+  showTerms: () => dispatch(show_term()),
 });
 const mapStateToProps = (state) => {
   return {
     error: state.auth.error,
     errorMessage: state.auth.errorMessage,
+    showbox: state.loginshow,
   };
 };
 
