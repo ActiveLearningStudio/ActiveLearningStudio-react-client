@@ -17,7 +17,6 @@ const FaceDiv = styled.div`
 `;
 
 const ResourceActivityBuild = (props) => {
-  console.log(props);
   return (
     <div className="row">
       <div className="col-md-3">
@@ -30,7 +29,7 @@ const ResourceActivityBuild = (props) => {
             style={{ marginLeft: "15px" }}
             onClick={props.goBacktoActivity}
           >
-            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+            <i className="fa fa-chevron-left" aria-hidden="true"></i>
             Back{" "}
           </div>
 

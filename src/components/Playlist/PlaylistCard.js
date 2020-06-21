@@ -187,8 +187,8 @@ export class PlaylistCard extends React.Component {
                   onClick={this.handleAddNewResourceClick}
                   className="add-resource-to-playlist-btn"
                 >
-                  <i class="fa fa-plus-circle" aria-hidden="true"></i> Add new
-                  resource
+                  <i className="fa fa-plus-circle" aria-hidden="true"></i> Add
+                  new resource
                 </button>
               </div>
             </div>

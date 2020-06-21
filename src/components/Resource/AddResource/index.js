@@ -43,7 +43,7 @@ const AddResource = (props) => {
                   data-dismiss="modal"
                   onClick={props.handleHideCreateResourceModal}
                 >
-                  <i class="fa fa-times" />
+                  <i className="fa fa-times" />
                 </button>
               </h1>
             </div>

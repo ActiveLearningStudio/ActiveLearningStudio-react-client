@@ -57,7 +57,6 @@ const ProjectPreview = (props) => {
     playlists = currentProject.playlists.map((playlist, counter) => {
       var activities;
       if (playlist.activities.length > 0) {
-        console.log(playlist);
         activities = playlist.activities.map((activity) => {
           return (
             <ActivityCard
@@ -80,7 +79,7 @@ const ProjectPreview = (props) => {
       return (
         <div className="check-each" key={playlist._id}>
           <button className={counter === 0 ? "active accordion" : " accordion"}>
-            <i class="fa fa-plus" />
+            <i className="fa fa-plus" />
             {playlist.title}
             {/* <Link to="">
               See All <i class="fa fa-chevron-right" />{" "}

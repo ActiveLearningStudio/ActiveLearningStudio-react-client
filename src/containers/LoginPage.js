@@ -81,7 +81,7 @@ export class LoginPage extends React.Component {
               className="login-form"
             >
               <div className="form-group username-box">
-                <i class="fa fa-user" aria-hidden="true"></i>{" "}
+                <i className="fa fa-user" aria-hidden="true"></i>{" "}
                 <input
                   className="username"
                   type="text"
@@ -93,7 +93,7 @@ export class LoginPage extends React.Component {
               </div>
 
               <div className="form-group password-box">
-                <i class="fa fa-lock" aria-hidden="true"></i>
+                <i className="fa fa-lock" aria-hidden="true"></i>
                 <input
                   className="password"
                   type="password"

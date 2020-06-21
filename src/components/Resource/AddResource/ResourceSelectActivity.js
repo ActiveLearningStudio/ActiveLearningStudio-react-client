@@ -126,7 +126,7 @@ let ResourceSelectActivity = (props) => {
               <div className="col-md-12">
                 <h2 className="title">
                   <div className="back-button" onClick={props.goBacktoActivity}>
-                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                    <i className="fa fa-chevron-left" aria-hidden="true"></i>
                     Back
                   </div>
                   Select the activity you want to build from the options below:

@@ -48,7 +48,7 @@ export class NewProjectPage extends React.Component {
                         onClick={this.props.handleCloseProjectModal}
                       >
                         <i
-                          class="fa fa-times"
+                          className="fa fa-times"
                           style={{
                             WebkitTextStroke: "5px #fff",
                             color: "#333",
