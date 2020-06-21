@@ -1,23 +1,35 @@
 import axios from "axios";
-import { AUTH_RECEIVE, AUTH_ERROR, AUTH_LOGOUT, AUTH_SIGNUP } from "../constants/actionTypes";
+import {
+  AUTH_RECEIVE,
+  AUTH_ERROR,
+  AUTH_LOGOUT,
+  AUTH_SIGNUP,
+  ShOW_TERMS,
+  ShOW_LOGIN,
+} from "../constants/actionTypes";
 
+export const show_login = () => ({
+  type: ShOW_LOGIN,
+});
+export const show_term = () => ({
+  type: ShOW_TERMS,
+});
 
-export const signup = (displayName, id, role) => ({
+export const showlogin = (login, terms) => ({
   type: AUTH_SIGNUP,
-  displayName,
-  id,
-  role
+  login,
+  terms,
 });
 
 export const startSignup = (displayName, email, password) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const response = await axios.post(
-        global.config.laravelAPIUrl +'/users',
+        global.config.laravelAPIUrl + "/users",
         {
           displayName,
           email,
-          password
+          password,
         }
       );
 
@@ -25,7 +37,7 @@ export const startSignup = (displayName, email, password) => {
         displayName: response.data.displayName,
         id: response.data._id,
         token: response.headers["x-auth"],
-        role: response.data.role
+        role: response.data.role,
       };
       localStorage.setItem("auth", JSON.stringify(user));
 
@@ -42,60 +54,53 @@ export const login = (displayName, id, token) => ({
   type: AUTH_RECEIVE,
   displayName,
   id,
-  token
+  token,
 });
 export const loginError = () => ({
-  type: AUTH_ERROR
+  type: AUTH_ERROR,
 });
 
 export const startLogin = (email, password) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const response = await axios.post(
-        global.config.laravelAPIUrl + '/auth/login',
+        global.config.laravelAPIUrl + "/auth/login",
         {
           email,
-          password
+          password,
         }
       );
-      if(response.data.status == 'success') {
-        console.log(response.data.data);
+      if (response.data.status == "success") {
         const user = {
           displayName: response.data.data.payload.user.name,
           id: response.data.data.payload.user._id,
           token: response.data.data.token,
-          auth_expiry: response.data.data.payload.exp
+          auth_expiry: response.data.data.payload.exp,
+          terms_flag: response.data.data.terms,
         };
-        
-        
-        localStorage.setItem("auth", JSON.stringify(user));
-        
-        dispatch(
-          login(user.displayName, user.id, user.token)
-        );
-      } else {
-        dispatch(
-          loginError()
-        );
-      }
-      
 
-      
+        if (user.terms_flag !== undefined) {
+          dispatch(show_term());
+        } else {
+          dispatch(login(user.displayName, user.id, user.token));
+          localStorage.setItem("auth", JSON.stringify(user));
+        }
+      } else {
+        dispatch(loginError());
+      }
     } catch (e) {
-      dispatch(
-        loginError()
-      );
+      dispatch(loginError());
       throw new Error(e.response.data.error);
     }
   };
 };
 
 export const logout = () => ({
-  type: AUTH_LOGOUT
+  type: AUTH_LOGOUT,
 });
 
 export const startLogoutAction = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       // const { token } = JSON.parse(localStorage.getItem("auth"));
       localStorage.removeItem("auth");
@@ -115,5 +120,3 @@ export const startLogoutAction = () => {
     }
   };
 };
-
-

@@ -1,10 +1,12 @@
-import { combineReducers } from 'redux'
-import {reducer as formReducer} from 'redux-form'
-import authReducer from './authReducer'
-import playlistReducer from './playlistReducer'
-import resourceReducer from './resourceReducer'
-import projectReducer from './projectReducer'
-import uiReducer from './uiReducer'
+import { combineReducers } from "redux";
+import { reducer as formReducer } from "redux-form";
+import authReducer from "./authReducer";
+import playlistReducer from "./playlistReducer";
+import resourceReducer from "./resourceReducer";
+import projectReducer from "./projectReducer";
+import uiReducer from "./uiReducer";
+import { from } from "apollo-boost";
+import termsreducer from "./termsreducer";
 
 export default combineReducers({
   auth: authReducer,
@@ -12,6 +14,6 @@ export default combineReducers({
   playlist: playlistReducer,
   resource: resourceReducer,
   ui: uiReducer,
-  form:formReducer
-})
-
+  form: formReducer,
+  loginshow: termsreducer,
+});
