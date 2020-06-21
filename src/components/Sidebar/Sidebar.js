@@ -1,26 +1,19 @@
 import React from "react";
 import "./Sidebar.scss";
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 function Sidebar() {
   return (
-    
-        
     <aside>
-        <ul>
-          <li>
-            <Link to="/">
-                <span className="sidebar-icon my-resources-icon"></span>
-                My Projects
-            </Link>
-          </li>
-          <li>
+      <ul>
+        <li>
+          <Link to="/">
+            <span className="sidebar-icon my-resources-icon"></span>
+            My Projects
+          </Link>
+        </li>
+        {/* <li>
             <Link to="/">
               <span className="sidebar-icon teams-icon"></span>
                 Teams
@@ -33,8 +26,8 @@ function Sidebar() {
                 <Link to="/">Birdies Creators</Link>
               </li>
             </ul>
-          </li>
-          <li>
+          </li> */}
+        {/* <li>
             <Link to="/">
               <span className="sidebar-icon favorites-icon"></span>
                 Favorite Playlists
@@ -45,10 +38,9 @@ function Sidebar() {
               <span className="sidebar-icon recent-resource-icon"></span>
                 Recently Added Resources
             </Link>
-          </li>
-        </ul>
+          </li> */}
+      </ul>
     </aside>
-    
   );
 }
 

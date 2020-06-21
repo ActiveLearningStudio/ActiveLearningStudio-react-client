@@ -32,7 +32,7 @@ const ProjectCard = (props) => (
             </h3>
           </div>
           <div className="col-md-2">
-            <div className="dropdown prokect pull-right">
+            <div className="dropdown pull-right">
               <button
                 className="btn project-dropdown-btn"
                 type="button"
@@ -59,27 +59,39 @@ const ProjectCard = (props) => (
                 >
                   <i className="fa fa-pencil" aria-hidden="true"></i> Edit
                 </Link>
-                <a
-                  className="dropdown-item"
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    props.handleShareProject(props.project._id);
-                  }}
-                >
-                  <i className="fa fa-share" aria-hidden="true"></i> Send To
-                </a>
-                <a
-                  className="dropdown-item"
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    window.open("/api/download/project/" + props.project._id);
-                  }}
-                >
-                  <i className="fa fa-cloud-download" aria-hidden="true"></i>{" "}
-                  Executable
-                </a>
+                {/* <a
+									className="dropdown-item"
+									href="#"
+									onClick={(e) => {
+										e.preventDefault();
+										props.handleShareProject(
+											props.project._id
+										);
+									}}
+								>
+									<i
+										className="fa fa-share"
+										aria-hidden="true"
+									></i>{" "}
+									Send To
+								</a>
+								<a
+									className="dropdown-item"
+									href="#"
+									onClick={(e) => {
+										e.preventDefault();
+										window.open(
+											"/api/download/project/" +
+												props.project._id
+										);
+									}}
+								>
+									<i
+										className="fa fa-cloud-download"
+										aria-hidden="true"
+									></i>{" "}
+									Executable
+								</a> */}
                 <a
                   className="dropdown-item"
                   onClick={() =>
@@ -97,27 +109,25 @@ const ProjectCard = (props) => (
             </div>
           </div>
         </div>
-        <div className="flex-text-box">
-          <div className="lessons-duration">
-            <div className="row">
-              <div className="col-md-12">
-                <p>
-                  {props.project.description &&
-                  props.project.description.length > 100
-                    ? props.project.description.substring(0, 100) + " ..."
-                    : props.project.description}
-                </p>
-              </div>
+        <div className="lessons-duration">
+          <div className="row">
+            <div className="col-md-12">
+              <p>
+                {props.project.description &&
+                props.project.description.length > 130
+                  ? props.project.description.substring(0, 130) + " ..."
+                  : props.project.description}
+              </p>
             </div>
           </div>
-          <div className="go-to-playlist">
-            <Link to={"/project/" + props.project._id}>
-              <img
-                src="/images/program-playlist-arrow.png"
-                alt="Go to Playlist"
-              />
-            </Link>
-          </div>
+        </div>
+        <div className="go-to-playlist">
+          <Link to={"/project/" + props.project._id}>
+            <img
+              src="/images/program-playlist-arrow.png"
+              alt="Go to Playlist"
+            />
+          </Link>
         </div>
       </div>
     </div>

@@ -126,7 +126,7 @@ export class LoginPage extends React.Component {
                     onChange={this.onPasswordChange}
                   />
                 </div>
-                <div className="form-group rememberme-check-box">
+                {/* <div className="form-group rememberme-check-box">
                   <label>
                     <input
                       type="checkbox"
@@ -138,7 +138,7 @@ export class LoginPage extends React.Component {
                   <div className="forgot-password-box">
                     <a href="/">Reset Password</a>
                   </div>
-                </div>
+                </div> */}
                 <div className="form-group">
                   <button
                     className="btn btn-primary login-submit"
@@ -198,7 +198,7 @@ export class LoginPage extends React.Component {
                     </a>
                   </label>
                 </div>
-                <div class="checkbox">
+                {/* <div class="checkbox">
                   <label>
                     <input
                       type="checkbox"
@@ -213,7 +213,7 @@ export class LoginPage extends React.Component {
                     />
                     <a href=""> Terms of Service </a>
                   </label>
-                </div>
+                </div> */}
                 <div class="checkbox ">
                   <label>
                     <input

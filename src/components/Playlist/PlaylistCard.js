@@ -139,7 +139,7 @@ export class PlaylistCard extends React.Component {
 												></i>{" "}
 												Edit
 											</a> */}
-                      <a className="dropdown-item" href="#">
+                      {/* <a className="dropdown-item" href="#">
                         <i className="fa fa-share" aria-hidden="true"></i> Send
                         To
                       </a>
@@ -156,7 +156,7 @@ export class PlaylistCard extends React.Component {
                           aria-hidden="true"
                         ></i>{" "}
                         Executable
-                      </a>
+                      </a> */}
                       <a className="dropdown-item" onClick={this.handleDelete}>
                         <i
                           className="fa fa-times-circle-o"
