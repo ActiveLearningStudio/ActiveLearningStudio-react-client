@@ -286,9 +286,9 @@ export class PlaylistsPage extends React.Component {
             <div className="sidebar-wrapper">
               <Sidebar />
             </div>
-            <div className="content-wrapper">
+            <div className="content-wrapper  ">
               <div className="content">
-                <div className="row">
+                <div className="row ">
                   <div className="col playlist-page-project-title project-each-view">
                     <div className="flex-se">
                       <h1>

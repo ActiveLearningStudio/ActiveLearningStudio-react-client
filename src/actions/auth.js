@@ -61,6 +61,8 @@ export const loginError = () => ({
 });
 
 export const startLogin = (email, password) => {
+  localStorage.setItem("temp_email", email);
+  localStorage.setItem("temp_pass", password);
   return async (dispatch) => {
     try {
       const response = await axios.post(
@@ -70,18 +72,51 @@ export const startLogin = (email, password) => {
           password,
         }
       );
-      if (response.data.status == "success") {
-        const user = {
-          displayName: response.data.data.payload.user.name,
-          id: response.data.data.payload.user._id,
-          token: response.data.data.token,
-          auth_expiry: response.data.data.payload.exp,
-          terms_flag: response.data.data.terms,
-        };
 
-        if (user.terms_flag !== undefined) {
+      if (response.data.status == "success") {
+        if (!response.data.data.subscribed) {
           dispatch(show_term());
         } else {
+          const user = {
+            displayName: response.data.data.payload.user.name,
+            id: response.data.data.payload.user._id,
+            token: response.data.data.token,
+            auth_expiry: response.data.data.payload.exp,
+          };
+          dispatch(login(user.displayName, user.id, user.token));
+          localStorage.setItem("auth", JSON.stringify(user));
+        }
+      } else {
+        dispatch(loginError());
+      }
+    } catch (e) {
+      dispatch(loginError());
+      throw new Error(e.response.data.error);
+    }
+  };
+};
+
+export const ecceptterms = (email, password) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(
+        global.config.laravelAPIUrl + "/auth/privacy-subscription/subscribe",
+        {
+          email,
+          password,
+        }
+      );
+
+      if (response.data.status == "success") {
+        if (!response.data.data.subscribed) {
+          dispatch(show_term());
+        } else {
+          const user = {
+            displayName: response.data.data.payload.user.name,
+            id: response.data.data.payload.user._id,
+            token: response.data.data.token,
+            auth_expiry: response.data.data.payload.exp,
+          };
           dispatch(login(user.displayName, user.id, user.token));
           localStorage.setItem("auth", JSON.stringify(user));
         }

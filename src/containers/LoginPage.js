@@ -4,7 +4,13 @@ import validator from "validator";
 import bg from "../images/loginbg.png";
 import bg1 from "../images/loginbg2.png";
 import { withRouter } from "react-router-dom";
-import { startLogin, show_login, show_term } from "./../actions/auth";
+import { Link } from "react-router-dom";
+import {
+  startLogin,
+  ecceptterms,
+  show_login,
+  show_term,
+} from "./../actions/auth";
 import logo from "../images/logo.svg";
 import terms from "../images/terms.png";
 
@@ -22,6 +28,7 @@ export class LoginPage extends React.Component {
       terms: false,
       privacy: false,
       subsription: false,
+      selectterms: false,
     };
   }
   componentDidMount() {
@@ -59,10 +66,18 @@ export class LoginPage extends React.Component {
 
   onSubmitterms = async (e) => {
     e.preventDefault();
-    if (this.state.terms && this.state.privacy && this.state.subsription) {
-      alert("accepting");
+    this.setState({
+      selectterms: false,
+    });
+    if (this.state.privacy && this.state.subsription) {
+      this.props.ecceptterms(
+        localStorage.getItem("temp_email"),
+        localStorage.getItem("temp_pass")
+      );
     } else {
-      alert("fil all fields");
+      this.setState({
+        selectterms: true,
+      });
     }
   };
   isDisabled = () => {
@@ -156,6 +171,9 @@ export class LoginPage extends React.Component {
           </div>
         ) : (
           <div className="login-container terms_section">
+            <div onClick={this.props.showLogin}>
+              <i className="fa fa-times" />
+            </div>
             <img src={terms} alt="" />
             <h1>Free to Create</h1>
             <form
@@ -178,6 +196,12 @@ export class LoginPage extends React.Component {
                 I agree to these following terms and have reviewd the
                 agreements.
               </h4>
+              {this.state.selectterms && (
+                <span style={{ color: "red" }}>
+                  {" "}
+                  Kindly select all checkboxes{" "}
+                </span>
+              )}
               <div className="form-group checkbox">
                 <div class="checkbox">
                   <label>
@@ -214,6 +238,7 @@ export class LoginPage extends React.Component {
                     <a href=""> Terms of Service </a>
                   </label>
                 </div> */}
+
                 <div class="checkbox ">
                   <label>
                     <input
@@ -251,6 +276,7 @@ const mapDispatchToProps = (dispatch) => ({
   startLogin: (email, password) => dispatch(startLogin(email, password)),
   showLogin: () => dispatch(show_login()),
   showTerms: () => dispatch(show_term()),
+  ecceptterms: (email, password) => dispatch(ecceptterms(email, password)),
 });
 const mapStateToProps = (state) => {
   return {

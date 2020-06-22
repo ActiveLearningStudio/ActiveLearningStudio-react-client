@@ -10,12 +10,12 @@ const termsReducer = (state = auth_state_login, action) => {
   switch (action.type) {
     case ShOW_TERMS:
       return {
-        Login: false,
+        login: false,
         terms: true,
       };
     case ShOW_LOGIN:
       return {
-        Login: true,
+        login: true,
         terms: false,
       };
 
