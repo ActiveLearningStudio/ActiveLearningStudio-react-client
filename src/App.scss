@@ -2809,7 +2809,26 @@ a:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 65%;
+    width: 80%;
+
+    .fa {
+      padding-right: 5px;
+    }
+
+    .checkbox {
+      cursor: pointer;
+    }
+
+    .active {
+      .fa {
+        color: #4646c4;
+
+        &:before {
+          content: "\f046"
+        }
+      }
+    }
+
 
     @media (max-width: 480px) {
       width: 100%;

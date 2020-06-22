@@ -124,7 +124,7 @@ const ProjectCard = (props) => (
           </div>
         </div>
         <div className="buttonbottom">
-          <Link to={"/project/" + props.project._id}>
+          <Link to={"/project/preview2/" + props.project._id}>
             <i className="fa fa-eye" aria-hidden="true"></i> Preview
           </Link>
 

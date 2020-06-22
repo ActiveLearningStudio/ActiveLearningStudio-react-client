@@ -117,6 +117,7 @@ export const ecceptterms = (email, password) => {
             id: response.data.data.payload.user._id,
             token: response.data.data.token,
             auth_expiry: response.data.data.payload.exp,
+            subscribed: response.data.data.subscribed,
           };
           dispatch(login(user.displayName, user.id, user.token));
           localStorage.setItem("auth", JSON.stringify(user));
