@@ -211,22 +211,21 @@ export class LoginPage extends React.Component {
               }
               <div className="form-group checkbox">
                 <div class="checkbox">
-                  <label>
-                    <input
-                      type="checkbox"
-                      value=""
-                      name="terms"
-                      checked={this.state.subsription}
-                      onChange={(e) => {
-                        this.setState({
-                          subsription: !this.state.subsription,
-                        });
-                      }}
-                    />
-                    <a target="_blank" href={pdf}>
-                      Subscription Agreement{" "}
-                    </a>
-                  </label>
+                  <div
+                    className={this.state.subsription ? "active" : "non-active"}
+                    onClick={() => {
+                      this.setState({
+                        subsription: !this.state.subsription,
+                      });
+                      window.open(
+                        pdf,
+                        "_blank" // <- This is what makes it open in a new window.
+                      );
+                    }}
+                  >
+                    <i class="fa fa-square-o" aria-hidden="true"></i>
+                    Subscription Agreement{}
+                  </div>
                 </div>
                 {/* <div class="checkbox">
                   <label>
@@ -246,26 +245,21 @@ export class LoginPage extends React.Component {
                 </div> */}
 
                 <div class="checkbox ">
-                  <label>
-                    <input
-                      type="checkbox"
-                      value=""
-                      name="terms"
-                      checked={this.state.privacy}
-                      onChange={(e) => {
-                        this.setState({
-                          privacy: !this.state.privacy,
-                        });
-                      }}
-                    />
-                    <a
-                      target="_blank"
-                      href="https://www.curriki.org/privacy-policy/"
-                    >
-                      {" "}
-                      Privacy policy{" "}
-                    </a>
-                  </label>
+                  <div
+                    className={this.state.privacy ? "active" : "non-active"}
+                    onClick={() => {
+                      this.setState({
+                        privacy: !this.state.privacy,
+                      });
+                      window.open(
+                        "https://www.curriki.org/privacy-policy/",
+                        "_blank" // <- This is what makes it open in a new window.
+                      );
+                    }}
+                  >
+                    <i class="fa fa-square-o" aria-hidden="true"></i> Privacy
+                    policy{" "}
+                  </div>
                 </div>
               </div>
             </form>
