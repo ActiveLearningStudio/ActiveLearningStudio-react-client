@@ -74,7 +74,7 @@ export const startLogin = (email, password) => {
       );
 
       if (response.data.status == "success") {
-        if (!response.data.data.subscribed) {
+        if (response.data.data.subscribed) {
           dispatch(show_term());
         } else {
           const user = {
@@ -119,6 +119,7 @@ export const ecceptterms = (email, password) => {
           };
           dispatch(login(user.displayName, user.id, user.token));
           localStorage.setItem("auth", JSON.stringify(user));
+          dispatch(show_login());
         }
       } else {
         dispatch(loginError());
