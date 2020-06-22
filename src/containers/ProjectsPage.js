@@ -16,6 +16,9 @@ import {
   loadMyProjectsAction,
   shareProjectAction,
 } from "../actions/project";
+
+import { logout } from "../actions/auth";
+
 import { NewProjectPage } from "./NewProjectPage";
 import ProjectCard from "../components/ProjectCard";
 import DeletePopup from "../components/DeletePopup/DeletePopup";
@@ -27,6 +30,8 @@ export class ProjectsPage extends React.Component {
   }
 
   componentDidMount() {
+    const termstrue = JSON.parse(localStorage.getItem("auth"));
+    !termstrue.subscribed && this.props.logout();
     //scroll to top
     window.scrollTo(0, 0);
     if (
@@ -167,6 +172,7 @@ const mapDispatchToProps = (dispatch) => ({
   hideDeletePopupAction: () => dispatch(hideDeletePopupAction()),
   loadProjectAction: (projectid) => dispatch(loadProjectAction(projectid)),
   shareProjectAction: (projectid) => dispatch(shareProjectAction(projectid)),
+  logout: () => dispatch(logout()),
 });
 
 const mapStateToProps = (state) => {

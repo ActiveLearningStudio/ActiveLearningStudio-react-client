@@ -38,6 +38,7 @@ export const startSignup = (displayName, email, password) => {
         id: response.data._id,
         token: response.headers["x-auth"],
         role: response.data.role,
+        subscribed: response.data.subscribed,
       };
       localStorage.setItem("auth", JSON.stringify(user));
 
@@ -72,7 +73,6 @@ export const startLogin = (email, password) => {
           password,
         }
       );
-
       if (response.data.status == "success") {
         if (!response.data.data.subscribed) {
           dispatch(show_term());
@@ -82,6 +82,7 @@ export const startLogin = (email, password) => {
             id: response.data.data.payload.user._id,
             token: response.data.data.token,
             auth_expiry: response.data.data.payload.exp,
+            subscribed: response.data.data.subscribed,
           };
           dispatch(login(user.displayName, user.id, user.token));
           localStorage.setItem("auth", JSON.stringify(user));
