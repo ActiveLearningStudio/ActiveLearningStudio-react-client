@@ -52,7 +52,7 @@ body {
   width: 201px !important;
   height: 40px !important;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 550;
 
   &:hover {
     background-color: #fff;
@@ -815,11 +815,34 @@ body {
 .program-tile {
   background: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin-top: 25px;
+
+  min-height: 450px;
+  height: 100%;
+
+  .buttonbottom {
+    display: flex;
+    justify-content: flex-end;
+
+    .fa {
+      font-size: 12px;
+      padding-right: 3px;
+    }
+
+    a {
+      background: #5952c6;
+      color: #fff;
+      margin-left: 10px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 400;
+      border-radius: 3px;
+    }
+  }
 
   .program-thumb {
-    height: 240px;
+    height: 200px;
     overflow: hidden;
+
 
     a {
       display: block;
@@ -828,7 +851,7 @@ body {
     }
 
     .project-thumb {
-      min-height: 250px;
+      min-height: 200px;
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
@@ -844,8 +867,12 @@ body {
   }
 
   .program-content {
+
     padding: 10px;
-    min-height: 225px;
+    height: calc(100% - 200px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     h3 {
       margin-top: 10px;
@@ -2823,4 +2850,14 @@ a:hover {
 
 .row.check-home {
   margin-bottom: 40px;
+  // display: flex;
+
+  // .colmd3 {
+  //   flex: 23%
+  // }
+}
+
+.col-md-3.check {
+  margin-bottom: 25px;
+
 }
