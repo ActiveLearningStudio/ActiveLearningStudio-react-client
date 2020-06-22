@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import ReactPlaceholder from "react-placeholder";
 import "react-placeholder/lib/reactPlaceholder.css";
-
+import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import Header from "../components/Header/Header";
 
@@ -118,10 +118,16 @@ export class ProjectsPage extends React.Component {
                   <div className="col-md-12">
                     <div className="program-page-title">
                       <h1>My Projects</h1>
+                      <Link to="./project/create">
+                        <div className="btn-top-page">
+                          <i className="fa fa-plus" />
+                          Add Project
+                        </div>
+                      </Link>
                     </div>
                   </div>
                 </div>
-                <div className="row">{projectCards}</div>
+                <div className="row  check-home">{projectCards}</div>
               </div>
             </div>
           </div>

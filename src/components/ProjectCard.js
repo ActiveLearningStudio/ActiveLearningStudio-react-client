@@ -32,7 +32,7 @@ const ProjectCard = (props) => (
             </h3>
           </div>
           <div className="col-md-2">
-            <div className="dropdown pull-right">
+            <div className="dropdown pull-right check">
               <button
                 className="btn project-dropdown-btn"
                 type="button"
