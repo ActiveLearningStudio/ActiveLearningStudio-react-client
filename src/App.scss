@@ -679,6 +679,7 @@ body {
 
       input {
         margin-right: 5px;
+        cursor: pointer;
       }
 
       a,
@@ -2808,7 +2809,7 @@ a:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 70%;
+    width: 65%;
 
     @media (max-width: 480px) {
       width: 100%;
