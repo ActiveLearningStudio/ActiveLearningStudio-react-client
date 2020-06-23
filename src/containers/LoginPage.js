@@ -189,11 +189,10 @@ export class LoginPage extends React.Component {
               </div>
               <h3>
                 I understand that using the CurrikiStudio online service is
-                subject to the Curriki subscription Agreement, and the Curriki
-                Terms of Services and Privacy Policy.{" "}
+                subject to the Curriki Subscription Agreement and Privacy Policy.{" "}
               </h3>
               <h4>
-                I agree to these following terms and have reviewd the
+                I agree to these following terms and have reviewed the
                 agreements.
               </h4>
               {
@@ -205,8 +204,7 @@ export class LoginPage extends React.Component {
                     color: this.state.selectterms && "red",
                   }}
                 >
-                  Please click on the document, then check the boxes below to
-                  confirm you have previewed these documents:
+                  Before proceeding, please click on the documents below to view our agreements.
                 </h4>
               }
               <div className="form-group checkbox">
