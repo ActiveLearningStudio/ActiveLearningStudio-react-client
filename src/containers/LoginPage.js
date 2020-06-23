@@ -192,7 +192,7 @@ export class LoginPage extends React.Component {
                 subject to the Curriki Subscription Agreement and Privacy Policy.{" "}
               </h3>
               <h4>
-                I agree to these following terms and have reviewed the
+                I agree to the following terms and have reviewed the
                 agreements.
               </h4>
               {
