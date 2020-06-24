@@ -4,7 +4,7 @@ import validator from "validator";
 import bg from "../images/loginbg.png";
 import bg1 from "../images/loginbg2.png";
 import { withRouter } from "react-router-dom";
-import { Link } from "react-router-dom";
+
 import {
   startLogin,
   ecceptterms,
@@ -29,6 +29,7 @@ export class LoginPage extends React.Component {
       privacy: false,
       subsription: false,
       selectterms: false,
+      requiredemail: "",
     };
   }
   componentDidMount() {
@@ -50,9 +51,23 @@ export class LoginPage extends React.Component {
   };
   onSubmit = async (e) => {
     e.preventDefault();
-
+    this.setState({
+      requiredemail: "",
+    });
     try {
       const { email, password } = this.state;
+      if (email == "" && password == "") {
+        this.setState({
+          requiredemail: "Kindly fill all fields",
+        });
+        return;
+      } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+        this.setState({
+          requiredemail: "Invalid email",
+        });
+        return;
+      } else {
+      }
 
       this.setState({ apiLoading: true });
       await this.props.startLogin(email, password);
@@ -154,10 +169,13 @@ export class LoginPage extends React.Component {
                     <a href="/">Reset Password</a>
                   </div>
                 </div> */}
+                {!!this.state.requiredemail && (
+                  <div>{<span>{this.state.requiredemail}</span>}</div>
+                )}
                 <div className="form-group">
                   <button
                     className="btn btn-primary login-submit"
-                    disabled={this.isDisabled()}
+                    // disabled={this.isDisabled()}
                   >
                     {this.state.apiLoading == true ? (
                       <img src={loader} alt="" />
@@ -189,11 +207,11 @@ export class LoginPage extends React.Component {
               </div>
               <h3>
                 I understand that using the CurrikiStudio online service is
-                subject to the Curriki Subscription Agreement and Privacy Policy.{" "}
+                subject to the Curriki Subscription Agreement and Privacy
+                Policy.{" "}
               </h3>
               <h4>
-                I agree to the following terms and have reviewed the
-                agreements.
+                I agree to the following terms and have reviewed the agreements.
               </h4>
               {
                 <h4
@@ -204,7 +222,8 @@ export class LoginPage extends React.Component {
                     color: this.state.selectterms && "red",
                   }}
                 >
-                  Before proceeding, please click on the documents below to view our agreements.
+                  Before proceeding, please click on the documents below to view
+                  our agreements.
                 </h4>
               }
               <div className="form-group checkbox">
