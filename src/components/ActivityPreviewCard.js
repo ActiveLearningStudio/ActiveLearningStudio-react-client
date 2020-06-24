@@ -15,7 +15,7 @@ const ActivityPreviewCard = (props) => {
   return (
     <li onClick={() => onSelect(activity._id)}>
       <div>
-        <i class="fa fa-play-circle-o" aria-hidden="true"></i>
+        <i className="fa fa-play-circle-o" aria-hidden="true"></i>
         <div className="title">{activity.title}</div>
       </div>
       <div className="dated">
