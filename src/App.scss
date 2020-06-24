@@ -822,6 +822,13 @@ body {
   }
 }
 
+.program-tile {
+  &:hover {
+    .buttonbottom {
+      display: flex
+    }
+  }
+}
 
 .program-tile {
   background: #fff;
@@ -830,9 +837,12 @@ body {
   min-height: 450px;
   height: 100%;
 
+
+
   .buttonbottom {
-    display: flex;
-    justify-content: flex-end;
+    display: none;
+    margin: -10px;
+
 
     .fa {
       font-size: 12px;
@@ -840,15 +850,31 @@ body {
     }
 
     a {
-      background: #5952c6;
-      color: #fff;
-      margin-left: 10px;
+
+      color: #5952c6;
+      border: 1px solid #ece9e9;
       padding: 5px 10px;
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 400;
-      border-radius: 3px;
+      text-align: center;
+      letter-spacing: 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 1;
+      width: 33.33%;
+
+      &:hover {
+        background-color: #5952c6;
+        color: #fff
+      }
+
+
     }
   }
+
+
+
 
   .program-thumb {
     height: 200px;

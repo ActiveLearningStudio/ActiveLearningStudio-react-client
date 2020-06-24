@@ -127,6 +127,9 @@ const ProjectCard = (props) => (
           <Link to={"/project/preview2/" + props.project._id}>
             <i className="fa fa-eye" aria-hidden="true"></i> Preview
           </Link>
+          <Link to={"/project/" + props.project._id}>
+            <i className="fa fa-cubes" aria-hidden="true"></i> Build
+          </Link>
 
           <Link to={"/project/create/" + props.project._id}>
             <i className="fa fa-pencil" aria-hidden="true"></i> Edit
