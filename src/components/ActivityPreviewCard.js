@@ -14,24 +14,13 @@ const ActivityPreviewCard = (props) => {
 
   return (
     <li onClick={() => onSelect(activity._id)}>
-      <div className="small-thumb">
-        <div
-          className="list-img-thumbnail"
-          style={{
-            backgroundImage:
-              "url(" + global.config.laravelAPIUrl + activity.thumb_url + ")",
-          }}
-        ></div>
+      <div>
+        <i class="fa fa-play-circle-o" aria-hidden="true"></i>
+        <div className="title">{activity.title}</div>
       </div>
-      <div className="panel-heading">{activity.title}</div>
-      <div className="list-inline">
-        <div className="inline-img">
-          {/* <img src="/images/icon-pic.png" alt="icon-pic"></img>
-                <img src="/images/icon-play.png" alt="icon-play"></img>
-                <img src="/images/icon-list.png" alt="icon-list"></img> */}
-        </div>
+      <div className="dated">
+        {new Date(activity.created_at).toDateString()}
       </div>
-      <div className="date">{new Date(activity.created_at).toDateString()}</div>
     </li>
   );
 };

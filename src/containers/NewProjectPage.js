@@ -50,7 +50,7 @@ export class NewProjectPage extends React.Component {
                         <i
                           className="fa fa-times"
                           style={{
-                            WebkitTextStroke: "5px #fff",
+                            WebkitTextStroke: "4px #fff",
                             color: "#333",
                             cursor: "pointer",
                           }}

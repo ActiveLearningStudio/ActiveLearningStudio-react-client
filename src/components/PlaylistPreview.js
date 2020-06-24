@@ -80,30 +80,15 @@ export class PlaylistPreview extends React.Component {
           className="slide-control prev"
           onClick={() => this.handleSelect(previousResource._id)}
         >
-          <img src="/images/slide-arrow.png" alt="slide-arrow"></img>
-          <div className="hover-control-caption">
-            <div
-              style={{
-                backgroundImage:
-                  "url(" +
-                  global.config.laravelAPIUrl +
-                  previousResource.thumb_url +
-                  ")",
-              }}
-              className="imginhover"
-            />
-            <span>{previousResource.title}</span>
-          </div>
+          <i class="fa fa-arrow-left" aria-hidden="true"></i>
+          <span> previous Activity</span>
         </a>
       );
     } else {
       previousLink = (
         <a to="#" className="slide-control prev disabled-link">
-          <img src="/images/slide-arrow.png" alt="slide-arrow"></img>
-          <div className="hover-control-caption">
-            <img alt="thumb01"></img>
-            <span></span>
-          </div>
+          <i class="fa fa-arrow-left" aria-hidden="true"></i>
+          <span> previous Activity</span>
         </a>
       );
     }
@@ -115,8 +100,9 @@ export class PlaylistPreview extends React.Component {
           className="slide-control next"
           onClick={() => this.handleSelect(nextResource._id)}
         >
-          <img src="/images/slide-arrow.png" alt="slide-arrow"></img>
-          <div className="hover-control-caption pointer-cursor">
+          <i class="fa fa-arrow-right" aria-hidden="true"></i>
+          <span> Next Activity</span>
+          {/* <div className="hover-control-caption pointer-cursor">
             <div
               style={{
                 backgroundImage:
@@ -128,25 +114,26 @@ export class PlaylistPreview extends React.Component {
               className="imginhover"
             />
             <span>{nextResource.title}</span>
-          </div>
+          </div> */}
         </a>
       );
     } else {
       nextLink = (
         <a to="#" className="slide-control next disabled-link">
-          <img src="/images/slide-arrow.png" alt="slide-arrow"></img>
-          <div className="hover-control-caption pointer-cursor">
+          <i class="fa fa-arrow-right" aria-hidden="true"></i>
+          <span> Next Activity</span>
+          {/* <div className="hover-control-caption pointer-cursor">
             <img alt="thumb01"></img>
             <span></span>
-          </div>
+          </div> */}
         </a>
       );
     }
 
     return (
-      <section className="main-page-content">
+      <section className="main-page-content preview">
         <div className="container">
-          <ul className="breadcrum">
+          {/* <ul className="breadcrum">
             <li>
               <Link
                 to={
@@ -158,39 +145,78 @@ export class PlaylistPreview extends React.Component {
               </Link>
             </li>
             <li>{playlist.title}</li>
-          </ul>
+          </ul> */}
         </div>
         <div className="flex-container wrap">
           <div className="activity-bg left-vdo">
-            <div className="act-top-hader">
-              <div className="heading-wrapper">
-                <div className="main-heading">
-                  <span>You are Watching:</span>
+            <div className="flex-container-preview">
+              <div className="act-top-hader">
+                <div className="heading-wrapper">
+                  <div className="main-heading">
+                    {/* <span>You are Watching:</span> */}
 
-                  {playlist.activities && playlist.activities.length
-                    ? playlist.activities.filter((a) => a._id == resourceid)
-                        .length > 0
-                      ? playlist.activities.filter(
-                          (a) => a._id == resourceid
-                        )[0].title
-                      : ""
-                    : ""}
-                </div>
-                <div className="sub-heading">
+                    {playlist.activities && playlist.activities.length
+                      ? playlist.activities.filter((a) => a._id == resourceid)
+                          .length > 0
+                        ? playlist.activities.filter(
+                            (a) => a._id == resourceid
+                          )[0].title
+                        : ""
+                      : ""}
+                  </div>
+                  {/* <div className="sub-heading">
                   <span>From the playlist:</span>
                   {playlist ? playlist.title : ""}
+                </div> */}
                 </div>
               </div>
-            </div>
-            <div className="right-control vd-controls">
-              {previousLink}
-              {nextLink}
+              <div className="right-control vd-controls">
+                <div class="dropdown">
+                  <button
+                    class="btn "
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                  </button>
+                  <div
+                    class="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton"
+                  >
+                    {nextLink}
+                    {previousLink}
+                    <Link
+                      to={
+                        "/project/preview2/" +
+                        this.props.playlist.selectedPlaylist.project._id
+                      }
+                      className="slide-control"
+                    >
+                      <i class="fa fa-share" aria-hidden="true"></i>
+                      Back to Project
+                    </Link>
+                    <Link
+                      to={
+                        "/project/" +
+                        this.props.playlist.selectedPlaylist.project._id
+                      }
+                      className="slide-control"
+                    >
+                      <i class="fa fa-times-circle-o" aria-hidden="true"></i>
+                      Exit
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="main-item-wrapper">
               <div className="item-container">
                 {/* <img src="/images/video-thumbnail.jpg" alt="video-thumbnail" className=""></img> */}
                 <H5PPreview {...this.state} resourceid={resourceid} />
-                <div className="item-caption-bottom">
+                {/* <div className="item-caption-bottom">
                   <p>
                     {playlist.activities && playlist.activities.length
                       ? playlist.activities.filter((a) => a._id == resourceid)
@@ -201,12 +227,12 @@ export class PlaylistPreview extends React.Component {
                         : ""
                       : ""}
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
           <div className="right-sidegolf-info">
-            <div className="back-header">
+            {/* <div className="back-header">
               <div>
                 {" "}
                 <Link
@@ -230,10 +256,31 @@ export class PlaylistPreview extends React.Component {
                 <img src="/images/right-arrow.png" className="back-arrow"></img>
                 Back to {this.props.playlist.selectedPlaylist.project.name}
               </Link>
-            </div>
-            <div className="sidebar-heading">{playlist.title}</div>
-            <div className="scrollDiv">
-              <ul className="panel-list">{activities}</ul>
+            </div> */}
+
+            <button
+              class=""
+              type="button"
+              data-toggle="collapse"
+              data-target="#collapseExample"
+              aria-expanded="false"
+              aria-controls="collapseExample"
+            >
+              <div className="sub-heading">
+                <div className="line">
+                  <span>From the playlist:</span>
+                  {playlist ? playlist.title : ""}
+                </div>
+                <i class="fa fa-angle-up" aria-hidden="true"></i>
+              </div>
+            </button>
+
+            <div className="collapse show" id="collapseExample">
+              <div className="card card-body">
+                <div className="scrollDiv">
+                  <ul className="">{activities}</ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
