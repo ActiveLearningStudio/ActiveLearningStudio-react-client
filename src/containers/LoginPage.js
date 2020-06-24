@@ -192,8 +192,17 @@ export class LoginPage extends React.Component {
             <div onClick={this.props.showLogin}>
               <i className="fa fa-times" />
             </div>
-            <img src={terms} alt="" />
-            <h1>Free to Create</h1>
+            <div className="flex-terms">
+              <img src={terms} alt="" />
+              <div>
+                <h1>Free to Create</h1>
+                <h3>
+                  I understand that using the CurrikiStudio online service is
+                  subject to the Curriki Subscription Agreement and Privacy
+                  Policy.{" "}
+                </h3>
+              </div>
+            </div>
             <form
               onSubmit={this.onSubmitterms}
               autoComplete="off"
@@ -205,11 +214,7 @@ export class LoginPage extends React.Component {
                   Accept & Connect
                 </button>
               </div>
-              <h3>
-                I understand that using the CurrikiStudio online service is
-                subject to the Curriki Subscription Agreement and Privacy
-                Policy.{" "}
-              </h3>
+
               <h4>
                 I agree to the following terms and have reviewed the agreements.
               </h4>

@@ -534,7 +534,7 @@ body {
   max-width: 580px;
   margin: 0px auto;
   border-radius: 5px;
-  padding: 40px 60px;
+  padding: 40px 45px;
   position: relative;
 
   &:after {
@@ -617,7 +617,7 @@ body {
   }
 
   .login-form {
-    margin-top: 35px;
+    margin-top: 25px;
   }
 
   .form-group {
@@ -821,7 +821,7 @@ body {
     }
   }
 }
-}
+
 
 .program-tile {
   background: #fff;
@@ -2790,10 +2790,14 @@ a:hover {
 
 .terms_section {
   img {
-    max-width: 60%;
+    max-width: 40%;
     margin: 0 auto;
 
     display: block;
+  }
+
+  .flex-terms {
+    display: flex;
   }
 
   .fa-times {
@@ -2801,6 +2805,7 @@ a:hover {
     cursor: pointer;
     text-align: right;
     float: right;
+    margin-top: -15px;
   }
 
   @media (max-width: 480px) {
@@ -2823,6 +2828,8 @@ a:hover {
 
     .fa {
       padding-right: 5px;
+      position: initial;
+
     }
 
     .checkbox {
@@ -2846,7 +2853,7 @@ a:hover {
   }
 
   h1 {
-    text-align: center;
+
     font-size: 30px;
     font-weight: 600;
     margin: 16px 0px;

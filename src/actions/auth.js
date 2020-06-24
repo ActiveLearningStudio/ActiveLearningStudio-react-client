@@ -74,7 +74,7 @@ export const startLogin = (email, password) => {
         }
       );
       if (response.data.status == "success") {
-        if (!response.data.data.subscribed) {
+        if (response.data.data.subscribed) {
           dispatch(show_term());
         } else {
           const user = {
