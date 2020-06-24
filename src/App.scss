@@ -3047,7 +3047,7 @@ a:hover {
 
   .main-item-wrapper {
     background: #fff;
-    min-height: 600px
+    min-height: 300px
   }
 
   .flex-container {
@@ -3194,5 +3194,15 @@ a:hover {
         }
       }
     }
+  }
+}
+
+#curriki-h5p-wrapper {
+  .loader_gif {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 300px;
   }
 }

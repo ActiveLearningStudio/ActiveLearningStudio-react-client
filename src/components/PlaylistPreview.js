@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { loadPlaylistAction } from "../actions/playlist";
 import ActivityPreviewCard from "./ActivityPreviewCard";
+import gifloader from "../images/276.gif";
 const H5PPreview = React.lazy(() => import("../containers/H5PPreview"));
 import "./PlayListPreview.css";
 
@@ -87,7 +88,18 @@ export class PlaylistPreview extends React.Component {
       );
 
       previousLink1 = (
-        <a onClick={() => this.handleSelect(previousResource._id)}>
+        <a
+          onClick={() => {
+            this.handleSelect(previousResource._id);
+            try {
+              document.getElementById(
+                "curriki-h5p-wrapper"
+              ).innerHTML = ` <div class="loader_gif">
+                <img src='${gifloader}' alt="" />
+              </div>`;
+            } catch (e) {}
+          }}
+        >
           {" "}
           <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
         </a>
@@ -133,7 +145,18 @@ export class PlaylistPreview extends React.Component {
         </a>
       );
       nextLink1 = (
-        <a onClick={() => this.handleSelect(nextResource._id)}>
+        <a
+          onClick={() => {
+            this.handleSelect(nextResource._id);
+            try {
+              document.getElementById(
+                "curriki-h5p-wrapper"
+              ).innerHTML = ` <div class="loader_gif">
+                <img src='${gifloader}' alt="" />
+              </div>`;
+            } catch (e) {}
+          }}
+        >
           <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
         </a>
       );
