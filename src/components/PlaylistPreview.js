@@ -1,10 +1,11 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { loadPlaylistAction } from "../actions/playlist";
 import ActivityPreviewCard from "./ActivityPreviewCard";
-import H5PPreview from "../containers/H5PPreview";
+import gifloader from "../images/276.gif";
+const H5PPreview = React.lazy(() => import("../containers/H5PPreview"));
 import "./PlayListPreview.css";
 
 export class PlaylistPreview extends React.Component {
@@ -73,6 +74,7 @@ export class PlaylistPreview extends React.Component {
         : null;
 
     let previousLink = null;
+    let previousLink1 = null;
     if (previousResource) {
       previousLink = (
         <a
@@ -80,27 +82,52 @@ export class PlaylistPreview extends React.Component {
           className="slide-control prev"
           onClick={() => this.handleSelect(previousResource._id)}
         >
-          <i class="fa fa-arrow-left" aria-hidden="true"></i>
+          <i className="fa fa-arrow-left" aria-hidden="true"></i>
           <span> previous Activity</span>
+        </a>
+      );
+
+      previousLink1 = (
+        <a
+          onClick={() => {
+            this.handleSelect(previousResource._id);
+            try {
+              document.getElementById(
+                "curriki-h5p-wrapper"
+              ).innerHTML = ` <div class="loader_gif">
+                <img src='${gifloader}' alt="" />
+              </div>`;
+            } catch (e) {}
+          }}
+        >
+          {" "}
+          <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
         </a>
       );
     } else {
       previousLink = (
         <a to="#" className="slide-control prev disabled-link">
-          <i class="fa fa-arrow-left" aria-hidden="true"></i>
+          <i className="fa fa-arrow-left" aria-hidden="true"></i>
           <span> previous Activity</span>
+        </a>
+      );
+      previousLink1 = (
+        <a>
+          {" "}
+          <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
         </a>
       );
     }
 
     let nextLink = null;
+    let nextLink1 = null;
     if (nextResource) {
       nextLink = (
         <a
           className="slide-control next"
           onClick={() => this.handleSelect(nextResource._id)}
         >
-          <i class="fa fa-arrow-right" aria-hidden="true"></i>
+          <i className="fa fa-arrow-right" aria-hidden="true"></i>
           <span> Next Activity</span>
           {/* <div className="hover-control-caption pointer-cursor">
             <div
@@ -117,15 +144,36 @@ export class PlaylistPreview extends React.Component {
           </div> */}
         </a>
       );
+      nextLink1 = (
+        <a
+          onClick={() => {
+            this.handleSelect(nextResource._id);
+            try {
+              document.getElementById(
+                "curriki-h5p-wrapper"
+              ).innerHTML = ` <div class="loader_gif">
+                <img src='${gifloader}' alt="" />
+              </div>`;
+            } catch (e) {}
+          }}
+        >
+          <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+        </a>
+      );
     } else {
       nextLink = (
         <a to="#" className="slide-control next disabled-link">
-          <i class="fa fa-arrow-right" aria-hidden="true"></i>
+          <i className="fa fa-arrow-right" aria-hidden="true"></i>
           <span> Next Activity</span>
           {/* <div className="hover-control-caption pointer-cursor">
             <img alt="thumb01"></img>
             <span></span>
           </div> */}
+        </a>
+      );
+      nextLink1 = (
+        <a>
+          <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
         </a>
       );
     }
@@ -171,19 +219,24 @@ export class PlaylistPreview extends React.Component {
                 </div>
               </div>
               <div className="right-control vd-controls">
-                <div class="dropdown">
+                <div className="sliderbtn">
+                  {previousLink1}
+                  {nextLink1}
+                </div>
+
+                <div className="dropdown">
                   <button
-                    class="btn "
+                    className="btn "
                     type="button"
                     id="dropdownMenuButton"
                     data-toggle="dropdown"
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                    <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
                   </button>
                   <div
-                    class="dropdown-menu"
+                    className="dropdown-menu"
                     aria-labelledby="dropdownMenuButton"
                   >
                     {nextLink}
@@ -195,7 +248,7 @@ export class PlaylistPreview extends React.Component {
                       }
                       className="slide-control"
                     >
-                      <i class="fa fa-share" aria-hidden="true"></i>
+                      <i className="fa fa-share" aria-hidden="true"></i>
                       Back to Project
                     </Link>
                     <Link
@@ -205,7 +258,10 @@ export class PlaylistPreview extends React.Component {
                       }
                       className="slide-control"
                     >
-                      <i class="fa fa-times-circle-o" aria-hidden="true"></i>
+                      <i
+                        className="fa fa-times-circle-o"
+                        aria-hidden="true"
+                      ></i>
                       Exit
                     </Link>
                   </div>
@@ -215,7 +271,9 @@ export class PlaylistPreview extends React.Component {
             <div className="main-item-wrapper">
               <div className="item-container">
                 {/* <img src="/images/video-thumbnail.jpg" alt="video-thumbnail" className=""></img> */}
-                <H5PPreview {...this.state} resourceid={resourceid} />
+                <Suspense fallback={<div>Loading</div>}>
+                  <H5PPreview {...this.state} resourceid={resourceid} />
+                </Suspense>
                 {/* <div className="item-caption-bottom">
                   <p>
                     {playlist.activities && playlist.activities.length
@@ -259,7 +317,7 @@ export class PlaylistPreview extends React.Component {
             </div> */}
 
             <button
-              class=""
+              className=""
               type="button"
               data-toggle="collapse"
               data-target="#collapseExample"
@@ -271,7 +329,9 @@ export class PlaylistPreview extends React.Component {
                   <span>From the playlist:</span>
                   {playlist ? playlist.title : ""}
                 </div>
-                <i class="fa fa-angle-up" aria-hidden="true"></i>
+                <div>
+                  <i className="fa fa-angle-up" aria-hidden="true"></i>
+                </div>
               </div>
             </button>
 

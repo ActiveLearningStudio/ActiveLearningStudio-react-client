@@ -135,7 +135,7 @@ export class LoginPage extends React.Component {
                 className="login-form"
               >
                 <div className="form-group username-box">
-                  <i class="fa fa-user" aria-hidden="true"></i>{" "}
+                  <i className="fa fa-user" aria-hidden="true"></i>{" "}
                   <input
                     className="username"
                     type="text"
@@ -147,7 +147,7 @@ export class LoginPage extends React.Component {
                 </div>
 
                 <div className="form-group password-box">
-                  <i class="fa fa-lock" aria-hidden="true"></i>
+                  <i className="fa fa-lock" aria-hidden="true"></i>
                   <input
                     className="password"
                     type="password"
@@ -232,7 +232,7 @@ export class LoginPage extends React.Component {
                 </h4>
               }
               <div className="form-group checkbox">
-                <div class="checkbox">
+                <div className="checkbox">
                   <div
                     className={this.state.subsription ? "active" : "non-active"}
                     onClick={() => {
@@ -245,7 +245,7 @@ export class LoginPage extends React.Component {
                       );
                     }}
                   >
-                    <i class="fa fa-square-o" aria-hidden="true"></i>
+                    <i className="fa fa-square-o" aria-hidden="true"></i>
                     Subscription Agreement{}
                   </div>
                 </div>
@@ -266,7 +266,7 @@ export class LoginPage extends React.Component {
                   </label>
                 </div> */}
 
-                <div class="checkbox ">
+                <div className="checkbox ">
                   <div
                     className={this.state.privacy ? "active" : "non-active"}
                     onClick={() => {
@@ -279,8 +279,8 @@ export class LoginPage extends React.Component {
                       );
                     }}
                   >
-                    <i class="fa fa-square-o" aria-hidden="true"></i> Privacy
-                    policy{" "}
+                    <i className="fa fa-square-o" aria-hidden="true"></i>{" "}
+                    Privacy policy{" "}
                   </div>
                 </div>
               </div>

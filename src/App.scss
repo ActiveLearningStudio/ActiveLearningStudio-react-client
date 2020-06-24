@@ -3046,9 +3046,8 @@ a:hover {
   }
 
   .main-item-wrapper {
-    background: #333;
-
-
+    background: #fff;
+    min-height: 300px
   }
 
   .flex-container {
@@ -3076,6 +3075,31 @@ a:hover {
     width: inherit;
     height: initial;
     background-color: #FAFAFA;
+    display: flex;
+    align-items: center;
+
+    .sliderbtn {
+      display: flex;
+
+      i {
+        border-radius: 50%;
+        border: none;
+        width: 34px;
+        height: 34px;
+        background-color: #DCDCDC;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 6px;
+        color: #707070;
+        cursor: pointer;
+
+        &:hover {
+          background: #4646c4;
+          color: #fff
+        }
+      }
+    }
 
     button {
       border-radius: 50%;
@@ -3086,6 +3110,14 @@ a:hover {
 
       .fa {
         color: #707070
+      }
+
+      &:hover {
+        background: #4646c4;
+
+        .fa {
+          color: #fff
+        }
       }
     }
   }
@@ -3162,5 +3194,15 @@ a:hover {
         }
       }
     }
+  }
+}
+
+#curriki-h5p-wrapper {
+  .loader_gif {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 300px;
   }
 }
