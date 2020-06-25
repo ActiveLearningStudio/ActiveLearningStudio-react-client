@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-
+import logo from "../../images/logo.svg";
 import {
   changePlaylistTitleAction,
   reorderPlaylistActivitiesAction,
@@ -139,11 +139,23 @@ export class PlaylistCard extends React.Component {
 												></i>{" "}
 												Edit
 											</a> */}
-                      {/* <a className="dropdown-item" href="#">
+                      <a
+                        className="dropdown-item"
+                        onClick={() => {
+                          Swal.fire({
+                            title: "STAY TUNED!",
+                            text: "COMING SOON",
+                            imageUrl: logo,
+                            imageWidth: 400,
+                            imageHeight: 200,
+                            imageAlt: "Custom image",
+                          });
+                        }}
+                      >
                         <i className="fa fa-share" aria-hidden="true"></i> Send
                         To
                       </a>
-                      <a
+                      {/*} <a
                         className="dropdown-item"
                         href="#"
                         onClick={(e) => {
