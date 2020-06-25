@@ -5,9 +5,10 @@ import { Draggable } from "react-beautiful-dnd";
 import youtube from "./assets/images/social-media.svg";
 import imageplaceholder from "./assets/images/interface.svg";
 import list from "./assets/images/signs.svg";
+import logo from "../../images/logo.svg";
 import { showDeletePopupAction, hideDeletePopupAction } from "../../actions/ui";
 import "./ResourceCard.scss";
-
+import ComingSoon from "../comingSoon/model";
 export class ResourceCard extends React.Component {
   constructor(props) {
     super(props);
@@ -139,7 +140,19 @@ export class ResourceCard extends React.Component {
                       >
                         <i className="fa fa-pencil" aria-hidden="true"></i> Edit
                       </Link>
-                      {/* <a className="dropdown-item" href="#">
+                      <a
+                        className="dropdown-item"
+                        onClick={() => {
+                          Swal.fire({
+                            title: "STAY TUNED!",
+                            text: "COMING SOON",
+                            imageUrl: logo,
+                            imageWidth: 400,
+                            imageHeight: 200,
+                            imageAlt: "Custom image",
+                          });
+                        }}
+                      >
                         <i className="fa fa-share" aria-hidden="true"></i> Send
                         To
                       </a>
@@ -147,8 +160,14 @@ export class ResourceCard extends React.Component {
                         className="dropdown-item"
                         href="#"
                         onClick={(e) => {
-                          e.preventDefault();
-                          window.open("/api/download/project/123");
+                          Swal.fire({
+                            title: "STAY TUNED!",
+                            text: "COMING SOON",
+                            imageUrl: logo,
+                            imageWidth: 400,
+                            imageHeight: 200,
+                            imageAlt: "Custom image",
+                          });
                         }}
                       >
                         <i
@@ -156,7 +175,7 @@ export class ResourceCard extends React.Component {
                           aria-hidden="true"
                         ></i>{" "}
                         Executable
-                      </a> */}
+                      </a>
                       <a className="dropdown-item" onClick={this.handleDelete}>
                         <i
                           className="fa fa-times-circle-o"
