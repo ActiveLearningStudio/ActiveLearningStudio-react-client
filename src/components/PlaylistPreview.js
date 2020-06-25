@@ -89,21 +89,28 @@ export class PlaylistPreview extends React.Component {
       );
 
       previousLink1 = (
-        <a
-          onClick={() => {
-            this.handleSelect(previousResource._id);
-            try {
-              document.getElementById(
-                "curriki-h5p-wrapper"
-              ).innerHTML = ` <div class="loader_gif">
-                <img src='${gifloader}' alt="" />
-              </div>`;
-            } catch (e) {}
-          }}
+        <Link
+          // onClick={() => {
+          //   this.handleSelect(previousResource._id);
+          //   try {
+          //     document.getElementById(
+          //       "curriki-h5p-wrapper"
+          //     ).innerHTML = ` <div class="loader_gif">
+          //       <img src='${gifloader}' alt="" />
+          //     </div>`;
+          //   } catch (e) {}
+          // }}
+          to={
+            this.props.playlistid &&
+            "/playlist/preview/" +
+              this.props.playlistid +
+              "/resource/" +
+              previousResource._id
+          }
         >
           {" "}
           <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
-        </a>
+        </Link>
       );
     } else {
       previousLink = (
@@ -146,20 +153,28 @@ export class PlaylistPreview extends React.Component {
         </a>
       );
       nextLink1 = (
-        <a
-          onClick={() => {
-            this.handleSelect(nextResource._id);
-            try {
-              document.getElementById(
-                "curriki-h5p-wrapper"
-              ).innerHTML = ` <div class="loader_gif">
-                <img src='${gifloader}' alt="" />
-              </div>`;
-            } catch (e) {}
-          }}
+        <Link
+          // onClick={() => {
+          //   this.handleSelect(nextResource._id);
+          //   try {
+          //     document.getElementById(
+          //       "curriki-h5p-wrapper"
+          //     ).innerHTML = ` <div class="loader_gif">
+          //       <img src='${gifloader}' alt="" />
+          //     </div>`;
+          //   } catch (e) {}
+          // }}
+
+          to={
+            this.props.playlistid &&
+            "/playlist/preview/" +
+              this.props.playlistid +
+              "/resource/" +
+              nextResource._id
+          }
         >
           <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-        </a>
+        </Link>
       );
     } else {
       nextLink = (
@@ -240,8 +255,8 @@ export class PlaylistPreview extends React.Component {
                     className="dropdown-menu"
                     aria-labelledby="dropdownMenuButton"
                   >
-                    {nextLink}
-                    {previousLink}
+                    {/* {nextLink}
+                    {previousLink} */}
                     <Link
                       to={
                         "/project/preview2/" +
