@@ -53,6 +53,7 @@ export class PlaylistPreview extends React.Component {
           activity={activity}
           key={activity._id}
           handleSelect={this.handleSelect}
+          playlist={this.props.playlistid}
         />
       ));
 
