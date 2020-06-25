@@ -61,12 +61,14 @@ export class LoginPage extends React.Component {
           requiredemail: "Kindly fill all fields",
         });
         return;
-      } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-        this.setState({
-          requiredemail: "Invalid email",
-        });
-        return;
-      } else {
+      }
+      // else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      //   // this.setState({
+      //   //   requiredemail: "Invalid email",
+      //   // });
+      //   // return;
+      // }
+      else {
       }
 
       this.setState({ apiLoading: true });
