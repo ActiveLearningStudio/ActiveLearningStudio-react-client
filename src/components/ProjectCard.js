@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import ProjectPreviewModal from "./ProjectPreviewModal";
 import "./ProjectCard.scss";
-
+import logo from "../images/logo.svg";
 const ProjectCard = (props) => (
   <div className="col-md-3 check">
     <div className="program-tile">
@@ -60,23 +60,22 @@ const ProjectCard = (props) => (
                   >
                     <i className="fa fa-pencil" aria-hidden="true"></i> Edit
                   </Link>
-                  {/* <a
-									className="dropdown-item"
-									href="#"
-									onClick={(e) => {
-										e.preventDefault();
-										props.handleShareProject(
-											props.project._id
-										);
-									}}
-								>
-									<i
-										className="fa fa-share"
-										aria-hidden="true"
-									></i>{" "}
-									Send To
-								</a>
-								<a
+                  <a
+                    className="dropdown-item"
+                    onClick={(e) => {
+                      Swal.fire({
+                        title: "STAY TUNED!",
+                        text: "COMING SOON",
+                        imageUrl: logo,
+                        imageWidth: 400,
+                        imageHeight: 200,
+                        imageAlt: "Custom image",
+                      });
+                    }}
+                  >
+                    <i className="fa fa-share" aria-hidden="true"></i> Send To
+                  </a>
+                  {/*<a
 									className="dropdown-item"
 									href="#"
 									onClick={(e) => {
