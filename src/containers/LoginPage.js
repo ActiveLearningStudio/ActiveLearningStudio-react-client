@@ -30,6 +30,7 @@ export class LoginPage extends React.Component {
       subsription: false,
       selectterms: false,
       requiredemail: "",
+      allterms: false,
     };
   }
   componentDidMount() {
@@ -86,7 +87,7 @@ export class LoginPage extends React.Component {
     this.setState({
       selectterms: false,
     });
-    if (this.state.privacy && this.state.subsription) {
+    if (this.state.allterms) {
       this.props.ecceptterms(
         localStorage.getItem("temp_email"),
         localStorage.getItem("temp_pass")
@@ -210,17 +211,59 @@ export class LoginPage extends React.Component {
               autoComplete="off"
               className="login-form"
             >
+              <h4
+                onClick={() => {
+                  this.setState({
+                    allterms: !this.state.allterms,
+                  });
+                }}
+                className={this.state.allterms && "active"}
+              >
+                <i className="fa fa-square-o" aria-hidden="true"></i> I agree to
+                the Curriki
+                <a
+                  onClick={() => {
+                    window.open(
+                      pdf,
+                      " Subscription Agreement",
+                      "width=500,height=500"
+                    );
+                  }}
+                >
+                  Subscription Agreement &nbsp;
+                </a>
+                and
+                <a
+                  onClick={() => {
+                    window.open(
+                      "https://www.curriki.org/privacy-policy/",
+                      " Subscription Agreement",
+                      "width=500,height=500"
+                    );
+                  }}
+                >
+                  Privacy policy
+                </a>
+              </h4>
+              {this.state.selectterms && (
+                <h4
+                  style={{
+                    marginTop: "15px",
+                    fontWeight: 500,
+                    fontSize: "14px",
+                    color: "red",
+                  }}
+                >
+                  Kindly accept subscription and privacy policy.
+                </h4>
+              )}
               <div className="form-group">
                 <button className="btn btn-primary login-submit">
                   {" "}
                   Accept & Connect
                 </button>
               </div>
-
-              <h4>
-                I agree to the following terms and have reviewed the agreements.
-              </h4>
-              {
+              {/* {
                 <h4
                   style={{
                     marginTop: "15px",
@@ -232,8 +275,8 @@ export class LoginPage extends React.Component {
                   Before proceeding, please click on the documents below to view
                   our agreements.
                 </h4>
-              }
-              <div className="form-group checkbox">
+              } */}
+              {/* <div className="form-group checkbox">
                 <div className="checkbox">
                   <div
                     className={this.state.subsription ? "active" : "non-active"}
@@ -266,7 +309,7 @@ export class LoginPage extends React.Component {
                     />
                     <a href=""> Terms of Service </a>
                   </label>
-                </div> */}
+                </div> *
 
                 <div className="checkbox ">
                   <div
@@ -285,7 +328,7 @@ export class LoginPage extends React.Component {
                     Privacy policy{" "}
                   </div>
                 </div>
-              </div>
+              </div> */}
             </form>
           </div>
         )}
