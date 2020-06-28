@@ -2815,6 +2815,48 @@ a:hover {
 }
 
 .terms_section {
+  h4 {
+    font-size: 13px;
+    cursor: pointer;
+
+    a {
+      color: #0f4392;
+      font-weight: bold;
+      font-family: 'OpenSans-Regular';
+      text-decoration: underline !important;
+      font-size: 13px;
+      cursor: pointer;
+      text-transform: uppercase;
+      ;
+    }
+  }
+
+  .pdf-social {
+    display: flex;
+    width: 60%;
+    justify-content: space-between;
+    cursor: pointer;
+    font-size: 11px;
+    color: #464646;
+    font-weight: bold;
+
+
+
+    i {
+      color: #f60018;
+      padding-right: 7px;
+    }
+
+  }
+
+  h4.active {
+    i {
+      &:before {
+        content: "\f046"
+      }
+    }
+  }
+
   img {
     max-width: 40%;
     margin: 0 auto;
