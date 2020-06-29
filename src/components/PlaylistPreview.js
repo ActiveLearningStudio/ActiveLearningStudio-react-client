@@ -4,15 +4,20 @@ import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { loadPlaylistAction } from "../actions/playlist";
 import ActivityPreviewCard from "./ActivityPreviewCard";
+import ActivityPreviewCarddropdown from "./ActivityPreviewCardDropdown";
 import gifloader from "../images/276.gif";
+import projecticon from "../images/project_icon.svg";
 const H5PPreview = React.lazy(() => import("../containers/H5PPreview"));
 import "./PlayListPreview.css";
+import { previewResource } from "../actions/resource";
 
 export class PlaylistPreview extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       resourceid: this.props.resourceid,
+      resourcetitle: "",
     };
   }
 
@@ -37,10 +42,19 @@ export class PlaylistPreview extends React.Component {
 
     const { resourceid } = this.state;
     const playlist = this.props.playlist.selectedPlaylist;
+    console.log(playlist);
     var activities;
+    var activities1;
 
     if (playlist.activities.length == 0) {
       activities = (
+        <div className="col-md-12">
+          <div className="alert alert-info" role="alert">
+            No activities defined for this playlist.
+          </div>
+        </div>
+      );
+      activities1 = (
         <div className="col-md-12">
           <div className="alert alert-info" role="alert">
             No activities defined for this playlist.
@@ -56,6 +70,16 @@ export class PlaylistPreview extends React.Component {
           playlist={this.props.playlistid}
         />
       ));
+      console.log(activities);
+      activities1 = playlist.activities.map((activity) => (
+        <ActivityPreviewCarddropdown
+          activity={activity}
+          key={activity._id}
+          handleSelect={this.handleSelect}
+          playlist={this.props.playlistid}
+        />
+      ));
+      console.log(activities1);
 
       if (resourceid == 0) this.state.resourceid = playlist.activities[0]._id;
     }
@@ -109,20 +133,20 @@ export class PlaylistPreview extends React.Component {
           }
         >
           {" "}
-          <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+          <i class="fa fa-chevron-left" aria-hidden="true"></i>
         </Link>
       );
     } else {
       previousLink = (
         <a to="#" className="slide-control prev disabled-link">
-          <i className="fa fa-arrow-left" aria-hidden="true"></i>
+          <i className="fa fa-chevron-left" aria-hidden="true"></i>
           <span> previous Activity</span>
         </a>
       );
       previousLink1 = (
         <a>
           {" "}
-          <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+          <i class="fa fa-chevron-left" aria-hidden="true"></i>
         </a>
       );
     }
@@ -173,7 +197,7 @@ export class PlaylistPreview extends React.Component {
               nextResource._id
           }
         >
-          <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+          <i class="fa  fa-chevron-right" aria-hidden="true"></i>
         </Link>
       );
     } else {
@@ -189,29 +213,25 @@ export class PlaylistPreview extends React.Component {
       );
       nextLink1 = (
         <a>
-          <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+          <i class="fa fa-chevron-right" aria-hidden="true"></i>
         </a>
       );
     }
 
     return (
       <section className="main-page-content preview">
-        <div className="container">
-          {/* <ul className="breadcrum">
-            <li>
-              <Link
-                to={
-                  "/project/preview2/" +
-                  this.props.playlist.selectedPlaylist.project._id
-                }
-              >
-                {this.props.playlist.selectedPlaylist.project.name}
-              </Link>
-            </li>
-            <li>{playlist.title}</li>
-          </ul> */}
+        <div className="container-flex-upper">
+          <div className="project-title">
+            <img src={projecticon} alt="" /> Project: {playlist.project.name}
+          </div>
+          <Link
+            to={"/project/" + this.props.playlist.selectedPlaylist.project._id}
+          >
+            {" "}
+            <i className="fa fa-times" />
+          </Link>
         </div>
-        <div className="flex-container wrap">
+        <div className="flex-container ">
           <div className="activity-bg left-vdo">
             <div className="flex-container-preview">
               <div className="act-top-hader">
@@ -240,7 +260,7 @@ export class PlaylistPreview extends React.Component {
                   {nextLink1}
                 </div>
 
-                <div className="dropdown">
+                {/* <div className="dropdown">
                   <button
                     className="btn "
                     type="button"
@@ -256,7 +276,7 @@ export class PlaylistPreview extends React.Component {
                     aria-labelledby="dropdownMenuButton"
                   >
                     {/* {nextLink}
-                    {previousLink} */}
+                    {previousLink} }
                     <Link
                       to={
                         "/project/preview2/" +
@@ -281,7 +301,7 @@ export class PlaylistPreview extends React.Component {
                       Exit
                     </Link>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="main-item-wrapper">
@@ -306,21 +326,40 @@ export class PlaylistPreview extends React.Component {
             </div>
           </div>
           <div className="right-sidegolf-info">
-            {/* <div className="back-header">
+            <div className="back-header">
               <div>
                 {" "}
                 <Link
                   className="gobackbuttonpreview"
                   to={
-                    "/project/" +
+                    "/project/preview2/" +
                     this.props.playlist.selectedPlaylist.project._id
                   }
                 >
-                  <i className="fa fa-undo" aria-hidden="true"></i>Exit Preview
-                  Mode
+                  <i className="fa fa-undo" aria-hidden="true"></i>Back to
+                  Projects
                 </Link>
               </div>
-              <Link
+              <div className="dropdown">
+                <button
+                  className="btn "
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
+                </button>
+                <div
+                  className="dropdown-menu"
+                  aria-labelledby="dropdownMenuButton"
+                >
+                  <ul className="">{activities1}</ul>
+                </div>
+              </div>
+
+              {/* <Link
                 to={
                   "/project/preview2/" +
                   this.props.playlist.selectedPlaylist.project._id
@@ -329,10 +368,10 @@ export class PlaylistPreview extends React.Component {
               >
                 <img src="/images/right-arrow.png" className="back-arrow"></img>
                 Back to {this.props.playlist.selectedPlaylist.project.name}
-              </Link>
-            </div> */}
+              </Link> */}
+            </div>
 
-            <button
+            {/* <button
               className=""
               type="button"
               data-toggle="collapse"
@@ -349,14 +388,13 @@ export class PlaylistPreview extends React.Component {
                   <i className="fa fa-angle-up" aria-hidden="true"></i>
                 </div>
               </div>
-            </button>
+            </button> */}
 
-            <div className="collapse show" id="collapseExample">
-              <div className="card card-body">
-                <div className="scrollDiv">
-                  <ul className="">{activities}</ul>
-                </div>
+            <div className="scrollDiv long">
+              <div className="watcher">
+                You are watching from <span>{playlist.title} </span>
               </div>
+              <ul className="sliderscrollauto">{activities}</ul>
             </div>
           </div>
         </div>

@@ -2766,6 +2766,99 @@ a:hover {
   }
 }
 
+.back-header {
+
+  border-bottom: 1px solid #e3e3e3;
+  border-left: 1px solid #e3e3e3;
+  padding: 7.5px 35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+
+  a {
+    background-color: #fff !important;
+    margin-bottom: 0px !important;
+  }
+
+  .dropdown-menu {
+    padding: 10px 20px;
+    left: -160px !important;
+    width: 240px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 20px #00000029;
+    border: 1px solid #E9E9E9;
+    opacity: 1;
+
+    li {
+      i {
+        opacity: .7;
+      }
+
+      &:hover {
+        background-color: transparent;
+        color: #4646c4;
+
+        .title {
+          color: #4646c4;
+        }
+      }
+
+      div {
+        display: flex;
+        align-items: center;
+      }
+
+      .title {
+        padding-left: 10px;
+        font-size: 12px;
+        color: #000;
+        opacity: .7;
+      }
+    }
+  }
+
+  .dropdown button {
+    border-radius: 50%;
+    border: none;
+    width: 25px;
+    height: 25px;
+    background-color: #dcdcdc;
+    display: flex;
+    justify-content: center;
+    padding-top: 7px;
+
+
+    align-items: center;
+
+
+
+
+    i {
+      color: #fff;
+      font-size: 13px !important;
+      padding: 0px !important;
+    }
+
+    &:focus,
+    &:active,
+    &:hover {
+
+      background-color: #126BDF !important;
+    }
+  }
+
+
+
+  .gobackbuttonpreview {
+    font-size: 12px;
+    line-height: 19px;
+    font-weight: 600;
+
+    letter-spacing: 0px;
+    color: #126BDF;
+  }
+}
+
 .sce_cont .gobackbuttonpreview {
   margin-bottom: 0px;
 }
@@ -2980,8 +3073,64 @@ a:hover {
 
   }
 
+  .watcher {
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 20px;
+    letter-spacing: 0px;
+    color: #707070;
+    padding: 20px 15px;
+
+    span {
+      color: #4646c4
+    }
+
+  }
+
+  .scrollDiv {
+
+    border-right: 1px solid #989da1;
+    padding-right: 0px !important;
+
+
+
+    li.check {
+      display: flex;
+      border: 1px solid #ececec;
+      padding: 8px 15px;
+
+      &:hover {
+        border-left: 3px solid #0f4392;
+
+      }
+
+
+
+      .bg-thumbnail {
+        padding: 20px;
+        width: 80px;
+        height: 50px;
+        background-position: center;
+        background-size: cover;
+        margin-right: 15px;
+      }
+
+
+      .title {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 16px;
+
+        letter-spacing: 0px;
+        color: #090708;
+        opacity: 1;
+
+      }
+    }
+  }
+
   .card-body {
-    background: #314250;
+    //background: #314250;
     border: none;
 
 
@@ -2989,7 +3138,9 @@ a:hover {
     .scrollDiv {
 
       border-right: 1px solid #989da1;
-      padding-right: 30px;
+      padding-right: 0px !important;
+
+
 
 
 
@@ -3031,27 +3182,32 @@ a:hover {
   }
 
   .right-sidegolf-info {
-    background-color: #314250;
+    background-color: #fff;
     min-height: 160px;
     border-bottom: 1px solid #989da1;
     padding-bottom: 15px;
     cursor: pointer;
+    padding: 0 !important;
 
-
+    .drpdown {
+      border-bottom: 1px solid #ddd;
+      padding: 5px 0px;
+      ;
+    }
 
     button {
-      background: transparent;
-      border: none;
-      text-align: left;
-      font-weight: 600;
-      font-size: 16px;
-      line-height: 22px;
+      // background: transparent;
+      // border: none;
+      // text-align: left;
+      // font-weight: 600;
+      // font-size: 16px;
+      // line-height: 22px;
 
-      letter-spacing: 0px;
-      color: #FAFAFA;
-      opacity: 1;
+      // letter-spacing: 0px;
+      // color: #FAFAFA;
+      // opacity: 1;
 
-      width: 100%;
+      // width: 100%;
 
       span {
         opacity: .6;
@@ -3089,23 +3245,29 @@ a:hover {
 
   .main-item-wrapper {
     background: #fff;
-    min-height: 300px
+    min-height: 450px
+  }
+
+  .sliderscrollauto {
+    min-height: 450px;
+    overflow-y: auto;
   }
 
   .flex-container {
-    max-width: 1050px;
+    max-width: 1280px;
     margin: 0 auto;
-    border-radius: 5px 5px 0px 0px;
+    border-radius: 5px;
 
   }
 
   .activity-bg.left-vdo {
     width: 100%;
     padding: 0 !important;
+    background-color: #fff !important;
   }
 
   .right-sidegolf-info {
-    width: 100%
+    width: 40%
   }
 
   .act-top-hader {
@@ -3122,23 +3284,25 @@ a:hover {
 
     .sliderbtn {
       display: flex;
+      width: 60px;
+      justify-content: space-between;
 
       i {
-        border-radius: 50%;
+
         border: none;
-        width: 34px;
-        height: 34px;
-        background-color: #DCDCDC;
+
         display: flex;
         justify-content: center;
         align-items: center;
         margin-right: 6px;
-        color: #707070;
+        color: #4646c4;
         cursor: pointer;
+        -webkit-text-stroke: 1px #fff;
 
         &:hover {
-          background: #4646c4;
-          color: #fff
+          //@extend background: #4646c4;
+
+
         }
       }
     }
@@ -3168,8 +3332,8 @@ a:hover {
     display: flex;
     justify-content: space-between;
     background: #FAFAFA;
-    padding: 15px 30px;
-    border-radius: 5px 5px 0px 0px;
+    padding: 8px 30px;
+    border-radius: 5px 0px 0px 0px;
     align-items: center;
 
 
@@ -3188,7 +3352,7 @@ a:hover {
     .main-heading {
       text-align: left;
       font-weight: 600;
-      font-size: 15px;
+      font-size: 13px;
       line-height: 19px;
       padding-bottom: 0px;
       letter-spacing: 0px;
@@ -3246,5 +3410,29 @@ a:hover {
     align-items: center;
     width: 100%;
     min-height: 300px;
+  }
+}
+
+.container-flex-upper {
+  max-width: 1280px;
+  margin: 0 auto;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  font-size: 16px;
+  opacity: .7;
+  color: #fff;
+
+  i {
+    font-size: 18px;
+    color: #fff;
+    opacity: 1;
+    -webkit-text-stroke: 2px #1B2E3D;
+  }
+
+  img {
+    margin-right: 10px;
+    width: 20px
   }
 }
