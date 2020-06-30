@@ -84,6 +84,15 @@ export const startLogin = (email, password) => {
             auth_expiry: response.data.data.payload.exp,
             subscribed: response.data.data.subscribed,
           };
+          //hubspot email tacking
+          var _hsq = (window._hsq = window._hsq || []);
+          _hsq.push([
+            "identify",
+            {
+              email: response.data.data.payload.user.email,
+              user_name: user.displayName,
+            },
+          ]);
           dispatch(login(user.displayName, user.id, user.token));
           localStorage.setItem("auth", JSON.stringify(user));
         }
@@ -119,6 +128,15 @@ export const ecceptterms = (email, password) => {
             auth_expiry: response.data.data.payload.exp,
             subscribed: response.data.data.subscribed,
           };
+          //hubspot email tacking
+          var _hsq = (window._hsq = window._hsq || []);
+          _hsq.push([
+            "identify",
+            {
+              email: response.data.data.payload.user.email,
+              user_name: user.displayName,
+            },
+          ]);
           dispatch(login(user.displayName, user.id, user.token));
           localStorage.setItem("auth", JSON.stringify(user));
           dispatch(show_login());
