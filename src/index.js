@@ -10,7 +10,11 @@ import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 
 import rootReducer from "./reducers";
-
+import ReactGA from "react-ga";
+const trackingId = "UA-1841781-13";
+ReactGA.initialize(trackingId, {
+  debug: true,
+});
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   rootReducer,

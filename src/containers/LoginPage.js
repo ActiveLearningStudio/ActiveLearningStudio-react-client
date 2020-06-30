@@ -4,7 +4,7 @@ import validator from "validator";
 import bg from "../images/loginbg.png";
 import bg1 from "../images/loginbg2.png";
 import { withRouter } from "react-router-dom";
-
+import { Event } from "../trackers/ga";
 import {
   startLogin,
   ecceptterms,
@@ -177,6 +177,13 @@ export class LoginPage extends React.Component {
                 )}
                 <div className="form-group">
                   <button
+                    onClick={() => {
+                      Event(
+                        "button click",
+                        "User press login button",
+                        "Login Page"
+                      );
+                    }}
                     className="btn btn-primary login-submit"
                     // disabled={this.isDisabled()}
                   >

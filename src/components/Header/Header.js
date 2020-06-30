@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { connect } from "react-redux";
-
+import { Event } from "../../trackers/ga";
 import { Link } from "react-router-dom";
 import { startLogoutAction } from "../../actions/auth";
 import {
@@ -169,7 +169,17 @@ function Header(props) {
                     <Link to="#">
                       <li>My Account</li>
                     </Link>
-                    <Link to="#" onClick={props.startLogoutAction}>
+                    <Link
+                      to="#"
+                      onClick={() => {
+                        Event(
+                          "button click",
+                          "User press Logout button",
+                          "Login Page"
+                        );
+                        props.startLogoutAction();
+                      }}
+                    >
                       <li>Logout</li>
                     </Link>
                   </ul>

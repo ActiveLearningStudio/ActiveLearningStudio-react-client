@@ -9,6 +9,7 @@ import logo from "../../images/logo.svg";
 import { showDeletePopupAction, hideDeletePopupAction } from "../../actions/ui";
 import "./ResourceCard.scss";
 import ComingSoon from "../comingSoon/model";
+import { Event } from "../../trackers/ga";
 export class ResourceCard extends React.Component {
   constructor(props) {
     super(props);
