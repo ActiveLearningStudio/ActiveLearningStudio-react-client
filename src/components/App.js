@@ -16,6 +16,7 @@ function App() {
         <meta name="description" content="CurrikiStudio" />
         <meta name="theme-color" content="#008f68" />
       </Helmet>
+
       <AppRouter />
     </div>
   );

@@ -77,6 +77,20 @@
       defer
       src="//js.hs-scripts.com/7874555.js"
     ></script>
+
+    <script type="text/javascript">
+      /* ... */
+      if (window.HubSpotConversations) {
+        console.log("The api is ready already");
+      } else {
+        window.hsConversationsOnReady = [
+          () => {
+            console.log("Now the api is ready");
+            window.HubSpotConversations.widget.load();
+          },
+        ];
+      }
+    </script>
     <!-- End of HubSpot Embed Code -->
   </body>
 </html>
