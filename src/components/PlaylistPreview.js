@@ -319,6 +319,7 @@ export class PlaylistPreview extends React.Component {
                     <H5PPreview
                       {...this.state}
                       resourceid={
+                        this.props.playlist.selectedPlaylist &&
                         this.props.playlist.selectedPlaylist.activities[0]._id
                       }
                     />
