@@ -15,42 +15,37 @@ import ProjectPreview from "../components/ProjectPreview";
 import ResourcePreview from "../components/ResourcePreview";
 import PlaylistPreview from "../components/PlaylistPreview";
 
-export class PreviewPage extends React.Component {
+export class LtiPreviewPage extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { resourceid: "" };
   }
 
   componentDidMount() {
     //scroll to top
     window.scrollTo(0, 0);
     this.props.loadMyProjectsAction();
+    console.log(this.props.project);
   }
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   console.log(nextProps);
+  //   if (
+  //     nextProps.project.playlist.selectedPlaylist !== prevState.playlistselected
+  //   ) {
+  //     return {
+  //       playlistselected: nextProps.project.playlist.selectedPlaylist,
+  //     };
+  //   } else return null;
+  // }
 
   render() {
-    // const { projects } = this.props.project;
-    var content;
-    if (this.props.previewType == "resource")
-      content = (
-        <ResourcePreview resourceid={this.props.match.params.resourceid} />
-      );
-    else if (this.props.previewType == "playlist")
-      content = (
-        <PlaylistPreview
-          playlistid={this.props.match.params.playlistid}
-          resourceid={this.props.match.params.resourceid}
-        />
-      );
-    else
-      content = (
-        <div className="sitecontainer">
-          <ProjectPreview
-            {...this.props}
-            key={this.props.match.params.projectid}
-            project={this.props.project}
-            showlti={false}
-          />
-        </div>
-      );
+    var content = (content = (
+      <PlaylistPreview
+        playlistid={this.props.match.params.playlistid}
+        resourceid={this.state.resourceid}
+        showlti={true}
+      />
+    ));
 
     return (
       <div>
@@ -72,10 +67,10 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => {
   return {
-    project: state.project,
+    project: state,
   };
 };
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(PreviewPage)
+  connect(mapStateToProps, mapDispatchToProps)(LtiPreviewPage)
 );
