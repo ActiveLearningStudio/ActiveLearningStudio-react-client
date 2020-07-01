@@ -14,6 +14,7 @@ history.listen((location) => {
 const ProjectsPage = loadable(() => import("../containers/ProjectsPage"));
 const PlaylistsPage = loadable(() => import("../containers/PlaylistsPage"));
 const PreviewPage = loadable(() => import("../containers/PreviewPage"));
+const Ltipreviewpage = loadable(() => import("../containers/Ltipreviewpage"));
 const LoginPage = loadable(() => import("../containers/LoginPage"));
 
 const AppRouter = () => {
@@ -39,6 +40,11 @@ const AppRouter = () => {
           path="/playlist/preview/:playlistid/resource/:resourceid"
           exact
           component={PreviewPage}
+          previewType="playlist"
+        />
+        <PrivateRoute
+          path="/playlist/lti/preview/:playlistid"
+          component={Ltipreviewpage}
           previewType="playlist"
         />
 

@@ -222,7 +222,10 @@ export class PlaylistPreview extends React.Component {
       <section className="main-page-content preview">
         <div className="container-flex-upper">
           <div className="project-title">
-            <img src={projecticon} alt="" /> Project: {playlist.project.name}
+            <img src={projecticon} alt="" />
+            {this.props.showlti
+              ? "Playlist :" + playlist.title
+              : "Project :" + playlist.project.name}
           </div>
           <Link
             to={"/project/" + this.props.playlist.selectedPlaylist.project._id}
