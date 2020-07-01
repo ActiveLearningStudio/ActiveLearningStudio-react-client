@@ -3436,3 +3436,23 @@ a:hover {
     width: 20px
   }
 }
+
+
+.need_help {
+  position: fixed;
+  width: 120px;
+  height: 50px;
+  right: 80px;
+  bottom: 20px;
+  z-index: 1111;
+  background: #007bff;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: bold;
+
+  clip-path: polygon(0% 0%, 93% 0, 100% 50%, 93% 100%, 0% 100%);
+  border-radius: 5px;
+}
