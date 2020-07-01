@@ -14,7 +14,7 @@ import { previewResource } from "../actions/resource";
 export class PlaylistPreview extends React.Component {
   constructor(props) {
     super(props);
-
+    console.log(this.props);
     this.state = {
       resourceid: this.props.resourceid,
       resourcetitle: "",
@@ -311,7 +311,18 @@ export class PlaylistPreview extends React.Component {
               <div className="item-container">
                 {/* <img src="/images/video-thumbnail.jpg" alt="video-thumbnail" className=""></img> */}
                 <Suspense fallback={<div>Loading</div>}>
-                  <H5PPreview {...this.state} resourceid={resourceid} />
+                  {console.log(this.props)}
+                  {!!resourceid && (
+                    <H5PPreview {...this.state} resourceid={resourceid} />
+                  )}
+                  {!!!resourceid && (
+                    <H5PPreview
+                      {...this.state}
+                      resourceid={
+                        this.props.playlist.selectedPlaylist.activities[0]._id
+                      }
+                    />
+                  )}
                 </Suspense>
                 {/* <div className="item-caption-bottom">
                   <p>

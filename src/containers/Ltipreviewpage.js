@@ -18,7 +18,7 @@ import PlaylistPreview from "../components/PlaylistPreview";
 export class LtiPreviewPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { resourceid: "" };
+    this.state = { resourceid: "sdfg" };
   }
 
   componentDidMount() {
@@ -27,16 +27,16 @@ export class LtiPreviewPage extends React.Component {
     this.props.loadMyProjectsAction();
     console.log(this.props.project);
   }
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   console.log(nextProps);
-  //   if (
-  //     nextProps.project.playlist.selectedPlaylist !== prevState.playlistselected
-  //   ) {
-  //     return {
-  //       playlistselected: nextProps.project.playlist.selectedPlaylist,
-  //     };
-  //   } else return null;
-  // }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.project.playlist.selectedPlaylist !== prevState.resourceid) {
+      var _ids =
+        nextProps.project.playlist.selectedPlaylist &&
+        nextProps.project.playlist.selectedPlaylist.activities[0]._id;
+      return {
+        resourceid: _ids,
+      };
+    } else return null;
+  }
 
   render() {
     var content = (content = (
