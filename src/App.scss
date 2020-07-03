@@ -2721,7 +2721,7 @@ a:hover {
   li {
     list-style-type: none;
 
-    min-height: 215px;
+    min-height: 180px;
     box-shadow: 0px 2px 2px #0000000d;
     border: 1px solid #ececec;
     border-radius: 3px;
@@ -2729,9 +2729,11 @@ a:hover {
   }
 
   .playimg {
-    height: 158px;
+    height: 100px;
     width: 100%;
-    background-size: cover;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
   .plydet {
@@ -3423,6 +3425,11 @@ a:hover {
   font-size: 16px;
   opacity: .7;
   color: #fff;
+
+  .project-title {
+    color: #fff
+  }
+
 
   i {
     font-size: 18px;
