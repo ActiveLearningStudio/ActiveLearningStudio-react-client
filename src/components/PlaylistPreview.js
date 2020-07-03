@@ -221,12 +221,18 @@ export class PlaylistPreview extends React.Component {
     return (
       <section className="main-page-content preview">
         <div className="container-flex-upper">
-          <div className="project-title">
-            <img src={projecticon} alt="" />
-            {this.props.showlti
-              ? "Playlist :" + playlist.title
-              : "Project :" + playlist.project.name}
-          </div>
+          <Link
+            to={
+              "/project/preview2/" +
+              this.props.playlist.selectedPlaylist.project._id
+            }
+          >
+            <div className="project-title">
+              <img src={projecticon} alt="" />
+              Project : {playlist.project.name}
+            </div>
+          </Link>
+
           <Link
             to={"/project/" + this.props.playlist.selectedPlaylist.project._id}
           >
@@ -311,19 +317,7 @@ export class PlaylistPreview extends React.Component {
               <div className="item-container">
                 {/* <img src="/images/video-thumbnail.jpg" alt="video-thumbnail" className=""></img> */}
                 <Suspense fallback={<div>Loading</div>}>
-                  {console.log(this.props)}
-                  {!!resourceid && (
-                    <H5PPreview {...this.state} resourceid={resourceid} />
-                  )}
-                  {!!!resourceid && (
-                    <H5PPreview
-                      {...this.state}
-                      resourceid={
-                        this.props.playlist.selectedPlaylist &&
-                        this.props.playlist.selectedPlaylist.activities[0]._id
-                      }
-                    />
-                  )}
+                  <H5PPreview {...this.state} resourceid={resourceid} />
                 </Suspense>
                 {/* <div className="item-caption-bottom">
                   <p>
@@ -344,13 +338,7 @@ export class PlaylistPreview extends React.Component {
             <div className="back-header">
               <div>
                 {" "}
-                <Link
-                  className="gobackbuttonpreview"
-                  to={
-                    "/project/preview2/" +
-                    this.props.playlist.selectedPlaylist.project._id
-                  }
-                >
+                <Link className="gobackbuttonpreview" to="/">
                   <i className="fa fa-undo" aria-hidden="true"></i>Back to
                   Projects
                 </Link>
