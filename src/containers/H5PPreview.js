@@ -19,18 +19,14 @@ class H5PPreview extends React.Component {
 
   loadResorce(resourceid) {
     if (resourceid == 0) return;
-
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: "JWT fefege...",
-    };
+    const { token } = JSON.parse(localStorage.getItem("auth"));
+    
 
     axios
-      .get(
-        global.config.laravelAPIUrl + "/h5p-resource-settings/" + resourceid,
-        {
-          headers: headers,
-        }
+      .post(
+        global.config.laravelAPIUrl + "/h5p-resource-settings",
+        { resourceid },
+        { headers: { Authorization: "Bearer " + token } }
       )
       .then((response) => {
         this.resourceLoaded(response);
