@@ -21,8 +21,8 @@ import {
   loadProjectPlaylistsAction,
   reorderPlaylistsAction,
   reorderPlaylistActivitiesAction,
-} from "../actions/playlist";
-import { showDeletePopupAction, hideDeletePopupAction } from "./../actions/ui";
+} from "../store/actions/playlist";
+import { showDeletePopupAction, hideDeletePopupAction } from "../store/actions/ui";
 import {
   deleteResourceAction,
   createResourceAction,
@@ -38,17 +38,17 @@ import {
   uploadResourceThumbnailAction,
   showDescribeActivityAction,
   showBuildActivityAction,
-} from "../actions/resource";
+} from "../store/actions/resource";
 import {
   showCreateProjectModalAction,
   loadProjectAction,
-} from "../actions/project";
+} from "../store/actions/project";
 
-import Header from "../components/Header/Header";
+import Header from "../components/Header";
 import Sidebar from "../components/Sidebar/Sidebar";
 import PreviewResourcePage from "./PreviewResourcePage";
-import DeletePopup from "./../components/DeletePopup/DeletePopup";
-import PlaylistCard from "../components/Playlist/PlaylistCard";
+import DeletePopup from "../components/DeletePopup";
+import PlaylistCard from "../components/PlaylistCard";
 import PlaylistsLoading from "./../components/Loading/PlaylistsLoading";
 import CreatePlaylistPopup from "../components/CreatePlaylistPopup/CreatePlaylistPopup";
 import AddResource from "../components/Resource/AddResource";

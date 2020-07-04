@@ -1,39 +1,84 @@
-import React from "react";
-import { Router, Switch } from "react-router-dom";
-import {createBrowserHistory} from "history";
-import loadable from '@loadable/component'
+import React from 'react';
+import { Router, Switch } from 'react-router-dom';
+import loadable from '@loadable/component';
 
-import PublicRoute from "./PublicRoute";
-import PrivateRoute from "./PrivateRoute";
-
-
-const history = createBrowserHistory();
+import { history } from 'store';
+import PublicRoute from './PublicRoute';
+import PrivateRoute from './PrivateRoute';
 
 const ProjectsPage = loadable(() => import('../containers/ProjectsPage'));
 const PlaylistsPage = loadable(() => import('../containers/PlaylistsPage'));
 const PreviewPage = loadable(() => import('../containers/PreviewPage'));
-const LoginPage = loadable(() => import('../containers/LoginPage'));
-
+const LoginPage = loadable(() => import('../containers/Auth/LoginPage'));
+const RegisterPage = loadable(() => import('../containers/Auth/RegisterPage'));
 
 const AppRouter = () => (
   <Router history={history}>
     <Switch>
       <PrivateRoute path="/" exact component={ProjectsPage} />
-      <PrivateRoute path="/project/preview2/:projectid" exact component={PreviewPage} />
-      <PrivateRoute path="/resource/preview/:resourceid" exact component={PreviewPage}  previewType="resource" />
-      <PrivateRoute path="/playlist/preview/:playlistid/resource/:resourceid" exact component={PreviewPage}  previewType="playlist" />
 
-      <PrivateRoute path="/project/create" exact component={ProjectsPage} id="create-project" showCreateProjectPopup={true} editMode={false} />
-      <PrivateRoute path="/project/create/:projectid" exact component={ProjectsPage} showEditProjectPopup={true} editMode={true} />
-      
-      
-      <PrivateRoute path="/project/:projectid/playlist/:playlistid/activity/create/:activityid" exact component={PlaylistsPage} openEditResourcePopup={true}/>
-      <PrivateRoute path="/project/:projectid" exact component={PlaylistsPage} />
-      <PrivateRoute path="/project/:projectid/playlist/create" exact component={PlaylistsPage} openCreatePopup={true} />
-      <PrivateRoute path="/project/:projectid/playlist/:playlistid/activity/create" exact component={PlaylistsPage}  openCreateResourcePopup={true} />
-      <PrivateRoute path="/activities/:activityid" exact component={PlaylistsPage} />
-      
-      <PublicRoute path="/login" component={LoginPage} />
+      <PrivateRoute
+        exact
+        path="/project/preview2/:projectid"
+        component={PreviewPage}
+      />
+      <PrivateRoute
+        exact
+        path="/resource/preview/:resourceid"
+        component={PreviewPage}
+        previewType="resource"
+      />
+      <PrivateRoute
+        exact
+        path="/playlist/preview/:playlistid/resource/:resourceid"
+        component={PreviewPage}
+        previewType="playlist"
+      />
+
+      <PrivateRoute
+        exact
+        path="/project/create"
+        component={ProjectsPage}
+        id="create-project"
+        showCreateProjectPopup
+        editMode={false}
+      />
+      <PrivateRoute
+        exact
+        path="/project/create/:projectid"
+        component={ProjectsPage}
+        showEditProjectPopup
+        editMode
+      />
+
+      <PrivateRoute
+        exact
+        path="/project/:projectid"
+        component={PlaylistsPage}
+      />
+      <PrivateRoute
+        exact
+        path="/project/:projectid/playlist/create"
+        component={PlaylistsPage}
+        openCreatePopup
+      />
+      <PrivateRoute
+        exact
+        path="/project/:projectid/playlist/:playlistid/activity/create/:activityid"
+        component={PlaylistsPage}
+        openEditResourcePopup
+      />
+      <PrivateRoute
+        exact
+        path="/project/:projectid/playlist/:playlistid/activity/create"
+        component={PlaylistsPage}
+        openCreateResourcePopup
+      />
+
+      <PrivateRoute exact path="/activities/:activityid" component={PlaylistsPage} />
+
+      <PublicRoute exact path="/login" component={LoginPage} />
+      <PublicRoute exact path="/register" component={RegisterPage} />
     </Switch>
   </Router>
 );

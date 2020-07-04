@@ -304,13 +304,13 @@ img {
   content: '';
   left: 0px;
   top: 0;
-  /* background: url(/images/plusblk.png); */
+  /* background: url(/assets.images/plusblk.png); */
   width: 15px;
   height: 15px;
 }
 
 .acc_active .plhead:after {
-  background: url(/images/minus.png);
+  background: url(/assets/images/minus.png);
 }
 
 .accordion_in {
@@ -381,7 +381,7 @@ img {
   position: absolute;
   top: 0;
   right: 0;
-  background: url(/images/seeall.png);
+  background: url(/assets/images/seeall.png);
   width: 8px;
   height: 13px;
   left: 0;

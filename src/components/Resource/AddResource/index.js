@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { slideInRight } from "react-animations";
 
 import styled, { keyframes } from "styled-components";
-// import { showCreateResourceActivityAction, showBuildActivityAction } from "./actions/resource";
+// import { showCreateResourceActivityAction, showBuildActivityAction } from "./store.actions/resource";
 
 import ResourceActivityType from "./ResourceActivityType";
 import ResourceSelectActivity from "./ResourceSelectActivity";
@@ -27,9 +27,7 @@ const AddResource = (props) => {
     <div className="resource-modal">
       <div
         className="modal fade right"
-        id="createPlaylistModal"
         role="dialog"
-        aria-labelledby="createPlaylistModalLabel"
         aria-hidden="true"
       >
         <div className="modal-dialog" role="document">

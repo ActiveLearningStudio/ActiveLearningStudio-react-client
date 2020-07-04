@@ -1,0 +1,29 @@
+{
+  "extends": ["react-app", "airbnb"],
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "jasmine": true
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"]
+      }
+    }
+  },
+  "rules": {
+    "consistent-return": 0,
+    "jsx-a11y/click-events-have-key-events": 0,
+    "jsx-a11y/label-has-associated-control": 0,
+    "jsx-a11y/no-autofocus": 0,
+    "jsx-a11y/no-noninteractive-element-interactions": 0,
+    "max-len": ["error", { "code": 120 }],
+    "no-case-declarations": 0,
+    "no-nested-ternary": 0,
+    "no-underscore-dangle": 0,
+    "react/forbid-prop-types": 0,
+    "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
+    "react/jsx-props-no-spreading": 0
+  }
+}

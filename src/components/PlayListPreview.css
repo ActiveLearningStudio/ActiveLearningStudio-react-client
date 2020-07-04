@@ -379,7 +379,7 @@ a.tooltip {
   content: "";
   right: 15px;
   top: 10px;
-  background: url(/images/right-arrow.png) no-repeat right top;
+  background: url(/assets/images/right-arrow.png) no-repeat right top;
   width: 6px;
   height: 10px;
 }

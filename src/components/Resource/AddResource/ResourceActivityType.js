@@ -9,7 +9,7 @@ import { Field, reduxForm, formValueSelector } from "redux-form";
 import {
   showSelectActivityAction,
   onChangeActivityTypeAction,
-} from "./../../../actions/resource";
+} from "../../../store/actions/resource";
 
 import "./AddResource.scss";
 
@@ -32,26 +32,26 @@ const FaceDiv = styled.div`
 //   {
 //     id:1,
 //     title:'Interactive',
-//     icon: '/images/course-presentation.png',
-//     overlayIcon:'/images/course-presentation-overlay.png'
+//     icon: '/assets.images/course-presentation.png',
+//     overlayIcon:'/assets.images/course-presentation-overlay.png'
 //   },
 //   {
 //     id:2,
 //     title:'Multimedia',
-//     icon: '/images/multimedia-icon.png',
-//     overlayIcon:'/images/multimedia-icon-overlay.png'
+//     icon: '/assets.images/multimedia-icon.png',
+//     overlayIcon:'/assets.images/multimedia-icon-overlay.png'
 //   },
 //   {
 //     id:3,
 //     title:'Questions',
-//     icon: '/images/question-icon.png',
-//     overlayIcon:'/images/question-icon-overlay.png'
+//     icon: '/assets.images/question-icon.png',
+//     overlayIcon:'/assets.images/question-icon-overlay.png'
 //   },
 //   {
 //     id:4,
 //     title:'Social Media',
-//     icon: '/images/share-icon.png',
-//     overlayIcon:'/images/share-icon-overlay.png'
+//     icon: '/assets.images/share-icon.png',
+//     overlayIcon:'/assets.images/share-icon-overlay.png'
 //   }
 // ];
 

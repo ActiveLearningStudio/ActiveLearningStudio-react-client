@@ -7,7 +7,7 @@ import styled, { keyframes } from "styled-components";
 
 import { withRouter } from "react-router-dom";
 
-import CreateProjectPopup from "../components/CreateProjectPopup/CreateProjectPopup";
+import CreateProjectPopup from "../components/CreateProjectPopup";
 
 const bounceAnimation = keyframes`${slideInRight}`;
 
@@ -28,9 +28,7 @@ export class NewProjectPage extends React.Component {
       <div className="resource-modal">
         <div
           className="modal fade right"
-          id="createPlaylistModal"
           role="dialog"
-          aria-labelledby="createPlaylistModalLabel"
           aria-hidden="true"
         >
           <div className="modal-dialog" role="document">

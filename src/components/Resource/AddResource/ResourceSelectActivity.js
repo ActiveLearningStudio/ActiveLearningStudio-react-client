@@ -17,7 +17,7 @@ import {
   showDescribeActivityAction,
   onChangeActivityAction,
   showCreateResourceActivity,
-} from "./../../../actions/resource";
+} from "../../../store/actions/resource";
 
 import h5pLibraries from "../../../constants/h5pLibraries";
 

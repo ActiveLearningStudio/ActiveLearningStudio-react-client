@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { slideInRight } from 'react-animations';
 
 import styled, { keyframes } from 'styled-components';
-import { showCreateResourceActivityAction, showSelectActivityAction, showBuildActivityAction } from "./../actions/resource";
+import { showCreateResourceActivityAction, showSelectActivityAction, showBuildActivityAction } from "../store/actions/resource";
 
 
 
@@ -36,7 +36,7 @@ export class PreviewResourcePage extends React.Component {
     return (
 
       <div className="resource-modal">
-        <div className="modal fade right" id="createPlaylistModal" role="dialog" aria-labelledby="createPlaylistModalLabel" aria-hidden="true">
+        <div className="modal fade right" role="dialog" aria-hidden="true">
           <div className="modal-dialog" role="document">
 
             <BouncyDiv className="modal-content">

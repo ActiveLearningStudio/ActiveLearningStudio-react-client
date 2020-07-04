@@ -23,9 +23,7 @@ const EditResource = (props) => {
     <div className="resource-modal">
       <div
         className="modal fade right"
-        id="editResourceModal"
         role="dialog"
-        aria-labelledby="editResourceModal"
         aria-hidden="true"
       >
         <div className="modal-dialog" role="document">

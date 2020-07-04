@@ -2,9 +2,9 @@ import React, { Suspense } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { loadPlaylistAction } from "../actions/playlist";
+import { loadPlaylistAction } from "../store/actions/playlist";
 import ActivityPreviewCard from "./ActivityPreviewCard";
-import gifloader from "../images/276.gif";
+import gifloader from "../assets/images/276.gif";
 const H5PPreview = React.lazy(() => import("../containers/H5PPreview"));
 import "./PlayListPreview.css";
 
@@ -253,7 +253,6 @@ export class PlaylistPreview extends React.Component {
                   </button>
                   <div
                     className="dropdown-menu"
-                    aria-labelledby="dropdownMenuButton"
                   >
                     {/* {nextLink}
                     {previousLink} */}
@@ -286,7 +285,7 @@ export class PlaylistPreview extends React.Component {
             </div>
             <div className="main-item-wrapper">
               <div className="item-container">
-                {/* <img src="/images/video-thumbnail.jpg" alt="video-thumbnail" className=""></img> */}
+                {/* <img src="/assets.images/video-thumbnail.jpg" alt="video-thumbnail" className=""></img> */}
                 <Suspense fallback={<div>Loading</div>}>
                   <H5PPreview {...this.state} resourceid={resourceid} />
                 </Suspense>
@@ -327,7 +326,7 @@ export class PlaylistPreview extends React.Component {
                 }
                 className="link"
               >
-                <img src="/images/right-arrow.png" className="back-arrow"></img>
+                <img src="/assets.images/right-arrow.png" className="back-arrow"></img>
                 Back to {this.props.playlist.selectedPlaylist.project.name}
               </Link>
             </div> */}

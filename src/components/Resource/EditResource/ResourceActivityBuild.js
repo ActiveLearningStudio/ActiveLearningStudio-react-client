@@ -7,9 +7,9 @@ import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 import EditResourceSidebar from "./EditResourceSidebar";
 import axios from "axios";
-import { showBuildActivityAction } from "./../../../actions/resource";
+import { showBuildActivityAction } from "../../../store/actions/resource";
 import H5PEditor from "./Editors/H5PEditor";
-import { hideBuildActivity } from "../../../actions/resource";
+import { hideBuildActivity } from "../../../store/actions/resource";
 const fadeAnimation = keyframes`${fadeIn}`;
 
 const FaceDiv = styled.div`

@@ -1,0 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap");
+
+body {
+  margin: 0;
+  background-color: #eee;
+  font-family: "Hind Siliguri", sans-serif;
+  font-size: 14px;
+  color: #777;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+*:focus {
+  outline: none !important;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 3px;
+  height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #d6d6d6;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.clearfix {
+  clear: both;
+}
+
+.thumb-image {
+  object-fit: none;
+  width: 100%;
+  max-height: 200px;
+}
+
+.student-score {
+  text-decoration: none;
+  color: gray;
+}

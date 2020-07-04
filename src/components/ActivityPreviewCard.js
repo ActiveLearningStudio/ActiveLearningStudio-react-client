@@ -1,7 +1,7 @@
 import React from "react";
 // import { Link } from "react-router-dom";
 import "./ActivityPreviewCard.scss";
-import gifloader from "../images/276.gif";
+import gifloader from "../assets/images/276.gif";
 import { Link } from "react-router-dom";
 const ActivityPreviewCard = (props) => {
   const activity = props.activity;

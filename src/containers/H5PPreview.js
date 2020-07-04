@@ -1,11 +1,11 @@
 import React from "react";
-import gifloader from "../images/276.gif";
+import gifloader from "../assets/images/276.gif";
 import axios from "axios";
 import { connect } from "react-redux";
 
 import { withRouter } from "react-router-dom";
 
-import { createResourceAction } from "./../actions/resource";
+import { createResourceAction } from "../store/actions/resource";
 
 class H5PPreview extends React.Component {
   constructor(props) {

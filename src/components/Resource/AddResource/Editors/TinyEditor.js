@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import validator from "validator";
 
 
-import { createPlaylist } from "./../../../../actions/playlist";
+import { createPlaylist } from "../../../../store/actions/playlist";
 
 import { Editor } from '@tinymce/tinymce-react';
 

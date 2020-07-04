@@ -11,7 +11,7 @@ import AddResourceSidebar from "./AddResourceSidebar";
 import {
   showBuildActivityAction,
   showDescribeActivity,
-} from "./../../../actions/resource";
+} from "../../../store/actions/resource";
 import H5PEditor from "./Editors/H5PEditor";
 
 const fadeAnimation = keyframes`${fadeIn}`;

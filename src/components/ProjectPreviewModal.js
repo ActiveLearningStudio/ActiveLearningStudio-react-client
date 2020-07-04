@@ -38,7 +38,7 @@ const ProjectPreviewModal = (props) => {
 
 	return (
 	<div className="resource-modal">
-		<div className="modal fade right" id="createPlaylistModal"  role="dialog" aria-labelledby="createPlaylistModalLabel" aria-hidden="true">
+		<div className="modal fade right" id="createPlaylistModal"  role="dialog" aria-hidden="true">
 			<div className="modal-dialog" role="document">
 				<div className="modal-content">
 					<div className="modal-title">

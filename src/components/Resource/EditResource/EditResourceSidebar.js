@@ -8,7 +8,7 @@ import {
     withRouter 
   } from "react-router-dom";
 
-import { showSelectActivityAction, showDescribeActivityAction, showBuildActivityAction, showCreateResourceActivityAction } from "./../../../actions/resource";
+import { showSelectActivityAction, showDescribeActivityAction, showBuildActivityAction, showCreateResourceActivityAction } from "../../../store/actions/resource";
 
 const EditResourceSidebar = (props) => {
     return (

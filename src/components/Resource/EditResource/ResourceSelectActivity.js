@@ -13,7 +13,7 @@ import {
   withRouter
 } from "react-router-dom";
 import EditResourceSidebar from "./EditResourceSidebar";
-import { showDescribeActivityAction } from "./../../../actions/resource";
+import { showDescribeActivityAction } from "../../../store/actions/resource";
 
 const fadeAnimation = keyframes `${fadeIn}`;
 
@@ -27,48 +27,48 @@ const questions = [
     text:'Interactive Video',
     h5pLib:'H5P.InteractiveVideo 1.21',
     type:'h5p',
-    icon: '/images/interactive-video.png',
-    overlayIcon:'/images/interactive-video-overlay.png',
+    icon: '/assets.images/interactive-video.png',
+    overlayIcon:'/assets.images/interactive-video-overlay.png',
     description:"Create videos enriched with interactions"
   },
   {
     text:'Flash Cards',
     h5pLib:'H5P.Flashcards 1.5',
     type:'h5p',
-    icon: '/images/flash-cards.png',
-    overlayIcon:'/images/flash-cards-overlay.png',
+    icon: '/assets.images/flash-cards.png',
+    overlayIcon:'/assets.images/flash-cards-overlay.png',
     description:"Create stylish and modern flash cards"
   },
   {
     text:'Drag and Drop',
     h5pLib:'H5P.DragQuestion 1.13',
     type:'h5p',
-    icon: '/images/drag-and-drop.png',
-    overlayIcon:'/images/drag-and-drop-overlay.png',
-    description:"Create drag and drop tasks with images"
+    icon: '/assets.images/drag-and-drop.png',
+    overlayIcon:'/assets.images/drag-and-drop-overlay.png',
+    description:"Create drag and drop tasks with assets.images"
   },
   {
     text:'Timeline',
     h5pLib:'H5P.Timeline 1.1',
     type:'h5p',
-    icon: '/images/timeline.png',
-    overlayIcon:'/images/timeline-overlay.png',
+    icon: '/assets.images/timeline.png',
+    overlayIcon:'/assets.images/timeline-overlay.png',
     description:"Create a timeline of events with multimedia"
   },
   {
     text:'Accordion',
     h5pLib:'H5P.Accordion 1.0',
     type:'h5p',
-    icon: '/images/accordion.png',
-    overlayIcon:'/images/accordion-overlay.png',
+    icon: '/assets.images/accordion.png',
+    overlayIcon:'/assets.images/accordion-overlay.png',
     description:"Create vertically stacked expandable items"
   },
   {
     text:'Interactive Presentation',
     h5pLib:'H5P.CoursePresentation 1.21',
     type:'h5p',
-    icon: '/images/course-presentation.png',
-    overlayIcon:'/images/course-presentation-overlay.png',
+    icon: '/assets.images/course-presentation.png',
+    overlayIcon:'/assets.images/course-presentation-overlay.png',
     description:"Create a presenstation with interactive slides"
   }
 

@@ -4,10 +4,10 @@ import ReactPlaceholder from "react-placeholder";
 import "react-placeholder/lib/reactPlaceholder.css";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
-import Header from "../components/Header/Header";
+import Header from "../components/Header";
 
 import Sidebar from "../components/Sidebar/Sidebar";
-import { showDeletePopupAction, hideDeletePopupAction } from "../actions/ui";
+import { showDeletePopupAction, hideDeletePopupAction } from "../store/actions/ui";
 import {
   deleteProjectAction,
   showCreateProjectModalAction,
@@ -15,13 +15,13 @@ import {
   createProjectAction,
   loadMyProjectsAction,
   shareProjectAction,
-} from "../actions/project";
+} from "../store/actions/project";
 
-import { logout } from "../actions/auth";
+import { logout } from "../store/actions/auth";
 
 import { NewProjectPage } from "./NewProjectPage";
 import ProjectCard from "../components/ProjectCard";
-import DeletePopup from "../components/DeletePopup/DeletePopup";
+import DeletePopup from "../components/DeletePopup";
 import ProjectsLoading from "../components/Loading/ProjectsLoading";
 
 export class ProjectsPage extends React.Component {

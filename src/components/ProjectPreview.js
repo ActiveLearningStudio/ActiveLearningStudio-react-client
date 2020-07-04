@@ -126,7 +126,7 @@ const ProjectPreview = (props) => {
             </Link>
           </div>
           <div className="sce_cont">
-            {/* <div className="collapsetogle"><img src="/images/plusblk.png" alt="plusblk" title=""></img></div> */}
+            {/* <div className="collapsetogle"><img src="/assets.images/plusblk.png" alt="plusblk" title=""></img></div> */}
             <ul className="bar_list flexdiv">
               <li>
                 <div className="title_lg check">
@@ -143,7 +143,7 @@ const ProjectPreview = (props) => {
                 </div>
               </li>
               <li>
-                {/* <div className="usrcmt"><img src="/images/heart.png" alt="heart" title=""></img>20</div> */}
+                {/* <div className="usrcmt"><img src="/assets.images/heart.png" alt="heart" title=""></img>20</div> */}
               </li>
               <li>
                 {/* <div className="usrcmt"><i className="fas fa-user"></i> 02</div> */}

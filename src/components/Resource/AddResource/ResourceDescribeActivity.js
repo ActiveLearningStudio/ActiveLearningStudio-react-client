@@ -5,7 +5,7 @@ import { Field, reduxForm, formValueSelector } from "redux-form";
 import styled, { keyframes } from "styled-components";
 import DropdownList from "react-widgets/lib/DropdownList";
 import "react-widgets/dist/css/react-widgets.css";
-import { uploadResourceThumbnailAction } from "../../../actions/resource";
+import { uploadResourceThumbnailAction } from "../../../store/actions/resource";
 
 import {
   BrowserRouter as Router,
@@ -19,7 +19,7 @@ import {
   showBuildActivityAction,
   onSubmitDescribeActivityAction,
   showSelectActivity,
-} from "./../../../actions/resource";
+} from "../../../store/actions/resource";
 
 import "./AddResource.scss";
 

@@ -1,24 +1,28 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import ProjectPreviewModal from "./ProjectPreviewModal";
-import "./ProjectCard.scss";
-import logo from "../images/logo.svg";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Swal from 'sweetalert';
+
+import logo from '../assets/images/logo.svg';
+
+import ProjectPreviewModal from './ProjectPreviewModal';
+import './ProjectCard.scss';
+
 const ProjectCard = (props) => (
   <div className="col-md-3 check">
     <div className="program-tile">
       <div className="program-thumb">
-        <Link to={"/project/" + props.project._id}>
+        <Link to={`/project/${props.project._id}`}>
           {props.project.thumb_url ? (
             <div
               className="project-thumb"
               style={{
                 backgroundImage:
-                  "url(" +
-                  global.config.laravelAPIUrl +
-                  props.project.thumb_url +
-                  ")",
+                  `url(${
+                    global.config.laravelAPIUrl
+                  }${props.project.thumb_url
+                  })`,
               }}
-            ></div>
+            />
           ) : null}
         </Link>
       </div>
@@ -27,7 +31,7 @@ const ProjectCard = (props) => (
           <div className="row">
             <div className="col-md-10">
               <h3 className="program-title">
-                <Link to={"/project/" + props.project._id}>
+                <Link to={`/project/${props.project._id}`}>
                   {props.project.name}
                 </Link>
               </h3>
@@ -42,40 +46,45 @@ const ProjectCard = (props) => (
                   aria-haspopup="true"
                   aria-expanded="false"
                 >
-                  <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
+                  <i className="fa fa-ellipsis-v" aria-hidden="true" />
                 </button>
                 <div
                   className="dropdown-menu"
-                  aria-labelledby="dropdownMenuButton"
                 >
                   <Link
                     className="dropdown-item"
-                    to={"/project/preview2/" + props.project._id}
+                    to={`/project/preview2/${props.project._id}`}
                   >
-                    <i className="fa fa-eye" aria-hidden="true"></i> Preview
+                    <i className="fa fa-eye" aria-hidden="true" />
+                    {' '}
+                    Preview
                   </Link>
                   <Link
                     className="dropdown-item"
-                    to={"/project/create/" + props.project._id}
+                    to={`/project/create/${props.project._id}`}
                   >
-                    <i className="fa fa-pencil" aria-hidden="true"></i> Edit
+                    <i className="fa fa-pencil" aria-hidden="true" />
+                    {' '}
+                    Edit
                   </Link>
                   <a
                     className="dropdown-item"
                     onClick={(e) => {
-                      Swal.fire({
-                        title: "STAY TUNED!",
-                        text: "COMING SOON",
+                      Swal({
+                        title: 'STAY TUNED!',
+                        text: 'COMING SOON',
                         imageUrl: logo,
                         imageWidth: 400,
                         imageHeight: 200,
-                        imageAlt: "Custom image",
+                        imageAlt: 'Custom image',
                       });
                     }}
                   >
-                    <i className="fa fa-share" aria-hidden="true"></i> Send To
+                    <i className="fa fa-share" aria-hidden="true" />
+                    {' '}
+                    Send To
                   </a>
-                  {/*<a
+                  {/* <a
 									className="dropdown-item"
 									href="#"
 									onClick={(e) => {
@@ -94,15 +103,14 @@ const ProjectCard = (props) => (
 								</a> */}
                   <a
                     className="dropdown-item"
-                    onClick={() =>
-                      props.showDeletePopupAction(
-                        props.project._id,
-                        props.project.name,
-                        "Project"
-                      )
-                    }
+                    onClick={() => props.showDeletePopupAction(
+                      props.project._id,
+                      props.project.name,
+                      'Project',
+                    )}
                   >
-                    <i className="fa fa-times-circle-o" aria-hidden="true"></i>{" "}
+                    <i className="fa fa-times-circle-o" aria-hidden="true" />
+                    {' '}
                     Delete
                   </a>
                 </div>
@@ -113,9 +121,9 @@ const ProjectCard = (props) => (
             <div className="row">
               <div className="col-md-12">
                 <p>
-                  {props.project.description &&
-                  props.project.description.length > 130
-                    ? props.project.description.substring(0, 130) + " ..."
+                  {props.project.description
+                  && props.project.description.length > 130
+                    ? `${props.project.description.substring(0, 130)} ...`
                     : props.project.description}
                 </p>
               </div>
@@ -123,15 +131,21 @@ const ProjectCard = (props) => (
           </div>
         </div>
         <div className="buttonbottom">
-          <Link to={"/project/preview2/" + props.project._id}>
-            <i className="fa fa-eye" aria-hidden="true"></i> Preview
+          <Link to={`/project/preview2/${props.project._id}`}>
+            <i className="fa fa-eye" aria-hidden="true" />
+            {' '}
+            Preview
           </Link>
-          <Link to={"/project/" + props.project._id}>
-            <i className="fa fa-cubes" aria-hidden="true"></i> Build
+          <Link to={`/project/${props.project._id}`}>
+            <i className="fa fa-cubes" aria-hidden="true" />
+            {' '}
+            Build
           </Link>
 
-          <Link to={"/project/create/" + props.project._id}>
-            <i className="fa fa-pencil" aria-hidden="true"></i> Edit
+          <Link to={`/project/create/${props.project._id}`}>
+            <i className="fa fa-pencil" aria-hidden="true" />
+            {' '}
+            Edit
           </Link>
         </div>
       </div>
@@ -139,7 +153,7 @@ const ProjectCard = (props) => (
     {props.showPreview ? (
       <ProjectPreviewModal key={props.project._id} project={props.project} />
     ) : (
-      ""
+      ''
     )}
   </div>
 );

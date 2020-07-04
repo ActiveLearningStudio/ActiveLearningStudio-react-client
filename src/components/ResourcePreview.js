@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
-import { loadResourceAction } from "../actions/resource";
+import { loadResourceAction } from "../store/actions/resource";
 import H5PPreview from "../containers/H5PPreview";
 
 export class ResourcePreview extends React.Component {

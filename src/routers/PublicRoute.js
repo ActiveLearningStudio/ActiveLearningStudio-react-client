@@ -1,32 +1,33 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Route, Redirect, withRouter } from "react-router-dom";
-
-
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Route, Redirect, withRouter } from 'react-router-dom';
 
 const PublicRoute = ({ component: Component, isAuthenticated, ...rest }) => (
   <Route
     {...rest}
-    render={props => {
-      return (
-        isAuthenticated ? (
-          <Redirect to="/" />
-        ) : (
-          <div>
-            <Component {...props} />
-          </div>
-        )
+    render={(props) => (
+      isAuthenticated ? (
+        <Redirect to="/" />
+      ) : (
+        <div>
+          <Component {...props} />
+        </div>
       )
-    }
-      
-    }
+    )}
   />
 );
 
-const mapStateToProps = state => {
-  return ({
-    isAuthenticated: !!state.auth.id
-  });
+PublicRoute.propTypes = {
+  component: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.func,
+  ]).isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
 };
 
-export default withRouter(connect(mapStateToProps,null)(PublicRoute));
+const mapStateToProps = (state) => ({
+  isAuthenticated: !!state.auth.id,
+});
+
+export default withRouter(connect(mapStateToProps, null)(PublicRoute));
