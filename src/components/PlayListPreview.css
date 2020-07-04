@@ -50,11 +50,7 @@ img {
   text-decoration: underline
 }
 
-.right-sidegolf-info .back-header {
-  border-bottom: 1px solid #F1F1F1;
-  padding-bottom: 20px;
-  margin-bottom: 35px;
-}
+.right-sidegolf-info .back-header {}
 
 .right-sidegolf-info .back-header a img {
   margin-right: 15px;

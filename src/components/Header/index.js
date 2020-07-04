@@ -10,6 +10,7 @@ import {
   closeMenuAction,
   showCreateProjectSubmenuAction,
 } from 'store/actions/project';
+import { Event } from 'trackers/ga';
 
 import './style.scss';
 
@@ -169,7 +170,16 @@ function Header(props) {
                       <li>My Account</li>
                     </Link>
 
-                    <Link to="#" onClick={startLogout}>
+                    <Link
+                      to="#"
+                      onClick={() => {
+                        Event(
+                          'button click',
+                          'User press Logout button',
+                          'Login Page',
+                        );
+                        startLogout();
+                      }}>
                       <li>Logout</li>
                     </Link>
                   </ul>
