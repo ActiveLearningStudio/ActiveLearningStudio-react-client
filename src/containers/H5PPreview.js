@@ -14,13 +14,14 @@ class H5PPreview extends React.Component {
   }
 
   componentDidMount() {
-    this.loadResorce(this.props.resourceid);
+    this.props.showltipreview
+      ? this.loadResorceLti(this.props.resourceid)
+      : this.loadResorce(this.props.resourceid);
   }
 
   loadResorce(resourceid) {
     if (resourceid == 0) return;
     const { token } = JSON.parse(localStorage.getItem("auth"));
-    
 
     axios
       .post(
@@ -28,6 +29,21 @@ class H5PPreview extends React.Component {
         { resourceid },
         { headers: { Authorization: "Bearer " + token } }
       )
+      .then((response) => {
+        this.resourceLoaded(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  loadResorceLti(resourceid) {
+    if (resourceid == 0) return;
+
+    axios
+      .post(global.config.laravelAPIUrl + "/h5p-resource-settings-lti", {
+        resourceid,
+      })
       .then((response) => {
         this.resourceLoaded(response);
       })
@@ -69,7 +85,9 @@ class H5PPreview extends React.Component {
     if (this.props.resourceid != props.resourceid) {
       var h5pIFrame = document.getElementsByClassName("h5p-iframe");
       if (h5pIFrame.length) h5pIFrame[0].remove();
-      this.loadResorce(props.resourceid);
+      this.props.showltipreview
+        ? this.loadResorceLti(props.resourceid)
+        : this.loadResorce(props.resourceid);
     }
   }
 

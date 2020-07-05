@@ -10,83 +10,97 @@ import {
   CHANGE_PLAYLIST_TITLE,
   REORDER_PLAYLIST,
   REORDER_PLAYLISTS,
-  CLICK_PLAYLIST_TITLE
-} from './../constants/actionTypes';
+  CLICK_PLAYLIST_TITLE,
+  lOADPH5,
+} from "./../constants/actionTypes";
 
 export const reorderPlaylists = (playlists) => ({
   type: REORDER_PLAYLISTS,
-  playlists: playlists
+  playlists: playlists,
 });
+export const LoadHP = (show) => {
+  return {
+    type: lOADPH5,
+    show,
+  };
+};
 
 export const reorderPlaylistsAction = (playlists) => {
-  return async dispatch => {
+  return async (dispatch) => {
     // Optimistically dispatching action with new playlists data
     // to avoid waiting for request to go through
     dispatch(reorderPlaylists(playlists));
 
-    // Then performing request. If something goes wrong, 
+    // Then performing request. If something goes wrong,
     // dispatch loadProjectPlaylistsAction to refresh playlists
     // with fresh server data
     const { token } = JSON.parse(localStorage.getItem("auth"));
-    const response = axios.post(
-      '/api/reorderprojectplaylists',
-      { playlists },
-      { headers: { "Authorization": "Bearer " + token } }
-    ).then(response => {
-      if (response.data.status == "error" || response.status != 200) {
-        console.log('Error: ' + response.data.message);
+    const response = axios
+      .post(
+        "/api/reorderprojectplaylists",
+        { playlists },
+        { headers: { Authorization: "Bearer " + token } }
+      )
+      .then((response) => {
+        if (response.data.status == "error" || response.status != 200) {
+          console.log("Error: " + response.data.message);
+          dispatch(loadProjectPlaylistsAction(playlists[0].projectid));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
         dispatch(loadProjectPlaylistsAction(playlists[0].projectid));
-      }
-    }).catch(error => {
-      console.log(error);
-      dispatch(loadProjectPlaylistsAction(playlists[0].projectid));
-    });
+      });
   };
 };
 
 export const reorderPlaylistActivities = (playlist) => ({
   type: REORDER_PLAYLIST,
-  playlist: playlist
+  playlist: playlist,
 });
 
 export const reorderPlaylistActivitiesAction = (playlist) => {
-  return async dispatch => {
+  return async (dispatch) => {
     // Optimistically dispatching action with new playlist data
     // to avoid waiting for request to go through
     dispatch(reorderPlaylistActivities(playlist));
 
-    // Then performing request. If something goes wrong, 
+    // Then performing request. If something goes wrong,
     // dispatch loadProjectPlaylistsAction to refresh playlists
     // with fresh server data
     const { token } = JSON.parse(localStorage.getItem("auth"));
-    const response = axios.post(
-      '/api/reorderplaylist',
-      { playlist },
-      { headers: { "Authorization": "Bearer " + token } }
-    ).then(response => {
-      if (response.data.status == "error" || response.status != 200) {
-        console.log('Error: ' + response.data.message);
+    const response = axios
+      .post(
+        "/api/reorderplaylist",
+        { playlist },
+        { headers: { Authorization: "Bearer " + token } }
+      )
+      .then((response) => {
+        if (response.data.status == "error" || response.status != 200) {
+          console.log("Error: " + response.data.message);
+          dispatch(loadProjectPlaylistsAction(playlist.projectid));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
         dispatch(loadProjectPlaylistsAction(playlist.projectid));
-      }
-    }).catch(error => {
-      console.log(error);
-      dispatch(loadProjectPlaylistsAction(playlist.projectid));
-    });
+      });
   };
 };
 
 export const loadPlaylist = (playlist) => ({
   type: LOAD_PLAYLIST,
-  playlist: playlist
+  playlist: playlist,
 });
 
 export const loadPlaylistAction = (playlistId) => {
-  return async dispatch => {
+  ///alert(playlistId);
+  return async (dispatch) => {
     const { token } = JSON.parse(localStorage.getItem("auth"));
     const response = await axios.post(
-      '/api/loadplaylist',
+      "/api/loadplaylist",
       { playlistId },
-      { headers: { "Authorization": "Bearer " + token } }
+      { headers: { Authorization: "Bearer " + token } }
     );
 
     if (response.data.status == "success")
@@ -94,23 +108,48 @@ export const loadPlaylistAction = (playlistId) => {
   };
 };
 
+export const loadPlaylistActionlti = (playlistId) => {
+  ///alert(playlistId);
+  return async (dispatch) => {
+    // const { token } = JSON.parse(localStorage.getItem("auth"));
+    const response = await axios.post("/api/loadplaylistlti", { playlistId });
+
+    if (response.data.status == "success")
+      dispatch(loadPlaylist(response.data.data.playlist));
+  };
+};
+
+export const loadPlaylistAction_new = (resourceid) => {
+  return async (dispatch) => {
+    const { token } = JSON.parse(localStorage.getItem("auth"));
+    const response = await axios
+      .post(
+        global.config.laravelAPIUrl + "/h5p-resource-settings",
+        { resourceid },
+        { headers: { Authorization: "Bearer " + token } }
+      )
+      .then((response) => {
+        // if (response.data.status == "success")
+        // dispatch(loadPlaylist(response.data.data.playlist));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+};
+
 export const createPlaylist = (playlistdata) => ({
   type: CREATE_PLAYLIST,
-  playlistdata
+  playlistdata,
 });
 
-
-
 export const createPlaylistAction = (projectid, title) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
-      const response = await axios.post(
-        '/api/playlist',
-        {
-          projectid,
-          title
-        }
-      );
+      const response = await axios.post("/api/playlist", {
+        projectid,
+        title,
+      });
 
       if (response.data.status == "success") {
         //getting last playlist id
@@ -118,15 +157,11 @@ export const createPlaylistAction = (projectid, title) => {
         const playlistdata = {
           _id: response.data.data._id,
           title: response.data.data.title,
-          projectid: response.data.data.projectid
+          projectid: response.data.data.projectid,
         };
 
-        dispatch(
-          createPlaylist(playlistdata)
-        );
+        dispatch(createPlaylist(playlistdata));
       }
-
-
     } catch (e) {
       throw new Error(e);
     }
@@ -135,86 +170,72 @@ export const createPlaylistAction = (projectid, title) => {
 
 export const deletePlaylist = (id) => ({
   type: DELETE_PLAYLIST,
-  id
+  id,
 });
 
 export const deletePlaylistAction = (id) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
-      const response = await axios.delete(
-        `/api/playlist/${id}`,
-        {
-          id
-        }
-      );
+      const response = await axios.delete(`/api/playlist/${id}`, {
+        id,
+      });
 
       if (response.data.status == "success") {
-
-        dispatch(
-          deletePlaylist(id)
-        );
+        dispatch(deletePlaylist(id));
       }
-
     } catch (e) {
       throw new Error(e);
     }
-  }
-}
-
+  };
+};
 
 export const showCreatePlaylistModal = () => ({
-  type: SHOW_CREATE_PLAYLIST_MODAL
+  type: SHOW_CREATE_PLAYLIST_MODAL,
 });
 
 export const showCreatePlaylistModalAction = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
-      dispatch(
-        showCreatePlaylistModal()
-      )
+      dispatch(showCreatePlaylistModal());
     } catch (e) {
       throw new Error(e);
     }
-  }
-}
-
+  };
+};
 
 export const hideCreatePlaylistModal = () => ({
-  type: HIDE_CREATE_PLAYLIST_MODAL
+  type: HIDE_CREATE_PLAYLIST_MODAL,
 });
 
 export const hideCreatePlaylistModalAction = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
-      dispatch(
-        hideCreatePlaylistModal()
-      )
+      dispatch(hideCreatePlaylistModal());
     } catch (e) {
       throw new Error(e);
     }
-  }
-}
-
+  };
+};
 
 export const loadProjectPlaylists = (playlists) => ({
   type: LOAD_PROJECT_PLAYLISTS,
-  playlists
+  playlists,
 });
 
 export const loadProjectPlaylistsAction = (projectid) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       // dispatch({type:PAGE_LOADING});
       const { token } = JSON.parse(localStorage.getItem("auth"));
       const response = await axios.post(
-        '/api/project-playlists',
+        "/api/project-playlists",
         {
-          projectid
+          projectid,
         },
         {
           headers: {
-            "Authorization": "Bearer " + token
-          }
+            Authorization: "Bearer " + token,
+          },
         }
       );
 
@@ -222,73 +243,56 @@ export const loadProjectPlaylistsAction = (projectid) => {
         let playlists = [];
         playlists = response.data.data.playlists;
 
-
-        dispatch(
-          loadProjectPlaylists(playlists)
-        );
+        dispatch(loadProjectPlaylists(playlists));
         // dispatch({type:PAGE_LOADING_COMPLETE});
       }
-
-
     } catch (e) {
       // dispatch({ type: PAGE_LOADING_COMPLETE });
       throw new Error(e);
-
     }
   };
 };
-
-
-
 
 export const changePlaylistTitle = (playlistid, title) => ({
   type: CHANGE_PLAYLIST_TITLE,
   playlistid,
-  title
+  title,
 });
 
 export const changePlaylistTitleAction = (e, playlistid) => {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
-      const title =e.target.value;
+      const title = e.target.value;
       const { token } = JSON.parse(localStorage.getItem("auth"));
       const response = await axios.put(
-        '/api/playlist/'+playlistid,
+        "/api/playlist/" + playlistid,
         {
-          title
+          title,
         },
         {
           headers: {
-            "Authorization": "Bearer " + token
-          }
+            Authorization: "Bearer " + token,
+          },
         }
       );
 
       if (response.data.status == "success") {
-        dispatch(
-          changePlaylistTitle(playlistid, title)
-        );
+        dispatch(changePlaylistTitle(playlistid, title));
       }
-
-
     } catch (e) {
       // dispatch({ type: PAGE_LOADING_COMPLETE });
       throw new Error(e);
-
     }
   };
 };
 
-
 export const clickPlaylistTitle = (playlistid) => ({
   type: CLICK_PLAYLIST_TITLE,
-  playlistid
+  playlistid,
 });
 
 export const clickPlaylistTitleAction = (playlistid) => {
-  return async dispatch => {
-    dispatch(
-      clickPlaylistTitle(playlistid)
-    );
+  return async (dispatch) => {
+    dispatch(clickPlaylistTitle(playlistid));
   };
 };

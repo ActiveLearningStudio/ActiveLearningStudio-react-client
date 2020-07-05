@@ -15,7 +15,14 @@ const ActivityPreviewCarddropdown = (props) => {
 
   return (
     <Link
-      to={"/playlist/preview/" + props.playlist + "/resource/" + activity._id}
+      to={
+        props.lti
+          ? "/playlist/lti/preview/" +
+            props.playlist +
+            "/resource/" +
+            activity._id
+          : "/playlist/preview/" + props.playlist + "/resource/" + activity._id
+      }
     >
       <li className="drpdown">
         <div>

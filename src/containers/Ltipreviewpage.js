@@ -11,38 +11,25 @@ import {
   loadMyProjectsAction,
 } from "../actions/project";
 
-import ProjectPreview from "../components/ProjectPreview";
-import ResourcePreview from "../components/ResourcePreview";
-import PlaylistPreview from "../components/PlaylistPreview";
+import LtiPlaylistPreview from "../components/LtiPlaylistPreview";
 
 export class LtiPreviewPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { resourceid: "sdfg" };
   }
 
   componentDidMount() {
     //scroll to top
     window.scrollTo(0, 0);
-    this.props.loadMyProjectsAction();
+    // this.props.loadMyProjectsAction();
     console.log(this.props.project);
-  }
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.project.playlist.selectedPlaylist !== prevState.resourceid) {
-      var _ids =
-        nextProps.project.playlist.selectedPlaylist &&
-        nextProps.project.playlist.selectedPlaylist.activities[0]._id;
-      return {
-        resourceid: _ids,
-      };
-    } else return null;
   }
 
   render() {
     var content = (content = (
-      <PlaylistPreview
+      <LtiPlaylistPreview
         playlistid={this.props.match.params.playlistid}
-        resourceid={this.state.resourceid}
+        resourceid={this.props.match.params.resourceid}
         showlti={true}
       />
     ));
