@@ -5,7 +5,7 @@ import styled, { keyframes } from "styled-components";
 
 import { withRouter } from "react-router-dom";
 
-import { TinyEditor } from "./Editors/TinyEditor";
+import  TinyEditor  from "./Editors/TinyEditor";
 import AddResourceSidebar from "./AddResourceSidebar";
 
 import {
@@ -41,7 +41,7 @@ const ResourceActivityBuild = (props) => {
               <H5PEditor {...props} />
             ) : null}
 
-            {props.resource.newResource.activity.type == "tinymce" ? (
+            {(props.resource.newResource.activity.type == "tinymce" || props.resource.newResource.activity.type =="immersive_reader") ? (
               <TinyEditor {...props} />
             ) : null}
 
