@@ -9,6 +9,7 @@ import {
   showCreateProjectModalAction,
   createProjectAction,
   loadMyProjectsAction,
+  //  LoadLMS,
 } from "../actions/project";
 import { loadPlaylistAction } from "../actions/playlist";
 
@@ -28,6 +29,8 @@ export class PreviewPage extends React.Component {
     //scroll to top
     window.scrollTo(0, 0);
     this.props.loadMyProjectsAction();
+
+    //this.props.LoadLMS();
     //this.props.loadPlaylistAction_new(this.props.match.params.resourceid);
   }
   // componentDidUpdate() {
@@ -87,6 +90,9 @@ const mapDispatchToProps = (dispatch) => ({
   createProjectAction: (name, description, thumb_url) =>
     dispatch(createProjectAction(name, description, thumb_url)),
   loadPlaylistAction_new: (res_id) => dispatch(loadPlaylistAction_new(res_id)),
+  // LoadLMS: () => {
+  //   dispatch(LoadLMS());
+  // },
 });
 
 const mapStateToProps = (state) => {

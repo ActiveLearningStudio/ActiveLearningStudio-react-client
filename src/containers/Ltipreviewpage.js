@@ -9,6 +9,7 @@ import {
   showCreateProjectModalAction,
   createProjectAction,
   loadMyProjectsAction,
+  // LoadLMS,
 } from "../actions/project";
 
 import LtiPlaylistPreview from "../components/LtiPlaylistPreview";
@@ -22,7 +23,8 @@ export class LtiPreviewPage extends React.Component {
     //scroll to top
     window.scrollTo(0, 0);
     // this.props.loadMyProjectsAction();
-    console.log(this.props.project);
+    //console.log(this.props.project);
+    // this.props.LoadLMS();
   }
 
   render() {
@@ -50,6 +52,7 @@ const mapDispatchToProps = (dispatch) => ({
   createProjectAction: (name, description, thumb_url) =>
     dispatch(createProjectAction(name, description, thumb_url)),
   // hideCreateProjectModalAction: () => dispatch(hideCreateProjectModalAction()),
+  // LoadLMS: () => dispatch(LoadLMS()),
 });
 
 const mapStateToProps = (state) => {

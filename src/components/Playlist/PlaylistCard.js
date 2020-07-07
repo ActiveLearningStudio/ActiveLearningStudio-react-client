@@ -10,7 +10,7 @@ import {
 } from "../../actions/playlist";
 import { showDeletePopupAction, hideDeletePopupAction } from "../../actions/ui";
 import ResourceCard from "../Resource/ResourceCard";
-
+import Sharelink from "../Resource/sharelinks";
 export class PlaylistCard extends React.Component {
   constructor(props) {
     super(props);
@@ -139,7 +139,7 @@ export class PlaylistCard extends React.Component {
 												></i>{" "}
 												Edit
 											</a> */}
-                      <a
+                      {/* <a
                         className="dropdown-item"
                         onClick={() => {
                           Swal.fire({
@@ -154,7 +154,8 @@ export class PlaylistCard extends React.Component {
                       >
                         <i className="fa fa-share" aria-hidden="true"></i> Send
                         To
-                      </a>
+                      </a> */}
+                      <Sharelink playlistID={this.props.playlist._id} />
                       {/*} <a
                         className="dropdown-item"
                         href="#"

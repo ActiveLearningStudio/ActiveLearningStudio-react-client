@@ -10,6 +10,7 @@ import { showDeletePopupAction, hideDeletePopupAction } from "../../actions/ui";
 import "./ResourceCard.scss";
 import ComingSoon from "../comingSoon/model";
 import { Event } from "../../trackers/ga";
+import Sharelink from "./sharelinks";
 export class ResourceCard extends React.Component {
   constructor(props) {
     super(props);
@@ -157,6 +158,7 @@ export class ResourceCard extends React.Component {
                         <i className="fa fa-share" aria-hidden="true"></i> Send
                         To
                       </a>
+
                       <a
                         className="dropdown-item"
                         href="#"
