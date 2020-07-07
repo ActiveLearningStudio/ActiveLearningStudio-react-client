@@ -1,32 +1,50 @@
-import React from "react";
-import gifloader from "../assets/images/276.gif";
-import axios from "axios";
-import { connect } from "react-redux";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import axios from 'axios';
 
-import { withRouter } from "react-router-dom";
+import gifloader from 'assets/images/276.gif';
 
-import { createResourceAction } from "../store/actions/resource";
-
+// TODO: need to convert to functional component
+// move API call to service
 class H5PPreview extends React.Component {
   constructor(props) {
     super(props);
-    this.h5pLib = props.resource.editor; //"H5P.Audio 1.4";
+
+    this.h5pLib = props.resource.editor; // "H5P.Audio 1.4";
   }
 
   componentDidMount() {
-    this.loadResorce(this.props.resourceid);
+    const { resourceId } = this.props;
+    this.loadResource(resourceId);
   }
 
-  loadResorce(resourceid) {
-    if (resourceid == 0) return;
-    const { token } = JSON.parse(localStorage.getItem("auth"));
-    
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(props) {
+    const { resourceId } = this.props;
+    if (resourceId !== props.resourceId) {
+      const h5pIFrame = document.getElementsByClassName('h5p-iframe');
+      if (h5pIFrame.length) {
+        h5pIFrame[0].remove();
+      }
+
+      this.loadResource(props.resourceId);
+    }
+  }
+
+  loadResource = (resourceId) => {
+    if (resourceId === 0) {
+      return;
+    }
+
+    const { token } = JSON.parse(localStorage.getItem('auth'));
 
     axios
       .post(
-        global.config.laravelAPIUrl + "/h5p-resource-settings",
-        { resourceid },
-        { headers: { Authorization: "Bearer " + token } }
+        `${global.config.laravelAPIUrl}/h5p-resource-settings`,
+        { resourceId },
+        { headers: { Authorization: `Bearer ${token}` } },
       )
       .then((response) => {
         this.resourceLoaded(response);
@@ -36,65 +54,52 @@ class H5PPreview extends React.Component {
       });
   }
 
-  async resourceLoaded(response) {
-    console.log(response);
-
+  resourceLoaded = async (response) => {
     window.H5PIntegration = response.data.data.h5p.settings;
 
-    var h5pWrapper = document.getElementById("curriki-h5p-wrapper");
+    const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
     h5pWrapper.innerHTML = response.data.data.h5p.embed_code.trim();
 
     await Promise.all(
-      response.data.data.h5p.settings.loadedCss.map((value) => {
-        var link = document.createElement("link");
+      response.data.data.h5p.settings.loadedCss.forEach((value) => {
+        const link = document.createElement('link');
         link.href = value;
-        link.type = "text/css";
-        link.rel = "stylesheet";
+        link.type = 'text/css';
+        link.rel = 'stylesheet';
         document.head.appendChild(link);
-      })
+      }),
     );
 
-    var new_scripts = response.data.data.h5p.settings.core.scripts.concat(
-      response.data.data.h5p.settings.loadedJs
+    const newScripts = response.data.data.h5p.settings.core.scripts.concat(
+      response.data.data.h5p.settings.loadedJs,
     );
-    new_scripts.map((value) => {
-      var script = document.createElement("script");
+
+    newScripts.forEach((value) => {
+      const script = document.createElement('script');
       script.src = value;
       script.async = false;
       document.body.appendChild(script);
     });
   }
 
-  componentWillReceiveProps(props) {
-    if (this.props.resourceid != props.resourceid) {
-      var h5pIFrame = document.getElementsByClassName("h5p-iframe");
-      if (h5pIFrame.length) h5pIFrame[0].remove();
-      this.loadResorce(props.resourceid);
-    }
-  }
-
   render() {
     return (
       <div id="curriki-h5p-wrapper">
         <div className="loader_gif">
-          <img src={gifloader} />
+          <img src={gifloader} alt="" />
         </div>
       </div>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  createResourceAction: (playlistid, editor, editorType) =>
-    dispatch(createResourceAction(playlistid, editor, editorType)),
-});
-
-const mapStateToProps = (state) => {
-  return {
-    resource: state.resource,
-  };
+H5PPreview.propTypes = {
+  resource: PropTypes.object.isRequired,
+  resourceId: PropTypes.number.isRequired,
 };
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(H5PPreview)
-);
+const mapStateToProps = (state) => ({
+  resource: state.resource,
+});
+
+export default withRouter(connect(mapStateToProps)(H5PPreview));

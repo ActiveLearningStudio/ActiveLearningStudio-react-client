@@ -1,39 +1,41 @@
 import axios from 'axios';
 
-const USER_TOKEN_KEY = 'auth_token';
+import { USER_TOKEN_KEY } from '../constants';
+
 const baseURL = process.env.REACT_APP_API_URL;
 
 const http = axios.create({ baseURL: `${baseURL}/` });
 
-function get(url, headers = {}, params = {}) {
+function getAuthHeader() {
   const accessToken = localStorage.getItem(USER_TOKEN_KEY);
-  const authHeader = { Authorization: `Bearer ${accessToken}` };
+  let authHeader = { 'Content-Type': 'application/json' };
+  if (accessToken) {
+    authHeader = { Authorization: `Bearer ${accessToken}` };
+  }
+  return authHeader;
+}
+
+function get(url, headers = {}, params = {}) {
   return http.get(url, {
     ...params,
-    headers: { ...authHeader, ...headers },
+    headers: { ...getAuthHeader(), ...headers },
   });
 }
 
 function post(url, data, headers = {}, params = {}) {
-  const accessToken = localStorage.getItem(USER_TOKEN_KEY);
-  const authHeader = { Authorization: `Bearer ${accessToken}` };
   return http.post(url, data, {
     ...params,
-    headers: { ...authHeader, ...headers },
+    headers: { ...getAuthHeader(), ...headers },
   });
 }
 
 function put(url, data, headers = {}) {
-  const accessToken = localStorage.getItem(USER_TOKEN_KEY);
-  const authHeader = { Authorization: `Bearer ${accessToken}` };
-  return http.put(url, data, { headers: { ...authHeader, ...headers } });
+  return http.put(url, data, { headers: { ...getAuthHeader(), ...headers } });
 }
 
 function remove(url, data, headers = {}) {
-  const accessToken = localStorage.getItem(USER_TOKEN_KEY);
-  const authHeader = { Authorization: `Bearer ${accessToken}` };
   return http.delete(url, {
-    headers: { ...authHeader, ...headers },
+    headers: { ...getAuthHeader(), ...headers },
     data,
   });
 }

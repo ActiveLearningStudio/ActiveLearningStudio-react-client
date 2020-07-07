@@ -25,6 +25,8 @@ const maxLength = (max) => (value) => (value && value.length > max
   : undefined);
 const maxLength80 = maxLength(80);
 
+// TODO: need to restructure code, clean up attributes
+// remove unused code,
 const renderProjectNameInput = ({
   input,
   label,
@@ -86,7 +88,7 @@ const onSubmit = async (values, dispatch, props) => {
       // update
       await dispatch(
         updateProjectAction(
-          props.match.params.projectid,
+          props.match.params.projectId,
           values.projectName,
           values.description,
           props.project.thumb_url,
@@ -115,7 +117,7 @@ export const uploadThumb = async (e, props) => {
     formData.append('uploads', e.target.files[0]);
 
     imageValidation = '';
-    await props.uploadProjectThumbnailAction(formData);
+    await props.uploadProjectThumbnail(formData);
   } catch (err) {
     console.log(err);
   }
@@ -161,6 +163,7 @@ let CreateProjectPopup = (props) => {
         </div>
 
         <div className="upload-thumbnail">
+          {/* TODO: need to refactor */}
           <h2>
             {' '}
             <br />
@@ -206,6 +209,7 @@ let CreateProjectPopup = (props) => {
         </div>
 
         <div className="project-description">
+          {/* TODO: need to refactor */}
           <h2>
             {' '}
             <br />
@@ -252,11 +256,11 @@ CreateProjectPopup = reduxForm({
 })(CreateProjectPopup);
 
 const mapDispatchToProps = (dispatch) => ({
-  createProjectAction: (name, description, thumbUrl) => dispatch(createProjectAction(name, description, thumbUrl)),
-  updateProjectAction: (projectId, name, description, thumbUrl) => dispatch(
+  createProject: (name, description, thumbUrl) => dispatch(createProjectAction(name, description, thumbUrl)),
+  updateProject: (projectId, name, description, thumbUrl) => dispatch(
     updateProjectAction(projectId, name, description, thumbUrl),
   ),
-  uploadProjectThumbnailAction: (formData) => dispatch(uploadProjectThumbnailAction(formData)),
+  uploadProjectThumbnail: (formData) => dispatch(uploadProjectThumbnailAction(formData)),
 });
 
 const mapStateToProps = (state) => ({

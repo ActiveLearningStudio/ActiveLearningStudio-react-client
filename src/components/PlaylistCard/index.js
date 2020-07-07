@@ -4,17 +4,20 @@ import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Swal from 'sweetalert';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import logo from '../../assets/images/logo.svg';
+import logo from 'assets/images/logo.svg';
 import {
   changePlaylistTitleAction,
   reorderPlaylistActivitiesAction,
   clickPlaylistTitleAction,
-} from '../../store/actions/playlist';
-import { showDeletePopupAction, hideDeletePopupAction } from '../../store/actions/ui';
-import { ResourceCard } from '../Resource';
+} from 'store/actions/playlist';
+import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
+import ResourceCard from '../ResourceCard';
 
-export class PlaylistCard extends React.Component {
+// TODO: need to clean up attributes, update to functional component
+// need to refactor template functions
+class PlaylistCard extends React.Component {
   handleDelete = (e) => {
     e.preventDefault();
 
@@ -109,12 +112,11 @@ export class PlaylistCard extends React.Component {
                     <button
                       className="btn project-dropdown-btn"
                       type="button"
-                      id="dropdownMenuButton"
                       data-toggle="dropdown"
                       aria-haspopup="true"
                       aria-expanded="false"
                     >
-                      <i className="fa fa-ellipsis-v" aria-hidden="true" />
+                      <FontAwesomeIcon icon="ellipsis-v" />
                     </button>
 
                     <div className="dropdown-menu">
@@ -123,18 +125,22 @@ export class PlaylistCard extends React.Component {
                         to={
                           `/playlist/preview/${playlist._id}`
                           // "/project/preview2/" +
-                          // this.props.match.params.projectid
+                          // this.props.match.params.projectId
                         }
                       >
-                        <i className="fa fa-eye" aria-hidden="true" />
+                        <FontAwesomeIcon icon="eye" />
                         {' '}
                         Preview
                       </Link>
-                      {/* <a className="dropdown-item" href="#">
-												<i className="fa fa-pencil" aria-hidden="true" />
-												{' '}
-												Edit
-											</a> */}
+
+                      {/*
+                      <a className="dropdown-item" href="#">
+                        <FontAwesomeIcon icon="pencil" />
+                        {' '}
+                        Edit
+                      </a>
+                      */}
+
                       <a
                         className="dropdown-item"
                         onClick={() => {
@@ -148,11 +154,13 @@ export class PlaylistCard extends React.Component {
                           });
                         }}
                       >
-                        <i className="fa fa-share" aria-hidden="true" />
+                        <FontAwesomeIcon icon="share" />
                         {' '}
                         Send To
                       </a>
-                      {/* <a
+
+                      {/*
+                      <a
                         className="dropdown-item"
                         href="#"
                         onClick={(e) => {
@@ -160,12 +168,14 @@ export class PlaylistCard extends React.Component {
                           window.open('/api/download/project/123');
                         }}
                       >
-                        <i className="fa fa-cloud-download" aria-hidden="true" />
+                        <FontAwesomeIcon icon="cloud-download" />
                         {' '}
                         Executable
-                      </a> */}
+                      </a>
+                      */}
+
                       <a className="dropdown-item" onClick={this.handleDelete}>
-                        <i className="fa fa-times-circle-o" aria-hidden="true" />
+                        <FontAwesomeIcon icon="times-circle-o" />
                         {' '}
                         Delete
                       </a>
@@ -195,7 +205,7 @@ export class PlaylistCard extends React.Component {
                   className="add-resource-to-playlist-btn"
                   onClick={this.handleAddNewResourceClick}
                 >
-                  <i className="fa fa-plus-circle" aria-hidden="true" />
+                  <FontAwesomeIcon icon="plus-circle" />
                   {' '}
                   Add new resource
                 </button>

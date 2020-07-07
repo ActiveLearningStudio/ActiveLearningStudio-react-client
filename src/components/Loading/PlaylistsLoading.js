@@ -11,7 +11,7 @@ const PlaylistsLoading = () => (
 
     <div className="content-wrapper">
       <div className="content">
-        <div id="board" className="u-fancy-scrollbar js-no-higher-edits js-list-sortable ui-sortable">
+        <div className="u-fancy-scrollbar js-no-higher-edits js-list-sortable ui-sortable">
           <div className="list-wrapper">
             <div className="list">
               <div className="list-header">

@@ -1,13 +1,10 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import * as History from 'history';
 import thunk from 'redux-thunk';
 
 import rootReducer from './reducers';
 
 const initialState = {};
 const enhancers = [];
-
-export const history = History.createBrowserHistory();
 
 if (process.env.NODE_ENV === 'development') {
   const { devToolsExtension } = window;

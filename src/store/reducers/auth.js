@@ -28,6 +28,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isLoggingIn: false,
+        user: action.payload.user,
       };
     case LOGIN_FAIL:
       return {
@@ -45,6 +46,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isSigningUp: false,
+        user: action.payload.user,
       };
     case SIGNUP_FAIL:
       return {

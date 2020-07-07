@@ -23,6 +23,7 @@ const ProjectsLoading = () => (
               <div className="program-thumb">
                 <RectShape color="#e4e4e4" type="media" style={{ width: '100%', height: 300 }} />
               </div>
+
               <div className="program-content">
                 <div className="row">
                   <div className="col-md-12">
@@ -34,6 +35,7 @@ const ProjectsLoading = () => (
                     </h3>
                   </div>
                 </div>
+
                 <div className="lessons-duration">
                   <div className="row">
                     <div className="col-md-12" />

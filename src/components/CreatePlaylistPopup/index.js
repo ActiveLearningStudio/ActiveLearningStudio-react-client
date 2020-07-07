@@ -11,7 +11,8 @@ const FaceDiv = styled.div`
   animation: 1s ${fadeAnimation};
 `;
 
-function Popup(props) {
+// TODO: need to clean up attributes
+function CreatePlaylistPopup(props) {
   const {
     handleCreatePlaylistSubmit,
     handleHideCreatePlaylistModal,
@@ -69,10 +70,10 @@ function Popup(props) {
   );
 }
 
-Popup.propTypes = {
+CreatePlaylistPopup.propTypes = {
   handleCreatePlaylistSubmit: PropTypes.func.isRequired,
   handleHideCreatePlaylistModal: PropTypes.func.isRequired,
   onPlaylistTitleChange: PropTypes.func.isRequired,
 };
 
-export default Popup;
+export default CreatePlaylistPopup;

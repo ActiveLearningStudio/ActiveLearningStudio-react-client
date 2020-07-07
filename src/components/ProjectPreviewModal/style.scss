@@ -1,0 +1,19 @@
+.project-preview-thumbnail {
+  border-radius: 5%;
+}
+
+.item {
+  float: left;
+  margin-right: 25px;
+
+  a {
+    display: block;
+    color: #8a848f;
+
+    .activity-image-thumb {
+      width: 150px;
+      height: 150px;
+      display: block;
+    }
+  }
+}

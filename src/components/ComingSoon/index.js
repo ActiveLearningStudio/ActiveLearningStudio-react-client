@@ -1,5 +1,6 @@
 import React from 'react';
 
+// TODO: need to clean up attributes
 const ComingSoon = () => (
   <div
     className="modal fade"

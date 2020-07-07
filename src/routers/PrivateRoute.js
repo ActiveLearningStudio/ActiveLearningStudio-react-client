@@ -14,19 +14,17 @@ const PrivateRoute = ({
     {...rest}
     render={(props) => {
       let newId = id;
-      if (props.match.params.resourceid) {
-        newId = props.match.params.resourceid;
-      } else if (props.match.params.playlistid) {
-        newId = props.match.params.playlistid;
-      } else if (props.match.params.projectid) {
-        newId = props.match.params.projectid;
+      if (props.match.params.resourceId) {
+        newId = props.match.params.resourceId;
+      } else if (props.match.params.playlistId) {
+        newId = props.match.params.playlistId;
+      } else if (props.match.params.projectId) {
+        newId = props.match.params.projectId;
       }
 
       return (
         isAuthenticated ? (
-          <div>
-            <Component {...props} {...rest} key={newId} />
-          </div>
+          <Component {...props} {...rest} key={newId} />
         ) : (
           <Redirect to="/login" />
         )

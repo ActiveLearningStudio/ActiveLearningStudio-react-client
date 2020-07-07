@@ -1,13 +1,11 @@
-import React from "react";
-import { connect } from "react-redux";
-import ReactPlaceholder from "react-placeholder";
-import "react-placeholder/lib/reactPlaceholder.css";
-import { Link } from "react-router-dom";
-import { withRouter } from "react-router-dom";
-import Header from "../components/Header";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import ReactPlaceholder from 'react-placeholder';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import Sidebar from "../components/Sidebar/Sidebar";
-import { showDeletePopupAction, hideDeletePopupAction } from "../store/actions/ui";
+import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import {
   deleteProjectAction,
   showCreateProjectModalAction,
@@ -15,91 +13,94 @@ import {
   createProjectAction,
   loadMyProjectsAction,
   shareProjectAction,
-} from "../store/actions/project";
+} from 'store/actions/project';
+import { logoutAction } from 'store/actions/auth';
+import Header from 'components/Header';
+import Sidebar from 'components/Sidebar';
+import ProjectCard from 'components/ProjectCard';
+import DeletePopup from 'components/DeletePopup';
+import ProjectsLoading from 'components/Loading/ProjectsLoading';
+import NewProjectPage from './NewProjectPage';
 
-import { logout } from "../store/actions/auth";
-
-import { NewProjectPage } from "./NewProjectPage";
-import ProjectCard from "../components/ProjectCard";
-import DeletePopup from "../components/DeletePopup";
-import ProjectsLoading from "../components/Loading/ProjectsLoading";
-
+// TODO: need to convert to functional component
 export class ProjectsPage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
-    const termstrue = JSON.parse(localStorage.getItem("auth"));
-    !termstrue.subscribed && this.props.logout();
-    //scroll to top
+    const {
+      match,
+      showCreateProjectPopup,
+      showEditProjectPopup,
+      showCreateProjectModal,
+      loadProject,
+      loadMyProjects,
+      logout,
+    } = this.props;
+
+    const termsTrue = JSON.parse(localStorage.getItem('auth'));
+    if (!termsTrue.subscribed) {
+      logout();
+    }
+
+    // scroll to top
     window.scrollTo(0, 0);
-    if (
-      this.props.showCreateProjectPopup == undefined &&
-      this.props.showEditProjectPopup == undefined
-    ) {
-      this.props.loadMyProjectsAction();
+
+    if (showCreateProjectPopup === undefined && showEditProjectPopup === undefined) {
+      loadMyProjects();
     }
 
-    if (this.props.showEditProjectPopup) {
+    if (showEditProjectPopup) {
       // loads the data of project for showing into edit form
-      this.props.loadProjectAction(this.props.match.params.projectid);
-    } else if (this.props.showCreateProjectPopup) {
-      this.props.showCreateProjectModalAction();
+      loadProject(match.params.projectId);
+    } else if (showCreateProjectPopup) {
+      showCreateProjectModal();
     }
   }
-
-  populateResources(resources) {
-    return resources.map(function (resource) {
-      return (
-        <div className="playlist-resource" key={resource.id}>
-          <h3 className="title">{resource.title}</h3>
-        </div>
-      );
-    });
-  }
-  onProjectNameChange = (e) => {
-    this.setState({ name: e.target.value });
-  };
-  onProjectDescriptionChange = (e) => {
-    this.setState({ description: e.target.value });
-  };
 
   handleCloseProjectModal = (e) => {
     e.preventDefault();
+
     try {
-      this.props.history.push("/");
-    } catch (e) {
-      console.log(e.message);
+      const { history } = this.props;
+      history.push('/');
+    } catch (err) {
+      console.log(err.message);
     }
   };
 
-  handleDeleteProject = (projectid) => {
-    if (confirm("Are you Sure?")) {
-      this.props.deleteProjectAction(projectid);
-    }
+  // TODO: need to check confirm
+  handleDeleteProject = (/* projectId */) => {
+    // if (confirm('Are you Sure?')) {
+    //   this.props.deleteProject(projectId);
+    // }
   };
 
-  handleShareProject = (projectid) => {
-    console.log("shared project: " + projectid);
-    this.props.shareProjectAction(projectid);
+  handleShareProject = (projectId) => {
+    const { shareProject } = this.props;
+    shareProject(projectId);
   };
 
   render() {
-    const { projects } = this.props.project;
-    const { showDeletePlaylistPopup } = this.props.ui;
+    const {
+      showCreateProjectPopup,
+      showEditProjectPopup,
+      project,
+      ui,
+      showPreview,
+      showDeletePopup,
+    } = this.props;
+    const { projects } = project;
+    const { pageLoading, showDeletePlaylistPopup } = ui;
 
-    const projectCards = projects.map((project) => {
-      let res = { title: project.name, id: project._id, deleteType: "Project" };
+    const projectCards = projects.map((proj) => {
+      const res = { title: proj.name, id: proj._id, deleteType: 'Project' };
       return (
         <ProjectCard
-          key={project._id}
-          project={project}
+          key={proj._id}
+          project={proj}
           res={res}
           handleDeleteProject={this.handleDeleteProject}
           handleShareProject={this.handleShareProject}
-          showDeletePopupAction={this.props.showDeletePopupAction}
-          showPreview={this.props.showPreview == project._id}
+          showDeletePopup={showDeletePopup}
+          showPreview={showPreview === project._id}
         />
       );
     });
@@ -111,12 +112,13 @@ export class ProjectsPage extends React.Component {
           type="media"
           showLoadingAnimation
           customPlaceholder={ProjectsLoading}
-          ready={!this.props.ui.pageLoading}
+          ready={!pageLoading}
         >
           <div className="main-content-wrapper">
             <div className="sidebar-wrapper">
               <Sidebar />
             </div>
+
             <div className="content-wrapper">
               <div className="content">
                 <div className="row">
@@ -125,63 +127,76 @@ export class ProjectsPage extends React.Component {
                       <h1>My Projects</h1>
                       <Link to="./project/create">
                         <div className="btn-top-page">
-                          <i className="fa fa-plus" />
+                          <FontAwesomeIcon icon="plus" />
                           Add Project
                         </div>
                       </Link>
                     </div>
                   </div>
                 </div>
+
                 <div className="row  check-home">{projectCards}</div>
               </div>
             </div>
           </div>
-          {this.props.showCreateProjectPopup ||
-          this.props.showEditProjectPopup ? (
+
+          {(showCreateProjectPopup || showEditProjectPopup) && (
             <NewProjectPage
               {...this.props}
-              onProjectNameChange={this.onProjectNameChange}
-              onProjectDescriptionChange={this.onProjectDescriptionChange}
               handleCloseProjectModal={this.handleCloseProjectModal}
               onThumbUrlChange={this.onThumbUrlChange}
-              inputRef={(input) => (this.textInput = input)}
+              inputRef={(input) => {
+                this.textInput = input;
+              }}
             />
-          ) : null}
+          )}
 
-          {showDeletePlaylistPopup ? (
+          {showDeletePlaylistPopup && (
             <DeletePopup
-              res={this.props.project}
+              res={project}
               deleteType="Project"
               {...this.props}
             />
-          ) : null}
+          )}
         </ReactPlaceholder>
       </>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  showCreateProjectModalAction: () => dispatch(showCreateProjectModalAction()),
-  loadMyProjectsAction: () => dispatch(loadMyProjectsAction()),
-  createProjectAction: (name, description, thumb_url) =>
-    dispatch(createProjectAction(name, description, thumb_url)),
-  showDeletePopupAction: (id, title, deleteType) =>
-    dispatch(showDeletePopupAction(id, title, deleteType)),
-  deleteProjectAction: (projectid) => dispatch(deleteProjectAction(projectid)),
-  hideDeletePopupAction: () => dispatch(hideDeletePopupAction()),
-  loadProjectAction: (projectid) => dispatch(loadProjectAction(projectid)),
-  shareProjectAction: (projectid) => dispatch(shareProjectAction(projectid)),
-  logout: () => dispatch(logout()),
-});
-
-const mapStateToProps = (state) => {
-  return {
-    project: state.project,
-    ui: state.ui,
-  };
+ProjectsPage.propTypes = {
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  project: PropTypes.object.isRequired,
+  ui: PropTypes.object.isRequired,
+  showPreview: PropTypes.string.isRequired,
+  showCreateProjectPopup: PropTypes.bool.isRequired,
+  showEditProjectPopup: PropTypes.bool.isRequired,
+  showCreateProjectModal: PropTypes.bool.isRequired,
+  showDeletePopup: PropTypes.func.isRequired,
+  loadProject: PropTypes.func.isRequired,
+  loadMyProjects: PropTypes.func.isRequired,
+  shareProject: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
+const mapDispatchToProps = (dispatch) => ({
+  showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
+  loadMyProjects: () => dispatch(loadMyProjectsAction()),
+  createProject: (name, description, thumbUrl) => dispatch(createProjectAction(name, description, thumbUrl)),
+  showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
+  deleteProject: (id) => dispatch(deleteProjectAction(id)),
+  hideDeletePopup: () => dispatch(hideDeletePopupAction()),
+  loadProject: (id) => dispatch(loadProjectAction(id)),
+  shareProject: (id) => dispatch(shareProjectAction(id)),
+  logout: () => dispatch(logoutAction()),
+});
+
+const mapStateToProps = (state) => ({
+  project: state.project,
+  ui: state.ui,
+});
+
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ProjectsPage)
+  connect(mapStateToProps, mapDispatchToProps)(ProjectsPage),
 );

@@ -1,13 +1,11 @@
-import React from "react";
-import axios from "axios";
-import { connect } from "react-redux";
-import { slideInRight } from "react-animations";
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import styled, { keyframes } from 'styled-components';
+import { slideInRight } from 'react-animations';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import styled, { keyframes } from "styled-components";
-
-import { withRouter } from "react-router-dom";
-
-import CreateProjectPopup from "../components/CreateProjectPopup";
+import CreateProjectPopup from 'components/CreateProjectPopup';
 
 const bounceAnimation = keyframes`${slideInRight}`;
 
@@ -15,73 +13,69 @@ const BouncyDiv = styled.div`
   animation: 0.5s ${bounceAnimation};
 `;
 
-export class NewProjectPage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+function NewProjectPage(props) {
+  const { editMode, project, handleCloseProjectModal } = props;
 
-  componentDidMount() {
+  useEffect(() => {
     window.scrollTo(0, 0);
-  }
-  render() {
-    return (
-      <div className="resource-modal">
-        <div
-          className="modal fade right"
-          role="dialog"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog" role="document">
-            <BouncyDiv className="modal-content">
-              <div className="modal-title">
-                <div className="row">
-                  <div className="col-md-12">
-                    <h1>
-                      {this.props.editMode ? "Update " : "Create New "}
-                      Project
-                      <button
-                        type="button"
-                        className="close-btn"
-                        data-dismiss="modal"
-                        onClick={this.props.handleCloseProjectModal}
-                      >
-                        <i
-                          className="fa fa-times"
-                          style={{
-                            WebkitTextStroke: "4px #fff",
-                            color: "#333",
-                            cursor: "pointer",
-                          }}
-                        />
-                      </button>
-                    </h1>
-                  </div>
+  }, []);
+
+  return (
+    <div className="resource-modal">
+      <div
+        className="modal fade right"
+        role="dialog"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog" role="document">
+          <BouncyDiv className="modal-content">
+            <div className="modal-title">
+              <div className="row">
+                <div className="col-md-12">
+                  <h1>
+                    {`${editMode ? 'Update' : 'Create New'} Project`}
+
+                    <button
+                      type="button"
+                      className="close-btn"
+                      data-dismiss="modal"
+                      onClick={handleCloseProjectModal}
+                    >
+                      <FontAwesomeIcon
+                        icon="times"
+                        style={{
+                          WebkitTextStroke: '4px #fff',
+                          color: '#333',
+                          cursor: 'pointer',
+                        }}
+                      />
+                    </button>
+                  </h1>
                 </div>
               </div>
-              <div className="modal-body">
-                <div className="row">
-                  <div className="col-md-12">
-                    <CreateProjectPopup
-                      {...this.props}
-                      thumb_url={this.props.project.thumb_url}
-                    />
-                  </div>
+            </div>
+
+            <div className="modal-body">
+              <div className="row">
+                <div className="col-md-12">
+                  <CreateProjectPopup
+                    {...props}
+                    thumb_url={project.thumb_url}
+                  />
                 </div>
               </div>
-            </BouncyDiv>
-          </div>
+            </div>
+          </BouncyDiv>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
-const mapDispatchToProps = (dispatch) => ({});
-
-const mapStateToProps = (state) => {
-  return {};
+NewProjectPage.propTypes = {
+  project: PropTypes.object.isRequired,
+  editMode: PropTypes.bool.isRequired,
+  handleCloseProjectModal: PropTypes.func.isRequired,
 };
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(NewProjectPage)
-);
+export default withRouter(NewProjectPage);

@@ -1,16 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import validator from 'validator';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { startLogin } from 'store/actions/auth';
+import { loginAction } from 'store/actions/auth';
 
 import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
 import logo from 'assets/images/logo.svg';
 import loader from 'assets/images/loader.svg';
 
-export class LoginPage extends React.Component {
+import './style.scss';
+
+class LoginPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -25,9 +29,9 @@ export class LoginPage extends React.Component {
     window.scrollTo(0, 0);
   }
 
-  onChangeField = (field) => (e) => {
+  onChangeField = (e) => {
     this.setState({
-      [field]: e.target.value,
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -36,27 +40,26 @@ export class LoginPage extends React.Component {
 
     try {
       const { email, password } = this.state;
+      const { history, login } = this.props;
 
-      this.setState({ apiLoading: true });
-      await this.props.startLogin(email, password);
-      this.props.history.push('/');
-      this.setState({ apiLoading: false });
-    } catch (e) {
-      this.setState({ apiLoading: false });
-      return this.setState({ error: e.message });
+      await login({ email, password });
+      history.push('/');
+    } catch (err) {
+      console.log(err);
     }
   };
 
   isDisabled = () => {
     const { email, password } = this.state;
-    return !(validator.isEmail(email) && !validator.isEmpty(password));
+    return !validator.isEmail(email) || validator.isEmpty(password);
   }
 
   renderError = () => {
-    if (this.props.error) {
+    const { error } = this.props;
+    if (error && typeof error === 'object' && error.errors && error.errors.length > 0) {
       return (
         <p className="error-msg alert alert-danger" role="alert">
-          {this.props.errorMessage}
+          {error.errors[0]}
         </p>
       );
     }
@@ -64,6 +67,7 @@ export class LoginPage extends React.Component {
 
   render() {
     const { email, password, rememberMe } = this.state;
+    const { isLoading } = this.props;
 
     return (
       <div className="auth-page">
@@ -83,27 +87,27 @@ export class LoginPage extends React.Component {
             className="auth-form"
           >
             <div className="form-group">
-              <i className="fa fa-user" aria-hidden="true" />
+              <FontAwesomeIcon icon="user" />
               <input
                 autoFocus
                 className="input-box"
-                type="text"
+                type="email"
                 name="email"
-                placeholder="Email"
+                placeholder="Email*"
                 value={email}
-                onChange={this.onChangeField('email')}
+                onChange={this.onChangeField}
               />
             </div>
 
             <div className="form-group">
-              <i className="fa fa-lock" aria-hidden="true" />
+              <FontAwesomeIcon icon="lock" />
               <input
                 className="password-box"
                 type="password"
                 name="password"
-                placeholder="Password"
+                placeholder="Password*"
                 value={password}
-                onChange={this.onChangeField('password')}
+                onChange={this.onChangeField}
               />
             </div>
 
@@ -111,9 +115,9 @@ export class LoginPage extends React.Component {
               <label>
                 <input
                   type="checkbox"
-                  name="remember-me"
+                  name="rememberMe"
                   value={rememberMe}
-                  onChange={this.onChangeField('rememberMe')}
+                  onChange={this.onChangeField}
                 />
                 Remember Me
               </label>
@@ -124,10 +128,11 @@ export class LoginPage extends React.Component {
 
             <div className="form-group">
               <button
+                type="submit"
                 className="btn btn-primary login-submit"
-                disabled={this.isDisabled()}
+                disabled={isLoading || this.isDisabled()}
               >
-                {this.state.apiLoading ? (
+                {isLoading ? (
                   <img src={loader} alt="" />
                 ) : (
                   'Login'
@@ -153,17 +158,23 @@ export class LoginPage extends React.Component {
 }
 
 LoginPage.propTypes = {
+  history: PropTypes.object.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  error: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+  login: PropTypes.func.isRequired,
+};
 
+LoginPage.defaultProps = {
+  error: null,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  startLogin: (email, password) => dispatch(startLogin(email, password)),
+  login: (data) => dispatch(loginAction(data)),
 });
 
 const mapStateToProps = (state) => ({
+  isLoading: state.auth.isLoggingIn,
   error: state.auth.error,
-  errorMessage: state.auth.errorMessage,
-  showbox: state.loginshow,
 });
 
 export default withRouter(

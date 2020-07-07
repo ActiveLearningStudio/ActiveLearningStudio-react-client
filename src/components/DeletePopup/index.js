@@ -11,21 +11,22 @@ const FaceDiv = styled.div`
   animation: 1s ${fadeAnimation};
 `;
 
+// TODO: need to clean up attribute
 function Popup(props) {
   const {
     ui,
-    hideDeletePopupAction,
-    deleteProjectAction,
-    deletePlaylistAction,
-    deleteResourceAction,
+    hideDeletePopup,
+    deleteProject,
+    deletePlaylist,
+    deleteResource,
   } = props;
 
   // remove popup when escape is pressed
   const escFunction = useCallback((event) => {
     if (event.keyCode === 27) {
-      hideDeletePopupAction(event);
+      hideDeletePopup(event);
     }
-  }, [hideDeletePopupAction]);
+  }, [hideDeletePopup]);
 
   useEffect(() => {
     document.addEventListener('keydown', escFunction, false);
@@ -34,17 +35,15 @@ function Popup(props) {
     };
   }, [escFunction]);
 
-  const deleteEntity = useCallback((deleteType, id) => {
-    return () => {
-      if (deleteType === 'Project') {
-        deleteProjectAction(id);
-      } else if (deleteType === 'Playlist') {
-        deletePlaylistAction(id);
-      } else if (deleteType === 'Activity') {
-        deleteResourceAction(id);
-      }
-    };
-  }, [deleteProjectAction, deletePlaylistAction, deleteResourceAction]);
+  const deleteEntity = useCallback((deleteType, id) => () => {
+    if (deleteType === 'Project') {
+      deleteProject(id);
+    } else if (deleteType === 'Playlist') {
+      deletePlaylist(id);
+    } else if (deleteType === 'Activity') {
+      deleteResource(id);
+    }
+  }, [deleteProject, deletePlaylist, deleteResource]);
 
   return (
     <FaceDiv className="popup">
@@ -53,15 +52,10 @@ function Popup(props) {
           <div className="modal-content">
             <div className="modal-body">
               <h5>
-                Delete &quot;
-                {ui.title}
-                &quot;?
+                {`Delete "${ui.title}"?`}
               </h5>
               <p>
-                You&apos;re about to permanently delete this
-                {ui.deleteType}
-                {' '}
-                and all of its data.
+                {`You're about to permanently delete this ${ui.deleteType} and all of its data.`}
               </p>
               <p>Do you want to continue?</p>
             </div>
@@ -79,7 +73,7 @@ function Popup(props) {
                 type="button"
                 className="btn btn-sm btn-default"
                 data-dismiss="modal"
-                onClick={hideDeletePopupAction}
+                onClick={hideDeletePopup}
               >
                 Cancel
               </button>
@@ -93,10 +87,10 @@ function Popup(props) {
 
 Popup.propTypes = {
   ui: PropTypes.object.isRequired,
-  hideDeletePopupAction: PropTypes.func.isRequired,
-  deleteProjectAction: PropTypes.func.isRequired,
-  deletePlaylistAction: PropTypes.func.isRequired,
-  deleteResourceAction: PropTypes.func.isRequired,
+  hideDeletePopup: PropTypes.func.isRequired,
+  deleteProject: PropTypes.func.isRequired,
+  deletePlaylist: PropTypes.func.isRequired,
+  deleteResource: PropTypes.func.isRequired,
 };
 
 export default Popup;

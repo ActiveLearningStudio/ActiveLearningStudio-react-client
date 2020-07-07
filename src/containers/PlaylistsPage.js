@@ -1,17 +1,9 @@
-import React from "react";
-import { connect } from "react-redux";
-import ReactPlaceholder from "react-placeholder";
-import "react-placeholder/lib/reactPlaceholder.css";
-import validator from "validator";
-
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import {
-  BrowserRouter as Router,
-  withRouter,
-  Switch,
-  Route,
-  Link,
-} from "react-router-dom";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withRouter, Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
   createPlaylistAction,
@@ -21,8 +13,8 @@ import {
   loadProjectPlaylistsAction,
   reorderPlaylistsAction,
   reorderPlaylistActivitiesAction,
-} from "../store/actions/playlist";
-import { showDeletePopupAction, hideDeletePopupAction } from "../store/actions/ui";
+} from 'store/actions/playlist';
+import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import {
   deleteResourceAction,
   createResourceAction,
@@ -38,79 +30,69 @@ import {
   uploadResourceThumbnailAction,
   showDescribeActivityAction,
   showBuildActivityAction,
-} from "../store/actions/resource";
-import {
-  showCreateProjectModalAction,
-  loadProjectAction,
-} from "../store/actions/project";
-
-import Header from "../components/Header";
-import Sidebar from "../components/Sidebar/Sidebar";
-import PreviewResourcePage from "./PreviewResourcePage";
-import DeletePopup from "../components/DeletePopup";
-import PlaylistCard from "../components/PlaylistCard";
-import PlaylistsLoading from "./../components/Loading/PlaylistsLoading";
-import CreatePlaylistPopup from "../components/CreatePlaylistPopup/CreatePlaylistPopup";
-import AddResource from "../components/Resource/AddResource";
-import EditResource from "../components/Resource/EditResource";
+} from 'store/actions/resource';
+import { showCreateProjectModalAction, loadProjectAction } from 'store/actions/project';
+import Header from 'components/Header';
+import Sidebar from 'components/Sidebar';
+import DeletePopup from 'components/DeletePopup';
+import PlaylistCard from 'components/PlaylistCard';
+import CreatePlaylistPopup from 'components/CreatePlaylistPopup';
+import AddResource from 'components/ResourceCard/AddResource';
+import EditResource from 'components/ResourceCard/EditResource';
+import PreviewResourcePage from './PreviewResourcePage';
 
 export class PlaylistsPage extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      email: "",
-      password: "",
-      error: "",
-      playlists: [
-        {
-          resources: [],
-        },
-      ],
-      title: "",
+      title: '',
     };
   }
 
-  escFunction(event) {
-    if (event.keyCode === 27) this.props.hideCreatePlaylistModal();
+  componentDidMount() {
+    // scroll to top
+    window.scrollTo(0, 0);
+
+    const {
+      match,
+      openCreatePopup,
+      openCreateResourcePopup,
+      openEditResourcePopup,
+      loadProject,
+      loadProjectPlaylists,
+    } = this.props;
+
+    if (!openCreatePopup && !openCreateResourcePopup && !openEditResourcePopup) {
+      loadProject(match.params.projectId);
+      loadProjectPlaylists(match.params.projectId);
+    }
   }
 
-  componentDidMount() {
-    //scroll to top
-    window.scrollTo(0, 0);
-    if (
-      this.props.openCreatePopup == true ||
-      this.props.openCreateResourcePopup == true ||
-      this.props.openEditResourcePopup == true
-    ) {
-    } else {
-      this.props.loadProjectPlaylistsAction(this.props.match.params.projectid);
-      this.props.loadProjectAction(this.props.match.params.projectid);
+  escFunction = (event) => {
+    if (event.keyCode === 27) {
+      const { hideCreatePlaylistModal } = this.props;
+      hideCreatePlaylistModal();
     }
   }
 
   handleShowCreatePlaylistModal = async (e) => {
     e.preventDefault();
+
     try {
-      await this.props.showCreatePlaylistModal();
-      this.props.history.push(
-        "/project/" + this.props.match.params.projectid + "/playlist/create"
-      );
-    } catch (e) {
-      console.log(e.message);
+      const { match, history, showCreatePlaylistModal } = this.props;
+      await showCreatePlaylistModal();
+      history.push(`/project/${match.params.projectId}/playlist/create`);
+    } catch (err) {
+      console.log(err.message);
     }
   };
 
   handleShowCreateResourceModal = (playlist) => {
     try {
-      this.props.showCreateResourceModalAction(playlist._id);
-      this.props.history.push(
-        "/project/" +
-          this.props.match.params.projectid +
-          "/playlist/" +
-          playlist._id +
-          "/activity/create"
-      );
+      const { match, history, showCreateResourceModal } = this.props;
+      showCreateResourceModal(playlist._id);
+      history.push(`/project/${match.params.projectId}/playlist/${playlist._id}/activity/create`);
     } catch (e) {
       console.log(e.message);
     }
@@ -118,21 +100,25 @@ export class PlaylistsPage extends React.Component {
 
   handleHideCreatePlaylistModal = async (e) => {
     e.preventDefault();
+
     try {
-      await this.props.hideCreatePlaylistModal();
-      this.props.history.push("/project/" + this.props.match.params.projectid);
-    } catch (e) {
-      console.log(e.message);
+      const { match, history, hideCreatePlaylistModal } = this.props;
+      await hideCreatePlaylistModal();
+      history.push(`/project/${match.params.projectId}`);
+    } catch (err) {
+      console.log(err.message);
     }
   };
 
   handleHideCreateResourceModal = async (e) => {
     e.preventDefault();
+
     try {
-      await this.props.hideCreateResourceModal();
-      this.props.history.push("/project/" + this.props.match.params.projectid);
-    } catch (e) {
-      console.log(e.message);
+      const { match, history, hideCreateResourceModal } = this.props;
+      await hideCreateResourceModal();
+      history.push(`/project/${match.params.projectId}`);
+    } catch (err) {
+      console.log(err.message);
     }
   };
 
@@ -142,25 +128,16 @@ export class PlaylistsPage extends React.Component {
 
   handleCreatePlaylistSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const { title } = this.state;
+      const { match, history, createPlaylist } = this.props;
 
-      await this.props.createPlaylistAction(
-        this.props.match.params.projectid,
-        title
-      );
-      this.props.history.push("/project/" + this.props.match.params.projectid);
-    } catch (e) {
-      console.log(e.message);
+      await createPlaylist(match.params.projectId, title);
+      history.push(`/project/${match.params.projectId}`);
+    } catch (err) {
+      console.log(err.message);
     }
-  };
-
-  handleShowDeletePopup = (id, title, deleteType) => {
-    this.props.showDeletePopupAction(id, title, deleteType);
-  };
-
-  handlePreviewResource = (id) => {
-    this.props.previewResourceAction(id);
   };
 
   handleCreateResourceSubmit = async (
@@ -168,30 +145,37 @@ export class PlaylistsPage extends React.Component {
     editor,
     editorType,
     payload,
-    metadata
+    metadata,
   ) => {
     try {
-      if (payload.submitAction === "upload") {
+      const {
+        resource,
+        match,
+        history,
+        createResource,
+        createResourceByH5PUpload,
+      } = this.props;
+
+      if (payload.submitAction === 'upload') {
         payload.event.preventDefault();
-        await this.props.createResourceByH5PUploadAction(
+        await createResourceByH5PUpload(
           currentPlaylistId,
           editor,
           editorType,
           payload,
-          metadata
+          metadata,
         );
       } else {
-        await this.props.createResourceAction(
+        await createResource(
           currentPlaylistId,
           editor,
           editorType,
-          metadata
+          metadata,
         );
       }
-      if (!this.props.resource.showCreateResourcePopup) {
-        this.props.history.push(
-          "/project/" + this.props.match.params.projectid
-        );
+
+      if (!resource.showCreateResourcePopup) {
+        history.push(`/project/${match.params.projectId}`);
       }
     } catch (e) {
       console.log(e.message);
@@ -202,18 +186,20 @@ export class PlaylistsPage extends React.Component {
     currentPlaylistId,
     editor,
     editorType,
-    activityid,
-    metadata
+    activityId,
+    metadata,
   ) => {
     try {
-      await this.props.editResourceAction(
+      const { match, history, editResource } = this.props;
+      await editResource(
         currentPlaylistId,
         editor,
         editorType,
-        activityid,
-        metadata
+        activityId,
+        metadata,
       );
-      this.props.history.push("/project/" + this.props.match.params.projectid);
+
+      history.push(`/project/${match.params.projectId}`);
     } catch (e) {
       console.log(e);
     }
@@ -221,99 +207,106 @@ export class PlaylistsPage extends React.Component {
 
   onDragEnd = (e) => {
     if (
-      !e.destination ||
-      (e.destination.index == e.source.index &&
-        e.source.droppableId == e.destination.droppableId)
-    )
+      !e.destination
+      || (e.destination.index === e.source.index && e.source.droppableId === e.destination.droppableId)
+    ) {
       return;
+    }
 
-    if (e.type == "resource") {
+    const { playlists: { playlists }, reorderPlaylists, reorderPlaylistActivities } = this.props;
+
+    if (e.type === 'resource') {
       // resource dropped
-      if (e.source.droppableId == e.destination.droppableId) {
+      if (e.source.droppableId === e.destination.droppableId) {
         // Resource dropped within the same list
-        let playlist = this.props.playlists.playlists.find((pl) => {
-          return pl._id == e.source.droppableId;
-        });
-        let resources = Array.from(playlist.resources);
+        const playlist = playlists.find((pl) => pl._id === e.source.droppableId);
+        const resources = Array.from(playlist.resources);
         const [removed] = resources.splice(e.source.index, 1);
         resources.splice(e.destination.index, 0, removed);
-        this.props.reorderPlaylistActivitiesAction({
+        reorderPlaylistActivities({
           ...playlist,
-          resources: resources,
+          resources,
         });
       } else {
         // Rsc dropped on a different list
-        let sourceList = this.props.playlists.playlists.find((pl) => {
-          return pl._id == e.source.droppableId;
-        });
-        let destinationList = this.props.playlists.playlists.find((pl) => {
-          return pl._id == e.destination.droppableId;
-        });
-        let sourceResources = Array.from(sourceList.resources);
-        let destResources = destinationList.resources
+        const sourceList = playlists.find((pl) => pl._id === e.source.droppableId);
+        const destinationList = playlists.find((pl) => pl._id === e.destination.droppableId);
+        const sourceResources = Array.from(sourceList.resources);
+        const destResources = destinationList.resources
           ? Array.from(destinationList.resources)
           : [];
 
         const [removed] = sourceResources.splice(e.source.index, 1);
         destResources.splice(e.destination.index, 0, removed);
 
-        this.props.reorderPlaylistActivitiesAction({
+        reorderPlaylistActivities({
           ...sourceList,
           resources: sourceResources,
         });
-        this.props.reorderPlaylistActivitiesAction({
+        reorderPlaylistActivities({
           ...destinationList,
           resources: destResources,
         });
       }
     } else {
       // playlist dropped
-      let playlists = Array.from(this.props.playlists.playlists);
-      const [removed] = playlists.splice(e.source.index, 1);
-      playlists.splice(e.destination.index, 0, removed);
-      this.props.reorderPlaylistsAction(playlists);
+      const pLists = Array.from(playlists);
+      const [removed] = pLists.splice(e.source.index, 1);
+      pLists.splice(e.destination.index, 0, removed);
+      reorderPlaylists(pLists);
     }
   };
 
   render() {
-    const { playlists } = this.props.playlists;
-    const { showDeletePlaylistPopup } = this.props.ui;
+    const {
+      match,
+      project,
+      resource,
+      playlists: { playlists },
+      ui,
+      openCreatePopup,
+      openCreateResourcePopup,
+      openEditResourcePopup,
+    } = this.props;
+
+    const { showDeletePlaylistPopup } = ui;
+
     return (
       <>
         <Header {...this.props} />
+
         <>
           <div className="main-content-wrapper">
             <div className="sidebar-wrapper">
               <Sidebar />
             </div>
-            <div className="content-wrapper  ">
+
+            <div className="content-wrapper">
               <div className="content">
                 <div className="row ">
                   <div className="col playlist-page-project-title project-each-view">
                     <div className="flex-se">
-                      <h1>
-                        {this.props.project.selectedProject
-                          ? this.props.project.selectedProject.name
-                          : ""}
-                      </h1>
+                      <h1>{project.selectedProject ? project.selectedProject.name : ''}</h1>
 
                       <button
+                        type="button"
                         onClick={this.handleShowCreatePlaylistModal}
                         className="create-playlist-btn"
                       >
-                        <i className="fa fa-plus" /> Create new playlist
+                        <FontAwesomeIcon icon="plus" />
+                        {' '}
+                        Create new playlist
                       </button>
                     </div>
+
                     <span>
                       <Link
                         className="dropdown-item"
-                        to={
-                          "/project/preview2/" +
-                          this.props.match.params.projectid
-                        }
+                        to={`/project/preview2/${match.params.projectId}`}
                       >
-                        <i className="fa fa-eye" aria-hidden="true"></i> Project
-                        Preview
+                        <FontAwesomeIcon icon="eye" />
+                        {' '}
+                        Project Preview
                       </Link>
                     </span>
                   </div>
@@ -339,9 +332,7 @@ export class PlaylistsPage extends React.Component {
                             playlist={playlist}
                             playlistTitleClicked={playlist.playlistTitleClicked}
                             title={playlist.title}
-                            handleCreateResource={
-                              this.handleShowCreateResourceModal
-                            }
+                            handleCreateResource={this.handleShowCreateResourceModal}
                           />
                         ))}
                         {provided.placeholder}
@@ -353,126 +344,128 @@ export class PlaylistsPage extends React.Component {
             </div>
           </div>
 
-          {this.props.openCreatePopup ? (
+          {openCreatePopup && (
             <CreatePlaylistPopup
-              escFunction={this.escFunction.bind(this)}
-              handleShowCreatePlaylistModal={this.handleShowCreatePlaylistModal.bind(
-                this
-              )}
-              handleHideCreatePlaylistModal={this.handleHideCreatePlaylistModal.bind(
-                this
-              )}
-              handleCreatePlaylistSubmit={this.handleCreatePlaylistSubmit.bind(
-                this
-              )}
-              onPlaylistTitleChange={this.onPlaylistTitleChange.bind(this)}
+              escFunction={this.escFunction}
+              handleShowCreatePlaylistModal={this.handleShowCreatePlaylistModal}
+              handleHideCreatePlaylistModal={this.handleHideCreatePlaylistModal}
+              handleCreatePlaylistSubmit={this.handleCreatePlaylistSubmit}
+              onPlaylistTitleChange={this.onPlaylistTitleChange}
             />
-          ) : null}
+          )}
 
-          {this.props.openCreateResourcePopup ? (
+          {openCreateResourcePopup && (
             <AddResource
               {...this.props}
               handleHideCreateResourceModal={this.handleHideCreateResourceModal}
               handleCreateResourceSubmit={this.handleCreateResourceSubmit}
               handleEditResourceSubmit={this.handleEditResourceSubmit}
             />
-          ) : null}
+          )}
 
-          {this.props.openEditResourcePopup ? (
+          {openEditResourcePopup && (
             <EditResource
               {...this.props}
               handleHideCreateResourceModal={this.handleHideCreateResourceModal}
               handleCreateResourceSubmit={this.handleCreateResourceSubmit}
               handleEditResourceSubmit={this.handleEditResourceSubmit}
             />
-          ) : null}
+          )}
 
-          {this.props.resource.showPreviewResourcePopup ? (
+          {resource.showPreviewResourcePopup && (
             <PreviewResourcePage {...this.props} />
-          ) : null}
-          {showDeletePlaylistPopup ? (
+          )}
+
+          {showDeletePlaylistPopup && (
             <DeletePopup
-              res={this.props.ui}
+              res={ui}
               deleteType="Playlist"
               {...this.props}
             />
-          ) : null}
+          )}
         </>
       </>
     );
   }
 }
 
+PlaylistsPage.propTypes = {
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  openCreatePopup: PropTypes.bool.isRequired,
+  openCreateResourcePopup: PropTypes.bool.isRequired,
+  openEditResourcePopup: PropTypes.bool.isRequired,
+  playlists: PropTypes.object.isRequired,
+  resource: PropTypes.object.isRequired,
+  project: PropTypes.object.isRequired,
+  ui: PropTypes.object.isRequired,
+  loadProject: PropTypes.func.isRequired,
+  loadProjectPlaylists: PropTypes.func.isRequired,
+  reorderPlaylists: PropTypes.func.isRequired,
+  reorderPlaylistActivities: PropTypes.func.isRequired,
+  editResource: PropTypes.func.isRequired,
+  createResource: PropTypes.func.isRequired,
+  createResourceByH5PUpload: PropTypes.func.isRequired,
+  createPlaylist: PropTypes.func.isRequired,
+  showCreateResourceModal: PropTypes.func.isRequired,
+  hideCreateResourceModal: PropTypes.func.isRequired,
+  showCreatePlaylistModal: PropTypes.func.isRequired,
+  hideCreatePlaylistModal: PropTypes.func.isRequired,
+};
+
 const mapDispatchToProps = (dispatch) => ({
-  createPlaylistAction: (projectid, title) =>
-    dispatch(createPlaylistAction(projectid, title)),
-  deletePlaylistAction: (id) => dispatch(deletePlaylistAction(id)),
+  createPlaylist: (id, title) => dispatch(createPlaylistAction(id, title)),
+  deletePlaylist: (id) => dispatch(deletePlaylistAction(id)),
   showCreatePlaylistModal: () => dispatch(showCreatePlaylistModalAction()),
   hideCreatePlaylistModal: () => dispatch(hideCreatePlaylistModalAction()),
-  hideDeletePopupAction: () => dispatch(hideDeletePopupAction()),
-  showCreateResourceModalAction: (id) =>
-    dispatch(showCreateResourceModalAction(id)),
+  hideDeletePopup: () => dispatch(hideDeletePopupAction()),
+  showCreateResourceModal: (id) => dispatch(showCreateResourceModalAction(id)),
   hideCreateResourceModal: () => dispatch(hideCreateResourceModalAction()),
-  previewResourceAction: (id) => dispatch(previewResourceAction(id)),
-  hidePreviewResourceModalAction: () =>
-    dispatch(hidePreviewResourceModalAction()),
-  showCreateProjectModalAction: () => dispatch(showCreateProjectModalAction()),
-  loadProjectPlaylistsAction: (projectid) =>
-    dispatch(loadProjectPlaylistsAction(projectid)),
-  createResourceAction: (playlistid, editor, editorType, metadata) =>
-    dispatch(createResourceAction(playlistid, editor, editorType, metadata)),
-  editResourceAction: (playlistid, editor, editorType, activityid, metadata) =>
-    dispatch(
-      editResourceAction(playlistid, editor, editorType, activityid, metadata)
-    ),
-  createResourceByH5PUploadAction: (
-    playlistid,
+  previewResource: (id) => dispatch(previewResourceAction(id)),
+  hidePreviewResourceModal: () => dispatch(hidePreviewResourceModalAction()),
+  showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
+  loadProjectPlaylists: (id) => dispatch(loadProjectPlaylistsAction(id)),
+  createResource: (id, editor, editorType, metadata) => dispatch(
+    createResourceAction(id, editor, editorType, metadata),
+  ),
+  editResource: (id, editor, editorType, actId, metadata) => dispatch(
+    editResourceAction(id, editor, editorType, actId, metadata),
+  ),
+  createResourceByH5PUpload: (
+    id,
     editor,
     editorType,
     payload,
-    metadata
-  ) =>
-    dispatch(
-      createResourceByH5PUploadAction(
-        playlistid,
-        editor,
-        editorType,
-        payload,
-        metadata
-      )
+    metadata,
+  ) => dispatch(
+    createResourceByH5PUploadAction(
+      id,
+      editor,
+      editorType,
+      payload,
+      metadata,
     ),
-  loadProjectAction: (projectid) => dispatch(loadProjectAction(projectid)),
-  deleteResourceAction: (resourceid) =>
-    dispatch(deleteResourceAction(resourceid)),
-  showDeletePopupAction: (id, title, deleteType) =>
-    dispatch(showDeletePopupAction(id, title, deleteType)),
-  showCreateResourceActivity: () =>
-    dispatch(showCreateResourceActivityAction()),
-  showDescribeActivityAction: (activity, activityid) =>
-    dispatch(showDescribeActivityAction(activity, activityid)),
-  showBuildActivityAction: (editor, editorType, activityid) =>
-    dispatch(showBuildActivityAction(editor, editorType, activityid)),
-  onChangeActivityTypeAction: (activityTypeId) =>
-    dispatch(onChangeActivityTypeAction(activityTypeId)),
-  onChangeActivityAction: (e, activity) =>
-    dispatch(onChangeActivityAction(e, activity)),
-  uploadResourceThumbnailAction: () =>
-    dispatch(uploadResourceThumbnailAction()),
-  reorderPlaylistsAction: (playlist) =>
-    dispatch(reorderPlaylistsAction(playlist)),
-  reorderPlaylistActivitiesAction: (playlist) =>
-    dispatch(reorderPlaylistActivitiesAction(playlist)),
+  ),
+  loadProject: (id) => dispatch(loadProjectAction(id)),
+  deleteResource: (resourceId) => dispatch(deleteResourceAction(resourceId)),
+  showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
+  showCreateResourceActivity: () => dispatch(showCreateResourceActivityAction()),
+  showDescribeActivity: (activity, id) => dispatch(showDescribeActivityAction(activity, id)),
+  showBuildActivity: (editor, editorType, id) => dispatch(showBuildActivityAction(editor, editorType, id)),
+  onChangeActivityType: (activityTypeId) => dispatch(onChangeActivityTypeAction(activityTypeId)),
+  onChangeActivity: (e, activity) => dispatch(onChangeActivityAction(e, activity)),
+  uploadResourceThumbnail: () => dispatch(uploadResourceThumbnailAction()),
+  reorderPlaylists: (playlist) => dispatch(reorderPlaylistsAction(playlist)),
+  reorderPlaylistActivities: (playlist) => dispatch(reorderPlaylistActivitiesAction(playlist)),
 });
 
-const mapStateToProps = (state) => {
-  return {
-    playlists: state.playlist,
-    resource: state.resource,
-    project: state.project,
-    ui: state.ui,
-  };
-};
+const mapStateToProps = (state) => ({
+  playlists: state.playlist,
+  resource: state.resource,
+  project: state.project,
+  ui: state.ui,
+});
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(PlaylistsPage)
+  connect(mapStateToProps, mapDispatchToProps)(PlaylistsPage),
 );

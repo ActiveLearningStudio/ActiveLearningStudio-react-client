@@ -1,0 +1,84 @@
+aside {
+  background: #fff;
+  min-height: 900px;
+  padding-top: 50px;
+  padding-right: 30px;
+
+  & > ul {
+    list-style: none;
+    padding-left: 32px;
+
+    & > li {
+      border-bottom: 1px solid #e8e8e8;
+
+      a {
+        color: #607a9b;
+      }
+
+      & > a {
+        font-size: 16px;
+        display: block;
+        padding-top: 20px;
+        padding-bottom: 20px;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .sublist {
+        list-style: none;
+        padding-left: 25px;
+
+        a {
+          display: block;
+          padding-top: 5px;
+          padding-bottom: 5px;
+          font-size: 14px;
+        }
+      }
+
+      .add-member {
+        padding-left: 25px;
+
+        button {
+          color: #607a9b;
+          border: 1px solid #bfbfbf;
+          cursor: pointer;
+          padding: 5px 10px 5px 35px;
+          background: #fafafa url(/assets/images/add-member-icon.png) no-repeat 10px 9px;
+          border-radius: 2px;
+          margin-top: 20px;
+          margin-bottom: 50px;
+        }
+      }
+    }
+  }
+
+  .sidebar-icon {
+    width: 25px;
+    height: 20px;
+    display: inline-block;
+  }
+
+  .my-resources-icon {
+    background: url('/assets/images/my-resource-icon.png') no-repeat 0 7px;
+  }
+
+  .teams-icon {
+    background: url('/assets/images/teams-icon.png') no-repeat 0 7px;
+  }
+
+  .favorites-icon {
+    background: url('/assets/images/favorites-icon.png') no-repeat 0 7px;
+  }
+
+  .recent-resource-icon {
+    background: url('/assets/images/recent-resource-icon.png') no-repeat 0 7px;
+  }
+
+}

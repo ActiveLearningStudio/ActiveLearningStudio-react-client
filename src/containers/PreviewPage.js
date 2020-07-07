@@ -1,56 +1,54 @@
-import React from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-
-import Sidebar from "../components/Sidebar/Sidebar";
-import Header from "../components/Header";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import {
   showCreateProjectModalAction,
   createProjectAction,
   loadMyProjectsAction,
-} from "../store/actions/project";
-
-import ProjectPreview from "../components/ProjectPreview";
-import ResourcePreview from "../components/ResourcePreview";
-import PlaylistPreview from "../components/PlaylistPreview";
+} from 'store/actions/project';
+import Header from 'components/Header';
+import ProjectPreview from 'components/ProjectPreview';
+import ResourcePreview from 'components/ResourcePreview';
+import PlaylistPreview from 'components/PlaylistPreview';
 
 export class PreviewPage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
-    //scroll to top
+    // scroll to top
     window.scrollTo(0, 0);
-    this.props.loadMyProjectsAction();
+
+    const { loadMyProjects } = this.props;
+    loadMyProjects();
   }
 
   render() {
-    // const { projects } = this.props.project;
-    var content;
-    if (this.props.previewType == "resource")
+    const { match, project, previewType } = this.props;
+
+    let content;
+    if (previewType === 'resource') {
       content = (
-        <ResourcePreview resourceid={this.props.match.params.resourceid} />
+        <ResourcePreview resourceId={match.params.resourceId} />
       );
-    else if (this.props.previewType == "playlist")
+    } else if (previewType === 'playlist') {
       content = (
         <PlaylistPreview
-          playlistid={this.props.match.params.playlistid}
-          resourceid={this.props.match.params.resourceid}
+          playlistid={match.params.playlistId}
+          resourceId={match.params.resourceId}
         />
       );
-    else
+    } else {
       content = (
-        <div className="sitecontainer">
+        <div className="site-container">
           <ProjectPreview
             {...this.props}
-            key={this.props.match.params.projectid}
-            project={this.props.project}
+            key={match.params.projectId}
+            project={project}
             showlti={false}
           />
         </div>
       );
+    }
 
     return (
       <div>
@@ -62,20 +60,23 @@ export class PreviewPage extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  showCreateProjectModalAction: () => dispatch(showCreateProjectModalAction()),
-  loadMyProjectsAction: () => dispatch(loadMyProjectsAction()),
-  createProjectAction: (name, description, thumb_url) =>
-    dispatch(createProjectAction(name, description, thumb_url)),
-  // hideCreateProjectModalAction: () => dispatch(hideCreateProjectModalAction()),
-});
-
-const mapStateToProps = (state) => {
-  return {
-    project: state.project,
-  };
+PreviewPage.propTypes = {
+  match: PropTypes.object.isRequired,
+  project: PropTypes.object.isRequired,
+  previewType: PropTypes.string.isRequired,
+  loadMyProjects: PropTypes.func.isRequired,
 };
 
+const mapDispatchToProps = (dispatch) => ({
+  showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
+  loadMyProjects: () => dispatch(loadMyProjectsAction()),
+  createProject: (name, description, thumbUrl) => dispatch(createProjectAction(name, description, thumbUrl)),
+});
+
+const mapStateToProps = (state) => ({
+  project: state.project,
+});
+
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(PreviewPage)
+  connect(mapStateToProps, mapDispatchToProps)(PreviewPage),
 );

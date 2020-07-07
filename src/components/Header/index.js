@@ -2,9 +2,10 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import logo from 'assets/images/logo.svg';
-import { startLogoutAction } from 'store/actions/auth';
+import { logoutAction } from 'store/actions/auth';
 import {
   showUserSubMenuAction,
   closeMenuAction,
@@ -14,6 +15,7 @@ import { Event } from 'trackers/ga';
 
 import './style.scss';
 
+// TODO: need to clean up attributes, update import asset
 function Header(props) {
   const createProjNode = useRef();
   const createTeamNode = useRef();
@@ -65,6 +67,7 @@ function Header(props) {
               <img src="/assets/images/search.png" alt="search" title="" />
             </button>
           </div>
+
           <div className="navbar_link">
             <ul className="top_info flexdiv">
               <li
@@ -79,7 +82,7 @@ function Header(props) {
                   className="addtop dropdown-toggle"
                   onClick={showCreateProjectSubmenu}
                 >
-                  <i className="fa fa-plus-circle" aria-hidden="true" />
+                  <FontAwesomeIcon icon="plus-circle" />
                 </Link>
 
                 <div className="navmenu dropdown-menu" ref={createProjNode}>
@@ -157,7 +160,7 @@ function Header(props) {
                   <ul className="dropdown-menu user-dropdown">
                     <Link to="#">
                       <li>
-                        Welcome &nbsp;
+                        Welcome&nbsp;
                         <span className="usernamelogin">
                           {typeof window !== 'undefined'
                             && JSON.parse(window.localStorage.getItem('auth'))
@@ -179,7 +182,8 @@ function Header(props) {
                           'Login Page',
                         );
                         startLogout();
-                      }}>
+                      }}
+                    >
                       <li>Logout</li>
                     </Link>
                   </ul>
@@ -204,7 +208,7 @@ Header.propTypes = {
 const mapDispatchToProps = (dispatch) => ({
   showCreateProjectSubmenu: () => dispatch(showCreateProjectSubmenuAction()),
   showUserSubMenu: () => dispatch(showUserSubMenuAction()),
-  startLogout: () => dispatch(startLogoutAction()),
+  startLogout: () => dispatch(logoutAction()),
   closeMenu: () => dispatch(closeMenuAction()),
 });
 

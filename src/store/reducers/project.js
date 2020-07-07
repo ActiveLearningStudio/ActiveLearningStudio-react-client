@@ -33,21 +33,19 @@ export default (state = defaultProgramState(), action) => {
   switch (action.type) {
     case CLOSE_MENU:
       if (state.showCreateProjectSubmenu) {
-        state = {
+        return {
           ...state,
           showCreateProjectSubmenu: !state.showCreateProjectSubmenu,
         };
       }
       if (state.showUserSubMenu) {
-        state = {
+        return {
           ...state,
           showUserSubMenu: !state.showUserSubMenu,
         };
       }
+      return state;
 
-      return {
-        ...state,
-      };
     case SHOW_CREATE_PROJECT_SUBMENU:
       return {
         ...state,

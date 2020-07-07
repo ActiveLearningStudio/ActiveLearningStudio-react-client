@@ -41,6 +41,7 @@ export default (state = defaultPlaylistState(), action) => {
           action.playlistdata,
         ],
       };
+
     // reset playlists to empty when going to projects dashboard
     // so that when user clicks to new project it will load to default empty
     case LOAD_MY_PROJECTS:
@@ -50,17 +51,19 @@ export default (state = defaultPlaylistState(), action) => {
       };
 
     case DELETE_PLAYLIST:
-      const newPlaylist = state.playlists.filter((playlist) => playlist._id !== action.id);
+      const nPlaylists = state.playlists.filter((playlist) => playlist._id !== action.id);
       return {
         ...state,
         showDeletePlaylistPopup: false,
-        playlists: newPlaylist,
+        playlists: nPlaylists,
       };
+
     case SHOW_CREATE_PLAYLIST_MODAL:
       return {
         ...state,
         showCreatePlaylistPopup: true,
       };
+
     case HIDE_CREATE_PLAYLIST_MODAL:
       return {
         ...state,
@@ -68,32 +71,35 @@ export default (state = defaultPlaylistState(), action) => {
       };
 
     case CREATE_RESOURCE:
-      // adding resource to newplaylist specific id
+      // adding resource to newPlaylist specific id
       newPlaylists = state.playlists;
       state.playlists.forEach((playlist, i) => {
         if (playlist._id === action.playlistid) {
           newPlaylists[i] = { resources: [], ...newPlaylists[i] };
-          newPlaylists[i].resources.push({ _id: action.resource.id, id: action.resource.mysqlid, title: action.resource.title });
+          newPlaylists[i].resources.push({
+            _id: action.resource.id,
+            id: action.resource.mysqlid,
+            title: action.resource.title,
+          });
         }
       });
       return {
         ...state,
         playlists: newPlaylists,
         showCreateResourcePopup: false,
-
       };
+
     case EDIT_RESOURCE:
-      // adding resource to newplaylist specific id
+      // adding resource to newPlaylist specific id
       return {
         ...state,
         showCreateResourcePopup: false,
-
       };
-    case DELETE_RESOURCE:
 
+    case DELETE_RESOURCE:
       const plists = [];
-      state.playlists.forEach((playlist, i) => {
-        const newResources = playlist.resources.filter((res) => res._id !== action.resourceid);
+      state.playlists.forEach((playlist) => {
+        const newResources = playlist.resources.filter((res) => res._id !== action.resourceId);
         let p = null;
         p = playlist;
         p.resources = newResources;
@@ -105,8 +111,8 @@ export default (state = defaultPlaylistState(), action) => {
         playlists: plists,
         showCreateResourcePopup: false,
         showDeletePlaylistPopup: false,
-
       };
+
     case LOAD_PROJECT_PLAYLISTS:
       return {
         ...state,
@@ -118,9 +124,12 @@ export default (state = defaultPlaylistState(), action) => {
         ...state,
         selectedPlaylist: action.playlist,
       };
+
     case REORDER_PLAYLIST:
       // Find the changed playlist and replace with action.playlist
-      const newReorderedPlaylists = state.playlists.map((playlist) => ((playlist._id === action.playlist._id) ? action.playlist : playlist));
+      const newReorderedPlaylists = state.playlists.map(
+        (playlist) => ((playlist._id === action.playlist._id) ? action.playlist : playlist),
+      );
       return {
         ...state,
         playlists: newReorderedPlaylists,
@@ -131,24 +140,28 @@ export default (state = defaultPlaylistState(), action) => {
         ...state,
         playlists: action.playlists,
       };
+
     case CHANGE_PLAYLIST_TITLE:
       const newTitleChangedPlaylists = state.playlists.filter((playlist) => {
-        if (playlist._id === action.playlistid) {
-          playlist.title = action.title;
-          playlist.playlistTitleClicked = false;
+        const newPlaylist = { ...playlist };
+        if (newPlaylist._id === action.playlistid) {
+          newPlaylist.title = action.title;
+          newPlaylist.playlistTitleClicked = false;
         }
-        return playlist;
+        return newPlaylist;
       });
       return {
         ...state,
         playlists: newTitleChangedPlaylists,
       };
+
     case CLICK_PLAYLIST_TITLE:
       const newClickTitlePlaylists = state.playlists.filter((playlist) => {
-        if (playlist._id === action.playlistid) {
-          playlist.playlistTitleClicked = true;
+        const nPlaylist = { ...playlist };
+        if (nPlaylist._id === action.playlistid) {
+          nPlaylist.playlistTitleClicked = true;
         }
-        return playlist;
+        return nPlaylist;
       });
       return {
         ...state,
