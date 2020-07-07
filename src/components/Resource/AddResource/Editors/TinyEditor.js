@@ -1,50 +1,41 @@
 import React from "react";
 import { connect } from "react-redux";
 import validator from "validator";
-
-
-import { createPlaylist } from "./../../../../actions/playlist";
-
+import { withRouter } from "react-router-dom";
 import { Editor } from '@tinymce/tinymce-react';
-
-
-
-
-
+import { saveGenericResourceAction } from "../../../../actions/resource";
 
 export class TinyEditor extends React.Component {
   constructor(props) {
     super(props);
 
-    
     this.state = {
-      email: "",
-      password: "",
-      error: "",
-      playlists:[
-      ],
-      title:""
+      title:"",
+      textcontent:""
     };
-
-    
   }
 
   handleEditorChange = (content, editor) => {
-    console.log('Content was updated:', content);
+    this.setState({textcontent: content});
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    console.log('Content was updated:'+ this.state.textcontent);
+
+    this.props.saveGenericResourceAction({
+      playlistid: this.props.match.params.playlistid,
+      mysqlid: null,
+      type: this.props.resource.newResource.activity.type,
+      metadata: this.props.resource.newResource.metadata,
+      textcontent: this.state.textcontent
+    });
   }
   
   render() {
-
-      
     return (
       <div className="post">
-        <h1>New Post</h1>
-        <div className="post-title">
-          <label>
-            <span>Title</span>
-            <input type="text" name="title" className="form-control" />
-          </label>
-        </div>
+        <h1>New Immersive Reader Resource</h1>
         <div className="post-title">
           <label>
             <span>Content</span>
@@ -70,18 +61,16 @@ export class TinyEditor extends React.Component {
         </div>
         <div className="form-group">
             <div className="col-md-9 col-md-offset-3">
-              <button type="submit" className="add-resource-submit-btn" onClick={this.handleH5PSubmit}>Finish</button>
+              <button type="submit" className="add-resource-submit-btn" onClick={this.handleSubmit}>Finish</button>
             </div>
         </div>
       </div>
-      
-      
     );
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  createPlaylist: (title) => dispatch(createPlaylist(title))
+const mapDispatchToProps = (dispatch) => ({
+  saveGenericResourceAction: (resourceData) => dispatch(saveGenericResourceAction(resourceData))
 });
 
 const mapStateToProps =(state) => {
@@ -90,10 +79,7 @@ const mapStateToProps =(state) => {
   };
 }
 
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TinyEditor);
-
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(TinyEditor)
+);
 

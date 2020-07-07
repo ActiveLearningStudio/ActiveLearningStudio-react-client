@@ -19,7 +19,28 @@ import {
   RESOURCE_VALIDATION_ERRORS,
   RESOURCE_THUMBNAIL_PROGRESS,
   HIDE_RESOURCE_ACTIVITY_BUILD,
+  SAVE_GENERIC_RESOURCE,
 } from "./../constants/actionTypes";
+
+export const saveGenericResource = () => ({
+  type: SAVE_GENERIC_RESOURCE
+});
+
+export const saveGenericResourceAction = (resourceData) => {
+  return async (dispatch) => {
+    const { token } = JSON.parse(localStorage.getItem("auth"));
+    const response = await axios.post(
+      global.config.laravelAPIUrl + "/activity",
+      resourceData,
+      { headers: { Authorization: "Bearer " + token } }
+    );
+
+    if (response.data.status == "success") {
+      dispatch(saveGenericResource());
+      dispatch(hideCreateResourceModal());
+    }
+  };
+};
 
 export const loadResource = (resource, previous, next) => ({
   type: LOAD_RESOURCE,
