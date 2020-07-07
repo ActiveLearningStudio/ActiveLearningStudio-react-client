@@ -24,8 +24,8 @@ export default function Sharelink({ playlistID }) {
                     onClick={() => {
                       ShareLMS(
                         playlistID,
-                        data.lms_access_token,
-                        data.site_name.toLowerCase()
+                        data._id,
+                        data.lms_name.toLowerCase()
                       );
                     }}
                   >
