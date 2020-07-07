@@ -55,3 +55,4 @@ export const ShOW_TERMS = "ShOW_TERMS";
 export const ShOW_LOGIN = "ShOW_LOGIN";
 export const lOADPH5 = "lOADPH5";
 export const SHOW_LMS = "SHOW_LMS";
+export const CHANGE_LOADING = "CHANGE_LOADING";

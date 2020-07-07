@@ -17,7 +17,7 @@ import {
   SHOW_LMS,
 } from "../constants/actionTypes";
 import { editResource } from "./resource";
-
+import loaderimg from "../images/loader.svg";
 // Publishes the project in LEARN
 export const shareProject = (project) => ({
   type: SHARE_PROJECT,
@@ -268,7 +268,15 @@ export const LoadLMS = () => {
 
 export const ShareLMS = (playlistId, LmsTokenId, lmsName) => {
   const { token } = JSON.parse(localStorage.getItem("auth"));
-  axios
+  Swal.fire({
+    iconHtml: loaderimg,
+    title: "Sharing....",
+
+    showCancelButton: false,
+    showConfirmButton: false,
+  });
+
+  return axios
     .post(
       global.config.laravelAPIUrl + `/go/${lmsName}/publish/playlist`,
       { setting_id: LmsTokenId, playlist_id: playlistId },
@@ -279,7 +287,22 @@ export const ShareLMS = (playlistId, LmsTokenId, lmsName) => {
       }
     )
     .then((res) => {
-      console.log(res);
+      if (res.data.length > 0 && res.data[0].status == "success") {
+        Swal.fire({
+          icon: "success",
+          title: "Shared!",
+
+          timer: 2000,
+          showCancelButton: false,
+          showConfirmButton: false,
+        });
+      }
+    })
+    .catch((e) => {
+      Swal.fire({
+        icon: "error",
+        title: "Something went wrong, Kindly try again",
+      });
     });
 };
 
@@ -287,6 +310,13 @@ export const loadLMSdata = (lmsInfo) => ({
   type: SHOW_LMS,
   lmsInfo,
 });
+
+export const changeloader = (change) => {
+  return {
+    type: CHANGE_LOADING,
+    change,
+  };
+};
 
 //LMS action ENDS from here
 

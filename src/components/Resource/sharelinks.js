@@ -11,7 +11,18 @@ export default function Sharelink({ playlistID }) {
 
   return (
     <li class="dropdown-submenu send">
-      <a class="test" tabindex="-1" href="#">
+      <a
+        class="test"
+        tabindex="-1"
+        onClick={() => {
+          if (allLms.sharevendoes && allLms.sharevendoes.length == 0) {
+            Swal.fire({
+              icon: "info",
+              title: "No LMS is available for this playlist.",
+            });
+          }
+        }}
+      >
         <i className="fa fa-share" aria-hidden="true"></i> Send To
       </a>
       <ul class="dropdown-menu check">
@@ -21,7 +32,7 @@ export default function Sharelink({ playlistID }) {
               <>
                 <li>
                   <a
-                    onClick={() => {
+                    onClick={async () => {
                       ShareLMS(
                         playlistID,
                         data._id,
@@ -29,7 +40,7 @@ export default function Sharelink({ playlistID }) {
                       );
                     }}
                   >
-                    {data.site_name}
+                    {data.description}
                   </a>
                 </li>
               </>

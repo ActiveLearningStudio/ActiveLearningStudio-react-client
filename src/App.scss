@@ -3515,10 +3515,31 @@ a:hover {
 
     .dropdown-menu.check {
       display: block;
-      left: -132px;
+      left: -130px;
       top: 0;
       width: 130px;
 
     }
+  }
+}
+
+.loadershare {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #21252961;
+
+  flex-direction: column;
+
+  img {
+    display: block;
+  }
+
+  h1 {
+    color: #fff;
+    padding-left: 17px;
+    font-size: 20px;
+    font-weight: 600;
   }
 }

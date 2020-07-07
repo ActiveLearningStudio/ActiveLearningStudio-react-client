@@ -236,12 +236,12 @@ export class LtiPlaylistPreview extends React.Component {
               ? "Playlist :" + playlist.title
               : "Project :" + playlist.project.name}
           </div>
-          <Link
+          {/* <Link
             to={"/project/" + this.props.playlist.selectedPlaylist.project._id}
           >
             {" "}
             <i className="fa fa-times" />
-          </Link>
+          </Link> */}
         </div>
         <div className="flex-container ">
           <div className="activity-bg left-vdo">
@@ -357,7 +357,7 @@ export class LtiPlaylistPreview extends React.Component {
             <div className="back-header">
               <div>
                 {" "}
-                <Link
+                {/* <Link
                   className="gobackbuttonpreview"
                   to={
                     "/project/preview2/" +
@@ -366,7 +366,7 @@ export class LtiPlaylistPreview extends React.Component {
                 >
                   <i className="fa fa-undo" aria-hidden="true"></i>Back to
                   Projects
-                </Link>
+                </Link> */}
               </div>
               <div className="dropdown">
                 <button

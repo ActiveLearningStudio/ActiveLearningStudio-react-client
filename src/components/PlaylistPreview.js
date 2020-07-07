@@ -242,7 +242,7 @@ export class PlaylistPreview extends React.Component {
         </a>
       );
     }
-
+    //  alert(this.props.loading);
     return (
       <>
         {!!this.props.loading ? (
