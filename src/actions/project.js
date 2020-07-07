@@ -250,7 +250,7 @@ export const LoadLMS = () => {
     try {
       const { token } = JSON.parse(localStorage.getItem("auth"));
       const response = await axios.get(
-        global.config.laravelAPIUrl + "go/lms-manager/get-all",
+        global.config.laravelAPIUrl + "go/lms-manager/get-user-settings",
 
         {
           headers: {
