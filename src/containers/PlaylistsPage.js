@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import ReactPlaceholder from "react-placeholder";
 import "react-placeholder/lib/reactPlaceholder.css";
 import validator from "validator";
-
+import loaderimg from "../images/loader.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import {
   BrowserRouter as Router,
@@ -68,6 +68,7 @@ export class PlaylistsPage extends React.Component {
         },
       ],
       title: "",
+      shareLoading: false,
     };
   }
 
@@ -282,123 +283,136 @@ export class PlaylistsPage extends React.Component {
     return (
       <>
         <Header {...this.props} />
-        <>
-          <div className="main-content-wrapper">
-            <div className="sidebar-wrapper">
-              <Sidebar />
-            </div>
-            <div className="content-wrapper  ">
-              <div className="content">
-                <div className="row ">
-                  <div className="col playlist-page-project-title project-each-view">
-                    <div className="flex-se">
-                      <h1>
-                        {this.props.project.selectedProject
-                          ? this.props.project.selectedProject.name
-                          : ""}
-                      </h1>
+        {this.state.shareLoading ? (
+          <div className="loadershare">
+            <img src={loaderimg} alt="" />
+            <h1>Sharing...</h1>
+          </div>
+        ) : (
+          <>
+            <div className="main-content-wrapper">
+              <div className="sidebar-wrapper">
+                <Sidebar />
+              </div>
+              <div className="content-wrapper  ">
+                <div className="content">
+                  <div className="row ">
+                    <div className="col playlist-page-project-title project-each-view">
+                      <div className="flex-se">
+                        <h1>
+                          {this.props.project.selectedProject
+                            ? this.props.project.selectedProject.name
+                            : ""}
+                        </h1>
 
-                      <button
-                        onClick={this.handleShowCreatePlaylistModal}
-                        className="create-playlist-btn"
-                      >
-                        <i className="fa fa-plus" /> Create new playlist
-                      </button>
-                    </div>
-                    <span>
-                      <Link
-                        className="dropdown-item"
-                        to={
-                          "/project/preview2/" +
-                          this.props.match.params.projectid
-                        }
-                      >
-                        <i className="fa fa-eye" aria-hidden="true"></i> Project
-                        Preview
-                      </Link>
-                    </span>
-                  </div>
-                </div>
-
-                <DragDropContext onDragEnd={this.onDragEnd}>
-                  <Droppable
-                    droppableId="project-droppable-id"
-                    direction="horizontal"
-                    type="column"
-                  >
-                    {(provided) => (
-                      <div
-                        id="board"
-                        className="board-custom"
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                      >
-                        {playlists.map((playlist, index) => (
-                          <PlaylistCard
-                            key={playlist._id}
-                            index={index}
-                            playlist={playlist}
-                            playlistTitleClicked={playlist.playlistTitleClicked}
-                            title={playlist.title}
-                            handleCreateResource={
-                              this.handleShowCreateResourceModal
-                            }
-                          />
-                        ))}
-                        {provided.placeholder}
+                        <button
+                          onClick={this.handleShowCreatePlaylistModal}
+                          className="create-playlist-btn"
+                        >
+                          <i className="fa fa-plus" /> Create new playlist
+                        </button>
                       </div>
-                    )}
-                  </Droppable>
-                </DragDropContext>
+                      <span>
+                        <Link
+                          className="dropdown-item"
+                          to={
+                            "/project/preview2/" +
+                            this.props.match.params.projectid
+                          }
+                        >
+                          <i className="fa fa-eye" aria-hidden="true"></i>{" "}
+                          Project Preview
+                        </Link>
+                      </span>
+                    </div>
+                  </div>
+
+                  <DragDropContext onDragEnd={this.onDragEnd}>
+                    <Droppable
+                      droppableId="project-droppable-id"
+                      direction="horizontal"
+                      type="column"
+                    >
+                      {(provided) => (
+                        <div
+                          id="board"
+                          className="board-custom"
+                          {...provided.droppableProps}
+                          ref={provided.innerRef}
+                        >
+                          {playlists.map((playlist, index) => (
+                            <PlaylistCard
+                              key={playlist._id}
+                              index={index}
+                              playlist={playlist}
+                              playlistTitleClicked={
+                                playlist.playlistTitleClicked
+                              }
+                              title={playlist.title}
+                              handleCreateResource={
+                                this.handleShowCreateResourceModal
+                              }
+                            />
+                          ))}
+                          {provided.placeholder}
+                        </div>
+                      )}
+                    </Droppable>
+                  </DragDropContext>
+                </div>
               </div>
             </div>
-          </div>
 
-          {this.props.openCreatePopup ? (
-            <CreatePlaylistPopup
-              escFunction={this.escFunction.bind(this)}
-              handleShowCreatePlaylistModal={this.handleShowCreatePlaylistModal.bind(
-                this
-              )}
-              handleHideCreatePlaylistModal={this.handleHideCreatePlaylistModal.bind(
-                this
-              )}
-              handleCreatePlaylistSubmit={this.handleCreatePlaylistSubmit.bind(
-                this
-              )}
-              onPlaylistTitleChange={this.onPlaylistTitleChange.bind(this)}
-            />
-          ) : null}
+            {this.props.openCreatePopup ? (
+              <CreatePlaylistPopup
+                escFunction={this.escFunction.bind(this)}
+                handleShowCreatePlaylistModal={this.handleShowCreatePlaylistModal.bind(
+                  this
+                )}
+                handleHideCreatePlaylistModal={this.handleHideCreatePlaylistModal.bind(
+                  this
+                )}
+                handleCreatePlaylistSubmit={this.handleCreatePlaylistSubmit.bind(
+                  this
+                )}
+                onPlaylistTitleChange={this.onPlaylistTitleChange.bind(this)}
+              />
+            ) : null}
 
-          {this.props.openCreateResourcePopup ? (
-            <AddResource
-              {...this.props}
-              handleHideCreateResourceModal={this.handleHideCreateResourceModal}
-              handleCreateResourceSubmit={this.handleCreateResourceSubmit}
-              handleEditResourceSubmit={this.handleEditResourceSubmit}
-            />
-          ) : null}
+            {this.props.openCreateResourcePopup ? (
+              <AddResource
+                {...this.props}
+                handleHideCreateResourceModal={
+                  this.handleHideCreateResourceModal
+                }
+                handleCreateResourceSubmit={this.handleCreateResourceSubmit}
+                handleEditResourceSubmit={this.handleEditResourceSubmit}
+              />
+            ) : null}
 
-          {this.props.openEditResourcePopup ? (
-            <EditResource
-              {...this.props}
-              handleHideCreateResourceModal={this.handleHideCreateResourceModal}
-              handleCreateResourceSubmit={this.handleCreateResourceSubmit}
-              handleEditResourceSubmit={this.handleEditResourceSubmit}
-            />
-          ) : null}
+            {this.props.openEditResourcePopup ? (
+              <EditResource
+                {...this.props}
+                handleHideCreateResourceModal={
+                  this.handleHideCreateResourceModal
+                }
+                handleCreateResourceSubmit={this.handleCreateResourceSubmit}
+                handleEditResourceSubmit={this.handleEditResourceSubmit}
+              />
+            ) : null}
 
-          {this.props.resource.showPreviewResourcePopup ? (
-            <PreviewResourcePage {...this.props} />
-          ) : null}
-          {showDeletePlaylistPopup ? (
-            <DeletePopup
-              res={this.props.ui}
-              deleteType="Playlist"
-              {...this.props}
-            />
-          ) : null}
-        </>
+            {this.props.resource.showPreviewResourcePopup ? (
+              <PreviewResourcePage {...this.props} />
+            ) : null}
+            {showDeletePlaylistPopup ? (
+              <DeletePopup
+                res={this.props.ui}
+                deleteType="Playlist"
+                {...this.props}
+              />
+            ) : null}
+          </>
+        )}
       </>
     );
   }
