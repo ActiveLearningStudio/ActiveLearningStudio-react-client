@@ -274,6 +274,7 @@ export const ShareLMS = (playlistId, LmsTokenId, lmsName) => {
 
     showCancelButton: false,
     showConfirmButton: false,
+    allowOutsideClick: false
   });
 
   return axios
@@ -287,7 +288,7 @@ export const ShareLMS = (playlistId, LmsTokenId, lmsName) => {
       }
     )
     .then((res) => {
-      if (res.data.length > 0 && res.data[0].status == "success") {
+      if (res.data.status == "success") {
         Swal.fire({
           icon: "success",
           title: "Shared!",
@@ -295,6 +296,7 @@ export const ShareLMS = (playlistId, LmsTokenId, lmsName) => {
           timer: 2000,
           showCancelButton: false,
           showConfirmButton: false,
+          allowOutsideClick: false
         });
       }
     })
