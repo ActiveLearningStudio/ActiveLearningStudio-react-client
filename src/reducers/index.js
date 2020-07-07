@@ -7,6 +7,7 @@ import projectReducer from "./projectReducer";
 import uiReducer from "./uiReducer";
 import { from } from "apollo-boost";
 import termsreducer from "./termsreducer";
+import defaultsharestate from "./shareReducer";
 
 export default combineReducers({
   auth: authReducer,
@@ -16,4 +17,5 @@ export default combineReducers({
   ui: uiReducer,
   form: formReducer,
   loginshow: termsreducer,
+  defaultsharestate: defaultsharestate,
 });

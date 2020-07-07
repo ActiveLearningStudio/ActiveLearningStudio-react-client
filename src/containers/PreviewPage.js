@@ -9,7 +9,9 @@ import {
   showCreateProjectModalAction,
   createProjectAction,
   loadMyProjectsAction,
+  //  LoadLMS,
 } from "../actions/project";
+import { loadPlaylistAction } from "../actions/playlist";
 
 import ProjectPreview from "../components/ProjectPreview";
 import ResourcePreview from "../components/ResourcePreview";
@@ -18,13 +20,32 @@ import PlaylistPreview from "../components/PlaylistPreview";
 export class PreviewPage extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      playlistID: null,
+    };
   }
 
   componentDidMount() {
     //scroll to top
     window.scrollTo(0, 0);
     this.props.loadMyProjectsAction();
+
+    //this.props.LoadLMS();
+    //this.props.loadPlaylistAction_new(this.props.match.params.resourceid);
   }
+  // componentDidUpdate() {
+  //   alert();
+  //   if (this.props.selectedplaylist !== this.state.playlistID) {
+  //     //return { playlistID: nextProps.selectedplaylist._id };
+  //     this.setState({ playlistID: this.props.selectedplaylist });
+  //   }
+  // }
+
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   if (nextProps.selectedplaylist !== prevState.playlistID) {
+  //     return { playlistID: nextProps.selectedplaylist._id };
+  //   } else return null;
+  // }
 
   render() {
     // const { projects } = this.props.project;
@@ -33,14 +54,15 @@ export class PreviewPage extends React.Component {
       content = (
         <ResourcePreview resourceid={this.props.match.params.resourceid} />
       );
-    else if (this.props.previewType == "playlist")
-      content = (
+    else if (this.props.previewType == "playlist") {
+      // alert(this.pri.selectedplaylist);
+      content = !this.state.playlistID && (
         <PlaylistPreview
           playlistid={this.props.match.params.playlistid}
           resourceid={this.props.match.params.resourceid}
         />
       );
-    else
+    } else
       content = (
         <div className="sitecontainer">
           <ProjectPreview
@@ -67,12 +89,18 @@ const mapDispatchToProps = (dispatch) => ({
   loadMyProjectsAction: () => dispatch(loadMyProjectsAction()),
   createProjectAction: (name, description, thumb_url) =>
     dispatch(createProjectAction(name, description, thumb_url)),
-  // hideCreateProjectModalAction: () => dispatch(hideCreateProjectModalAction()),
+  loadPlaylistAction_new: (res_id) => dispatch(loadPlaylistAction_new(res_id)),
+  // LoadLMS: () => {
+  //   dispatch(LoadLMS());
+  // },
 });
 
 const mapStateToProps = (state) => {
+  //console.log(state.playlist);
+
   return {
     project: state.project,
+    selectedplaylist: state.playlist.selectedPlaylist,
   };
 };
 

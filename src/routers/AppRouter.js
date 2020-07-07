@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Router, Switch } from "react-router-dom";
+import { Route, Router, Switch } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import loadable from "@loadable/component";
 import ReactGA from "react-ga";
@@ -42,8 +42,16 @@ const AppRouter = () => {
           component={PreviewPage}
           previewType="playlist"
         />
-        <PrivateRoute
+        <Route
           path="/playlist/lti/preview/:playlistid"
+          component={Ltipreviewpage}
+          previewType="playlist"
+          exact
+        />
+
+        <Route
+          path="/playlist/lti/preview/:playlistid/resource/:resourceid"
+          exact
           component={Ltipreviewpage}
           previewType="playlist"
         />
