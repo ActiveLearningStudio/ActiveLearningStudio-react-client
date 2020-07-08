@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ShareLMS } from "../../actions/project";
-export default function Sharelink({ playlistID, playlistName }) {
+export default function Sharelink({ playlistID, playlistName, projectName }) {
   const All_Lms = useSelector((state) => state.defaultsharestate);
 
   const [allLms, setAllLms] = useState([]);
@@ -38,7 +38,8 @@ export default function Sharelink({ playlistID, playlistName }) {
                         data._id,
                         data.lms_name.toLowerCase(),
                         data.lms_url,
-                        playlistName
+                        playlistName,
+                        projectName
                       );
                     }}
                   >

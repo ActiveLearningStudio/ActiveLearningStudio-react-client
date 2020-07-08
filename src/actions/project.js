@@ -271,12 +271,13 @@ export const ShareLMS = (
   LmsTokenId,
   lmsName,
   lmsUrl,
-  playlistName
+  playlistName,
+  projectName
 ) => {
   const { token } = JSON.parse(localStorage.getItem("auth"));
 
   Swal.fire({
-    title: `This playlist will be added to course ${playlistName}. If the course does not exit it will be created. `,
+    title: `This playlist will be added to course <strong>${projectName}</strong>. If the course does not exist, it will be created. `,
     text: "Would you like to proceed?",
 
     showCancelButton: true,

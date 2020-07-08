@@ -59,7 +59,9 @@ export class PlaylistCard extends React.Component {
       this.titleInput.blur();
     }
   }
+
   render() {
+    console.log(this.props);
     return (
       <Draggable
         key={this.props.playlist._id}
@@ -157,6 +159,10 @@ export class PlaylistCard extends React.Component {
                       <Sharelink
                         playlistID={this.props.playlist._id}
                         playlistName={this.props.title}
+                        projectName={
+                          this.props.projectId.selectedProject &&
+                          this.props.projectId.selectedProject.name
+                        }
                       />
                       {/*} <a
                         className="dropdown-item"
