@@ -306,7 +306,7 @@ export const ShareLMS = (playlistId, LmsTokenId, lmsName, lmsUrl) => {
               title: "Shared!",
               confirmButtonColor: "#5952c6",
               html: `Your playlist has been submitted to <a target="_blank" href="${lmsUrl}"> ${lmsUrl}</a>`,
-              //   text: `Your playlist has been submitted to ${lmsUrl}`,
+              //   text: `Yo'ur playlist has been submitted to ${lmsUrl}`,
             });
           }
         })
