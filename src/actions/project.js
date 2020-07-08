@@ -266,8 +266,21 @@ export const LoadLMS = () => {
   };
 };
 
-export const ShareLMS = (playlistId, LmsTokenId, lmsName) => {
+export const ShareLMS = (playlistId, LmsTokenId, lmsName, lmsUrl) => {
   const { token } = JSON.parse(localStorage.getItem("auth"));
+
+
+  Swal.fire({
+    title: `If this playlist is not available in your ${lmsName} LMS, we will add it to the course or name of the course.`,
+    text: "Would you like to proceed?",
+
+    showCancelButton: true,
+    confirmButtonColor: "#5952c6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Continue",
+  }).then((result) => {
+    if (result.value) {
+
   Swal.fire({
     iconHtml: loaderimg,
     title: "Sharing....",
@@ -301,11 +314,14 @@ export const ShareLMS = (playlistId, LmsTokenId, lmsName) => {
       }
     })
     .catch((e) => {
+
       Swal.fire({
-        icon: "error",
-        title: "Something went wrong, Kindly try again",
+        title: "Sharing....",
+
+        showCancelButton: false,
+        showConfirmButton: false,
       });
-    });
+      
 };
 
 export const loadLMSdata = (lmsInfo) => ({
