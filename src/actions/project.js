@@ -266,11 +266,17 @@ export const LoadLMS = () => {
   };
 };
 
-export const ShareLMS = (playlistId, LmsTokenId, lmsName, lmsUrl) => {
+export const ShareLMS = (
+  playlistId,
+  LmsTokenId,
+  lmsName,
+  lmsUrl,
+  playlistName
+) => {
   const { token } = JSON.parse(localStorage.getItem("auth"));
 
   Swal.fire({
-    title: `If this playlist is not available in your ${lmsName} LMS, we will add it to the course or name of the course.`,
+    title: `This playlist will be added to course ${playlistName}. If the course does not exit it will be created. `,
     text: "Would you like to proceed?",
 
     showCancelButton: true,
@@ -281,7 +287,7 @@ export const ShareLMS = (playlistId, LmsTokenId, lmsName, lmsUrl) => {
     if (result.value) {
       Swal.fire({
         iconHtml: loaderimg,
-        title: "Sharing....",
+        title: "Publishing....",
 
         showCancelButton: false,
         showConfirmButton: false,
@@ -303,9 +309,9 @@ export const ShareLMS = (playlistId, LmsTokenId, lmsName, lmsUrl) => {
           if (res.data.status == "success") {
             Swal.fire({
               icon: "success",
-              title: "Shared!",
+              title: "Published!",
               confirmButtonColor: "#5952c6",
-              html: `Your playlist has been submitted to <a target="_blank" href="${lmsUrl}"> ${lmsUrl}</a>`,
+              html: `Your playlist has been published to <a target="_blank" href="${lmsUrl}"> ${lmsUrl}</a>`,
               //   text: `Yo'ur playlist has been submitted to ${lmsUrl}`,
             });
           }

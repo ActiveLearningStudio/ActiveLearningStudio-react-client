@@ -102,8 +102,7 @@ export class PlaylistCard extends React.Component {
                     }
                     onKeyPress={(e) => this.onEnterPress(e)}
                     defaultValue={this.props.title}
-                  >
-                  </textarea>
+                  ></textarea>
                   <div className="dropdown pull-right playlist-dropdown check">
                     <button
                       className="btn project-dropdown-btn"
@@ -155,7 +154,10 @@ export class PlaylistCard extends React.Component {
                         <i className="fa fa-share" aria-hidden="true"></i> Send
                         To
                       </a> */}
-                      <Sharelink playlistID={this.props.playlist._id} />
+                      <Sharelink
+                        playlistID={this.props.playlist._id}
+                        playlistName={this.props.title}
+                      />
                       {/*} <a
                         className="dropdown-item"
                         href="#"
@@ -181,7 +183,11 @@ export class PlaylistCard extends React.Component {
                   </div>
                 </h2>
               </div>
-              <Droppable droppableId={this.props.playlist._id} type="resource" key={this.props.playlist._id}>
+              <Droppable
+                droppableId={this.props.playlist._id}
+                type="resource"
+                key={this.props.playlist._id}
+              >
                 {(provided) => (
                   <div
                     className="list-body"
