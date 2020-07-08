@@ -266,44 +266,54 @@ export const LoadLMS = () => {
   };
 };
 
-export const ShareLMS = (playlistId, LmsTokenId, lmsName) => {
+export const ShareLMS = (playlistId, LmsTokenId, lmsName, lmsUrl) => {
   const { token } = JSON.parse(localStorage.getItem("auth"));
+
   Swal.fire({
-    iconHtml: loaderimg,
-    title: "Sharing....",
+    title: `If this playlist is not available in your ${lmsName} LMS, we will add it to the course or name of the course.`,
+    text: "Would you like to proceed?",
 
-    showCancelButton: false,
-    showConfirmButton: false,
-  });
-
-  return axios
-    .post(
-      global.config.laravelAPIUrl + `/go/${lmsName}/publish/playlist`,
-      { setting_id: LmsTokenId, playlist_id: playlistId },
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      }
-    )
-    .then((res) => {
-      if (res.data.length > 0 && res.data[0].status == "success") {
-        Swal.fire({
-          icon: "success",
-          title: "Shared!",
-
-          timer: 2000,
-          showCancelButton: false,
-          showConfirmButton: false,
-        });
-      }
-    })
-    .catch((e) => {
+    showCancelButton: true,
+    confirmButtonColor: "#5952c6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Continue",
+  }).then((result) => {
+    if (result.value) {
       Swal.fire({
-        icon: "error",
-        title: "Something went wrong, Kindly try again",
+        title: "Sharing....",
+
+        showCancelButton: false,
+        showConfirmButton: false,
       });
-    });
+      axios
+        .post(
+          global.config.laravelAPIUrl + `/go/${lmsName}/publish/playlist`,
+          { setting_id: LmsTokenId, playlist_id: playlistId },
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        )
+        .then((res) => {
+          if (res.data.length > 0 && res.data[0].status == "success") {
+            Swal.fire({
+              icon: "success",
+              title: "Shared!",
+              text: `Your playlist has been submitted to ${lmsUrl}`,
+              confirmButtonColor: "#5952c6",
+            });
+          }
+        })
+        .catch((e) => {
+          Swal.fire({
+            icon: "error",
+            title: "Something went wrong, Kindly try again",
+            confirmButtonColor: "#5952c6",
+          });
+        });
+    }
+  });
 };
 
 export const loadLMSdata = (lmsInfo) => ({

@@ -36,7 +36,8 @@ export default function Sharelink({ playlistID }) {
                       ShareLMS(
                         playlistID,
                         data._id,
-                        data.lms_name.toLowerCase()
+                        data.lms_name.toLowerCase(),
+                        data.lms_url
                       );
                     }}
                   >
