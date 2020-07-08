@@ -43,7 +43,7 @@ export class PlaylistCard extends React.Component {
       <ResourceCard
         {...this.props}
         resource={resource}
-        key={resource.id}
+        key={resource._id}
         index={index}
       />
     ));
@@ -101,8 +101,8 @@ export class PlaylistCard extends React.Component {
                       )
                     }
                     onKeyPress={(e) => this.onEnterPress(e)}
+                    defaultValue={this.props.title}
                   >
-                    {this.props.title}
                   </textarea>
                   <div className="dropdown pull-right playlist-dropdown check">
                     <button
@@ -181,7 +181,7 @@ export class PlaylistCard extends React.Component {
                   </div>
                 </h2>
               </div>
-              <Droppable droppableId={this.props.playlist._id} type="resource">
+              <Droppable droppableId={this.props.playlist._id} type="resource" key={this.props.playlist._id}>
                 {(provided) => (
                   <div
                     className="list-body"
