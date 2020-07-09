@@ -18,7 +18,7 @@ export default function Sharelink({ playlistID }) {
           if (allLms.sharevendoes && allLms.sharevendoes.length == 0) {
             Swal.fire({
               icon: "info",
-              title: "No LMS is available for this playlist.",
+              title: "You don't have a Learning Management Systems set up for publishing. Please contact us to get this configured.",
             });
           }
         }}
