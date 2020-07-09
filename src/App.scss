@@ -3543,3 +3543,20 @@ a:hover {
     font-weight: 600;
   }
 }
+
+.swal2-title {
+  font-size: 16px;
+  font-weight: 400;
+  display: block !important;
+}
+
+.swal2-html-container {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.swal2-actions {
+  button.swal2-confirm {
+    order: 1
+  }
+}
