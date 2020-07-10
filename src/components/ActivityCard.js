@@ -9,7 +9,14 @@ const ActivityCard = (props) => {
   return (
     <li>
       <Link
-        to={"/playlist/preview/" + playlist_id + "/resource/" + activity._id}
+        to={
+          !!props.lti
+            ? "/playlist/shared/preview/" +
+              playlist_id +
+              "/resource/" +
+              activity._id
+            : "/playlist/preview/" + playlist_id + "/resource/" + activity._id
+        }
       >
         <div
           className="playimg"

@@ -14,23 +14,46 @@ const ActivityPreviewCarddropdown = (props) => {
   }
 
   return (
-    <Link
-      to={
-        props.lti
-          ? "/playlist/lti/preview/" +
+    <>
+      {!!props.shared ? (
+        <Link
+          to={
+            "/playlist/shared/preview/" +
             props.playlist +
             "/resource/" +
             activity._id
-          : "/playlist/preview/" + props.playlist + "/resource/" + activity._id
-      }
-    >
-      <li className="drpdown">
-        <div>
-          <i class="fa fa-play-circle" aria-hidden="true"></i>
-          <div className="title">{activity.title}</div>
-        </div>
-      </li>
-    </Link>
+          }
+        >
+          <li className="drpdown">
+            <div>
+              <i class="fa fa-play-circle" aria-hidden="true"></i>
+              <div className="title">{activity.title}</div>
+            </div>
+          </li>
+        </Link>
+      ) : (
+        <Link
+          to={
+            props.lti
+              ? "/playlist/lti/preview/" +
+                props.playlist +
+                "/resource/" +
+                activity._id
+              : "/playlist/preview/" +
+                props.playlist +
+                "/resource/" +
+                activity._id
+          }
+        >
+          <li className="drpdown">
+            <div>
+              <i class="fa fa-play-circle" aria-hidden="true"></i>
+              <div className="title">{activity.title}</div>
+            </div>
+          </li>
+        </Link>
+      )}
+    </>
   );
 };
 

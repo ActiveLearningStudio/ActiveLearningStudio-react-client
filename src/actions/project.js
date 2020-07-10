@@ -15,6 +15,7 @@ import {
   SHOW_USER_SUB_MENU,
   CLOSE_MENU,
   SHOW_LMS,
+  LOAD_MY_PROJECTS_SELECTED,
 } from "../constants/actionTypes";
 import { editResource } from "./resource";
 import loaderimg from "../images/loader.svg";
@@ -347,6 +348,13 @@ export const loadMyProjects = (projects) => ({
   projects,
 });
 
+export const loadMyProjectsselected = (projects) => {
+  return {
+    type: LOAD_MY_PROJECTS_SELECTED,
+    projects,
+  };
+};
+
 //load projects of current logged in user
 
 export const loadMyProjectsAction = () => {
@@ -382,6 +390,107 @@ export const loadMyProjectsAction = () => {
       throw new Error(e);
     }
   };
+};
+
+//load project preview
+
+export const loadMyProjectsActionPreview = (projectId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: PAGE_LOADING,
+      });
+      const { token } = JSON.parse(localStorage.getItem("auth"));
+      const response = await axios.get(
+        global.config.laravelAPIUrl + "/project?projectId=" + projectId,
+
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      if (response.data.status == "success") {
+        dispatch(loadMyProjectsselected(response.data.data.project));
+        dispatch({
+          type: PAGE_LOADING_COMPLETE,
+        });
+      }
+    } catch (e) {
+      dispatch({
+        type: PAGE_LOADING_COMPLETE,
+      });
+      throw new Error(e);
+    }
+  };
+};
+
+//load project shared view
+export const loadMyProjectsActionPreviewShared = (projectId) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(
+        global.config.laravelAPIUrl +
+          "/get-shared-project?projectId=" +
+          projectId
+      );
+
+      if (response.data.status == "success") {
+        dispatch(loadMyProjectsselected(response.data.data.project));
+        dispatch({
+          type: PAGE_LOADING_COMPLETE,
+        });
+      } else {
+        dispatch(loadMyProjectsselected(response.data));
+      }
+    } catch (e) {
+      throw new Error(e);
+    }
+  };
+};
+
+//toggle project share
+
+export const toggleProjectshare = async (projectId, ProjectName) => {
+  const { token } = JSON.parse(localStorage.getItem("auth"));
+  const response = await axios.post(
+    global.config.laravelAPIUrl + "/share-project",
+    { projectId },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  if (response.data.status == "success") {
+    Swal.fire({
+      html: `<strong>${ProjectName}</strong> is public now.<br>
+       Use below Share link<br><br><a target="_blank" href="${
+         window.location.host
+       }/project/shared/${projectId.trim()}
+      }">${window.location.host}/project/shared/${projectId.trim()}</a>`,
+    });
+  }
+};
+export const toggleProjectshareremoved = async (projectId, ProjectName) => {
+  const { token } = JSON.parse(localStorage.getItem("auth"));
+  const response = await axios.post(
+    global.config.laravelAPIUrl + "/remove-share-project",
+    { projectId },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  if (response.data.status == "success") {
+    Swal.fire({
+      title: `<strong>${ProjectName}</strong> is private now. `,
+    });
+  }
 };
 
 export const deleteProject = (projectid) => ({

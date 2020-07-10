@@ -32,7 +32,7 @@ function Header(props) {
       return;
     }
 
-    closeMenuAction();
+    // closeMenuAction();
   };
 
   return (
