@@ -13,7 +13,7 @@ import {
 } from "../actions/project";
 
 import LtiPlaylistPreview from "../components/LtiPlaylistPreview";
-
+import LtiPlaylistPreviewShared from "../components/LtiPlaylistPreviewShared";
 export class LtiPreviewPage extends React.Component {
   constructor(props) {
     super(props);
@@ -28,13 +28,20 @@ export class LtiPreviewPage extends React.Component {
   }
 
   render() {
-    var content = (content = (
-      <LtiPlaylistPreview
-        playlistid={this.props.match.params.playlistid}
-        resourceid={this.props.match.params.resourceid}
-        showlti={true}
-      />
-    ));
+    var content =
+      this.props.previewType == "playlistshared" ? (
+        <LtiPlaylistPreviewShared
+          playlistid={this.props.match.params.playlistid}
+          resourceid={this.props.match.params.resourceid}
+          showlti={true}
+        />
+      ) : (
+        <LtiPlaylistPreview
+          playlistid={this.props.match.params.playlistid}
+          resourceid={this.props.match.params.resourceid}
+          showlti={true}
+        />
+      );
 
     return (
       <div>
