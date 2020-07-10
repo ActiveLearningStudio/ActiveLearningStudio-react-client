@@ -41,7 +41,7 @@ class H5PPreview extends React.Component {
     if (resourceid == 0) return;
 
     axios
-      .post(global.config.laravelAPIUrl + "/h5p-resource-settings-lti", {
+      .post(global.config.laravelAPIUrl + "/h5p-resource-settings-open", {
         resourceid,
       })
       .then((response) => {
