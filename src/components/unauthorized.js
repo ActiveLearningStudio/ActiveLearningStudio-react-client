@@ -6,20 +6,33 @@ import { LoadHP } from "./../actions/playlist";
 import { withRouter } from "react-router-dom";
 function Unauthorized(props) {
   return (
-    <div className="box-unathorized">
-      <img src={std} alt="" />
-      <h3>{props.text}</h3>
-      {props.showbutton && (
-        <Link
-          to="/"
-          onClick={() => {
-            props.LoadHP("loading...");
-          }}
-        >
-          {" "}
-          Go Back to Projects
-        </Link>
-      )}
+    <div className="whole-authorized">
+      <div className="box-unathorized">
+        <img src={std} alt="" />
+        <h3>{props.text}</h3>
+        {props.showbutton && (
+          <Link
+            to="/"
+            onClick={() => {
+              props.LoadHP("loading...");
+            }}
+          >
+            {" "}
+            Go Back to Projects
+          </Link>
+        )}
+        {!props.showbutton && (
+          <Link
+            to="/"
+            onClick={() => {
+              props.LoadHP("loading...");
+            }}
+          >
+            {" "}
+            Go Back
+          </Link>
+        )}
+      </div>
     </div>
   );
 }
