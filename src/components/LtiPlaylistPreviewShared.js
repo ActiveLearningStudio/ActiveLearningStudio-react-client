@@ -2,14 +2,14 @@ import React, { Suspense } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { loadPlaylistActionlti } from "../actions/playlist";
+import { loadPlaylistActionshared } from "../actions/playlist";
 import ActivityPreviewCard from "./ActivityPreviewCard";
 import ActivityPreviewCarddropdown from "./ActivityPreviewCardDropdown";
 import gifloader from "../images/276.gif";
 import projecticon from "../images/project_icon.svg";
 const H5PPreview = React.lazy(() => import("../containers/H5PPreview"));
 import "./PlayListPreview.css";
-
+import Unauthorized from "./unauthorized";
 export class LtiPlaylistPreview extends React.Component {
   constructor(props) {
     super(props);
@@ -40,6 +40,9 @@ export class LtiPlaylistPreview extends React.Component {
   };
 
   render() {
+    if (this.props.playlist.selectedPlaylist == "error") {
+      return <Unauthorized text="Project is not public." />;
+    }
     if (!this.props.playlist.selectedPlaylist)
       return (
         <div className="alert alert-info" role="alert">
@@ -125,16 +128,6 @@ export class LtiPlaylistPreview extends React.Component {
 
       previousLink1 = (
         <Link
-          // onClick={() => {
-          //   this.handleSelect(previousResource._id);
-          //   try {
-          //     document.getElementById(
-          //       "curriki-h5p-wrapper"
-          //     ).innerHTML = ` <div class="loader_gif">
-          //       <img src='${gifloader}' alt="" />
-          //     </div>`;
-          //   } catch (e) {}
-          // }}
           to={
             this.props.playlistid &&
             "/playlist/shared/preview/" +
@@ -172,34 +165,10 @@ export class LtiPlaylistPreview extends React.Component {
         >
           <i className="fa fa-arrow-right" aria-hidden="true"></i>
           <span> Next Activity</span>
-          {/* <div className="hover-control-caption pointer-cursor">
-            <div
-              style={{
-                backgroundImage:
-                  "url(" +
-                  global.config.laravelAPIUrl +
-                  nextResource.thumb_url +
-                  ")",
-              }}
-              className="imginhover"
-            />
-            <span>{nextResource.title}</span>
-          </div> */}
         </a>
       );
       nextLink1 = (
         <Link
-          // onClick={() => {
-          //   this.handleSelect(nextResource._id);
-          //   try {
-          //     document.getElementById(
-          //       "curriki-h5p-wrapper"
-          //     ).innerHTML = ` <div class="loader_gif">
-          //       <img src='${gifloader}' alt="" />
-          //     </div>`;
-          //   } catch (e) {}
-          // }}
-
           to={
             this.props.playlistid &&
             "/playlist/shared/preview/" +
@@ -216,10 +185,6 @@ export class LtiPlaylistPreview extends React.Component {
         <a to="#" className="slide-control next disabled-link">
           <i className="fa fa-arrow-right" aria-hidden="true"></i>
           <span> Next Activity</span>
-          {/* <div className="hover-control-caption pointer-cursor">
-            <img alt="thumb01"></img>
-            <span></span>
-          </div> */}
         </a>
       );
       nextLink1 = (
@@ -273,49 +238,6 @@ export class LtiPlaylistPreview extends React.Component {
                   {previousLink1}
                   {nextLink1}
                 </div>
-
-                {/* <div className="dropdown">
-                  <button
-                    className="btn "
-                    type="button"
-                    id="dropdownMenuButton"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
-                  </button>
-                  <div
-                    className="dropdown-menu"
-                    aria-labelledby="dropdownMenuButton"
-                  >
-                    {/* {nextLink}
-                    {previousLink} }
-                    <Link
-                      to={
-                        "/project/preview2/" +
-                        this.props.playlist.selectedPlaylist.project._id
-                      }
-                      className="slide-control"
-                    >
-                      <i className="fa fa-share" aria-hidden="true"></i>
-                      Back to Project
-                    </Link>
-                    <Link
-                      to={
-                        "/project/" +
-                        this.props.playlist.selectedPlaylist.project._id
-                      }
-                      className="slide-control"
-                    >
-                      <i
-                        className="fa fa-times-circle-o"
-                        aria-hidden="true"
-                      ></i>
-                      Exit
-                    </Link>
-                  </div>
-                </div> */}
               </div>
             </div>
             <div className="main-item-wrapper">
@@ -340,18 +262,6 @@ export class LtiPlaylistPreview extends React.Component {
                     />
                   )}
                 </Suspense>
-                {/* <div className="item-caption-bottom">
-                  <p>
-                    {playlist.activities && playlist.activities.length
-                      ? playlist.activities.filter((a) => a._id == resourceid)
-                          .length > 0
-                        ? playlist.activities.filter(
-                            (a) => a._id == resourceid
-                          )[0].title
-                        : ""
-                      : ""}
-                  </p>
-                </div> */}
               </div>
             </div>
           </div>
@@ -385,37 +295,7 @@ export class LtiPlaylistPreview extends React.Component {
                   <ul className="">{activities1}</ul>
                 </div>
               </div>
-
-              {/* <Link
-                to={
-                  "/project/preview2/" +
-                  this.props.playlist.selectedPlaylist.project._id
-                }
-                className="link"
-              >
-                <img src="/images/right-arrow.png" className="back-arrow"></img>
-                Back to {this.props.playlist.selectedPlaylist.project.name}
-              </Link> */}
             </div>
-
-            {/* <button
-              className=""
-              type="button"
-              data-toggle="collapse"
-              data-target="#collapseExample"
-              aria-expanded="false"
-              aria-controls="collapseExample"
-            >
-              <div className="sub-heading">
-                <div className="line">
-                  <span>From the playlist:</span>
-                  {playlist ? playlist.title : ""}
-                </div>
-                <div>
-                  <i className="fa fa-angle-up" aria-hidden="true"></i>
-                </div>
-              </div>
-            </button> */}
 
             <div className="scrollDiv long">
               <div className="watcher">
@@ -432,7 +312,7 @@ export class LtiPlaylistPreview extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   loadPlaylistActionlti: (playlistid) =>
-    dispatch(loadPlaylistActionlti(playlistid)),
+    dispatch(loadPlaylistActionshared(playlistid)),
 });
 
 const mapStateToProps = (state) => {

@@ -159,7 +159,7 @@ export default function ProjectPreview(props) {
                       <div className="configuration">
                         <Link to="/" className="gobackbuttonpreview">
                           <i className="fa fa-undo" aria-hidden="true"></i> Exit
-                          Preview Mode
+                          Preview Mod
                         </Link>
                         <div className="sharebutton">
                           Share Project
@@ -188,6 +188,26 @@ export default function ProjectPreview(props) {
                             checkedIcon={false}
                           />
                         </div>
+                        {activeShared && (
+                          <div
+                            className="sharedlink"
+                            onClick={() => {
+                              Swal.fire({
+                                html: ` 
+                               <a target="_blank" href="/project/shared/${props.match.params.projectid.trim()}
+                              ">${
+                                window.location.host
+                              }/project/shared/${props.match.params.projectid.trim()}</a>`,
+                              });
+                            }}
+                          >
+                            <i
+                              class="fa fa-external-link"
+                              aria-hidden="true"
+                            ></i>
+                            View Shared Link
+                          </div>
+                        )}
                       </div>
                     </div>
                   </li>
