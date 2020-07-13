@@ -489,7 +489,8 @@ export const toggleProjectshareremoved = async (projectId, ProjectName) => {
 
   if (response.data.status == "success") {
     Swal.fire({
-      title: `<strong>${ProjectName}</strong> is private now. `,
+      title: `You stopped sharing <strong>"${ProjectName}"</strong> ! `,
+      html: `Please remember that anyone you have shared this project with, will no longer have access to its contents.`
     });
   }
 };

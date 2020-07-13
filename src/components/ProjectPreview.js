@@ -169,7 +169,7 @@ export default function ProjectPreview(props) {
                               if (activeShared) {
                                 Swal.fire({
                                   icon: "warning",
-                                  title: `You are about to stop sharing "${currentProject.name}"`,
+                                  title: `You are about to stop sharing <strong>"${currentProject.name}"</strong>`,
                                   html: `Please remember that anyone you have shared this project with will no longer have access its contents.
                                   Do you want to continue?`,
                                   showCloseButton: true,
