@@ -159,7 +159,7 @@ export default function ProjectPreview(props) {
                       <div className="configuration">
                         <Link to="/" className="gobackbuttonpreview">
                           <i className="fa fa-undo" aria-hidden="true"></i> Exit
-                          Preview Mod
+                          Preview Mode
                         </Link>
                         <div className="sharebutton">
                           Share Project
