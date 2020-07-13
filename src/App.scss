@@ -792,6 +792,12 @@ body {
     }
   }
 }
+.hidechat-container .need_help {
+  display: none;
+}
+.hidechat-container #hubspot-messages-iframe-container {
+  display:none;
+}
 
 .login-right {
   max-width: 460px;
