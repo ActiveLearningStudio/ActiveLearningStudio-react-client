@@ -793,10 +793,10 @@ body {
   }
 }
 .hidechat-container .need_help {
-  display: none;
+  display: none !important;
 }
 .hidechat-container #hubspot-messages-iframe-container {
-  display:none;
+  display:none !important;
 }
 
 .login-right {
