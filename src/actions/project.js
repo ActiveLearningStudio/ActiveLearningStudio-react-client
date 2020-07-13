@@ -466,7 +466,7 @@ export const toggleProjectshare = async (projectId, ProjectName) => {
   
   
   if (response.data.status == "success") {
-    let protocol = window.location.href.split("/")[0] + "//" + window.location.href.split("/")[2]
+    let protocol = window.location.href.split("/")[0] + "//" 
     Swal.fire({
       html: `Your can now share project <strong>"${ProjectName}"</strong><br>
       Anyone with the link below can access your project:<br>

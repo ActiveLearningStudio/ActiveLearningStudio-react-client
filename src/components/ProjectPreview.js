@@ -192,12 +192,18 @@ export default function ProjectPreview(props) {
                           <div
                             className="sharedlink"
                             onClick={() => {
+                              let protocol = window.location.href.split("/")[0] + "//" 
+                              
                               Swal.fire({
-                                html: ` 
-                               <a target="_blank" href="/project/shared/${props.match.params.projectid.trim()}
-                              ">${
-                                window.location.host
-                              }/project/shared/${props.match.params.projectid.trim()}</a>`,
+                                html: `Your can now share project <strong>"${currentProject.name}"</strong><br>
+                                      Anyone with the link below can access your project:<br>
+                                      <br><a target="_blank" href="/project/shared/${props.match.params.projectid.trim()}
+                                      ">${protocol+window.location.host}/project/shared/${props.match.params.projectid.trim()}</a>`,
+                              //   html: ` 
+                              //  <a target="_blank" href="/project/shared/${props.match.params.projectid.trim()}
+                              // ">${
+                              //   window.location.host
+                              // }/project/shared/${props.match.params.projectid.trim()}</a>`,
                               });
                             }}
                           >
