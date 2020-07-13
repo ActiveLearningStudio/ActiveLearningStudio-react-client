@@ -463,12 +463,15 @@ export const toggleProjectshare = async (projectId, ProjectName) => {
       },
     }
   );
-
+  
+  
   if (response.data.status == "success") {
+    let protocol = window.location.href.split("/")[0] + "//" + window.location.href.split("/")[2]
     Swal.fire({
-      html: `<strong>${ProjectName}</strong> is public now.<br>
-       Use below Share link<br><br><a target="_blank" href="/project/shared/${projectId.trim()}
-      ">${window.location.host}/project/shared/${projectId.trim()}</a>`,
+      html: `Your can now share project <strong>${ProjectName}</strong><br>
+      Anyone with the link below can access your project:<br>
+      <br><a target="_blank" href="/project/shared/${projectId.trim()}
+      ">${protocol+window.location.host}/project/shared/${projectId.trim()}</a>`,
     });
   }
 };
