@@ -167,18 +167,38 @@ export default function ProjectPreview(props) {
                             onColor="#5952c6"
                             onChange={() => {
                               if (activeShared) {
-                                toggleProjectshareremoved(
-                                  currentProject._id,
-                                  currentProject.name
-                                );
+                                Swal.fire({
+                                  icon: "warning",
+                                  title: `You are about to stop sharing "${currentProject.name}"`,
+                                  html: `Please remember that anyone you have shared this project with will no longer have access its contents.
+                                  Do you want to continue?`,
+                                  showCloseButton: true,
+                                  showCancelButton: true,
+                                  focusConfirm: false,
+                                  confirmButtonText:
+                                    'Stop Sharing!',
+                                  confirmButtonAriaLabel: 'Stop Sharing!',
+                                  cancelButtonText:
+                                    'Cancel',
+                                  cancelButtonAriaLabel: 'Cancel'
+                                }).then(function(resp) {
+                                  if(resp.isConfirmed){
+                                    toggleProjectshareremoved(
+                                      currentProject._id,
+                                      currentProject.name
+                                    );
+                                    setActiveShared(!activeShared);
+                                  }
+                                });
                               } else {
                                 toggleProjectshare(
                                   currentProject._id,
                                   currentProject.name
                                 );
+                                setActiveShared(!activeShared);
                               }
 
-                              setActiveShared(!activeShared);
+                              
                             }}
                             checked={activeShared}
                             className="react-switch"
