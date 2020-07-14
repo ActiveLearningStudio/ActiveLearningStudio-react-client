@@ -26,14 +26,14 @@ const ActivityPreviewCard = (props) => {
           }
         >
           <li className="check">
-            {activity.thumb_url ? (
+            {activity.metadata && activity.metadata.thumb_url ? (
               <div
                 className="bg-thumbnail"
                 style={{
                   backgroundImage:
                     "url(" +
                     global.config.laravelAPIUrl +
-                    activity.thumb_url +
+                    activity.metadata.thumb_url +
                     ")",
                 }}
               />
@@ -67,14 +67,14 @@ const ActivityPreviewCard = (props) => {
           }
         >
           <li className="check">
-            {activity.thumb_url ? (
+            {activity.metadata && activity.metadata.thumb_url ? (
               <div
                 className="bg-thumbnail"
                 style={{
                   backgroundImage:
                     "url(" +
                     global.config.laravelAPIUrl +
-                    activity.thumb_url +
+                    activity.metadata.thumb_url +
                     ")",
                 }}
               />
