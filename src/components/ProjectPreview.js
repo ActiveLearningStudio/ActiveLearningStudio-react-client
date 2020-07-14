@@ -224,7 +224,9 @@ export default function ProjectPreview(props) {
                                       Anyone with the link below can access your project:<br>
                                       <br><a target="_blank" href="/project/shared/${props.match.params.projectid.trim()}
                                       ">${protocol+window.location.host}/project/shared/${props.match.params.projectid.trim()}</a>
+                                      <hr />
                                       <div id="croom">
+                                      <span>Share: </span>
                                       <div class="g-sharetoclassroom" data-size="32" data-url="${protocol+window.location.host}/project/shared/${props.match.params.projectid.trim()}" >Loading Classroom...</div>
                                       </div>`,
                               })

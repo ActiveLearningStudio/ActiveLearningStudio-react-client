@@ -472,7 +472,9 @@ export const toggleProjectshare = async (projectId, ProjectName) => {
       Anyone with the link below can access your project:<br>
       <br><a target="_blank" href="/project/shared/${projectId.trim()}
       ">${protocol+window.location.host}/project/shared/${projectId.trim()}</a>
+      <hr />
       <div id="croom">
+        <span>Share: </span>
         <div class="g-sharetoclassroom" data-size="32" data-url="${protocol+window.location.host}/project/shared/${projectId.trim()}" >Loading Classroom...</div>
       </div>`,
     })
