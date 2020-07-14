@@ -792,11 +792,13 @@ body {
     }
   }
 }
+
 .hidechat-container .need_help {
   display: none !important;
 }
+
 .hidechat-container #hubspot-messages-iframe-container {
-  display:none !important;
+  display: none !important;
 }
 
 .login-right {
@@ -2764,7 +2766,7 @@ a:hover {
 .back-header {
   border-bottom: 1px solid #e3e3e3;
   border-left: 1px solid #e3e3e3;
-  padding: 7.5px 35px;
+  padding: 13px 35px;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -3220,6 +3222,7 @@ a:hover {
     width: 100%;
     padding: 0 !important;
     background-color: #fff !important;
+    position: relative;
   }
 
   .right-sidegolf-info {
@@ -3242,6 +3245,7 @@ a:hover {
       display: flex;
       width: 60px;
       justify-content: space-between;
+
 
       i {
         border: none;
@@ -3285,7 +3289,7 @@ a:hover {
     display: flex;
     justify-content: space-between;
     background: #fafafa;
-    padding: 8px 30px;
+    padding: 0px 20px;
     border-radius: 5px 0px 0px 0px;
     align-items: center;
 
@@ -3547,4 +3551,79 @@ a:hover {
   height: 100%;
   position: fixed;
   z-index: 11;
+}
+
+.slider-hover-section {
+  position: relative;
+  padding: 18px 0px;
+  // width: 20px;
+
+  // &:hover {
+  //   background-color: #007bff;
+
+  //   i {
+  //     color: #fff !important;
+  //     -webkit-text-stroke: 1px #007bff;
+  //   }
+  // }
+}
+
+
+
+.slider-hover-section {
+  .hover-control-caption {
+    top: 13px;
+    left: -80px
+  }
+
+  &:hover {
+    .hover-control-caption {
+      display: block;
+    }
+
+  }
+}
+
+.sliderend {
+
+  p {
+
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: left;
+    padding: 25px;
+    color: #45D22A;
+  }
+
+  a {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    color: #007bff !important;
+    text-align: left;
+    border-top: 1px solid #ddd;
+    padding: 15px 17px;
+    text-align: left !important;
+    display: block;
+
+    i {
+      display: inline-block !important;
+      margin-left: 20px;
+      color: #007bff !important;
+
+    }
+  }
+}
+
+.hover-control-caption.no-data {
+  width:
+    235px;
+  padding: 0;
+  min-height: auto !important;
+}
+
+.hover-control-caption.no-data.prev a i {
+  margin-left: 0px;
+  margin-right: 5px;
 }
