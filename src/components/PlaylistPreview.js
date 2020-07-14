@@ -28,7 +28,10 @@ export class PlaylistPreview extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     console.log(nextProps);
-    if (nextProps.allproject !== prevState.allprojectsState) {
+    if (
+      nextProps.allproject !== prevState.allprojectsState &&
+      !!nextProps.playlist.selectedPlaylist
+    ) {
       const selectedplaylist = nextProps.allproject.filter((data) => {
         return data._id == nextProps.playlist.selectedPlaylist.projectid;
       });
