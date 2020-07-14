@@ -39,6 +39,7 @@ export default function ProjectPreview(props) {
   var first = true;
 
   useEffect(() => {
+
     try {
       var acc = document
         .getElementById("custom_accordian")
@@ -138,6 +139,10 @@ export default function ProjectPreview(props) {
           <div className="container">
             <div className="scne_div flex-wrap">
               <div className="sce_imgdiv">
+              <div id="content">
+              
+              
+              </div>
                 <Link to={"/project/" + currentProject._id}>
                   <img
                     alt="thumbnail"
@@ -218,13 +223,12 @@ export default function ProjectPreview(props) {
                                 html: `Your can now share project <strong>"${currentProject.name}"</strong><br>
                                       Anyone with the link below can access your project:<br>
                                       <br><a target="_blank" href="/project/shared/${props.match.params.projectid.trim()}
-                                      ">${protocol+window.location.host}/project/shared/${props.match.params.projectid.trim()}</a>`,
-                              //   html: ` 
-                              //  <a target="_blank" href="/project/shared/${props.match.params.projectid.trim()}
-                              // ">${
-                              //   window.location.host
-                              // }/project/shared/${props.match.params.projectid.trim()}</a>`,
-                              });
+                                      ">${protocol+window.location.host}/project/shared/${props.match.params.projectid.trim()}</a>
+                                      <div id="croom">
+                                      <div class="g-sharetoclassroom" data-size="32" data-url="${protocol+window.location.host}/project/shared/${props.match.params.projectid.trim()}" >Loading Classroom...</div>
+                                      </div>`,
+                              })
+                                window.gapi.sharetoclassroom.go("croom")
                             }}
                           >
                             <i
