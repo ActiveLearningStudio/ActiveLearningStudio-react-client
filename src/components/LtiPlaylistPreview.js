@@ -35,17 +35,20 @@ export class LtiPlaylistPreview extends React.Component {
     console.log(nextProps);
     if (!!nextProps.playlist.selectedPlaylist) {
       const selectedplaylist =
+        nextProps.playlist.selectedPlaylist.project &&
         nextProps.playlist.selectedPlaylist.project.playlists;
-      if (selectedplaylist.length > 0) {
-        return {
-          allprojectsState: selectedplaylist,
-          currentPlaylist: nextProps.playlist.selectedPlaylist,
-        };
-      } else {
-        return {
-          allprojectsState: null,
-          currentPlaylist: nextProps.playlist.selectedPlaylist,
-        };
+      if (!!selectedplaylist) {
+        if (selectedplaylist.length > 0) {
+          return {
+            allprojectsState: selectedplaylist,
+            currentPlaylist: nextProps.playlist.selectedPlaylist,
+          };
+        } else {
+          return {
+            allprojectsState: null,
+            currentPlaylist: nextProps.playlist.selectedPlaylist,
+          };
+        }
       }
     } else return null;
   }

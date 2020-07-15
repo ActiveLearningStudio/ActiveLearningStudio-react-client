@@ -29,19 +29,21 @@ export class LtiPlaylistPreview extends React.Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     console.log(nextProps);
     if (!!nextProps.playlist.selectedPlaylist) {
-      const selectedplaylist = !!nextProps.playlist.selectedPlaylist.project
-        ? nextProps.playlist.selectedPlaylist.project.playlists
-        : [];
-      if (selectedplaylist.length > 0) {
-        return {
-          allprojectsState: selectedplaylist,
-          currentPlaylist: nextProps.playlist.selectedPlaylist,
-        };
-      } else {
-        return {
-          allprojectsState: null,
-          currentPlaylist: nextProps.playlist.selectedPlaylist,
-        };
+      const selectedplaylist =
+        nextProps.playlist.selectedPlaylist.project &&
+        nextProps.playlist.selectedPlaylist.project.playlists;
+      if (!!selectedplaylist) {
+        if (selectedplaylist.length > 0) {
+          return {
+            allprojectsState: selectedplaylist,
+            currentPlaylist: nextProps.playlist.selectedPlaylist,
+          };
+        } else {
+          return {
+            allprojectsState: null,
+            currentPlaylist: nextProps.playlist.selectedPlaylist,
+          };
+        }
       }
     } else return null;
   }
