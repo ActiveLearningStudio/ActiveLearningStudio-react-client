@@ -4,7 +4,6 @@ import "./ActivityPreviewCard.scss";
 import gifloader from "../images/276.gif";
 import { Link } from "react-router-dom";
 const ActivityPreviewCard = (props) => {
-  console.log(props);
   const activity = props.activity;
   console.log(activity);
   function onSelect(id) {
@@ -26,7 +25,7 @@ const ActivityPreviewCard = (props) => {
           }
         >
           <li className="check">
-            {activity.thumb_url ? (
+            {!!activity.thumb_url ? (
               <div
                 className="bg-thumbnail"
                 style={{

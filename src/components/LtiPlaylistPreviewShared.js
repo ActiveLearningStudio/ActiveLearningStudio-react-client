@@ -242,7 +242,10 @@ export class LtiPlaylistPreview extends React.Component {
                           confirmButtonText: "Yes",
                         }).then((result) => {
                           if (result.value) {
-                            this.props.history.push("/");
+                            this.props.history.push(
+                              "/project/preview2/" +
+                                this.props.playlist.selectedPlaylist.project._id
+                            );
                           }
                         });
                       }
@@ -363,7 +366,10 @@ export class LtiPlaylistPreview extends React.Component {
                           confirmButtonText: "Yes",
                         }).then((result) => {
                           if (result.value) {
-                            this.props.history.push("/");
+                            this.props.history.push(
+                              "/project/preview2/" +
+                                this.props.playlist.selectedPlaylist.project._id
+                            );
                           }
                         });
                       }
