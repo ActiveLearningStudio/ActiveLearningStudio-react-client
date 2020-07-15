@@ -33,9 +33,11 @@ export class LtiPlaylistPreview extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     console.log(nextProps);
-    if (!!nextProps.playlist.selectedPlaylist) {
+    if (
+      !!nextProps.playlist.selectedPlaylist &&
+      nextProps.playlist.selectedPlaylist.project
+    ) {
       const selectedplaylist =
-        nextProps.playlist.selectedPlaylist.project &&
         nextProps.playlist.selectedPlaylist.project.playlists;
       if (!!selectedplaylist) {
         if (selectedplaylist.length > 0) {
