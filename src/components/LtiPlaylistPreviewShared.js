@@ -9,15 +9,41 @@ import gifloader from "../images/276.gif";
 import projecticon from "../images/project_icon.svg";
 const H5PPreview = React.lazy(() => import("../containers/H5PPreview"));
 import "./PlayListPreview.css";
+import { previewResource } from "../actions/resource";
+import { LoadHP } from "./../actions/playlist";
+import axios from "axios";
 import Unauthorized from "./unauthorized";
 export class LtiPlaylistPreview extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      resourceid: this.props.match.params.resourceid,
+      resourceid: this.props.resourceid,
       resourcetitle: "",
+      allprojectsState: {},
+      currentPlaylist: "",
+      //  loading: "loading.ddd..",
     };
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log(nextProps);
+    if (!!nextProps.playlist.selectedPlaylist) {
+      const selectedplaylist = !!nextProps.playlist.selectedPlaylist.project
+        ? nextProps.playlist.selectedPlaylist.project.playlists
+        : [];
+      if (selectedplaylist.length > 0) {
+        return {
+          allprojectsState: selectedplaylist,
+          currentPlaylist: nextProps.playlist.selectedPlaylist,
+        };
+      } else {
+        return {
+          allprojectsState: null,
+          currentPlaylist: nextProps.playlist.selectedPlaylist,
+        };
+      }
+    } else return null;
   }
 
   componentDidUpdate() {
@@ -25,6 +51,7 @@ export class LtiPlaylistPreview extends React.Component {
       this.setState({
         resourceid: this.props.match.params.resourceid,
       });
+      this.props.loadPlaylistActionlti(this.props.playlistid);
     }
   }
 
@@ -111,7 +138,7 @@ export class LtiPlaylistPreview extends React.Component {
       playlist.activities.length - 1
         ? playlist.activities[playlist.activities.indexOf(currentActivity) + 1]
         : null;
-
+    console.log("previousResource", previousResource);
     let previousLink = null;
     let previousLink1 = null;
     if (previousResource) {
@@ -127,18 +154,44 @@ export class LtiPlaylistPreview extends React.Component {
       );
 
       previousLink1 = (
-        <Link
-          to={
-            this.props.playlistid &&
-            "/playlist/shared/preview/" +
-              this.props.playlistid +
-              "/resource/" +
-              previousResource._id
-          }
-        >
-          {" "}
-          <i class="fa fa-chevron-left" aria-hidden="true"></i>
-        </Link>
+        <div className="slider-hover-section">
+          <Link
+            to={
+              this.props.playlistid &&
+              "/playlist/shared/preview/" +
+                this.props.playlistid +
+                "/resource/" +
+                previousResource._id
+            }
+          >
+            {" "}
+            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+          </Link>
+          <div className="hover-control-caption pointer-cursor">
+            <Link
+              to={
+                this.props.playlistid &&
+                "/playlist/shared/preview/" +
+                  this.props.playlistid +
+                  "/resource/" +
+                  previousResource._id
+              }
+            >
+              <div
+                style={{
+                  backgroundImage: previousResource.thumb_url
+                    ? "url(" +
+                      global.config.laravelAPIUrl +
+                      previousResource.thumb_url +
+                      ")"
+                    : "url(data:image/jpeg;base64,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)",
+                }}
+                className="imginhover"
+              />
+              <span>{previousResource.title}</span>
+            </Link>
+          </div>
+        </div>
       );
     } else {
       previousLink = (
@@ -148,10 +201,57 @@ export class LtiPlaylistPreview extends React.Component {
         </a>
       );
       previousLink1 = (
-        <a>
-          {" "}
-          <i class="fa fa-chevron-left" aria-hidden="true"></i>
-        </a>
+        <div className="slider-hover-section">
+          <Link>
+            <i class="fa  fa-chevron-left" aria-hidden="true"></i>
+          </Link>
+          <div className="hover-control-caption pointer-cursor no-data  prev">
+            <div className="sliderend">
+              <p>Welcome! You are at the beginning of this playlist.</p>
+              <Link
+                onClick={() => {
+                  for (
+                    var data = 0;
+                    data < this.state.allprojectsState.length;
+                    data++
+                  ) {
+                    if (
+                      this.state.allprojectsState[data]._id ==
+                      this.state.currentPlaylist._id
+                    ) {
+                      try {
+                        this.props.history.push(
+                          "/playlist/shared/preview/" +
+                            this.state.allprojectsState[data - 1]._id +
+                            "/resource/" +
+                            this.state.allprojectsState[data - 1].activities[0]
+                              ._id
+                        );
+                        //  global.config.laravelAPIUrl
+                      } catch (e) {
+                        Swal.fire({
+                          text:
+                            "You are at the beginning of this project. Would you like to return to the project preview?",
+                          showCancelButton: true,
+                          confirmButtonColor: "#3085d6",
+                          cancelButtonColor: "#d33",
+                          confirmButtonText: "Yes",
+                        }).then((result) => {
+                          if (result.value) {
+                            this.props.history.push("/");
+                          }
+                        });
+                      }
+                    }
+                  }
+                }}
+              >
+                <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                Switch to previous playlist{" "}
+              </Link>
+            </div>
+          </div>
+        </div>
       );
     }
 
@@ -168,56 +268,245 @@ export class LtiPlaylistPreview extends React.Component {
         </a>
       );
       nextLink1 = (
-        <Link
-          to={
-            this.props.playlistid &&
-            "/playlist/shared/preview/" +
-              this.props.playlistid +
-              "/resource/" +
-              nextResource._id
-          }
-        >
-          <i class="fa  fa-chevron-right" aria-hidden="true"></i>
-        </Link>
+        <div className="slider-hover-section">
+          <Link
+            to={
+              this.props.playlistid &&
+              "/playlist/shared/preview/" +
+                this.props.playlistid +
+                "/resource/" +
+                nextResource._id
+            }
+          >
+            <i class="fa  fa-chevron-right" aria-hidden="true"></i>
+          </Link>
+          <div className="hover-control-caption pointer-cursor">
+            <Link
+              to={
+                this.props.playlistid &&
+                "/playlist/shared/preview/" +
+                  this.props.playlistid +
+                  "/resource/" +
+                  nextResource._id
+              }
+            >
+              <div
+                style={{
+                  backgroundImage: nextResource.thumb_url
+                    ? "url(" +
+                      global.config.laravelAPIUrl +
+                      nextResource.thumb_url +
+                      ")"
+                    : "url(data:image/jpeg;base64,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)",
+                }}
+                className="imginhover"
+              />
+              <span>{nextResource.title}</span>
+            </Link>
+          </div>
+        </div>
       );
     } else {
       nextLink = (
         <a to="#" className="slide-control next disabled-link">
           <i className="fa fa-arrow-right" aria-hidden="true"></i>
           <span> Next Activity</span>
+          {/* <div className="hover-control-caption pointer-cursor">
+            <img alt="thumb01"></img>
+            <span></span>
+          </div> */}
         </a>
       );
       nextLink1 = (
-        <a>
-          <i class="fa fa-chevron-right" aria-hidden="true"></i>
-        </a>
+        <div className="slider-hover-section">
+          <Link>
+            <i class="fa  fa-chevron-right" aria-hidden="true"></i>
+          </Link>
+          <div className="hover-control-caption pointer-cursor no-data">
+            <div className="sliderend">
+              <p>
+                Hooray! You did it! There are no more activities in this
+                playlist.
+              </p>
+              <Link
+                onClick={() => {
+                  for (
+                    var data = 0;
+                    data < this.state.allprojectsState.length;
+                    data++
+                  ) {
+                    if (
+                      this.state.allprojectsState[data]._id ==
+                      this.state.currentPlaylist._id
+                    ) {
+                      try {
+                        this.props.history.push(
+                          "/playlist/shared/preview/" +
+                            this.state.allprojectsState[data + 1]._id +
+                            "/resource/" +
+                            this.state.allprojectsState[data + 1].activities[0]
+                              ._id
+                        );
+                        //  global.config.laravelAPIUrl
+                      } catch (e) {
+                        Swal.fire({
+                          text:
+                            "You are at the end of this project. Would you like to return to the project preview?",
+                          showCancelButton: true,
+                          confirmButtonColor: "#4646c4",
+                          cancelButtonColor: "#d33",
+                          cancelButtonText: "No",
+                          confirmButtonText: "Yes",
+                        }).then((result) => {
+                          if (result.value) {
+                            this.props.history.push("/");
+                          }
+                        });
+                      }
+                    }
+                  }
+                }}
+              >
+                Switch to next playlist{" "}
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+              </Link>
+            </div>
+          </div>
+        </div>
       );
     }
-
+    //  alert(this.props.loading);
     return (
-      <section className="main-page-content preview">
-        <div className="container-flex-upper">
-          <div className="project-title">
-            <img src={projecticon} alt="" />
-            {this.props.showlti
-              ? "Playlist :" + playlist.title
-              : "Project :" + playlist.project.name}
+      <>
+        {!!this.props.loading ? (
+          <div className="loadingphfdata">
+            {this.props.loading == "loading..." ? (
+              <Unauthorized text={this.props.loading} />
+            ) : (
+              <Unauthorized
+                text={"You are unauthorized to access this!"}
+                showbutton={true}
+              />
+            )}
           </div>
-          {/* <Link
-            to={"/project/" + this.props.playlist.selectedPlaylist.project._id}
-          >
-            {" "}
-            <i className="fa fa-times" />
-          </Link> */}
-        </div>
-        <div className="flex-container ">
-          <div className="activity-bg left-vdo">
-            <div className="flex-container-preview">
-              <div className="act-top-hader">
-                <div className="heading-wrapper">
-                  <div className="main-heading">
-                    {/* <span>You are Watching:</span> */}
+        ) : (
+          <section className="main-page-content preview">
+            <div className="container-flex-upper">
+              <Link onClick={this.props.history.goBack}>
+                <div className="project-title">
+                  <img src={projecticon} alt="" />
+                  Project : {playlist.project.name}
+                </div>
+              </Link>
 
+              <Link
+                to={
+                  "/project/" + this.props.playlist.selectedPlaylist.project._id
+                }
+              >
+                {" "}
+                <i className="fa fa-times" />
+              </Link>
+            </div>
+            <div className="flex-container ">
+              <div className="activity-bg left-vdo">
+                <div className="flex-container-preview">
+                  <div className="act-top-hader">
+                    <div className="heading-wrapper">
+                      <div className="main-heading">
+                        {/* <span>You are Watching:</span> */}
+
+                        {playlist.activities && playlist.activities.length
+                          ? playlist.activities.filter(
+                              (a) => a._id == resourceid
+                            ).length > 0
+                            ? playlist.activities.filter(
+                                (a) => a._id == resourceid
+                              )[0].title
+                            : ""
+                          : ""}
+                      </div>
+                      {/* <div className="sub-heading">
+                  <span>From the playlist:</span>
+                  {playlist ? playlist.title : ""}
+                </div> */}
+                    </div>
+                  </div>
+                  <div className="right-control vd-controls">
+                    <div className="sliderbtn">
+                      {previousLink1}
+                      {nextLink1}
+                    </div>
+
+                    {/* <div className="dropdown">
+                  <button
+                    className="btn "
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
+                  </button>
+                  <div
+                    className="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton"
+                  >
+                    {/* {nextLink}
+                    {previousLink} }
+                    <Link
+                      to={
+                        "/project/preview2/" +
+                        this.props.playlist.selectedPlaylist.project._id
+                      }
+                      className="slide-control"
+                    >
+                      <i className="fa fa-share" aria-hidden="true"></i>
+                      Back to Project
+                    </Link>
+                    <Link
+                      to={
+                        "/project/" +
+                        this.props.playlist.selectedPlaylist.project._id
+                      }
+                      className="slide-control"
+                    >
+                      <i
+                        className="fa fa-times-circle-o"
+                        aria-hidden="true"
+                      ></i>
+                      Exit
+                    </Link>
+                  </div>
+                </div> */}
+                  </div>
+                </div>
+                <div className="main-item-wrapper">
+                  <div className="item-container">
+                    {/* <img src="/images/video-thumbnail.jpg" alt="video-thumbnail" className=""></img> */}
+                    <Suspense fallback={<div>Loading</div>}>
+                      {!!this.state.resourceid ? (
+                        <H5PPreview
+                          {...this.state}
+                          resourceid={this.state.resourceid}
+                          tokenrequire={true}
+                          showltipreview={true}
+                        />
+                      ) : (
+                        <H5PPreview
+                          {...this.state}
+                          showltipreview={true}
+                          resourceid={
+                            this.props.playlist.selectedPlaylist &&
+                            this.props.playlist.selectedPlaylist.activities[0]
+                              ._id
+                          }
+                        />
+                      )}
+                    </Suspense>
+                    {/* <div className="item-caption-bottom">
+                  <p>
                     {playlist.activities && playlist.activities.length
                       ? playlist.activities.filter((a) => a._id == resourceid)
                           .length > 0
@@ -226,86 +515,84 @@ export class LtiPlaylistPreview extends React.Component {
                           )[0].title
                         : ""
                       : ""}
+                  </p>
+                </div> */}
                   </div>
-                  {/* <div className="sub-heading">
+                </div>
+              </div>
+              <div className="right-sidegolf-info">
+                <div className="back-header">
+                  <div>
+                    {" "}
+                    <Link
+                      className="gobackbuttonpreview"
+                      onClick={this.props.history.goBack}
+                    >
+                      <i className="fa fa-undo" aria-hidden="true"></i>Back to
+                      Project
+                    </Link>
+                  </div>
+                  <div className="dropdown">
+                    <button
+                      className="btn "
+                      type="button"
+                      id="dropdownMenuButton"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
+                    </button>
+                    <div
+                      className="dropdown-menu"
+                      aria-labelledby="dropdownMenuButton"
+                    >
+                      <ul className="">{activities1}</ul>
+                    </div>
+                  </div>
+
+                  {/* <Link
+                to={
+                  "/project/preview2/" +
+                  this.props.playlist.selectedPlaylist.project._id
+                }
+                className="link"
+              >
+                <img src="/images/right-arrow.png" className="back-arrow"></img>
+                Back to {this.props.playlist.selectedPlaylist.project.name}
+              </Link> */}
+                </div>
+
+                {/* <button
+              className=""
+              type="button"
+              data-toggle="collapse"
+              data-target="#collapseExample"
+              aria-expanded="false"
+              aria-controls="collapseExample"
+            >
+              <div className="sub-heading">
+                <div className="line">
                   <span>From the playlist:</span>
                   {playlist ? playlist.title : ""}
-                </div> */}
+                </div>
+                <div>
+                  <i className="fa fa-angle-up" aria-hidden="true"></i>
                 </div>
               </div>
-              <div className="right-control vd-controls">
-                <div className="sliderbtn">
-                  {previousLink1}
-                  {nextLink1}
-                </div>
-              </div>
-            </div>
-            <div className="main-item-wrapper">
-              <div className="item-container">
-                {/* <img src="/images/video-thumbnail.jpg" alt="video-thumbnail" className=""></img> */}
-                <Suspense fallback={<div>Loading</div>}>
-                  {!!this.state.resourceid ? (
-                    <H5PPreview
-                      {...this.state}
-                      resourceid={this.state.resourceid}
-                      tokenrequire={true}
-                      showltipreview={true}
-                    />
-                  ) : (
-                    <H5PPreview
-                      {...this.state}
-                      showltipreview={true}
-                      resourceid={
-                        this.props.playlist.selectedPlaylist &&
-                        this.props.playlist.selectedPlaylist.activities[0]._id
-                      }
-                    />
-                  )}
-                </Suspense>
-              </div>
-            </div>
-          </div>
-          <div className="right-sidegolf-info">
-            <div className="back-header">
-              <div>
-                {" "}
-                <Link
-                  className="gobackbuttonpreview"
-                  onClick={this.props.history.goBack}
-                >
-                  <i className="fa fa-undo" aria-hidden="true"></i>Back to
-                  Project
-                </Link>
-              </div>
-              <div className="dropdown">
-                <button
-                  className="btn "
-                  type="button"
-                  id="dropdownMenuButton"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
-                </button>
-                <div
-                  className="dropdown-menu"
-                  aria-labelledby="dropdownMenuButton"
-                >
-                  <ul className="">{activities1}</ul>
-                </div>
-              </div>
-            </div>
+            </button> */}
 
-            <div className="scrollDiv long">
-              <div className="watcher">
-                You are watching from <span>{playlist.title} </span>
+                <div className="scrollDiv long">
+                  <div className="watcher">
+                    You are watching from <span>{playlist.title} </span>
+                  </div>
+                  <ul className="sliderscrollauto">{activities}</ul>
+                </div>
               </div>
-              <ul className="sliderscrollauto">{activities}</ul>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
+        )}
+      </>
     );
   }
 }
