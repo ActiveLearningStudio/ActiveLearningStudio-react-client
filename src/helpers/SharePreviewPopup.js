@@ -13,25 +13,7 @@ import {
 
   import { confirmAlert } from 'react-confirm-alert'; // Import
   import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
-// const addBodyClass = className => document.body.classList.add(className);
-// const removeBodyClass = className => document.body.classList.remove(className);
 
-// export default function useBodyClass(className) {
-//     useEffect(
-//         () => {
-//             // Set up
-//             className instanceof Array ? className.map(addBodyClass) : addBodyClass(className);
-
-//             // Clean up
-//             return () => {
-//                 className instanceof Array
-//                     ? className.map(removeBodyClass)
-//                     : removeBodyClass(className);
-//             };
-//         },
-//         [className]
-//     );
-// }
 
 const SharePreviewPopup = (url, projectName) => {
     confirmAlert({
@@ -42,15 +24,15 @@ const SharePreviewPopup = (url, projectName) => {
                                 Anyone with the link below can access your project:<br />
         <br /><a target="_blank" href={url}>{url}</a><br /></h1>
         <hr />
-        <div className="margin-bottom-20">
+        {/* <div className="margin-bottom-20">
           <span>
             <FacebookShareButton url={url} className='share'>
               <FacebookIcon size={32} />
             </FacebookShareButton>
           </span>
           <span className="margin-left-20 inline-block">Share this project on Facebook</span>
-        </div>
-        <div className="margin-bottom-20">
+        </div> */}
+        {/* <div className="margin-bottom-20">
           <span>
             <TwitterShareButton
                 url={url}
@@ -62,21 +44,7 @@ const SharePreviewPopup = (url, projectName) => {
               </TwitterShareButton>
           </span>
           <span className="margin-left-20 inline-block">Share this project on Twitter</span>
-        </div>
-        <div className="margin-bottom-20">
-          <span>
-          <EmailShareButton
-                url={url}
-                title='test'
-                className="Demo__some-network__share-button">
-                <EmailIcon
-                  size={32}
-                   />
-              </EmailShareButton>
-          </span>
-          <span className="margin-left-20 inline-block">Share this project through email</span>
-        </div>
-  
+        </div> */}
         <div className="margin-bottom-20">
           <span>
             <div id="croom">
@@ -86,6 +54,21 @@ const SharePreviewPopup = (url, projectName) => {
           </span>
           
         </div>
+        <div className="margin-bottom-20">
+          <span>
+          <EmailShareButton
+                url={url}
+                subject={projectName}
+                className="email-share">
+                <EmailIcon
+                  size={32}
+                   />
+              </EmailShareButton>
+          </span>
+          <span className="margin-left-20 inline-block">Share this project through email</span>
+        </div>
+  
+        
   
             <div className="close-btn">
               <button onClick={onClose}>Ok</button>

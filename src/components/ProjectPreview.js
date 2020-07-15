@@ -308,25 +308,6 @@ export default function ProjectPreview(props) {
                               let protocol = window.location.href.split("/")[0] + "//" 
                               let url = `${protocol+window.location.host}/project/shared/${props.match.params.projectid.trim()}`;
                               return SharePreviewPopup(url, currentProject.name)
-                              // Swal.fire({
-                              //   html: `Your can now share project <strong>"${currentProject.name}"</strong><br>
-                              //         Anyone with the link below can access your project:<br>
-                              //         <br><a target="_blank" href="/project/shared/${props.match.params.projectid.trim()}
-                              //         ">${protocol+window.location.host}/project/shared/${props.match.params.projectid.trim()}</a>
-                              //         <hr />
-                              //         <div id="croom">
-                              //         <span>Shared: </span>
-                              //         <div class="g-sharetoclassroom" data-size="32" data-url="${protocol+window.location.host}/project/shared/${props.match.params.projectid.trim()}" >Loading Classroom...</div>
-                              //         </div><FacebookShareButton url='https://google.com' quote={'გააზიარე'} className='share'>
-                              //         <FacebookIcon size={32} round={true}/>
-                              //       </FacebookShareButton>`,
-                              //       content: {
-                              //         element: "a",
-                              //         attributes: {
-                              //             href: "http://www.stackoverflow.com",
-                              //             innerText: "Click here"}}
-                              // })
-                              //   window.gapi.sharetoclassroom.go("croom")
                             }}
                           >
                             
