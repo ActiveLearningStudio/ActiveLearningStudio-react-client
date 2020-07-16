@@ -9,46 +9,38 @@ import {
   loadMyProjectsAction,
 } from 'store/actions/project';
 import Header from 'components/Header';
-import PlaylistPreview from 'components/PlaylistPreview';
+import LtiPlaylistPreview from 'components/PlaylistPreview/LtiPlaylistPreview';
+import LtiPlaylistPreviewShared from 'components/PlaylistPreview/LtiPlaylistPreviewShared';
 
 class LtiPreviewPage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { resourceId: 'sdfg' };
-  }
-
   componentDidMount() {
     // scroll to top
     window.scrollTo(0, 0);
 
-    const { loadMyProjects } = this.props;
-    loadMyProjects();
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.project.playlist.selectedPlaylist !== prevState.resourceId) {
-      const _ids = nextProps.project.playlist.selectedPlaylist
-        && nextProps.project.playlist.selectedPlaylist.activities[0]._id;
-      return {
-        resourceId: _ids,
-      };
-    } return null;
+    // const { loadMyProjects } = this.props;
+    // loadMyProjects();
   }
 
   render() {
-    const { resourceId } = this.state;
-    const { match } = this.props;
+    const { match, previewType } = this.props;
 
     return (
       <div>
         <Header {...this.props} />
 
-        <PlaylistPreview
-          playlistId={match.params.playlistId}
-          resourceId={resourceId}
-          showLti
-        />
+        {previewType === 'playlistShared' ? (
+          <LtiPlaylistPreviewShared
+            playlistId={match.params.playlistId}
+            resourceId={match.params.resourceId}
+            showLti
+          />
+        ) : (
+          <LtiPlaylistPreview
+            playlistId={match.params.playlistId}
+            resourceId={match.params.resourceId}
+            showLti
+          />
+        )}
       </div>
     );
   }
@@ -57,6 +49,7 @@ class LtiPreviewPage extends React.Component {
 LtiPreviewPage.propTypes = {
   match: PropTypes.object.isRequired,
   project: PropTypes.object.isRequired,
+  previewType: PropTypes.string.isRequired,
   loadMyProjects: PropTypes.func.isRequired,
 };
 
