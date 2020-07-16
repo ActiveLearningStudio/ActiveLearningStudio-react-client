@@ -3,17 +3,21 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import {
-  showCreateProjectModalAction,
-  createProjectAction,
-  loadMyProjectsAction,
-} from 'store/actions/project';
+import { loadMyProjectsAction } from 'store/actions/project';
 import Header from 'components/Header';
 import ProjectPreview from 'components/ProjectPreview';
 import ResourcePreview from 'components/ResourcePreview';
 import PlaylistPreview from 'components/PlaylistPreview';
 
 export class PreviewPage extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      playlistId: null,
+    };
+  }
+
   componentDidMount() {
     // scroll to top
     window.scrollTo(0, 0);
@@ -22,7 +26,22 @@ export class PreviewPage extends React.Component {
     loadMyProjects();
   }
 
+  // componentDidUpdate() {
+  //   if (this.props.selectedPlaylist !== this.state.playlistId) {
+  //     this.setState({ playlistId: this.props.selectedPlaylist });
+  //   }
+  // }
+
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   if (nextProps.selectedPlaylist !== prevState.playlistId) {
+  //     return { playlistId: nextProps.selectedPlaylist._id };
+  //   } else {
+  //     return null;
+  //   }
+  // }
+
   render() {
+    const { playlistId } = this.state;
     const { match, project, previewType } = this.props;
 
     let content;
@@ -31,9 +50,9 @@ export class PreviewPage extends React.Component {
         <ResourcePreview resourceId={match.params.resourceId} />
       );
     } else if (previewType === 'playlist') {
-      content = (
+      content = !playlistId && (
         <PlaylistPreview
-          playlistid={match.params.playlistId}
+          playlistId={match.params.playlistId}
           resourceId={match.params.resourceId}
         />
       );
@@ -68,13 +87,12 @@ PreviewPage.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
   loadMyProjects: () => dispatch(loadMyProjectsAction()),
-  createProject: (name, description, thumbUrl) => dispatch(createProjectAction(name, description, thumbUrl)),
 });
 
 const mapStateToProps = (state) => ({
   project: state.project,
+  selectedPlaylist: state.playlist.selectedPlaylist,
 });
 
 export default withRouter(

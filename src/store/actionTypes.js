@@ -79,3 +79,10 @@ export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 export const SIGNUP_FAIL = 'SIGNUP_FAIL';
 
 export const LOG_OUT = 'LOG_OUT';
+
+export const LOAD_H5P = 'LOAD_H5P';
+export const SHOW_LMS = 'SHOW_LMS';
+export const LOAD_MY_PROJECTS_SELECTED = 'LOAD_MY_PROJECTS_SELECTED';
+export const CHANGE_LOADING = 'CHANGE_LOADING';
+
+export const SAVE_GENERIC_RESOURCE = 'SAVE_GENERIC_RESOURCE';

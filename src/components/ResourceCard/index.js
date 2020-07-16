@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import listImg from 'assets/images/signs.svg';
 import logo from 'assets/images/logo.svg';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
+// import ShareLink from './ShareLink';
 
 import './style.scss';
 
@@ -52,13 +53,13 @@ class ResourceCard extends React.Component {
             {...provided.dragHandleProps}
           >
             <div className="resource-card-wrapper">
-              {resource.metadata && resource.metadata.thumb_url && (
+              {resource.metadata && resource.metadata.thumbUrl && (
                 <div className="activity-thumb-wrapper">
                   <Link to={`/playlist/preview/${playlist._id}/resource/${resource._id}`}>
                     <div
                       className="activity-thumb"
                       style={{
-                        backgroundImage: `url(${global.config.laravelAPIUrl}${resource.metadata.thumb_url})`,
+                        backgroundImage: `url(${global.config.laravelAPIUrl}${resource.metadata.thumbUrl})`,
                       }}
                     />
                   </Link>
@@ -67,7 +68,7 @@ class ResourceCard extends React.Component {
 
               <div
                 className={
-                  resource.metadata && resource.metadata.thumb_url
+                  resource.metadata && resource.metadata.thumbUrl
                     ? 'activity-thumb-content'
                     : 'activity-thumb-content'
                 }

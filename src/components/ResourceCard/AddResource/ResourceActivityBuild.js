@@ -43,7 +43,7 @@ const ResourceActivityBuild = (props) => {
               <H5PEditor {...props} />
             )}
 
-            {resource.newResource.activity.type === 'tinymce' && (
+            {(resource.newResource.activity.type === 'tinymce' || resource.newResource.activity.type === 'immersive_reader') && (
               <TinyEditor {...props} />
             )}
 

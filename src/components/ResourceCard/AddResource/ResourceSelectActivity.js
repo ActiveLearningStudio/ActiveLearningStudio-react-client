@@ -70,7 +70,7 @@ let ResourceSelectActivity = (props) => {
           name="activity"
           component={ResourceActivityTypeField}
           type="radio"
-          value={activity.h5pLib}
+          value={activity.h5pLib || activity.type}
           onChange={(e) => onChangeActivity(activity, e)}
           validate={[required]}
         />

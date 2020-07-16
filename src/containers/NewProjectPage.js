@@ -60,7 +60,7 @@ function NewProjectPage(props) {
                 <div className="col-md-12">
                   <CreateProjectPopup
                     {...props}
-                    thumb_url={project.thumb_url}
+                    thumbUrl={project.thumbUrl}
                   />
                 </div>
               </div>

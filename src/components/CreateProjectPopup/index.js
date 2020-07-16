@@ -79,7 +79,7 @@ let imageValidation = '';
 
 const onSubmit = async (values, dispatch, props) => {
   try {
-    if (!props.project.thumb_url) {
+    if (!props.project.thumbUrl) {
       imageValidation = '* Required';
       return false;
     }
@@ -91,7 +91,7 @@ const onSubmit = async (values, dispatch, props) => {
           props.match.params.projectId,
           values.projectName,
           values.description,
-          props.project.thumb_url,
+          props.project.thumbUrl,
         ),
       );
     } else {
@@ -100,7 +100,7 @@ const onSubmit = async (values, dispatch, props) => {
         createProjectAction(
           values.projectName,
           values.description,
-          props.project.thumb_url,
+          props.project.thumbUrl,
         ),
       );
     }
@@ -189,7 +189,7 @@ let CreateProjectPopup = (props) => {
 
           {project.progress}
 
-          {project.thumb_url ? (
+          {project.thumbUrl ? (
             <div className="thumb-display">
               <div
                 className="success"
@@ -202,7 +202,7 @@ let CreateProjectPopup = (props) => {
                 Image Uploaded:
               </div>
               <div className="thumb">
-                <img src={global.config.laravelAPIUrl + project.thumb_url} alt="" />
+                <img src={global.config.laravelAPIUrl + project.thumbUrl} alt="" />
               </div>
             </div>
           ) : null}

@@ -257,7 +257,7 @@ img {
   padding: 10px
 }
 
-.hover-control-caption .imginhover {
+.hover-control-caption .img-in-hover {
   background-size: cover;
   height: 100px;
   width: 100%;
@@ -268,13 +268,13 @@ img {
 }
 
 .hover-control-caption:after {
-  content: "";
+  /* content: "";
   border: 9px solid transparent;
   width: 100%;
   position: absolute;
   top: -17px;
   z-index: 0;
-  background: transparent;
+  background: transparent; */
 }
 
 .right-control .slide-control:hover>.hover-control-caption {
@@ -284,7 +284,7 @@ img {
 }
 
 .hover-control-caption:before {
-  position: absolute;
+  /* position: absolute;
   content: "";
   top: -9px;
   border-bottom: 10px solid #ffffff;
@@ -292,7 +292,7 @@ img {
   border-left: 10px solid transparent;
   left: 50%;
   margin-left: -5px;
-  z-index: 11;
+  z-index: 11; */
 }
 
 .right-control .slide-control.prev .hover-control-caption {

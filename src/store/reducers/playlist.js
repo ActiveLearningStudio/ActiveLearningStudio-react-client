@@ -13,6 +13,7 @@ import {
   LOAD_MY_PROJECTS,
   CHANGE_PLAYLIST_TITLE,
   CLICK_PLAYLIST_TITLE,
+  LOAD_H5P,
 } from '../actionTypes';
 
 const defaultPlaylistState = () => {
@@ -20,12 +21,15 @@ const defaultPlaylistState = () => {
     return {
       playlists: JSON.parse(localStorage.getItem('playlists')),
       showCreatePlaylistPopup: false,
+      loadingH5P: 'loading...',
     };
   }
+
   return {
     playlists: [],
     showCreatePlaylistPopup: false,
     selectedPlaylist: null,
+    loadingH5P: 'loading...',
   };
 };
 
@@ -38,8 +42,14 @@ export default (state = defaultPlaylistState(), action) => {
         ...state,
         playlists: [
           ...state.playlists,
-          action.playlistdata,
+          action.playlistData,
         ],
+      };
+
+    case LOAD_H5P:
+      return {
+        ...state,
+        loadingH5P: action.show,
       };
 
     // reset playlists to empty when going to projects dashboard
@@ -74,11 +84,11 @@ export default (state = defaultPlaylistState(), action) => {
       // adding resource to newPlaylist specific id
       newPlaylists = state.playlists;
       state.playlists.forEach((playlist, i) => {
-        if (playlist._id === action.playlistid) {
+        if (playlist._id === action.playlistId) {
           newPlaylists[i] = { resources: [], ...newPlaylists[i] };
           newPlaylists[i].resources.push({
             _id: action.resource.id,
-            id: action.resource.mysqlid,
+            id: action.resource.mysqlId,
             title: action.resource.title,
           });
         }
@@ -144,7 +154,7 @@ export default (state = defaultPlaylistState(), action) => {
     case CHANGE_PLAYLIST_TITLE:
       const newTitleChangedPlaylists = state.playlists.filter((playlist) => {
         const newPlaylist = { ...playlist };
-        if (newPlaylist._id === action.playlistid) {
+        if (newPlaylist._id === action.playlistId) {
           newPlaylist.title = action.title;
           newPlaylist.playlistTitleClicked = false;
         }
@@ -158,7 +168,7 @@ export default (state = defaultPlaylistState(), action) => {
     case CLICK_PLAYLIST_TITLE:
       const newClickTitlePlaylists = state.playlists.filter((playlist) => {
         const nPlaylist = { ...playlist };
-        if (nPlaylist._id === action.playlistid) {
+        if (nPlaylist._id === action.playlistId) {
           nPlaylist.playlistTitleClicked = true;
         }
         return nPlaylist;

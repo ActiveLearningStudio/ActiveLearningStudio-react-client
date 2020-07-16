@@ -35,7 +35,7 @@ const defaultResourceState = () => {
         type: null,
       },
       metadata: {
-        thumb_url: null,
+        thumbUrl: null,
       },
     },
     editResource: {
@@ -44,9 +44,9 @@ const defaultResourceState = () => {
       },
       metadata: {
         title: null,
-        subjectid: null,
-        educationlevelid: null,
-        thumb_url: null,
+        subjectId: null,
+        educationLevelId: null,
+        thumbUrl: null,
       },
     },
     selectedResource: null,
@@ -74,9 +74,9 @@ export default (state = defaultResourceState(), action) => {
           },
           metadata: {
             title: null,
-            subjectid: null,
-            educationlevelid: null,
-            thumb_url: null,
+            subjectId: null,
+            educationLevelId: null,
+            thumbUrl: null,
           },
         },
         editResource: {
@@ -85,9 +85,9 @@ export default (state = defaultResourceState(), action) => {
           },
           metadata: {
             title: null,
-            subjectid: null,
-            educationlevelid: null,
-            thumb_url: null,
+            subjectId: null,
+            educationLevelId: null,
+            thumbUrl: null,
           },
         },
       };
@@ -165,7 +165,7 @@ export default (state = defaultResourceState(), action) => {
             type: null,
           },
           metadata: {
-            thumb_url: null,
+            thumbUrl: null,
           },
         },
       };
@@ -215,7 +215,7 @@ export default (state = defaultResourceState(), action) => {
         },
       };
     case DESCRIBE_ACTIVITY:
-      if (action.activityid != null) {
+      if (action.activityId != null) {
         return {
           ...state,
           editResource: {
@@ -245,14 +245,14 @@ export default (state = defaultResourceState(), action) => {
           ...state.newResource,
           metadata: {
             ...state.newResource.metadata,
-            thumb_url: action.thumb_url,
+            thumbUrl: action.thumbUrl,
           },
         },
         editResource: {
           ...state.editResource,
           metadata: {
             ...state.editResource.metadata,
-            thumb_url: action.thumb_url,
+            thumbUrl: action.thumbUrl,
           },
         },
         progress: null,

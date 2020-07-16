@@ -6,25 +6,54 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './style.scss';
 
 const ActivityPreviewCardDropdown = (props) => {
-  const { activity, playlist } = props;
+  const {
+    lti,
+    shared,
+    activity,
+    playlist,
+  } = props;
 
   return (
-    <Link
-      to={`/playlist/preview/${playlist}/resource/${activity._id}`}
-    >
-      <li className="drpdown">
-        <div>
-          <FontAwesomeIcon icon="play-circle" />
-          <div className="title">{activity.title}</div>
-        </div>
-      </li>
-    </Link>
+    <>
+      {shared ? (
+        <Link to={`/playlist/shared/preview/${playlist}/resource/${activity._id}`}>
+          <li className="drpdown">
+            <div>
+              <FontAwesomeIcon icon="play-circle" />
+              <div className="title">{activity.title}</div>
+            </div>
+          </li>
+        </Link>
+      ) : (
+        <Link
+          to={
+            lti
+              ? `/playlist/lti/preview/${playlist}/resource/${activity._id}`
+              : `/playlist/preview/${playlist}/resource/${activity._id}`
+          }
+        >
+          <li className="drpdown">
+            <div>
+              <FontAwesomeIcon icon="play-circle" />
+              <div className="title">{activity.title}</div>
+            </div>
+          </li>
+        </Link>
+      )}
+    </>
   );
 };
 
 ActivityPreviewCardDropdown.propTypes = {
+  lti: PropTypes.bool,
+  shared: PropTypes.bool,
   activity: PropTypes.object.isRequired,
   playlist: PropTypes.string.isRequired,
+};
+
+ActivityPreviewCardDropdown.defaultProps = {
+  lti: false,
+  shared: false,
 };
 
 export default ActivityPreviewCardDropdown;

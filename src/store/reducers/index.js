@@ -6,6 +6,7 @@ import playlist from './playlist';
 import resource from './resource';
 import project from './project';
 import ui from './ui';
+import defaultShareState from './share';
 
 export default combineReducers({
   auth,
@@ -14,4 +15,5 @@ export default combineReducers({
   resource,
   ui,
   form: formReducer,
+  defaultShareState,
 });

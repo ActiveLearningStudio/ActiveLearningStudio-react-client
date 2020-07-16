@@ -5,19 +5,24 @@ import { Link } from 'react-router-dom';
 import './style.scss';
 
 const ActivityCard = (props) => {
-  const { activity, playlistId } = props;
+  const { lti, activity, playlistId } = props;
 
   return (
     <li>
       <Link
-        to={`/playlist/preview/${playlistId}/resource/${activity._id}`}
+        to={
+          lti
+            ? `/playlist/shared/preview/${playlistId}/resource/${activity._id}`
+            : `/playlist/preview/${playlistId}/resource/${activity._id}`
+        }
       >
         <div
           className="playimg"
           style={{
-            backgroundImage: `url(${global.config.laravelAPIUrl}${activity.thumb_url})`,
+            backgroundImage: `url(${global.config.laravelAPIUrl}${activity.thumbUrl})`,
           }}
         />
+
         <div className="plydet">{activity.title}</div>
       </Link>
     </li>
@@ -25,11 +30,13 @@ const ActivityCard = (props) => {
 };
 
 ActivityCard.propTypes = {
+  lti: PropTypes.bool,
   activity: PropTypes.object.isRequired,
   playlistId: PropTypes.string,
 };
 
 ActivityCard.defaultProps = {
+  lti: false,
   playlistId: '',
 };
 

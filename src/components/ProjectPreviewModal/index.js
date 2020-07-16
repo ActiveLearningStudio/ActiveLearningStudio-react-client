@@ -63,7 +63,7 @@ const ProjectPreviewModal = (props) => {
                   <div className="row">
                     <div className="col">
                       <img
-                        src={global.config.laravelAPIUrl + project.thumb_url}
+                        src={global.config.laravelAPIUrl + project.thumbUrl}
                         className="img-fluid project-preview-thumbnail"
                         alt=""
                       />

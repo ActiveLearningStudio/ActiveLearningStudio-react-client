@@ -9,6 +9,7 @@ import {
   PROJECT_THUMBNAIL_PROGRESS,
   SHOW_USER_SUB_MENU,
   CLOSE_MENU,
+  LOAD_MY_PROJECTS_SELECTED,
 } from '../actionTypes';
 
 const defaultProgramState = () => {
@@ -26,10 +27,11 @@ const defaultProgramState = () => {
     showCreateProjectSubmenu: false,
     showCreateProjectPopup: false,
     showUserSubMenu: false,
+    projectSelect: {},
   };
 };
 
-export default (state = defaultProgramState(), action) => {
+const projectReducer = (state = defaultProgramState(), action) => {
   switch (action.type) {
     case CLOSE_MENU:
       if (state.showCreateProjectSubmenu) {
@@ -51,11 +53,13 @@ export default (state = defaultProgramState(), action) => {
         ...state,
         showCreateProjectSubmenu: !state.showCreateProjectSubmenu,
       };
+
     case SHOW_USER_SUB_MENU:
       return {
         ...state,
         showUserSubMenu: !state.showUserSubMenu,
       };
+
     case SHOW_CREATE_PROJECT_MODAL:
       return {
         ...state,
@@ -64,28 +68,35 @@ export default (state = defaultProgramState(), action) => {
         },
         thumb_url: null,
       };
+
     case CREATE_PROJECT:
       return {
         ...state,
-        projects: [
-          ...state.projects,
-          action.projectdata,
-        ],
+        projects: [...state.projects, action.projectData],
         thumb_url: null,
       };
+
     case LOAD_MY_PROJECTS:
       return {
         ...state,
         projects: action.projects,
       };
+
+    case LOAD_MY_PROJECTS_SELECTED:
+      return {
+        ...state,
+        projectSelect: action.projects,
+      };
+
     case LOAD_PROJECT:
       return {
         ...state,
         selectedProject: action.project,
         thumb_url: action.project.thumb_url,
       };
+
     case DELETE_PROJECT:
-      const newProjects = state.projects.filter((project) => project._id !== action.projectid);
+      const newProjects = state.projects.filter((project) => project._id !== action.projectId);
       return {
         ...state,
         projects: newProjects,
@@ -97,6 +108,7 @@ export default (state = defaultProgramState(), action) => {
         thumb_url: action.thumb_url,
         progress: null,
       };
+
     case PROJECT_THUMBNAIL_PROGRESS:
       return {
         ...state,
@@ -107,3 +119,5 @@ export default (state = defaultProgramState(), action) => {
       return state;
   }
 };
+
+export default projectReducer;

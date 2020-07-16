@@ -13,7 +13,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import App from './containers/App';
 import store from './store';
 import * as serviceWorker from './serviceWorker';
-// import './config';
+import './config';
 import './style.scss';
 
 library.add(fas);

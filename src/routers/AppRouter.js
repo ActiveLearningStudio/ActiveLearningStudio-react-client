@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Switch } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import * as History from 'history';
 import loadable from '@loadable/component';
 import ReactGA from 'react-ga';
@@ -19,6 +19,7 @@ const ProjectsPage = loadable(() => import('../containers/ProjectsPage'));
 const PlaylistsPage = loadable(() => import('../containers/PlaylistsPage'));
 const PreviewPage = loadable(() => import('../containers/PreviewPage'));
 const LtiPreviewPage = loadable(() => import('../containers/LtiPreviewPage'));
+const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared'));
 // const LoginPage = loadable(() => import('../containers/Auth/LoginPage'));
 // const RegisterPage = loadable(() => import('../containers/Auth/RegisterPage'));
 
@@ -38,6 +39,12 @@ const AppRouter = () => {
           component={PreviewPage}
         />
 
+        <Route
+          exact
+          path="/project/shared/:projectId"
+          component={PreviewPageShared}
+        />
+
         <PrivateRoute
           exact
           path="/resource/preview/:resourceId"
@@ -52,11 +59,24 @@ const AppRouter = () => {
           previewType="playlist"
         />
 
-        <PrivateRoute
+        <Route
           exact
           path="/playlist/lti/preview/:playlistId"
           component={LtiPreviewPage}
           previewType="playlist"
+        />
+
+        <Route
+          path="/playlist/lti/preview/:playlistId/resource/:resourceId"
+          exact
+          component={LtiPreviewPage}
+          previewType="playlist"
+        />
+
+        <Route
+          path="/playlist/shared/preview/:playlistId/resource/:resourceId"
+          exact
+          render={() => <LtiPreviewPage previewType="playlistShared" />}
         />
 
         <PrivateRoute

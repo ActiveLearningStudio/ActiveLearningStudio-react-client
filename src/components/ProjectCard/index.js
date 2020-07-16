@@ -15,11 +15,11 @@ const ProjectCard = ({ showPreview, project, showDeletePopup }) => (
     <div className="program-tile">
       <div className="program-thumb">
         <Link to={`/project/${project._id}`}>
-          {project.thumb_url && (
+          {project.thumbUrl && (
             <div
               className="project-thumb"
               style={{
-                backgroundImage: `url(${global.config.laravelAPIUrl}${project.thumb_url})`,
+                backgroundImage: `url(${global.config.laravelAPIUrl}${project.thumbUrl})`,
               }}
             />
           )}

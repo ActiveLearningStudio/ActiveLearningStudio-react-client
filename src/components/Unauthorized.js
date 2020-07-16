@@ -1,0 +1,57 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import std from 'assets/images/terms.png';
+import { LoadHP } from 'store/actions/playlist';
+
+function Unauthorized(props) {
+  const { text, showButton, loadHP } = props;
+
+  return (
+    <div className="whole-authorized">
+      <div className="box-unauthorized">
+        <img src={std} alt="" />
+
+        <h3>{text}</h3>
+
+        {showButton ? (
+          <Link
+            to="/"
+            onClick={() => {
+              loadHP('loading...');
+            }}
+          >
+            {' '}
+            Go Back to Projects
+          </Link>
+        ) : (
+          <Link
+            to="/"
+            onClick={() => {
+              loadHP('loading...');
+            }}
+          >
+            {' '}
+            Go Back
+          </Link>
+        )}
+      </div>
+    </div>
+  );
+}
+
+Unauthorized.propTypes = {
+  text: PropTypes.string.isRequired,
+  showButton: PropTypes.bool.isRequired,
+  loadHP: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  loadHP: (show) => dispatch(LoadHP(show)),
+});
+
+export default withRouter(
+  connect(null, mapDispatchToProps)(Unauthorized),
+);

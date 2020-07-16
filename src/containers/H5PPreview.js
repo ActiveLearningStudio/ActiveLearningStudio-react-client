@@ -16,20 +16,29 @@ class H5PPreview extends React.Component {
   }
 
   componentDidMount() {
-    const { resourceId } = this.props;
-    this.loadResource(resourceId);
+    const { resourceId, showLtiPreview } = this.props;
+
+    if (showLtiPreview) {
+      this.loadResourceLti(resourceId);
+    } else {
+      this.loadResource(resourceId);
+    }
   }
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps(props) {
-    const { resourceId } = this.props;
+    const { resourceId, showLtiPreview } = this.props;
     if (resourceId !== props.resourceId) {
       const h5pIFrame = document.getElementsByClassName('h5p-iframe');
       if (h5pIFrame.length) {
         h5pIFrame[0].remove();
       }
 
-      this.loadResource(props.resourceId);
+      if (showLtiPreview) {
+        this.loadResourceLti(props.resourceId);
+      } else {
+        this.loadResource(props.resourceId);
+      }
     }
   }
 
@@ -45,6 +54,24 @@ class H5PPreview extends React.Component {
         `${global.config.laravelAPIUrl}/h5p-resource-settings`,
         { resourceId },
         { headers: { Authorization: `Bearer ${token}` } },
+      )
+      .then((response) => {
+        this.resourceLoaded(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  loadResourceLti = (resourceId) => {
+    if (resourceId === 0) {
+      return;
+    }
+
+    axios
+      .post(
+        `${global.config.laravelAPIUrl}/h5p-resource-settings-open`,
+        { resourceId },
       )
       .then((response) => {
         this.resourceLoaded(response);
@@ -96,6 +123,11 @@ class H5PPreview extends React.Component {
 H5PPreview.propTypes = {
   resource: PropTypes.object.isRequired,
   resourceId: PropTypes.number.isRequired,
+  showLtiPreview: PropTypes.bool,
+};
+
+H5PPreview.defaultProps = {
+  showLtiPreview: false,
 };
 
 const mapStateToProps = (state) => ({

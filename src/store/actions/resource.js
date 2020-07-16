@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 import {
   SHOW_CREATE_RESOURCE_MODAL,
   HIDE_CREATE_RESOURCE_MODAL,
@@ -20,7 +19,30 @@ import {
   RESOURCE_VALIDATION_ERRORS,
   RESOURCE_THUMBNAIL_PROGRESS,
   HIDE_RESOURCE_ACTIVITY_BUILD,
+  SAVE_GENERIC_RESOURCE,
 } from '../actionTypes';
+
+export const saveGenericResource = () => ({
+  type: SAVE_GENERIC_RESOURCE,
+});
+
+export const hideCreateResourceModal = () => ({
+  type: HIDE_CREATE_RESOURCE_MODAL,
+});
+
+export const saveGenericResourceAction = (resourceData) => async (dispatch) => {
+  const { token } = JSON.parse(localStorage.getItem('auth'));
+  const response = await axios.post(
+    `${global.config.laravelAPIUrl}/activity`,
+    resourceData,
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+
+  if (response.data.status === 'success') {
+    dispatch(saveGenericResource());
+    dispatch(hideCreateResourceModal());
+  }
+};
 
 export const loadResource = (resource, previous, next) => ({
   type: LOAD_RESOURCE,
@@ -33,7 +55,7 @@ export const loadResource = (resource, previous, next) => ({
 export const loadResourceAction = (resourceId) => async (dispatch) => {
   const { token } = JSON.parse(localStorage.getItem('auth'));
   const response = await axios.post(
-    '/api/loadresource',
+    '/api/load-resource',
     { resourceId },
     { headers: { Authorization: `Bearer ${token}` } },
   );
@@ -62,10 +84,6 @@ export const showCreateResourceModalAction = (id) => async (dispatch) => {
     throw new Error(e);
   }
 };
-
-export const hideCreateResourceModal = () => ({
-  type: HIDE_CREATE_RESOURCE_MODAL,
-});
 
 export const hideCreateResourceModalAction = () => async (dispatch) => {
   try {
@@ -114,24 +132,18 @@ export const hideBuildActivity = () => ({
 export const showBuildActivityAction = (
   editor = null,
   editorType = null,
-  activityid = null,
+  activityId = null,
 ) => async (dispatch) => {
   try {
-    if (activityid) {
+    if (activityId) {
       const response = await axios.get(
-        `${global.config.laravelAPIUrl}/activity/${activityid}`,
+        `${global.config.laravelAPIUrl}/activity/${activityId}`,
       );
 
-      const lib = `${response.data.data.library_name} ${response.data.data.major_version
-      }.${response.data.data.minor_version}`;
+      const { data } = response.data;
+      const lib = `${data.library_name} ${data.major_version}.${data.minor_version}`;
 
-      dispatch(
-        showBuildActivity(
-          lib,
-          response.data.data.type,
-          response.data.data.h5p,
-        ),
-      );
+      dispatch(showBuildActivity(lib, data.type, data.h5p));
     } else {
       dispatch(showBuildActivity(editor, editorType, ''));
     }
@@ -146,16 +158,16 @@ export const showDescribeActivity = (activity, metadata = null) => ({
   metadata,
 });
 
-export const showDescribeActivityAction = (activity, activityid = null) => async (dispatch) => {
+export const showDescribeActivityAction = (activity, activityId = null) => async (dispatch) => {
   try {
-    if (activityid) {
+    if (activityId) {
       const response = await axios.get(
-        `${global.config.laravelAPIUrl}/activity/${activityid}`,
+        `${global.config.laravelAPIUrl}/activity/${activityId}`,
       );
       let metadata = {
         title: '',
-        subjectid: '',
-        educationlevelid: '',
+        subjectId: '',
+        educationLevelId: '',
       };
       if (response.data.data.metadata != null) {
         metadata = response.data.data.metadata;
@@ -169,19 +181,19 @@ export const showDescribeActivityAction = (activity, activityid = null) => async
   }
 };
 
-export const editResource = (playlistid, resource, editor, editorType) => ({
+export const editResource = (playlistId, resource, editor, editorType) => ({
   type: EDIT_RESOURCE,
-  playlistid,
+  playlistId,
   resource,
   editor,
   editorType,
 });
 
 export const editResourceAction = (
-  playlistid,
+  playlistId,
   editor,
   editorType,
-  activityid,
+  activityId,
   metadata,
 ) => async (dispatch) => {
   try {
@@ -199,9 +211,9 @@ export const editResourceAction = (
     };
 
     const response = await axios.put(
-      `${global.config.laravelAPIUrl}/activity/${activityid}`,
+      `${global.config.laravelAPIUrl}/activity/${activityId}`,
       {
-        playlistid,
+        playlistId,
         metadata,
         action: 'create',
         data,
@@ -214,7 +226,7 @@ export const editResourceAction = (
     const resource = {};
     resource.id = response.data.data._id;
 
-    dispatch(editResource(playlistid, resource, editor, editorType));
+    dispatch(editResource(playlistId, resource, editor, editorType));
   } catch (e) {
     throw new Error(e);
   }
@@ -224,16 +236,16 @@ export const validationErrorsResource = () => ({
   type: RESOURCE_VALIDATION_ERRORS,
 });
 
-export const createResource = (playlistid, resource, editor, editorType) => ({
+export const createResource = (playlistId, resource, editor, editorType) => ({
   type: CREATE_RESOURCE,
-  playlistid,
+  playlistId,
   resource,
   editor,
   editorType,
 });
 
 export const createResourceAction = (
-  playlistid,
+  playlistId,
   editor,
   editorType,
   metadata,
@@ -247,7 +259,7 @@ export const createResourceAction = (
 
     // h5peditorCopy to be taken from h5papi/storage/h5p/laravel-h5p/js/laravel-h5p.js
     const data = {
-      playlistid,
+      playlistId,
       library: window.h5peditorCopy.getLibrary(),
       parameters: JSON.stringify(window.h5peditorCopy.getParams()),
       action: 'create',
@@ -268,8 +280,8 @@ export const createResourceAction = (
       const insertedResource = await axios.post(
         `${global.config.laravelAPIUrl}/activity`,
         {
-          mysqlid: resource.id,
-          playlistid,
+          mysqlId: resource.id,
+          playlistId,
           metadata,
           action: 'create',
         },
@@ -279,9 +291,9 @@ export const createResourceAction = (
       );
 
       resource.id = insertedResource.data.data._id;
-      resource.mysqlid = insertedResource.data.data.mysqlid;
+      resource.mysqlId = insertedResource.data.data.mysqlId;
 
-      dispatch(createResource(playlistid, resource, editor, editorType));
+      dispatch(createResource(playlistId, resource, editor, editorType));
     } else {
       dispatch(validationErrorsResource());
     }
@@ -291,7 +303,7 @@ export const createResourceAction = (
 };
 
 export const createResourceByH5PUploadAction = (
-  playlistid,
+  playlistId,
   editor,
   editorType,
   payload,
@@ -321,8 +333,8 @@ export const createResourceByH5PUploadAction = (
       const responseActivity = await axios.post(
         `${global.config.laravelAPIUrl}/activity`,
         {
-          mysqlid: dataUpload.id,
-          playlistid,
+          mysqlId: dataUpload.id,
+          playlistId,
           metadata,
           action: 'create',
         },
@@ -335,9 +347,9 @@ export const createResourceByH5PUploadAction = (
       );
       const resource = { ...responseActivity.data.data };
       resource.id = responseActivity.data.data._id;
-      resource.mysqlid = responseActivity.data.data.mysqlid;
+      resource.mysqlId = responseActivity.data.data.mysqlId;
 
-      dispatch(createResource(playlistid, resource, editor, editorType));
+      dispatch(createResource(playlistId, resource, editor, editorType));
     } else {
       throw new Error();
     }
@@ -372,7 +384,6 @@ export const hidePreviewResourceModalAction = () => async (dispatch) => {
 };
 
 // runs delete resource ajax
-
 export const deleteResource = (resourceId) => ({
   type: DELETE_RESOURCE,
   resourceId,
@@ -380,9 +391,10 @@ export const deleteResource = (resourceId) => ({
 
 export const deleteResourceAction = (resourceId) => async (dispatch) => {
   try {
-    const response = await axios.delete(`/api/activity/${resourceId}`, {
-      resourceId,
-    });
+    const response = await axios.delete(
+      `/api/activity/${resourceId}`,
+      { resourceId },
+    );
 
     if (response.data.status === 'success') {
       dispatch(deleteResource(resourceId));
@@ -392,8 +404,7 @@ export const deleteResourceAction = (resourceId) => async (dispatch) => {
   }
 };
 
-// handles the store.actions when some activity type is switched inside activity type wizard
-
+// handles the actions when some activity type is switched inside activity type wizard
 export const onChangeActivityType = (activityTypeId) => ({
   type: SELECT_ACTIVITY_TYPE,
   activityTypeId,
@@ -408,8 +419,7 @@ export const onChangeActivityTypeAction = (activityTypeId) => (dispatch) => {
   }
 };
 
-// handles the store.actions when some activity switched inside select activity wizard
-
+// handles the actions when some activity switched inside select activity wizard
 export const onChangeActivity = (activity) => ({
   type: SELECT_ACTIVITY,
   activity,
@@ -424,26 +434,24 @@ export const onChangeActivityAction = (activity) => (dispatch) => {
 };
 
 // Metadata saving inside state when metadata form is submitted
-
-export const onSubmitDescribeActivity = (metadata, activityid) => ({
+export const onSubmitDescribeActivity = (metadata, activityId) => ({
   type: DESCRIBE_ACTIVITY,
   metadata,
-  activityid,
+  activityId,
 });
 
-export const onSubmitDescribeActivityAction = (metadata, activityid = null) => (dispatch) => {
+export const onSubmitDescribeActivityAction = (metadata, activityId = null) => (dispatch) => {
   try {
-    dispatch(onSubmitDescribeActivity(metadata, activityid));
+    dispatch(onSubmitDescribeActivity(metadata, activityId));
   } catch (e) {
     console.log(e);
   }
 };
 
 // uploads the thumbnail of resource
-
 export const uploadResourceThumbnail = (thumbUrl) => ({
   type: UPLOAD_RESOURCE_THUMBNAIL,
-  thumb_url: thumbUrl,
+  thumbUrl,
 });
 
 export const resourceThumbnailProgress = (progress) => ({
@@ -467,6 +475,7 @@ export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
         );
       },
     };
+
     return axios
       .post(
         `${global.config.laravelAPIUrl}/post-upload-image`,

@@ -33,7 +33,7 @@ function Header(props) {
       createProjNode.current.contains(e.target)
       || createTeamNode.current.contains(e.target)
     ) {
-      return;
+      // return;
     }
 
     closeMenu();

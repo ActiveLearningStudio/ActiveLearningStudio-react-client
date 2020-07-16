@@ -134,7 +134,7 @@ let ResourceDescribeActivity = (props) => {
 
                           {resource.progress}
 
-                          {resource.newResource.metadata.thumb_url && (
+                          {resource.newResource.metadata.thumbUrl && (
                             <div className="thumb-display">
                               <div
                                 className="success"
@@ -149,7 +149,7 @@ let ResourceDescribeActivity = (props) => {
 
                               <div className="thumb">
                                 <img
-                                  src={`${global.config.laravelAPIUrl}${resource.newResource.metadata.thumb_url}`}
+                                  src={`${global.config.laravelAPIUrl}${resource.newResource.metadata.thumbUrl}`}
                                   alt=""
                                 />
                               </div>
@@ -225,7 +225,7 @@ ResourceDescribeActivity = reduxForm({
 
     try {
       // image validation
-      if (!resource.newResource.metadata.thumb_url) {
+      if (!resource.newResource.metadata.thumbUrl) {
         imageValidation = '* Required';
         return false;
       }

@@ -1,25 +1,46 @@
 /* eslint-disable max-len */
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { Editor } from '@tinymce/tinymce-react';
+
+import { saveGenericResourceAction } from 'store/actions/resource';
 
 // TODO: need to convert to functional component
 // set API key via .env.local
 export class TinyEditor extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      textContent: '',
+    };
+  }
+
   handleEditorChange = (content) => {
-    console.log('Content was updated:', content);
+    this.setState({ textContent: content });
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+
+    const { textContent } = this.state;
+    const { match, resource, saveGenericResource } = this.props;
+
+    saveGenericResource({
+      playlistId: match.params.playlistId,
+      mysqlId: null,
+      type: resource.newResource.activity.type,
+      metadata: resource.newResource.metadata,
+      textContent,
+    });
   }
 
   render() {
     return (
       <div className="post">
-        <h1>New Post</h1>
-
-        <div className="post-title">
-          <label>
-            <span>Title</span>
-            <input type="text" name="title" className="form-control" />
-          </label>
-        </div>
+        <h1>New Immersive Reader Resource</h1>
 
         <div className="post-title">
           <label>
@@ -46,7 +67,13 @@ export class TinyEditor extends React.Component {
 
         <div className="form-group">
           <div className="col-md-9 col-md-offset-3">
-            <button type="submit" className="add-resource-submit-btn" onClick={this.handleH5PSubmit}>Finish</button>
+            <button
+              type="submit"
+              className="add-resource-submit-btn"
+              onClick={this.handleSubmit}
+            >
+              Finish
+            </button>
           </div>
         </div>
       </div>
@@ -54,4 +81,16 @@ export class TinyEditor extends React.Component {
   }
 }
 
-export default TinyEditor;
+TinyEditor.propTypes = {
+  match: PropTypes.object.isRequired,
+  resource: PropTypes.object.isRequired,
+  saveGenericResource: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  saveGenericResource: (resourceData) => dispatch(saveGenericResourceAction(resourceData)),
+});
+
+export default withRouter(
+  connect(null, mapDispatchToProps)(TinyEditor),
+);

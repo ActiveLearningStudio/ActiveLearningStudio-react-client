@@ -60,7 +60,7 @@ let imageValidation = '';
 const onSubmit = async (values, dispatch, props) => {
   try {
     // image validation
-    if (!props.resource.editResource.metadata.thumb_url) {
+    if (!props.resource.editResource.metadata.thumbUrl) {
       imageValidation = '* Required';
       return false;
     }
@@ -126,7 +126,7 @@ let ResourceDescribeActivity = (props) => {
 
                           {resource.progress}
 
-                          {resource.editResource.metadata.thumb_url && (
+                          {resource.editResource.metadata.thumbUrl && (
                             <div className="thumb-display">
                               <div
                                 className="success"
@@ -136,7 +136,7 @@ let ResourceDescribeActivity = (props) => {
                               </div>
                               <div className="thumb">
                                 <img
-                                  src={global.config.laravelAPIUrl + resource.editResource.metadata.thumb_url}
+                                  src={global.config.laravelAPIUrl + resource.editResource.metadata.thumbUrl}
                                   alt=""
                                 />
                               </div>
@@ -211,8 +211,8 @@ const mapStateToProps = (state) => ({
   resource: state.resource,
   initialValues: {
     metaTitle: state.resource.editResource.metadata.title,
-    metaSubject: state.resource.editResource.metadata.subjectid,
-    metaEducationLevels: state.resource.editResource.metadata.educationlevelid,
+    metaSubject: state.resource.editResource.metadata.subjectId,
+    metaEducationLevels: state.resource.editResource.metadata.educationLevelId,
   },
 });
 

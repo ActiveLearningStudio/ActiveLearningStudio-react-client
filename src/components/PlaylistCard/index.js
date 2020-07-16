@@ -14,6 +14,7 @@ import {
 } from 'store/actions/playlist';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import ResourceCard from '../ResourceCard';
+import ShareLink from '../ResourceCard/ShareLink';
 
 // TODO: need to clean up attributes, update to functional component
 // need to refactor template functions
@@ -46,7 +47,7 @@ class PlaylistCard extends React.Component {
       <ResourceCard
         {...this.props}
         resource={resource}
-        key={resource.id}
+        key={resource._id}
         index={index}
       />
     ));
@@ -69,6 +70,7 @@ class PlaylistCard extends React.Component {
       index,
       playlist,
       title,
+      projectId,
       playlistTitleClicked,
       changePlaylistTitle,
     } = this.props;
@@ -104,9 +106,8 @@ class PlaylistCard extends React.Component {
                     className={playlistTitleClicked ? 'show' : 'hide'}
                     onBlur={(e) => changePlaylistTitle(e, playlist._id)}
                     onKeyPress={this.onEnterPress}
-                  >
-                    {title}
-                  </textarea>
+                    defaultValue={title}
+                  />
 
                   <div className="dropdown pull-right playlist-dropdown check">
                     <button
@@ -159,6 +160,12 @@ class PlaylistCard extends React.Component {
                         Send To
                       </a>
 
+                      <ShareLink
+                        playlistId={playlist._id}
+                        playlistName={title}
+                        projectName={projectId.selectedProject && projectId.selectedProject.name}
+                      />
+
                       {/*
                       <a
                         className="dropdown-item"
@@ -184,7 +191,11 @@ class PlaylistCard extends React.Component {
                 </h2>
               </div>
 
-              <Droppable droppableId={playlist._id} type="resource">
+              <Droppable
+                key={playlist._id}
+                droppableId={playlist._id}
+                type="resource"
+              >
                 {(provd) => (
                   <div
                     className="list-body"
@@ -222,6 +233,7 @@ PlaylistCard.propTypes = {
   index: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   playlist: PropTypes.object.isRequired,
+  projectId: PropTypes.object.isRequired,
   playlistTitleClicked: PropTypes.bool.isRequired,
   showDeletePopup: PropTypes.func.isRequired,
   hideDeletePopup: PropTypes.func.isRequired,
