@@ -215,7 +215,7 @@ class LtiPlaylistPreview extends React.Component {
                           confirmButtonText: 'Yes',
                         }).then((result) => {
                           if (result.value) {
-                            history.push('/');
+                            history.push(`/project/preview2/${selectedPlaylist.project._id}`);
                           }
                         });
                       }
@@ -224,6 +224,7 @@ class LtiPlaylistPreview extends React.Component {
                 }}
               >
                 <FontAwesomeIcon icon="chevron-left" />
+                {' '}
                 Switch to previous playlist
               </Link>
             </div>
@@ -311,7 +312,7 @@ class LtiPlaylistPreview extends React.Component {
                           confirmButtonText: 'Yes',
                         }).then((result) => {
                           if (result.value) {
-                            history.push('/');
+                            history.push(`/project/preview2/${selectedPlaylist.project._id}`);
                           }
                         });
                       }

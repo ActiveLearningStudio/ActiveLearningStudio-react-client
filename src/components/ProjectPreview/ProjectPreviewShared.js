@@ -145,11 +145,11 @@ function ProjectPreviewShared(props) {
               </div>
 
               <div className="container">
-                <div className="play_listdiv">
-                  <div className="plytitle_div">
-                    <div className="title_md">Playlists</div>
+                <div className="playlist-div">
+                  <div className="playlist-title-div">
+                    <div className="title-md">Playlists</div>
                   </div>
-                  <div className="all_plylist check-custom">
+                  <div className="all-playlist check-custom">
                     <div className="playlist-accordion" id="custom_accordion">
                       {playlists}
                     </div>

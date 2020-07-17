@@ -22,6 +22,7 @@ import {
   LOAD_MY_PROJECTS_SELECTED,
   CHANGE_LOADING,
 } from '../actionTypes';
+import SharePreviewPopup from '../../helpers/SharePreviewPopup';
 
 // Publishes the project in LEARN
 export const shareProject = (project) => ({
@@ -420,7 +421,7 @@ export const loadMyProjectsActionPreviewShared = (projectId) => async (dispatch)
 };
 
 // toggle project share
-export const toggleProjectShare = async (projectId, ProjectName) => {
+export const toggleProjectShareAction = async (projectId, ProjectName) => {
   const { token } = JSON.parse(localStorage.getItem('auth'));
   const response = await axios.post(
     `${global.config.laravelAPIUrl}/share-project`,
@@ -434,30 +435,12 @@ export const toggleProjectShare = async (projectId, ProjectName) => {
 
   if (response.data.status === 'success') {
     const protocol = `${window.location.href.split('/')[0]}//`;
-    Swal({
-      html: `Your can now share project <strong>"${ProjectName}"</strong><br>
-      Anyone with the link below can access your project:<br>
-      <br>
-      <a target="_blank" href="/project/shared/${projectId.trim()}">
-        ${protocol + window.location.host}/project/shared/${projectId.trim()}
-      </a>
-      <hr />
-      <div id="croom">
-        <span>Share: </span>
-        <div
-          class="g-sharetoclassroom"
-          data-size="32"
-          data-url="${protocol + window.location.host}/project/shared/${projectId.trim()}"
-        >
-          Loading Classroom...
-        </div>
-      </div>`,
-    });
-    window.gapi.sharetoclassroom.go('croom');
+    const url = `${protocol + window.location.host}/project/shared/${projectId.trim()}`;
+    return SharePreviewPopup(url, ProjectName);
   }
 };
 
-export const toggleProjectShareRemoved = async (projectId, ProjectName) => {
+export const toggleProjectShareRemovedAction = async (projectId, ProjectName) => {
   const { token } = JSON.parse(localStorage.getItem('auth'));
   const response = await axios.post(
     `${global.config.laravelAPIUrl}/remove-share-project`,

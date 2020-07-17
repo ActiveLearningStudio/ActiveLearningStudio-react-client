@@ -9,6 +9,7 @@ import 'react-widgets/dist/css/react-widgets.css';
 import 'react-placeholder/lib/reactPlaceholder.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import App from './containers/App';
 import store from './store';

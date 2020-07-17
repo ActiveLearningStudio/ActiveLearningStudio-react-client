@@ -239,7 +239,7 @@ class PlaylistPreview extends React.Component {
                           confirmButtonText: 'Yes',
                         }).then((result) => {
                           if (result.value) {
-                            history.push('/');
+                            history.push(`/project/preview2/${selectedPlaylist.project._id}`);
                           }
                         });
                       }
@@ -248,8 +248,8 @@ class PlaylistPreview extends React.Component {
                 }}
               >
                 <FontAwesomeIcon icon="chevron-left" />
-                Switch to previous playlist
                 {' '}
+                Switch to previous playlist
               </Link>
             </div>
           </div>
@@ -328,7 +328,7 @@ class PlaylistPreview extends React.Component {
                           confirmButtonText: 'Yes',
                         }).then((result) => {
                           if (result.value) {
-                            history.push('/');
+                            history.push(`/project/preview2/${selectedPlaylist.project._id}`);
                           }
                         });
                       }
