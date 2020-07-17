@@ -6,6 +6,8 @@ import ReactGA from 'react-ga';
 
 import LoginPage from 'containers/Auth/LoginPage';
 import RegisterPage from 'containers/Auth/RegisterPage';
+import ForgotPasswordPage from 'containers/Auth/ForgotPasswordPage';
+import ResetPasswordPage from 'containers/Auth/ResetPasswordPage';
 import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
 
@@ -125,6 +127,9 @@ const AppRouter = () => {
         />
 
         <PublicRoute exact path="/login" component={LoginPage} />
+        <PublicRoute exact path="/register" component={RegisterPage} />
+        <PublicRoute exact path="/forgot-password" component={ForgotPasswordPage} />
+        <PublicRoute exact path="/reset-password" component={ResetPasswordPage} />
         <PublicRoute exact path="/register" component={RegisterPage} />
       </Switch>
     </Router>

@@ -5,12 +5,12 @@ import { Link, withRouter } from 'react-router-dom';
 import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { loginAction } from 'store/actions/auth';
-
 import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
 import logo from 'assets/images/logo.svg';
 import loader from 'assets/images/loader.svg';
+import { loginAction } from 'store/actions/auth';
+import Error from './Error';
 
 import './style.scss';
 
@@ -54,20 +54,9 @@ class LoginPage extends React.Component {
     return !validator.isEmail(email) || validator.isEmpty(password);
   }
 
-  renderError = () => {
-    const { error } = this.props;
-    if (error && typeof error === 'object' && error.errors && error.errors.length > 0) {
-      return (
-        <p className="error-msg alert alert-danger" role="alert">
-          {error.errors[0]}
-        </p>
-      );
-    }
-  };
-
   render() {
     const { email, password, rememberMe } = this.state;
-    const { isLoading } = this.props;
+    const { isLoading, error } = this.props;
 
     return (
       <div className="auth-page">
@@ -87,7 +76,7 @@ class LoginPage extends React.Component {
             className="auth-form"
           >
             <div className="form-group">
-              <FontAwesomeIcon icon="user" />
+              <FontAwesomeIcon icon="envelope" />
               <input
                 autoFocus
                 className="input-box"
@@ -122,7 +111,7 @@ class LoginPage extends React.Component {
                 Remember Me
               </label>
               <div className="forgot-password-box">
-                <a href="/">Reset Password</a>
+                <Link to="/forgot-password">Forgot Password ?</Link>
               </div>
             </div>
 
@@ -140,7 +129,7 @@ class LoginPage extends React.Component {
               </button>
             </div>
 
-            {this.renderError()}
+            <Error error={error} />
 
             <div className="form-group text-center">
               New to here?
@@ -173,7 +162,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
-  isLoading: state.auth.isLoggingIn,
+  isLoading: state.auth.isLoading,
   error: state.auth.error,
 });
 

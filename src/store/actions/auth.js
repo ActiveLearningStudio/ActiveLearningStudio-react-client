@@ -1,5 +1,6 @@
 import authService from 'services/auth.service';
 import storageService from 'services/storage.service';
+import { getErrors } from 'utils';
 import { USER_TOKEN_KEY } from '../../constants';
 import {
   LOGIN_REQUEST,
@@ -8,6 +9,12 @@ import {
   SIGNUP_REQUEST,
   SIGNUP_SUCCESS,
   SIGNUP_FAIL,
+  FORGOT_PASSWORD_REQUEST,
+  FORGOT_PASSWORD_SUCCESS,
+  FORGOT_PASSWORD_FAIL,
+  RESET_PASSWORD_REQUEST,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_FAIL,
 } from '../actionTypes';
 
 export const loginAction = (data) => async (dispatch) => {
@@ -38,7 +45,52 @@ export const loginAction = (data) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: LOGIN_FAIL,
-      payload: { error: e },
+      payload: { error: getErrors(e) },
+    });
+
+    throw new Error(e);
+  }
+};
+
+export const forgotPasswordAction = (data) => async (dispatch) => {
+  dispatch({
+    type: FORGOT_PASSWORD_REQUEST,
+  });
+
+  try {
+    await authService.forgotPassword(data);
+
+    dispatch({
+      type: FORGOT_PASSWORD_SUCCESS,
+      payload: data,
+    });
+
+    storageService.setItem('forgotPasswordEmail', data.email);
+  } catch (e) {
+    dispatch({
+      type: FORGOT_PASSWORD_FAIL,
+      payload: { error: getErrors(e) },
+    });
+
+    throw new Error(e);
+  }
+};
+
+export const resetPasswordAction = (data) => async (dispatch) => {
+  dispatch({
+    type: RESET_PASSWORD_REQUEST,
+  });
+
+  try {
+    await authService.resetPassword(data);
+
+    dispatch({
+      type: RESET_PASSWORD_SUCCESS,
+    });
+  } catch (e) {
+    dispatch({
+      type: RESET_PASSWORD_FAIL,
+      payload: { error: getErrors(e) },
     });
 
     throw new Error(e);
@@ -62,7 +114,7 @@ export const registerAction = (data) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: SIGNUP_FAIL,
-      payload: { error: e },
+      payload: { error: getErrors(e) },
     });
 
     throw new Error(e);

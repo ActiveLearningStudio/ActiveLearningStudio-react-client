@@ -6,14 +6,18 @@ import {
   SIGNUP_SUCCESS,
   SIGNUP_FAIL,
   LOG_OUT,
+  FORGOT_PASSWORD_REQUEST,
+  FORGOT_PASSWORD_SUCCESS,
+  FORGOT_PASSWORD_FAIL,
+  RESET_PASSWORD_REQUEST,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_FAIL,
 } from '../actionTypes';
 
 const INITIAL_STATE = {
-  isLoggingIn: false,
-  isSigningUp: false,
-
+  isLoading: false,
   user: null,
-
+  forgotPasswordEmail: null,
   error: '',
 };
 
@@ -22,36 +26,78 @@ export default (state = INITIAL_STATE, action) => {
     case LOGIN_REQUEST:
       return {
         ...state,
-        isLoggingIn: true,
+        isLoading: true,
+        error: null,
       };
     case LOGIN_SUCCESS:
       return {
         ...state,
-        isLoggingIn: false,
+        isLoading: false,
         user: action.payload.user,
+        error: null,
       };
     case LOGIN_FAIL:
       return {
         ...state,
-        isLoggingIn: false,
+        isLoading: false,
         error: action.payload.error,
       };
 
     case SIGNUP_REQUEST:
       return {
         ...state,
-        isSigningUp: true,
+        isLoading: true,
+        error: null,
       };
     case SIGNUP_SUCCESS:
       return {
         ...state,
-        isSigningUp: false,
+        isLoading: false,
         user: action.payload.user,
+        error: null,
       };
     case SIGNUP_FAIL:
       return {
         ...state,
-        isSigningUp: false,
+        isLoading: false,
+        error: action.payload.error,
+      };
+
+    case FORGOT_PASSWORD_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        error: null,
+      };
+    case FORGOT_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+      };
+    case FORGOT_PASSWORD_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error,
+      };
+
+    case RESET_PASSWORD_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        error: null,
+      };
+    case RESET_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+      };
+    case RESET_PASSWORD_FAIL:
+      return {
+        ...state,
+        isLoading: false,
         error: action.payload.error,
       };
 

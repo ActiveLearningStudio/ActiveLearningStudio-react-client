@@ -5,12 +5,12 @@ import { Link, withRouter } from 'react-router-dom';
 import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { registerAction } from 'store/actions/auth';
-
 import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
 import logo from 'assets/images/logo.svg';
 import loader from 'assets/images/loader.svg';
+import { registerAction } from 'store/actions/auth';
+import Error from './Error';
 
 import './style.scss';
 
@@ -90,17 +90,6 @@ class RegisterPage extends React.Component {
       || validator.isEmpty(jobTitle);
   }
 
-  renderError = () => {
-    const { error } = this.props;
-    if (error && typeof error === 'object' && error.errors && error.errors.length > 0) {
-      return (
-        <p className="error-msg alert alert-danger" role="alert">
-          {error.errors[0]}
-        </p>
-      );
-    }
-  };
-
   render() {
     const {
       firstName,
@@ -111,7 +100,7 @@ class RegisterPage extends React.Component {
       organizationName,
       jobTitle,
     } = this.state;
-    const { isLoading } = this.props;
+    const { isLoading, error } = this.props;
 
     return (
       <div className="auth-page">
@@ -172,7 +161,7 @@ class RegisterPage extends React.Component {
             </div>
 
             <div className="form-group">
-              <FontAwesomeIcon icon="user" />
+              <FontAwesomeIcon icon="envelope" />
               <input
                 autoFocus
                 className="input-box"
@@ -238,7 +227,7 @@ class RegisterPage extends React.Component {
               </button>
             </div>
 
-            {this.renderError()}
+            <Error error={error} />
 
             <div className="form-group text-center">
               Already have an account?
@@ -271,7 +260,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
-  isLoading: state.auth.isSigningUp,
+  isLoading: state.auth.isLoading,
   error: state.auth.error,
 });
 

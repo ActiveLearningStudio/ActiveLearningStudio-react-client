@@ -10,7 +10,19 @@ const register = (body) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const forgotPassword = (body) => httpService
+  .post('/forgot-password', body)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const resetPassword = (body) => httpService
+  .post('/reset-password', body)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   login,
   register,
+  forgotPassword,
+  resetPassword,
 };
