@@ -3628,6 +3628,27 @@ a:hover {
   margin-right: 5px;
 }
 
+
+.watcher.spaner {
+  display: flex;
+  justify-content: space-between;
+
+  align-items: center;
+  align-self: center;
+  background: #efefef;
+  padding: 10px 15px !important;
+
+  .react-switch {
+    margin-left: 10px;
+  }
+
+  div,
+  .sharedlink {
+    align-items: center;
+    display: flex;
+  }
+
+=======
 .google-script {
   display: none;
 }
@@ -3670,4 +3691,5 @@ a:hover {
       cursor:pointer;
     }
   }
+
 }

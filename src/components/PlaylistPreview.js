@@ -9,10 +9,15 @@ import gifloader from "../images/276.gif";
 import projecticon from "../images/project_icon.svg";
 const H5PPreview = React.lazy(() => import("../containers/H5PPreview"));
 import "./PlayListPreview.css";
-import { previewResource } from "../actions/resource";
+import {
+  previewResource,
+  resourceshared,
+  resourceUnshared,
+} from "../actions/resource";
 import { LoadHP } from "./../actions/playlist";
 import axios from "axios";
 import Unauthorized from "./unauthorized";
+import Switch from "react-switch";
 export class PlaylistPreview extends React.Component {
   constructor(props) {
     super(props);
@@ -22,6 +27,7 @@ export class PlaylistPreview extends React.Component {
       resourcetitle: "",
       allprojectsState: {},
       currentPlaylist: "",
+      activeShared: "",
       //  loading: "loading.ddd..",
     };
   }
@@ -36,9 +42,15 @@ export class PlaylistPreview extends React.Component {
         return data._id == nextProps.playlist.selectedPlaylist.projectid;
       });
       if (selectedplaylist.length > 0) {
+        var currentactvity = nextProps.playlist.selectedPlaylist.activities.filter(
+          (a) => a._id == prevState.resourceid
+        );
+        currentactvity = currentactvity.length > 0 && currentactvity[0].shared;
+
         return {
           allprojectsState: selectedplaylist[0].playlists,
           currentPlaylist: nextProps.playlist.selectedPlaylist,
+          activeShared: !!currentactvity,
         };
       } else {
         return {
@@ -51,16 +63,6 @@ export class PlaylistPreview extends React.Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
-
-    // //
-    // console.log(this.props.playlist);
-    // alert(
-    //   this.props.allproject.filter(
-    //     (data) => data.id == this.props.playlist.selectedPlaylist._id
-    //   )
-    // );
-
-    //
 
     this.props.loadPlaylistAction(this.props.playlistid);
     const checkvalifresourcer = async () => {
@@ -428,7 +430,6 @@ export class PlaylistPreview extends React.Component {
                   Project : {playlist.project.name}
                 </div>
               </Link>
-
               <Link
                 to={
                   "/project/" + this.props.playlist.selectedPlaylist.project._id
@@ -599,6 +600,73 @@ export class PlaylistPreview extends React.Component {
             </button> */}
 
                 <div className="scrollDiv long">
+                  <div className="watcher spaner">
+                    <div>
+                      Share Activity
+                      <Switch
+                        onColor="#5952c6"
+                        onChange={() => {
+                          const nameactivity =
+                            playlist.activities && playlist.activities.length
+                              ? playlist.activities.filter(
+                                  (a) => a._id == resourceid
+                                ).length > 0
+                                ? playlist.activities.filter(
+                                    (a) => a._id == resourceid
+                                  )[0].title
+                                : ""
+                              : "";
+                          if (this.state.activeShared) {
+                            Swal.fire({
+                              icon: "warning",
+                              title: `You are about to stop sharing <strong>${nameactivity}</strong>
+                    Please remember that anyone you have shared this activity with will no longer have access its contents.
+                                  Do you want to continue?`,
+                              showCloseButton: true,
+                              showCancelButton: true,
+                              focusConfirm: false,
+                              confirmButtonText: "Stop Sharing!",
+                              confirmButtonAriaLabel: "Stop Sharing!",
+                              cancelButtonText: "Cancel",
+                              cancelButtonAriaLabel: "Cancel",
+                            }).then((resp) => {
+                              if (resp.isConfirmed) {
+                                resourceUnshared(
+                                  this.state.resourceid,
+                                  nameactivity
+                                );
+                                this.props.loadPlaylistAction(
+                                  this.props.playlistid
+                                );
+                              }
+                            });
+                          } else {
+                            resourceshared(this.state.resourceid, nameactivity);
+                            this.props.loadPlaylistAction(
+                              this.props.playlistid
+                            );
+                          }
+                        }}
+                        checked={this.state.activeShared}
+                        className="react-switch"
+                        id="material-switch"
+                        handleDiameter={30}
+                        uncheckedIcon={false}
+                        checkedIcon={false}
+                      />
+                    </div>
+                    {this.state.activeShared && (
+                      <div
+                        className="sharedlink"
+                        onClick={() => {
+                          swal.fire("Share details goes here");
+                        }}
+                      >
+                        <i class="fa fa-external-link" aria-hidden="true"></i>
+                        View Shared Link
+                      </div>
+                    )}
+                  </div>
                   <div className="watcher">
                     You are watching from <span>{playlist.title} </span>
                   </div>

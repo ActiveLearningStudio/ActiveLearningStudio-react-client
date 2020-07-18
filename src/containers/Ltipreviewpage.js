@@ -14,6 +14,8 @@ import {
 
 import LtiPlaylistPreview from "../components/LtiPlaylistPreview";
 import LtiPlaylistPreviewShared from "../components/LtiPlaylistPreviewShared";
+import ActivityShared from "../components/ActivityShared";
+
 export class LtiPreviewPage extends React.Component {
   constructor(props) {
     super(props);
@@ -28,20 +30,28 @@ export class LtiPreviewPage extends React.Component {
   }
 
   render() {
-    var content =
-      this.props.previewType == "playlistshared" ? (
+    var content;
+    if (this.props.previewType == "playlistshared") {
+      content = (
         <LtiPlaylistPreviewShared
           playlistid={this.props.match.params.playlistid}
           resourceid={this.props.match.params.resourceid}
           showlti={true}
         />
-      ) : (
+      );
+    } else if (this.props.previewType == "activityshared") {
+      content = (
+        <ActivityShared resourceid={this.props.match.params.resourceid} />
+      );
+    } else {
+      content = (
         <LtiPlaylistPreview
           playlistid={this.props.match.params.playlistid}
           resourceid={this.props.match.params.resourceid}
           showlti={true}
         />
       );
+    }
 
     return (
       <div>
