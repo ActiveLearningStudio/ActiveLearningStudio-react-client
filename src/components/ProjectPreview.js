@@ -39,7 +39,6 @@ export default function ProjectPreview(props) {
   var first = true;
 
   useEffect(() => {
-
     try {
       var acc = document
         .getElementById("custom_accordian")
@@ -139,10 +138,7 @@ export default function ProjectPreview(props) {
           <div className="container">
             <div className="scne_div flex-wrap">
               <div className="sce_imgdiv">
-              <div id="content">
-              
-              
-              </div>
+                <div id="content"></div>
                 <Link to={"/project/" + currentProject._id}>
                   <img
                     alt="thumbnail"
@@ -180,14 +176,12 @@ export default function ProjectPreview(props) {
                                   showCloseButton: true,
                                   showCancelButton: true,
                                   focusConfirm: false,
-                                  confirmButtonText:
-                                    'Stop Sharing!',
-                                  confirmButtonAriaLabel: 'Stop Sharing!',
-                                  cancelButtonText:
-                                    'Cancel',
-                                  cancelButtonAriaLabel: 'Cancel'
-                                }).then(function(resp) {
-                                  if(resp.isConfirmed){
+                                  confirmButtonText: "Stop Sharing!",
+                                  confirmButtonAriaLabel: "Stop Sharing!",
+                                  cancelButtonText: "Cancel",
+                                  cancelButtonAriaLabel: "Cancel",
+                                }).then(function (resp) {
+                                  if (resp.isConfirmed) {
                                     toggleProjectshareremoved(
                                       currentProject._id,
                                       currentProject.name
@@ -202,8 +196,6 @@ export default function ProjectPreview(props) {
                                 );
                                 setActiveShared(!activeShared);
                               }
-
-                              
                             }}
                             checked={activeShared}
                             className="react-switch"
@@ -217,20 +209,10 @@ export default function ProjectPreview(props) {
                           <div
                             className="sharedlink"
                             onClick={() => {
-                              let protocol = window.location.href.split("/")[0] + "//" 
-                              
-                              Swal.fire({
-                                html: `Your can now share project <strong>"${currentProject.name}"</strong><br>
-                                      Anyone with the link below can access your project:<br>
-                                      <br><a target="_blank" href="/project/shared/${props.match.params.projectid.trim()}
-                                      ">${protocol+window.location.host}/project/shared/${props.match.params.projectid.trim()}</a>
-                                      <hr />
-                                      <div id="croom">
-                                      <span>Share: </span>
-                                      <div class="g-sharetoclassroom" data-size="32" data-url="${protocol+window.location.host}/project/shared/${props.match.params.projectid.trim()}" >Loading Classroom...</div>
-                                      </div>`,
-                              })
-                                window.gapi.sharetoclassroom.go("croom")
+                              let protocol =
+                                window.location.href.split("/")[0] + "//";
+
+                              window.gapi.sharetoclassroom.go("croom");
                             }}
                           >
                             <i

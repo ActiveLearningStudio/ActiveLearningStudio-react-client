@@ -15,25 +15,25 @@ function Header(props) {
   const createProjNode = useRef();
   const createTeamNode = useRef();
 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClick);
+  // useEffect(() => {
+  //   document.addEventListener("mousedown", handleClick);
 
-    return () => {
-      document.removeEventListener("mousedown", handleClick);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClick);
+  //   };
+  // }, []);
 
-  const handleClick = (e) => {
-    const { closeMenuAction } = props;
-    if (
-      createProjNode.current.contains(e.target) ||
-      createTeamNode.current.contains(e.target)
-    ) {
-      return;
-    }
+  // const handleClick = (e) => {
+  //   const { closeMenuAction } = props;
+  //   if (
+  //     createProjNode.current.contains(e.target) ||
+  //     createTeamNode.current.contains(e.target)
+  //   ) {
+  //     return;
+  //   }
 
-    // closeMenuAction();
-  };
+  // closeMenuAction();
+  //};
 
   return (
     <header>
@@ -133,56 +133,52 @@ function Header(props) {
                   <img src="/images/search.png" alt="search"></img>
                 </Link>
               </li>
-              <li
-                className={
-                  props.project.showUserSubMenu
-                    ? "active button-dropdown"
-                    : "hide active button-dropdown"
-                }
-              >
-                <Link to="#" className="dropbtn">
-                  {" "}
-                  <img
-                    src="/images/user.png"
-                    alt="user"
-                    title=""
-                    onClick={() => props.showUserSubMenuAction()}
-                  ></img>
-                </Link>
-                <div
-                  id="myDropdown"
-                  className="dropdown-content"
-                  ref={createTeamNode}
-                >
-                  <ul className="dropdown-menu user-dropdown">
-                    <Link to="#">
-                      <li>
-                        Welcome &nbsp;
-                        <span className="usernamelogin">
-                          {typeof window != "undefined" &&
-                            JSON.parse(window.localStorage.getItem("auth")) &&
-                            JSON.parse(window.localStorage.getItem("auth"))
-                              .displayName}
-                        </span>
-                      </li>
-                    </Link>
-                    <Link to="#">
-                      <li>My Account</li>
-                    </Link>
-                    <Link
-                      to="#"
-                      onClick={() => {
-                        Event(
-                          "button click",
-                          "User press Logout button",
-                          "Login Page"
-                        );
-                        props.startLogoutAction();
-                      }}
-                    >
-                      <li>Logout</li>
-                    </Link>
-                  </ul>
+              <li>
+                <div class="dropdown">
+                  <span
+                    class="dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <img src="/images/user.png" alt="user" title="" />
+                  </span>
+                  <div
+                    class="dropdown-menu user-dropdown"
+                    aria-labelledby="dropdownMenuButton"
+                  >
+                    <ul>
+                      <Link to="#">
+                        <li>
+                          Welcome &nbsp;
+                          <span className="usernamelogin">
+                            {typeof window != "undefined" &&
+                              JSON.parse(window.localStorage.getItem("auth")) &&
+                              JSON.parse(window.localStorage.getItem("auth"))
+                                .displayName}
+                          </span>
+                        </li>
+                      </Link>
+                      <Link to="#">
+                        <li>My Account</li>
+                      </Link>
+                      <Link
+                        to="#"
+                        onClick={() => {
+                          Event(
+                            "button click",
+                            "User press Logout button",
+                            "Login Page"
+                          );
+                          props.startLogoutAction();
+                        }}
+                      >
+                        <li>Logout</li>
+                      </Link>
+                    </ul>
+                  </div>
                 </div>
               </li>
             </ul>

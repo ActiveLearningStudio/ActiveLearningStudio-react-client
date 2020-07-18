@@ -23,7 +23,7 @@ import {
 } from "./../constants/actionTypes";
 
 export const saveGenericResource = () => ({
-  type: SAVE_GENERIC_RESOURCE
+  type: SAVE_GENERIC_RESOURCE,
 });
 
 export const saveGenericResourceAction = (resourceData) => {
@@ -216,6 +216,69 @@ export const editResource = (playlistid, resource, editor, editorType) => ({
   editor,
   editorType,
 });
+
+//resource shared
+
+export const resourceUnshared = (resourceid, resourceName) => {
+  const { token } = JSON.parse(localStorage.getItem("auth"));
+
+  axios
+    .post(
+      global.config.laravelAPIUrl + "/remove-share-activity",
+      {
+        resourceid,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    )
+    .then((res) => {
+      if (res.data.status == "success") {
+        Swal.fire({
+          title: `You stopped sharing <strong>"${resourceName}"</strong> ! `,
+          html: `Please remember that anyone you have shared this activity with, will no longer have access to its contents.`,
+        });
+      }
+    });
+};
+
+//resource unshared
+
+export const resourceshared = (resourceid, resourceName) => {
+  const { token } = JSON.parse(localStorage.getItem("auth"));
+
+  axios
+    .post(
+      global.config.laravelAPIUrl + "/share-activity",
+      {
+        resourceid,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    )
+    .then((res) => {
+      if (res.data.status == "success") {
+        let protocol = window.location.href.split("/")[0] + "//";
+
+        Swal.fire({
+          html: `Your can now share project <strong>"${resourceName}"</strong><br>
+                Anyone with the link below can access your activity:<br>
+                <br><a target="_blank" href="/shared/activity/${resourceid.trim()}
+                ">${
+                  protocol + window.location.host
+                }/sahred/activity/${resourceid.trim()}</a>
+              `,
+        });
+      }
+    });
+};
 
 export const editResourceAction = (
   playlistid,
