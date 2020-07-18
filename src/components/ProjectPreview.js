@@ -12,7 +12,7 @@ import {
 } from "../actions/project";
 import Switch from "react-switch";
 import "./ProductDetails.css";
-import SharePreviewPopup from '../helpers/SharePreviewPopup'
+import SharePreviewPopup from "../helpers/SharePreviewPopup";
 // import { confirmAlert } from 'react-confirm-alert'; // Import
 // import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 // import {
@@ -25,8 +25,6 @@ import SharePreviewPopup from '../helpers/SharePreviewPopup'
 //   FacebookIcon,
 //   TwitterIcon,
 // } from "react-share";
-
-
 
 // const showPreviewURL = (url, projectName) => {
 //   confirmAlert({
@@ -79,7 +77,7 @@ import SharePreviewPopup from '../helpers/SharePreviewPopup'
 //             <span className="margin-left-20 inline-block">Share this project on Google Classroom</span>
 //           </div>
 //         </span>
-        
+
 //       </div>
 
 //           <div className="close-btn">
@@ -91,7 +89,7 @@ import SharePreviewPopup from '../helpers/SharePreviewPopup'
 //               window.gapi.sharetoclassroom.go("croom")
 //             }, 1)
 //           }
-          
+
 //           </div>
 //         </div>
 //       );
@@ -218,7 +216,6 @@ export default function ProjectPreview(props) {
 
   return (
     <div>
-      
       {currentProject && (
         <>
           <div className="container">
@@ -292,24 +289,22 @@ export default function ProjectPreview(props) {
                           />
                         </div>
                         {activeShared && (
-                          
                           <div
                             className="sharedlink"
                             onClick={() => {
+                              window.gapi.sharetoclassroom.go("croom");
 
                               let protocol =
                                 window.location.href.split("/")[0] + "//";
-
-                              window.gapi.sharetoclassroom.go("croom");
-
-                              
-                              let protocol = window.location.href.split("/")[0] + "//" 
-                              let url = `${protocol+window.location.host}/project/shared/${props.match.params.projectid.trim()}`;
-                              return SharePreviewPopup(url, currentProject.name)
-
+                              let url = `${
+                                protocol + window.location.host
+                              }/project/shared/${props.match.params.projectid.trim()}`;
+                              return SharePreviewPopup(
+                                url,
+                                currentProject.name
+                              );
                             }}
                           >
-                            
                             <i
                               class="fa fa-external-link"
                               aria-hidden="true"
