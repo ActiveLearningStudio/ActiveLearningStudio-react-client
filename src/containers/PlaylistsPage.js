@@ -5,6 +5,7 @@ import "react-placeholder/lib/reactPlaceholder.css";
 import validator from "validator";
 import loaderimg from "../images/loader.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { GoogleLogin } from 'react-google-login';
 import {
   BrowserRouter as Router,
   withRouter,
@@ -53,6 +54,10 @@ import PlaylistsLoading from "./../components/Loading/PlaylistsLoading";
 import CreatePlaylistPopup from "../components/CreatePlaylistPopup/CreatePlaylistPopup";
 import AddResource from "../components/Resource/AddResource";
 import EditResource from "../components/Resource/EditResource";
+
+const responseGoogle = (response) => {
+  console.log(response);
+}
 
 export class PlaylistsPage extends React.Component {
   constructor(props) {
@@ -304,7 +309,13 @@ export class PlaylistsPage extends React.Component {
                             ? this.props.project.selectedProject.name
                             : ""}
                         </h1>
-
+                        <GoogleLogin
+                          clientId="651187723142-61n3qdrdt1vjs56g8drqoh87gg0coqs8.apps.googleusercontent.com"
+                          buttonText="Login"
+                          onSuccess={responseGoogle}
+                          onFailure={responseGoogle}
+                          cookiePolicy={'single_host_origin'}
+                        />
                         <button
                           onClick={this.handleShowCreatePlaylistModal}
                           className="create-playlist-btn"
