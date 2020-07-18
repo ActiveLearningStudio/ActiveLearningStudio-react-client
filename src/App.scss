@@ -3628,6 +3628,7 @@ a:hover {
   margin-right: 5px;
 }
 
+
 .watcher.spaner {
   display: flex;
   justify-content: space-between;
@@ -3645,6 +3646,50 @@ a:hover {
   .sharedlink {
     align-items: center;
     display: flex;
+  }
+
+=======
+.google-script {
+  display: none;
+}
+
+.margin-left-20 {
+  margin-left:20px;
+}
+.margin-bottom-20 {
+  margin-bottom:20px;
+}
+.inline-block {
+  display: inline-block;
+}
+.react-confirm-alert-overlay {
+  background: rgba(0, 0, 0, 0.5) !important;
+}
+.react-confirm-alert {
+  background: #fff !important;
+  padding: 25px;
+  border-radius: 5px;
+}
+
+.share-project-preview-url {
+  .close-btn {
+    text-align: center;
+    button {
+      border: 0;
+      border-radius: .25em;
+      background: initial;
+      background-color: #3085d6;
+      color: #fff;
+      font-size: 1.0625em;
+      display: inline-block;
+      border-left-color: rgb(48, 133, 214);
+      border-right-color: rgb(48, 133, 214);
+      margin: .3125em;
+      padding: .625em 2em;
+      box-shadow: none;
+      font-weight: 500;
+      cursor:pointer;
+    }
   }
 
 }

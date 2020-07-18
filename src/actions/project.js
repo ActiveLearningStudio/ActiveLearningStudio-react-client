@@ -19,6 +19,8 @@ import {
 } from "../constants/actionTypes";
 import { editResource } from "./resource";
 import loaderimg from "../images/loader.svg";
+import SharePreviewPopup from '../helpers/SharePreviewPopup'
+
 // Publishes the project in LEARN
 export const shareProject = (project) => ({
   type: SHARE_PROJECT,
@@ -467,18 +469,8 @@ export const toggleProjectshare = async (projectId, ProjectName) => {
   
   if (response.data.status == "success") {
     let protocol = window.location.href.split("/")[0] + "//" 
-    Swal.fire({
-      html: `Your can now share project <strong>"${ProjectName}"</strong><br>
-      Anyone with the link below can access your project:<br>
-      <br><a target="_blank" href="/project/shared/${projectId.trim()}
-      ">${protocol+window.location.host}/project/shared/${projectId.trim()}</a>
-      <hr />
-      <div id="croom">
-        <span>Share: </span>
-        <div class="g-sharetoclassroom" data-size="32" data-url="${protocol+window.location.host}/project/shared/${projectId.trim()}" >Loading Classroom...</div>
-      </div>`,
-    })
-    window.gapi.sharetoclassroom.go("croom")
+    let url = `${protocol+window.location.host}/project/shared/${projectId.trim()}`;
+    return SharePreviewPopup(url, ProjectName)
   }
 };
 export const toggleProjectshareremoved = async (projectId, ProjectName) => {
