@@ -43,7 +43,7 @@ const GoogleModel = ({
               <div>
                 <GoogleLogin
                   clientId={
-                    "142910758972-sje8g0anaa3oke1omjmr0v7p9k6fat0a.apps.googleusercontent.com"
+                    "898143939834-9ioui2i9ghgrmcgmgtg0h6rsf83d0t0c.apps.googleusercontent.com"
                   }
                   onSuccess={googleClassRoomLoginAction}
                   onFailure={(response) =>
