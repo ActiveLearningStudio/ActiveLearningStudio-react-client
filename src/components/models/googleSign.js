@@ -1,16 +1,27 @@
-import React, { useState } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+
+import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 import logo from "../../images/loginlogo.png";
 import { Formik } from "formik";
 import { GoogleLogin } from "react-google-login";
-import { googleClassRoomLoginAction, googleClassRoomLoginFailureAction } from "../../actions/gapi";
+import {
+  googleClassRoomLoginAction,
+  googleClassRoomLoginFailureAction,
+} from "../../actions/gapi";
 
-const GoogleModel = ({ show, onHide, googleClassRoomLoginAction, googleClassRoomLoginFailureAction }) => {
+import { copyProject } from "../../actions/share.js";
+const GoogleModel = ({
+  show,
+  onHide,
+  googleClassRoomLoginAction,
+  googleClassRoomLoginFailureAction,
+  projectId,
+}) => {
   const [showForm, setShowForm] = useState(false);
   const [rooms, setRooms] = useState(["a", "b", "c"]);
-  
+
   return (
     <Modal
       show={show}
@@ -29,15 +40,15 @@ const GoogleModel = ({ show, onHide, googleClassRoomLoginAction, googleClassRoom
                 Classroom course.
               </p>
               <p>To start, please log into your Google account.</p>
-              <div
-                onClick={() => {
-                  setShowForm(true);
-                }}
-              >
+              <div>
                 <GoogleLogin
-                  clientId={'8299142860-f5jl83fapof5ohs5vjstso5pll87uoor.apps.googleusercontent.com'}
+                  clientId={
+                    "8299142860-f5jl83fapof5ohs5vjstso5pll87uoor.apps.googleusercontent.com"
+                  }
                   onSuccess={googleClassRoomLoginAction}
-                  onFailure={googleClassRoomLoginFailureAction}
+                  onFailure={(response) =>
+                    googleClassRoomLoginFailureAction(response)
+                  }
                   scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
                 >
                   <span> Login with Google</span>
@@ -76,10 +87,7 @@ const GoogleModel = ({ show, onHide, googleClassRoomLoginAction, googleClassRoom
                     return errors;
                   }}
                   onSubmit={(values, { setSubmitting }) => {
-                    setTimeout(() => {
-                      alert(JSON.stringify(values, null, 2));
-                      setSubmitting(false);
-                    }, 400);
+                    copyProject(projectId);
                   }}
                 >
                   {({
@@ -153,6 +161,12 @@ const GoogleModel = ({ show, onHide, googleClassRoomLoginAction, googleClassRoom
                       {/* {errors.description && touched.description && (
                         <div className="form-error">{errors.description}</div>
                       )} */}
+
+                      <p>
+                        Are you sure you want to share this Project to Google
+                        Classroom?
+                      </p>
+
                       <button type="submit">Confirm</button>
                     </form>
                   )}
@@ -164,13 +178,13 @@ const GoogleModel = ({ show, onHide, googleClassRoomLoginAction, googleClassRoom
       </Modal.Body>
     </Modal>
   );
-}
-
-
+};
 
 const mapDispatchToProps = (dispatch) => ({
-  googleClassRoomLoginAction: (response) => dispatch(googleClassRoomLoginAction(response)),
-  googleClassRoomLoginFailureAction: (response) => dispatch(googleClassRoomLoginFailureAction(response))
+  googleClassRoomLoginAction: (response) =>
+    dispatch(googleClassRoomLoginAction(response)),
+  googleClassRoomLoginFailureAction: (response) =>
+    dispatch(googleClassRoomLoginFailureAction(response)),
 });
 
 const mapStateToProps = (state) => {
