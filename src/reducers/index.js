@@ -5,9 +5,9 @@ import playlistReducer from "./playlistReducer";
 import resourceReducer from "./resourceReducer";
 import projectReducer from "./projectReducer";
 import uiReducer from "./uiReducer";
-import { from } from "apollo-boost";
 import termsreducer from "./termsreducer";
 import defaultsharestate from "./shareReducer";
+import gapiReducer from "./gapiReducer";
 
 export default combineReducers({
   auth: authReducer,
@@ -18,4 +18,5 @@ export default combineReducers({
   form: formReducer,
   loginshow: termsreducer,
   defaultsharestate: defaultsharestate,
+  gapi: gapiReducer
 });

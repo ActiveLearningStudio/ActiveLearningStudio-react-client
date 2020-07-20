@@ -1,17 +1,16 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { Modal, Button } from "react-bootstrap";
 import logo from "../../images/loginlogo.png";
 import { Formik } from "formik";
 import { GoogleLogin } from "react-google-login";
-export default function GoogleModel({ show, onHide }) {
+import { googleClassRoomLoginAction, googleClassRoomLoginFailureAction } from "../../actions/gapi";
+
+const GoogleModel = ({ show, onHide, googleClassRoomLoginAction, googleClassRoomLoginFailureAction }) => {
   const [showForm, setShowForm] = useState(false);
   const [rooms, setRooms] = useState(["a", "b", "c"]);
-  const responseGoogle = (response) => {
-    console.log(response);
-  };
-  const responseGoogleSuccess = (response) => {
-    console.log(response);
-  };
+  
   return (
     <Modal
       show={show}
@@ -29,19 +28,20 @@ export default function GoogleModel({ show, onHide }) {
                 With CurrikiStudio you can publish your Project as a new Google
                 Classroom course.
               </p>
-              <p>T start, please log into your Google account.</p>
+              <p>To start, please log into your Google account.</p>
               <div
                 onClick={() => {
                   setShowForm(true);
                 }}
               >
                 <GoogleLogin
-                  clientId="651187723142-61n3qdrdt1vjs56g8drqoh87gg0coqs8.apps.googleusercontent.com"
-                  buttonText="Login"
-                  onSuccess={responseGoogleSuccess}
-                  onFailure={responseGoogle}
-                  cookiePolicy={"single_host_origin"}
-                />
+                  clientId={'8299142860-f5jl83fapof5ohs5vjstso5pll87uoor.apps.googleusercontent.com'}
+                  onSuccess={googleClassRoomLoginAction}
+                  onFailure={googleClassRoomLoginFailureAction}
+                  scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
+                >
+                  <span> Login with Google</span>
+                </GoogleLogin>
               </div>
             </div>
           ) : (
@@ -93,7 +93,7 @@ export default function GoogleModel({ show, onHide }) {
                     /* and other goodies */
                   }) => (
                     <form onSubmit={handleSubmit}>
-                      <input
+                      {/* <input
                         type="text"
                         name="course"
                         class="form-control"
@@ -101,13 +101,13 @@ export default function GoogleModel({ show, onHide }) {
                         onBlur={handleBlur}
                         value={values.course}
                         placeholder="Course Name"
-                      />
+                      /> */}
 
-                      {errors.course && touched.course && (
+                      {/* {errors.course && touched.course && (
                         <div className="form-error"> {errors.course} </div>
-                      )}
+                      )} */}
 
-                      <select
+                      {/* <select
                         class="form-control"
                         name="room"
                         onChange={handleChange}
@@ -119,13 +119,13 @@ export default function GoogleModel({ show, onHide }) {
                         {rooms.map((data) => {
                           return <option>{data}</option>;
                         })}
-                      </select>
+                      </select> */}
 
-                      {errors.room && touched.room && (
+                      {/* {errors.room && touched.room && (
                         <div className="form-error">{errors.room}</div>
-                      )}
+                      )} */}
 
-                      <input
+                      {/* <input
                         type="text"
                         name="heading"
                         class="form-control"
@@ -133,13 +133,13 @@ export default function GoogleModel({ show, onHide }) {
                         onBlur={handleBlur}
                         value={values.heading}
                         placeholder="Heading"
-                      />
+                      /> */}
 
-                      {errors.heading && touched.heading && (
+                      {/* {errors.heading && touched.heading && (
                         <div className="form-error">{errors.heading}</div>
-                      )}
+                      )} */}
 
-                      <textarea
+                      {/* <textarea
                         class="form-control"
                         rows="5"
                         type="text"
@@ -148,13 +148,13 @@ export default function GoogleModel({ show, onHide }) {
                         onBlur={handleBlur}
                         value={values.description}
                         placeholder="Description"
-                      />
+                      /> */}
 
-                      {errors.description && touched.description && (
+                      {/* {errors.description && touched.description && (
                         <div className="form-error">{errors.description}</div>
-                      )}
-
-                      <button type="submit">Submit</button>
+                      )} */}
+                      <p>Are you sure you want to share this Project to Google Classroom?</p>
+                      <button type="submit">Confirm</button>
                     </form>
                   )}
                 </Formik>
@@ -166,3 +166,18 @@ export default function GoogleModel({ show, onHide }) {
     </Modal>
   );
 }
+
+
+
+const mapDispatchToProps = (dispatch) => ({
+  googleClassRoomLoginAction: (response) => dispatch(googleClassRoomLoginAction(response)),
+  googleClassRoomLoginFailureAction: (response) => dispatch(googleClassRoomLoginFailureAction(response))
+});
+
+const mapStateToProps = (state) => {
+  return {};
+};
+
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(GoogleModel)
+);
