@@ -4,7 +4,7 @@ import ProjectPreviewModal from "./ProjectPreviewModal";
 import "./ProjectCard.scss";
 import logo from "../images/logo.svg";
 import GoogleModel from "./models/googleSign";
-
+import { getprojectid } from "../actions/gapi";
 const ProjectCard = (props) => {
   const [show, setShow] = useState(false);
 
@@ -13,7 +13,11 @@ const ProjectCard = (props) => {
 
   return (
     <div className="col-md-3 check">
-      <GoogleModel show={show} onHide={() => setShow(false)} />
+      <GoogleModel
+        projectId={props.project._id}
+        show={show}
+        onHide={() => setShow(false)}
+      />
 
       <div className="program-tile">
         <div className="program-thumb">
@@ -91,7 +95,12 @@ const ProjectCard = (props) => {
                         To
                       </a>
                       <ul class="dropdown-menu check">
-                        <li onClick={handleShow}>
+                        <li
+                          onClick={() => {
+                            handleShow();
+                            getprojectid(props.project._id);
+                          }}
+                        >
                           <a>Google Classroom</a>
                         </li>
                       </ul>
