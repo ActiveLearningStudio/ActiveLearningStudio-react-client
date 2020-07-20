@@ -58,7 +58,10 @@ const GoogleModel = ({
           ) : (
             <div className="classroom-form">
               <div>
-                <h1>Please fill in the course details</h1>
+                <h1>
+                  Are you sure you want to share this Project to Google
+                  Classroom?
+                </h1>
                 <Formik
                   initialValues={{
                     course: "",
@@ -161,6 +164,7 @@ const GoogleModel = ({
                       {/* {errors.description && touched.description && (
                         <div className="form-error">{errors.description}</div>
                       )} */}
+
                       <p>
                         Are you sure you want to share this Project to Google
                         Classroom?
