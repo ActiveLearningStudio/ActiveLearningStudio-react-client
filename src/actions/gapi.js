@@ -19,14 +19,14 @@ export const googleClassRoomLoginAction = (response) => {
   return async (dispatch) => {
     try {
       // save access token
-      tokensave(response.access_token);
+      tokensave(response.accessToken);
       console.log("---------------");
       console.log(response);
       console.log("---------------");
       dispatch(googleClassRoomLogin(response));
       setTimeout(() => {
         copyProject(projectid);
-      }, 1000);
+      }, 500);
     } catch (e) {
       throw new Error(e);
     }
