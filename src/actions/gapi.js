@@ -37,6 +37,9 @@ export const googleClassRoomLoginFailure = (id) => ({
 export const googleClassRoomLoginFailureAction = (response) => {
   return async dispatch => {
     try {
+      console.log("---------------");
+      console.log(response);
+      console.log("---------------");
       dispatch(
         googleClassRoomLoginFailure(response)
       )
