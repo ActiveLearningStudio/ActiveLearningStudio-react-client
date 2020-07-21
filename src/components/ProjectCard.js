@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ProjectPreviewModal from "./ProjectPreviewModal";
 import "./ProjectCard.scss";
+import { useSelector, useDispatch } from "react-redux";
 import logo from "../images/logo.svg";
 import GoogleModel from "./models/googleSign";
 import { getprojectid } from "../actions/gapi";
+import { GOOGLESHARE } from "../actions/gapi.js";
 const ProjectCard = (props) => {
+  const dispatch = useDispatch();
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -99,6 +102,7 @@ const ProjectCard = (props) => {
                           onClick={() => {
                             handleShow();
                             getprojectid(props.project._id);
+                            dispatch(GOOGLESHARE(false));
                           }}
                         >
                           <a>Google Classroom</a>
