@@ -21,9 +21,9 @@ export const googleClassRoomLoginAction = (response) => {
   return async (dispatch) => {
     try {
       // save access token
-      tokensave(response.accessToken);
+      tokensave(JSON.stringify(response.tokenObj));
       console.log("---------------");
-      console.log(response);
+      console.log(JSON.stringify(response.tokenObj));
       console.log("---------------");
       dispatch(googleClassRoomLogin(response));
       setTimeout(() => {
