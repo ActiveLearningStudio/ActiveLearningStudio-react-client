@@ -15,7 +15,7 @@ const gapiReducer = (state = defaultAuthState(), action) => {
         ...state,
         displayName: action.displayName,
         id: action.id,
-        role: action.role
+        role: action.role,
       };
     default:
       return state;
