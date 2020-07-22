@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-
+import Footer from "../components/Footer.js";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Header from "../components/Header/Header";
 
@@ -58,6 +58,7 @@ export class LtiPreviewPage extends React.Component {
         <Header {...this.props} />
 
         {content}
+        <Footer />
       </div>
     );
   }

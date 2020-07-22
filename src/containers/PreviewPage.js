@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 
 import Sidebar from "../components/Sidebar/Sidebar";
 import Header from "../components/Header/Header";
-
+import Footer from "../components/Footer.js";
 import {
   showCreateProjectModalAction,
   createProjectAction,
@@ -79,6 +79,7 @@ export class PreviewPage extends React.Component {
         <Header {...this.props} />
 
         {content}
+        <Footer />
       </div>
     );
   }

@@ -5,7 +5,7 @@ import "react-placeholder/lib/reactPlaceholder.css";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import Header from "../components/Header/Header";
-
+import Footer from "../components/Footer.js";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { showDeletePopupAction, hideDeletePopupAction } from "../actions/ui";
 import {
@@ -156,6 +156,7 @@ export class ProjectsPage extends React.Component {
             />
           ) : null}
         </ReactPlaceholder>
+        <Footer />
       </>
     );
   }
