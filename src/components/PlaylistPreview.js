@@ -659,7 +659,15 @@ export class PlaylistPreview extends React.Component {
                       <div
                         className="sharedlink"
                         onClick={() => {
-                          swal.fire("Share details goes here");
+                          let protocol =
+                            window.location.href.split("/")[0] + "//";
+                          swal.fire({
+                            html: `<a target="_blank" href="/shared/activity/${this.state.resourceid.trim()}">
+                             ${
+                               protocol + window.location.host
+                             }/shared/activity/${this.state.resourceid}
+                              </a>`,
+                          });
                         }}
                       >
                         <i class="fa fa-external-link" aria-hidden="true"></i>
