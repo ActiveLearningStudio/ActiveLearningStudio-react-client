@@ -582,7 +582,6 @@ export const getProjectCourseFromLMS = (lms, setting_id, project_id) => {
           formData
         ).then((response) => {
           if( response.data.status === "success"){
-            console.log("status*** === ", response.data.data);
             dispatch( setLmsCourse(response.data.data) );
           }
         });
