@@ -23,7 +23,7 @@ const SharePreviewPopup = (url, projectName) => {
           Anyone with the link below can access your project:
           <br />
           <br />
-          <a href={url} target="_blank" rel="noreferrer">{url}</a>
+          <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
           <br />
         </h1>
 

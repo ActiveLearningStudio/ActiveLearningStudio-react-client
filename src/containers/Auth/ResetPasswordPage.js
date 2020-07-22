@@ -87,6 +87,7 @@ function ResetPasswordPage(props) {
               type="email"
               name="email"
               placeholder="Email*"
+              required
               value={state.email}
               onChange={onChangeField}
             />
@@ -100,6 +101,7 @@ function ResetPasswordPage(props) {
               type="password"
               name="password"
               placeholder="Password*"
+              required
               value={state.password}
               onChange={onChangeField}
             />
@@ -112,6 +114,7 @@ function ResetPasswordPage(props) {
               type="password"
               name="confirmPassword"
               placeholder="Confirm Password*"
+              required
               value={state.confirmPassword}
               onChange={onChangeField}
             />
@@ -120,7 +123,7 @@ function ResetPasswordPage(props) {
           <div className="form-group">
             <button
               type="submit"
-              className="btn btn-primary login-submit"
+              className="btn btn-primary submit"
               disabled={isLoading || isDisabled}
             >
               {isLoading ? (

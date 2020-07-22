@@ -66,7 +66,7 @@ class RegisterPage extends React.Component {
 
       history.push('/');
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 
@@ -128,6 +128,7 @@ class RegisterPage extends React.Component {
                   type="text"
                   name="firstName"
                   placeholder="First Name*"
+                  required
                   value={firstName}
                   onChange={this.onChangeField}
                 />
@@ -141,6 +142,7 @@ class RegisterPage extends React.Component {
                   type="text"
                   name="lastName"
                   placeholder="Last Name*"
+                  required
                   value={lastName}
                   onChange={this.onChangeField}
                 />
@@ -155,6 +157,7 @@ class RegisterPage extends React.Component {
                 type="text"
                 name="name"
                 placeholder="Username*"
+                required
                 value={name}
                 onChange={this.onChangeField}
               />
@@ -168,6 +171,7 @@ class RegisterPage extends React.Component {
                 type="email"
                 name="email"
                 placeholder="Email*"
+                required
                 value={email}
                 onChange={this.onChangeField}
               />
@@ -180,6 +184,7 @@ class RegisterPage extends React.Component {
                 type="password"
                 name="password"
                 placeholder="Password*"
+                required
                 value={password}
                 onChange={this.onChangeField}
               />
@@ -194,6 +199,7 @@ class RegisterPage extends React.Component {
                   type="text"
                   name="organizationName"
                   placeholder="Organization Name*"
+                  required
                   value={organizationName}
                   onChange={this.onChangeField}
                 />
@@ -207,6 +213,7 @@ class RegisterPage extends React.Component {
                   type="text"
                   name="jobTitle"
                   placeholder="Job Title*"
+                  required
                   value={jobTitle}
                   onChange={this.onChangeField}
                 />
@@ -216,7 +223,7 @@ class RegisterPage extends React.Component {
             <div className="form-group">
               <button
                 type="submit"
-                className="btn btn-primary login-submit"
+                className="btn btn-primary submit"
                 disabled={isLoading || this.isDisabled()}
               >
                 {isLoading ? (

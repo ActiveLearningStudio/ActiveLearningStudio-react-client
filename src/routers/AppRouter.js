@@ -4,10 +4,6 @@ import * as History from 'history';
 import loadable from '@loadable/component';
 import ReactGA from 'react-ga';
 
-import LoginPage from 'containers/Auth/LoginPage';
-import RegisterPage from 'containers/Auth/RegisterPage';
-import ForgotPasswordPage from 'containers/Auth/ForgotPasswordPage';
-import ResetPasswordPage from 'containers/Auth/ResetPasswordPage';
 import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
 
@@ -17,13 +13,18 @@ history.listen((location) => {
   ReactGA.pageview(location.pathname);
 });
 
+const LoginPage = loadable(() => import('../containers/Auth/LoginPage'));
+const RegisterPage = loadable(() => import('../containers/Auth/RegisterPage'));
+const ForgotPasswordPage = loadable(() => import('../containers/Auth/ForgotPasswordPage'));
+const ResetPasswordPage = loadable(() => import('../containers/Auth/ResetPasswordPage'));
+
+const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
+
 const ProjectsPage = loadable(() => import('../containers/ProjectsPage'));
 const PlaylistsPage = loadable(() => import('../containers/PlaylistsPage'));
 const PreviewPage = loadable(() => import('../containers/PreviewPage'));
 const LtiPreviewPage = loadable(() => import('../containers/LtiPreviewPage'));
 const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared'));
-// const LoginPage = loadable(() => import('../containers/Auth/LoginPage'));
-// const RegisterPage = loadable(() => import('../containers/Auth/RegisterPage'));
 
 const AppRouter = () => {
   useEffect(() => {
@@ -34,6 +35,14 @@ const AppRouter = () => {
     <Router history={history}>
       <Switch>
         <PrivateRoute exact path="/" component={ProjectsPage} />
+
+        <PublicRoute exact path="/login" component={LoginPage} />
+        <PublicRoute exact path="/register" component={RegisterPage} />
+        <PublicRoute exact path="/forgot-password" component={ForgotPasswordPage} />
+        <PublicRoute exact path="/reset-password" component={ResetPasswordPage} />
+        <PublicRoute exact path="/register" component={RegisterPage} />
+
+        <PrivateRoute exact path="/account" component={ProfilePage} />
 
         <PrivateRoute
           exact
@@ -125,12 +134,6 @@ const AppRouter = () => {
           path="/activities/:activityId"
           component={PlaylistsPage}
         />
-
-        <PublicRoute exact path="/login" component={LoginPage} />
-        <PublicRoute exact path="/register" component={RegisterPage} />
-        <PublicRoute exact path="/forgot-password" component={ForgotPasswordPage} />
-        <PublicRoute exact path="/reset-password" component={ResetPasswordPage} />
-        <PublicRoute exact path="/register" component={RegisterPage} />
       </Switch>
     </Router>
   );

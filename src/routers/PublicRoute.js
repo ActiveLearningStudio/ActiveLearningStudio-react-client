@@ -8,7 +8,7 @@ const PublicRoute = ({ component: Component, isAuthenticated, ...rest }) => (
     {...rest}
     render={(props) => (
       isAuthenticated ? (
-        <Redirect to="/" />
+        <Redirect to="/account" />
       ) : (
         <div>
           <Component {...props} />
@@ -27,7 +27,7 @@ PublicRoute.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  isAuthenticated: !!state.auth.id,
+  isAuthenticated: !!state.auth.user,
 });
 
 export default withRouter(connect(mapStateToProps, null)(PublicRoute));

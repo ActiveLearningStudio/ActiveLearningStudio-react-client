@@ -219,8 +219,9 @@
       }
     }
 
-    .login-submit {
+    .submit {
       width: 100%;
+      min-width: 150px;
       height: 50px;
       background: #4646c4 0 0 no-repeat padding-box;
       border-color: #4646c4;

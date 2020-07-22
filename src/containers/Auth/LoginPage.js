@@ -43,9 +43,9 @@ class LoginPage extends React.Component {
       const { history, login } = this.props;
 
       await login({ email, password });
-      history.push('/');
+      history.push('/account');
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 
@@ -83,6 +83,7 @@ class LoginPage extends React.Component {
                 type="email"
                 name="email"
                 placeholder="Email*"
+                required
                 value={email}
                 onChange={this.onChangeField}
               />
@@ -95,6 +96,7 @@ class LoginPage extends React.Component {
                 type="password"
                 name="password"
                 placeholder="Password*"
+                required
                 value={password}
                 onChange={this.onChangeField}
               />
@@ -118,7 +120,7 @@ class LoginPage extends React.Component {
             <div className="form-group">
               <button
                 type="submit"
-                className="btn btn-primary login-submit"
+                className="btn btn-primary submit"
                 disabled={isLoading || this.isDisabled()}
               >
                 {isLoading ? (

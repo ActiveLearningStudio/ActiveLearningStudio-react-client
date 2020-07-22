@@ -13,7 +13,7 @@ export function getQueryVariable(variable) {
 
 export function getErrors(e) {
   if (e.errors) {
-    if (typeof e.errors === 'object') {
+    if (!Array.isArray(e.errors) && typeof e.errors === 'object') {
       let errors = [];
       Object.keys(e.errors).forEach((key) => {
         if (Array.isArray(e.errors[key])) {

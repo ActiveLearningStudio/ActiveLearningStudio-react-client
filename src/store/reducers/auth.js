@@ -1,18 +1,4 @@
-import {
-  LOGIN_REQUEST,
-  LOGIN_SUCCESS,
-  LOGIN_FAIL,
-  SIGNUP_REQUEST,
-  SIGNUP_SUCCESS,
-  SIGNUP_FAIL,
-  LOG_OUT,
-  FORGOT_PASSWORD_REQUEST,
-  FORGOT_PASSWORD_SUCCESS,
-  FORGOT_PASSWORD_FAIL,
-  RESET_PASSWORD_REQUEST,
-  RESET_PASSWORD_SUCCESS,
-  RESET_PASSWORD_FAIL,
-} from '../actionTypes';
+import * as actionTypes from '../actionTypes';
 
 const INITIAL_STATE = {
   isLoading: false,
@@ -23,85 +9,122 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case LOGIN_REQUEST:
+    case actionTypes.GET_USER_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case actionTypes.GET_USER_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        user: action.payload.user,
+      };
+    case actionTypes.GET_USER_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case actionTypes.LOGIN_REQUEST:
       return {
         ...state,
         isLoading: true,
         error: null,
       };
-    case LOGIN_SUCCESS:
+    case actionTypes.LOGIN_SUCCESS:
       return {
         ...state,
         isLoading: false,
         user: action.payload.user,
         error: null,
       };
-    case LOGIN_FAIL:
+    case actionTypes.LOGIN_FAIL:
       return {
         ...state,
         isLoading: false,
         error: action.payload.error,
       };
 
-    case SIGNUP_REQUEST:
+    case actionTypes.SIGNUP_REQUEST:
       return {
         ...state,
         isLoading: true,
         error: null,
       };
-    case SIGNUP_SUCCESS:
+    case actionTypes.SIGNUP_SUCCESS:
       return {
         ...state,
         isLoading: false,
         user: action.payload.user,
         error: null,
       };
-    case SIGNUP_FAIL:
+    case actionTypes.SIGNUP_FAIL:
       return {
         ...state,
         isLoading: false,
         error: action.payload.error,
       };
 
-    case FORGOT_PASSWORD_REQUEST:
+    case actionTypes.FORGOT_PASSWORD_REQUEST:
       return {
         ...state,
         isLoading: true,
         error: null,
       };
-    case FORGOT_PASSWORD_SUCCESS:
+    case actionTypes.FORGOT_PASSWORD_SUCCESS:
       return {
         ...state,
         isLoading: false,
         error: null,
       };
-    case FORGOT_PASSWORD_FAIL:
+    case actionTypes.FORGOT_PASSWORD_FAIL:
       return {
         ...state,
         isLoading: false,
         error: action.payload.error,
       };
 
-    case RESET_PASSWORD_REQUEST:
+    case actionTypes.RESET_PASSWORD_REQUEST:
       return {
         ...state,
         isLoading: true,
         error: null,
       };
-    case RESET_PASSWORD_SUCCESS:
+    case actionTypes.RESET_PASSWORD_SUCCESS:
       return {
         ...state,
         isLoading: false,
         error: null,
       };
-    case RESET_PASSWORD_FAIL:
+    case actionTypes.RESET_PASSWORD_FAIL:
       return {
         ...state,
         isLoading: false,
         error: action.payload.error,
       };
 
-    case LOG_OUT:
+    case actionTypes.UPDATE_PROFILE_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        error: null,
+      };
+    case actionTypes.UPDATE_PROFILE_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        user: action.payload.user,
+        error: null,
+      };
+    case actionTypes.UPDATE_PROFILE_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error,
+      };
+
+    case actionTypes.LOG_OUT:
       return INITIAL_STATE;
 
     default:

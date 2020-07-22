@@ -5,6 +5,11 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import logo from 'assets/images/logo.svg';
+import searchImg from 'assets/images/search.png';
+import createProjectImg from 'assets/images/create-project-icon.png';
+import createTeamImg from 'assets/images/create-team.png';
+import notificationImg from 'assets/images/notification.png';
+import userImg from 'assets/images/user.png';
 import { logoutAction } from 'store/actions/auth';
 import {
   showUserSubMenuAction,
@@ -64,7 +69,7 @@ function Header(props) {
               placeholder="Search existing content"
             />
             <button type="submit" className="search-submit">
-              <img src="/assets/images/search.png" alt="search" title="" />
+              <img src={searchImg} alt="search" title="" />
             </button>
           </div>
 
@@ -72,7 +77,7 @@ function Header(props) {
             <ul className="top_info flexdiv">
               <li
                 className={
-                  project.showCreateProjectSubmenu
+                  project && project.showCreateProjectSubmenu
                     ? 'active has-sub button-dropdown'
                     : 'hide has-sub button-dropdown'
                 }
@@ -91,7 +96,7 @@ function Header(props) {
                       <li>
                         <div className="notifybx">
                           <div className="notiy_icon">
-                            <img src="/assets/images/create-project-icon.png" alt="create" />
+                            <img src={createProjectImg} alt="create" />
                           </div>
 
                           <div className="notiy_det">
@@ -112,7 +117,7 @@ function Header(props) {
                       <li>
                         <div className="notifybx">
                           <div className="notiy_icon">
-                            <img src="/assets/images/create-team.png" alt="create-team" />
+                            <img src={createTeamImg} alt="create-team" />
                           </div>
                           <div className="notiy_det">
                             <div className="nav_title">Create Team</div>
@@ -131,29 +136,25 @@ function Header(props) {
 
               <li>
                 <Link to="#">
-                  <img src="/assets/images/notification.png" alt="notification" />
+                  <img src={notificationImg} alt="notification" />
                 </Link>
               </li>
 
               <li className="mobile-links">
                 <Link to="#">
-                  <img src="/assets/images/search.png" alt="search" />
+                  <img src={searchImg} alt="search" />
                 </Link>
               </li>
 
               <li
                 className={
-                  project.showUserSubMenu
+                  project && project.showUserSubMenu
                     ? 'active button-dropdown'
                     : 'hide active button-dropdown'
                 }
               >
                 <Link to="#" className="dropbtn">
-                  <img
-                    src="/assets/images/user.png"
-                    alt="user"
-                    onClick={showUserSubMenu}
-                  />
+                  <img src={userImg} alt="user" onClick={showUserSubMenu} />
                 </Link>
 
                 <div className="dropdown-content" ref={createTeamNode}>
@@ -161,7 +162,7 @@ function Header(props) {
                     <Link to="#">
                       <li>
                         Welcome&nbsp;
-                        <span className="usernamelogin">
+                        <span className="user-name-login">
                           {typeof window !== 'undefined'
                             && JSON.parse(window.localStorage.getItem('auth'))
                             && JSON.parse(window.localStorage.getItem('auth')).displayName}
@@ -198,11 +199,15 @@ function Header(props) {
 }
 
 Header.propTypes = {
-  project: PropTypes.object.isRequired,
+  project: PropTypes.object,
   closeMenu: PropTypes.func.isRequired,
   showCreateProjectSubmenu: PropTypes.func.isRequired,
   showUserSubMenu: PropTypes.func.isRequired,
   startLogout: PropTypes.func.isRequired,
+};
+
+Header.defaultProps = {
+  project: null,
 };
 
 const mapDispatchToProps = (dispatch) => ({

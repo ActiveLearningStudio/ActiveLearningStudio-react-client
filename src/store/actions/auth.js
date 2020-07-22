@@ -1,25 +1,35 @@
 import authService from 'services/auth.service';
 import storageService from 'services/storage.service';
 import { getErrors } from 'utils';
-import { USER_TOKEN_KEY } from '../../constants';
-import {
-  LOGIN_REQUEST,
-  LOGIN_SUCCESS,
-  LOGIN_FAIL,
-  SIGNUP_REQUEST,
-  SIGNUP_SUCCESS,
-  SIGNUP_FAIL,
-  FORGOT_PASSWORD_REQUEST,
-  FORGOT_PASSWORD_SUCCESS,
-  FORGOT_PASSWORD_FAIL,
-  RESET_PASSWORD_REQUEST,
-  RESET_PASSWORD_SUCCESS,
-  RESET_PASSWORD_FAIL,
-} from '../actionTypes';
+import { USER_TOKEN_KEY } from 'constants/index';
+import * as actionTypes from '../actionTypes';
+
+export const getUserAction = () => async (dispatch) => {
+  const token = storageService.getItem(USER_TOKEN_KEY);
+  if (token) {
+    dispatch({
+      type: actionTypes.GET_USER_REQUEST,
+    });
+
+    try {
+      const response = await authService.me();
+
+      dispatch({
+        type: actionTypes.GET_USER_SUCCESS,
+        payload: { user: response.data },
+      });
+    } catch (e) {
+      dispatch({
+        type: actionTypes.GET_USER_FAIL,
+        payload: { error: getErrors(e) },
+      });
+    }
+  }
+};
 
 export const loginAction = (data) => async (dispatch) => {
   dispatch({
-    type: LOGIN_REQUEST,
+    type: actionTypes.LOGIN_REQUEST,
   });
 
   try {
@@ -39,12 +49,12 @@ export const loginAction = (data) => async (dispatch) => {
     storageService.setItem(USER_TOKEN_KEY, response.access_token);
 
     dispatch({
-      type: LOGIN_SUCCESS,
+      type: actionTypes.LOGIN_SUCCESS,
       payload: { user: response.user },
     });
   } catch (e) {
     dispatch({
-      type: LOGIN_FAIL,
+      type: actionTypes.LOGIN_FAIL,
       payload: { error: getErrors(e) },
     });
 
@@ -54,21 +64,21 @@ export const loginAction = (data) => async (dispatch) => {
 
 export const forgotPasswordAction = (data) => async (dispatch) => {
   dispatch({
-    type: FORGOT_PASSWORD_REQUEST,
+    type: actionTypes.FORGOT_PASSWORD_REQUEST,
   });
 
   try {
     await authService.forgotPassword(data);
 
     dispatch({
-      type: FORGOT_PASSWORD_SUCCESS,
+      type: actionTypes.FORGOT_PASSWORD_SUCCESS,
       payload: data,
     });
 
     storageService.setItem('forgotPasswordEmail', data.email);
   } catch (e) {
     dispatch({
-      type: FORGOT_PASSWORD_FAIL,
+      type: actionTypes.FORGOT_PASSWORD_FAIL,
       payload: { error: getErrors(e) },
     });
 
@@ -78,18 +88,18 @@ export const forgotPasswordAction = (data) => async (dispatch) => {
 
 export const resetPasswordAction = (data) => async (dispatch) => {
   dispatch({
-    type: RESET_PASSWORD_REQUEST,
+    type: actionTypes.RESET_PASSWORD_REQUEST,
   });
 
   try {
     await authService.resetPassword(data);
 
     dispatch({
-      type: RESET_PASSWORD_SUCCESS,
+      type: actionTypes.RESET_PASSWORD_SUCCESS,
     });
   } catch (e) {
     dispatch({
-      type: RESET_PASSWORD_FAIL,
+      type: actionTypes.RESET_PASSWORD_FAIL,
       payload: { error: getErrors(e) },
     });
 
@@ -99,7 +109,7 @@ export const resetPasswordAction = (data) => async (dispatch) => {
 
 export const registerAction = (data) => async (dispatch) => {
   dispatch({
-    type: SIGNUP_REQUEST,
+    type: actionTypes.SIGNUP_REQUEST,
   });
 
   try {
@@ -108,12 +118,12 @@ export const registerAction = (data) => async (dispatch) => {
     storageService.setItem(USER_TOKEN_KEY, response.access_token);
 
     dispatch({
-      type: SIGNUP_SUCCESS,
+      type: actionTypes.SIGNUP_SUCCESS,
       payload: { user: response.user },
     });
   } catch (e) {
     dispatch({
-      type: SIGNUP_FAIL,
+      type: actionTypes.SIGNUP_FAIL,
       payload: { error: getErrors(e) },
     });
 
@@ -124,6 +134,28 @@ export const registerAction = (data) => async (dispatch) => {
 export const logoutAction = () => async () => {
   storageService.removeItem(USER_TOKEN_KEY);
   window.location.href = '/';
+};
+
+export const updateProfileAction = (data) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.UPDATE_PROFILE_REQUEST,
+  });
+
+  try {
+    const response = await authService.updateProfile(data);
+
+    dispatch({
+      type: actionTypes.UPDATE_PROFILE_SUCCESS,
+      payload: { user: response.user },
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.UPDATE_PROFILE_FAIL,
+      payload: { error: getErrors(e) },
+    });
+
+    throw new Error(e);
+  }
 };
 
 // export const acceptTerms = (email, password) => async (dispatch) => {

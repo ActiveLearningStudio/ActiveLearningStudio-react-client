@@ -65,6 +65,7 @@ function ForgotPasswordPage(props) {
               type="email"
               name="email"
               placeholder="Email*"
+              required
               value={email}
               onChange={onChangeEmail}
             />
@@ -73,7 +74,7 @@ function ForgotPasswordPage(props) {
           <div className="form-group">
             <button
               type="submit"
-              className="btn btn-primary login-submit"
+              className="btn btn-primary submit"
               disabled={isLoading || isDisabled}
             >
               {isLoading ? (
