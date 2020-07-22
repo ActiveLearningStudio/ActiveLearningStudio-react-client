@@ -10,8 +10,9 @@ import {
   SHOW_USER_SUB_MENU,
   CLOSE_MENU,
   LOAD_MY_PROJECTS_SELECTED,
+  SET_LMS_COURSE,
 } from "../constants/actionTypes";
-
+import { prepareLmsCourse } from "../logic/lmsCourse";
 const defaultProgramState = () => {
   if (localStorage.getItem("projects")) {
     return {
@@ -28,6 +29,7 @@ const defaultProgramState = () => {
       showCreateProjectPopup: false,
       showUserSubMenu: false,
       projectSelect: {},
+      lms_course: null
     };
   }
 };
@@ -112,6 +114,8 @@ const projectReducer = (state = defaultProgramState(), action) => {
         ...state,
         progress: action.progress,
       };
+    case SET_LMS_COURSE:
+      return {...state, lms_course: prepareLmsCourse(action, state)};
 
     default:
       return state;

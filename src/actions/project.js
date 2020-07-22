@@ -16,6 +16,7 @@ import {
   CLOSE_MENU,
   SHOW_LMS,
   LOAD_MY_PROJECTS_SELECTED,
+  SET_LMS_COURSE
 } from "../constants/actionTypes";
 import { editResource } from "./resource";
 import loaderimg from "../images/loader.svg";
@@ -556,4 +557,41 @@ export const uploadProjectThumbnailAction = (formData) => {
       throw new Error(e);
     }
   };
+};
+
+export const getProjectCourseFromLMS = (lms, setting_id, project_id) => {
+  return dispatch => {
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+      onUploadProgress: (progressEvent) => {
+        /*dispatch(
+          projectThumbnailProgress(
+            "Uploaded progress: " +
+              Math.round((progressEvent.loaded / progressEvent.total) * 100) +
+              "%"
+          )
+        );*/
+      },
+    };
+
+    let formData = {setting_id, project_id};
+    return axios.post(
+          global.config.laravelAPIUrl + "/go/" + lms + "/fetch/course",
+          formData
+        ).then((response) => {
+          if( response.data.status === "success"){
+            console.log("status*** === ", response.data.data);
+            dispatch( setLmsCourse(response.data.data) );
+          }
+        });
+  }
+}
+
+export const setLmsCourse = (course) => {
+  return {
+    type: SET_LMS_COURSE,
+    lms_course: course 
+  }
 };
