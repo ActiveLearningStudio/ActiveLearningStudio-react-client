@@ -24,6 +24,7 @@ export const copyProject = (projectId) => {
       });
     })
     .catch((error) => {
+      console.log(error);
       Swal.fire({
         confirmButtonColor: "#5952c6",
         icon: "error",

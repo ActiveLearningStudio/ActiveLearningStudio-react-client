@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-
+import { useSelector, useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 import logo from "../../images/loginlogo.png";
@@ -12,6 +12,8 @@ import {
 } from "../../actions/gapi";
 
 import { copyProject } from "../../actions/share.js";
+import { GOOGLESHARE } from "../../actions/gapi.js";
+
 const GoogleModel = ({
   show,
   onHide,
@@ -19,9 +21,20 @@ const GoogleModel = ({
   googleClassRoomLoginFailureAction,
   projectId,
 }) => {
+  const dataredux = useSelector((state) => state);
+  const dispatch = useDispatch();
+  console.log(dataredux);
   const [showForm, setShowForm] = useState(false);
   const [rooms, setRooms] = useState(["a", "b", "c"]);
-
+  useEffect(() => {
+    if (dataredux.defaultsharestate.googleshare === true) {
+      setShowForm(true);
+    } else if (dataredux.defaultsharestate.googleshare === false) {
+      setShowForm(false);
+    } else if (dataredux.defaultsharestate.googleshare == "close") {
+      onHide();
+    }
+  }, [dataredux]);
   return (
     <Modal
       show={show}
@@ -50,7 +63,7 @@ const GoogleModel = ({
                     googleClassRoomLoginFailureAction(response)
                   }
                   scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
-                  cookiePolicy={'single_host_origin'}
+                  cookiePolicy={"single_host_origin"}
                 >
                   <span> Login with Google</span>
                 </GoogleLogin>
@@ -65,10 +78,10 @@ const GoogleModel = ({
                 </h1>
                 <Formik
                   initialValues={{
-                    course: "",
-                    heading: "",
-                    description: "",
-                    room: "",
+                    course: "test",
+                    heading: "test",
+                    description: "test",
+                    room: "test",
                   }}
                   validate={(values) => {
                     const errors = {};
@@ -91,6 +104,7 @@ const GoogleModel = ({
                     return errors;
                   }}
                   onSubmit={(values, { setSubmitting }) => {
+                    dispatch(GOOGLESHARE("close"));
                     copyProject(projectId);
                   }}
                 >
