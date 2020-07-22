@@ -16,8 +16,6 @@ export const prepareLmsCourse = (action, state) => {
             //return res == null ? false : res[0];
             return res == null ? false : parseInt(res[0].match(/\d+(?!.*\d)/g));
           }).filter(n => typeof n == "number").sort((a,b) => b-a);
-          console.log('playlist_found = ', playlist_found);
-          console.log('playlist_copy_counters = ', playlist_copy_counters);
           let playlist_counter = 0;
           if(playlist_found != null && playlist_copy_counters.length == 0){
             playlist_counter = 1;
