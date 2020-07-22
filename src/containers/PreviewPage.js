@@ -63,7 +63,7 @@ export class PreviewPage extends React.Component {
             {...this.props}
             key={match.params.projectId}
             project={project}
-            showlti={false}
+            showLti={false}
           />
         </div>
       );

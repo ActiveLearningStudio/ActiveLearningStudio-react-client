@@ -1,4 +1,6 @@
 import axios from 'axios';
+import Swal from 'sweetalert';
+
 import {
   SHOW_CREATE_RESOURCE_MODAL,
   HIDE_CREATE_RESOURCE_MODAL,
@@ -488,4 +490,57 @@ export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
   } catch (e) {
     throw new Error(e);
   }
+};
+
+export const resourceUnshared = (resourceId, resourceName) => {
+  const { token } = JSON.parse(localStorage.getItem('auth'));
+
+  axios
+    .post(
+      `${global.config.laravelAPIUrl}/remove-share-activity`,
+      { resourceId },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
+    .then((res) => {
+      if (res.data.status === 'success') {
+        Swal({
+          title: `You stopped sharing <strong>"${resourceName}"</strong> ! `,
+          html: 'Please remember that anyone you have shared this activity with,'
+            + ' will no longer have access to its contents.',
+        });
+      }
+    });
+};
+
+export const resourceShared = (resourceId, resourceName) => {
+  const { token } = JSON.parse(localStorage.getItem('auth'));
+
+  axios
+    .post(
+      `${global.config.laravelAPIUrl}/share-activity`,
+      { resourceId },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
+    .then((res) => {
+      if (res.data.status === 'success') {
+        const protocol = `${window.location.href.split('/')[0]}//`;
+
+        Swal({
+          html: `Your can now share project <strong>"${resourceName}"</strong><br>
+                Anyone with the link below can access your activity:<br>
+                <br><a target="_blank" href="/shared/activity/${resourceId.trim()}
+                ">${protocol + window.location.host}/shared/activity/${resourceId.trim()}</a>`,
+        });
+      }
+    });
 };

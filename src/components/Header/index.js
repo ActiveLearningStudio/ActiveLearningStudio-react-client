@@ -29,7 +29,7 @@ function Header(props) {
     project,
     closeMenu,
     showCreateProjectSubmenu,
-    showUserSubMenu,
+    // showUserSubMenu,
     startLogout,
   } = props;
 
@@ -146,48 +146,49 @@ function Header(props) {
                 </Link>
               </li>
 
-              <li
-                className={
-                  project && project.showUserSubMenu
-                    ? 'active button-dropdown'
-                    : 'hide active button-dropdown'
-                }
-              >
-                <Link to="#" className="dropbtn">
-                  <img src={userImg} alt="user" onClick={showUserSubMenu} />
-                </Link>
-
-                <div className="dropdown-content" ref={createTeamNode}>
-                  <ul className="dropdown-menu user-dropdown">
-                    <Link to="#">
-                      <li>
-                        Welcome&nbsp;
-                        <span className="user-name-login">
-                          {typeof window !== 'undefined'
+              <li>
+                <div className="dropdown">
+                  <span
+                    className="dropdown-toggle"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <img src={userImg} alt="user" />
+                  </span>
+                  <div
+                    className="dropdown-menu user-dropdown"
+                    aria-labelledby="dropdownMenuButton"
+                  >
+                    <ul>
+                      <Link to="#">
+                        <li>
+                          Welcome &nbsp;
+                          <span className="user-name-login">
+                            {typeof window !== 'undefined'
                             && JSON.parse(window.localStorage.getItem('auth'))
                             && JSON.parse(window.localStorage.getItem('auth')).displayName}
-                        </span>
-                      </li>
-                    </Link>
-
-                    <Link to="#">
-                      <li>My Account</li>
-                    </Link>
-
-                    <Link
-                      to="#"
-                      onClick={() => {
-                        Event(
-                          'button click',
-                          'User press Logout button',
-                          'Login Page',
-                        );
-                        startLogout();
-                      }}
-                    >
-                      <li>Logout</li>
-                    </Link>
-                  </ul>
+                          </span>
+                        </li>
+                      </Link>
+                      <Link to="#">
+                        <li>My Account</li>
+                      </Link>
+                      <Link
+                        to="#"
+                        onClick={() => {
+                          Event(
+                            'button click',
+                            'User press Logout button',
+                            'Login Page',
+                          );
+                          startLogout();
+                        }}
+                      >
+                        <li>Logout</li>
+                      </Link>
+                    </ul>
+                  </div>
                 </div>
               </li>
             </ul>
@@ -202,7 +203,7 @@ Header.propTypes = {
   project: PropTypes.object,
   closeMenu: PropTypes.func.isRequired,
   showCreateProjectSubmenu: PropTypes.func.isRequired,
-  showUserSubMenu: PropTypes.func.isRequired,
+  // showUserSubMenu: PropTypes.func.isRequired,
   startLogout: PropTypes.func.isRequired,
 };
 

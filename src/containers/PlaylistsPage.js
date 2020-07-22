@@ -42,6 +42,10 @@ import AddResource from 'components/ResourceCard/AddResource';
 import EditResource from 'components/ResourceCard/EditResource';
 import PreviewResourcePage from './PreviewResourcePage';
 
+// const responseGoogle = (response) => {
+//   console.log(response);
+// };
+
 export class PlaylistsPage extends React.Component {
   constructor(props) {
     super(props);

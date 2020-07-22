@@ -282,8 +282,10 @@ function ProjectPreview(props) {
 
                         {activeShared && (
                           <div
-                            className="sharedlink"
+                            className="shared-link"
                             onClick={() => {
+                              window.gapi.sharetoclassroom.go('croom');
+
                               const protocol = `${window.location.href.split('/')[0]}//`;
                               const url = `${protocol + window.location.host}/project/shared/${match.params.projectId.trim()}`;
                               return SharePreviewPopup(url, currentProject.name);

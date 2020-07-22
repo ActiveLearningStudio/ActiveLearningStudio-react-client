@@ -6,9 +6,11 @@ import { withRouter, Link } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert';
+import Switch from 'react-switch';
 
 import projectIcon from 'assets/images/project_icon.svg';
 import { loadPlaylistAction, LoadHP } from 'store/actions/playlist';
+import { resourceShared, resourceUnshared } from 'store/actions/resource';
 import ActivityPreviewCard from '../ActivityPreviewCard';
 import ActivityPreviewCardDropdown from '../ActivityPreviewCard/ActivityPreviewCardDropdown';
 import Unauthorized from '../Unauthorized';
@@ -26,6 +28,7 @@ class PlaylistPreview extends React.Component {
       resourceTitle: '',
       allProjectsState: {},
       currentPlaylist: '',
+      activeShared: '',
       // loading: "loading.ddd..",
     };
   }
@@ -39,9 +42,15 @@ class PlaylistPreview extends React.Component {
         (data) => data._id === nextProps.playlist.selectedPlaylist.projectId,
       );
       if (selectedPlaylist.length > 0) {
+        let currentActvity = nextProps.playlist.selectedPlaylist.activities.filter(
+          (a) => a._id === prevState.resourceId,
+        );
+        currentActvity = currentActvity.length > 0 && currentActvity[0].shared;
+
         return {
           allProjectsState: selectedPlaylist[0].playlists,
           currentPlaylist: nextProps.playlist.selectedPlaylist,
+          activeShared: !!currentActvity,
         };
       }
 
@@ -99,12 +108,13 @@ class PlaylistPreview extends React.Component {
 
   render() {
     let { resourceId } = this.state;
-    const { allProjectsState, currentPlaylist } = this.state;
+    const { allProjectsState, currentPlaylist, activeShared } = this.state;
     const {
       history,
       playlist,
       playlistId,
       loading,
+      loadPlaylist,
     } = this.props;
 
     if (!playlist.selectedPlaylist) {
@@ -515,6 +525,62 @@ class PlaylistPreview extends React.Component {
                 </button> */}
 
                 <div className="scrollDiv long">
+                  <div className="watcher spaner">
+                    <div>
+                      Share Activity
+                      <Switch
+                        onColor="#5952c6"
+                        onChange={() => {
+                          const nameActivity = playlist.activities && playlist.activities.length
+                            ? playlist.activities.filter((a) => a._id === resourceId).length > 0
+                              ? playlist.activities.filter((a) => a._id === resourceId)[0].title
+                              : ''
+                            : '';
+                          if (activeShared) {
+                            Swal({
+                              icon: 'warning',
+                              title: `You are about to stop sharing <strong>${nameActivity}</strong>
+                                Please remember that anyone you have shared this activity with will no longer have access its contents.
+                                Do you want to continue?`,
+                              showCloseButton: true,
+                              showCancelButton: true,
+                              focusConfirm: false,
+                              confirmButtonText: 'Stop Sharing!',
+                              confirmButtonAriaLabel: 'Stop Sharing!',
+                              cancelButtonText: 'Cancel',
+                              cancelButtonAriaLabel: 'Cancel',
+                            }).then((resp) => {
+                              if (resp.isConfirmed) {
+                                resourceUnshared(resourceId, nameActivity);
+                                loadPlaylist(playlistId);
+                              }
+                            });
+                          } else {
+                            resourceShared(resourceId, nameActivity);
+                            loadPlaylist(playlistId);
+                          }
+                        }}
+                        checked={activeShared}
+                        className="react-switch"
+                        handleDiameter={30}
+                        uncheckedIcon={false}
+                        checkedIcon={false}
+                      />
+                    </div>
+
+                    {activeShared && (
+                      <div
+                        className="shared-link"
+                        onClick={() => {
+                          Swal('Share details goes here');
+                        }}
+                      >
+                        <FontAwesomeIcon icon="external-link" />
+                        View Shared Link
+                      </div>
+                    )}
+                  </div>
+
                   <div className="watcher">
                     You are watching from
                     {' '}
@@ -556,7 +622,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   playlist: state.playlist,
-  loading: state.playlist.loadingHP5,
+  loading: state.playlist.loadingH5P,
   allProject: state.project.projects,
 });
 

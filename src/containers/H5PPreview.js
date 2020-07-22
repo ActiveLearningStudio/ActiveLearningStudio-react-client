@@ -13,13 +13,19 @@ class H5PPreview extends React.Component {
     super(props);
 
     this.h5pLib = props.resource.editor; // "H5P.Audio 1.4";
+
+    this.state = {
+      shared: true,
+    };
   }
 
   componentDidMount() {
-    const { resourceId, showLtiPreview } = this.props;
+    const { resourceId, showLtiPreview, showActivityPreview } = this.props;
 
     if (showLtiPreview) {
       this.loadResourceLti(resourceId);
+    } else if (showActivityPreview) {
+      this.loadResourceActivity(resourceId);
     } else {
       this.loadResource(resourceId);
     }
@@ -27,7 +33,7 @@ class H5PPreview extends React.Component {
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps(props) {
-    const { resourceId, showLtiPreview } = this.props;
+    const { resourceId, showLtiPreview, showActivityPreview } = this.props;
     if (resourceId !== props.resourceId) {
       const h5pIFrame = document.getElementsByClassName('h5p-iframe');
       if (h5pIFrame.length) {
@@ -36,6 +42,8 @@ class H5PPreview extends React.Component {
 
       if (showLtiPreview) {
         this.loadResourceLti(props.resourceId);
+      } else if (showActivityPreview) {
+        this.loadResourceActivity(props.resourceId);
       } else {
         this.loadResource(props.resourceId);
       }
@@ -81,7 +89,32 @@ class H5PPreview extends React.Component {
       });
   }
 
+  loadResourceActivity = (resourceId) => {
+    if (resourceId === 0) {
+      return;
+    }
+
+    axios
+      .post(
+        `${global.config.laravelAPIUrl}/h5p-resource-settings-shared`,
+        { resourceId },
+      )
+      .then((response) => {
+        this.resourceLoaded(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   resourceLoaded = async (response) => {
+    if (response.data.status === 'fail') {
+      this.setState({
+        shared: false,
+      });
+      return;
+    }
+
     window.H5PIntegration = response.data.data.h5p.settings;
 
     const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
@@ -110,12 +143,23 @@ class H5PPreview extends React.Component {
   }
 
   render() {
+    const { shared } = this.state;
     return (
-      <div id="curriki-h5p-wrapper">
-        <div className="loader_gif">
-          <img src={gifloader} alt="" />
-        </div>
-      </div>
+      <>
+        {!shared ? (
+          <div id="curriki-h5p-wrapper">
+            <div className="loader_gif" style={{ color: 'black' }}>
+              Activity Resource is not sharable
+            </div>
+          </div>
+        ) : (
+          <div id="curriki-h5p-wrapper">
+            <div className="loader_gif">
+              <img src={gifloader} alt="" />
+            </div>
+          </div>
+        )}
+      </>
     );
   }
 }
@@ -124,10 +168,12 @@ H5PPreview.propTypes = {
   resource: PropTypes.object.isRequired,
   resourceId: PropTypes.number.isRequired,
   showLtiPreview: PropTypes.bool,
+  showActivityPreview: PropTypes.bool,
 };
 
 H5PPreview.defaultProps = {
   showLtiPreview: false,
+  showActivityPreview: false,
 };
 
 const mapStateToProps = (state) => ({

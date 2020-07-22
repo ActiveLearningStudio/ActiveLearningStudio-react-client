@@ -9,6 +9,7 @@ import {
   loadMyProjectsAction,
 } from 'store/actions/project';
 import Header from 'components/Header';
+import ActivityShared from 'components/PlaylistPreview/ActivityShared';
 import LtiPlaylistPreview from 'components/PlaylistPreview/LtiPlaylistPreview';
 import LtiPlaylistPreviewShared from 'components/PlaylistPreview/LtiPlaylistPreviewShared';
 
@@ -24,23 +25,34 @@ class LtiPreviewPage extends React.Component {
   render() {
     const { match, previewType } = this.props;
 
+    let content;
+    if (previewType === 'playlistShared') {
+      content = (
+        <LtiPlaylistPreviewShared
+          playlistId={match.params.playlistId}
+          resourceId={match.params.resourceId}
+          showLti
+        />
+      );
+    } else if (previewType === 'activityShared') {
+      content = (
+        <ActivityShared resourceId={match.params.resourceId} />
+      );
+    } else {
+      content = (
+        <LtiPlaylistPreview
+          playlistId={match.params.playlistId}
+          resourceId={match.params.resourceId}
+          showLti
+        />
+      );
+    }
+
     return (
       <div>
         <Header {...this.props} />
 
-        {previewType === 'playlistShared' ? (
-          <LtiPlaylistPreviewShared
-            playlistId={match.params.playlistId}
-            resourceId={match.params.resourceId}
-            showLti
-          />
-        ) : (
-          <LtiPlaylistPreview
-            playlistId={match.params.playlistId}
-            resourceId={match.params.resourceId}
-            showLti
-          />
-        )}
+        {content}
       </div>
     );
   }

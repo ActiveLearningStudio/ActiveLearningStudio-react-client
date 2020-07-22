@@ -441,7 +441,7 @@
   min-height: 450px;
   height: 100%;
 
-  .buttonbottom {
+  .button-bottom {
     display: none;
     margin: -10px;
 
@@ -3034,7 +3034,7 @@ a:hover {
 .slider-hover-section {
   .hover-control-caption {
     top: 13px;
-    left: -80px
+    left: -80px;
   }
 
   &:hover {
@@ -3051,7 +3051,7 @@ a:hover {
     line-height: 18px;
     text-align: left;
     padding: 25px;
-    color: #45D22A;
+    color: #45d22a;
   }
 
   a {
@@ -3083,51 +3083,149 @@ a:hover {
   margin-right: 5px;
 }
 
-.google-script {
-  display: none;
+.watcher.spaner {
+  display: flex;
+  justify-content: space-between;
+
+  align-items: center;
+  align-self: center;
+  background: #efefef;
+  padding: 10px 15px !important;
+
+  .react-switch {
+    margin-left: 10px;
+  }
+
+  div,
+  .shared-link {
+    align-items: center;
+    display: flex;
+  }
+
+  .google-script {
+    display: none;
+  }
+
+  .margin-left-20 {
+    margin-left: 20px;
+  }
+
+  .margin-bottom-20 {
+    margin-bottom: 20px;
+  }
+
+  .inline-block {
+    display: inline-block;
+  }
+
+  .react-confirm-alert-overlay {
+    background: rgba(0, 0, 0, 0.5) !important;
+  }
+
+  .react-confirm-alert {
+    background: #fff !important;
+    padding: 25px;
+    border-radius: 5px;
+  }
+
+  .share-project-preview-url {
+    .close-btn {
+      text-align: center;
+
+      button {
+        border: 0;
+        border-radius: .25em;
+        background: initial;
+        background-color: #3085d6;
+        color: #fff;
+        font-size: 1.0625em;
+        display: inline-block;
+        border-left-color: rgb(48, 133, 214);
+        border-right-color: rgb(48, 133, 214);
+        margin: .3125em;
+        padding: .625em 2em;
+        box-shadow: none;
+        font-weight: 500;
+        cursor: pointer;
+      }
+    }
+  }
 }
 
-.margin-left-20 {
-  margin-left:20px;
-}
+.model-box-view {
+  background-color: #3c3d3e00 !important;
 
-.margin-bottom-20 {
-  margin-bottom:20px;
-}
+  .modal-header img {
+    max-width: 110px;
+  }
 
-.inline-block {
-  display: inline-block;
-}
-
-.react-confirm-alert-overlay {
-  background: rgba(0, 0, 0, 0.5) !important;
-}
-
-.react-confirm-alert {
-  background: #fff !important;
-  padding: 25px;
-  border-radius: 5px;
-}
-
-.share-project-preview-url {
-  .close-btn {
+  .modal-body {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
     text-align: center;
+    padding: 40px 15px;
+
+    p {
+      padding-bottom: 15px;
+    }
+
+    button span {
+      width: 80px;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: bold !important;
+      cursor: pointer;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+    }
+  }
+
+  .classroom-form {
+    padding: 0 20px;
+
+    h1 {
+      font-size: 20px;
+      font-weight: bold;
+      padding-bottom: 20px;
+    }
+
+    input,
+    select,
+    textarea {
+      border: 1px solid #b5b4b4;
+      padding-left: 20px;
+      margin-bottom: 20px;
+    }
+
+    textarea {
+      height: auto;
+    }
+
+    .form-error {
+      color: red;
+      font-size: 12px;
+      text-align: left;
+      margin-top: -20px;
+    }
 
     button {
-      border: 0;
-      border-radius: .25em;
-      background: initial;
-      background-color: #3085d6;
+      background-color: #5952c6;
       color: #fff;
-      font-size: 1.0625em;
-      display: inline-block;
-      border-left-color: rgb(48, 133, 214);
-      border-right-color: rgb(48, 133, 214);
-      margin: .3125em;
-      padding: .625em 2em;
-      box-shadow: none;
-      font-weight: 500;
-      cursor:pointer;
+      width: 150px;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
     }
   }
 }

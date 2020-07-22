@@ -1,8 +1,9 @@
-import { SHOW_LMS, CHANGE_LOADING } from '../actionTypes';
+import { SHOW_LMS, CHANGE_LOADING, GOOGLE_SHARE } from '../actionTypes';
 
 const defaultShareState = () => ({
   shareVendors: [],
   loadingShare: false,
+  googleShare: false,
 });
 
 export default (state = defaultShareState(), action) => {
@@ -17,6 +18,12 @@ export default (state = defaultShareState(), action) => {
       return {
         ...state,
         loadingShare: action.change,
+      };
+
+    case GOOGLE_SHARE:
+      return {
+        ...state,
+        googleShare: action.value,
       };
 
     default:

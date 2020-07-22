@@ -7,6 +7,7 @@ import resource from './resource';
 import project from './project';
 import ui from './ui';
 import defaultShareState from './share';
+import gapi from './gapi';
 
 export default combineReducers({
   auth,
@@ -16,4 +17,5 @@ export default combineReducers({
   ui,
   form: formReducer,
   defaultShareState,
+  gapi,
 });
