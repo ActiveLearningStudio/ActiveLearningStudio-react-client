@@ -4,6 +4,7 @@ import ReactPlaceholder from "react-placeholder";
 import "react-placeholder/lib/reactPlaceholder.css";
 import validator from "validator";
 import loaderimg from "../images/loader.svg";
+import Footer from "../components/Footer.js";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import {
   BrowserRouter as Router,
@@ -56,7 +57,7 @@ import EditResource from "../components/Resource/EditResource";
 
 const responseGoogle = (response) => {
   console.log(response);
-}
+};
 
 export class PlaylistsPage extends React.Component {
   constructor(props) {
@@ -416,6 +417,7 @@ export class PlaylistsPage extends React.Component {
             ) : null}
           </>
         )}
+        <Footer />
       </>
     );
   }
