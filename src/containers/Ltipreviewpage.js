@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-
+import Footer from "../components/Footer.js";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Header from "../components/Header/Header";
 
@@ -13,6 +13,8 @@ import {
 } from "../actions/project";
 
 import LtiPlaylistPreview from "../components/LtiPlaylistPreview";
+import LtiPlaylistPreviewShared from "../components/LtiPlaylistPreviewShared";
+import ActivityShared from "../components/ActivityShared";
 
 export class LtiPreviewPage extends React.Component {
   constructor(props) {
@@ -28,19 +30,35 @@ export class LtiPreviewPage extends React.Component {
   }
 
   render() {
-    var content = (content = (
-      <LtiPlaylistPreview
-        playlistid={this.props.match.params.playlistid}
-        resourceid={this.props.match.params.resourceid}
-        showlti={true}
-      />
-    ));
+    var content;
+    if (this.props.previewType == "playlistshared") {
+      content = (
+        <LtiPlaylistPreviewShared
+          playlistid={this.props.match.params.playlistid}
+          resourceid={this.props.match.params.resourceid}
+          showlti={true}
+        />
+      );
+    } else if (this.props.previewType == "activityshared") {
+      content = (
+        <ActivityShared resourceid={this.props.match.params.resourceid} />
+      );
+    } else {
+      content = (
+        <LtiPlaylistPreview
+          playlistid={this.props.match.params.playlistid}
+          resourceid={this.props.match.params.resourceid}
+          showlti={true}
+        />
+      );
+    }
 
     return (
       <div>
         <Header {...this.props} />
 
         {content}
+        <Footer />
       </div>
     );
   }

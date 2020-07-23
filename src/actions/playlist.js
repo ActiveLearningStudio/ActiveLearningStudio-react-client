@@ -119,6 +119,22 @@ export const loadPlaylistActionlti = (playlistId) => {
   };
 };
 
+export const loadPlaylistActionshared = (playlistId) => {
+  ///alert(playlistId);
+  return async (dispatch) => {
+    // const { token } = JSON.parse(localStorage.getItem("auth"));
+    const response = await axios.post("/api/load-shared-playlist", {
+      playlistId,
+    });
+
+    if (response.data.status == "success") {
+      dispatch(loadPlaylist(response.data.data.playlist));
+    } else {
+      dispatch(loadPlaylist(response.data.status));
+    }
+  };
+};
+
 export const loadPlaylistAction_new = (resourceid) => {
   return async (dispatch) => {
     const { token } = JSON.parse(localStorage.getItem("auth"));

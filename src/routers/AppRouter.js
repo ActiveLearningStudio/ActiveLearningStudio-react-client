@@ -16,7 +16,9 @@ const PlaylistsPage = loadable(() => import("../containers/PlaylistsPage"));
 const PreviewPage = loadable(() => import("../containers/PreviewPage"));
 const Ltipreviewpage = loadable(() => import("../containers/Ltipreviewpage"));
 const LoginPage = loadable(() => import("../containers/LoginPage"));
-
+const PreviewPageShared = loadable(() =>
+  import("../containers/PreviewPageShared")
+);
 const AppRouter = () => {
   useEffect(() => {
     ReactGA.pageview(window.location.pathname);
@@ -29,6 +31,11 @@ const AppRouter = () => {
           path="/project/preview2/:projectid"
           exact
           component={PreviewPage}
+        />
+        <Route
+          path="/project/shared/:projectid"
+          exact
+          component={PreviewPageShared}
         />
         <PrivateRoute
           path="/resource/preview/:resourceid"
@@ -50,10 +57,28 @@ const AppRouter = () => {
         />
 
         <Route
+          path="/shared/resource/:activityid"
+          component={Ltipreviewpage}
+          exact
+        />
+
+        <Route
+          path="/shared/activity/:resourceid"
+          exact
+          render={() => <Ltipreviewpage previewType="activityshared" />}
+        />
+
+        <Route
           path="/playlist/lti/preview/:playlistid/resource/:resourceid"
           exact
           component={Ltipreviewpage}
           previewType="playlist"
+        />
+
+        <Route
+          path="/playlist/shared/preview/:playlistid/resource/:resourceid"
+          exact
+          render={() => <Ltipreviewpage previewType="playlistshared" />}
         />
 
         <PrivateRoute

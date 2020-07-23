@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ShareLMS } from "../../actions/project";
-export default function Sharelink({ playlistID }) {
+export default function Sharelink({ playlistID, playlistName, projectName }) {
   const All_Lms = useSelector((state) => state.defaultsharestate);
-  console.log(All_Lms);
+
   const [allLms, setAllLms] = useState([]);
   useEffect(() => {
     setAllLms(All_Lms);
@@ -18,7 +18,7 @@ export default function Sharelink({ playlistID }) {
           if (allLms.sharevendoes && allLms.sharevendoes.length == 0) {
             Swal.fire({
               icon: "info",
-              title: "No LMS is available for this playlist.",
+              title: "You don't have a Learning Management Systems set up for publishing. Please contact us to get this configured.",
             });
           }
         }}
@@ -36,7 +36,10 @@ export default function Sharelink({ playlistID }) {
                       ShareLMS(
                         playlistID,
                         data._id,
-                        data.lms_name.toLowerCase()
+                        data.lms_name.toLowerCase(),
+                        data.lms_url,
+                        playlistName,
+                        projectName
                       );
                     }}
                   >

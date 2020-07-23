@@ -2,7 +2,7 @@ import React from "react";
 import gifloader from "../images/276.gif";
 import axios from "axios";
 import { connect } from "react-redux";
-
+import Unauthorized from "../components/unauthorized";
 import { withRouter } from "react-router-dom";
 
 import { createResourceAction } from "./../actions/resource";
@@ -11,12 +11,20 @@ class H5PPreview extends React.Component {
   constructor(props) {
     super(props);
     this.h5pLib = props.resource.editor; //"H5P.Audio 1.4";
+
+    this.state = {
+      shared: true,
+    };
   }
 
   componentDidMount() {
-    this.props.showltipreview
-      ? this.loadResorceLti(this.props.resourceid)
-      : this.loadResorce(this.props.resourceid);
+    if (this.props.showltipreview) {
+      this.loadResorceLti(this.props.resourceid);
+    } else if (this.props.showActivitypreview) {
+      this.loadResorceActivity(this.props.resourceid);
+    } else {
+      this.loadResorce(this.props.resourceid);
+    }
   }
 
   loadResorce(resourceid) {
@@ -41,7 +49,22 @@ class H5PPreview extends React.Component {
     if (resourceid == 0) return;
 
     axios
-      .post(global.config.laravelAPIUrl + "/h5p-resource-settings-lti", {
+      .post(global.config.laravelAPIUrl + "/h5p-resource-settings-open", {
+        resourceid,
+      })
+      .then((response) => {
+        this.resourceLoaded(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  loadResorceActivity(resourceid) {
+    if (resourceid == 0) return;
+
+    axios
+      .post(global.config.laravelAPIUrl + "/h5p-resource-settings-shared", {
         resourceid,
       })
       .then((response) => {
@@ -54,6 +77,12 @@ class H5PPreview extends React.Component {
 
   async resourceLoaded(response) {
     console.log(response);
+    if (response.data.status == "fail") {
+      this.setState({
+        shared: false,
+      });
+      return;
+    }
 
     window.H5PIntegration = response.data.data.h5p.settings;
 
@@ -85,19 +114,33 @@ class H5PPreview extends React.Component {
     if (this.props.resourceid != props.resourceid) {
       var h5pIFrame = document.getElementsByClassName("h5p-iframe");
       if (h5pIFrame.length) h5pIFrame[0].remove();
-      this.props.showltipreview
-        ? this.loadResorceLti(props.resourceid)
-        : this.loadResorce(props.resourceid);
+      if (this.props.showltipreview) {
+        this.loadResorceLti(props.resourceid);
+      } else if (this.props.showActivitypreview) {
+        this.loadResorceActivity(props.resourceid);
+      } else {
+        this.loadResorce(props.resourceid);
+      }
     }
   }
 
   render() {
     return (
-      <div id="curriki-h5p-wrapper">
-        <div className="loader_gif">
-          <img src={gifloader} />
-        </div>
-      </div>
+      <>
+        {!this.state.shared ? (
+          <div id="curriki-h5p-wrapper">
+            <div className="loader_gif" style={{ color: "black" }}>
+              Activity Resource is not sharable
+            </div>
+          </div>
+        ) : (
+          <div id="curriki-h5p-wrapper">
+            <div className="loader_gif">
+              <img src={gifloader} />
+            </div>
+          </div>
+        )}
+      </>
     );
   }
 }

@@ -4,6 +4,7 @@ import ReactPlaceholder from "react-placeholder";
 import "react-placeholder/lib/reactPlaceholder.css";
 import validator from "validator";
 import loaderimg from "../images/loader.svg";
+import Footer from "../components/Footer.js";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import {
   BrowserRouter as Router,
@@ -53,6 +54,10 @@ import PlaylistsLoading from "./../components/Loading/PlaylistsLoading";
 import CreatePlaylistPopup from "../components/CreatePlaylistPopup/CreatePlaylistPopup";
 import AddResource from "../components/Resource/AddResource";
 import EditResource from "../components/Resource/EditResource";
+
+const responseGoogle = (response) => {
+  console.log(response);
+};
 
 export class PlaylistsPage extends React.Component {
   constructor(props) {
@@ -304,7 +309,6 @@ export class PlaylistsPage extends React.Component {
                             ? this.props.project.selectedProject.name
                             : ""}
                         </h1>
-
                         <button
                           onClick={this.handleShowCreatePlaylistModal}
                           className="create-playlist-btn"
@@ -413,6 +417,7 @@ export class PlaylistsPage extends React.Component {
             ) : null}
           </>
         )}
+        <Footer />
       </>
     );
   }
