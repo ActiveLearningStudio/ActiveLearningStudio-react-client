@@ -15,10 +15,10 @@ const ActivityCard = (props) => {
           className="playimg"
           style={{
             backgroundImage:
-              "url(" + global.config.laravelAPIUrl + activity.thumb_url + ")",
+              "url(" + global.config.laravelAPIUrl + activity.metadata.thumb_url + ")",
           }}
         ></div>
-        <div className="plydet">{activity.title}</div>
+        <div className="plydet">{activity.metadata.title}</div>
       </Link>
     </li>
   );

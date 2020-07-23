@@ -4,15 +4,7 @@ import "./ActivityPreviewCard.scss";
 import gifloader from "../images/276.gif";
 import { Link } from "react-router-dom";
 const ActivityPreviewCard = (props) => {
-  console.log(props);
   const activity = props.activity;
-
-  function onSelect(id) {
-    const { handleSelect } = props;
-    if (handleSelect) {
-      handleSelect(id);
-    }
-  }
 
   return (
     <Link
@@ -25,25 +17,13 @@ const ActivityPreviewCard = (props) => {
           : "/playlist/preview/" + props.playlist + "/resource/" + activity._id
       }
     >
-      <li
-        //   onclick={() => {
-        //     onSelect(activity._id);
-        //     try {
-        //       document.getElementById(
-        //         "curriki-h5p-wrapper"
-        //       ).innerHTML = ` <div class="loader_gif">
-        //       <img src='${gifloader}' alt="" />
-        //     </div>`;
-        //     } catch (e) {}
-        //   }}
-        className="check"
-      >
-        {activity.thumb_url ? (
+      <li className="check">
+        {activity.metadata.thumb_url ? (
           <div
             className="bg-thumbnail"
             style={{
               backgroundImage:
-                "url(" + global.config.laravelAPIUrl + activity.thumb_url + ")",
+                "url(" + global.config.laravelAPIUrl + activity.metadata.thumb_url + ")",
             }}
           />
         ) : (
@@ -57,7 +37,7 @@ const ActivityPreviewCard = (props) => {
         )}
 
         <div>
-          <div className="title">{activity.title}</div>
+          <div className="title">{activity.metadata.title}</div>
         </div>
       </li>
     </Link>

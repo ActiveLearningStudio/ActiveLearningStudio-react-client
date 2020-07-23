@@ -4,15 +4,7 @@ import ActivityCard from "./ActivityCard";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-// import "./ProjectPreviewModal.scss";
 import "./ProductDetails.css";
-// import {
-//     Accordion,
-//     AccordionItem,
-//     AccordionItemHeading,
-//     AccordionItemButton,
-//     AccordionItemPanel,
-// } from 'react-accessible-accordion';
 
 const ProjectPreview = (props) => {
   var currentProject = {
@@ -81,9 +73,6 @@ const ProjectPreview = (props) => {
           <button className={counter === 0 ? "active accordion" : " accordion"}>
             <i className="fa fa-plus" />
             {playlist.title}
-            {/* <Link to="">
-              See All <i class="fa fa-chevron-right" />{" "}
-            </Link> */}
           </button>
 
           <div className="panel ">
@@ -91,15 +80,6 @@ const ProjectPreview = (props) => {
               <Slider {...settings}>{activities}</Slider>
             </ul>
           </div>
-          {/* <div className="plhead">
-            {playlist.title}
-        
-          </div>
-          <div className="acc_content">
-            <ul>
-              <Slider {...settings}>{activities}</Slider>
-            </ul>
-          </div> */}
         </div>
       );
     });
@@ -126,42 +106,16 @@ const ProjectPreview = (props) => {
             </Link>
           </div>
           <div className="sce_cont">
-            {/* <div className="collapsetogle"><img src="/images/plusblk.png" alt="plusblk" title=""></img></div> */}
             <ul className="bar_list flexdiv">
               <li>
                 <div className="title_lg check">
                   <div> {currentProject.name}</div>
-                  {/* <div className="w3-border">
-                    <div className="w3-grey" style={{ width: "35%" }}>
-                      30%
-                    </div>
-                  </div> */}
                   <Link to="/" className="gobackbuttonpreview">
-                    <i className="fa fa-undo" aria-hidden="true"></i> Exit
-                    Preview Mode
+                    <i className="fa fa-undo" aria-hidden="true"></i> 
+                    Exit Preview Mode
                   </Link>
                 </div>
               </li>
-              <li>
-                {/* <div className="usrcmt"><img src="/images/heart.png" alt="heart" title=""></img>20</div> */}
-              </li>
-              <li>
-                {/* <div className="usrcmt"><i className="fas fa-user"></i> 02</div> */}
-              </li>
-
-              <li>
-                {/* <div className="bar flexdiv">
-                                    <div className="progress_bar"> 30%</div>
-                                    <div className="progress_div"></div>
-                                </div> */}
-              </li>
-            </ul>
-            <ul className="rating flexdiv">
-              {/* <li><i className="fas fa-star"></i> </li>
-                            <li><i className="fas fa-star"></i> </li>
-                            <li><i className="fas fa-star"></i> </li>
-                            <li><i className="fas fa-star"></i> </li>
-                            <li><i className="fas fa-star"></i> </li> */}
             </ul>
             <p className="expandiv">{currentProject.description}</p>
           </div>
