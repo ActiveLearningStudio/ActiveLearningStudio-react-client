@@ -2936,10 +2936,10 @@ a:hover {
   }
 
   img {
-    max-width: 40%;
+    max-width: 300px;
     margin: 0 auto;
-
     display: block;
+    height: 150px;
   }
 
   .flex-terms {
@@ -3790,5 +3790,46 @@ a:hover {
     font-size: 13px;
     text-decoration: underline;
     padding-left: 30px;
+  }
+}
+
+.config_options {
+  justify-content: space-around;
+  display: flex;
+  /* justify-content: space-around; */
+  border: 1px solid #ccc;
+  width: 100%;
+  color: #5952c6;
+
+
+  div {
+    width: 50%;
+    padding: 3px;
+    text-align: center;
+    cursor: pointer;
+
+    i {
+      padding-right: 3px;
+    }
+
+    &:first-child {
+      border-right: 1px solid #ccc
+    }
+
+    &:hover {
+      color: #fff;
+      background: #5952c6;
+    }
+  }
+
+}
+
+.model-box-video {
+  .modal-dialog {
+    max-width: 900px;
+
+    img {
+      max-width: 125px;
+    }
   }
 }
