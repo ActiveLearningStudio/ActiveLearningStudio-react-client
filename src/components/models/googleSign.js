@@ -180,10 +180,10 @@ const GoogleModel = ({
                         <div className="form-error">{errors.description}</div>
                       )} */}
 
-                      <p>
+                      {/* <p>
                         Are you sure you want to share this Project to Google
                         Classroom?
-                      </p>
+                      </p> */}
                       <button type="submit">Confirm</button>
                     </form>
                   )}
