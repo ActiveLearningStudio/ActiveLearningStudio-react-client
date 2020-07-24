@@ -1,5 +1,10 @@
 import React, { useEffect } from 'react';
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import {
+  // Route,
+  BrowserRouter as Router,
+  Redirect,
+  Switch,
+} from 'react-router-dom';
 import * as History from 'history';
 import loadable from '@loadable/component';
 import ReactGA from 'react-ga';
@@ -20,11 +25,11 @@ const ResetPasswordPage = loadable(() => import('../containers/Auth/ResetPasswor
 
 const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
 
-const ProjectsPage = loadable(() => import('../containers/ProjectsPage'));
-const PlaylistsPage = loadable(() => import('../containers/PlaylistsPage'));
-const PreviewPage = loadable(() => import('../containers/PreviewPage'));
-const LtiPreviewPage = loadable(() => import('../containers/LtiPreviewPage'));
-const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared'));
+// const ProjectsPage = loadable(() => import('../containers/ProjectsPage'));
+// const PlaylistsPage = loadable(() => import('../containers/PlaylistsPage'));
+// const PreviewPage = loadable(() => import('../containers/PreviewPage'));
+// const LtiPreviewPage = loadable(() => import('../containers/LtiPreviewPage'));
+// const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared'));
 
 const AppRouter = () => {
   useEffect(() => {
@@ -34,7 +39,7 @@ const AppRouter = () => {
   return (
     <Router history={history}>
       <Switch>
-        <PrivateRoute exact path="/" component={ProjectsPage} />
+        {/* <PrivateRoute exact path="/" component={ProjectsPage} /> */}
 
         <PublicRoute exact path="/login" component={LoginPage} />
         <PublicRoute exact path="/register" component={RegisterPage} />
@@ -44,6 +49,7 @@ const AppRouter = () => {
 
         <PrivateRoute exact path="/account" component={ProfilePage} />
 
+        {/*
         <PrivateRoute
           exact
           path="/project/preview2/:projectId"
@@ -146,6 +152,9 @@ const AppRouter = () => {
           path="/activities/:activityId"
           component={PlaylistsPage}
         />
+        */}
+
+        <Redirect to="/account" />
       </Switch>
     </Router>
   );

@@ -64,7 +64,7 @@ class RegisterPage extends React.Component {
         job_title: jobTitle,
       });
 
-      history.push('/');
+      history.push('/account');
     } catch (err) {
       // console.log(err);
     }
