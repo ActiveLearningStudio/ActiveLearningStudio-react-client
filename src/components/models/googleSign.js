@@ -72,10 +72,10 @@ const GoogleModel = ({
           ) : (
             <div className="classroom-form">
               <div>
-                <h1>
+                {/* <h1>
                   Are you sure you want to share this Project to Google
                   Classroom?
-                </h1>
+                </h1> */}
                 <Formik
                   initialValues={{
                     course: "test",
