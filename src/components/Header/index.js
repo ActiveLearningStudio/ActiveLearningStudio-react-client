@@ -1,13 +1,19 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  // useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Dropdown } from 'react-bootstrap';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import logo from 'assets/images/logo.svg';
 import searchImg from 'assets/images/search.png';
-import createProjectImg from 'assets/images/create-project-icon.png';
-import createTeamImg from 'assets/images/create-team.png';
+// import createProjectImg from 'assets/images/create-project-icon.png';
+// import createTeamImg from 'assets/images/create-team.png';
 import notificationImg from 'assets/images/notification.png';
 import userImg from 'assets/images/user.png';
 import { logoutAction } from 'store/actions/auth';
@@ -26,17 +32,17 @@ function Header(props) {
   const createTeamNode = useRef();
 
   const {
-    project,
+    // project,
     closeMenu,
-    showCreateProjectSubmenu,
+    // showCreateProjectSubmenu,
     // showUserSubMenu,
     startLogout,
   } = props;
 
   const handleClick = useCallback((e) => {
     if (
-      createProjNode.current.contains(e.target)
-      || createTeamNode.current.contains(e.target)
+      createProjNode.current && createTeamNode.current
+      && (createProjNode.current.contains(e.target) || createTeamNode.current.contains(e.target))
     ) {
       // return;
     }
@@ -75,6 +81,7 @@ function Header(props) {
 
           <div className="navbar_link">
             <ul className="top_info flexdiv">
+              {/*
               <li
                 className={
                   project && project.showCreateProjectSubmenu
@@ -133,10 +140,11 @@ function Header(props) {
                   </ul>
                 </div>
               </li>
+              */}
 
               <li>
-                <Link to="#">
-                  <img src={notificationImg} alt="notification" />
+                <Link to="#" style={{ marginTop: 6 }}>
+                  <img src={notificationImg} alt="notification" style={{ verticalAlign: 'top' }} />
                 </Link>
               </li>
 
@@ -147,49 +155,36 @@ function Header(props) {
               </li>
 
               <li>
-                <div className="dropdown">
-                  <span
-                    className="dropdown-toggle"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <img src={userImg} alt="user" />
-                  </span>
-                  <div
-                    className="dropdown-menu user-dropdown"
-                    aria-labelledby="dropdownMenuButton"
-                  >
-                    <ul>
-                      <Link to="#">
-                        <li>
-                          Welcome &nbsp;
-                          <span className="user-name-login">
-                            {typeof window !== 'undefined'
-                            && JSON.parse(window.localStorage.getItem('auth'))
-                            && JSON.parse(window.localStorage.getItem('auth')).displayName}
-                          </span>
-                        </li>
-                      </Link>
-                      <Link to="#">
-                        <li>My Account</li>
-                      </Link>
-                      <Link
-                        to="#"
-                        onClick={() => {
-                          Event(
-                            'button click',
-                            'User press Logout button',
-                            'Login Page',
-                          );
-                          startLogout();
-                        }}
-                      >
-                        <li>Logout</li>
-                      </Link>
-                    </ul>
-                  </div>
-                </div>
+                <Dropdown>
+                  <Dropdown.Toggle>
+                    <img src={userImg} alt="user" title="" />
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    <Dropdown.Item href="#">
+                      Welcome &nbsp;
+                      <span className="user-name-login">
+                        {typeof window !== 'undefined'
+                        && JSON.parse(window.localStorage.getItem('auth'))
+                        && JSON.parse(window.localStorage.getItem('auth')).displayName}
+                      </span>
+                    </Dropdown.Item>
+                    <Dropdown.Item href="#">My Account</Dropdown.Item>
+                    <Dropdown.Item
+                      href="#"
+                      onClick={() => {
+                        Event(
+                          'button click',
+                          'User press Logout button',
+                          'Login Page',
+                        );
+                        startLogout();
+                      }}
+                    >
+                      Logout
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </li>
             </ul>
           </div>
@@ -200,15 +195,15 @@ function Header(props) {
 }
 
 Header.propTypes = {
-  project: PropTypes.object,
+  // project: PropTypes.object,
   closeMenu: PropTypes.func.isRequired,
-  showCreateProjectSubmenu: PropTypes.func.isRequired,
+  // showCreateProjectSubmenu: PropTypes.func.isRequired,
   // showUserSubMenu: PropTypes.func.isRequired,
   startLogout: PropTypes.func.isRequired,
 };
 
 Header.defaultProps = {
-  project: null,
+  // project: null,
 };
 
 const mapDispatchToProps = (dispatch) => ({
