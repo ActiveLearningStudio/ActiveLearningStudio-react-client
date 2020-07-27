@@ -19,6 +19,7 @@ const LoginPage = loadable(() => import("../containers/LoginPage"));
 const PreviewPageShared = loadable(() =>
   import("../containers/PreviewPageShared")
 );
+const registration = loadable(() => import("../containers/Registration"));
 const AppRouter = () => {
   useEffect(() => {
     ReactGA.pageview(window.location.pathname);
@@ -37,6 +38,7 @@ const AppRouter = () => {
           exact
           component={PreviewPageShared}
         />
+        <Route path="/registration" exact component={registration} />
         <PrivateRoute
           path="/resource/preview/:resourceid"
           exact
