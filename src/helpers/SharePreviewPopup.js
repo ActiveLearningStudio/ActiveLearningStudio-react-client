@@ -31,7 +31,7 @@ export default function SharePreviewPopup(url, projectName) {
               onClick={() => {
                 /* Get the text field */
                 var copyText = document.getElementById("urllink_clip");
-                alert;
+
                 /* Select the text field */
                 copyText.focus();
                 copyText.select();
