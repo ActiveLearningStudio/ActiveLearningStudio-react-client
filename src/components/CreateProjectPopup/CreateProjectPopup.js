@@ -226,7 +226,7 @@ CreateProjectPopup = reduxForm({
 const mapDispatchToProps = (dispatch) => ({
   createProjectAction: (name, description, thumb_url) =>
     dispatch(createProjectAction(name, description, thumb_url)),
-  updateProjectAction: (name, description, thumb_url) =>
+  updateProjectAction: (projectid, name, description, thumb_url) =>
     dispatch(updateProjectAction(projectid, name, description, thumb_url)),
   uploadProjectThumbnailAction: (formData) =>
     dispatch(uploadProjectThumbnailAction(formData)),
