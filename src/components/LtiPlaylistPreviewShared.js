@@ -7,11 +7,16 @@ import ActivityPreviewCard from "./ActivityPreviewCard";
 import ActivityPreviewCarddropdown from "./ActivityPreviewCardDropdown";
 import gifloader from "../images/276.gif";
 import projecticon from "../images/project_icon.svg";
+
 import "./PlayListPreview.css";
 import { previewResource } from "../actions/resource";
 import { LoadHP } from "./../actions/playlist";
 import axios from "axios";
 import Unauthorized from "./unauthorized";
+
+import Swal from "sweetalert2";
+
+
 const H5PPreview = React.lazy(() => import("../containers/H5PPreview"));
 
 export class LtiPlaylistPreview extends React.Component {

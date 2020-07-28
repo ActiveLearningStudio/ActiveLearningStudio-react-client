@@ -13,7 +13,7 @@ import {
 import Switch from "react-switch";
 import "./ProductDetails.css";
 import SharePreviewPopup from "../helpers/SharePreviewPopup";
-
+import Swal from "sweetalert2";
 export default function ProjectPreview(props) {
   const dispatch = useDispatch();
   const projectfind = useSelector((state) => state);
@@ -208,15 +208,11 @@ export default function ProjectPreview(props) {
                       </div>
                     </div>
                   </li>
-                  <li>
-                  </li>
-                  <li>
-                  </li>
-                  <li>
-                  </li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
                 </ul>
-                <ul className="rating flexdiv">
-                </ul>
+                <ul className="rating flexdiv"></ul>
                 <p className="expandiv">{currentProject.description}</p>
               </div>
             </div>

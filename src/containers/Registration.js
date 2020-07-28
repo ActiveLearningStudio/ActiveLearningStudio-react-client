@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Formik } from "formik";
 import ReCAPTCHA from "react-google-recaptcha";
+import Swal from "sweetalert2";
 const Registration = () => {
   const [capctha, setCaptcha] = useState();
 

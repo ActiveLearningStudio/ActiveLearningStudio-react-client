@@ -1,4 +1,5 @@
 import axios from "axios";
+import Swal from "sweetalert2";
 export const copyProject = (projectId) => {
   const { token } = JSON.parse(localStorage.getItem("auth"));
   Swal.fire({

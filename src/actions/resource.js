@@ -1,4 +1,5 @@
 import axios from "axios";
+import Swal from "sweetalert2";
 import {
   SHOW_CREATE_RESOURCE_MODAL,
   HIDE_CREATE_RESOURCE_MODAL,
