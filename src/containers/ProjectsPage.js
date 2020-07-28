@@ -77,7 +77,7 @@ export class ProjectsPage extends React.Component {
   };
 
   handleDeleteProject = (projectid) => {
-    if (confirm("Are you Sure?")) {
+    if (window.confirm("Are you Sure?")) {
       this.props.deleteProjectAction(projectid);
     }
   };
