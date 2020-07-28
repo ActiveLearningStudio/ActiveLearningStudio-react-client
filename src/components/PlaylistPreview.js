@@ -568,7 +568,7 @@ export class PlaylistPreview extends React.Component {
                         onClick={() => {
                           let protocol =
                             window.location.href.split("/")[0] + "//";
-                          swal.fire({
+                          Swal.fire({
                             html: `<a target="_blank" href="/shared/activity/${this.state.resourceid.trim()}">
                              ${
                                protocol + window.location.host
