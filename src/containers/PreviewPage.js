@@ -90,7 +90,7 @@ const mapDispatchToProps = (dispatch) => ({
   loadMyProjectsAction: () => dispatch(loadMyProjectsAction()),
   createProjectAction: (name, description, thumb_url) =>
     dispatch(createProjectAction(name, description, thumb_url)),
-  loadPlaylistAction_new: (res_id) => dispatch(loadPlaylistAction_new(res_id)),
+  // loadPlaylistAction_new: (res_id) => dispatch(loadPlaylistAction_new(res_id)),
   // LoadLMS: () => {
   //   dispatch(LoadLMS());
   // },
