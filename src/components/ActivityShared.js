@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { loadPlaylistAction } from "../actions/playlist";
-const H5PPreview = React.lazy(() => import("../containers/H5PPreview"));
 import "./PlayListPreview.css";
+const H5PPreview = React.lazy(() => import("../containers/H5PPreview"));
 
 export class ActivityShared extends React.Component {
   constructor(props) {

@@ -7,8 +7,8 @@ import ActivityPreviewCard from "./ActivityPreviewCard";
 import ActivityPreviewCarddropdown from "./ActivityPreviewCardDropdown";
 import gifloader from "../images/276.gif";
 import projecticon from "../images/project_icon.svg";
-const H5PPreview = React.lazy(() => import("../containers/H5PPreview"));
 import "./PlayListPreview.css";
+const H5PPreview = React.lazy(() => import("../containers/H5PPreview"));
 
 export class LtiPlaylistPreview extends React.Component {
   constructor(props) {
