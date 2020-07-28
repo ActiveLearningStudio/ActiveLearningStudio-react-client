@@ -8,6 +8,7 @@ import GoogleModel from "./models/googleSign";
 import { getprojectid } from "../actions/gapi";
 import { GOOGLESHARE } from "../actions/gapi.js";
 import { getProjectCourseFromLMS } from "../actions/project";
+import SharePreviewPopup from "../helpers/SharePreviewPopup";
 const ProjectCard = (props) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
@@ -101,8 +102,8 @@ const ProjectCard = (props) => {
                   </a> */}
                     <li class="dropdown-submenu send">
                       <a class="test" tabindex="-1">
-                        <i className="fa fa-share" aria-hidden="true"></i> Send
-                        To
+                        <i className="fa fa-newspaper" aria-hidden="true"></i>{" "}
+                        Publish
                       </a>
                       <ul class="dropdown-menu check">
                         <li
@@ -137,6 +138,22 @@ const ProjectCard = (props) => {
                             );
                           })}
                       </ul>
+                    </li>
+                    <li class="dropdown-submenu send">
+                      <a
+                        class="test"
+                        tabindex="-1"
+                        onClick={() => {
+                          let protocol =
+                            window.location.href.split("/")[0] + "//";
+                          let url = `${
+                            protocol + window.location.host
+                          }/project/shared/${props.project._id.trim()}`;
+                          SharePreviewPopup(url, props.project.name);
+                        }}
+                      >
+                        <i className="fa fa-share" aria-hidden="true"></i> Share
+                      </a>
                     </li>
 
                     {/*<a

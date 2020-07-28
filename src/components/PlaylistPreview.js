@@ -8,6 +8,9 @@ import ActivityPreviewCarddropdown from "./ActivityPreviewCardDropdown";
 import gifloader from "../images/276.gif";
 import projecticon from "../images/project_icon.svg";
 import "./PlayListPreview.css";
+import { confirmAlert } from "react-confirm-alert"; // Import
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+
 import {
   previewResource,
   resourceshared,
@@ -570,13 +573,65 @@ export class PlaylistPreview extends React.Component {
                         onClick={() => {
                           let protocol =
                             window.location.href.split("/")[0] + "//";
-                          Swal.fire({
-                            html: `<a target="_blank" href="/shared/activity/${this.state.resourceid.trim()}">
-                             ${
-                               protocol + window.location.host
-                             }/shared/activity/${this.state.resourceid}
-                              </a>`,
+                          confirmAlert({
+                            customUI: ({ onClose }) => {
+                              return (
+                                <div className="share-project-preview-url project-share-check">
+                                  <br />
+
+                                  <a
+                                    target="_blank"
+                                    href="/shared/activity/${this.state.resourceid.trim()}"
+                                  >
+                                    <input
+                                      id="urllink_clip"
+                                      value={
+                                        protocol +
+                                        window.location.host +
+                                        "/shared/activity/" +
+                                        this.state.resourceid
+                                      }
+                                    />
+                                  </a>
+
+                                  <i
+                                    title="copy to clipboard"
+                                    className="fa fa-clipboard"
+                                    aria-hidden="true"
+                                    onClick={() => {
+                                      /* Get the text field */
+                                      var copyText = document.getElementById(
+                                        "urllink_clip"
+                                      );
+                                      alert;
+                                      /* Select the text field */
+                                      copyText.focus();
+                                      copyText.select();
+                                      //  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+                                      /* Copy the text inside the text field */
+                                      document.execCommand("copy");
+
+                                      /* Alert the copied text */
+                                      Swal.fire({
+                                        title: "Link Copied",
+                                        showCancelButton: false,
+                                        showConfirmButton: false,
+                                        timer: 1500,
+                                        allowOutsideClick: false,
+                                      });
+                                    }}
+                                  ></i>
+                                  <br />
+
+                                  <div className="close-btn">
+                                    <button onClick={onClose}>Ok</button>
+                                  </div>
+                                </div>
+                              );
+                            },
                           });
+                          // confirmAlert();
                         }}
                       >
                         <i class="fa fa-external-link" aria-hidden="true"></i>

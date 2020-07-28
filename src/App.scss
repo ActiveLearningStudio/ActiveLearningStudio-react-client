@@ -3655,6 +3655,7 @@ a:hover {
 
   .react-confirm-alert-overlay {
     background: rgba(0, 0, 0, 0.5) !important;
+
   }
 
   .react-confirm-alert {
@@ -3666,14 +3667,46 @@ a:hover {
   .share-project-preview-url {}
 }
 
+.react-confirm-alert-overlay {
+  background: rgba(0, 0, 0, 0.6);
+
+}
+
+.react-confirm-alert {
+  min-width: 650px;
+}
+
 .share-project-preview-url.project-share-check {
   background: #fff;
   padding: 20px;
-  box-shadow: 0px 0px 5px 2px #ccc;
+
   border-radius: 5px;
+
+  h3 {
+    text-align: center;
+    padding-bottom: 10px;
+
+    strong {
+      text-decoration: underline;
+    }
+  }
+
+  input {
+    width: 90%;
+    border: none;
+    cursor: pointer;
+    color: #007bff;
+  }
+
+
 
   i {
     padding-left: 10px;
+    cursor: pointer;
+
+    &:hover {
+      color: #007bff
+    }
   }
 
   .google-script {
@@ -3696,6 +3729,7 @@ a:hover {
     text-align: center;
 
     button {
+      margin-top: 10px;
       border: 0;
       border-radius: 0.25em;
       background: initial;
@@ -3802,7 +3836,7 @@ a:hover {
 
 .footer-all {
   position: fixed;
-  color: red;
+
   z-index: 111;
   width: 100%;
   bottom: 0;
@@ -3811,6 +3845,7 @@ a:hover {
   padding: 10px 30px;
   display: flex;
   justify-content: center;
+  box-shadow: 1px 1px 1px 1px #ddd;
 
   a {
     color: #5952c6;
@@ -3960,4 +3995,16 @@ a:hover {
 
 .row.check-home {
   padding: 0px 20px;
+}
+
+.main-page-content.preview .sliderscrollauto {
+  max-height: 450px;
+  overflow-y: auto;
+  min-height: 400px;
+}
+
+.main-page-content.preview {
+
+  z-index: 1;
+  height: 105vh
 }

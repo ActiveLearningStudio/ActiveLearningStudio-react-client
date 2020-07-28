@@ -12,6 +12,9 @@ import "./ResourceCard.scss";
 import ComingSoon from "../comingSoon/model";
 import { Event } from "../../trackers/ga";
 import Sharelink from "./sharelinks";
+import { confirmAlert } from "react-confirm-alert"; // Import
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+
 export class ResourceCard extends React.Component {
   constructor(props) {
     super(props);
@@ -146,18 +149,79 @@ export class ResourceCard extends React.Component {
                       <a
                         className="dropdown-item"
                         onClick={() => {
-                          Swal.fire({
-                            title: "STAY TUNED!",
-                            text: "COMING SOON",
-                            imageUrl: logo,
-                            imageWidth: 400,
-                            imageHeight: 200,
-                            imageAlt: "Custom image",
+                          let protocol =
+                            window.location.href.split("/")[0] + "//";
+                          confirmAlert({
+                            customUI: ({ onClose }) => {
+                              return (
+                                <div className="share-project-preview-url project-share-check">
+                                  <br />
+                                  <h3>
+                                    You can now share Activity{" "}
+                                    <strong>{this.props.resource.title}</strong>
+                                    <br />
+                                    Anyone with the link below can access your
+                                    activity:
+                                  </h3>
+
+                                  <a
+                                    target="_blank"
+                                    href={
+                                      "/shared/activity/" +
+                                      this.props.resource._id.trim()
+                                    }
+                                  >
+                                    <input
+                                      id="urllink_clip"
+                                      value={
+                                        protocol +
+                                        window.location.host +
+                                        "/shared/activity/" +
+                                        this.props.resource._id
+                                      }
+                                    />
+                                  </a>
+
+                                  <i
+                                    title="copy to clipboard"
+                                    className="fa fa-clipboard"
+                                    aria-hidden="true"
+                                    onClick={() => {
+                                      /* Get the text field */
+                                      var copyText = document.getElementById(
+                                        "urllink_clip"
+                                      );
+                                      alert;
+                                      /* Select the text field */
+                                      copyText.focus();
+                                      copyText.select();
+                                      //  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+                                      /* Copy the text inside the text field */
+                                      document.execCommand("copy");
+
+                                      /* Alert the copied text */
+                                      Swal.fire({
+                                        title: "Link Copied",
+                                        showCancelButton: false,
+                                        showConfirmButton: false,
+                                        timer: 1500,
+                                        allowOutsideClick: false,
+                                      });
+                                    }}
+                                  ></i>
+                                  <br />
+
+                                  <div className="close-btn">
+                                    <button onClick={onClose}>Ok</button>
+                                  </div>
+                                </div>
+                              );
+                            },
                           });
                         }}
                       >
-                        <i className="fa fa-share" aria-hidden="true"></i> Send
-                        To
+                        <i className="fa fa-share" aria-hidden="true"></i> Share
                       </a>
 
                       <a

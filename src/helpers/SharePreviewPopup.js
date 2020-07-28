@@ -22,27 +22,34 @@ export default function SharePreviewPopup(url, projectName) {
             <br />
             <br />
             <a target="_blank" href={url}>
-              <span id="urllink_clip">{url}</span>{" "}
-              <i
-                title="copy to clipboard"
-                className="fa fa-clipboard"
-                aria-hidden="true"
-                onclick={() => {
-                  /* Get the text field */
-                  var copyText = document.getElementById("urllink_clip");
-
-                  /* Select the text field */
-                  copyText.select();
-                  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-
-                  /* Copy the text inside the text field */
-                  document.execCommand("copy");
-
-                  /* Alert the copied text */
-                  alert("Copied the text: " + copyText.value);
-                }}
-              ></i>
+              <input id="urllink_clip" value={url} />
             </a>
+            <i
+              title="copy to clipboard"
+              className="fa fa-clipboard"
+              aria-hidden="true"
+              onClick={() => {
+                /* Get the text field */
+                var copyText = document.getElementById("urllink_clip");
+                alert;
+                /* Select the text field */
+                copyText.focus();
+                copyText.select();
+                //  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+                /* Copy the text inside the text field */
+                document.execCommand("copy");
+
+                /* Alert the copied text */
+                Swal.fire({
+                  title: "Link Copied",
+                  showCancelButton: false,
+                  showConfirmButton: false,
+                  timer: 1500,
+                  allowOutsideClick: false,
+                });
+              }}
+            ></i>
             <br />
           </h1>
           <hr />
