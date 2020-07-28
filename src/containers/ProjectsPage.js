@@ -7,6 +7,7 @@ import { withRouter } from "react-router-dom";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer.js";
 import Sidebar from "../components/Sidebar/Sidebar";
+import { LoadLMS } from "../actions/project";
 import { showDeletePopupAction, hideDeletePopupAction } from "../actions/ui";
 import {
   deleteProjectAction,
@@ -32,6 +33,7 @@ export class ProjectsPage extends React.Component {
   componentDidMount() {
     const termstrue = JSON.parse(localStorage.getItem("auth"));
     !termstrue.subscribed && this.props.logout();
+    this.props.LoadLMS();
     //scroll to top
     window.scrollTo(0, 0);
     if (
@@ -174,6 +176,7 @@ const mapDispatchToProps = (dispatch) => ({
   loadProjectAction: (projectid) => dispatch(loadProjectAction(projectid)),
   shareProjectAction: (projectid) => dispatch(shareProjectAction(projectid)),
   logout: () => dispatch(logout()),
+  LoadLMS: () => dispatch(LoadLMS()),
 });
 
 const mapStateToProps = (state) => {

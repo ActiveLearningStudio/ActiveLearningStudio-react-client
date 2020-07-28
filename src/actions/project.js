@@ -16,11 +16,12 @@ import {
   CLOSE_MENU,
   SHOW_LMS,
   LOAD_MY_PROJECTS_SELECTED,
-  SET_LMS_COURSE
+  SET_LMS_COURSE,
 } from "../constants/actionTypes";
 import { editResource } from "./resource";
 import loaderimg from "../images/loader.svg";
-import SharePreviewPopup from '../helpers/SharePreviewPopup'
+import SharePreviewPopup from "../helpers/SharePreviewPopup";
+import { store } from "../index.js";
 
 // Publishes the project in LEARN
 export const shareProject = (project) => ({
@@ -466,12 +467,13 @@ export const toggleProjectshare = async (projectId, ProjectName) => {
       },
     }
   );
-  
-  
+
   if (response.data.status == "success") {
-    let protocol = window.location.href.split("/")[0] + "//" 
-    let url = `${protocol+window.location.host}/project/shared/${projectId.trim()}`;
-    return SharePreviewPopup(url, ProjectName)
+    let protocol = window.location.href.split("/")[0] + "//";
+    let url = `${
+      protocol + window.location.host
+    }/project/shared/${projectId.trim()}`;
+    return SharePreviewPopup(url, ProjectName);
   }
 };
 export const toggleProjectshareremoved = async (projectId, ProjectName) => {
@@ -489,7 +491,7 @@ export const toggleProjectshareremoved = async (projectId, ProjectName) => {
   if (response.data.status == "success") {
     Swal.fire({
       title: `You stopped sharing <strong>"${ProjectName}"</strong> ! `,
-      html: `Please remember that anyone you have shared this project with, will no longer have access to its contents.`
+      html: `Please remember that anyone you have shared this project with, will no longer have access to its contents.`,
     });
   }
 };
@@ -559,8 +561,14 @@ export const uploadProjectThumbnailAction = (formData) => {
   };
 };
 
-export const getProjectCourseFromLMS = (lms, setting_id, project_id) => {
-  return dispatch => {
+export const getProjectCourseFromLMS = (
+  lms,
+  setting_id,
+  project_id,
+  playslist,
+  lmsUrl
+) => {
+  return (dispatch) => {
     const config = {
       headers: {
         "content-type": "multipart/form-data",
@@ -576,21 +584,101 @@ export const getProjectCourseFromLMS = (lms, setting_id, project_id) => {
       },
     };
 
-    let formData = {setting_id, project_id};
-    return axios.post(
-          global.config.laravelAPIUrl + "/go/" + lms + "/fetch/course",
-          formData
-        ).then((response) => {
-          if( response.data.status === "success"){
-            dispatch( setLmsCourse(response.data.data) );
+    let formData = { setting_id, project_id };
+    Swal.fire({
+      iconHtml: loaderimg,
+      title: "Fetchnig Information....",
+
+      showCancelButton: false,
+      showConfirmButton: false,
+      allowOutsideClick: false,
+    });
+    return axios
+      .post(
+        global.config.laravelAPIUrl + "/go/" + lms + "/fetch/course",
+        formData
+      )
+      .then((response) => {
+        if (response.data.status === "success") {
+          dispatch(setLmsCourse(response.data.data));
+          const globalstoreClone = store.getState();
+          const counterarray = [];
+          if (response.data.data.playlists.length > 0) {
+          } else {
           }
-        });
-  }
-}
+          const { token } = JSON.parse(localStorage.getItem("auth"));
+          Swal.fire({
+            title: `This Project will be added to ${lms}. If the Project does not exist, it will be created. `,
+            text: "Would you like to proceed?",
+
+            showCancelButton: true,
+            confirmButtonColor: "#5952c6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Continue",
+          }).then((result) => {
+            if (result.value) {
+              Swal.fire({
+                iconHtml: loaderimg,
+                title: "Publishing....",
+
+                showCancelButton: false,
+                showConfirmButton: false,
+                allowOutsideClick: false,
+              });
+
+              const allplay = playslist.map((eachPlaylist, counter) => {
+                return axios.post(
+                  global.config.laravelAPIUrl + `/go/${lms}/publish/playlist`,
+                  {
+                    setting_id: setting_id,
+                    playlist_id: eachPlaylist._id,
+                    counter:
+                      !!globalstoreClone.project.lms_course &&
+                      globalstoreClone.project.lms_course.playlists_copy_counter
+                        .length > 0
+                        ? globalstoreClone.project.lms_course
+                            .playlists_copy_counter[counter].counter
+                        : 0,
+                  },
+                  {
+                    headers: {
+                      Authorization: "Bearer " + token,
+                    },
+                  }
+                );
+              });
+              console.log(allplay);
+              axios
+                .all(allplay)
+                .then((res) => {
+                  console.log(res);
+                  if (!!res) {
+                    Swal.fire({
+                      icon: "success",
+                      title: "Published!",
+                      confirmButtonColor: "#5952c6",
+                      html: `Your Project has been published to <a target="_blank" href="${lmsUrl}"> ${lmsUrl}</a>`,
+                      //   text: `Yo'ur playlist has been submitted to ${lmsUrl}`,
+                    });
+                  }
+                })
+                .catch((e) => {
+                  Swal.fire({
+                    confirmButtonColor: "#5952c6",
+                    icon: "error",
+                    text: "Something went wrong, Kindly try again",
+                  });
+                });
+            }
+          });
+        }
+      });
+  };
+};
 
 export const setLmsCourse = (course) => {
   return {
     type: SET_LMS_COURSE,
-    lms_course: course 
-  }
+    lms_course: course,
+  };
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ProjectPreviewModal from "./ProjectPreviewModal";
 import "./ProjectCard.scss";
@@ -7,13 +7,20 @@ import logo from "../images/logo.svg";
 import GoogleModel from "./models/googleSign";
 import { getprojectid } from "../actions/gapi";
 import { GOOGLESHARE } from "../actions/gapi.js";
+import { getProjectCourseFromLMS } from "../actions/project";
 const ProjectCard = (props) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const All_Lms = useSelector((state) => state.defaultsharestate);
 
+  const [allLms, setAllLms] = useState([]);
+  useEffect(() => {
+    setAllLms(All_Lms);
+  }, [All_Lms]);
+  console.log(props);
   return (
     <div className="col-md-3 check">
       <GoogleModel
@@ -107,6 +114,28 @@ const ProjectCard = (props) => {
                         >
                           <a>Google Classroom</a>
                         </li>
+                        {allLms.sharevendoes &&
+                          allLms.sharevendoes.map((data) => {
+                            return (
+                              <li>
+                                <a
+                                  onClick={() => {
+                                    dispatch(
+                                      getProjectCourseFromLMS(
+                                        data.lms_name.toLowerCase(),
+                                        data._id,
+                                        props.project._id,
+                                        props.project.playlists,
+                                        data.lms_url
+                                      )
+                                    );
+                                  }}
+                                >
+                                  {data.description}
+                                </a>
+                              </li>
+                            );
+                          })}
                       </ul>
                     </li>
 
