@@ -1,190 +1,206 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik } from "formik";
-const Registration = () => (
-  <div>
-    <Formik
-      initialValues={{
-        firstName: "",
-        LastName: "",
-        email: "",
-        phone: "",
-        jobTitle: "",
-        school: "",
-        websiteUrl: "",
-        organization: "",
-        message: "",
-      }}
-      validate={(values) => {
-        const errors = {};
-        if (!values.email) {
-          errors.email = "Required";
-        } else if (
-          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-        ) {
-          errors.email = "Invalid email address";
-        }
+import ReCAPTCHA from "react-google-recaptcha";
+const Registration = () => {
+  const [capctha, setCaptcha] = useState();
 
-        if (!values.firstName) {
-          errors.firstName = "Required";
-        }
+  return (
+    <div>
+      <Formik
+        initialValues={{
+          firstName: "",
+          LastName: "",
+          email: "",
+          phone: "",
+          jobTitle: "",
+          school: "",
+          websiteUrl: "",
+          organization: "",
+          message: "",
+        }}
+        validate={(values) => {
+          const errors = {};
+          if (!values.email) {
+            errors.email = "Required";
+          } else if (
+            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+          ) {
+            errors.email = "Invalid email address";
+          }
 
-        if (!values.LastName) {
-          errors.LastName = "Required";
-        }
+          if (!values.firstName) {
+            errors.firstName = "Required";
+          }
 
-        // if (values.phone.length < 7 ) {
-        //   errors.phone = "phone number length must be 7 or gretaer ";
-        // }
+          if (!values.LastName) {
+            errors.LastName = "Required";
+          }
 
-        return errors;
-      }}
-      onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 400);
-      }}
-    >
-      {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        isSubmitting,
-        /* and other goodies */
-      }) => (
-        <form onSubmit={handleSubmit} className="formRegister">
-          <div className="half-group">
+          // if (values.phone.length < 7 ) {
+          //   errors.phone = "phone number length must be 7 or gretaer ";
+          // }
+
+          return errors;
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+          if (!!capctha) {
+          } else {
+            Swal.fire({
+              title: "Recaptcha required....",
+            });
+          }
+
+          setTimeout(() => {
+            alert(JSON.stringify(values, null, 2));
+            setSubmitting(false);
+          }, 400);
+        }}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+          /* and other goodies */
+        }) => (
+          <form onSubmit={handleSubmit} className="formRegister">
+            <div className="half-group">
+              <div className="form-group">
+                <label>
+                  First Name <span>*</span>
+                </label>
+                <input
+                  type="text"
+                  name="firstName"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.firstName}
+                />
+                {errors.firstName && touched.firstName && (
+                  <div className="error">{errors.firstName} </div>
+                )}
+              </div>
+              <div className="form-group">
+                <label>
+                  Last Name <span>*</span>
+                </label>
+                <input
+                  type="text"
+                  name="LastName"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.LastName}
+                />
+                {errors.LastName && touched.LastName && (
+                  <div className="error"> {errors.LastName} </div>
+                )}
+              </div>
+
+              <div className="form-group">
+                <label>
+                  Email <span>*</span>
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.email}
+                />
+                {errors.email && touched.email && (
+                  <div className="error">{errors.email}</div>
+                )}
+              </div>
+              <div className="form-group">
+                <label>Phone number</label>
+                <input
+                  type="text"
+                  name="phone"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.phone}
+                />
+                {errors.phone && touched.phone && errors.phone}
+              </div>
+            </div>
             <div className="form-group">
-              <label>
-                First Name <span>*</span>
-              </label>
+              <label>Job Title</label>
               <input
                 type="text"
-                name="firstName"
+                name="jobTitle"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.firstName}
+                value={values.jobTitle}
               />
-              {errors.firstName && touched.firstName && (
-                <div className="error">{errors.firstName} </div>
-              )}
             </div>
             <div className="form-group">
-              <label>
-                Last Name <span>*</span>
-              </label>
+              <label>School/District/Organization</label>
+
               <input
                 type="text"
-                name="LastName"
+                name="school"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.LastName}
+                value={values.school}
               />
-              {errors.LastName && touched.LastName && (
-                <div className="error"> {errors.LastName} </div>
-              )}
-            </div>
-
-            <div className="form-group">
-              <label>
-                Email <span>*</span>
-              </label>
-              <input
-                type="email"
-                name="email"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.email}
-              />
-              {errors.email && touched.email && (
-                <div className="error">{errors.email}</div>
-              )}
             </div>
             <div className="form-group">
-              <label>Phone number</label>
+              <label>Website URL</label>
               <input
                 type="text"
-                name="phone"
+                name="websiteUrl"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.phone}
+                value={values.websiteUrl}
               />
-              {errors.phone && touched.phone && errors.phone}
             </div>
-          </div>
-          <div className="form-group">
-            <label>Job Title</label>
-            <input
-              type="text"
-              name="jobTitle"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.jobTitle}
+            <div className="form-group">
+              <label>Organization type</label>
+              <p>
+                Which of the following best describes you or your organization?
+              </p>
+              <select>
+                <option>Please Select</option>
+                <option>Business organization</option>
+                <option>Nonprofit</option>
+                <option>Content provider</option>
+                <option>Content creator</option>
+                <option>Educator</option>
+                <option>Instructional Technologist</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>Please describe your interest in Curriki Studio</label>
+              <p>
+                This will help us follow-up with the best resources that fit
+                your needs.
+              </p>
+              <textarea
+                name="message"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.message}
+              />
+            </div>
+            <ReCAPTCHA
+              sitekey="6Ld-p6QZAAAAAATSMPRa1Laqf11-AOz2_WTUrZ22 "
+              onChange={(el) => {
+                setCaptcha(el);
+              }}
             />
-          </div>
-
-          <div className="form-group">
-            <label>School/District/Organization</label>
-
-            <input
-              type="text"
-              name="school"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.school}
-            />
-          </div>
-          <div className="form-group">
-            <label>Website URL</label>
-            <input
-              type="text"
-              name="websiteUrl"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.websiteUrl}
-            />
-          </div>
-          <div className="form-group">
-            <label>Organization type</label>
-            <p>
-              Which of the following best describes you or your organization?
-            </p>
-            <select>
-              <option>Please Select</option>
-              <option>Business organization</option>
-              <option>Nonprofit</option>
-              <option>Content provider</option>
-              <option>Content creator</option>
-              <option>Educator</option>
-              <option>Instructional Technologist</option>
-              <option>Other</option>
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label>Please describe your interest in Curriki Studio</label>
-            <p>
-              This will help us follow-up with the best resources that fit your
-              needs.
-            </p>
-            <textarea
-              name="message"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.message}
-            />
-          </div>
-
-          <button type="submit" disabled={isSubmitting}>
-            Submit
-          </button>
-        </form>
-      )}
-    </Formik>
-  </div>
-);
+            ,
+            <button type="submit" disabled={isSubmitting}>
+              Submit
+            </button>
+          </form>
+        )}
+      </Formik>
+    </div>
+  );
+};
 
 export default Registration;

@@ -3930,3 +3930,12 @@ a:hover {
     }
   }
 }
+
+.btn.project-dropdown-btn.project+.dropdown-menu {
+  left: -80px !important
+}
+
+.row.check-home {
+
+  padding: 0px 20px;
+}

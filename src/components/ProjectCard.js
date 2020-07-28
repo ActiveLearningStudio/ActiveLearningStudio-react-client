@@ -59,7 +59,7 @@ const ProjectCard = (props) => {
               <div className="col-md-2">
                 <div className="dropdown pull-right check">
                   <button
-                    className="btn project-dropdown-btn"
+                    className="btn project-dropdown-btn project"
                     type="button"
                     id="dropdownMenuButton"
                     data-toggle="dropdown"
