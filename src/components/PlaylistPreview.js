@@ -603,7 +603,7 @@ export class PlaylistPreview extends React.Component {
                                       var copyText = document.getElementById(
                                         "urllink_clip"
                                       );
-                                      alert;
+
                                       /* Select the text field */
                                       copyText.focus();
                                       copyText.select();
