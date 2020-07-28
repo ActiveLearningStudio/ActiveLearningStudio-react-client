@@ -22,13 +22,24 @@ export default function SharePreviewPopup(url, projectName) {
             <br />
             <br />
             <a target="_blank" href={url}>
-              <span ref={urllink}>{url}</span>{" "}
+              <span id="urllink_clip">{url}</span>{" "}
               <i
                 title="copy to clipboard"
                 className="fa fa-clipboard"
                 aria-hidden="true"
                 onclick={() => {
-                  console.log(urllink.current);
+                  /* Get the text field */
+                  var copyText = document.getElementById("urllink_clip");
+
+                  /* Select the text field */
+                  copyText.select();
+                  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+                  /* Copy the text inside the text field */
+                  document.execCommand("copy");
+
+                  /* Alert the copied text */
+                  alert("Copied the text: " + copyText.value);
                 }}
               ></i>
             </a>
