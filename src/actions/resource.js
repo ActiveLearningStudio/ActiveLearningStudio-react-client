@@ -448,7 +448,7 @@ export const createResourceByH5PUploadAction = (
 
         dispatch(createResource(playlistid, resource, editor, editorType));
       } else {
-        throw new Error(e);
+        throw new Error("Error occurred while creating resource");
       }
     } catch (e) {
       throw new Error(e);
