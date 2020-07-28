@@ -41,21 +41,21 @@ export default function ProjectPreview(props) {
   };
   var first = true;
 
-  useEffect(() => {
-    try {
-      var acc = document
-        .getElementById("custom_accordian")
-        .getElementsByClassName("accordion");
+  // useEffect(() => {
+  //   try {
+  //     var acc = document
+  //       .getElementById("custom_accordian")
+  //       .getElementsByClassName("accordion");
 
-      var i;
+  //     var i;
 
-      for (i = 0; i < acc.length; i++) {
-        acc[i].addEventListener("click", function () {
-          this.classList.toggle("active");
-        });
-      }
-    } catch (e) {}
-  });
+  //     for (i = 0; i < acc.length; i++) {
+  //       acc[i].addEventListener("click", function () {
+  //         this.classList.toggle("active");
+  //       });
+  //     }
+  //   } catch (e) {}
+  // });
 
   useEffect(() => {
     dispatch(loadMyProjectsActionPreview(props.match.params.projectid));
@@ -91,7 +91,11 @@ export default function ProjectPreview(props) {
         return (
           <div className="check-each" key={playlist._id}>
             <button
+              ref={(el) => (accordian.current[counter] = el)}
               className={counter === 0 ? "active accordion" : " accordion"}
+              onClick={() => {
+                accordian.current[counter].classList.toggle("active");
+              }}
             >
               <i className="fa fa-plus" />
               {playlist.title}
