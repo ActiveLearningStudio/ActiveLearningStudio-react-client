@@ -17,6 +17,7 @@ import {
   SHOW_LMS,
   LOAD_MY_PROJECTS_SELECTED,
   SET_LMS_COURSE,
+  CHANGE_LOADING,
 } from "../constants/actionTypes";
 import { editResource } from "./resource";
 import loaderimg from "../images/loader.svg";
