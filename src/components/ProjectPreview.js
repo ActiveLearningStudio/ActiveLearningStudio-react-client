@@ -5,6 +5,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useDispatch, useSelector } from "react-redux";
+
 import {
   loadMyProjectsActionPreview,
   toggleProjectshare,
@@ -17,6 +18,7 @@ import Swal from "sweetalert2";
 export default function ProjectPreview(props) {
   const dispatch = useDispatch();
   const projectfind = useSelector((state) => state);
+  const accordian = useRef([]);
 
   const [currentProject, setSet_Proj] = useState(null);
   const [activeShared, setActiveShared] = useState(true);
