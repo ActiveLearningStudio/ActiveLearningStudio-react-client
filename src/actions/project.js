@@ -603,9 +603,7 @@ export const getProjectCourseFromLMS = (
           dispatch(setLmsCourse(response.data.data));
           const globalstoreClone = store.getState();
           const counterarray = [];
-          if (response.data.data.playlists.length > 0) {
-          } else {
-          }
+
           const { token } = JSON.parse(localStorage.getItem("auth"));
           Swal.fire({
             title: `This Project will be added to ${lms}. If the Project does not exist, it will be created. `,
@@ -626,49 +624,97 @@ export const getProjectCourseFromLMS = (
                 allowOutsideClick: false,
               });
 
-              const allplay = playslist.map((eachPlaylist, counter) => {
-                return axios.post(
-                  global.config.laravelAPIUrl + `/go/${lms}/publish/playlist`,
-                  {
-                    setting_id: setting_id,
-                    playlist_id: eachPlaylist._id,
-                    counter:
-                      !!globalstoreClone.project.lms_course &&
-                      globalstoreClone.project.lms_course.playlists_copy_counter
-                        .length > 0
-                        ? globalstoreClone.project.lms_course
-                            .playlists_copy_counter[counter].counter
-                        : 0,
-                  },
-                  {
-                    headers: {
-                      Authorization: "Bearer " + token,
-                    },
-                  }
-                );
-              });
-              console.log(allplay);
-              axios
-                .all(allplay)
-                .then((res) => {
-                  console.log(res);
-                  if (!!res) {
-                    Swal.fire({
-                      icon: "success",
-                      title: "Published!",
-                      confirmButtonColor: "#5952c6",
-                      html: `Your Project has been published to <a target="_blank" href="${lmsUrl}"> ${lmsUrl}</a>`,
-                      //   text: `Yo'ur playlist has been submitted to ${lmsUrl}`,
+              async function asyncFunc() {
+                for (var x = 0; x < playslist.length; x++) {
+                  const data = await axios
+                    .post(
+                      global.config.laravelAPIUrl +
+                        `/go/${lms}/publish/playlist`,
+                      {
+                        setting_id: setting_id,
+                        playlist_id: playslist[x]._id,
+                        counter:
+                          !!globalstoreClone.project.lms_course &&
+                          globalstoreClone.project.lms_course
+                            .playlists_copy_counter.length > 0
+                            ? globalstoreClone.project.lms_course
+                                .playlists_copy_counter[x].counter
+                            : 0,
+                      },
+                      {
+                        headers: {
+                          Authorization: "Bearer " + token,
+                        },
+                      }
+                    )
+                    .then((res) => {
+                      if (x + 1 === playslist.length) {
+                        Swal.fire({
+                          icon: "success",
+                          title: "Published!",
+                          confirmButtonColor: "#5952c6",
+                          html: `Your Project has been published to <a target="_blank" href="${lmsUrl}"> ${lmsUrl}</a>`,
+                          //   text: `Yo'ur playlist has been submitted to ${lmsUrl}`,
+                        });
+                      }
                     });
-                  }
-                })
-                .catch((e) => {
-                  Swal.fire({
-                    confirmButtonColor: "#5952c6",
-                    icon: "error",
-                    text: "Something went wrong, Kindly try again",
-                  });
+                }
+              }
+              if (playslist.length > 0) {
+                asyncFunc();
+              } else {
+                Swal.fire({
+                  icon: "warning",
+                  title: "No playlist available",
+                  confirmButtonColor: "#5952c6",
                 });
+              }
+
+              // const allplay = playslist.map((eachPlaylist, counter) => {
+              //   // return axios.post(
+              //   //   global.config.laravelAPIUrl + `/go/${lms}/publish/playlist`,
+              //   //   {
+              //   //     setting_id: setting_id,
+              //   //     playlist_id: eachPlaylist._id,
+              //   //     counter:
+              //   //       !!globalstoreClone.project.lms_course &&
+              //   //       globalstoreClone.project.lms_course.playlists_copy_counter
+              //   //         .length > 0
+              //   //         ? globalstoreClone.project.lms_course
+              //   //             .playlists_copy_counter[counter].counter
+              //   //         : 0,
+              //   //   },
+              //   //   {
+              //   //     headers: {
+              //   //       Authorization: "Bearer " + token,
+              //   //     },
+              //   //   }
+              //   // );
+              // });
+              // console.log(allplay);
+              // const syncrequest = allplay[Symbol.iterator]();
+
+              // axios
+              //   .all(allplay)
+              //   .then((res) => {
+              //     console.log(res);
+              //     if (!!res) {
+              //       Swal.fire({
+              //         icon: "success",
+              //         title: "Published!",
+              //         confirmButtonColor: "#5952c6",
+              //         html: `Your Project has been published to <a target="_blank" href="${lmsUrl}"> ${lmsUrl}</a>`,
+              //         //   text: `Yo'ur playlist has been submitted to ${lmsUrl}`,
+              //       });
+              //     }
+              //   })
+              //   .catch((e) => {
+              //     Swal.fire({
+              //       confirmButtonColor: "#5952c6",
+              //       icon: "error",
+              //       text: "Something went wrong, Kindly try again",
+              //     });
+              //   });
             }
           });
         }
