@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   EmailShareButton,
   FacebookShareButton,
   TwitterShareButton,
 } from "react-share";
+import Swal from "sweetalert2";
 import { EmailIcon, FacebookIcon, TwitterIcon } from "react-share";
 
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 
-const SharePreviewPopup = (url, projectName) => {
+export default function SharePreviewPopup(url, projectName) {
   confirmAlert({
     customUI: ({ onClose }) => {
       return (
@@ -21,7 +22,15 @@ const SharePreviewPopup = (url, projectName) => {
             <br />
             <br />
             <a target="_blank" href={url}>
-              {url}
+              <span ref={urllink}>{url}</span>{" "}
+              <i
+                title="copy to clipboard"
+                className="fa fa-clipboard"
+                aria-hidden="true"
+                onclick={() => {
+                  console.log(urllink.current);
+                }}
+              ></i>
             </a>
             <br />
           </h1>
@@ -86,6 +95,5 @@ const SharePreviewPopup = (url, projectName) => {
       );
     },
   });
-};
-
-export default SharePreviewPopup;
+  return <div />;
+}

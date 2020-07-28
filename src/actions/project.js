@@ -588,7 +588,7 @@ export const getProjectCourseFromLMS = (
     let formData = { setting_id, project_id };
     Swal.fire({
       iconHtml: loaderimg,
-      title: "Fetchnig Information....",
+      title: "Fetching Information....",
 
       showCancelButton: false,
       showConfirmButton: false,

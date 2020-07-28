@@ -19,7 +19,9 @@ import Unauthorized from "./unauthorized";
 import Switch from "react-switch";
 import Swal from "sweetalert2";
 const H5PPreview = lazy(() => import("../containers/H5PPreview"));
-//const ImmersiveReaderPreview = lazy(() => import("./Microsoft/ImmersiveReaderPreview"));
+const ImmersiveReaderPreview = lazy(() =>
+  import("./Microsoft/ImmersiveReaderPreview")
+);
 
 export class PlaylistPreview extends React.Component {
   constructor(props) {
@@ -462,11 +464,11 @@ export class PlaylistPreview extends React.Component {
                 <div className="main-item-wrapper">
                   <div className="item-container">
                     <Suspense fallback={<div>Loading</div>}>
-                      {/* {
-                        (currentActivity.type === 'h5p') ? 
-                          (<H5PPreview {...this.state} resourceid={resourceid} />) : 
-                          (<ImmersiveReaderPreview activity={currentActivity}/>)
-                      } */}
+                      {currentActivity.type === "h5p" ? (
+                        <H5PPreview {...this.state} resourceid={resourceid} />
+                      ) : (
+                        <ImmersiveReaderPreview activity={currentActivity} />
+                      )}
                     </Suspense>
                   </div>
                 </div>

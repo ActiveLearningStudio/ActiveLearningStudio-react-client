@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
-//import { launchAsync } from "@microsoft/immersive-reader-sdk";
+import { launchAsync } from "@microsoft/immersive-reader-sdk";
 import "./ImmersiveReaderPreview.scss";
 
 export class ImmersiveReaderPreview extends React.Component {
@@ -32,7 +32,7 @@ export class ImmersiveReaderPreview extends React.Component {
           ],
         };
 
-        // launchAsync(token, subdomain, data);
+        launchAsync(token, subdomain, data);
       });
   };
 
