@@ -208,7 +208,6 @@ export class ResourceCard extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  loadPlaylistAction: (playlistid) => dispatch(loadPlaylistAction(playlistid)),
   showDeletePopupAction: (id, title, deleteType) =>
     dispatch(showDeletePopupAction(id, title, deleteType)),
   hideDeletePopupAction: () => dispatch(hideDeletePopupAction()),

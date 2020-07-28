@@ -3663,7 +3663,7 @@ a:hover {
     border-radius: 5px;
   }
 
-  .share-project-preview-url {
+  .share-project-preview-url.project-share-check{
     .close-btn {
       text-align: center;
 
@@ -3683,6 +3683,28 @@ a:hover {
         font-weight: 500;
         cursor: pointer;
       }
+    }
+  }
+}
+.share-project-preview-url {
+  .close-btn {
+    text-align: center;
+
+    button {
+      border: 0;
+      border-radius: 0.25em;
+      background: initial;
+      background-color: #3085d6;
+      color: #fff;
+      font-size: 1.0625em;
+      display: inline-block;
+      border-left-color: rgb(48, 133, 214);
+      border-right-color: rgb(48, 133, 214);
+      margin: 0.3125em;
+      padding: 0.625em 2em;
+      box-shadow: none;
+      font-weight: 500;
+      cursor: pointer;
     }
   }
 }
