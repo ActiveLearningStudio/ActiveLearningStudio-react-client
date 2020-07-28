@@ -42,9 +42,9 @@ export const startSignup = (displayName, email, password) => {
       };
       localStorage.setItem("auth", JSON.stringify(user));
 
-      dispatch(
-        signup(response.data.displayName, response.data._id, response.data.role)
-      );
+      // dispatch(
+      //   signup(response.data.displayName, response.data._id, response.data.role)
+      // );
     } catch (e) {
       throw e.response.data.errors;
     }
