@@ -6,6 +6,7 @@ import youtube from "./assets/images/social-media.svg";
 import imageplaceholder from "./assets/images/interface.svg";
 import list from "./assets/images/signs.svg";
 import logo from "../../images/logo.svg";
+import Swal from "sweetalert2";
 import { showDeletePopupAction, hideDeletePopupAction } from "../../actions/ui";
 import "./ResourceCard.scss";
 import ComingSoon from "../comingSoon/model";

@@ -22,7 +22,7 @@ import { editResource } from "./resource";
 import loaderimg from "../images/loader.svg";
 import SharePreviewPopup from "../helpers/SharePreviewPopup";
 import { store } from "../index.js";
-
+import Swal from "sweetalert2";
 // Publishes the project in LEARN
 export const shareProject = (project) => ({
   type: SHARE_PROJECT,

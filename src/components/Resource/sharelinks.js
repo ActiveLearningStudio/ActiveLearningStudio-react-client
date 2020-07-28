@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ShareLMS } from "../../actions/project";
+import Swal from "sweetalert2";
 export default function Sharelink({ playlistID, playlistName, projectName }) {
   const All_Lms = useSelector((state) => state.defaultsharestate);
 
@@ -18,12 +19,13 @@ export default function Sharelink({ playlistID, playlistName, projectName }) {
           if (allLms.sharevendoes && allLms.sharevendoes.length == 0) {
             Swal.fire({
               icon: "info",
-              title: "You don't have a Learning Management Systems set up for publishing. Please contact us to get this configured.",
+              title:
+                "You don't have a Learning Management Systems set up for publishing. Please contact us to get this configured.",
             });
           }
         }}
       >
-        <i className="fa fa-share" aria-hidden="true"></i> Send To
+        <i className="fa fa-newspaper" aria-hidden="true"></i> Publish
       </a>
       <ul class="dropdown-menu check">
         {allLms.sharevendoes &&

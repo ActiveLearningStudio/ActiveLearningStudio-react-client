@@ -6,9 +6,10 @@ import { loadPlaylistActionlti } from "../actions/playlist";
 import ActivityPreviewCard from "./ActivityPreviewCard";
 import ActivityPreviewCarddropdown from "./ActivityPreviewCardDropdown";
 import gifloader from "../images/276.gif";
+import Swal from "sweetalert2";
+import "./PlayListPreview.css";
 import projecticon from "../images/project_icon.svg";
 const H5PPreview = React.lazy(() => import("../containers/H5PPreview"));
-import "./PlayListPreview.css";
 
 export class LtiPlaylistPreview extends React.Component {
   constructor(props) {
