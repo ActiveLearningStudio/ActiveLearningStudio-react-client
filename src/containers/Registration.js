@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Formik } from "formik";
 import ReCAPTCHA from "react-google-recaptcha";
 import Swal from "sweetalert2";
+import { form_registration } from "../actions/auth";
+
 const Registration = () => {
-  const [capctha, setCaptcha] = useState();
+  const [capctha, setCaptcha] = useState("test");
 
   return (
     <div>
@@ -18,6 +20,7 @@ const Registration = () => {
           websiteUrl: "",
           organization: "",
           message: "",
+          captcha_google: capctha,
         }}
         validate={(values) => {
           const errors = {};
@@ -36,6 +39,9 @@ const Registration = () => {
           if (!values.LastName) {
             errors.LastName = "Required";
           }
+          if (!values.captcha_google) {
+            errors.captcha_google = "Required";
+          }
 
           // if (values.phone.length < 7 ) {
           //   errors.phone = "phone number length must be 7 or gretaer ";
@@ -43,18 +49,25 @@ const Registration = () => {
 
           return errors;
         }}
-        onSubmit={(values, { setSubmitting }) => {
-          if (!!capctha) {
-          } else {
-            Swal.fire({
-              title: "Recaptcha required....",
-            });
-          }
-
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
+        onSubmit={(values) => {
+          Swal.fire({
+            title: "Sending...",
+            onOpen: () => {
+              swal.showLoading();
+            },
+          });
+          form_registration(
+            values.firstName,
+            values.LastName,
+            values.email,
+            values.phone,
+            values.jobTitle,
+            values.school,
+            values.websiteUrl,
+            values.organization,
+            values.message,
+            values.captcha_google
+          );
         }}
       >
         {({
@@ -187,16 +200,19 @@ const Registration = () => {
                 value={values.message}
               />
             </div>
-            <ReCAPTCHA
-              sitekey="6Ld-p6QZAAAAAATSMPRa1Laqf11-AOz2_WTUrZ22 "
-              onChange={(el) => {
-                setCaptcha(el);
-              }}
-            />
-            ,
-            <button type="submit" disabled={isSubmitting}>
-              Submit
-            </button>
+            <div className="form-group">
+              <ReCAPTCHA
+                sitekey="6Ld-p6QZAAAAAATSMPRa1Laqf11-AOz2_WTUrZ22 "
+                onChange={(el) => {
+                  setCaptcha(el);
+                }}
+              />
+              {errors.captcha_google && touched.captcha_google && (
+                <div className="error"> {errors.captcha_google} </div>
+              )}
+            </div>
+
+            <button type="submit">Submit</button>
           </form>
         )}
       </Formik>

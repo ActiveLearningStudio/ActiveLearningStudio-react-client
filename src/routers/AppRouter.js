@@ -16,6 +16,8 @@ const PlaylistsPage = loadable(() => import("../containers/PlaylistsPage"));
 const PreviewPage = loadable(() => import("../containers/PreviewPage"));
 const Ltipreviewpage = loadable(() => import("../containers/Ltipreviewpage"));
 const LoginPage = loadable(() => import("../containers/LoginPage"));
+const ConfirmPage = loadable(() => import("../containers/Confirmemail"));
+
 const PreviewPageShared = loadable(() =>
   import("../containers/PreviewPageShared")
 );
@@ -34,9 +36,9 @@ const AppRouter = () => {
           component={PreviewPage}
         />
         <Route
-          path="/project/shared/:projectid"
+          path="/confirmemail/:confirmationid"
           exact
-          component={PreviewPageShared}
+          component={ConfirmPage}
         />
         <Route path="/registration" exact component={registration} />
         <PrivateRoute

@@ -4009,3 +4009,36 @@ a:hover {
   z-index: 1;
   height: 105vh
 }
+
+.confirm-page {
+  .login-container {
+    min-width: 400px;
+  }
+
+  .loader {
+    width: 50px;
+    text-align: center;
+    margin: 0 auto;
+    display: table
+  }
+
+  a {
+    background: #4646c4;
+    border-color: #4646c4;
+    border: none;
+    color: #fff;
+    width: 100%;
+    padding: 10px;
+    font-size: 19px;
+    margin-top: 30px;
+    width: 100%;
+    display: block;
+    display: flex;
+    justify-content: center;
+
+  }
+
+  h2 {
+    line-height: 30px;
+  }
+}

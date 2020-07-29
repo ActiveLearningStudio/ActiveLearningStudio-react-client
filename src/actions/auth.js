@@ -7,6 +7,58 @@ import {
   ShOW_TERMS,
   ShOW_LOGIN,
 } from "../constants/actionTypes";
+import Swal from "sweetalert2";
+export const registration_confirm = async (confirmId) => {
+  const response_confirm = await axios.post(
+    global.config.laravelAPIUrl + "/auth/signup",
+    { confirmId }
+  );
+  return response_confirm;
+};
+export const form_registration = (
+  firstName,
+  LastName,
+  email,
+  phone,
+  jobTitle,
+  school,
+  websiteUrl,
+  organization,
+  message,
+  captcha
+) => {
+  axios
+    .post(global.config.laravelAPIUrl + "/auth/signup", {
+      first_name: firstName,
+      last_name: LastName,
+      email: email,
+      gapi_access_token: captcha,
+      phone: phone,
+      job_title: jobTitle,
+      school_district_organization: school,
+      website: websiteUrl,
+      organization_type: organization,
+      studio_interest: message,
+    })
+    .then((res) => {
+      if (res.data.status == "success") {
+        Swal.fire({
+          text:
+            "Thanks for requesting early access! Please check your email for next steps.",
+          icon: "success",
+
+          title: "Request Demo Access",
+        });
+      }
+    })
+
+    .catch((res) => {
+      Swal.fire({
+        icon: "error",
+        title: res.response.data.message,
+      });
+    });
+};
 
 export const show_login = () => ({
   type: ShOW_LOGIN,
