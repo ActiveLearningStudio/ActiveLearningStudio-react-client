@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { registration_confirm, hubspotconformation } from "../actions/auth";
 import Swal from "sweetalert2";
 export default function Confirm(props) {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState();
 
   useEffect(() => {
     const result = registration_confirm(props.match.params.confirmationid);

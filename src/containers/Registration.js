@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { form_registration } from "../actions/auth";
 
 const Registration = () => {
-  const [capctha, setCaptcha] = useState("true");
+  const [capctha, setCaptcha] = useState();
 
   return (
     <div>
@@ -39,9 +39,6 @@ const Registration = () => {
           if (!values.LastName) {
             errors.LastName = "Required";
           }
-          if (!values.captcha_google) {
-            errors.captcha_google = "Required";
-          }
 
           // if (values.phone.length < 7 ) {
           //   errors.phone = "phone number length must be 7 or gretaer ";
@@ -50,24 +47,30 @@ const Registration = () => {
           return errors;
         }}
         onSubmit={(values) => {
-          Swal.fire({
-            title: "Sending...",
-            onOpen: () => {
-              Swal.showLoading();
-            },
-          });
-          form_registration(
-            values.firstName,
-            values.LastName,
-            values.email,
-            values.phone,
-            values.jobTitle,
-            values.school,
-            values.websiteUrl,
-            values.organization,
-            values.message,
-            values.captcha_google
-          );
+          if (!capctha) {
+            Swal.fire({
+              title: "Captcha required",
+            });
+          } else {
+            Swal.fire({
+              title: "Sending...",
+              onOpen: () => {
+                Swal.showLoading();
+              },
+            });
+            form_registration(
+              values.firstName,
+              values.LastName,
+              values.email,
+              values.phone,
+              values.jobTitle,
+              values.school,
+              values.websiteUrl,
+              values.organization,
+              values.message,
+              (values.captcha_google = capctha)
+            );
+          }
         }}
       >
         {({
@@ -212,9 +215,6 @@ const Registration = () => {
                   setCaptcha(el);
                 }}
               />
-              {errors.captcha_google && touched.captcha_google && (
-                <div className="error"> {errors.captcha_google} </div>
-              )}
             </div>
 
             <button type="submit">Submit</button>

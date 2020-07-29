@@ -41,14 +41,14 @@ export const form_registration = (
   websiteUrl,
   organization,
   message,
-  captcha
+  captcha_google
 ) => {
   axios
     .post(global.config.laravelAPIUrl + "/auth/signup", {
       first_name: firstName,
       last_name: LastName,
       email: email,
-      gapi_access_token: captcha,
+      gapi_access_token: captcha_google,
       phone: phone,
       job_title: jobTitle,
       school_district_organization: school,
