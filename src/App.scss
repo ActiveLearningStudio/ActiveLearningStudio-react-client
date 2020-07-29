@@ -4011,8 +4011,11 @@ a:hover {
 }
 
 .confirm-page {
+
+
   .login-container {
     min-width: 400px;
+
   }
 
   .loader {
@@ -4042,5 +4045,10 @@ a:hover {
 
   h2 {
     line-height: 30px;
+    display: block;
+  }
+
+  h3 {
+    display: block;
   }
 }
