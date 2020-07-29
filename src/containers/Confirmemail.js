@@ -47,17 +47,13 @@ export default function Confirm(props) {
             <img className="loader" src={dotsloader} alt="" />
           ) : (
             <>
-              <h1>Welcome to CurrikiStudio</h1>
-              <h2>
-                Thanks for joining CurrikiStudio. Your Email has been Confirmed.
-              </h2>
+              <h2>Thanks for joining. Your Email has been Confirmed!</h2>
               <h3>
-                CurrikiStudio is changing the way learning experiences are
-                designed, created, and delivered to a new generation of
-                learners.
+                Please check your mail. We just sent you CurrikiStudio Password.
               </h3>
-
-              <Link to="/login">Login</Link>
+              <Link to="/login">
+                Please click here when you are ready to Sign In
+              </Link>
             </>
           )}
         </div>
