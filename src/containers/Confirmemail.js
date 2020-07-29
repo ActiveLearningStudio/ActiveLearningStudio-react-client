@@ -7,19 +7,22 @@ import Swal from "sweetalert2";
 export default function Confirm(props) {
   const [loading, setLoading] = useState(true);
 
-  //   useEffect(() => {
-  //     const result=registration_confirm(props.match.params.confirmationid);
-  //     if (!!result == "") {
-  //       setLoading(true);
-  //     } else {
-  //       Swal.fire({
-  //         text: "Invalid Confirmation Code",
-  //         icon: "warning",
-  //       }).then(() => {
-  //         props.history.push("/");
-  //       });
-  //     }
-  //   }, []);
+  useEffect(() => {
+    const result = registration_confirm(props.match.params.confirmationid);
+    result
+      .then((res) => {
+        console.log(res);
+        setLoading(false);
+      })
+      .catch((err) => {
+        Swal.fire({
+          text: err.response.data.message,
+          icon: "warning",
+        }).then(() => {
+          // props.history.push("/");
+        });
+      });
+  }, []);
 
   useEffect(() => {
     const result_hub = hubspotconformation(
@@ -29,7 +32,9 @@ export default function Confirm(props) {
       "company",
       "phone"
     );
-    console.log(result_hub);
+    result_hub.then((res) => {
+      console.log(res);
+    });
   }, []);
 
   return (

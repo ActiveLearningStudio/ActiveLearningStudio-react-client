@@ -9,10 +9,10 @@ import {
 } from "../constants/actionTypes";
 import Swal from "sweetalert2";
 
-export const registration_confirm = async (confirmId) => {
+export const registration_confirm = async (verification_code) => {
   const response_confirm = await axios.post(
-    global.config.laravelAPIUrl + "/auth/signup",
-    { confirmId }
+    global.config.laravelAPIUrl + "/auth/confirm",
+    { verification_code }
   );
   return response_confirm;
 };
