@@ -49,7 +49,8 @@ export default function Confirm(props) {
             <>
               <h2>Thanks for joining. Your Email has been Confirmed!</h2>
               <h3>
-                Please check your mail. We just sent you CurrikiStudio Password.
+                Please check your mail. We just sent you a CurrikiStudio
+                password.
               </h3>
               <Link to="/login">
                 Please click here when you are ready to Sign In
