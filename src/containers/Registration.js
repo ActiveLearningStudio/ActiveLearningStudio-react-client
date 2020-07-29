@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { form_registration } from "../actions/auth";
 
 const Registration = () => {
-  const [capctha, setCaptcha] = useState();
+  const [capctha, setCaptcha] = useState("true");
 
   return (
     <div>
