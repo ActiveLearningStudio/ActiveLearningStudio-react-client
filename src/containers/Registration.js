@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { form_registration } from "../actions/auth";
 
 const Registration = () => {
-  const [capctha, setCaptcha] = useState("test");
+  const [capctha, setCaptcha] = useState();
 
   return (
     <div>
@@ -53,7 +53,7 @@ const Registration = () => {
           Swal.fire({
             title: "Sending...",
             onOpen: () => {
-              swal.showLoading();
+              Swal.showLoading();
             },
           });
           form_registration(
