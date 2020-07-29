@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { registration_confirm, hubspotconformation } from "../actions/auth";
 import Swal from "sweetalert2";
 export default function Confirm(props) {
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const result = registration_confirm(props.match.params.confirmationid);
@@ -19,7 +19,7 @@ export default function Confirm(props) {
           text: err.response.data.message,
           icon: "warning",
         }).then(() => {
-          // props.history.push("/");
+          props.history.push("/");
         });
       });
   }, []);
