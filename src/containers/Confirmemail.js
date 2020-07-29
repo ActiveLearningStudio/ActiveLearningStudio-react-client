@@ -2,23 +2,36 @@ import React, { useState, useEffect } from "react";
 import logo from "../images/logo.svg";
 import dotsloader from "../images/dotsloader.gif";
 import { Link } from "react-router-dom";
-import { registration_confirm } from "../actions/auth";
+import { registration_confirm, hubspotconformation } from "../actions/auth";
 import Swal from "sweetalert2";
 export default function Confirm(props) {
   const [loading, setLoading] = useState(true);
+
+  //   useEffect(() => {
+  //     const result=registration_confirm(props.match.params.confirmationid);
+  //     if (!!result == "") {
+  //       setLoading(true);
+  //     } else {
+  //       Swal.fire({
+  //         text: "Invalid Confirmation Code",
+  //         icon: "warning",
+  //       }).then(() => {
+  //         props.history.push("/");
+  //       });
+  //     }
+  //   }, []);
+
   useEffect(() => {
-    const result = registration_confirm(props.match.params.confirmationid);
-    if (!!result == "") {
-      setLoading(true);
-    } else {
-      Swal.fire({
-        text: "Invalid Confirmation Code",
-        icon: "warning",
-      }).then(() => {
-        props.history.push("/");
-      });
-    }
-  });
+    const result_hub = hubspotconformation(
+      "email@email.com",
+      "firstname",
+      "lastname",
+      "company",
+      "phone"
+    );
+    console.log(result_hub);
+  }, []);
+
   return (
     <div className="newlogin confirm-page">
       <img className="headerlogologin" src={logo} alt="" />

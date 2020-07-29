@@ -8,6 +8,7 @@ import {
   ShOW_LOGIN,
 } from "../constants/actionTypes";
 import Swal from "sweetalert2";
+
 export const registration_confirm = async (confirmId) => {
   const response_confirm = await axios.post(
     global.config.laravelAPIUrl + "/auth/signup",
@@ -15,6 +16,21 @@ export const registration_confirm = async (confirmId) => {
   );
   return response_confirm;
 };
+
+export const hubspotconformation = async (
+  email,
+  firstname,
+  lastname,
+  company,
+  phone
+) => {
+  const response_confirm_hub = await axios.post(
+    "https://api.hubapi.com/contacts/v1/contact/?hapikey=68896ae2-0832-43d3-ae55-9852086ca0ef",
+    { email, firstname, lastname, company, phone }
+  );
+  return response_confirm_hub;
+};
+
 export const form_registration = (
   firstName,
   LastName,

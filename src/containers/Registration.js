@@ -176,7 +176,12 @@ const Registration = () => {
               <p>
                 Which of the following best describes you or your organization?
               </p>
-              <select>
+              <select
+                name="organization"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.organization}
+              >
                 <option>Please Select</option>
                 <option>Business organization</option>
                 <option>Nonprofit</option>
