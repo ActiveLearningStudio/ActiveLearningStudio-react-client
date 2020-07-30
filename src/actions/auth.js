@@ -20,13 +20,25 @@ export const registration_confirm = async (verification_code) => {
 export const hubspotconformation = async (
   email,
   firstname,
-  lastname,
+
   company,
   phone
 ) => {
   const response_confirm_hub = await axios.post(
     "https://api.hubapi.com/contacts/v1/contact/?hapikey=68896ae2-0832-43d3-ae55-9852086ca0ef",
-    { email, firstname, lastname, company, phone }
+
+    {
+      properties: [
+        { property: "email", value: email },
+        { property: "firstname", value: firstname },
+
+        { property: "company", value: company },
+        { property: "phone", value: phone },
+      ],
+    },
+    {
+      headers: { "Content-Type": "application/json" },
+    }
   );
   return response_confirm_hub;
 };

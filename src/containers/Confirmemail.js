@@ -13,6 +13,17 @@ export default function Confirm(props) {
       .then((res) => {
         console.log(res);
         setLoading(false);
+        if (res.data.status == "success") {
+          const result_hub = hubspotconformation(
+            res.data.data.email,
+            res.data.data.name,
+            res.data.dataschool_district_organization,
+            res.data.data.phone
+          );
+          result_hub.then((res) => {
+            console.log(res);
+          });
+        }
       })
       .catch((err) => {
         Swal.fire({
@@ -22,19 +33,6 @@ export default function Confirm(props) {
           props.history.push("/");
         });
       });
-  }, []);
-
-  useEffect(() => {
-    const result_hub = hubspotconformation(
-      "email@email.com",
-      "firstname",
-      "lastname",
-      "company",
-      "phone"
-    );
-    result_hub.then((res) => {
-      console.log(res);
-    });
   }, []);
 
   return (
