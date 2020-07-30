@@ -37,7 +37,10 @@ export const hubspotconformation = async (
       ],
     },
     {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
     }
   );
   return response_confirm_hub;

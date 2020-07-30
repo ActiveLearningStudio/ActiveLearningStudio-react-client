@@ -12,6 +12,15 @@ export default function Confirm(props) {
     result
       .then((res) => {
         console.log(res);
+        //hubspot email tacking
+        var _hsq = (window._hsq = window._hsq || []);
+        _hsq.push([
+          "identify",
+          {
+            email: res.data.data.email,
+            name: res.data.data.name,
+          },
+        ]);
         setLoading(false);
         if (res.data.status == "success") {
           const result_hub = hubspotconformation(
