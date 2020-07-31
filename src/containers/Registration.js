@@ -210,7 +210,7 @@ const Registration = () => {
             </div>
             <div className="form-group">
               <ReCAPTCHA
-                sitekey="6Ld-p6QZAAAAAATSMPRa1Laqf11-AOz2_WTUrZ22"
+                sitekey="6LdImbgZAAAAAN4s1eEi53-ul7uJfLONrFuBcKS0"
                 onChange={(el) => {
                   setCaptcha(el);
                 }}
