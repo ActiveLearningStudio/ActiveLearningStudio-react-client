@@ -467,7 +467,9 @@ export class PlaylistPreview extends React.Component {
                 <div className="main-item-wrapper">
                   <div className="item-container">
                     <Suspense fallback={<div>Loading</div>}>
-                      {!!currentActivity && currentActivity.type === "h5p" ? (
+                      {!!currentActivity &&
+                      !!currentActivity.type &&
+                      currentActivity.type === "h5p" ? (
                         <H5PPreview {...this.state} resourceid={resourceid} />
                       ) : (
                         <ImmersiveReaderPreview activity={currentActivity} />

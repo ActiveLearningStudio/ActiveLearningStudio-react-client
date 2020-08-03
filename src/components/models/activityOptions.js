@@ -38,6 +38,7 @@ export default function MyVerticallyCenteredModal(props) {
               src={
                 "https://www.youtube.com/embed/" +
                 (!!props.activity &&
+                  !!props.activity.demo_video_id &&
                   props.activity.demo_video_id.split("/").length > 0 &&
                   props.activity.demo_video_id.split("/")[
                     props.activity.demo_video_id.split("/").length - 1
