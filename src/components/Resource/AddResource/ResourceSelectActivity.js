@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import axios from "axios";
 import styled, { keyframes } from "styled-components";
 import { Field, reduxForm, formValueSelector } from "redux-form";
+import MyVerticallyCenteredModal from "../../models/activityOptions";
 
 import {
   BrowserRouter as Router,
@@ -58,7 +59,9 @@ const renderResourceActivityType = ({
 let ResourceSelectActivity = (props) => {
   const [activities, setActivities] = useState([]);
   const [Searchactivities, setSearchActivities] = useState([]);
-
+  const [activeType, setActiveType] = useState("");
+  const [modalShow, setModalShow] = React.useState(false);
+  const [currentActivity, setCurrentActivity] = React.useState();
   const searchactivity = (e) => {
     var dataactivities = Searchactivities.filter((data) =>
       data.title.toLowerCase().includes(e.target.value.toLowerCase())
@@ -87,57 +90,87 @@ let ResourceSelectActivity = (props) => {
   const { handleSubmit, load, pristine, reset, submitting } = props;
   const questionsContent = activities.map((activity, i) => (
     <div className="col-md-3" key={i}>
-      <label className="question-label">
-        <Field
-          name="activity"
-          component={renderResourceActivityType}
-          type="radio"
-          value={(activity.h5pLib) ? activity.h5pLib : activity.type}
-          onChange={(e) => props.onChangeActivityAction(activity, e)}
-          validate={[required]}
-        />
-
-        <div className="activity-item">
-          <div
-            className="activity-img"
-            style={{
-              backgroundImage:
-                "url(" + global.config.laravelAPIUrl + activity.image + ")",
-            }}
-          ></div>
-          <div className="activity-content">
-            <span>{activity.title}</span>
-            <p>{activity.description}</p>
+      <div className="activity-item with_options">
+        <label className="question-label">
+          <Field
+            name="activity"
+            component={renderResourceActivityType}
+            type="radio"
+            value={activity.h5pLib ? activity.h5pLib : activity.type}
+            onChange={(e) => props.onChangeActivityAction(activity, e)}
+            validate={[required]}
+          />
+          <div className="content">
+            <div
+              className="activity-img"
+              style={{
+                backgroundImage:
+                  "url(" + global.config.laravelAPIUrl + activity.image + ")",
+              }}
+            ></div>
+            <div className="activity-content">
+              <span>{activity.title}</span>
+              <p>{activity.description}</p>
+            </div>
           </div>
+
           {/* <i className="fa fa-star" /> */}
+        </label>
+        <div className="option_section">
+          <div
+            className="option_type"
+            onClick={() => {
+              setCurrentActivity(activity);
+              setActiveType("demo");
+              setModalShow(true);
+            }}
+          >
+            <i className="fa fa-desktop" aria-hidden="true"></i>
+            demo
+          </div>
+          <div
+            className="option_type"
+            onClick={() => {
+              setCurrentActivity(activity);
+              setActiveType("video");
+              setModalShow(true);
+            }}
+          >
+            <i class="fa fa-play-circle" aria-hidden="true"></i>Video
+          </div>
         </div>
-      </label>
+      </div>
     </div>
   ));
   return (
-    <div className="row">
-      <div className="col-md-3">
-        <AddResourceSidebar {...props} />
-      </div>
-      <div className="col-md-9">
-        <div className="resource-question">
-          <FadeDiv>
-            <div className="row">
-              <div className="col-md-12">
-                <h2 className="title">
-                  <div className="back-button" onClick={props.goBacktoActivity}>
-                    <i className="fa fa-chevron-left" aria-hidden="true"></i>
-                    Back
-                  </div>
-                  Select the activity you want to build from the options below:
-                </h2>
+    <>
+      <div className="row">
+        <div className="col-md-3">
+          <AddResourceSidebar {...props} />
+        </div>
+        <div className="col-md-9">
+          <div className="resource-question">
+            <FadeDiv>
+              <div className="row">
+                <div className="col-md-12">
+                  <h2 className="title">
+                    <div
+                      className="back-button"
+                      onClick={props.goBacktoActivity}
+                    >
+                      <i className="fa fa-chevron-left" aria-hidden="true"></i>
+                      Back
+                    </div>
+                    Select the activity you want to build from the options
+                    below:
+                  </h2>
+                </div>
               </div>
-            </div>
-            <div className="row">
-              <div className="col-md-12">
-                <div className="shadowbox">
-                  <div className="dropdown">
-                    {/* <button
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="shadowbox">
+                    <div className="dropdown">
+                      {/* <button
                       className="btn btn-primary dropdown-toggle"
                       type="button"
                       data-toggle="dropdown"
@@ -156,40 +189,48 @@ let ResourceSelectActivity = (props) => {
                         <a href="#"></a>
                       </li>
                     </ul> */}
-                  </div>
-                  <div className="searchbox">
-                    <input
-                      clasName=""
-                      type="text"
-                      placeholder="Search activity"
-                      onChange={searchactivity}
-                    />
-                    <i className="fa fa-search" />
+                    </div>
+                    <div className="searchbox">
+                      <input
+                        clasName=""
+                        type="text"
+                        placeholder="Search activity"
+                        onChange={searchactivity}
+                      />
+                      <i className="fa fa-search" />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="">
-              <form
-                className="row meta-form"
-                onSubmit={handleSubmit}
-                autoComplete="off"
-              >
-                <div className="scrollblog">
-                  <div className="row">{questionsContent}</div>
-                </div>
+              <div className="">
+                <form
+                  className="row meta-form"
+                  onSubmit={handleSubmit}
+                  autoComplete="off"
+                >
+                  <div className="scrollblog">
+                    <div className="row">{questionsContent}</div>
+                  </div>
 
-                {/* <div className="col-md-12">
+                  {/* <div className="col-md-12">
                   <button type="submit" className="add-resource-continue-btn">
                     Continue
                   </button>
                 </div> */}
-              </form>
-            </div>
-          </FadeDiv>
+                </form>
+              </div>
+            </FadeDiv>
+          </div>
         </div>
       </div>
-    </div>
+      <MyVerticallyCenteredModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        activity={currentActivity}
+        activeType={activeType}
+      />
+      ;
+    </>
   );
 };
 

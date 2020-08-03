@@ -467,7 +467,7 @@ export class PlaylistPreview extends React.Component {
                 <div className="main-item-wrapper">
                   <div className="item-container">
                     <Suspense fallback={<div>Loading</div>}>
-                      {currentActivity.type === "h5p" ? (
+                      {!!currentActivity && currentActivity.type === "h5p" ? (
                         <H5PPreview {...this.state} resourceid={resourceid} />
                       ) : (
                         <ImmersiveReaderPreview activity={currentActivity} />
@@ -581,7 +581,10 @@ export class PlaylistPreview extends React.Component {
 
                                   <a
                                     target="_blank"
-                                    href="/shared/activity/${this.state.resourceid.trim()}"
+                                    href={
+                                      "/shared/activity/" +
+                                      this.state.resourceid.trim()
+                                    }
                                   >
                                     <input
                                       id="urllink_clip"

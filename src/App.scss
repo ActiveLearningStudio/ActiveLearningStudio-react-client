@@ -4052,3 +4052,86 @@ a:hover {
     display: block;
   }
 }
+
+.activity-item.with_options {
+  margin-bottom: 20px;
+  min-height: 240px !important;
+
+  .content {
+    cursor: pointer;
+
+  }
+
+  .question-label {
+    margin-bottom: 0px;
+  }
+
+  display: flex;
+  justify-content: space-between !important;
+
+  .option_section {
+    display: flex;
+
+    border-top: 1px solid #ccc;
+    width: 100%;
+
+    .option_type {
+      padding: 5px;
+      width: 50%;
+      color: #084892;
+      text-transform: capitalize;
+
+      &:hover {
+        background-color: #084892;
+        color: #fff;
+      }
+
+      &:first-child {
+        border-right: 1px solid #ccc;
+      }
+
+      i {
+        padding-right: 3px;
+      }
+    }
+  }
+
+}
+
+
+.video_activity.modal {
+  nav {
+    width: 100%;
+    margin: 0px;
+
+
+    a.active {
+      background-color: #4646c4;
+      color: #fff;
+      text-align: center;
+    }
+
+
+
+
+    a {
+      width: 50%;
+      border: none;
+      text-align: center;
+      color: #333
+    }
+  }
+
+  .modal-title img {
+    width: 180px
+  }
+
+  iframe {
+    width: 100%;
+    min-height: 500px
+  }
+
+  .modal-body {
+    padding: 0px;
+  }
+}
