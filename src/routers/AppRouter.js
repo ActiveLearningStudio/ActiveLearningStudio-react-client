@@ -36,6 +36,11 @@ const AppRouter = () => {
           component={PreviewPage}
         />
         <Route
+          path="/project/shared/:projectid"
+          exact
+          component={PreviewPageShared}
+        />
+        <Route
           path="/confirmemail/:confirmationid"
           exact
           component={ConfirmPage}
