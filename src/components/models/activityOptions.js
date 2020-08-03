@@ -1,8 +1,8 @@
 import React, { Suspense } from "react";
 import { Modal, Tabs, Tab } from "react-bootstrap";
+import logo from "../../images/loginlogo.png";
 const H5PPreview = React.lazy(() => import("../../containers/H5PPreview"));
 
-import logo from "../../images/loginlogo.png";
 export default function MyVerticallyCenteredModal(props) {
   console.log(props);
   return (
