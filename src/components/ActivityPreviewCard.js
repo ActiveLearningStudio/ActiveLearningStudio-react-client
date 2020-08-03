@@ -47,7 +47,7 @@ const ActivityPreviewCard = (props) => {
             )}
 
             <div>
-              <div className="title">{activity.metadata.title}</div>
+              <div className="title">{activity.title}</div>
             </div>
           </li>
         </Link>
@@ -89,7 +89,7 @@ const ActivityPreviewCard = (props) => {
               )}
 
               <div>
-                <div className="title">{activity.metadata.title}</div>
+                <div className="title">{activity.title}</div>
               </div>
             </li>
           ) : (
@@ -116,7 +116,7 @@ const ActivityPreviewCard = (props) => {
               )}
 
               <div>
-                <div className="title">{activity.metadata.title}</div>
+                <div className="title">{activity.title}</div>
               </div>
             </li>
           )}
