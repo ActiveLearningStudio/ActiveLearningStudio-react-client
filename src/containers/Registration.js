@@ -14,6 +14,7 @@ const Registration = () => {
           firstName: "",
           LastName: "",
           email: "",
+          password: "",
           phone: "",
           jobTitle: "",
           school: "",
@@ -30,6 +31,18 @@ const Registration = () => {
             !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
           ) {
             errors.email = "Invalid email address";
+          }
+          if(!values.password) {
+            errors.password = "Required";
+          }
+          if(!values.repassword) {
+            errors.repassword = "Required";
+          }
+          if(values.password != values.repassword){
+            errors.repassword = "Password and Renter Password Must match";
+          }
+          if(values.password.length < 8){
+            errors.password = "Password must be at least 8 characters long";
           }
 
           if (!values.firstName) {
@@ -62,6 +75,7 @@ const Registration = () => {
               values.firstName,
               values.LastName,
               values.email,
+              values.password,
               values.phone,
               values.jobTitle,
               values.school,
@@ -142,6 +156,37 @@ const Registration = () => {
                 />
                 {errors.phone && touched.phone && errors.phone}
               </div>
+              <div className="form-group">
+                <label>
+                  Password <span>*</span>
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.password}
+                />
+                {errors.password && touched.password && (
+                  <div className="error">{errors.password}</div>
+                )}
+              </div>
+              <div className="form-group">
+                <label>
+                  Re-enter Password <span>*</span>
+                </label>
+                <input
+                  type="password"
+                  name="repassword"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.repassword}
+                />
+                {errors.repassword && touched.repassword && (
+                  <div className="error">{errors.repassword}</div>
+                )}
+              </div>
+              
             </div>
             <div className="form-group">
               <label>Job Title</label>
