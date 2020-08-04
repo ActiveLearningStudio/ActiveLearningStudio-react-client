@@ -464,7 +464,7 @@ export class PlaylistPreview extends React.Component {
                     </div>
                   </div>
                 </div>
-                &
+
                 <div className="main-item-wrapper">
                   <div className="item-container">
                     {!!currentActivity && (

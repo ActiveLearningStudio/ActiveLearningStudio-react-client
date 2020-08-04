@@ -4103,7 +4103,7 @@ a:hover {
   nav {
     width: 100%;
     margin: 0px;
-
+    padding: 0 0 0 0;
 
     a.active {
       background-color: #4646c4;
@@ -4134,4 +4134,26 @@ a:hover {
   .modal-body {
     padding: 0px;
   }
+}
+
+.stayTuned {
+  display: flex;
+  flex-direction: column;
+  padding: 150px 10px;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    font-size: 40px;
+    font-weight: 600;
+    color: #4646c4;
+
+    padding-bottom: 10px;
+  }
+
+  h5 {
+    font-size: 16px;
+    font-weight: 300;
+  }
+
 }

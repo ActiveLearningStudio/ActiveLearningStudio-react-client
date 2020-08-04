@@ -21,30 +21,40 @@ export default function MyVerticallyCenteredModal(props) {
       <Modal.Body>
         <Tabs defaultActiveKey={props.activeType} id="uncontrolled-tab-example">
           <Tab eventKey="demo" title="Demo">
-            {!!props.activity && (
+            {!!props.activity && props.activity.demo_activity_id ? (
               <Suspense fallback={<div>Loading</div>}>
                 <H5PPreview
-                  resourceid={props.activity._id.trim()}
+                  resourceid={props.activity.demo_activity_id.trim()}
                   tokenrequire={false}
                   showltipreview={true}
                 />
               </Suspense>
+            ) : (
+              <div className="stayTuned">
+                <h1>Stay Tuned!</h1>
+                <h5>Demo will be available Soon</h5>
+              </div>
             )}
           </Tab>
           <Tab eventKey="video" title="Video">
-            <iframe
-              width="100%"
-              height="400"
-              src={
-                "https://www.youtube.com/embed/" +
-                (!!props.activity &&
-                  !!props.activity.demo_video_id &&
-                  props.activity.demo_video_id.split("/").length > 0 &&
-                  props.activity.demo_video_id.split("/")[
-                    props.activity.demo_video_id.split("/").length - 1
-                  ])
-              }
-            ></iframe>
+            {!!props.activity && !!props.activity.demo_video_id ? (
+              <iframe
+                width="100%"
+                height="400"
+                src={
+                  "https://www.youtube.com/embed/" +
+                  (props.activity.demo_video_id.split("/").length > 0 &&
+                    props.activity.demo_video_id.split("/")[
+                      props.activity.demo_video_id.split("/").length - 1
+                    ])
+                }
+              ></iframe>
+            ) : (
+              <div className="stayTuned">
+                <h1>Stay Tuned!</h1>
+                <h5>Video will be available Soon</h5>
+              </div>
+            )}
           </Tab>
         </Tabs>
       </Modal.Body>
