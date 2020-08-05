@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { fadeIn } from "react-animations";
 import { Field, reduxForm, formValueSelector } from "redux-form";
@@ -6,6 +6,7 @@ import styled, { keyframes } from "styled-components";
 import DropdownList from "react-widgets/lib/DropdownList";
 import "react-widgets/dist/css/react-widgets.css";
 import { uploadResourceThumbnailAction } from "../../../actions/resource";
+import PexelsAPI from "../../models/pexels.js";
 
 import {
   BrowserRouter as Router,
@@ -20,8 +21,6 @@ import {
   onSubmitDescribeActivityAction,
   showSelectActivity,
 } from "./../../../actions/resource";
-
-import "./AddResource.scss";
 
 const fadeAnimation = keyframes`${fadeIn}`;
 
@@ -119,7 +118,9 @@ const renderMetaEducationLevelInput = ({ input, ...rest }) => (
 );
 
 let ResourceDescribeActivity = (props) => {
-  console.log(props.resource);
+  console.log(props);
+  const [modalShow, setModalShow] = React.useState(false);
+  const openfile = useRef();
   const {
     handleSubmit,
     metaSubject,
@@ -128,6 +129,7 @@ let ResourceDescribeActivity = (props) => {
     reset,
     submitting,
   } = props;
+
   return (
     <div className="row">
       <div className="col-md-3">
@@ -155,91 +157,130 @@ let ResourceDescribeActivity = (props) => {
                     onSubmit={handleSubmit}
                     autoComplete="off"
                   >
-                    <div className="row">
-                      <div className="col-md-12">
-                        <div className="meta-title">
-                          <Field
-                            name="metaTitle"
-                            component={renderMetaTitleInput}
-                            type="text"
-                            label="Title"
-                            validate={[required]}
+                    <div className="flex-form-imag-upload">
+                      <div className="upload-thumbnail check">
+                        {/* <h2>Upload thumbnail</h2> */}
+
+                        <label>
+                          <input
+                            ref={openfile}
+                            type="file"
+                            onChange={(e) => uploadThumb(e, props)}
+                            accept="image/x-png,image/jpeg"
                           />
-                        </div>
-                      </div>
-                    </div>
+                          <span>Upload</span>
+                        </label>
+                        <span className="validation-error">
+                          {imageValidation}
+                        </span>
 
-                    <div className="row">
-                      <div className="col-md-12">
-                        <div className="upload-thumbnail">
-                          <h2>Upload thumbnail</h2>
-                          <label>
-                            <input
-                              type="file"
-                              onChange={(e) => uploadThumb(e, props)}
-                              accept="image/x-png,image/jpeg"
-                            />
-                            <span>Upload</span>
-                          </label>
-                          <span className="validation-error">
-                            {imageValidation}
-                          </span>
+                        {props.resource.progress}
 
-                          {props.resource.progress}
-
-                          {props.resource.newResource.metadata.thumb_url ? (
-                            <div className="thumb-display">
-                              <div
-                                className="success"
-                                style={{
-                                  color: "green",
-                                  marginBottom: "20px",
-                                  fontSize: "20px",
-                                }}
-                              >
-                                Image Uploaded:
-                              </div>
-                              <div className="thumb">
-                                <img
-                                  src={
-                                    global.config.laravelAPIUrl +
-                                    props.resource.newResource.metadata
-                                      .thumb_url
-                                  }
-                                />
-                              </div>
+                        {props.resource.newResource.metadata.thumb_url ? (
+                          <div className="thumb-display">
+                            <div
+                              className="success"
+                              style={{
+                                color: "green",
+                                marginBottom: "20px",
+                                fontSize: "20px",
+                              }}
+                            >
+                              Image Uploaded:
                             </div>
-                          ) : null}
-                        </div>
+                            <div
+                              className="thumb"
+                              onClick={() => {
+                                openfile.current.click();
+                              }}
+                            >
+                              <img
+                                src={
+                                  global.config.laravelAPIUrl +
+                                  props.resource.newResource.metadata.thumb_url
+                                }
+                              />
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="upload_placeholder">
+                            <div
+                              onClick={() => setModalShow(true)}
+                              className=" pexel"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="32px"
+                                height="32px"
+                                viewBox="0 0 32 32"
+                              >
+                                <path
+                                  d="M2 0h28a2 2 0 0 1 2 2v28a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z"
+                                  fill="#05A081"
+                                ></path>
+                                <path
+                                  d="M13 21h3.863v-3.752h1.167a3.124 3.124 0 1 0 0-6.248H13v10zm5.863 2H11V9h7.03a5.124 5.124 0 0 1 .833 10.18V23z"
+                                  fill="#fff"
+                                ></path>
+                              </svg>
+                              <p>Select from Pexels</p>
+                            </div>
+                            <div
+                              onClick={() => {
+                                openfile.current.click();
+                              }}
+                              className=" gallery"
+                            >
+                              <i className="fa fa-image" />
+                              <p>Select from Gallery</p>
+                            </div>
+                          </div>
+                        )}
                       </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="meta-subjects">
-                          <label>
-                            <h2>Subject</h2>
-                          </label>
-                          <Field
-                            name="metaSubject"
-                            component={renderMetaSubjects}
-                            data={subjects}
-                            valueField="value"
-                            textField="subject"
-                          />
+
+                      <div className="leftdata">
+                        <div className="row">
+                          <div className="col-md-12">
+                            <div className="meta-title">
+                              <Field
+                                name="metaTitle"
+                                component={renderMetaTitleInput}
+                                type="text"
+                                label="Title"
+                                validate={[required]}
+                              />
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="meta-education-levels">
-                          <label>
-                            <h2>Education Level</h2>
-                          </label>
-                          <Field
-                            name="metaEducationLevels"
-                            component={renderMetaEducationLevelInput}
-                            data={educationLevels}
-                            valueField="value"
-                            textField="name"
-                          />
+                        <div className="row">
+                          <div className="col-md-6">
+                            <div className="meta-subjects">
+                              <label>
+                                <h2>Subject</h2>
+                              </label>
+                              <Field
+                                name="metaSubject"
+                                component={renderMetaSubjects}
+                                data={subjects}
+                                valueField="value"
+                                textField="subject"
+                              />
+                            </div>
+                          </div>
+                          <div className="col-md-6">
+                            <div className="meta-education-levels">
+                              <label>
+                                <h2>Education Level</h2>
+                              </label>
+                              <Field
+                                name="metaEducationLevels"
+                                component={renderMetaEducationLevelInput}
+                                data={educationLevels}
+                                valueField="value"
+                                textField="name"
+                              />
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -260,6 +301,16 @@ let ResourceDescribeActivity = (props) => {
           </FadeDiv>
         </div>
       </div>
+      <PexelsAPI
+        show={modalShow}
+        resourceName={
+          props.resource &&
+          props.resource.newResource &&
+          props.resource.newResource.activity &&
+          props.resource.newResource.activity.title
+        }
+        onHide={() => setModalShow(false)}
+      />
     </div>
   );
 };
