@@ -47,7 +47,7 @@ export default function Pexels(props) {
               onChange={(e) => {
                 setSearchValue(e.target.value);
               }}
-              onKeyPress={(e) => {
+              onKeyPress={(event) => {
                 if (event.key === "Enter") {
                   setLoader(true);
 
