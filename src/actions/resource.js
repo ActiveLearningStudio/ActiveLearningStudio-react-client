@@ -269,12 +269,12 @@ export const resourceshared = (resourceid, resourceName) => {
         let protocol = window.location.href.split("/")[0] + "//";
 
         Swal.fire({
-          html: `You can now share Activity <strong>"${resourceName}"</strong><br>
+          html: `Yo can now share Activity <strong>"${resourceName}"</strong><br>
                 Anyone with the link below can access your activity:<br>
                 <br><a target="_blank" href="/shared/activity/${resourceid.trim()}
                 ">${
                   protocol + window.location.host
-                }/sahred/activity/${resourceid.trim()}</a>
+                }/shared/activity/${resourceid.trim()}</a>
                 
               `,
         });

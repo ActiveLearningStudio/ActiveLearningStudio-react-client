@@ -4161,9 +4161,9 @@ a:hover {
 //activity upload css
 
 .flex-form-imag-upload {
-  display: flex;
+  // display: flex;
 
-  width: 100%;
+  // width: 100%;
 
   .leftdata {
     width: 80%
@@ -4180,22 +4180,17 @@ a:hover {
   }
 
   .upload_placeholder {
-    display: flex;
 
-    align-items: center;
-    justify-content: center;
-    margin-right: 5px;
-    box-shadow: 0px 0px 4px 0px #ccc;
-    border-radius: 2px;
+    display: flex;
+    width: 400px;
     cursor: pointer;
-    width: 170px;
-    height: 205px;
-    flex-direction: column;
+
+
 
     .gallery,
     .pexel {
       display: flex;
-      height: 50%;
+      height: 140px;
       border: 1px solid #ccc;
       justify-content: center;
       align-items: center;
@@ -4220,6 +4215,11 @@ a:hover {
   .fa {
     font-size: 40px;
   }
+}
+
+.modelbox-container-text {
+  font-size: 16px;
+  padding-bottom: 15px;
 }
 
 .imgboxpexels {

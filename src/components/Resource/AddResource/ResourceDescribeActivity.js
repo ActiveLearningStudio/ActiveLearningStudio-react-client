@@ -159,7 +159,7 @@ let ResourceDescribeActivity = (props) => {
                   >
                     <div className="flex-form-imag-upload">
                       <div className="upload-thumbnail check">
-                        {/* <h2>Upload thumbnail</h2> */}
+                        <h2>Upload thumbnail</h2>
 
                         <label>
                           <input
@@ -308,6 +308,14 @@ let ResourceDescribeActivity = (props) => {
           props.resource.newResource &&
           props.resource.newResource.activity &&
           props.resource.newResource.activity.title
+        }
+        searchName={
+          props.resource &&
+          props.resource.newResource &&
+          props.resource.newResource.activity &&
+          !!props.resource.newResource.activity.activity_thumbnail_text
+            ? props.resource.newResource.activity.activity_thumbnail_text
+            : props.resource.newResource.activity.title
         }
         onHide={() => setModalShow(false)}
       />

@@ -13,9 +13,9 @@ export default function Pexels(props) {
   const [searchValue, setSearchValue] = useState();
 
   useEffect(() => {
-    !!props.resourceName && setSearchValue(props.resourceName);
+    //  !!props.resourceName && setSearchValue(props.searchName);
     pexelsClient
-      .search(!!props.resourceName ? props.resourceName : "Curriki", 10, 4)
+      .search(props.searchName, 10, 4)
       .then(function (result) {
         setLoader(false);
         console.log(result);
@@ -39,6 +39,11 @@ export default function Pexels(props) {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
+          <p className="modelbox-container-text">
+            You are currently viewing Thumbnails form{" "}
+            <b>{props.resourceName}</b> Category. You can search other
+            thumbnails below as well
+          </p>
           <div className="searchpixels">
             <input
               type="text"
