@@ -32,16 +32,16 @@ const Registration = () => {
           ) {
             errors.email = "Invalid email address";
           }
-          if(!values.password) {
+          if (!values.password) {
             errors.password = "Required";
           }
-          if(!values.repassword) {
+          if (!values.repassword) {
             errors.repassword = "Required";
           }
-          if(values.password != values.repassword){
+          if (values.password != values.repassword) {
             errors.repassword = "Password and Renter Password Must match";
           }
-          if(values.password.length < 8){
+          if (values.password.length < 8) {
             errors.password = "Password must be at least 8 characters long";
           }
 
@@ -186,7 +186,6 @@ const Registration = () => {
                   <div className="error">{errors.repassword}</div>
                 )}
               </div>
-              
             </div>
             <div className="form-group">
               <label>Job Title</label>
@@ -255,7 +254,7 @@ const Registration = () => {
             </div>
             <div className="form-group">
               <ReCAPTCHA
-                sitekey="6LdImbgZAAAAAN4s1eEi53-ul7uJfLONrFuBcKS0"
+                sitekey={process.env.REACT_APP_GOOGLE_CAPTCHA}
                 onChange={(el) => {
                   setCaptcha(el);
                 }}
