@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik } from "formik";
 import ReCAPTCHA from "react-google-recaptcha";
 import Swal from "sweetalert2";
@@ -6,6 +6,13 @@ import { form_registration } from "../actions/auth";
 
 const Registration = () => {
   const [capctha, setCaptcha] = useState();
+  useEffect(() => {
+    try {
+      document
+        .getElementsByTagName("body")[0]
+        .classList.add("registration-body-page");
+    } catch (e) {}
+  }, []);
 
   return (
     <div>
@@ -21,6 +28,7 @@ const Registration = () => {
           websiteUrl: "",
           organization: "",
           message: "",
+          repassword: "",
           captcha_google: capctha,
         }}
         validate={(values) => {
@@ -51,6 +59,9 @@ const Registration = () => {
 
           if (!values.LastName) {
             errors.LastName = "Required";
+          }
+          if (!values.school) {
+            errors.school = "Required";
           }
 
           // if (values.phone.length < 7 ) {
@@ -146,7 +157,7 @@ const Registration = () => {
                 )}
               </div>
               <div className="form-group">
-                <label>Phone number</label>
+                <label>Phone number (optional):</label>
                 <input
                   type="text"
                   name="phone"
@@ -187,7 +198,7 @@ const Registration = () => {
                 )}
               </div>
             </div>
-            <div className="form-group">
+            {/* <div className="form-group">
               <label>Job Title</label>
               <input
                 type="text"
@@ -196,9 +207,11 @@ const Registration = () => {
                 onBlur={handleBlur}
                 value={values.jobTitle}
               />
-            </div>
+            </div> */}
             <div className="form-group">
-              <label>School/District/Organization</label>
+              <label>
+                School/District/Organization <span>*</span>
+              </label>
 
               <input
                 type="text"
@@ -207,8 +220,11 @@ const Registration = () => {
                 onBlur={handleBlur}
                 value={values.school}
               />
+              {errors.school && touched.school && (
+                <div className="error">{errors.school} </div>
+              )}
             </div>
-            <div className="form-group">
+            {/* <div className="form-group">
               <label>Website URL</label>
               <input
                 type="text"
@@ -251,7 +267,7 @@ const Registration = () => {
                 onBlur={handleBlur}
                 value={values.message}
               />
-            </div>
+            </div> */}
             <div className="form-group">
               <ReCAPTCHA
                 sitekey={process.env.REACT_APP_GOOGLE_CAPTCHA}

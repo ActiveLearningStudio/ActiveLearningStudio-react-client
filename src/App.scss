@@ -3897,8 +3897,8 @@ a:hover {
 
 .formRegister {
   background-color: #efefef;
-  border-radius: 10px 10px 10px 10px;
-  padding: 30px;
+
+
 
   .form-group {
     width: 100%;
@@ -4273,4 +4273,8 @@ a:hover {
     color: #ccc;
     -webkit-text-stroke: 1px #fff;
   }
+}
+
+.registration-body-page #hubspot-messages-iframe-container {
+  display: none !important;
 }
