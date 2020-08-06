@@ -14,7 +14,7 @@ body {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 3px;
+  width: 4px;
   height: 5px;
 }
 
@@ -25,7 +25,7 @@ body {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #d6d6d6;
+  background: #d9d9d9
 }
 
 /* Handle on hover */
@@ -3224,10 +3224,15 @@ a:hover {
     padding: 0 !important;
     background-color: #fff !important;
     position: relative;
+    max-height: 650px;
+    min-height: 500px;
+    overflow-y: auto;
   }
 
   .right-sidegolf-info {
     width: 40%;
+    max-height: 650px;
+    min-height: 500px;
   }
 
   .act-top-hader {

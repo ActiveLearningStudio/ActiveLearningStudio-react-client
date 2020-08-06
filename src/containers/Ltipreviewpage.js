@@ -58,7 +58,6 @@ export class LtiPreviewPage extends React.Component {
         <Header {...this.props} />
 
         {content}
-        <Footer />
       </div>
     );
   }

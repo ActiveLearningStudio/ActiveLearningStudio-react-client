@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import dotsloader from "../../images/dotsloader.gif";
-const PexelsAPI = require("pexels-api-wrapper");
+//const PexelsAPI = require("pexels-api-wrapper");
 
-var pexelsClient = new PexelsAPI(
-  "563492ad6f91700001000001155d7b75f5424ea694b81ce9f867dddf"
-);
+//var pexelsClient = new PexelsAPI("");
 
 export default function Pexels(props) {
   const [pixeldata, setpixels] = useState([]);
@@ -13,22 +11,22 @@ export default function Pexels(props) {
   const [searchValue, setSearchValue] = useState();
 
   useEffect(() => {
-    //  !!props.resourceName && setSearchValue(props.searchName);
-    pexelsClient
-      .search(props.searchName, 10, 4)
-      .then(function (result) {
-        setLoader(false);
-        console.log(result);
-        const allphotos =
-          !!result.photos &&
-          result.photos.map((data) => {
-            return data.src.tiny;
-          });
-        setpixels(allphotos);
-      })
-      .catch(function (e) {
-        console.err(e);
-      });
+    // //  !!props.resourceName && setSearchValue(props.searchName);
+    // pexelsClient
+    //   .search(props.searchName, 10, 4)
+    //   .then(function (result) {
+    //     setLoader(false);
+    //     console.log(result);
+    //     const allphotos =
+    //       !!result.photos &&
+    //       result.photos.map((data) => {
+    //         return data.src.tiny;
+    //       });
+    //     setpixels(allphotos);
+    //   })
+    //   .catch(function (e) {
+    //     console.err(e);
+    //   });
   }, []);
   return (
     <Modal

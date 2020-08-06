@@ -6,7 +6,7 @@ import styled, { keyframes } from "styled-components";
 import DropdownList from "react-widgets/lib/DropdownList";
 import "react-widgets/dist/css/react-widgets.css";
 import { uploadResourceThumbnailAction } from "../../../actions/resource";
-import PexelsAPI from "../../models/pexels.js";
+//import PexelsAPI from "../../models/pexels.js";
 
 import {
   BrowserRouter as Router,
@@ -204,7 +204,7 @@ let ResourceDescribeActivity = (props) => {
                           </div>
                         ) : (
                           <div className="upload_placeholder">
-                            <div
+                            {/* <div
                               onClick={() => setModalShow(true)}
                               className=" pexel"
                             >
@@ -224,7 +224,7 @@ let ResourceDescribeActivity = (props) => {
                                 ></path>
                               </svg>
                               <p>Select from Pexels</p>
-                            </div>
+                            </div> */}
                             <div
                               onClick={() => {
                                 openfile.current.click();
@@ -232,7 +232,7 @@ let ResourceDescribeActivity = (props) => {
                               className=" gallery"
                             >
                               <i className="fa fa-image" />
-                              <p>Select from Gallery</p>
+                              {/* <p>Select from Gallery</p> */}
                             </div>
                           </div>
                         )}
@@ -301,7 +301,7 @@ let ResourceDescribeActivity = (props) => {
           </FadeDiv>
         </div>
       </div>
-      <PexelsAPI
+      {/* <PexelsAPI
         show={modalShow}
         resourceName={
           props.resource &&
@@ -318,7 +318,7 @@ let ResourceDescribeActivity = (props) => {
             : props.resource.newResource.activity.title
         }
         onHide={() => setModalShow(false)}
-      />
+      /> */}
     </div>
   );
 };

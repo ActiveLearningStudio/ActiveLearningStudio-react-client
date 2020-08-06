@@ -79,7 +79,6 @@ export class PreviewPage extends React.Component {
         <Header {...this.props} />
 
         {content}
-        <Footer />
       </div>
     );
   }
