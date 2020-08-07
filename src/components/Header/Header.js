@@ -96,7 +96,7 @@ function Header(props) {
                           </div>
                         </li>
                       </Link>
-                      <Link to="#">
+                      {/* <Link to="#">
                         <li>
                           <div className="notifybx">
                             <div className="notiy_icon">
@@ -115,7 +115,7 @@ function Header(props) {
                             </div>
                           </div>
                         </li>
-                      </Link>
+                      </Link> */}
                     </ul>
                   </div>
                 </div>

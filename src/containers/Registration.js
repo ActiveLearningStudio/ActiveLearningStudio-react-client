@@ -108,7 +108,11 @@ const Registration = () => {
           isSubmitting,
           /* and other goodies */
         }) => (
-          <form onSubmit={handleSubmit} className="formRegister">
+          <form
+            autocomplete="off"
+            onSubmit={handleSubmit}
+            className="formRegister"
+          >
             <div className="half-group">
               <div className="form-group">
                 <label>
@@ -120,6 +124,7 @@ const Registration = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.firstName}
+                  autocomplete="off"
                 />
                 {errors.firstName && touched.firstName && (
                   <div className="error">{errors.firstName} </div>
@@ -135,6 +140,7 @@ const Registration = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.LastName}
+                  autocomplete="off"
                 />
                 {errors.LastName && touched.LastName && (
                   <div className="error"> {errors.LastName} </div>
@@ -151,6 +157,7 @@ const Registration = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.email}
+                  autocomplete="off"
                 />
                 {errors.email && touched.email && (
                   <div className="error">{errors.email}</div>
@@ -164,6 +171,7 @@ const Registration = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.phone}
+                  autocomplete="off"
                 />
                 {errors.phone && touched.phone && errors.phone}
               </div>
@@ -177,6 +185,7 @@ const Registration = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.password}
+                  autocomplete="off"
                 />
                 {errors.password && touched.password && (
                   <div className="error">{errors.password}</div>
@@ -192,6 +201,7 @@ const Registration = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.repassword}
+                  autocomplete="off"
                 />
                 {errors.repassword && touched.repassword && (
                   <div className="error">{errors.repassword}</div>
@@ -219,6 +229,7 @@ const Registration = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.school}
+                autocomplete="off"
               />
               {errors.school && touched.school && (
                 <div className="error">{errors.school} </div>
