@@ -56,67 +56,68 @@ function Header(props) {
           </div>
           <div className="navbar_link">
             <ul className="top_info flexdiv">
-              <li
-                className={
-                  props.project.showCreateProjectSubmenu
-                    ? "active has-sub button-dropdown"
-                    : "hide has-sub button-dropdown"
-                }
-              >
-                <Link
-                  to="#"
-                  className="addtop dropdown-toggle"
-                  className="addtop dropdown-toggle"
-                  onClick={() => props.showCreateProjectSubmenuAction()}
-                >
-                  <i className="fa fa-plus-circle" aria-hidden="true"></i>{" "}
-                </Link>
-                <div className="navmenu dropdown-menu" ref={createProjNode}>
-                  <ul>
-                    <Link to="/project/create" className="menuLinks">
-                      <li>
-                        <div className="notifybx">
-                          <div className="notiy_icon">
-                            <img
-                              src="/images/create-project-icon.png"
-                              alt="create"
-                              title=""
-                            />
-                          </div>
-                          <div className="notiy_det">
-                            <div className="nav_title">
-                              Create a New Project
+              <li>
+                <div class="dropdown create_project  ">
+                  <span
+                    class="dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <i className="fa fa-plus-circle" aria-hidden="true"></i>{" "}
+                  </span>
+                  <div
+                    class="dropdown-menu user-dropdown"
+                    aria-labelledby="dropdownMenuButton"
+                  >
+                    <ul>
+                      <Link to="/project/create" className="menuLinks">
+                        <li>
+                          <div className="notifybx">
+                            <div className="notiy_icon">
+                              <img
+                                src="/images/create-project-icon.png"
+                                alt="create"
+                                title=""
+                              />
                             </div>
-                            <p>
-                              A project gives you a place to build and organize
-                              the amazing learning experiences available in the
-                              Active Learning Studio.
-                            </p>
+                            <div className="notiy_det">
+                              <div className="nav_title">
+                                Create a New Project
+                              </div>
+                              <p>
+                                A project gives you a place to build and
+                                organize the amazing learning experiences
+                                available in the Active Learning Studio.
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      </li>
-                    </Link>
-                    <Link to="#">
-                      <li>
-                        <div className="notifybx">
-                          <div className="notiy_icon">
-                            <img
-                              src="/images/create-team.png"
-                              alt="create-team"
-                            ></img>
+                        </li>
+                      </Link>
+                      <Link to="#">
+                        <li>
+                          <div className="notifybx">
+                            <div className="notiy_icon">
+                              <img
+                                src="/images/create-team.png"
+                                alt="create-team"
+                              ></img>
+                            </div>
+                            <div className="notiy_det">
+                              <div className="nav_title">Create Team</div>
+                              <p>
+                                Increase productivity by making it easy for your
+                                group to create memorable learning experiences
+                                together.
+                              </p>
+                            </div>
                           </div>
-                          <div className="notiy_det">
-                            <div className="nav_title">Create Team</div>
-                            <p>
-                              Increase productivity by making it easy for your
-                              group to create memorable learning experiences
-                              together.
-                            </p>
-                          </div>
-                        </div>
-                      </li>
-                    </Link>
-                  </ul>
+                        </li>
+                      </Link>
+                    </ul>
+                  </div>
                 </div>
               </li>
               <li>
@@ -133,7 +134,7 @@ function Header(props) {
                   <img src="/images/search.png" alt="search"></img>
                 </Link>
               </li>
-              <li>
+              <li className="menuusersettings">
                 <div class="dropdown">
                   <span
                     class="dropdown-toggle"

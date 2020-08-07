@@ -4283,3 +4283,33 @@ a:hover {
 .registration-body-page #hubspot-messages-iframe-container {
   display: none !important;
 }
+
+.create_project .fa-plus-circle {
+
+
+  color: #084892;
+  font-size: 30px
+}
+
+.top_header.flexdiv .dropdown-toggle {
+
+  cursor: pointer;
+}
+
+.top_header.flexdiv .dropdown-toggle::after {
+  content: none;
+  cursor: pointer;
+}
+
+.create_project .dropdown-menu.user-dropdown {
+  min-width: 400px !important;
+  top: 15px !important;
+  left: 0px !important;
+  padding: 15px;
+}
+
+.menuusersettings .dropdown-menu.user-dropdown {
+
+  top: 18px !important;
+
+}
