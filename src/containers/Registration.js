@@ -20,37 +20,37 @@ const Registration = () => {
         initialValues={{
           firstName: "",
           LastName: "",
-          email: "",
-          password: "",
+          emails: "",
+          passwords: "",
           phone: "",
           jobTitle: "",
           school: "",
           websiteUrl: "",
           organization: "",
           message: "",
-          repassword: "",
+          repasswords: "",
           captcha_google: capctha,
         }}
         validate={(values) => {
           const errors = {};
-          if (!values.email) {
-            errors.email = "Required";
+          if (!values.emails) {
+            errors.emails = "Required";
           } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.emails)
           ) {
-            errors.email = "Invalid email address";
+            errors.emails = "Invalid email address";
           }
-          if (!values.password) {
-            errors.password = "Required";
+          if (!values.passwords) {
+            errors.passwords = "Required";
           }
-          if (!values.repassword) {
-            errors.repassword = "Required";
+          if (!values.repasswords) {
+            errors.repasswords = "Required";
           }
-          if (values.password != values.repassword) {
-            errors.repassword = "Password and Renter Password Must match";
+          if (values.passwords != values.repasswords) {
+            errors.repasswords = "Password and Renter Password Must match";
           }
-          if (values.password.length < 8) {
-            errors.password = "Password must be at least 8 characters long";
+          if (values.passwords.length < 8) {
+            errors.passwords = "Password must be at least 8 characters long";
           }
 
           if (!values.firstName) {
@@ -85,8 +85,8 @@ const Registration = () => {
             form_registration(
               values.firstName,
               values.LastName,
-              values.email,
-              values.password,
+              values.emails,
+              values.passwords,
               values.phone,
               values.jobTitle,
               values.school,
@@ -109,7 +109,7 @@ const Registration = () => {
           /* and other goodies */
         }) => (
           <form
-            autocomplete="off"
+            autoComplete="off"
             onSubmit={handleSubmit}
             className="formRegister"
           >
@@ -124,7 +124,7 @@ const Registration = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.firstName}
-                  autocomplete="off"
+                  autoComplete="off"
                 />
                 {errors.firstName && touched.firstName && (
                   <div className="error">{errors.firstName} </div>
@@ -140,7 +140,7 @@ const Registration = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.LastName}
-                  autocomplete="off"
+                  autoComplete="off"
                 />
                 {errors.LastName && touched.LastName && (
                   <div className="error"> {errors.LastName} </div>
@@ -153,14 +153,14 @@ const Registration = () => {
                 </label>
                 <input
                   type="email"
-                  name="email"
+                  name="emails"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values.email}
-                  autocomplete="off"
+                  value={values.emails}
+                  autoComplete="off"
                 />
-                {errors.email && touched.email && (
-                  <div className="error">{errors.email}</div>
+                {errors.emails && touched.emails && (
+                  <div className="error">{errors.emails}</div>
                 )}
               </div>
               <div className="form-group">
@@ -171,7 +171,7 @@ const Registration = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.phone}
-                  autocomplete="off"
+                  autoComplete="off"
                 />
                 {errors.phone && touched.phone && errors.phone}
               </div>
@@ -181,14 +181,14 @@ const Registration = () => {
                 </label>
                 <input
                   type="password"
-                  name="password"
+                  name="passwords"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values.password}
-                  autocomplete="off"
+                  value={values.passwords}
+                  autoComplete="new-password"
                 />
-                {errors.password && touched.password && (
-                  <div className="error">{errors.password}</div>
+                {errors.passwords && touched.passwords && (
+                  <div className="error">{errors.passwords}</div>
                 )}
               </div>
               <div className="form-group">
@@ -197,14 +197,14 @@ const Registration = () => {
                 </label>
                 <input
                   type="password"
-                  name="repassword"
+                  name="repasswords"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values.repassword}
-                  autocomplete="off"
+                  value={values.repasswords}
+                  autoComplete="off"
                 />
-                {errors.repassword && touched.repassword && (
-                  <div className="error">{errors.repassword}</div>
+                {errors.repasswords && touched.repasswords && (
+                  <div className="error">{errors.repasswords}</div>
                 )}
               </div>
             </div>
@@ -229,7 +229,7 @@ const Registration = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.school}
-                autocomplete="off"
+                autoComplete="off"
               />
               {errors.school && touched.school && (
                 <div className="error">{errors.school} </div>
