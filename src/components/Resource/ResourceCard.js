@@ -60,10 +60,15 @@ export class ResourceCard extends React.Component {
                       className="activity-thumb"
                       style={{
                         backgroundImage:
-                          "url(" +
-                          global.config.laravelAPIUrl +
-                          this.props.resource.metadata.thumb_url +
-                          ")",
+                          this.props.resource.metadata.thumb_url_type ===
+                          "pexels"
+                            ? "url(" +
+                              this.props.resource.metadata.thumb_url +
+                              ")"
+                            : "url(" +
+                              global.config.laravelAPIUrl +
+                              this.props.resource.metadata.thumb_url +
+                              ")",
                       }}
                     ></div>
                   </Link>

@@ -29,11 +29,12 @@ const ActivityPreviewCard = (props) => {
               <div
                 className="bg-thumbnail"
                 style={{
-                  backgroundImage:
-                    "url(" +
-                    global.config.laravelAPIUrl +
-                    activity.thumb_url +
-                    ")",
+                  backgroundImage: activity.thumb_url.includes("pexels.com")
+                    ? "url(" + activity.thumb_url + ")"
+                    : "url(" +
+                      global.config.laravelAPIUrl +
+                      activity.thumb_url +
+                      ")",
                 }}
               />
             ) : (
@@ -67,15 +68,17 @@ const ActivityPreviewCard = (props) => {
         >
           {props.lti ? (
             <li className="check">
-              {activity.thumb_url ? (
+              {activity.metadata.thumb_url ? (
                 <div
                   className="bg-thumbnail"
                   style={{
                     backgroundImage:
-                      "url(" +
-                      global.config.laravelAPIUrl +
-                      activity.thumb_url +
-                      ")",
+                      activity.metadata.thumb_url_type === "pexels"
+                        ? "url(" + activity.metadata.thumb_url + ")"
+                        : "url(" +
+                          global.config.laravelAPIUrl +
+                          activity.metadata.thumb_url +
+                          ")",
                   }}
                 />
               ) : (
@@ -99,10 +102,12 @@ const ActivityPreviewCard = (props) => {
                   className="bg-thumbnail"
                   style={{
                     backgroundImage:
-                      "url(" +
-                      global.config.laravelAPIUrl +
-                      activity.metadata.thumb_url +
-                      ")",
+                      activity.metadata.thumb_url_type === "pexels"
+                        ? "url(" + activity.metadata.thumb_url + ")"
+                        : "url(" +
+                          global.config.laravelAPIUrl +
+                          activity.metadata.thumb_url +
+                          ")",
                   }}
                 />
               ) : (

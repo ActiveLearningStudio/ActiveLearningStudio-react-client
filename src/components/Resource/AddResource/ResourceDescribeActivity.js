@@ -6,7 +6,7 @@ import styled, { keyframes } from "styled-components";
 import DropdownList from "react-widgets/lib/DropdownList";
 import "react-widgets/dist/css/react-widgets.css";
 import { uploadResourceThumbnailAction } from "../../../actions/resource";
-//import PexelsAPI from "../../models/pexels.js";
+import PexelsAPI from "../../models/pexels.js";
 
 import {
   BrowserRouter as Router,
@@ -59,6 +59,7 @@ export const uploadThumb = async (e, props) => {
   try {
     formData.append("uploads", e.target.files[0]);
     imageValidation = "";
+    console.log(formData);
     await props.uploadResourceThumbnailAction(formData);
   } catch (e) {
     console.log(e);
@@ -196,15 +197,21 @@ let ResourceDescribeActivity = (props) => {
                             >
                               <img
                                 src={
-                                  global.config.laravelAPIUrl +
-                                  props.resource.newResource.metadata.thumb_url
+                                  props.resource.newResource.metadata.thumb_url.includes(
+                                    "pexel"
+                                  )
+                                    ? props.resource.newResource.metadata
+                                        .thumb_url
+                                    : global.config.laravelAPIUrl +
+                                      props.resource.newResource.metadata
+                                        .thumb_url
                                 }
                               />
                             </div>
                           </div>
                         ) : (
                           <div className="upload_placeholder">
-                            {/* <div
+                            <div
                               onClick={() => setModalShow(true)}
                               className=" pexel"
                             >
@@ -224,7 +231,7 @@ let ResourceDescribeActivity = (props) => {
                                 ></path>
                               </svg>
                               <p>Select from Pexels</p>
-                            </div> */}
+                            </div>
                             <div
                               onClick={() => {
                                 openfile.current.click();
@@ -232,7 +239,7 @@ let ResourceDescribeActivity = (props) => {
                               className=" gallery"
                             >
                               <i className="fa fa-image" />
-                              {/* <p>Select from Gallery</p> */}
+                              <p>Select from Computer Gallery</p>
                             </div>
                           </div>
                         )}
@@ -301,7 +308,7 @@ let ResourceDescribeActivity = (props) => {
           </FadeDiv>
         </div>
       </div>
-      {/* <PexelsAPI
+      <PexelsAPI
         show={modalShow}
         resourceName={
           props.resource &&
@@ -318,7 +325,7 @@ let ResourceDescribeActivity = (props) => {
             : props.resource.newResource.activity.title
         }
         onHide={() => setModalShow(false)}
-      /> */}
+      />
     </div>
   );
 };

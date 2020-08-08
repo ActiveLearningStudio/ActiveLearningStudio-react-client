@@ -3574,7 +3574,7 @@ a:hover {
 .slider-hover-section {
   .hover-control-caption {
     top: 13px;
-    left: -80px;
+    left: -125px;
   }
 
   &:hover {
@@ -3617,6 +3617,7 @@ a:hover {
   width: 235px;
   padding: 0;
   min-height: auto !important;
+  left: -200px
 }
 
 .hover-control-caption.no-data.prev a i {
@@ -4187,7 +4188,7 @@ a:hover {
   .upload_placeholder {
 
     display: flex;
-    width: 200px;
+    width: 400px;
     cursor: pointer;
 
 

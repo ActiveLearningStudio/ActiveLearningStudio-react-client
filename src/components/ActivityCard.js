@@ -20,13 +20,22 @@ const ActivityCard = (props) => {
       >
         <div
           className="playimg"
+          // style={{
+          //   backgroundImage: !!activity.metadata
+          //     ? "url(" +
+          //       global.config.laravelAPIUrl +
+          //       activity.metadata.thumb_url +
+          //       ")"
+          //     : "url(" + global.config.laravelAPIUrl + activity.thumb_url + ")",
+          // }}
           style={{
-            backgroundImage: !!activity.metadata
-              ? "url(" +
-                global.config.laravelAPIUrl +
-                activity.metadata.thumb_url +
-                ")"
-              : "url(" + global.config.laravelAPIUrl + activity.thumb_url + ")",
+            backgroundImage:
+              !!activity.thumb_url && activity.thumb_url.includes("pexels.com")
+                ? "url(" + activity.thumb_url + ")"
+                : "url(" +
+                  global.config.laravelAPIUrl +
+                  activity.thumb_url +
+                  ")",
           }}
         ></div>
         <div className="plydet">
