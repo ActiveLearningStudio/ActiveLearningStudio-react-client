@@ -7,13 +7,14 @@ import {
   // FacebookIcon,
   // TwitterIcon,
 } from 'react-share';
+import Swal from 'sweetalert2';
 import { confirmAlert } from 'react-confirm-alert';
 
 const SharePreviewPopup = (url, projectName) => {
   confirmAlert({
     // eslint-disable-next-line react/prop-types
     customUI: ({ onClose }) => (
-      <div className="share-project-preview-url">
+      <div className="share-project-preview-url project-share-check">
         <h1>
           Your can now share project
           <strong>
@@ -23,22 +24,53 @@ const SharePreviewPopup = (url, projectName) => {
           Anyone with the link below can access your project:
           <br />
           <br />
-          <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
+          <a href={url} target="_blank" rel="noopener noreferrer">
+            <input id="urllink_clip" value={url} />
+          </a>
+          <i
+            title="copy to clipboard"
+            className="fa fa-clipboard"
+            aria-hidden="true"
+            onClick={() => {
+              /* Get the text field */
+              const copyText = document.getElementById('urllink_clip');
+
+              /* Select the text field */
+              copyText.focus();
+              copyText.select();
+              //  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+              /* Copy the text inside the text field */
+              document.execCommand('copy');
+
+              /* Alert the copied text */
+              Swal.fire({
+                title: 'Link Copied',
+                showCancelButton: false,
+                showConfirmButton: false,
+                timer: 1500,
+                allowOutsideClick: false,
+              });
+            }}
+          />
           <br />
         </h1>
 
         <hr />
 
-        {/* <div className="margin-bottom-20">
+        {/*
+        <div className="margin-bottom-20">
           <span>
             <FacebookShareButton url={url} className="share">
               <FacebookIcon size={32} />
             </FacebookShareButton>
           </span>
           <span className="margin-left-20 inline-block">Share this project on Facebook</span>
-        </div> */}
+        </div>
+        */}
 
-        {/* <div className="margin-bottom-20">
+        {/*
+        <div className="margin-bottom-20">
           <span>
             <TwitterShareButton
               url={url}
@@ -49,7 +81,8 @@ const SharePreviewPopup = (url, projectName) => {
             </TwitterShareButton>
           </span>
           <span className="margin-left-20 inline-block">Share this project on Twitter</span>
-        </div> */}
+        </div>
+        */}
 
         <div className="margin-bottom-20">
           <span>

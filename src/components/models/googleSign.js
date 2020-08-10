@@ -57,7 +57,7 @@ const GoogleModel = ({
               <p>To start, please log into your Google account.</p>
               <div>
                 <GoogleLogin
-                  clientId="8299142860-f5jl83fapof5ohs5vjstso5pll87uoor.apps.googleusercontent.com"
+                  clientId="898143939834-9ioui2i9ghgrmcgmgtg0h6rsf83d0t0c.apps.googleusercontent.com"
                   onSuccess={googleClassRoomLogin}
                   onFailure={(response) => googleClassRoomLoginFailure(response)}
                   scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
@@ -177,9 +177,11 @@ const GoogleModel = ({
                         <div className="form-error">{errors.description}</div>
                       )} */}
 
+                      {/*
                       <p>
                         Are you sure you want to share this Project to Google Classroom?
                       </p>
+                      */}
                       <button type="submit">Confirm</button>
                     </form>
                   )}

@@ -1,22 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+// import logo from 'assets/images/logo.svg';
 import { getProjectId, googleShare } from 'store/actions/gapi';
+import { getProjectCourseFromLMS } from 'store/actions/project';
+import SharePreviewPopup from 'helpers/SharePreviewPopup';
 import GoogleModel from '../models/googleSign';
 import ProjectPreviewModal from '../ProjectPreviewModal';
 
 import './style.scss';
 
-// TODO: need to clean up attributes
-const ProjectCard = ({ showPreview, project, showDeletePopup }) => {
+const ProjectCard = (props) => {
+  const { showPreview, project, showDeletePopup } = props;
+
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
 
   // const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const AllLms = useSelector((state) => state.defaultShareState);
+
+  const [allLms, setAllLms] = useState([]);
+  useEffect(() => {
+    setAllLms(AllLms);
+  }, [AllLms]);
 
   return (
     <div className="col-md-3 check">
@@ -54,8 +64,9 @@ const ProjectCard = ({ showPreview, project, showDeletePopup }) => {
               <div className="col-md-2">
                 <div className="dropdown pull-right check">
                   <button
-                    className="btn project-dropdown-btn"
+                    className="btn project-dropdown-btn project"
                     type="button"
+                    id="dropdownMenuButton"
                     data-toggle="dropdown"
                     aria-haspopup="true"
                     aria-expanded="false"
@@ -63,7 +74,7 @@ const ProjectCard = ({ showPreview, project, showDeletePopup }) => {
                     <FontAwesomeIcon icon="ellipsis-v" />
                   </button>
 
-                  <div className="dropdown-menu">
+                  <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <Link
                       className="dropdown-item"
                       to={`/project/preview2/${project._id}`}
@@ -72,7 +83,6 @@ const ProjectCard = ({ showPreview, project, showDeletePopup }) => {
                       {' '}
                       Preview
                     </Link>
-
                     <Link
                       className="dropdown-item"
                       to={`/project/create/${project._id}`}
@@ -81,18 +91,17 @@ const ProjectCard = ({ showPreview, project, showDeletePopup }) => {
                       {' '}
                       Edit
                     </Link>
-
                     {/*
                     <a
                       className="dropdown-item"
-                      onClick={() => {
-                        Swal({
-                          title: 'STAY TUNED!',
-                          text: 'COMING SOON',
+                      onClick={(e) => {
+                        Swal.fire({
+                          title: "STAY TUNED!",
+                          text: "COMING SOON",
                           imageUrl: logo,
                           imageWidth: 400,
                           imageHeight: 200,
-                          imageAlt: 'Custom image',
+                          imageAlt: "Custom image",
                         });
                       }}
                     >
@@ -101,12 +110,11 @@ const ProjectCard = ({ showPreview, project, showDeletePopup }) => {
                       Send To
                     </a>
                     */}
-
                     <li className="dropdown-submenu send">
                       <a className="test" tabIndex="-1">
-                        <FontAwesomeIcon icon="share" />
+                        <FontAwesomeIcon icon="newspaper" />
                         {' '}
-                        Send To
+                        Publish
                       </a>
                       <ul className="dropdown-menu check">
                         <li
@@ -118,7 +126,43 @@ const ProjectCard = ({ showPreview, project, showDeletePopup }) => {
                         >
                           <a>Google Classroom</a>
                         </li>
+
+                        {allLms.shareVendors && allLms.shareVendors.map((data) => (
+                          <li>
+                            <a
+                              onClick={() => {
+                                dispatch(
+                                  getProjectCourseFromLMS(
+                                    data.lmsName.toLowerCase(),
+                                    data._id,
+                                    project._id,
+                                    project.playlists,
+                                    data.lmsUrl,
+                                  ),
+                                );
+                              }}
+                            >
+                              {data.description}
+                            </a>
+                          </li>
+                        ))}
                       </ul>
+                    </li>
+
+                    <li className="dropdown-submenu send">
+                      <a
+                        className="test"
+                        tabIndex="-1"
+                        onClick={() => {
+                          const protocol = `${window.location.href.split('/')[0]}//`;
+                          const url = `${protocol + window.location.host}/project/shared/${project._id.trim()}`;
+                          SharePreviewPopup(url, project.name);
+                        }}
+                      >
+                        <FontAwesomeIcon icon="share" />
+                        {' '}
+                        Share
+                      </a>
                     </li>
 
                     {/*
@@ -135,7 +179,6 @@ const ProjectCard = ({ showPreview, project, showDeletePopup }) => {
                       Executable
                     </a>
                     */}
-
                     <a
                       className="dropdown-item"
                       onClick={() => showDeletePopup(
@@ -172,7 +215,6 @@ const ProjectCard = ({ showPreview, project, showDeletePopup }) => {
               {' '}
               Preview
             </Link>
-
             <Link to={`/project/${project._id}`}>
               <FontAwesomeIcon icon="cubes" />
               {' '}
@@ -196,9 +238,13 @@ const ProjectCard = ({ showPreview, project, showDeletePopup }) => {
 };
 
 ProjectCard.propTypes = {
-  showPreview: PropTypes.bool.isRequired,
   project: PropTypes.object.isRequired,
+  showPreview: PropTypes.bool,
   showDeletePopup: PropTypes.func.isRequired,
+};
+
+ProjectCard.defaultProps = {
+  showPreview: false,
 };
 
 export default ProjectCard;

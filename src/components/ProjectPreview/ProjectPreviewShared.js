@@ -67,7 +67,7 @@ function ProjectPreviewShared(props) {
             activity={activity}
             playlistId={playlist._id}
             key={activity._id}
-            lti="true"
+            lti
           />
         ));
       } else {

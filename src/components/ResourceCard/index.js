@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { Draggable } from 'react-beautiful-dnd';
-import Swal from 'sweetalert';
+import Swal from 'sweetalert2';
+import { confirmAlert } from 'react-confirm-alert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // TODO: these files does not exist
@@ -59,7 +60,10 @@ class ResourceCard extends React.Component {
                     <div
                       className="activity-thumb"
                       style={{
-                        backgroundImage: `url(${global.config.laravelAPIUrl}${resource.metadata.thumbUrl})`,
+                        backgroundImage:
+                          resource.metadata.thumbUrlType === 'pexels'
+                            ? `url(${resource.metadata.thumbUrl})`
+                            : `url(${global.config.laravelAPIUrl}${resource.metadata.thumbUrl})`,
                       }}
                     />
                   </Link>
@@ -130,25 +134,75 @@ class ResourceCard extends React.Component {
                       <a
                         className="dropdown-item"
                         onClick={() => {
-                          Swal({
-                            title: 'STAY TUNED!',
-                            text: 'COMING SOON',
-                            imageUrl: logo,
-                            imageWidth: 400,
-                            imageHeight: 200,
-                            imageAlt: 'Custom image',
+                          const protocol = `${window.location.href.split('/')[0]}//`;
+                          confirmAlert({
+                            customUI: ({ onClose }) => (
+                              <div className="share-project-preview-url project-share-check">
+                                <br />
+                                <h3>
+                                  You can now share Activity
+                                  {' '}
+                                  <strong>{resource.title}</strong>
+                                  <br />
+                                  Anyone with the link below can access your activity:
+                                </h3>
+
+                                <a
+                                  target="_blank"
+                                  href={`/shared/activity/${resource._id.trim()}`}
+                                  rel="noopener noreferrer"
+                                >
+                                  <input
+                                    id="urllink_clip"
+                                    value={`${protocol + window.location.host}/shared/activity/${resource._id}`}
+                                  />
+                                </a>
+
+                                <i
+                                  title="copy to clipboard"
+                                  className="fa fa-clipboard"
+                                  aria-hidden="true"
+                                  onClick={() => {
+                                    /* Get the text field */
+                                    const copyText = document.getElementById('urllink_clip');
+
+                                    /* Select the text field */
+                                    copyText.focus();
+                                    copyText.select();
+                                    // copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+                                    /* Copy the text inside the text field */
+                                    document.execCommand('copy');
+
+                                    /* Alert the copied text */
+                                    Swal.fire({
+                                      title: 'Link Copied',
+                                      showCancelButton: false,
+                                      showConfirmButton: false,
+                                      timer: 1500,
+                                      allowOutsideClick: false,
+                                    });
+                                  }}
+                                />
+                                <br />
+
+                                <div className="close-btn">
+                                  <button type="button" onClick={onClose}>Ok</button>
+                                </div>
+                              </div>
+                            ),
                           });
                         }}
                       >
                         <FontAwesomeIcon icon="share" />
                         {' '}
-                        Send To
+                        Share
                       </a>
                       <a
                         className="dropdown-item"
                         href="#"
                         onClick={() => {
-                          Swal({
+                          Swal.fire({
                             title: 'STAY TUNED!',
                             text: 'COMING SOON',
                             imageUrl: logo,

@@ -1,9 +1,9 @@
 import axios from 'axios';
-import Swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 export const copyProject = (projectId) => {
   const { token } = JSON.parse(localStorage.getItem('auth'));
-  Swal({
+  Swal.fire({
     title: 'Publishing....',
     showCancelButton: false,
     showConfirmButton: false,
@@ -17,7 +17,7 @@ export const copyProject = (projectId) => {
       { headers: { Authorization: `Bearer ${token}` } },
     )
     .then(() => {
-      Swal({
+      Swal.fire({
         icon: 'success',
         title: 'Shared!',
         confirmButtonColor: '#5952c6',
@@ -27,7 +27,7 @@ export const copyProject = (projectId) => {
     })
     .catch((error) => {
       console.log(error);
-      Swal({
+      Swal.fire({
         confirmButtonColor: '#5952c6',
         icon: 'error',
         text: 'Something went wrong, Kindly try again',

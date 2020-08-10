@@ -14,11 +14,32 @@ function App(props) {
     getUser();
   }, [getUser]);
 
+  useEffect(() => {
+    if (window.HubSpotConversations) {
+      // console.log('The api is ready already');
+    } else {
+      window.hsConversationsOnReady = [
+        () => {
+          // console.log('Now the api is ready');
+          window.HubSpotConversations.widget.load();
+        },
+      ];
+    }
+  }, []);
+
   return (
     <div>
       <Helmet>
         <meta name="description" content="CurrikiStudio" />
         <meta name="theme-color" content="#008f68" />
+
+        <script
+          type="text/javascript"
+          id="hs-script-loader"
+          async
+          defer
+          src={`//js.hs-scripts.com/${process.env.REACT_APP_HUBSPOT}.js`}
+        />
       </Helmet>
 
       <div className="need_help">Need Help ?</div>

@@ -29,7 +29,9 @@ const ActivityPreviewCard = (props) => {
               <div
                 className="bg-thumbnail"
                 style={{
-                  backgroundImage: `url(${global.config.laravelAPIUrl}${activity.thumbUrl})`,
+                  backgroundImage: activity.thumbUrl.includes('pexels.com')
+                    ? `url(${activity.thumbUrl})`
+                    : `url(${global.config.laravelAPIUrl}${activity.thumbUrl})`,
                 }}
               />
             ) : (
@@ -57,11 +59,14 @@ const ActivityPreviewCard = (props) => {
         >
           {lti ? (
             <li className="check">
-              {activity.thumbUrl ? (
+              {activity.metadata.thumbUrl ? (
                 <div
                   className="bg-thumbnail"
                   style={{
-                    backgroundImage: `url(${global.config.laravelAPIUrl}${activity.thumbUrl})`,
+                    backgroundImage:
+                      activity.metadata.thumbUrlType === 'pexels'
+                        ? `url(${activity.metadata.thumbUrl})`
+                        : `url(${global.config.laravelAPIUrl}${activity.metadata.thumbUrl})`,
                   }}
                 />
               ) : (
@@ -84,7 +89,13 @@ const ActivityPreviewCard = (props) => {
                 <div
                   className="bg-thumbnail"
                   style={{
-                    backgroundImage: `url(${global.config.laravelAPIUrl}${activity.metadata.thumbUrl})`,
+                    backgroundImage:
+                      activity.metadata.thumbUrlType === 'pexels'
+                        ? `url(${activity.metadata.thumbUrl})`
+                        : `url(${
+                          global.config.laravelAPIUrl
+                        }${activity.metadata.thumbUrl
+                        })`,
                   }}
                 />
               ) : (

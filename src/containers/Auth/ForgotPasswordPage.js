@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
@@ -30,7 +30,7 @@ function ForgotPasswordPage(props) {
     try {
       await forgotPassword({ email });
 
-      Swal({
+      Swal.fire({
         icon: 'success',
         title: 'Success',
         text: 'Password reset email has been sent. Please follow the instructions.',

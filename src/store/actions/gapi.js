@@ -1,4 +1,4 @@
-import Swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 import {
   GOOGLE_CLASSROOM_LOGIN,
@@ -46,7 +46,7 @@ export const googleClassRoomLoginFailureAction = (response) => async (dispatch) 
   dispatch(googleShare('close'));
   dispatch(googleClassRoomLogin(response));
   try {
-    Swal({
+    Swal.fire({
       confirmButtonColor: '#5952c6',
       icon: 'error',
       text: response.error.replace(/_/g, ' '),

@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import styled, { keyframes } from 'styled-components';
 import { fadeIn } from 'react-animations';
+// import PexelsAPI from 'pexels-api-wrapper';
 
 import {
   uploadResourceThumbnailAction,
@@ -22,6 +23,8 @@ const FadeDiv = styled.div`
   animation: 0.5s ${fadeAnimation};
 `;
 
+// const pexelsClient = new PexelsAPI('563492ad6f91700001000001155d7b75f5424ea694b81ce9f867dddf');
+
 const required = (value) => (value ? undefined : '* Required');
 
 export const uploadEditThumb = async (e, props) => {
@@ -31,7 +34,7 @@ export const uploadEditThumb = async (e, props) => {
 
     await props.uploadResourceThumbnail(formData);
   } catch (err) {
-    console.log(err);
+    // console.log(err);
   }
 };
 
@@ -67,7 +70,7 @@ const onSubmit = async (values, dispatch, props) => {
     props.onSubmitDescribeActivity(values, props.match.params.activityId);
     props.showBuildActivity(null, null, props.match.params.activityId); // show create resource activity wizard
   } catch (e) {
-    console.log(e.message);
+    // console.log(e.message);
   }
 };
 
@@ -109,7 +112,7 @@ let ResourceDescribeActivity = (props) => {
 
                     <div className="row">
                       <div className="col-md-12">
-                        <div className="upload-thumbnail">
+                        <div className="upload-thumbnail check">
                           <h2>Upload thumbnail</h2>
                           <label>
                             <input

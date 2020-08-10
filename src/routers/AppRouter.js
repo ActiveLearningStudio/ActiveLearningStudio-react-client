@@ -22,6 +22,7 @@ const LoginPage = loadable(() => import('../containers/Auth/LoginPage'));
 const RegisterPage = loadable(() => import('../containers/Auth/RegisterPage'));
 const ForgotPasswordPage = loadable(() => import('../containers/Auth/ForgotPasswordPage'));
 const ResetPasswordPage = loadable(() => import('../containers/Auth/ResetPasswordPage'));
+// const ConfirmPage = loadable(() => import('../containers/ConfirmEmail'));
 
 const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
 
@@ -45,7 +46,7 @@ const AppRouter = () => {
         <PublicRoute exact path="/register" component={RegisterPage} />
         <PublicRoute exact path="/forgot-password" component={ForgotPasswordPage} />
         <PublicRoute exact path="/reset-password" component={ResetPasswordPage} />
-        <PublicRoute exact path="/register" component={RegisterPage} />
+        {/* <PublicRoute exact path="/confirm-email/:confirmationId" component={ConfirmPage} /> */}
 
         <PrivateRoute exact path="/account" component={ProfilePage} />
 

@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import axios from 'axios';
-import Swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 import loaderImg from 'assets/images/loader.svg';
 import {
@@ -20,6 +20,7 @@ import {
   CLOSE_MENU,
   SHOW_LMS,
   LOAD_MY_PROJECTS_SELECTED,
+  SET_LMS_COURSE,
   CHANGE_LOADING,
 } from '../actionTypes';
 import SharePreviewPopup from '../../helpers/SharePreviewPopup';
@@ -267,7 +268,7 @@ export const ShareLMS = (
 ) => {
   const { token } = JSON.parse(localStorage.getItem('auth'));
 
-  Swal({
+  Swal.fire({
     title: `This playlist will be added to course <strong>${projectName}</strong>. If the course does not exist, it will be created. `,
     text: 'Would you like to proceed?',
     showCancelButton: true,
@@ -276,7 +277,7 @@ export const ShareLMS = (
     confirmButtonText: 'Continue',
   }).then((result) => {
     if (result.value) {
-      Swal({
+      Swal.fire({
         iconHtml: loaderImg,
         title: 'Publishing....',
         showCancelButton: false,
@@ -299,7 +300,7 @@ export const ShareLMS = (
         )
         .then((res) => {
           if (res.data.status === 'success') {
-            Swal({
+            Swal.fire({
               icon: 'success',
               title: 'Published!',
               confirmButtonColor: '#5952c6',
@@ -309,7 +310,7 @@ export const ShareLMS = (
           }
         })
         .catch(() => {
-          Swal({
+          Swal.fire({
             confirmButtonColor: '#5952c6',
             icon: 'error',
             text: 'Something went wrong, Kindly try again',
@@ -453,7 +454,7 @@ export const toggleProjectShareRemovedAction = async (projectId, ProjectName) =>
   );
 
   if (response.data.status === 'success') {
-    Swal({
+    Swal.fire({
       title: `You stopped sharing <strong>"${ProjectName}"</strong> ! `,
       html: 'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
     });
@@ -525,4 +526,149 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
   } catch (e) {
     throw new Error(e);
   }
+};
+
+export const setLmsCourse = (lmsCourse) => ({
+  type: SET_LMS_COURSE,
+  lmsCourse,
+});
+
+export const getProjectCourseFromLMS = (
+  lms,
+  settingId,
+  projectId,
+  playlist,
+  lmsUrl,
+) => (dispatch, getState) => {
+  const formData = { settingId, projectId };
+  Swal.fire({
+    iconHtml: loaderImg,
+    title: 'Fetching Information....',
+    showCancelButton: false,
+    showConfirmButton: false,
+    allowOutsideClick: false,
+  });
+
+  return axios
+    .post(
+      `${global.config.laravelAPIUrl}/go/${lms}/fetch/course`,
+      formData,
+    )
+    .then((response) => {
+      if (response.data.status === 'success') {
+        dispatch(setLmsCourse(response.data.data));
+
+        const globalStoreClone = getState();
+
+        const { token } = JSON.parse(localStorage.getItem('auth'));
+        Swal.fire({
+          title: `This Project will be added to ${lms}. If the Project does not exist, it will be created. `,
+          text: 'Would you like to proceed?',
+          showCancelButton: true,
+          confirmButtonColor: '#5952c6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Continue',
+        }).then((result) => {
+          if (result.value) {
+            Swal.fire({
+              iconHtml: loaderImg,
+              title: 'Publishing....',
+              showCancelButton: false,
+              showConfirmButton: false,
+              allowOutsideClick: false,
+            });
+
+            // eslint-disable-next-line no-inner-declarations
+            async function asyncFunc() {
+              for (let x = 0; x < playlist.length; x += 1) {
+                // eslint-disable-next-line no-await-in-loop
+                await axios.post(
+                  `${global.config.laravelAPIUrl}/go/${lms}/publish/playlist`,
+                  {
+                    settingId,
+                    playlistId: playlist[x]._id,
+                    counter:
+                        !!globalStoreClone.project.lmsCourse
+                        && globalStoreClone.project.lmsCourse
+                          .playlistsCopyCounter.length > 0
+                          ? globalStoreClone.project.lmsCourse
+                            .playlistsCopyCounter[x].counter
+                          : 0,
+                  },
+                  {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                  },
+                )
+                  .then(() => {
+                    if (x + 1 === playlist.length) {
+                      Swal.fire({
+                        icon: 'success',
+                        title: 'Published!',
+                        confirmButtonColor: '#5952c6',
+                        html: `Your Project has been published to <a target="_blank" href="${lmsUrl}"> ${lmsUrl}</a>`,
+                        // text: `Yo'ur playlist has been submitted to ${lmsUrl}`,
+                      });
+                    }
+                  });
+              }
+            }
+            if (playlist.length > 0) {
+              asyncFunc();
+            } else {
+              Swal.fire({
+                icon: 'warning',
+                title: 'No playlist available',
+                confirmButtonColor: '#5952c6',
+              });
+            }
+
+            // const allplay = playlist.map((eachPlaylist, counter) => {
+            //   return axios.post(
+            //     global.config.laravelAPIUrl + `/go/${lms}/publish/playlist`,
+            //     {
+            //       settingId,
+            //       playlistId,
+            //       counter:
+            //         !!globalStoreClone.project.lmsCourse &&
+            //         globalStoreClone.project.lmsCourse.playlistsCopyCounter
+            //           .length > 0
+            //           ? globalStoreClone.project.lmsCourse.playlistsCopyCounter[counter].counter
+            //           : 0,
+            //     },
+            //     {
+            //       headers: {
+            //         Authorization: "Bearer " + token,
+            //       },
+            //     }
+            //   );
+            // });
+
+            // const syncRequest = allplay[Symbol.iterator]();
+
+            // axios
+            //   .all(allplay)
+            //   .then((res) => {
+            //     if (!!res) {
+            //       Swal.fire({
+            //         icon: 'success',
+            //         title: 'Published!',
+            //         confirmButtonColor: '#5952c6',
+            //         html: `Your Project has been published to <a target="_blank" href="${lmsUrl}">${lmsUrl}</a>`,
+            //         // text: `Yo'ur playlist has been submitted to ${lmsUrl}`,
+            //       });
+            //     }
+            //   })
+            //   .catch((e) => {
+            //     Swal.fire({
+            //       confirmButtonColor: '#5952c6',
+            //       icon: 'error',
+            //       text: 'Something went wrong, Kindly try again',
+            //     });
+            //   });
+          }
+        });
+      }
+    });
 };

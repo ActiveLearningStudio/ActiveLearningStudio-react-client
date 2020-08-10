@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import Swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -53,7 +53,7 @@ function ResetPasswordPage(props) {
         password_confirmation: state.confirmPassword,
       });
 
-      Swal({
+      Swal.fire({
         icon: 'success',
         title: 'Success',
         text: 'Password has been reset successfully.',

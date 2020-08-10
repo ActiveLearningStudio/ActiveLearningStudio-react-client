@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { loadMyProjectsAction } from 'store/actions/project';
+import { createProjectAction, loadMyProjectsAction, showCreateProjectModalAction } from 'store/actions/project';
+import { loadPlaylistAction } from 'store/actions/playlist';
 import Header from 'components/Header';
 import ProjectPreview from 'components/ProjectPreview';
 import ResourcePreview from 'components/ResourcePreview';
 import PlaylistPreview from 'components/PlaylistPreview';
 
-export class PreviewPage extends React.Component {
+class PreviewPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -87,7 +88,10 @@ PreviewPage.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  createProject: (name, description, thumbUrl) => dispatch(createProjectAction(name, description, thumbUrl)),
   loadMyProjects: () => dispatch(loadMyProjectsAction()),
+  showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
+  loadPlaylist: () => dispatch(loadPlaylistAction()),
 });
 
 const mapStateToProps = (state) => ({

@@ -14,6 +14,7 @@ import {
   showCreateResourceActivity,
 } from 'store/actions/resource';
 import ResourceActivityTypeField from '../fields/ResourceActivityTypeField';
+import MyVerticallyCenteredModal from '../../models/activityOptions';
 import AddResourceSidebar from './AddResourceSidebar';
 
 const fadeAnimation = keyframes`${fadeIn}`;
@@ -36,6 +37,9 @@ let ResourceSelectActivity = (props) => {
 
   const [activities, setActivities] = useState([]);
   const [searchActivities, setSearchActivities] = useState([]);
+  const [activeType, setActiveType] = useState('');
+  const [modalShow, setModalShow] = useState(false);
+  const [currentActivity, setCurrentActivity] = useState(null);
 
   const searchActivity = useCallback((e) => {
     const data = searchActivities.filter(
@@ -65,117 +69,155 @@ let ResourceSelectActivity = (props) => {
 
   const questionsContent = activities.map((activity) => (
     <div className="col-md-3" key={activity._id}>
-      <label className="question-label">
-        <Field
-          name="activity"
-          component={ResourceActivityTypeField}
-          type="radio"
-          value={activity.h5pLib || activity.type}
-          onChange={(e) => onChangeActivity(activity, e)}
-          validate={[required]}
-        />
-
-        <div className="activity-item">
-          <div
-            className="activity-img"
-            style={{
-              backgroundImage: `url(${global.config.laravelAPIUrl}${activity.image})`,
-            }}
+      <div className="activity-item with_options">
+        <label className="question-label">
+          <Field
+            name="activity"
+            component={ResourceActivityTypeField}
+            type="radio"
+            value={activity.h5pLib || activity.type}
+            onChange={(e) => onChangeActivity(activity, e)}
+            validate={[required]}
           />
-          <div className="activity-content">
-            <span>{activity.title}</span>
-            <p>{activity.description}</p>
+
+          <div className="content">
+            <div
+              className="activity-img"
+              style={{
+                backgroundImage: `url(${global.config.laravelAPIUrl}${activity.image})`,
+              }}
+            />
+
+            <div className="activity-content">
+              <span>{activity.title}</span>
+              <p>{activity.description}</p>
+            </div>
+
+            {/* <FontAwesomeIcon icon="star" /> */}
           </div>
-          {/* <FontAwesomeIcon icon="star" /> */}
+        </label>
+
+        <div className="option_section">
+          <div
+            className="option_type"
+            onClick={() => {
+              setCurrentActivity(activity);
+              setActiveType('demo');
+              setModalShow(true);
+            }}
+          >
+            <FontAwesomeIcon icon="desktop" />
+            demo
+          </div>
+          <div
+            className="option_type"
+            onClick={() => {
+              setCurrentActivity(activity);
+              setActiveType('video');
+              setModalShow(true);
+            }}
+          >
+            <FontAwesomeIcon icon="play-circle" />
+            Video
+          </div>
         </div>
-      </label>
+      </div>
     </div>
   ));
 
   return (
-    <div className="row">
-      <div className="col-md-3">
-        <AddResourceSidebar {...props} />
-      </div>
+    <>
+      <div className="row">
+        <div className="col-md-3">
+          <AddResourceSidebar {...props} />
+        </div>
 
-      <div className="col-md-9">
-        <div className="resource-question">
-          <FadeDiv>
-            <div className="row">
-              <div className="col-md-12">
-                <h2 className="title">
-                  <div className="back-button" onClick={goBackToActivity}>
-                    <FontAwesomeIcon icon="chevron-left" />
-                    Back
-                  </div>
-                  Select the activity you want to build from the options below:
-                </h2>
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="col-md-12">
-                <div className="shadowbox">
-                  <div className="dropdown">
-                    {/*
-                    <button
-                      className="btn btn-primary dropdown-toggle"
-                      type="button"
-                      data-toggle="dropdown"
-                    >
-                      Sort By
-                      <span className="caret"></span>
-                    </button>
-
-                    <ul className="dropdown-menu">
-                      <li>
-                        <a href="#"></a>
-                      </li>
-                      <li>
-                        <a href="#"></a>
-                      </li>
-                      <li>
-                        <a href="#"></a>
-                      </li>
-                    </ul>
-                    */}
-                  </div>
-
-                  <div className="searchbox">
-                    <input
-                      type="text"
-                      placeholder="Search activity"
-                      onChange={searchActivity}
-                    />
-                    <FontAwesomeIcon icon="search" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <form
-                className="row meta-form"
-                onSubmit={handleSubmit}
-                autoComplete="off"
-              >
-                <div className="scrollblog">
-                  <div className="row">{questionsContent}</div>
-                </div>
-
-                {/*
+        <div className="col-md-9">
+          <div className="resource-question">
+            <FadeDiv>
+              <div className="row">
                 <div className="col-md-12">
-                  <button type="submit" className="add-resource-continue-btn">
-                    Continue
-                  </button>
+                  <h2 className="title">
+                    <div className="back-button" onClick={goBackToActivity}>
+                      <FontAwesomeIcon icon="chevron-left" />
+                      Back
+                    </div>
+                    Select the activity you want to build from the options below:
+                  </h2>
                 </div>
-                */}
-              </form>
-            </div>
-          </FadeDiv>
+              </div>
+
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="shadowbox">
+                    <div className="dropdown">
+                      {/*
+                      <button
+                        className="btn btn-primary dropdown-toggle"
+                        type="button"
+                        data-toggle="dropdown"
+                      >
+                        Sort By
+                        <span className="caret"></span>
+                      </button>
+
+                      <ul className="dropdown-menu">
+                        <li>
+                          <a href="#"></a>
+                        </li>
+                        <li>
+                          <a href="#"></a>
+                        </li>
+                        <li>
+                          <a href="#"></a>
+                        </li>
+                      </ul>
+                      */}
+                    </div>
+
+                    <div className="searchbox">
+                      <input
+                        type="text"
+                        placeholder="Search activity"
+                        onChange={searchActivity}
+                      />
+                      <FontAwesomeIcon icon="search" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <form
+                  className="row meta-form"
+                  onSubmit={handleSubmit}
+                  autoComplete="off"
+                >
+                  <div className="scrollblog">
+                    <div className="row">{questionsContent}</div>
+                  </div>
+
+                  {/*
+                  <div className="col-md-12">
+                    <button type="submit" className="add-resource-continue-btn">
+                      Continue
+                    </button>
+                  </div>
+                  */}
+                </form>
+              </div>
+            </FadeDiv>
+          </div>
         </div>
       </div>
-    </div>
+
+      <MyVerticallyCenteredModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        activity={currentActivity}
+        activeType={activeType}
+      />
+    </>
   );
 };
 
@@ -194,7 +236,7 @@ ResourceSelectActivity = reduxForm({
       const data = values.activity;
       props.showDescribeActivity(data);
     } catch (e) {
-      console.log(e.message);
+      // console.log(e.message);
     }
   },
   onChange: (values, dispatch, props) => {

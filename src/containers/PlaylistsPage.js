@@ -21,7 +21,6 @@ import {
   createResourceAction,
   showCreateResourceModalAction,
   hideCreateResourceModalAction,
-  previewResourceAction,
   hidePreviewResourceModalAction,
   createResourceByH5PUploadAction,
   editResourceAction,
@@ -34,6 +33,7 @@ import {
 } from 'store/actions/resource';
 import { showCreateProjectModalAction, loadProjectAction, LoadLMS } from 'store/actions/project';
 import Header from 'components/Header';
+import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
 import DeletePopup from 'components/DeletePopup';
 import PlaylistCard from 'components/PlaylistCard';
@@ -46,7 +46,7 @@ import PreviewResourcePage from './PreviewResourcePage';
 //   console.log(response);
 // };
 
-export class PlaylistsPage extends React.Component {
+class PlaylistsPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -92,7 +92,7 @@ export class PlaylistsPage extends React.Component {
       await showCreatePlaylistModal();
       history.push(`/project/${match.params.projectId}/playlist/create`);
     } catch (err) {
-      console.log(err.message);
+      // console.log(err.message);
     }
   };
 
@@ -102,7 +102,7 @@ export class PlaylistsPage extends React.Component {
       showCreateResourceModal(playlist._id);
       history.push(`/project/${match.params.projectId}/playlist/${playlist._id}/activity/create`);
     } catch (e) {
-      console.log(e.message);
+      // console.log(e.message);
     }
   };
 
@@ -114,7 +114,7 @@ export class PlaylistsPage extends React.Component {
       await hideCreatePlaylistModal();
       history.push(`/project/${match.params.projectId}`);
     } catch (err) {
-      console.log(err.message);
+      // console.log(err.message);
     }
   };
 
@@ -126,7 +126,7 @@ export class PlaylistsPage extends React.Component {
       await hideCreateResourceModal();
       history.push(`/project/${match.params.projectId}`);
     } catch (err) {
-      console.log(err.message);
+      // console.log(err.message);
     }
   };
 
@@ -144,7 +144,7 @@ export class PlaylistsPage extends React.Component {
       await createPlaylist(match.params.projectId, title);
       history.push(`/project/${match.params.projectId}`);
     } catch (err) {
-      console.log(err.message);
+      // console.log(err.message);
     }
   };
 
@@ -186,7 +186,7 @@ export class PlaylistsPage extends React.Component {
         history.push(`/project/${match.params.projectId}`);
       }
     } catch (e) {
-      console.log(e.message);
+      // console.log(e.message);
     }
   };
 
@@ -209,7 +209,7 @@ export class PlaylistsPage extends React.Component {
 
       history.push(`/project/${match.params.projectId}`);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -400,6 +400,8 @@ export class PlaylistsPage extends React.Component {
             )}
           </>
         )}
+
+        <Footer />
       </>
     );
   }
@@ -438,7 +440,6 @@ const mapDispatchToProps = (dispatch) => ({
   hideDeletePopup: () => dispatch(hideDeletePopupAction()),
   showCreateResourceModal: (id) => dispatch(showCreateResourceModalAction(id)),
   hideCreateResourceModal: () => dispatch(hideCreateResourceModalAction()),
-  previewResource: (id) => dispatch(previewResourceAction(id)),
   hidePreviewResourceModal: () => dispatch(hidePreviewResourceModalAction()),
   showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
   loadProjectPlaylists: (id) => dispatch(loadProjectPlaylistsAction(id)),

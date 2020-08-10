@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import Swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { ShareLMS } from 'store/actions/project';
@@ -23,7 +23,7 @@ function ShareLink(props) {
         tabIndex="-1"
         onClick={() => {
           if (allLms.shareVendors && allLms.shareVendors.length === 0) {
-            Swal({
+            Swal.fire({
               icon: 'info',
               // eslint-disable-next-line max-len
               title: "You don't have a Learning Management Systems set up for publishing. Please contact us to get this configured.",
@@ -31,9 +31,9 @@ function ShareLink(props) {
           }
         }}
       >
-        <FontAwesomeIcon icon="share" />
+        <FontAwesomeIcon icon="newspaper" />
         {' '}
-        Send To
+        Publish
       </a>
 
       <ul className="dropdown-menu check">

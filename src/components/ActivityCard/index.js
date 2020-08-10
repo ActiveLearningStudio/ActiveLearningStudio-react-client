@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import './style.scss';
 
 const ActivityCard = (props) => {
-  const { lti, activity, playlistId } = props;
+  const { activity, playlistId, lti } = props;
 
   return (
     <li>
@@ -18,26 +18,35 @@ const ActivityCard = (props) => {
       >
         <div
           className="playimg"
+          // style={{
+          //   backgroundImage: !!activity.metadata
+          //     ? "url(" + global.config.laravelAPIUrl + activity.metadata.thumbUrl + ")"
+          //     : "url(" + global.config.laravelAPIUrl + activity.thumbUrl + ")",
+          // }}
           style={{
-            backgroundImage: `url(${global.config.laravelAPIUrl}${activity.thumbUrl})`,
+            backgroundImage:
+              !!activity.thumbUrl && activity.thumbUrl.includes('pexels.com')
+                ? `url(${activity.thumbUrl})`
+                : `url(${global.config.laravelAPIUrl}${activity.thumbUrl})`,
           }}
         />
-
-        <div className="plydet">{activity.title}</div>
+        <div className="plydet">
+          {activity.metadata ? activity.metadata.title : activity.title}
+        </div>
       </Link>
     </li>
   );
 };
 
 ActivityCard.propTypes = {
-  lti: PropTypes.bool,
   activity: PropTypes.object.isRequired,
   playlistId: PropTypes.string,
+  lti: PropTypes.bool,
 };
 
 ActivityCard.defaultProps = {
-  lti: false,
   playlistId: '',
+  lti: false,
 };
 
 export default ActivityCard;

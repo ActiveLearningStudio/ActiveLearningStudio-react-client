@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 import {
   SHOW_CREATE_RESOURCE_MODAL,
@@ -57,7 +57,7 @@ export const loadResource = (resource, previous, next) => ({
 export const loadResourceAction = (resourceId) => async (dispatch) => {
   const { token } = JSON.parse(localStorage.getItem('auth'));
   const response = await axios.post(
-    '/api/load-resource',
+    '/api/loadresource',
     { resourceId },
     { headers: { Authorization: `Bearer ${token}` } },
   );
@@ -142,10 +142,19 @@ export const showBuildActivityAction = (
         `${global.config.laravelAPIUrl}/activity/${activityId}`,
       );
 
-      const { data } = response.data;
-      const lib = `${data.library_name} ${data.major_version}.${data.minor_version}`;
+      const lib = `${response.data.data.libraryName
+      } ${
+        response.data.data.majorVersion
+      }.${
+        response.data.data.minorVersion}`;
 
-      dispatch(showBuildActivity(lib, data.type, data.h5p));
+      dispatch(
+        showBuildActivity(
+          lib,
+          response.data.data.type,
+          response.data.data.h5p,
+        ),
+      );
     } else {
       dispatch(showBuildActivity(editor, editorType, ''));
     }
@@ -171,9 +180,11 @@ export const showDescribeActivityAction = (activity, activityId = null) => async
         subjectId: '',
         educationLevelId: '',
       };
+
       if (response.data.data.metadata != null) {
         metadata = response.data.data.metadata;
       }
+
       dispatch(showDescribeActivity(activity, metadata));
     } else {
       dispatch(showDescribeActivity(activity));
@@ -191,6 +202,64 @@ export const editResource = (playlistId, resource, editor, editorType) => ({
   editorType,
 });
 
+// resource shared
+
+export const resourceUnshared = (resourceId, resourceName) => {
+  const { token } = JSON.parse(localStorage.getItem('auth'));
+
+  axios
+    .post(
+      `${global.config.laravelAPIUrl}/remove-share-activity`,
+      { resourceId },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
+    .then((res) => {
+      if (res.data.status === 'success') {
+        Swal.fire({
+          title: `You stopped sharing <strong>"${resourceName}"</strong> ! `,
+          html: 'Please remember that anyone you have shared this activity with,'
+            + ' will no longer have access to its contents.',
+        });
+      }
+    });
+};
+
+// resource unshared
+
+export const resourceShared = (resourceId, resourceName) => {
+  const { token } = JSON.parse(localStorage.getItem('auth'));
+
+  axios
+    .post(
+      `${global.config.laravelAPIUrl}/share-activity`,
+      { resourceId },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
+    .then((res) => {
+      if (res.data.status === 'success') {
+        const protocol = `${window.location.href.split('/')[0]}//`;
+
+        Swal.fire({
+          html: `You can now share Activity <strong>"${resourceName}"</strong><br>
+                Anyone with the link below can access your activity:<br>
+                <br><a target="_blank" href="/shared/activity/${resourceId.trim()}
+                ">${protocol + window.location.host}/shared/activity/${resourceId.trim()}</a>
+              `,
+        });
+      }
+    });
+};
+
 export const editResourceAction = (
   playlistId,
   editor,
@@ -205,7 +274,7 @@ export const editResourceAction = (
       Authorization: `Bearer ${token}`,
     };
 
-    // h5peditorCopy to be taken from h5papi/storage/h5p/laravel-h5p/js/laravel-h5p.js
+    // h5pEditorCopy to be taken from h5papi/storage/h5p/laravel-h5p/js/laravel-h5p.js
     const data = {
       library: window.h5peditorCopy.getLibrary(),
       parameters: JSON.stringify(window.h5peditorCopy.getParams()),
@@ -282,7 +351,7 @@ export const createResourceAction = (
       const insertedResource = await axios.post(
         `${global.config.laravelAPIUrl}/activity`,
         {
-          mysqlId: resource.id,
+          mysqlid: resource.id,
           playlistId,
           metadata,
           action: 'create',
@@ -293,7 +362,7 @@ export const createResourceAction = (
       );
 
       resource.id = insertedResource.data.data._id;
-      resource.mysqlId = insertedResource.data.data.mysqlId;
+      resource.mysqlid = insertedResource.data.data.mysqlid;
 
       dispatch(createResource(playlistId, resource, editor, editorType));
     } else {
@@ -335,7 +404,7 @@ export const createResourceByH5PUploadAction = (
       const responseActivity = await axios.post(
         `${global.config.laravelAPIUrl}/activity`,
         {
-          mysqlId: dataUpload.id,
+          mysqlid: dataUpload.id,
           playlistId,
           metadata,
           action: 'create',
@@ -349,11 +418,11 @@ export const createResourceByH5PUploadAction = (
       );
       const resource = { ...responseActivity.data.data };
       resource.id = responseActivity.data.data._id;
-      resource.mysqlId = responseActivity.data.data.mysqlId;
+      resource.mysqlid = responseActivity.data.data.mysqlid;
 
       dispatch(createResource(playlistId, resource, editor, editorType));
     } else {
-      throw new Error();
+      throw new Error('Error occurred while creating resource');
     }
   } catch (e) {
     throw new Error(e);
@@ -386,6 +455,7 @@ export const hidePreviewResourceModalAction = () => async (dispatch) => {
 };
 
 // runs delete resource ajax
+
 export const deleteResource = (resourceId) => ({
   type: DELETE_RESOURCE,
   resourceId,
@@ -393,10 +463,9 @@ export const deleteResource = (resourceId) => ({
 
 export const deleteResourceAction = (resourceId) => async (dispatch) => {
   try {
-    const response = await axios.delete(
-      `/api/activity/${resourceId}`,
-      { resourceId },
-    );
+    const response = await axios.delete(`/api/activity/${resourceId}`, {
+      resourceId,
+    });
 
     if (response.data.status === 'success') {
       dispatch(deleteResource(resourceId));
@@ -407,6 +476,7 @@ export const deleteResourceAction = (resourceId) => async (dispatch) => {
 };
 
 // handles the actions when some activity type is switched inside activity type wizard
+
 export const onChangeActivityType = (activityTypeId) => ({
   type: SELECT_ACTIVITY_TYPE,
   activityTypeId,
@@ -422,6 +492,7 @@ export const onChangeActivityTypeAction = (activityTypeId) => (dispatch) => {
 };
 
 // handles the actions when some activity switched inside select activity wizard
+
 export const onChangeActivity = (activity) => ({
   type: SELECT_ACTIVITY,
   activity,
@@ -436,6 +507,7 @@ export const onChangeActivityAction = (activity) => (dispatch) => {
 };
 
 // Metadata saving inside state when metadata form is submitted
+
 export const onSubmitDescribeActivity = (metadata, activityId) => ({
   type: DESCRIBE_ACTIVITY,
   metadata,
@@ -451,6 +523,7 @@ export const onSubmitDescribeActivityAction = (metadata, activityId = null) => (
 };
 
 // uploads the thumbnail of resource
+
 export const uploadResourceThumbnail = (thumbUrl) => ({
   type: UPLOAD_RESOURCE_THUMBNAIL,
   thumbUrl,
@@ -470,14 +543,11 @@ export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
       onUploadProgress: (progressEvent) => {
         dispatch(
           resourceThumbnailProgress(
-            `Uploaded progress: ${
-              Math.round((progressEvent.loaded / progressEvent.total) * 100)
-            }%`,
+            `Uploaded progress: ${Math.round((progressEvent.loaded / progressEvent.total) * 100)}%`,
           ),
         );
       },
     };
-
     return axios
       .post(
         `${global.config.laravelAPIUrl}/post-upload-image`,
@@ -490,57 +560,4 @@ export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
   } catch (e) {
     throw new Error(e);
   }
-};
-
-export const resourceUnshared = (resourceId, resourceName) => {
-  const { token } = JSON.parse(localStorage.getItem('auth'));
-
-  axios
-    .post(
-      `${global.config.laravelAPIUrl}/remove-share-activity`,
-      { resourceId },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    )
-    .then((res) => {
-      if (res.data.status === 'success') {
-        Swal({
-          title: `You stopped sharing <strong>"${resourceName}"</strong> ! `,
-          html: 'Please remember that anyone you have shared this activity with,'
-            + ' will no longer have access to its contents.',
-        });
-      }
-    });
-};
-
-export const resourceShared = (resourceId, resourceName) => {
-  const { token } = JSON.parse(localStorage.getItem('auth'));
-
-  axios
-    .post(
-      `${global.config.laravelAPIUrl}/share-activity`,
-      { resourceId },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    )
-    .then((res) => {
-      if (res.data.status === 'success') {
-        const protocol = `${window.location.href.split('/')[0]}//`;
-
-        Swal({
-          html: `Your can now share project <strong>"${resourceName}"</strong><br>
-                Anyone with the link below can access your activity:<br>
-                <br><a target="_blank" href="/shared/activity/${resourceId.trim()}
-                ">${protocol + window.location.host}/shared/activity/${resourceId.trim()}</a>`,
-        });
-      }
-    });
 };

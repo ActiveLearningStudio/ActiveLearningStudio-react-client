@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
-import Swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import logo from 'assets/images/logo.svg';
@@ -145,7 +145,7 @@ class PlaylistCard extends React.Component {
                       <a
                         className="dropdown-item"
                         onClick={() => {
-                          Swal({
+                          Swal.fire({
                             title: 'STAY TUNED!',
                             text: 'COMING SOON',
                             imageUrl: logo,

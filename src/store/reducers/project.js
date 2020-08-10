@@ -1,3 +1,4 @@
+import { prepareLmsCourse } from 'logic/lmsCourse';
 import {
   SHOW_CREATE_PROJECT_SUBMENU,
   SHOW_CREATE_PROJECT_MODAL,
@@ -10,6 +11,7 @@ import {
   SHOW_USER_SUB_MENU,
   CLOSE_MENU,
   LOAD_MY_PROJECTS_SELECTED,
+  SET_LMS_COURSE,
 } from '../actionTypes';
 
 const defaultProgramState = () => {
@@ -18,16 +20,18 @@ const defaultProgramState = () => {
       projects: JSON.parse(localStorage.getItem('projects')),
     };
   }
+
   return {
     projects: [],
     selectedProject: {
       _id: null,
     },
-    thumb_url: null,
+    thumbUrl: null,
     showCreateProjectSubmenu: false,
     showCreateProjectPopup: false,
     showUserSubMenu: false,
     projectSelect: {},
+    lmsCourse: null,
   };
 };
 
@@ -66,14 +70,14 @@ const projectReducer = (state = defaultProgramState(), action) => {
         selectedProject: {
           _id: null,
         },
-        thumb_url: null,
+        thumbUrl: null,
       };
 
     case CREATE_PROJECT:
       return {
         ...state,
         projects: [...state.projects, action.projectData],
-        thumb_url: null,
+        thumbUrl: null,
       };
 
     case LOAD_MY_PROJECTS:
@@ -92,7 +96,7 @@ const projectReducer = (state = defaultProgramState(), action) => {
       return {
         ...state,
         selectedProject: action.project,
-        thumb_url: action.project.thumb_url,
+        thumbUrl: action.project.thumbUrl,
       };
 
     case DELETE_PROJECT:
@@ -105,7 +109,7 @@ const projectReducer = (state = defaultProgramState(), action) => {
     case UPLOAD_PROJECT_THUMBNAIL:
       return {
         ...state,
-        thumb_url: action.thumb_url,
+        thumbUrl: action.thumbUrl,
         progress: null,
       };
 
@@ -113,6 +117,12 @@ const projectReducer = (state = defaultProgramState(), action) => {
       return {
         ...state,
         progress: action.progress,
+      };
+
+    case SET_LMS_COURSE:
+      return {
+        ...state,
+        lmsCourse: prepareLmsCourse(action, state),
       };
 
     default:

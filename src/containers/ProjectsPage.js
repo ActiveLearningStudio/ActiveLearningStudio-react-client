@@ -13,9 +13,11 @@ import {
   createProjectAction,
   loadMyProjectsAction,
   shareProjectAction,
+  LoadLMS,
 } from 'store/actions/project';
 import { logoutAction } from 'store/actions/auth';
 import Header from 'components/Header';
+import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
 import ProjectCard from 'components/ProjectCard';
 import DeletePopup from 'components/DeletePopup';
@@ -33,12 +35,15 @@ export class ProjectsPage extends React.Component {
       loadProject,
       loadMyProjects,
       logout,
+      loadLMS,
     } = this.props;
 
     const termsTrue = JSON.parse(localStorage.getItem('auth'));
     if (!termsTrue.subscribed) {
       logout();
     }
+
+    loadLMS();
 
     // scroll to top
     window.scrollTo(0, 0);
@@ -66,11 +71,11 @@ export class ProjectsPage extends React.Component {
     }
   };
 
-  // TODO: need to check confirm
-  handleDeleteProject = (/* projectId */) => {
-    // if (confirm('Are you Sure?')) {
-    //   this.props.deleteProject(projectId);
-    // }
+  handleDeleteProject = (projectId) => {
+    const { deleteProject } = this.props;
+    if (window.confirm('Are you Sure?')) {
+      deleteProject(projectId);
+    }
   };
 
   handleShareProject = (projectId) => {
@@ -159,6 +164,8 @@ export class ProjectsPage extends React.Component {
             />
           )}
         </ReactPlaceholder>
+
+        <Footer />
       </>
     );
   }
@@ -174,10 +181,12 @@ ProjectsPage.propTypes = {
   showEditProjectPopup: PropTypes.bool.isRequired,
   showCreateProjectModal: PropTypes.bool.isRequired,
   showDeletePopup: PropTypes.func.isRequired,
+  deleteProject: PropTypes.func.isRequired,
   loadProject: PropTypes.func.isRequired,
   loadMyProjects: PropTypes.func.isRequired,
   shareProject: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
+  loadLMS: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -190,6 +199,7 @@ const mapDispatchToProps = (dispatch) => ({
   loadProject: (id) => dispatch(loadProjectAction(id)),
   shareProject: (id) => dispatch(shareProjectAction(id)),
   logout: () => dispatch(logoutAction()),
+  loadLMS: () => dispatch(LoadLMS()),
 });
 
 const mapStateToProps = (state) => ({
