@@ -4172,7 +4172,7 @@ a:hover {
   // width: 100%;
 
   .leftdata {
-    width: 80%
+    width: 100%
   }
 
   align-items: center;
@@ -4180,6 +4180,11 @@ a:hover {
 }
 
 .upload-thumbnail.check {
+  margin-bottom: 50px;
+
+  .thumb {
+    max-width: 100%;
+  }
 
   label {
     display: none;
@@ -4188,24 +4193,53 @@ a:hover {
   .upload_placeholder {
 
     display: flex;
-    width: 400px;
+    width: 100%;
+    margin-top: 20px;
+
+
     cursor: pointer;
+
+    .imgbox {
+
+      height: 200px;
+      border: 1px solid #ccc;
+
+
+      img {
+        max-width: 100%;
+        max-height: 100%
+      }
+    }
+
+    .button-flex {
+      margin-left: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
 
 
 
     .gallery,
     .pexel {
+      width: 300px;
+      height: 89px;
       display: flex;
-      height: 140px;
-      border: 1px solid #ccc;
-      justify-content: center;
+      background: #00000000 0% 0% no-repeat padding-box;
+      border: 1px solid #D9DFE8;
+      border-radius: 1px;
+      opacity: 1;
+
       align-items: center;
-      width: 100%;
-      flex-direction: column;
+      padding-left: 20px;
+
+
 
       p {
-        font-weight: 300;
-        font-size: 14px;
+        font-weight: 400;
+        font-size: 16px;
+
+        padding-left: 10px;
 
         color: #084892;
       }
@@ -4312,5 +4346,22 @@ a:hover {
 .menuusersettings .dropdown-menu.user-dropdown {
 
   top: 18px !important;
+
+
+}
+
+.new-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.readmore-pexel {
+  background-color: #084892;
+  color: #fff;
+  cursor: pointer;
+  padding: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  margin-top: 10px;
 
 }

@@ -7,7 +7,8 @@ import DropdownList from "react-widgets/lib/DropdownList";
 import "react-widgets/dist/css/react-widgets.css";
 import { uploadResourceThumbnailAction } from "../../../actions/resource";
 import PexelsAPI from "../../models/pexels.js";
-
+import bgimg from "../../../images/thumb-des.png";
+import computer from "../../../images/computer.svg";
 import {
   BrowserRouter as Router,
   Switch,
@@ -97,8 +98,8 @@ const onSubmit = async (values, dispatch, props) => {
   try {
     //image validation
     if (!props.resource.newResource.metadata.thumb_url) {
-      imageValidation = "* Required";
-      return false;
+      //  imageValidation = "* Required";
+      //  return false;
     }
     props.onSubmitDescribeActivityAction(values);
     props.showBuildActivityAction(
@@ -159,9 +160,66 @@ let ResourceDescribeActivity = (props) => {
                     autoComplete="off"
                   >
                     <div className="flex-form-imag-upload">
+                      <div className="leftdata">
+                        <div className="row">
+                          <div className="col-md-12">
+                            <div className="meta-title">
+                              <Field
+                                name="metaTitle"
+                                component={renderMetaTitleInput}
+                                type="text"
+                                label="Title"
+                                validate={[required]}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-4">
+                            <div className="meta-subjects">
+                              <label>
+                                <h2>Subject</h2>
+                              </label>
+                              <Field
+                                name="metaSubject"
+                                component={renderMetaSubjects}
+                                data={subjects}
+                                valueField="value"
+                                textField="subject"
+                              />
+                            </div>
+                          </div>
+                          {/* <div className="col-md-4">
+                            <div className="meta-education-levels">
+                              <label>
+                                <h2>Education Level</h2>
+                              </label>
+                              <Field
+                                name="metaEducationLevels"
+                                component={renderMetaEducationLevelInput}
+                                data={educationLevels}
+                                valueField="value"
+                                textField="name"
+                              />
+                            </div>
+                          </div> */}
+                          <div className="col-md-4">
+                            <div className="meta-education-levels">
+                              <label>
+                                <h2>Grade Level</h2>
+                              </label>
+                              <Field
+                                name="metaEducationLevels"
+                                component={renderMetaEducationLevelInput}
+                                data={educationLevels}
+                                valueField="value"
+                                textField="name"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                       <div className="upload-thumbnail check">
-                        <h2>Upload thumbnail</h2>
-
                         <label>
                           <input
                             ref={openfile}
@@ -174,43 +232,46 @@ let ResourceDescribeActivity = (props) => {
                         <span className="validation-error">
                           {imageValidation}
                         </span>
-
                         {props.resource.progress}
 
-                        {props.resource.newResource.metadata.thumb_url ? (
-                          <div className="thumb-display">
-                            <div
-                              className="success"
-                              style={{
-                                color: "green",
-                                marginBottom: "20px",
-                                fontSize: "20px",
-                              }}
-                            >
-                              Image Uploaded:
+                        <div className="upload_placeholder">
+                          {props.resource.newResource.metadata.thumb_url ? (
+                            <div className="thumb-display">
+                              <div
+                                className="success"
+                                style={{
+                                  color: "green",
+                                  marginBottom: "20px",
+                                  fontSize: "20px",
+                                }}
+                              >
+                                Image Uploaded:
+                              </div>
+                              <div className="thumb">
+                                <img
+                                  src={
+                                    props.resource.newResource.metadata.thumb_url.includes(
+                                      "pexel"
+                                    )
+                                      ? props.resource.newResource.metadata
+                                          .thumb_url
+                                      : global.config.laravelAPIUrl +
+                                        props.resource.newResource.metadata
+                                          .thumb_url
+                                  }
+                                />
+                              </div>
                             </div>
-                            <div
-                              className="thumb"
-                              onClick={() => {
-                                openfile.current.click();
-                              }}
-                            >
-                              <img
-                                src={
-                                  props.resource.newResource.metadata.thumb_url.includes(
-                                    "pexel"
-                                  )
-                                    ? props.resource.newResource.metadata
-                                        .thumb_url
-                                    : global.config.laravelAPIUrl +
-                                      props.resource.newResource.metadata
-                                        .thumb_url
-                                }
-                              />
+                          ) : (
+                            <div className="new-box">
+                              <h2>Default Selected thumbnail</h2>
+                              <div class="imgbox">
+                                <img src={bgimg} alt="" />
+                              </div>
                             </div>
-                          </div>
-                        ) : (
-                          <div className="upload_placeholder">
+                          )}
+                          <div className="button-flex">
+                            <h2>Change thumbnail from below options</h2>
                             <div
                               onClick={() => setModalShow(true)}
                               className=" pexel"
@@ -238,54 +299,8 @@ let ResourceDescribeActivity = (props) => {
                               }}
                               className=" gallery"
                             >
-                              <i className="fa fa-image" />
-                              <p>Select from Computer Gallery</p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="leftdata">
-                        <div className="row">
-                          <div className="col-md-12">
-                            <div className="meta-title">
-                              <Field
-                                name="metaTitle"
-                                component={renderMetaTitleInput}
-                                type="text"
-                                label="Title"
-                                validate={[required]}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-md-6">
-                            <div className="meta-subjects">
-                              <label>
-                                <h2>Subject</h2>
-                              </label>
-                              <Field
-                                name="metaSubject"
-                                component={renderMetaSubjects}
-                                data={subjects}
-                                valueField="value"
-                                textField="subject"
-                              />
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="meta-education-levels">
-                              <label>
-                                <h2>Education Level</h2>
-                              </label>
-                              <Field
-                                name="metaEducationLevels"
-                                component={renderMetaEducationLevelInput}
-                                data={educationLevels}
-                                valueField="value"
-                                textField="name"
-                              />
+                              <img src={computer} alt="" />
+                              <p>Upload a Photo From your computer</p>
                             </div>
                           </div>
                         </div>

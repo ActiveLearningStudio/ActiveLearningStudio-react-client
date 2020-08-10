@@ -3,6 +3,8 @@ import { Modal } from "react-bootstrap";
 import dotsloader from "../../images/dotsloader.gif";
 import { uploadResourceThumbnail, editResource } from "../../actions/resource";
 import { useDispatch } from "react-redux";
+import axios from "axios";
+import { reducer } from "redux-form";
 const PexelsAPI = require("pexels-api-wrapper");
 
 var pexelsClient = new PexelsAPI(
@@ -14,6 +16,7 @@ export default function Pexels(props) {
   const [pixeldata, setpixels] = useState([]);
   const [loader, setLoader] = useState(true);
   const [searchValue, setSearchValue] = useState();
+  const [nextAPI, setNextAPi] = useState("");
 
   useEffect(() => {
     //  !!props.resourceName && setSearchValue(props.searchName);
@@ -21,13 +24,15 @@ export default function Pexels(props) {
       .search(props.searchName, 10, 4)
       .then(function (result) {
         setLoader(false);
-        console.log(result);
+
         const allphotos =
           !!result.photos &&
           result.photos.map((data) => {
             return data.src.tiny;
           });
+        console.log();
         setpixels(allphotos);
+        setNextAPi(result.next_page);
       })
       .catch(function (e) {
         console.err(e);
@@ -69,6 +74,7 @@ export default function Pexels(props) {
                           return data.src.tiny;
                         });
                       setpixels(allphotos);
+                      setNextAPi(result.next_page);
                     })
                     .catch(function (e) {});
                 }
@@ -90,18 +96,44 @@ export default function Pexels(props) {
           ) : pixeldata.length == 0 ? (
             "no result found. You can still search other thumbnails"
           ) : (
-            pixeldata.map((images) => {
-              return (
-                <img
-                  src={images}
-                  alt=""
+            <>
+              {pixeldata.map((images) => {
+                return (
+                  <img
+                    src={images}
+                    alt=""
+                    onClick={() => {
+                      dispatch(uploadResourceThumbnail(images));
+                      props.onHide();
+                    }}
+                  />
+                );
+              })}
+              {!!nextAPI && (
+                <h6
+                  className="readmore-pexel"
                   onClick={() => {
-                    dispatch(uploadResourceThumbnail(images));
-                    props.onHide();
+                    axios
+                      .get(nextAPI, {
+                        headers: {
+                          Authorization:
+                            "563492ad6f91700001000001155d7b75f5424ea694b81ce9f867dddf",
+                        },
+                      })
+                      .then((res) => {
+                        var moreData = res.data.photos.map((data) => {
+                          return data.src.tiny;
+                        });
+                        console.log(moreData);
+                        setpixels(pixeldata.concat(moreData));
+                        setNextAPi(res.data.next_page);
+                      });
                   }}
-                />
-              );
-            })
+                >
+                  Load more
+                </h6>
+              )}
+            </>
           )}
         </div>
       </Modal.Body>
