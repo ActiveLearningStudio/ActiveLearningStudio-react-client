@@ -38,10 +38,13 @@ const ProjectCard = (props) => {
                 className="project-thumb"
                 style={{
                   backgroundImage:
-                    "url(" +
-                    global.config.laravelAPIUrl +
-                    props.project.thumb_url +
-                    ")",
+                    !!props.project.thumb_url &&
+                    props.project.thumb_url.includes("pexels.com")
+                      ? "url(" + props.project.thumb_url + ")"
+                      : "url(" +
+                        global.config.laravelAPIUrl +
+                        props.project.thumb_url +
+                        ")",
                 }}
               ></div>
             ) : null}

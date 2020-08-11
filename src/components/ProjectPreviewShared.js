@@ -123,7 +123,11 @@ export default function ProjectPreviewShared(props) {
                       <img
                         alt="thumbnail"
                         src={
-                          global.config.laravelAPIUrl + currentProject.thumb_url
+                          !!currentProject.thumb_url &&
+                          currentProject.thumb_url.includes("pexels.com")
+                            ? currentProject.thumb_url
+                            : global.config.laravelAPIUrl +
+                              currentProject.thumb_url
                         }
                       ></img>
                     </Link>

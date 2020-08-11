@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import dotsloader from "../../images/dotsloader.gif";
-import { uploadResourceThumbnail, editResource } from "../../actions/resource";
+import { uploadResourceThumbnail } from "../../actions/resource";
+import { uploadProjectThumbnail } from "../../actions/project";
+
 import { useDispatch } from "react-redux";
+
 import axios from "axios";
 import { reducer } from "redux-form";
 const PexelsAPI = require("pexels-api-wrapper");
 
-var pexelsClient = new PexelsAPI(
-  "563492ad6f91700001000001155d7b75f5424ea694b81ce9f867dddf"
-);
+var pexelsClient = new PexelsAPI(process.env.REACT_APP_PEXEL_API);
 
 export default function Pexels(props) {
   const dispatch = useDispatch();
@@ -20,8 +21,9 @@ export default function Pexels(props) {
 
   useEffect(() => {
     //  !!props.resourceName && setSearchValue(props.searchName);
+
     pexelsClient
-      .search(props.searchName, 10, 4)
+      .search(!!props.searchName ? props.searchName : "abstract", 10, 4)
       .then(function (result) {
         setLoader(false);
 
@@ -34,9 +36,7 @@ export default function Pexels(props) {
         setpixels(allphotos);
         setNextAPi(result.next_page);
       })
-      .catch(function (e) {
-        console.err(e);
-      });
+      .catch(function (e) {});
   }, []);
   return (
     <Modal
@@ -64,19 +64,20 @@ export default function Pexels(props) {
                 if (event.key === "Enter") {
                   setLoader(true);
 
-                  pexelsClient
-                    .search(searchValue, 10, 1)
-                    .then(function (result) {
-                      setLoader(false);
-                      const allphotos =
-                        !!result.photos &&
-                        result.photos.map((data) => {
-                          return data.src.tiny;
-                        });
-                      setpixels(allphotos);
-                      setNextAPi(result.next_page);
-                    })
-                    .catch(function (e) {});
+                  !!pexelsClient &&
+                    pexelsClient
+                      .search(searchValue, 10, 1)
+                      .then(function (result) {
+                        setLoader(false);
+                        const allphotos =
+                          !!result.photos &&
+                          result.photos.map((data) => {
+                            return data.src.tiny;
+                          });
+                        setpixels(allphotos);
+                        setNextAPi(result.next_page);
+                      })
+                      .catch(function (e) {});
                 }
               }}
             />
@@ -103,7 +104,9 @@ export default function Pexels(props) {
                     src={images}
                     alt=""
                     onClick={() => {
-                      dispatch(uploadResourceThumbnail(images));
+                      !!props.project
+                        ? dispatch(uploadProjectThumbnail(images))
+                        : dispatch(uploadResourceThumbnail(images));
                       props.onHide();
                     }}
                   />
@@ -116,8 +119,7 @@ export default function Pexels(props) {
                     axios
                       .get(nextAPI, {
                         headers: {
-                          Authorization:
-                            "563492ad6f91700001000001155d7b75f5424ea694b81ce9f867dddf",
+                          Authorization: process.env.REACT_APP_PEXEL_API,
                         },
                       })
                       .then((res) => {

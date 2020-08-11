@@ -5,10 +5,14 @@ import { Field, reduxForm, formValueSelector } from "redux-form";
 import styled, { keyframes } from "styled-components";
 import DropdownList from "react-widgets/lib/DropdownList";
 import "react-widgets/dist/css/react-widgets.css";
-import { uploadResourceThumbnailAction } from "../../../actions/resource";
+import {
+  uploadResourceThumbnailAction,
+  uploadResourceThumbnail,
+} from "../../../actions/resource";
 import PexelsAPI from "../../models/pexels.js";
 import bgimg from "../../../images/thumb-des.png";
 import computer from "../../../images/computer.svg";
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -100,6 +104,10 @@ const onSubmit = async (values, dispatch, props) => {
     if (!props.resource.newResource.metadata.thumb_url) {
       //  imageValidation = "* Required";
       //  return false;
+      //
+      props.uploadResourceThumbnail(
+        "https://images.pexels.com/photos/3694708/pexels-photo-3694708.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280"
+      );
     }
     props.onSubmitDescribeActivityAction(values);
     props.showBuildActivityAction(
@@ -131,6 +139,7 @@ let ResourceDescribeActivity = (props) => {
     reset,
     submitting,
   } = props;
+  console.log(bgimg);
 
   return (
     <div className="row">
@@ -247,7 +256,7 @@ let ResourceDescribeActivity = (props) => {
                               >
                                 Image Uploaded:
                               </div>
-                              <div className="thumb">
+                              <div className="thumb ">
                                 <img
                                   src={
                                     props.resource.newResource.metadata.thumb_url.includes(
@@ -266,7 +275,12 @@ let ResourceDescribeActivity = (props) => {
                             <div className="new-box">
                               <h2>Default Selected thumbnail</h2>
                               <div class="imgbox">
-                                <img src={bgimg} alt="" />
+                                <img
+                                  src={
+                                    "https://images.pexels.com/photos/3694708/pexels-photo-3694708.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280"
+                                  }
+                                  alt=""
+                                />
                               </div>
                             </div>
                           )}
@@ -304,6 +318,11 @@ let ResourceDescribeActivity = (props) => {
                             </div>
                           </div>
                         </div>
+                        <p className="descliamer">
+                          <br />
+                          Project Image dimension should be{" "}
+                          <strong>290px width and 200px height.</strong>
+                        </p>
                       </div>
                     </div>
                     <div className="row">
@@ -360,6 +379,9 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(uploadResourceThumbnailAction(formData)),
   goBacktoActivity: () => {
     dispatch(showSelectActivity());
+  },
+  uploadResourceThumbnail: (img) => {
+    dispatch(uploadResourceThumbnail(img));
   },
 });
 

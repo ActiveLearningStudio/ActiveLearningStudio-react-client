@@ -4180,7 +4180,7 @@ a:hover {
 }
 
 .upload-thumbnail.check {
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 
   .thumb {
     max-width: 100%;
@@ -4196,6 +4196,7 @@ a:hover {
     width: 100%;
     margin-top: 20px;
 
+    .thumb-display {}
 
     cursor: pointer;
 
@@ -4364,4 +4365,19 @@ a:hover {
   text-align: center;
   margin-top: 10px;
 
+}
+
+.upload_perce {
+  display: block;
+}
+
+.create-program-wrapper .create-playlist-form .upload-thumbnail .thumb-display {
+  width: auto !important;
+  height: auto !important;
+
+}
+
+.describe-activity-wrapper .meta-form .upload-thumbnail .thumb-display {
+  width: auto !important;
+  height: auto !important;
 }
