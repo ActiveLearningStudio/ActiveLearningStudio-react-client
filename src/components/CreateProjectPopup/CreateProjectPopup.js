@@ -208,7 +208,8 @@ let CreateProjectPopup = (props) => {
                     Image Uploaded:
                   </div>
                   <div className="imgbox">
-                    {props.project.thumb_url.includes("pexels.com") ? (
+                    {!!props.project.thumb_url &&
+                    props.project.thumb_url.includes("pexels.com") ? (
                       <img src={props.project.thumb_url} />
                     ) : (
                       <img

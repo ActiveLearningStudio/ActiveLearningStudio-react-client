@@ -4183,7 +4183,7 @@ a:hover {
   margin-bottom: 20px;
 
   .thumb {
-    max-width: 100%;
+    max-width: 280px;
   }
 
   label {
@@ -4204,10 +4204,11 @@ a:hover {
 
       height: 200px;
       border: 1px solid #ccc;
+      max-width: 280px;
 
 
       img {
-        max-width: 100%;
+        width: 100%;
         max-height: 100%
       }
     }
@@ -4274,11 +4275,39 @@ a:hover {
   min-height: 300px;
   overflow-y: auto;
 
-  img {
-    width: 32%;
+  .watermark {
+    width: 32.5%;
     margin-bottom: 10px;
     cursor: pointer;
+    position: relative;
 
+    img {
+      width: 100%;
+    }
+
+    a {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      color: #fff;
+      display: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+
+    &:hover {
+      a {
+        display: block;
+
+      }
+
+      img {
+        filter: brightness(0.7);
+      }
+    }
 
   }
 

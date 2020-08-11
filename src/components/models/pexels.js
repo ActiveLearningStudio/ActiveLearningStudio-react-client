@@ -30,7 +30,7 @@ export default function Pexels(props) {
         const allphotos =
           !!result.photos &&
           result.photos.map((data) => {
-            return data.src.tiny;
+            return data;
           });
         console.log();
         setpixels(allphotos);
@@ -72,7 +72,7 @@ export default function Pexels(props) {
                         const allphotos =
                           !!result.photos &&
                           result.photos.map((data) => {
-                            return data.src.tiny;
+                            return data;
                           });
                         setpixels(allphotos);
                         setNextAPi(result.next_page);
@@ -100,16 +100,22 @@ export default function Pexels(props) {
             <>
               {pixeldata.map((images) => {
                 return (
-                  <img
-                    src={images}
-                    alt=""
-                    onClick={() => {
-                      !!props.project
-                        ? dispatch(uploadProjectThumbnail(images))
-                        : dispatch(uploadResourceThumbnail(images));
-                      props.onHide();
-                    }}
-                  />
+                  <div className="watermark">
+                    <img
+                      src={images.src.tiny}
+                      alt=""
+                      onClick={() => {
+                        !!props.project
+                          ? dispatch(uploadProjectThumbnail(images.src.tiny))
+                          : dispatch(uploadResourceThumbnail(images.src.tiny));
+                        props.onHide();
+                      }}
+                    />
+                    <a href={images.url} target="_blank">
+                      {" "}
+                      {images.photographer}/Pexels
+                    </a>
+                  </div>
                 );
               })}
               {!!nextAPI && (
@@ -124,7 +130,7 @@ export default function Pexels(props) {
                       })
                       .then((res) => {
                         var moreData = res.data.photos.map((data) => {
-                          return data.src.tiny;
+                          return data;
                         });
                         console.log(moreData);
                         setpixels(pixeldata.concat(moreData));
