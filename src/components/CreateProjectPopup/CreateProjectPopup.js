@@ -317,7 +317,6 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(updateProjectAction(projectid, name, description, thumb_url)),
   uploadProjectThumbnailAction: (formData) =>
     dispatch(uploadProjectThumbnailAction(formData)),
-  uploadProjectThumbnail: (img) => dispatch(uploadProjectThumbnail(img)),
 });
 
 const mapStateToProps = (state) => {
