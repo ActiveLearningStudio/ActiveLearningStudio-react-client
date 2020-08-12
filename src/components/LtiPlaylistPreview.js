@@ -407,12 +407,12 @@ export class LtiPlaylistPreview extends React.Component {
     return (
       <section className="main-page-content preview">
         <div className="container-flex-upper">
-          <div className="project-title">
+          {/* <div className="project-title">
             <img src={projecticon} alt="" />
             {this.props.showlti
               ? "Playlist :" + playlist.title
               : "Project :" + playlist.project.name}
-          </div>
+          </div> */}
           {/* <Link
             to={"/project/" + this.props.playlist.selectedPlaylist.project._id}
           >
