@@ -397,6 +397,39 @@ export const loadMyProjectsAction = () => {
   };
 };
 
+export const loadMyProjectsltiAction = (lms_url, lti_client_id) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: PAGE_LOADING,
+      });
+      const response = await axios.post(
+        global.config.laravelAPIUrl + "/go/lms/projects",
+        {
+          lms_url: lms_url,
+
+          lti_client_id: lti_client_id,
+        }
+      );
+
+      if (response.data.status == "success") {
+        let projects = [];
+        projects = response.data.data.projects;
+
+        dispatch(loadMyProjects(projects));
+        dispatch({
+          type: PAGE_LOADING_COMPLETE,
+        });
+      }
+    } catch (e) {
+      dispatch({
+        type: PAGE_LOADING_COMPLETE,
+      });
+      throw new Error(e);
+    }
+  };
+};
+
 //load project preview
 
 export const loadMyProjectsActionPreview = (projectId) => {

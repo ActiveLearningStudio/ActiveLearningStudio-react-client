@@ -23,6 +23,8 @@ const PreviewPageShared = loadable(() =>
   import("../containers/PreviewPageShared")
 );
 const registration = loadable(() => import("../containers/Registration"));
+const Lticonetnt = loadable(() => import("../containers/Lticonetnt"));
+
 const AppRouter = () => {
   useEffect(() => {
     ReactGA.pageview(window.location.pathname);
@@ -69,6 +71,12 @@ const AppRouter = () => {
         <Route
           path="/shared/resource/:activityid"
           component={Ltipreviewpage}
+          exact
+        />
+
+        <Route
+          path="/lti/content/:lms_url/:lti_client_id/:redirect_url"
+          component={Lticonetnt}
           exact
         />
 
