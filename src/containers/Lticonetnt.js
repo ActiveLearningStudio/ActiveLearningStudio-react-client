@@ -21,7 +21,7 @@ export default function LTIProjectShared(props) {
   });
   useEffect(() => {
     dispatch(
-      loadMyProjectsltiAction(
+      loadMyProjectsAction(
         decodeURIComponent(props.match.params.lms_url),
         decodeURIComponent(props.match.params.lti_client_id)
       )
@@ -56,12 +56,27 @@ export default function LTIProjectShared(props) {
                         // setActivePlaylist();
                       }}
                     >
-                      {activeProject === counter_top + 1 ? (
-                        <i className="fa fa-check-square" aria-hidden="true" />
-                      ) : (
-                        <i className="fa fa-square" aria-hidden="true" />
-                      )}
-                      {data.name}
+                      <div className="flex-bar">
+                        <div>
+                          {/* {activeProject === counter_top + 1 ? (
+                            <i
+                              className="fa fa-check-square"
+                              aria-hidden="true"
+                            />
+                          ) : (
+                            <i className="fa fa-square" aria-hidden="true" />
+                          )} */}
+                          {data.name}
+                        </div>
+                        {activeProject === counter_top + 1 ? (
+                          <i className="fa fa-chevron-up" aria-hidden="true" />
+                        ) : (
+                          <i
+                            className="fa fa-chevron-down"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </div>
                     </span>
                   </Accordion.Toggle>
                 </Card.Header>
@@ -85,42 +100,55 @@ export default function LTIProjectShared(props) {
                                         counter_playlist + counter_top + 1
                                       ) {
                                         setActivePlaylist();
-                                        setactiveactivitydefault(true);
+                                        // setactiveactivitydefault(true);
                                         setformdata({});
                                       } else {
-                                        setActivePlaylist(
-                                          counter_playlist + counter_top + 1
-                                        );
+                                        !activeactivity &&
+                                          setActivePlaylist(
+                                            counter_playlist + counter_top + 1
+                                          );
                                         setactiveactivity();
-                                        setactiveactivitydefault(true);
+                                        // setactiveactivitydefault(true);
                                         setformdata({
                                           name: data2.title,
                                           _id: data2._id,
                                           entity: "playlist",
                                         });
-                                        swal.fire({
-                                          text:
-                                            "By default all activities are slected from current playlist. If you want to select any specific activity, kindly select from below.",
-                                        });
                                       }
                                     }}
                                   >
-                                    <span>
-                                      {" "}
+                                    <div className="flex-bar">
+                                      <div>
+                                        <span>
+                                          {" "}
+                                          {activePlaylist ===
+                                          counter_playlist + counter_top + 1 ? (
+                                            <i
+                                              className="fa fa-stop-circle-o"
+                                              aria-hidden="true"
+                                            />
+                                          ) : (
+                                            <i
+                                              className="fa fa-circle-o"
+                                              aria-hidden="true"
+                                            />
+                                          )}
+                                          {data2.title}
+                                        </span>
+                                      </div>
                                       {activePlaylist ===
                                       counter_playlist + counter_top + 1 ? (
                                         <i
-                                          className="fa fa-check-square"
+                                          className="fa fa-chevron-up"
                                           aria-hidden="true"
                                         />
                                       ) : (
                                         <i
-                                          className="fa fa-square"
+                                          className="fa fa-chevron-down"
                                           aria-hidden="true"
                                         />
                                       )}
-                                      {data2.title}
-                                    </span>
+                                    </div>
                                   </span>
                                 </Accordion.Toggle>
                               </Card.Header>
@@ -141,11 +169,22 @@ export default function LTIProjectShared(props) {
                                                 ) {
                                                   setactiveactivity();
                                                   setformdata();
+                                                  setActivePlaylist(
+                                                    counter_playlist +
+                                                      counter_top +
+                                                      1
+                                                  );
+                                                  setformdata({
+                                                    name: data2.title,
+                                                    _id: data2._id,
+                                                    entity: "playlist",
+                                                  });
                                                 } else {
                                                   setactiveactivity(counter_3);
-                                                  setactiveactivitydefault(
-                                                    false
-                                                  );
+                                                  // //  setactiveactivitydefault(
+                                                  //     false
+                                                  //   );
+                                                  setActivePlaylist();
                                                   setformdata({
                                                     name: data3.title,
                                                     _id: data3._id,
@@ -155,8 +194,7 @@ export default function LTIProjectShared(props) {
                                               }}
                                               key={counter_3}
                                             >
-                                              {activeactivity === counter_3 ||
-                                              activeactivitydefault ? (
+                                              {activeactivity === counter_3 ? (
                                                 <i
                                                   className="fa fa-stop-circle-o"
                                                   aria-hidden="true"
@@ -200,13 +238,27 @@ export default function LTIProjectShared(props) {
           const final_url =
             decodeURIComponent(props.match.params.redirect_url) +
             "&title=" +
-            encodeURIComponent(formdata.name) +
+            formdata.name +
             "&entity=" +
             formdata.entity +
             "&id=" +
             formdata._id;
           if (!!formdata._id) {
-            window.location.href = formdata._id;
+            Swal.fire({
+              html: `You have selected <strong>${formdata.entity}:
+              ${formdata.name}
+              </strong><br>Do you want to continue ?`,
+
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Ok",
+            }).then((result) => {
+              if (result.value) {
+                console.log(final_url);
+                window.location.href = final_url;
+              }
+            });
           }
         }}
       >

@@ -4614,11 +4614,30 @@ a:hover {
   color: #333
 }
 
+.btn.btn-link {
+  width: 100%;
+  justify-content: flex-start;
+
+
+}
+
 .ltiallproject {
   margin: 15px;
 
+  .flex-bar {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
   .btn {
-    padding: 0;
+    padding: 10px;
+  }
+
+
+  .card-header {
+    padding: 0px;
   }
 
   .topcard.card-header {
@@ -4648,8 +4667,8 @@ a:hover {
 
       i {
         padding-right: 10px;
-        color: #fff;
-        -webkit-text-stroke: 1px #084892;
+        color: #084892;
+
       }
     }
 
