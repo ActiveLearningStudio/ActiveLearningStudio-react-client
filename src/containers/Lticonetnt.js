@@ -21,7 +21,7 @@ export default function LTIProjectShared(props) {
   });
   useEffect(() => {
     dispatch(
-      loadMyProjectsAction(
+      loadMyProjectsltiAction(
         decodeURIComponent(props.match.params.lms_url),
         decodeURIComponent(props.match.params.lti_client_id)
       )
