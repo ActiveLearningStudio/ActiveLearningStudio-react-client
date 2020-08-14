@@ -5,7 +5,7 @@ import {
   loadMyProjectsAction,
 } from "../actions/project";
 import { Accordion, Card, Button } from "react-bootstrap";
-import swal from "sweetalert2";
+import Swal from "sweetalert2";
 export default function LTIProjectShared(props) {
   console.log(props);
 
