@@ -238,7 +238,7 @@ export default function LTIProjectShared(props) {
           const final_url =
             decodeURIComponent(props.match.params.redirect_url) +
             "&title=" +
-            formdata.name +
+            encodeURIComponent(formdata.name) +
             "&entity=" +
             formdata.entity +
             "&id=" +
