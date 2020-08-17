@@ -17,11 +17,14 @@ const PreviewPage = loadable(() => import("../containers/PreviewPage"));
 const Ltipreviewpage = loadable(() => import("../containers/Ltipreviewpage"));
 const LoginPage = loadable(() => import("../containers/LoginPage"));
 const ConfirmPage = loadable(() => import("../containers/Confirmemail"));
+const Ltiprojectpage = loadable(() => import("../containers/Ltiprojectpage"));
 
 const PreviewPageShared = loadable(() =>
   import("../containers/PreviewPageShared")
 );
 const registration = loadable(() => import("../containers/Registration"));
+const Lticonetnt = loadable(() => import("../containers/Lticonetnt"));
+
 const AppRouter = () => {
   useEffect(() => {
     ReactGA.pageview(window.location.pathname);
@@ -38,7 +41,7 @@ const AppRouter = () => {
         <Route
           path="/project/shared/:projectid"
           exact
-          component={PreviewPageShared}
+          component={Ltiprojectpage}
         />
         <Route
           path="/confirmemail/:confirmationid"
@@ -72,9 +75,21 @@ const AppRouter = () => {
         />
 
         <Route
+          path="/lti/content/:lms_url/:lti_client_id/:redirect_url"
+          component={Lticonetnt}
+          exact
+        />
+
+        <Route
           path="/shared/activity/:resourceid"
           exact
           render={() => <Ltipreviewpage previewType="activityshared" />}
+        />
+
+        <Route
+          path="/activity/lti/preview/:resourceid"
+          exact
+          render={() => <Ltipreviewpage previewType="activitysharedlti" />}
         />
 
         <Route

@@ -20,6 +20,8 @@ class H5PPreview extends React.Component {
   componentDidMount() {
     if (this.props.showltipreview) {
       this.loadResorceLti(this.props.resourceid);
+    } else if (this.props.ltiactivity) {
+      this.loadResorceltiActivity(this.props.resourceid);
     } else if (this.props.showActivitypreview) {
       this.loadResorceActivity(this.props.resourceid);
     } else {
@@ -75,6 +77,20 @@ class H5PPreview extends React.Component {
       });
   }
 
+  loadResorceltiActivity(resourceid) {
+    if (resourceid == 0) return;
+
+    axios
+      .post(global.config.laravelAPIUrl + "/h5p-resource-settings-public", {
+        resourceid,
+      })
+      .then((response) => {
+        this.resourceLoaded(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   async resourceLoaded(response) {
     console.log(response);
     if (response.data.status == "fail") {

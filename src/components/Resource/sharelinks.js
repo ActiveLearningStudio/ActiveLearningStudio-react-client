@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+
 import { ShareLMS } from "../../actions/project";
 import Swal from "sweetalert2";
-export default function Sharelink({ playlistID, playlistName, projectName }) {
+import { useSelector, useDispatch } from "react-redux";
+import { getProjectCourseFromLMSPlaylist } from "../../actions/project";
+export default function Sharelink({
+  playlistID,
+  playlistName,
+  projectName,
+  projectId,
+}) {
   const All_Lms = useSelector((state) => state.defaultsharestate);
-
+  const dispatch = useDispatch();
   const [allLms, setAllLms] = useState([]);
   useEffect(() => {
     setAllLms(All_Lms);
@@ -34,14 +41,26 @@ export default function Sharelink({ playlistID, playlistName, projectName }) {
               <>
                 <li>
                   <a
-                    onClick={async () => {
-                      ShareLMS(
-                        playlistID,
-                        data._id,
-                        data.lms_name.toLowerCase(),
-                        data.lms_url,
-                        playlistName,
-                        projectName
+                    // onClick={async () => {
+                    //   ShareLMS(
+                    //     playlistID,
+                    //     data._id,
+                    //     data.lms_name.toLowerCase(),
+                    //     data.lms_url,
+                    //     playlistName,
+                    //     projectName
+                    //   );
+                    // }}
+
+                    onClick={() => {
+                      dispatch(
+                        getProjectCourseFromLMSPlaylist(
+                          data.lms_name.toLowerCase(),
+                          data._id,
+                          projectId,
+                          playlistID,
+                          data.lms_url
+                        )
                       );
                     }}
                   >

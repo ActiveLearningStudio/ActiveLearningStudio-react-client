@@ -1,37 +1,42 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import dotsloader from "../../images/dotsloader.gif";
-import { uploadResourceThumbnail, editResource } from "../../actions/resource";
+import { uploadResourceThumbnail } from "../../actions/resource";
+import { uploadProjectThumbnail } from "../../actions/project";
+
 import { useDispatch } from "react-redux";
+
+import axios from "axios";
+import { reducer } from "redux-form";
 const PexelsAPI = require("pexels-api-wrapper");
 
-var pexelsClient = new PexelsAPI(
-  "563492ad6f91700001000001155d7b75f5424ea694b81ce9f867dddf"
-);
+var pexelsClient = new PexelsAPI(process.env.REACT_APP_PEXEL_API);
 
 export default function Pexels(props) {
   const dispatch = useDispatch();
   const [pixeldata, setpixels] = useState([]);
   const [loader, setLoader] = useState(true);
   const [searchValue, setSearchValue] = useState();
+  const [nextAPI, setNextAPi] = useState("");
 
   useEffect(() => {
     //  !!props.resourceName && setSearchValue(props.searchName);
+
     pexelsClient
-      .search(props.searchName, 10, 4)
+      .search(!!props.searchName ? props.searchName : "abstract", 10, 4)
       .then(function (result) {
         setLoader(false);
-        console.log(result);
+
         const allphotos =
           !!result.photos &&
           result.photos.map((data) => {
-            return data.src.tiny;
+            return data;
           });
+        console.log();
         setpixels(allphotos);
+        setNextAPi(result.next_page);
       })
-      .catch(function (e) {
-        console.err(e);
-      });
+      .catch(function (e) {});
   }, []);
   return (
     <Modal
@@ -59,18 +64,20 @@ export default function Pexels(props) {
                 if (event.key === "Enter") {
                   setLoader(true);
 
-                  pexelsClient
-                    .search(searchValue, 10, 1)
-                    .then(function (result) {
-                      setLoader(false);
-                      const allphotos =
-                        !!result.photos &&
-                        result.photos.map((data) => {
-                          return data.src.tiny;
-                        });
-                      setpixels(allphotos);
-                    })
-                    .catch(function (e) {});
+                  !!pexelsClient &&
+                    pexelsClient
+                      .search(searchValue, 10, 1)
+                      .then(function (result) {
+                        setLoader(false);
+                        const allphotos =
+                          !!result.photos &&
+                          result.photos.map((data) => {
+                            return data;
+                          });
+                        setpixels(allphotos);
+                        setNextAPi(result.next_page);
+                      })
+                      .catch(function (e) {});
                 }
               }}
             />
@@ -90,18 +97,51 @@ export default function Pexels(props) {
           ) : pixeldata.length == 0 ? (
             "no result found. You can still search other thumbnails"
           ) : (
-            pixeldata.map((images) => {
-              return (
-                <img
-                  src={images}
-                  alt=""
+            <>
+              {pixeldata.map((images) => {
+                return (
+                  <div className="watermark">
+                    <img
+                      src={images.src.tiny}
+                      alt=""
+                      onClick={() => {
+                        !!props.project
+                          ? dispatch(uploadProjectThumbnail(images.src.tiny))
+                          : dispatch(uploadResourceThumbnail(images.src.tiny));
+                        props.onHide();
+                      }}
+                    />
+                    <a href={images.url} target="_blank">
+                      {" "}
+                      {images.photographer}/Pexels
+                    </a>
+                  </div>
+                );
+              })}
+              {!!nextAPI && (
+                <h6
+                  className="readmore-pexel"
                   onClick={() => {
-                    dispatch(uploadResourceThumbnail(images));
-                    props.onHide();
+                    axios
+                      .get(nextAPI, {
+                        headers: {
+                          Authorization: process.env.REACT_APP_PEXEL_API,
+                        },
+                      })
+                      .then((res) => {
+                        var moreData = res.data.photos.map((data) => {
+                          return data;
+                        });
+                        console.log(moreData);
+                        setpixels(pixeldata.concat(moreData));
+                        setNextAPi(res.data.next_page);
+                      });
                   }}
-                />
-              );
-            })
+                >
+                  Load more
+                </h6>
+              )}
+            </>
           )}
         </div>
       </Modal.Body>

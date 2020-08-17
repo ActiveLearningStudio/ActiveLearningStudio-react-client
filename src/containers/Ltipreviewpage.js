@@ -1,9 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import Footer from "../components/Footer.js";
-import Sidebar from "../components/Sidebar/Sidebar";
-import Header from "../components/Header/Header";
 
 import {
   showCreateProjectModalAction,
@@ -43,6 +40,13 @@ export class LtiPreviewPage extends React.Component {
       content = (
         <ActivityShared resourceid={this.props.match.params.resourceid} />
       );
+    } else if (this.props.previewType == "activitysharedlti") {
+      content = (
+        <ActivityShared
+          ltiactivity={true}
+          resourceid={this.props.match.params.resourceid}
+        />
+      );
     } else {
       content = (
         <LtiPlaylistPreview
@@ -53,13 +57,7 @@ export class LtiPreviewPage extends React.Component {
       );
     }
 
-    return (
-      <div>
-        <Header {...this.props} />
-
-        {content}
-      </div>
-    );
+    return <div>{content}</div>;
   }
 }
 

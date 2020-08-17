@@ -397,6 +397,39 @@ export const loadMyProjectsAction = () => {
   };
 };
 
+export const loadMyProjectsltiAction = (lms_url, lti_client_id) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: PAGE_LOADING,
+      });
+      const response = await axios.post(
+        global.config.laravelAPIUrl + "/go/lms/projects",
+        {
+          lms_url: lms_url,
+
+          lti_client_id: lti_client_id,
+        }
+      );
+
+      if (response.data.status == "success") {
+        let projects = [];
+        projects = response.data.data.projects;
+
+        dispatch(loadMyProjects(projects));
+        dispatch({
+          type: PAGE_LOADING_COMPLETE,
+        });
+      }
+    } catch (e) {
+      dispatch({
+        type: PAGE_LOADING_COMPLETE,
+      });
+      throw new Error(e);
+    }
+  };
+};
+
 //load project preview
 
 export const loadMyProjectsActionPreview = (projectId) => {
@@ -716,6 +749,113 @@ export const getProjectCourseFromLMS = (
               //       text: "Something went wrong, Kindly try again",
               //     });
               //   });
+            }
+          });
+        }
+      });
+  };
+};
+
+export const getProjectCourseFromLMSPlaylist = (
+  lms,
+  setting_id,
+  project_id,
+  playlistid,
+  lmsUrl
+) => {
+  return (dispatch) => {
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+      onUploadProgress: (progressEvent) => {
+        /*dispatch(
+          projectThumbnailProgress(
+            "Uploaded progress: " +
+              Math.round((progressEvent.loaded / progressEvent.total) * 100) +
+              "%"
+          )
+        );*/
+      },
+    };
+
+    let formData = { setting_id, project_id };
+    Swal.fire({
+      iconHtml: loaderimg,
+      title: "Fetching Information....",
+
+      showCancelButton: false,
+      showConfirmButton: false,
+      allowOutsideClick: false,
+    });
+    return axios
+      .post(
+        global.config.laravelAPIUrl + "/go/" + lms + "/fetch/course",
+        formData
+      )
+      .then((response) => {
+        if (response.data.status === "success") {
+          dispatch(setLmsCourse(response.data.data));
+          const globalstoreClone = store.getState();
+          const counterarray = [];
+          const { token } = JSON.parse(localStorage.getItem("auth"));
+
+          Swal.fire({
+            title: `This Playlist will be added to ${lms}. If the Playlist does not exist, it will be created. `,
+            text: "Would you like to proceed?",
+            showCancelButton: true,
+            confirmButtonColor: "#5952c6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Continue",
+          }).then((result) => {
+            if (result.value) {
+              Swal.fire({
+                iconHtml: loaderimg,
+                title: "Publishing....",
+
+                showCancelButton: false,
+                showConfirmButton: false,
+                allowOutsideClick: false,
+              });
+
+              var playlistcounter =
+                !!globalstoreClone.project.lms_course &&
+                globalstoreClone.project.lms_course.playlists_copy_counter
+                  .length > 0
+                  ? globalstoreClone.project.lms_course.playlists_copy_counter
+                  : 0;
+
+              var counterid = 0;
+              playlistcounter != 0 &&
+                playlistcounter.map((playistid_) => {
+                  if (playlistid === playistid_.playlist_id) {
+                    counterid = playistid_.counter;
+                  }
+                });
+
+              axios
+                .post(
+                  global.config.laravelAPIUrl + `/go/${lms}/publish/playlist`,
+                  {
+                    setting_id: setting_id,
+                    playlist_id: playlistid,
+                    counter: counterid,
+                  },
+                  {
+                    headers: {
+                      Authorization: "Bearer " + token,
+                    },
+                  }
+                )
+                .then((res) => {
+                  Swal.fire({
+                    icon: "success",
+                    title: "Published!",
+                    confirmButtonColor: "#5952c6",
+                    html: `Your Project has been published to <a target="_blank" href="${lmsUrl}"> ${lmsUrl}</a>`,
+                    //   text: `Yo'ur playlist has been submitted to ${lmsUrl}`,
+                  });
+                });
             }
           });
         }

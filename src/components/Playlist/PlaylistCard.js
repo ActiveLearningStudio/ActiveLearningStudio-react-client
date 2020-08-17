@@ -163,6 +163,10 @@ export class PlaylistCard extends React.Component {
                           this.props.projectId.selectedProject &&
                           this.props.projectId.selectedProject.name
                         }
+                        projectId={
+                          this.props.projectId.selectedProject &&
+                          this.props.projectId.selectedProject._id
+                        }
                       />
                       {/*} <a
                         className="dropdown-item"
