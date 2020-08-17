@@ -22,7 +22,7 @@ export class ActivityShared extends React.Component {
   render() {
     return (
       <>
-        <section className="main-page-content preview">
+        <section className="main-page-content preview ltisharedactivity">
           <div className="flex-container ">
             <div className="activity-bg left-vdo">
               <div className="main-item-wrapper">
@@ -33,6 +33,7 @@ export class ActivityShared extends React.Component {
                       {...this.state}
                       resourceid={this.state.resourceid}
                       showActivitypreview={true}
+                      ltiactivity={!!this.props.ltiactivity}
                     />
                   </Suspense>
                 </div>

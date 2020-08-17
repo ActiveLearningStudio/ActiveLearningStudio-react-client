@@ -87,6 +87,12 @@ const AppRouter = () => {
         />
 
         <Route
+          path="/activity/lti/preview/:resourceid"
+          exact
+          render={() => <Ltipreviewpage previewType="activitysharedlti" />}
+        />
+
+        <Route
           path="/playlist/lti/preview/:playlistid/resource/:resourceid"
           exact
           component={Ltipreviewpage}

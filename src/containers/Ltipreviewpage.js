@@ -1,9 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import Footer from "../components/Footer.js";
-import Sidebar from "../components/Sidebar/Sidebar";
-import Header from "../components/Header/Header";
 
 import {
   showCreateProjectModalAction,
@@ -42,6 +39,13 @@ export class LtiPreviewPage extends React.Component {
     } else if (this.props.previewType == "activityshared") {
       content = (
         <ActivityShared resourceid={this.props.match.params.resourceid} />
+      );
+    } else if (this.props.previewType == "activitysharedlti") {
+      content = (
+        <ActivityShared
+          ltiactivity={true}
+          resourceid={this.props.match.params.resourceid}
+        />
       );
     } else {
       content = (
