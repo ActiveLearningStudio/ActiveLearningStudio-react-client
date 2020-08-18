@@ -1,70 +1,119 @@
 import { prepareLmsCourse } from 'logic/lmsCourse';
-import {
-  SHOW_CREATE_PROJECT_SUBMENU,
-  SHOW_CREATE_PROJECT_MODAL,
-  CREATE_PROJECT,
-  LOAD_MY_PROJECTS,
-  LOAD_PROJECT,
-  DELETE_PROJECT,
-  UPLOAD_PROJECT_THUMBNAIL,
-  PROJECT_THUMBNAIL_PROGRESS,
-  SHOW_USER_SUB_MENU,
-  CLOSE_MENU,
-  LOAD_MY_PROJECTS_SELECTED,
-  SET_LMS_COURSE,
-} from '../actionTypes';
+import * as actionTypes from '../actionTypes';
 
-const defaultProgramState = () => {
-  if (localStorage.getItem('projects')) {
-    return {
-      projects: JSON.parse(localStorage.getItem('projects')),
-    };
-  }
-
-  return {
-    projects: [],
-    selectedProject: {
-      _id: null,
-    },
-    thumbUrl: null,
-    showCreateProjectSubmenu: false,
-    showCreateProjectPopup: false,
-    showUserSubMenu: false,
-    projectSelect: {},
-    lmsCourse: null,
-  };
+const INITIAL_STATE = {
+  isLoading: false,
+  projects: [],
+  selectedProject: {},
+  thumbUrl: null,
+  projectSelect: {},
+  lmsCourse: null,
 };
 
-const projectReducer = (state = defaultProgramState(), action) => {
+export default (state = INITIAL_STATE, action) => {
+  const { projects } = state;
+
   switch (action.type) {
-    case CLOSE_MENU:
-      if (state.showCreateProjectSubmenu) {
-        return {
-          ...state,
-          showCreateProjectSubmenu: !state.showCreateProjectSubmenu,
-        };
-      }
-      if (state.showUserSubMenu) {
-        return {
-          ...state,
-          showUserSubMenu: !state.showUserSubMenu,
-        };
-      }
-      return state;
-
-    case SHOW_CREATE_PROJECT_SUBMENU:
+    case actionTypes.CREATE_PROJECT_REQUEST:
       return {
         ...state,
-        showCreateProjectSubmenu: !state.showCreateProjectSubmenu,
+        isLoading: true,
       };
-
-    case SHOW_USER_SUB_MENU:
+    case actionTypes.CREATE_PROJECT_SUCCESS:
       return {
         ...state,
-        showUserSubMenu: !state.showUserSubMenu,
+        isLoading: false,
+        projects: [...projects, action.payload.project],
+        thumbUrl: null,
+      };
+    case actionTypes.CREATE_PROJECT_FAIL:
+      return {
+        ...state,
+        isLoading: false,
       };
 
-    case SHOW_CREATE_PROJECT_MODAL:
+    case actionTypes.LOAD_PROJECT_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case actionTypes.LOAD_PROJECT_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        selectedProject: action.payload.project,
+        thumbUrl: action.payload.project.thumb_url,
+      };
+    case actionTypes.LOAD_PROJECT_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case actionTypes.UPDATE_PROJECT_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case actionTypes.UPDATE_PROJECT_SUCCESS:
+      const index = projects.findIndex((p) => p.id === action.payload.project.id);
+      if (index > -1) {
+        return {
+          ...state,
+          isLoading: false,
+          projects: projects.splice(index, 1, action.payload.project),
+          thumbUrl: null,
+        };
+      }
+      return {
+        ...state,
+        isLoading: false,
+        projects: [...projects, action.payload.project],
+        thumbUrl: null,
+      };
+    case actionTypes.UPDATE_PROJECT_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case actionTypes.DELETE_PROJECT_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case actionTypes.DELETE_PROJECT_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        projects: projects.filter((project) => project.id !== action.payload.projectId),
+      };
+    case actionTypes.DELETE_PROJECT_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case actionTypes.LOAD_MY_PROJECTS:
+      return {
+        ...state,
+        projects: action.payload.projects,
+      };
+    case actionTypes.LOAD_MY_PROJECTS_SELECTED:
+    case actionTypes.SHARE_PROJECT:
+      return {
+        ...state,
+        projectSelect: action.payload.project,
+      };
+
+    case actionTypes.UPLOAD_PROJECT_THUMBNAIL:
+      return {
+        ...state,
+        thumbUrl: action.payload.thumbUrl,
+        progress: null,
+      };
+
+    case actionTypes.SHOW_CREATE_PROJECT_MODAL:
       return {
         ...state,
         selectedProject: {
@@ -73,53 +122,13 @@ const projectReducer = (state = defaultProgramState(), action) => {
         thumbUrl: null,
       };
 
-    case CREATE_PROJECT:
-      return {
-        ...state,
-        projects: [...state.projects, action.projectData],
-        thumbUrl: null,
-      };
-
-    case LOAD_MY_PROJECTS:
-      return {
-        ...state,
-        projects: action.projects,
-      };
-
-    case LOAD_MY_PROJECTS_SELECTED:
-      return {
-        ...state,
-        projectSelect: action.projects,
-      };
-
-    case LOAD_PROJECT:
-      return {
-        ...state,
-        selectedProject: action.project,
-        thumbUrl: action.project.thumbUrl,
-      };
-
-    case DELETE_PROJECT:
-      const newProjects = state.projects.filter((project) => project._id !== action.projectId);
-      return {
-        ...state,
-        projects: newProjects,
-      };
-
-    case UPLOAD_PROJECT_THUMBNAIL:
-      return {
-        ...state,
-        thumbUrl: action.thumbUrl,
-        progress: null,
-      };
-
-    case PROJECT_THUMBNAIL_PROGRESS:
+    case actionTypes.PROJECT_THUMBNAIL_PROGRESS:
       return {
         ...state,
         progress: action.progress,
       };
 
-    case SET_LMS_COURSE:
+    case actionTypes.SET_LMS_COURSE:
       return {
         ...state,
         lmsCourse: prepareLmsCourse(action, state),
@@ -129,5 +138,3 @@ const projectReducer = (state = defaultProgramState(), action) => {
       return state;
   }
 };
-
-export default projectReducer;

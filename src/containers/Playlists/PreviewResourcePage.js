@@ -10,7 +10,7 @@ import {
   showSelectActivityAction,
   showBuildActivityAction,
 } from 'store/actions/resource';
-import H5PPreview from './H5PPreview';
+import H5PPreview from '../H5PPreview';
 
 const bounceAnimation = keyframes`${slideInRight}`;
 

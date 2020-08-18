@@ -5,6 +5,7 @@ import { withRouter, Link } from 'react-router-dom';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Dropdown } from 'react-bootstrap';
 
 import logo from 'assets/images/logo.svg';
 import {
@@ -13,8 +14,8 @@ import {
   clickPlaylistTitleAction,
 } from 'store/actions/playlist';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
-import ResourceCard from '../ResourceCard';
-import ShareLink from '../ResourceCard/ShareLink';
+import ResourceCard from 'components/ResourceCard';
+import ShareLink from 'components/ResourceCard/ShareLink';
 
 // TODO: need to clean up attributes, update to functional component
 // need to refactor template functions
@@ -23,7 +24,7 @@ class PlaylistCard extends React.Component {
     e.preventDefault();
 
     const { playlist, showDeletePopup } = this.props;
-    showDeletePopup(playlist._id, playlist.title, 'Playlist');
+    showDeletePopup(playlist.id, playlist.title, 'Playlist');
   };
 
   handleAddNewResourceClick = () => {
@@ -70,15 +71,15 @@ class PlaylistCard extends React.Component {
       index,
       playlist,
       title,
-      projectId,
+      project,
       playlistTitleClicked,
       changePlaylistTitle,
     } = this.props;
 
     return (
       <Draggable
-        key={playlist._id}
-        draggableId={playlist._id}
+        key={playlist.id}
+        draggableId={playlist.id}
         index={index}
       >
         {(provided) => (
@@ -92,7 +93,7 @@ class PlaylistCard extends React.Component {
                 <h2 className="list-header-name">
                   <span
                     className={playlistTitleClicked ? 'hide' : 'show'}
-                    onClick={() => this.handleClickPlaylistTitle(playlist._id)}
+                    onClick={() => this.handleClickPlaylistTitle(playlist.id)}
                     style={{ cursor: 'pointer' }}
                   >
                     {title}
@@ -104,46 +105,34 @@ class PlaylistCard extends React.Component {
                     }}
                     name="playlist-title"
                     className={playlistTitleClicked ? 'show' : 'hide'}
-                    onBlur={(e) => changePlaylistTitle(e, playlist._id)}
+                    onBlur={(e) => changePlaylistTitle(e, playlist.id)}
                     onKeyPress={this.onEnterPress}
                     defaultValue={title}
                   />
 
-                  <div className="dropdown pull-right playlist-dropdown check">
-                    <button
-                      className="btn project-dropdown-btn"
-                      type="button"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
+                  <Dropdown className="pull-right playlist-dropdown check">
+                    <Dropdown.Toggle className="project-dropdown-btn">
                       <FontAwesomeIcon icon="ellipsis-v" />
-                    </button>
+                    </Dropdown.Toggle>
 
-                    <div className="dropdown-menu">
-                      <Link
-                        className="dropdown-item hidden"
-                        to={
-                          `/playlist/preview/${playlist._id}`
-                          // "/project/preview2/" +
-                          // this.props.match.params.projectId
-                        }
+                    <Dropdown.Menu>
+                      <Dropdown.Item
+                        as={Link}
+                        className="hidden"
+                        to={`/project/${playlist.project.id}/playlist/${playlist.id}/preview`}
                       >
-                        <FontAwesomeIcon icon="eye" />
-                        {' '}
+                        <FontAwesomeIcon icon="eye" className="mr-2" />
                         Preview
-                      </Link>
+                      </Dropdown.Item>
 
                       {/*
-                      <a className="dropdown-item" href="#">
-                        <FontAwesomeIcon icon="pencil" />
-                        {' '}
+                      <Dropdown.Item href="#">
+                        <FontAwesomeIcon icon="pen" className="mr-2" />
                         Edit
                       </a>
                       */}
 
-                      <a
-                        className="dropdown-item"
+                      <Dropdown.Item
                         onClick={() => {
                           Swal.fire({
                             title: 'STAY TUNED!',
@@ -155,15 +144,14 @@ class PlaylistCard extends React.Component {
                           });
                         }}
                       >
-                        <FontAwesomeIcon icon="share" />
-                        {' '}
+                        <FontAwesomeIcon icon="share" className="mr-2" />
                         Send To
-                      </a>
+                      </Dropdown.Item>
 
                       <ShareLink
-                        playlistId={playlist._id}
+                        playlistId={playlist.id}
                         playlistName={title}
-                        projectName={projectId.selectedProject && projectId.selectedProject.name}
+                        projectName={project.selectedProject && project.selectedProject.name}
                       />
 
                       {/*
@@ -175,25 +163,23 @@ class PlaylistCard extends React.Component {
                           window.open('/api/download/project/123');
                         }}
                       >
-                        <FontAwesomeIcon icon="cloud-download" />
-                        {' '}
+                        <FontAwesomeIcon icon="cloud-download" className="mr-2" />
                         Executable
                       </a>
                       */}
 
-                      <a className="dropdown-item" onClick={this.handleDelete}>
-                        <FontAwesomeIcon icon="times-circle-o" />
-                        {' '}
+                      <Dropdown.Item onClick={this.handleDelete}>
+                        <FontAwesomeIcon icon="times-circle" className="mr-2" />
                         Delete
-                      </a>
-                    </div>
-                  </div>
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </h2>
               </div>
 
               <Droppable
-                key={playlist._id}
-                droppableId={playlist._id}
+                key={playlist.id}
+                droppableId={playlist.id}
                 type="resource"
               >
                 {(provd) => (
@@ -233,7 +219,7 @@ PlaylistCard.propTypes = {
   index: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   playlist: PropTypes.object.isRequired,
-  projectId: PropTypes.object.isRequired,
+  project: PropTypes.object.isRequired,
   playlistTitleClicked: PropTypes.bool.isRequired,
   showDeletePopup: PropTypes.func.isRequired,
   hideDeletePopup: PropTypes.func.isRequired,
@@ -256,7 +242,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
-  projectId: state.project,
+  project: state.project,
   ui: state.ui,
 });
 

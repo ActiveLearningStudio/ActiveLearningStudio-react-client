@@ -20,7 +20,9 @@ function Error(props) {
       message = error.errors[0];
     }
 
-    if (error.error) {
+    if (error.message) {
+      message = error.message;
+    } else if (error.error) {
       message = error.error;
     }
   }

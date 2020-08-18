@@ -5,6 +5,7 @@ import { Link, withRouter } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import QueryString from 'query-string';
 
 import logo from 'assets/images/logo.svg';
 import loader from 'assets/images/loader.svg';
@@ -12,19 +13,21 @@ import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
 import { resetPasswordAction } from 'store/actions/auth';
 import storageService from 'services/storage.service';
-import { getQueryVariable } from 'utils';
+import { getErrors } from 'utils';
 import Error from './Error';
+
+import './style.scss';
 
 function ResetPasswordPage(props) {
   const {
     history,
+    location,
     isLoading,
-    error,
     resetPassword,
   } = props;
 
-  const token = getQueryVariable('token');
-  if (!token) {
+  const query = QueryString.parse(location.search);
+  if (!query.token) {
     history.push('/login');
   }
 
@@ -33,6 +36,8 @@ function ResetPasswordPage(props) {
     password: '',
     confirmPassword: '',
   });
+
+  const [error, setError] = useState(null);
 
   const onChangeField = useCallback((e) => {
     e.persist();
@@ -46,8 +51,10 @@ function ResetPasswordPage(props) {
     e.preventDefault();
 
     try {
+      setError(null);
+
       await resetPassword({
-        token,
+        token: query.token,
         email: state.email,
         password: state.password,
         password_confirmation: state.confirmPassword,
@@ -59,9 +66,9 @@ function ResetPasswordPage(props) {
         text: 'Password has been reset successfully.',
       });
     } catch (err) {
-      // console.log(err);
+      setError(getErrors(err));
     }
-  }, [token, state, resetPassword]);
+  }, [query.token, state, resetPassword]);
 
   const isDisabled = !state.email || !state.password || !state.confirmPassword
     || !validator.isEmail(state.email)
@@ -150,13 +157,9 @@ function ResetPasswordPage(props) {
 
 ResetPasswordPage.propTypes = {
   history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  error: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   resetPassword: PropTypes.func.isRequired,
-};
-
-ResetPasswordPage.defaultProps = {
-  error: null,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -165,7 +168,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
-  error: state.auth.error,
 });
 
 export default withRouter(

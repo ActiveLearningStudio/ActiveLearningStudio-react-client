@@ -1,90 +1,135 @@
-import {
-  CREATE_PLAYLIST,
-  DELETE_PLAYLIST,
-  SHOW_CREATE_PLAYLIST_MODAL,
-  HIDE_CREATE_PLAYLIST_MODAL,
-  CREATE_RESOURCE,
-  LOAD_PROJECT_PLAYLISTS,
-  LOAD_PLAYLIST,
-  DELETE_RESOURCE,
-  REORDER_PLAYLIST,
-  REORDER_PLAYLISTS,
-  EDIT_RESOURCE,
-  LOAD_MY_PROJECTS,
-  CHANGE_PLAYLIST_TITLE,
-  CLICK_PLAYLIST_TITLE,
-  LOAD_H5P,
-} from '../actionTypes';
+import * as actionTypes from '../actionTypes';
 
-const defaultPlaylistState = () => {
-  if (localStorage.getItem('playlists')) {
-    return {
-      playlists: JSON.parse(localStorage.getItem('playlists')),
-      showCreatePlaylistPopup: false,
-      loadingH5P: 'loading...',
-    };
-  }
-
-  return {
-    playlists: [],
-    showCreatePlaylistPopup: false,
-    selectedPlaylist: null,
-    loadingH5P: 'loading...',
-  };
+const INITIAL_STATE = {
+  playlists: [],
+  showCreatePlaylistPopup: false,
+  selectedPlaylist: {},
+  loadingH5P: 'loading...',
 };
 
 let newPlaylists = [];
 
-export default (state = defaultPlaylistState(), action) => {
+export default (state = INITIAL_STATE, action) => {
+  const { playlists } = state;
+
   switch (action.type) {
-    case CREATE_PLAYLIST:
+    case actionTypes.CREATE_PLAYLIST_REQUEST:
       return {
         ...state,
-        playlists: [
-          ...state.playlists,
-          action.playlistData,
-        ],
+        isLoading: true,
+      };
+    case actionTypes.CREATE_PLAYLIST_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        playlists: [...playlists, action.payload.playlist],
+        thumbUrl: null,
+      };
+    case actionTypes.CREATE_PLAYLIST_FAIL:
+      return {
+        ...state,
+        isLoading: false,
       };
 
-    case LOAD_H5P:
+    case actionTypes.LOAD_PLAYLIST_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case actionTypes.LOAD_PLAYLIST_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        selectedPlaylist: action.payload.playlist,
+      };
+    case actionTypes.LOAD_PLAYLIST_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case actionTypes.UPDATE_PLAYLIST_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case actionTypes.UPDATE_PLAYLIST_SUCCESS:
+      const index = playlists.findIndex((p) => p.id === action.payload.playlist.id);
+      if (index > -1) {
+        return {
+          ...state,
+          isLoading: false,
+          playlists: playlists.splice(index, 1, action.payload.playlist),
+          thumbUrl: null,
+        };
+      }
+      return {
+        ...state,
+        isLoading: false,
+        playlists: [...playlists, action.payload.playlist],
+        thumbUrl: null,
+      };
+    case actionTypes.UPDATE_PLAYLIST_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case actionTypes.DELETE_PLAYLIST_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case actionTypes.DELETE_PLAYLIST_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        playlists: playlists.filter((playlist) => playlist.id !== action.payload.playlistId),
+      };
+    case actionTypes.DELETE_PLAYLIST_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case actionTypes.LOAD_PROJECT_PLAYLISTS:
+      return {
+        ...state,
+        playlists: action.payload.playlists,
+      };
+
+    // Refactor bottom
+    case actionTypes.LOAD_H5P:
       return {
         ...state,
         loadingH5P: action.show,
       };
 
-    // reset playlists to empty when going to projects dashboard
-    // so that when user clicks to new project it will load to default empty
-    case LOAD_MY_PROJECTS:
+    // reset playlists to empty when going to playlists dashboard
+    // so that when user clicks to new playlist it will load to default empty
+    case actionTypes.LOAD_MY_PROJECTS:
       return {
         ...state,
         playlists: [],
       };
 
-    case DELETE_PLAYLIST:
-      const nPlaylists = state.playlists.filter((playlist) => playlist._id !== action.id);
-      return {
-        ...state,
-        showDeletePlaylistPopup: false,
-        playlists: nPlaylists,
-      };
-
-    case SHOW_CREATE_PLAYLIST_MODAL:
+    case actionTypes.SHOW_CREATE_PLAYLIST_MODAL:
       return {
         ...state,
         showCreatePlaylistPopup: true,
       };
 
-    case HIDE_CREATE_PLAYLIST_MODAL:
+    case actionTypes.HIDE_CREATE_PLAYLIST_MODAL:
       return {
         ...state,
         showCreatePlaylistPopup: false,
       };
 
-    case CREATE_RESOURCE:
+    case actionTypes.CREATE_RESOURCE:
       // adding resource to newPlaylist specific id
       newPlaylists = state.playlists;
       state.playlists.forEach((playlist, i) => {
-        if (playlist._id === action.playlistId) {
+        if (playlist.id === action.playlistId) {
           newPlaylists[i] = { resources: [], ...newPlaylists[i] };
           newPlaylists[i].resources.push({
             _id: action.resource.id,
@@ -99,14 +144,14 @@ export default (state = defaultPlaylistState(), action) => {
         showCreateResourcePopup: false,
       };
 
-    case EDIT_RESOURCE:
+    case actionTypes.EDIT_RESOURCE:
       // adding resource to newPlaylist specific id
       return {
         ...state,
         showCreateResourcePopup: false,
       };
 
-    case DELETE_RESOURCE:
+    case actionTypes.DELETE_RESOURCE:
       const plists = [];
       state.playlists.forEach((playlist) => {
         const newResources = playlist.resources.filter((res) => res._id !== action.resourceId);
@@ -123,35 +168,29 @@ export default (state = defaultPlaylistState(), action) => {
         showDeletePlaylistPopup: false,
       };
 
-    case LOAD_PROJECT_PLAYLISTS:
-      return {
-        ...state,
-        playlists: action.playlists,
-      };
-
-    case LOAD_PLAYLIST:
+    case actionTypes.LOAD_PLAYLIST:
       return {
         ...state,
         selectedPlaylist: action.playlist,
       };
 
-    case REORDER_PLAYLIST:
+    case actionTypes.REORDER_PLAYLIST:
       // Find the changed playlist and replace with action.playlist
       const newReorderedPlaylists = state.playlists.map(
-        (playlist) => ((playlist._id === action.playlist._id) ? action.playlist : playlist),
+        (playlist) => ((playlist.id === action.playlist.id) ? action.playlist : playlist),
       );
       return {
         ...state,
         playlists: newReorderedPlaylists,
       };
 
-    case REORDER_PLAYLISTS:
+    case actionTypes.REORDER_PLAYLISTS:
       return {
         ...state,
         playlists: action.playlists,
       };
 
-    case CHANGE_PLAYLIST_TITLE:
+    case actionTypes.CHANGE_PLAYLIST_TITLE:
       const newTitleChangedPlaylists = state.playlists.filter((playlist) => {
         const newPlaylist = { ...playlist };
         if (newPlaylist._id === action.playlistId) {
@@ -165,7 +204,7 @@ export default (state = defaultPlaylistState(), action) => {
         playlists: newTitleChangedPlaylists,
       };
 
-    case CLICK_PLAYLIST_TITLE:
+    case actionTypes.CLICK_PLAYLIST_TITLE:
       const newClickTitlePlaylists = state.playlists.filter((playlist) => {
         const nPlaylist = { ...playlist };
         if (nPlaylist._id === action.playlistId) {

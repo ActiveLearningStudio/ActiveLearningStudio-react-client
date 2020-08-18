@@ -7,6 +7,7 @@ import { Route, Redirect, withRouter } from 'react-router-dom';
 const PrivateRoute = ({
   component: Component,
   id,
+  isLoading,
   isAuthenticated,
   ...rest
 }) => (
@@ -23,7 +24,7 @@ const PrivateRoute = ({
       }
 
       return (
-        isAuthenticated ? (
+        (isLoading || isAuthenticated) ? (
           <Component {...props} {...rest} key={newId} />
         ) : (
           <Redirect to="/login" />
@@ -39,6 +40,7 @@ PrivateRoute.propTypes = {
     PropTypes.func,
   ]).isRequired,
   id: PropTypes.string,
+  isLoading: PropTypes.bool.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
 };
 
@@ -47,6 +49,7 @@ PrivateRoute.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
+  isLoading: state.auth.isLoading,
   isAuthenticated: !!state.auth.user,
 });
 

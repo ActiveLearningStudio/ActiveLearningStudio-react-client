@@ -4,6 +4,7 @@ import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Swal from 'sweetalert2';
 
 import loaderImg from 'assets/images/loader.svg';
 import {
@@ -31,20 +32,16 @@ import {
   showDescribeActivityAction,
   showBuildActivityAction,
 } from 'store/actions/resource';
-import { showCreateProjectModalAction, loadProjectAction, LoadLMS } from 'store/actions/project';
+import { showCreateProjectModalAction, loadProjectAction, loadLmsAction } from 'store/actions/project';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
 import DeletePopup from 'components/DeletePopup';
-import PlaylistCard from 'components/PlaylistCard';
-import CreatePlaylistPopup from 'components/CreatePlaylistPopup';
 import AddResource from 'components/ResourceCard/AddResource';
 import EditResource from 'components/ResourceCard/EditResource';
+import PlaylistCard from './PlaylistCard';
 import PreviewResourcePage from './PreviewResourcePage';
-
-// const responseGoogle = (response) => {
-//   console.log(response);
-// };
+import CreatePlaylistPopup from './CreatePlaylistPopup';
 
 class PlaylistsPage extends React.Component {
   constructor(props) {
@@ -64,11 +61,11 @@ class PlaylistsPage extends React.Component {
       openEditResourcePopup,
       loadProject,
       loadProjectPlaylists,
-      loadLMS,
+      loadLms,
     } = this.props;
 
     // scroll to top
-    loadLMS();
+    loadLms();
     window.scrollTo(0, 0);
 
     if (!openCreatePopup && !openCreateResourcePopup && !openEditResourcePopup) {
@@ -90,6 +87,7 @@ class PlaylistsPage extends React.Component {
     try {
       const { match, history, showCreatePlaylistModal } = this.props;
       await showCreatePlaylistModal();
+
       history.push(`/project/${match.params.projectId}/playlist/create`);
     } catch (err) {
       // console.log(err.message);
@@ -99,8 +97,8 @@ class PlaylistsPage extends React.Component {
   handleShowCreateResourceModal = (playlist) => {
     try {
       const { match, history, showCreateResourceModal } = this.props;
-      showCreateResourceModal(playlist._id);
-      history.push(`/project/${match.params.projectId}/playlist/${playlist._id}/activity/create`);
+      showCreateResourceModal(playlist.id);
+      history.push(`/project/${match.params.projectId}/playlist/${playlist.id}/activity/create`);
     } catch (e) {
       // console.log(e.message);
     }
@@ -142,9 +140,16 @@ class PlaylistsPage extends React.Component {
       const { match, history, createPlaylist } = this.props;
 
       await createPlaylist(match.params.projectId, title);
+
       history.push(`/project/${match.params.projectId}`);
     } catch (err) {
       // console.log(err.message);
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to create playlist.',
+      });
     }
   };
 
@@ -221,7 +226,7 @@ class PlaylistsPage extends React.Component {
       return;
     }
 
-    const { playlists: { playlists }, reorderPlaylists, reorderPlaylistActivities } = this.props;
+    const { playlist: { playlists }, reorderPlaylists, reorderPlaylistActivities } = this.props;
 
     if (e.type === 'resource') {
       // resource dropped
@@ -269,9 +274,9 @@ class PlaylistsPage extends React.Component {
     const { shareLoading } = this.state;
     const {
       match,
-      project,
+      project: { selectedProject },
       resource,
-      playlists: { playlists },
+      playlist: { playlists },
       ui,
       openCreatePopup,
       openCreateResourcePopup,
@@ -285,7 +290,7 @@ class PlaylistsPage extends React.Component {
         <Header {...this.props} />
 
         {shareLoading ? (
-          <div className="loadershare">
+          <div className="loader-share">
             <img src={loaderImg} alt="" />
             <h1>Sharing...</h1>
           </div>
@@ -301,15 +306,14 @@ class PlaylistsPage extends React.Component {
                   <div className="row ">
                     <div className="col playlist-page-project-title project-each-view">
                       <div className="flex-se">
-                        <h1>{project.selectedProject ? project.selectedProject.name : ''}</h1>
+                        <h1>{selectedProject ? selectedProject.name : ''}</h1>
 
                         <button
                           type="button"
-                          onClick={this.handleShowCreatePlaylistModal}
                           className="create-playlist-btn"
+                          onClick={this.handleShowCreatePlaylistModal}
                         >
-                          <FontAwesomeIcon icon="plus" />
-                          {' '}
+                          <FontAwesomeIcon icon="plus" className="mr-2" />
                           Create new playlist
                         </button>
                       </div>
@@ -317,10 +321,9 @@ class PlaylistsPage extends React.Component {
                       <span>
                         <Link
                           className="dropdown-item"
-                          to={`/project/preview2/${match.params.projectId}`}
+                          to={`/project/${match.params.projectId}/preview`}
                         >
-                          <FontAwesomeIcon icon="eye" />
-                          {' '}
+                          <FontAwesomeIcon icon="eye" className="mr-2" />
                           Project Preview
                         </Link>
                       </span>
@@ -342,7 +345,7 @@ class PlaylistsPage extends React.Component {
                         >
                           {playlists.map((playlist, index) => (
                             <PlaylistCard
-                              key={playlist._id}
+                              key={playlist.id}
                               index={index}
                               playlist={playlist}
                               playlistTitleClicked={playlist.playlistTitleClicked}
@@ -413,7 +416,7 @@ PlaylistsPage.propTypes = {
   openCreatePopup: PropTypes.bool.isRequired,
   openCreateResourcePopup: PropTypes.bool.isRequired,
   openEditResourcePopup: PropTypes.bool.isRequired,
-  playlists: PropTypes.object.isRequired,
+  playlist: PropTypes.object.isRequired,
   resource: PropTypes.object.isRequired,
   project: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
@@ -429,7 +432,7 @@ PlaylistsPage.propTypes = {
   hideCreateResourceModal: PropTypes.func.isRequired,
   showCreatePlaylistModal: PropTypes.func.isRequired,
   hideCreatePlaylistModal: PropTypes.func.isRequired,
-  loadLMS: PropTypes.func.isRequired,
+  loadLms: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -475,11 +478,11 @@ const mapDispatchToProps = (dispatch) => ({
   uploadResourceThumbnail: () => dispatch(uploadResourceThumbnailAction()),
   reorderPlaylists: (playlist) => dispatch(reorderPlaylistsAction(playlist)),
   reorderPlaylistActivities: (playlist) => dispatch(reorderPlaylistActivitiesAction(playlist)),
-  loadLMS: () => dispatch(LoadLMS()),
+  loadLms: () => dispatch(loadLmsAction()),
 });
 
 const mapStateToProps = (state) => ({
-  playlists: state.playlist,
+  playlist: state.playlist,
   resource: state.resource,
   project: state.project,
   ui: state.ui,

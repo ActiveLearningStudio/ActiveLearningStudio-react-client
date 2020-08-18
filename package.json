@@ -25,6 +25,7 @@
     "node-sass": "^4.14.1",
     "pexels-api-wrapper": "^1.1.2",
     "prop-types": "^15.7.2",
+    "query-string": "^6.13.1",
     "react": "^16.12.0",
     "react-animations": "^1.0.0",
     "react-beautiful-dnd": "^13.0.0",

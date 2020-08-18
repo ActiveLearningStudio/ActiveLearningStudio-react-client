@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Dropdown } from 'react-bootstrap';
 
-// import logo from 'assets/images/logo.svg';
 import { getProjectId, googleShare } from 'store/actions/gapi';
 import { getProjectCourseFromLMS } from 'store/actions/project';
-import SharePreviewPopup from 'helpers/SharePreviewPopup';
-import GoogleModel from '../models/googleSign';
+import SharePreviewPopup from 'components/SharePreviewPopup';
+import GoogleModel from 'components/models/googleSign';
 import ProjectPreviewModal from '../ProjectPreviewModal';
 
 import './style.scss';
@@ -19,7 +19,7 @@ const ProjectCard = (props) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
 
-  // const handleClose = () => setShow(false);
+  const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const AllLms = useSelector((state) => state.defaultShareState);
 
@@ -31,19 +31,19 @@ const ProjectCard = (props) => {
   return (
     <div className="col-md-3 check">
       <GoogleModel
-        projectId={project._id}
+        projectId={project.id}
         show={show}
-        onHide={() => setShow(false)}
+        onHide={handleClose}
       />
 
       <div className="program-tile">
         <div className="program-thumb">
-          <Link to={`/project/${project._id}`}>
-            {project.thumbUrl && (
+          <Link to={`/project/${project.id}/preview`}>
+            {project.thumb_url && (
               <div
                 className="project-thumb"
                 style={{
-                  backgroundImage: `url(${global.config.laravelAPIUrl}${project.thumbUrl})`,
+                  backgroundImage: `url(${global.config.resourceUrl}${project.thumb_url})`,
                 }}
               />
             )}
@@ -55,72 +55,40 @@ const ProjectCard = (props) => {
             <div className="row">
               <div className="col-md-10">
                 <h3 className="program-title">
-                  <Link to={`/project/${project._id}`}>
+                  <Link to={`/project/${project.id}`}>
                     {project.name}
                   </Link>
                 </h3>
               </div>
 
               <div className="col-md-2">
-                <div className="dropdown pull-right check">
-                  <button
-                    className="btn project-dropdown-btn project"
-                    type="button"
-                    id="dropdownMenuButton"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
+                <Dropdown className="project-dropdown check d-flex justify-content-center align-items-center">
+                  <Dropdown.Toggle
+                    className="project-dropdown-btn project d-flex justify-content-center align-items-center"
                   >
                     <FontAwesomeIcon icon="ellipsis-v" />
-                  </button>
+                  </Dropdown.Toggle>
 
-                  <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <Link
-                      className="dropdown-item"
-                      to={`/project/preview2/${project._id}`}
-                    >
-                      <FontAwesomeIcon icon="eye" />
-                      {' '}
+                  <Dropdown.Menu>
+                    <Dropdown.Item as={Link} to={`/project/${project.id}/preview`}>
+                      <FontAwesomeIcon icon="eye" className="mr-2" />
                       Preview
-                    </Link>
-                    <Link
-                      className="dropdown-item"
-                      to={`/project/create/${project._id}`}
-                    >
-                      <FontAwesomeIcon icon="pencil" />
-                      {' '}
+                    </Dropdown.Item>
+                    <Dropdown.Item as={Link} to={`/project/${project.id}/edit`}>
+                      <FontAwesomeIcon icon="pen" className="mr-2" />
                       Edit
-                    </Link>
-                    {/*
-                    <a
-                      className="dropdown-item"
-                      onClick={(e) => {
-                        Swal.fire({
-                          title: "STAY TUNED!",
-                          text: "COMING SOON",
-                          imageUrl: logo,
-                          imageWidth: 400,
-                          imageHeight: 200,
-                          imageAlt: "Custom image",
-                        });
-                      }}
-                    >
-                      <FontAwesomeIcon icon="share" />
-                      {' '}
-                      Send To
-                    </a>
-                    */}
+                    </Dropdown.Item>
+
                     <li className="dropdown-submenu send">
-                      <a className="test" tabIndex="-1">
-                        <FontAwesomeIcon icon="newspaper" />
-                        {' '}
+                      <a tabIndex="-1">
+                        <FontAwesomeIcon icon="newspaper" className="mr-2" />
                         Publish
                       </a>
                       <ul className="dropdown-menu check">
                         <li
                           onClick={() => {
                             handleShow();
-                            getProjectId(project._id);
+                            getProjectId(project.id);
                             dispatch(googleShare(false));
                           }}
                         >
@@ -135,7 +103,7 @@ const ProjectCard = (props) => {
                                   getProjectCourseFromLMS(
                                     data.lmsName.toLowerCase(),
                                     data._id,
-                                    project._id,
+                                    project.id,
                                     project.playlists,
                                     data.lmsUrl,
                                   ),
@@ -149,50 +117,29 @@ const ProjectCard = (props) => {
                       </ul>
                     </li>
 
-                    <li className="dropdown-submenu send">
-                      <a
-                        className="test"
-                        tabIndex="-1"
+                    {project.shared && (
+                      <Dropdown.Item
+                        to="#"
                         onClick={() => {
                           const protocol = `${window.location.href.split('/')[0]}//`;
-                          const url = `${protocol + window.location.host}/project/shared/${project._id.trim()}`;
+                          const url = `${protocol + window.location.host}/project/shared/${project.id}`;
                           SharePreviewPopup(url, project.name);
                         }}
                       >
-                        <FontAwesomeIcon icon="share" />
-                        {' '}
+                        <FontAwesomeIcon icon="share" className="mr-2" />
                         Share
-                      </a>
-                    </li>
+                      </Dropdown.Item>
+                    )}
 
-                    {/*
-                    <a
-                      className="dropdown-item"
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        window.open(`/api/download/project/${project._id}`);
-                      }}
+                    <Dropdown.Item
+                      to="#"
+                      onClick={() => showDeletePopup(project.id, project.name, 'Project')}
                     >
-                      <FontAwesomeIcon icon="cloud-download" />
-                      {' '}
-                      Executable
-                    </a>
-                    */}
-                    <a
-                      className="dropdown-item"
-                      onClick={() => showDeletePopup(
-                        project._id,
-                        project.name,
-                        'Project',
-                      )}
-                    >
-                      <FontAwesomeIcon icon="times-circle-o" />
-                      {' '}
+                      <FontAwesomeIcon icon="times-circle" className="mr-2" />
                       Delete
-                    </a>
-                  </div>
-                </div>
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </div>
             </div>
 
@@ -210,20 +157,17 @@ const ProjectCard = (props) => {
           </div>
 
           <div className="button-bottom">
-            <Link to={`/project/preview2/${project._id}`}>
-              <FontAwesomeIcon icon="eye" />
-              {' '}
+            <Link to={`/project/${project.id}/preview`}>
+              <FontAwesomeIcon icon="eye" className="mr-2" />
               Preview
             </Link>
-            <Link to={`/project/${project._id}`}>
-              <FontAwesomeIcon icon="cubes" />
-              {' '}
+            <Link to={`/project/${project.id}`}>
+              <FontAwesomeIcon icon="cubes" className="mr-2" />
               Build
             </Link>
 
-            <Link to={`/project/create/${project._id}`}>
-              <FontAwesomeIcon icon="pencil" />
-              {' '}
+            <Link to={`/project/${project.id}/edit`}>
+              <FontAwesomeIcon icon="pen" className="mr-2" />
               Edit
             </Link>
           </div>
@@ -231,7 +175,7 @@ const ProjectCard = (props) => {
       </div>
 
       {showPreview && (
-        <ProjectPreviewModal key={project._id} project={project} />
+        <ProjectPreviewModal key={project.id} project={project} />
       )}
     </div>
   );

@@ -11,14 +11,16 @@ import bg1 from 'assets/images/loginbg2.png';
 import logo from 'assets/images/logo.svg';
 import loader from 'assets/images/loader.svg';
 import { forgotPasswordAction } from 'store/actions/auth';
+import { getErrors } from 'utils';
 import Error from './Error';
 
 import './style.scss';
 
 function ForgotPasswordPage(props) {
-  const { isLoading, forgotPassword, error } = props;
+  const { isLoading, forgotPassword } = props;
 
   const [email, setEmail] = useState('');
+  const [error, setError] = useState(null);
 
   const onChangeEmail = useCallback((e) => {
     setEmail(e.target.value);
@@ -28,6 +30,8 @@ function ForgotPasswordPage(props) {
     e.preventDefault();
 
     try {
+      setError(null);
+
       await forgotPassword({ email });
 
       Swal.fire({
@@ -36,7 +40,7 @@ function ForgotPasswordPage(props) {
         text: 'Password reset email has been sent. Please follow the instructions.',
       });
     } catch (err) {
-      // console.log(err);
+      setError(getErrors(err));
     }
   }, [email, forgotPassword]);
 
@@ -101,12 +105,7 @@ function ForgotPasswordPage(props) {
 
 ForgotPasswordPage.propTypes = {
   isLoading: PropTypes.bool.isRequired,
-  error: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   forgotPassword: PropTypes.func.isRequired,
-};
-
-ForgotPasswordPage.defaultProps = {
-  error: null,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -115,7 +114,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
-  error: state.auth.error,
 });
 
 export default withRouter(

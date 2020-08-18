@@ -56,7 +56,7 @@ class ResourceCard extends React.Component {
             <div className="resource-card-wrapper">
               {resource.metadata && resource.metadata.thumbUrl && (
                 <div className="activity-thumb-wrapper">
-                  <Link to={`/playlist/preview/${playlist._id}/resource/${resource._id}`}>
+                  <Link to={`/playlist/preview/${playlist.id}/resource/${resource._id}`}>
                     <div
                       className="activity-thumb"
                       style={{
@@ -78,7 +78,7 @@ class ResourceCard extends React.Component {
                 }
               >
                 <div className="title">
-                  <Link to={`/playlist/preview/${playlist._id}/resource/${resource._id}`}>
+                  <Link to={`/playlist/preview/${playlist.id}/resource/${resource._id}`}>
                     {resource.metadata && resource.metadata.title !== undefined
                       ? resource.metadata.title
                       : resource.title}
@@ -115,7 +115,7 @@ class ResourceCard extends React.Component {
                     <div className="dropdown-menu">
                       <Link
                         className="dropdown-item"
-                        to={`/playlist/preview/${playlist._id}/resource/${resource._id}`}
+                        to={`/playlist/preview/${playlist.id}/resource/${resource._id}`}
                       >
                         <FontAwesomeIcon icon="eye" />
                         {' '}
@@ -124,10 +124,10 @@ class ResourceCard extends React.Component {
                       <Link
                         className="dropdown-item"
                         to={
-                          `/project/${match.params.projectId}/playlist/${playlist._id}/activity/create/${resource._id}`
+                          `/project/${match.params.projectId}/playlist/${playlist.id}/activity/create/${resource._id}`
                         }
                       >
-                        <FontAwesomeIcon icon="pencil" />
+                        <FontAwesomeIcon icon="pen" />
                         {' '}
                         Edit
                       </Link>
@@ -217,7 +217,7 @@ class ResourceCard extends React.Component {
                         Executable
                       </a>
                       <a className="dropdown-item" onClick={this.handleDelete}>
-                        <FontAwesomeIcon icon="times-circle-o" />
+                        <FontAwesomeIcon icon="times-circle" />
                         {' '}
                         Delete
                       </a>

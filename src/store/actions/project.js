@@ -3,33 +3,180 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 import loaderImg from 'assets/images/loader.svg';
-import {
-  SHOW_CREATE_PROJECT_MODAL,
-  SHOW_CREATE_PROJECT_SUBMENU,
-  CREATE_PROJECT,
-  LOAD_MY_PROJECTS,
-  LOAD_PROJECT,
-  DELETE_PROJECT,
-  PAGE_LOADING,
-  PAGE_LOADING_COMPLETE,
-  UPDATE_PROJECT,
-  UPLOAD_PROJECT_THUMBNAIL,
-  SHARE_PROJECT,
-  PROJECT_THUMBNAIL_PROGRESS,
-  SHOW_USER_SUB_MENU,
-  CLOSE_MENU,
-  SHOW_LMS,
-  LOAD_MY_PROJECTS_SELECTED,
-  SET_LMS_COURSE,
-  CHANGE_LOADING,
-} from '../actionTypes';
-import SharePreviewPopup from '../../helpers/SharePreviewPopup';
+import SharePreviewPopup from 'components/SharePreviewPopup';
+import projectService from 'services/project.service';
+import * as actionTypes from '../actionTypes';
 
-// Publishes the project in LEARN
-export const shareProject = (project) => ({
-  type: SHARE_PROJECT,
-  project,
-});
+export const createProjectAction = (data) => async (dispatch) => {
+  try {
+    dispatch({ type: actionTypes.CREATE_PROJECT_REQUEST });
+
+    const { project } = await projectService.create(data);
+
+    dispatch({
+      type: actionTypes.CREATE_PROJECT_SUCCESS,
+      payload: { project },
+    });
+  } catch (e) {
+    dispatch({ type: actionTypes.CREATE_PROJECT_FAIL });
+
+    throw e;
+  }
+};
+
+export const loadProjectAction = (projectId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.LOAD_PROJECT_REQUEST,
+    });
+
+    const { project } = await projectService.get(projectId);
+
+    dispatch({
+      type: actionTypes.LOAD_PROJECT_SUCCESS,
+      payload: { project },
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.LOAD_PROJECT_FAIL,
+    });
+  }
+};
+
+export const updateProjectAction = (projectId, data) => async (dispatch) => {
+  try {
+    dispatch({ type: actionTypes.UPDATE_PROJECT_REQUEST });
+
+    const { project } = await projectService.update(projectId, data);
+
+    dispatch({
+      type: actionTypes.UPDATE_PROJECT_SUCCESS,
+      payload: { project },
+    });
+  } catch (e) {
+    dispatch({ type: actionTypes.UPDATE_PROJECT_FAIL });
+
+    throw e;
+  }
+};
+
+export const deleteProjectAction = (projectId) => async (dispatch) => {
+  try {
+    dispatch({ type: actionTypes.DELETE_PROJECT_REQUEST });
+
+    await projectService.remove(projectId);
+
+    dispatch({
+      type: actionTypes.DELETE_PROJECT_SUCCESS,
+      payload: { projectId },
+    });
+  } catch (e) {
+    dispatch({ type: actionTypes.DELETE_PROJECT_FAIL });
+
+    throw e;
+  }
+};
+
+export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
+  const config = {
+    onUploadProgress: (progressEvent) => {
+      dispatch({
+        type: actionTypes.PROJECT_THUMBNAIL_PROGRESS,
+        payload: {
+          progress: `Uploaded progress: ${
+            Math.round((progressEvent.loaded / progressEvent.total) * 100)
+          }%`,
+        },
+      });
+    },
+  };
+
+  const { thumbUrl } = await projectService.upload(formData, config);
+
+  dispatch({
+    type: actionTypes.UPLOAD_PROJECT_THUMBNAIL,
+    payload: { thumbUrl },
+  });
+};
+
+export const loadMyProjectsAction = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.PAGE_LOADING,
+    });
+
+    const { projects } = await projectService.getAll();
+
+    dispatch({
+      type: actionTypes.LOAD_MY_PROJECTS,
+      payload: { projects },
+    });
+
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+
+    throw e;
+  }
+};
+
+export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.PAGE_LOADING,
+    });
+
+    const { project } = await projectService.get(projectId);
+
+    dispatch({
+      type: actionTypes.LOAD_MY_PROJECTS_SELECTED,
+      payload: { project },
+    });
+
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+
+    throw e;
+  }
+};
+
+export const toggleProjectShareAction = (projectId, ProjectName) => async (dispatch) => {
+  const { project } = await projectService.share(projectId);
+
+  dispatch({
+    type: actionTypes.SHARE_PROJECT,
+    payload: { project },
+  });
+
+  const protocol = `${window.location.href.split('/')[0]}//`;
+  const url = `${protocol + window.location.host}/project/shared/${projectId}`;
+  return SharePreviewPopup(url, ProjectName);
+};
+
+export const toggleProjectShareRemovedAction = (projectId, ProjectName) => async (dispatch) => {
+  const { project } = await projectService.removeShared(projectId);
+
+  dispatch({
+    type: actionTypes.SHARE_PROJECT,
+    payload: { project },
+  });
+
+  Swal.fire({
+    title: `You stopped sharing <strong>"${ProjectName}"</strong> !`,
+    html: 'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
+  });
+};
+
+// TODO: need to refactor bottom functions
 
 // Publishes the project in LEARN
 export const shareProjectAction = (projectId) => async () => {
@@ -54,208 +201,35 @@ export const shareProjectAction = (projectId) => async () => {
     });
 };
 
-// Loads a specific project
-export const loadProject = (project) => ({
-  type: LOAD_PROJECT,
-  project,
-});
-
-// gets the data of project based on project id from the server
-// populates the data to the edit form
-export const loadProjectAction = (projectId) => async (dispatch) => {
-  const { token } = JSON.parse(localStorage.getItem('auth'));
-  const response = await axios.post(
-    '/api/load-project',
-    { projectId },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
-
-  if (response.data.status === 'success') {
-    dispatch(loadProject(response.data.data.project));
-  }
-};
-
-// when user clicks on header plus button it opens dropdown menu
-
-export const showCreateProjectSubmenu = () => ({
-  type: SHOW_CREATE_PROJECT_SUBMENU,
-});
-
-export const showUserSubMenu = () => ({
-  type: SHOW_USER_SUB_MENU,
-});
-
-export const closeMenu = () => ({
-  type: CLOSE_MENU,
-});
-
-export const closeMenuAction = () => async (dispatch) => {
-  try {
-    dispatch(closeMenu());
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
-export const showCreateProjectSubmenuAction = () => async (dispatch) => {
-  try {
-    dispatch(showCreateProjectSubmenu());
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
-export const showUserSubMenuAction = () => async (dispatch) => {
-  try {
-    dispatch(showUserSubMenu());
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
 // opens a project modal both for new
-
 export const showCreateProjectModal = () => ({
-  type: SHOW_CREATE_PROJECT_MODAL,
+  type: actionTypes.SHOW_CREATE_PROJECT_MODAL,
 });
 
 export const showCreateProjectModalAction = () => async (dispatch) => {
-  try {
-    dispatch(showCreateProjectModal());
-  } catch (e) {
-    throw new Error(e);
-  }
+  dispatch(showCreateProjectModal());
 };
-
-export const createProject = (projectData) => ({
-  type: CREATE_PROJECT,
-  projectData,
-});
-
-// This method sends two different request based on request parameter
-// request parameter can be create / update
-// if request = create it sends request to create a Project
-// if request = update it sends request to update the resource
-
-export const createUpdateProject = async (
-  url,
-  request,
-  name,
-  description,
-  thumbUrl,
-) => {
-  try {
-    const { token } = JSON.parse(localStorage.getItem('auth'));
-
-    const data = {
-      name,
-      description,
-      thumbUrl,
-    };
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    let response = {};
-    if (request === 'create') {
-      response = await axios.post(url, data, config);
-    } else if (request === 'update') {
-      response = await axios.put(url, data, config);
-    }
-
-    if (response.data.status === 'success') {
-      return {
-        _id: response.data.data._id,
-        name: response.data.data.name,
-        thumbUrl: response.data.data.thumbUrl,
-        userId: response.data.data.userId,
-      };
-    }
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
-// create project request
-// @params, name, description, thumbUrl is sent to the server
-// upon success redux states appends the project to already created projects
-
-export const createProjectAction = (name, description, thumbUrl) => async (dispatch) => {
-  try {
-    const projectData = await createUpdateProject(
-      '/api/project',
-      'create',
-      name,
-      description,
-      thumbUrl,
-    );
-
-    dispatch(createProject(projectData));
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
-export const updateProject = (projectData) => ({
-  type: UPDATE_PROJECT,
-  projectData,
-});
-
-// edit project data is sent to the server for updates
-
-export const updateProjectAction = (
-  projectId,
-  name,
-  description,
-  thumbUrl,
-) => async (dispatch) => {
-  try {
-    const projectData = await createUpdateProject(
-      `/api/project/${projectId}`,
-      'update',
-      name,
-      description,
-      thumbUrl,
-    );
-
-    dispatch(updateProject(projectData));
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
-// loadLMS
-
-export const loadLMSData = (lmsInfo) => ({
-  type: SHOW_LMS,
-  lmsInfo,
-});
-
-// load projects of current logged in user
 
 // LMS action starts from here
-export const LoadLMS = () => async (dispatch) => {
-  try {
-    const { token } = JSON.parse(localStorage.getItem('auth'));
-    const response = await axios.get(
-      `${global.config.laravelAPIUrl}go/lms-manager/get-user-settings`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-
-    dispatch(loadLMSData(response.data.data));
-  } catch (e) {
-    throw new Error(e);
-  }
+export const loadLmsAction = () => async (/* dispatch */) => {
+  // try {
+  //   const { token } = JSON.parse(localStorage.getItem('auth'));
+  //   const response = await axios.get(
+  //     `${global.config.laravelAPIUrl}go/lms-manager/get-user-settings`,
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     },
+  //   );
+  //
+  //   dispatch({
+  //     type: actionTypes.SHOW_LMS,
+  //     lmsInfo: response.data.data,
+  //   });
+  // } catch (e) {
+  //   throw e;
+  // }
 };
 
 export const ShareLMS = (
@@ -320,218 +294,26 @@ export const ShareLMS = (
   });
 };
 
-export const changeloader = (change) => ({
-  type: CHANGE_LOADING,
-  change,
-});
-
-// LMS action ENDS from here
-
-export const loadMyProjects = (projects) => ({
-  type: LOAD_MY_PROJECTS,
-  projects,
-});
-
-export const loadMyProjectsSelected = (projects) => ({
-  type: LOAD_MY_PROJECTS_SELECTED,
-  projects,
-});
-
-// load projects of current logged in user
-
-export const loadMyProjectsAction = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: PAGE_LOADING,
-    });
-    const { token } = JSON.parse(localStorage.getItem('auth'));
-    const response = await axios.post(
-      `${global.config.laravelAPIUrl}/myprojects`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-
-    if (response.data.status === 'success') {
-      let projects = [];
-      projects = response.data.data.projects;
-
-      dispatch(loadMyProjects(projects));
-      dispatch({
-        type: PAGE_LOADING_COMPLETE,
-      });
-    }
-  } catch (e) {
-    dispatch({
-      type: PAGE_LOADING_COMPLETE,
-    });
-    throw new Error(e);
-  }
-};
-
-// load project preview
-
-export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
-  try {
-    dispatch({
-      type: PAGE_LOADING,
-    });
-    const { token } = JSON.parse(localStorage.getItem('auth'));
-    const response = await axios.get(
-      `${global.config.laravelAPIUrl}/project?projectId=${projectId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-
-    if (response.data.status === 'success') {
-      dispatch(loadMyProjectsSelected(response.data.data.project));
-      dispatch({
-        type: PAGE_LOADING_COMPLETE,
-      });
-    }
-  } catch (e) {
-    dispatch({
-      type: PAGE_LOADING_COMPLETE,
-    });
-    throw new Error(e);
-  }
-};
-
 // load project shared view
-export const loadMyProjectsActionPreviewShared = (projectId) => async (dispatch) => {
-  try {
-    const response = await axios.get(`${global.config.laravelAPIUrl}/get-shared-project?projectId=${projectId}`);
-
-    if (response.data.status === 'success') {
-      dispatch(loadMyProjectsSelected(response.data.data.project));
-      dispatch({
-        type: PAGE_LOADING_COMPLETE,
-      });
-    } else {
-      dispatch(loadMyProjectsSelected(response.data));
-    }
-  } catch (e) {
-    throw new Error(e);
-  }
+export const loadMyProjectsActionPreviewShared = (/* projectId */) => async (/* dispatch */) => {
+  // try {
+  //   const response = await axios.get(`${global.config.laravelAPIUrl}/get-shared-project?projectId=${projectId}`);
+  // {
+  //   type: actionTypes.LOAD_MY_PROJECTS_SELECTED,
+  //     payload: { project },
+  // }
+  //   if (response.data.status === 'success') {
+  //     dispatch(loadMyProjectsSelected(response.data.data.project));
+  //     dispatch({
+  //       type: actionTypes.PAGE_LOADING_COMPLETE,
+  //     });
+  //   } else {
+  //     dispatch(loadMyProjectsSelected(response.data));
+  //   }
+  // } catch (e) {
+  //   throw e;
+  // }
 };
-
-// toggle project share
-export const toggleProjectShareAction = async (projectId, ProjectName) => {
-  const { token } = JSON.parse(localStorage.getItem('auth'));
-  const response = await axios.post(
-    `${global.config.laravelAPIUrl}/share-project`,
-    { projectId },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
-
-  if (response.data.status === 'success') {
-    const protocol = `${window.location.href.split('/')[0]}//`;
-    const url = `${protocol + window.location.host}/project/shared/${projectId.trim()}`;
-    return SharePreviewPopup(url, ProjectName);
-  }
-};
-
-export const toggleProjectShareRemovedAction = async (projectId, ProjectName) => {
-  const { token } = JSON.parse(localStorage.getItem('auth'));
-  const response = await axios.post(
-    `${global.config.laravelAPIUrl}/remove-share-project`,
-    { projectId },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
-
-  if (response.data.status === 'success') {
-    Swal.fire({
-      title: `You stopped sharing <strong>"${ProjectName}"</strong> ! `,
-      html: 'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
-    });
-  }
-};
-
-export const deleteProject = (projectId) => ({
-  type: DELETE_PROJECT,
-  projectId,
-});
-
-// deletes project
-export const deleteProjectAction = (projectId) => async (dispatch) => {
-  try {
-    const { token } = JSON.parse(localStorage.getItem('auth'));
-    const response = await axios.delete(
-      `/api/project/${projectId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-
-    if (response.data.status === 'success') {
-      dispatch(deleteProject(projectId));
-    }
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
-export const uploadProjectThumbnail = (thumbUrl) => ({
-  type: UPLOAD_PROJECT_THUMBNAIL,
-  thumbUrl,
-});
-
-export const projectThumbnailProgress = (progress) => ({
-  type: PROJECT_THUMBNAIL_PROGRESS,
-  progress,
-});
-
-// uploads project thumbnail
-export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
-  try {
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
-      onUploadProgress: (progressEvent) => {
-        dispatch(
-          projectThumbnailProgress(
-            `Uploaded progress: ${
-              Math.round((progressEvent.loaded / progressEvent.total) * 100)
-            }%`,
-          ),
-        );
-      },
-    };
-    return axios
-      .post(
-        `${global.config.laravelAPIUrl}/post-upload-image`,
-        formData,
-        config,
-      )
-      .then((response) => {
-        dispatch(uploadProjectThumbnail(response.data.data.guid));
-      });
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
-export const setLmsCourse = (lmsCourse) => ({
-  type: SET_LMS_COURSE,
-  lmsCourse,
-});
 
 export const getProjectCourseFromLMS = (
   lms,
@@ -556,7 +338,10 @@ export const getProjectCourseFromLMS = (
     )
     .then((response) => {
       if (response.data.status === 'success') {
-        dispatch(setLmsCourse(response.data.data));
+        dispatch({
+          type: actionTypes.SET_LMS_COURSE,
+          lmsCourse: response.data.data,
+        });
 
         const globalStoreClone = getState();
 

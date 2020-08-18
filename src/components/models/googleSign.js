@@ -63,7 +63,7 @@ const GoogleModel = ({
                   scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
                   cookiePolicy="single_host_origin"
                 >
-                  <span> Login with Google</span>
+                  <span>Login with Google</span>
                 </GoogleLogin>
               </div>
             </div>
@@ -197,7 +197,7 @@ const GoogleModel = ({
 
 GoogleModel.propTypes = {
   show: PropTypes.bool.isRequired,
-  projectId: PropTypes.string.isRequired,
+  projectId: PropTypes.number.isRequired,
   onHide: PropTypes.func.isRequired,
   googleClassRoomLogin: PropTypes.func.isRequired,
   googleClassRoomLoginFailure: PropTypes.func.isRequired,

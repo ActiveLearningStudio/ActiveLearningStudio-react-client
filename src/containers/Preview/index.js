@@ -6,9 +6,9 @@ import { withRouter } from 'react-router-dom';
 import { createProjectAction, loadMyProjectsAction, showCreateProjectModalAction } from 'store/actions/project';
 import { loadPlaylistAction } from 'store/actions/playlist';
 import Header from 'components/Header';
-import ProjectPreview from 'components/ProjectPreview';
-import ResourcePreview from 'components/ResourcePreview';
-import PlaylistPreview from 'components/PlaylistPreview';
+import ProjectPreview from './ProjectPreview';
+import ResourcePreview from './ResourcePreview';
+import PlaylistPreview from './PlaylistPreview';
 
 class PreviewPage extends React.Component {
   constructor(props) {
@@ -83,8 +83,12 @@ class PreviewPage extends React.Component {
 PreviewPage.propTypes = {
   match: PropTypes.object.isRequired,
   project: PropTypes.object.isRequired,
-  previewType: PropTypes.string.isRequired,
+  previewType: PropTypes.string,
   loadMyProjects: PropTypes.func.isRequired,
+};
+
+PreviewPage.defaultProps = {
+  previewType: '',
 };
 
 const mapDispatchToProps = (dispatch) => ({

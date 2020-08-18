@@ -5,7 +5,7 @@ import styled, { keyframes } from 'styled-components';
 import { slideInRight } from 'react-animations';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import CreateProjectPopup from 'components/CreateProjectPopup';
+import CreateProjectPopup from './CreateProjectPopup';
 
 const bounceAnimation = keyframes`${slideInRight}`;
 

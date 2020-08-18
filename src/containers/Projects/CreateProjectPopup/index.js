@@ -3,21 +3,18 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
-// import { fadeIn } from 'react-animations';
-// import styled, { keyframes } from 'styled-components';
+import Swal from 'sweetalert2';
 
+import loader from 'assets/images/loader.svg';
 import {
   createProjectAction,
   updateProjectAction,
   uploadProjectThumbnailAction,
 } from 'store/actions/project';
+import InputField from 'components/InputField';
+import TextareaField from 'components/TextareaField';
 
 import './style.scss';
-
-// const fadeAnimation = keyframes`${fadeIn}`;
-// const FaceDiv = styled.div`
-//   animation: 1s ${fadeAnimation};
-// `;
 
 const required = (value) => (value ? undefined : '* Required');
 const maxLength = (max) => (value) => (value && value.length > max
@@ -27,116 +24,80 @@ const maxLength80 = maxLength(80);
 
 // TODO: need to restructure code, clean up attributes
 // remove unused code,
-const renderProjectNameInput = ({
-  input,
-  label,
-  type,
-  meta: { touched, error, warning },
-}) => (
-  <div>
-    <label>
-      <h2>{label}</h2>
-    </label>
-    <div>
-      <input {...input} type={type} />
-      {touched
-        && ((error && <span className="validation-error">{error}</span>)
-          || (warning && <span>{warning}</span>))}
-    </div>
-  </div>
-);
-
-renderProjectNameInput.propTypes = {
-  input: PropTypes.object.isRequired,
-  label: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  meta: PropTypes.object.isRequired,
-};
-
-const renderProjectDescriptionInput = ({
-  input,
-  label,
-  meta: { touched, error, warning },
-}) => (
-  <div>
-    <label>{label}</label>
-    <div>
-      <textarea {...input} />
-      {touched
-        && ((error && <span className="validation-error">{error}</span>)
-          || (warning && <span>{warning}</span>))}
-    </div>
-  </div>
-);
-
-renderProjectDescriptionInput.propTypes = {
-  input: PropTypes.object.isRequired,
-  label: PropTypes.string.isRequired,
-  meta: PropTypes.object.isRequired,
-};
 
 let imageValidation = '';
 
 const onSubmit = async (values, dispatch, props) => {
+  const { history, project: { thumbUrl }, editMode } = props;
+  const { name, description } = values;
+
   try {
-    if (!props.project.thumbUrl) {
+    if (!thumbUrl) {
       imageValidation = '* Required';
       return false;
     }
 
-    if (props.editMode) {
+    if (editMode) {
       // update
       await dispatch(
-        updateProjectAction(
-          props.match.params.projectId,
-          values.projectName,
-          values.description,
-          props.project.thumbUrl,
-        ),
+        updateProjectAction(props.match.params.projectId, {
+          name,
+          description,
+          thumb_url: thumbUrl,
+        }),
       );
     } else {
       // create
       await dispatch(
-        createProjectAction(
-          values.projectName,
-          values.description,
-          props.project.thumbUrl,
-        ),
+        createProjectAction({
+          name,
+          description,
+          thumb_url: thumbUrl,
+        }),
       );
     }
 
-    props.history.push('/');
+    history.push('/');
   } catch (e) {
-    console.log(e.message);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: `Failed to ${editMode ? 'update' : 'create'} project.`,
+    });
   }
 };
 
 export const uploadThumb = async (e, props) => {
   const formData = new FormData();
   try {
-    formData.append('uploads', e.target.files[0]);
+    formData.append('thumb', e.target.files[0]);
 
     imageValidation = '';
     await props.uploadProjectThumbnail(formData);
   } catch (err) {
-    console.log(err);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Failed to upload thumb.',
+    });
   }
 };
 
 let CreateProjectPopup = (props) => {
   const {
+    isLoading,
     project,
     editMode,
     handleSubmit,
-    handleHideCreatePlaylistModal,
+    handleCloseProjectModal,
   } = props;
 
   // remove popup when escape is pressed
   const escFunction = useCallback((event) => {
     if (event.keyCode === 27) {
-      handleHideCreatePlaylistModal(event);
+      handleCloseProjectModal(event);
     }
-  }, [handleHideCreatePlaylistModal]);
+  }, [handleCloseProjectModal]);
 
   useEffect(() => {
     document.addEventListener('keydown', escFunction, false);
@@ -154,8 +115,8 @@ let CreateProjectPopup = (props) => {
       >
         <div className="project-name">
           <Field
-            name="projectName"
-            component={renderProjectNameInput}
+            name="name"
+            component={InputField}
             type="text"
             label="Enter Project Name (Up to 80 characters)"
             validate={[required, maxLength80]}
@@ -163,12 +124,7 @@ let CreateProjectPopup = (props) => {
         </div>
 
         <div className="upload-thumbnail">
-          {/* TODO: need to refactor */}
-          <h2>
-            {' '}
-            <br />
-            Upload thumbnail
-          </h2>
+          <h2 className="mt-4 mb-2">Upload thumbnail</h2>
 
           <label>
             <input
@@ -189,7 +145,7 @@ let CreateProjectPopup = (props) => {
 
           {project.progress}
 
-          {project.thumbUrl ? (
+          {project.thumbUrl && (
             <div className="thumb-display">
               <div
                 className="success"
@@ -202,40 +158,30 @@ let CreateProjectPopup = (props) => {
                 Image Uploaded:
               </div>
               <div className="thumb">
-                <img src={global.config.laravelAPIUrl + project.thumbUrl} alt="" />
+                <img src={global.config.resourceUrl + project.thumbUrl} alt="" />
               </div>
             </div>
-          ) : null}
+          )}
         </div>
 
         <div className="project-description">
-          {/* TODO: need to refactor */}
-          <h2>
-            {' '}
-            <br />
-            Program Description
-          </h2>
+          <h2 className="mt-4 mb-0">Program Description</h2>
 
           <Field
             name="description"
-            component={renderProjectDescriptionInput}
+            component={TextareaField}
             validate={[required]}
           />
         </div>
 
         <div className="create-project-template-wrapper">
-          {editMode ? (
-            <button type="submit" className="create-project-submit-btn">
-              Update Project
-            </button>
-          ) : (
-            <>
-              <button type="submit" className="create-project-submit-btn">
-                Create Project
-              </button>
-              {/* <button className="project-template-btn">Start With Template</button> */}
-            </>
-          )}
+          <button type="submit" className="create-project-submit-btn" disabled={isLoading}>
+            {isLoading ? (
+              <img src={loader} alt="" />
+            ) : (
+              editMode ? 'Update Project' : 'Create Project'
+            )}
+          </button>
         </div>
       </form>
     </div>
@@ -245,8 +191,9 @@ let CreateProjectPopup = (props) => {
 CreateProjectPopup.propTypes = {
   project: PropTypes.object.isRequired,
   editMode: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  handleHideCreatePlaylistModal: PropTypes.func.isRequired,
+  handleCloseProjectModal: PropTypes.func.isRequired,
 };
 
 CreateProjectPopup = reduxForm({
@@ -256,27 +203,19 @@ CreateProjectPopup = reduxForm({
 })(CreateProjectPopup);
 
 const mapDispatchToProps = (dispatch) => ({
-  createProject: (name, description, thumbUrl) => dispatch(createProjectAction(name, description, thumbUrl)),
-  updateProject: (projectId, name, description, thumbUrl) => dispatch(
-    updateProjectAction(projectId, name, description, thumbUrl),
-  ),
   uploadProjectThumbnail: (formData) => dispatch(uploadProjectThumbnailAction(formData)),
 });
 
 const mapStateToProps = (state) => ({
   initialValues: {
-    projectName: state.project.selectedProject
+    name: state.project.selectedProject
       ? state.project.selectedProject.name
       : null,
     description: state.project.selectedProject
       ? state.project.selectedProject.description
       : null,
-  }, // pull initial values from account reducer
+  },
+  isLoading: state.project.isLoading,
 });
 
-CreateProjectPopup = connect(
-  mapStateToProps,
-  mapDispatchToProps, // bind account loading action creator
-)(CreateProjectPopup);
-
-export default withRouter(CreateProjectPopup);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CreateProjectPopup));

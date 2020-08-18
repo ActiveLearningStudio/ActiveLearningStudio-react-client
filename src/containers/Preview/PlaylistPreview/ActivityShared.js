@@ -7,7 +7,7 @@ import { loadPlaylistAction } from 'store/actions/playlist';
 
 import './style.scss';
 
-const H5PPreview = React.lazy(() => import('../../containers/H5PPreview'));
+const H5PPreview = React.lazy(() => import('../../H5PPreview'));
 
 class ActivityShared extends React.Component {
   constructor(props) {

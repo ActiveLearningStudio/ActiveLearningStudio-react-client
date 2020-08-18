@@ -1,63 +1,104 @@
 import axios from 'axios';
 
-import {
-  CREATE_PLAYLIST,
-  DELETE_PLAYLIST,
-  SHOW_CREATE_PLAYLIST_MODAL,
-  HIDE_CREATE_PLAYLIST_MODAL,
-  LOAD_PROJECT_PLAYLISTS,
-  LOAD_PLAYLIST,
-  CHANGE_PLAYLIST_TITLE,
-  REORDER_PLAYLIST,
-  REORDER_PLAYLISTS,
-  CLICK_PLAYLIST_TITLE,
-  LOAD_H5P,
-} from '../actionTypes';
+import playlistService from 'services/playlist.service';
+import * as actionTypes from '../actionTypes';
 
-export const reorderPlaylists = (playlists) => ({
-  type: REORDER_PLAYLISTS,
-  playlists,
+export const createPlaylistAction = (projectId, title) => async (dispatch) => {
+  try {
+    dispatch({ type: actionTypes.CREATE_PLAYLIST_REQUEST });
+
+    const { playlist } = await playlistService.create(projectId, { title });
+
+    dispatch({
+      type: actionTypes.CREATE_PLAYLIST_SUCCESS,
+      payload: { playlist },
+    });
+  } catch (e) {
+    dispatch({ type: actionTypes.CREATE_PLAYLIST_FAIL });
+
+    throw e;
+  }
+};
+
+export const loadPlaylist = (playlist) => ({
+  type: actionTypes.LOAD_PLAYLIST,
+  playlist,
 });
 
-export const loadProjectPlaylists = (playlists) => ({
-  type: LOAD_PROJECT_PLAYLISTS,
+export const loadPlaylistAction = (projectId, id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.LOAD_PLAYLIST_REQUEST,
+    });
+
+    const { playlist } = await playlistService.get(projectId, id);
+
+    dispatch({
+      type: actionTypes.LOAD_PLAYLIST_SUCCESS,
+      payload: { playlist },
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.LOAD_PLAYLIST_FAIL,
+    });
+
+    throw e;
+  }
+};
+
+export const deletePlaylistAction = (projectId, id) => async (dispatch) => {
+  try {
+    dispatch({ type: actionTypes.DELETE_PLAYLIST_REQUEST });
+
+    await playlistService.remove(projectId, id);
+
+    dispatch({
+      type: actionTypes.DELETE_PLAYLIST_SUCCESS,
+      payload: { playlistId: id },
+    });
+  } catch (e) {
+    dispatch({ type: actionTypes.DELETE_PLAYLIST_FAIL });
+
+    throw e;
+  }
+};
+
+export const loadProjectPlaylistsAction = (projectId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.PAGE_LOADING,
+    });
+
+    const { playlists } = await playlistService.getAll(projectId);
+
+    dispatch({
+      type: actionTypes.LOAD_PROJECT_PLAYLISTS,
+      payload: { playlists },
+    });
+
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+
+    throw e;
+  }
+};
+
+// Refactor bottom
+
+export const reorderPlaylists = (playlists) => ({
+  type: actionTypes.REORDER_PLAYLISTS,
   playlists,
 });
 
 export const LoadHP = (show) => ({
-  type: LOAD_H5P,
+  type: actionTypes.LOAD_H5P,
   show,
 });
-
-export const loadProjectPlaylistsAction = (projectId) => async (dispatch) => {
-  try {
-    // dispatch({type:PAGE_LOADING});
-    const { token } = JSON.parse(localStorage.getItem('auth'));
-    const response = await axios.post(
-      '/api/project-playlists',
-      {
-        projectId,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-
-    if (response.data.status === 'success') {
-      const { playlists } = response.data.data;
-
-      dispatch(
-        loadProjectPlaylists(playlists),
-      );
-      // dispatch({type:PAGE_LOADING_COMPLETE});
-    }
-  } catch (e) {
-    // dispatch({ type: PAGE_LOADING_COMPLETE });
-    throw new Error(e);
-  }
-};
 
 export const reorderPlaylistsAction = (playlists) => async (dispatch) => {
   // Optimistically dispatching action with new playlists data
@@ -84,7 +125,7 @@ export const reorderPlaylistsAction = (playlists) => async (dispatch) => {
 };
 
 export const reorderPlaylistActivities = (playlist) => ({
-  type: REORDER_PLAYLIST,
+  type: actionTypes.REORDER_PLAYLIST,
   playlist,
 });
 
@@ -110,24 +151,6 @@ export const reorderPlaylistActivitiesAction = (playlist) => async (dispatch) =>
     .catch(() => {
       dispatch(loadProjectPlaylistsAction(playlist.projectId));
     });
-};
-
-export const loadPlaylist = (playlist) => ({
-  type: LOAD_PLAYLIST,
-  playlist,
-});
-
-export const loadPlaylistAction = (playlistId) => async (dispatch) => {
-  const { token } = JSON.parse(localStorage.getItem('auth'));
-  const response = await axios.post(
-    '/api/load-playlist',
-    { playlistId },
-    { headers: { Authorization: `Bearer ${token}` } },
-  );
-
-  if (response.data.status === 'success') {
-    dispatch(loadPlaylist(response.data.data.playlist));
-  }
 };
 
 export const loadLtiPlaylistAction = (playlistId) => async (dispatch) => {
@@ -169,93 +192,24 @@ export const loadPlaylistActionShared = (playlistId) => async (dispatch) => {
 //     });
 // };
 
-export const createPlaylist = (playlistData) => ({
-  type: CREATE_PLAYLIST,
-  playlistData,
-});
-
-export const createPlaylistAction = (projectId, title) => async (dispatch) => {
-  try {
-    const response = await axios.post(
-      '/api/playlist',
-      {
-        projectId,
-        title,
-      },
-    );
-
-    if (response.data.status === 'success') {
-      // getting last playlist id
-
-      const playlistData = {
-        _id: response.data.data._id,
-        title: response.data.data.title,
-        projectId: response.data.data.projectId,
-      };
-
-      dispatch(
-        createPlaylist(playlistData),
-      );
-    }
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
-export const deletePlaylist = (id) => ({
-  type: DELETE_PLAYLIST,
-  id,
-});
-
-export const deletePlaylistAction = (id) => async (dispatch) => {
-  try {
-    const response = await axios.delete(
-      `/api/playlist/${id}`,
-      {
-        id,
-      },
-    );
-
-    if (response.data.status === 'success') {
-      dispatch(
-        deletePlaylist(id),
-      );
-    }
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
 export const showCreatePlaylistModal = () => ({
-  type: SHOW_CREATE_PLAYLIST_MODAL,
+  type: actionTypes.SHOW_CREATE_PLAYLIST_MODAL,
 });
 
 export const showCreatePlaylistModalAction = () => async (dispatch) => {
-  try {
-    dispatch(
-      showCreatePlaylistModal(),
-    );
-  } catch (e) {
-    throw new Error(e);
-  }
+  dispatch(showCreatePlaylistModal());
 };
 
 export const hideCreatePlaylistModal = () => ({
-  type: HIDE_CREATE_PLAYLIST_MODAL,
+  type: actionTypes.HIDE_CREATE_PLAYLIST_MODAL,
 });
 
 export const hideCreatePlaylistModalAction = () => async (dispatch) => {
-  try {
-    dispatch(
-      hideCreatePlaylistModal(),
-    );
-  } catch (e) {
-    throw new Error(e);
-  }
+  dispatch(hideCreatePlaylistModal());
 };
 
 export const changePlaylistTitle = (playlistId, title) => ({
-  type: CHANGE_PLAYLIST_TITLE,
+  type: actionTypes.CHANGE_PLAYLIST_TITLE,
   playlistId,
   title,
 });
@@ -282,13 +236,13 @@ export const changePlaylistTitleAction = (e, playlistId) => async (dispatch) => 
       );
     }
   } catch (err) {
-    // dispatch({ type: PAGE_LOADING_COMPLETE });
+    // dispatch({ type: actionTypes.PAGE_LOADING_COMPLETE });
     throw new Error(err);
   }
 };
 
 export const clickPlaylistTitle = (playlistId) => ({
-  type: CLICK_PLAYLIST_TITLE,
+  type: actionTypes.CLICK_PLAYLIST_TITLE,
   playlistId,
 });
 

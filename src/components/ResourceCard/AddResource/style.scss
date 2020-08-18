@@ -232,7 +232,7 @@
     border-radius: 3px;
     position: relative;
     text-align: center;
-    background: #ffffff url(/assets/images/unselected-radio-icon.png) no-repeat right 15px top 13px;
+    background: #ffffff url(../../../assets/images/unselected-radio-icon.png) no-repeat right 15px top 13px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -596,7 +596,7 @@ input[type="radio"]:checked + .activity-item {
   box-shadow: 0 3px 6px #00000029;
   border: 2px solid #084892;
   border-radius: 4px;
-  background: url(/assets/images/resource-tickmark.png) no-repeat right 15px top 13px;
+  background: url(../../../assets/images/resource-tickmark.png) no-repeat right 15px top 13px;
 
   .activity-icon {
     display: none;
@@ -659,7 +659,7 @@ input[type="radio"]:checked + .activity-item {
   margin-top: 30px;
   width: 163px;
   height: 56px;
-  background: url(/assets/images/btn-arrow.png) #2ecf43 no-repeat right 20px top 20px;
+  background: url(../../../assets/images/btn-arrow.png) #2ecf43 no-repeat right 20px top 20px;
   text-align: left;
   padding-left: 35px;
   font-size: 14px;

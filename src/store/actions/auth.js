@@ -3,7 +3,6 @@ import Swal from 'sweetalert2';
 
 import authService from 'services/auth.service';
 import storageService from 'services/storage.service';
-import { getErrors } from 'utils';
 import { USER_TOKEN_KEY } from 'constants/index';
 import * as actionTypes from '../actionTypes';
 
@@ -76,12 +75,11 @@ export const getUserAction = () => async (dispatch) => {
 
       dispatch({
         type: actionTypes.GET_USER_SUCCESS,
-        payload: { user: response.data },
+        payload: { user: response.user },
       });
     } catch (e) {
       dispatch({
         type: actionTypes.GET_USER_FAIL,
-        payload: { error: getErrors(e) },
       });
     }
   }
@@ -115,10 +113,9 @@ export const loginAction = (data) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: actionTypes.LOGIN_FAIL,
-      payload: { error: getErrors(e) },
     });
 
-    throw new Error(e);
+    throw e;
   }
 };
 
@@ -139,10 +136,9 @@ export const forgotPasswordAction = (data) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: actionTypes.FORGOT_PASSWORD_FAIL,
-      payload: { error: getErrors(e) },
     });
 
-    throw new Error(e);
+    throw e;
   }
 };
 
@@ -160,10 +156,9 @@ export const resetPasswordAction = (data) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: actionTypes.RESET_PASSWORD_FAIL,
-      payload: { error: getErrors(e) },
     });
 
-    throw new Error(e);
+    throw e;
   }
 };
 
@@ -175,19 +170,47 @@ export const registerAction = (data) => async (dispatch) => {
   try {
     const response = await authService.register(data);
 
-    storageService.setItem(USER_TOKEN_KEY, response.access_token);
+    Swal.fire({
+      text: response.message,
+      icon: 'success',
+      title: 'Registration Success',
+    });
 
     dispatch({
       type: actionTypes.SIGNUP_SUCCESS,
-      payload: { user: response.user },
     });
   } catch (e) {
     dispatch({
       type: actionTypes.SIGNUP_FAIL,
-      payload: { error: getErrors(e) },
     });
 
-    throw new Error(e);
+    throw e;
+  }
+};
+
+export const confirmEmailAction = (data) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.CONFIRM_EMAIL_REQUEST,
+  });
+
+  try {
+    await authService.confirmEmail(data);
+
+    dispatch({
+      type: actionTypes.CONFIRM_EMAIL_SUCCESS,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.CONFIRM_EMAIL_FAIL,
+    });
+
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'The confirmation link is invalid or expired.',
+    });
+
+    throw e;
   }
 };
 
@@ -211,10 +234,9 @@ export const updateProfileAction = (data) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: actionTypes.UPDATE_PROFILE_FAIL,
-      payload: { error: getErrors(e) },
     });
 
-    throw new Error(e);
+    throw e;
   }
 };
 

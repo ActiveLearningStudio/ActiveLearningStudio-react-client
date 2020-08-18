@@ -3,7 +3,6 @@ import React, { Suspense, lazy } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
-import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import Switch from 'react-switch';
@@ -12,14 +11,14 @@ import { confirmAlert } from 'react-confirm-alert';
 import projectIcon from 'assets/images/project_icon.svg';
 import { loadPlaylistAction, LoadHP } from 'store/actions/playlist';
 import { resourceShared, resourceUnshared } from 'store/actions/resource';
-import ActivityPreviewCard from '../ActivityPreviewCard';
-import ActivityPreviewCardDropdown from '../ActivityPreviewCard/ActivityPreviewCardDropdown';
-import Unauthorized from '../Unauthorized';
+import ActivityPreviewCard from 'components/ActivityPreviewCard';
+import ActivityPreviewCardDropdown from 'components/ActivityPreviewCard/ActivityPreviewCardDropdown';
+import Unauthorized from 'components/Unauthorized';
 
 import './style.scss';
 
-const H5PPreview = lazy(() => import('../../containers/H5PPreview'));
-const ImmersiveReaderPreview = lazy(() => import('../Microsoft/ImmersiveReaderPreview'));
+const H5PPreview = lazy(() => import('../../H5PPreview'));
+const ImmersiveReaderPreview = lazy(() => import('../../../components/Microsoft/ImmersiveReaderPreview'));
 
 class PlaylistPreview extends React.Component {
   constructor(props) {
@@ -41,18 +40,18 @@ class PlaylistPreview extends React.Component {
       && !!nextProps.playlist.selectedPlaylist
     ) {
       const selectedPlaylist = nextProps.allProject.filter(
-        (data) => data._id === nextProps.playlist.selectedPlaylist.projectId,
+        (data) => data.id === nextProps.playlist.selectedPlaylist.projectId,
       );
       if (selectedPlaylist.length > 0) {
-        let currentActvity = nextProps.playlist.selectedPlaylist.activities.filter(
-          (a) => a._id === prevState.resourceId,
+        let currentActivity = nextProps.playlist.selectedPlaylist.activities.filter(
+          (a) => a.id === prevState.resourceId,
         );
-        currentActvity = currentActvity.length > 0 && currentActvity[0].shared;
+        currentActivity = currentActivity.length > 0 && currentActivity[0].shared;
 
         return {
           allProjectsState: selectedPlaylist[0].playlists,
           currentPlaylist: nextProps.playlist.selectedPlaylist,
-          activeShared: !!currentActvity,
+          activeShared: !!currentActivity,
         };
       }
 
@@ -69,34 +68,34 @@ class PlaylistPreview extends React.Component {
     window.scrollTo(0, 0);
 
     const {
-      loading,
+      // loading,
       playlistId,
-      resourceId,
-      loadHP,
+      // resourceId,
+      // loadHP,
       loadPlaylist,
     } = this.props;
     loadPlaylist(playlistId);
 
     const checkValidResource = async () => {
-      const { token } = JSON.parse(localStorage.getItem('auth'));
-      if (loading) {
-        axios
-          .post(
-            `${global.config.laravelAPIUrl}/h5p-resource-settings`,
-            { resourceId },
-            { headers: { Authorization: `Bearer ${token}` } },
-          )
-          .then((response) => {
-            if (response.data.status === 'success') {
-              loadHP(null);
-            } else {
-              loadHP(response.data.status);
-            }
-          })
-          .catch((/* error */) => {
-            // console.log(error);
-          });
-      }
+      // const token = JSON.parse(localStorage.getItem(USER_TOKEN_KEY));
+      // if (loading) {
+      //   axios
+      //     .post(
+      //       `${global.config.laravelAPIUrl}/h5p-resource-settings`,
+      //       { resourceId },
+      //       { headers: { Authorization: `Bearer ${token}` } },
+      //     )
+      //     .then((response) => {
+      //       if (response.data.status === 'success') {
+      //         loadHP(null);
+      //       } else {
+      //         loadHP(response.data.status);
+      //       }
+      //     })
+      //     .catch((/* error */) => {
+      //       // console.log(error);
+      //     });
+      // }
     };
 
     checkValidResource();
@@ -132,7 +131,7 @@ class PlaylistPreview extends React.Component {
     let activities;
     let activities1;
 
-    if (selectedPlaylist.activities.length === 0) {
+    if (selectedPlaylist.activities && selectedPlaylist.activities.length === 0) {
       activities = (
         <div className="col-md-12">
           <div className="alert alert-info" role="alert">
@@ -253,7 +252,7 @@ class PlaylistPreview extends React.Component {
                           confirmButtonText: 'Yes',
                         }).then((result) => {
                           if (result.value) {
-                            history.push(`/project/preview2/${selectedPlaylist.project._id}`);
+                            history.push(`/project/preview2/${selectedPlaylist.project.id}`);
                           }
                         });
                       }
@@ -344,7 +343,7 @@ class PlaylistPreview extends React.Component {
                           confirmButtonText: 'Yes',
                         }).then((result) => {
                           if (result.value) {
-                            history.push(`/project/preview2/${selectedPlaylist.project._id}`);
+                            history.push(`/project/preview2/${selectedPlaylist.project.id}`);
                           }
                         });
                       }
@@ -378,7 +377,7 @@ class PlaylistPreview extends React.Component {
         ) : (
           <section className="main-page-content preview">
             <div className="container-flex-upper">
-              <Link to={`/project/preview2/${selectedPlaylist.project._id}`}>
+              <Link to={`/project/preview2/${selectedPlaylist.project.id}`}>
                 <div className="project-title">
                   <img src={projectIcon} alt="" />
                   Project :
@@ -387,7 +386,7 @@ class PlaylistPreview extends React.Component {
                 </div>
               </Link>
 
-              <Link to={`/project/${selectedPlaylist.project._id}`}>
+              <Link to={`/project/${selectedPlaylist.project.id}`}>
                 {' '}
                 <FontAwesomeIcon icon="times" />
               </Link>
@@ -436,7 +435,7 @@ class PlaylistPreview extends React.Component {
                   <div>
                     <Link
                       className="go-back-button-preview"
-                      to={`/project/preview2/${playlist.selectedPlaylist.project._id}`}
+                      to={`/project/preview2/${playlist.selectedPlaylist.project.id}`}
                     >
                       <FontAwesomeIcon icon="undo" />
                       Back to Project
@@ -565,7 +564,7 @@ class PlaylistPreview extends React.Component {
                           // confirmAlert();
                         }}
                       >
-                        <FontAwesomeIcon icon="external-link" />
+                        <FontAwesomeIcon icon="external-link-alt" />
                         View Shared Link
                       </div>
                     )}

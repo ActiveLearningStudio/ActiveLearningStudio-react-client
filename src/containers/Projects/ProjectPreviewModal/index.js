@@ -8,7 +8,7 @@ const ProjectPreviewModal = (props) => {
   const { project } = props;
 
   let playlists;
-  if (project.playlists.length > 0) {
+  if (project.playlists && project.playlists.length > 0) {
     playlists = project.playlists.map((playlist) => {
       let activities;
       if (playlist.activities.length > 0) {
@@ -24,7 +24,7 @@ const ProjectPreviewModal = (props) => {
       }
 
       return (
-        <div className="row" key={playlist._id}>
+        <div className="row" key={playlist.id}>
           <div className="col">
             <h4>{playlist.title}</h4>
             {activities}
@@ -63,7 +63,7 @@ const ProjectPreviewModal = (props) => {
                   <div className="row">
                     <div className="col">
                       <img
-                        src={global.config.laravelAPIUrl + project.thumbUrl}
+                        src={global.config.resourceUrl + project.thumbUrl}
                         className="img-fluid project-preview-thumbnail"
                         alt=""
                       />

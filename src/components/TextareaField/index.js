@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const InputField = ({
+const TextareaField = ({
   input,
   label,
-  type,
   meta: { touched, error, warning },
 }) => (
   <div>
@@ -12,7 +11,7 @@ const InputField = ({
       <h2>{label}</h2>
     </label>
     <div>
-      <input {...input} type={type} />
+      <textarea {...input} />
       {touched && (
         (error && <span className="validation-error">{error}</span>)
         || (warning && <span>{warning}</span>)
@@ -21,15 +20,14 @@ const InputField = ({
   </div>
 );
 
-InputField.propTypes = {
+TextareaField.propTypes = {
   input: PropTypes.object.isRequired,
   label: PropTypes.string,
-  type: PropTypes.string.isRequired,
   meta: PropTypes.object.isRequired,
 };
 
-InputField.defaultProps = {
+TextareaField.defaultProps = {
   label: '',
 };
 
-export default InputField;
+export default TextareaField;

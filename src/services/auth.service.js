@@ -1,7 +1,10 @@
+import config from 'config';
 import httpService from './http.service';
 
-const me = (body) => httpService
-  .get('/user', body)
+const { apiVersion } = config;
+
+const me = () => httpService
+  .get(`/${apiVersion}/users/me`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -12,6 +15,11 @@ const login = (body) => httpService
 
 const register = (body) => httpService
   .post('/register', body)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const confirmEmail = (body) => httpService
+  .post('/verify-email', body)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -26,7 +34,7 @@ const resetPassword = (body) => httpService
   .catch((err) => Promise.reject(err.response.data));
 
 const updateProfile = (body) => httpService
-  .put(`/users/${body.id}`, body)
+  .put(`/${apiVersion}/users/${body.id}`, body)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -34,6 +42,7 @@ export default {
   me,
   login,
   register,
+  confirmEmail,
   forgotPassword,
   resetPassword,
   updateProfile,

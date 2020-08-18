@@ -10,6 +10,7 @@ import bg1 from 'assets/images/loginbg2.png';
 import logo from 'assets/images/logo.svg';
 import loader from 'assets/images/loader.svg';
 import { registerAction } from 'store/actions/auth';
+import { getErrors } from 'utils';
 import Error from './Error';
 
 import './style.scss';
@@ -26,6 +27,7 @@ class RegisterPage extends React.Component {
       password: '',
       organizationName: '',
       jobTitle: '',
+      error: null,
     };
   }
 
@@ -54,6 +56,10 @@ class RegisterPage extends React.Component {
       } = this.state;
       const { history, register } = this.props;
 
+      this.setState({
+        error: null,
+      });
+
       await register({
         first_name: firstName,
         last_name: lastName,
@@ -64,9 +70,11 @@ class RegisterPage extends React.Component {
         job_title: jobTitle,
       });
 
-      history.push('/account');
+      history.push('/login');
     } catch (err) {
-      // console.log(err);
+      this.setState({
+        error: getErrors(err),
+      });
     }
   };
 
@@ -99,8 +107,9 @@ class RegisterPage extends React.Component {
       password,
       organizationName,
       jobTitle,
+      error,
     } = this.state;
-    const { isLoading, error } = this.props;
+    const { isLoading } = this.props;
 
     return (
       <div className="auth-page">
@@ -254,12 +263,7 @@ class RegisterPage extends React.Component {
 RegisterPage.propTypes = {
   history: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  error: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   register: PropTypes.func.isRequired,
-};
-
-RegisterPage.defaultProps = {
-  error: null,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -268,7 +272,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
-  error: state.auth.error,
 });
 
 export default withRouter(

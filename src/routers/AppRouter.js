@@ -22,13 +22,14 @@ const LoginPage = loadable(() => import('../containers/Auth/LoginPage'));
 const RegisterPage = loadable(() => import('../containers/Auth/RegisterPage'));
 const ForgotPasswordPage = loadable(() => import('../containers/Auth/ForgotPasswordPage'));
 const ResetPasswordPage = loadable(() => import('../containers/Auth/ResetPasswordPage'));
+const ConfirmEmailPage = loadable(() => import('../containers/Auth/ConfirmEmailPage'));
 // const ConfirmPage = loadable(() => import('../containers/ConfirmEmail'));
 
 const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
 
-// const ProjectsPage = loadable(() => import('../containers/ProjectsPage'));
-// const PlaylistsPage = loadable(() => import('../containers/PlaylistsPage'));
-// const PreviewPage = loadable(() => import('../containers/PreviewPage'));
+const ProjectsPage = loadable(() => import('../containers/Projects'));
+const PlaylistsPage = loadable(() => import('../containers/Playlists'));
+const PreviewPage = loadable(() => import('../containers/Preview'));
 // const LtiPreviewPage = loadable(() => import('../containers/LtiPreviewPage'));
 // const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared'));
 
@@ -40,22 +41,18 @@ const AppRouter = () => {
   return (
     <Router history={history}>
       <Switch>
-        {/* <PrivateRoute exact path="/" component={ProjectsPage} /> */}
+        <PrivateRoute exact path="/" component={ProjectsPage} />
 
         <PublicRoute exact path="/login" component={LoginPage} />
         <PublicRoute exact path="/register" component={RegisterPage} />
         <PublicRoute exact path="/forgot-password" component={ForgotPasswordPage} />
         <PublicRoute exact path="/reset-password" component={ResetPasswordPage} />
+        <PublicRoute exact path="/verify-email" component={ConfirmEmailPage} />
         {/* <PublicRoute exact path="/confirm-email/:confirmationId" component={ConfirmPage} /> */}
 
         <PrivateRoute exact path="/account" component={ProfilePage} />
 
         {/*
-        <PrivateRoute
-          exact
-          path="/project/preview2/:projectId"
-          component={PreviewPage}
-        />
 
         <Route
           exact
@@ -108,6 +105,7 @@ const AppRouter = () => {
           exact
           render={() => <LtiPreviewPage previewType="playlistShared" />}
         />
+        */}
 
         <PrivateRoute
           exact
@@ -119,11 +117,17 @@ const AppRouter = () => {
         />
         <PrivateRoute
           exact
-          path="/project/create/:projectId"
+          path="/project/:projectId/preview"
+          component={PreviewPage}
+        />
+        <PrivateRoute
+          exact
+          path="/project/:projectId/edit"
           component={ProjectsPage}
           showEditProjectPopup
           editMode
         />
+
         <PrivateRoute
           exact
           path="/project/:projectId"
@@ -135,6 +139,13 @@ const AppRouter = () => {
           component={PlaylistsPage}
           openCreatePopup
         />
+        <PrivateRoute
+          exact
+          path="/project/:projectId/playlist/:playlistId/preview"
+          component={PreviewPage}
+          previewType="playlist"
+        />
+        {/*
         <PrivateRoute
           exact
           path="/project/:projectId/playlist/:playlistId/activity/create"
@@ -155,7 +166,7 @@ const AppRouter = () => {
         />
         */}
 
-        <Redirect to="/account" />
+        <Redirect to="/" />
       </Switch>
     </Router>
   );

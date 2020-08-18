@@ -12,8 +12,8 @@ import {
   toggleProjectShareAction,
   toggleProjectShareRemovedAction,
 } from 'store/actions/project';
-import SharePreviewPopup from 'helpers/SharePreviewPopup';
-import ActivityCard from '../ActivityCard';
+import SharePreviewPopup from 'components/SharePreviewPopup';
+import ActivityCard from 'components/ActivityCard';
 
 import './style.scss';
 
@@ -28,14 +28,9 @@ function ProjectPreview(props) {
   const [activeShared, setActiveShared] = useState(true);
 
   useEffect(() => {
-    setCurrentProject(projectState && projectState.projectSelect);
-  }, [projectState]);
-
-  useEffect(() => {
-    setActiveShared(
-      projectState && projectState.projectSelect.shared,
-    );
-  }, [projectState]);
+    setCurrentProject(projectState.projectSelect);
+    setActiveShared(projectState.projectSelect.shared);
+  }, [projectState.projectSelect]);
 
   const settings = {
     dots: false,
@@ -69,11 +64,11 @@ function ProjectPreview(props) {
     playlists = currentProject.playlists
       && currentProject.playlists.map((playlist, counter) => {
         let activities;
-        if (playlist.activities.length > 0) {
+        if (playlist.activities && playlist.activities.length > 0) {
           activities = playlist.activities.map((activity) => (
             <ActivityCard
               activity={activity}
-              playlist_id={playlist._id}
+              playlist_id={playlist.id}
               key={activity._id}
             />
           ));
@@ -88,7 +83,7 @@ function ProjectPreview(props) {
         }
 
         return (
-          <div className="check-each" key={playlist._id}>
+          <div className="check-each" key={playlist.id}>
             <button
               type="button"
               ref={(el) => {
@@ -99,7 +94,7 @@ function ProjectPreview(props) {
                 accordion.current[counter].classList.toggle('active');
               }}
             >
-              <FontAwesomeIcon icon="plus" />
+              <FontAwesomeIcon icon="plus" className="mr-2" />
               {playlist.title}
             </button>
 
@@ -126,31 +121,25 @@ function ProjectPreview(props) {
       {currentProject && (
         <>
           <div className="container">
-            <div className="scne_div flex-wrap">
-              <div className="sce_imgdiv">
+            <div className="scene flex-wrap">
+              <div className="scene-img">
                 <div id="content" />
-                <Link to={`/project/${currentProject._id}`}>
-                  <img
-                    alt="thumbnail"
-                    src={global.config.laravelAPIUrl + currentProject.thumbUrl}
-                  />
+                <Link to={`/project/${currentProject.id}`}>
+                  <img src={global.config.resourceUrl + currentProject.thumb_url} alt="thumbnail" />
                 </Link>
               </div>
               <div className="sce_cont">
-                <ul className="bar_list flexdiv">
+                <ul className="bar_list flex-div">
                   <li>
                     <div className="title_lg check">
-                      <div>
-                        {' '}
-                        {currentProject.name}
-                      </div>
+                      <div>{currentProject.name}</div>
+
                       <div className="configuration">
                         <Link to="/" className="go-back-button-preview">
-                          <FontAwesomeIcon icon="undo" aria-hidden="true" />
-                          {' '}
-                          Exit
-                          Preview Mode
+                          <FontAwesomeIcon icon="undo" className="mr-2" />
+                          Exit Preview Mode
                         </Link>
+
                         <div className="share-button">
                           Share Project
                           <Switch
@@ -171,34 +160,31 @@ function ProjectPreview(props) {
                                   cancelButtonAriaLabel: 'Cancel',
                                 }).then((resp) => {
                                   if (resp.isConfirmed) {
-                                    toggleProjectShareRemovedAction(
-                                      currentProject._id,
+                                    dispatch(toggleProjectShareRemovedAction(
+                                      currentProject.id,
                                       currentProject.name,
-                                    );
-                                    setActiveShared(!activeShared);
+                                    ));
                                   }
                                 });
                               } else {
-                                toggleProjectShareAction(
-                                  currentProject._id,
-                                  currentProject.name,
-                                );
-                                setActiveShared(!activeShared);
+                                dispatch(toggleProjectShareAction(currentProject.id, currentProject.name));
                               }
                             }}
-                            checked={activeShared}
+                            checked={activeShared || false}
                             className="react-switch"
-                            id="material-switch"
                             handleDiameter={30}
                             uncheckedIcon={false}
                             checkedIcon={false}
                           />
                         </div>
+
                         {activeShared && (
                           <div
                             className="shared-link"
                             onClick={() => {
-                              window.gapi.sharetoclassroom.go('croom');
+                              if (window.gapi && window.gapi.sharetoclassroom) {
+                                window.gapi.sharetoclassroom.go('croom');
+                              }
                               const protocol = `${window.location.href.split('/')[0]}//`;
                               const url = `${protocol}${window.location.host}/project/shared/${
                                 match.params.projectId.trim()
@@ -206,7 +192,7 @@ function ProjectPreview(props) {
                               return SharePreviewPopup(url, currentProject.name);
                             }}
                           >
-                            <FontAwesomeIcon icon="external-link" aria-hidden="true" />
+                            <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
                             View Shared Link
                           </div>
                         )}
@@ -218,7 +204,7 @@ function ProjectPreview(props) {
                   <li />
                 </ul>
 
-                <ul className="rating flexdiv" />
+                <ul className="rating flex-div" />
 
                 <p className="expandiv">{currentProject.description}</p>
               </div>
@@ -228,7 +214,7 @@ function ProjectPreview(props) {
           <div className="container">
             <div className="playlist-div">
               <div className="playlist-title-div">
-                <div className="title_md">Playlists</div>
+                <div className="title-md">Playlists</div>
               </div>
               <div className="all-playlist check-custom">
                 <div className="playlist-accordion" id="custom_accordion">

@@ -10,6 +10,7 @@ import bg1 from 'assets/images/loginbg2.png';
 import logo from 'assets/images/logo.svg';
 import loader from 'assets/images/loader.svg';
 import { loginAction } from 'store/actions/auth';
+import { getErrors } from 'utils';
 import Error from './Error';
 
 import './style.scss';
@@ -22,6 +23,7 @@ class LoginPage extends React.Component {
       email: '',
       password: '',
       rememberMe: false,
+      error: null,
     };
   }
 
@@ -42,10 +44,16 @@ class LoginPage extends React.Component {
       const { email, password } = this.state;
       const { history, login } = this.props;
 
+      this.setState({
+        error: null,
+      });
+
       await login({ email, password });
-      history.push('/account');
+      history.push('/');
     } catch (err) {
-      // console.log(err);
+      this.setState({
+        error: getErrors(err),
+      });
     }
   };
 
@@ -55,8 +63,13 @@ class LoginPage extends React.Component {
   }
 
   render() {
-    const { email, password, rememberMe } = this.state;
-    const { isLoading, error } = this.props;
+    const {
+      email,
+      password,
+      rememberMe,
+      error,
+    } = this.state;
+    const { isLoading } = this.props;
 
     return (
       <div className="auth-page">
@@ -151,12 +164,7 @@ class LoginPage extends React.Component {
 LoginPage.propTypes = {
   history: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  error: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   login: PropTypes.func.isRequired,
-};
-
-LoginPage.defaultProps = {
-  error: null,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -165,7 +173,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
-  error: state.auth.error,
 });
 
 export default withRouter(

@@ -6,8 +6,8 @@ import Slider from 'react-slick';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { loadMyProjectsActionPreviewShared } from 'store/actions/project';
-import ActivityCard from '../ActivityCard';
-import Unauthorized from '../Unauthorized';
+import ActivityCard from 'components/ActivityCard';
+import Unauthorized from 'components/Unauthorized';
 
 import './style.scss';
 
@@ -19,8 +19,8 @@ function ProjectPreviewShared(props) {
   const [currentProject, setCurrentProject] = useState(null);
 
   useEffect(() => {
-    if (projectFind.project && Object.keys(projectFind.project.projectSelect).length > 0) {
-      setCurrentProject(projectFind.project.projectSelect);
+    if (projectFind.project && Object.keys(projectFind.project.selectedProject).length > 0) {
+      setCurrentProject(projectFind.project.selectedProject);
     }
   }, [projectFind.project]);
 
@@ -65,7 +65,7 @@ function ProjectPreviewShared(props) {
         activities = playlist.activities.map((activity) => (
           <ActivityCard
             activity={activity}
-            playlistId={playlist._id}
+            playlistId={playlist.id}
             key={activity._id}
             lti
           />
@@ -81,7 +81,7 @@ function ProjectPreviewShared(props) {
       }
 
       return (
-        <div className="check-each" key={playlist._id}>
+        <div className="check-each" key={playlist.id}>
           <button
             type="button"
             className={counter === 0 ? 'active accordion' : ' accordion'}
@@ -117,8 +117,8 @@ function ProjectPreviewShared(props) {
           {currentProject && (
             <div>
               <div className="container">
-                <div className="scne_div flex-wrap">
-                  <div className="sce_imgdiv">
+                <div className="scene flex-wrap">
+                  <div className="scene-img">
                     <Link to={`/project/${currentProject._id}`}>
                       <img
                         alt="thumbnail"
@@ -128,7 +128,7 @@ function ProjectPreviewShared(props) {
                   </div>
                   <div className="sce_cont">
                     {/* <div className="collapse-toggle"><img src="/images/plusblk.png" alt="plusblk" /></div> */}
-                    <ul className="bar_list flexdiv">
+                    <ul className="bar_list flex-div">
                       <li>
                         <div className="title_lg check">
                           <div>

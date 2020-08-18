@@ -1,8 +1,9 @@
-import React, { /* useEffect, useRef */ } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Dropdown } from 'react-bootstrap';
 
 import logo from 'assets/images/logo.svg';
 import searchImg from 'assets/images/search.png';
@@ -10,58 +11,28 @@ import createProjectIcon from 'assets/images/create-project-icon.png';
 import notificationImg from 'assets/images/notification.png';
 import userImg from 'assets/images/user.png';
 // import createTeamImg from 'assets/images/create-team.png';
-import { startLogoutAction } from 'store/actions/auth';
-import {
-  showUserSubMenuAction,
-  closeMenuAction,
-  showCreateProjectSubmenuAction,
-} from 'store/actions/project';
+import { logoutAction } from 'store/actions/auth';
 import { Event } from '../../trackers/ga';
 
 import './style.scss';
 
 function Header(props) {
-  const {
-    // showCreateProjectSubmenu,
-    // showUserSubMenu,
-    startLogout,
-    // closeMenu,
-  } = props;
-
-  // const createProjNode = useRef();
-  // const createTeamNode = useRef();
-
-  // useEffect(() => {
-  //   document.addEventListener('mousedown', handleClick);
-  //   return () => {
-  //     document.removeEventListener('mousedown', handleClick);
-  //   };
-  // }, []);
-
-  // const handleClick = (e) => {
-  //   if (
-  //     createProjNode.current.contains(e.target) ||
-  //     createTeamNode.current.contains(e.target)
-  //   ) {
-  //     return;
-  //   }
-  //   closeMenu();
-  // };
+  const { user, logout } = props;
 
   return (
     <header>
-      <div className="top_header flexdiv">
+      <div className="top-header flex-div align-items-center">
         <div className="tophd_left">
           <Link to="/" className="top_logo">
             <img src={logo} alt="logo" title="" />
           </Link>
         </div>
 
-        <div className="tophd_right flexdiv">
-          <div className="searchblock navbtn">
+        <div className="top-header-right d-flex flex-wrap align-items-center">
+          <div className="search-block navbtn">
             <input
               type="text"
-              className="searchterm"
+              className="search-term"
               placeholder="Search existing content"
             />
             <button type="submit" className="search-submit">
@@ -69,82 +40,58 @@ function Header(props) {
             </button>
           </div>
 
-          <div className="navbar_link">
-            <ul className="top_info flexdiv">
-              <li>
-                <div className="dropdown create_project">
-                  <span
-                    className="dropdown-toggle"
-                    type="button"
-                    id="dropdownMenuButton"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
+          <div className="navbar-link">
+            <ul className="top-info flex-div">
+              <li className="d-flex align-items-center">
+                <Dropdown className="create-project">
+                  <Dropdown.Toggle className="d-flex align-items-center">
                     <FontAwesomeIcon icon="plus-circle" />
-                  </span>
+                  </Dropdown.Toggle>
 
-                  <div
-                    className="dropdown-menu user-dropdown"
-                    aria-labelledby="dropdownMenuButton"
-                  >
-                    <ul>
-                      <Link to="/project/create" className="menuLinks">
-                        <li>
-                          <div className="notifybx">
-                            <div className="notiy_icon">
-                              <img
-                                src={createProjectIcon}
-                                alt="create"
-                                title=""
-                              />
-                            </div>
+                  <Dropdown.Menu className="user-dropdown">
+                    <Dropdown.Item as={Link} to="/project/create" className="menuLinks">
+                      <div className="notify-box">
+                        <div className="notify-icon">
+                          <img src={createProjectIcon} alt="create" />
+                        </div>
 
-                            <div className="notiy_det">
-                              <div className="nav_title">
-                                Create a New Project
-                              </div>
-                              <p>
-                                A project gives you a place to build and
-                                organize the amazing learning experiences
-                                available in the Active Learning Studio.
-                              </p>
-                            </div>
+                        <div className="notify-description">
+                          <div className="nav-title">
+                            Create a New Project
                           </div>
-                        </li>
-                      </Link>
+                          <p>
+                            A project gives you a place to build and
+                            organize the amazing learning experiences
+                            available in the Active Learning Studio.
+                          </p>
+                        </div>
+                      </div>
+                    </Dropdown.Item>
 
-                      {/*
-                      <Link to="#">
-                        <li>
-                          <div className="notifybx">
-                            <div className="notiy_icon">
-                              <img src={createTeamImg} alt="create-team" />
-                            </div>
-                            <div className="notiy_det">
-                              <div className="nav_title">Create Team</div>
-                              <p>
-                                Increase productivity by making it easy for your
-                                group to create memorable learning experiences
-                                together.
-                              </p>
-                            </div>
-                          </div>
-                        </li>
-                      </Link>
-                      */}
-                    </ul>
-                  </div>
-                </div>
+                    {/*
+                    <Dropdown.Item to="#" className="menuLinks">
+                      <div className="notify-box">
+                        <div className="notify-icon">
+                          <img src={createTeamImg} alt="create-team" />
+                        </div>
+                        <div className="notify-description">
+                          <div className="nav-title">Create Team</div>
+                          <p>
+                            Increase productivity by making it easy for your
+                            group to create memorable learning experiences
+                            together.
+                          </p>
+                        </div>
+                      </div>
+                    </Dropdown.Item>
+                    */}
+                  </Dropdown.Menu>
+                </Dropdown>
               </li>
 
-              <li>
+              <li className="d-flex align-items-center justify-content-center">
                 <Link to="#">
-                  <img
-                    src={notificationImg}
-                    alt="notification"
-                    title=""
-                  />
+                  <img src={notificationImg} alt="notification" />
                 </Link>
               </li>
 
@@ -154,54 +101,39 @@ function Header(props) {
                 </Link>
               </li>
 
-              <li className="menu-user-settings">
-                <div className="dropdown">
-                  <span
-                    className="dropdown-toggle"
-                    type="button"
-                    id="dropdownMenuButton"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
+              <li className="menu-user-settings d-flex align-items-center">
+                <Dropdown>
+                  <Dropdown.Toggle className="d-flex align-items-center">
                     <img src={userImg} alt="user" title="" />
-                  </span>
-                  <div
-                    className="dropdown-menu user-dropdown"
-                    aria-labelledby="dropdownMenuButton"
-                  >
-                    <ul>
-                      <Link to="#">
-                        <li>
-                          Welcome &nbsp;
-                          <span className="user-name-login">
-                            {typeof window !== 'undefined'
-                            && JSON.parse(window.localStorage.getItem('auth'))
-                            && JSON.parse(window.localStorage.getItem('auth')).displayName}
-                          </span>
-                        </li>
-                      </Link>
+                  </Dropdown.Toggle>
 
-                      <Link to="#">
-                        <li>My Account</li>
-                      </Link>
+                  <Dropdown.Menu className="user-dropdown">
+                    <Dropdown.Item to="#">
+                      Welcome &nbsp;
+                      <span className="user-name-login">
+                        {user.displayName}
+                      </span>
+                    </Dropdown.Item>
 
-                      <Link
-                        to="#"
-                        onClick={() => {
-                          Event(
-                            'button click',
-                            'User press Logout button',
-                            'Login Page',
-                          );
-                          startLogout();
-                        }}
-                      >
-                        <li>Logout</li>
-                      </Link>
-                    </ul>
-                  </div>
-                </div>
+                    <Dropdown.Item as={Link} to="/account">
+                      My Account
+                    </Dropdown.Item>
+
+                    <Dropdown.Item
+                      href="#"
+                      onClick={() => {
+                        Event(
+                          'button click',
+                          'User press Logout button',
+                          'Login Page',
+                        );
+                        logout();
+                      }}
+                    >
+                      Logout
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </li>
             </ul>
           </div>
@@ -212,18 +144,16 @@ function Header(props) {
 }
 
 Header.propTypes = {
-  // showCreateProjectSubmenu: PropTypes.func.isRequired,
-  // showUserSubMenu: PropTypes.func.isRequired,
-  startLogout: PropTypes.func.isRequired,
-  // closeMenu: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
-// export default Header;
-const mapDispatchToProps = (dispatch) => ({
-  showCreateProjectSubmenu: () => dispatch(showCreateProjectSubmenuAction()),
-  showUserSubMenu: () => dispatch(showUserSubMenuAction()),
-  startLogout: () => dispatch(startLogoutAction()),
-  closeMenu: () => dispatch(closeMenuAction()),
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
 });
 
-export default connect(null, mapDispatchToProps)(Header);
+const mapDispatchToProps = (dispatch) => ({
+  logout: () => dispatch(logoutAction()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

@@ -8,13 +8,13 @@ import Swal from 'sweetalert2';
 
 import projectIcon from 'assets/images/project_icon.svg';
 import { loadPlaylistActionShared } from 'store/actions/playlist';
-import ActivityPreviewCard from '../ActivityPreviewCard';
-import ActivityPreviewCardDropdown from '../ActivityPreviewCard/ActivityPreviewCardDropdown';
-import Unauthorized from '../Unauthorized';
+import ActivityPreviewCard from 'components/ActivityPreviewCard';
+import ActivityPreviewCardDropdown from 'components/ActivityPreviewCard/ActivityPreviewCardDropdown';
+import Unauthorized from 'components/Unauthorized';
 
 import './style.scss';
 
-const H5PPreview = React.lazy(() => import('../../containers/H5PPreview'));
+const H5PPreview = React.lazy(() => import('../../H5PPreview'));
 
 class LtiPlaylistPreviewShared extends React.Component {
   constructor(props) {
@@ -224,7 +224,7 @@ class LtiPlaylistPreviewShared extends React.Component {
                           confirmButtonText: 'Yes',
                         }).then((result) => {
                           if (result.value) {
-                            history.push(`/project/preview2/${selectedPlaylist.project._id}`);
+                            history.push(`/project/preview2/${selectedPlaylist.project.id}`);
                           }
                         });
                       }
@@ -316,7 +316,7 @@ class LtiPlaylistPreviewShared extends React.Component {
                           confirmButtonText: 'Yes',
                         }).then((result) => {
                           if (result.value) {
-                            history.push(`/project/preview2/${selectedPlaylist.project._id}`);
+                            history.push(`/project/preview2/${selectedPlaylist.project.id}`);
                           }
                         });
                       }
@@ -359,7 +359,7 @@ class LtiPlaylistPreviewShared extends React.Component {
                 </div>
               </Link>
 
-              <Link to={`/project/${selectedPlaylist.project._id}`}>
+              <Link to={`/project/${selectedPlaylist.project.id}`}>
                 {' '}
                 <FontAwesomeIcon icon="times" />
               </Link>
@@ -409,17 +409,17 @@ class LtiPlaylistPreviewShared extends React.Component {
                         {/* {nextLink}
                         {previousLink}
                         <Link
-                          to={`/project/preview2/${selectedPlaylist.project._id}`}
+                          to={`/project/preview2/${selectedPlaylist.project.id}`}
                           className="slide-control"
                         >
                           <FontAwesomeIcon icon="share" />
                           Back to Project
                         </Link>
                         <Link
-                          to={`/project/${selectedPlaylist.project._id}`}
+                          to={`/project/${selectedPlaylist.project.id}`}
                           className="slide-control"
                         >
-                          <FontAwesomeIcon icon="times-circle-o" />
+                          <FontAwesomeIcon icon="times-circle" />
                           Exit
                         </Link>
                       </div>
@@ -491,7 +491,7 @@ class LtiPlaylistPreviewShared extends React.Component {
                   </div>
 
                   {/* <Link
-                    to={`/project/preview2/${selectedPlaylist.project._id}`}
+                    to={`/project/preview2/${selectedPlaylist.project.id}`}
                     className="link"
                   >
                     <img src="/images/right-arrow.png" className="back-arrow" />
