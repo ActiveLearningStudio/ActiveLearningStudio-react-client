@@ -29,7 +29,7 @@ const defaultProgramState = () => {
       showCreateProjectPopup: false,
       showUserSubMenu: false,
       projectSelect: {},
-      lms_course: null
+      lms_course: null,
     };
   }
 };
@@ -115,7 +115,10 @@ const projectReducer = (state = defaultProgramState(), action) => {
         progress: action.progress,
       };
     case SET_LMS_COURSE:
-      return {...state, lms_course: prepareLmsCourse(action, state)};
+      return {
+        ...state,
+        lms_course: prepareLmsCourse(action, state),
+      };
 
     default:
       return state;

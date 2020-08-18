@@ -795,8 +795,8 @@ export const getProjectCourseFromLMSPlaylist = (
       )
       .then((response) => {
         if (response.data.status === "success") {
-          dispatch(setLmsCourse(response.data.data));
-          const globalstoreClone = store.getState();
+          var globalstoreClone = store.getState();
+          dispatch(setLmsCourse(response.data.data, globalstoreClone));
           const counterarray = [];
           const { token } = JSON.parse(localStorage.getItem("auth"));
 
@@ -817,7 +817,7 @@ export const getProjectCourseFromLMSPlaylist = (
                 showConfirmButton: false,
                 allowOutsideClick: false,
               });
-
+              var globalstoreClone = store.getState();
               var playlistcounter =
                 !!globalstoreClone.project.lms_course &&
                 globalstoreClone.project.lms_course.playlists_copy_counter
@@ -863,9 +863,10 @@ export const getProjectCourseFromLMSPlaylist = (
   };
 };
 
-export const setLmsCourse = (course) => {
+export const setLmsCourse = (course, allstate) => {
   return {
     type: SET_LMS_COURSE,
     lms_course: course,
+    allstate: allstate,
   };
 };

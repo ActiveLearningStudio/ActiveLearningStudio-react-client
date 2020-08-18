@@ -11,6 +11,7 @@ import {
 } from "./../../actions/project";
 import logo from "../../images/logo.svg";
 import "./Header.scss";
+import { Dropdown } from "react-bootstrap";
 
 function Header(props) {
   const createProjNode = useRef();
@@ -45,129 +46,134 @@ function Header(props) {
             <img src={logo} alt="logo" title=""></img>
           </Link>
         </div>
-        <div className="tophd_right flexdiv">
-          <div className="searchblock navbtn">
-            <input
-              type="text"
-              className="searchterm"
-              placeholder="Search existing content"
-            ></input>
+        <div className="tophd_right flexdiv searchdiv_">
+          <Dropdown>
+            <div className="searchblock navbtn">
+              <input
+                type="text"
+                className="searchterm"
+                placeholder="Search existing content"
+              ></input>
+              <Dropdown.Toggle variant="" id="dropdown-basic">
+                <i className="fa fa-chevron-down" />
+              </Dropdown.Toggle>
+            </div>
 
-            <button type="submit" className="search-submit">
-              <img src="/images/search.png" alt="search" title=""></img>
-            </button>
-            {/* <div className="overlay-search-form">
-              Advanced Search
-              <Formik
-                initialValues={{
-                  phrase: "",
-                  subject: "",
-                  grade: "",
-                  standard: "",
-                  email: "",
-                  words: "",
-                  no_words: "",
-                }}
-                validate={(values) => {
-                  const errors = {};
-                
-                  return errors;
-                }}
-                onSubmit={(values, { setSubmitting }) => {
-                  setTimeout(() => {
-                    alert(JSON.stringify(values, null, 2));
-                    setSubmitting(false);
-                  }, 400);
-                }}
-              >
-                {({
-                  values,
-                  errors,
-                  touched,
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-                  isSubmitting,
-              
-                }) => (
-                  <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        name="phrase"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.phrase}
-                        placeholder="Enter search phrase"
-                      />
-                    </div>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        name="subject"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.subject}
-                        placeholder="Subject + Subject Area"
-                      />
-                    </div>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        name="grade"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.grade}
-                        placeholder="Grade Level"
-                      />
-                      <input
-                        type="text"
-                        name="standard"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.standard}
-                        placeholder="Standard"
-                      />
-                    </div>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        name="email"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.email}
-                        placeholder="From User:Enter Email"
-                      />
-                    </div>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        name="words"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.words}
-                        placeholder="Has the words"
-                      />
-                    </div>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        name="no_words"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.no_words}
-                        placeholder="Doesn't have the words"
-                      />
-                    </div>
+            <Dropdown.Menu>
+              <div className="overlay-search-form">
+                <h4> Advanced Search</h4>
+                <Formik
+                  initialValues={{
+                    phrase: "",
+                    subject: "",
+                    grade: "",
+                    standard: "",
+                    email: "",
+                    words: "",
+                    no_words: "",
+                  }}
+                  validate={(values) => {
+                    const errors = {};
 
-                    <button type="submit" disabled={isSubmitting}>
-                      Submit
-                    </button>
-                  </form>
-                )}
-              </Formik>
-                </div> */}
-          </div>
+                    return errors;
+                  }}
+                  onSubmit={(values, { setSubmitting }) => {
+                    setTimeout(() => {
+                      alert(JSON.stringify(values, null, 2));
+                      setSubmitting(false);
+                    }, 400);
+                  }}
+                >
+                  {({
+                    values,
+                    errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting,
+                  }) => (
+                    <form onSubmit={handleSubmit}>
+                      <div className="form-group">
+                        <input
+                          type="text"
+                          name="phrase"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.phrase}
+                          placeholder="Enter search phrase"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <input
+                          type="text"
+                          name="subject"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.subject}
+                          placeholder="Subject + Subject Area"
+                        />
+                      </div>
+                      <div className="form-group dual">
+                        <input
+                          type="text"
+                          name="grade"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.grade}
+                          placeholder="Grade Level"
+                        />
+                        <input
+                          type="text"
+                          name="standard"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.standard}
+                          placeholder="Standard"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <input
+                          type="text"
+                          name="email"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.email}
+                          placeholder="From User:Enter Email"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <input
+                          type="text"
+                          name="words"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.words}
+                          placeholder="Has the words"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <input
+                          type="text"
+                          name="no_words"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.no_words}
+                          placeholder="Doesn't have the words"
+                        />
+                      </div>
+                      <div className="dual_activity">
+                        <button type="submit" disabled={isSubmitting}>
+                          Submit
+                        </button>
+                      </div>
+                    </form>
+                  )}
+                </Formik>
+              </div>
+            </Dropdown.Menu>
+          </Dropdown>
+
           <div className="navbar_link">
             <ul className="top_info flexdiv">
               <li>

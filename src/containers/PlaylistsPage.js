@@ -43,6 +43,7 @@ import {
 import {
   showCreateProjectModalAction,
   loadProjectAction,
+  loadMyProjectsAction,
 } from "../actions/project";
 import { LoadLMS } from "../actions/project";
 import Header from "../components/Header/Header";
@@ -84,6 +85,7 @@ export class PlaylistsPage extends React.Component {
   componentDidMount() {
     //scroll to top
     this.props.LoadLMS();
+    // this.props.loadMyProjectsAction();
     window.scrollTo(0, 0);
     if (
       this.props.openCreatePopup == true ||
@@ -483,6 +485,7 @@ const mapDispatchToProps = (dispatch) => ({
   reorderPlaylistActivitiesAction: (playlist) =>
     dispatch(reorderPlaylistActivitiesAction(playlist)),
   LoadLMS: () => dispatch(LoadLMS()),
+  loadMyProjectsAction: () => dispatch(loadMyProjectsAction()),
 });
 
 const mapStateToProps = (state) => {
