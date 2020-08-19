@@ -4,6 +4,8 @@ import { Event } from "../../trackers/ga";
 import { Link } from "react-router-dom";
 import { Formik } from "formik";
 import { startLogoutAction } from "../../actions/auth";
+import { simpleSearchfunction, advancedSearches } from "../../actions/search";
+import { useSelector, useDispatch } from "react-redux";
 import {
   showUserSubMenuAction,
   closeMenuAction,
@@ -12,12 +14,15 @@ import {
 import logo from "../../images/logo.svg";
 import "./Header.scss";
 import { Dropdown } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 
 function Header(props) {
+  const history = useHistory();
+  const dispatcher = useDispatch();
   const createProjNode = useRef();
   const createTeamNode = useRef();
   const [advancedSearch, setAdvancedSearch] = useState(false);
-
+  const [simpleSearch, setsimpleSearch] = useState();
   // useEffect(() => {
   //   document.addEventListener("mousedown", handleClick);
 
@@ -50,6 +55,17 @@ function Header(props) {
           <Dropdown>
             <div className="searchblock navbtn">
               <input
+                onChange={(e) => {
+                  setsimpleSearch(e.target.value);
+                }}
+                onKeyPress={(e) => {
+                  if (e.key == "Enter") {
+                    dispatcher(simpleSearchfunction(simpleSearch));
+                    localStorage.setItem("loading", "true");
+                    !!simpleSearch && history.push("/search");
+                  }
+                }}
+                value={simpleSearch}
                 type="text"
                 className="searchterm"
                 placeholder="Search existing content"
@@ -78,10 +94,8 @@ function Header(props) {
                     return errors;
                   }}
                   onSubmit={(values, { setSubmitting }) => {
-                    setTimeout(() => {
-                      alert(JSON.stringify(values, null, 2));
-                      setSubmitting(false);
-                    }, 400);
+                    dispatcher(advancedSearches(values));
+                    history.push("/search");
                   }}
                 >
                   {({

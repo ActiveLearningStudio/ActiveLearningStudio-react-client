@@ -8,6 +8,7 @@ import uiReducer from "./uiReducer";
 import termsreducer from "./termsreducer";
 import defaultsharestate from "./shareReducer";
 import gapiReducer from "./gapiReducer";
+import search from "./searchReducer";
 
 export default combineReducers({
   auth: authReducer,
@@ -18,5 +19,6 @@ export default combineReducers({
   form: formReducer,
   loginshow: termsreducer,
   defaultsharestate: defaultsharestate,
-  gapi: gapiReducer
+  gapi: gapiReducer,
+  search: search,
 });

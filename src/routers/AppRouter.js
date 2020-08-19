@@ -22,6 +22,7 @@ const Ltiprojectpage = loadable(() => import("../containers/Ltiprojectpage"));
 const PreviewPageShared = loadable(() =>
   import("../containers/PreviewPageShared")
 );
+const SearchResult = loadable(() => import("../containers/searchResult"));
 const registration = loadable(() => import("../containers/Registration"));
 const Lticonetnt = loadable(() => import("../containers/Lticonetnt"));
 
@@ -61,6 +62,7 @@ const AppRouter = () => {
           component={PreviewPage}
           previewType="playlist"
         />
+        <PrivateRoute path="/search" exact component={SearchResult} />
         <Route
           path="/playlist/lti/preview/:playlistid"
           component={Ltipreviewpage}
