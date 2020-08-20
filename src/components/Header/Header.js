@@ -11,7 +11,7 @@ import {
   closeMenuAction,
   showCreateProjectSubmenuAction,
 } from "./../../actions/project";
-import logo from "../../images/logo.svg";
+import logo from "../../images/TFA.png";
 import "./Header.scss";
 import { Dropdown } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
@@ -53,7 +53,7 @@ function Header(props) {
         </div>
         <div className="tophd_right flexdiv searchdiv_">
           <Dropdown>
-            <div className="searchblock navbtn">
+            <div className="searchblock navbtn ">
               <input
                 onChange={(e) => {
                   setsimpleSearch(e.target.value);
@@ -76,7 +76,7 @@ function Header(props) {
             </div>
 
             <Dropdown.Menu>
-              <div className="overlay-search-form">
+              <div className="overlay-search-form " style={{ display: "none" }}>
                 <h4> Advanced Search</h4>
                 <Formik
                   initialValues={{
