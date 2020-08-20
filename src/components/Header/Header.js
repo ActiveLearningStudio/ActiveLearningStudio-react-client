@@ -60,7 +60,7 @@ function Header(props) {
                 }}
                 onKeyPress={(e) => {
                   if (e.key == "Enter") {
-                    dispatcher(simpleSearchfunction(simpleSearch));
+                    dispatcher(simpleSearchfunction(simpleSearch, 0, 100));
                     localStorage.setItem("loading", "true");
                     !!simpleSearch && history.push("/search");
                   }

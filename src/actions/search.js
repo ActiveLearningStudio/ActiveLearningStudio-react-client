@@ -3,11 +3,17 @@ import Swal from "sweetalert2";
 
 import { SEARCHREDUX } from "../constants/actionTypes";
 const { token } = JSON.parse(localStorage.getItem("auth"));
-export const simpleSearchfunction = (searchquerry) => {
+export const simpleSearchfunction = (searchquerry, from, size) => {
   return async (dispatch) => {
     const response = axios
       .get(
-        global.config.laravelAPIUrl + "/search/advance?query=" + searchquerry,
+        global.config.laravelAPIUrl +
+          "/search/advance?query=" +
+          searchquerry +
+          "&from=" +
+          from +
+          "&size=" +
+          size,
 
         {
           headers: {
@@ -17,6 +23,9 @@ export const simpleSearchfunction = (searchquerry) => {
       )
       .then((res) => {
         dispatch(searchredux(res.data, searchquerry));
+      })
+      .catch((e) => {
+        Swal.close();
       });
   };
 };

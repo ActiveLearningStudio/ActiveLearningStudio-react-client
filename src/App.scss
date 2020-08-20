@@ -1596,6 +1596,7 @@ body {
   right: 4px;
   color: #ccc;
   top: -2px;
+
 }
 
 .searchdiv_ .dropdown-menu {
@@ -1614,7 +1615,8 @@ body {
   border-radius: 5px;
   left: initial !important;
   border-radius: 5px;
-  top: 30px !important
+  top: 30px !important;
+  display: none
 }
 
 .overlay-search-form {
@@ -4813,6 +4815,7 @@ a:hover {
 
 .searchresultmain {
   padding: 0 20px;
+  margin-bottom: 40px;
 
   .searchlibrary .card {
     padding: 20px 10px 30px;
@@ -5055,7 +5058,7 @@ a:hover {
 
       .imgbox {
         width: 20%;
-        height: 100px;
+        height: 140px;
 
         div {
           width: 100%;

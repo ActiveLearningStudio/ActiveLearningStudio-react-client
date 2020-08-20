@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import { Accordion, Card, Tabs, Tab } from "react-bootstrap";
@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 export default function SearchU(props) {
   const allstate = useSelector((state) => state.search.searchresult);
   const searchquerry = useSelector((state) => state.search.searchquerry);
-
+  const more = useRef();
   const [search, setsearch] = useState();
   const [searchquerryes, Setsearchquerry] = useState("");
   const [searchinput, setsearchinput] = useState();
@@ -36,6 +36,17 @@ export default function SearchU(props) {
         },
       });
   });
+
+  useEffect(() => {
+    setTimeout(() => {
+      Swal.close();
+      localStorage.setItem("loading", "false");
+    }, 5000);
+  });
+
+  // useEffect(() => {
+  //   console.log(more.current.getBoundingClientRect());
+  // }, [window.screenY]);
   const dispatch = useDispatch();
   return (
     <>
@@ -77,13 +88,13 @@ export default function SearchU(props) {
                                 type="text"
                                 placeholder="Search"
                               />
-                              <div className="check-box-search">
+                              {/* <div className="check-box-search">
                                 <i
                                   class="fa fa-square-o"
                                   aria-hidden="true"
                                 ></i>
                                 Student Facing
-                              </div>
+                              </div> */}
                               <div
                                 onClick={() => {
                                   if (!!searchinput) {
@@ -94,7 +105,9 @@ export default function SearchU(props) {
                                         Swal.showLoading();
                                       },
                                     });
-                                    dispatch(simpleSearchfunction(searchinput));
+                                    dispatch(
+                                      simpleSearchfunction(searchinput, 0, 100)
+                                    );
                                   }
                                 }}
                                 className="src-btn"
@@ -107,7 +120,7 @@ export default function SearchU(props) {
                       </Card>
                     </Accordion>
                   </div>
-                  <div className="refinesearch">
+                  {/* <div className="refinesearch">
                     <div className="headline">Refine your search</div>
                     <Accordion defaultActiveKey="">
                       <Card>
@@ -147,7 +160,7 @@ export default function SearchU(props) {
                         </Accordion.Collapse>
                       </Card>
                     </Accordion>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="right-search">
                   <Tabs defaultActiveKey="all" id="uncontrolled-tab-example">
@@ -181,7 +194,18 @@ export default function SearchU(props) {
                                   {/* <h5>CALCULUS</h5> */}
                                 </div>
                                 <div className="content">
-                                  <h2>{res.title}</h2>
+                                  <Link
+                                    to={
+                                      res.model_type === "Activity"
+                                        ? "/activity/lti/preview/" + res._id
+                                        : res.model_type === "Playlist"
+                                        ? "/playlist/lti/preview/" + res._id
+                                        : ""
+                                    }
+                                  >
+                                    {" "}
+                                    <h2>{res.title || res.name}</h2>
+                                  </Link>
                                   <ul>
                                     <li>
                                       by{" "}
@@ -407,6 +431,9 @@ export default function SearchU(props) {
                       </div>
                     </Tab>
                   </Tabs>
+                  {/* <div ref={more} className="">
+                    Loading More
+                  </div> */}
                 </div>
               </div>
             </div>
