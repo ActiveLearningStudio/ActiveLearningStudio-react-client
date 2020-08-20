@@ -11,7 +11,7 @@ import {
   show_login,
   show_term,
 } from "./../actions/auth";
-import logo from "../images/logo.svg";
+import logo from "../images/tfalogo.png";
 import terms from "../images/terms.png";
 
 import loader from "../images/loader.svg";

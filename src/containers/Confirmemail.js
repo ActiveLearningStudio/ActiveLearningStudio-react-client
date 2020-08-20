@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import logo from "../images/logo.svg";
+import logo from "../images/tfalogo.png";
 import dotsloader from "../images/dotsloader.gif";
 import { Link } from "react-router-dom";
 import { registration_confirm, hubspotconformation } from "../actions/auth";
