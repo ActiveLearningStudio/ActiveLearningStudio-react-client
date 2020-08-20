@@ -194,18 +194,19 @@ export default function SearchU(props) {
                                   {/* <h5>CALCULUS</h5> */}
                                 </div>
                                 <div className="content">
-                                  <Link
-                                    to={
+                                  <a
+                                    href={
                                       res.model_type === "Activity"
                                         ? "/activity/lti/preview/" + res._id
                                         : res.model_type === "Playlist"
                                         ? "/playlist/lti/preview/" + res._id
                                         : ""
                                     }
+                                    target="_blank"
                                   >
                                     {" "}
                                     <h2>{res.title || res.name}</h2>
-                                  </Link>
+                                  </a>
                                   <ul>
                                     <li>
                                       by{" "}
