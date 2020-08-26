@@ -1,39 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import PexelsAPI from 'pexels-api-wrapper';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { useDispatch } from "react-redux";
+import axios from 'axios';
+import dotsloader from '../../assets/images/dotsloader.gif';
+// import { uploadResourceThumbnail } from "../../store/actions/resource";
+// import { uploadProjectThumbnail } from "../../store/actions/project";
+import './styles.scss';
 
-import dotsloader from 'assets/images/dotsloader.gif';
-import { uploadResourceThumbnail } from 'store/actions/resource';
+const PexelsAPI = require('pexels-api-wrapper');
 
-const pexelsClient = new PexelsAPI(
-  '563492ad6f91700001000001155d7b75f5424ea694b81ce9f867dddf',
-);
+const pexelsClient = new PexelsAPI(process.env.REACT_APP_PEXEL_API);
 
-function Pexels(props) {
-  const { searchName, resourceName, onHide } = props;
-
-  const dispatch = useDispatch();
-  const [pixelData, setPixels] = useState([]);
+export default function Pexels(props) {
+  // const dispatch = useDispatch();
+  const [pixeldata, setpixels] = useState([]);
   const [loader, setLoader] = useState(true);
   const [searchValue, setSearchValue] = useState();
-
+  const [nextAPI, setNextAPi] = useState('');
+  // const { project, resourceName, searchName } = props;
+  const { resourceName, searchName } = props;
   useEffect(() => {
     //  !!props.resourceName && setSearchValue(props.searchName);
+
     pexelsClient
-      .search(searchName, 10, 4)
+      .search(!!searchName && searchName)
       .then((result) => {
         setLoader(false);
-        const allPhotos = !!result.photos && result.photos.map((data) => data.src.tiny);
-        setPixels(allPhotos);
-      })
-      .catch(() => {
-        // console.err(e);
-      });
-  }, [searchName]);
 
+        const allphotos = !!result.photos
+          && result.photos.map((data) => data);
+
+        setpixels(allphotos);
+        setNextAPi(result.next_page);
+      })
+      .catch(() => {});
+  }, [searchName]);
   return (
     <Modal
       {...props}
@@ -48,11 +50,9 @@ function Pexels(props) {
             {' '}
             <b>{resourceName}</b>
             {' '}
-            Category. You can search other
-            thumbnails below as well
+            Category. You can search other thumbnails below as well
           </p>
-
-          <div className="search-pixels">
+          <div className="searchpixels">
             <input
               type="text"
               placeholder="Search Thumbnails..."
@@ -68,57 +68,88 @@ function Pexels(props) {
                     .search(searchValue, 10, 1)
                     .then((result) => {
                       setLoader(false);
-                      const allPhotos = !!result.photos && result.photos.map((data) => data.src.tiny);
-                      setPixels(allPhotos);
+                      const allphotos = !!result.photos
+                        && result.photos.map((data) => data);
+                      setpixels(allphotos);
+                      setNextAPi(result.next_page);
                     })
                     .catch(() => {});
                 }
               }}
             />
-            <FontAwesomeIcon icon="search" />
+            <i className="fa fa-search" />
           </div>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div
-          className="img-box-pexels"
-          onScroll={() => {
-            // console.log(window.screen);
-          }}
-        >
+        <div className="imgboxpexels">
           {loader ? (
-            <img src={dotsloader} className="loader" alt="" />
+            <img src={dotsloader} className="loader" alt="loader" />
+          ) : pixeldata.length === 0 ? (
+            'no result found. You can still search other thumbnails'
           ) : (
-            pixelData.length === 0 ? (
-              'no result found. You can still search other thumbnails'
-            ) : (
-              pixelData.map((images) => (
-                <img
-                  src={images}
-                  alt=""
+            <>
+              {!!pixeldata && (
+                <>
+                  {pixeldata.map((images) => (
+                    <div className="watermark" key={images.id}>
+                      <img
+                        src={images.src.tiny}
+                          // onClick={() => {
+                          //   {
+                          //     !!project
+                          //       ? dispatch(
+                          //           uploadProjectThumbnail(images.src.tiny)
+                          //         )
+                          //       : dispatch(
+                          //           uploadResourceThumbnail(images.src.tiny)
+                          //         );
+                          //     props.onHide();
+                          //   }
+                          // }}
+                        alt="pexel"
+                      />
+                      <a rel="noreferrer" href={images.url} target="_blank">
+                        {' '}
+                        {images.photographer}
+                        /Pexels
+                      </a>
+                    </div>
+                  ))}
+                </>
+              )}
+              {!!nextAPI && (
+                <h6
+                  className="readmore-pexel"
                   onClick={() => {
-                    dispatch(uploadResourceThumbnail(images));
-                    onHide();
+                    axios
+                      .get(nextAPI, {
+                        headers: {
+                          Authorization: process.env.REACT_APP_PEXEL_API,
+                        },
+                      })
+                      .then((res) => {
+                        const moreData = res.data.photos.map((data) => data);
+
+                        setpixels(pixeldata.concat(moreData));
+                        setNextAPi(res.data.next_page);
+                      });
                   }}
-                />
-              ))
-            )
+                >
+                  Load more
+                </h6>
+              )}
+            </>
           )}
         </div>
       </Modal.Body>
     </Modal>
   );
 }
-
 Pexels.propTypes = {
-  searchName: PropTypes.string,
-  resourceName: PropTypes.string,
+  project: PropTypes.object.isRequired,
+  searchName: PropTypes.string.isRequired,
   onHide: PropTypes.func.isRequired,
+  show: PropTypes.func.isRequired,
+  resourceName: PropTypes.string.isRequired,
 };
-
-Pexels.defaultProps = {
-  searchName: '',
-  resourceName: '',
-};
-
-export default Pexels;

@@ -1,0 +1,252 @@
+.upload-thumbnail.check {
+    margin-bottom: 20px;
+
+    .thumb {
+        max-width: 280px;
+    }
+
+    label {
+        display: none;
+    }
+
+    .upload_placeholder {
+
+        display: flex;
+        width: 100%;
+        margin-top: 20px;
+
+        .thumb-display {}
+
+        cursor: pointer;
+
+        .imgbox {
+
+            height: 200px;
+            border: 1px solid #ccc;
+            max-width: 280px;
+
+
+            img {
+                width: 100%;
+                max-height: 100%
+            }
+        }
+
+        .button-flex {
+            margin-left: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+
+
+        .gallery,
+        .pexel {
+            width: 300px;
+            height: 89px;
+            display: flex;
+            background: #00000000 0% 0% no-repeat padding-box;
+            border: 1px solid #D9DFE8;
+            border-radius: 1px;
+            opacity: 1;
+
+            align-items: center;
+            padding-left: 20px;
+
+
+
+            p {
+                font-weight: 400;
+                font-size: 16px;
+
+                padding-left: 10px;
+
+                color: #084892;
+            }
+
+        }
+    }
+
+    .thumb {
+        cursor: pointer;
+        margin-right: 15px;
+    }
+
+    .fa {
+        font-size: 40px;
+    }
+}
+
+.imgboxpexels {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-height: 700px;
+    min-height: 300px;
+    overflow-y: auto;
+
+    .readmore-pexel {
+        background-color: #084892;
+        color: #fff;
+        cursor: pointer;
+        padding: 10px;
+        margin-bottom: 10px;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .watermark {
+        width: 32.5%;
+        margin-bottom: 10px;
+        cursor: pointer;
+        position: relative;
+
+        img {
+            width: 100%;
+        }
+
+        a {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: #fff;
+            display: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
+
+        &:hover {
+            a {
+                display: block;
+
+            }
+
+            img {
+                filter: brightness(0.7);
+            }
+        }
+
+    }
+
+    .loader {
+        width: 50px;
+        display: flex;
+        height: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        align-self: center;
+        margin: 0 auto;
+    }
+}
+
+.searchpixels {
+    position: relative;
+
+
+
+    input {
+        border: none;
+        font-size: 16px;
+        font-weight: 300;
+        height: 50px;
+        width: 420px;
+        padding-left: 50px;
+        box-shadow: 0px 0px 3px 0px #ccc
+    }
+
+    .fa {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        color: #ccc;
+        -webkit-text-stroke: 1px #fff;
+    }
+}
+
+.upload-thumbnail.check {
+    margin-bottom: 20px;
+
+    .thumb {
+        max-width: 280px;
+    }
+
+    label {
+        display: none;
+    }
+
+    .upload_placeholder {
+
+        display: flex;
+        width: 100%;
+        margin-top: 20px;
+
+        .thumb-display {}
+
+        cursor: pointer;
+
+        .imgbox {
+
+            height: 200px;
+            border: 1px solid #ccc;
+            max-width: 280px;
+
+
+            img {
+                width: 100%;
+                max-height: 100%
+            }
+        }
+
+        .button-flex {
+            margin-left: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+
+
+        .gallery,
+        .pexel {
+            width: 300px;
+            height: 89px;
+            display: flex;
+            background: #00000000 0% 0% no-repeat padding-box;
+            border: 1px solid #D9DFE8;
+            border-radius: 1px;
+            opacity: 1;
+            justify-content: flex-start;
+            align-items: center;
+            padding-left: 20px;
+            flex-direction: row;
+
+
+            p {
+                font-weight: 400;
+                font-size: 16px;
+
+                padding-left: 10px;
+
+                color: #084892;
+            }
+
+        }
+    }
+
+    .thumb {
+        cursor: pointer;
+        margin-right: 15px;
+    }
+
+    .fa {
+        font-size: 40px;
+    }
+}

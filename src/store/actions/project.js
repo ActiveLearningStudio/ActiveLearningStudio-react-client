@@ -76,6 +76,10 @@ export const deleteProjectAction = (projectId) => async (dispatch) => {
     throw e;
   }
 };
+export const uploadProjectThumbnail = (thumbUrl) => ({
+  type: actionTypes.UPLOAD_PROJECT_THUMBNAIL,
+  payload: { thumbUrl },
+});
 
 export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
   const config = {
@@ -83,9 +87,9 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
       dispatch({
         type: actionTypes.PROJECT_THUMBNAIL_PROGRESS,
         payload: {
-          progress: `Uploaded progress: ${
-            Math.round((progressEvent.loaded / progressEvent.total) * 100)
-          }%`,
+          progress: `Uploaded progress: ${Math.round(
+            (progressEvent.loaded / progressEvent.total) * 100,
+          )}%`,
         },
       });
     },
@@ -149,7 +153,9 @@ export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
   }
 };
 
-export const toggleProjectShareAction = (projectId, ProjectName) => async (dispatch) => {
+export const toggleProjectShareAction = (projectId, ProjectName) => async (
+  dispatch,
+) => {
   const { project } = await projectService.share(projectId);
 
   dispatch({
@@ -162,7 +168,10 @@ export const toggleProjectShareAction = (projectId, ProjectName) => async (dispa
   return SharePreviewPopup(url, ProjectName);
 };
 
-export const toggleProjectShareRemovedAction = (projectId, ProjectName) => async (dispatch) => {
+export const toggleProjectShareRemovedAction = (
+  projectId,
+  ProjectName,
+) => async (dispatch) => {
   const { project } = await projectService.removeShared(projectId);
 
   dispatch({
@@ -172,7 +181,8 @@ export const toggleProjectShareRemovedAction = (projectId, ProjectName) => async
 
   Swal.fire({
     title: `You stopped sharing <strong>"${ProjectName}"</strong> !`,
-    html: 'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
+    html:
+      'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
   });
 };
 
@@ -332,10 +342,7 @@ export const getProjectCourseFromLMS = (
   });
 
   return axios
-    .post(
-      `${global.config.laravelAPIUrl}/go/${lms}/fetch/course`,
-      formData,
-    )
+    .post(`${global.config.laravelAPIUrl}/go/${lms}/fetch/course`, formData)
     .then((response) => {
       if (response.data.status === 'success') {
         dispatch({
@@ -367,25 +374,26 @@ export const getProjectCourseFromLMS = (
             async function asyncFunc() {
               for (let x = 0; x < playlist.length; x += 1) {
                 // eslint-disable-next-line no-await-in-loop
-                await axios.post(
-                  `${global.config.laravelAPIUrl}/go/${lms}/publish/playlist`,
-                  {
-                    settingId,
-                    playlistId: playlist[x]._id,
-                    counter:
+                await axios
+                  .post(
+                    `${global.config.laravelAPIUrl}/go/${lms}/publish/playlist`,
+                    {
+                      settingId,
+                      playlistId: playlist[x]._id,
+                      counter:
                         !!globalStoreClone.project.lmsCourse
-                        && globalStoreClone.project.lmsCourse
-                          .playlistsCopyCounter.length > 0
+                        && globalStoreClone.project.lmsCourse.playlistsCopyCounter
+                          .length > 0
                           ? globalStoreClone.project.lmsCourse
                             .playlistsCopyCounter[x].counter
                           : 0,
-                  },
-                  {
-                    headers: {
-                      Authorization: `Bearer ${token}`,
                     },
-                  },
-                )
+                    {
+                      headers: {
+                        Authorization: `Bearer ${token}`,
+                      },
+                    },
+                  )
                   .then(() => {
                     if (x + 1 === playlist.length) {
                       Swal.fire({
