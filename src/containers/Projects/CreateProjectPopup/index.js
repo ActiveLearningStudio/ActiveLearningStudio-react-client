@@ -64,8 +64,7 @@ const onSubmit = async (values, dispatch, props) => {
           : createProjectAction({
             name,
             description,
-            thumb_url: `https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?
-              auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280`,
+            thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
           }),
       );
     }
@@ -198,9 +197,7 @@ let CreateProjectPopup = (props) => {
                   <h2>Default Selected thumbnail</h2>
                   <div className="imgbox">
                     <img
-                      src={`https://images.pexels.com/photos/593158/
-                        pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;
-                        dpr=1&amp;fit=crop&amp;h=200&amp;w=280`}
+                      src={'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280'}
                       alt=""
                     />
                   </div>

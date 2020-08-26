@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { Modal } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
-import dotsloader from '../../assets/images/dotsloader.gif';
-import { uploadResourceThumbnail } from '../../store/actions/resource';
-import { uploadProjectThumbnail } from '../../store/actions/project';
+import dotsloader from 'assets/images/dotsloader.gif';
+import { uploadResourceThumbnail } from 'store/actions/resource';
+import { uploadProjectThumbnail } from 'store/actions/project';
 import './styles.scss';
 
 const PexelsAPI = require('pexels-api-wrapper');
@@ -21,8 +21,6 @@ export default function Pexels(props) {
   const { project, resourceName, searchName } = props;
 
   useEffect(() => {
-    //  !!props.resourceName && setSearchValue(props.searchName);
-
     pexelsClient
       .search(!!searchName && searchName)
       .then((result) => {
