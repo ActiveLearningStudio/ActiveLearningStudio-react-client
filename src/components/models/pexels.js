@@ -2,22 +2,26 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
+import PexelsAPI from 'pexels-api-wrapper';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
+
 import dotsloader from 'assets/images/dotsloader.gif';
 import { uploadResourceThumbnail } from 'store/actions/resource';
 import { uploadProjectThumbnail } from 'store/actions/project';
-import './styles.scss';
 
-const PexelsAPI = require('pexels-api-wrapper');
+import './styles.scss';
 
 const pexelsClient = new PexelsAPI(process.env.REACT_APP_PEXEL_API);
 
-export default function Pexels(props) {
+function Pexels(props) {
   const dispatch = useDispatch();
-  const [pixeldata, setpixels] = useState([]);
+
+  const [pexelData, setPexels] = useState([]);
   const [loader, setLoader] = useState(true);
   const [searchValue, setSearchValue] = useState();
-  const [nextAPI, setNextAPi] = useState('');
+  const [nextApi, setNextApi] = useState('');
+
   const { project, resourceName, searchName } = props;
 
   useEffect(() => {
@@ -25,13 +29,13 @@ export default function Pexels(props) {
       .search(!!searchName && searchName)
       .then((result) => {
         setLoader(false);
-
-        const allphotos = !!result.photos && result.photos.map((data) => data);
-
-        setpixels(allphotos);
-        setNextAPi(result.next_page);
+        const allPhotos = !!result.photos && result.photos.map((data) => data);
+        setPexels(allPhotos);
+        setNextApi(result.next_page);
       })
-      .catch(() => {});
+      .catch(() => {
+        // console.err(e);
+      });
   }, [searchName]);
   return (
     <Modal
@@ -47,9 +51,10 @@ export default function Pexels(props) {
             {' '}
             <b>{resourceName}</b>
             {' '}
-            Category. You can search other thumbnails below as well
+            Category. You can search other thumbnails below as well.
           </p>
-          <div className="searchpixels">
+
+          <div className="search-pixels">
             <input
               type="text"
               placeholder="Search Thumbnails..."
@@ -65,29 +70,33 @@ export default function Pexels(props) {
                     .search(searchValue, 10, 1)
                     .then((result) => {
                       setLoader(false);
-                      const allphotos = !!result.photos && result.photos.map((data) => data);
-                      setpixels(allphotos);
-                      setNextAPi(result.next_page);
+                      const allPhotos = !!result.photos && result.photos.map((data) => data);
+                      setPexels(allPhotos);
+                      setNextApi(result.next_page);
                     })
-                    .catch(() => {});
+                    .catch(() => {
+                      // console.err(e);
+                    });
                 }
               }}
             />
-            <i className="fa fa-search" />
+
+            <FontAwesomeIcon icon="search" />
           </div>
         </Modal.Title>
       </Modal.Header>
+
       <Modal.Body>
-        <div className="imgboxpexels">
+        <div className="img-box-pexels">
           {loader ? (
             <img src={dotsloader} className="loader" alt="loader" />
-          ) : pixeldata.length === 0 ? (
-            'no result found. You can still search other thumbnails'
+          ) : pexelData.length === 0 ? (
+            'No result found. You can still search other thumbnails.'
           ) : (
             <>
-              {!!pixeldata && (
+              {!!pexelData && (
                 <>
-                  {pixeldata.map((images) => (
+                  {pexelData.map((images) => (
                     <div className="watermark" key={images.id}>
                       <img
                         src={images.src.tiny}
@@ -95,13 +104,11 @@ export default function Pexels(props) {
                           props.onHide();
                           return project
                             ? dispatch(uploadProjectThumbnail(images.src.tiny))
-                            : dispatch(
-                              uploadResourceThumbnail(images.src.tiny),
-                            );
+                            : dispatch(uploadResourceThumbnail(images.src.tiny));
                         }}
                         alt="pexel"
                       />
-                      <a rel="noreferrer" href={images.url} target="_blank">
+                      <a href={images.url} target="_blank" rel="noreferrer">
                         {' '}
                         {images.photographer}
                         /Pexels
@@ -110,21 +117,20 @@ export default function Pexels(props) {
                   ))}
                 </>
               )}
-              {!!nextAPI && (
+
+              {!!nextApi && (
                 <h6
                   className="readmore-pexel"
                   onClick={() => {
-                    axios
-                      .get(nextAPI, {
-                        headers: {
-                          Authorization: process.env.REACT_APP_PEXEL_API,
-                        },
-                      })
+                    axios.get(nextApi, {
+                      headers: {
+                        Authorization: process.env.REACT_APP_PEXEL_API,
+                      },
+                    })
                       .then((res) => {
-                        const moreData = res.data.photos.map((data) => data);
-
-                        setpixels(pixeldata.concat(moreData));
-                        setNextAPi(res.data.next_page);
+                        const moreData = res.data.photos;
+                        setPexels(pexelData.concat(moreData));
+                        setNextApi(res.data.next_page);
                       });
                   }}
                 >
@@ -138,10 +144,13 @@ export default function Pexels(props) {
     </Modal>
   );
 }
+
 Pexels.propTypes = {
   project: PropTypes.object.isRequired,
   searchName: PropTypes.string.isRequired,
+  resourceName: PropTypes.string.isRequired,
   onHide: PropTypes.func.isRequired,
   show: PropTypes.func.isRequired,
-  resourceName: PropTypes.string.isRequired,
 };
+
+export default Pexels;

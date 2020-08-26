@@ -1,10 +1,18 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useCallback,
+  useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import Swal from 'sweetalert2';
+
+import computer from 'assets/images/computer.svg';
 import loader from 'assets/images/loader.svg';
+import pexel from 'assets/images/pexel.png';
 import {
   createProjectAction,
   updateProjectAction,
@@ -12,9 +20,7 @@ import {
 } from 'store/actions/project';
 import InputField from 'components/InputField';
 import TextareaField from 'components/TextareaField';
-import pexel from '../../../assets/images/pexel.png';
-import PexelsAPI from '../../../components/models/pexels';
-import computer from '../../../assets/images/computer.svg';
+import PexelsAPI from 'components/models/pexels';
 
 import './style.scss';
 
@@ -64,6 +70,7 @@ const onSubmit = async (values, dispatch, props) => {
           : createProjectAction({
             name,
             description,
+            // eslint-disable-next-line max-len
             thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
           }),
       );
@@ -103,17 +110,16 @@ let CreateProjectPopup = (props) => {
     handleSubmit,
     handleCloseProjectModal,
   } = props;
-  const [modalShow, setModalShow] = React.useState(false);
-  const openfile = useRef();
+
+  const [modalShow, setModalShow] = useState(false);
+  const openFile = useRef();
+
   // remove popup when escape is pressed
-  const escFunction = useCallback(
-    (event) => {
-      if (event.keyCode === 27) {
-        handleCloseProjectModal(event);
-      }
-    },
-    [handleCloseProjectModal],
-  );
+  const escFunction = useCallback((event) => {
+    if (event.keyCode === 27) {
+      handleCloseProjectModal(event);
+    }
+  }, [handleCloseProjectModal]);
 
   useEffect(() => {
     document.addEventListener('keydown', escFunction, false);
@@ -132,6 +138,7 @@ let CreateProjectPopup = (props) => {
         }}
         searchName="abstract"
       />
+
       <form
         className="create-playlist-form"
         onSubmit={handleSubmit}
@@ -149,14 +156,17 @@ let CreateProjectPopup = (props) => {
 
         <div className="upload-thumbnail check">
           <div className="upload_placeholder">
-            {/* <h2>
+            {/*
+            <h2>
               {" "}
               <br />
               Upload thumbnail
-            </h2> */}
+            </h2>
+            */}
+
             <label style={{ display: 'none' }}>
               <input
-                ref={openfile}
+                ref={openFile}
                 type="file"
                 onChange={(e) => uploadThumb(e, props)}
                 accept="image/x-png,image/jpeg"
@@ -181,48 +191,47 @@ let CreateProjectPopup = (props) => {
                     Image Uploaded:
                   </div>
                   <div className="imgbox">
-                    {!!project.thumbUrl
-                    && project.thumbUrl.includes('pexels.com') ? (
-                      <img alt="" src={project.thumbUrl} />
-                      ) : (
-                        <img
-                          alt=""
-                          src={global.config.laravelAPIUrl + project.thumbUrl}
-                        />
-                      )}
+                    {!!project.thumbUrl && project.thumbUrl.includes('pexels.com') ? (
+                      <img src={project.thumbUrl} alt="" />
+                    ) : (
+                      <img src={global.config.laravelAPIUrl + project.thumbUrl} alt="" />
+                    )}
                   </div>
                 </div>
               ) : (
                 <div className="new-box">
                   <h2>Default Selected thumbnail</h2>
                   <div className="imgbox">
-                    <img
-                      src={'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280'}
-                      alt=""
-                    />
+                    {/* eslint-disable-next-line max-len */}
+                    <img src="https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280" alt="" />
                   </div>
                 </div>
               )}
             </div>
+
             <div className="button-flex">
               <h2>Change thumbnail from below options</h2>
-              <div onClick={() => setModalShow(true)} className=" pexel">
+
+              <div className="pexel" onClick={() => setModalShow(true)}>
                 <img src={pexel} alt="pexel" />
                 <p>Select from Pexels</p>
               </div>
+
               <div
+                className="gallery"
                 onClick={() => {
-                  openfile.current.click();
+                  openFile.current.click();
                 }}
-                className=" gallery"
               >
                 <img src={computer} alt="" />
                 <p>Upload a Photo From your computer</p>
               </div>
             </div>
           </div>
+
           <br />
-          <p className="descliamer">
+
+          <p className="disclaimer">
             Project Image dimension should be
             {' '}
             <strong>290px width and 200px height.</strong>

@@ -76,6 +76,7 @@ export const deleteProjectAction = (projectId) => async (dispatch) => {
     throw e;
   }
 };
+
 export const uploadProjectThumbnail = (thumbUrl) => ({
   type: actionTypes.UPLOAD_PROJECT_THUMBNAIL,
   payload: { thumbUrl },
@@ -153,9 +154,7 @@ export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
   }
 };
 
-export const toggleProjectShareAction = (projectId, ProjectName) => async (
-  dispatch,
-) => {
+export const toggleProjectShareAction = (projectId, ProjectName) => async (dispatch) => {
   const { project } = await projectService.share(projectId);
 
   dispatch({
@@ -168,10 +167,7 @@ export const toggleProjectShareAction = (projectId, ProjectName) => async (
   return SharePreviewPopup(url, ProjectName);
 };
 
-export const toggleProjectShareRemovedAction = (
-  projectId,
-  ProjectName,
-) => async (dispatch) => {
+export const toggleProjectShareRemovedAction = (projectId, projectName) => async (dispatch) => {
   const { project } = await projectService.removeShared(projectId);
 
   dispatch({
@@ -180,9 +176,8 @@ export const toggleProjectShareRemovedAction = (
   });
 
   Swal.fire({
-    title: `You stopped sharing <strong>"${ProjectName}"</strong> !`,
-    html:
-      'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
+    title: `You stopped sharing <strong>"${projectName}"</strong> !`,
+    html: 'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
   });
 };
 
@@ -289,7 +284,7 @@ export const ShareLMS = (
               title: 'Published!',
               confirmButtonColor: '#5952c6',
               html: `Your playlist has been published to <a target="_blank" href="${lmsUrl}"> ${lmsUrl}</a>`,
-              //   text: `Yo'ur playlist has been submitted to ${lmsUrl}`,
+              //   text: `Your playlist has been submitted to ${lmsUrl}`,
             });
           }
         })

@@ -3480,53 +3480,6 @@ a:hover {
   font-size: 16px;
 }
 
-.img-box-pexels {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  max-height: 700px;
-  min-height: 300px;
-  overflow-y: auto;
-
-  img {
-    width: 32%;
-    margin-bottom: 10px;
-    cursor: pointer;
-  }
-
-  .loader {
-    width: 50px;
-    height: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    align-self: center;
-    margin: 0 auto;
-  }
-}
-
-.search-pixels {
-  position: relative;
-
-  input {
-    border: none;
-    font-size: 16px;
-    font-weight: 300;
-    height: 50px;
-    width: 420px;
-    padding-left: 50px;
-    box-shadow: 0 0 3px 0 #ccc;
-  }
-
-  .fa {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    color: #ccc;
-    -webkit-text-stroke: 1px #fff;
-  }
-}
-
 .registration-body-page #hubspot-messages-iframe-container {
   display: none !important;
 }
