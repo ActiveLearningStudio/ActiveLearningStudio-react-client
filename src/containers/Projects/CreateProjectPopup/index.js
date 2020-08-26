@@ -1,11 +1,18 @@
-import React, { useEffect, useCallback } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useCallback,
+  useState,
+} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import Swal from 'sweetalert2';
 
+import computer from 'assets/images/computer.svg';
 import loader from 'assets/images/loader.svg';
+import pexel from 'assets/images/pexel.png';
 import {
   createProjectAction,
   updateProjectAction,
@@ -13,6 +20,7 @@ import {
 } from 'store/actions/project';
 import InputField from 'components/InputField';
 import TextareaField from 'components/TextareaField';
+import PexelsAPI from 'components/models/pexels';
 
 import './style.scss';
 
@@ -28,14 +36,18 @@ const maxLength80 = maxLength(80);
 let imageValidation = '';
 
 const onSubmit = async (values, dispatch, props) => {
-  const { history, project: { thumbUrl }, editMode } = props;
+  const {
+    history,
+    project: { thumbUrl },
+    editMode,
+  } = props;
   const { name, description } = values;
 
   try {
-    if (!thumbUrl) {
-      imageValidation = '* Required';
-      return false;
-    }
+    // if (!thumbUrl) {
+    //   imageValidation = "* Required";
+    //   return false;
+    // }
 
     if (editMode) {
       // update
@@ -49,11 +61,18 @@ const onSubmit = async (values, dispatch, props) => {
     } else {
       // create
       await dispatch(
-        createProjectAction({
-          name,
-          description,
-          thumb_url: thumbUrl,
-        }),
+        props.project.thumb_url
+          ? createProjectAction({
+            name,
+            description,
+            thumb_url: thumbUrl,
+          })
+          : createProjectAction({
+            name,
+            description,
+            // eslint-disable-next-line max-len
+            thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+          }),
       );
     }
 
@@ -92,6 +111,9 @@ let CreateProjectPopup = (props) => {
     handleCloseProjectModal,
   } = props;
 
+  const [modalShow, setModalShow] = useState(false);
+  const openFile = useRef();
+
   // remove popup when escape is pressed
   const escFunction = useCallback((event) => {
     if (event.keyCode === 27) {
@@ -108,6 +130,15 @@ let CreateProjectPopup = (props) => {
 
   return (
     <div className="create-program-wrapper">
+      <PexelsAPI
+        show={modalShow}
+        project
+        onHide={() => {
+          setModalShow(false);
+        }}
+        searchName="abstract"
+      />
+
       <form
         className="create-playlist-form"
         onSubmit={handleSubmit}
@@ -123,45 +154,88 @@ let CreateProjectPopup = (props) => {
           />
         </div>
 
-        <div className="upload-thumbnail">
-          <h2 className="mt-4 mb-2">Upload thumbnail</h2>
+        <div className="upload-thumbnail check">
+          <div className="upload_placeholder">
+            {/*
+            <h2>
+              {" "}
+              <br />
+              Upload thumbnail
+            </h2>
+            */}
 
-          <label>
-            <input
-              type="file"
-              onChange={(e) => uploadThumb(e, props)}
-              accept="image/x-png,image/jpeg"
-            />
-            <span>Upload</span>
-          </label>
+            <label style={{ display: 'none' }}>
+              <input
+                ref={openFile}
+                type="file"
+                onChange={(e) => uploadThumb(e, props)}
+                accept="image/x-png,image/jpeg"
+              />
+              <span>Upload</span>
+            </label>
+
+            <span className="validation-error">{imageValidation}</span>
+
+            <div>
+              {project.progress}
+              {project.thumbUrl ? (
+                <div className="thumb-display">
+                  <div
+                    className="success"
+                    style={{
+                      color: 'green',
+                      marginBottom: '20px',
+                      fontSize: '20px',
+                    }}
+                  >
+                    Image Uploaded:
+                  </div>
+                  <div className="imgbox">
+                    {!!project.thumbUrl && project.thumbUrl.includes('pexels.com') ? (
+                      <img src={project.thumbUrl} alt="" />
+                    ) : (
+                      <img src={global.config.laravelAPIUrl + project.thumbUrl} alt="" />
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="new-box">
+                  <h2>Default Selected thumbnail</h2>
+                  <div className="imgbox">
+                    {/* eslint-disable-next-line max-len */}
+                    <img src="https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280" alt="" />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="button-flex">
+              <h2>Change thumbnail from below options</h2>
+
+              <div className="pexel" onClick={() => setModalShow(true)}>
+                <img src={pexel} alt="pexel" />
+                <p>Select from Pexels</p>
+              </div>
+
+              <div
+                className="gallery"
+                onClick={() => {
+                  openFile.current.click();
+                }}
+              >
+                <img src={computer} alt="" />
+                <p>Upload a Photo From your computer</p>
+              </div>
+            </div>
+          </div>
+
+          <br />
 
           <p className="disclaimer">
             Project Image dimension should be
             {' '}
             <strong>290px width and 200px height.</strong>
           </p>
-
-          <span className="validation-error">{imageValidation}</span>
-
-          {project.progress}
-
-          {project.thumbUrl && (
-            <div className="thumb-display">
-              <div
-                className="success"
-                style={{
-                  color: 'green',
-                  marginBottom: '20px',
-                  fontSize: '20px',
-                }}
-              >
-                Image Uploaded:
-              </div>
-              <div className="thumb">
-                <img src={global.config.resourceUrl + project.thumbUrl} alt="" />
-              </div>
-            </div>
-          )}
         </div>
 
         <div className="project-description">
@@ -175,11 +249,17 @@ let CreateProjectPopup = (props) => {
         </div>
 
         <div className="create-project-template-wrapper">
-          <button type="submit" className="create-project-submit-btn" disabled={isLoading}>
+          <button
+            type="submit"
+            className="create-project-submit-btn"
+            disabled={isLoading}
+          >
             {isLoading ? (
               <img src={loader} alt="" />
+            ) : editMode ? (
+              'Update Project'
             ) : (
-              editMode ? 'Update Project' : 'Create Project'
+              'Create Project'
             )}
           </button>
         </div>
@@ -218,4 +298,6 @@ const mapStateToProps = (state) => ({
   isLoading: state.project.isLoading,
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CreateProjectPopup));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(CreateProjectPopup),
+);

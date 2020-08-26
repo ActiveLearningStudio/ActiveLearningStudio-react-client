@@ -77,15 +77,20 @@ export const deleteProjectAction = (projectId) => async (dispatch) => {
   }
 };
 
+export const uploadProjectThumbnail = (thumbUrl) => ({
+  type: actionTypes.UPLOAD_PROJECT_THUMBNAIL,
+  payload: { thumbUrl },
+});
+
 export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
   const config = {
     onUploadProgress: (progressEvent) => {
       dispatch({
         type: actionTypes.PROJECT_THUMBNAIL_PROGRESS,
         payload: {
-          progress: `Uploaded progress: ${
-            Math.round((progressEvent.loaded / progressEvent.total) * 100)
-          }%`,
+          progress: `Uploaded progress: ${Math.round(
+            (progressEvent.loaded / progressEvent.total) * 100,
+          )}%`,
         },
       });
     },
@@ -162,7 +167,7 @@ export const toggleProjectShareAction = (projectId, ProjectName) => async (dispa
   return SharePreviewPopup(url, ProjectName);
 };
 
-export const toggleProjectShareRemovedAction = (projectId, ProjectName) => async (dispatch) => {
+export const toggleProjectShareRemovedAction = (projectId, projectName) => async (dispatch) => {
   const { project } = await projectService.removeShared(projectId);
 
   dispatch({
@@ -171,7 +176,7 @@ export const toggleProjectShareRemovedAction = (projectId, ProjectName) => async
   });
 
   Swal.fire({
-    title: `You stopped sharing <strong>"${ProjectName}"</strong> !`,
+    title: `You stopped sharing <strong>"${projectName}"</strong> !`,
     html: 'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
   });
 };
@@ -279,7 +284,7 @@ export const ShareLMS = (
               title: 'Published!',
               confirmButtonColor: '#5952c6',
               html: `Your playlist has been published to <a target="_blank" href="${lmsUrl}"> ${lmsUrl}</a>`,
-              //   text: `Yo'ur playlist has been submitted to ${lmsUrl}`,
+              //   text: `Your playlist has been submitted to ${lmsUrl}`,
             });
           }
         })
@@ -332,10 +337,7 @@ export const getProjectCourseFromLMS = (
   });
 
   return axios
-    .post(
-      `${global.config.laravelAPIUrl}/go/${lms}/fetch/course`,
-      formData,
-    )
+    .post(`${global.config.laravelAPIUrl}/go/${lms}/fetch/course`, formData)
     .then((response) => {
       if (response.data.status === 'success') {
         dispatch({
@@ -367,25 +369,26 @@ export const getProjectCourseFromLMS = (
             async function asyncFunc() {
               for (let x = 0; x < playlist.length; x += 1) {
                 // eslint-disable-next-line no-await-in-loop
-                await axios.post(
-                  `${global.config.laravelAPIUrl}/go/${lms}/publish/playlist`,
-                  {
-                    settingId,
-                    playlistId: playlist[x]._id,
-                    counter:
+                await axios
+                  .post(
+                    `${global.config.laravelAPIUrl}/go/${lms}/publish/playlist`,
+                    {
+                      settingId,
+                      playlistId: playlist[x]._id,
+                      counter:
                         !!globalStoreClone.project.lmsCourse
-                        && globalStoreClone.project.lmsCourse
-                          .playlistsCopyCounter.length > 0
+                        && globalStoreClone.project.lmsCourse.playlistsCopyCounter
+                          .length > 0
                           ? globalStoreClone.project.lmsCourse
                             .playlistsCopyCounter[x].counter
                           : 0,
-                  },
-                  {
-                    headers: {
-                      Authorization: `Bearer ${token}`,
                     },
-                  },
-                )
+                    {
+                      headers: {
+                        Authorization: `Bearer ${token}`,
+                      },
+                    },
+                  )
                   .then(() => {
                     if (x + 1 === playlist.length) {
                       Swal.fire({

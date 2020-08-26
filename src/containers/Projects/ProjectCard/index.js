@@ -43,7 +43,9 @@ const ProjectCard = (props) => {
               <div
                 className="project-thumb"
                 style={{
-                  backgroundImage: `url(${global.config.resourceUrl}${project.thumb_url})`,
+                  backgroundImage: !!project.thumb_url && project.thumb_url.includes('pexels.com')
+                    ? `url(${project.thumb_url})`
+                    : `url(${global.config.resourceUrl}${project.thumb_url})`,
                 }}
               />
             )}
@@ -55,9 +57,7 @@ const ProjectCard = (props) => {
             <div className="row">
               <div className="col-md-10">
                 <h3 className="program-title">
-                  <Link to={`/project/${project.id}`}>
-                    {project.name}
-                  </Link>
+                  <Link to={`/project/${project.id}`}>{project.name}</Link>
                 </h3>
               </div>
 
@@ -74,6 +74,7 @@ const ProjectCard = (props) => {
                       <FontAwesomeIcon icon="eye" className="mr-2" />
                       Preview
                     </Dropdown.Item>
+
                     <Dropdown.Item as={Link} to={`/project/${project.id}/edit`}>
                       <FontAwesomeIcon icon="pen" className="mr-2" />
                       Edit
@@ -161,6 +162,7 @@ const ProjectCard = (props) => {
               <FontAwesomeIcon icon="eye" className="mr-2" />
               Preview
             </Link>
+
             <Link to={`/project/${project.id}`}>
               <FontAwesomeIcon icon="cubes" className="mr-2" />
               Build

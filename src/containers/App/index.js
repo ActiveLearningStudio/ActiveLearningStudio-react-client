@@ -42,8 +42,6 @@ function App(props) {
         />
       </Helmet>
 
-      <div className="need_help">Need Help ?</div>
-
       <AppRouter />
     </div>
   );
