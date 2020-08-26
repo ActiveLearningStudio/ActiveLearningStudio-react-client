@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import { Modal } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import PexelsAPI from 'pexels-api-wrapper';
 import dotsloader from 'assets/images/dotsloader.gif';
 import { uploadResourceThumbnail } from 'store/actions/resource';
 import { uploadProjectThumbnail } from 'store/actions/project';
 import './styles.scss';
-
-const PexelsAPI = require('pexels-api-wrapper');
 
 const pexelsClient = new PexelsAPI(process.env.REACT_APP_PEXEL_API);
 
