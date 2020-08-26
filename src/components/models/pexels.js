@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from 'react-bootstrap';
-// import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import dotsloader from '../../assets/images/dotsloader.gif';
-// import { uploadResourceThumbnail } from "../../store/actions/resource";
-// import { uploadProjectThumbnail } from "../../store/actions/project";
+import { uploadResourceThumbnail } from '../../store/actions/resource';
+import { uploadProjectThumbnail } from '../../store/actions/project';
 import './styles.scss';
 
 const PexelsAPI = require('pexels-api-wrapper');
@@ -13,13 +13,13 @@ const PexelsAPI = require('pexels-api-wrapper');
 const pexelsClient = new PexelsAPI(process.env.REACT_APP_PEXEL_API);
 
 export default function Pexels(props) {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [pixeldata, setpixels] = useState([]);
   const [loader, setLoader] = useState(true);
   const [searchValue, setSearchValue] = useState();
   const [nextAPI, setNextAPi] = useState('');
-  // const { project, resourceName, searchName } = props;
-  const { resourceName, searchName } = props;
+  const { project, resourceName, searchName } = props;
+
   useEffect(() => {
     //  !!props.resourceName && setSearchValue(props.searchName);
 
@@ -28,8 +28,7 @@ export default function Pexels(props) {
       .then((result) => {
         setLoader(false);
 
-        const allphotos = !!result.photos
-          && result.photos.map((data) => data);
+        const allphotos = !!result.photos && result.photos.map((data) => data);
 
         setpixels(allphotos);
         setNextAPi(result.next_page);
@@ -68,8 +67,7 @@ export default function Pexels(props) {
                     .search(searchValue, 10, 1)
                     .then((result) => {
                       setLoader(false);
-                      const allphotos = !!result.photos
-                        && result.photos.map((data) => data);
+                      const allphotos = !!result.photos && result.photos.map((data) => data);
                       setpixels(allphotos);
                       setNextAPi(result.next_page);
                     })
@@ -95,18 +93,14 @@ export default function Pexels(props) {
                     <div className="watermark" key={images.id}>
                       <img
                         src={images.src.tiny}
-                          // onClick={() => {
-                          //   {
-                          //     !!project
-                          //       ? dispatch(
-                          //           uploadProjectThumbnail(images.src.tiny)
-                          //         )
-                          //       : dispatch(
-                          //           uploadResourceThumbnail(images.src.tiny)
-                          //         );
-                          //     props.onHide();
-                          //   }
-                          // }}
+                        onClick={() => {
+                          props.onHide();
+                          return project
+                            ? dispatch(uploadProjectThumbnail(images.src.tiny))
+                            : dispatch(
+                              uploadResourceThumbnail(images.src.tiny),
+                            );
+                        }}
                         alt="pexel"
                       />
                       <a rel="noreferrer" href={images.url} target="_blank">

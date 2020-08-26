@@ -55,11 +55,18 @@ const onSubmit = async (values, dispatch, props) => {
     } else {
       // create
       await dispatch(
-        createProjectAction({
-          name,
-          description,
-          thumb_url: thumbUrl,
-        }),
+        props.project.thumb_url
+          ? createProjectAction({
+            name,
+            description,
+            thumb_url: thumbUrl,
+          })
+          : createProjectAction({
+            name,
+            description,
+            thumb_url: `https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?
+              auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280`,
+          }),
       );
     }
 
