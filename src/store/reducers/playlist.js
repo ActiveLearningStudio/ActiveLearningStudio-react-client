@@ -1,6 +1,7 @@
 import * as actionTypes from '../actionTypes';
 
 const INITIAL_STATE = {
+  isLoading: false,
   playlists: [],
   showCreatePlaylistPopup: false,
   selectedPlaylist: {},
@@ -188,33 +189,6 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         playlists: action.playlists,
-      };
-
-    case actionTypes.CHANGE_PLAYLIST_TITLE:
-      const newTitleChangedPlaylists = state.playlists.filter((playlist) => {
-        const newPlaylist = { ...playlist };
-        if (newPlaylist._id === action.playlistId) {
-          newPlaylist.title = action.title;
-          newPlaylist.playlistTitleClicked = false;
-        }
-        return newPlaylist;
-      });
-      return {
-        ...state,
-        playlists: newTitleChangedPlaylists,
-      };
-
-    case actionTypes.CLICK_PLAYLIST_TITLE:
-      const newClickTitlePlaylists = state.playlists.filter((playlist) => {
-        const nPlaylist = { ...playlist };
-        if (nPlaylist._id === action.playlistId) {
-          nPlaylist.playlistTitleClicked = true;
-        }
-        return nPlaylist;
-      });
-      return {
-        ...state,
-        playlists: newClickTitlePlaylists,
       };
 
     default:

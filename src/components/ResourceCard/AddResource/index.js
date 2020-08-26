@@ -91,10 +91,14 @@ const AddResource = (props) => {
 
 AddResource.propTypes = {
   resource: PropTypes.object.isRequired,
-  editResourcePopup: PropTypes.bool.isRequired,
+  editResourcePopup: PropTypes.bool,
   handleHideCreateResourceModal: PropTypes.func.isRequired,
   showCreateResourceActivity: PropTypes.func.isRequired,
   showResourceDescribeActivity: PropTypes.func.isRequired,
+};
+
+AddResource.defaultProps = {
+  editResourcePopup: false,
 };
 
 export default AddResource;

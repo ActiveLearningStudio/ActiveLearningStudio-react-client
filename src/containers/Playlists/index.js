@@ -348,8 +348,7 @@ class PlaylistsPage extends React.Component {
                               key={playlist.id}
                               index={index}
                               playlist={playlist}
-                              playlistTitleClicked={playlist.playlistTitleClicked}
-                              title={playlist.title}
+                              projectId={playlist.project ? playlist.project.id : playlist.project_id}
                               handleCreateResource={this.handleShowCreateResourceModal}
                             />
                           ))}
@@ -413,9 +412,9 @@ class PlaylistsPage extends React.Component {
 PlaylistsPage.propTypes = {
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  openCreatePopup: PropTypes.bool.isRequired,
-  openCreateResourcePopup: PropTypes.bool.isRequired,
-  openEditResourcePopup: PropTypes.bool.isRequired,
+  openCreatePopup: PropTypes.bool,
+  openCreateResourcePopup: PropTypes.bool,
+  openEditResourcePopup: PropTypes.bool,
   playlist: PropTypes.object.isRequired,
   resource: PropTypes.object.isRequired,
   project: PropTypes.object.isRequired,
@@ -432,7 +431,15 @@ PlaylistsPage.propTypes = {
   hideCreateResourceModal: PropTypes.func.isRequired,
   showCreatePlaylistModal: PropTypes.func.isRequired,
   hideCreatePlaylistModal: PropTypes.func.isRequired,
+  showCreateResourceActivity: PropTypes.func.isRequired,
+  showResourceDescribeActivity: PropTypes.func.isRequired,
   loadLms: PropTypes.func.isRequired,
+};
+
+PlaylistsPage.defaultProps = {
+  openCreatePopup: false,
+  openCreateResourcePopup: false,
+  openEditResourcePopup: false,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -471,7 +478,7 @@ const mapDispatchToProps = (dispatch) => ({
   deleteResource: (resourceId) => dispatch(deleteResourceAction(resourceId)),
   showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
   showCreateResourceActivity: () => dispatch(showCreateResourceActivityAction()),
-  showDescribeActivity: (activity, id) => dispatch(showDescribeActivityAction(activity, id)),
+  showResourceDescribeActivity: (activity, id) => dispatch(showDescribeActivityAction(activity, id)),
   showBuildActivity: (editor, editorType, id) => dispatch(showBuildActivityAction(editor, editorType, id)),
   onChangeActivityType: (activityTypeId) => dispatch(onChangeActivityTypeAction(activityTypeId)),
   onChangeActivity: (e, activity) => dispatch(onChangeActivityAction(e, activity)),

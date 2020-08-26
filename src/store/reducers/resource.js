@@ -1,67 +1,79 @@
-import {
-  SHOW_CREATE_RESOURCE_MODAL,
-  HIDE_CREATE_RESOURCE_MODAL,
-  SHOW_RESOURCE_ACTIVITY_TYPE,
-  SHOW_RESOURCE_SELECT_ACTIVITY,
-  SHOW_RESOURCE_ACTIVITY_BUILD,
-  CREATE_RESOURCE,
-  PREVIEW_RESOURCE,
-  HIDE_PREVIEW_PLAYLIST_MODAL,
-  LOAD_RESOURCE,
-  SHOW_RESOURCE_DESCRIBE_ACTIVITY,
-  SELECT_ACTIVITY_TYPE,
-  SELECT_ACTIVITY,
-  DESCRIBE_ACTIVITY,
-  UPLOAD_RESOURCE_THUMBNAIL,
-  EDIT_RESOURCE,
-  RESOURCE_VALIDATION_ERRORS,
-  RESOURCE_THUMBNAIL_PROGRESS,
-  HIDE_RESOURCE_ACTIVITY_BUILD,
-} from '../actionTypes';
+import * as actionTypes from '../actionTypes';
 
-const defaultResourceState = () => {
-  if (localStorage.getItem('resources')) {
-    return {
-      playlists: JSON.parse(localStorage.getItem('playlists')),
-      // 'resources':JSON.parse(localStorage.getItem("resources")),
-      showCreateResourcePopup: false,
-    };
-  }
-  return {
-    playlists: [],
-    showCreateResourcePopup: false,
-    newResource: {
-      activity: {
-        type: null,
-      },
-      metadata: {
-        thumbUrl: null,
-      },
+const INITIAL_STATE = {
+  isLoading: false,
+  types: [],
+  resources: [],
+  showCreateResourcePopup: false,
+  newResource: {
+    activity: {
+      type: null,
     },
-    editResource: {
-      params: {
-        data: '',
-      },
-      metadata: {
-        title: null,
-        subjectId: null,
-        educationLevelId: null,
-        thumbUrl: null,
-      },
+    metadata: {
+      thumbUrl: null,
     },
-    selectedResource: null,
-  };
+  },
+  editResource: {
+    params: {
+      data: '',
+    },
+    metadata: {
+      title: null,
+      subjectId: null,
+      educationLevelId: null,
+      thumbUrl: null,
+    },
+  },
+  selectedResource: null,
 };
 
-export default (state = defaultResourceState(), action) => {
+export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case SHOW_CREATE_RESOURCE_MODAL:
+    case actionTypes.LOAD_RESOURCE_TYPE_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case actionTypes.LOAD_RESOURCE_TYPE_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        types: action.payload.types,
+      };
+    case actionTypes.LOAD_RESOURCE_TYPE_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case actionTypes.LOAD_RESOURCE_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case actionTypes.LOAD_RESOURCE_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        selectedResource: action.payload.resource,
+        previousResourceId: action.payload.previousResourceId,
+        nextResourceId: action.payload.nextResourceId,
+      };
+    case actionTypes.LOAD_RESOURCE_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    // TODO: refactor bottom
+    case actionTypes.SHOW_CREATE_RESOURCE_MODAL:
       return {
         ...state,
         showCreateResourcePopup: true,
         currentPlaylistId: action.id,
       };
-    case HIDE_CREATE_RESOURCE_MODAL:
+
+    case actionTypes.HIDE_CREATE_RESOURCE_MODAL:
       return {
         ...state,
         showCreateResourcePopup: false,
@@ -91,7 +103,8 @@ export default (state = defaultResourceState(), action) => {
           },
         },
       };
-    case SHOW_RESOURCE_ACTIVITY_TYPE:
+
+    case actionTypes.SHOW_RESOURCE_ACTIVITY_TYPE:
       return {
         ...state,
         isResourceActivityType: true,
@@ -102,7 +115,8 @@ export default (state = defaultResourceState(), action) => {
         isSelectActivityFilled: false,
         isDescribeFilled: false,
       };
-    case SHOW_RESOURCE_SELECT_ACTIVITY:
+
+    case actionTypes.SHOW_RESOURCE_SELECT_ACTIVITY:
       return {
         ...state,
         isResourceActivityType: false,
@@ -111,7 +125,8 @@ export default (state = defaultResourceState(), action) => {
         isResourceActivityBuild: false,
         isActivityTypeFilled: true,
       };
-    case SHOW_RESOURCE_DESCRIBE_ACTIVITY:
+
+    case actionTypes.SHOW_RESOURCE_DESCRIBE_ACTIVITY:
       return {
         ...state,
         isResourceActivityType: false,
@@ -127,7 +142,8 @@ export default (state = defaultResourceState(), action) => {
           metadata: action.metadata,
         },
       };
-    case SHOW_RESOURCE_ACTIVITY_BUILD:
+
+    case actionTypes.SHOW_RESOURCE_ACTIVITY_BUILD:
       return {
         ...state,
         isResourceActivityType: false,
@@ -142,7 +158,8 @@ export default (state = defaultResourceState(), action) => {
           editorType: action.editorType,
         },
       };
-    case HIDE_RESOURCE_ACTIVITY_BUILD:
+
+    case actionTypes.HIDE_RESOURCE_ACTIVITY_BUILD:
       return {
         ...state,
         isResourceActivityType: false,
@@ -151,7 +168,8 @@ export default (state = defaultResourceState(), action) => {
         isResourceActivityBuild: false,
         isDescribeFilled: false,
       };
-    case CREATE_RESOURCE:
+
+    case actionTypes.CREATE_RESOURCE:
       return {
         ...state,
         showCreateResourcePopup: false,
@@ -169,7 +187,8 @@ export default (state = defaultResourceState(), action) => {
           },
         },
       };
-    case EDIT_RESOURCE:
+
+    case actionTypes.EDIT_RESOURCE:
       return {
         ...state,
         showEditResourcePopup: false,
@@ -179,26 +198,21 @@ export default (state = defaultResourceState(), action) => {
           },
         },
       };
-    case PREVIEW_RESOURCE:
+
+    case actionTypes.PREVIEW_RESOURCE:
       return {
         ...state,
         showPreviewResourcePopup: true,
         previewResourceId: action.id,
       };
-    case HIDE_PREVIEW_PLAYLIST_MODAL:
+
+    case actionTypes.HIDE_PREVIEW_PLAYLIST_MODAL:
       return {
         ...state,
         showPreviewResourcePopup: false,
       };
 
-    case LOAD_RESOURCE:
-      return {
-        ...state,
-        selectedResource: action.resource,
-        previousResourceId: action.previousResourceId,
-        nextResourceId: action.nextResourceId,
-      };
-    case SELECT_ACTIVITY_TYPE:
+    case actionTypes.SELECT_ACTIVITY_TYPE:
       return {
         ...state,
         newResource: {
@@ -206,7 +220,8 @@ export default (state = defaultResourceState(), action) => {
           activityTypeId: action.activityTypeId,
         },
       };
-    case SELECT_ACTIVITY:
+
+    case actionTypes.SELECT_ACTIVITY:
       return {
         ...state,
         newResource: {
@@ -214,7 +229,8 @@ export default (state = defaultResourceState(), action) => {
           activity: action.activity,
         },
       };
-    case DESCRIBE_ACTIVITY:
+
+    case actionTypes.DESCRIBE_ACTIVITY:
       if (action.activityId != null) {
         return {
           ...state,
@@ -238,7 +254,7 @@ export default (state = defaultResourceState(), action) => {
         },
       };
 
-    case UPLOAD_RESOURCE_THUMBNAIL:
+    case actionTypes.UPLOAD_RESOURCE_THUMBNAIL:
       return {
         ...state,
         newResource: {
@@ -257,16 +273,19 @@ export default (state = defaultResourceState(), action) => {
         },
         progress: null,
       };
-    case RESOURCE_VALIDATION_ERRORS:
+
+    case actionTypes.RESOURCE_VALIDATION_ERRORS:
       return {
         ...state,
         showCreateResourcePopup: true,
       };
-    case RESOURCE_THUMBNAIL_PROGRESS:
+
+    case actionTypes.RESOURCE_THUMBNAIL_PROGRESS:
       return {
         ...state,
         progress: action.progress,
       };
+
     default:
       return state;
   }

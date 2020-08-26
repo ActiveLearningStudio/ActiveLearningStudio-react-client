@@ -151,67 +151,6 @@
   margin-right: 2px;
 }
 
-.list-header-name {
-  border-radius: 3px;
-  box-shadow: none;
-  font-weight: 700;
-  min-height: 20px;
-  resize: none;
-  max-height: 256px;
-  font-size: 16px;
-  background: #fff;
-  padding: 10px 25px;
-  border-top: 3px solid #fdc558;
-  border-bottom: 1px solid #ebebeb;
-  margin: 0;
-  color: #000;
-  font-family: 'Open Sans', sans-serif;
-
-  & > span {
-    display: block;
-    padding-top: 10px;
-    height: 40px;
-  }
-
-  &:hover {
-    span:after {
-      content: "\f303";
-      font-family: "FontAwesome";
-      color: #4646c4;
-      -webkit-text-stroke: 0.1px #fff;
-      padding-left: 5px;
-    }
-  }
-
-  .show {
-    display: block;
-  }
-
-  .hide {
-    display: none;
-  }
-
-  textarea {
-    width: 95%;
-    border: 1px solid blue;
-    resize: none;
-    border-radius: 3px;
-    padding-top: 10px;
-    padding-left: 10px;
-    height: 40px;
-  }
-
-  i {
-    font-size: 20px;
-  }
-
-  button {
-    &:focus {
-      box-shadow: none;
-    }
-  }
-}
-
 .playlist-search {
   .search {
     border: none;
@@ -781,23 +720,6 @@
 
 .react-h5-type {
   display: none;
-}
-
-.playlist-dropdown {
-  position: absolute !important;
-  top: 14px;
-  right: 10px;
-
-  button {
-    color: #868686;
-    background: transparent;
-  }
-}
-
-.playlist-dropdown-btn {
-  background-color: transparent;
-  color: gray;
-  font-size: xx-large;
 }
 
 /* NEW CSS which applies to whole application*/

@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import axios from 'axios';
 import styled, { keyframes } from 'styled-components';
 import { fadeIn } from 'react-animations';
 import { Field, reduxForm } from 'redux-form';
 
-import { showSelectActivityAction, onChangeActivityTypeAction } from 'store/actions/resource';
+import { loadResourceTypesAction, showSelectActivityAction, onChangeActivityTypeAction } from 'store/actions/resource';
 import AddResourceSidebar from './AddResourceSidebar';
 
 import './style.scss';
@@ -17,33 +16,6 @@ const fadeAnimation = keyframes`${fadeIn}`;
 const FaceDiv = styled.div`
   animation: 1s ${fadeAnimation};
 `;
-
-// const activityTypes = [
-//   {
-//     id: 1,
-//     title: 'Interactive',
-//     icon: '/assets.images/course-presentation.png',
-//     overlayIcon: '/assets.images/course-presentation-overlay.png',
-//   },
-//   {
-//     id: 2,
-//     title: 'Multimedia',
-//     icon: '/assets.images/multimedia-icon.png',
-//     overlayIcon: '/assets.images/multimedia-icon-overlay.png',
-//   },
-//   {
-//     id: 3,
-//     title: 'Questions',
-//     icon: '/assets.images/question-icon.png',
-//     overlayIcon: '/assets.images/question-icon-overlay.png',
-//   },
-//   {
-//     id: 4,
-//     title: 'Social Media',
-//     icon: '/assets.images/share-icon.png',
-//     overlayIcon: '/assets.images/share-icon-overlay.png',
-//   },
-// ];
 
 // TODO: need to refactor code
 
@@ -69,22 +41,12 @@ ResourceActivityTypeField.propTypes = {
 };
 
 let ResourceActivityType = (props) => {
-  const [activityTypes, setActivityTypes] = useState([]);
+  const { resource, loadResourceTypes } = props;
+  const { types: activityTypes } = resource;
 
   useEffect(() => {
-    // get activity types
-    const { token } = JSON.parse(localStorage.getItem('auth'));
-
-    // TODO: need to move service or store
-    axios.get(`${global.config.laravelAPIUrl}/api/activity-types`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => {
-        setActivityTypes(response.data.data);
-      });
-  }, []);
+    loadResourceTypes();
+  }, [loadResourceTypes]);
 
   const { handleSubmit, onChangeActivityType } = props;
 
@@ -162,6 +124,7 @@ let ResourceActivityType = (props) => {
 ResourceActivityType.propTypes = {
   resource: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  loadResourceTypes: PropTypes.func.isRequired,
   onChangeActivityType: PropTypes.func.isRequired,
 };
 
@@ -174,7 +137,7 @@ ResourceActivityType = reduxForm({
       const data = values.activityType;
       props.showSelectActivity(data);
     } catch (e) {
-      console.log(e.message);
+      // console.log(e.message);
     }
   },
   onChange: (values, dispatch, props) => {
@@ -186,6 +149,7 @@ ResourceActivityType = reduxForm({
 })(ResourceActivityType);
 
 const mapDispatchToProps = (dispatch) => ({
+  loadResourceTypes: () => dispatch(loadResourceTypesAction()),
   showSelectActivity: (activityType) => dispatch(showSelectActivityAction(activityType)),
   onChangeActivityType: (activityTypeId) => dispatch(onChangeActivityTypeAction(activityTypeId)),
 });

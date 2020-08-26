@@ -26,7 +26,7 @@ class ResourceCard extends React.Component {
     const { resource, showDeletePopup } = this.props;
     // eslint-disable-next-line react/destructuring-assignment
     showDeletePopup(
-      resource._id,
+      resource.id,
       resource.title,
       'Activity',
     );
@@ -42,8 +42,8 @@ class ResourceCard extends React.Component {
 
     return (
       <Draggable
-        key={resource._id}
-        draggableId={resource._id}
+        key={resource.id}
+        draggableId={`${resource.id}`}
         index={index}
       >
         {(provided) => (
@@ -56,7 +56,7 @@ class ResourceCard extends React.Component {
             <div className="resource-card-wrapper">
               {resource.metadata && resource.metadata.thumbUrl && (
                 <div className="activity-thumb-wrapper">
-                  <Link to={`/playlist/preview/${playlist.id}/resource/${resource._id}`}>
+                  <Link to={`/playlist/preview/${playlist.id}/resource/${resource.id}`}>
                     <div
                       className="activity-thumb"
                       style={{
@@ -78,7 +78,7 @@ class ResourceCard extends React.Component {
                 }
               >
                 <div className="title">
-                  <Link to={`/playlist/preview/${playlist.id}/resource/${resource._id}`}>
+                  <Link to={`/playlist/preview/${playlist.id}/resource/${resource.id}`}>
                     {resource.metadata && resource.metadata.title !== undefined
                       ? resource.metadata.title
                       : resource.title}
@@ -115,7 +115,7 @@ class ResourceCard extends React.Component {
                     <div className="dropdown-menu">
                       <Link
                         className="dropdown-item"
-                        to={`/playlist/preview/${playlist.id}/resource/${resource._id}`}
+                        to={`/playlist/preview/${playlist.id}/resource/${resource.id}`}
                       >
                         <FontAwesomeIcon icon="eye" />
                         {' '}
@@ -124,7 +124,7 @@ class ResourceCard extends React.Component {
                       <Link
                         className="dropdown-item"
                         to={
-                          `/project/${match.params.projectId}/playlist/${playlist.id}/activity/create/${resource._id}`
+                          `/project/${match.params.projectId}/playlist/${playlist.id}/activity/create/${resource.id}`
                         }
                       >
                         <FontAwesomeIcon icon="pen" />
@@ -149,12 +149,12 @@ class ResourceCard extends React.Component {
 
                                 <a
                                   target="_blank"
-                                  href={`/shared/activity/${resource._id.trim()}`}
+                                  href={`/shared/activity/${resource.id.trim()}`}
                                   rel="noopener noreferrer"
                                 >
                                   <input
                                     id="urllink_clip"
-                                    value={`${protocol + window.location.host}/shared/activity/${resource._id}`}
+                                    value={`${protocol + window.location.host}/shared/activity/${resource.id}`}
                                   />
                                 </a>
 

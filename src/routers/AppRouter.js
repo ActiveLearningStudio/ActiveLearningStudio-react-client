@@ -145,7 +145,6 @@ const AppRouter = () => {
           component={PreviewPage}
           previewType="playlist"
         />
-        {/*
         <PrivateRoute
           exact
           path="/project/:projectId/playlist/:playlistId/activity/create"
@@ -154,7 +153,7 @@ const AppRouter = () => {
         />
         <PrivateRoute
           exact
-          path="/project/:projectId/playlist/:playlistId/activity/create/:activityId"
+          path="/project/:projectId/playlist/:playlistId/activity/:activityId/edit"
           component={PlaylistsPage}
           openEditResourcePopup
         />
@@ -164,7 +163,6 @@ const AppRouter = () => {
           path="/activities/:activityId"
           component={PlaylistsPage}
         />
-        */}
 
         <Redirect to="/" />
       </Switch>

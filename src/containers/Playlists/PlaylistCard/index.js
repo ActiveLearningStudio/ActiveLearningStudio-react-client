@@ -11,15 +11,24 @@ import logo from 'assets/images/logo.svg';
 import {
   changePlaylistTitleAction,
   reorderPlaylistActivitiesAction,
-  clickPlaylistTitleAction,
 } from 'store/actions/playlist';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import ResourceCard from 'components/ResourceCard';
 import ShareLink from 'components/ResourceCard/ShareLink';
 
+import './style.scss';
+
 // TODO: need to clean up attributes, update to functional component
 // need to refactor template functions
 class PlaylistCard extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      editMode: false,
+    };
+  }
+
   handleDelete = (e) => {
     e.preventDefault();
 
@@ -30,7 +39,7 @@ class PlaylistCard extends React.Component {
   handleAddNewResourceClick = () => {
     const { playlist, handleCreateResource } = this.props;
     if (!handleCreateResource) {
-      console.log('Event handler handleCreateResource() not defined.');
+      // console.log('Event handler handleCreateResource() not defined.');
     } else {
       handleCreateResource(playlist);
     }
@@ -48,38 +57,59 @@ class PlaylistCard extends React.Component {
       <ResourceCard
         {...this.props}
         resource={resource}
-        key={resource._id}
+        key={resource.id}
         index={index}
       />
     ));
-  }
+  };
 
   onEnterPress = (e) => {
     if (e.charCode === 13) {
       this.titleInput.blur();
     }
-  }
+  };
 
-  handleClickPlaylistTitle = async (playlistId) => {
-    const { clickPlaylistTitle } = this.props;
-    await clickPlaylistTitle(playlistId);
-    this.titleInput.focus();
-  }
+  onBlur = (e) => {
+    const title = e.target.value;
+    const { playlist, projectId, changePlaylistTitle } = this.props;
+
+    this.setState({
+      editMode: false,
+    });
+
+    if (playlist.title !== title) {
+      changePlaylistTitle(projectId, playlist.id, title)
+        .catch(() => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to update playlist title',
+          });
+        });
+    }
+  };
+
+  handleClickPlaylistTitle = async () => {
+    this.setState({
+      editMode: true,
+    }, () => {
+      this.titleInput.focus();
+    });
+  };
 
   render() {
+    const { editMode } = this.state;
     const {
       index,
       playlist,
-      title,
-      project,
-      playlistTitleClicked,
-      changePlaylistTitle,
+      projectId,
+      selectedProject,
     } = this.props;
 
     return (
       <Draggable
         key={playlist.id}
-        draggableId={playlist.id}
+        draggableId={`${playlist.id}`}
         index={index}
       >
         {(provided) => (
@@ -90,24 +120,25 @@ class PlaylistCard extends React.Component {
           >
             <div className="list">
               <div className="list-header" {...provided.dragHandleProps}>
-                <h2 className="list-header-name">
-                  <span
-                    className={playlistTitleClicked ? 'hide' : 'show'}
-                    onClick={() => this.handleClickPlaylistTitle(playlist.id)}
-                    style={{ cursor: 'pointer' }}
+                <h2 className="list-header-name d-flex align-items-center">
+                  <div
+                    className={`list-title-wrapper d-flex align-items-center ${editMode ? 'hide' : 'show'}`}
+                    onClick={this.handleClickPlaylistTitle}
                   >
-                    {title}
-                  </span>
+                    <span>{playlist.title}</span>
+
+                    <FontAwesomeIcon icon="pencil-alt" className="ml-2 edit-icon" />
+                  </div>
 
                   <textarea
                     ref={(input) => {
                       this.titleInput = input;
                     }}
                     name="playlist-title"
-                    className={playlistTitleClicked ? 'show' : 'hide'}
-                    onBlur={(e) => changePlaylistTitle(e, playlist.id)}
+                    className={editMode ? 'show' : 'hide'}
+                    onBlur={this.onBlur}
                     onKeyPress={this.onEnterPress}
-                    defaultValue={title}
+                    defaultValue={playlist.title}
                   />
 
                   <Dropdown className="pull-right playlist-dropdown check">
@@ -119,7 +150,7 @@ class PlaylistCard extends React.Component {
                       <Dropdown.Item
                         as={Link}
                         className="hidden"
-                        to={`/project/${playlist.project.id}/playlist/${playlist.id}/preview`}
+                        to={`/project/${projectId}/playlist/${playlist.id}/preview`}
                       >
                         <FontAwesomeIcon icon="eye" className="mr-2" />
                         Preview
@@ -150,23 +181,9 @@ class PlaylistCard extends React.Component {
 
                       <ShareLink
                         playlistId={playlist.id}
-                        playlistName={title}
-                        projectName={project.selectedProject && project.selectedProject.name}
+                        playlistName={playlist.title}
+                        projectName={selectedProject && selectedProject.name}
                       />
-
-                      {/*
-                      <a
-                        className="dropdown-item"
-                        href="#"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          window.open('/api/download/project/123');
-                        }}
-                      >
-                        <FontAwesomeIcon icon="cloud-download" className="mr-2" />
-                        Executable
-                      </a>
-                      */}
 
                       <Dropdown.Item onClick={this.handleDelete}>
                         <FontAwesomeIcon icon="times-circle" className="mr-2" />
@@ -179,7 +196,7 @@ class PlaylistCard extends React.Component {
 
               <Droppable
                 key={playlist.id}
-                droppableId={playlist.id}
+                droppableId={`${playlist.id}`}
                 type="resource"
               >
                 {(provd) => (
@@ -202,8 +219,7 @@ class PlaylistCard extends React.Component {
                   className="add-resource-to-playlist-btn"
                   onClick={this.handleAddNewResourceClick}
                 >
-                  <FontAwesomeIcon icon="plus-circle" />
-                  {' '}
+                  <FontAwesomeIcon icon="plus-circle" className="mr-2" />
                   Add new resource
                 </button>
               </div>
@@ -217,15 +233,13 @@ class PlaylistCard extends React.Component {
 
 PlaylistCard.propTypes = {
   index: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
   playlist: PropTypes.object.isRequired,
-  project: PropTypes.object.isRequired,
-  playlistTitleClicked: PropTypes.bool.isRequired,
+  projectId: PropTypes.number.isRequired,
+  selectedProject: PropTypes.object.isRequired,
   showDeletePopup: PropTypes.func.isRequired,
   hideDeletePopup: PropTypes.func.isRequired,
   reorderPlaylistActivities: PropTypes.func.isRequired,
   changePlaylistTitle: PropTypes.func.isRequired,
-  clickPlaylistTitle: PropTypes.func.isRequired,
   handleCreateResource: PropTypes.func,
 };
 
@@ -238,12 +252,10 @@ const mapDispatchToProps = (dispatch) => ({
   hideDeletePopup: () => dispatch(hideDeletePopupAction()),
   reorderPlaylistActivities: (playlist) => dispatch(reorderPlaylistActivitiesAction(playlist)),
   changePlaylistTitle: (e, id) => dispatch(changePlaylistTitleAction(e, id)),
-  clickPlaylistTitle: (playlistId) => dispatch(clickPlaylistTitleAction(playlistId)),
 });
 
 const mapStateToProps = (state) => ({
-  project: state.project,
-  ui: state.ui,
+  selectedProject: state.project.selectedProject,
 });
 
 export default withRouter(

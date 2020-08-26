@@ -1,35 +1,62 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-import {
-  SHOW_CREATE_RESOURCE_MODAL,
-  HIDE_CREATE_RESOURCE_MODAL,
-  SHOW_RESOURCE_ACTIVITY_TYPE,
-  SHOW_RESOURCE_SELECT_ACTIVITY,
-  SHOW_RESOURCE_ACTIVITY_BUILD,
-  CREATE_RESOURCE,
-  PREVIEW_RESOURCE,
-  HIDE_PREVIEW_PLAYLIST_MODAL,
-  LOAD_RESOURCE,
-  DELETE_RESOURCE,
-  SHOW_RESOURCE_DESCRIBE_ACTIVITY,
-  SELECT_ACTIVITY_TYPE,
-  SELECT_ACTIVITY,
-  DESCRIBE_ACTIVITY,
-  UPLOAD_RESOURCE_THUMBNAIL,
-  EDIT_RESOURCE,
-  RESOURCE_VALIDATION_ERRORS,
-  RESOURCE_THUMBNAIL_PROGRESS,
-  HIDE_RESOURCE_ACTIVITY_BUILD,
-  SAVE_GENERIC_RESOURCE,
-} from '../actionTypes';
+import resourceService from 'services/resource.service';
+import * as actionTypes from '../actionTypes';
 
+export const loadResourceTypesAction = async () => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.LOAD_RESOURCE_TYPE_REQUEST,
+    });
+
+    const { types } = await resourceService.getTypes();
+
+    dispatch({
+      type: actionTypes.LOAD_RESOURCE_TYPE_SUCCESS,
+      payload: { types },
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.LOAD_RESOURCE_TYPE_FAIL,
+    });
+
+    throw e;
+  }
+};
+
+export const loadResourceAction = (resourceId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.LOAD_RESOURCE_REQUEST,
+    });
+
+    const data = await resourceService.loadResource(resourceId);
+
+    dispatch({
+      type: actionTypes.LOAD_RESOURCE_SUCCESS,
+      payload: {
+        resource: data.resource,
+        previousResourceId: data.previousResourceId,
+        nextResourceId: data.nextResourceId,
+      },
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.LOAD_RESOURCE_FAIL,
+    });
+
+    throw e;
+  }
+};
+
+// TODO: refactor bottom
 export const saveGenericResource = () => ({
-  type: SAVE_GENERIC_RESOURCE,
+  type: actionTypes.SAVE_GENERIC_RESOURCE,
 });
 
 export const hideCreateResourceModal = () => ({
-  type: HIDE_CREATE_RESOURCE_MODAL,
+  type: actionTypes.HIDE_CREATE_RESOURCE_MODAL,
 });
 
 export const saveGenericResourceAction = (resourceData) => async (dispatch) => {
@@ -46,36 +73,8 @@ export const saveGenericResourceAction = (resourceData) => async (dispatch) => {
   }
 };
 
-export const loadResource = (resource, previous, next) => ({
-  type: LOAD_RESOURCE,
-  resource,
-  previousResourceId: previous,
-  nextResourceId: next,
-});
-
-// Returns the requested resource along the next and previous one in the playlist
-export const loadResourceAction = (resourceId) => async (dispatch) => {
-  const { token } = JSON.parse(localStorage.getItem('auth'));
-  const response = await axios.post(
-    '/api/loadresource',
-    { resourceId },
-    { headers: { Authorization: `Bearer ${token}` } },
-  );
-
-  if (response.data.status === 'success') {
-    const { data } = response.data;
-    dispatch(
-      loadResource(
-        data.resource,
-        data.previousResourceId,
-        data.nextResourceId,
-      ),
-    );
-  }
-};
-
 export const showCreateResourceModal = (id) => ({
-  type: SHOW_CREATE_RESOURCE_MODAL,
+  type: actionTypes.SHOW_CREATE_RESOURCE_MODAL,
   id,
 });
 
@@ -96,7 +95,7 @@ export const hideCreateResourceModalAction = () => async (dispatch) => {
 };
 
 export const showCreateResourceActivity = () => ({
-  type: SHOW_RESOURCE_ACTIVITY_TYPE,
+  type: actionTypes.SHOW_RESOURCE_ACTIVITY_TYPE,
 });
 
 export const showCreateResourceActivityAction = () => async (dispatch) => {
@@ -108,7 +107,7 @@ export const showCreateResourceActivityAction = () => async (dispatch) => {
 };
 
 export const showSelectActivity = (activityType) => ({
-  type: SHOW_RESOURCE_SELECT_ACTIVITY,
+  type: actionTypes.SHOW_RESOURCE_SELECT_ACTIVITY,
   activityType,
 });
 
@@ -121,14 +120,14 @@ export const showSelectActivityAction = (activityType) => async (dispatch) => {
 };
 
 export const showBuildActivity = (editor, editorType, params) => ({
-  type: SHOW_RESOURCE_ACTIVITY_BUILD,
+  type: actionTypes.SHOW_RESOURCE_ACTIVITY_BUILD,
   editor,
   editorType,
   params,
 });
 
 export const hideBuildActivity = () => ({
-  type: HIDE_RESOURCE_ACTIVITY_BUILD,
+  type: actionTypes.HIDE_RESOURCE_ACTIVITY_BUILD,
 });
 
 export const showBuildActivityAction = (
@@ -164,7 +163,7 @@ export const showBuildActivityAction = (
 };
 
 export const showDescribeActivity = (activity, metadata = null) => ({
-  type: SHOW_RESOURCE_DESCRIBE_ACTIVITY,
+  type: actionTypes.SHOW_RESOURCE_DESCRIBE_ACTIVITY,
   activity,
   metadata,
 });
@@ -195,7 +194,7 @@ export const showDescribeActivityAction = (activity, activityId = null) => async
 };
 
 export const editResource = (playlistId, resource, editor, editorType) => ({
-  type: EDIT_RESOURCE,
+  type: actionTypes.EDIT_RESOURCE,
   playlistId,
   resource,
   editor,
@@ -304,11 +303,11 @@ export const editResourceAction = (
 };
 
 export const validationErrorsResource = () => ({
-  type: RESOURCE_VALIDATION_ERRORS,
+  type: actionTypes.RESOURCE_VALIDATION_ERRORS,
 });
 
 export const createResource = (playlistId, resource, editor, editorType) => ({
-  type: CREATE_RESOURCE,
+  type: actionTypes.CREATE_RESOURCE,
   playlistId,
   resource,
   editor,
@@ -430,7 +429,7 @@ export const createResourceByH5PUploadAction = (
 };
 
 export const previewResource = (id) => ({
-  type: PREVIEW_RESOURCE,
+  type: actionTypes.PREVIEW_RESOURCE,
   id,
 });
 
@@ -443,7 +442,7 @@ export const previewResourceAction = (id) => async (dispatch) => {
 };
 
 export const hidePreviewResourceModal = () => ({
-  type: HIDE_PREVIEW_PLAYLIST_MODAL,
+  type: actionTypes.HIDE_PREVIEW_PLAYLIST_MODAL,
 });
 
 export const hidePreviewResourceModalAction = () => async (dispatch) => {
@@ -457,7 +456,7 @@ export const hidePreviewResourceModalAction = () => async (dispatch) => {
 // runs delete resource ajax
 
 export const deleteResource = (resourceId) => ({
-  type: DELETE_RESOURCE,
+  type: actionTypes.DELETE_RESOURCE,
   resourceId,
 });
 
@@ -478,7 +477,7 @@ export const deleteResourceAction = (resourceId) => async (dispatch) => {
 // handles the actions when some activity type is switched inside activity type wizard
 
 export const onChangeActivityType = (activityTypeId) => ({
-  type: SELECT_ACTIVITY_TYPE,
+  type: actionTypes.SELECT_ACTIVITY_TYPE,
   activityTypeId,
 });
 
@@ -494,7 +493,7 @@ export const onChangeActivityTypeAction = (activityTypeId) => (dispatch) => {
 // handles the actions when some activity switched inside select activity wizard
 
 export const onChangeActivity = (activity) => ({
-  type: SELECT_ACTIVITY,
+  type: actionTypes.SELECT_ACTIVITY,
   activity,
 });
 
@@ -509,7 +508,7 @@ export const onChangeActivityAction = (activity) => (dispatch) => {
 // Metadata saving inside state when metadata form is submitted
 
 export const onSubmitDescribeActivity = (metadata, activityId) => ({
-  type: DESCRIBE_ACTIVITY,
+  type: actionTypes.DESCRIBE_ACTIVITY,
   metadata,
   activityId,
 });
@@ -525,12 +524,12 @@ export const onSubmitDescribeActivityAction = (metadata, activityId = null) => (
 // uploads the thumbnail of resource
 
 export const uploadResourceThumbnail = (thumbUrl) => ({
-  type: UPLOAD_RESOURCE_THUMBNAIL,
+  type: actionTypes.UPLOAD_RESOURCE_THUMBNAIL,
   thumbUrl,
 });
 
 export const resourceThumbnailProgress = (progress) => ({
-  type: RESOURCE_THUMBNAIL_PROGRESS,
+  type: actionTypes.RESOURCE_THUMBNAIL_PROGRESS,
   progress,
 });
 

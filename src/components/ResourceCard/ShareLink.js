@@ -31,8 +31,7 @@ function ShareLink(props) {
           }
         }}
       >
-        <FontAwesomeIcon icon="newspaper" />
-        {' '}
+        <FontAwesomeIcon icon="newspaper" className="mr-2" />
         Publish
       </a>
 
@@ -61,7 +60,7 @@ function ShareLink(props) {
 }
 
 ShareLink.propTypes = {
-  playlistId: PropTypes.string.isRequired,
+  playlistId: PropTypes.number.isRequired,
   playlistName: PropTypes.string.isRequired,
   projectName: PropTypes.string.isRequired,
 };

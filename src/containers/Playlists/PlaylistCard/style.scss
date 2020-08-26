@@ -5,3 +5,85 @@
 .playlist-drag-dashed {
   border-style: dashed;
 }
+
+.list-title-wrapper {
+  height: 30px;
+  flex: auto;
+
+  .edit-icon {
+    display: none;
+    color: #868686;
+  }
+
+  &:hover {
+    .edit-icon {
+      display: block;
+    }
+  }
+}
+
+.list-header-name {
+  border-radius: 3px;
+  box-shadow: none;
+  font-weight: 700;
+  min-height: 20px;
+  resize: none;
+  max-height: 256px;
+  font-size: 16px;
+  background: #fff;
+  padding: 10px 25px;
+  border-top: 3px solid #fdc558;
+  border-bottom: 1px solid #ebebeb;
+  margin: 0;
+  color: #000;
+  font-family: 'Open Sans', sans-serif;
+
+  & > span {
+    display: block;
+    padding-top: 10px;
+    height: 40px;
+  }
+
+  .show {
+    display: block;
+  }
+
+  .hide {
+    display: none !important;
+  }
+
+  textarea {
+    height: 30px;
+    flex: auto;
+    border: 1px solid blue;
+    resize: none;
+    border-radius: 3px;
+  }
+
+  i {
+    font-size: 20px;
+  }
+
+  button {
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}
+
+.playlist-dropdown {
+  //position: absolute !important;
+  //top: 14px;
+  //right: 10px;
+
+  button {
+    color: #868686;
+    background: transparent;
+  }
+}
+
+.playlist-dropdown-btn {
+  background-color: transparent;
+  color: gray;
+  font-size: xx-large;
+}
