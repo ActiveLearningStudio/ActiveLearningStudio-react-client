@@ -225,7 +225,7 @@ class PlaylistsPage extends React.Component {
       // resource dropped
       if (e.source.droppableId === e.destination.droppableId) {
         // Resource dropped within the same list
-        const playlist = playlists.find((pl) => pl._id === e.source.droppableId);
+        const playlist = playlists.find((pl) => pl.id === e.source.droppableId);
         const resources = Array.from(playlist.resources);
         const [removed] = resources.splice(e.source.index, 1);
         resources.splice(e.destination.index, 0, removed);
@@ -235,8 +235,8 @@ class PlaylistsPage extends React.Component {
         });
       } else {
         // Rsc dropped on a different list
-        const sourceList = playlists.find((pl) => pl._id === e.source.droppableId);
-        const destinationList = playlists.find((pl) => pl._id === e.destination.droppableId);
+        const sourceList = playlists.find((pl) => pl.id === e.source.droppableId);
+        const destinationList = playlists.find((pl) => pl.id === e.destination.droppableId);
         const sourceResources = Array.from(sourceList.resources);
         const destResources = destinationList.resources
           ? Array.from(destinationList.resources)

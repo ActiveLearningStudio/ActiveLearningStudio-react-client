@@ -101,7 +101,7 @@ const ProjectCard = (props) => {
                                   dispatch(
                                     getProjectCourseFromLMS(
                                       data.lmsName.toLowerCase(),
-                                      data._id,
+                                      data.id,
                                       project.id,
                                       project.playlists,
                                       data.lmsUrl,

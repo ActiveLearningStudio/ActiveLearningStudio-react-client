@@ -150,7 +150,7 @@ class PlaylistPreview extends React.Component {
       activities = selectedPlaylist.activities.map((activity) => (
         <ActivityPreviewCard
           activity={activity}
-          key={activity._id}
+          key={activity.id}
           handleSelect={this.handleSelect}
           playlist={playlistId}
         />
@@ -158,19 +158,19 @@ class PlaylistPreview extends React.Component {
       activities1 = selectedPlaylist.activities.map((activity) => (
         <ActivityPreviewCardDropdown
           activity={activity}
-          key={activity._id}
+          key={activity.id}
           handleSelect={this.handleSelect}
           playlist={playlistId}
         />
       ));
 
       if (resourceId === 0) {
-        resourceId = selectedPlaylist.activities[0]._id;
+        resourceId = selectedPlaylist.activities[0].id;
       }
     }
 
     const currentActivity = selectedPlaylist.activities.filter(
-      (f) => f._id === resourceId,
+      (f) => f.id === resourceId,
     )[0];
 
     const previousResource = selectedPlaylist.activities.indexOf(currentActivity) >= 1
@@ -187,7 +187,7 @@ class PlaylistPreview extends React.Component {
       //   <a
       //     href="#"
       //     className="slide-control prev"
-      //     onClick={() => this.handleSelect(previousResource._id)}
+      //     onClick={() => this.handleSelect(previousResource.id)}
       //   >
       //     <FontAwesomeIcon icon="arrow-left" />
       //     <span> previous Activity</span>
@@ -196,13 +196,13 @@ class PlaylistPreview extends React.Component {
 
       previousLink1 = (
         <div className="slider-hover-section">
-          <Link to={playlistId && `/playlist/preview/${playlistId}/resource/${previousResource._id}`}>
+          <Link to={playlistId && `/playlist/preview/${playlistId}/resource/${previousResource.id}`}>
             {' '}
             <FontAwesomeIcon icon="chevron-left" />
           </Link>
 
           <div className="hover-control-caption pointer-cursor">
-            <Link to={playlistId && `/playlist/preview/${playlistId}/resource/${previousResource._id}`}>
+            <Link to={playlistId && `/playlist/preview/${playlistId}/resource/${previousResource.id}`}>
               <div
                 style={{
                   backgroundImage: previousResource.metadata
@@ -238,10 +238,10 @@ class PlaylistPreview extends React.Component {
               <Link
                 onClick={() => {
                   for (let data = 0; data < allProjectsState.length; data += 1) {
-                    if (allProjectsState[data]._id === currentPlaylist._id) {
+                    if (allProjectsState[data].id === currentPlaylist.id) {
                       try {
                         history.push(
-                          `/playlist/preview/${allProjectsState[data - 1]._id}/resource/${allProjectsState[data - 1].activities[0]._id}`,
+                          `/playlist/preview/${allProjectsState[data - 1].id}/resource/${allProjectsState[data - 1].activities[0].id}`,
                         );
                       } catch (e) {
                         Swal.fire({
@@ -276,7 +276,7 @@ class PlaylistPreview extends React.Component {
       // nextLink = (
       //   <a
       //     className="slide-control next"
-      //     onClick={() => this.handleSelect(nextResource._id)}
+      //     onClick={() => this.handleSelect(nextResource.id)}
       //   >
       //     <FontAwesomeIcon icon="arrow-right" />
       //     <span> Next Activity</span>
@@ -284,11 +284,11 @@ class PlaylistPreview extends React.Component {
       // );
       nextLink1 = (
         <div className="slider-hover-section">
-          <Link to={playlistId && `/playlist/preview/${playlistId}/resource/${nextResource._id}`}>
+          <Link to={playlistId && `/playlist/preview/${playlistId}/resource/${nextResource.id}`}>
             <FontAwesomeIcon icon="chevron-right" />
           </Link>
           <div className="hover-control-caption pointer-cursor">
-            <Link to={playlistId && `/playlist/preview/${playlistId}/resource/${nextResource._id}`}>
+            <Link to={playlistId && `/playlist/preview/${playlistId}/resource/${nextResource.id}`}>
               <div
                 style={{
                   backgroundImage: nextResource.metadata
@@ -328,10 +328,10 @@ class PlaylistPreview extends React.Component {
               <Link
                 onClick={() => {
                   for (let data = 0; data < allProjectsState.length; data += 1) {
-                    if (allProjectsState[data]._id === currentPlaylist._id) {
+                    if (allProjectsState[data].id === currentPlaylist.id) {
                       try {
                         history.push(
-                          `/playlist/preview/${allProjectsState[data + 1]._id}/resource/${allProjectsState[data + 1].activities[0]._id}`,
+                          `/playlist/preview/${allProjectsState[data + 1].id}/resource/${allProjectsState[data + 1].activities[0].id}`,
                         );
                       } catch (e) {
                         Swal.fire({
@@ -399,8 +399,8 @@ class PlaylistPreview extends React.Component {
                     <div className="heading-wrapper">
                       <div className="main-heading">
                         {selectedPlaylist.activities && selectedPlaylist.activities.length
-                          ? selectedPlaylist.activities.filter((a) => a._id === resourceId).length > 0
-                            ? selectedPlaylist.activities.filter((a) => a._id === resourceId)[0].title
+                          ? selectedPlaylist.activities.filter((a) => a.id === resourceId).length > 0
+                            ? selectedPlaylist.activities.filter((a) => a.id === resourceId)[0].title
                             : ''
                           : ''}
                       </div>
@@ -470,8 +470,8 @@ class PlaylistPreview extends React.Component {
                         onColor="#5952c6"
                         onChange={() => {
                           const activityTitle = playlist.activities && playlist.activities.length
-                            ? playlist.activities.filter((a) => a._id === resourceId).length > 0
-                              ? playlist.activities.filter((a) => a._id === resourceId)[0].title
+                            ? playlist.activities.filter((a) => a.id === resourceId).length > 0
+                              ? playlist.activities.filter((a) => a.id === resourceId)[0].title
                               : ''
                             : '';
                           if (activeShared) {

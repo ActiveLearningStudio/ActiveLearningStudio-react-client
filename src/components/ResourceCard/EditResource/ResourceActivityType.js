@@ -3,18 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
-import styled, { keyframes } from 'styled-components';
-import { fadeIn } from 'react-animations';
 
+import { required, FadeDiv } from 'utils';
 import { showSelectActivityAction } from 'store/actions/resource';
 import EditResourceSidebar from './EditResourceSidebar';
 import ResourceActivityTypeField from '../fields/ResourceActivityTypeField';
-
-const fadeAnimation = keyframes`${fadeIn}`;
-
-const FaceDiv = styled.div`
-  animation: 1s ${fadeAnimation};
-`;
 
 const activities = [
   {
@@ -42,8 +35,6 @@ const activities = [
     overlayIcon: '/assets.images/share-icon-overlay.png',
   },
 ];
-
-const required = (value) => (value ? undefined : '* Required');
 
 // TODO: unused component
 let ResourceActivityType = (props) => {
@@ -88,7 +79,7 @@ let ResourceActivityType = (props) => {
 
       <div className="col-md-9">
         <div className="resource-activity">
-          <FaceDiv>
+          <FadeDiv>
             <div className="row">
               <div className="col-md-12">
                 <h2 className="title">Select the type of activity you want to create?</h2>
@@ -108,7 +99,7 @@ let ResourceActivityType = (props) => {
                 </div>
               </div>
             </form>
-          </FaceDiv>
+          </FadeDiv>
         </div>
       </div>
     </div>

@@ -7,18 +7,41 @@ import * as actionTypes from '../actionTypes';
 export const loadResourceTypesAction = () => async (dispatch) => {
   try {
     dispatch({
-      type: actionTypes.LOAD_RESOURCE_TYPE_REQUEST,
+      type: actionTypes.LOAD_RESOURCE_TYPES_REQUEST,
     });
 
-    const { types } = await resourceService.getTypes();
+    const { activityTypes } = await resourceService.getTypes();
 
     dispatch({
-      type: actionTypes.LOAD_RESOURCE_TYPE_SUCCESS,
-      payload: { types },
+      type: actionTypes.LOAD_RESOURCE_TYPES_SUCCESS,
+      payload: { activityTypes },
     });
   } catch (e) {
     dispatch({
-      type: actionTypes.LOAD_RESOURCE_TYPE_FAIL,
+      type: actionTypes.LOAD_RESOURCE_TYPES_FAIL,
+    });
+
+    throw e;
+  }
+};
+
+export const loadResourceItemsAction = (activityTypeId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.LOAD_RESOURCE_ITEMS_REQUEST,
+    });
+
+    const { activityItems } = await resourceService.getItems(activityTypeId);
+
+    dispatch({
+      type: actionTypes.LOAD_RESOURCE_ITEMS_SUCCESS,
+      payload: { activityItems },
+    });
+
+    return activityItems;
+  } catch (e) {
+    dispatch({
+      type: actionTypes.LOAD_RESOURCE_ITEMS_FAIL,
     });
 
     throw e;
@@ -294,7 +317,7 @@ export const editResourceAction = (
     );
 
     const resource = {};
-    resource.id = response.data.data._id;
+    resource.id = response.data.data.id;
 
     dispatch(editResource(playlistId, resource, editor, editorType));
   } catch (e) {
@@ -360,7 +383,7 @@ export const createResourceAction = (
         },
       );
 
-      resource.id = insertedResource.data.data._id;
+      resource.id = insertedResource.data.data.id;
       resource.mysqlid = insertedResource.data.data.mysqlid;
 
       dispatch(createResource(playlistId, resource, editor, editorType));
@@ -416,7 +439,7 @@ export const createResourceByH5PUploadAction = (
         },
       );
       const resource = { ...responseActivity.data.data };
-      resource.id = responseActivity.data.data._id;
+      resource.id = responseActivity.data.data.id;
       resource.mysqlid = responseActivity.data.data.mysqlid;
 
       dispatch(createResource(playlistId, resource, editor, editorType));
@@ -454,20 +477,15 @@ export const hidePreviewResourceModalAction = () => async (dispatch) => {
 };
 
 // runs delete resource ajax
-
-export const deleteResource = (resourceId) => ({
-  type: actionTypes.DELETE_RESOURCE,
-  resourceId,
-});
-
-export const deleteResourceAction = (resourceId) => async (dispatch) => {
+export const deleteResourceAction = (playlistId, resourceId) => async (dispatch) => {
   try {
-    const response = await axios.delete(`/api/activity/${resourceId}`, {
-      resourceId,
-    });
+    const response = await resourceService.remove(playlistId, resourceId);
 
     if (response.data.status === 'success') {
-      dispatch(deleteResource(resourceId));
+      dispatch({
+        type: actionTypes.DELETE_RESOURCE,
+        payload: { resourceId },
+      });
     }
   } catch (e) {
     throw new Error(e);
@@ -475,47 +493,40 @@ export const deleteResourceAction = (resourceId) => async (dispatch) => {
 };
 
 // handles the actions when some activity type is switched inside activity type wizard
-
-export const onChangeActivityType = (activityTypeId) => ({
-  type: actionTypes.SELECT_ACTIVITY_TYPE,
-  activityTypeId,
-});
-
 export const onChangeActivityTypeAction = (activityTypeId) => (dispatch) => {
   try {
     // let activityTypeId = activityTypeId;
-    dispatch(onChangeActivityType(activityTypeId));
+    dispatch({
+      type: actionTypes.SELECT_ACTIVITY_TYPE,
+      payload: { activityTypeId },
+    });
   } catch (e) {
     throw new Error(e);
   }
 };
 
 // handles the actions when some activity switched inside select activity wizard
-
-export const onChangeActivity = (activity) => ({
-  type: actionTypes.SELECT_ACTIVITY,
-  activity,
-});
-
 export const onChangeActivityAction = (activity) => (dispatch) => {
   try {
-    dispatch(onChangeActivity(activity));
+    dispatch({
+      type: actionTypes.SELECT_ACTIVITY,
+      payload: { activity },
+    });
   } catch (e) {
     console.log(e);
   }
 };
 
 // Metadata saving inside state when metadata form is submitted
-
-export const onSubmitDescribeActivity = (metadata, activityId) => ({
-  type: actionTypes.DESCRIBE_ACTIVITY,
-  metadata,
-  activityId,
-});
-
 export const onSubmitDescribeActivityAction = (metadata, activityId = null) => (dispatch) => {
   try {
-    dispatch(onSubmitDescribeActivity(metadata, activityId));
+    dispatch({
+      type: actionTypes.DESCRIBE_ACTIVITY,
+      payload: {
+        activityId,
+        metadata,
+      },
+    });
   } catch (e) {
     console.log(e);
   }

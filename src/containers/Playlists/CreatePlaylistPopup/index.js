@@ -1,15 +1,9 @@
 import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { fadeIn } from 'react-animations';
-import styled, { keyframes } from 'styled-components';
+
+import { FadeDiv } from 'utils';
 
 import './style.scss';
-
-const fadeAnimation = keyframes`${fadeIn}`;
-
-const FaceDiv = styled.div`
-  animation: 1s ${fadeAnimation};
-`;
 
 // TODO: need to clean up attributes
 function CreatePlaylistPopup(props) {
@@ -34,7 +28,7 @@ function CreatePlaylistPopup(props) {
   }, [escFunction]);
 
   return (
-    <FaceDiv className="popup">
+    <FadeDiv className="popup">
       <form onSubmit={handleCreatePlaylistSubmit}>
         <div className="modal fade" role="dialog" aria-hidden="true">
           <div className="modal-dialog" role="document">
@@ -66,7 +60,7 @@ function CreatePlaylistPopup(props) {
           </div>
         </div>
       </form>
-    </FaceDiv>
+    </FadeDiv>
   );
 }
 

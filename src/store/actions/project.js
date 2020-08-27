@@ -374,7 +374,7 @@ export const getProjectCourseFromLMS = (
                     `${global.config.laravelAPIUrl}/go/${lms}/publish/playlist`,
                     {
                       settingId,
-                      playlistId: playlist[x]._id,
+                      playlistId: playlist[x].id,
                       counter:
                         !!globalStoreClone.project.lmsCourse
                         && globalStoreClone.project.lmsCourse.playlistsCopyCounter

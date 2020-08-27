@@ -33,6 +33,11 @@ const getTypes = () => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const getItems = (activityTypeId) => httpService
+  .get(`/${apiVersion}/activity-types/${activityTypeId}/items`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const loadResource = (resourceId) => httpService
   .get(`/${apiVersion}/load-resource/${resourceId}`)
   .then(({ data }) => data)
@@ -45,5 +50,6 @@ export default {
   update,
   remove,
   getTypes,
+  getItems,
   loadResource,
 };

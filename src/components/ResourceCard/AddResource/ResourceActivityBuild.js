@@ -3,20 +3,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
-import { fadeIn } from 'react-animations';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { FadeDiv } from 'utils';
 import { showDescribeActivity } from 'store/actions/resource';
 import AddResourceSidebar from './AddResourceSidebar';
 import { TinyEditor } from './Editors/TinyEditor';
 import H5PEditor from './Editors/H5PEditor';
-
-const fadeAnimation = keyframes`${fadeIn}`;
-
-const FaceDiv = styled.div`
-  animation: 1s ${fadeAnimation};
-`;
 
 const ResourceActivityBuild = (props) => {
   const { resource, editResourcePopup, goBackToActivity } = props;
@@ -38,7 +31,7 @@ const ResourceActivityBuild = (props) => {
             Back
           </div>
 
-          <FaceDiv>
+          <FadeDiv>
             {resource.newResource.activity.type === 'h5p' && (
               <H5PEditor {...props} />
             )}
@@ -55,7 +48,7 @@ const ResourceActivityBuild = (props) => {
                 h5pLib="H5P.InteractiveVideo 1.21"
               />
             )}
-          </FaceDiv>
+          </FadeDiv>
         </div>
       </div>
     </div>

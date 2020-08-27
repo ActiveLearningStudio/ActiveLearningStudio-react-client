@@ -2,13 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import { Field, reduxForm } from 'redux-form';
-import styled, { keyframes } from 'styled-components';
-import { fadeIn } from 'react-animations';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { required, FadeDiv } from 'utils';
 import {
+  loadResourceItemsAction,
   showDescribeActivityAction,
   onChangeActivityAction,
   showCreateResourceActivity,
@@ -16,14 +15,6 @@ import {
 import ResourceActivityTypeField from '../fields/ResourceActivityTypeField';
 import MyVerticallyCenteredModal from '../../models/activityOptions';
 import AddResourceSidebar from './AddResourceSidebar';
-
-const fadeAnimation = keyframes`${fadeIn}`;
-
-const FadeDiv = styled.div`
-  animation: 0.5s ${fadeAnimation};
-`;
-
-const required = (value) => (value ? undefined : '* Required');
 
 // TODO: need to refactor code
 
@@ -33,6 +24,7 @@ let ResourceSelectActivity = (props) => {
     handleSubmit,
     goBackToActivity,
     onChangeActivity,
+    loadResourceItems,
   } = props;
 
   const [activities, setActivities] = useState([]);
@@ -49,26 +41,19 @@ let ResourceSelectActivity = (props) => {
   }, [searchActivities]);
 
   useEffect(() => {
-    // get activity types
-    const { token } = JSON.parse(localStorage.getItem('auth'));
-    // TODO: need to move service or store
-    axios
-      .get(
-        `${global.config.laravelAPIUrl}/api/activity-types/items/${resource.newResource.activityTypeId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      )
-      .then((response) => {
-        setActivities(response.data.data);
-        setSearchActivities(response.data.data);
+    // get activity type items
+    loadResourceItems(resource.newResource.activityTypeId)
+      .then((activityItems) => {
+        setActivities(activityItems);
+        setSearchActivities(activityItems);
+      })
+      .catch((/* e */) => {
+        // console.log(e);
       });
-  }, [resource.newResource.activityTypeId]);
+  }, [loadResourceItems, resource.newResource.activityTypeId]);
 
   const questionsContent = activities.map((activity) => (
-    <div className="col-md-3" key={activity._id}>
+    <div className="col-md-3" key={activity.id}>
       <div className="activity-item with_options">
         <label className="question-label">
           <Field
@@ -224,8 +209,9 @@ let ResourceSelectActivity = (props) => {
 ResourceSelectActivity.propTypes = {
   resource: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  goBackToActivity: PropTypes.func.isRequired,
+  loadResourceItems: PropTypes.func.isRequired,
   onChangeActivity: PropTypes.func.isRequired,
+  goBackToActivity: PropTypes.func.isRequired,
 };
 
 ResourceSelectActivity = reduxForm({
@@ -247,6 +233,7 @@ ResourceSelectActivity = reduxForm({
 })(ResourceSelectActivity);
 
 const mapDispatchToProps = (dispatch) => ({
+  loadResourceItems: (activityTypeId) => dispatch(loadResourceItemsAction(activityTypeId)),
   showDescribeActivity: (activity) => dispatch(showDescribeActivityAction(activity)),
   onChangeActivity: (e, activity) => dispatch(onChangeActivityAction(e, activity)),
   goBackToActivity: () => dispatch(showCreateResourceActivity()),

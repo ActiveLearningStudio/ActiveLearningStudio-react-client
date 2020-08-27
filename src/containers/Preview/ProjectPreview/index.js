@@ -69,7 +69,7 @@ function ProjectPreview(props) {
             <ActivityCard
               activity={activity}
               playlist_id={playlist.id}
-              key={activity._id}
+              key={activity.id}
             />
           ));
         } else {

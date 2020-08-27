@@ -1,15 +1,9 @@
 import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { fadeIn } from 'react-animations';
-import styled, { keyframes } from 'styled-components';
+
+import { FadeDiv } from 'utils';
 
 import './style.scss';
-
-const fadeAnimation = keyframes`${fadeIn}`;
-
-const FaceDiv = styled.div`
-  animation: 1s ${fadeAnimation};
-`;
 
 // TODO: need to clean up attribute
 function Popup(props) {
@@ -46,7 +40,7 @@ function Popup(props) {
   }, [deleteProject, deletePlaylist, deleteResource]);
 
   return (
-    <FaceDiv className="popup">
+    <FadeDiv className="popup">
       <div className="modal fade" role="dialog" aria-hidden="true">
         <div className="modal-dialog" role="document">
           <div className="modal-content">
@@ -81,7 +75,7 @@ function Popup(props) {
           </div>
         </div>
       </div>
-    </FaceDiv>
+    </FadeDiv>
   );
 }
 
