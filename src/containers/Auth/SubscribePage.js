@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import logo from 'assets/images/tfa-logo.png';
+import logo from 'assets/images/logo.png';
 import loader from 'assets/images/loader.svg';
 import terms from 'assets/images/terms.png';
 import pdf from 'assets/pdf/Curriki_Subscription_Agreement.pdf';

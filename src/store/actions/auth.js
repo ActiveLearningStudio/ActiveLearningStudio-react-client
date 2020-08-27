@@ -82,6 +82,10 @@ export const getUserAction = () => async (dispatch) => {
         type: actionTypes.GET_USER_FAIL,
       });
     }
+  } else {
+    dispatch({
+      type: actionTypes.GET_USER_FAIL,
+    });
   }
 };
 
