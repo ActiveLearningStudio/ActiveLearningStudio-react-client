@@ -111,7 +111,7 @@ function Header(props) {
                     <Dropdown.Item to="#">
                       Welcome &nbsp;
                       <span className="user-name-login">
-                        {user.displayName}
+                        {user && user.displayName}
                       </span>
                     </Dropdown.Item>
 
@@ -144,8 +144,12 @@ function Header(props) {
 }
 
 Header.propTypes = {
-  user: PropTypes.object.isRequired,
+  user: PropTypes.object,
   logout: PropTypes.func.isRequired,
+};
+
+Header.defaultProps = {
+  user: null,
 };
 
 const mapStateToProps = (state) => ({

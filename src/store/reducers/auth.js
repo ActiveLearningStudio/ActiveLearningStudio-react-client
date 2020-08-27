@@ -1,7 +1,7 @@
 import * as actionTypes from '../actionTypes';
 
 const INITIAL_STATE = {
-  isLoading: false,
+  isLoading: true,
   user: null,
   forgotPasswordEmail: null,
 };
@@ -118,6 +118,23 @@ export default (state = INITIAL_STATE, action) => {
         user: action.payload.user,
       };
     case actionTypes.UPDATE_PROFILE_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case actionTypes.ACCEPT_TERMS_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case actionTypes.ACCEPT_TERMS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        user: action.payload.user,
+      };
+    case actionTypes.ACCEPT_TERMS_FAIL:
       return {
         ...state,
         isLoading: false,

@@ -168,7 +168,7 @@ export class ProjectsPage extends React.Component {
 ProjectsPage.propTypes = {
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
+  user: PropTypes.object,
   project: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
   showPreview: PropTypes.number,
@@ -185,6 +185,7 @@ ProjectsPage.propTypes = {
 };
 
 ProjectsPage.defaultProps = {
+  user: null,
   showPreview: undefined,
   showCreateProjectPopup: false,
   showEditProjectPopup: false,

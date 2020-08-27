@@ -4,11 +4,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Redirect, withRouter } from 'react-router-dom';
 
+import SubscribePage from 'containers/Auth/SubscribePage';
+
 const PrivateRoute = ({
   component: Component,
   id,
   isLoading,
   isAuthenticated,
+  user,
   ...rest
 }) => (
   <Route
@@ -23,12 +26,20 @@ const PrivateRoute = ({
         newId = props.match.params.projectId;
       }
 
-      return (
-        (isLoading || isAuthenticated) ? (
-          <Component {...props} {...rest} key={newId} />
-        ) : (
+      if (!isLoading && !isAuthenticated) {
+        return (
           <Redirect to="/login" />
-        )
+        );
+      }
+
+      if (user && !user.subscribed) {
+        return (
+          <SubscribePage />
+        );
+      }
+
+      return (
+        <Component {...props} {...rest} key={newId} />
       );
     }}
   />
@@ -42,15 +53,18 @@ PrivateRoute.propTypes = {
   id: PropTypes.string,
   isLoading: PropTypes.bool.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
+  user: PropTypes.object,
 };
 
 PrivateRoute.defaultProps = {
   id: '',
+  user: null,
 };
 
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
   isAuthenticated: !!state.auth.user,
+  user: state.auth.user,
 });
 
 export default withRouter(connect(mapStateToProps)(PrivateRoute));

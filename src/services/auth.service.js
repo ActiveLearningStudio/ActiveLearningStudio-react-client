@@ -38,6 +38,11 @@ const updateProfile = (body) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const subscribe = () => httpService
+  .post(`/${apiVersion}/subscribe`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   me,
   login,
@@ -46,4 +51,5 @@ export default {
   forgotPassword,
   resetPassword,
   updateProfile,
+  subscribe,
 };
