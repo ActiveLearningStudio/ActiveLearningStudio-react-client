@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,272 +10,263 @@ import Error from '../Auth/Error';
 
 import './style.scss';
 
-class ProfilePage extends Component {
-  constructor(props) {
-    super(props);
+function ProfilePage(props) {
+  const {
+    isLoading,
+    error,
+    user,
+    updateProfile,
+  } = props;
 
-    this.state = {
-      firstName: props.user.first_name || '',
-      lastName: props.user.last_name || '',
-      organizationName: props.user.organization_name || '',
-      organizationType: props.user.organization_type || '',
-      website: props.user.website || '',
-      jobTitle: props.user.job_title || '',
-      address: props.user.address || '',
-      phoneNumber: props.user.phone_number || '',
-    };
-  }
+  const [state, setState] = useState({
+    firstName: (user && user.first_name) || '',
+    lastName: (user && user.last_name) || '',
+    organizationName: (user && user.organization_name) || '',
+    organizationType: (user && user.organization_type) || '',
+    website: (user && user.website) || '',
+    jobTitle: (user && user.job_title) || '',
+    address: (user && user.address) || '',
+    phoneNumber: (user && user.phone_number) || '',
+  });
 
-  componentDidMount() {
+  useEffect(() => {
     window.scrollTo(0, 0);
-  }
+  }, []);
 
-  onChangeField = (e) => {
-    this.setState({
+  useEffect(() => {
+    setState({
+      firstName: (user && user.first_name) || '',
+      lastName: (user && user.last_name) || '',
+      organizationName: (user && user.organization_name) || '',
+      organizationType: (user && user.organization_type) || '',
+      website: (user && user.website) || '',
+      jobTitle: (user && user.job_title) || '',
+      address: (user && user.address) || '',
+      phoneNumber: (user && user.phone_number) || '',
+    });
+  }, [user]);
+
+  const onChangeField = (e) => {
+    setState({
+      ...state,
       [e.target.name]: e.target.value,
     });
   };
 
-  onSubmit = async (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const {
-        firstName,
-        lastName,
-        organizationName,
-        organizationType,
-        website,
-        jobTitle,
-        address,
-        phoneNumber,
-      } = this.state;
-      const { user, updateProfile } = this.props;
-
       await updateProfile({
         id: user.id,
-        first_name: firstName,
-        last_name: lastName,
-        organization_name: organizationName,
-        organization_type: organizationType,
-        website,
-        job_title: jobTitle,
-        address,
-        phone_number: phoneNumber,
+        first_name: state.firstName,
+        last_name: state.lastName,
+        organization_name: state.organizationName,
+        organization_type: state.organizationType,
+        website: state.website,
+        job_title: state.jobTitle,
+        address: state.address,
+        phone_number: state.phoneNumber,
       });
     } catch (err) {
       // console.log(err);
     }
   };
 
-  render() {
-    const {
-      firstName,
-      lastName,
-      organizationName,
-      organizationType,
-      website,
-      jobTitle,
-      address,
-      phoneNumber,
-    } = this.state;
+  return (
+    <>
+      <Header {...props} />
 
-    const { isLoading, error } = this.props;
-
-    return (
-      <>
-        <Header {...this.props} />
-
-        <div className="account-page main-content-wrapper">
-          <div className="content-wrapper">
-            <div className="content">
-              <div className="row">
-                <div className="col-md-12">
-                  <h1 className="title">My Profile</h1>
-                </div>
+      <div className="account-page main-content-wrapper">
+        <div className="content-wrapper">
+          <div className="content">
+            <div className="row">
+              <div className="col-md-12">
+                <h1 className="title">My Profile</h1>
               </div>
+            </div>
 
-              <div className="row justify-content-center">
-                <div className="col-md-8">
-                  <form
-                    className="auth-form"
-                    onSubmit={this.onSubmit}
-                    autoComplete="off"
-                  >
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="first-name">First Name</label>
-                          <FontAwesomeIcon icon="user" />
-                          <input
-                            className="input-box"
-                            type="text"
-                            id="first-name"
-                            name="firstName"
-                            placeholder="First Name*"
-                            required
-                            value={firstName}
-                            onChange={this.onChangeField}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="last-name">Last Name</label>
-                          <FontAwesomeIcon icon="user" />
-                          <input
-                            className="input-box"
-                            type="text"
-                            id="last-name"
-                            name="lastName"
-                            placeholder="Last Name*"
-                            required
-                            value={lastName}
-                            onChange={this.onChangeField}
-                          />
-                        </div>
+            <div className="row justify-content-center">
+              <div className="col-md-8">
+                <form
+                  className="auth-form"
+                  onSubmit={onSubmit}
+                  autoComplete="off"
+                >
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="first-name">First Name</label>
+                        <FontAwesomeIcon icon="user" />
+                        <input
+                          className="input-box"
+                          type="text"
+                          id="first-name"
+                          name="firstName"
+                          placeholder="First Name*"
+                          required
+                          value={state.firstName}
+                          onChange={onChangeField}
+                        />
                       </div>
                     </div>
 
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="organization-name">Organization Name</label>
-                          <FontAwesomeIcon icon="user" />
-                          <input
-                            className="input-box"
-                            type="text"
-                            id="organization-name"
-                            name="organizationName"
-                            placeholder="Organization Name*"
-                            required
-                            value={organizationName}
-                            onChange={this.onChangeField}
-                          />
-                        </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="last-name">Last Name</label>
+                        <FontAwesomeIcon icon="user" />
+                        <input
+                          className="input-box"
+                          type="text"
+                          id="last-name"
+                          name="lastName"
+                          placeholder="Last Name*"
+                          required
+                          value={state.lastName}
+                          onChange={onChangeField}
+                        />
                       </div>
+                    </div>
+                  </div>
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="organization-type">Organization Type</label>
-                          <FontAwesomeIcon icon="user" />
-                          <input
-                            className="input-box"
-                            type="text"
-                            id="organization-type"
-                            name="organizationType"
-                            placeholder="Organization Type*"
-                            value={organizationType}
-                            onChange={this.onChangeField}
-                          />
-                        </div>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="organization-name">Organization Name</label>
+                        <FontAwesomeIcon icon="user" />
+                        <input
+                          className="input-box"
+                          type="text"
+                          id="organization-name"
+                          name="organizationName"
+                          placeholder="Organization Name*"
+                          required
+                          value={state.organizationName}
+                          onChange={onChangeField}
+                        />
                       </div>
                     </div>
 
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="website">Website</label>
-                          <FontAwesomeIcon icon="user" />
-                          <input
-                            className="input-box"
-                            type="text"
-                            id="website"
-                            name="website"
-                            placeholder="Website"
-                            value={website}
-                            onChange={this.onChangeField}
-                          />
-                        </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="organization-type">Organization Type</label>
+                        <FontAwesomeIcon icon="user" />
+                        <input
+                          className="input-box"
+                          type="text"
+                          id="organization-type"
+                          name="organizationType"
+                          placeholder="Organization Type*"
+                          value={state.organizationType}
+                          onChange={onChangeField}
+                        />
                       </div>
+                    </div>
+                  </div>
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="job-title">Job Title</label>
-                          <FontAwesomeIcon icon="user" />
-                          <input
-                            className="input-box"
-                            type="text"
-                            id="job-title"
-                            name="jobTitle"
-                            placeholder="Job Title*"
-                            required
-                            value={jobTitle}
-                            onChange={this.onChangeField}
-                          />
-                        </div>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="website">Website</label>
+                        <FontAwesomeIcon icon="user" />
+                        <input
+                          className="input-box"
+                          type="text"
+                          id="website"
+                          name="website"
+                          placeholder="Website"
+                          value={state.website}
+                          onChange={onChangeField}
+                        />
                       </div>
                     </div>
 
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="address">Address</label>
-                          <FontAwesomeIcon icon="home" />
-                          <input
-                            className="input-box"
-                            type="text"
-                            id="address"
-                            name="address"
-                            placeholder="Address"
-                            value={address}
-                            onChange={this.onChangeField}
-                          />
-                        </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="job-title">Job Title</label>
+                        <FontAwesomeIcon icon="user" />
+                        <input
+                          className="input-box"
+                          type="text"
+                          id="job-title"
+                          name="jobTitle"
+                          placeholder="Job Title*"
+                          required
+                          value={state.jobTitle}
+                          onChange={onChangeField}
+                        />
                       </div>
+                    </div>
+                  </div>
 
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="phone-number">Phone Number</label>
-                          <FontAwesomeIcon icon="phone" />
-                          <input
-                            className="input-box"
-                            type="text"
-                            id="phone-number"
-                            name="phoneNumber"
-                            placeholder="Phone Number"
-                            value={phoneNumber}
-                            onChange={this.onChangeField}
-                          />
-                        </div>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="address">Address</label>
+                        <FontAwesomeIcon icon="home" />
+                        <input
+                          className="input-box"
+                          type="text"
+                          id="address"
+                          name="address"
+                          placeholder="Address"
+                          value={state.address}
+                          onChange={onChangeField}
+                        />
                       </div>
                     </div>
 
-                    <div className="form-group">
-                      <button
-                        type="submit"
-                        className="btn btn-primary submit"
-                        disabled={isLoading}
-                      >
-                        {isLoading ? (
-                          <img src={loader} alt="" />
-                        ) : (
-                          'Update Profile'
-                        )}
-                      </button>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="phone-number">Phone Number</label>
+                        <FontAwesomeIcon icon="phone" />
+                        <input
+                          className="input-box"
+                          type="text"
+                          id="phone-number"
+                          name="phoneNumber"
+                          placeholder="Phone Number"
+                          value={state.phoneNumber}
+                          onChange={onChangeField}
+                        />
+                      </div>
                     </div>
+                  </div>
 
-                    <Error error={error} />
-                  </form>
-                </div>
+                  <div className="form-group">
+                    <button
+                      type="submit"
+                      className="btn btn-primary submit"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <img src={loader} alt="" />
+                      ) : (
+                        'Update Profile'
+                      )}
+                    </button>
+                  </div>
+
+                  <Error error={error} />
+                </form>
               </div>
             </div>
           </div>
         </div>
-      </>
-    );
-  }
+      </div>
+    </>
+  );
 }
 
 ProfilePage.propTypes = {
   isLoading: PropTypes.bool.isRequired,
-  user: PropTypes.object.isRequired,
+  user: PropTypes.object,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   updateProfile: PropTypes.func.isRequired,
 };
 
 ProfilePage.defaultProps = {
+  user: null,
   error: null,
 };
 
