@@ -39,11 +39,9 @@ const ProjectCard = (props) => {
               <div
                 className="project-thumb"
                 style={{
-                  backgroundImage:
-                    !!project.thumb_url
-                    && project.thumb_url.includes('pexels.com')
-                      ? `url(${project.thumb_url})`
-                      : `url(${global.config.resourceUrl}${project.thumb_url})`,
+                  backgroundImage: !!project.thumb_url && project.thumb_url.includes('pexels.com')
+                    ? `url(${project.thumb_url})`
+                    : `url(${global.config.resourceUrl}${project.thumb_url})`,
                 }}
               />
             )}
@@ -122,12 +120,8 @@ const ProjectCard = (props) => {
                       <Dropdown.Item
                         to="#"
                         onClick={() => {
-                          const protocol = `${
-                            window.location.href.split('/')[0]
-                          }//`;
-                          const url = `${
-                            protocol + window.location.host
-                          }/project/shared/${project.id}`;
+                          const protocol = `${window.location.href.split('/')[0]}//`;
+                          const url = `${protocol + window.location.host}/project/shared/${project.id}`;
                           SharePreviewPopup(url, project.name);
                         }}
                       >

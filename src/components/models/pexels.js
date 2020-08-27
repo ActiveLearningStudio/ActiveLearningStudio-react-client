@@ -104,9 +104,7 @@ function Pexels(props) {
                           props.onHide();
                           return project
                             ? dispatch(uploadProjectThumbnail(images.src.tiny))
-                            : dispatch(
-                              uploadResourceThumbnail(images.src.tiny),
-                            );
+                            : dispatch(uploadResourceThumbnail(images.src.tiny));
                         }}
                         alt="pexel"
                       />
@@ -122,7 +120,7 @@ function Pexels(props) {
 
               {!!nextApi && (
                 <h6
-                  className="readmore-pexel"
+                  className="read-more-pexel"
                   onClick={() => {
                     axios
                       .get(nextApi, {
