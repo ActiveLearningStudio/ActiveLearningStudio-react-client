@@ -4,13 +4,17 @@ import PropTypes from 'prop-types';
 const InputField = ({
   input,
   label,
+  showLabel,
   type,
   meta: { touched, error, warning },
 }) => (
   <div>
-    <label>
-      <h2>{label}</h2>
-    </label>
+    {showLabel && (
+      <label>
+        <h2>{label}</h2>
+      </label>
+    )}
+
     <div>
       <input {...input} type={type} />
       {touched && (
@@ -24,12 +28,14 @@ const InputField = ({
 InputField.propTypes = {
   input: PropTypes.object.isRequired,
   label: PropTypes.string,
+  showLabel: PropTypes.bool,
   type: PropTypes.string.isRequired,
   meta: PropTypes.object.isRequired,
 };
 
 InputField.defaultProps = {
   label: '',
+  showLabel: true,
 };
 
 export default InputField;

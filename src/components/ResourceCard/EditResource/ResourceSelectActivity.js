@@ -3,18 +3,11 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import styled, { keyframes } from 'styled-components';
-import { fadeIn } from 'react-animations';
 
+import { required, FadeDiv } from 'utils';
 import { showDescribeActivityAction } from 'store/actions/resource';
 import EditResourceSidebar from './EditResourceSidebar';
 import ResourceActivityTypeField from '../fields/ResourceActivityTypeField';
-
-const fadeAnimation = keyframes`${fadeIn}`;
-
-const FadeDiv = styled.div`
-  animation: 0.5s ${fadeAnimation};
-`;
 
 const questions = [
   {
@@ -63,12 +56,9 @@ const questions = [
     type: 'h5p',
     icon: '/assets.images/course-presentation.png',
     overlayIcon: '/assets.images/course-presentation-overlay.png',
-    description: 'Create a presenstation with interactive slides',
+    description: 'Create a presentation with interactive slides',
   },
-
 ];
-
-const required = (value) => (value ? undefined : '* Required');
 
 // TODO: unused component
 let ResourceSelectActivity = (props) => {

@@ -1,4 +1,6 @@
-// eslint-disable-next-line import/prefer-default-export
+import styled, { keyframes } from 'styled-components';
+import { fadeIn } from 'react-animations';
+
 export function getErrors(e) {
   if (e.errors) {
     if (!Array.isArray(e.errors) && typeof e.errors === 'object') {
@@ -15,3 +17,14 @@ export function getErrors(e) {
 
   return e;
 }
+
+export const required = (value) => (value ? undefined : '* Required');
+
+export const maxLength = (max) => (value) => (value && value.length > max
+  ? `* Must be ${max} characters or less`
+  : undefined);
+
+const fadeAnimation = keyframes`${fadeIn}`;
+export const FadeDiv = styled.div`
+  animation: 0.8s ${fadeAnimation};
+`;

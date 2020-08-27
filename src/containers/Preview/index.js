@@ -35,7 +35,7 @@ class PreviewPage extends React.Component {
 
   // static getDerivedStateFromProps(nextProps, prevState) {
   //   if (nextProps.selectedPlaylist !== prevState.playlistId) {
-  //     return { playlistId: nextProps.selectedPlaylist._id };
+  //     return { playlistId: nextProps.selectedPlaylist.id };
   //   } else {
   //     return null;
   //   }

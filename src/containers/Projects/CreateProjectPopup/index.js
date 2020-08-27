@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import computer from 'assets/images/computer.svg';
 import loader from 'assets/images/loader.svg';
 import pexel from 'assets/images/pexel.png';
+import { required, maxLength } from 'utils';
 import {
   createProjectAction,
   updateProjectAction,
@@ -21,10 +22,6 @@ import PexelsAPI from 'components/models/pexels';
 
 import './style.scss';
 
-const required = (value) => (value ? undefined : '* Required');
-const maxLength = (max) => (value) => (value && value.length > max
-  ? `* Must be ${max} characters or less`
-  : undefined);
 const maxLength80 = maxLength(80);
 
 // TODO: need to restructure code, clean up attributes

@@ -155,13 +155,11 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.DELETE_RESOURCE:
       const plists = [];
       state.playlists.forEach((playlist) => {
-        const newResources = playlist.resources.filter((res) => res._id !== action.resourceId);
-        let p = null;
-        p = playlist;
+        const newResources = playlist.resources.filter((res) => res.id !== action.payload.resourceId);
+        const p = playlist;
         p.resources = newResources;
         plists.push(p);
       });
-
       return {
         ...state,
         playlists: plists,

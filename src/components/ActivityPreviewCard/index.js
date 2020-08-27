@@ -23,7 +23,7 @@ const ActivityPreviewCard = (props) => {
   return (
     <>
       {shared ? (
-        <Link to={`/playlist/shared/preview/${playlist}/resource/${activity._id}`}>
+        <Link to={`/playlist/shared/preview/${playlist}/resource/${activity.id}`}>
           <li className="check">
             {activity.thumbUrl ? (
               <div
@@ -53,8 +53,8 @@ const ActivityPreviewCard = (props) => {
         <Link
           to={
             lti
-              ? `/playlist/lti/preview/${playlist}/resource/${activity._id}`
-              : `/playlist/preview/${playlist}/resource/${activity._id}`
+              ? `/playlist/lti/preview/${playlist}/resource/${activity.id}`
+              : `/playlist/preview/${playlist}/resource/${activity.id}`
           }
         >
           {lti ? (

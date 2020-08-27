@@ -66,7 +66,7 @@ function ProjectPreviewShared(props) {
           <ActivityCard
             activity={activity}
             playlistId={playlist.id}
-            key={activity._id}
+            key={activity.id}
             lti
           />
         ));

@@ -4,10 +4,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
-import styled, { keyframes } from 'styled-components';
-import { fadeIn } from 'react-animations';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { required, FadeDiv } from 'utils';
 import {
   showBuildActivityAction,
   onSubmitDescribeActivityAction,
@@ -21,14 +20,6 @@ import MetaEducationLevelInputField from '../fields/MetaEducationLevelInputField
 import PexelsAPI from '../../models/pexels';
 
 import './style.scss';
-
-const fadeAnimation = keyframes`${fadeIn}`;
-
-const FadeDiv = styled.div`
-  animation: 0.5s ${fadeAnimation};
-`;
-
-const required = (value) => (value ? undefined : '* Required');
 
 // TODO: need to refactor code, remove constants
 

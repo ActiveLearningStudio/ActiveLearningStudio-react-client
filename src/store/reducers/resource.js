@@ -29,18 +29,18 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case actionTypes.LOAD_RESOURCE_TYPE_REQUEST:
+    case actionTypes.LOAD_RESOURCE_TYPES_REQUEST:
       return {
         ...state,
         isLoading: true,
       };
-    case actionTypes.LOAD_RESOURCE_TYPE_SUCCESS:
+    case actionTypes.LOAD_RESOURCE_TYPES_SUCCESS:
       return {
         ...state,
         isLoading: false,
-        types: action.payload.types,
+        types: action.payload.activityTypes,
       };
-    case actionTypes.LOAD_RESOURCE_TYPE_FAIL:
+    case actionTypes.LOAD_RESOURCE_TYPES_FAIL:
       return {
         ...state,
         isLoading: false,
@@ -217,7 +217,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         newResource: {
           ...state.newResource,
-          activityTypeId: action.activityTypeId,
+          activityTypeId: action.payload.activityTypeId,
         },
       };
 
@@ -226,19 +226,19 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         newResource: {
           ...state.newResource,
-          activity: action.activity,
+          activity: action.payload.activity,
         },
       };
 
     case actionTypes.DESCRIBE_ACTIVITY:
-      if (action.activityId != null) {
+      if (action.payload.activityId != null) {
         return {
           ...state,
           editResource: {
             ...state.editResource,
             metadata: {
               ...state.editResource.metadata,
-              metaContent: action.metadata,
+              metaContent: action.payload.metadata,
             },
           },
         };

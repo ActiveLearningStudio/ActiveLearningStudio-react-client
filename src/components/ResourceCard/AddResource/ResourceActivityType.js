@@ -2,43 +2,20 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
-import { fadeIn } from 'react-animations';
 import { Field, reduxForm } from 'redux-form';
 
+import { required, FadeDiv } from 'utils';
 import { loadResourceTypesAction, showSelectActivityAction, onChangeActivityTypeAction } from 'store/actions/resource';
+import InputField from 'components/InputField';
 import AddResourceSidebar from './AddResourceSidebar';
 
 import './style.scss';
 
-const fadeAnimation = keyframes`${fadeIn}`;
-
-const FaceDiv = styled.div`
-  animation: 1s ${fadeAnimation};
-`;
-
 // TODO: need to refactor code
 
-const required = (value) => (value ? undefined : '* Required');
-
-const ResourceActivityTypeField = ({
-  input,
-  type,
-  meta: { touched, error, warning },
-}) => (
-  <>
-    <input {...input} type={type} />
-    {touched
-      && ((error && <span className="validation-error">{error}</span>)
-        || (warning && <span>{warning}</span>))}
-  </>
+const ResourceActivityTypeField = (props) => (
+  <InputField {...props} showLabel={false} />
 );
-
-ResourceActivityTypeField.propTypes = {
-  input: PropTypes.object.isRequired,
-  type: PropTypes.string.isRequired,
-  meta: PropTypes.object.isRequired,
-};
 
 let ResourceActivityType = (props) => {
   const { resource, loadResourceTypes } = props;
@@ -50,15 +27,15 @@ let ResourceActivityType = (props) => {
 
   const { handleSubmit, onChangeActivityType } = props;
 
-  const activityTypesContent = activityTypes.map((activity) => (
-    <div className="col-md-3" key={activity._id}>
+  const activityTypesContent = activityTypes.map((activityType) => (
+    <div className="col-md-3" key={activityType.id}>
       <label className="activity-label">
         <Field
           name="activityType"
           component={ResourceActivityTypeField}
           type="radio"
-          value={`${activity._id}`}
-          onChange={() => onChangeActivityType(activity._id)}
+          value={`${activityType.id}`}
+          onChange={() => onChangeActivityType(activityType.id)}
           validate={[required]}
         />
 
@@ -66,12 +43,12 @@ let ResourceActivityType = (props) => {
           <div
             className="activity-img"
             style={{
-              backgroundImage: `url(${global.config.laravelAPIUrl}${activity.image})`,
+              backgroundImage: `url(${global.config.resourceUrl}${activityType.image})`,
             }}
           />
 
           <div className="activity-content">
-            <span>{activity.title}</span>
+            <span>{activityType.title}</span>
           </div>
         </div>
       </label>
@@ -86,7 +63,7 @@ let ResourceActivityType = (props) => {
 
       <div className="col-md-9">
         <div className="resource-activity">
-          <FaceDiv>
+          <FadeDiv>
             <div className="row">
               <div className="col-md-12">
                 <h2 className="title">Pick Activity Type</h2>
@@ -114,7 +91,7 @@ let ResourceActivityType = (props) => {
               </div>
               */}
             </form>
-          </FaceDiv>
+          </FadeDiv>
         </div>
       </div>
     </div>
