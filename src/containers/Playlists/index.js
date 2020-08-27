@@ -74,13 +74,6 @@ class PlaylistsPage extends React.Component {
     }
   }
 
-  escFunction = (event) => {
-    if (event.keyCode === 27) {
-      const { hideCreatePlaylistModal } = this.props;
-      hideCreatePlaylistModal();
-    }
-  }
-
   handleShowCreatePlaylistModal = async (e) => {
     e.preventDefault();
 
@@ -363,8 +356,6 @@ class PlaylistsPage extends React.Component {
 
             {openCreatePopup && (
               <CreatePlaylistPopup
-                escFunction={this.escFunction}
-                handleShowCreatePlaylistModal={this.handleShowCreatePlaylistModal}
                 handleHideCreatePlaylistModal={this.handleHideCreatePlaylistModal}
                 handleCreatePlaylistSubmit={this.handleCreatePlaylistSubmit}
                 onPlaylistTitleChange={this.onPlaylistTitleChange}

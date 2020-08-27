@@ -91,6 +91,8 @@ EditResource.propTypes = {
   // showBuildActivity: PropTypes.func.isRequired,
   showResourceDescribeActivity: PropTypes.func.isRequired,
   handleHideCreateResourceModal: PropTypes.func.isRequired,
+  handleCreateResourceSubmit: PropTypes.func.isRequired,
+  handleEditResourceSubmit: PropTypes.func.isRequired,
 };
 
 export default EditResource;

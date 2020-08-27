@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import resourceService from 'services/resource.service';
 import * as actionTypes from '../actionTypes';
 
-export const loadResourceTypesAction = async () => async (dispatch) => {
+export const loadResourceTypesAction = () => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPE_REQUEST,
