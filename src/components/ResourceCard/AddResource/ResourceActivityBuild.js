@@ -66,16 +66,14 @@ ResourceActivityBuild.propTypes = {
   resource: PropTypes.object.isRequired,
   editResourcePopup: PropTypes.bool.isRequired,
   goBackToActivity: PropTypes.func.isRequired,
+  handleCreateResourceSubmit: PropTypes.func.isRequired,
+  handleEditResourceSubmit: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   goBackToActivity: () => dispatch(showDescribeActivity()),
 });
 
-const mapStateToProps = (state) => ({
-  resource: state.resource,
-});
-
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ResourceActivityBuild),
+  connect(null, mapDispatchToProps)(ResourceActivityBuild),
 );

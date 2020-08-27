@@ -22,7 +22,7 @@ function CreatePlaylistPopup(props) {
   // remove popup when escape is pressed
   const escFunction = useCallback((event) => {
     if (event.keyCode === 27) {
-      handleHideCreatePlaylistModal(event);
+      handleHideCreatePlaylistModal();
     }
   }, [handleHideCreatePlaylistModal]);
 

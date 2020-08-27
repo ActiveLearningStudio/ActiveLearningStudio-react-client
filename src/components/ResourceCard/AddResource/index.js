@@ -95,6 +95,8 @@ AddResource.propTypes = {
   handleHideCreateResourceModal: PropTypes.func.isRequired,
   showCreateResourceActivity: PropTypes.func.isRequired,
   showResourceDescribeActivity: PropTypes.func.isRequired,
+  handleCreateResourceSubmit: PropTypes.func.isRequired,
+  handleEditResourceSubmit: PropTypes.func.isRequired,
 };
 
 AddResource.defaultProps = {

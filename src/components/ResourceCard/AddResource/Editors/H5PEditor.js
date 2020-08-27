@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
@@ -273,16 +272,15 @@ H5PEditor.propTypes = {
   match: PropTypes.object.isRequired,
   resource: PropTypes.object.isRequired,
   editResourcePopup: PropTypes.bool.isRequired,
-  h5pLib: PropTypes.string.isRequired,
-  h5pParams: PropTypes.string.isRequired,
+  h5pLib: PropTypes.string,
+  h5pParams: PropTypes.string,
   handleCreateResourceSubmit: PropTypes.func.isRequired,
   handleEditResourceSubmit: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  resource: state.resource,
-});
+H5PEditor.defaultProps = {
+  h5pLib: '',
+  h5pParams: '',
+};
 
-export default withRouter(
-  connect(mapStateToProps)(H5PEditor),
-);
+export default withRouter(H5PEditor);
