@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import ReactGA from 'react-ga';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
 
 import 'react-widgets/dist/css/react-widgets.css';
 import 'react-placeholder/lib/reactPlaceholder.css';
@@ -18,6 +19,7 @@ import './config';
 import './style.scss';
 
 library.add(fas);
+library.add(far);
 
 const trackingId = 'UA-1841781-12';
 ReactGA.initialize(trackingId, {

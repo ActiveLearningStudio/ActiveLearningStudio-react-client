@@ -240,65 +240,34 @@ export const updateProfileAction = (data) => async (dispatch) => {
   }
 };
 
-// export const acceptTerms = (email, password) => async (dispatch) => {
-//   try {
-//     const response = await axios.post(
-//       `${global.config.laravelAPIUrl}/auth/privacy-subscription/subscribe`,
-//       {
-//         email,
-//         password,
-//       },
-//     );
-//
-//     if (response.data.status === 'success') {
-//       if (!response.data.data.subscribed) {
-//         dispatch(show_term());
-//       } else {
-//         const user = {
-//           displayName: response.data.data.payload.user.name,
-//           id: response.data.data.payload.user._id,
-//           token: response.data.data.token,
-//           auth_expiry: response.data.data.payload.exp,
-//           subscribed: response.data.data.subscribed,
-//         };
-//           // hubspot email tacking
-//         const _hsq = (window._hsq = window._hsq || []);
-//         _hsq.push([
-//           'identify',
-//           {
-//             email: response.data.data.payload.user.email,
-//             user_name: user.displayName,
-//           },
-//         ]);
-//         dispatch(login(user.displayName, user.id, user.token));
-//         localStorage.setItem('auth', JSON.stringify(user));
-//         dispatch(show_login());
-//       }
-//     } else {
-//       dispatch(loginError());
-//     }
-//   } catch (e) {
-//     dispatch(loginError());
-//     throw new Error(e.response.data.error);
-//   }
-// };
+export const acceptTermsAction = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.ACCEPT_TERMS_REQUEST,
+  });
 
-export const startLogoutAction = () => async (dispatch) => {
   try {
-    // const { token } = JSON.parse(localStorage.getItem("auth"));
-    localStorage.removeItem('auth');
-    // await axios.delete(
-    //   // `${process.env.REACT_APP_API_URL}/users/me/token`,
-    //   global.config.laravelAPIUrl +'/users/me/token',
-    //   {
-    //     headers: {
-    //       "x-auth": token
-    //     }
-    //   }
-    // );
-    dispatch(logoutAction());
+    const { user } = await authService.subscribe();
+
+    dispatch({
+      type: actionTypes.ACCEPT_TERMS_SUCCESS,
+      payload: { user },
+    });
+
+    // hubspot email tacking
+    // eslint-disable-next-line no-multi-assign
+    const _hsq = (window._hsq = window._hsq || []);
+    _hsq.push([
+      'identify',
+      {
+        email: user.email,
+        user_name: user.name,
+      },
+    ]);
   } catch (e) {
-    localStorage.removeItem('auth');
-    dispatch(logoutAction());
+    dispatch({
+      type: actionTypes.ACCEPT_TERMS_FAIL,
+    });
+
+    throw e;
   }
 };
