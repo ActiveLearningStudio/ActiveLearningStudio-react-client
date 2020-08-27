@@ -1,8 +1,5 @@
 import React, {
-  useEffect,
-  useRef,
-  useCallback,
-  useState,
+  useEffect, useRef, useCallback, useState,
 } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -71,7 +68,8 @@ const onSubmit = async (values, dispatch, props) => {
             name,
             description,
             // eslint-disable-next-line max-len
-            thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+            thumb_url:
+                'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
           }),
       );
     }
@@ -115,11 +113,14 @@ let CreateProjectPopup = (props) => {
   const openFile = useRef();
 
   // remove popup when escape is pressed
-  const escFunction = useCallback((event) => {
-    if (event.keyCode === 27) {
-      handleCloseProjectModal(event);
-    }
-  }, [handleCloseProjectModal]);
+  const escFunction = useCallback(
+    (event) => {
+      if (event.keyCode === 27) {
+        handleCloseProjectModal(event);
+      }
+    },
+    [handleCloseProjectModal],
+  );
 
   useEffect(() => {
     document.addEventListener('keydown', escFunction, false);
@@ -156,14 +157,6 @@ let CreateProjectPopup = (props) => {
 
         <div className="upload-thumbnail check">
           <div className="upload_placeholder">
-            {/*
-            <h2>
-              {" "}
-              <br />
-              Upload thumbnail
-            </h2>
-            */}
-
             <label style={{ display: 'none' }}>
               <input
                 ref={openFile}
@@ -191,11 +184,15 @@ let CreateProjectPopup = (props) => {
                     Image Uploaded:
                   </div>
                   <div className="imgbox">
-                    {!!project.thumbUrl && project.thumbUrl.includes('pexels.com') ? (
+                    {!!project.thumbUrl
+                    && project.thumbUrl.includes('pexels.com') ? (
                       <img src={project.thumbUrl} alt="" />
-                    ) : (
-                      <img src={global.config.laravelAPIUrl + project.thumbUrl} alt="" />
-                    )}
+                      ) : (
+                        <img
+                          src={global.config.resourceUrl + project.thumbUrl}
+                          alt=""
+                        />
+                      )}
                   </div>
                 </div>
               ) : (
@@ -203,7 +200,10 @@ let CreateProjectPopup = (props) => {
                   <h2>Default Selected thumbnail</h2>
                   <div className="imgbox">
                     {/* eslint-disable-next-line max-len */}
-                    <img src="https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280" alt="" />
+                    <img
+                      src="https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280"
+                      alt=""
+                    />
                   </div>
                 </div>
               )}

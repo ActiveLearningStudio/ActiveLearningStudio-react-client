@@ -20,30 +20,7 @@
   }
 }
 
-.img-box-pexels {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  max-height: 700px;
-  min-height: 300px;
-  overflow-y: auto;
 
-  img {
-    width: 32%;
-    margin-bottom: 10px;
-    cursor: pointer;
-  }
-
-  .loader {
-    width: 50px;
-    height: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    align-self: center;
-    margin: 0 auto;
-  }
-}
 
 .upload-thumbnail.check {
   margin-bottom: 20px;
@@ -63,6 +40,8 @@
     cursor: pointer;
 
     .thumb-display {
+      width: auto !important;
+      height: auto !important;
     }
 
     .imgbox {
@@ -113,5 +92,99 @@
 
   .fa {
     font-size: 40px;
+  }
+}
+
+.img-box-pexels {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-height: 700px;
+  min-height: 300px;
+  overflow-y: auto;
+
+  .readmore-pexel {
+    background-color: #084892;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    margin-top: 10px;
+
+  }
+
+  .watermark {
+    width: 32.5%;
+    margin-bottom: 10px;
+    cursor: pointer;
+    position: relative;
+
+    img {
+      width: 100%;
+    }
+
+    a {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      color: #fff;
+      display: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+
+    &:hover {
+      a {
+        display: block;
+
+      }
+
+      img {
+        filter: brightness(0.7);
+      }
+    }
+
+  }
+
+  .loader {
+    width: 50px;
+    display: flex;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    margin: 0 auto;
+  }
+}
+
+
+
+.search-pixels {
+  position: relative;
+
+  input {
+    border: none;
+    font-size: 16px;
+    font-weight: 300;
+    height: 50px;
+    width: 420px;
+    padding-left: 50px;
+    box-shadow: 0px 0px 3px 0px #ccc
+  }
+
+  svg {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #ccc;
+    -webkit-text-stroke: 1px #fff;
   }
 }

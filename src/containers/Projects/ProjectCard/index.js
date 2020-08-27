@@ -30,11 +30,7 @@ const ProjectCard = (props) => {
 
   return (
     <div className="col-md-3 check">
-      <GoogleModel
-        projectId={project.id}
-        show={show}
-        onHide={handleClose}
-      />
+      <GoogleModel projectId={project.id} show={show} onHide={handleClose} />
 
       <div className="program-tile">
         <div className="program-thumb">
@@ -43,9 +39,11 @@ const ProjectCard = (props) => {
               <div
                 className="project-thumb"
                 style={{
-                  backgroundImage: !!project.thumb_url && project.thumb_url.includes('pexels.com')
-                    ? `url(${project.thumb_url})`
-                    : `url(${global.config.resourceUrl}${project.thumb_url})`,
+                  backgroundImage:
+                    !!project.thumb_url
+                    && project.thumb_url.includes('pexels.com')
+                      ? `url(${project.thumb_url})`
+                      : `url(${global.config.resourceUrl}${project.thumb_url})`,
                 }}
               />
             )}
@@ -63,14 +61,15 @@ const ProjectCard = (props) => {
 
               <div className="col-md-2">
                 <Dropdown className="project-dropdown check d-flex justify-content-center align-items-center">
-                  <Dropdown.Toggle
-                    className="project-dropdown-btn project d-flex justify-content-center align-items-center"
-                  >
+                  <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
                     <FontAwesomeIcon icon="ellipsis-v" />
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                    <Dropdown.Item as={Link} to={`/project/${project.id}/preview`}>
+                    <Dropdown.Item
+                      as={Link}
+                      to={`/project/${project.id}/preview`}
+                    >
                       <FontAwesomeIcon icon="eye" className="mr-2" />
                       Preview
                     </Dropdown.Item>
@@ -96,25 +95,26 @@ const ProjectCard = (props) => {
                           <a>Google Classroom</a>
                         </li>
 
-                        {allLms.shareVendors && allLms.shareVendors.map((data) => (
-                          <li>
-                            <a
-                              onClick={() => {
-                                dispatch(
-                                  getProjectCourseFromLMS(
-                                    data.lmsName.toLowerCase(),
-                                    data._id,
-                                    project.id,
-                                    project.playlists,
-                                    data.lmsUrl,
-                                  ),
-                                );
-                              }}
-                            >
-                              {data.description}
-                            </a>
-                          </li>
-                        ))}
+                        {allLms.shareVendors
+                          && allLms.shareVendors.map((data) => (
+                            <li>
+                              <a
+                                onClick={() => {
+                                  dispatch(
+                                    getProjectCourseFromLMS(
+                                      data.lmsName.toLowerCase(),
+                                      data._id,
+                                      project.id,
+                                      project.playlists,
+                                      data.lmsUrl,
+                                    ),
+                                  );
+                                }}
+                              >
+                                {data.description}
+                              </a>
+                            </li>
+                          ))}
                       </ul>
                     </li>
 
@@ -122,8 +122,12 @@ const ProjectCard = (props) => {
                       <Dropdown.Item
                         to="#"
                         onClick={() => {
-                          const protocol = `${window.location.href.split('/')[0]}//`;
-                          const url = `${protocol + window.location.host}/project/shared/${project.id}`;
+                          const protocol = `${
+                            window.location.href.split('/')[0]
+                          }//`;
+                          const url = `${
+                            protocol + window.location.host
+                          }/project/shared/${project.id}`;
                           SharePreviewPopup(url, project.name);
                         }}
                       >

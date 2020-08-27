@@ -22,7 +22,7 @@ function Pexels(props) {
   const [searchValue, setSearchValue] = useState();
   const [nextApi, setNextApi] = useState('');
 
-  const { project, resourceName, searchName } = props;
+  const { project, resourceName = 'abstract', searchName } = props;
 
   useEffect(() => {
     pexelsClient
@@ -104,7 +104,9 @@ function Pexels(props) {
                           props.onHide();
                           return project
                             ? dispatch(uploadProjectThumbnail(images.src.tiny))
-                            : dispatch(uploadResourceThumbnail(images.src.tiny));
+                            : dispatch(
+                              uploadResourceThumbnail(images.src.tiny),
+                            );
                         }}
                         alt="pexel"
                       />
@@ -122,11 +124,12 @@ function Pexels(props) {
                 <h6
                   className="readmore-pexel"
                   onClick={() => {
-                    axios.get(nextApi, {
-                      headers: {
-                        Authorization: process.env.REACT_APP_PEXEL_API,
-                      },
-                    })
+                    axios
+                      .get(nextApi, {
+                        headers: {
+                          Authorization: process.env.REACT_APP_PEXEL_API,
+                        },
+                      })
                       .then((res) => {
                         const moreData = res.data.photos;
                         setPexels(pexelData.concat(moreData));
