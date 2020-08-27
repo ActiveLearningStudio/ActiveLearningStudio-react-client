@@ -63,7 +63,9 @@ const ProjectPreviewModal = (props) => {
                   <div className="row">
                     <div className="col">
                       <img
-                        src={global.config.resourceUrl + project.thumbUrl}
+                        src={!!project.thumb_url && project.thumb_url.includes('pexels.com')
+                          ? `url(${project.thumb_url})`
+                          : `url(${global.config.resourceUrl}${project.thumb_url})`}
                         className="img-fluid project-preview-thumbnail"
                         alt=""
                       />

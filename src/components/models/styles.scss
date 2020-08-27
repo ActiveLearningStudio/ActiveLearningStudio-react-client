@@ -11,6 +11,14 @@
     box-shadow: 0 0 3px 0 #ccc;
   }
 
+  svg {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #ccc;
+    -webkit-text-stroke: 1px #fff;
+  }
+
   .fa {
     position: absolute;
     top: 10px;
@@ -19,8 +27,6 @@
     -webkit-text-stroke: 1px #fff;
   }
 }
-
-
 
 .upload-thumbnail.check {
   margin-bottom: 20px;
@@ -96,17 +102,14 @@
 }
 
 .img-box-pexels {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
   max-height: 700px;
   min-height: 300px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   overflow-y: auto;
 
-  .readmore-pexel {
+  .read-more-pexel {
     background-color: #084892;
     color: #fff;
     cursor: pointer;
@@ -114,7 +117,6 @@
     margin-bottom: 10px;
     text-align: center;
     margin-top: 10px;
-
   }
 
   .watermark {
@@ -139,52 +141,24 @@
       }
     }
 
-
     &:hover {
       a {
         display: block;
-
       }
 
       img {
         filter: brightness(0.7);
       }
     }
-
   }
 
   .loader {
     width: 50px;
-    display: flex;
     height: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
     align-self: center;
     margin: 0 auto;
-  }
-}
-
-
-
-.search-pixels {
-  position: relative;
-
-  input {
-    border: none;
-    font-size: 16px;
-    font-weight: 300;
-    height: 50px;
-    width: 420px;
-    padding-left: 50px;
-    box-shadow: 0px 0px 3px 0px #ccc
-  }
-
-  svg {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    color: #ccc;
-    -webkit-text-stroke: 1px #fff;
   }
 }
