@@ -67,7 +67,7 @@ const ProjectPreviewModal = (props) => {
                           ? `url(${project.thumb_url})`
                           : `url(${global.config.resourceUrl}${project.thumb_url})`}
                         className="img-fluid project-preview-thumbnail"
-                        alt=""
+                        alt="thumbnail"
                       />
                     </div>
                   </div>

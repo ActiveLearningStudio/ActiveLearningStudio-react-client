@@ -119,11 +119,12 @@ function ProjectPreviewShared(props) {
               <div className="container">
                 <div className="scene flex-wrap">
                   <div className="scene-img">
-                    <Link to={`/project/${currentProject._id}`}>
-                      <img
-                        alt="thumbnail"
-                        src={global.config.laravelAPIUrl + currentProject.thumbUrl}
-                      />
+                    <Link to={`/project/${currentProject.id}`}>
+                      {!!currentProject.thumb_url && currentProject.thumb_url.includes('pexels.com') ? (
+                        <img src={currentProject.thumb_url} alt="thumbnail" />
+                      ) : (
+                        <img src={global.config.resourceUrl + currentProject.thumb_url} alt="thumbnail" />
+                      )}
                     </Link>
                   </div>
                   <div className="sce_cont">

@@ -39,7 +39,7 @@ const ProjectCard = (props) => {
               <div
                 className="project-thumb"
                 style={{
-                  backgroundImage: !!project.thumb_url && project.thumb_url.includes('pexels.com')
+                  backgroundImage: project.thumb_url.includes('pexels.com')
                     ? `url(${project.thumb_url})`
                     : `url(${global.config.resourceUrl}${project.thumb_url})`,
                 }}

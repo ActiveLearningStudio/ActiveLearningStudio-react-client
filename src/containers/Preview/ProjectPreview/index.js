@@ -125,7 +125,11 @@ function ProjectPreview(props) {
               <div className="scene-img">
                 <div id="content" />
                 <Link to={`/project/${currentProject.id}`}>
-                  <img src={global.config.resourceUrl + currentProject.thumb_url} alt="thumbnail" />
+                  {!!currentProject.thumb_url && currentProject.thumb_url.includes('pexels.com') ? (
+                    <img src={currentProject.thumb_url} alt="thumbnail" />
+                  ) : (
+                    <img src={global.config.resourceUrl + currentProject.thumb_url} alt="thumbnail" />
+                  )}
                 </Link>
               </div>
               <div className="sce_cont">
