@@ -142,7 +142,7 @@ class PlaylistCard extends React.Component {
                   />
 
                   <Dropdown className="pull-right playlist-dropdown check">
-                    <Dropdown.Toggle className="project-dropdown-btn">
+                    <Dropdown.Toggle className="playlist-dropdown-btn">
                       <FontAwesomeIcon icon="ellipsis-v" />
                     </Dropdown.Toggle>
 
@@ -251,7 +251,7 @@ const mapDispatchToProps = (dispatch) => ({
   showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
   hideDeletePopup: () => dispatch(hideDeletePopupAction()),
   reorderPlaylistActivities: (playlist) => dispatch(reorderPlaylistActivitiesAction(playlist)),
-  changePlaylistTitle: (e, id) => dispatch(changePlaylistTitleAction(e, id)),
+  changePlaylistTitle: (projectId, id, title) => dispatch(changePlaylistTitleAction(projectId, id, title)),
 });
 
 const mapStateToProps = (state) => ({

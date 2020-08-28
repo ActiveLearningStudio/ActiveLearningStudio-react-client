@@ -6,9 +6,10 @@ import { FadeDiv } from 'utils';
 import './style.scss';
 
 // TODO: need to clean up attribute
-function Popup(props) {
+function DeletePopup(props) {
   const {
     ui,
+    selectedProject,
     hideDeletePopup,
     deleteProject,
     deletePlaylist,
@@ -33,11 +34,11 @@ function Popup(props) {
     if (deleteType === 'Project') {
       deleteProject(id);
     } else if (deleteType === 'Playlist') {
-      deletePlaylist(id);
+      deletePlaylist(selectedProject.id, id);
     } else if (deleteType === 'Activity') {
       deleteResource(id);
     }
-  }, [deleteProject, deletePlaylist, deleteResource]);
+  }, [selectedProject, deleteProject, deletePlaylist, deleteResource]);
 
   return (
     <FadeDiv className="popup">
@@ -79,12 +80,20 @@ function Popup(props) {
   );
 }
 
-Popup.propTypes = {
+DeletePopup.propTypes = {
   ui: PropTypes.object.isRequired,
+  selectedProject: PropTypes.object,
   hideDeletePopup: PropTypes.func.isRequired,
-  deleteProject: PropTypes.func.isRequired,
-  deletePlaylist: PropTypes.func.isRequired,
-  deleteResource: PropTypes.func.isRequired,
+  deleteProject: PropTypes.func,
+  deletePlaylist: PropTypes.func,
+  deleteResource: PropTypes.func,
 };
 
-export default Popup;
+DeletePopup.defaultProps = {
+  selectedProject: null,
+  deleteProject: () => {},
+  deletePlaylist: () => {},
+  deleteResource: () => {},
+};
+
+export default DeletePopup;
