@@ -33,12 +33,13 @@ let ResourceSelectActivity = (props) => {
   const [modalShow, setModalShow] = useState(false);
   const [currentActivity, setCurrentActivity] = useState(null);
 
-  const searchActivity = useCallback((e) => {
-    const data = searchActivities.filter(
-      (activity) => activity.title.toLowerCase().includes(e.target.value.toLowerCase()),
-    );
-    setActivities(data);
-  }, [searchActivities]);
+  const searchActivity = useCallback(
+    (e) => {
+      const data = searchActivities.filter((activity) => activity.title.toLowerCase().includes(e.target.value.toLowerCase()));
+      setActivities(data);
+    },
+    [searchActivities],
+  );
 
   useEffect(() => {
     // get activity type items
@@ -47,9 +48,7 @@ let ResourceSelectActivity = (props) => {
         setActivities(activityItems);
         setSearchActivities(activityItems);
       })
-      .catch((/* e */) => {
-        // console.log(e);
-      });
+      .catch(() => {});
   }, [loadResourceItems, resource.newResource.activityTypeId]);
 
   const questionsContent = activities.map((activity) => (
@@ -69,7 +68,7 @@ let ResourceSelectActivity = (props) => {
             <div
               className="activity-img"
               style={{
-                backgroundImage: `url(${global.config.laravelAPIUrl}${activity.image})`,
+                backgroundImage: `url(${activity.image})`,
               }}
             />
 
@@ -77,8 +76,6 @@ let ResourceSelectActivity = (props) => {
               <span>{activity.title}</span>
               <p>{activity.description}</p>
             </div>
-
-            {/* <FontAwesomeIcon icon="star" /> */}
           </div>
         </label>
 
@@ -127,7 +124,8 @@ let ResourceSelectActivity = (props) => {
                       <FontAwesomeIcon icon="chevron-left" />
                       Back
                     </div>
-                    Select the activity you want to build from the options below:
+                    Select the activity you want to build from the options
+                    below:
                   </h2>
                 </div>
               </div>
@@ -135,31 +133,6 @@ let ResourceSelectActivity = (props) => {
               <div className="row">
                 <div className="col-md-12">
                   <div className="shadowbox">
-                    <div className="dropdown">
-                      {/*
-                      <button
-                        className="btn btn-primary dropdown-toggle"
-                        type="button"
-                        data-toggle="dropdown"
-                      >
-                        Sort By
-                        <span className="caret"></span>
-                      </button>
-
-                      <ul className="dropdown-menu">
-                        <li>
-                          <a href="#"></a>
-                        </li>
-                        <li>
-                          <a href="#"></a>
-                        </li>
-                        <li>
-                          <a href="#"></a>
-                        </li>
-                      </ul>
-                      */}
-                    </div>
-
                     <div className="searchbox">
                       <input
                         type="text"
@@ -181,14 +154,6 @@ let ResourceSelectActivity = (props) => {
                   <div className="scrollblog">
                     <div className="row">{questionsContent}</div>
                   </div>
-
-                  {/*
-                  <div className="col-md-12">
-                    <button type="submit" className="add-resource-continue-btn">
-                      Continue
-                    </button>
-                  </div>
-                  */}
                 </form>
               </div>
             </FadeDiv>

@@ -43,6 +43,16 @@ const loadResource = (resourceId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const uploadResourceThumb = (formData, configData) => httpService
+  .post(`/${apiVersion}/post-upload-image`, formData, configData)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const h5pSetings = () => httpService
+  .get('/h5p-settings')
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -52,4 +62,6 @@ export default {
   getTypes,
   getItems,
   loadResource,
+  uploadResourceThumb,
+  h5pSetings,
 };

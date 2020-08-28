@@ -5,13 +5,15 @@ import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 
 import { required, FadeDiv } from 'utils';
-import { loadResourceTypesAction, showSelectActivityAction, onChangeActivityTypeAction } from 'store/actions/resource';
+import {
+  loadResourceTypesAction,
+  showSelectActivityAction,
+  onChangeActivityTypeAction,
+} from 'store/actions/resource';
 import InputField from 'components/InputField';
 import AddResourceSidebar from './AddResourceSidebar';
 
 import './style.scss';
-
-// TODO: need to refactor code
 
 const ResourceActivityTypeField = (props) => (
   <InputField {...props} showLabel={false} />
@@ -43,7 +45,7 @@ let ResourceActivityType = (props) => {
           <div
             className="activity-img"
             style={{
-              backgroundImage: `url(${global.config.resourceUrl}${activityType.image})`,
+              backgroundImage: `url(${activityType.image})`,
             }}
           />
 
@@ -83,13 +85,6 @@ let ResourceActivityType = (props) => {
               autoComplete="off"
             >
               {activityTypesContent}
-              {/*
-              <div className="col-md-12">
-                <button type="submit" className="add-resource-continue-btn">
-                  Continue
-                </button>
-              </div>
-              */}
             </form>
           </FadeDiv>
         </div>
