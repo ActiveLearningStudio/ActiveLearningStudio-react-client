@@ -346,7 +346,7 @@ class PlaylistsPage extends React.Component {
                               key={playlist.id}
                               index={index}
                               playlist={playlist}
-                              projectId={playlist.project ? playlist.project.id : playlist.project_id}
+                              projectId={match.params.projectId}
                               handleCreateResource={this.handleShowCreateResourceModal}
                             />
                           ))}
