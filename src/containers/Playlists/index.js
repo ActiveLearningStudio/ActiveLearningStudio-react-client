@@ -219,7 +219,12 @@ class PlaylistsPage extends React.Component {
       return;
     }
 
-    const { playlist: { playlists }, reorderPlaylists, reorderPlaylistActivities } = this.props;
+    const {
+      match,
+      playlist: { playlists },
+      reorderPlaylists,
+      reorderPlaylistActivities,
+    } = this.props;
 
     if (e.type === 'resource') {
       // resource dropped
@@ -259,7 +264,7 @@ class PlaylistsPage extends React.Component {
       const pLists = Array.from(playlists);
       const [removed] = pLists.splice(e.source.index, 1);
       pLists.splice(e.destination.index, 0, removed);
-      reorderPlaylists(pLists);
+      reorderPlaylists(match.params.projectId, playlists, pLists);
     }
   };
 
@@ -386,9 +391,9 @@ class PlaylistsPage extends React.Component {
 
             {showDeletePlaylistPopup && (
               <DeletePopup
-                res={ui}
-                deleteType="Playlist"
                 {...this.props}
+                deleteType="Playlist"
+                selectedProject={selectedProject}
               />
             )}
           </>
@@ -435,7 +440,7 @@ PlaylistsPage.defaultProps = {
 
 const mapDispatchToProps = (dispatch) => ({
   createPlaylist: (id, title) => dispatch(createPlaylistAction(id, title)),
-  deletePlaylist: (id) => dispatch(deletePlaylistAction(id)),
+  deletePlaylist: (projectId, id) => dispatch(deletePlaylistAction(projectId, id)),
   showCreatePlaylistModal: () => dispatch(showCreatePlaylistModalAction()),
   hideCreatePlaylistModal: () => dispatch(hideCreatePlaylistModalAction()),
   hideDeletePopup: () => dispatch(hideDeletePopupAction()),
@@ -444,12 +449,8 @@ const mapDispatchToProps = (dispatch) => ({
   hidePreviewResourceModal: () => dispatch(hidePreviewResourceModalAction()),
   showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
   loadProjectPlaylists: (id) => dispatch(loadProjectPlaylistsAction(id)),
-  createResource: (id, editor, editorType, metadata) => dispatch(
-    createResourceAction(id, editor, editorType, metadata),
-  ),
-  editResource: (id, editor, editorType, actId, metadata) => dispatch(
-    editResourceAction(id, editor, editorType, actId, metadata),
-  ),
+  createResource: (id, editor, editorType, metadata) => dispatch(createResourceAction(id, editor, editorType, metadata)),
+  editResource: (id, editor, editorType, actId, metadata) => dispatch(editResourceAction(id, editor, editorType, actId, metadata)),
   createResourceByH5PUpload: (
     id,
     editor,
@@ -474,7 +475,7 @@ const mapDispatchToProps = (dispatch) => ({
   onChangeActivityType: (activityTypeId) => dispatch(onChangeActivityTypeAction(activityTypeId)),
   onChangeActivity: (e, activity) => dispatch(onChangeActivityAction(e, activity)),
   uploadResourceThumbnail: () => dispatch(uploadResourceThumbnailAction()),
-  reorderPlaylists: (playlist) => dispatch(reorderPlaylistsAction(playlist)),
+  reorderPlaylists: (projectId, orgPlaylists, playlists) => dispatch(reorderPlaylistsAction(projectId, orgPlaylists, playlists)),
   reorderPlaylistActivities: (playlist) => dispatch(reorderPlaylistActivitiesAction(playlist)),
   loadLms: () => dispatch(loadLmsAction()),
 });

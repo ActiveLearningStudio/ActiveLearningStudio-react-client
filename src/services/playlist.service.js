@@ -28,10 +28,16 @@ const remove = (projectId, id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const reorder = (projectId, playlists) => httpService
+  .post(`/${apiVersion}/projects/${projectId}/playlists/reorder`, { playlists })
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
   get,
   update,
   remove,
+  reorder,
 };
