@@ -74,8 +74,16 @@ export const loadResourceAction = (resourceId) => async (dispatch) => {
 };
 
 export const loadH5pSettings = () => async () => {
-  // alert();
-  // const data = await resourceService.h5pSetings();
+  const response = await resourceService.h5pSetings();
+  console.log(response);
+  window.H5PIntegration = response.h5p.settings;
+
+  response.h5p.settings.editor.assets.js.forEach((value) => {
+    const script = document.createElement('script');
+    script.src = value;
+    script.async = false;
+    document.body.appendChild(script);
+  });
 };
 
 // TODO: refactor bottom
@@ -551,25 +559,29 @@ export const resourceThumbnailProgress = (progress) => ({
   progress,
 });
 
-export const uploadResourceThumbnailAction = () => async () => {
-  //   try {
-  //     // const config = {
-  //     //   headers: {
-  //     //     "content-type": "multipart/form-data",
-  //     //   },
-  //     //   onUploadProgress: (progressEvent) => {
-  //     //     dispatch(
-  //     //       resourceThumbnailProgress(
-  //     //         `Uploaded progress: ${Math.round(
-  //     //           (progressEvent.loaded / progressEvent.total) * 100
-  //     //         )}%`
-  //     //       )
-  //     //     );
-  //     //   },
-  //     // };
-  //     const response = await resourceService.uploadResourceThumb();
-  //     // dispatch(uploadResourceThumbnail(response.data.data.guid));
-  //   } catch (e) {
-  //     // throw new Error(e);
-  //   }
-};
+// export const uploadResourceThumbnailAction = () => async (dispatch) => {
+//   try {
+//     const configdata = {
+//       headers: {
+//         "content-type": "multipart/form-data",
+//       },
+//       onUploadProgress: (progressEvent) => {
+//         dispatch(
+//           resourceThumbnailProgress(
+//             `Uploaded progress: ${Math.round(
+//               (progressEvent.loaded / progressEvent.total) * 100
+//             )}%`
+//           )
+//         );
+//       },
+//     };
+//     configdata = configdata;
+//     // const response = await resourceService.uploadResourceThumb();
+
+//     // dispatch(uploadResourceThumbnail(response.data.data.guid));
+//   } catch (e) {
+//     // throw new Error(e);
+//   }
+// };
+
+export const uploadResourceThumbnailAction = () => async () => {};

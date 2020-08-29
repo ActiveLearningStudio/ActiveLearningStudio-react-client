@@ -173,8 +173,18 @@ const H5PEditor = (props) => {
             type="hidden"
             value="B6TFsmFD5TLZaWCAYZ91ly0D2We0xjLAtRmBJzQT"
           />
-          <input type="hidden" name="library" value={h5pLib} />
-          <input type="hidden" name="parameters" value={h5pParams} />
+          <input
+            type="hidden"
+            id="laravel-h5p-library"
+            name="library"
+            value={h5pLib}
+          />
+          <input
+            type="hidden"
+            id="laravel-h5p-parameters"
+            name="parameters"
+            value={h5pParams}
+          />
         </>
       ) : (
         <>
@@ -188,11 +198,10 @@ const H5PEditor = (props) => {
       )}
 
       <fieldset>
-        <div className="form-group">
-          <label className="control-label col-md-3">&nbsp;</label>
+        <div id="laravel-h5p-create" className="form-group ">
           <div className="col-md-12">
             <div>
-              <div>Loading...</div>
+              <div id="laravel-h5p-editor">Loading...</div>
             </div>
           </div>
         </div>

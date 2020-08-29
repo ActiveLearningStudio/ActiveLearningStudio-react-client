@@ -49,7 +49,7 @@ const uploadResourceThumb = (formData, configData) => httpService
   .catch((err) => Promise.reject(err.response.data));
 
 const h5pSetings = () => httpService
-  .get('/h5p-settings')
+  .get(`/${apiVersion}/h5p/settings`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
