@@ -1,8 +1,9 @@
-import axios from 'axios';
-import Swal from 'sweetalert2';
+import axios from "axios";
+import Swal from "sweetalert2";
 
-import resourceService from 'services/resource.service';
-import * as actionTypes from '../actionTypes';
+import resourceService from "services/resource.service";
+import projectService from "services/project.service";
+import * as actionTypes from "../actionTypes";
 
 export const loadResourceTypesAction = () => async (dispatch) => {
   try {
@@ -79,7 +80,7 @@ export const loadH5pSettings = () => async () => {
   window.H5PIntegration = response.h5p.settings;
 
   response.h5p.settings.editor.assets.js.forEach((value) => {
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.src = value;
     script.async = false;
     document.body.appendChild(script);
@@ -96,14 +97,14 @@ export const hideCreateResourceModal = () => ({
 });
 
 export const saveGenericResourceAction = (resourceData) => async (dispatch) => {
-  const { token } = JSON.parse(localStorage.getItem('auth'));
+  const { token } = JSON.parse(localStorage.getItem("auth"));
   const response = await axios.post(
     `${global.config.laravelAPIUrl}/activity`,
     resourceData,
-    { headers: { Authorization: `Bearer ${token}` } },
+    { headers: { Authorization: `Bearer ${token}` } }
   );
 
-  if (response.data.status === 'success') {
+  if (response.data.status === "success") {
     dispatch(saveGenericResource());
     dispatch(hideCreateResourceModal());
   }
@@ -169,21 +170,21 @@ export const hideBuildActivity = () => ({
 export const showBuildActivityAction = (
   editor = null,
   editorType = null,
-  activityId = null,
+  activityId = null
 ) => async (dispatch) => {
   try {
     if (activityId) {
       const response = await axios.get(
-        `${global.config.laravelAPIUrl}/activity/${activityId}`,
+        `${global.config.laravelAPIUrl}/activity/${activityId}`
       );
 
       const lib = `${response.data.data.libraryName} ${response.data.data.majorVersion}.${response.data.data.minorVersion}`;
 
       dispatch(
-        showBuildActivity(lib, response.data.data.type, response.data.data.h5p),
+        showBuildActivity(lib, response.data.data.type, response.data.data.h5p)
       );
     } else {
-      dispatch(showBuildActivity(editor, editorType, ''));
+      dispatch(showBuildActivity(editor, editorType, ""));
     }
   } catch (e) {
     throw new Error(e);
@@ -198,17 +199,17 @@ export const showDescribeActivity = (activity, metadata = null) => ({
 
 export const showDescribeActivityAction = (
   activity,
-  activityId = null,
+  activityId = null
 ) => async (dispatch) => {
   try {
     if (activityId) {
       const response = await axios.get(
-        `${global.config.laravelAPIUrl}/activity/${activityId}`,
+        `${global.config.laravelAPIUrl}/activity/${activityId}`
       );
       let metadata = {
-        title: '',
-        subjectId: '',
-        educationLevelId: '',
+        title: "",
+        subjectId: "",
+        educationLevelId: "",
       };
 
       if (response.data.data.metadata != null) {
@@ -235,7 +236,7 @@ export const editResource = (playlistId, resource, editor, editorType) => ({
 // resource shared
 
 export const resourceUnshared = (resourceId, resourceName) => {
-  const { token } = JSON.parse(localStorage.getItem('auth'));
+  const { token } = JSON.parse(localStorage.getItem("auth"));
 
   axios
     .post(
@@ -243,18 +244,18 @@ export const resourceUnshared = (resourceId, resourceName) => {
       { resourceId },
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-      },
+      }
     )
     .then((res) => {
-      if (res.data.status === 'success') {
+      if (res.data.status === "success") {
         Swal.fire({
           title: `You stopped sharing <strong>"${resourceName}"</strong> ! `,
           html:
-            'Please remember that anyone you have shared this activity with,'
-            + ' will no longer have access to its contents.',
+            "Please remember that anyone you have shared this activity with," +
+            " will no longer have access to its contents.",
         });
       }
     });
@@ -263,7 +264,7 @@ export const resourceUnshared = (resourceId, resourceName) => {
 // resource unshared
 
 export const resourceShared = (resourceId, resourceName) => {
-  const { token } = JSON.parse(localStorage.getItem('auth'));
+  const { token } = JSON.parse(localStorage.getItem("auth"));
 
   axios
     .post(
@@ -271,22 +272,22 @@ export const resourceShared = (resourceId, resourceName) => {
       { resourceId },
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-      },
+      }
     )
     .then((res) => {
-      if (res.data.status === 'success') {
-        const protocol = `${window.location.href.split('/')[0]}//`;
+      if (res.data.status === "success") {
+        const protocol = `${window.location.href.split("/")[0]}//`;
 
         Swal.fire({
           html: `You can now share Activity <strong>"${resourceName}"</strong><br>
                 Anyone with the link below can access your activity:<br>
                 <br><a target="_blank" href="/shared/activity/${resourceId.trim()}
                 ">${
-  protocol + window.location.host
-}/shared/activity/${resourceId.trim()}</a>
+                  protocol + window.location.host
+                }/shared/activity/${resourceId.trim()}</a>
               `,
         });
       }
@@ -298,12 +299,12 @@ export const editResourceAction = (
   editor,
   editorType,
   activityId,
-  metadata,
+  metadata
 ) => async (dispatch) => {
   try {
-    const { token } = JSON.parse(localStorage.getItem('auth'));
+    const { token } = JSON.parse(localStorage.getItem("auth"));
     const headers = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     };
 
@@ -311,7 +312,7 @@ export const editResourceAction = (
     const data = {
       library: window.h5peditorCopy.getLibrary(),
       parameters: JSON.stringify(window.h5peditorCopy.getParams()),
-      action: 'create',
+      action: "create",
     };
 
     const response = await axios.put(
@@ -319,12 +320,12 @@ export const editResourceAction = (
       {
         playlistId,
         metadata,
-        action: 'create',
+        action: "create",
         data,
       },
       {
         headers,
-      },
+      }
     );
 
     const resource = {};
@@ -352,12 +353,12 @@ export const createResourceAction = (
   playlistId,
   editor,
   editorType,
-  metadata,
+  metadata
 ) => async (dispatch) => {
   try {
-    const { token } = JSON.parse(localStorage.getItem('auth'));
+    const { token } = JSON.parse(localStorage.getItem("auth"));
     const headers = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     };
 
@@ -366,36 +367,29 @@ export const createResourceAction = (
       playlistId,
       library: window.h5peditorCopy.getLibrary(),
       parameters: JSON.stringify(window.h5peditorCopy.getParams()),
-      action: 'create',
+      action: "create",
     };
 
-    const insertedH5pResource = await axios.post(
-      `${global.config.h5pAjaxUrl}/api/h5p/?api_token=test`,
-      data,
-      {
-        headers,
-      },
-    );
+    const insertedH5pResource = await resourceService.h5pToken(data);
+    console.log(metadata);
+    if (!insertedH5pResource.fail) {
+      const resource = insertedH5pResource;
 
-    if (!insertedH5pResource.data.fail) {
-      const resource = insertedH5pResource.data;
-
-      // insert into mongodb
-      const insertedResource = await axios.post(
-        `${global.config.laravelAPIUrl}/activity`,
-        {
-          mysqlid: resource.id,
-          playlistId,
-          metadata,
-          action: 'create',
-        },
-        {
-          headers,
-        },
+      const createActivityDate = {
+        h5p_content_id: resource.id,
+        playlist_id: playlistId,
+        thumb_url: metadata.thumbUrl,
+        action: "create",
+        title: metadata.metaContent.metaTitle,
+        type: "h5p",
+        content: "okok",
+      };
+      const insertedResource = await resourceService.createActivity(
+        createActivityDate
       );
 
-      resource.id = insertedResource.data.data.id;
-      resource.mysqlid = insertedResource.data.data.mysqlid;
+      resource.id = insertedResource.id;
+      resource.mysqlid = insertedResource.mysqlid;
 
       dispatch(createResource(playlistId, resource, editor, editorType));
     } else {
@@ -411,16 +405,16 @@ export const createResourceByH5PUploadAction = (
   editor,
   editorType,
   payload,
-  metadata,
+  metadata
 ) => async (dispatch) => {
   try {
-    const { token } = JSON.parse(localStorage.getItem('auth'));
+    const { token } = JSON.parse(localStorage.getItem("auth"));
     const formData = new FormData();
-    formData.append('h5p_file', payload.h5pFile);
-    formData.append('action', 'upload');
+    formData.append("h5p_file", payload.h5pFile);
+    formData.append("action", "upload");
     const config = {
       headers: {
-        'content-type': 'multipart/form-data',
+        "content-type": "multipart/form-data",
         Authorization: `Bearer ${token}`,
       },
     };
@@ -428,11 +422,11 @@ export const createResourceByH5PUploadAction = (
     const responseUpload = await axios.post(
       `${global.config.h5pAjaxUrl}/api/h5p`,
       formData,
-      config,
+      config
     );
 
     const dataUpload = { ...responseUpload.data };
-    if (dataUpload instanceof Object && 'id' in dataUpload) {
+    if (dataUpload instanceof Object && "id" in dataUpload) {
       // insert into mongodb
       const responseActivity = await axios.post(
         `${global.config.laravelAPIUrl}/activity`,
@@ -440,14 +434,14 @@ export const createResourceByH5PUploadAction = (
           mysqlid: dataUpload.id,
           playlistId,
           metadata,
-          action: 'create',
+          action: "create",
         },
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-        },
+        }
       );
       const resource = { ...responseActivity.data.data };
       resource.id = responseActivity.data.data.id;
@@ -455,7 +449,7 @@ export const createResourceByH5PUploadAction = (
 
       dispatch(createResource(playlistId, resource, editor, editorType));
     } else {
-      throw new Error('Error occurred while creating resource');
+      throw new Error("Error occurred while creating resource");
     }
   } catch (e) {
     throw new Error(e);
@@ -489,12 +483,12 @@ export const hidePreviewResourceModalAction = () => async (dispatch) => {
 
 // runs delete resource ajax
 export const deleteResourceAction = (playlistId, resourceId) => async (
-  dispatch,
+  dispatch
 ) => {
   try {
     const response = await resourceService.remove(playlistId, resourceId);
 
-    if (response.data.status === 'success') {
+    if (response.data.status === "success") {
       dispatch({
         type: actionTypes.DELETE_RESOURCE,
         payload: { resourceId },
@@ -532,7 +526,7 @@ export const onChangeActivityAction = (activity) => (dispatch) => {
 
 // Metadata saving inside state when metadata form is submitted
 export const onSubmitDescribeActivityAction = (metadata, activityId = null) => (
-  dispatch,
+  dispatch
 ) => {
   try {
     dispatch({
@@ -559,29 +553,27 @@ export const resourceThumbnailProgress = (progress) => ({
   progress,
 });
 
-// export const uploadResourceThumbnailAction = () => async (dispatch) => {
-//   try {
-//     const configdata = {
-//       headers: {
-//         "content-type": "multipart/form-data",
-//       },
-//       onUploadProgress: (progressEvent) => {
-//         dispatch(
-//           resourceThumbnailProgress(
-//             `Uploaded progress: ${Math.round(
-//               (progressEvent.loaded / progressEvent.total) * 100
-//             )}%`
-//           )
-//         );
-//       },
-//     };
-//     configdata = configdata;
-//     // const response = await resourceService.uploadResourceThumb();
+export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
+  try {
+    const configdata = {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+      onUploadProgress: (progressEvent) => {
+        dispatch(
+          resourceThumbnailProgress(
+            `Uploaded progress: ${Math.round(
+              (progressEvent.loaded / progressEvent.total) * 100
+            )}%`
+          )
+        );
+      },
+    };
 
-//     // dispatch(uploadResourceThumbnail(response.data.data.guid));
-//   } catch (e) {
-//     // throw new Error(e);
-//   }
-// };
+    const response = await projectService.upload(formData, configdata);
 
-export const uploadResourceThumbnailAction = () => async () => {};
+    dispatch(uploadResourceThumbnail(response.data.data.guid));
+  } catch (e) {
+    // throw new Error(e);
+  }
+};

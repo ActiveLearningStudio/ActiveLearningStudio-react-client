@@ -1,36 +1,37 @@
-import React, { useState, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { Field, reduxForm } from 'redux-form';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useState, useRef } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { Field, reduxForm } from "redux-form";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { required, FadeDiv } from 'utils';
+import { required, FadeDiv } from "utils";
 import {
   showBuildActivityAction,
   onSubmitDescribeActivityAction,
   showSelectActivity,
   uploadResourceThumbnailAction,
-} from 'store/actions/resource';
-import MetaTitleInputField from 'components/ResourceCard/fields/MetaTitleInputField';
-import MetaSubjectsField from 'components/ResourceCard/fields/MetaSubjectsField';
-import MetaEducationLevelInputField from 'components/ResourceCard/fields/MetaEducationLevelInputField';
-import PexelsAPI from 'components/models/pexels';
+  uploadResourceThumbnail,
+} from "store/actions/resource";
+import MetaTitleInputField from "components/ResourceCard/fields/MetaTitleInputField";
+import MetaSubjectsField from "components/ResourceCard/fields/MetaSubjectsField";
+import MetaEducationLevelInputField from "components/ResourceCard/fields/MetaEducationLevelInputField";
+import PexelsAPI from "components/models/pexels";
 
-import computer from 'assets/images/computer.svg';
-import pexel from 'assets/images/pexel.png';
-import { subjects, educationLevels } from './dropdownData';
-import AddResourceSidebar from './AddResourceSidebar';
-import './style.scss';
+import computer from "assets/images/computer.svg";
+import pexel from "assets/images/pexel.png";
+import { subjects, educationLevels } from "./dropdownData";
+import AddResourceSidebar from "./AddResourceSidebar";
+import "./style.scss";
 
-let imageValidation = '';
+let imageValidation = "";
 
 export const uploadThumb = async (e, props) => {
   const formData = new FormData();
   try {
-    formData.append('uploads', e.target.files[0]);
-    imageValidation = '';
-    await props.uploadResourceThumbnail(formData);
+    formData.append("uploads", e.target.files[0]);
+    imageValidation = "";
+    await props.uploadResourceThumbnailAction(formData);
   } catch (err) {
     // console.log(err);
   }
@@ -124,7 +125,7 @@ let ResourceDescribeActivity = (props) => {
 
                     <div className="upload-thumbnail check">
                       <div className="upload_placeholder">
-                        <label style={{ display: 'none' }}>
+                        <label style={{ display: "none" }}>
                           <input
                             ref={openFile}
                             type="file"
@@ -146,9 +147,9 @@ let ResourceDescribeActivity = (props) => {
                               <div
                                 className="success"
                                 style={{
-                                  color: 'green',
-                                  marginBottom: '20px',
-                                  fontSize: '20px',
+                                  color: "green",
+                                  marginBottom: "20px",
+                                  fontSize: "20px",
                                 }}
                               >
                                 Image Uploaded:
@@ -219,16 +220,16 @@ let ResourceDescribeActivity = (props) => {
       <PexelsAPI
         show={modalShow}
         resourceName={
-          resource
-          && resource.newResource
-          && resource.newResource.activity
-          && resource.newResource.activity.title
+          resource &&
+          resource.newResource &&
+          resource.newResource.activity &&
+          resource.newResource.activity.title
         }
         searchName={
-          resource
-          && resource.newResource
-          && resource.newResource.activity
-          && !!resource.newResource.activity.activity_thumbnail_text
+          resource &&
+          resource.newResource &&
+          resource.newResource.activity &&
+          !!resource.newResource.activity.activity_thumbnail_text
             ? resource.newResource.activity.activity_thumbnail_text
             : resource.newResource.activity.title
         }
@@ -245,7 +246,7 @@ ResourceDescribeActivity.propTypes = {
 };
 
 ResourceDescribeActivity = reduxForm({
-  form: 'describeActivityForm',
+  form: "describeActivityForm",
   enableReinitialize: true,
   onSubmit: async (values, dispatch, props) => {
     const { resource, showBuildActivity, onSubmitDescribeActivity } = props;
@@ -254,13 +255,13 @@ ResourceDescribeActivity = reduxForm({
       // image validation
       if (!resource.newResource.metadata.thumbUrl) {
         props.uploadResourceThumbnail(
-          'https://images.pexels.com/photos/3694708/pexels-photo-3694708.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+          "https://images.pexels.com/photos/3694708/pexels-photo-3694708.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280"
         );
       }
       onSubmitDescribeActivity(values);
       showBuildActivity(
         resource.newResource.activity.h5pLib,
-        resource.newResource.activity.type,
+        resource.newResource.activity.type
       );
     } catch (e) {
       // console.log(e.message);
@@ -269,10 +270,14 @@ ResourceDescribeActivity = reduxForm({
 })(ResourceDescribeActivity);
 
 const mapDispatchToProps = (dispatch) => ({
-  showBuildActivity: (editor, editorType) => dispatch(showBuildActivityAction(editor, editorType)),
-  onSubmitDescribeActivity: (metadata) => dispatch(onSubmitDescribeActivityAction(metadata)),
-  uploadResourceThumbnail: (formData) => dispatch(uploadResourceThumbnailAction(formData)),
+  showBuildActivity: (editor, editorType) =>
+    dispatch(showBuildActivityAction(editor, editorType)),
+  onSubmitDescribeActivity: (metadata) =>
+    dispatch(onSubmitDescribeActivityAction(metadata)),
+  uploadResourceThumbnailAction: (formData) =>
+    dispatch(uploadResourceThumbnailAction(formData)),
   goBackToActivity: () => dispatch(showSelectActivity()),
+  uploadResourceThumbnail: (url) => dispatch(uploadResourceThumbnail(url)),
 });
 
 const mapStateToProps = (state) => ({
@@ -280,5 +285,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ResourceDescribeActivity),
+  connect(mapStateToProps, mapDispatchToProps)(ResourceDescribeActivity)
 );
