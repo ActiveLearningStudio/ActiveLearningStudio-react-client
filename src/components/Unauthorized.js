@@ -20,7 +20,7 @@ function Unauthorized(props) {
           <Link
             to="/"
             onClick={() => {
-              loadHP('loading...');
+              loadHP('Loading...');
             }}
           >
             {' '}
@@ -30,7 +30,7 @@ function Unauthorized(props) {
           <Link
             to="/"
             onClick={() => {
-              loadHP('loading...');
+              loadHP('Loading...');
             }}
           >
             {' '}
@@ -44,8 +44,12 @@ function Unauthorized(props) {
 
 Unauthorized.propTypes = {
   text: PropTypes.string.isRequired,
-  showButton: PropTypes.bool.isRequired,
+  showButton: PropTypes.bool,
   loadHP: PropTypes.func.isRequired,
+};
+
+Unauthorized.defaultProps = {
+  showButton: false,
 };
 
 const mapDispatchToProps = (dispatch) => ({

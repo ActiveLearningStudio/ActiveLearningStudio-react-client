@@ -151,11 +151,7 @@ export class ProjectsPage extends React.Component {
           )}
 
           {showDeletePlaylistPopup && (
-            <DeletePopup
-              res={project}
-              deleteType="Project"
-              {...this.props}
-            />
+            <DeletePopup {...this.props} deleteType="Project" />
           )}
         </ReactPlaceholder>
 
