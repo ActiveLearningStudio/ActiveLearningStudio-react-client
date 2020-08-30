@@ -1,22 +1,22 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { withRouter, Link } from "react-router-dom";
-import { Droppable, Draggable } from "react-beautiful-dnd";
-import Swal from "sweetalert2";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Dropdown } from "react-bootstrap";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withRouter, Link } from 'react-router-dom';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
+import Swal from 'sweetalert2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Dropdown } from 'react-bootstrap';
 
-import logo from "assets/images/logo.svg";
+import logo from 'assets/images/logo.svg';
 import {
   changePlaylistTitleAction,
   reorderPlaylistActivitiesAction,
-} from "store/actions/playlist";
-import { showDeletePopupAction, hideDeletePopupAction } from "store/actions/ui";
-import ResourceCard from "components/ResourceCard";
-import ShareLink from "components/ResourceCard/ShareLink";
+} from 'store/actions/playlist';
+import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
+import ResourceCard from 'components/ResourceCard';
+import ShareLink from 'components/ResourceCard/ShareLink';
 
-import "./style.scss";
+import './style.scss';
 
 // TODO: need to clean up attributes, update to functional component
 // need to refactor template functions
@@ -33,7 +33,7 @@ class PlaylistCard extends React.Component {
     e.preventDefault();
 
     const { playlist, showDeletePopup } = this.props;
-    showDeletePopup(playlist.id, playlist.title, "Playlist");
+    showDeletePopup(playlist.id, playlist.title, 'Playlist');
   };
 
   handleAddNewResourceClick = () => {
@@ -47,7 +47,7 @@ class PlaylistCard extends React.Component {
 
   renderResources = () => {
     const { playlist } = this.props;
-    console.log(this.props);
+
     if (!playlist.activities || playlist.activities.length === 0) {
       return <div className="alert alert-info m-3">No resources yet.</div>;
     }
@@ -79,9 +79,9 @@ class PlaylistCard extends React.Component {
     if (playlist.title !== title) {
       changePlaylistTitle(projectId, playlist.id, title).catch(() => {
         Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Failed to update playlist title",
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to update playlist title',
         });
       });
     }
@@ -94,13 +94,15 @@ class PlaylistCard extends React.Component {
       },
       () => {
         this.titleInput.focus();
-      }
+      },
     );
   };
 
   render() {
     const { editMode } = this.state;
-    const { index, playlist, projectId, selectedProject } = this.props;
+    const {
+      index, playlist, projectId, selectedProject,
+    } = this.props;
 
     return (
       <Draggable key={playlist.id} draggableId={`${playlist.id}`} index={index}>
@@ -115,7 +117,7 @@ class PlaylistCard extends React.Component {
                 <h2 className="list-header-name d-flex align-items-center">
                   <div
                     className={`list-title-wrapper d-flex align-items-center ${
-                      editMode ? "hide" : "show"
+                      editMode ? 'hide' : 'show'
                     }`}
                     onClick={this.handleClickPlaylistTitle}
                   >
@@ -132,7 +134,7 @@ class PlaylistCard extends React.Component {
                       this.titleInput = input;
                     }}
                     name="playlist-title"
-                    className={editMode ? "show" : "hide"}
+                    className={editMode ? 'show' : 'hide'}
                     onBlur={this.onBlur}
                     onKeyPress={this.onEnterPress}
                     defaultValue={playlist.title}
@@ -163,12 +165,12 @@ class PlaylistCard extends React.Component {
                       <Dropdown.Item
                         onClick={() => {
                           Swal.fire({
-                            title: "STAY TUNED!",
-                            text: "COMING SOON",
+                            title: 'STAY TUNED!',
+                            text: 'COMING SOON',
                             imageUrl: logo,
                             imageWidth: 400,
                             imageHeight: 200,
-                            imageAlt: "Custom image",
+                            imageAlt: 'Custom image',
                           });
                         }}
                       >
@@ -245,11 +247,9 @@ PlaylistCard.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  showDeletePopup: (id, title, deleteType) =>
-    dispatch(showDeletePopupAction(id, title, deleteType)),
+  showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
   hideDeletePopup: () => dispatch(hideDeletePopupAction()),
-  reorderPlaylistActivities: (playlist) =>
-    dispatch(reorderPlaylistActivitiesAction(playlist)),
+  reorderPlaylistActivities: (playlist) => dispatch(reorderPlaylistActivitiesAction(playlist)),
   changePlaylistTitle: (e, id) => dispatch(changePlaylistTitleAction(e, id)),
 });
 
@@ -258,5 +258,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(PlaylistCard)
+  connect(mapStateToProps, mapDispatchToProps)(PlaylistCard),
 );

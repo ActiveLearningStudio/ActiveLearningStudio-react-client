@@ -32,7 +32,11 @@ import {
   showDescribeActivityAction,
   showBuildActivityAction,
 } from 'store/actions/resource';
-import { showCreateProjectModalAction, loadProjectAction, loadLmsAction } from 'store/actions/project';
+import {
+  showCreateProjectModalAction,
+  loadProjectAction,
+  loadLmsAction,
+} from 'store/actions/project';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
@@ -68,7 +72,11 @@ class PlaylistsPage extends React.Component {
     loadLms();
     window.scrollTo(0, 0);
 
-    if (!openCreatePopup && !openCreateResourcePopup && !openEditResourcePopup) {
+    if (
+      !openCreatePopup
+      && !openCreateResourcePopup
+      && !openEditResourcePopup
+    ) {
       loadProject(match.params.projectId);
       loadProjectPlaylists(match.params.projectId);
     }
@@ -91,7 +99,9 @@ class PlaylistsPage extends React.Component {
     try {
       const { match, history, showCreateResourceModal } = this.props;
       showCreateResourceModal(playlist.id);
-      history.push(`/project/${match.params.projectId}/playlist/${playlist.id}/activity/create`);
+      history.push(
+        `/project/${match.params.projectId}/playlist/${playlist.id}/activity/create`,
+      );
     } catch (e) {
       // console.log(e.message);
     }
@@ -152,6 +162,7 @@ class PlaylistsPage extends React.Component {
     editorType,
     payload,
     metadata,
+    projectId,
   ) => {
     try {
       const {
@@ -176,7 +187,9 @@ class PlaylistsPage extends React.Component {
           currentPlaylistId,
           editor,
           editorType,
+
           metadata,
+          projectId,
         );
       }
 
@@ -214,12 +227,17 @@ class PlaylistsPage extends React.Component {
   onDragEnd = (e) => {
     if (
       !e.destination
-      || (e.destination.index === e.source.index && e.source.droppableId === e.destination.droppableId)
+      || (e.destination.index === e.source.index
+        && e.source.droppableId === e.destination.droppableId)
     ) {
       return;
     }
 
-    const { playlist: { playlists }, reorderPlaylists, reorderPlaylistActivities } = this.props;
+    const {
+      playlist: { playlists },
+      reorderPlaylists,
+      reorderPlaylistActivities,
+    } = this.props;
 
     if (e.type === 'resource') {
       // resource dropped
@@ -235,8 +253,12 @@ class PlaylistsPage extends React.Component {
         });
       } else {
         // Rsc dropped on a different list
-        const sourceList = playlists.find((pl) => pl.id === e.source.droppableId);
-        const destinationList = playlists.find((pl) => pl.id === e.destination.droppableId);
+        const sourceList = playlists.find(
+          (pl) => pl.id === e.source.droppableId,
+        );
+        const destinationList = playlists.find(
+          (pl) => pl.id === e.destination.droppableId,
+        );
         const sourceResources = Array.from(sourceList.resources);
         const destResources = destinationList.resources
           ? Array.from(destinationList.resources)
@@ -341,8 +363,14 @@ class PlaylistsPage extends React.Component {
                               key={playlist.id}
                               index={index}
                               playlist={playlist}
-                              projectId={playlist.project ? playlist.project.id : playlist.project_id}
-                              handleCreateResource={this.handleShowCreateResourceModal}
+                              projectId={
+                                playlist.project
+                                  ? playlist.project.id
+                                  : playlist.project_id
+                              }
+                              handleCreateResource={
+                                this.handleShowCreateResourceModal
+                              }
                             />
                           ))}
                           {provided.placeholder}
@@ -356,7 +384,9 @@ class PlaylistsPage extends React.Component {
 
             {openCreatePopup && (
               <CreatePlaylistPopup
-                handleHideCreatePlaylistModal={this.handleHideCreatePlaylistModal}
+                handleHideCreatePlaylistModal={
+                  this.handleHideCreatePlaylistModal
+                }
                 handleCreatePlaylistSubmit={this.handleCreatePlaylistSubmit}
                 onPlaylistTitleChange={this.onPlaylistTitleChange}
               />
@@ -365,7 +395,9 @@ class PlaylistsPage extends React.Component {
             {openCreateResourcePopup && (
               <AddResource
                 {...this.props}
-                handleHideCreateResourceModal={this.handleHideCreateResourceModal}
+                handleHideCreateResourceModal={
+                  this.handleHideCreateResourceModal
+                }
                 handleCreateResourceSubmit={this.handleCreateResourceSubmit}
                 handleEditResourceSubmit={this.handleEditResourceSubmit}
               />
@@ -374,7 +406,9 @@ class PlaylistsPage extends React.Component {
             {openEditResourcePopup && (
               <EditResource
                 {...this.props}
-                handleHideCreateResourceModal={this.handleHideCreateResourceModal}
+                handleHideCreateResourceModal={
+                  this.handleHideCreateResourceModal
+                }
                 handleCreateResourceSubmit={this.handleCreateResourceSubmit}
                 handleEditResourceSubmit={this.handleEditResourceSubmit}
               />
@@ -385,11 +419,7 @@ class PlaylistsPage extends React.Component {
             )}
 
             {showDeletePlaylistPopup && (
-              <DeletePopup
-                res={ui}
-                deleteType="Playlist"
-                {...this.props}
-              />
+              <DeletePopup res={ui} deleteType="Playlist" {...this.props} />
             )}
           </>
         )}
@@ -444,26 +474,12 @@ const mapDispatchToProps = (dispatch) => ({
   hidePreviewResourceModal: () => dispatch(hidePreviewResourceModalAction()),
   showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
   loadProjectPlaylists: (id) => dispatch(loadProjectPlaylistsAction(id)),
-  createResource: (id, editor, editorType, metadata) => dispatch(
-    createResourceAction(id, editor, editorType, metadata),
+  createResource: (id, editor, editorType, metadata, playlistId) => dispatch(
+    createResourceAction(id, editor, editorType, metadata, playlistId),
   ),
-  editResource: (id, editor, editorType, actId, metadata) => dispatch(
-    editResourceAction(id, editor, editorType, actId, metadata),
-  ),
-  createResourceByH5PUpload: (
-    id,
-    editor,
-    editorType,
-    payload,
-    metadata,
-  ) => dispatch(
-    createResourceByH5PUploadAction(
-      id,
-      editor,
-      editorType,
-      payload,
-      metadata,
-    ),
+  editResource: (id, editor, editorType, actId, metadata) => dispatch(editResourceAction(id, editor, editorType, actId, metadata)),
+  createResourceByH5PUpload: (id, editor, editorType, payload, metadata) => dispatch(
+    createResourceByH5PUploadAction(id, editor, editorType, payload, metadata),
   ),
   loadProject: (id) => dispatch(loadProjectAction(id)),
   deleteResource: (resourceId) => dispatch(deleteResourceAction(resourceId)),

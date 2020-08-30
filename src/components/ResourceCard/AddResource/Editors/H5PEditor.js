@@ -1,82 +1,82 @@
 /* eslint-disable max-len */
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import { loadH5pSettings } from "store/actions/resource";
+import { loadH5pSettings } from 'store/actions/resource';
 
 const H5PEditor = (props) => {
-  const [submitAction, setSubmitAction] = useState("create");
+  const { h5pParams, resource } = props;
+  const [submitAction, setSubmitAction] = useState('create');
   const [h5pFile, setH5pFile] = useState(null);
 
   const setH5pFileUpload = (e) => {
-    setH5pFile({ h5pFile: e.target.files[0] });
+    setH5pFile(e.target.files[0]);
   };
 
   useEffect(() => {
     props.loadH5pSettings();
-  }, []);
+  }, [props]);
 
   const onSubmitActionRadioChange = (e) => {
-    setSubmitAction({ submitAction: e.currentTarget.value });
+    setSubmitAction(e.currentTarget.value);
   };
 
   const submitResource = (event) => {
     event.preventDefault();
 
     if (0) {
-      let payload = {
+      const payload = {
         event,
-        submitAction: submitAction,
-        h5pFile: h5pFile,
+        submitAction,
+        h5pFile,
       };
       props.handleEditResourceSubmit(
         props.match.params.playlistid,
         props.resource.newResource.activity.h5pLib,
         props.resource.newResource.activity.h5pLibType,
-        payload
+        payload,
       );
-    } else if (submitAction === "upload" && h5pFile === null) {
-    } else if (submitAction === "upload" && h5pFile !== null) {
-      let file_arr = h5pFile.name.split(".");
-      let file_extension =
-        file_arr.length > 0 ? file_arr[file_arr.length - 1] : "";
-      if (file_extension !== "h5p") {
-      } else {
-        let payload = {
-          event,
-          submitAction: submitAction,
-          h5pFile: h5pFile,
-        };
-        props.handleCreateResourceSubmit(
-          props.match.params.playlistid,
-          props.resource.newResource.activity.h5pLib,
-          props.resource.newResource.activity.h5pLibType,
-          payload,
-          props.resource.newResource.metadata
-        );
+    } else if (submitAction === 'upload' && h5pFile === null) {
+      return true;
+    } else if (submitAction === 'upload' && h5pFile !== null) {
+      const fileArr = h5pFile.name.split('.');
+      const fileExtension = fileArr.length > 0 ? fileArr[fileArr.length - 1] : '';
+      if (fileExtension !== 'h5p') {
+        return true;
       }
-    } else if (submitAction === "create") {
-      let payload = {
+      const payload = {
         event,
-        submitAction: submitAction,
-        h5pFile: h5pFile,
+        submitAction,
+        h5pFile,
       };
-      console.log(props.resource);
-      if (true) {
-        props.handleCreateResourceSubmit(
-          props.match.params.playlistId,
-          props.resource.newResource.activity.h5pLib,
-          props.resource.newResource.activity.h5pLibType,
-          payload,
-          props.resource.newResource.metadata
-        );
-      }
+      props.handleCreateResourceSubmit(
+        props.match.params.playlistid,
+        props.resource.newResource.activity.h5pLib,
+        props.resource.newResource.activity.h5pLibType,
+        payload,
+        props.resource.newResource.metadata,
+      );
+    } else if (submitAction === 'create') {
+      const payload = {
+        event,
+        submitAction,
+        h5pFile,
+      };
+
+      props.handleCreateResourceSubmit(
+        props.match.params.playlistId,
+        props.resource.newResource.activity.h5pLib,
+        props.resource.newResource.activity.type,
+        payload,
+        props.resource.newResource.metadata,
+        props.match.params.projectId,
+      );
     }
   };
 
-  if (props.h5pParams == '""') {
+  if (h5pParams === '""') {
     return <></>;
   }
 
@@ -84,10 +84,10 @@ const H5PEditor = (props) => {
     <>
       <form
         method="POST"
-        action={global.config.h5pAjaxUrl + "/h5p"}
-        accept-charset="UTF-8"
+        // action={global.config.h5pAjaxUrl + "/h5p"}
+        acceptCharset="UTF-8"
         className="form-horizontal"
-        /*enctype="multipart/form-data"*/ id="laravel-h5p-form"
+        /* enctype="multipart/form-data" */ id="laravel-h5p-form"
       >
         <input
           name="_token"
@@ -98,7 +98,7 @@ const H5PEditor = (props) => {
           type="hidden"
           name="library"
           id="laravel-h5p-library"
-          value={props.resource.newResource.activity.h5pLib}
+          value={resource.newResource.activity.h5pLib}
         />
         <input
           type="hidden"
@@ -116,7 +116,7 @@ const H5PEditor = (props) => {
             </div>
           </div>
           <div className="form-group laravel-h5p-upload-container">
-            <label for="inputUpload" className="control-label col-md-3">
+            <label htmlFor="inputUpload" className="control-label col-md-3">
               Upload
             </label>
             <div className="col-md-12">
@@ -133,7 +133,8 @@ const H5PEditor = (props) => {
                     type="checkbox"
                     name="h5p_disable_file_check"
                     id="h5p-disable-file-check"
-                  />{" "}
+                  />
+                  {' '}
                   Disable file extension check
                 </label>
               </small>
@@ -149,7 +150,7 @@ const H5PEditor = (props) => {
                   name="action"
                   value="upload"
                   className="laravel-h5p-type"
-                  checked={submitAction === "upload"}
+                  checked={submitAction === 'upload'}
                   onChange={onSubmitActionRadioChange}
                 />
                 Upload
@@ -161,7 +162,7 @@ const H5PEditor = (props) => {
                   name="action"
                   value="create"
                   className="laravel-h5p-type"
-                  checked={submitAction === "create"}
+                  checked={submitAction === 'create'}
                   onChange={onSubmitActionRadioChange}
                 />
                 Create
@@ -189,7 +190,7 @@ const H5PEditor = (props) => {
 H5PEditor.propTypes = {
   match: PropTypes.object.isRequired,
   resource: PropTypes.object.isRequired,
-  editResourcePopup: PropTypes.bool.isRequired,
+
   h5pLib: PropTypes.string,
   h5pParams: PropTypes.string,
   handleCreateResourceSubmit: PropTypes.func.isRequired,
@@ -198,8 +199,8 @@ H5PEditor.propTypes = {
 };
 
 H5PEditor.defaultProps = {
-  h5pLib: "",
-  h5pParams: "",
+  h5pLib: '',
+  h5pParams: '',
 };
 const mapDispatchToProps = (dispatch) => ({
   loadH5pSettings: () => dispatch(loadH5pSettings()),

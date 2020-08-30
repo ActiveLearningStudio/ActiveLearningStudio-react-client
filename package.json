@@ -73,6 +73,11 @@
       "git add"
     ]
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "scripts": {
     "start:dev": "react-scripts start",
     "start": "node server/server.js",

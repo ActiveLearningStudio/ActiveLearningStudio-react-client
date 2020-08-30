@@ -16,11 +16,14 @@ function Popup(props) {
   } = props;
 
   // remove popup when escape is pressed
-  const escFunction = useCallback((event) => {
-    if (event.keyCode === 27) {
-      hideDeletePopup(event);
-    }
-  }, [hideDeletePopup]);
+  const escFunction = useCallback(
+    (event) => {
+      if (event.keyCode === 27) {
+        hideDeletePopup(event);
+      }
+    },
+    [hideDeletePopup],
+  );
 
   useEffect(() => {
     document.addEventListener('keydown', escFunction, false);
@@ -29,15 +32,18 @@ function Popup(props) {
     };
   }, [escFunction]);
 
-  const deleteEntity = useCallback((deleteType, id) => () => {
-    if (deleteType === 'Project') {
-      deleteProject(id);
-    } else if (deleteType === 'Playlist') {
-      deletePlaylist(id);
-    } else if (deleteType === 'Activity') {
-      deleteResource(id);
-    }
-  }, [deleteProject, deletePlaylist, deleteResource]);
+  const deleteEntity = useCallback(
+    (deleteType, id) => () => {
+      if (deleteType === 'Project') {
+        deleteProject(id);
+      } else if (deleteType === 'Playlist') {
+        deletePlaylist(id);
+      } else if (deleteType === 'Activity') {
+        deleteResource(id);
+      }
+    },
+    [deleteProject, deletePlaylist, deleteResource],
+  );
 
   return (
     <FadeDiv className="popup">
@@ -45,9 +51,7 @@ function Popup(props) {
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-body">
-              <h5>
-                {`Delete "${ui.title}"?`}
-              </h5>
+              <h5>{`Delete "${ui.title}"?`}</h5>
               <p>
                 {`You're about to permanently delete this ${ui.deleteType} and all of its data.`}
               </p>
