@@ -365,9 +365,7 @@ class PlaylistsPage extends React.Component {
                               index={index}
                               playlist={playlist}
                               projectId={match.params.projectId}
-                              handleCreateResource={
-                                this.handleShowCreateResourceModal
-                              }
+                              handleCreateResource={this.handleShowCreateResourceModal}
                             />
                           ))}
                           {provided.placeholder}
@@ -475,13 +473,9 @@ const mapDispatchToProps = (dispatch) => ({
   hidePreviewResourceModal: () => dispatch(hidePreviewResourceModalAction()),
   showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
   loadProjectPlaylists: (id) => dispatch(loadProjectPlaylistsAction(id)),
-  createResource: (id, editor, editorType, metadata, playlistId) => dispatch(
-    createResourceAction(id, editor, editorType, metadata, playlistId),
-  ),
+  createResource: (id, editor, editorType, metadata, playlistId) => dispatch(createResourceAction(id, editor, editorType, metadata, playlistId)),
   editResource: (id, editor, editorType, actId, metadata) => dispatch(editResourceAction(id, editor, editorType, actId, metadata)),
-  createResourceByH5PUpload: (id, editor, editorType, payload, metadata) => dispatch(
-    createResourceByH5PUploadAction(id, editor, editorType, payload, metadata),
-  ),
+  createResourceByH5PUpload: (id, editor, editorType, payload, metadata) => dispatch(createResourceByH5PUploadAction(id, editor, editorType, payload, metadata)),
   loadProject: (id) => dispatch(loadProjectAction(id)),
   deleteResource: (resourceId) => dispatch(deleteResourceAction(resourceId)),
   showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),

@@ -57,10 +57,11 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.UPDATE_PLAYLIST_SUCCESS:
       const index = playlists.findIndex((p) => p.id === action.payload.playlist.id);
       if (index > -1) {
+        playlists.splice(index, 1, action.payload.playlist);
         return {
           ...state,
           isLoading: false,
-          playlists: playlists.splice(index, 1, action.payload.playlist),
+          playlists,
           thumbUrl: null,
         };
       }
@@ -97,6 +98,25 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         playlists: action.payload.playlists,
+      };
+
+    case actionTypes.REORDER_PLAYLISTS_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        playlists: action.payload.playlists,
+      };
+    case actionTypes.REORDER_PLAYLISTS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        playlists: action.payload.updatedPlaylists,
+      };
+    case actionTypes.REORDER_PLAYLISTS_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+        playlists: action.payload.orgPlaylists,
       };
 
     // Refactor bottom
@@ -177,17 +197,11 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.REORDER_PLAYLIST:
       // Find the changed playlist and replace with action.playlist
       const newReorderedPlaylists = state.playlists.map(
-        (playlist) => (playlist.id === action.playlist.id ? action.playlist : playlist)
+        (playlist) => (playlist.id === action.playlist.id ? action.playlist : playlist),
       );
       return {
         ...state,
         playlists: newReorderedPlaylists,
-      };
-
-    case actionTypes.REORDER_PLAYLISTS:
-      return {
-        ...state,
-        playlists: action.playlists,
       };
 
     default:

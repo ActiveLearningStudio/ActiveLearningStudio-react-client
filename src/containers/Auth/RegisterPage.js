@@ -22,7 +22,6 @@ class RegisterPage extends React.Component {
     this.state = {
       firstName: '',
       lastName: '',
-      name: '',
       email: '',
       password: '',
       organizationName: '',
@@ -48,7 +47,6 @@ class RegisterPage extends React.Component {
       const {
         firstName,
         lastName,
-        name,
         email,
         password,
         organizationName,
@@ -63,7 +61,6 @@ class RegisterPage extends React.Component {
       await register({
         first_name: firstName,
         last_name: lastName,
-        name,
         email,
         password,
         organization_name: organizationName,
@@ -82,7 +79,6 @@ class RegisterPage extends React.Component {
     const {
       firstName,
       lastName,
-      name,
       email,
       password,
       organizationName,
@@ -91,7 +87,6 @@ class RegisterPage extends React.Component {
 
     return validator.isEmpty(firstName)
       || validator.isEmpty(lastName)
-      || validator.isEmpty(name)
       || !validator.isEmail(email)
       || validator.isEmpty(password)
       || validator.isEmpty(organizationName)
@@ -102,7 +97,6 @@ class RegisterPage extends React.Component {
     const {
       firstName,
       lastName,
-      name,
       email,
       password,
       organizationName,
@@ -156,20 +150,6 @@ class RegisterPage extends React.Component {
                   onChange={this.onChangeField}
                 />
               </div>
-            </div>
-
-            <div className="form-group">
-              <FontAwesomeIcon icon="user" />
-              <input
-                autoFocus
-                className="input-box"
-                type="text"
-                name="name"
-                placeholder="Username*"
-                required
-                value={name}
-                onChange={this.onChangeField}
-              />
             </div>
 
             <div className="form-group">

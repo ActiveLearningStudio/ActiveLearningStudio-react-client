@@ -8,7 +8,7 @@ import './style.scss';
 const ActivityPreviewCard = (props) => {
   const {
     activity,
-    playlist,
+    playlistId,
     shared,
     lti,
     // handleSelect
@@ -23,7 +23,7 @@ const ActivityPreviewCard = (props) => {
   return (
     <>
       {shared ? (
-        <Link to={`/playlist/shared/preview/${playlist}/resource/${activity.id}`}>
+        <Link to={`/playlist/shared/preview/${playlistId}/resource/${activity.id}`}>
           <li className="check">
             {activity.thumbUrl ? (
               <div
@@ -53,8 +53,8 @@ const ActivityPreviewCard = (props) => {
         <Link
           to={
             lti
-              ? `/playlist/lti/preview/${playlist}/resource/${activity.id}`
-              : `/playlist/preview/${playlist}/resource/${activity.id}`
+              ? `/playlist/lti/preview/${playlistId}/resource/${activity.id}`
+              : `/playlist/preview/${playlistId}/resource/${activity.id}`
           }
         >
           {lti ? (
@@ -121,7 +121,7 @@ const ActivityPreviewCard = (props) => {
 
 ActivityPreviewCard.propTypes = {
   activity: PropTypes.object.isRequired,
-  playlist: PropTypes.string.isRequired,
+  playlistId: PropTypes.string.isRequired,
   shared: PropTypes.bool,
   lti: PropTypes.bool,
 };

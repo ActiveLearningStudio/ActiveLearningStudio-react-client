@@ -108,41 +108,38 @@ export const changePlaylistTitleAction = (projectId, playlistId, title) => async
   }
 };
 
-// Refactor bottom
+export const reorderPlaylistsAction = (projectId, orgPlaylists, playlists) => async (dispatch) => {
+  try {
+    // Optimistically dispatching action with new playlists data
+    // to avoid waiting for request to go through
+    dispatch({
+      type: actionTypes.REORDER_PLAYLISTS_REQUEST,
+      payload: { playlists },
+    });
 
-export const reorderPlaylists = (playlists) => ({
-  type: actionTypes.REORDER_PLAYLISTS,
-  playlists,
-});
+    const pLists = playlists.map((pList, index) => ({
+      id: pList.id,
+      order: index,
+    }));
+    const { playlists: updatedPlaylists } = await playlistService.reorder(projectId, pLists);
+    dispatch({
+      type: actionTypes.REORDER_PLAYLISTS_SUCCESS,
+      payload: { updatedPlaylists },
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.REORDER_PLAYLISTS_FAIL,
+      payload: { orgPlaylists },
+    });
+  }
+};
+
+// Refactor bottom
 
 export const LoadHP = (show) => ({
   type: actionTypes.LOAD_H5P,
   show,
 });
-
-export const reorderPlaylistsAction = (playlists) => async (dispatch) => {
-  // Optimistically dispatching action with new playlists data
-  // to avoid waiting for request to go through
-  dispatch(reorderPlaylists(playlists));
-
-  // Then performing request. If something goes wrong,
-  // dispatch loadProjectPlaylistsAction to refresh playlists
-  // with fresh server data
-  const { token } = JSON.parse(localStorage.getItem('auth'));
-  axios.post(
-    '/api/reorder-project-playlists',
-    { playlists },
-    { headers: { Authorization: `Bearer ${token}` } },
-  )
-    .then((response) => {
-      if (response.data.status === 'error' || response.status !== 200) {
-        dispatch(loadProjectPlaylistsAction(playlists[0].projectId));
-      }
-    })
-    .catch(() => {
-      dispatch(loadProjectPlaylistsAction(playlists[0].projectId));
-    });
-};
 
 export const reorderPlaylistActivities = (playlist) => ({
   type: actionTypes.REORDER_PLAYLIST,

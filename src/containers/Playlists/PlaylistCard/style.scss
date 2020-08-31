@@ -72,18 +72,18 @@
 }
 
 .playlist-dropdown {
-  //position: absolute !important;
-  //top: 14px;
-  //right: 10px;
-
-  button {
+  .playlist-dropdown-btn {
+    height: 24px;
+    padding: 0 0 0 10px !important;
     color: #868686 !important;
     background: transparent !important;
-  }
-}
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
 
-.playlist-dropdown-btn {
-  background-color: transparent;
-  color: gray;
-  font-size: xx-large;
+    &:after {
+      display: none;
+      border-top-color: white !important;
+    }
+  }
 }
