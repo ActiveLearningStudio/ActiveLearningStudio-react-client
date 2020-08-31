@@ -6,11 +6,8 @@ import { Draggable } from 'react-beautiful-dnd';
 import Swal from 'sweetalert2';
 import { confirmAlert } from 'react-confirm-alert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Dropdown } from 'react-bootstrap';
 
-// TODO: these files does not exist
-// import youtubeImg from 'assets/images/social-media.svg';
-// import placeholderImg from 'assets/images/interface.svg';
-// import listImg from 'assets/images/signs.svg';
 import logo from 'assets/images/logo.svg';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 // import ShareLink from './ShareLink';
@@ -19,100 +16,65 @@ import './style.scss';
 
 // TODO: need to convert to functional component
 // need to clean up attribute, remove template functions
-class ResourceCard extends React.Component {
-  handleDelete = (e) => {
+const ResourceCard = (props) => {
+  const handleDelete = (e) => {
     e.preventDefault();
 
-    const { resource, showDeletePopup } = this.props;
+    const { resource, showDeletePopup } = props;
     // eslint-disable-next-line react/destructuring-assignment
-    showDeletePopup(
-      resource.id,
-      resource.title,
-      'Activity',
-    );
+
+    showDeletePopup(resource.id, resource.title, 'Activity');
   };
 
-  render() {
-    const {
-      resource,
-      playlist,
-      match,
-      index,
-    } = this.props;
+  const {
+    resource, playlist, match, index,
+  } = props;
 
-    return (
-      <Draggable
-        key={resource.id}
-        draggableId={`${resource.id}`}
-        index={index}
-      >
-        {(provided) => (
-          <div
-            className="playlist-resource"
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          >
-            <div className="resource-card-wrapper">
-              {resource.metadata && resource.metadata.thumbUrl && (
-                <div className="activity-thumb-wrapper">
-                  <Link to={`/playlist/preview/${playlist.id}/resource/${resource.id}`}>
-                    <div
-                      className="activity-thumb"
-                      style={{
-                        backgroundImage:
-                          resource.metadata.thumbUrlType === 'pexels'
-                            ? `url(${resource.metadata.thumbUrl})`
-                            : `url(${global.config.laravelAPIUrl}${resource.metadata.thumbUrl})`,
-                      }}
-                    />
-                  </Link>
-                </div>
-              )}
-
-              <div
-                className={
-                  resource.metadata && resource.metadata.thumbUrl
-                    ? 'activity-thumb-content'
-                    : 'activity-thumb-content'
-                }
-              >
-                <div className="title">
-                  <Link to={`/playlist/preview/${playlist.id}/resource/${resource.id}`}>
-                    {resource.metadata && resource.metadata.title !== undefined
-                      ? resource.metadata.title
-                      : resource.title}
-                  </Link>
-                </div>
-                {/*
-                <div className="social-icons-tray">
-                  <Link to="">
-                    <img src={placeholderImg} alt="" />
-                  </Link>
-                  <Link to="">
-                    <img src={youtubeImg} alt="" />
-                  </Link>
-                  <Link to="">
-                    <img src={listImg} alt="" />
-                  </Link>
-                </div>
-                */}
+  return (
+    <Draggable key={resource.id} draggableId={`${resource.id}`} index={index}>
+      {(provided) => (
+        <div
+          className="playlist-resource"
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          <div className="resource-card-wrapper">
+            {!!resource.thumb_url && (
+              <div className="activity-thumb-wrapper">
+                <Link
+                  to={`/playlist/preview/${playlist.id}/resource/${resource.id}`}
+                >
+                  <div
+                    className="activity-thumb"
+                    style={{
+                      backgroundImage: `url(${resource.thumb_url})`,
+                    }}
+                  />
+                </Link>
               </div>
+            )}
 
-              <div className="activity-options-wrapper check">
-                <div className="activity-options">
-                  <div className="dropdown pull-right">
-                    <button
-                      className="btn project-dropdown-btn"
-                      type="button"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
+            <div>
+              <div className="title">
+                <Link
+                  to={`/playlist/preview/${playlist.id}/resource/${resource.id}`}
+                >
+                  {resource.metadata && resource.metadata.title !== undefined
+                    ? resource.metadata.title
+                    : resource.title}
+                </Link>
+              </div>
+            </div>
+
+            <div className="activity-options-wrapper check">
+              <div className="activity-options">
+                <div className="dropdown pull-right">
+                  <Dropdown>
+                    <Dropdown.Toggle id="dropdown-basic">
                       <FontAwesomeIcon icon="ellipsis-v" />
-                    </button>
-
-                    <div className="dropdown-menu">
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
                       <Link
                         className="dropdown-item"
                         to={`/playlist/preview/${playlist.id}/resource/${resource.id}`}
@@ -123,9 +85,7 @@ class ResourceCard extends React.Component {
                       </Link>
                       <Link
                         className="dropdown-item"
-                        to={
-                          `/project/${match.params.projectId}/playlist/${playlist.id}/activity/create/${resource.id}`
-                        }
+                        to={`/project/${match.params.projectId}/playlist/${playlist.id}/activity/create/${resource.id}`}
                       >
                         <FontAwesomeIcon icon="pen" />
                         {' '}
@@ -187,7 +147,9 @@ class ResourceCard extends React.Component {
                                 <br />
 
                                 <div className="close-btn">
-                                  <button type="button" onClick={onClose}>Ok</button>
+                                  <button type="button" onClick={onClose}>
+                                    Ok
+                                  </button>
                                 </div>
                               </div>
                             ),
@@ -212,38 +174,28 @@ class ResourceCard extends React.Component {
                           });
                         }}
                       >
-                        <FontAwesomeIcon icon="cloud-download" />
+                        <FontAwesomeIcon icon="times-circle" />
                         {' '}
                         Executable
                       </a>
-                      <a className="dropdown-item" onClick={this.handleDelete}>
+                      <a className="dropdown-item" onClick={handleDelete}>
                         <FontAwesomeIcon icon="times-circle" />
                         {' '}
                         Delete
                       </a>
-                    </div>
-                  </div>
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </div>
               </div>
-
-              <div className="clearfix" />
             </div>
 
-            {/*
-            <div className="row timestamp">
-              <div className="col-md-12">
-                <p>
-                  {new Date(resource.created_at).toDateString()}
-                </p>
-              </div>
-            </div>
-            */}
+            <div className="clearfix" />
           </div>
-        )}
-      </Draggable>
-    );
-  }
-}
+        </div>
+      )}
+    </Draggable>
+  );
+};
 
 ResourceCard.propTypes = {
   resource: PropTypes.object.isRequired,
@@ -252,6 +204,7 @@ ResourceCard.propTypes = {
   index: PropTypes.string.isRequired,
   showDeletePopup: PropTypes.func.isRequired,
   hideDeletePopup: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -259,6 +212,4 @@ const mapDispatchToProps = (dispatch) => ({
   hideDeletePopup: () => dispatch(hideDeletePopupAction()),
 });
 
-export default withRouter(
-  connect(null, mapDispatchToProps)(ResourceCard),
-);
+export default withRouter(connect(null, mapDispatchToProps)(ResourceCard));

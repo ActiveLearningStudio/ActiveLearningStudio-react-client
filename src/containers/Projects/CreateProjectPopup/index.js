@@ -55,7 +55,7 @@ const onSubmit = async (values, dispatch, props) => {
     } else {
       // create
       await dispatch(
-        props.project.thumb_url
+        props.project.thumbUrl
           ? createProjectAction({
             name,
             description,
@@ -184,7 +184,10 @@ let CreateProjectPopup = (props) => {
                     {project.thumbUrl.includes('pexels.com') ? (
                       <img src={project.thumbUrl} alt="thumbnail" />
                     ) : (
-                      <img src={global.config.resourceUrl + project.thumbUrl} alt="thumbnail" />
+                      <img
+                        src={global.config.resourceUrl + project.thumbUrl}
+                        alt="thumbnail"
+                      />
                     )}
                   </div>
                 </div>

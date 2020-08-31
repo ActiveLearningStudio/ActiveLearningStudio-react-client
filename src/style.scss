@@ -6,7 +6,7 @@
 body {
   margin: 0;
   background-color: #eee;
-  font-family: 'Hind Siliguri', sans-serif;
+  font-family: "Hind Siliguri", sans-serif;
   font-size: 14px;
   color: #777;
   -webkit-font-smoothing: antialiased;
@@ -14,7 +14,7 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
 *:focus {
@@ -55,4 +55,8 @@ code {
 .student-score {
   text-decoration: none;
   color: gray;
+}
+
+.btn-primary {
+  border: none;
 }

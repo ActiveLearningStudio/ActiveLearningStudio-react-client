@@ -23,8 +23,8 @@ const update = (playlistId, id, activity) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const remove = (playlistId, id) => httpService
-  .remove(`/${apiVersion}/playlists/${playlistId}/activities/${id}`)
+const remove = (id) => httpService
+  .remove(`/${apiVersion}/activities/${id}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -43,6 +43,26 @@ const loadResource = (resourceId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const uploadResourceThumb = (formData, configData) => httpService
+  .post(`/${apiVersion}/post-upload-image`, formData, configData)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const h5pSetings = () => httpService
+  .get(`/${apiVersion}/h5p/settings`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const h5pToken = (dataH5p) => httpService
+  .post(`/${apiVersion}/h5p`, dataH5p)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const createActivity = (dataActivity) => httpService
+  .post(`/${apiVersion}/activities`, dataActivity)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -52,4 +72,8 @@ export default {
   getTypes,
   getItems,
   loadResource,
+  uploadResourceThumb,
+  h5pSetings,
+  h5pToken,
+  createActivity,
 };

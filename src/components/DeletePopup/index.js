@@ -46,9 +46,7 @@ function DeletePopup(props) {
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-body">
-              <h5>
-                {`Delete "${ui.title}"?`}
-              </h5>
+              <h5>{`Delete "${ui.title}"?`}</h5>
               <p>
                 {`You're about to permanently delete this ${ui.deleteType} and all of its data.`}
               </p>

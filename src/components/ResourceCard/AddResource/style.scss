@@ -159,11 +159,11 @@
         }
       }
 
-      i {
+      svg {
         position: absolute;
         right: 14px;
         color: #0f4392;
-        top: 11px;
+        top: 13px;
       }
     }
   }
@@ -203,7 +203,7 @@
         line-height: 20px;
         letter-spacing: 0.28px;
         color: #707070;
-        padding: 5px 20px 0;
+        padding: 5px 0px 0;
       }
 
       span {
@@ -379,7 +379,7 @@ $filled: #44ca92;
       margin-left: 50px;
       font-size: 16px;
       cursor: pointer;
-      font-family: 'Open Sans', sans-serif;
+      font-family: "Open Sans", sans-serif;
       font-weight: 400;
       padding-top: 7px;
       padding-bottom: 10px;
@@ -644,7 +644,7 @@ input[type="radio"]:checked + .activity-item {
   height: 56px;
   background: #2ecf43;
   font-size: 14px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-weight: 600;
 }
 
@@ -663,7 +663,7 @@ input[type="radio"]:checked + .activity-item {
   text-align: left;
   padding-left: 35px;
   font-size: 14px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-weight: 600;
 }
 
@@ -716,7 +716,7 @@ input[type="radio"]:checked + .activity-item {
     text-transform: capitalize;
     margin: 0;
     font-size: 2rem;
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-weight: 300;
   }
 
@@ -724,7 +724,7 @@ input[type="radio"]:checked + .activity-item {
     h2 {
       color: #565656;
       font-size: 18px;
-      font-family: 'Hind Siliguri', sans-serif;
+      font-family: "Hind Siliguri", sans-serif;
       font-weight: 400;
       margin-top: 15px;
       margin-bottom: 15px;
@@ -733,7 +733,6 @@ input[type="radio"]:checked + .activity-item {
     .meta-title,
     .meta-subjects,
     .meta-education-levels {
-
       input,
       .rw-widget-input {
         width: 100%;
@@ -768,7 +767,7 @@ input[type="radio"]:checked + .activity-item {
           text-transform: uppercase;
           text-align: center;
           font-size: 12px;
-          font-family: 'Open Sans', sans-serif;
+          font-family: "Open Sans", sans-serif;
           font-weight: 600;
         }
       }

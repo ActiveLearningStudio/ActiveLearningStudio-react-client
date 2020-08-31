@@ -47,13 +47,14 @@ class PlaylistCard extends React.Component {
 
   renderResources = () => {
     const { playlist } = this.props;
-    if (!playlist.resources || playlist.resources.length === 0) {
+
+    if (!playlist.activities || playlist.activities.length === 0) {
       return (
         <div className="alert alert-info m-3">No resources yet.</div>
       );
     }
 
-    return playlist.resources.map((resource, index) => (
+    return playlist.activities.map((resource, index) => (
       <ResourceCard
         {...this.props}
         resource={resource}
@@ -78,14 +79,13 @@ class PlaylistCard extends React.Component {
     });
 
     if (playlist.title !== title) {
-      changePlaylistTitle(projectId, playlist.id, title)
-        .catch(() => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Failed to update playlist title',
-          });
+      changePlaylistTitle(projectId, playlist.id, title).catch(() => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to update playlist title',
         });
+      });
     }
   };
 
@@ -126,7 +126,6 @@ class PlaylistCard extends React.Component {
                     onClick={this.handleClickPlaylistTitle}
                   >
                     <span>{playlist.title}</span>
-
                     <FontAwesomeIcon icon="pencil-alt" className="ml-2 edit-icon" />
                   </div>
 

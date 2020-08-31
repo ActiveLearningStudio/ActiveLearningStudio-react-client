@@ -231,25 +231,13 @@ export default (state = INITIAL_STATE, action) => {
       };
 
     case actionTypes.DESCRIBE_ACTIVITY:
-      if (action.payload.activityId != null) {
-        return {
-          ...state,
-          editResource: {
-            ...state.editResource,
-            metadata: {
-              ...state.editResource.metadata,
-              metaContent: action.payload.metadata,
-            },
-          },
-        };
-      }
       return {
         ...state,
         newResource: {
           ...state.newResource,
           metadata: {
             ...state.newResource.metadata,
-            metaContent: action.metadata,
+            metaContent: action.payload.metadata,
           },
         },
       };

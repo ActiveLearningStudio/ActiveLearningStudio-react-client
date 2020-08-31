@@ -2,6 +2,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 import resourceService from 'services/resource.service';
+import projectService from 'services/project.service';
 import * as actionTypes from '../actionTypes';
 
 export const loadResourceTypesAction = () => async (dispatch) => {
@@ -71,6 +72,19 @@ export const loadResourceAction = (resourceId) => async (dispatch) => {
 
     throw e;
   }
+};
+
+export const loadH5pSettingsActivity = () => async () => {
+  const response = await resourceService.h5pSetings();
+
+  window.H5PIntegration = response.h5p.settings;
+
+  response.h5p.settings.editor.assets.js.forEach((value) => {
+    const script = document.createElement('script');
+    script.src = value;
+    script.async = false;
+    document.body.appendChild(script);
+  });
 };
 
 // TODO: refactor bottom
@@ -164,18 +178,10 @@ export const showBuildActivityAction = (
         `${global.config.laravelAPIUrl}/activity/${activityId}`,
       );
 
-      const lib = `${response.data.data.libraryName
-      } ${
-        response.data.data.majorVersion
-      }.${
-        response.data.data.minorVersion}`;
+      const lib = `${response.data.data.libraryName} ${response.data.data.majorVersion}.${response.data.data.minorVersion}`;
 
       dispatch(
-        showBuildActivity(
-          lib,
-          response.data.data.type,
-          response.data.data.h5p,
-        ),
+        showBuildActivity(lib, response.data.data.type, response.data.data.h5p),
       );
     } else {
       dispatch(showBuildActivity(editor, editorType, ''));
@@ -342,57 +348,54 @@ export const createResourceAction = (
   editor,
   editorType,
   metadata,
+  projectId,
 ) => async (dispatch) => {
-  try {
-    const { token } = JSON.parse(localStorage.getItem('auth'));
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    };
+  // try {
+  // h5peditorCopy to be taken from h5papi/storage/h5p/laravel-h5p/js/laravel-h5p.js
+  const data = {
+    playlistId,
+    library: window.h5peditorCopy.getLibrary(),
+    parameters: JSON.stringify(window.h5peditorCopy.getParams()),
+    action: 'create',
+  };
 
-    // h5peditorCopy to be taken from h5papi/storage/h5p/laravel-h5p/js/laravel-h5p.js
-    const data = {
-      playlistId,
-      library: window.h5peditorCopy.getLibrary(),
-      parameters: JSON.stringify(window.h5peditorCopy.getParams()),
+  const insertedH5pResource = await resourceService.h5pToken(data);
+
+  if (!insertedH5pResource.fail) {
+    const resource = insertedH5pResource;
+
+    const createActivityDate = {
+      h5p_content_id: resource.id,
+      playlist_id: playlistId,
+      thumb_url: metadata.thumbUrl,
       action: 'create',
+      title: metadata.metaContent.metaTitle,
+      type: 'h5p',
+      content: 'place_holder',
+      subject_id:
+        metadata.metaContent.metaSubject
+        && metadata.metaContent.metaSubject.subject,
+      education_level_id:
+        metadata.metaContent.metaEducationalLevels
+        && metadata.metaContent.metaEducationalLevels.name,
     };
-
-    const insertedH5pResource = await axios.post(
-      `${global.config.h5pAjaxUrl}/api/h5p/?api_token=test`,
-      data,
-      {
-        headers,
-      },
+    const insertedResource = await resourceService.createActivity(
+      createActivityDate,
     );
 
-    if (!insertedH5pResource.data.fail) {
-      const resource = insertedH5pResource.data;
+    resource.id = insertedResource.id;
+    resource.mysqlid = insertedResource.mysqlid;
 
-      // insert into mongodb
-      const insertedResource = await axios.post(
-        `${global.config.laravelAPIUrl}/activity`,
-        {
-          mysqlid: resource.id,
-          playlistId,
-          metadata,
-          action: 'create',
-        },
-        {
-          headers,
-        },
-      );
-
-      resource.id = insertedResource.data.data.id;
-      resource.mysqlid = insertedResource.data.data.mysqlid;
-
-      dispatch(createResource(playlistId, resource, editor, editorType));
-    } else {
-      dispatch(validationErrorsResource());
-    }
-  } catch (e) {
-    throw new Error(e);
+    dispatch(createResource(playlistId, resource, editor, editorType));
+    // dispatch(hideCreateResourceModal());
+    window.location.href = `/project/${projectId}`;
+  } else {
+    dispatch(validationErrorsResource());
   }
+  // } catch (e) {
+  //   alert("dsf");
+  //   throw new Error(e);
+  // }
 };
 
 export const createResourceByH5PUploadAction = (
@@ -477,9 +480,9 @@ export const hidePreviewResourceModalAction = () => async (dispatch) => {
 };
 
 // runs delete resource ajax
-export const deleteResourceAction = (playlistId, resourceId) => async (dispatch) => {
+export const deleteResourceAction = (resourceId) => async (dispatch) => {
   try {
-    const response = await resourceService.remove(playlistId, resourceId);
+    const response = await resourceService.remove(resourceId);
 
     if (response.data.status === 'success') {
       dispatch({
@@ -546,28 +549,23 @@ export const resourceThumbnailProgress = (progress) => ({
 
 export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
   try {
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
+    const configData = {
       onUploadProgress: (progressEvent) => {
-        dispatch(
-          resourceThumbnailProgress(
-            `Uploaded progress: ${Math.round((progressEvent.loaded / progressEvent.total) * 100)}%`,
-          ),
-        );
+        dispatch({
+          type: actionTypes.PROJECT_THUMBNAIL_PROGRESS,
+          payload: {
+            progress: `Uploaded progress: ${Math.round(
+              (progressEvent.loaded / progressEvent.total) * 100,
+            )}%`,
+          },
+        });
       },
     };
-    return axios
-      .post(
-        `${global.config.laravelAPIUrl}/post-upload-image`,
-        formData,
-        config,
-      )
-      .then((response) => {
-        dispatch(uploadResourceThumbnail(response.data.data.guid));
-      });
+
+    const response = await projectService.upload(formData, configData);
+
+    dispatch(uploadResourceThumbnail(response.thumbUrl));
   } catch (e) {
-    throw new Error(e);
+    // throw new Error(e);
   }
 };

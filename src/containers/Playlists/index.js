@@ -32,7 +32,11 @@ import {
   showDescribeActivityAction,
   showBuildActivityAction,
 } from 'store/actions/resource';
-import { showCreateProjectModalAction, loadProjectAction, loadLmsAction } from 'store/actions/project';
+import {
+  showCreateProjectModalAction,
+  loadProjectAction,
+  loadLmsAction,
+} from 'store/actions/project';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
@@ -68,7 +72,11 @@ class PlaylistsPage extends React.Component {
     loadLms();
     window.scrollTo(0, 0);
 
-    if (!openCreatePopup && !openCreateResourcePopup && !openEditResourcePopup) {
+    if (
+      !openCreatePopup
+      && !openCreateResourcePopup
+      && !openEditResourcePopup
+    ) {
       loadProject(match.params.projectId);
       loadProjectPlaylists(match.params.projectId);
     }
@@ -136,8 +144,6 @@ class PlaylistsPage extends React.Component {
 
       history.push(`/project/${match.params.projectId}`);
     } catch (err) {
-      // console.log(err.message);
-
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -152,6 +158,7 @@ class PlaylistsPage extends React.Component {
     editorType,
     payload,
     metadata,
+    projectId,
   ) => {
     try {
       const {
@@ -177,6 +184,7 @@ class PlaylistsPage extends React.Component {
           editor,
           editorType,
           metadata,
+          projectId,
         );
       }
 
@@ -449,23 +457,9 @@ const mapDispatchToProps = (dispatch) => ({
   hidePreviewResourceModal: () => dispatch(hidePreviewResourceModalAction()),
   showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
   loadProjectPlaylists: (id) => dispatch(loadProjectPlaylistsAction(id)),
-  createResource: (id, editor, editorType, metadata) => dispatch(createResourceAction(id, editor, editorType, metadata)),
+  createResource: (id, editor, editorType, metadata, playlistId) => dispatch(createResourceAction(id, editor, editorType, metadata, playlistId)),
   editResource: (id, editor, editorType, actId, metadata) => dispatch(editResourceAction(id, editor, editorType, actId, metadata)),
-  createResourceByH5PUpload: (
-    id,
-    editor,
-    editorType,
-    payload,
-    metadata,
-  ) => dispatch(
-    createResourceByH5PUploadAction(
-      id,
-      editor,
-      editorType,
-      payload,
-      metadata,
-    ),
-  ),
+  createResourceByH5PUpload: (id, editor, editorType, payload, metadata) => dispatch(createResourceByH5PUploadAction(id, editor, editorType, payload, metadata)),
   loadProject: (id) => dispatch(loadProjectAction(id)),
   deleteResource: (resourceId) => dispatch(deleteResourceAction(resourceId)),
   showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
