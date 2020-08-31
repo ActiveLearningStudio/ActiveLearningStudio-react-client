@@ -32,7 +32,11 @@ import {
   showDescribeActivityAction,
   showBuildActivityAction,
 } from 'store/actions/resource';
-import { showCreateProjectModalAction, loadProjectAction, loadLmsAction } from 'store/actions/project';
+import {
+  showCreateProjectModalAction,
+  loadProjectAction,
+  loadLmsAction,
+} from 'store/actions/project';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
@@ -68,7 +72,11 @@ class PlaylistsPage extends React.Component {
     loadLms();
     window.scrollTo(0, 0);
 
-    if (!openCreatePopup && !openCreateResourcePopup && !openEditResourcePopup) {
+    if (
+      !openCreatePopup
+      && !openCreateResourcePopup
+      && !openEditResourcePopup
+    ) {
       loadProject(match.params.projectId);
       loadProjectPlaylists(match.params.projectId);
     }
@@ -91,7 +99,9 @@ class PlaylistsPage extends React.Component {
     try {
       const { match, history, showCreateResourceModal } = this.props;
       showCreateResourceModal(playlist.id);
-      history.push(`/project/${match.params.projectId}/playlist/${playlist.id}/activity/create`);
+      history.push(
+        `/project/${match.params.projectId}/playlist/${playlist.id}/activity/create`,
+      );
     } catch (e) {
       // console.log(e.message);
     }
@@ -152,7 +162,7 @@ class PlaylistsPage extends React.Component {
     editorType,
     payload,
     metadata,
-    projectId
+    projectId,
   ) => {
     try {
       const {
@@ -178,7 +188,7 @@ class PlaylistsPage extends React.Component {
           editor,
           editorType,
           metadata,
-          projectId
+          projectId,
         );
       }
 
@@ -216,7 +226,8 @@ class PlaylistsPage extends React.Component {
   onDragEnd = (e) => {
     if (
       !e.destination
-      || (e.destination.index === e.source.index && e.source.droppableId === e.destination.droppableId)
+      || (e.destination.index === e.source.index
+        && e.source.droppableId === e.destination.droppableId)
     ) {
       return;
     }
@@ -242,8 +253,12 @@ class PlaylistsPage extends React.Component {
         });
       } else {
         // Rsc dropped on a different list
-        const sourceList = playlists.find((pl) => pl.id === e.source.droppableId);
-        const destinationList = playlists.find((pl) => pl.id === e.destination.droppableId);
+        const sourceList = playlists.find(
+          (pl) => pl.id === e.source.droppableId,
+        );
+        const destinationList = playlists.find(
+          (pl) => pl.id === e.destination.droppableId,
+        );
         const sourceResources = Array.from(sourceList.resources);
         const destResources = destinationList.resources
           ? Array.from(destinationList.resources)
@@ -295,111 +310,120 @@ class PlaylistsPage extends React.Component {
             <h1>Sharing...</h1>
           </div>
         ) : (
-            <>
-              <div className="main-content-wrapper">
-                <div className="sidebar-wrapper">
-                  <Sidebar />
-                </div>
-
-                <div className="content-wrapper">
-                  <div className="content">
-                    <div className="row ">
-                      <div className="col playlist-page-project-title project-each-view">
-                        <div className="flex-se">
-                          <h1>{selectedProject ? selectedProject.name : ''}</h1>
-
-                          <button
-                            type="button"
-                            className="create-playlist-btn"
-                            onClick={this.handleShowCreatePlaylistModal}
-                          >
-                            <FontAwesomeIcon icon="plus" className="mr-2" />
-                            Create new playlist
-                        </button>
-                        </div>
-
-                        <span>
-                          <Link
-                            className="dropdown-item"
-                            to={`/project/${match.params.projectId}/preview`}
-                          >
-                            <FontAwesomeIcon icon="eye" className="mr-2" />
-                            Project Preview
-                        </Link>
-                        </span>
-                      </div>
-                    </div>
-
-                    <DragDropContext onDragEnd={this.onDragEnd}>
-                      <Droppable
-                        droppableId="project-droppable-id"
-                        direction="horizontal"
-                        type="column"
-                      >
-                        {(provided) => (
-                          <div
-                            id="board"
-                            className="board-custom"
-                            {...provided.droppableProps}
-                            ref={provided.innerRef}
-                          >
-                            {playlists.map((playlist, index) => (
-                              <PlaylistCard
-                                key={playlist.id}
-                                index={index}
-                                playlist={playlist}
-                                projectId={match.params.projectId}
-                                handleCreateResource={this.handleShowCreateResourceModal}
-                              />
-                            ))}
-                            {provided.placeholder}
-                          </div>
-                        )}
-                      </Droppable>
-                    </DragDropContext>
-                  </div>
-                </div>
+          <>
+            <div className="main-content-wrapper">
+              <div className="sidebar-wrapper">
+                <Sidebar />
               </div>
 
-              {openCreatePopup && (
-                <CreatePlaylistPopup
-                  handleHideCreatePlaylistModal={this.handleHideCreatePlaylistModal}
-                  handleCreatePlaylistSubmit={this.handleCreatePlaylistSubmit}
-                  onPlaylistTitleChange={this.onPlaylistTitleChange}
-                />
-              )}
+              <div className="content-wrapper">
+                <div className="content">
+                  <div className="row ">
+                    <div className="col playlist-page-project-title project-each-view">
+                      <div className="flex-se">
+                        <h1>{selectedProject ? selectedProject.name : ''}</h1>
 
-              {openCreateResourcePopup && (
-                <AddResource
-                  {...this.props}
-                  handleHideCreateResourceModal={this.handleHideCreateResourceModal}
-                  handleCreateResourceSubmit={this.handleCreateResourceSubmit}
-                  handleEditResourceSubmit={this.handleEditResourceSubmit}
-                />
-              )}
+                        <button
+                          type="button"
+                          className="create-playlist-btn"
+                          onClick={this.handleShowCreatePlaylistModal}
+                        >
+                          <FontAwesomeIcon icon="plus" className="mr-2" />
+                          {' '}
+                          Create new playlist
+                        </button>
+                      </div>
 
-              {openEditResourcePopup && (
-                <EditResource
-                  {...this.props}
-                  handleHideCreateResourceModal={this.handleHideCreateResourceModal}
-                  handleCreateResourceSubmit={this.handleCreateResourceSubmit}
-                  handleEditResourceSubmit={this.handleEditResourceSubmit}
-                />
-              )}
+                      <span>
+                        <Link
+                          className="dropdown-item"
+                          to={`/project/${match.params.projectId}/preview`}
+                        >
+                          <FontAwesomeIcon icon="eye" className="mr-2" />
+                          Project Preview
+                        </Link>
+                      </span>
+                    </div>
+                  </div>
 
-              {resource.showPreviewResourcePopup && (
-                <PreviewResourcePage {...this.props} />
-              )}
+                  <DragDropContext onDragEnd={this.onDragEnd}>
+                    <Droppable
+                      droppableId="project-droppable-id"
+                      direction="horizontal"
+                      type="column"
+                    >
+                      {(provided) => (
+                        <div
+                          id="board"
+                          className="board-custom"
+                          {...provided.droppableProps}
+                          ref={provided.innerRef}
+                        >
+                          {playlists.map((playlist, index) => (
+                            <PlaylistCard
+                              key={playlist.id}
+                              index={index}
+                              playlist={playlist}
+                              projectId={match.params.projectId}
+                              handleCreateResource={
+                                this.handleShowCreateResourceModal
+                              }
+                            />
+                          ))}
+                          {provided.placeholder}
+                        </div>
+                      )}
+                    </Droppable>
+                  </DragDropContext>
+                </div>
+              </div>
+            </div>
 
-              {showDeletePlaylistPopup && (
-                <DeletePopup
-                  {...this.props}
-                  deleteType="Playlist"
-                  selectedProject={selectedProject}
-                />
-              )}
-            </>
-          )}
+            {openCreatePopup && (
+              <CreatePlaylistPopup
+                handleHideCreatePlaylistModal={
+                  this.handleHideCreatePlaylistModal
+                }
+                handleCreatePlaylistSubmit={this.handleCreatePlaylistSubmit}
+                onPlaylistTitleChange={this.onPlaylistTitleChange}
+              />
+            )}
+
+            {openCreateResourcePopup && (
+              <AddResource
+                {...this.props}
+                handleHideCreateResourceModal={
+                  this.handleHideCreateResourceModal
+                }
+                handleCreateResourceSubmit={this.handleCreateResourceSubmit}
+                handleEditResourceSubmit={this.handleEditResourceSubmit}
+              />
+            )}
+
+            {openEditResourcePopup && (
+              <EditResource
+                {...this.props}
+                handleHideCreateResourceModal={
+                  this.handleHideCreateResourceModal
+                }
+                handleCreateResourceSubmit={this.handleCreateResourceSubmit}
+                handleEditResourceSubmit={this.handleEditResourceSubmit}
+              />
+            )}
+
+            {resource.showPreviewResourcePopup && (
+              <PreviewResourcePage {...this.props} />
+            )}
+
+            {showDeletePlaylistPopup && (
+              <DeletePopup
+                {...this.props}
+                deleteType="Playlist"
+                selectedProject={selectedProject}
+              />
+            )}
+          </>
+        )}
 
         <Footer />
       </>
@@ -451,22 +475,12 @@ const mapDispatchToProps = (dispatch) => ({
   hidePreviewResourceModal: () => dispatch(hidePreviewResourceModalAction()),
   showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
   loadProjectPlaylists: (id) => dispatch(loadProjectPlaylistsAction(id)),
-  createResource: (id, editor, editorType, metadata, playlistId) => dispatch(createResourceAction(id, editor, editorType, metadata, playlistId)),
+  createResource: (id, editor, editorType, metadata, playlistId) => dispatch(
+    createResourceAction(id, editor, editorType, metadata, playlistId),
+  ),
   editResource: (id, editor, editorType, actId, metadata) => dispatch(editResourceAction(id, editor, editorType, actId, metadata)),
-  createResourceByH5PUpload: (
-    id,
-    editor,
-    editorType,
-    payload,
-    metadata,
-  ) => dispatch(
-    createResourceByH5PUploadAction(
-      id,
-      editor,
-      editorType,
-      payload,
-      metadata,
-    ),
+  createResourceByH5PUpload: (id, editor, editorType, payload, metadata) => dispatch(
+    createResourceByH5PUploadAction(id, editor, editorType, payload, metadata),
   ),
   loadProject: (id) => dispatch(loadProjectAction(id)),
   deleteResource: (resourceId) => dispatch(deleteResourceAction(resourceId)),
