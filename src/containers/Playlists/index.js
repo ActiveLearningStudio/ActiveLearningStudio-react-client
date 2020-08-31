@@ -248,12 +248,8 @@ class PlaylistsPage extends React.Component {
         });
       } else {
         // Rsc dropped on a different list
-        const sourceList = playlists.find(
-          (pl) => pl.id === e.source.droppableId,
-        );
-        const destinationList = playlists.find(
-          (pl) => pl.id === e.destination.droppableId,
-        );
+        const sourceList = playlists.find((pl) => pl.id === e.source.droppableId);
+        const destinationList = playlists.find((pl) => pl.id === e.destination.droppableId);
         const sourceResources = Array.from(sourceList.resources);
         const destResources = destinationList.resources
           ? Array.from(destinationList.resources)

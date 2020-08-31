@@ -191,7 +191,6 @@ const H5PEditor = (props) => {
 H5PEditor.propTypes = {
   match: PropTypes.object.isRequired,
   resource: PropTypes.object.isRequired,
-
   h5pLib: PropTypes.string,
   h5pParams: PropTypes.string,
   handleCreateResourceSubmit: PropTypes.func.isRequired,
