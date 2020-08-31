@@ -99,9 +99,7 @@ class PlaylistsPage extends React.Component {
     try {
       const { match, history, showCreateResourceModal } = this.props;
       showCreateResourceModal(playlist.id);
-      history.push(
-        `/project/${match.params.projectId}/playlist/${playlist.id}/activity/create`,
-      );
+      history.push(`/project/${match.params.projectId}/playlist/${playlist.id}/activity/create`);
     } catch (e) {
       // console.log(e.message);
     }
@@ -146,8 +144,6 @@ class PlaylistsPage extends React.Component {
 
       history.push(`/project/${match.params.projectId}`);
     } catch (err) {
-      // console.log(err.message);
-
       Swal.fire({
         icon: 'error',
         title: 'Error',
@@ -226,8 +222,7 @@ class PlaylistsPage extends React.Component {
   onDragEnd = (e) => {
     if (
       !e.destination
-      || (e.destination.index === e.source.index
-        && e.source.droppableId === e.destination.droppableId)
+      || (e.destination.index === e.source.index && e.source.droppableId === e.destination.droppableId)
     ) {
       return;
     }
@@ -329,7 +324,6 @@ class PlaylistsPage extends React.Component {
                           onClick={this.handleShowCreatePlaylistModal}
                         >
                           <FontAwesomeIcon icon="plus" className="mr-2" />
-                          {' '}
                           Create new playlist
                         </button>
                       </div>
@@ -379,9 +373,7 @@ class PlaylistsPage extends React.Component {
 
             {openCreatePopup && (
               <CreatePlaylistPopup
-                handleHideCreatePlaylistModal={
-                  this.handleHideCreatePlaylistModal
-                }
+                handleHideCreatePlaylistModal={this.handleHideCreatePlaylistModal}
                 handleCreatePlaylistSubmit={this.handleCreatePlaylistSubmit}
                 onPlaylistTitleChange={this.onPlaylistTitleChange}
               />
@@ -390,9 +382,7 @@ class PlaylistsPage extends React.Component {
             {openCreateResourcePopup && (
               <AddResource
                 {...this.props}
-                handleHideCreateResourceModal={
-                  this.handleHideCreateResourceModal
-                }
+                handleHideCreateResourceModal={this.handleHideCreateResourceModal}
                 handleCreateResourceSubmit={this.handleCreateResourceSubmit}
                 handleEditResourceSubmit={this.handleEditResourceSubmit}
               />
@@ -401,9 +391,7 @@ class PlaylistsPage extends React.Component {
             {openEditResourcePopup && (
               <EditResource
                 {...this.props}
-                handleHideCreateResourceModal={
-                  this.handleHideCreateResourceModal
-                }
+                handleHideCreateResourceModal={this.handleHideCreateResourceModal}
                 handleCreateResourceSubmit={this.handleCreateResourceSubmit}
                 handleEditResourceSubmit={this.handleEditResourceSubmit}
               />

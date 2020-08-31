@@ -49,7 +49,9 @@ class PlaylistCard extends React.Component {
     const { playlist } = this.props;
 
     if (!playlist.activities || playlist.activities.length === 0) {
-      return <div className="alert alert-info m-3">No resources yet.</div>;
+      return (
+        <div className="alert alert-info m-3">No resources yet.</div>
+      );
     }
 
     return playlist.activities.map((resource, index) => (
@@ -105,7 +107,11 @@ class PlaylistCard extends React.Component {
     } = this.props;
 
     return (
-      <Draggable key={playlist.id} draggableId={`${playlist.id}`} index={index}>
+      <Draggable
+        key={playlist.id}
+        draggableId={`${playlist.id}`}
+        index={index}
+      >
         {(provided) => (
           <div
             className="list-wrapper"
@@ -120,11 +126,7 @@ class PlaylistCard extends React.Component {
                     onClick={this.handleClickPlaylistTitle}
                   >
                     <span>{playlist.title}</span>
-
-                    <FontAwesomeIcon
-                      icon="pencil-alt"
-                      className="ml-2 edit-icon"
-                    />
+                    <FontAwesomeIcon icon="pencil-alt" className="ml-2 edit-icon" />
                   </div>
 
                   <textarea

@@ -7,7 +7,9 @@ import { connect } from 'react-redux';
 import { loadH5pSettingsActivity } from 'store/actions/resource';
 
 const H5PEditor = (props) => {
-  const { h5pParams, resource, loadH5pSettings } = props;
+  const {
+    h5pParams, handleEditResourceSubmit, match, handleCreateResourceSubmit, resource, loadH5pSettings,
+  } = props;
   const [submitAction, setSubmitAction] = useState('create');
   const [h5pFile, setH5pFile] = useState(null);
 
@@ -17,7 +19,7 @@ const H5PEditor = (props) => {
 
   useEffect(() => {
     loadH5pSettings();
-  }, []);
+  }, [loadH5pSettings]);
 
   const onSubmitActionRadioChange = (e) => {
     setSubmitAction(e.currentTarget.value);
@@ -32,10 +34,10 @@ const H5PEditor = (props) => {
         submitAction,
         h5pFile,
       };
-      props.handleEditResourceSubmit(
-        props.match.params.playlistid,
-        props.resource.newResource.activity.h5pLib,
-        props.resource.newResource.activity.h5pLibType,
+      handleEditResourceSubmit(
+        match.params.playlistid,
+        resource.newResource.activity.h5pLib,
+        resource.newResource.activity.h5pLibType,
         payload,
       );
     } else if (submitAction === 'upload' && h5pFile === null) {
@@ -51,12 +53,12 @@ const H5PEditor = (props) => {
         submitAction,
         h5pFile,
       };
-      props.handleCreateResourceSubmit(
-        props.match.params.playlistid,
-        props.resource.newResource.activity.h5pLib,
-        props.resource.newResource.activity.h5pLibType,
+      handleCreateResourceSubmit(
+        match.params.playlistid,
+        resource.newResource.activity.h5pLib,
+        resource.newResource.activity.h5pLibType,
         payload,
-        props.resource.newResource.metadata,
+        resource.newResource.metadata,
       );
     } else if (submitAction === 'create') {
       const payload = {
@@ -65,13 +67,13 @@ const H5PEditor = (props) => {
         h5pFile,
       };
 
-      props.handleCreateResourceSubmit(
-        props.match.params.playlistId,
-        props.resource.newResource.activity.h5pLib,
-        props.resource.newResource.activity.type,
+      handleCreateResourceSubmit(
+        match.params.playlistId,
+        resource.newResource.activity.h5pLib,
+        resource.newResource.activity.type,
         payload,
-        props.resource.newResource.metadata,
-        props.match.params.projectId,
+        resource.newResource.metadata,
+        match.params.projectId,
       );
     }
   };
@@ -84,15 +86,14 @@ const H5PEditor = (props) => {
     <>
       <form
         method="POST"
-        // action={global.config.h5pAjaxUrl + "/h5p"}
         acceptCharset="UTF-8"
         className="form-horizontal"
-        /* enctype="multipart/form-data" */ id="laravel-h5p-form"
+        id="laravel-h5p-form"
       >
         <input
           name="_token"
           type="hidden"
-          value="B6TFsmFD5TLZaWCAYZ91ly0D2We0xjLAtRmBJzQT"
+          value={process.env.REACT_APP_H5P_KEY}
         />
         <input
           type="hidden"
@@ -125,10 +126,10 @@ const H5PEditor = (props) => {
                 name="h5p_file"
                 id="h5p-file"
                 className="laravel-h5p-upload form-control"
-                onChange={(e) => setH5pFileUpload(e)}
+                onChange={setH5pFileUpload}
               />
               <small className="h5p-disable-file-check helper-block">
-                <label className="">
+                <label>
                   <input
                     type="checkbox"
                     name="h5p_disable_file_check"

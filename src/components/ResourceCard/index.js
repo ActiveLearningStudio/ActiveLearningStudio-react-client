@@ -22,7 +22,7 @@ const ResourceCard = (props) => {
 
     const { resource, showDeletePopup } = props;
     // eslint-disable-next-line react/destructuring-assignment
-    console.log(resource);
+
     showDeletePopup(resource.id, resource.title, 'Activity');
   };
 

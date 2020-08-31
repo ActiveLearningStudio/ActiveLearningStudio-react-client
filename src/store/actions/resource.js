@@ -197,7 +197,7 @@ export const showDescribeActivity = (activity, metadata = null) => ({
   metadata,
 });
 
-export const showDescribeActivityAction = (activity, activityId = null, ) => async (dispatch) => {
+export const showDescribeActivityAction = (activity, activityId = null) => async (dispatch) => {
   try {
     if (activityId) {
       const response = await axios.get(
@@ -481,13 +481,17 @@ export const hidePreviewResourceModalAction = () => async (dispatch) => {
 
 // runs delete resource ajax
 export const deleteResourceAction = (resourceId) => async (dispatch) => {
-  const response = await resourceService.remove(resourceId);
+  try {
+    const response = await resourceService.remove(resourceId);
 
-  if (response.message) {
-    dispatch({
-      type: actionTypes.DELETE_RESOURCE,
-      payload: { resourceId },
-    });
+    if (response.data.status === 'success') {
+      dispatch({
+        type: actionTypes.DELETE_RESOURCE,
+        payload: { resourceId },
+      });
+    }
+  } catch (e) {
+    throw new Error(e);
   }
 };
 
@@ -517,7 +521,7 @@ export const onChangeActivityAction = (activity) => (dispatch) => {
 };
 
 // Metadata saving inside state when metadata form is submitted
-export const onSubmitDescribeActivityAction = (metadata, activityId = null) => (dispatch, ) => {
+export const onSubmitDescribeActivityAction = (metadata, activityId = null) => (dispatch) => {
   try {
     dispatch({
       type: actionTypes.DESCRIBE_ACTIVITY,
