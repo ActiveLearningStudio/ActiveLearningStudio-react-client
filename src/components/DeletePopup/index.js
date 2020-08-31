@@ -16,14 +16,11 @@ function Popup(props) {
   } = props;
 
   // remove popup when escape is pressed
-  const escFunction = useCallback(
-    (event) => {
-      if (event.keyCode === 27) {
-        hideDeletePopup(event);
-      }
-    },
-    [hideDeletePopup],
-  );
+  const escFunction = useCallback((event) => {
+    if (event.keyCode === 27) {
+      hideDeletePopup(event);
+    }
+  }, [hideDeletePopup]);
 
   useEffect(() => {
     document.addEventListener('keydown', escFunction, false);

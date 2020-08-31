@@ -94,9 +94,7 @@ const ResourceCard = (props) => {
                       <a
                         className="dropdown-item"
                         onClick={() => {
-                          const protocol = `${
-                            window.location.href.split('/')[0]
-                          }//`;
+                          const protocol = `${window.location.href.split('/')[0]}//`;
                           confirmAlert({
                             customUI: ({ onClose }) => (
                               <div className="share-project-preview-url project-share-check">
@@ -106,8 +104,7 @@ const ResourceCard = (props) => {
                                   {' '}
                                   <strong>{resource.title}</strong>
                                   <br />
-                                  Anyone with the link below can access your
-                                  activity:
+                                  Anyone with the link below can access your activity:
                                 </h3>
 
                                 <a
@@ -117,9 +114,7 @@ const ResourceCard = (props) => {
                                 >
                                   <input
                                     id="urllink_clip"
-                                    value={`${
-                                      protocol + window.location.host
-                                    }/shared/activity/${resource.id}`}
+                                    value={`${protocol + window.location.host}/shared/activity/${resource.id}`}
                                   />
                                 </a>
 
@@ -129,9 +124,7 @@ const ResourceCard = (props) => {
                                   aria-hidden="true"
                                   onClick={() => {
                                     /* Get the text field */
-                                    const copyText = document.getElementById(
-                                      'urllink_clip',
-                                    );
+                                    const copyText = document.getElementById('urllink_clip');
 
                                     /* Select the text field */
                                     copyText.focus();

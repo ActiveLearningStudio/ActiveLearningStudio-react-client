@@ -5,8 +5,8 @@ import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
-import { required, FadeDiv } from 'utils';
 
+import { required, FadeDiv } from 'utils';
 import {
   showBuildActivityAction,
   onSubmitDescribeActivityAction,
@@ -168,17 +168,17 @@ let ResourceDescribeActivity = (props) => {
                               </div>
                             </div>
                           ) : (
-                            <div className="new-box">
-                              <h2>Default Selected thumbnail</h2>
-                              <div className="imgbox">
-                                {/* eslint-disable-next-line max-len */}
-                                <img
-                                  src="https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280"
-                                  alt=""
-                                />
+                              <div className="new-box">
+                                <h2>Default Selected thumbnail</h2>
+                                <div className="imgbox">
+                                  {/* eslint-disable-next-line max-len */}
+                                  <img
+                                    src="https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280"
+                                    alt=""
+                                  />
+                                </div>
                               </div>
-                            </div>
-                          )}
+                            )}
                         </div>
 
                         <div className="button-flex">
@@ -233,9 +233,9 @@ let ResourceDescribeActivity = (props) => {
         }
         searchName={
           resource
-          && resource.newResource
-          && resource.newResource.activity
-          && !!resource.newResource.activity.activity_thumbnail_text
+            && resource.newResource
+            && resource.newResource.activity
+            && !!resource.newResource.activity.activity_thumbnail_text
             ? resource.newResource.activity.activity_thumbnail_text
             : resource.newResource.activity.title
         }

@@ -1,4 +1,4 @@
-import * as actionTypes from "../actionTypes";
+import * as actionTypes from '../actionTypes';
 
 const INITIAL_STATE = {
   isLoading: false,
@@ -15,7 +15,7 @@ const INITIAL_STATE = {
   },
   editResource: {
     params: {
-      data: "",
+      data: '',
     },
     metadata: {
       title: null,
@@ -82,7 +82,7 @@ export default (state = INITIAL_STATE, action) => {
             type: null,
           },
           params: {
-            data: "",
+            data: '',
           },
           metadata: {
             title: null,
@@ -93,7 +93,7 @@ export default (state = INITIAL_STATE, action) => {
         },
         editResource: {
           params: {
-            data: "",
+            data: '',
           },
           metadata: {
             title: null,
@@ -175,7 +175,7 @@ export default (state = INITIAL_STATE, action) => {
         showCreateResourcePopup: false,
         editResource: {
           params: {
-            data: "",
+            data: '',
           },
         },
         newResource: {
@@ -194,7 +194,7 @@ export default (state = INITIAL_STATE, action) => {
         showEditResourcePopup: false,
         editResource: {
           params: {
-            data: "",
+            data: '',
           },
         },
       };

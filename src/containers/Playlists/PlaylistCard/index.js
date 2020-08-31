@@ -88,20 +88,20 @@ class PlaylistCard extends React.Component {
   };
 
   handleClickPlaylistTitle = async () => {
-    this.setState(
-      {
-        editMode: true,
-      },
-      () => {
-        this.titleInput.focus();
-      },
-    );
+    this.setState({
+      editMode: true,
+    }, () => {
+      this.titleInput.focus();
+    });
   };
 
   render() {
     const { editMode } = this.state;
     const {
-      index, playlist, projectId, selectedProject,
+      index,
+      playlist,
+      projectId,
+      selectedProject,
     } = this.props;
 
     return (
@@ -116,9 +116,7 @@ class PlaylistCard extends React.Component {
               <div className="list-header" {...provided.dragHandleProps}>
                 <h2 className="list-header-name d-flex align-items-center">
                   <div
-                    className={`list-title-wrapper d-flex align-items-center ${
-                      editMode ? 'hide' : 'show'
-                    }`}
+                    className={`list-title-wrapper d-flex align-items-center ${editMode ? 'hide' : 'show'}`}
                     onClick={this.handleClickPlaylistTitle}
                   >
                     <span>{playlist.title}</span>

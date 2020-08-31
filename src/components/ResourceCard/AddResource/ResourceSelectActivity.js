@@ -48,7 +48,7 @@ let ResourceSelectActivity = (props) => {
         setActivities(activityItems);
         setSearchActivities(activityItems);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, [loadResourceItems, resource.newResource.activityTypeId]);
 
   const questionsContent = activities.map((activity) => (
@@ -124,8 +124,7 @@ let ResourceSelectActivity = (props) => {
                       <FontAwesomeIcon icon="chevron-left" />
                       Back
                     </div>
-                    Select the activity you want to build from the options
-                    below:
+                    Select the activity you want to build from the options below:
                   </h2>
                 </div>
               </div>

@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { loadH5pSettings } from 'store/actions/resource';
+import { loadH5pSettingsActivity } from 'store/actions/resource';
 
 const H5PEditor = (props) => {
-  const { h5pParams, resource } = props;
+  const { h5pParams, resource, loadH5pSettings } = props;
   const [submitAction, setSubmitAction] = useState('create');
   const [h5pFile, setH5pFile] = useState(null);
 
@@ -16,8 +16,8 @@ const H5PEditor = (props) => {
   };
 
   useEffect(() => {
-    props.loadH5pSettings();
-  }, [props]);
+    loadH5pSettings();
+  }, []);
 
   const onSubmitActionRadioChange = (e) => {
     setSubmitAction(e.currentTarget.value);
@@ -203,7 +203,7 @@ H5PEditor.defaultProps = {
   h5pParams: '',
 };
 const mapDispatchToProps = (dispatch) => ({
-  loadH5pSettings: () => dispatch(loadH5pSettings()),
+  loadH5pSettings: () => dispatch(loadH5pSettingsActivity()),
 });
 
 export default withRouter(connect(null, mapDispatchToProps)(H5PEditor));

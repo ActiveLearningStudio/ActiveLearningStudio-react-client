@@ -74,7 +74,7 @@ export const loadResourceAction = (resourceId) => async (dispatch) => {
   }
 };
 
-export const loadH5pSettings = () => async () => {
+export const loadH5pSettingsActivity = () => async () => {
   const response = await resourceService.h5pSetings();
 
   window.H5PIntegration = response.h5p.settings;
@@ -197,10 +197,7 @@ export const showDescribeActivity = (activity, metadata = null) => ({
   metadata,
 });
 
-export const showDescribeActivityAction = (
-  activity,
-  activityId = null,
-) => async (dispatch) => {
+export const showDescribeActivityAction = (activity, activityId = null, ) => async (dispatch) => {
   try {
     if (activityId) {
       const response = await axios.get(
@@ -253,8 +250,7 @@ export const resourceUnshared = (resourceId, resourceName) => {
       if (res.data.status === 'success') {
         Swal.fire({
           title: `You stopped sharing <strong>"${resourceName}"</strong> ! `,
-          html:
-            'Please remember that anyone you have shared this activity with,'
+          html: 'Please remember that anyone you have shared this activity with,'
             + ' will no longer have access to its contents.',
         });
       }
@@ -285,9 +281,7 @@ export const resourceShared = (resourceId, resourceName) => {
           html: `You can now share Activity <strong>"${resourceName}"</strong><br>
                 Anyone with the link below can access your activity:<br>
                 <br><a target="_blank" href="/shared/activity/${resourceId.trim()}
-                ">${
-  protocol + window.location.host
-}/shared/activity/${resourceId.trim()}</a>
+                ">${protocol + window.location.host}/shared/activity/${resourceId.trim()}</a>
               `,
         });
       }
@@ -523,9 +517,7 @@ export const onChangeActivityAction = (activity) => (dispatch) => {
 };
 
 // Metadata saving inside state when metadata form is submitted
-export const onSubmitDescribeActivityAction = (metadata, activityId = null) => (
-  dispatch,
-) => {
+export const onSubmitDescribeActivityAction = (metadata, activityId = null) => (dispatch, ) => {
   try {
     dispatch({
       type: actionTypes.DESCRIBE_ACTIVITY,

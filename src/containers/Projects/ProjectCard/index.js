@@ -116,12 +116,8 @@ const ProjectCard = (props) => {
                       <Dropdown.Item
                         to="#"
                         onClick={() => {
-                          const protocol = `${
-                            window.location.href.split('/')[0]
-                          }//`;
-                          const url = `${
-                            protocol + window.location.host
-                          }/project/shared/${project.id}`;
+                          const protocol = `${window.location.href.split('/')[0]}//`;
+                          const url = `${protocol + window.location.host}/project/shared/${project.id}`;
                           SharePreviewPopup(url, project.name);
                         }}
                       >
