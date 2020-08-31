@@ -82,12 +82,10 @@ const ResourceCard = (props) => {
                         to={`/playlist/preview/${playlist.id}/resource/${resource.id}`}
                       >
                         <FontAwesomeIcon icon="eye" />
-                        {' '}
                         Preview
                       </Link>
                       <Link
                         className="dropdown-item"
-
                         to={`/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
                       >
                         <FontAwesomeIcon icon="pen" />
