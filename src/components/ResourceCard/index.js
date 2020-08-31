@@ -48,6 +48,7 @@ const ResourceCard = (props) => {
                   <div
                     className="activity-thumb"
                     style={{
+
                       backgroundImage: resource.thumb_url.includes('pexels.com')
                         ? `url(${resource.thumb_url})`
                         : `url(${global.config.resourceUrl}${resource.thumb_url})`,
@@ -87,6 +88,7 @@ const ResourceCard = (props) => {
                       </Link>
                       <Link
                         className="dropdown-item"
+
                         to={`/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
                       >
                         <FontAwesomeIcon icon="pen" />

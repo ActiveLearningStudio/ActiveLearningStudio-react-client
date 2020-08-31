@@ -169,7 +169,7 @@ let ResourceDescribeActivity = (props) => {
                                     : `url(${global.config.resourceUrl}${resource.newResource.metadata.thumbUrl})`,
                                 }}
                               />
-                            </div>
+                             </div>
                           ) : (
                             <div className="new-box">
                               <h2>Default Selected thumbnail</h2>
