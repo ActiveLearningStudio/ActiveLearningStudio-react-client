@@ -44,7 +44,7 @@ let ResourceActivityType = (props) => {
         <div className="activity-item">
           <div
             className="activity-img"
-            style={{ backgroundImage: `url(${activityType.image})`, }}
+            style={{ backgroundImage: `url(${global.config.resourceUrl}${activityType.image})` }}
           />
 
           <div className="activity-content">
