@@ -48,7 +48,6 @@ const ResourceCard = (props) => {
                   <div
                     className="activity-thumb"
                     style={{
-
                       backgroundImage: resource.thumb_url.includes('pexels.com')
                         ? `url(${resource.thumb_url})`
                         : `url(${global.config.resourceUrl}${resource.thumb_url})`,
