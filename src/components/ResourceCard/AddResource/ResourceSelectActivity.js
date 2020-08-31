@@ -67,8 +67,11 @@ let ResourceSelectActivity = (props) => {
           <div className="content">
             <div
               className="activity-img"
+
               style={{
-                backgroundImage: `url(${global.config.resourceUrl}${activity.image})`,
+                backgroundImage: activity.image.includes('pexels.com')
+                  ? `url(${activity.image})`
+                  : `url(${global.config.resourceUrl}${activity.image})`,
               }}
             />
 
