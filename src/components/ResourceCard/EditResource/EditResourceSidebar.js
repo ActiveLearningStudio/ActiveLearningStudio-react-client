@@ -49,7 +49,6 @@ const EditResourceSidebar = ({ resource }) => {
           </div>
           <span className="name">Build Activity</span>
         </div>
-
       </div>
     </>
   );
