@@ -8,8 +8,13 @@ import { loadH5pSettingsActivity } from 'store/actions/resource';
 
 const H5PEditor = (props) => {
   const {
-    h5pParams, handleEditResourceSubmit, match, handleCreateResourceSubmit, resource, loadH5pSettings,
+    match,
+    h5pParams,
+    resource,
+    loadH5pSettings,
+    handleCreateResourceSubmit,
   } = props;
+
   const [submitAction, setSubmitAction] = useState('create');
   const [h5pFile, setH5pFile] = useState(null);
 
@@ -28,21 +33,11 @@ const H5PEditor = (props) => {
   const submitResource = (event) => {
     event.preventDefault();
 
-    if (0) {
-      const payload = {
-        event,
-        submitAction,
-        h5pFile,
-      };
-      handleEditResourceSubmit(
-        match.params.playlistid,
-        resource.newResource.activity.h5pLib,
-        resource.newResource.activity.h5pLibType,
-        payload,
-      );
-    } else if (submitAction === 'upload' && h5pFile === null) {
+    if (submitAction === 'upload' && h5pFile === null) {
       return true;
-    } else if (submitAction === 'upload' && h5pFile !== null) {
+    }
+
+    if (submitAction === 'upload' && h5pFile !== null) {
       const fileArr = h5pFile.name.split('.');
       const fileExtension = fileArr.length > 0 ? fileArr[fileArr.length - 1] : '';
       if (fileExtension !== 'h5p') {
@@ -132,10 +127,10 @@ const H5PEditor = (props) => {
                 <label>
                   <input
                     type="checkbox"
+                    className="mr-2"
                     name="h5p_disable_file_check"
                     id="h5p-disable-file-check"
                   />
-                  {' '}
                   Disable file extension check
                 </label>
               </small>
@@ -145,12 +140,12 @@ const H5PEditor = (props) => {
           <div className="form-group">
             <label className="control-label col-md-3">Method</label>
             <div className="col-md-6">
-              <label className="radio-inline">
+              <label className="radio-inline mr-4">
                 <input
                   type="radio"
                   name="action"
                   value="upload"
-                  className="laravel-h5p-type"
+                  className="laravel-h5p-type mr-2"
                   checked={submitAction === 'upload'}
                   onChange={onSubmitActionRadioChange}
                 />
@@ -162,7 +157,7 @@ const H5PEditor = (props) => {
                   type="radio"
                   name="action"
                   value="create"
-                  className="laravel-h5p-type"
+                  className="laravel-h5p-type mr-2"
                   checked={submitAction === 'create'}
                   onChange={onSubmitActionRadioChange}
                 />
@@ -194,7 +189,6 @@ H5PEditor.propTypes = {
   h5pLib: PropTypes.string,
   h5pParams: PropTypes.string,
   handleCreateResourceSubmit: PropTypes.func.isRequired,
-  handleEditResourceSubmit: PropTypes.func.isRequired,
   loadH5pSettings: PropTypes.func.isRequired,
 };
 

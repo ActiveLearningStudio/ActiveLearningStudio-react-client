@@ -139,7 +139,12 @@ class H5PEditor extends React.Component {
 
                 <small className="h5p-disable-file-check helper-block">
                   <label className="">
-                    <input type="checkbox" name="h5p_disable_file_check" id="h5p-disable-file-check" />
+                    <input
+                      type="checkbox"
+                      className="mr-2"
+                      name="h5p_disable_file_check"
+                      id="h5p-disable-file-check"
+                    />
                     {' '}
                     Disable file extension check
                   </label>

@@ -133,7 +133,6 @@ function ProjectPreviewShared(props) {
                       <li>
                         <div className="title_lg check">
                           <div>
-                            {' '}
                             {currentProject.name}
                           </div>
                         </div>

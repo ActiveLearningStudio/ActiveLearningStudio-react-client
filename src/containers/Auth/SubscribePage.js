@@ -69,8 +69,7 @@ class SubscribePage extends Component {
                 }));
               }}
             >
-              <FontAwesomeIcon icon={['far', allTerms ? 'check-square' : 'square']} />
-              {' '}
+              <FontAwesomeIcon icon={['far', allTerms ? 'check-square' : 'square']} className="mr-2" />
               I agree to the Curriki
               <a
                 onClick={() => {

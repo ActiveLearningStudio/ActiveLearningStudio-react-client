@@ -122,7 +122,7 @@ class LtiPlaylistPreviewShared extends React.Component {
           activity={activity}
           key={activity.id}
           handleSelect={this.handleSelect}
-          playlist={playlistId}
+          playlistId={playlistId}
           lti
           shared
         />
@@ -133,7 +133,7 @@ class LtiPlaylistPreviewShared extends React.Component {
           activity={activity}
           key={activity.id}
           handleSelect={this.handleSelect}
-          playlist={playlistId}
+          playlistId={playlistId}
           lti
           shared
         />
@@ -162,21 +162,21 @@ class LtiPlaylistPreviewShared extends React.Component {
       //     className="slide-control prev"
       //     onClick={() => this.handleSelect(previousResource.id)}
       //   >
-      //     <FontAwesomeIcon icon="arrow-left" />
-      //     <span> previous Activity</span>
+      //     <FontAwesomeIcon icon="arrow-left" className="mr-2" />
+      //     <span>Previous Activity</span>
       //   </a>
       // );
 
       previousLink1 = (
         <div className="slider-hover-section">
           <Link to={playlistId && `/playlist/shared/preview/${playlistId}/resource/${previousResource.id}`}>
-            {' '}
             <FontAwesomeIcon icon="chevron-left" />
           </Link>
 
           <div className="hover-control-caption pointer-cursor">
             <Link to={playlistId && `/playlist/shared/preview/${playlistId}/resource/${previousResource.id}`}>
               <div
+                className="img-in-hover"
                 style={{
                   backgroundImage: previousResource.thumbUrl
                     ? previousResource.thumbUrl.includes('pexels.com')
@@ -184,7 +184,6 @@ class LtiPlaylistPreviewShared extends React.Component {
                       : `url(${global.config.laravelAPIUrl}${previousResource.thumbUrl})`
                     : 'url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBw0NDQ0NDQ0NDQ0NDQ0NDg0NDQ8NDQ0NFREWFhURExMYHSggGBolGxUWITEhJSk3Li4uFx8zODMtNygtLjcBCgoKBQUFDgUFDisZExkrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIALcBEwMBIgACEQEDEQH/xAAaAAEBAQEBAQEAAAAAAAAAAAAAAgEDBAUH/8QANBABAQACAAEIBwgCAwAAAAAAAAECEQMEEiExQWFxkQUTFDJRUqEiM2JygYKxwdHhQvDx/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AP0QAAAAAAGgA0GNGgxo3QMNN0AzRpWjQJ0K0Akbo0CTTdAJGgMY0BgAAAAAAAAAAAAANCNAGgDdDQNGm6boGabpum6BOjStGgTo0rRoEaZpemWAnTNL0nQJFMBLKpNBgUAAAAAAAAAAAIEBsUyNBrWRUAbI2RsgMkVI2RsgM03TZG6BOjS9GgRo0vRoHPTNOmk2AixNjppNgIsYupoJTV1FBIUAAAAAAAAAAAIEBUUyKgCoyKgNipCRUAkVISKkBmm6duFwMsuqdHxvRHq4XIZ/yu+6f5B4Zjvqd+HyPO9f2Z39fk932OHOzH+a48Tlnyz9b/gFcPkeE6/tXv6vJw9IcLXNyk1Pdv8ASMuNnbLbei711R7uLj6zDo7ZueIPj6ZY6WJsBzsTY6WJsBzsTXSooJqK6VFBzo2sAAAAAAAAAAAIEBeKkxcBsVGRUBUXw8LeiS290duQcPDLKzOb6Nzp1H0888OFPhOySdYPFwuQZX3rMe7rr2cPkuGPZu/G9LzcTl1vuzXfemvbctY7vZN0HPiceTqxyyvdLrzefPjcS9lxndLvzd/asO/yb7Vh3+QPFzMvhl5U9Xl8t8q9vtOHf5HtOHf5A8Pq8vlvlXs5HbzdWWa6tzsV7Th3+R7Th3+QPJyng2Z3Utl6eiOF4WXy5eVfR9qw7/JXD4+OV1N76+oHyc8bOuWeM052Pf6S68fCvFQc6mrqKCKjJ0rnkCKxtYAAAAAAAAAAAQIC4uIxXAVFRMXAdODnzcplOy7/AEfX5Vhz+HddOpzo+NH1vR/E52Gu3Ho/TsB86Prcf7u/lfO4/D5udnZ1zwfR4/3d/KD52Memcly12b+DjwctZS3qlfSlmt9nxB86zXRetjpx8pcrZ1OYDHp5Lwt3nXqnV4ufG4VmWpN76YDjXbkXv/tv9OOU10V25F7/AO2/0B6S97Hwrw17vSXvY+FeGgipqqmgioyXUZA51jawAAAAAAAAAAAgQF4riIqAuKiIqAuPX6P4nNzk7Muj9ex44vGg+l6R4fRMvh0Xw/7/AC78f7u/lJZxeH+bHyv/AKco+7y/KD50VKiV6OTcHndN92fUHNfCw511590e7icLHKas8NdjODwphNdfeC8ZqajQB8/luOs9/GbOQ+/+2/078vx3jv5b9K8/IL9v9t/oG+kvex8K8Ne30n72Phf5eG0GVFVUUGVzyXUZAisbWAAAAAAAAAAAECAuKRFQFRURFQFxUrnKuUH0/RfE6MsP3T+3q5V93n4Pkcm4vMzxy7Jenw7X2crjZq2WXs3AfIxs6N9Xb2PZjy6SamGpO/8A09HqeF8uH0PVcL5cPoDj7f8Ah+p7f+H6u3quF8uH0PVcL5cPoDj7f+H6s9v/AAfX/Tv6rhfLh9D1XC+XD6A83E5bMsbOZ1zXX/pHo/7z9t/mPZ6nhfLh9G4YcPG7kxl+M0Dx+lPex8L/AC8Fr2+lbOdjq9l/l4LQZU1tTQZUVVTQTWNrAAAAAAAAAAACBAVGpigbFbQ0FytlRFbBcrZUSt2DpK3bntuwXs2jbdgrZanbNgrbLU7ZaDbWWs2zYNtTaMAqKpNBNCgAAAAAAAAAAAANjWANawBTdpaCtt2jbQXs2nZsF7No23YK2zbNs2Cts2zbNg3bKMA2wYDU1rKDKAAAAAAAAAAAAAA1gDRjQaMAUMAVs2wBu27SArbNsAbsYwGjAAYAAwAAAAAAAAAAAAAAAAAABu2ANAAawBoAAwBrAAAAYAAAAAAAAAAAP//Z)',
                 }}
-                className="img-in-hover"
               />
               <span>{previousResource.title}</span>
             </Link>
@@ -194,8 +193,8 @@ class LtiPlaylistPreviewShared extends React.Component {
     } else {
       // previousLink = (
       //   <a href="#" className="slide-control prev disabled-link">
-      //     <FontAwesomeIcon icon="chevron-left" />
-      //     <span> previous Activity</span>
+      //     <FontAwesomeIcon icon="chevron-left" className="mr-2" />
+      //     <span>Previous Activity</span>
       //   </a>
       // );
 
@@ -232,8 +231,7 @@ class LtiPlaylistPreviewShared extends React.Component {
                   }
                 }}
               >
-                <FontAwesomeIcon icon="chevron-left" />
-                {' '}
+                <FontAwesomeIcon icon="chevron-left" className="mr-2" />
                 Switch to previous playlist
               </Link>
             </div>
@@ -250,8 +248,8 @@ class LtiPlaylistPreviewShared extends React.Component {
       //     className="slide-control next"
       //     onClick={() => this.handleSelect(nextResource.id)}
       //   >
-      //     <FontAwesomeIcon icon="arrow-right" />
-      //     <span> Next Activity</span>
+      //     <FontAwesomeIcon icon="arrow-right" className="mr-2" />
+      //     <span>Next Activity</span>
       //   </a>
       // );
 
@@ -264,6 +262,7 @@ class LtiPlaylistPreviewShared extends React.Component {
           <div className="hover-control-caption pointer-cursor">
             <Link to={playlistId && `/playlist/shared/preview/${playlistId}/resource/${nextResource.id}`}>
               <div
+                className="img-in-hover"
                 style={{
                   backgroundImage: nextResource.thumbUrl
                     ? nextResource.thumbUrl.includes('pexels.com')
@@ -271,7 +270,6 @@ class LtiPlaylistPreviewShared extends React.Component {
                       : `url(${global.config.laravelAPIUrl}${nextResource.thumbUrl})`
                     : 'url(data:image/jpeg;base64,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)',
                 }}
-                className="img-in-hover"
               />
               <span>{nextResource.title}</span>
             </Link>
@@ -283,10 +281,12 @@ class LtiPlaylistPreviewShared extends React.Component {
       //   <a href="#" className="slide-control next disabled-link">
       //     <FontAwesomeIcon icon="arrow-right" />
       //     <span> Next Activity</span>
-      //     {/* <div className="hover-control-caption pointer-cursor">
+      //     {/*
+      //     <div className="hover-control-caption pointer-cursor">
       //       <img alt="thumb01" />
       //       <span></span>
-      //     </div> */}
+      //     </div>
+      //     */}
       //   </a>
       // );
 
@@ -325,8 +325,7 @@ class LtiPlaylistPreviewShared extends React.Component {
                 }}
               >
                 Switch to next playlist
-                {' '}
-                <FontAwesomeIcon icon="chevron-right" />
+                <FontAwesomeIcon icon="chevron-right" className="ml-2" />
               </Link>
             </div>
           </div>
@@ -360,7 +359,6 @@ class LtiPlaylistPreviewShared extends React.Component {
               </Link>
 
               <Link to={`/project/${selectedPlaylist.project.id}`}>
-                {' '}
                 <FontAwesomeIcon icon="times" />
               </Link>
             </div>
@@ -379,10 +377,12 @@ class LtiPlaylistPreviewShared extends React.Component {
                             : ''
                           : ''}
                       </div>
-                      {/* <div className="sub-heading">
+                      {/*
+                      <div className="sub-heading">
                         <span>From the playlist:</span>
                         {selectedPlaylist ? selectedPlaylist.title : ""}
-                      </div> */}
+                      </div>
+                      */}
                     </div>
                   </div>
 
@@ -392,7 +392,8 @@ class LtiPlaylistPreviewShared extends React.Component {
                       {nextLink1}
                     </div>
 
-                    {/* <div className="dropdown">
+                    {/*
+                    <div className="dropdown">
                       <button
                         className="btn"
                         type="button"
@@ -406,24 +407,25 @@ class LtiPlaylistPreviewShared extends React.Component {
                         className="dropdown-menu"
                         aria-labelledby="dropdownMenuButton"
                       >
-                        {/* {nextLink}
+                        {nextLink}
                         {previousLink}
                         <Link
                           to={`/project/preview2/${selectedPlaylist.project.id}`}
                           className="slide-control"
                         >
-                          <FontAwesomeIcon icon="share" />
+                          <FontAwesomeIcon icon="share" className="mr-2" />
                           Back to Project
                         </Link>
                         <Link
                           to={`/project/${selectedPlaylist.project.id}`}
                           className="slide-control"
                         >
-                          <FontAwesomeIcon icon="times-circle" />
+                          <FontAwesomeIcon icon="times-circle" className="mr-2" />
                           Exit
                         </Link>
                       </div>
-                    </div> */}
+                    </div>
+                    */}
                   </div>
                 </div>
 
@@ -446,7 +448,8 @@ class LtiPlaylistPreviewShared extends React.Component {
                         />
                       )}
                     </Suspense>
-                    {/* <div className="item-caption-bottom">
+                    {/*
+                    <div className="item-caption-bottom">
                       <p>
                         {selectedPlaylist.activities && selectedPlaylist.activities.length
                           ? selectedPlaylist.activities.filter((a) => a.id === resourceId).length > 0
@@ -454,7 +457,8 @@ class LtiPlaylistPreviewShared extends React.Component {
                             : ''
                           : ''}
                       </p>
-                    </div> */}
+                    </div>
+                    */}
                   </div>
                 </div>
               </div>
@@ -462,12 +466,11 @@ class LtiPlaylistPreviewShared extends React.Component {
               <div className="right-sidegolf-info">
                 <div className="back-header">
                   <div>
-                    {' '}
                     <Link
                       className="go-back-button-preview"
                       onClick={history.goBack}
                     >
-                      <FontAwesomeIcon icon="undo" />
+                      <FontAwesomeIcon icon="undo" className="mr-2" />
                       Back to Project
                     </Link>
                   </div>
@@ -490,16 +493,19 @@ class LtiPlaylistPreviewShared extends React.Component {
                     </div>
                   </div>
 
-                  {/* <Link
+                  {/*
+                  <Link
                     to={`/project/preview2/${selectedPlaylist.project.id}`}
                     className="link"
                   >
                     <img src="/images/right-arrow.png" className="back-arrow" />
                     Back to {selectedPlaylist.project.name}
-                  </Link> */}
+                  </Link>
+                  */}
                 </div>
 
-                {/* <button
+                {/*
+                <button
                   type="button"
                   data-toggle="collapse"
                   aria-expanded="false"
@@ -513,7 +519,8 @@ class LtiPlaylistPreviewShared extends React.Component {
                       <FontAwesomeIcon icon="angle-up" />
                     </div>
                   </div>
-                </button> */}
+                </button>
+                */}
 
                 <div className="scrollDiv long">
                   <div className="watcher">

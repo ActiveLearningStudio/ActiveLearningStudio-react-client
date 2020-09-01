@@ -79,16 +79,14 @@ const ResourceCard = (props) => {
                         className="dropdown-item"
                         to={`/playlist/preview/${playlist.id}/resource/${resource.id}`}
                       >
-                        <FontAwesomeIcon icon="eye" />
-                        {' '}
+                        <FontAwesomeIcon icon="eye" className="mr-2" />
                         Preview
                       </Link>
                       <Link
                         className="dropdown-item"
                         to={`/project/${match.params.projectId}/playlist/${playlist.id}/activity/create/${resource.id}`}
                       >
-                        <FontAwesomeIcon icon="pen" />
-                        {' '}
+                        <FontAwesomeIcon icon="pen" className="mr-2" />
                         Edit
                       </Link>
                       <a
@@ -156,8 +154,7 @@ const ResourceCard = (props) => {
                           });
                         }}
                       >
-                        <FontAwesomeIcon icon="share" />
-                        {' '}
+                        <FontAwesomeIcon icon="share" className="mr-2" />
                         Share
                       </a>
                       <a
@@ -174,13 +171,11 @@ const ResourceCard = (props) => {
                           });
                         }}
                       >
-                        <FontAwesomeIcon icon="times-circle" />
-                        {' '}
+                        <FontAwesomeIcon icon="times-circle" className="mr-2" />
                         Executable
                       </a>
                       <a className="dropdown-item" onClick={handleDelete}>
-                        <FontAwesomeIcon icon="times-circle" />
-                        {' '}
+                        <FontAwesomeIcon icon="times-circle" className="mr-2" />
                         Delete
                       </a>
                     </Dropdown.Menu>
