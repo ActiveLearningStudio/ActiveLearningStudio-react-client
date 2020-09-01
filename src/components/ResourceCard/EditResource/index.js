@@ -20,17 +20,14 @@ const EditResource = (props) => {
   const {
     match,
     resource,
-    // openEditResourcePopup,
     showDescribeActivity,
-    // showBuildActivity,
     showResourceDescribeActivity,
     handleHideCreateResourceModal,
   } = props;
 
   useEffect(() => {
-    showDescribeActivity(null, match.params.activityId);
-    // showBuildActivity(null, null, match.params.activityId); // show create resource activity wizard
-  }, [match, showDescribeActivity]);
+    showResourceDescribeActivity(resource, match.params.activityId);
+  }, [match, resource, showDescribeActivity, showResourceDescribeActivity]);
 
   return (
     <div className="resource-modal">

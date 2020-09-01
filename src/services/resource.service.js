@@ -53,6 +53,11 @@ const h5pSetings = () => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const h5pSetingsUpdate = (activityId, dataUpload) => httpService
+  .put(`/${apiVersion}/activities/${activityId}`, dataUpload)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const h5pToken = (dataH5p) => httpService
   .post(`/${apiVersion}/h5p`, dataH5p)
   .then(({ data }) => data)
@@ -60,6 +65,11 @@ const h5pToken = (dataH5p) => httpService
 
 const createActivity = (dataActivity) => httpService
   .post(`/${apiVersion}/activities`, dataActivity)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const activityH5p = (activityId) => httpService
+  .get(`/${apiVersion}/activities/${activityId}/detail`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -76,4 +86,6 @@ export default {
   h5pSetings,
   h5pToken,
   createActivity,
+  activityH5p,
+  h5pSetingsUpdate,
 };

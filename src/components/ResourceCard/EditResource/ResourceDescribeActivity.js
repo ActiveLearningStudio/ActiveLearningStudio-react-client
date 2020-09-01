@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
-// import PexelsAPI from 'pexels-api-wrapper';
+import Swal from 'sweetalert2';
 
 import { required, FadeDiv } from 'utils';
 import {
@@ -11,55 +11,34 @@ import {
   showBuildActivityAction,
   onSubmitDescribeActivityAction,
 } from 'store/actions/resource';
+import PexelsAPI from 'components/models/pexels';
+import { subjects, educationLevels } from 'components/ResourceCard/AddResource/dropdownData';
+import computer from 'assets/images/computer.svg';
+import pexel from 'assets/images/pexel.png';
 import EditResourceSidebar from './EditResourceSidebar';
 import MetaTitleInputField from '../fields/MetaTitleInputField';
 import MetaSubjectsField from '../fields/MetaSubjectsField';
 import MetaEducationLevelInputField from '../fields/MetaEducationLevelInputField';
 
-// const pexelsClient = new PexelsAPI('563492ad6f91700001000001155d7b75f5424ea694b81ce9f867dddf');
-
-export const uploadEditThumb = async (e, props) => {
+export const uploadThumb = async (e, props) => {
   const formData = new FormData();
   try {
-    formData.append('uploads', e.target.files[0]);
-
+    formData.append('thumb', e.target.files[0]);
     await props.uploadResourceThumbnail(formData);
   } catch (err) {
-    // console.log(err);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Failed to upload thumb.',
+    });
   }
 };
 
-const subjects = [{ subject: 'Arts', value: 'Arts' },
-  { subject: 'Career & Technical Education', value: 'CareerTechnicalEducation' },
-  { subject: 'Computer Science', value: 'ComputerScience' },
-  { subject: 'Language Arts', value: 'LanguageArts' },
-  { subject: 'Mathematics', value: 'Mathematics' },
-  { subject: 'Science', value: 'Science' },
-  { subject: 'Social Studies', value: 'SocialStudies' },
-];
-
-const educationLevels = [
-  { name: 'Preschool (Ages 0-4)', value: '1' },
-  { name: 'Kindergarten-Grade 2 (Ages 5-7)', value: '2' },
-  { name: 'Grades 3-5 (Ages 8-10)', value: '3' },
-  { name: 'Grades 6-8 (Ages 11-13)', value: '4' },
-  { name: 'Grades 9-10 (Ages 14-16)', value: '5' },
-  { name: 'Grades 11-12 (Ages 16-18)', value: '6' },
-  { name: 'College & Beyond', value: '7' },
-  { name: 'Professional Development', value: '8' },
-  { name: 'Special Education', value: '9' },
-];
-
-let imageValidation = '';
+const imageValidation = '';
 const onSubmit = async (values, dispatch, props) => {
   try {
-    // image validation
-    if (!props.resource.editResource.metadata.thumbUrl) {
-      imageValidation = '* Required';
-      return false;
-    }
     props.onSubmitDescribeActivity(values, props.match.params.activityId);
-    props.showBuildActivity(null, null, props.match.params.activityId); // show create resource activity wizard
+    dispatch(props.showBuildActivity(null, null, props.match.params.activityId)); // show create resource activity wizard
   } catch (e) {
     // console.log(e.message);
   }
@@ -67,6 +46,8 @@ const onSubmit = async (values, dispatch, props) => {
 
 let ResourceDescribeActivity = (props) => {
   const { resource, handleSubmit } = props;
+  const [modalShow, setModalShow] = useState(false);
+  const openFile = useRef();
 
   return (
     <div className="row">
@@ -100,46 +81,6 @@ let ResourceDescribeActivity = (props) => {
                         </div>
                       </div>
                     </div>
-
-                    <div className="row">
-                      <div className="col-md-12">
-                        <div className="upload-thumbnail check">
-                          <h2>Upload thumbnail</h2>
-                          <label>
-                            <input
-                              type="file"
-                              onChange={(e) => uploadEditThumb(e, props)}
-                              accept="image/x-png,image/jpeg"
-                            />
-                            <span>Upload</span>
-                          </label>
-
-                          <span className="validation-error">
-                            {imageValidation}
-                          </span>
-
-                          {resource.progress}
-
-                          {resource.editResource.metadata.thumbUrl && (
-                            <div className="thumb-display">
-                              <div
-                                className="success"
-                                style={{ color: 'green', marginBottom: '20px', fontSize: '20px' }}
-                              >
-                                Image Uploaded:
-                              </div>
-                              <div className="thumb">
-                                <img
-                                  src={global.config.laravelAPIUrl + resource.editResource.metadata.thumbUrl}
-                                  alt=""
-                                />
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
                     <div className="row">
                       <div className="col-md-6">
                         <div className="meta-subjects">
@@ -167,6 +108,83 @@ let ResourceDescribeActivity = (props) => {
                         </div>
                       </div>
                     </div>
+                    <div className="upload-thumbnail check">
+                      <div className="upload_placeholder">
+                        <label style={{ display: 'none' }}>
+                          <input
+                            ref={openFile}
+                            type="file"
+                            onChange={(e) => uploadThumb(e, props)}
+                            accept="image/x-png,image/jpeg"
+                          />
+                          <span>Upload</span>
+                        </label>
+
+                        <span className="validation-error">
+                          {imageValidation}
+                        </span>
+
+                        <div>
+                          {resource.progress}
+
+                          {resource.editResource.metadata.thumbUrl ? (
+                            <div className="thumb-display">
+                              <div
+                                className="success"
+                                style={{
+                                  color: 'green',
+                                  marginBottom: '20px',
+                                  fontSize: '20px',
+                                }}
+                              >
+                                Image Uploaded:
+                              </div>
+                              <div
+                                className="imgbox"
+                                style={{
+                                  backgroundImage: resource.editResource.metadata.thumbUrl.includes('pexels.com')
+                                    ? `url(${resource.editResource.metadata.thumbUrl})`
+                                    : `url(${global.config.resourceUrl}${resource.editResource.metadata.thumbUrl})`,
+                                }}
+                              />
+                            </div>
+                          ) : (
+                            <div className="new-box">
+                              <h2>Default Selected thumbnail</h2>
+                              <div className="imgbox">
+                                {/* eslint-disable-next-line max-len */}
+                                <img
+                                  src="https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280"
+                                  alt=""
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="button-flex">
+                          <h2>Change thumbnail from below options</h2>
+
+                          <div
+                            className="pexel"
+                            onClick={() => setModalShow(true)}
+                          >
+                            <img src={pexel} alt="pexel" />
+                            <p>Select from Pexels</p>
+                          </div>
+
+                          <div
+                            className="gallery"
+                            onClick={() => {
+                              openFile.current.click();
+                            }}
+                          >
+                            <img src={computer} alt="" />
+                            <p>Upload a Photo From your computer</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
                     <div className="row">
                       <div className="col-md-12">
@@ -180,6 +198,18 @@ let ResourceDescribeActivity = (props) => {
           </FadeDiv>
         </div>
       </div>
+
+      <PexelsAPI
+        show={modalShow}
+        resourceName={
+          resource
+          && resource.newResource
+          && resource.newResource.activity
+          && resource.newResource.activity.title
+        }
+        searchName="abstract"
+        onHide={() => setModalShow(false)}
+      />
     </div>
   );
 };
