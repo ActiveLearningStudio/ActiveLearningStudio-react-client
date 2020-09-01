@@ -5,6 +5,9 @@ import resourceService from 'services/resource.service';
 import projectService from 'services/project.service';
 import * as actionTypes from '../actionTypes';
 
+// global variable for h5p object
+let h5pid;
+
 export const loadResourceTypesAction = () => async (dispatch) => {
   try {
     dispatch({
@@ -174,15 +177,11 @@ export const showBuildActivityAction = (
 ) => async (dispatch) => {
   try {
     if (activityId) {
-      const response = await axios.get(
-        `${global.config.laravelAPIUrl}/activity/${activityId}`,
-      );
-
-      const lib = `${response.data.data.libraryName} ${response.data.data.majorVersion}.${response.data.data.minorVersion}`;
-
-      dispatch(
-        showBuildActivity(lib, response.data.data.type, response.data.data.h5p),
-      );
+      const response = await resourceService.activityH5p(activityId);
+      const { activity } = response;
+      h5pid = activity;
+      const lib = `${activity.library_name} ${activity.major_version}.${activity.minor_version}`;
+      dispatch(showBuildActivity(lib, activity.type, activity.h5p));
     } else {
       dispatch(showBuildActivity(editor, editorType, ''));
     }
@@ -200,20 +199,17 @@ export const showDescribeActivity = (activity, metadata = null) => ({
 export const showDescribeActivityAction = (activity, activityId = null) => async (dispatch) => {
   try {
     if (activityId) {
-      const response = await axios.get(
-        `${global.config.laravelAPIUrl}/activity/${activityId}`,
-      );
-      let metadata = {
-        title: '',
-        subjectId: '',
-        educationLevelId: '',
-      };
-
-      if (response.data.data.metadata != null) {
-        metadata = response.data.data.metadata;
+      const response = await resourceService.activityH5p(activityId);
+      if (response.activity) {
+        const metadata = {
+          title: response.activity.title,
+          subjectId: response.activity.subject_id,
+          educationLevelId: response.activity.education_level_id,
+          thumbUrl: response.activity.thumb_url,
+          type: response.activity.type,
+        };
+        dispatch(showDescribeActivity(activity, metadata));
       }
-
-      dispatch(showDescribeActivity(activity, metadata));
     } else {
       dispatch(showDescribeActivity(activity));
     }
@@ -296,34 +292,24 @@ export const editResourceAction = (
   metadata,
 ) => async (dispatch) => {
   try {
-    const { token } = JSON.parse(localStorage.getItem('auth'));
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    };
-
-    // h5pEditorCopy to be taken from h5papi/storage/h5p/laravel-h5p/js/laravel-h5p.js
-    const data = {
-      library: window.h5peditorCopy.getLibrary(),
-      parameters: JSON.stringify(window.h5peditorCopy.getParams()),
+    const dataUpload = {
+      title: metadata.metaContent && metadata.metaContent.metaTitle,
+      content: 'create',
+      thumb_url: metadata.thumbUrl,
+      subject_id:
+      metadata.metaContent.metaSubject
+      && metadata.metaContent.metaSubject.subject,
+      education_level_id:
+      metadata.metaContent.metaEducationalLevels
+      && metadata.metaContent.metaEducationalLevels.name,
+      h5p_content_id: h5pid.id,
       action: 'create',
     };
 
-    const response = await axios.put(
-      `${global.config.laravelAPIUrl}/activity/${activityId}`,
-      {
-        playlistId,
-        metadata,
-        action: 'create',
-        data,
-      },
-      {
-        headers,
-      },
-    );
+    const response = await resourceService.h5pSetingsUpdate(activityId, dataUpload);
 
     const resource = {};
-    resource.id = response.data.data.id;
+    resource.id = response.id;
 
     dispatch(editResource(playlistId, resource, editor, editorType));
   } catch (e) {
@@ -484,12 +470,14 @@ export const deleteResourceAction = (resourceId) => async (dispatch) => {
   try {
     const response = await resourceService.remove(resourceId);
 
-    if (response.data.status === 'success') {
+    if (!response.message) {
       dispatch({
         type: actionTypes.DELETE_RESOURCE,
         payload: { resourceId },
       });
     }
+
+    window.location.reload();
   } catch (e) {
     throw new Error(e);
   }

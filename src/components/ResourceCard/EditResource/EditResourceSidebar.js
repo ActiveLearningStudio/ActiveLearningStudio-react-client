@@ -13,10 +13,6 @@ import {
 
 const EditResourceSidebar = ({ resource }) => {
   const {
-    isActivityTypeFilled,
-    isResourceActivityType,
-    isSelectActivityFilled,
-    isResourceSelectActivity,
     isDescribeFilled,
     isResourceDescribeActivity,
     isResourceActivityBuild,
@@ -25,36 +21,6 @@ const EditResourceSidebar = ({ resource }) => {
   return (
     <>
       <div className="create-resource-sidebar">
-        <div
-          className={classnames('activity-sidebar-btn first', {
-            filled: isActivityTypeFilled,
-            selected: isResourceActivityType,
-          })}
-        >
-          <div className="btn-box">
-            <div className="number-box">
-              <span className="number">1</span>
-            </div>
-            <span className="bottom-vertical-line" />
-          </div>
-          <span className="name">Pick Activity Type</span>
-        </div>
-
-        <div
-          className={classnames('activity-sidebar-btn', {
-            filled: isSelectActivityFilled,
-            selected: isResourceSelectActivity,
-          })}
-        >
-          <div className="btn-box">
-            <span className="top-vertical-line" />
-            <div className="number-box">
-              <span className="number">2</span>
-            </div>
-            <span className="bottom-vertical-line" />
-          </div>
-          <span className="name">Select Activity</span>
-        </div>
 
         <div
           className={classnames('activity-sidebar-btn', {
@@ -77,13 +43,13 @@ const EditResourceSidebar = ({ resource }) => {
           })}
         >
           <div className="btn-box">
-            {/* <span className="top-vertical-line"></span> */}
             <div className="number-box">
               <span className="number">2</span>
             </div>
           </div>
           <span className="name">Build Activity</span>
         </div>
+
       </div>
     </>
   );
