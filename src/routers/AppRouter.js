@@ -51,6 +51,12 @@ const AppRouter = () => {
         {/* <PublicRoute exact path="/confirm-email/:confirmationId" component={ConfirmPage} /> */}
 
         <PrivateRoute exact path="/account" component={ProfilePage} />
+        <PrivateRoute
+          exact
+          path="/playlist/preview/:playlistId/resource/:resourceId"
+          component={PreviewPage}
+          previewType="playlist"
+        />
 
         {/*
 
@@ -65,13 +71,6 @@ const AppRouter = () => {
           path="/resource/preview/:resourceId"
           component={PreviewPage}
           previewType="resource"
-        />
-
-        <PrivateRoute
-          exact
-          path="/playlist/preview/:playlistId/resource/:resourceId"
-          component={PreviewPage}
-          previewType="playlist"
         />
 
         <Route

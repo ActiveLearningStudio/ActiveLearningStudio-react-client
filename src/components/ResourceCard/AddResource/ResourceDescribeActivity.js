@@ -160,12 +160,15 @@ let ResourceDescribeActivity = (props) => {
                               >
                                 Image Uploaded:
                               </div>
-                              <div className="imgbox">
-                                <img
-                                  src={resource.newResource.metadata.thumbUrl}
-                                  alt="thumbnail"
-                                />
-                              </div>
+
+                              <div
+                                className="imgbox"
+                                style={{
+                                  backgroundImage: resource.newResource.metadata.thumbUrl.includes('pexels.com')
+                                    ? `url(${resource.newResource.metadata.thumbUrl})`
+                                    : `url(${global.config.resourceUrl}${resource.newResource.metadata.thumbUrl})`,
+                                }}
+                              />
                             </div>
                           ) : (
                             <div className="new-box">

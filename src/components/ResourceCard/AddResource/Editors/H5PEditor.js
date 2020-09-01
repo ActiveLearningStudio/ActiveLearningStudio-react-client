@@ -196,6 +196,7 @@ H5PEditor.defaultProps = {
   h5pLib: '',
   h5pParams: '',
 };
+
 const mapDispatchToProps = (dispatch) => ({
   loadH5pSettings: () => dispatch(loadH5pSettingsActivity()),
 });
