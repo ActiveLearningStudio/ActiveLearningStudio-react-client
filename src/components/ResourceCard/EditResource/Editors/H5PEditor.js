@@ -78,31 +78,8 @@ const H5PEditorEdit = (props) => {
             </div>
           </div>
         </div>
-        <div className="form-group laravel-h5p-upload-container">
-          <label htmlFor="inputUpload" className="control-label col-md-3">
-            Upload
-          </label>
-          <div className="col-md-12">
-            <input
-              type="file"
-              name="h5p_file"
-              id="h5p-file"
-              className="laravel-h5p-upload form-control"
-            />
-            <small className="h5p-disable-file-check helper-block">
-              <label>
-                <input
-                  type="checkbox"
-                  name="h5p_disable_file_check"
-                  id="h5p-disable-file-check"
-                />
-                Disable file extension check
-              </label>
-            </small>
-          </div>
-        </div>
 
-        <div className="form-group">
+        <div className="form-group" style={{ display: 'none' }}>
           <label className="control-label col-md-3">Method</label>
           <div className="col-md-6">
             <label className="radio-inline">
