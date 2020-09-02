@@ -26,6 +26,7 @@ const ConfirmEmailPage = loadable(() => import('../containers/Auth/ConfirmEmailP
 // const ConfirmPage = loadable(() => import('../containers/ConfirmEmail'));
 
 const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
+const DashboardPage = loadable(() => import('../containers/Dashboard/DashboardPage'));
 
 const ProjectsPage = loadable(() => import('../containers/Projects'));
 const PlaylistsPage = loadable(() => import('../containers/Playlists'));
@@ -51,6 +52,7 @@ const AppRouter = () => {
         {/* <PublicRoute exact path="/confirm-email/:confirmationId" component={ConfirmPage} /> */}
 
         <PrivateRoute exact path="/account" component={ProfilePage} />
+        <PrivateRoute exact path="/dashboard" component={DashboardPage} />
         <PrivateRoute
           exact
           path="/playlist/preview/:playlistId/resource/:resourceId"

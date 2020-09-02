@@ -155,3 +155,8 @@ export const LOAD_RESOURCE_ITEMS_FAIL = 'LOAD_RESOURCE_ITEMS_FAIL';
 /* Activity */
 
 export const SET_LMS_COURSE = 'SET_LMS_COURSE';
+
+/* Metrics */
+
+export const GET_USER_METRICS = 'GET_USER_METRICS';
+export const GET_USER_MEMBERSHIP = 'GET_USER_MEMBERSHIP';
