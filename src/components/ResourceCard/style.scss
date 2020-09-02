@@ -5,3 +5,23 @@
 .resource-drag-dashed {
   border-style: dashed;
 }
+
+.share-project-preview-url.project-share-check {
+  h3 {
+        text-align: center;
+        padding-bottom: 10px;
+        font-size: 16px;
+        font-weight: 400;
+  }
+
+  input {
+        width: 90%;
+        border: none;
+        cursor: pointer;
+        color: #007bff;
+        text-align: center;
+        margin-bottom: 10px;
+  }
+}
+  
+  

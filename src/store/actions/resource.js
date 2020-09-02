@@ -490,7 +490,7 @@ export const onChangeActivityAction = (activity) => (dispatch) => {
       payload: { activity },
     });
   } catch (e) {
-    console.log(e);
+    return e;
   }
 };
 
@@ -505,7 +505,7 @@ export const onSubmitDescribeActivityAction = (metadata, activityId = null) => (
       },
     });
   } catch (e) {
-    console.log(e);
+    return e;
   }
 };
 
@@ -542,4 +542,14 @@ export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
   } catch (e) {
     // throw new Error(e);
   }
+};
+
+export const ActiveShareActivity = async (actvityId) => {
+  const result = await resourceService.activeShare(actvityId);
+  return result;
+};
+
+export const loadh5pShareResource = async (actvityId) => {
+  const result = await resourceService.loadH5pShared(actvityId);
+  return result;
 };

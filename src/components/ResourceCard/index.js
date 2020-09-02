@@ -10,6 +10,7 @@ import { Dropdown } from 'react-bootstrap';
 
 import logo from 'assets/images/logo.svg';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
+import { ActiveShareActivity } from 'store/actions/resource';
 // import ShareLink from './ShareLink';
 
 import './style.scss';
@@ -84,17 +85,19 @@ const ResourceCard = (props) => {
                         <FontAwesomeIcon icon="eye" />
                         Preview
                       </Link>
+
                       <Link
                         className="dropdown-item"
                         to={`/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
                       >
                         <FontAwesomeIcon icon="pen" />
-                        {' '}
                         Edit
                       </Link>
-                      <a
+
+                      <Dropdown.Item
                         className="dropdown-item"
-                        onClick={() => {
+                        onClick={async () => {
+                          ActiveShareActivity(resource.id);
                           const protocol = `${window.location.href.split('/')[0]}//`;
                           confirmAlert({
                             customUI: ({ onClose }) => (
@@ -144,7 +147,9 @@ const ResourceCard = (props) => {
                                       allowOutsideClick: false,
                                     });
                                   }}
-                                />
+                                >
+                                  <FontAwesomeIcon icon="clipboard" />
+                                </i>
                                 <br />
 
                                 <div className="close-btn">
@@ -160,8 +165,9 @@ const ResourceCard = (props) => {
                         <FontAwesomeIcon icon="share" />
                         {' '}
                         Share
-                      </a>
-                      <a
+                      </Dropdown.Item>
+
+                      <Dropdown.Item
                         className="dropdown-item"
                         href="#"
                         onClick={() => {
@@ -176,14 +182,13 @@ const ResourceCard = (props) => {
                         }}
                       >
                         <FontAwesomeIcon icon="times-circle" />
-                        {' '}
                         Executable
-                      </a>
-                      <a className="dropdown-item" onClick={handleDelete}>
+                      </Dropdown.Item>
+
+                      <Dropdown.Item className="dropdown-item" onClick={handleDelete}>
                         <FontAwesomeIcon icon="times-circle" />
-                        {' '}
                         Delete
-                      </a>
+                      </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </div>
