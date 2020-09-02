@@ -367,7 +367,6 @@ export const createResourceAction = (
       const insertedResource = await resourceService.createActivity(createActivityDate);
 
       resource.id = insertedResource.id;
-      resource.mysqlid = insertedResource.mysqlid;
 
       dispatch(createResource(playlistId, resource, editor, editorType));
       // dispatch(hideCreateResourceModal());
@@ -416,7 +415,6 @@ export const createResourceByH5PUploadAction = (
 
       const resource = { ...responseActivity };
       resource.id = responseActivity.activity.id;
-      resource.mysqlid = responseActivity.mysqlid;
 
       dispatch(createResource(playlistId, resource, editor, editorType));
       window.location.href = `/project/${projectId}`;

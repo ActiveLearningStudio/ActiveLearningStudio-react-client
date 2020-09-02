@@ -20,15 +20,13 @@ const EditResource = (props) => {
   const {
     match,
     resource,
-    update_activity,
-    showDescribeActivity,
     showResourceDescribeActivity,
     handleHideCreateResourceModal,
   } = props;
 
   useEffect(() => {
     showResourceDescribeActivity(resource, match.params.activityId);
-  }, []);
+  }, [match.params.activityId, resource, showResourceDescribeActivity]);
 
   return (
     <div className="resource-modal">
@@ -84,9 +82,6 @@ const EditResource = (props) => {
 EditResource.propTypes = {
   match: PropTypes.object.isRequired,
   resource: PropTypes.object.isRequired,
-  // openEditResourcePopup: PropTypes.bool.isRequired,
-  //showDescribeActivity: PropTypes.func.isRequired,
-  // showBuildActivity: PropTypes.func.isRequired,
   showResourceDescribeActivity: PropTypes.func.isRequired,
   handleHideCreateResourceModal: PropTypes.func.isRequired,
   handleCreateResourceSubmit: PropTypes.func.isRequired,
