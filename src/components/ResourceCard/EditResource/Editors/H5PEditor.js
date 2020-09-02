@@ -17,10 +17,6 @@ const H5PEditorEdit = (props) => {
     loadH5pSettings();
   }, [loadH5pSettings]);
 
-  // const setH5pFileUpload = (e) => {
-  //   setH5pFile(e.target.files[0]);
-  // };
-
   const onSubmitActionRadioChange = (e) => {
     setSubmitAction(e.currentTarget.value);
   };
@@ -78,6 +74,7 @@ const H5PEditorEdit = (props) => {
             </div>
           </div>
         </div>
+
         <div className="form-group laravel-h5p-upload-container">
           <label htmlFor="inputUpload" className="control-label col-md-3">
             Upload
@@ -102,7 +99,7 @@ const H5PEditorEdit = (props) => {
           </div>
         </div>
 
-        <div className="form-group">
+        <div className="form-group" style={{ display: 'none' }}>
           <label className="control-label col-md-3">Method</label>
           <div className="col-md-6">
             <label className="radio-inline">

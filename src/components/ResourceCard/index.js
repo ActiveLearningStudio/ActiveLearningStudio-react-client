@@ -110,7 +110,7 @@ const ResourceCard = (props) => {
 
                                 <a
                                   target="_blank"
-                                  href={`/shared/activity/${resource.id.trim()}`}
+                                  href={`/shared/activity/${resource.id}`}
                                   rel="noopener noreferrer"
                                 >
                                   <input

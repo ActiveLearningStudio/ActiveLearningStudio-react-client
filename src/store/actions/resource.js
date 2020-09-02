@@ -346,42 +346,37 @@ export const createResourceAction = (
   };
 
   const insertedH5pResource = await resourceService.h5pToken(data);
-
-  if (!insertedH5pResource.fail) {
-    const resource = insertedH5pResource;
-
-    const createActivityDate = {
-      h5p_content_id: resource.id,
-      playlist_id: playlistId,
-      thumb_url: metadata.thumbUrl,
-      action: 'create',
-      title: metadata.metaContent.metaTitle,
-      type: 'h5p',
-      content: 'place_holder',
-      subject_id:
+  try {
+    if (!insertedH5pResource.fail) {
+      const resource = insertedH5pResource;
+      const createActivityDate = {
+        h5p_content_id: resource.id,
+        playlist_id: playlistId,
+        thumb_url: metadata.thumbUrl,
+        action: 'create',
+        title: metadata.metaContent.metaTitle,
+        type: 'h5p',
+        content: 'place_holder',
+        subject_id:
         metadata.metaContent.metaSubject
         && metadata.metaContent.metaSubject.subject,
-      education_level_id:
+        education_level_id:
         metadata.metaContent.metaEducationalLevels
         && metadata.metaContent.metaEducationalLevels.name,
-    };
-    const insertedResource = await resourceService.createActivity(
-      createActivityDate,
-    );
+      };
+      const insertedResource = await resourceService.createActivity(createActivityDate);
 
-    resource.id = insertedResource.id;
-    resource.mysqlid = insertedResource.mysqlid;
+      resource.id = insertedResource.id;
 
-    dispatch(createResource(playlistId, resource, editor, editorType));
-    // dispatch(hideCreateResourceModal());
-    window.location.href = `/project/${projectId}`;
-  } else {
-    dispatch(validationErrorsResource());
+      dispatch(createResource(playlistId, resource, editor, editorType));
+      // dispatch(hideCreateResourceModal());
+      window.location.href = `/project/${projectId}`;
+    } else {
+      dispatch(validationErrorsResource());
+    }
+  } catch (e) {
+    throw new Error(e);
   }
-  // } catch (e) {
-  //   alert("dsf");
-  //   throw new Error(e);
-  // }
 };
 
 export const createResourceByH5PUploadAction = (
@@ -390,48 +385,39 @@ export const createResourceByH5PUploadAction = (
   editorType,
   payload,
   metadata,
+  projectId,
 ) => async (dispatch) => {
   try {
-    const { token } = JSON.parse(localStorage.getItem('auth'));
     const formData = new FormData();
     formData.append('h5p_file', payload.h5pFile);
     formData.append('action', 'upload');
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data',
-        Authorization: `Bearer ${token}`,
-      },
-    };
 
-    const responseUpload = await axios.post(
-      `${global.config.h5pAjaxUrl}/api/h5p`,
-      formData,
-      config,
-    );
+    const responseUpload = await resourceService.h5pToken(formData);
 
-    const dataUpload = { ...responseUpload.data };
-    if (dataUpload instanceof Object && 'id' in dataUpload) {
-      // insert into mongodb
-      const responseActivity = await axios.post(
-        `${global.config.laravelAPIUrl}/activity`,
-        {
-          mysqlid: dataUpload.id,
-          playlistId,
-          metadata,
-          action: 'create',
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      const resource = { ...responseActivity.data.data };
-      resource.id = responseActivity.data.data.id;
-      resource.mysqlid = responseActivity.data.data.mysqlid;
+    if (responseUpload.id) {
+      const createActivityUpload = {
+        h5p_content_id: responseUpload.id,
+        playlist_id: playlistId,
+        thumb_url: metadata.thumbUrl,
+        action: 'create',
+        title: metadata.metaContent.metaTitle,
+        type: 'h5p',
+        content: 'place_holder',
+        subject_id:
+          metadata.metaContent.metaSubject
+          && metadata.metaContent.metaSubject.subject,
+        education_level_id:
+          metadata.metaContent.metaEducationalLevels
+          && metadata.metaContent.metaEducationalLevels.name,
+      };
+
+      const responseActivity = await resourceService.createActivity(createActivityUpload);
+
+      const resource = { ...responseActivity };
+      resource.id = responseActivity.activity.id;
 
       dispatch(createResource(playlistId, resource, editor, editorType));
+      window.location.href = `/project/${projectId}`;
     } else {
       throw new Error('Error occurred while creating resource');
     }

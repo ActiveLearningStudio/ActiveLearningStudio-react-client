@@ -20,7 +20,6 @@ const EditResource = (props) => {
   const {
     match,
     resource,
-    //showDescribeActivity,
     showResourceDescribeActivity,
     handleHideCreateResourceModal,
   } = props;
@@ -83,9 +82,6 @@ const EditResource = (props) => {
 EditResource.propTypes = {
   match: PropTypes.object.isRequired,
   resource: PropTypes.object.isRequired,
-  // openEditResourcePopup: PropTypes.bool.isRequired,
-  //showDescribeActivity: PropTypes.func.isRequired,
-  // showBuildActivity: PropTypes.func.isRequired,
   showResourceDescribeActivity: PropTypes.func.isRequired,
   handleHideCreateResourceModal: PropTypes.func.isRequired,
   handleCreateResourceSubmit: PropTypes.func.isRequired,

@@ -1,5 +1,19 @@
 .resource-activity {
   // padding-left: 25px;
+   #laravel-h5p-form{
+     .methods .control-label{
+      font-weight: bold;
+     }
+
+     .methods .radio-inline{
+      padding-right: 10px;
+      cursor: pointer;
+     }
+     
+     .methods .radio-inline input{
+      margin-right: 2px;
+     }
+  }
 
   .back-button {
     color: #ffffff;
@@ -773,8 +787,8 @@ input[type="radio"]:checked + .activity-item {
       }
 
       .thumb-display {
-        width: 200px;
-        height: 200px;
+        width: 280px;
+        height: auto;
         overflow: hidden;
 
         img {
