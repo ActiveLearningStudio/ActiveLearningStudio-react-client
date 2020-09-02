@@ -20,14 +20,13 @@ const EditResource = (props) => {
   const {
     match,
     resource,
-    showDescribeActivity,
     showResourceDescribeActivity,
     handleHideCreateResourceModal,
   } = props;
 
   useEffect(() => {
     showResourceDescribeActivity(resource, match.params.activityId);
-  }, [match.params.activityId, resource, showDescribeActivity, showResourceDescribeActivity]);
+  }, [match.params.activityId, resource, showResourceDescribeActivity]);
 
   return (
     <div className="resource-modal">
