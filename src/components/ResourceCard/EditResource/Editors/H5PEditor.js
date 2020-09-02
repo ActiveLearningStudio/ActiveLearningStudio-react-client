@@ -75,9 +75,6 @@ const H5PEditorEdit = (props) => {
           </div>
         </div>
 
-
-        <div className="form-group" style={{ display: 'none' }}>
-
         <div className="form-group laravel-h5p-upload-container">
           <label htmlFor="inputUpload" className="control-label col-md-3">
             Upload
@@ -102,8 +99,7 @@ const H5PEditorEdit = (props) => {
           </div>
         </div>
 
-        <div className="form-group">
-
+        <div className="form-group" style={{ display: 'none' }}>
           <label className="control-label col-md-3">Method</label>
           <div className="col-md-6">
             <label className="radio-inline">
