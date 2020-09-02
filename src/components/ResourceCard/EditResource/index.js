@@ -26,7 +26,7 @@ const EditResource = (props) => {
 
   useEffect(() => {
     showResourceDescribeActivity(resource, match.params.activityId);
-  },[]);
+  }, []);
 
   return (
     <div className="resource-modal">
