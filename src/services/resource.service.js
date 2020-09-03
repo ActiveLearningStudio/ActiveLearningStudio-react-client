@@ -73,6 +73,16 @@ const activityH5p = (activityId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const shareActivity = (activityId) => httpService
+  .get(`/${apiVersion}/activities/${activityId}/share`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const loadH5pShared = (activityId) => httpService
+  .get(`/${apiVersion}/h5p/activity/${activityId}`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -88,4 +98,6 @@ export default {
   createActivity,
   activityH5p,
   h5pSetingsUpdate,
+  shareActivity,
+  loadH5pShared,
 };

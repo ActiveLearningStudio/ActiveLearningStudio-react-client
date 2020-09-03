@@ -10,6 +10,7 @@ import { Dropdown } from 'react-bootstrap';
 
 import logo from 'assets/images/logo.svg';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
+import { shareActivity } from 'store/actions/resource';
 // import ShareLink from './ShareLink';
 
 import './style.scss';
@@ -81,20 +82,22 @@ const ResourceCard = (props) => {
                         className="dropdown-item"
                         to={`/playlist/preview/${playlist.id}/resource/${resource.id}`}
                       >
-                        <FontAwesomeIcon icon="eye" />
+                        <FontAwesomeIcon className="mr-2" icon="eye" />
                         Preview
                       </Link>
+
                       <Link
                         className="dropdown-item"
                         to={`/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
                       >
-                        <FontAwesomeIcon icon="pen" />
-                        {' '}
+                        <FontAwesomeIcon className="mr-2" icon="pen" />
                         Edit
                       </Link>
-                      <a
+
+                      <Dropdown.Item
                         className="dropdown-item"
-                        onClick={() => {
+                        onClick={async () => {
+                          shareActivity(resource.id);
                           const protocol = `${window.location.href.split('/')[0]}//`;
                           confirmAlert({
                             customUI: ({ onClose }) => (
@@ -119,9 +122,8 @@ const ResourceCard = (props) => {
                                   />
                                 </a>
 
-                                <i
+                                <span
                                   title="copy to clipboard"
-                                  className="fa fa-clipboard"
                                   aria-hidden="true"
                                   onClick={() => {
                                     /* Get the text field */
@@ -144,7 +146,9 @@ const ResourceCard = (props) => {
                                       allowOutsideClick: false,
                                     });
                                   }}
-                                />
+                                >
+                                  <FontAwesomeIcon icon="clipboard" />
+                                </span>
                                 <br />
 
                                 <div className="close-btn">
@@ -157,11 +161,11 @@ const ResourceCard = (props) => {
                           });
                         }}
                       >
-                        <FontAwesomeIcon icon="share" />
-                        {' '}
+                        <FontAwesomeIcon className="mr-2" icon="share" />
                         Share
-                      </a>
-                      <a
+                      </Dropdown.Item>
+
+                      <Dropdown.Item
                         className="dropdown-item"
                         href="#"
                         onClick={() => {
@@ -175,15 +179,14 @@ const ResourceCard = (props) => {
                           });
                         }}
                       >
-                        <FontAwesomeIcon icon="times-circle" />
-                        {' '}
+                        <FontAwesomeIcon className="mr-2" icon="times-circle" />
                         Executable
-                      </a>
-                      <a className="dropdown-item" onClick={handleDelete}>
-                        <FontAwesomeIcon icon="times-circle" />
-                        {' '}
+                      </Dropdown.Item>
+
+                      <Dropdown.Item className="dropdown-item" onClick={handleDelete}>
+                        <FontAwesomeIcon className="mr-2" icon="times-circle" />
                         Delete
-                      </a>
+                      </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 </div>

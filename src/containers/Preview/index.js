@@ -9,6 +9,7 @@ import Header from 'components/Header';
 import ProjectPreview from './ProjectPreview';
 import ResourcePreview from './ResourcePreview';
 import PlaylistPreview from './PlaylistPreview';
+import ActivityShared from './PlaylistPreview/ActivityShared';
 
 class PreviewPage extends React.Component {
   constructor(props) {
@@ -22,9 +23,10 @@ class PreviewPage extends React.Component {
   componentDidMount() {
     // scroll to top
     window.scrollTo(0, 0);
-
-    const { loadMyProjects } = this.props;
-    loadMyProjects();
+    const { loadMyProjects, previewType } = this.props;
+    if (previewType !== 'activityShared') {
+      loadMyProjects();
+    }
   }
 
   // componentDidUpdate() {
@@ -44,7 +46,6 @@ class PreviewPage extends React.Component {
   render() {
     const { playlistId } = this.state;
     const { match, project, previewType } = this.props;
-
     let content;
     if (previewType === 'resource') {
       content = (
@@ -58,6 +59,8 @@ class PreviewPage extends React.Component {
           resourceId={parseInt(match.params.resourceId, 10)}
         />
       );
+    } else if (previewType === 'activityShared') {
+      content = <ActivityShared />;
     } else {
       content = (
         <div className="site-container">

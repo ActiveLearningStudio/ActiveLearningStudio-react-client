@@ -11,6 +11,7 @@ import ReactGA from 'react-ga';
 
 import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
+import OpenRoute from './OpenRouter';
 
 const history = History.createBrowserHistory();
 history.listen((location) => {
@@ -56,6 +57,12 @@ const AppRouter = () => {
           path="/playlist/preview/:playlistId/resource/:resourceId"
           component={PreviewPage}
           previewType="playlist"
+        />
+        <OpenRoute
+          path="/shared/activity/:resourceId"
+          exact
+          previewType="activityShared"
+          component={PreviewPage}
         />
 
         {/*

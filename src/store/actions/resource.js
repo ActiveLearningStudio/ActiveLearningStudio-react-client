@@ -471,42 +471,29 @@ export const deleteResourceAction = (resourceId) => async (dispatch) => {
 
 // handles the actions when some activity type is switched inside activity type wizard
 export const onChangeActivityTypeAction = (activityTypeId) => (dispatch) => {
-  try {
-    // let activityTypeId = activityTypeId;
-    dispatch({
-      type: actionTypes.SELECT_ACTIVITY_TYPE,
-      payload: { activityTypeId },
-    });
-  } catch (e) {
-    throw new Error(e);
-  }
+  dispatch({
+    type: actionTypes.SELECT_ACTIVITY_TYPE,
+    payload: { activityTypeId },
+  });
 };
 
 // handles the actions when some activity switched inside select activity wizard
 export const onChangeActivityAction = (activity) => (dispatch) => {
-  try {
-    dispatch({
-      type: actionTypes.SELECT_ACTIVITY,
-      payload: { activity },
-    });
-  } catch (e) {
-    console.log(e);
-  }
+  dispatch({
+    type: actionTypes.SELECT_ACTIVITY,
+    payload: { activity },
+  });
 };
 
 // Metadata saving inside state when metadata form is submitted
 export const onSubmitDescribeActivityAction = (metadata, activityId = null) => (dispatch) => {
-  try {
-    dispatch({
-      type: actionTypes.DESCRIBE_ACTIVITY,
-      payload: {
-        activityId,
-        metadata,
-      },
-    });
-  } catch (e) {
-    console.log(e);
-  }
+  dispatch({
+    type: actionTypes.DESCRIBE_ACTIVITY,
+    payload: {
+      activityId,
+      metadata,
+    },
+  });
 };
 
 // uploads the thumbnail of resource
@@ -543,3 +530,9 @@ export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
     // throw new Error(e);
   }
 };
+
+export const shareActivity = (actvityId) => {
+  resourceService.shareActivity(actvityId);
+};
+
+export const loadh5pShareResource = async (actvityId) => resourceService.loadH5pShared(actvityId);
