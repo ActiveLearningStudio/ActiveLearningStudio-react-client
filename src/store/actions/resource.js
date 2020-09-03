@@ -535,7 +535,4 @@ export const shareActivity = (actvityId) => {
   resourceService.shareActivity(actvityId);
 };
 
-export const loadh5pShareResource = async (actvityId) => {
-  const result = await resourceService.loadH5pShared(actvityId);
-  return result;
-};
+export const loadh5pShareResource = async (actvityId) => resourceService.loadH5pShared(actvityId);
