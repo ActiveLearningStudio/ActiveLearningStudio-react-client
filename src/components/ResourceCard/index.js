@@ -10,7 +10,7 @@ import { Dropdown } from 'react-bootstrap';
 
 import logo from 'assets/images/logo.svg';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
-import { ActiveShareActivity } from 'store/actions/resource';
+import { activeShareActivity } from 'store/actions/resource';
 // import ShareLink from './ShareLink';
 
 import './style.scss';
@@ -82,7 +82,7 @@ const ResourceCard = (props) => {
                         className="dropdown-item"
                         to={`/playlist/preview/${playlist.id}/resource/${resource.id}`}
                       >
-                        <FontAwesomeIcon icon="eye" />
+                        <FontAwesomeIcon className="mr-2" icon="eye" />
                         Preview
                       </Link>
 
@@ -90,14 +90,14 @@ const ResourceCard = (props) => {
                         className="dropdown-item"
                         to={`/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
                       >
-                        <FontAwesomeIcon icon="pen" />
+                        <FontAwesomeIcon className="mr-2" icon="pen" />
                         Edit
                       </Link>
 
                       <Dropdown.Item
                         className="dropdown-item"
                         onClick={async () => {
-                          ActiveShareActivity(resource.id);
+                          activeShareActivity(resource.id);
                           const protocol = `${window.location.href.split('/')[0]}//`;
                           confirmAlert({
                             customUI: ({ onClose }) => (
@@ -122,7 +122,7 @@ const ResourceCard = (props) => {
                                   />
                                 </a>
 
-                                <i
+                                <div
                                   title="copy to clipboard"
                                   className="fa fa-clipboard"
                                   aria-hidden="true"
@@ -149,7 +149,7 @@ const ResourceCard = (props) => {
                                   }}
                                 >
                                   <FontAwesomeIcon icon="clipboard" />
-                                </i>
+                                </div>
                                 <br />
 
                                 <div className="close-btn">
@@ -162,8 +162,7 @@ const ResourceCard = (props) => {
                           });
                         }}
                       >
-                        <FontAwesomeIcon icon="share" />
-                        {' '}
+                        <FontAwesomeIcon className="mr-2" icon="share" />
                         Share
                       </Dropdown.Item>
 
@@ -181,12 +180,12 @@ const ResourceCard = (props) => {
                           });
                         }}
                       >
-                        <FontAwesomeIcon icon="times-circle" />
+                        <FontAwesomeIcon className="mr-2" icon="times-circle" />
                         Executable
                       </Dropdown.Item>
 
                       <Dropdown.Item className="dropdown-item" onClick={handleDelete}>
-                        <FontAwesomeIcon icon="times-circle" />
+                        <FontAwesomeIcon className="mr-2" icon="times-circle" />
                         Delete
                       </Dropdown.Item>
                     </Dropdown.Menu>

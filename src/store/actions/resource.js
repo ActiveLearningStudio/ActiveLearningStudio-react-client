@@ -544,8 +544,8 @@ export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
   }
 };
 
-export const ActiveShareActivity = async (actvityId) => {
-  const result = await resourceService.activeShare(actvityId);
+export const activeShareActivity = async (actvityId) => {
+  const result = await resourceService.shareActivity(actvityId);
   return result;
 };
 

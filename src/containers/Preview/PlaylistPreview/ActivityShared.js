@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { loadh5pShareResource } from 'store/actions/resource';
 import { withRouter } from 'react-router-dom';
 
-import './style.scss';
 import gifloader from 'assets/images/dotsloader.gif';
+import { loadh5pShareResource } from 'store/actions/resource';
+
+import './style.scss';
 
 const ActivityShared = (props) => {
   const { match } = props;
