@@ -48,12 +48,14 @@ const H5PEditor = (props) => {
         submitAction,
         h5pFile,
       };
+
       handleCreateResourceSubmit(
-        match.params.playlistid,
+        match.params.playlistId,
         resource.newResource.activity.h5pLib,
         resource.newResource.activity.h5pLibType,
         payload,
         resource.newResource.metadata,
+        match.params.projectId,
       );
     } else if (submitAction === 'create') {
       const payload = {
@@ -137,7 +139,7 @@ const H5PEditor = (props) => {
             </div>
           </div>
 
-          <div className="form-group">
+          <div className="form-group methods">
             <label className="control-label col-md-3">Method</label>
             <div className="col-md-6">
               <label className="radio-inline mr-4">

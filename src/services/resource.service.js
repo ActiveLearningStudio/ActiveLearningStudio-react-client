@@ -55,6 +55,11 @@ const h5pSettings = () => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const h5pSettingsUpdate = (activityId, dataUpload) => httpService
+  .put(`/${apiVersion}/activities/${activityId}`, dataUpload)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const h5pResourceSettings = (activityId) => httpService
   .get(`/${apiVersion}/activities/${activityId}/h5p-resource-settings`)
   .then(({ data }) => data)
@@ -70,6 +75,21 @@ const h5pResourceSettingsShared = (activityId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const activityH5p = (activityId) => httpService
+  .get(`/${apiVersion}/activities/${activityId}/detail`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const shareActivity = (activityId) => httpService
+  .get(`/${apiVersion}/activities/${activityId}/share`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const loadH5pShared = (activityId) => httpService
+  .get(`/${apiVersion}/h5p/activity/${activityId}/visibility/public`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -81,7 +101,11 @@ export default {
   getItems,
   h5pToken,
   h5pSettings,
+  h5pSettingsUpdate,
   h5pResourceSettings,
   h5pResourceSettingsOpen,
   h5pResourceSettingsShared,
+  activityH5p,
+  shareActivity,
+  loadH5pShared,
 };

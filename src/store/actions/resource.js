@@ -4,6 +4,9 @@ import Swal from 'sweetalert2';
 import resourceService from 'services/resource.service';
 import * as actionTypes from '../actionTypes';
 
+// global variable for h5p object
+let h5pid;
+
 export const loadResourceTypesAction = () => async (dispatch) => {
   try {
     dispatch({
@@ -98,7 +101,7 @@ export const createResourceAction = (
   projectId,
 ) => async (dispatch) => {
   // try {
-  // h5peditorCopy to be taken from h5papi/storage/h5p/laravel-h5p/js/laravel-h5p.js
+  // h5pEditorCopy to be taken from h5papi/storage/h5p/laravel-h5p/js/laravel-h5p.js
   const data = {
     playlistId,
     library: window.h5peditorCopy.getLibrary(),
@@ -259,6 +262,158 @@ export const hideBuildActivityAction = () => ({
   type: actionTypes.HIDE_RESOURCE_ACTIVITY_BUILD,
 });
 
+export const showBuildActivity = (editor, editorType, params) => ({
+  type: actionTypes.SHOW_RESOURCE_ACTIVITY_BUILD,
+  editor,
+  editorType,
+  params,
+});
+
+export const showBuildActivityAction = (
+  editor = null,
+  editorType = null,
+  activityId = null,
+) => async (dispatch) => {
+  try {
+    if (activityId) {
+      const response = await resourceService.activityH5p(activityId);
+      const { activity } = response;
+      h5pid = activity;
+      const lib = `${activity.library_name} ${activity.major_version}.${activity.minor_version}`;
+      dispatch(showBuildActivity(lib, activity.type, activity.h5p));
+    } else {
+      dispatch(showBuildActivity(editor, editorType, ''));
+    }
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
+export const showDescribeActivity = (activity, metadata = null) => ({
+  type: actionTypes.SHOW_RESOURCE_DESCRIBE_ACTIVITY,
+  activity,
+  metadata,
+});
+
+export const showDescribeActivityAction = (activity, activityId = null) => async (dispatch) => {
+  try {
+    if (activityId) {
+      const response = await resourceService.activityH5p(activityId);
+      if (response.activity) {
+        const metadata = {
+          title: response.activity.title,
+          subjectId: response.activity.subject_id,
+          educationLevelId: response.activity.education_level_id,
+          thumbUrl: response.activity.thumb_url,
+          type: response.activity.type,
+        };
+        dispatch(showDescribeActivity(activity, metadata));
+      }
+    } else {
+      dispatch(showDescribeActivity(activity));
+    }
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
+export const createResourceByH5PUploadAction = (
+  playlistId,
+  editor,
+  editorType,
+  payload,
+  metadata,
+  projectId,
+) => async (dispatch) => {
+  try {
+    const formData = new FormData();
+    formData.append('h5p_file', payload.h5pFile);
+    formData.append('action', 'upload');
+
+    const responseUpload = await resourceService.h5pToken(formData);
+
+    if (responseUpload.id) {
+      const createActivityUpload = {
+        h5p_content_id: responseUpload.id,
+        playlist_id: playlistId,
+        thumb_url: metadata.thumbUrl,
+        action: 'create',
+        title: metadata.metaContent.metaTitle,
+        type: 'h5p',
+        content: 'place_holder',
+        subject_id:
+          metadata.metaContent.metaSubject
+          && metadata.metaContent.metaSubject.subject,
+        education_level_id:
+          metadata.metaContent.metaEducationalLevels
+          && metadata.metaContent.metaEducationalLevels.name,
+      };
+
+      const responseActivity = await resourceService.create(createActivityUpload);
+
+      const resource = { ...responseActivity };
+      resource.id = responseActivity.activity.id;
+
+      dispatch({
+        type: actionTypes.CREATE_RESOURCE,
+        playlistId,
+        resource,
+        editor,
+        editorType,
+      });
+
+      window.location.href = `/project/${projectId}`;
+    } else {
+      throw new Error('Error occurred while creating resource');
+    }
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
+export const editResourceAction = (
+  playlistId,
+  editor,
+  editorType,
+  activityId,
+  metadata,
+) => async (dispatch) => {
+  try {
+    const dataUpload = {
+      title: metadata.metaContent && metadata.metaContent.metaTitle,
+      content: 'create',
+      thumb_url: metadata.thumbUrl,
+      subject_id:
+        metadata.metaContent.metaSubject
+        && metadata.metaContent.metaSubject.subject,
+      education_level_id:
+        metadata.metaContent.metaEducationalLevels
+        && metadata.metaContent.metaEducationalLevels.name,
+      h5p_content_id: h5pid.id,
+      action: 'create',
+    };
+
+    const response = await resourceService.h5pSettingsUpdate(activityId, dataUpload);
+
+    const resource = {};
+    resource.id = response.id;
+
+    dispatch({
+      type: actionTypes.EDIT_RESOURCE,
+      playlistId,
+      resource,
+      editor,
+      editorType,
+    });
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
+export const shareActivity = (activityId) => resourceService.shareActivity(activityId);
+
+export const loadH5pShareResource = async (activityId) => resourceService.loadH5pShared(activityId);
+
 // TODO: refactor bottom
 export const saveGenericResourceAction = (resourceData) => async (dispatch) => {
   const { token } = JSON.parse(localStorage.getItem('auth'));
@@ -278,76 +433,6 @@ export const saveGenericResourceAction = (resourceData) => async (dispatch) => {
     });
   }
 };
-
-export const showBuildActivity = (editor, editorType, params) => ({
-  type: actionTypes.SHOW_RESOURCE_ACTIVITY_BUILD,
-  editor,
-  editorType,
-  params,
-});
-
-export const showBuildActivityAction = (
-  editor = null,
-  editorType = null,
-  activityId = null,
-) => async (dispatch) => {
-  try {
-    if (activityId) {
-      const response = await axios.get(
-        `${global.config.laravelAPIUrl}/activity/${activityId}`,
-      );
-
-      const lib = `${response.data.data.libraryName} ${response.data.data.majorVersion}.${response.data.data.minorVersion}`;
-
-      dispatch(
-        showBuildActivity(lib, response.data.data.type, response.data.data.h5p),
-      );
-    } else {
-      dispatch(showBuildActivity(editor, editorType, ''));
-    }
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
-export const showDescribeActivity = (activity, metadata = null) => ({
-  type: actionTypes.SHOW_RESOURCE_DESCRIBE_ACTIVITY,
-  activity,
-  metadata,
-});
-
-export const showDescribeActivityAction = (activity, activityId = null) => async (dispatch) => {
-  try {
-    if (activityId) {
-      const response = await axios.get(
-        `${global.config.laravelAPIUrl}/activity/${activityId}`,
-      );
-      let metadata = {
-        title: '',
-        subjectId: '',
-        educationLevelId: '',
-      };
-
-      if (response.data.data.metadata != null) {
-        metadata = response.data.data.metadata;
-      }
-
-      dispatch(showDescribeActivity(activity, metadata));
-    } else {
-      dispatch(showDescribeActivity(activity));
-    }
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
-export const editResource = (playlistId, resource, editor, editorType) => ({
-  type: actionTypes.EDIT_RESOURCE,
-  playlistId,
-  resource,
-  editor,
-  editorType,
-});
 
 // resource shared
 
@@ -405,111 +490,4 @@ export const resourceShared = (activityId, resourceName) => {
         });
       }
     });
-};
-
-export const editResourceAction = (
-  playlistId,
-  editor,
-  editorType,
-  activityId,
-  metadata,
-) => async (dispatch) => {
-  try {
-    const { token } = JSON.parse(localStorage.getItem('auth'));
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    };
-
-    // h5pEditorCopy to be taken from h5papi/storage/h5p/laravel-h5p/js/laravel-h5p.js
-    const data = {
-      library: window.h5peditorCopy.getLibrary(),
-      parameters: JSON.stringify(window.h5peditorCopy.getParams()),
-      action: 'create',
-    };
-
-    const response = await axios.put(
-      `${global.config.laravelAPIUrl}/activity/${activityId}`,
-      {
-        playlistId,
-        metadata,
-        action: 'create',
-        data,
-      },
-      {
-        headers,
-      },
-    );
-
-    const resource = {};
-    resource.id = response.data.data.id;
-
-    dispatch(editResource(playlistId, resource, editor, editorType));
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
-export const createResource = (playlistId, resource, editor, editorType) => ({
-  type: actionTypes.CREATE_RESOURCE,
-  playlistId,
-  resource,
-  editor,
-  editorType,
-});
-
-export const createResourceByH5PUploadAction = (
-  playlistId,
-  editor,
-  editorType,
-  payload,
-  metadata,
-) => async (dispatch) => {
-  try {
-    const { token } = JSON.parse(localStorage.getItem('auth'));
-    const formData = new FormData();
-    formData.append('h5p_file', payload.h5pFile);
-    formData.append('action', 'upload');
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data',
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    const responseUpload = await axios.post(
-      `${global.config.h5pAjaxUrl}/api/h5p`,
-      formData,
-      config,
-    );
-
-    const dataUpload = { ...responseUpload.data };
-    if (dataUpload instanceof Object && 'id' in dataUpload) {
-      // insert into mongodb
-      const responseActivity = await axios.post(
-        `${global.config.laravelAPIUrl}/activity`,
-        {
-          mysqlid: dataUpload.id,
-          playlistId,
-          metadata,
-          action: 'create',
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      const resource = { ...responseActivity.data.data };
-      resource.id = responseActivity.data.data.id;
-      resource.mysqlid = responseActivity.data.data.mysqlid;
-
-      dispatch(createResource(playlistId, resource, editor, editorType));
-    } else {
-      throw new Error('Error occurred while creating resource');
-    }
-  } catch (e) {
-    throw new Error(e);
-  }
 };

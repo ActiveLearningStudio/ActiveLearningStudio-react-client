@@ -177,6 +177,7 @@ class PlaylistsPage extends React.Component {
           editorType,
           payload,
           metadata,
+          projectId,
         );
       } else {
         await createResource(
@@ -459,7 +460,7 @@ const mapDispatchToProps = (dispatch) => ({
   loadProjectPlaylists: (id) => dispatch(loadProjectPlaylistsAction(id)),
   createResource: (id, editor, editorType, metadata, playlistId) => dispatch(createResourceAction(id, editor, editorType, metadata, playlistId)),
   editResource: (id, editor, editorType, actId, metadata) => dispatch(editResourceAction(id, editor, editorType, actId, metadata)),
-  createResourceByH5PUpload: (id, editor, editorType, payload, metadata) => dispatch(createResourceByH5PUploadAction(id, editor, editorType, payload, metadata)),
+  createResourceByH5PUpload: (id, editor, editorType, payload, mdata, projId) => dispatch(createResourceByH5PUploadAction(id, editor, editorType, payload, mdata, projId)),
   loadProject: (id) => dispatch(loadProjectAction(id)),
   deleteResource: (activityId) => dispatch(deleteResourceAction(activityId)),
   showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),

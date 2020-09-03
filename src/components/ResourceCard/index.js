@@ -10,6 +10,7 @@ import { Dropdown } from 'react-bootstrap';
 
 import logo from 'assets/images/logo.svg';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
+import { shareActivity } from 'store/actions/resource';
 // import ShareLink from './ShareLink';
 
 import './style.scss';
@@ -93,6 +94,8 @@ const ResourceCard = (props) => {
 
                   <Dropdown.Item
                     onClick={() => {
+                      shareActivity(resource.id);
+
                       const protocol = `${window.location.href.split('/')[0]}//`;
                       confirmAlert({
                         // eslint-disable-next-line react/prop-types
@@ -118,9 +121,8 @@ const ResourceCard = (props) => {
                               />
                             </a>
 
-                            <i
+                            <span
                               title="copy to clipboard"
-                              className="fa fa-clipboard"
                               aria-hidden="true"
                               onClick={() => {
                                 /* Get the text field */
@@ -143,7 +145,9 @@ const ResourceCard = (props) => {
                                   allowOutsideClick: false,
                                 });
                               }}
-                            />
+                            >
+                              <FontAwesomeIcon icon="clipboard" />
+                            </span>
                             <br />
 
                             <div className="close-btn">
@@ -161,6 +165,7 @@ const ResourceCard = (props) => {
                   </Dropdown.Item>
 
                   <Dropdown.Item
+                    href="#"
                     onClick={() => {
                       Swal.fire({
                         title: 'STAY TUNED!',
