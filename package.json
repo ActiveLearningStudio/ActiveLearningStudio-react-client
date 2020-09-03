@@ -79,6 +79,7 @@
     }
   },
   "scripts": {
+    "lint": "eslint .",
     "start:dev": "react-scripts start",
     "start": "node server/server.js",
     "build": "react-scripts build",

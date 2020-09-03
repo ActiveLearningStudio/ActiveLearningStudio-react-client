@@ -15,7 +15,6 @@ import {
   shareProjectAction,
   loadLmsAction,
 } from 'store/actions/project';
-import { logoutAction } from 'store/actions/auth';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
@@ -34,15 +33,8 @@ export class ProjectsPage extends React.Component {
       showCreateProjectModal,
       loadProject,
       loadMyProjects,
-      // logout,
       loadLms,
-      // user,
     } = this.props;
-
-    // TODO: enable after add subscription step on auth
-    // if (!user.subscribed) {
-    //   logout();
-    // }
 
     loadLms();
 
@@ -93,7 +85,11 @@ export class ProjectsPage extends React.Component {
     const { pageLoading, showDeletePlaylistPopup } = ui;
 
     const projectCards = projects.map((proj) => {
-      const res = { title: proj.name, id: proj.id, deleteType: 'Project' };
+      const res = {
+        title: proj.name,
+        id: proj.id,
+        deleteType: 'Project',
+      };
       return (
         <ProjectCard
           key={proj.id}
@@ -164,7 +160,6 @@ export class ProjectsPage extends React.Component {
 ProjectsPage.propTypes = {
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  user: PropTypes.object,
   project: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
   showPreview: PropTypes.number,
@@ -176,12 +171,10 @@ ProjectsPage.propTypes = {
   loadProject: PropTypes.func.isRequired,
   loadMyProjects: PropTypes.func.isRequired,
   shareProject: PropTypes.func.isRequired,
-  logout: PropTypes.func.isRequired,
   loadLms: PropTypes.func.isRequired,
 };
 
 ProjectsPage.defaultProps = {
-  user: null,
   showPreview: undefined,
   showCreateProjectPopup: false,
   showEditProjectPopup: false,
@@ -190,7 +183,6 @@ ProjectsPage.defaultProps = {
 const mapStateToProps = (state) => ({
   project: state.project,
   ui: state.ui,
-  user: state.auth.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -202,7 +194,6 @@ const mapDispatchToProps = (dispatch) => ({
   hideDeletePopup: () => dispatch(hideDeletePopupAction()),
   loadProject: (id) => dispatch(loadProjectAction(id)),
   shareProject: (id) => dispatch(shareProjectAction(id)),
-  logout: () => dispatch(logoutAction()),
   loadLms: () => dispatch(loadLmsAction()),
 });
 

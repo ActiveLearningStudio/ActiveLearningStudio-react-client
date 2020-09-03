@@ -23,7 +23,6 @@ const RegisterPage = loadable(() => import('../containers/Auth/RegisterPage'));
 const ForgotPasswordPage = loadable(() => import('../containers/Auth/ForgotPasswordPage'));
 const ResetPasswordPage = loadable(() => import('../containers/Auth/ResetPasswordPage'));
 const ConfirmEmailPage = loadable(() => import('../containers/Auth/ConfirmEmailPage'));
-// const ConfirmPage = loadable(() => import('../containers/ConfirmEmail'));
 
 const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
 
@@ -48,18 +47,10 @@ const AppRouter = () => {
         <PublicRoute exact path="/forgot-password" component={ForgotPasswordPage} />
         <PublicRoute exact path="/reset-password" component={ResetPasswordPage} />
         <PublicRoute exact path="/verify-email" component={ConfirmEmailPage} />
-        {/* <PublicRoute exact path="/confirm-email/:confirmationId" component={ConfirmPage} /> */}
 
         <PrivateRoute exact path="/account" component={ProfilePage} />
-        <PrivateRoute
-          exact
-          path="/playlist/preview/:playlistId/resource/:resourceId"
-          component={PreviewPage}
-          previewType="playlist"
-        />
 
         {/*
-
         <Route
           exact
           path="/project/shared/:projectId"
@@ -68,7 +59,7 @@ const AppRouter = () => {
 
         <PrivateRoute
           exact
-          path="/resource/preview/:resourceId"
+          path="/activity/:activityId/preview"
           component={PreviewPage}
           previewType="resource"
         />
@@ -81,26 +72,26 @@ const AppRouter = () => {
         />
 
         <Route
-          path="/shared/resource/:activityId"
+          path="/shared/activity/:activityId"
           component={LtiPreviewPage}
           exact
         />
 
         <Route
-          path="/shared/activity/:resourceId"
+          path="/shared/activity/:activityId"
           exact
           render={() => <LtiPreviewPage previewType="activityShared" />}
         />
 
         <Route
-          path="/playlist/lti/preview/:playlistId/resource/:resourceId"
+          path="/playlist/lti/preview/:playlistId/activity/:activityId"
           exact
           component={LtiPreviewPage}
           previewType="playlist"
         />
 
         <Route
-          path="/playlist/shared/preview/:playlistId/resource/:resourceId"
+          path="/playlist/shared/preview/:playlistId/activity/:activityId"
           exact
           render={() => <LtiPreviewPage previewType="playlistShared" />}
         />
@@ -110,9 +101,13 @@ const AppRouter = () => {
           exact
           path="/project/create"
           component={ProjectsPage}
-          id="create-project"
           showCreateProjectPopup
           editMode={false}
+        />
+        <PrivateRoute
+          exact
+          path="/project/:projectId"
+          component={PlaylistsPage}
         />
         <PrivateRoute
           exact
@@ -127,11 +122,6 @@ const AppRouter = () => {
           editMode
         />
 
-        <PrivateRoute
-          exact
-          path="/project/:projectId"
-          component={PlaylistsPage}
-        />
         <PrivateRoute
           exact
           path="/project/:projectId/playlist/create"
@@ -161,6 +151,12 @@ const AppRouter = () => {
           exact
           path="/activities/:activityId"
           component={PlaylistsPage}
+        />
+        <PrivateRoute
+          exact
+          path="/playlist/:playlistId/activity/:activityId/preview"
+          component={PreviewPage}
+          previewType="resource"
         />
 
         <Redirect to="/" />

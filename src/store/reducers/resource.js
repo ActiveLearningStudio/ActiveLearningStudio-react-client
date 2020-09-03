@@ -65,6 +65,26 @@ export default (state = INITIAL_STATE, action) => {
         isLoading: false,
       };
 
+    case actionTypes.UPLOAD_RESOURCE_THUMBNAIL:
+      return {
+        ...state,
+        newResource: {
+          ...state.newResource,
+          metadata: {
+            ...state.newResource.metadata,
+            thumbUrl: action.payload.thumbUrl,
+          },
+        },
+        editResource: {
+          ...state.editResource,
+          metadata: {
+            ...state.editResource.metadata,
+            thumbUrl: action.payload.thumbUrl,
+          },
+        },
+        progress: null,
+      };
+
     // TODO: refactor bottom
     case actionTypes.SHOW_CREATE_RESOURCE_MODAL:
       return {
@@ -203,7 +223,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         showPreviewResourcePopup: true,
-        previewResourceId: action.id,
+        previewResourceId: action.payload.id,
       };
 
     case actionTypes.HIDE_PREVIEW_PLAYLIST_MODAL:
@@ -240,26 +260,6 @@ export default (state = INITIAL_STATE, action) => {
             metaContent: action.payload.metadata,
           },
         },
-      };
-
-    case actionTypes.UPLOAD_RESOURCE_THUMBNAIL:
-      return {
-        ...state,
-        newResource: {
-          ...state.newResource,
-          metadata: {
-            ...state.newResource.metadata,
-            thumbUrl: action.thumbUrl,
-          },
-        },
-        editResource: {
-          ...state.editResource,
-          metadata: {
-            ...state.editResource.metadata,
-            thumbUrl: action.thumbUrl,
-          },
-        },
-        progress: null,
       };
 
     case actionTypes.RESOURCE_VALIDATION_ERRORS:

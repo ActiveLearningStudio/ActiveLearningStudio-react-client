@@ -12,8 +12,8 @@ const ActivityCard = (props) => {
       <Link
         to={
           lti
-            ? `/playlist/shared/preview/${playlistId}/resource/${activity.id}`
-            : `/playlist/preview/${playlistId}/resource/${activity.id}`
+            ? `/playlist/shared/preview/${playlistId}/activity/${activity.id}`
+            : `/playlist/${playlistId}/activity/${activity.id}/preview`
         }
       >
         <div

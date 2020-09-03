@@ -2,7 +2,6 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 import resourceService from 'services/resource.service';
-import projectService from 'services/project.service';
 import * as actionTypes from '../actionTypes';
 
 export const loadResourceTypesAction = () => async (dispatch) => {
@@ -49,13 +48,13 @@ export const loadResourceItemsAction = (activityTypeId) => async (dispatch) => {
   }
 };
 
-export const loadResourceAction = (resourceId) => async (dispatch) => {
+export const loadResourceAction = (activityId) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.LOAD_RESOURCE_REQUEST,
     });
 
-    const data = await resourceService.loadResource(resourceId);
+    const data = await resourceService.get(activityId);
 
     dispatch({
       type: actionTypes.LOAD_RESOURCE_SUCCESS,
@@ -75,7 +74,7 @@ export const loadResourceAction = (resourceId) => async (dispatch) => {
 };
 
 export const loadH5pSettingsActivity = () => async () => {
-  const response = await resourceService.h5pSetings();
+  const response = await resourceService.h5pSettings();
 
   window.H5PIntegration = response.h5p.settings;
 
@@ -87,15 +86,180 @@ export const loadH5pSettingsActivity = () => async () => {
   });
 };
 
-// TODO: refactor bottom
-export const saveGenericResource = () => ({
-  type: actionTypes.SAVE_GENERIC_RESOURCE,
+export const loadH5pResourceSettings = (activityId) => resourceService.h5pResourceSettings(activityId);
+export const loadH5pResourceSettingsOpen = (activityId) => resourceService.h5pResourceSettingsOpen(activityId);
+export const loadH5pResourceSettingsShared = (activityId) => resourceService.h5pResourceSettingsShared(activityId);
+
+export const createResourceAction = (
+  playlistId,
+  editor,
+  editorType,
+  metadata,
+  projectId,
+) => async (dispatch) => {
+  // try {
+  // h5peditorCopy to be taken from h5papi/storage/h5p/laravel-h5p/js/laravel-h5p.js
+  const data = {
+    playlistId,
+    library: window.h5peditorCopy.getLibrary(),
+    parameters: JSON.stringify(window.h5peditorCopy.getParams()),
+    action: 'create',
+  };
+
+  const insertedH5pResource = await resourceService.h5pToken(data);
+
+  if (!insertedH5pResource.fail) {
+    const resource = insertedH5pResource;
+
+    const activity = {
+      h5p_content_id: resource.id,
+      playlist_id: playlistId,
+      thumb_url: metadata.thumbUrl,
+      action: 'create',
+      title: metadata.metaContent.metaTitle,
+      type: 'h5p',
+      content: 'place_holder',
+      subject_id:
+        metadata.metaContent.metaSubject
+        && metadata.metaContent.metaSubject.subject,
+      education_level_id:
+        metadata.metaContent.metaEducationalLevels
+        && metadata.metaContent.metaEducationalLevels.name,
+    };
+    const insertedResource = await resourceService.create(activity);
+
+    resource.id = insertedResource.id;
+    resource.mysqlid = insertedResource.mysqlid;
+
+    dispatch({
+      type: actionTypes.CREATE_RESOURCE,
+      playlistId,
+      resource,
+      editor,
+      editorType,
+    });
+    // dispatch(hideCreateResourceModal());
+
+    window.location.href = `/project/${projectId}`;
+  } else {
+    dispatch({
+      type: actionTypes.RESOURCE_VALIDATION_ERRORS,
+    });
+  }
+  // } catch (e) {
+  //   alert("dsf");
+  //   throw new Error(e);
+  // }
+};
+
+export const uploadResourceThumbnail = (thumbUrl) => ({
+  type: actionTypes.UPLOAD_RESOURCE_THUMBNAIL,
+  payload: { thumbUrl },
 });
 
-export const hideCreateResourceModal = () => ({
+export const resourceThumbnailProgress = (progress) => ({
+  type: actionTypes.RESOURCE_THUMBNAIL_PROGRESS,
+  progress,
+});
+
+export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
+  const configData = {
+    onUploadProgress: (progressEvent) => {
+      dispatch({
+        type: actionTypes.RESOURCE_THUMBNAIL_PROGRESS,
+        payload: {
+          progress: `Uploaded progress: ${Math.round(
+            (progressEvent.loaded / progressEvent.total) * 100,
+          )}%`,
+        },
+      });
+    },
+  };
+
+  const { thumbUrl } = await resourceService.upload(formData, configData);
+
+  dispatch({
+    type: actionTypes.UPLOAD_RESOURCE_THUMBNAIL,
+    payload: { thumbUrl },
+  });
+};
+
+export const deleteResourceAction = (activityId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.DELETE_RESOURCE_REQUEST,
+    });
+
+    const response = await resourceService.remove(activityId);
+
+    if (response.data.status === 'success') {
+      dispatch({
+        type: actionTypes.DELETE_RESOURCE_SUCCESS,
+        payload: { activityId },
+      });
+    }
+  } catch (e) {
+    dispatch({
+      type: actionTypes.DELETE_RESOURCE_FAIL,
+    });
+
+    throw e;
+  }
+};
+
+export const showCreateResourceModalAction = (id) => ({
+  type: actionTypes.SHOW_CREATE_RESOURCE_MODAL,
+  id,
+});
+
+export const hideCreateResourceModalAction = () => ({
   type: actionTypes.HIDE_CREATE_RESOURCE_MODAL,
 });
 
+export const showCreateResourceActivityAction = () => ({
+  type: actionTypes.SHOW_RESOURCE_ACTIVITY_TYPE,
+});
+
+export const showSelectActivityAction = (activityType) => ({
+  type: actionTypes.SHOW_RESOURCE_SELECT_ACTIVITY,
+  activityType,
+});
+
+export const previewResourceAction = (id) => ({
+  type: actionTypes.PREVIEW_RESOURCE,
+  payload: { id },
+});
+
+export const hidePreviewResourceModalAction = () => ({
+  type: actionTypes.HIDE_PREVIEW_PLAYLIST_MODAL,
+});
+
+// handles the actions when some activity type is switched inside activity type wizard
+export const onChangeActivityTypeAction = (activityTypeId) => ({
+  type: actionTypes.SELECT_ACTIVITY_TYPE,
+  payload: { activityTypeId },
+});
+
+// handles the actions when some activity switched inside select activity wizard
+export const onChangeActivityAction = (activity) => ({
+  type: actionTypes.SELECT_ACTIVITY,
+  payload: { activity },
+});
+
+// Metadata saving inside state when metadata form is submitted
+export const onSubmitDescribeActivityAction = (metadata, activityId = null) => ({
+  type: actionTypes.DESCRIBE_ACTIVITY,
+  payload: {
+    activityId,
+    metadata,
+  },
+});
+
+export const hideBuildActivityAction = () => ({
+  type: actionTypes.HIDE_RESOURCE_ACTIVITY_BUILD,
+});
+
+// TODO: refactor bottom
 export const saveGenericResourceAction = (resourceData) => async (dispatch) => {
   const { token } = JSON.parse(localStorage.getItem('auth'));
   const response = await axios.post(
@@ -105,54 +269,13 @@ export const saveGenericResourceAction = (resourceData) => async (dispatch) => {
   );
 
   if (response.data.status === 'success') {
-    dispatch(saveGenericResource());
-    dispatch(hideCreateResourceModal());
-  }
-};
+    dispatch({
+      type: actionTypes.SAVE_GENERIC_RESOURCE,
+    });
 
-export const showCreateResourceModal = (id) => ({
-  type: actionTypes.SHOW_CREATE_RESOURCE_MODAL,
-  id,
-});
-
-export const showCreateResourceModalAction = (id) => async (dispatch) => {
-  try {
-    dispatch(showCreateResourceModal(id));
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
-export const hideCreateResourceModalAction = () => async (dispatch) => {
-  try {
-    dispatch(hideCreateResourceModal());
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
-export const showCreateResourceActivity = () => ({
-  type: actionTypes.SHOW_RESOURCE_ACTIVITY_TYPE,
-});
-
-export const showCreateResourceActivityAction = () => async (dispatch) => {
-  try {
-    dispatch(showCreateResourceActivity());
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
-export const showSelectActivity = (activityType) => ({
-  type: actionTypes.SHOW_RESOURCE_SELECT_ACTIVITY,
-  activityType,
-});
-
-export const showSelectActivityAction = (activityType) => async (dispatch) => {
-  try {
-    dispatch(showSelectActivity(activityType));
-  } catch (e) {
-    throw new Error(e);
+    dispatch({
+      type: actionTypes.HIDE_CREATE_RESOURCE_MODAL,
+    });
   }
 };
 
@@ -161,10 +284,6 @@ export const showBuildActivity = (editor, editorType, params) => ({
   editor,
   editorType,
   params,
-});
-
-export const hideBuildActivity = () => ({
-  type: actionTypes.HIDE_RESOURCE_ACTIVITY_BUILD,
 });
 
 export const showBuildActivityAction = (
@@ -232,13 +351,13 @@ export const editResource = (playlistId, resource, editor, editorType) => ({
 
 // resource shared
 
-export const resourceUnshared = (resourceId, resourceName) => {
+export const resourceUnshared = (activityId, resourceName) => {
   const { token } = JSON.parse(localStorage.getItem('auth'));
 
   axios
     .post(
       `${global.config.laravelAPIUrl}/remove-share-activity`,
-      { resourceId },
+      { activityId },
       {
         headers: {
           'Content-Type': 'application/json',
@@ -259,13 +378,13 @@ export const resourceUnshared = (resourceId, resourceName) => {
 
 // resource unshared
 
-export const resourceShared = (resourceId, resourceName) => {
+export const resourceShared = (activityId, resourceName) => {
   const { token } = JSON.parse(localStorage.getItem('auth'));
 
   axios
     .post(
       `${global.config.laravelAPIUrl}/share-activity`,
-      { resourceId },
+      { activityId },
       {
         headers: {
           'Content-Type': 'application/json',
@@ -280,8 +399,8 @@ export const resourceShared = (resourceId, resourceName) => {
         Swal.fire({
           html: `You can now share Activity <strong>"${resourceName}"</strong><br>
                 Anyone with the link below can access your activity:<br>
-                <br><a target="_blank" href="/shared/activity/${resourceId.trim()}
-                ">${protocol + window.location.host}/shared/activity/${resourceId.trim()}</a>
+                <br><a target="_blank" href="/shared/activity/${activityId}
+                ">${protocol + window.location.host}/shared/activity/${activityId}</a>
               `,
         });
       }
@@ -331,10 +450,6 @@ export const editResourceAction = (
   }
 };
 
-export const validationErrorsResource = () => ({
-  type: actionTypes.RESOURCE_VALIDATION_ERRORS,
-});
-
 export const createResource = (playlistId, resource, editor, editorType) => ({
   type: actionTypes.CREATE_RESOURCE,
   playlistId,
@@ -342,61 +457,6 @@ export const createResource = (playlistId, resource, editor, editorType) => ({
   editor,
   editorType,
 });
-
-export const createResourceAction = (
-  playlistId,
-  editor,
-  editorType,
-  metadata,
-  projectId,
-) => async (dispatch) => {
-  // try {
-  // h5peditorCopy to be taken from h5papi/storage/h5p/laravel-h5p/js/laravel-h5p.js
-  const data = {
-    playlistId,
-    library: window.h5peditorCopy.getLibrary(),
-    parameters: JSON.stringify(window.h5peditorCopy.getParams()),
-    action: 'create',
-  };
-
-  const insertedH5pResource = await resourceService.h5pToken(data);
-
-  if (!insertedH5pResource.fail) {
-    const resource = insertedH5pResource;
-
-    const createActivityDate = {
-      h5p_content_id: resource.id,
-      playlist_id: playlistId,
-      thumb_url: metadata.thumbUrl,
-      action: 'create',
-      title: metadata.metaContent.metaTitle,
-      type: 'h5p',
-      content: 'place_holder',
-      subject_id:
-        metadata.metaContent.metaSubject
-        && metadata.metaContent.metaSubject.subject,
-      education_level_id:
-        metadata.metaContent.metaEducationalLevels
-        && metadata.metaContent.metaEducationalLevels.name,
-    };
-    const insertedResource = await resourceService.createActivity(
-      createActivityDate,
-    );
-
-    resource.id = insertedResource.id;
-    resource.mysqlid = insertedResource.mysqlid;
-
-    dispatch(createResource(playlistId, resource, editor, editorType));
-    // dispatch(hideCreateResourceModal());
-    window.location.href = `/project/${projectId}`;
-  } else {
-    dispatch(validationErrorsResource());
-  }
-  // } catch (e) {
-  //   alert("dsf");
-  //   throw new Error(e);
-  // }
-};
 
 export const createResourceByH5PUploadAction = (
   playlistId,
@@ -451,121 +511,5 @@ export const createResourceByH5PUploadAction = (
     }
   } catch (e) {
     throw new Error(e);
-  }
-};
-
-export const previewResource = (id) => ({
-  type: actionTypes.PREVIEW_RESOURCE,
-  id,
-});
-
-export const previewResourceAction = (id) => async (dispatch) => {
-  try {
-    dispatch(previewResource(id));
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
-export const hidePreviewResourceModal = () => ({
-  type: actionTypes.HIDE_PREVIEW_PLAYLIST_MODAL,
-});
-
-export const hidePreviewResourceModalAction = () => async (dispatch) => {
-  try {
-    dispatch(hidePreviewResourceModal());
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
-// runs delete resource ajax
-export const deleteResourceAction = (resourceId) => async (dispatch) => {
-  try {
-    const response = await resourceService.remove(resourceId);
-
-    if (response.data.status === 'success') {
-      dispatch({
-        type: actionTypes.DELETE_RESOURCE,
-        payload: { resourceId },
-      });
-    }
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
-// handles the actions when some activity type is switched inside activity type wizard
-export const onChangeActivityTypeAction = (activityTypeId) => (dispatch) => {
-  try {
-    // let activityTypeId = activityTypeId;
-    dispatch({
-      type: actionTypes.SELECT_ACTIVITY_TYPE,
-      payload: { activityTypeId },
-    });
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
-// handles the actions when some activity switched inside select activity wizard
-export const onChangeActivityAction = (activity) => (dispatch) => {
-  try {
-    dispatch({
-      type: actionTypes.SELECT_ACTIVITY,
-      payload: { activity },
-    });
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-// Metadata saving inside state when metadata form is submitted
-export const onSubmitDescribeActivityAction = (metadata, activityId = null) => (dispatch) => {
-  try {
-    dispatch({
-      type: actionTypes.DESCRIBE_ACTIVITY,
-      payload: {
-        activityId,
-        metadata,
-      },
-    });
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-// uploads the thumbnail of resource
-
-export const uploadResourceThumbnail = (thumbUrl) => ({
-  type: actionTypes.UPLOAD_RESOURCE_THUMBNAIL,
-  thumbUrl,
-});
-
-export const resourceThumbnailProgress = (progress) => ({
-  type: actionTypes.RESOURCE_THUMBNAIL_PROGRESS,
-  progress,
-});
-
-export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
-  try {
-    const configData = {
-      onUploadProgress: (progressEvent) => {
-        dispatch({
-          type: actionTypes.PROJECT_THUMBNAIL_PROGRESS,
-          payload: {
-            progress: `Uploaded progress: ${Math.round(
-              (progressEvent.loaded / progressEvent.total) * 100,
-            )}%`,
-          },
-        });
-      },
-    };
-
-    const response = await projectService.upload(formData, configData);
-
-    dispatch(uploadResourceThumbnail(response.thumbUrl));
-  } catch (e) {
-    // throw new Error(e);
   }
 };

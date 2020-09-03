@@ -10,9 +10,9 @@ import { required, FadeDiv } from 'utils';
 import {
   showBuildActivityAction,
   onSubmitDescribeActivityAction,
-  showSelectActivity,
-  uploadResourceThumbnailAction,
+  showSelectActivityAction,
   uploadResourceThumbnail,
+  uploadResourceThumbnailAction,
 } from 'store/actions/resource';
 import MetaTitleInputField from 'components/ResourceCard/fields/MetaTitleInputField';
 import MetaSubjectsField from 'components/ResourceCard/fields/MetaSubjectsField';
@@ -23,6 +23,7 @@ import computer from 'assets/images/computer.svg';
 import pexel from 'assets/images/pexel.png';
 import { subjects, educationLevels } from './dropdownData';
 import AddResourceSidebar from './AddResourceSidebar';
+
 import './style.scss';
 
 let imageValidation = '';
@@ -278,9 +279,9 @@ ResourceDescribeActivity = reduxForm({
 const mapDispatchToProps = (dispatch) => ({
   showBuildActivity: (editor, editorType) => dispatch(showBuildActivityAction(editor, editorType)),
   onSubmitDescribeActivity: (metadata) => dispatch(onSubmitDescribeActivityAction(metadata)),
-  uploadResourceThumbnailAction: (formData) => dispatch(uploadResourceThumbnailAction(formData)),
-  goBackToActivity: () => dispatch(showSelectActivity()),
   uploadResourceThumbnail: (url) => dispatch(uploadResourceThumbnail(url)),
+  uploadResourceThumbnailAction: (formData) => dispatch(uploadResourceThumbnailAction(formData)),
+  goBackToActivity: () => dispatch(showSelectActivityAction()),
 });
 
 const mapStateToProps = (state) => ({

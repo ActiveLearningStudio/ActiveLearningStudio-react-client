@@ -27,7 +27,10 @@ const ResourceCard = (props) => {
   };
 
   const {
-    resource, playlist, match, index,
+    resource,
+    playlist,
+    match,
+    index,
   } = props;
 
   return (
@@ -39,11 +42,11 @@ const ResourceCard = (props) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <div className="resource-card-wrapper">
+          <div className="resource-card-wrapper d-flex align-items-center">
             {!!resource.thumb_url && (
               <div className="activity-thumb-wrapper">
                 <Link
-                  to={`/playlist/preview/${playlist.id}/resource/${resource.id}`}
+                  to={`/playlist/${playlist.id}/activity/${resource.id}/preview`}
                 >
                   <div
                     className="activity-thumb"
@@ -57,136 +60,129 @@ const ResourceCard = (props) => {
               </div>
             )}
 
-            <div>
-              <div className="title">
-                <Link
-                  to={`/playlist/preview/${playlist.id}/resource/${resource.id}`}
-                >
-                  {resource.metadata && resource.metadata.title !== undefined
-                    ? resource.metadata.title
-                    : resource.title}
-                </Link>
-              </div>
+            <div className="title" style={{ flex: 1 }}>
+              <Link to={`/playlist/${playlist.id}/activity/${resource.id}/preview`}>
+                {resource.metadata && resource.metadata.title !== undefined
+                  ? resource.metadata.title
+                  : resource.title}
+              </Link>
             </div>
 
             <div className="activity-options-wrapper check">
-              <div className="activity-options">
-                <div className="dropdown pull-right">
-                  <Dropdown>
-                    <Dropdown.Toggle id="dropdown-basic">
-                      <FontAwesomeIcon icon="ellipsis-v" />
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Link
-                        className="dropdown-item"
-                        to={`/playlist/preview/${playlist.id}/resource/${resource.id}`}
-                      >
-                        <FontAwesomeIcon icon="eye" className="mr-2" />
-                        Preview
-                      </Link>
-                      <Link
-                        className="dropdown-item"
-                        to={`/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
-                      >
-                        <FontAwesomeIcon icon="pen" className="mr-2" />
-                        Edit
-                      </Link>
-                      <a
-                        className="dropdown-item"
-                        onClick={() => {
-                          const protocol = `${window.location.href.split('/')[0]}//`;
-                          confirmAlert({
-                            customUI: ({ onClose }) => (
-                              <div className="share-project-preview-url project-share-check">
-                                <br />
-                                <h3>
-                                  You can now share Activity
-                                  {' '}
-                                  <strong>{resource.title}</strong>
-                                  <br />
-                                  Anyone with the link below can access your activity:
-                                </h3>
+              <Dropdown className="pull-right resource-dropdown">
+                <Dropdown.Toggle className="resource-dropdown-btn">
+                  <FontAwesomeIcon icon="ellipsis-v" />
+                </Dropdown.Toggle>
 
-                                <a
-                                  target="_blank"
-                                  href={`/shared/activity/${resource.id.trim()}`}
-                                  rel="noopener noreferrer"
-                                >
-                                  <input
-                                    id="urllink_clip"
-                                    value={`${protocol + window.location.host}/shared/activity/${resource.id}`}
-                                  />
-                                </a>
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    as={Link}
+                    to={`/playlist/${playlist.id}/activity/${resource.id}/preview`}
+                  >
+                    <FontAwesomeIcon icon="eye" className="mr-2" />
+                    Preview
+                  </Dropdown.Item>
 
-                                <i
-                                  title="copy to clipboard"
-                                  className="fa fa-clipboard"
-                                  aria-hidden="true"
-                                  onClick={() => {
-                                    /* Get the text field */
-                                    const copyText = document.getElementById('urllink_clip');
+                  <Dropdown.Item
+                    as={Link}
+                    to={`/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
+                  >
+                    <FontAwesomeIcon icon="pen" className="mr-2" />
+                    Edit
+                  </Dropdown.Item>
 
-                                    /* Select the text field */
-                                    copyText.focus();
-                                    copyText.select();
-                                    // copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+                  <Dropdown.Item
+                    onClick={() => {
+                      const protocol = `${window.location.href.split('/')[0]}//`;
+                      confirmAlert({
+                        // eslint-disable-next-line react/prop-types
+                        customUI: ({ onClose }) => (
+                          <div className="share-project-preview-url project-share-check">
+                            <br />
+                            <h3>
+                              You can now share Activity
+                              {' '}
+                              <strong>{resource.title}</strong>
+                              <br />
+                              Anyone with the link below can access your activity:
+                            </h3>
 
-                                    /* Copy the text inside the text field */
-                                    document.execCommand('copy');
+                            <a
+                              target="_blank"
+                              href={`/shared/activity/${resource.id}`}
+                              rel="noopener noreferrer"
+                            >
+                              <input
+                                id="urllink_clip"
+                                value={`${protocol + window.location.host}/shared/activity/${resource.id}`}
+                              />
+                            </a>
 
-                                    /* Alert the copied text */
-                                    Swal.fire({
-                                      title: 'Link Copied',
-                                      showCancelButton: false,
-                                      showConfirmButton: false,
-                                      timer: 1500,
-                                      allowOutsideClick: false,
-                                    });
-                                  }}
-                                />
-                                <br />
+                            <i
+                              title="copy to clipboard"
+                              className="fa fa-clipboard"
+                              aria-hidden="true"
+                              onClick={() => {
+                                /* Get the text field */
+                                const copyText = document.getElementById('urllink_clip');
 
-                                <div className="close-btn">
-                                  <button type="button" onClick={onClose}>
-                                    Ok
-                                  </button>
-                                </div>
-                              </div>
-                            ),
-                          });
-                        }}
-                      >
-                        <FontAwesomeIcon icon="share" className="mr-2" />
-                        Share
-                      </a>
-                      <a
-                        className="dropdown-item"
-                        href="#"
-                        onClick={() => {
-                          Swal.fire({
-                            title: 'STAY TUNED!',
-                            text: 'COMING SOON',
-                            imageUrl: logo,
-                            imageWidth: 400,
-                            imageHeight: 200,
-                            imageAlt: 'Custom image',
-                          });
-                        }}
-                      >
-                        <FontAwesomeIcon icon="times-circle" className="mr-2" />
-                        Executable
-                      </a>
-                      <a className="dropdown-item" onClick={handleDelete}>
-                        <FontAwesomeIcon icon="times-circle" className="mr-2" />
-                        Delete
-                      </a>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </div>
-              </div>
+                                /* Select the text field */
+                                copyText.focus();
+                                copyText.select();
+                                // copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+                                /* Copy the text inside the text field */
+                                document.execCommand('copy');
+
+                                /* Alert the copied text */
+                                Swal.fire({
+                                  title: 'Link Copied',
+                                  showCancelButton: false,
+                                  showConfirmButton: false,
+                                  timer: 1500,
+                                  allowOutsideClick: false,
+                                });
+                              }}
+                            />
+                            <br />
+
+                            <div className="close-btn">
+                              <button type="button" onClick={onClose}>
+                                Ok
+                              </button>
+                            </div>
+                          </div>
+                        ),
+                      });
+                    }}
+                  >
+                    <FontAwesomeIcon icon="share" className="mr-2" />
+                    Share
+                  </Dropdown.Item>
+
+                  <Dropdown.Item
+                    onClick={() => {
+                      Swal.fire({
+                        title: 'STAY TUNED!',
+                        text: 'COMING SOON',
+                        imageUrl: logo,
+                        imageWidth: 400,
+                        imageHeight: 200,
+                        imageAlt: 'Custom image',
+                      });
+                    }}
+                  >
+                    <FontAwesomeIcon icon="times-circle" className="mr-2" />
+                    Executable
+                  </Dropdown.Item>
+
+                  <Dropdown.Item onClick={handleDelete}>
+                    <FontAwesomeIcon icon="times-circle" className="mr-2" />
+                    Delete
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </div>
-
-            <div className="clearfix" />
           </div>
         </div>
       )}
@@ -198,10 +194,9 @@ ResourceCard.propTypes = {
   resource: PropTypes.object.isRequired,
   playlist: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
-  index: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
   showDeletePopup: PropTypes.func.isRequired,
   hideDeletePopup: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

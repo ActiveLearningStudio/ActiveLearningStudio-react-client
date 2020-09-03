@@ -48,14 +48,14 @@ class PreviewPage extends React.Component {
     let content;
     if (previewType === 'resource') {
       content = (
-        <ResourcePreview resourceId={parseInt(match.params.resourceId, 10)} />
+        <ResourcePreview activityId={parseInt(match.params.activityId, 10)} />
       );
     } else if (previewType === 'playlist') {
       content = !playlistId && (
         <PlaylistPreview
           projectId={parseInt(match.params.projectId, 10)}
           playlistId={parseInt(match.params.playlistId, 10)}
-          resourceId={parseInt(match.params.resourceId, 10)}
+          activityId={parseInt(match.params.activityId, 10)}
         />
       );
     } else {

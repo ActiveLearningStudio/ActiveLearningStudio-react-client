@@ -27,7 +27,7 @@ class PlaylistPreview extends Component {
     super(props);
 
     this.state = {
-      resourceId: props.resourceId,
+      activityId: props.activityId,
       resourceTitle: '',
       playlists: [],
       currentPlaylist: '',
@@ -42,7 +42,7 @@ class PlaylistPreview extends Component {
         let currentActivity;
         if (nextProps.playlist.selectedPlaylist && nextProps.playlist.selectedPlaylist.activities) {
           currentActivity = nextProps.playlist.selectedPlaylist.activities.find(
-            (a) => a.id === prevState.resourceId,
+            (a) => a.id === prevState.activityId,
           );
         }
 
@@ -74,7 +74,7 @@ class PlaylistPreview extends Component {
       // loading,
       projectId,
       playlistId,
-      // resourceId,
+      // activityId,
       // loadHP,
       loadPlaylist,
     } = this.props;
@@ -87,7 +87,7 @@ class PlaylistPreview extends Component {
       //   axios
       //     .post(
       //       `${global.config.laravelAPIUrl}/h5p-resource-settings`,
-      //       { resourceId },
+      //       { activityId },
       //       { headers: { Authorization: `Bearer ${token}` } },
       //     )
       //     .then((response) => {
@@ -106,14 +106,14 @@ class PlaylistPreview extends Component {
     checkValidResource();
   }
 
-  handleSelect = (resourceId) => {
-    if (resourceId) {
-      this.setState({ resourceId });
+  handleSelect = (activityId) => {
+    if (activityId) {
+      this.setState({ activityId });
     }
   };
 
   render() {
-    let { resourceId } = this.state;
+    let { activityId } = this.state;
     const { playlists, currentPlaylist, activeShared } = this.state;
     const {
       history,
@@ -178,11 +178,11 @@ class PlaylistPreview extends Component {
         />
       ));
 
-      if (resourceId === 0) {
-        resourceId = selectedPlaylist.activities[0].id;
+      if (activityId === 0) {
+        activityId = selectedPlaylist.activities[0].id;
       }
 
-      const currentIndex = selectedPlaylist.activities.findIndex((f) => f.id === resourceId);
+      const currentIndex = selectedPlaylist.activities.findIndex((f) => f.id === activityId);
       if (currentIndex > -1) {
         currentActivity = selectedPlaylist.activities[currentIndex];
       }
@@ -206,12 +206,12 @@ class PlaylistPreview extends Component {
 
         previousLink1 = (
           <div className="slider-hover-section">
-            <Link to={`/playlist/preview/${playlistId}/resource/${previousResource.id}`}>
+            <Link to={`/playlist/${playlistId}/activity/${previousResource.id}/preview`}>
               <FontAwesomeIcon icon="chevron-left" />
             </Link>
 
             <div className="hover-control-caption pointer-cursor">
-              <Link to={`/playlist/preview/${playlistId}/resource/${previousResource.id}`}>
+              <Link to={`/playlist/${playlistId}/activity/${previousResource.id}/preview`}>
                 <div
                   className="img-in-hover"
                   style={{
@@ -251,7 +251,7 @@ class PlaylistPreview extends Component {
                       if (playlists[i].id === currentPlaylist.id) {
                         try {
                           history.push(
-                            `/playlist/preview/${playlists[i - 1].id}/resource/${playlists[i - 1].activities[0].id}`,
+                            `/playlist/${playlists[i - 1].id}/activity/${playlists[i - 1].activities[0].id}/preview`,
                           );
                         } catch (e) {
                           Swal.fire({
@@ -292,12 +292,12 @@ class PlaylistPreview extends Component {
 
         nextLink1 = (
           <div className="slider-hover-section">
-            <Link to={`/playlist/preview/${playlistId}/resource/${nextResource.id}`}>
+            <Link to={`/playlist/${playlistId}/activity/${nextResource.id}/preview`}>
               <FontAwesomeIcon icon="chevron-right" />
             </Link>
 
             <div className="hover-control-caption pointer-cursor">
-              <Link to={`/playlist/preview/${playlistId}/resource/${nextResource.id}`}>
+              <Link to={`/playlist/${playlistId}/activity/${nextResource.id}/preview`}>
                 <div
                   className="img-in-hover"
                   style={{
@@ -344,7 +344,7 @@ class PlaylistPreview extends Component {
                       if (playlists[i].id === currentPlaylist.id) {
                         try {
                           history.push(
-                            `/playlist/preview/${playlists[i + 1].id}/resource/${playlists[i + 1].activities[0].id}`,
+                            `/playlist/${playlists[i + 1].id}/activity/${playlists[i + 1].activities[0].id}/preview`,
                           );
                         } catch (e) {
                           Swal.fire({
@@ -408,8 +408,8 @@ class PlaylistPreview extends Component {
                     <div className="heading-wrapper">
                       <div className="main-heading">
                         {selectedPlaylist.activities && selectedPlaylist.activities.length
-                          ? selectedPlaylist.activities.filter((a) => a.id === resourceId).length > 0
-                            ? selectedPlaylist.activities.filter((a) => a.id === resourceId)[0].title
+                          ? selectedPlaylist.activities.filter((a) => a.id === activityId).length > 0
+                            ? selectedPlaylist.activities.filter((a) => a.id === activityId)[0].title
                             : ''
                           : ''}
                       </div>
@@ -429,7 +429,7 @@ class PlaylistPreview extends Component {
                     {!!currentActivity && (
                       <Suspense fallback={<div>Loading</div>}>
                         {currentActivity.type === 'h5p' ? (
-                          <H5PPreview {...this.state} resourceId={resourceId} />
+                          <H5PPreview {...this.state} activityId={activityId} />
                         ) : (
                           <ImmersiveReaderPreview activity={currentActivity} />
                         )}
@@ -470,8 +470,8 @@ class PlaylistPreview extends Component {
                         onColor="#5952c6"
                         onChange={() => {
                           const activityTitle = selectedPlaylist.activities && selectedPlaylist.activities.length
-                            ? selectedPlaylist.activities.filter((a) => a.id === resourceId).length > 0
-                              ? selectedPlaylist.activities.filter((a) => a.id === resourceId)[0].title
+                            ? selectedPlaylist.activities.filter((a) => a.id === activityId).length > 0
+                              ? selectedPlaylist.activities.filter((a) => a.id === activityId)[0].title
                               : ''
                             : '';
                           if (activeShared) {
@@ -489,12 +489,12 @@ class PlaylistPreview extends Component {
                               cancelButtonAriaLabel: 'Cancel',
                             }).then((resp) => {
                               if (resp.isConfirmed) {
-                                resourceUnshared(resourceId, activityTitle);
+                                resourceUnshared(activityId, activityTitle);
                                 loadPlaylist(projectId, playlistId);
                               }
                             });
                           } else {
-                            resourceShared(resourceId, activityTitle);
+                            resourceShared(activityId, activityTitle);
                             loadPlaylist(projectId, playlistId);
                           }
                         }}
@@ -519,12 +519,12 @@ class PlaylistPreview extends Component {
 
                                 <a
                                   target="_blank"
-                                  href={`/shared/activity/${resourceId.trim()}`}
+                                  href={`/shared/activity/${activityId}`}
                                   rel="noopener noreferrer"
                                 >
                                   <input
                                     id="urllink_clip"
-                                    value={`${protocol + window.location.host}/shared/activity/${resourceId}`}
+                                    value={`${protocol + window.location.host}/shared/activity/${activityId}`}
                                   />
                                 </a>
 
@@ -594,7 +594,7 @@ PlaylistPreview.propTypes = {
   playlist: PropTypes.object.isRequired,
   projectId: PropTypes.number.isRequired,
   playlistId: PropTypes.number.isRequired,
-  resourceId: PropTypes.number,
+  activityId: PropTypes.number,
   loading: PropTypes.string,
   projects: PropTypes.array.isRequired,
   loadPlaylist: PropTypes.func.isRequired,
@@ -603,7 +603,7 @@ PlaylistPreview.propTypes = {
 
 PlaylistPreview.defaultProps = {
   loading: '',
-  resourceId: undefined,
+  activityId: undefined,
 };
 
 const mapDispatchToProps = (dispatch) => ({

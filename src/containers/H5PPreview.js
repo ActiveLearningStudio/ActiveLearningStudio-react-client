@@ -2,9 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import axios from 'axios';
 
 import gifloader from 'assets/images/276.gif';
+import {
+  loadH5pResourceSettings,
+  loadH5pResourceSettingsOpen,
+  loadH5pResourceSettingsShared,
+} from 'store/actions/resource';
 
 // TODO: need to convert to functional component
 // move API call to service
@@ -20,101 +24,82 @@ class H5PPreview extends React.Component {
   }
 
   componentDidMount() {
-    const { resourceId, showLtiPreview, showActivityPreview } = this.props;
+    const { activityId, showLtiPreview, showActivityPreview } = this.props;
 
     if (showLtiPreview) {
-      this.loadResourceLti(resourceId);
+      this.loadResourceLti(activityId);
     } else if (showActivityPreview) {
-      this.loadResourceActivity(resourceId);
+      this.loadResourceActivity(activityId);
     } else {
-      this.loadResource(resourceId);
+      this.loadResource(activityId);
     }
   }
 
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps(props) {
-    const { resourceId, showLtiPreview, showActivityPreview } = this.props;
-    if (resourceId !== props.resourceId) {
+    const { activityId, showLtiPreview, showActivityPreview } = this.props;
+    if (activityId !== props.activityId) {
       const h5pIFrame = document.getElementsByClassName('h5p-iframe');
       if (h5pIFrame.length) {
         h5pIFrame[0].remove();
       }
 
       if (showLtiPreview) {
-        this.loadResourceLti(props.resourceId);
+        this.loadResourceLti(props.activityId);
       } else if (showActivityPreview) {
-        this.loadResourceActivity(props.resourceId);
+        this.loadResourceActivity(props.activityId);
       } else {
-        this.loadResource(props.resourceId);
+        this.loadResource(props.activityId);
       }
     }
   }
 
-  loadResource = (resourceId) => {
-    if (resourceId === 0) {
+  loadResource = async (activityId) => {
+    if (activityId === 0) {
       return;
     }
 
-    const { token } = JSON.parse(localStorage.getItem('auth'));
-
-    axios
-      .post(
-        `${global.config.laravelAPIUrl}/h5p-resource-settings`,
-        { resourceId },
-        { headers: { Authorization: `Bearer ${token}` } },
-      )
-      .then((response) => {
-        this.resourceLoaded(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  loadResourceLti = (resourceId) => {
-    if (resourceId === 0) {
-      return;
-    }
-
-    axios
-      .post(
-        `${global.config.laravelAPIUrl}/h5p-resource-settings-open`,
-        { resourceId },
-      )
-      .then((response) => {
-        this.resourceLoaded(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  loadResourceActivity = (resourceId) => {
-    if (resourceId === 0) {
-      return;
-    }
-
-    axios
-      .post(
-        `${global.config.laravelAPIUrl}/h5p-resource-settings-shared`,
-        { resourceId },
-      )
-      .then((response) => {
-        this.resourceLoaded(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  resourceLoaded = async (response) => {
-    if (response.data.status === 'fail') {
+    try {
+      const response = await loadH5pResourceSettings(activityId);
+      await this.resourceLoaded(response);
+    } catch (e) {
       this.setState({
         shared: false,
       });
+    }
+  };
+
+  loadResourceLti = async (activityId) => {
+    if (activityId === 0) {
       return;
     }
 
+    try {
+      const response = await loadH5pResourceSettingsOpen(activityId);
+      await this.resourceLoaded(response);
+    } catch (e) {
+      this.setState({
+        shared: false,
+      });
+    }
+  };
+
+  loadResourceActivity = async (activityId) => {
+    if (activityId === 0) {
+      return;
+    }
+
+    try {
+      const response = await loadH5pResourceSettingsShared(activityId);
+      await this.resourceLoaded(response);
+    } catch (e) {
+      this.setState({
+        shared: false,
+      });
+    }
+  };
+
+  resourceLoaded = async (response) => {
     window.H5PIntegration = response.data.data.h5p.settings;
 
     const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
@@ -140,7 +125,7 @@ class H5PPreview extends React.Component {
       script.async = false;
       document.body.appendChild(script);
     });
-  }
+  };
 
   render() {
     const { shared } = this.state;
@@ -166,7 +151,7 @@ class H5PPreview extends React.Component {
 
 H5PPreview.propTypes = {
   resource: PropTypes.object.isRequired,
-  resourceId: PropTypes.number.isRequired,
+  activityId: PropTypes.number.isRequired,
   showLtiPreview: PropTypes.bool,
   showActivityPreview: PropTypes.bool,
 };

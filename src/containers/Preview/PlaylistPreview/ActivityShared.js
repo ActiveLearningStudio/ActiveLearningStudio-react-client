@@ -14,7 +14,7 @@ class ActivityShared extends React.Component {
     super(props);
 
     this.state = {
-      resourceId: props.resourceId,
+      activityId: props.activityId,
     };
   }
 
@@ -23,7 +23,7 @@ class ActivityShared extends React.Component {
   }
 
   render() {
-    const { resourceId } = this.state;
+    const { activityId } = this.state;
 
     return (
       <>
@@ -36,7 +36,7 @@ class ActivityShared extends React.Component {
                   <Suspense fallback={<div>Loading</div>}>
                     <H5PPreview
                       {...this.state}
-                      resourceId={resourceId}
+                      activityId={activityId}
                       showActivitypreview
                     />
                   </Suspense>
@@ -51,7 +51,7 @@ class ActivityShared extends React.Component {
 }
 
 ActivityShared.propTypes = {
-  resourceId: PropTypes.string.isRequired,
+  activityId: PropTypes.string.isRequired,
   loadPlaylist: PropTypes.func.isRequired,
 };
 

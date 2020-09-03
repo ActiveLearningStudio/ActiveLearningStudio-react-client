@@ -192,12 +192,12 @@ export const loadPlaylistActionShared = (playlistId) => async (dispatch) => {
   }
 };
 
-// export const loadPlaylistActionNew = (resourceId) => async (dispatch) => {
+// export const loadPlaylistActionNew = (activityId) => async (dispatch) => {
 //   const { token } = JSON.parse(localStorage.getItem('auth'));
 //   await axios
 //     .post(
 //       `${global.config.laravelAPIUrl}/h5p-resource-settings`,
-//       { resourceId },
+//       { activityId },
 //       { headers: { Authorization: `Bearer ${token}` } },
 //     )
 //     .then((response) => {
