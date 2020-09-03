@@ -18,16 +18,11 @@ const ActivityCard = (props) => {
       >
         <div
           className="playimg"
-          // style={{
-          //   backgroundImage: !!activity.metadata
-          //     ? "url(" + global.config.laravelAPIUrl + activity.metadata.thumbUrl + ")"
-          //     : "url(" + global.config.laravelAPIUrl + activity.thumbUrl + ")",
-          // }}
           style={{
             backgroundImage:
-              !!activity.thumbUrl && activity.thumbUrl.includes('pexels.com')
-                ? `url(${activity.thumbUrl})`
-                : `url(${global.config.laravelAPIUrl}${activity.thumbUrl})`,
+              !!activity.thumb_url && activity.thumb_url.includes('pexels.com')
+                ? `url(${activity.thumb_url})`
+                : `url(${global.config.resourceUrl}${activity.thumb_url})`,
           }}
         />
         <div className="plydet">
@@ -40,12 +35,11 @@ const ActivityCard = (props) => {
 
 ActivityCard.propTypes = {
   activity: PropTypes.object.isRequired,
-  playlistId: PropTypes.string,
+  playlistId: PropTypes.number.isRequired,
   lti: PropTypes.bool,
 };
 
 ActivityCard.defaultProps = {
-  playlistId: '',
   lti: false,
 };
 
