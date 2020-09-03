@@ -412,7 +412,9 @@ export const editResourceAction = (
 
 export const shareActivity = (activityId) => resourceService.shareActivity(activityId);
 
-export const loadH5pShareResource = async (activityId) => resourceService.loadH5pShared(activityId);
+export const loadH5pShareResource = async (activityId) => {
+  return await resourceService.loadH5pShared(activityId);
+}
 
 // TODO: refactor bottom
 export const saveGenericResourceAction = (resourceData) => async (dispatch) => {
