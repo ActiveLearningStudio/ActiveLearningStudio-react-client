@@ -18,8 +18,8 @@ const PrivateRoute = ({
     {...rest}
     render={(props) => {
       let newId = id;
-      if (props.match.params.resourceId) {
-        newId = props.match.params.resourceId;
+      if (props.match.params.activityId) {
+        newId = props.match.params.activityId;
       } else if (props.match.params.playlistId) {
         newId = props.match.params.playlistId;
       } else if (props.match.params.projectId) {

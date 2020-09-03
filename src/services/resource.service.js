@@ -3,28 +3,35 @@ import httpService from './http.service';
 
 const { apiVersion } = config;
 
-const getAll = (playlistId) => httpService
-  .get(`/${apiVersion}/playlists/${playlistId}/activities`)
+const getAll = () => httpService
+  .get(`/${apiVersion}/activities`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const create = (playlistId, activity) => httpService
-  .post(`/${apiVersion}/playlists/${playlistId}/activities`, activity)
+const create = (activity) => httpService
+  .post(`/${apiVersion}/activities`, activity)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const get = (playlistId, id) => httpService
-  .get(`/${apiVersion}/playlists/${playlistId}/activities/${id}`)
+const get = (id) => httpService
+  .get(`/${apiVersion}/activities/${id}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const update = (playlistId, id, activity) => httpService
-  .put(`/${apiVersion}/playlists/${playlistId}/activities/${id}`, activity)
+const update = (id, activity) => httpService
+  .put(`/${apiVersion}/activities/${id}`, activity)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
 const remove = (id) => httpService
   .remove(`/${apiVersion}/activities/${id}`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const upload = (formData, conf) => httpService
+  .post(`/${apiVersion}/activities/upload-thumb`, formData, {
+    'Content-Type': 'multipart/form-data',
+  }, conf)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -38,33 +45,33 @@ const getItems = (activityTypeId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const loadResource = (resourceId) => httpService
-  .get(`/${apiVersion}/load-resource/${resourceId}`)
-  .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
-
-const uploadResourceThumb = (formData, configData) => httpService
-  .post(`/${apiVersion}/post-upload-image`, formData, configData)
-  .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
-
-const h5pSetings = () => httpService
-  .get(`/${apiVersion}/h5p/settings`)
-  .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
-
-const h5pSetingsUpdate = (activityId, dataUpload) => httpService
-  .put(`/${apiVersion}/activities/${activityId}`, dataUpload)
-  .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
-
 const h5pToken = (dataH5p) => httpService
   .post(`/${apiVersion}/h5p`, dataH5p)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const createActivity = (dataActivity) => httpService
-  .post(`/${apiVersion}/activities`, dataActivity)
+const h5pSettings = () => httpService
+  .get(`/${apiVersion}/h5p/settings`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const h5pSettingsUpdate = (activityId, dataUpload) => httpService
+  .put(`/${apiVersion}/activities/${activityId}`, dataUpload)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const h5pResourceSettings = (activityId) => httpService
+  .get(`/${apiVersion}/activities/${activityId}/h5p-resource-settings`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const h5pResourceSettingsOpen = (activityId) => httpService
+  .get(`/${apiVersion}/activities/${activityId}/h5p-resource-settings-open`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const h5pResourceSettingsShared = (activityId) => httpService
+  .get(`/${apiVersion}/activities/${activityId}/h5p-resource-settings-shared`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -89,15 +96,16 @@ export default {
   get,
   update,
   remove,
+  upload,
   getTypes,
   getItems,
-  loadResource,
-  uploadResourceThumb,
-  h5pSetings,
   h5pToken,
-  createActivity,
+  h5pSettings,
+  h5pSettingsUpdate,
+  h5pResourceSettings,
+  h5pResourceSettingsOpen,
+  h5pResourceSettingsShared,
   activityH5p,
-  h5pSetingsUpdate,
   shareActivity,
   loadH5pShared,
 };

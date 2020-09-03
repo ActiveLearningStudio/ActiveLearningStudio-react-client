@@ -9,9 +9,9 @@ import {
   loadMyProjectsAction,
 } from 'store/actions/project';
 import Header from 'components/Header';
-import ActivityShared from 'components/PlaylistPreview/ActivityShared';
-import LtiPlaylistPreview from 'components/PlaylistPreview/LtiPlaylistPreview';
-import LtiPlaylistPreviewShared from 'components/PlaylistPreview/LtiPlaylistPreviewShared';
+import ActivityShared from 'containers/Preview/PlaylistPreview/ActivityShared';
+import LtiPlaylistPreview from 'containers/Preview/PlaylistPreview/LtiPlaylistPreview';
+import LtiPlaylistPreviewShared from 'containers/Preview/PlaylistPreview/LtiPlaylistPreviewShared';
 
 class LtiPreviewPage extends React.Component {
   componentDidMount() {

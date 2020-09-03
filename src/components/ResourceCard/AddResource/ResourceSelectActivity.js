@@ -10,7 +10,7 @@ import {
   loadResourceItemsAction,
   showDescribeActivityAction,
   onChangeActivityAction,
-  showCreateResourceActivity,
+  showCreateResourceActivityAction,
 } from 'store/actions/resource';
 import ResourceActivityTypeField from '../fields/ResourceActivityTypeField';
 import MyVerticallyCenteredModal from '../../models/activityOptions';
@@ -91,8 +91,8 @@ let ResourceSelectActivity = (props) => {
               setModalShow(true);
             }}
           >
-            <FontAwesomeIcon icon="desktop" />
-            demo
+            <FontAwesomeIcon icon="desktop" className="mr-2" />
+            Demo
           </div>
           <div
             className="option_type"
@@ -124,7 +124,7 @@ let ResourceSelectActivity = (props) => {
                 <div className="col-md-12">
                   <h2 className="title">
                     <div className="back-button" onClick={goBackToActivity}>
-                      <FontAwesomeIcon icon="chevron-left" />
+                      <FontAwesomeIcon icon="chevron-left" className="mr-2" />
                       Back
                     </div>
                     Select the activity you want to build from the options below:
@@ -135,7 +135,7 @@ let ResourceSelectActivity = (props) => {
               <div className="row">
                 <div className="col-md-12">
                   <div className="shadowbox">
-                    <div className="searchbox">
+                    <div className="search-box">
                       <input
                         type="text"
                         placeholder="Search activity"
@@ -153,7 +153,7 @@ let ResourceSelectActivity = (props) => {
                   onSubmit={handleSubmit}
                   autoComplete="off"
                 >
-                  <div className="scrollblog">
+                  <div className="scroll-blog">
                     <div className="row">{questionsContent}</div>
                   </div>
                 </form>
@@ -203,7 +203,7 @@ const mapDispatchToProps = (dispatch) => ({
   loadResourceItems: (activityTypeId) => dispatch(loadResourceItemsAction(activityTypeId)),
   showDescribeActivity: (activity) => dispatch(showDescribeActivityAction(activity)),
   onChangeActivity: (e, activity) => dispatch(onChangeActivityAction(e, activity)),
-  goBackToActivity: () => dispatch(showCreateResourceActivity()),
+  goBackToActivity: () => dispatch(showCreateResourceActivityAction()),
 });
 
 const mapStateToProps = (state) => ({

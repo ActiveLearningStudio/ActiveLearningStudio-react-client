@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { FadeDiv } from 'utils';
-import { hideBuildActivity } from 'store/actions/resource';
+import { hideBuildActivityAction } from 'store/actions/resource';
 import EditResourceSidebar from './EditResourceSidebar';
 import H5PEditor from './Editors/H5PEditor';
 
@@ -58,7 +58,7 @@ ResourceActivityBuild.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  goBackToActivity: () => dispatch(hideBuildActivity()),
+  goBackToActivity: () => dispatch(hideBuildActivityAction()),
 });
 
 const mapStateToProps = (state) => ({

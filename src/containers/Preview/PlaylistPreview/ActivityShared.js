@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
 import gifloader from 'assets/images/dotsloader.gif';
-import { loadh5pShareResource } from 'store/actions/resource';
+import { loadH5pShareResource } from 'store/actions/resource';
 
 import './style.scss';
 
@@ -12,7 +12,7 @@ const ActivityShared = (props) => {
   const [authorized, setAuthorized] = useState(true);
   useEffect(() => {
     window.scrollTo(0, 0);
-    const result = !!match.params.resourceId && loadh5pShareResource(match.params.resourceId);
+    const result = !!match.params.resourceId && loadH5pShareResource(match.params.resourceId);
     result.then(async (data) => {
       window.H5PIntegration = data.h5p_activity.h5p.settings;
       const h5pWrapper = document.getElementById('curriki-h5p-wrapper');

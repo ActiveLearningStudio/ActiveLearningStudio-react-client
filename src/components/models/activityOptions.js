@@ -29,7 +29,7 @@ function MyVerticallyCenteredModal(props) {
             {!!activity && activity.demoActivityId ? (
               <Suspense fallback={<div>Loading</div>}>
                 <H5PPreview
-                  resourceId={activity.demoActivityId.trim()}
+                  activityId={activity.demoActivityId.trim()}
                   tokenrequire={false}
                   showltipreview
                 />

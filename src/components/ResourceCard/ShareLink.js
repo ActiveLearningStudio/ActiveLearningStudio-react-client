@@ -19,6 +19,7 @@ function ShareLink(props) {
   return (
     <li className="dropdown-submenu send">
       <a
+        href="#"
         className="test"
         tabIndex="-1"
         onClick={() => {
@@ -39,6 +40,7 @@ function ShareLink(props) {
         {allLms.shareVendors && allLms.shareVendors.map((data) => (
           <li key={data._id}>
             <a
+              href="#"
               onClick={async () => {
                 ShareLMS(
                   playlistId,

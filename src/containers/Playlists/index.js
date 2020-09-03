@@ -355,7 +355,7 @@ class PlaylistsPage extends React.Component {
                               key={playlist.id}
                               index={index}
                               playlist={playlist}
-                              projectId={match.params.projectId}
+                              projectId={parseInt(match.params.projectId, 10)}
                               handleCreateResource={this.handleShowCreateResourceModal}
                             />
                           ))}
@@ -462,7 +462,7 @@ const mapDispatchToProps = (dispatch) => ({
   editResource: (id, editor, editorType, actId, metadata) => dispatch(editResourceAction(id, editor, editorType, actId, metadata)),
   createResourceByH5PUpload: (id, editor, editorType, payload, mdata, projId) => dispatch(createResourceByH5PUploadAction(id, editor, editorType, payload, mdata, projId)),
   loadProject: (id) => dispatch(loadProjectAction(id)),
-  deleteResource: (resourceId) => dispatch(deleteResourceAction(resourceId)),
+  deleteResource: (activityId) => dispatch(deleteResourceAction(activityId)),
   showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
   showCreateResourceActivity: () => dispatch(showCreateResourceActivityAction()),
   showResourceDescribeActivity: (activity, id) => dispatch(showDescribeActivityAction(activity, id)),

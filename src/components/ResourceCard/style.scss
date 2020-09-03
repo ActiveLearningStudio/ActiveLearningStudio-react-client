@@ -6,6 +6,84 @@
   border-style: dashed;
 }
 
+.activity-options-wrapper {
+  width: 25px;
+}
+
+.activity-options {
+  float: right;
+  cursor: pointer;
+
+  button {
+    padding: 0 0 10px 10px;
+    height: auto;
+    vertical-align: top;
+    line-height: 0;
+    background: #fff;
+    color: #868686;
+  }
+
+  span {
+    border: 2px solid #dbdbdb;
+    display: block;
+    width: 2px;
+    margin-top: 2px;
+    margin-left: auto;
+  }
+
+  .options {
+    margin-top: 5px;
+
+    .preview-btn {
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 8px;
+      cursor: pointer;
+      display: block;
+      width: 100%;
+    }
+
+    .edit-btn {
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 8px;
+      cursor: pointer;
+      display: block;
+      width: 100%;
+    }
+
+    .delete-btn {
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 8px;
+      cursor: pointer;
+      display: block;
+      width: 100%;
+    }
+  }
+}
+
+.resource-dropdown {
+  .resource-dropdown-btn {
+    height: 24px;
+    padding: 0 0 0 10px !important;
+    color: #868686 !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+
+    &:after {
+      display: none;
+      border-top-color: white !important;
+    }
+  }
+
+  .dropdown-menu {
+    position: fixed !important;
+  }
+}
+
 .share-project-preview-url.project-share-check {
   h3 {
     text-align: center;
@@ -23,5 +101,3 @@
     margin-bottom: 10px;
   }
 }
-  
-  

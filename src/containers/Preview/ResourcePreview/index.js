@@ -8,16 +8,16 @@ import { loadResourceAction } from 'store/actions/resource';
 import H5PPreview from 'containers/H5PPreview';
 
 function ResourcePreview(props) {
-  const { resource, resourceId, loadResource } = props;
+  const { resource, activityId, loadResource } = props;
 
   useEffect(() => {
-    loadResource(resourceId);
-  }, [loadResource, resourceId]);
+    loadResource(activityId);
+  }, [loadResource, activityId]);
 
   let next = '';
   if (resource.nextResourceId) {
     next = (
-      <Link to={`/resource/preview/${resource.nextResourceId}`} className="next-prev-link">
+      <Link to={`/activity/${resource.nextResourceId}/preview`} className="next-prev-link">
         <FontAwesomeIcon icon="chevron-circle-right" />
       </Link>
     );
@@ -26,7 +26,7 @@ function ResourcePreview(props) {
   let previous = '';
   if (resource.previousResourceId) {
     previous = (
-      <Link to={`/resource/preview/${resource.previousResourceId}`} className="next-prev-link">
+      <Link to={`/activity/${resource.previousResourceId}/preview`} className="next-prev-link">
         <FontAwesomeIcon icon="chevron-circle-left" />
       </Link>
     );
@@ -52,12 +52,12 @@ function ResourcePreview(props) {
 
 ResourcePreview.propTypes = {
   resource: PropTypes.object.isRequired,
-  resourceId: PropTypes.number.isRequired,
+  activityId: PropTypes.number.isRequired,
   loadResource: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  loadResource: (resourceId) => dispatch(loadResourceAction(resourceId)),
+  loadResource: (activityId) => dispatch(loadResourceAction(activityId)),
 });
 
 const mapStateToProps = (state) => ({
