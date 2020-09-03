@@ -79,7 +79,7 @@ const shareActivity = (activityId) => httpService
   .catch((err) => Promise.reject(err.response.data));
 
 const loadH5pShared = (activityId) => httpService
-  .get(`/${apiVersion}/h5p/activity/${activityId}`)
+  .get(`/${apiVersion}/h5p/activity/${activityId}/public`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
