@@ -122,7 +122,7 @@ const ResourceCard = (props) => {
                                   />
                                 </a>
 
-                                <div
+                                <span
                                   title="copy to clipboard"
                                   className="fa fa-clipboard"
                                   aria-hidden="true"
@@ -149,7 +149,7 @@ const ResourceCard = (props) => {
                                   }}
                                 >
                                   <FontAwesomeIcon icon="clipboard" />
-                                </div>
+                                </span>
                                 <br />
 
                                 <div className="close-btn">
