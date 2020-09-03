@@ -10,7 +10,7 @@ import { Dropdown } from 'react-bootstrap';
 
 import logo from 'assets/images/logo.svg';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
-import { activeShareActivity } from 'store/actions/resource';
+import { shareActivity } from 'store/actions/resource';
 // import ShareLink from './ShareLink';
 
 import './style.scss';
@@ -97,7 +97,7 @@ const ResourceCard = (props) => {
                       <Dropdown.Item
                         className="dropdown-item"
                         onClick={async () => {
-                          activeShareActivity(resource.id);
+                          shareActivity(resource.id);
                           const protocol = `${window.location.href.split('/')[0]}//`;
                           confirmAlert({
                             customUI: ({ onClose }) => (
@@ -124,7 +124,6 @@ const ResourceCard = (props) => {
 
                                 <span
                                   title="copy to clipboard"
-                                  className="fa fa-clipboard"
                                   aria-hidden="true"
                                   onClick={() => {
                                     /* Get the text field */
