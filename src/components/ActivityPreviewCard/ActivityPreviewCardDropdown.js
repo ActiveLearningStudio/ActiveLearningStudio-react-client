@@ -48,7 +48,7 @@ ActivityPreviewCardDropdown.propTypes = {
   lti: PropTypes.bool,
   shared: PropTypes.bool,
   activity: PropTypes.object.isRequired,
-  playlistId: PropTypes.string.isRequired,
+  playlistId: PropTypes.number.isRequired,
 };
 
 ActivityPreviewCardDropdown.defaultProps = {

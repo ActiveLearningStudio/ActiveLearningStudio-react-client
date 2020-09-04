@@ -31,7 +31,7 @@ const ActivityPreviewCard = (props) => {
                 style={{
                   backgroundImage: activity.thumbUrl.includes('pexels.com')
                     ? `url(${activity.thumbUrl})`
-                    : `url(${global.config.laravelAPIUrl}${activity.thumbUrl})`,
+                    : `url(${global.config.resourceUrl}${activity.thumbUrl})`,
                 }}
               />
             ) : (
@@ -66,7 +66,7 @@ const ActivityPreviewCard = (props) => {
                     backgroundImage:
                       activity.metadata.thumbUrlType === 'pexels'
                         ? `url(${activity.metadata.thumbUrl})`
-                        : `url(${global.config.laravelAPIUrl}${activity.metadata.thumbUrl})`,
+                        : `url(${global.config.resourceUrl}${activity.metadata.thumbUrl})`,
                   }}
                 />
               ) : (
@@ -92,10 +92,7 @@ const ActivityPreviewCard = (props) => {
                     backgroundImage:
                       activity.metadata.thumbUrlType === 'pexels'
                         ? `url(${activity.metadata.thumbUrl})`
-                        : `url(${
-                          global.config.laravelAPIUrl
-                        }${activity.metadata.thumbUrl
-                        })`,
+                        : `url(${global.config.resourceUrl}${activity.metadata.thumbUrl})`,
                   }}
                 />
               ) : (
@@ -121,7 +118,7 @@ const ActivityPreviewCard = (props) => {
 
 ActivityPreviewCard.propTypes = {
   activity: PropTypes.object.isRequired,
-  playlistId: PropTypes.string.isRequired,
+  playlistId: PropTypes.number.isRequired,
   shared: PropTypes.bool,
   lti: PropTypes.bool,
 };

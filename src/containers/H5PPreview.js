@@ -63,6 +63,7 @@ class H5PPreview extends React.Component {
       const response = await loadH5pResourceSettings(activityId);
       await this.resourceLoaded(response);
     } catch (e) {
+      console.log(e);
       this.setState({
         shared: false,
       });
@@ -78,6 +79,7 @@ class H5PPreview extends React.Component {
       const response = await loadH5pResourceSettingsOpen(activityId);
       await this.resourceLoaded(response);
     } catch (e) {
+      console.log(e);
       this.setState({
         shared: false,
       });
@@ -93,6 +95,7 @@ class H5PPreview extends React.Component {
       const response = await loadH5pResourceSettingsShared(activityId);
       await this.resourceLoaded(response);
     } catch (e) {
+      console.log(e);
       this.setState({
         shared: false,
       });
@@ -100,13 +103,15 @@ class H5PPreview extends React.Component {
   };
 
   resourceLoaded = async (response) => {
-    window.H5PIntegration = response.data.data.h5p.settings;
+    const { h5p } = response;
+
+    window.H5PIntegration = h5p.settings;
 
     const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
-    h5pWrapper.innerHTML = response.data.data.h5p.embed_code.trim();
+    h5pWrapper.innerHTML = h5p.embed_code.trim();
 
     await Promise.all(
-      response.data.data.h5p.settings.loadedCss.forEach((value) => {
+      h5p.settings.loadedCss.forEach((value) => {
         const link = document.createElement('link');
         link.href = value;
         link.type = 'text/css';
@@ -115,9 +120,7 @@ class H5PPreview extends React.Component {
       }),
     );
 
-    const newScripts = response.data.data.h5p.settings.core.scripts.concat(
-      response.data.data.h5p.settings.loadedJs,
-    );
+    const newScripts = h5p.settings.core.scripts.concat(h5p.settings.loadedJs);
 
     newScripts.forEach((value) => {
       const script = document.createElement('script');

@@ -6,19 +6,6 @@ import storageService from 'services/storage.service';
 import { USER_TOKEN_KEY } from 'constants/index';
 import * as actionTypes from '../actionTypes';
 
-export const confirmRegistration = async (verificationCode) => {
-  const confirm = await axios.post(
-    `${global.config.laravelAPIUrl}/auth/confirm`,
-    { verificationCode },
-  );
-
-  return confirm;
-};
-
-export const hubspotConfirmation = () => {
-  axios.get(`${global.config.laravelAPIUrl}/auth/send-to-hubspot`);
-};
-
 export const registrationAction = (
   firstName,
   LastName,

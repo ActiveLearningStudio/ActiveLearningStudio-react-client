@@ -237,7 +237,7 @@ class PlaylistPreview extends Component {
 
         previousLink1 = (
           <div className="slider-hover-section">
-            <Link>
+            <Link to="#">
               <FontAwesomeIcon icon="chevron-left" />
             </Link>
 
@@ -246,6 +246,7 @@ class PlaylistPreview extends Component {
                 <p>Welcome! You are at the beginning of this playlist.</p>
 
                 <Link
+                  to="#"
                   onClick={() => {
                     for (let i = 0; i < playlists.length; i += 1) {
                       if (playlists[i].id === currentPlaylist.id) {
@@ -373,6 +374,8 @@ class PlaylistPreview extends Component {
         );
       }
     }
+
+    console.log(currentActivity);
 
     return (
       <>
