@@ -32,7 +32,7 @@ const PlaylistPreview = (props) => {
     projectId,
     playlistId,
     loading,
-    // loadPlaylist,
+    loadPlaylist,
     activityDetail,
   } = props;
 
@@ -91,6 +91,10 @@ const PlaylistPreview = (props) => {
   //   return null;
   // }
 
+  useEffect(() => {
+    loadPlaylist(projectId, playlistId);
+  }, [loadPlaylist, playlistId, projectId]);
+
   // componentDidMount() {
   //   loadPlaylist(projectId, playlistId);
   //
@@ -139,10 +143,11 @@ const PlaylistPreview = (props) => {
   // let nextLink = null;
   let nextLink1 = null;
 
-  // let currentActivity;
+  let currentActivity;
 
   // const currentProject = projects.find((p) => p.id === projectId);
 
+  let selectedActivityId = activityId;
   if (!selectedPlaylist.activities || selectedPlaylist.activities.length === 0) {
     activities = (
       <div className="col-md-12">
@@ -176,14 +181,13 @@ const PlaylistPreview = (props) => {
       />
     ));
 
-    let selectedActivityId = activityId;
-    if (selectedActivityId === 0) {
+    if (!selectedActivityId) {
       selectedActivityId = selectedPlaylist.activities[0].id;
     }
 
     const currentIndex = selectedPlaylist.activities.findIndex((f) => f.id === selectedActivityId);
     if (currentIndex > -1) {
-      // currentActivity = selectedPlaylist.activities[currentIndex];
+      currentActivity = selectedPlaylist.activities[currentIndex];
     }
 
     const previousResource = currentIndex > 0 ? selectedPlaylist.activities[currentIndex - 1] : null;
@@ -413,8 +417,8 @@ const PlaylistPreview = (props) => {
                   <div className="heading-wrapper">
                     <div className="main-heading">
                       {selectedPlaylist.activities && selectedPlaylist.activities.length
-                        ? selectedPlaylist.activities.filter((a) => a.id === activityId).length > 0
-                          ? selectedPlaylist.activities.filter((a) => a.id === activityId)[0].title
+                        ? selectedPlaylist.activities.filter((a) => a.id === selectedActivityId).length > 0
+                          ? selectedPlaylist.activities.filter((a) => a.id === selectedActivityId)[0].title
                           : ''
                         : ''}
                     </div>
@@ -432,10 +436,12 @@ const PlaylistPreview = (props) => {
               <div className="main-item-wrapper">
                 <div className="item-container">
                   <Suspense fallback={<div>Loading</div>}>
-                    <H5PPreview activityId={activityId} />
+                    {currentActivity && currentActivity.type === 'h5p' && (
+                      <H5PPreview activityId={selectedActivityId} />
+                    )}
                     {/*
                     {currentActivity.type === 'h5p' ? (
-                      <H5PPreview activityId={activityId} />
+                      <H5PPreview activityId={selectedActivityId} />
                     ) : (
                       <ImmersiveReaderPreview activity={currentActivity} />
                     )}
@@ -490,13 +496,13 @@ const PlaylistPreview = (props) => {
                           })
                             .then(async (resp) => {
                               if (resp.isConfirmed) {
-                                await removeShareActivity(activityId, activityDetail.title);
+                                await removeShareActivity(selectedActivityId, activityDetail.title);
                                 setActiveShared(false);
                                 // loadPlaylist(projectId, playlistId);
                               }
                             });
                         } else {
-                          await shareActivity(activityId, activityDetail.title);
+                          await shareActivity(selectedActivityId, activityDetail.title);
                           setActiveShared(true);
                           // loadPlaylist(projectId, playlistId);
                         }
@@ -523,12 +529,12 @@ const PlaylistPreview = (props) => {
 
                               <a
                                 target="_blank"
-                                href={`/shared/activity/${activityId}`}
+                                href={`/shared/activity/${selectedActivityId}`}
                                 rel="noopener noreferrer"
                               >
                                 <input
                                   id="urllink_clip"
-                                  value={`${protocol + window.location.host}/shared/activity/${activityId}`}
+                                  value={`${protocol + window.location.host}/shared/activity/${selectedActivityId}`}
                                 />
                               </a>
 
@@ -600,14 +606,15 @@ PlaylistPreview.propTypes = {
   activityId: PropTypes.number,
   loading: PropTypes.string,
   // projects: PropTypes.array.isRequired,
-  // loadPlaylist: PropTypes.func.isRequired,
+  loadPlaylist: PropTypes.func.isRequired,
   // loadHP: PropTypes.func.isRequired,
-  activityDetail: PropTypes.object.isRequired,
+  activityDetail: PropTypes.object,
 };
 
 PlaylistPreview.defaultProps = {
   loading: '',
   activityId: undefined,
+  activityDetail: {},
 };
 
 const mapDispatchToProps = (dispatch) => ({
