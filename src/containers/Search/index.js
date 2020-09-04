@@ -14,21 +14,30 @@ import { useSelector, useDispatch } from 'react-redux';
 import './style.scss';
 
 function SearchInterface() {
-  const allstate = useSelector((state) => state.search && state.search.searchresult);
-  const searchquerry = useSelector((state) => state.search && state.search.searchquerry);
+  const allstate = useSelector((state) => state.search && state.search);
+
   // const more = useRef();
   const [search, setsearch] = useState();
   const [searchquerryes, Setsearchquerry] = useState('');
   const [searchinput, setsearchinput] = useState();
+  const [meta, setMeta] = useState();
   // const [loading, setloading] = useState(false);
 
   useEffect(() => {
-    if (allstate) {
-      if (Object.keys(allstate).length > 0) {
-        setsearch(allstate)(Setsearchquerry(searchquerry))(localStorage.setItem('loading', 'false'))(Swal.close());
-      }
+    if (allstate.searchResult.length > 0) {
+      setsearch(allstate.searchResult);
+      Setsearchquerry(allstate.searchQuerry);
+      setMeta(allstate.searchMeta);
+      localStorage.setItem('loading', 'false');
+      Swal.close();
+    } else if (allstate.searchResult.length === 0) {
+      setsearch([]);
+      Setsearchquerry(allstate.searchQuerry);
+      setMeta({});
+      localStorage.setItem('loading', 'false');
+      Swal.close();
     }
-  }, [allstate, searchquerry]);
+  }, [allstate.searchMeta, allstate.searchQuerry, allstate.searchResult]);
 
   useEffect(() => {
     if (localStorage.getItem('loading') === 'true') {
@@ -69,7 +78,7 @@ function SearchInterface() {
                   <div>
                     Showing
                     {' '}
-                    {search.total ? search.total : '0'}
+                    {search ? meta.total : '0'}
                     {' '}
                     results For
                     {' '}
@@ -170,19 +179,19 @@ function SearchInterface() {
                     <Tab
                       eventKey="all"
                       title={
-                        !!search && !!search.total
-                          ? `all (${search.total})`
+                        !!search && !!meta.total
+                          ? `all (${meta.total})`
                           : 'all (0)'
                       }
                     >
                       <div className="results_search">
-                        {!!search && search.data.length > 0 ? (
-                          search.data.map((res) => (
+                        {!!search && search.length > 0 ? (
+                          search.map((res) => (
                             <div className="box">
                               <div className="imgbox">
                                 <div
                                   style={{
-                                    backgroundImage: res.thumb_url.includes('pexels.com')
+                                    backgroundImage: !!res.thumb_url && !!res.thumb_url && res.thumb_url.includes('pexels.com')
                                       ? `url(${res.thumb_url})`
                                       : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                   }}
@@ -233,21 +242,21 @@ function SearchInterface() {
                     <Tab
                       eventKey="project"
                       title={
-                        !!search && !!search.projects
-                          ? `project (${search.projects})`
+                        !!search && !!meta.projects
+                          ? `project (${meta.projects})`
                           : 'project (0)'
                       }
                     >
                       <div className="results_search">
-                        {!!search && search.data.length > 0 ? (
-                          search.data.map((res) => (
+                        {!!search && search.length > 0 ? (
+                          search.map((res) => (
                             <>
                               {res.model === 'Project' && (
                               <div className="box">
                                 <div className="imgbox">
                                   <div
                                     style={{
-                                      backgroundImage: res.thumb_url.includes('pexels.com')
+                                      backgroundImage: !!res.thumb_url && res.thumb_url.includes('pexels.com')
                                         ? `url(${res.thumb_url})`
                                         : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                     }}
@@ -288,21 +297,21 @@ function SearchInterface() {
                     <Tab
                       eventKey="playlist"
                       title={
-                        !!search && !!search.playlists
-                          ? `playlist (${search.playlists})`
+                        !!search && !!meta.playlists
+                          ? `playlist (${meta.playlists})`
                           : 'playlist (0)'
                       }
                     >
                       <div className="results_search">
-                        {!!search && search.data.length > 0 ? (
-                          search.data.map((res) => (
+                        {!!search && search.length > 0 ? (
+                          search.map((res) => (
                             <>
                               {res.model === 'Playlist' && (
                               <div className="box">
                                 <div className="imgbox">
                                   <div
                                     style={{
-                                      backgroundImage: res.thumb_url.includes('pexels.com')
+                                      backgroundImage: !!res.thumb_url && res.thumb_url.includes('pexels.com')
                                         ? `url(${res.thumb_url})`
                                         : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                     }}
@@ -344,21 +353,21 @@ function SearchInterface() {
                     <Tab
                       eventKey="activity"
                       title={
-                        !!search && !!search.activities
-                          ? `activity (${search.activities})`
+                        !!search && !!meta.activities
+                          ? `activity (${meta.activities})`
                           : 'activity (0)'
                       }
                     >
                       <div className="results_search">
-                        {!!search && search.data.length > 0 ? (
-                          search.data.map((res) => (
+                        {!!search && search.length > 0 ? (
+                          search.map((res) => (
                             <>
                               {res.model === 'Activity' && (
                               <div className="box">
                                 <div className="imgbox">
                                   <div
                                     style={{
-                                      backgroundImage: res.thumb_url.includes('pexels.com')
+                                      backgroundImage: !!res.thumb_url && res.thumb_url.includes('pexels.com')
                                         ? `url(${res.thumb_url})`
                                         : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                     }}

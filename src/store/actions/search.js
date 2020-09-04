@@ -2,15 +2,16 @@
 import { SEARCH_REDUX } from 'store/actionTypes';
 import searchService from 'services/search.service';
 
-export const searchredux = (result, searchquerry) => ({
+export const searchredux = (result, searchquerry, meta) => ({
   type: SEARCH_REDUX,
-  result,
+  data: result,
   searchquerry,
+  meta,
 });
 
 export const simpleSearchfunction = (searchquerry, from, size) => async (dispatch) => {
   const response = await searchService.searchResult(searchquerry, from, size);
-  dispatch(searchredux(response.data));
+  dispatch(searchredux(response.data, searchquerry, response.meta));
 };
 
 // export const advancedSearches = (searchquerry) => {

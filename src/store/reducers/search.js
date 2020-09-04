@@ -1,8 +1,9 @@
 import { SEARCH_REDUX } from 'store/actionTypes';
 
 const defaultsharestate = () => ({
-  searchresult: {},
-  searchquerry: '',
+  searchResult: {},
+  searchQuerry: '',
+  searchMeta: {},
 });
 
 const SearchReducuer = (state = defaultsharestate(), action) => {
@@ -10,8 +11,9 @@ const SearchReducuer = (state = defaultsharestate(), action) => {
     case SEARCH_REDUX:
       return {
         ...state,
-        searchresult: action.result,
-        searchquerry: action.searchquerry,
+        searchResult: action.data,
+        searchQuerry: action.searchquerry,
+        searchMeta: action.meta,
       };
 
     default:
