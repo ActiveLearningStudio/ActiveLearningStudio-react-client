@@ -20,7 +20,7 @@ const ActivityPreviewCard = (props) => {
           style={{
             backgroundImage: activity.thumb_url.includes('pexels.com')
               ? `url(${activity.thumb_url})`
-              : `url(${global.config}${activity.thumb_url})`,
+              : `url(${global.config.resourceUrl}${activity.thumb_url})`,
           }}
         />
         )}
