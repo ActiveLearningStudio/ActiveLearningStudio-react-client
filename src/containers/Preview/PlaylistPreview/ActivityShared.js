@@ -12,7 +12,7 @@ const ActivityShared = (props) => {
   const [authorized, setAuthorized] = useState(true);
   useEffect(() => {
     window.scrollTo(0, 0);
-    const result = !!match.params.resourceId && loadH5pShareResource(match.params.resourceId);
+    const result = !!match.params.activityId && loadH5pShareResource(match.params.activityId);
     result.then(async (data) => {
       window.H5PIntegration = data.h5p_activity.h5p.settings;
       const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
@@ -45,7 +45,7 @@ const ActivityShared = (props) => {
     }).catch(() => {
       setAuthorized(true);
     });
-  }, [match.params.resourceId]);
+  }, [match.params.activityId]);
 
   return (
     <>
