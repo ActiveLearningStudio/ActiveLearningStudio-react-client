@@ -96,6 +96,10 @@ class LtiPlaylistPreview extends React.Component {
     let activities;
     let activities1;
 
+    let currentActivity;
+    let previousResource = null;
+    let nextResource = null;
+
     if (selectedPlaylist.activities.length === 0) {
       activities = (
         <div className="col-md-12">
@@ -118,7 +122,7 @@ class LtiPlaylistPreview extends React.Component {
           activity={activity}
           key={activity.id}
           handleSelect={this.handleSelect}
-          playlist={playlistId}
+          playlistId={playlistId}
           lti
         />
       ));
@@ -128,7 +132,7 @@ class LtiPlaylistPreview extends React.Component {
           activity={activity}
           key={activity.id}
           handleSelect={this.handleSelect}
-          playlist={playlistId}
+          playlistId={playlistId}
           lti
         />
       ));
@@ -136,16 +140,19 @@ class LtiPlaylistPreview extends React.Component {
       if (activityId === 0) {
         activityId = selectedPlaylist.activities[0].id;
       }
+
+      currentActivity = selectedPlaylist.activities.find((f) => f.id === activityId);
+
+      if (currentActivity) {
+        const index = selectedPlaylist.activities.findIndex((act) => act.id === currentActivity.id);
+        if (index > 0) {
+          previousResource = selectedPlaylist.activities[index - 1];
+        }
+        if (index < selectedPlaylist.activities.length - 1) {
+          nextResource = selectedPlaylist.activities[index + 1];
+        }
+      }
     }
-
-    const currentActivity = selectedPlaylist.activities.filter((f) => f.id === activityId)[0];
-
-    const previousResource = selectedPlaylist.activities.indexOf(currentActivity) >= 1
-      ? selectedPlaylist.activities[selectedPlaylist.activities.indexOf(currentActivity) - 1]
-      : null;
-    const nextResource = selectedPlaylist.activities.indexOf(currentActivity) !== selectedPlaylist.activities.length - 1
-      ? selectedPlaylist.activities[selectedPlaylist.activities.indexOf(currentActivity) + 1]
-      : null;
 
     // let previousLink = null;
     let previousLink1 = null;
@@ -194,7 +201,7 @@ class LtiPlaylistPreview extends React.Component {
 
       previousLink1 = (
         <div className="slider-hover-section">
-          <Link>
+          <Link to="#">
             <FontAwesomeIcon icon="chevron-left" />
           </Link>
 
@@ -202,6 +209,7 @@ class LtiPlaylistPreview extends React.Component {
             <div className="slider-end">
               <p>Welcome! You are at the beginning of this playlist.</p>
               <Link
+                to="#"
                 onClick={() => {
                   for (let data = 0; data < allProjectsState.length; data += 1) {
                     if (allProjectsState[data].id === currentPlaylist.id) {
@@ -292,7 +300,7 @@ class LtiPlaylistPreview extends React.Component {
 
       nextLink1 = (
         <div className="slider-hover-section">
-          <Link>
+          <Link to="#">
             <FontAwesomeIcon icon="chevron-right" />
           </Link>
 
@@ -300,6 +308,7 @@ class LtiPlaylistPreview extends React.Component {
             <div className="slider-end">
               <p>Hooray! You did it! There are no more activities in this playlist.</p>
               <Link
+                to="#"
                 onClick={() => {
                   for (let data = 0; data < allProjectsState.length; data += 1) {
                     if (allProjectsState[data].id === currentPlaylist.id) {
@@ -356,11 +365,7 @@ class LtiPlaylistPreview extends React.Component {
                   <div className="main-heading">
                     {/* <span>You are Watching:</span> */}
 
-                    {selectedPlaylist.activities && selectedPlaylist.activities.length
-                      ? selectedPlaylist.activities.filter((a) => a.id === activityId).length > 0
-                        ? selectedPlaylist.activities.filter((a) => a.id === activityId)[0].title
-                        : ''
-                      : ''}
+                    {currentActivity && currentActivity.title}
                   </div>
                   {/* <div className="sub-heading">
                     <span>From the playlist:</span>
@@ -432,11 +437,7 @@ class LtiPlaylistPreview extends React.Component {
 
                 {/* <div className="item-caption-bottom">
                   <p>
-                    {selectedPlaylist.activities && selectedPlaylist.activities.length
-                      ? selectedPlaylist.activities.filter((a) => a.id == activityId).length > 0
-                        ? selectedPlaylist.activities.filter((a) => a.id == activityId)[0].title
-                        : ''
-                      : ''}
+                    {currentActivity && currentActivity.title}
                   </p>
                 </div> */}
               </div>
@@ -521,7 +522,7 @@ LtiPlaylistPreview.propTypes = {
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   playlist: PropTypes.object.isRequired,
-  playlistId: PropTypes.string.isRequired,
+  playlistId: PropTypes.number.isRequired,
   showLti: PropTypes.bool,
   loadLtiPlaylist: PropTypes.func.isRequired,
 };

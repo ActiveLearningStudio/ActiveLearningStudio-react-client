@@ -8,7 +8,7 @@ const ActivityPreviewCard = (props) => {
   const { activity, playlistId } = props;
 
   return (
-    <Link to={`/playlist/shared/preview/${playlistId}/activity/${activity.id}`}>
+    <Link to={`/playlist/${playlistId}/shared/preview/activity/${activity.id}`}>
       <li className="check">
         {activity.thumb_url && (
           <div
@@ -30,7 +30,7 @@ const ActivityPreviewCard = (props) => {
 
 ActivityPreviewCard.propTypes = {
   activity: PropTypes.object.isRequired,
-  playlistId: PropTypes.string.isRequired,
+  playlistId: PropTypes.number.isRequired,
 };
 
 export default ActivityPreviewCard;

@@ -10,6 +10,7 @@ import './style.scss';
 const ActivityShared = (props) => {
   const { match } = props;
   const [authorized, setAuthorized] = useState(true);
+
   useEffect(() => {
     window.scrollTo(0, 0);
 
@@ -54,27 +55,23 @@ const ActivityShared = (props) => {
   return (
     <>
       <section className="main-page-content preview">
-        <div className="flex-container ">
+        <div className="flex-container">
           <div className="activity-bg left-vdo">
             <div className="main-item-wrapper">
               <div className="item-container">
-
-                {
-                    !authorized ? (
-                      <div id="curriki-h5p-wrapper">
-                        <div className="loader_gif" style={{ color: 'black' }}>
-                          Activity is not sharable
-                        </div>
-                      </div>
-                    ) : (
-                      <div id="curriki-h5p-wrapper">
-                        <div className="loader_gif">
-                          <img style={{ width: '50px' }} src={gifloader} alt="" />
-                        </div>
-                      </div>
-                    )
-                  }
-
+                {!authorized ? (
+                  <div id="curriki-h5p-wrapper">
+                    <div className="loader_gif" style={{ color: 'black' }}>
+                      Activity is not sharable
+                    </div>
+                  </div>
+                ) : (
+                  <div id="curriki-h5p-wrapper">
+                    <div className="loader_gif">
+                      <img style={{ width: '50px' }} src={gifloader} alt="" />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -85,7 +82,7 @@ const ActivityShared = (props) => {
 };
 
 ActivityShared.propTypes = {
-  match: PropTypes.string.isRequired,
+  match: PropTypes.object.isRequired,
 };
 
 export default withRouter(ActivityShared);

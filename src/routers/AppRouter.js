@@ -58,12 +58,6 @@ const AppRouter = () => {
           path="/project/shared/:projectId"
           component={PreviewPageShared}
         />
-        <PrivateRoute
-          exact
-          path="/activity/:activityId/preview"
-          component={PreviewPage}
-          previewType="resource"
-        />
         <Route
           exact
           path="/playlist/lti/preview/:playlistId"
@@ -147,7 +141,7 @@ const AppRouter = () => {
           exact
           path="/playlist/:playlistId/activity/:activityId/preview"
           component={PreviewPage}
-          previewType="playlist"
+          previewType="resource"
         />
         <PrivateRoute
           exact
@@ -155,15 +149,16 @@ const AppRouter = () => {
           component={SearchResult}
         />
         <PrivateRoute
-          path="/playlist/shared/preview/:playlistId/activity/:activityId"
           exact
-          render={() => <LtiPreviewPage previewType="playlistShared" />}
+          path="/playlist/:playlistId/shared/preview/activity/:activityId"
+          component={LtiPreviewPage}
+          previewType="playlistShared"
         />
         <OpenRoute
-          path="/shared/activity/:activityId"
           exact
-          previewType="activityShared"
+          path="/shared/activity/:activityId"
           component={PreviewPage}
+          previewType="activityShared"
         />
 
         <Redirect to="/" />

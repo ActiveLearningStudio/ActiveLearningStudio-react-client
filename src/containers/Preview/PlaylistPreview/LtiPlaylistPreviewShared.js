@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 
 import projectIcon from 'assets/images/project_icon.svg';
-import { loadPlaylistActionShared } from 'store/actions/playlist';
+import { loadSharedPlaylistAction } from 'store/actions/playlist';
 import ActivityPreviewCard from 'components/ActivityPreviewCard';
 import ActivityPreviewCardDropdown from 'components/ActivityPreviewCard/ActivityPreviewCardDropdown';
 import Unauthorized from 'components/Unauthorized';
@@ -21,7 +21,7 @@ class LtiPlaylistPreviewShared extends React.Component {
     super(props);
 
     this.state = {
-      activityId: props.match.params.activityId,
+      activityId: parseInt(props.match.params.activityId, 10),
       allProjectsState: {},
       currentPlaylist: '',
       // loading: 'loading.ddd..',
@@ -59,11 +59,12 @@ class LtiPlaylistPreviewShared extends React.Component {
   componentDidUpdate() {
     const { activityId } = this.state;
     const { match, playlistId, loadLtiPlaylist } = this.props;
-    if (activityId !== match.params.activityId) {
+    if (activityId !== parseInt(match.params.activityId, 10)) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
-        activityId: match.params.activityId,
+        activityId: parseInt(match.params.activityId, 10),
       });
+
       loadLtiPlaylist(playlistId);
     }
   }
@@ -83,6 +84,7 @@ class LtiPlaylistPreviewShared extends React.Component {
       playlistId,
       loading,
     } = this.props;
+
     const { selectedPlaylist } = playlist;
 
     if (selectedPlaylist === 'error') {
@@ -100,7 +102,11 @@ class LtiPlaylistPreviewShared extends React.Component {
     let activities;
     let activities1;
 
-    if (selectedPlaylist.activities.length === 0) {
+    let currentActivity;
+    let previousResource = null;
+    let nextResource = null;
+
+    if (!selectedPlaylist.activities || selectedPlaylist.activities.length === 0) {
       activities = (
         <div className="col-md-12">
           <div className="alert alert-info" role="alert">
@@ -142,16 +148,19 @@ class LtiPlaylistPreviewShared extends React.Component {
       if (activityId === 0) {
         activityId = selectedPlaylist.activities[0].id;
       }
+
+      currentActivity = selectedPlaylist.activities.find((f) => f.id === activityId);
+
+      if (currentActivity) {
+        const index = selectedPlaylist.activities.findIndex((act) => act.id === currentActivity.id);
+        if (index > 0) {
+          previousResource = selectedPlaylist.activities[index - 1];
+        }
+        if (index < selectedPlaylist.activities.length - 1) {
+          nextResource = selectedPlaylist.activities[index + 1];
+        }
+      }
     }
-
-    const currentActivity = selectedPlaylist.activities.filter((f) => f.id === activityId)[0];
-
-    const previousResource = selectedPlaylist.activities.indexOf(currentActivity) >= 1
-      ? selectedPlaylist.activities[selectedPlaylist.activities.indexOf(currentActivity) - 1]
-      : null;
-    const nextResource = selectedPlaylist.activities.indexOf(currentActivity) !== selectedPlaylist.activities.length - 1
-      ? selectedPlaylist.activities[selectedPlaylist.activities.indexOf(currentActivity) + 1]
-      : null;
 
     // let previousLink = null;
     let previousLink1 = null;
@@ -169,12 +178,12 @@ class LtiPlaylistPreviewShared extends React.Component {
 
       previousLink1 = (
         <div className="slider-hover-section">
-          <Link to={playlistId && `/playlist/shared/preview/${playlistId}/activity/${previousResource.id}`}>
+          <Link to={`/playlist/${playlistId}/shared/preview/activity/${previousResource.id}`}>
             <FontAwesomeIcon icon="chevron-left" />
           </Link>
 
           <div className="hover-control-caption pointer-cursor">
-            <Link to={playlistId && `/playlist/shared/preview/${playlistId}/activity/${previousResource.id}`}>
+            <Link to={`/playlist/${playlistId}/shared/preview/activity/${previousResource.id}`}>
               <div
                 className="img-in-hover"
                 style={{
@@ -200,7 +209,7 @@ class LtiPlaylistPreviewShared extends React.Component {
 
       previousLink1 = (
         <div className="slider-hover-section">
-          <Link>
+          <Link to="#">
             <FontAwesomeIcon icon="chevron-left" />
           </Link>
 
@@ -209,11 +218,12 @@ class LtiPlaylistPreviewShared extends React.Component {
               <p>Welcome! You are at the beginning of this playlist.</p>
 
               <Link
+                to="#"
                 onClick={() => {
                   for (let data = 0; data < allProjectsState.length; data += 1) {
                     if (allProjectsState[data].id === currentPlaylist.id) {
                       try {
-                        history.push(`/playlist/shared/preview/${allProjectsState[data - 1].id}/activity/${allProjectsState[data - 1].activities[0].id}`);
+                        history.push(`/playlist/${allProjectsState[data - 1].id}/shared/preview/activity/${allProjectsState[data - 1].activities[0].id}`);
                       } catch (e) {
                         Swal.fire({
                           text: 'You are at the beginning of this project. Would you like to return to the project preview?',
@@ -255,12 +265,12 @@ class LtiPlaylistPreviewShared extends React.Component {
 
       nextLink1 = (
         <div className="slider-hover-section">
-          <Link to={playlistId && `/playlist/shared/preview/${playlistId}/activity/${nextResource.id}`}>
+          <Link to={`/playlist/${playlistId}/shared/preview/activity/${nextResource.id}`}>
             <FontAwesomeIcon icon="chevron-right" />
           </Link>
 
           <div className="hover-control-caption pointer-cursor">
-            <Link to={playlistId && `/playlist/shared/preview/${playlistId}/activity/${nextResource.id}`}>
+            <Link to={`/playlist/${playlistId}/shared/preview/activity/${nextResource.id}`}>
               <div
                 className="img-in-hover"
                 style={{
@@ -279,12 +289,12 @@ class LtiPlaylistPreviewShared extends React.Component {
     } else {
       // nextLink = (
       //   <a href="#" className="slide-control next disabled-link">
-      //     <FontAwesomeIcon icon="arrow-right" />
-      //     <span> Next Activity</span>
+      //     <FontAwesomeIcon icon="arrow-right" className="mr-2" />
+      //     <span>Next Activity</span>
       //     {/*
       //     <div className="hover-control-caption pointer-cursor">
       //       <img alt="thumb01" />
-      //       <span></span>
+      //       <span />
       //     </div>
       //     */}
       //   </a>
@@ -292,7 +302,7 @@ class LtiPlaylistPreviewShared extends React.Component {
 
       nextLink1 = (
         <div className="slider-hover-section">
-          <Link>
+          <Link to="#">
             <FontAwesomeIcon icon="chevron-right" />
           </Link>
 
@@ -301,11 +311,12 @@ class LtiPlaylistPreviewShared extends React.Component {
               <p>Hooray! You did it! There are no more activities in this playlist.</p>
 
               <Link
+                to="#"
                 onClick={() => {
                   for (let data = 0; data < allProjectsState.length; data += 1) {
                     if (allProjectsState[data].id === currentPlaylist.id) {
                       try {
-                        history.push(`/playlist/shared/preview/${allProjectsState[data + 1].id}/activity/${allProjectsState[data + 1].activities[0].id}`);
+                        history.push(`/playlist/${allProjectsState[data + 1].id}/shared/preview/activity/${allProjectsState[data + 1].activities[0].id}`);
                       } catch (e) {
                         Swal.fire({
                           text: 'You are at the end of this project. Would you like to return to the project preview?',
@@ -349,16 +360,16 @@ class LtiPlaylistPreviewShared extends React.Component {
         ) : (
           <section className="main-page-content preview">
             <div className="container-flex-upper">
-              <Link onClick={history.goBack}>
+              <Link to="#" onClick={history.goBack}>
                 <div className="project-title">
                   <img src={projectIcon} alt="" />
                   Project :
                   {' '}
-                  {selectedPlaylist.project.name}
+                  {selectedPlaylist.project && selectedPlaylist.project.name}
                 </div>
               </Link>
 
-              <Link to={`/project/${selectedPlaylist.project.id}`}>
+              <Link to={`/project/${selectedPlaylist.project && selectedPlaylist.project.id}`}>
                 <FontAwesomeIcon icon="times" />
               </Link>
             </div>
@@ -371,11 +382,7 @@ class LtiPlaylistPreviewShared extends React.Component {
                       <div className="main-heading">
                         {/* <span>You are Watching:</span> */}
 
-                        {selectedPlaylist.activities && selectedPlaylist.activities.length
-                          ? selectedPlaylist.activities.filter((a) => a.id === activityId).length > 0
-                            ? selectedPlaylist.activities.filter((a) => a.id === activityId)[0].title
-                            : ''
-                          : ''}
+                        {currentActivity && currentActivity.title}
                       </div>
                       {/*
                       <div className="sub-heading">
@@ -444,18 +451,14 @@ class LtiPlaylistPreviewShared extends React.Component {
                         <H5PPreview
                           {...this.state}
                           showLtiPreview
-                          activityId={selectedPlaylist && selectedPlaylist.activities[0].id}
+                          activityId={selectedPlaylist && selectedPlaylist.activities && selectedPlaylist.activities[0].id}
                         />
                       )}
                     </Suspense>
                     {/*
                     <div className="item-caption-bottom">
                       <p>
-                        {selectedPlaylist.activities && selectedPlaylist.activities.length
-                          ? selectedPlaylist.activities.filter((a) => a.id === activityId).length > 0
-                            ? selectedPlaylist.activities.filter((a) => a.id === activityId)[0].title
-                            : ''
-                          : ''}
+                        {currentActivity && currentActivity.title}
                       </p>
                     </div>
                     */}
@@ -467,6 +470,7 @@ class LtiPlaylistPreviewShared extends React.Component {
                 <div className="back-header">
                   <div>
                     <Link
+                      to="#"
                       className="go-back-button-preview"
                       onClick={history.goBack}
                     >
@@ -546,7 +550,7 @@ LtiPlaylistPreviewShared.propTypes = {
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   playlist: PropTypes.object.isRequired,
-  playlistId: PropTypes.string.isRequired,
+  playlistId: PropTypes.number.isRequired,
   loading: PropTypes.string,
   loadLtiPlaylist: PropTypes.func.isRequired,
 };
@@ -556,7 +560,7 @@ LtiPlaylistPreviewShared.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  loadLtiPlaylist: (playlistId) => dispatch(loadPlaylistActionShared(playlistId)),
+  loadLtiPlaylist: (playlistId) => dispatch(loadSharedPlaylistAction(playlistId)),
 });
 
 const mapStateToProps = (state) => ({
