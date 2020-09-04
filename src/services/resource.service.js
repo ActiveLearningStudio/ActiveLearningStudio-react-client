@@ -61,7 +61,7 @@ const h5pSettingsUpdate = (activityId, dataUpload) => httpService
   .catch((err) => Promise.reject(err.response.data));
 
 const h5pResourceSettings = (activityId) => httpService
-  .get(`/${apiVersion}/activities/${activityId}/h5p-resource-settings`)
+  .get(`/${apiVersion}/activities/${activityId}/h5p`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -82,6 +82,11 @@ const activityH5p = (activityId) => httpService
 
 const shareActivity = (activityId) => httpService
   .get(`/${apiVersion}/activities/${activityId}/share`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const removeShareActivity = (activityId) => httpService
+  .get(`/${apiVersion}/activities/${activityId}/remove-share`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -108,4 +113,5 @@ export default {
   activityH5p,
   shareActivity,
   loadH5pShared,
+  removeShareActivity,
 };

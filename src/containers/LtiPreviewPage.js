@@ -9,9 +9,9 @@ import {
   loadMyProjectsAction,
 } from 'store/actions/project';
 import Header from 'components/Header';
-import ActivityShared from 'components/PlaylistPreview/ActivityShared';
-import LtiPlaylistPreview from 'components/PlaylistPreview/LtiPlaylistPreview';
-import LtiPlaylistPreviewShared from 'components/PlaylistPreview/LtiPlaylistPreviewShared';
+import ActivityShared from 'containers/Preview/PlaylistPreview/ActivityShared';
+import LtiPlaylistPreview from 'containers/Preview/PlaylistPreview/LtiPlaylistPreview';
+import LtiPlaylistPreviewShared from 'containers/Preview/PlaylistPreview/LtiPlaylistPreviewShared';
 
 class LtiPreviewPage extends React.Component {
   componentDidMount() {
@@ -29,20 +29,20 @@ class LtiPreviewPage extends React.Component {
     if (previewType === 'playlistShared') {
       content = (
         <LtiPlaylistPreviewShared
-          playlistId={match.params.playlistId}
-          resourceId={match.params.resourceId}
+          playlistId={parseInt(match.params.playlistId, 10)}
+          resourceId={parseInt(match.params.resourceId, 10)}
           showLti
         />
       );
     } else if (previewType === 'activityShared') {
       content = (
-        <ActivityShared resourceId={match.params.resourceId} />
+        <ActivityShared resourceId={parseInt(match.params.resourceId, 10)} />
       );
     } else {
       content = (
         <LtiPlaylistPreview
-          playlistId={match.params.playlistId}
-          resourceId={match.params.resourceId}
+          playlistId={parseInt(match.params.playlistId, 10)}
+          resourceId={parseInt(match.params.resourceId, 10)}
           showLti
         />
       );

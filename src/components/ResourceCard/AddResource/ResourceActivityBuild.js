@@ -27,7 +27,7 @@ const ResourceActivityBuild = (props) => {
             style={{ marginLeft: '15px' }}
             onClick={goBackToActivity}
           >
-            <FontAwesomeIcon icon="chevron-left" />
+            <FontAwesomeIcon icon="chevron-left" className="mr-2" />
             Back
           </div>
 

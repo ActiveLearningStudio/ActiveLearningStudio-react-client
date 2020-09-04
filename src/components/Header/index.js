@@ -2,17 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import logo from 'assets/images/logo.svg';
 import searchImg from 'assets/images/search.png';
 import createProjectIcon from 'assets/images/create-project-icon.png';
 import notificationImg from 'assets/images/notification.png';
 import userImg from 'assets/images/user.png';
-// import createTeamImg from 'assets/images/create-team.png';
 import { logoutAction } from 'store/actions/auth';
-import { Event } from '../../trackers/ga';
+import { Event } from 'trackers/ga';
+import SearchForm from './searchForm';
 
 import './style.scss';
 
@@ -27,19 +27,8 @@ function Header(props) {
             <img src={logo} alt="logo" title="" />
           </Link>
         </div>
-
-        <div className="top-header-right d-flex flex-wrap align-items-center">
-          <div className="search-block navbtn">
-            <input
-              type="text"
-              className="search-term"
-              placeholder="Search existing content"
-            />
-            <button type="submit" className="search-submit">
-              <img src={searchImg} alt="search" title="" />
-            </button>
-          </div>
-
+        <div className="tophd_right flexdiv search-div  d-flex flex-wrap ">
+          <SearchForm />
           <div className="navbar-link">
             <ul className="top-info flex-div">
               <li className="d-flex align-items-center">
@@ -54,37 +43,34 @@ function Header(props) {
                         <div className="notify-icon">
                           <img src={createProjectIcon} alt="create" />
                         </div>
-
                         <div className="notify-description">
-                          <div className="nav-title">
-                            Create a New Project
-                          </div>
+                          <div className="nav-title">Create a New Project</div>
                           <p>
-                            A project gives you a place to build and
-                            organize the amazing learning experiences
-                            available in the Active Learning Studio.
+                            A project gives you a place to build and organize the
+                            amazing learning experiences available in the Active
+                            Learning Studio.
                           </p>
                         </div>
                       </div>
                     </Dropdown.Item>
 
                     {/*
-                    <Dropdown.Item to="#" className="menuLinks">
-                      <div className="notify-box">
-                        <div className="notify-icon">
-                          <img src={createTeamImg} alt="create-team" />
-                        </div>
-                        <div className="notify-description">
-                          <div className="nav-title">Create Team</div>
-                          <p>
-                            Increase productivity by making it easy for your
-                            group to create memorable learning experiences
-                            together.
-                          </p>
-                        </div>
-                      </div>
-                    </Dropdown.Item>
-                    */}
+                          <Dropdown.Item to="#" className="menuLinks">
+                            <div className="notify-box">
+                              <div className="notify-icon">
+                                <img src={createTeamImg} alt="create-team" />
+                              </div>
+                              <div className="notify-description">
+                                <div className="nav-title">Create Team</div>
+                                <p>
+                                  Increase productivity by making it easy for your
+                                  group to create memorable learning experiences
+                                  together.
+                                </p>
+                              </div>
+                            </div>
+                          </Dropdown.Item>
+                          */}
                   </Dropdown.Menu>
                 </Dropdown>
               </li>
@@ -122,11 +108,7 @@ function Header(props) {
                     <Dropdown.Item
                       href="#"
                       onClick={() => {
-                        Event(
-                          'button click',
-                          'User press Logout button',
-                          'Login Page',
-                        );
+                        Event('button click', 'User press Logout button', 'Login Page');
                         logout();
                       }}
                     >
