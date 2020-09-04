@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -7,116 +7,58 @@ import gifloader from 'assets/images/276.gif';
 import {
   loadH5pResourceSettings,
   loadH5pResourceSettingsOpen,
-  loadH5pResourceSettingsShared,
 } from 'store/actions/resource';
 
-// TODO: need to convert to functional component
-// move API call to service
-class H5PPreview extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.h5pLib = props.resource.editor; // "H5P.Audio 1.4";
-
-    this.state = {
-      shared: true,
-    };
-  }
-
-  componentDidMount() {
-    const { activityId, showLtiPreview, showActivityPreview } = this.props;
-
-    if (showLtiPreview) {
-      this.loadResourceLti(activityId);
-    } else if (showActivityPreview) {
-      this.loadResourceActivity(activityId);
-    } else {
-      this.loadResource(activityId);
-    }
-  }
+const H5PPreview = (props) => {
+  const [loading, setLoading] = useState(true);
+  const {
+    activityId, loadH5pResourceProp, showLtiPreview,
+  } = props;
 
   // eslint-disable-next-line camelcase
-  UNSAFE_componentWillReceiveProps(props) {
-    const { activityId, showLtiPreview, showActivityPreview } = this.props;
-    if (activityId !== props.activityId) {
-      const h5pIFrame = document.getElementsByClassName('h5p-iframe');
-      if (h5pIFrame.length) {
-        h5pIFrame[0].remove();
-      }
+  // UNSAFE_componentWillReceiveProps(props) {
+  //   const { activityId, showLtiPreview, showActivityPreview } = props;
+  //   if (activityId !== props.activityId) {
+  //     const h5pIFrame = document.getElementsByClassName('h5p-iframe');
+  //     if (h5pIFrame.length) {
+  //       h5pIFrame[0].remove();
+  //     }
 
-      if (showLtiPreview) {
-        this.loadResourceLti(props.activityId);
-      } else if (showActivityPreview) {
-        this.loadResourceActivity(props.activityId);
-      } else {
-        this.loadResource(props.activityId);
-      }
-    }
-  }
+  //     if (showLtiPreview) {
+  //       loadResourceLti(props.activityId);
+  //     } else if (showActivityPreview) {
+  //       loadResourceActivity(props.activityId);
+  //     } else {
+  //       loadResource(props.activityId);
+  //     }
+  //   }
+  // }
 
-  loadResource = async (activityId) => {
-    if (activityId === 0) {
-      return;
-    }
+  // load simple preview
 
-    try {
-      const response = await loadH5pResourceSettings(activityId);
-      await this.resourceLoaded(response);
-    } catch (e) {
-      this.setState({
-        shared: false,
-      });
-    }
-  };
 
-  loadResourceLti = async (activityId) => {
-    if (activityId === 0) {
-      return;
-    }
 
-    try {
-      const response = await loadH5pResourceSettingsOpen(activityId);
-      await this.resourceLoaded(response);
-    } catch (e) {
-      this.setState({
-        shared: false,
-      });
-    }
-  };
-
-  loadResourceActivity = async (activityId) => {
-    if (activityId === 0) {
-      return;
-    }
-
-    try {
-      const response = await loadH5pResourceSettingsShared(activityId);
-      await this.resourceLoaded(response);
-    } catch (e) {
-      this.setState({
-        shared: false,
-      });
-    }
-  };
-
-  resourceLoaded = async (response) => {
-    window.H5PIntegration = response.data.data.h5p.settings;
-
+  const resourceLoaded = async (data) => {
+    window.H5PIntegration = data.h5p.settings;
     const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
-    h5pWrapper.innerHTML = response.data.data.h5p.embed_code.trim();
+    h5pWrapper.innerHTML = data.h5p.embed_code.trim();
+    const newCss = data.h5p.settings.core.styles.concat(
+      data.h5p.settings.loadedCss,
+    );
 
     await Promise.all(
-      response.data.data.h5p.settings.loadedCss.forEach((value) => {
+      newCss.map((value) => {
         const link = document.createElement('link');
         link.href = value;
         link.type = 'text/css';
         link.rel = 'stylesheet';
         document.head.appendChild(link);
+        return true;
       }),
     );
 
-    const newScripts = response.data.data.h5p.settings.core.scripts.concat(
-      response.data.data.h5p.settings.loadedJs,
+    const newScripts = data.h5p.settings.core.scripts.concat(
+      data.h5p.settings.loadedJs,
     );
 
     newScripts.forEach((value) => {
@@ -125,44 +67,71 @@ class H5PPreview extends React.Component {
       script.async = false;
       document.body.appendChild(script);
     });
+    setLoading(false);
+  };
+  const loadResource = async (activityIdResorce) => {
+    if (activityIdResorce === 0) { return; }
+
+    const response = await loadH5pResourceProp(activityIdResorce);
+    if (response.activity) {
+      resourceLoaded(response.activity);
+    }
   };
 
-  render() {
-    const { shared } = this.state;
-    return (
-      <>
-        {!shared ? (
-          <div id="curriki-h5p-wrapper">
-            <div className="loader_gif" style={{ color: 'black' }}>
-              Activity Resource is not sharable
-            </div>
+  const loadResourceLti = async (activityId) => {
+    if (activityId === 0) { return; }
+    try {
+      const response = await loadH5pResourceSettingsOpen(activityId);
+      await resourceLoaded(response);
+    } catch (e) {
+      setLoading(false);
+    }
+  };
+  // load lti preview
+  useEffect(() => {
+    if (showLtiPreview) {
+      loadResourceLti(activityId);
+    } else { loadResource(activityId); }
+  }, [activityId, loadResource, loadResourceLti, showLtiPreview]);
+
+  return (
+    <>
+      {!loading ? (
+        <div id="curriki-h5p-wrapper">
+          <div className="loader_gif" style={{ color: 'black' }}>
+            Unable to Load Activity
           </div>
-        ) : (
-          <div id="curriki-h5p-wrapper">
-            <div className="loader_gif">
-              <img src={gifloader} alt="" />
-            </div>
+        </div>
+      ) : (
+        <div id="curriki-h5p-wrapper">
+          <div className="loader_gif">
+            <img src={gifloader} alt="" />
           </div>
-        )}
-      </>
-    );
-  }
-}
+        </div>
+      )}
+    </>
+  );
+};
 
 H5PPreview.propTypes = {
-  resource: PropTypes.object.isRequired,
+
   activityId: PropTypes.number.isRequired,
   showLtiPreview: PropTypes.bool,
-  showActivityPreview: PropTypes.bool,
+  // showActivityPreview: PropTypes.bool,
+  loadH5pResourceProp: PropTypes.func.isRequired,
 };
 
 H5PPreview.defaultProps = {
   showLtiPreview: false,
-  showActivityPreview: false,
+ // showActivityPreview: false,
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  loadH5pResourceProp: (activityId) => dispatch(loadH5pResourceSettings(activityId)),
+});
 
 const mapStateToProps = (state) => ({
   resource: state.resource,
 });
 
-export default withRouter(connect(mapStateToProps)(H5PPreview));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(H5PPreview));

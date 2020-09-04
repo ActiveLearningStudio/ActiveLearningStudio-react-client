@@ -152,7 +152,7 @@ const AppRouter = () => {
           exact
           path="/playlist/:playlistId/activity/:activityId/preview"
           component={PreviewPage}
-          previewType="resource"
+          previewType="playlist"
         />
         <PrivateRoute
           exact
