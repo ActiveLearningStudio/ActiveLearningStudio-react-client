@@ -158,3 +158,5 @@ export const LOAD_RESOURCE_ITEMS_FAIL = 'LOAD_RESOURCE_ITEMS_FAIL';
 /* Activity */
 
 export const SET_LMS_COURSE = 'SET_LMS_COURSE';
+
+export const SEARCH_REDUX = 'SEARCH_REDUX';

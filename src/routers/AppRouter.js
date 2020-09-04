@@ -30,8 +30,9 @@ const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
 const ProjectsPage = loadable(() => import('../containers/Projects'));
 const PlaylistsPage = loadable(() => import('../containers/Playlists'));
 const PreviewPage = loadable(() => import('../containers/Preview'));
-// const LtiPreviewPage = loadable(() => import('../containers/LtiPreviewPage'));
+const LtiPreviewPage = loadable(() => import('../containers/LtiPreviewPage'));
 // const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared'));
+const SearchResult = loadable(() => import('../containers/Search'));
 
 const AppRouter = () => {
   useEffect(() => {
@@ -57,44 +58,33 @@ const AppRouter = () => {
           path="/project/shared/:projectId"
           component={PreviewPageShared}
         />
-
         <PrivateRoute
           exact
           path="/activity/:activityId/preview"
           component={PreviewPage}
           previewType="resource"
         />
-
         <Route
           exact
           path="/playlist/lti/preview/:playlistId"
           component={LtiPreviewPage}
           previewType="playlist"
         />
-
         <Route
           path="/shared/activity/:activityId"
           component={LtiPreviewPage}
           exact
         />
-
         <Route
           path="/shared/activity/:activityId"
           exact
           render={() => <LtiPreviewPage previewType="activityShared" />}
         />
-
         <Route
           path="/playlist/lti/preview/:playlistId/activity/:activityId"
           exact
           component={LtiPreviewPage}
           previewType="playlist"
-        />
-
-        <Route
-          path="/playlist/shared/preview/:playlistId/activity/:activityId"
-          exact
-          render={() => <LtiPreviewPage previewType="playlistShared" />}
         />
         */}
 
@@ -157,7 +147,17 @@ const AppRouter = () => {
           exact
           path="/playlist/:playlistId/activity/:activityId/preview"
           component={PreviewPage}
-          previewType="resource"
+          previewType="playlist"
+        />
+        <PrivateRoute
+          exact
+          path="/search"
+          component={SearchResult}
+        />
+        <PrivateRoute
+          path="/playlist/shared/preview/:playlistId/activity/:activityId"
+          exact
+          render={() => <LtiPreviewPage previewType="playlistShared" />}
         />
         <OpenRoute
           path="/shared/activity/:activityId"

@@ -8,6 +8,7 @@ import project from './project';
 import ui from './ui';
 import defaultShareState from './share';
 import gapi from './gapi';
+import search from './search';
 
 export default combineReducers({
   auth,
@@ -18,4 +19,5 @@ export default combineReducers({
   form: formReducer,
   defaultShareState,
   gapi,
+  search,
 });
