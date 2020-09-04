@@ -61,51 +61,50 @@ function ProjectPreview(props) {
   let playlists;
 
   if (currentProject) {
-    playlists = currentProject.playlists
-      && currentProject.playlists.map((playlist, counter) => {
-        let activities;
-        if (playlist.activities && playlist.activities.length > 0) {
-          activities = playlist.activities.map((activity) => (
-            <ActivityCard
-              activity={activity}
-              playlist_id={playlist.id}
-              key={activity.id}
-            />
-          ));
-        } else {
-          activities = (
-            <div className="col-md-12">
-              <div className="alert alert-info" role="alert">
-                No activities defined for this playlist.
-              </div>
-            </div>
-          );
-        }
-
-        return (
-          <div className="check-each" key={playlist.id}>
-            <button
-              type="button"
-              ref={(el) => {
-                accordion.current[counter] = el;
-              }}
-              className={counter === 0 ? 'active accordion' : ' accordion'}
-              onClick={() => {
-                accordion.current[counter].classList.toggle('active');
-              }}
-            >
-              <FontAwesomeIcon icon="plus" className="mr-2" />
-              {playlist.title}
-            </button>
-
-            <div className="panel">
-              <ul>
-                <Slider {...settings}>{activities}</Slider>
-              </ul>
+    playlists = currentProject.playlists && currentProject.playlists.map((playlist, counter) => {
+      let activities;
+      if (playlist.activities && playlist.activities.length > 0) {
+        activities = playlist.activities.map((activity) => (
+          <ActivityCard
+            activity={activity}
+            playlistId={playlist.id}
+            key={activity.id}
+          />
+        ));
+      } else {
+        activities = (
+          <div className="col-md-12">
+            <div className="alert alert-info" role="alert">
+              No activities defined for this playlist.
             </div>
           </div>
         );
-      });
+      }
+
+      return (
+        <div className="check-each" key={playlist.id}>
+          <button
+            type="button"
+            ref={(el) => {
+              accordion.current[counter] = el;
+            }}
+            className={counter === 0 ? 'active accordion' : ' accordion'}
+            onClick={() => {
+              accordion.current[counter].classList.toggle('active');
+            }}
+          >
+            <FontAwesomeIcon icon="plus" className="mr-2" />
+            {playlist.title}
+          </button>
+
+          <div className="panel">
+            <ul>
+              <Slider {...settings}>{activities}</Slider>
+            </ul>
+          </div>
+        </div>
+      );
+    });
   } else {
     playlists = (
       <div className="col-md-12">
