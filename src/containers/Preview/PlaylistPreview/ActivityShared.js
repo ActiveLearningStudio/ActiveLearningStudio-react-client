@@ -45,7 +45,7 @@ const ActivityShared = (props) => {
     }).catch(() => {
       setAuthorized(true);
     });
-  }, [match.params.resourceId]);
+  }, [match.params.activityId]);
 
   return (
     <>

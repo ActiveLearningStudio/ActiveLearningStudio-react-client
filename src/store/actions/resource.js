@@ -62,7 +62,7 @@ export const loadResourceAction = (activityId) => async (dispatch) => {
     dispatch({
       type: actionTypes.LOAD_RESOURCE_SUCCESS,
       payload: {
-        resource: data.resource,
+        resource: data.activity,
         previousResourceId: data.previousResourceId,
         nextResourceId: data.nextResourceId,
       },
@@ -89,7 +89,15 @@ export const loadH5pSettingsActivity = () => async () => {
   });
 };
 
-export const loadH5pResourceSettings = (activityId) => resourceService.h5pResourceSettings(activityId);
+export const loadH5pResourceSettings = (activityId) => async (dispatch) => {
+  const result = await resourceService.h5pResourceSettings(activityId);
+  dispatch({
+    type: actionTypes.LOAD_PLAYLIST_SUCCESS,
+    payload: result,
+  });
+  return result;
+};
+
 export const loadH5pResourceSettingsOpen = (activityId) => resourceService.h5pResourceSettingsOpen(activityId);
 export const loadH5pResourceSettingsShared = (activityId) => resourceService.h5pResourceSettingsShared(activityId);
 
@@ -410,8 +418,32 @@ export const editResourceAction = (
   }
 };
 
-export const shareActivity = (activityId) => resourceService.shareActivity(activityId);
+export const shareActivity = async (activityId, resourceName) => {
+  const result = await resourceService.shareActivity(activityId);
 
+  if (result.activity.id) {
+    const protocol = `${window.location.href.split('/')[0]}//`;
+
+    Swal.fire({
+      html: `You can now share Activity <strong>"${resourceName}"</strong><br>
+          Anyone with the link below can access your activity:<br>
+          <br><a target="_blank" href="/shared/activity/${activityId}
+          ">${protocol + window.location.host}/shared/activity/${activityId}</a>
+        `,
+    });
+  }
+};
+
+export const unShareActivity = async (activityId, resourceName) => {
+  const result = await resourceService.unShareActivity(activityId);
+  if (result.activity.id) {
+    Swal.fire({
+      title: `You stopped sharing <strong>"${resourceName}"</strong> ! `,
+      html: 'Please remember that anyone you have shared this activity with,'
+      + ' will no longer have access to its contents.',
+    });
+  }
+};
 export const loadH5pShareResource = async (activityId) => {
   return await resourceService.loadH5pShared(activityId);
 }
