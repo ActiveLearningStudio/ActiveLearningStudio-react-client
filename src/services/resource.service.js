@@ -85,7 +85,7 @@ const shareActivity = (activityId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const unShareActivity = (activityId) => httpService
+const removeShareActivity = (activityId) => httpService
   .get(`/${apiVersion}/activities/${activityId}/remove-share`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
@@ -113,5 +113,5 @@ export default {
   activityH5p,
   shareActivity,
   loadH5pShared,
-  unShareActivity,
+  removeShareActivity,
 };

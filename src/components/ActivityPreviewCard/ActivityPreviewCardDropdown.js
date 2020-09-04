@@ -16,7 +16,7 @@ const ActivityPreviewCardDropdown = (props) => {
   return (
     <>
       {shared ? (
-        <Link to={`/playlist/shared/preview/${playlistId}/activity/${activity.id}`}>
+        <Link to={`/playlist/${playlistId}/shared/preview/activity/${activity.id}`}>
           <li className="drpdown">
             <div>
               <FontAwesomeIcon icon="play-circle" />
@@ -48,7 +48,7 @@ ActivityPreviewCardDropdown.propTypes = {
   lti: PropTypes.bool,
   shared: PropTypes.bool,
   activity: PropTypes.object.isRequired,
-  playlistId: PropTypes.string.isRequired,
+  playlistId: PropTypes.number.isRequired,
 };
 
 ActivityPreviewCardDropdown.defaultProps = {

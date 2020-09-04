@@ -62,7 +62,7 @@ let ResourceDescribeActivity = (props) => {
               <div className="col-md-12">
                 <h2 className="title">
                   <div className="back-button" onClick={goBackToActivity}>
-                    <FontAwesomeIcon icon="chevron-left" />
+                    <FontAwesomeIcon icon="chevron-left" className="mr-2" />
                     Back
                   </div>
                   Describe Activity:

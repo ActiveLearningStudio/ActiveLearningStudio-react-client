@@ -35,13 +35,12 @@ class PreviewPage extends React.Component {
   //   }
   // }
 
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   if (nextProps.selectedPlaylist !== prevState.playlistId) {
-  //     return { playlistId: nextProps.selectedPlaylist.id };
-  //   } else {
-  //     return null;
-  //   }
-  // }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.selectedPlaylist !== prevState.playlistId) {
+      return { playlistId: nextProps.selectedPlaylist.id };
+    }
+    return null;
+  }
 
   render() {
     const { playlistId } = this.state;
@@ -49,14 +48,16 @@ class PreviewPage extends React.Component {
     let content;
     if (previewType === 'resource') {
       content = (
-        <ResourcePreview activityId={parseInt(match.params.activityId, 10)} />
+        <ResourcePreview
+          playlistId={parseInt(match.params.playlistId, 10)}
+          activityId={parseInt(match.params.activityId, 10)}
+        />
       );
     } else if (previewType === 'playlist') {
       content = !playlistId && (
         <PlaylistPreview
           projectId={parseInt(match.params.projectId, 10)}
           playlistId={parseInt(match.params.playlistId, 10)}
-          activityId={parseInt(match.params.activityId, 10)}
         />
       );
     } else if (previewType === 'activityShared') {
@@ -88,6 +89,7 @@ PreviewPage.propTypes = {
   match: PropTypes.object.isRequired,
   project: PropTypes.object.isRequired,
   previewType: PropTypes.string,
+  selectedPlaylist: PropTypes.object.isRequired,
   loadMyProjects: PropTypes.func.isRequired,
 };
 

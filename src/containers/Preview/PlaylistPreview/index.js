@@ -12,7 +12,7 @@ import Switch from 'react-switch';
 import { confirmAlert } from 'react-confirm-alert';
 
 import { loadPlaylistAction, LoadHP } from 'store/actions/playlist';
-import { shareActivity, unShareActivity, loadResourceAction } from 'store/actions/resource';
+import { shareActivity, removeShareActivity, loadResourceAction } from 'store/actions/resource';
 import ActivityPreviewCard from 'components/ActivityPreviewCard';
 import ActivityPreviewCardDropdown from 'components/ActivityPreviewCard/ActivityPreviewCardDropdown';
 import Unauthorized from 'components/Unauthorized';
@@ -31,23 +31,24 @@ const PlaylistPreview = (props) => {
     playlist: { selectedPlaylist },
     projectId,
     playlistId,
-
     loading,
-    // loadPlaylist,
+    loadPlaylist,
     activityDetail,
   } = props;
+
   // const [activityIdResource, setActivityIdResource] = useState(activityId);
   const [playlists, setPlaylists] = useState([]);
-  const [currentPlaylist, setCurrentPlaylist] = useState();
-  const [activeShared, setActiveShared] = useState();
+  const [currentPlaylist, setCurrentPlaylist] = useState({});
+  const [activeShared, setActiveShared] = useState(false);
 
   // get activity information
   useEffect(() => {
     window.scrollTo(0, 0);
     if (activityId) {
       dispatch(loadResourceAction(activityId));
-      setPlaylists();
-      setCurrentPlaylist();
+
+      setPlaylists([]);
+      setCurrentPlaylist({});
     }
   }, [activityId, dispatch]);
 
@@ -68,32 +69,35 @@ const PlaylistPreview = (props) => {
   //           (a) => a.id === prevactivityId,
   //         );
   //       }
-
+  //
   //       let activeShared;
   //       if (currentActivity) {
   //         activeShared = currentActivity.length > 0 && currentActivity[0].shared;
   //       }
-
+  //
   //       return {
   //         playlists: selectedProject.playlists,
   //         currentPlaylist: nextProps.playlist.selectedPlaylist,
   //         activeShared: !!activeShared,
   //       };
   //     }
-
+  //
   //     return {
   //       playlists: [],
   //       currentPlaylist: nextProps.playlist.selectedPlaylist,
   //     };
   //   }
-
+  //
   //   return null;
   // }
 
+  useEffect(() => {
+    loadPlaylist(projectId, playlistId);
+  }, [loadPlaylist, playlistId, projectId]);
+
   // componentDidMount() {
-
   //   loadPlaylist(projectId, playlistId);
-
+  //
   //   const checkValidResource = async () => {
   //     // const token = JSON.parse(localStorage.getItem(USER_TOKEN_KEY));
   //     // if (loading) {
@@ -115,12 +119,11 @@ const PlaylistPreview = (props) => {
   //     //     });
   //     // }
   //   };
-
   // }
 
   const handleSelect = () => {
     // if (activityId) {
-    //   setActivityIdResource( activityId );
+    //   setActivityIdResource(activityId);
     // }
   };
 
@@ -140,10 +143,11 @@ const PlaylistPreview = (props) => {
   // let nextLink = null;
   let nextLink1 = null;
 
-  var currentActivity;
+  let currentActivity;
 
   // const currentProject = projects.find((p) => p.id === projectId);
 
+  let selectedActivityId = activityId;
   if (!selectedPlaylist.activities || selectedPlaylist.activities.length === 0) {
     activities = (
       <div className="col-md-12">
@@ -177,11 +181,11 @@ const PlaylistPreview = (props) => {
       />
     ));
 
-    if (activityId === 0) {
-      activityId = selectedPlaylist.activities[0].id;
+    if (!selectedActivityId) {
+      selectedActivityId = selectedPlaylist.activities[0].id;
     }
 
-    const currentIndex = selectedPlaylist.activities.findIndex((f) => f.id === activityId);
+    const currentIndex = selectedPlaylist.activities.findIndex((f) => f.id === selectedActivityId);
     if (currentIndex > -1) {
       currentActivity = selectedPlaylist.activities[currentIndex];
     }
@@ -193,12 +197,12 @@ const PlaylistPreview = (props) => {
 
     if (previousResource) {
       // previousLink = (
-      //   <a
-      //     href="#"
+      //   <Link
+      //     to="#"
       //     className="slide-control prev"
       //     onClick={() => handleSelect(previousResource.id)}
       //   >
-      //     <FontAwesomeIcon icon="arrow-left" />
+      //     <FontAwesomeIcon icon="arrow-left" className="mr-2" />
       //     <span>Previous Activity</span>
       //   </a>
       // );
@@ -228,15 +232,15 @@ const PlaylistPreview = (props) => {
       );
     } else {
       // previousLink = (
-      //   <a href="#" className="slide-control prev disabled-link">
-      //     <FontAwesomeIcon icon="chevron-left" />
-      //     <span> previous Activity</span>
+      //   <Link to="#" className="slide-control prev disabled-link">
+      //     <FontAwesomeIcon icon="chevron-left" className="mr-2" />
+      //     <span>Previous Activity</span>
       //   </a>
       // );
 
       previousLink1 = (
         <div className="slider-hover-section">
-          <Link>
+          <Link to="#">
             <FontAwesomeIcon icon="chevron-left" />
           </Link>
 
@@ -245,6 +249,7 @@ const PlaylistPreview = (props) => {
               <p>Welcome! You are at the beginning of this playlist.</p>
 
               <Link
+                to="#"
                 onClick={() => {
                   for (let i = 0; i < playlists.length; i += 1) {
                     if (playlists[i].id === currentPlaylist.id) {
@@ -259,11 +264,12 @@ const PlaylistPreview = (props) => {
                           confirmButtonColor: '#3085d6',
                           cancelButtonColor: '#d33',
                           confirmButtonText: 'Yes',
-                        }).then((result) => {
-                          if (result.value) {
-                            history.push(`/project/preview2/${projectId}`);
-                          }
-                        });
+                        })
+                          .then((result) => {
+                            if (result.value) {
+                              history.push(`/project/preview2/${projectId}`);
+                            }
+                          });
                       }
                     }
                   }
@@ -329,7 +335,7 @@ const PlaylistPreview = (props) => {
 
       nextLink1 = (
         <div className="slider-hover-section">
-          <Link>
+          <Link to="#">
             <FontAwesomeIcon icon="chevron-right" />
           </Link>
 
@@ -338,6 +344,7 @@ const PlaylistPreview = (props) => {
               <p>Hooray! You did it! There are no more activities in this playlist.</p>
 
               <Link
+                to="#"
                 onClick={() => {
                   for (let i = 0; i < playlists.length; i += 1) {
                     if (playlists[i].id === currentPlaylist.id) {
@@ -353,11 +360,12 @@ const PlaylistPreview = (props) => {
                           cancelButtonColor: '#d33',
                           cancelButtonText: 'No',
                           confirmButtonText: 'Yes',
-                        }).then((result) => {
-                          if (result.value) {
-                            history.push(`/project/preview2/${projectId}`);
-                          }
-                        });
+                        })
+                          .then((result) => {
+                            if (result.value) {
+                              history.push(`/project/preview2/${projectId}`);
+                            }
+                          });
                       }
                     }
                   }
@@ -387,12 +395,14 @@ const PlaylistPreview = (props) => {
         <section className="main-page-content preview">
           <div className="container-flex-upper">
             <Link to={`/project/preview2/${projectId}`}>
-              {/* <div className="project-title">
-                  <img src={projectIcon} alt="" />
-                  Project :
-                  {' '}
-                  {currentProject && currentProject.name}
-                </div> */}
+              {/*
+              <div className="project-title">
+                <img src={projectIcon} alt="" />
+                Project :
+                {' '}
+                {currentProject && currentProject.name}
+              </div>
+              */}
             </Link>
 
             <Link to={`/project/${projectId}`}>
@@ -407,8 +417,8 @@ const PlaylistPreview = (props) => {
                   <div className="heading-wrapper">
                     <div className="main-heading">
                       {selectedPlaylist.activities && selectedPlaylist.activities.length
-                        ? selectedPlaylist.activities.filter((a) => a.id === activityId).length > 0
-                          ? selectedPlaylist.activities.filter((a) => a.id === activityId)[0].title
+                        ? selectedPlaylist.activities.filter((a) => a.id === selectedActivityId).length > 0
+                          ? selectedPlaylist.activities.filter((a) => a.id === selectedActivityId)[0].title
                           : ''
                         : ''}
                     </div>
@@ -426,15 +436,17 @@ const PlaylistPreview = (props) => {
               <div className="main-item-wrapper">
                 <div className="item-container">
                   <Suspense fallback={<div>Loading</div>}>
-                    <H5PPreview activityId={activityId} />
-
-                    {/* {currentActivity.type === 'h5p' ? (
-                          <H5PPreview  activityId={activityId} />
-                        ) : (
-                          <ImmersiveReaderPreview activity={currentActivity} />
-                        )} */}
+                    {currentActivity && currentActivity.type === 'h5p' && (
+                      <H5PPreview activityId={selectedActivityId} />
+                    )}
+                    {/*
+                    {currentActivity.type === 'h5p' ? (
+                      <H5PPreview activityId={selectedActivityId} />
+                    ) : (
+                      <ImmersiveReaderPreview activity={currentActivity} />
+                    )}
+                    */}
                   </Suspense>
-
                 </div>
               </div>
             </div>
@@ -481,15 +493,16 @@ const PlaylistPreview = (props) => {
                             confirmButtonAriaLabel: 'Stop Sharing!',
                             cancelButtonText: 'Cancel',
                             cancelButtonAriaLabel: 'Cancel',
-                          }).then(async (resp) => {
-                            if (resp.isConfirmed) {
-                              await unShareActivity(activityId, activityDetail.title);
-                              setActiveShared(false);
-                              // loadPlaylist(projectId, playlistId);
-                            }
-                          });
+                          })
+                            .then(async (resp) => {
+                              if (resp.isConfirmed) {
+                                await removeShareActivity(selectedActivityId, activityDetail.title);
+                                setActiveShared(false);
+                                // loadPlaylist(projectId, playlistId);
+                              }
+                            });
                         } else {
-                          await shareActivity(activityId, activityDetail.title);
+                          await shareActivity(selectedActivityId, activityDetail.title);
                           setActiveShared(true);
                           // loadPlaylist(projectId, playlistId);
                         }
@@ -504,65 +517,66 @@ const PlaylistPreview = (props) => {
                   </div>
 
                   {activeShared && (
-                  <div
-                    className="shared-link"
-                    onClick={() => {
-                      const protocol = `${window.location.href.split('/')[0]}//`;
-                      confirmAlert({
-                        customUI: ({ onClose }) => (
-                          <div className="share-project-preview-url project-share-check">
-                            <br />
+                    <div
+                      className="shared-link"
+                      onClick={() => {
+                        const protocol = `${window.location.href.split('/')[0]}//`;
+                        confirmAlert({
+                          // eslint-disable-next-line react/prop-types
+                          customUI: ({ onClose }) => (
+                            <div className="share-project-preview-url project-share-check">
+                              <br />
 
-                            <a
-                              target="_blank"
-                              href={`/shared/activity/${activityId}`}
-                              rel="noopener noreferrer"
-                            >
-                              <input
-                                id="urllink_clip"
-                                value={`${protocol + window.location.host}/shared/activity/${activityId}`}
+                              <a
+                                target="_blank"
+                                href={`/shared/activity/${selectedActivityId}`}
+                                rel="noopener noreferrer"
+                              >
+                                <input
+                                  id="urllink_clip"
+                                  value={`${protocol + window.location.host}/shared/activity/${selectedActivityId}`}
+                                />
+                              </a>
+
+                              <FontAwesomeIcon
+                                title="copy to clipboard"
+                                icon="clipboard"
+                                onClick={() => {
+                                  /* Get the text field */
+                                  const copyText = document.getElementById('urllink_clip');
+
+                                  /* Select the text field */
+                                  copyText.focus();
+                                  copyText.select();
+                                  // copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+                                  /* Copy the text inside the text field */
+                                  document.execCommand('copy');
+
+                                  /* Alert the copied text */
+                                  Swal.fire({
+                                    title: 'Link Copied',
+                                    showCancelButton: false,
+                                    showConfirmButton: false,
+                                    timer: 1500,
+                                    allowOutsideClick: false,
+                                  });
+                                }}
                               />
-                            </a>
+                              <br />
 
-                            <FontAwesomeIcon
-                              title="copy to clipboard"
-                              icon="clipboard"
-                              onClick={() => {
-                                /* Get the text field */
-                                const copyText = document.getElementById('urllink_clip');
-
-                                /* Select the text field */
-                                copyText.focus();
-                                copyText.select();
-                                // copyText.setSelectionRange(0, 99999); /* For mobile devices */
-
-                                /* Copy the text inside the text field */
-                                document.execCommand('copy');
-
-                                /* Alert the copied text */
-                                Swal.fire({
-                                  title: 'Link Copied',
-                                  showCancelButton: false,
-                                  showConfirmButton: false,
-                                  timer: 1500,
-                                  allowOutsideClick: false,
-                                });
-                              }}
-                            />
-                            <br />
-
-                            <div className="close-btn">
-                              <button type="button" onClick={onClose}>Ok</button>
+                              <div className="close-btn">
+                                <button type="button" onClick={onClose}>Ok</button>
+                              </div>
                             </div>
-                          </div>
-                        ),
-                      });
-                      // confirmAlert();
-                    }}
-                  >
-                    <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
-                    View Shared Link
-                  </div>
+                          ),
+                        });
+                        // confirmAlert();
+                      }}
+                    >
+                      <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
+                      View Shared Link
+                    </div>
                   )}
                 </div>
 
@@ -592,15 +606,15 @@ PlaylistPreview.propTypes = {
   activityId: PropTypes.number,
   loading: PropTypes.string,
   // projects: PropTypes.array.isRequired,
-  // loadPlaylist: PropTypes.func.isRequired,
+  loadPlaylist: PropTypes.func.isRequired,
   // loadHP: PropTypes.func.isRequired,
-  activityDetail: PropTypes.object.isRequired,
-   onClose:PropTypes.func.isRequired
+  activityDetail: PropTypes.object,
 };
 
 PlaylistPreview.defaultProps = {
   loading: '',
   activityId: undefined,
+  activityDetail: {},
 };
 
 const mapDispatchToProps = (dispatch) => ({

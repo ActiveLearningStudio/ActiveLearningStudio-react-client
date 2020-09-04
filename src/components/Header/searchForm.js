@@ -15,7 +15,7 @@ function SearchForm() {
 
   return (
     <Dropdown>
-      <div className="searchblock navbtn ">
+      <div className="search-block navbtn">
         <input
           onChange={(e) => {
             setsimpleSearch(e.target.value);
@@ -30,7 +30,7 @@ function SearchForm() {
           }}
           value={simpleSearch}
           type="text"
-          className="searchterm"
+          className="search-term"
           placeholder="Search existing content"
         />
         <Dropdown.Toggle variant="" id="dropdown-basic">
