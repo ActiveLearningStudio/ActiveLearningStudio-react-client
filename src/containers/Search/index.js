@@ -14,7 +14,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import './style.scss';
 
 function SearchInterface() {
-  const allstate = useSelector((state) => state.search && state.search);
+  const allstate = useSelector((state) => state.search);
 
   // const more = useRef();
   const [search, setsearch] = useState();
@@ -191,7 +191,7 @@ function SearchInterface() {
                               <div className="imgbox">
                                 <div
                                   style={{
-                                    backgroundImage: !!res.thumb_url && !!res.thumb_url && res.thumb_url.includes('pexels.com')
+                                    backgroundImage: !!res.thumb_url && res.thumb_url.includes('pexels.com')
                                       ? `url(${res.thumb_url})`
                                       : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                   }}
