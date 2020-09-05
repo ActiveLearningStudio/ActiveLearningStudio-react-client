@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './style.scss';
@@ -17,29 +18,29 @@ const ActivityPreviewCardDropdown = (props) => {
   return (
     <>
       {shared ? (
-        <Link to={`/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview/shared`}>
-          <li className="drpdown">
-            <div>
-              <FontAwesomeIcon icon="play-circle" />
-              <div className="title">{activity.title}</div>
-            </div>
-          </li>
-        </Link>
+        <Dropdown.Item
+          as={Link}
+          to={`/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview/shared`}
+        >
+          <div>
+            <FontAwesomeIcon icon="play-circle" />
+            <div className="title">{activity.title}</div>
+          </div>
+        </Dropdown.Item>
       ) : (
-        <Link
+        <Dropdown.Item
+          as={Link}
           to={
             lti
               ? `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview/lti`
               : `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
           }
         >
-          <li className="drpdown">
-            <div>
-              <FontAwesomeIcon icon="play-circle" />
-              <div className="title">{activity.title}</div>
-            </div>
-          </li>
-        </Link>
+          <div>
+            <FontAwesomeIcon icon="play-circle" />
+            <div className="title">{activity.title}</div>
+          </div>
+        </Dropdown.Item>
       )}
     </>
   );

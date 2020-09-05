@@ -136,7 +136,8 @@ class PlaylistPreview extends React.Component {
     let previousResource;
     let nextResource;
 
-    if (!selectedPlaylist.activities || selectedPlaylist.activities.length === 0) {
+    const noActivities = !selectedPlaylist.activities || selectedPlaylist.activities.length === 0;
+    if (noActivities) {
       activities = (
         <div className="col-md-12">
           <div className="alert alert-info" role="alert">
@@ -452,7 +453,7 @@ class PlaylistPreview extends React.Component {
                     <Dropdown.Toggle className="playlist-dropdown-btn">
                       <FontAwesomeIcon icon="ellipsis-v" />
                     </Dropdown.Toggle>
-                    <Dropdown.Menu>
+                    <Dropdown.Menu className={noActivities ? 'no-activities' : ''}>
                       {activities1}
                     </Dropdown.Menu>
                   </Dropdown>
