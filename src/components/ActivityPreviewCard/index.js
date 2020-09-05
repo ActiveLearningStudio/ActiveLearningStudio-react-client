@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom';
 import './style.scss';
 
 const ActivityPreviewCard = (props) => {
-  const { activity, playlistId } = props;
+  const { activity, projectId, playlistId } = props;
 
   return (
-    <Link to={`/playlist/${playlistId}/shared/preview/activity/${activity.id}`}>
+    <Link to={`/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview/shared`}>
       <li className="check">
         {activity.thumb_url && (
           <div
@@ -30,6 +30,7 @@ const ActivityPreviewCard = (props) => {
 
 ActivityPreviewCard.propTypes = {
   activity: PropTypes.object.isRequired,
+  projectId: PropTypes.number.isRequired,
   playlistId: PropTypes.number.isRequired,
 };
 

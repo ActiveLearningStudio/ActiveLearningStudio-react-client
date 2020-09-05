@@ -55,13 +55,18 @@ const h5pSettings = () => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const h5pResource = (activityId) => httpService
+  .get(`/${apiVersion}/activities/${activityId}/h5p`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const h5pSettingsUpdate = (activityId, dataUpload) => httpService
   .put(`/${apiVersion}/activities/${activityId}`, dataUpload)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
 const h5pResourceSettings = (activityId) => httpService
-  .get(`/${apiVersion}/activities/${activityId}/h5p`)
+  .get(`/${apiVersion}/activities/${activityId}/h5p-resource-settings`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -106,6 +111,7 @@ export default {
   getItems,
   h5pToken,
   h5pSettings,
+  h5pResource,
   h5pSettingsUpdate,
   h5pResourceSettings,
   h5pResourceSettingsOpen,

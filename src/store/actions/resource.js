@@ -89,15 +89,18 @@ export const loadH5pSettingsActivity = () => async () => {
   });
 };
 
-export const loadH5pResourceSettings = (activityId) => async (dispatch) => {
-  const result = await resourceService.h5pResourceSettings(activityId);
+export const loadH5pResource = (activityId) => async (dispatch) => {
+  const result = await resourceService.h5pResource(activityId);
+
   dispatch({
     type: actionTypes.LOAD_PLAYLIST_SUCCESS,
     payload: result,
   });
+
   return result;
 };
 
+export const loadH5pResourceSettings = (activityId) => resourceService.h5pResourceSettings(activityId);
 export const loadH5pResourceSettingsOpen = (activityId) => resourceService.h5pResourceSettingsOpen(activityId);
 export const loadH5pResourceSettingsShared = (activityId) => resourceService.h5pResourceSettingsShared(activityId);
 
@@ -419,19 +422,20 @@ export const editResourceAction = (
 };
 
 export const shareActivity = async (activityId) => {
-  resourceService.shareActivity(activityId);
+  await resourceService.shareActivity(activityId);
 
-  //   if (result.activity.id) {
-  //   //   const protocol = `${window.location.href.split('/')[0]}//`;
-
-//   //   // Swal.fire({
-//   //   //   html: `You can now share Activity <strong>"${resourceName}"</strong><br>
-//   //   //       Anyone with the link below can access your activity:<br>
-//   //   //       <br><a target="_blank" href="/shared/activity/${activityId}
-//   //   //       ">${protocol + window.location.host}/shared/activity/${activityId}</a>
-//   //   //     `,
-//   //   // });
-//   // }
+  // if (result.activity.id) {
+  //   const protocol = `${window.location.href.split('/')[0]}//`;
+  //
+  //   Swal.fire({
+  //     html: `You can now share Activity <strong>"${resourceName}"</strong><br>
+  //       Anyone with the link below can access your activity:<br>
+  //       <br><a target="_blank" href="/activity/${activityId}/shared">
+  //       ${protocol + window.location.host}/activity/${activityId}/shared
+  //       </a>
+  //     `,
+  //   });
+  // }
 };
 
 export const removeShareActivity = async (activityId, resourceName) => {
@@ -440,7 +444,7 @@ export const removeShareActivity = async (activityId, resourceName) => {
     Swal.fire({
       title: `You stopped sharing <strong>"${resourceName}"</strong> ! `,
       html: 'Please remember that anyone you have shared this activity with,'
-      + ' will no longer have access to its contents.',
+        + ' will no longer have access to its contents.',
     });
   }
 };

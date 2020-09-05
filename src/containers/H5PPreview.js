@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 
 import gifloader from 'assets/images/276.gif';
 import {
-  loadH5pResourceSettings,
+  loadH5pResource,
   loadH5pResourceSettingsOpen,
 } from 'store/actions/resource';
 
@@ -137,7 +137,7 @@ H5PPreview.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  loadH5pResourceProp: (activityId) => dispatch(loadH5pResourceSettings(activityId)),
+  loadH5pResourceProp: (activityId) => dispatch(loadH5pResource(activityId)),
 });
 
 const mapStateToProps = (state) => ({
