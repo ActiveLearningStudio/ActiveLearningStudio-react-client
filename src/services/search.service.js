@@ -1,14 +1,13 @@
-import config from 'config';
 import Swal from 'sweetalert2';
+
+import config from 'config';
 import httpService from './http.service';
 
 const { apiVersion } = config;
 
-const searchResult = (searchquerry, from, size) => httpService
-
-  // .get(`https://refactored.curriki.org/api/api/v1/search/advanced?from=${from}&size=${size}&query=${searchquerry}`)
-  .get(`/${apiVersion}/search/advanced?from=${from}&size=${size}&query=${searchquerry}`)
-
+const searchResult = (searchQuery, from, size) => httpService
+  // .get(`https://refactored.curriki.org/api/api/v1/search/advanced?from=${from}&size=${size}&query=${searchQuery}`)
+  .get(`/${apiVersion}/search/advanced?from=${from}&size=${size}&query=${searchQuery}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -36,7 +35,6 @@ export default {
 
 // const searchResult = {
 //   'activities': 4,
-
 //   "playlists": 1,
 //   "total": 5,
 //   "data": [

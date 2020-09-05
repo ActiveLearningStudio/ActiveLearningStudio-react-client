@@ -590,13 +590,19 @@ img {
         border-top-color: white !important;
       }
     }
+  }
 
-    .dropdown-menu {
+  .dropdown-menu {
+    max-height: 400px;
+    overflow-y: auto;
+    left: 0 !important;
+
+    &.no-activities {
       left: 0 !important;
+    }
 
-      .alert {
-        margin-top: 1rem;
-      }
+    .alert {
+      margin-top: 1rem;
     }
   }
 }

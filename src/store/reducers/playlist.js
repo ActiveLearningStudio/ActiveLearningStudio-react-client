@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   isLoading: false,
   playlists: [],
   showCreatePlaylistPopup: false,
-  selectedPlaylist: {},
+  selectedPlaylist: null,
   loadingH5P: 'loading...',
 };
 

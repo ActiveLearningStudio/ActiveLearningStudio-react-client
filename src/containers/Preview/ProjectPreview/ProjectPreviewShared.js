@@ -65,6 +65,7 @@ function ProjectPreviewShared(props) {
         activities = playlist.activities.map((activity) => (
           <ActivityCard
             activity={activity}
+            projectId={parseInt(match.params.projectId, 10)}
             playlistId={playlist.id}
             key={activity.id}
             lti

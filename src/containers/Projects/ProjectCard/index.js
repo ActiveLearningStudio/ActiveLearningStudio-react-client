@@ -121,7 +121,7 @@ const ProjectCard = (props) => {
                         to="#"
                         onClick={() => {
                           const protocol = `${window.location.href.split('/')[0]}//`;
-                          const url = `${protocol + window.location.host}/project/shared/${project.id}`;
+                          const url = `${protocol + window.location.host}/project/${project.id}/shared`;
                           SharePreviewPopup(url, project.name);
                         }}
                       >

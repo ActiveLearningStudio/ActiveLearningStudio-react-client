@@ -23,6 +23,7 @@ class PreviewPage extends React.Component {
   componentDidMount() {
     // scroll to top
     window.scrollTo(0, 0);
+
     const { loadMyProjects, previewType } = this.props;
     if (previewType !== 'activityShared') {
       loadMyProjects();
@@ -35,31 +36,34 @@ class PreviewPage extends React.Component {
   //   }
   // }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.selectedPlaylist !== prevState.playlistId) {
-      return { playlistId: nextProps.selectedPlaylist.id };
-    }
-    return null;
-  }
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   if (nextProps.selectedPlaylist !== prevState.playlistId) {
+  //     return { playlistId: nextProps.selectedPlaylist.id };
+  //   }
+  //   return null;
+  // }
 
   render() {
     const { playlistId } = this.state;
     const { match, project, previewType } = this.props;
-    let content;
-    if (previewType === 'resource') {
+
+    let content = null;
+    if (previewType === 'activity') {
       content = (
         <ResourcePreview
-          playlistId={parseInt(match.params.playlistId, 10)}
           activityId={parseInt(match.params.activityId, 10)}
         />
       );
     } else if (previewType === 'playlist') {
-      content = !playlistId && (
-        <PlaylistPreview
-          projectId={parseInt(match.params.projectId, 10)}
-          playlistId={parseInt(match.params.playlistId, 10)}
-        />
-      );
+      if (!playlistId) {
+        content = (
+          <PlaylistPreview
+            projectId={parseInt(match.params.projectId, 10)}
+            playlistId={parseInt(match.params.playlistId, 10)}
+            activityId={parseInt(match.params.activityId, 10)}
+          />
+        );
+      }
     } else if (previewType === 'activityShared') {
       content = <ActivityShared />;
     } else {
@@ -89,12 +93,13 @@ PreviewPage.propTypes = {
   match: PropTypes.object.isRequired,
   project: PropTypes.object.isRequired,
   previewType: PropTypes.string,
-  selectedPlaylist: PropTypes.object.isRequired,
+  selectedPlaylist: PropTypes.object,
   loadMyProjects: PropTypes.func.isRequired,
 };
 
 PreviewPage.defaultProps = {
   previewType: '',
+  selectedPlaylist: null,
 };
 
 const mapDispatchToProps = (dispatch) => ({

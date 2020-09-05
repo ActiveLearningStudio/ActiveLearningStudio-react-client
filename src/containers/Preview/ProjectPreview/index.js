@@ -67,6 +67,7 @@ function ProjectPreview(props) {
         activities = playlist.activities.map((activity) => (
           <ActivityCard
             activity={activity}
+            projectId={parseInt(match.params.projectId, 10)}
             playlistId={playlist.id}
             key={activity.id}
           />
@@ -189,9 +190,7 @@ function ProjectPreview(props) {
                                 window.gapi.sharetoclassroom.go('croom');
                               }
                               const protocol = `${window.location.href.split('/')[0]}//`;
-                              const url = `${protocol}${window.location.host}/project/shared/${
-                                match.params.projectId.trim()
-                              }`;
+                              const url = `${protocol}${window.location.host}/project/${match.params.projectId}/shared`;
                               return SharePreviewPopup(url, currentProject.name);
                             }}
                           >

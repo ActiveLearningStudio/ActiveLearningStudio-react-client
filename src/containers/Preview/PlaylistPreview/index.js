@@ -1,9 +1,7 @@
 /* eslint-disable max-len */
-import React, {
-  useEffect, Suspense, lazy, useState,
-} from 'react';
+import React, { Suspense, lazy } from 'react';
 import PropTypes from 'prop-types';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
@@ -11,8 +9,9 @@ import { Dropdown } from 'react-bootstrap';
 import Switch from 'react-switch';
 import { confirmAlert } from 'react-confirm-alert';
 
+import projectIcon from 'assets/images/project_icon.svg';
 import { loadPlaylistAction, LoadHP } from 'store/actions/playlist';
-import { shareActivity, removeShareActivity, loadResourceAction } from 'store/actions/resource';
+import { shareActivity, removeShareActivity, loadH5pResourceSettings } from 'store/actions/resource';
 import ActivityPreviewCard from 'components/ActivityPreviewCard';
 import ActivityPreviewCardDropdown from 'components/ActivityPreviewCard/ActivityPreviewCardDropdown';
 import Unauthorized from 'components/Unauthorized';
@@ -20,201 +19,202 @@ import Unauthorized from 'components/Unauthorized';
 import './style.scss';
 
 const H5PPreview = lazy(() => import('../../H5PPreview'));
-// const ImmersiveReaderPreview = lazy(() => import('../../../components/Microsoft/ImmersiveReaderPreview'));
+const ImmersiveReaderPreview = lazy(() => import('../../../components/Microsoft/ImmersiveReaderPreview'));
 
-const PlaylistPreview = (props) => {
-  const dispatch = useDispatch();
+class PlaylistPreview extends React.Component {
+  constructor(props) {
+    super(props);
 
-  const {
-    activityId,
-    history,
-    playlist: { selectedPlaylist },
-    projectId,
-    playlistId,
-    loading,
-    loadPlaylist,
-    activityDetail,
-  } = props;
-
-  // const [activityIdResource, setActivityIdResource] = useState(activityId);
-  const [playlists, setPlaylists] = useState([]);
-  const [currentPlaylist, setCurrentPlaylist] = useState({});
-  const [activeShared, setActiveShared] = useState(false);
-
-  // get activity information
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    if (activityId) {
-      dispatch(loadResourceAction(activityId));
-
-      setPlaylists([]);
-      setCurrentPlaylist({});
-    }
-  }, [activityId, dispatch]);
-
-  // get share status
-  useEffect(() => {
-    if (activityDetail) {
-      setActiveShared(activityDetail.shared);
-    }
-  }, [activityDetail]);
-
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   if (nextProps.projects.length > 0 && !!nextProps.playlist.selectedPlaylist) {
-  //     const selectedProject = nextProps.projects.find((data) => data.id === nextProps.projectId);
-  //     if (selectedProject) {
-  //       let currentActivity;
-  //       if (nextProps.playlist.selectedPlaylist && nextProps.playlist.selectedPlaylist.activities) {
-  //         currentActivity = nextProps.playlist.selectedPlaylist.activities.find(
-  //           (a) => a.id === prevactivityId,
-  //         );
-  //       }
-  //
-  //       let activeShared;
-  //       if (currentActivity) {
-  //         activeShared = currentActivity.length > 0 && currentActivity[0].shared;
-  //       }
-  //
-  //       return {
-  //         playlists: selectedProject.playlists,
-  //         currentPlaylist: nextProps.playlist.selectedPlaylist,
-  //         activeShared: !!activeShared,
-  //       };
-  //     }
-  //
-  //     return {
-  //       playlists: [],
-  //       currentPlaylist: nextProps.playlist.selectedPlaylist,
-  //     };
-  //   }
-  //
-  //   return null;
-  // }
-
-  useEffect(() => {
-    loadPlaylist(projectId, playlistId);
-  }, [loadPlaylist, playlistId, projectId]);
-
-  // componentDidMount() {
-  //   loadPlaylist(projectId, playlistId);
-  //
-  //   const checkValidResource = async () => {
-  //     // const token = JSON.parse(localStorage.getItem(USER_TOKEN_KEY));
-  //     // if (loading) {
-  //     //   axios
-  //     //     .post(
-  //     //       `${global.config.laravelAPIUrl}/h5p-resource-settings`,
-  //     //       { activityId },
-  //     //       { headers: { Authorization: `Bearer ${token}` } },
-  //     //     )
-  //     //     .then((response) => {
-  //     //       if (response.data.status === 'success') {
-  //     //         loadHP(null);
-  //     //       } else {
-  //     //         loadHP(response.data.status);
-  //     //       }
-  //     //     })
-  //     //     .catch((/* error */) => {
-  //     //       // console.log(error);
-  //     //     });
-  //     // }
-  //   };
-  // }
-
-  const handleSelect = () => {
-    // if (activityId) {
-    //   setActivityIdResource(activityId);
-    // }
-  };
-
-  if (!selectedPlaylist) {
-    return (
-      <div className="alert alert-info" role="alert">
-        Loading...
-      </div>
-    );
+    this.state = {
+      activityId: props.activityId,
+      allPlaylists: [],
+      currentPlaylist: {},
+      activityShared: false,
+    };
   }
 
-  let activities;
-  let activities1;
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (
+      nextProps.projects !== prevState.allPlaylists
+      && !!nextProps.playlist.selectedPlaylist
+    ) {
+      const selectedProject = nextProps.projects.find((data) => data.id === nextProps.playlist.selectedPlaylist.project_id);
+      if (selectedProject) {
+        const currentActivity = nextProps.playlist.selectedPlaylist.activities.find((a) => a.id === prevState.activityId);
+        const currentActivityShared = currentActivity && currentActivity.shared;
 
-  // let previousLink = null;
-  let previousLink1 = null;
-  // let nextLink = null;
-  let nextLink1 = null;
+        return {
+          allPlaylists: selectedProject.playlists,
+          currentPlaylist: nextProps.playlist.selectedPlaylist,
+          activityShared: !!currentActivityShared,
+        };
+      }
 
-  let currentActivity;
+      if (nextProps.playlist.selectedPlaylist.activities) {
+        if (nextProps.playlist.selectedPlaylist.activities.length > 0) {
+          loadH5pResourceSettings(nextProps.playlist.selectedPlaylist.activities[0].id)
+            .then(() => {
+              nextProps.loadHP(null);
+            })
+            .catch(() => {
+              nextProps.loadHP('fail');
+            });
+        } else {
+          nextProps.loadHP(null);
+        }
+      }
 
-  // const currentProject = projects.find((p) => p.id === projectId);
-
-  let selectedActivityId = activityId;
-  if (!selectedPlaylist.activities || selectedPlaylist.activities.length === 0) {
-    activities = (
-      <div className="col-md-12">
-        <div className="alert alert-info" role="alert">
-          No activities defined for this playlist.
-        </div>
-      </div>
-    );
-    activities1 = (
-      <div className="col-md-12">
-        <div className="alert alert-info" role="alert">
-          No activities defined for this playlist.
-        </div>
-      </div>
-    );
-  } else {
-    activities = selectedPlaylist.activities.map((activity) => (
-      <ActivityPreviewCard
-        key={activity.id}
-        activity={activity}
-        handleSelect={handleSelect}
-        playlistId={playlistId}
-      />
-    ));
-    activities1 = selectedPlaylist.activities.map((activity) => (
-      <ActivityPreviewCardDropdown
-        key={activity.id}
-        activity={activity}
-        handleSelect={handleSelect}
-        playlistId={playlistId}
-      />
-    ));
-
-    if (!selectedActivityId) {
-      selectedActivityId = selectedPlaylist.activities[0].id;
+      return {
+        allPlaylists: [],
+        currentPlaylist: nextProps.playlist.selectedPlaylist,
+      };
     }
 
-    const currentIndex = selectedPlaylist.activities.findIndex((f) => f.id === selectedActivityId);
-    if (currentIndex > -1) {
-      currentActivity = selectedPlaylist.activities[currentIndex];
+    return null;
+  }
+
+  componentDidMount() {
+    window.scrollTo(0, 0);
+
+    const {
+      projectId,
+      playlistId,
+      activityId,
+      loadPlaylist,
+    } = this.props;
+
+    loadPlaylist(projectId, playlistId);
+
+    this.checkValidActivity(activityId);
+  }
+
+  checkValidActivity = (activityId) => {
+    const { loading, loadHP } = this.props;
+    if (loading && activityId) {
+      loadH5pResourceSettings(activityId)
+        .then(() => {
+          loadHP(null);
+        })
+        .catch(() => {
+          loadHP('fail');
+        });
+    }
+  };
+
+  handleSelect = (activityId) => {
+    if (activityId) {
+      this.setState({ activityId });
+    }
+  };
+
+  render() {
+    let { activityId } = this.state;
+    const { allPlaylists, currentPlaylist, activityShared } = this.state;
+
+    const {
+      history,
+      loading,
+      projects,
+      projectId,
+      playlistId,
+      playlist: { selectedPlaylist },
+      loadPlaylist,
+    } = this.props;
+
+    if (!selectedPlaylist) {
+      return (
+        <div className="alert alert-info" role="alert">
+          Loading...
+        </div>
+      );
     }
 
-    const previousResource = currentIndex > 0 ? selectedPlaylist.activities[currentIndex - 1] : null;
-    const nextResource = currentIndex < selectedPlaylist.activities.length - 1
-      ? selectedPlaylist.activities[currentIndex + 1]
-      : null;
+    let activities;
+    let activities1;
 
+    let currentActivity;
+    let previousResource;
+    let nextResource;
+
+    const noActivities = !selectedPlaylist.activities || selectedPlaylist.activities.length === 0;
+    if (noActivities) {
+      activities = (
+        <div className="col-md-12">
+          <div className="alert alert-info" role="alert">
+            No activities defined for this playlist.
+          </div>
+        </div>
+      );
+      activities1 = (
+        <div className="col-md-12">
+          <div className="alert alert-info" role="alert">
+            No activities defined for this playlist.
+          </div>
+        </div>
+      );
+    } else {
+      activities = selectedPlaylist.activities.map((activity) => (
+        <ActivityPreviewCard
+          key={activity.id}
+          activity={activity}
+          projectId={projectId}
+          playlistId={playlistId}
+          handleSelect={this.handleSelect}
+        />
+      ));
+      activities1 = selectedPlaylist.activities.map((activity) => (
+        <ActivityPreviewCardDropdown
+          key={activity.id}
+          activity={activity}
+          projectId={projectId}
+          playlistId={playlistId}
+          handleSelect={this.handleSelect}
+        />
+      ));
+
+      if (!activityId) {
+        activityId = selectedPlaylist.activities[0].id;
+      }
+
+      currentActivity = selectedPlaylist.activities.find((f) => f.id === activityId);
+
+      if (currentActivity) {
+        const index = selectedPlaylist.activities.findIndex((f) => f.id === currentActivity.id);
+        if (index > 0) {
+          previousResource = selectedPlaylist.activities[index - 1];
+        }
+        if (index < selectedPlaylist.activities.length - 1) {
+          nextResource = selectedPlaylist.activities[index + 1];
+        }
+      }
+    }
+
+    // let previousLink = null;
+    let previousLink1 = null;
     if (previousResource) {
       // previousLink = (
       //   <Link
       //     to="#"
       //     className="slide-control prev"
-      //     onClick={() => handleSelect(previousResource.id)}
+      //     onClick={() => this.handleSelect(previousResource.id)}
       //   >
       //     <FontAwesomeIcon icon="arrow-left" className="mr-2" />
       //     <span>Previous Activity</span>
-      //   </a>
+      //   </Link>
       // );
 
       previousLink1 = (
         <div className="slider-hover-section">
-          <Link to={`/playlist/${playlistId}/activity/${previousResource.id}/preview`}>
+          <Link
+            to={playlistId && `/project/${projectId}/playlist/${playlistId}/activity/${previousResource.id}/preview`}
+          >
             <FontAwesomeIcon icon="chevron-left" />
           </Link>
 
           <div className="hover-control-caption pointer-cursor">
-            <Link to={`/playlist/${playlistId}/activity/${previousResource.id}/preview`}>
+            <Link
+              to={playlistId && `/project/${projectId}/playlist/${playlistId}/activity/${previousResource.id}/preview`}
+            >
               <div
                 className="img-in-hover"
                 style={{
@@ -235,7 +235,7 @@ const PlaylistPreview = (props) => {
       //   <Link to="#" className="slide-control prev disabled-link">
       //     <FontAwesomeIcon icon="chevron-left" className="mr-2" />
       //     <span>Previous Activity</span>
-      //   </a>
+      //   </Link>
       // );
 
       previousLink1 = (
@@ -247,16 +247,13 @@ const PlaylistPreview = (props) => {
           <div className="hover-control-caption pointer-cursor no-data prev">
             <div className="slider-end">
               <p>Welcome! You are at the beginning of this playlist.</p>
-
               <Link
                 to="#"
                 onClick={() => {
-                  for (let i = 0; i < playlists.length; i += 1) {
-                    if (playlists[i].id === currentPlaylist.id) {
+                  for (let i = 0; i < allPlaylists.length; i += 1) {
+                    if (allPlaylists[i].id === currentPlaylist.id) {
                       try {
-                        history.push(
-                          `/playlist/${playlists[i - 1].id}/activity/${playlists[i - 1].activities[0].id}/preview`,
-                        );
+                        history.push(`/project/${projectId}/playlist/${allPlaylists[i - 1].id}/activity/${allPlaylists[i - 1].activities[0].id}/preview`);
                       } catch (e) {
                         Swal.fire({
                           text: 'You are at the beginning of this project. Would you like to return to the project preview?',
@@ -264,12 +261,11 @@ const PlaylistPreview = (props) => {
                           confirmButtonColor: '#3085d6',
                           cancelButtonColor: '#d33',
                           confirmButtonText: 'Yes',
-                        })
-                          .then((result) => {
-                            if (result.value) {
-                              history.push(`/project/preview2/${projectId}`);
-                            }
-                          });
+                        }).then((result) => {
+                          if (result.value) {
+                            history.push(`/project/${projectId}/preview`);
+                          }
+                        });
                       }
                     }
                   }
@@ -284,25 +280,26 @@ const PlaylistPreview = (props) => {
       );
     }
 
+    // let nextLink = null;
+    let nextLink1 = null;
     if (nextResource) {
       // nextLink = (
       //   <a
       //     className="slide-control next"
-      //     onClick={() => handleSelect(nextResource.id)}
+      //     onClick={() => this.handleSelect(nextResource.id)}
       //   >
-      //     <FontAwesomeIcon icon="arrow-right" />
+      //     <FontAwesomeIcon icon="arrow-right" className="mr-2" />
       //     <span>Next Activity</span>
       //   </a>
       // );
 
       nextLink1 = (
         <div className="slider-hover-section">
-          <Link to={`/playlist/${playlistId}/activity/${nextResource.id}/preview`}>
+          <Link to={playlistId && `/project/${projectId}/playlist/${playlistId}/activity/${nextResource.id}/preview`}>
             <FontAwesomeIcon icon="chevron-right" />
           </Link>
-
           <div className="hover-control-caption pointer-cursor">
-            <Link to={`/playlist/${playlistId}/activity/${nextResource.id}/preview`}>
+            <Link to={playlistId && `/project/${projectId}/playlist/${playlistId}/activity/${nextResource.id}/preview`}>
               <div
                 className="img-in-hover"
                 style={{
@@ -320,17 +317,10 @@ const PlaylistPreview = (props) => {
       );
     } else {
       // nextLink = (
-      //   <a href="#" className="slide-control next disabled-link">
-      //     <FontAwesomeIcon icon="arrow-right" />
+      //   <Link to="#" className="slide-control next disabled-link">
+      //     <FontAwesomeIcon icon="arrow-right" className="mr-2" />
       //     <span>Next Activity</span>
-      //
-      //     {/*
-      //     <div className="hover-control-caption pointer-cursor">
-      //       <img alt="thumb01" />
-      //       <span />
-      //     </div>
-      //     */}
-      //   </a>
+      //   </Link>
       // );
 
       nextLink1 = (
@@ -346,12 +336,10 @@ const PlaylistPreview = (props) => {
               <Link
                 to="#"
                 onClick={() => {
-                  for (let i = 0; i < playlists.length; i += 1) {
-                    if (playlists[i].id === currentPlaylist.id) {
+                  for (let i = 0; i < allPlaylists.length; i += 1) {
+                    if (allPlaylists[i].id === currentPlaylist.id) {
                       try {
-                        history.push(
-                          `/playlist/${playlists[i + 1].id}/activity/${playlists[i + 1].activities[0].id}/preview`,
-                        );
+                        history.push(`/project/${projectId}/playlist/${allPlaylists[i + 1].id}/activity/${allPlaylists[i + 1].activities[0].id}/preview`);
                       } catch (e) {
                         Swal.fire({
                           text: 'You are at the end of this project. Would you like to return to the project preview?',
@@ -360,12 +348,11 @@ const PlaylistPreview = (props) => {
                           cancelButtonColor: '#d33',
                           cancelButtonText: 'No',
                           confirmButtonText: 'Yes',
-                        })
-                          .then((result) => {
-                            if (result.value) {
-                              history.push(`/project/preview2/${projectId}`);
-                            }
-                          });
+                        }).then((result) => {
+                          if (result.value) {
+                            history.push(`/project/${projectId}/preview`);
+                          }
+                        });
                       }
                     }
                   }
@@ -379,224 +366,223 @@ const PlaylistPreview = (props) => {
         </div>
       );
     }
-  }
 
-  return (
-    <>
-      {!loading ? (
-        <div className="loading-phf-data">
-          {loading === 'loading...' ? (
-            <Unauthorized text="Loading..." />
-          ) : (
-            <Unauthorized showButton text="You are unauthorized to access this!" />
-          )}
-        </div>
-      ) : (
-        <section className="main-page-content preview">
-          <div className="container-flex-upper">
-            <Link to={`/project/preview2/${projectId}`}>
-              {/*
-              <div className="project-title">
-                <img src={projectIcon} alt="" />
-                Project :
-                {' '}
-                {currentProject && currentProject.name}
-              </div>
-              */}
-            </Link>
+    let selectedProject;
+    if (selectedPlaylist && selectedPlaylist.project_id) {
+      selectedProject = projects.find((p) => p.id === selectedPlaylist.project_id);
+    }
 
-            <Link to={`/project/${projectId}`}>
-              <FontAwesomeIcon icon="times" />
-            </Link>
+    return (
+      <>
+        {loading ? (
+          <div className="loading-phf-data">
+            {loading === 'loading...' ? (
+              <Unauthorized text={loading.toUpperCase()} />
+            ) : (
+              <Unauthorized showbutton text="You are unauthorized to access this!" />
+            )}
           </div>
+        ) : (
+          <section className="main-page-content preview">
+            <div className="container-flex-upper">
+              {selectedProject && (
+                <>
+                  <Link to={`/project/${selectedProject.id}/preview`}>
+                    <div className="project-title">
+                      <img src={projectIcon} alt="" />
+                      {`Project : ${selectedProject.name}`}
+                    </div>
+                  </Link>
 
-          <div className="flex-container">
-            <div className="activity-bg left-vdo">
-              <div className="flex-container-preview">
-                <div className="act-top-header">
-                  <div className="heading-wrapper">
-                    <div className="main-heading">
-                      {selectedPlaylist.activities && selectedPlaylist.activities.length
-                        ? selectedPlaylist.activities.filter((a) => a.id === selectedActivityId).length > 0
-                          ? selectedPlaylist.activities.filter((a) => a.id === selectedActivityId)[0].title
-                          : ''
-                        : ''}
+                  <Link to={`/project/${selectedProject.id}`}>
+                    <FontAwesomeIcon icon="times" />
+                  </Link>
+                </>
+              )}
+            </div>
+
+            <div className="flex-container">
+              <div className="activity-bg left-vdo">
+                <div className="flex-container-preview">
+                  <div className="act-top-header">
+                    <div className="heading-wrapper">
+                      <div className="main-heading">
+                        {currentActivity && currentActivity.title}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="right-control vd-controls">
+                    <div className="slider-btn">
+                      {previousLink1}
+                      {nextLink1}
                     </div>
                   </div>
                 </div>
 
-                <div className="right-control vd-controls">
-                  <div className="slider-btn">
-                    {previousLink1}
-                    {nextLink1}
+                <div className="main-item-wrapper">
+                  <div className="item-container">
+                    {!!currentActivity && (
+                      <Suspense fallback={<div>Loading</div>}>
+                        {currentActivity.type === 'h5p' ? (
+                          <H5PPreview {...this.state} activityId={activityId} />
+                        ) : (
+                          <ImmersiveReaderPreview activity={currentActivity} />
+                        )}
+                      </Suspense>
+                    )}
                   </div>
                 </div>
               </div>
 
-              <div className="main-item-wrapper">
-                <div className="item-container">
-                  <Suspense fallback={<div>Loading</div>}>
-                    {currentActivity && currentActivity.type === 'h5p' && (
-                      <H5PPreview activityId={selectedActivityId} />
-                    )}
-                    {/*
-                    {currentActivity.type === 'h5p' ? (
-                      <H5PPreview activityId={selectedActivityId} />
-                    ) : (
-                      <ImmersiveReaderPreview activity={currentActivity} />
-                    )}
-                    */}
-                  </Suspense>
-                </div>
-              </div>
-            </div>
-
-            <div className="right-sidegolf-info">
-              <div className="back-header">
-                <div>
-                  <Link
-                    className="go-back-button-preview"
-                    to={`/project/preview2/${projectId}`}
-                  >
-                    <FontAwesomeIcon icon="undo" className="mr-2" />
-                    Back to Project
-                  </Link>
-                </div>
-
-                <Dropdown className="preview-dropdown check">
-                  <Dropdown.Toggle className="btn">
-                    <FontAwesomeIcon icon="ellipsis-v" />
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    {activities1}
-                  </Dropdown.Menu>
-                </Dropdown>
-              </div>
-
-              <div className="scrollDiv long">
-                <div className="watcher spaner">
-                  <div>
-                    Share Activity
-                    <Switch
-                      onColor="#5952c6"
-                      onChange={async () => {
-                        if (activeShared) {
-                          Swal.fire({
-                            icon: 'warning',
-                            title: `You are about to stop sharing <strong>${activityDetail.title}</strong>
-                                Please remember that anyone you have shared this activity with will no longer have access its contents.
-                                Do you want to continue?`,
-                            showCloseButton: true,
-                            showCancelButton: true,
-                            focusConfirm: false,
-                            confirmButtonText: 'Stop Sharing!',
-                            confirmButtonAriaLabel: 'Stop Sharing!',
-                            cancelButtonText: 'Cancel',
-                            cancelButtonAriaLabel: 'Cancel',
-                          })
-                            .then(async (resp) => {
-                              if (resp.isConfirmed) {
-                                await removeShareActivity(selectedActivityId, activityDetail.title);
-                                setActiveShared(false);
-                                // loadPlaylist(projectId, playlistId);
-                              }
-                            });
-                        } else {
-                          await shareActivity(selectedActivityId, activityDetail.title);
-                          setActiveShared(true);
-                          // loadPlaylist(projectId, playlistId);
-                        }
-                      }}
-                      checked={activeShared}
-                      className="react-switch"
-                      id="material-switch"
-                      handleDiameter={30}
-                      uncheckedIcon={false}
-                      checkedIcon={false}
-                    />
-                  </div>
-
-                  {activeShared && (
-                    <div
-                      className="shared-link"
-                      onClick={() => {
-                        const protocol = `${window.location.href.split('/')[0]}//`;
-                        confirmAlert({
-                          // eslint-disable-next-line react/prop-types
-                          customUI: ({ onClose }) => (
-                            <div className="share-project-preview-url project-share-check">
-                              <br />
-
-                              <a
-                                target="_blank"
-                                href={`/shared/activity/${selectedActivityId}`}
-                                rel="noopener noreferrer"
-                              >
-                                <input
-                                  id="urllink_clip"
-                                  value={`${protocol + window.location.host}/shared/activity/${selectedActivityId}`}
-                                />
-                              </a>
-
-                              <FontAwesomeIcon
-                                title="copy to clipboard"
-                                icon="clipboard"
-                                onClick={() => {
-                                  /* Get the text field */
-                                  const copyText = document.getElementById('urllink_clip');
-
-                                  /* Select the text field */
-                                  copyText.focus();
-                                  copyText.select();
-                                  // copyText.setSelectionRange(0, 99999); /* For mobile devices */
-
-                                  /* Copy the text inside the text field */
-                                  document.execCommand('copy');
-
-                                  /* Alert the copied text */
-                                  Swal.fire({
-                                    title: 'Link Copied',
-                                    showCancelButton: false,
-                                    showConfirmButton: false,
-                                    timer: 1500,
-                                    allowOutsideClick: false,
-                                  });
-                                }}
-                              />
-                              <br />
-
-                              <div className="close-btn">
-                                <button type="button" onClick={onClose}>Ok</button>
-                              </div>
-                            </div>
-                          ),
-                        });
-                        // confirmAlert();
-                      }}
-                    >
-                      <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
-                      View Shared Link
+              <div className="right-sidegolf-info">
+                <div className="back-header justify-content-end">
+                  {selectedPlaylist.project && (
+                    <div>
+                      <Link
+                        className="go-back-button-preview"
+                        to={`/project/${projectId}/preview`}
+                      >
+                        <FontAwesomeIcon icon="undo" className="mr-2" />
+                        Back to Project
+                      </Link>
                     </div>
                   )}
+
+                  <Dropdown className="playlist-dropdown check">
+                    <Dropdown.Toggle className="playlist-dropdown-btn">
+                      <FontAwesomeIcon icon="ellipsis-v" />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu className={noActivities ? 'no-activities' : ''}>
+                      {activities1}
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </div>
 
-                <div className="watcher">
-                  You are watching from
-                  {' '}
-                  <span>
-                    {selectedPlaylist.title}
-                  </span>
-                </div>
+                <div className="scrollDiv long">
+                  <div className="watcher spaner">
+                    <div>
+                      Share Activity
+                      <Switch
+                        onColor="#5952c6"
+                        onChange={async () => {
+                          const nameActivity = currentActivity && currentActivity.title;
+                          if (activityShared) {
+                            Swal.fire({
+                              icon: 'warning',
+                              title: `You are about to stop sharing <strong>${nameActivity}</strong>
+                                Please remember that anyone you have shared this activity with will no longer have access its contents.
+                                Do you want to continue?`,
+                              showCloseButton: true,
+                              showCancelButton: true,
+                              focusConfirm: false,
+                              confirmButtonText: 'Stop Sharing!',
+                              confirmButtonAriaLabel: 'Stop Sharing!',
+                              cancelButtonText: 'Cancel',
+                              cancelButtonAriaLabel: 'Cancel',
+                            })
+                              .then(async (resp) => {
+                                if (resp.isConfirmed) {
+                                  await removeShareActivity(activityId, nameActivity);
+                                  loadPlaylist(projectId, playlistId);
+                                }
+                              });
+                          } else {
+                            await shareActivity(activityId);
+                            loadPlaylist(projectId, playlistId);
+                          }
+                        }}
+                        checked={activityShared}
+                        className="react-switch"
+                        id="material-switch"
+                        handleDiameter={30}
+                        uncheckedIcon={false}
+                        checkedIcon={false}
+                      />
+                    </div>
 
-                <ul className="slider-scroll-auto">{activities}</ul>
+                    {activityShared && (
+                      <div
+                        className="shared-link"
+                        onClick={() => {
+                          const protocol = `${window.location.href.split('/')[0]}//`;
+                          confirmAlert({
+                            customUI: ({ onClose }) => (
+                              <div className="share-project-preview-url project-share-check">
+                                <div className="mt-3 mb-2 d-flex align-items-center">
+                                  <a
+                                    href={`/activity/${activityId}/shared`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    style={{ flex: 1 }}
+                                  >
+                                    <input
+                                      id="urllink_clip"
+                                      style={{ width: '100%' }}
+                                      value={`${protocol}${window.location.host}/activity/${activityId}/shared`}
+                                    />
+                                  </a>
+
+                                  <FontAwesomeIcon
+                                    title="Copy to clipboard"
+                                    icon="clipboard"
+                                    onClick={() => {
+                                      /* Get the text field */
+                                      const copyText = document.getElementById('urllink_clip');
+
+                                      /* Select the text field */
+                                      copyText.focus();
+                                      copyText.select();
+                                      // copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+                                      /* Copy the text inside the text field */
+                                      document.execCommand('copy');
+
+                                      /* Alert the copied text */
+                                      Swal.fire({
+                                        title: 'Link Copied',
+                                        showCancelButton: false,
+                                        showConfirmButton: false,
+                                        timer: 1500,
+                                        allowOutsideClick: false,
+                                      });
+                                    }}
+                                  />
+                                </div>
+
+                                <div className="close-btn">
+                                  <button type="button" onClick={onClose}>Ok</button>
+                                </div>
+                              </div>
+                            ),
+                          });
+                        }}
+                      >
+                        <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
+                        View Shared Link
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="watcher">
+                    You are watching from
+                    {' '}
+                    <span>
+                      {selectedPlaylist.title}
+                      {' '}
+                    </span>
+                  </div>
+
+                  <ul className="slider-scroll-auto">{activities}</ul>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
-      )}
-    </>
-  );
-};
+          </section>
+        )}
+      </>
+    );
+  }
+}
 
 PlaylistPreview.propTypes = {
   history: PropTypes.object.isRequired,
@@ -605,19 +591,16 @@ PlaylistPreview.propTypes = {
   playlistId: PropTypes.number.isRequired,
   activityId: PropTypes.number,
   loading: PropTypes.string,
-  // projects: PropTypes.array.isRequired,
+  projects: PropTypes.array.isRequired,
   loadPlaylist: PropTypes.func.isRequired,
-  // loadHP: PropTypes.func.isRequired,
-
-  activityDetail: PropTypes.object.isRequired,
-  onClose: PropTypes.func.isRequired,
-
+  loadHP: PropTypes.func.isRequired,
+  // activityDetail: PropTypes.object,
 };
 
 PlaylistPreview.defaultProps = {
   loading: '',
   activityId: undefined,
-  activityDetail: {},
+  // activityDetail: {},
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -629,7 +612,7 @@ const mapStateToProps = (state) => ({
   playlist: state.playlist,
   loading: state.playlist.loadingH5P,
   projects: state.project.projects,
-  activityDetail: state.resource.selectedResource,
+  // activityDetail: state.resource.selectedResource,
 });
 
 export default withRouter(
