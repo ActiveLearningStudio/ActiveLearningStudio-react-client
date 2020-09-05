@@ -20,7 +20,7 @@ class LtiPlaylistPreview extends React.Component {
     super(props);
 
     this.state = {
-      resourceId: props.match.params.resourceId,
+      activityId: props.match.params.activityId,
       allProjectsState: {},
       currentPlaylist: '',
     };
@@ -55,35 +55,40 @@ class LtiPlaylistPreview extends React.Component {
   }
 
   componentDidUpdate() {
-    const { resourceId } = this.state;
-    const { match, playlistId, loadLtiPlaylist } = this.props;
+    const { activityId } = this.state;
+    const {
+      match,
+      projectId,
+      playlistId,
+      loadLtiPlaylist,
+    } = this.props;
 
-    if (resourceId !== match.params.resourceId) {
+    if (activityId !== match.params.activityId) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
-        resourceId: match.params.resourceId,
+        activityId: match.params.activityId,
       });
 
-      loadLtiPlaylist(playlistId);
+      loadLtiPlaylist(projectId, playlistId);
     }
   }
 
-  handleSelect = (resourceId) => {
-    if (resourceId) {
-      this.setState({ resourceId });
+  handleSelect = (activityId) => {
+    if (activityId) {
+      this.setState({ activityId });
     }
   };
 
   render() {
-    let { resourceId } = this.state;
+    let { activityId } = this.state;
     const { allProjectsState, currentPlaylist } = this.state;
     const {
       history,
-      playlist,
+      playlist: { selectedPlaylist },
+      projectId,
       playlistId,
       showLti,
     } = this.props;
-    const { selectedPlaylist } = playlist;
 
     if (!selectedPlaylist) {
       return (
@@ -95,6 +100,10 @@ class LtiPlaylistPreview extends React.Component {
 
     let activities;
     let activities1;
+
+    let currentActivity;
+    let previousResource = null;
+    let nextResource = null;
 
     if (selectedPlaylist.activities.length === 0) {
       activities = (
@@ -115,37 +124,42 @@ class LtiPlaylistPreview extends React.Component {
     } else {
       activities = selectedPlaylist.activities.map((activity) => (
         <ActivityPreviewCard
-          activity={activity}
           key={activity.id}
-          handleSelect={this.handleSelect}
-          playlist={playlistId}
           lti
+          activity={activity}
+          projectId={projectId}
+          playlistId={playlistId}
+          handleSelect={this.handleSelect}
         />
       ));
 
       activities1 = selectedPlaylist.activities.map((activity) => (
         <ActivityPreviewCardDropdown
-          activity={activity}
           key={activity.id}
-          handleSelect={this.handleSelect}
-          playlist={playlistId}
           lti
+          activity={activity}
+          projectId={projectId}
+          playlistId={playlistId}
+          handleSelect={this.handleSelect}
         />
       ));
 
-      if (resourceId === 0) {
-        resourceId = selectedPlaylist.activities[0].id;
+      if (activityId === 0) {
+        activityId = selectedPlaylist.activities[0].id;
+      }
+
+      currentActivity = selectedPlaylist.activities.find((f) => f.id === activityId);
+
+      if (currentActivity) {
+        const index = selectedPlaylist.activities.findIndex((act) => act.id === currentActivity.id);
+        if (index > 0) {
+          previousResource = selectedPlaylist.activities[index - 1];
+        }
+        if (index < selectedPlaylist.activities.length - 1) {
+          nextResource = selectedPlaylist.activities[index + 1];
+        }
       }
     }
-
-    const currentActivity = selectedPlaylist.activities.filter((f) => f.id === resourceId)[0];
-
-    const previousResource = selectedPlaylist.activities.indexOf(currentActivity) >= 1
-      ? selectedPlaylist.activities[selectedPlaylist.activities.indexOf(currentActivity) - 1]
-      : null;
-    const nextResource = selectedPlaylist.activities.indexOf(currentActivity) !== selectedPlaylist.activities.length - 1
-      ? selectedPlaylist.activities[selectedPlaylist.activities.indexOf(currentActivity) + 1]
-      : null;
 
     // let previousLink = null;
     let previousLink1 = null;
@@ -163,22 +177,21 @@ class LtiPlaylistPreview extends React.Component {
 
       previousLink1 = (
         <div className="slider-hover-section">
-          <Link to={playlistId && `/playlist/lti/preview/${playlistId}/resource/${previousResource.id}`}>
-            {' '}
+          <Link to={playlistId && `/project/${projectId}/playlist/${playlistId}/activity/${previousResource.id}/preview/lti`}>
             <FontAwesomeIcon icon="chevron-left" />
           </Link>
 
           <div className="hover-control-caption pointer-cursor">
-            <Link to={playlistId && `/playlist/lti/preview/${playlistId}/resource/${previousResource.id}`}>
+            <Link to={playlistId && `/project/${projectId}/playlist/${playlistId}/activity/${previousResource.id}/preview/lti`}>
               <div
+                className="img-in-hover"
                 style={{
                   backgroundImage: previousResource.metadata.thumbUrl
                     ? previousResource.metadata.thumbUrl.includes('pexels.com')
                       ? `url(${previousResource.metadata.thumbUrl})`
-                      : `url(${global.config.laravelAPIUrl}${previousResource.metadata.thumbUrl})`
+                      : `url(${global.config.resourceUrl}${previousResource.metadata.thumbUrl})`
                     : 'url(data:image/jpeg;base64,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)',
                 }}
-                className="img-in-hover"
               />
               <span>{previousResource.title}</span>
             </Link>
@@ -195,7 +208,7 @@ class LtiPlaylistPreview extends React.Component {
 
       previousLink1 = (
         <div className="slider-hover-section">
-          <Link>
+          <Link to="#">
             <FontAwesomeIcon icon="chevron-left" />
           </Link>
 
@@ -203,11 +216,12 @@ class LtiPlaylistPreview extends React.Component {
             <div className="slider-end">
               <p>Welcome! You are at the beginning of this playlist.</p>
               <Link
+                to="#"
                 onClick={() => {
                   for (let data = 0; data < allProjectsState.length; data += 1) {
                     if (allProjectsState[data].id === currentPlaylist.id) {
                       try {
-                        history.push(`/playlist/lti/preview/${allProjectsState[data - 1].id}/resource/${allProjectsState[data - 1].activities[0].id}`);
+                        history.push(`/project/${projectId}/playlist/${allProjectsState[data - 1].id}/activity/${allProjectsState[data - 1].activities[0].id}/preview/lti`);
                       } catch (e) {
                         Swal.fire({
                           text: 'You are at the beginning of this project. Would you like to return to the project preview?',
@@ -217,7 +231,7 @@ class LtiPlaylistPreview extends React.Component {
                           confirmButtonText: 'Yes',
                         }).then((result) => {
                           if (result.value) {
-                            history.push(`/project/preview2/${selectedPlaylist.project.id}`);
+                            history.push(`/project/${projectId}/preview`);
                           }
                         });
                       }
@@ -225,8 +239,7 @@ class LtiPlaylistPreview extends React.Component {
                   }
                 }}
               >
-                <FontAwesomeIcon icon="chevron-left" />
-                {' '}
+                <FontAwesomeIcon icon="chevron-left" className="mr-2" />
                 Switch to previous playlist
               </Link>
             </div>
@@ -240,7 +253,7 @@ class LtiPlaylistPreview extends React.Component {
     if (nextResource) {
       // nextLink = (
       //   <div className="slider-hover-section">
-      //     <Link to={playlistId && `/playlist/lti/preview/${playlistId}/resource/${nextResource.id}`}>
+      //     <Link to={playlistId && `/playlist/${playlistId}/activity/${nextResource.id}/preview/lti`}>
       //       <FontAwesomeIcon icon="chevron-right" />
       //     </Link>
       //
@@ -248,7 +261,7 @@ class LtiPlaylistPreview extends React.Component {
       //       <div
       //         style={{
       //           backgroundImage: nextResource.thumbUrl
-      //             ? `url(${global.config.laravelAPIUrl}${nextResource.thumbUrl})`
+      //             ? `url(${global.config.resourceUrl}${nextResource.thumbUrl})`
       //             : 'url(data:image/jpeg;base64,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)',
       //         }}
       //         className="img-in-hover"
@@ -260,17 +273,17 @@ class LtiPlaylistPreview extends React.Component {
 
       nextLink1 = (
         <div className="slider-hover-section">
-          <Link to={playlistId && `/playlist/lti/preview/${playlistId}/resource/${nextResource.id}`}>
+          <Link to={playlistId && `/project/${projectId}/playlist/${playlistId}/activity/${nextResource.id}/preview/lti`}>
             <FontAwesomeIcon icon="chevron-right" />
           </Link>
           <div className="hover-control-caption pointer-cursor">
-            <Link to={playlistId && `/playlist/lti/preview/${playlistId}/resource/${nextResource.id}`}>
+            <Link to={playlistId && `/project/${projectId}/playlist/${playlistId}/activity/${nextResource.id}/preview/lti`}>
               <div
                 style={{
                   backgroundImage: nextResource.metadata.thumbUrl
                     ? nextResource.metadata.thumbUrl.includes('pexels.com')
                       ? `url(${nextResource.metadata.thumbUrl})`
-                      : `url(${global.config.laravelAPIUrl}${nextResource.metadata.thumbUrl})`
+                      : `url(${global.config.resourceUrl}${nextResource.metadata.thumbUrl})`
                     : 'url(data:image/jpeg;base64,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)',
                 }}
                 className="img-in-hover"
@@ -294,7 +307,7 @@ class LtiPlaylistPreview extends React.Component {
 
       nextLink1 = (
         <div className="slider-hover-section">
-          <Link>
+          <Link to="#">
             <FontAwesomeIcon icon="chevron-right" />
           </Link>
 
@@ -302,11 +315,12 @@ class LtiPlaylistPreview extends React.Component {
             <div className="slider-end">
               <p>Hooray! You did it! There are no more activities in this playlist.</p>
               <Link
+                to="#"
                 onClick={() => {
                   for (let data = 0; data < allProjectsState.length; data += 1) {
                     if (allProjectsState[data].id === currentPlaylist.id) {
                       try {
-                        history.push(`/playlist/lti/preview/${allProjectsState[data + 1].id}/resource/${allProjectsState[data + 1].activities[0].id}`);
+                        history.push(`/project/${projectId}/playlist/${allProjectsState[data + 1].id}/activity/${allProjectsState[data + 1].activities[0].id}/preview/lti`);
                       } catch (e) {
                         Swal.fire({
                           text: 'You are at the end of this project. Would you like to return to the project preview?',
@@ -316,7 +330,7 @@ class LtiPlaylistPreview extends React.Component {
                           confirmButtonText: 'Yes',
                         }).then((result) => {
                           if (result.value) {
-                            history.push(`/project/preview2/${selectedPlaylist.project.id}`);
+                            history.push(`/project/${projectId}/preview`);
                           }
                         });
                       }
@@ -325,8 +339,7 @@ class LtiPlaylistPreview extends React.Component {
                 }}
               >
                 Switch to next playlist
-                {' '}
-                <FontAwesomeIcon icon="chevron-right" />
+                <FontAwesomeIcon icon="chevron-right" className="ml-2" />
               </Link>
             </div>
           </div>
@@ -344,10 +357,11 @@ class LtiPlaylistPreview extends React.Component {
               : `Project :${selectedPlaylist.project.name}`}
           </div>
 
-          {/* <Link to={`/project/${selectedPlaylist.project.id}`}>
-            {' '}
+          {/*
+          <Link to={`/project/${selectedPlaylist.project.id}`}>
             <FontAwesomeIcon icon="times" />
-          </Link> */}
+          </Link>
+          */}
         </div>
 
         <div className="flex-container">
@@ -358,11 +372,7 @@ class LtiPlaylistPreview extends React.Component {
                   <div className="main-heading">
                     {/* <span>You are Watching:</span> */}
 
-                    {selectedPlaylist.activities && selectedPlaylist.activities.length
-                      ? selectedPlaylist.activities.filter((a) => a.id === resourceId).length > 0
-                        ? selectedPlaylist.activities.filter((a) => a.id === resourceId)[0].title
-                        : ''
-                      : ''}
+                    {currentActivity && currentActivity.title}
                   </div>
                   {/* <div className="sub-heading">
                     <span>From the playlist:</span>
@@ -394,7 +404,7 @@ class LtiPlaylistPreview extends React.Component {
                     {/* {nextLink}
                     {previousLink}
                     <Link
-                      to={`/project/preview2/${selectedPlaylist.project.id}`}
+                      to={`/project/${selectedPlaylist.project.id}/preview`}
                       className="slide-control"
                     >
                       <FontAwesomeIcon icon="share" />
@@ -416,10 +426,10 @@ class LtiPlaylistPreview extends React.Component {
               <div className="item-container">
                 {/* <img src="/images/video-thumbnail.jpg" alt="video-thumbnail" /> */}
                 <Suspense fallback={<div>Loading</div>}>
-                  {resourceId ? (
+                  {activityId ? (
                     <H5PPreview
                       {...this.state}
-                      resourceId={resourceId}
+                      activityId={activityId}
                       tokenrequire
                       showLtiPreview
                     />
@@ -427,18 +437,14 @@ class LtiPlaylistPreview extends React.Component {
                     <H5PPreview
                       {...this.state}
                       showLtiPreview
-                      resourceId={selectedPlaylist && selectedPlaylist.activities[0].id}
+                      activityId={selectedPlaylist && selectedPlaylist.activities[0].id}
                     />
                   )}
                 </Suspense>
 
                 {/* <div className="item-caption-bottom">
                   <p>
-                    {selectedPlaylist.activities && selectedPlaylist.activities.length
-                      ? selectedPlaylist.activities.filter((a) => a.id == resourceId).length > 0
-                        ? selectedPlaylist.activities.filter((a) => a.id == resourceId)[0].title
-                        : ''
-                      : ''}
+                    {currentActivity && currentActivity.title}
                   </p>
                 </div> */}
               </div>
@@ -450,7 +456,7 @@ class LtiPlaylistPreview extends React.Component {
               <div>
                 {/* <Link
                   className="go-back-button-preview"
-                  to={`/project/preview2/${selectedPlaylist.project.id}`}
+                  to={`/project/${selectedPlaylist.project.id}/preview`}
                 >
                   <FontAwesomeIcon icon="undo" />
                   Back to Projects
@@ -476,11 +482,11 @@ class LtiPlaylistPreview extends React.Component {
               </div>
 
               {/* <Link
-                to={`/project/preview2/${selectedPlaylist.project.id}`}
+                to={`/project/${selectedPlaylist.project.id}/preview`}
                 className="link"
               >
                 <img src="/images/right-arrow.png" className="back-arrow"></img>
-                Back to {this.props.playlist.selectedPlaylist.project.name}
+                Back to {selectedPlaylist.project.name}
               </Link> */}
             </div>
 
@@ -493,7 +499,7 @@ class LtiPlaylistPreview extends React.Component {
               <div className="sub-heading">
                 <div className="line">
                   <span>From the playlist:</span>
-                  {playlist ? playlist.title : ""}
+                  {selectedPlaylist ? selectedPlaylist.title : ""}
                 </div>
                 <div>
                   <FontAwesomeIcon icon="angle-up" />
@@ -506,10 +512,10 @@ class LtiPlaylistPreview extends React.Component {
                 You are watching from
                 {' '}
                 <span>
-                  {playlist.title}
-                  {' '}
+                  {selectedPlaylist.title}
                 </span>
               </div>
+
               <ul className="slider-scroll-auto">{activities}</ul>
             </div>
           </div>
@@ -523,7 +529,8 @@ LtiPlaylistPreview.propTypes = {
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   playlist: PropTypes.object.isRequired,
-  playlistId: PropTypes.string.isRequired,
+  projectId: PropTypes.number.isRequired,
+  playlistId: PropTypes.number.isRequired,
   showLti: PropTypes.bool,
   loadLtiPlaylist: PropTypes.func.isRequired,
 };

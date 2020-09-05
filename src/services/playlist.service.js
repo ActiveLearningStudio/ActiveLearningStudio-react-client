@@ -33,6 +33,11 @@ const reorder = (projectId, playlists) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const loadShared = (id) => httpService
+  .get(`/${apiVersion}/playlists/${id}/load-shared`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -40,4 +45,5 @@ export default {
   update,
   remove,
   reorder,
+  loadShared,
 };

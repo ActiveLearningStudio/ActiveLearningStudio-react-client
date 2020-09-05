@@ -108,7 +108,7 @@ function Pexels(props) {
                         }}
                         alt="pexel"
                       />
-                      <a href={images.url} target="_blank" rel="noreferrer">
+                      <a href={images.url} target="_blank" rel="noopener noreferrer">
                         {' '}
                         {images.photographer}
                         /Pexels

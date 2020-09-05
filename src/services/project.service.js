@@ -36,12 +36,12 @@ const upload = (formData, conf) => httpService
   .catch((err) => Promise.reject(err.response.data));
 
 const share = (id) => httpService
-  .post(`/${apiVersion}/projects/${id}/share-project`)
+  .post(`/${apiVersion}/projects/${id}/share`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
 const removeShared = (id) => httpService
-  .post(`/${apiVersion}/projects/${id}/remove-share-project`)
+  .post(`/${apiVersion}/projects/${id}/remove-share`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 

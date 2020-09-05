@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './style.scss';
@@ -10,35 +11,36 @@ const ActivityPreviewCardDropdown = (props) => {
     lti,
     shared,
     activity,
+    projectId,
     playlistId,
   } = props;
 
   return (
     <>
       {shared ? (
-        <Link to={`/playlist/shared/preview/${playlistId}/resource/${activity.id}`}>
-          <li className="drpdown">
-            <div>
-              <FontAwesomeIcon icon="play-circle" />
-              <div className="title">{activity.title}</div>
-            </div>
-          </li>
-        </Link>
+        <Dropdown.Item
+          as={Link}
+          to={`/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview/shared`}
+        >
+          <div>
+            <FontAwesomeIcon icon="play-circle" />
+            <div className="title">{activity.title}</div>
+          </div>
+        </Dropdown.Item>
       ) : (
-        <Link
+        <Dropdown.Item
+          as={Link}
           to={
             lti
-              ? `/playlist/lti/preview/${playlistId}/resource/${activity.id}`
-              : `/playlist/preview/${playlistId}/resource/${activity.id}`
+              ? `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview/lti`
+              : `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
           }
         >
-          <li className="drpdown">
-            <div>
-              <FontAwesomeIcon icon="play-circle" />
-              <div className="title">{activity.title}</div>
-            </div>
-          </li>
-        </Link>
+          <div>
+            <FontAwesomeIcon icon="play-circle" />
+            <div className="title">{activity.title}</div>
+          </div>
+        </Dropdown.Item>
       )}
     </>
   );
@@ -48,7 +50,8 @@ ActivityPreviewCardDropdown.propTypes = {
   lti: PropTypes.bool,
   shared: PropTypes.bool,
   activity: PropTypes.object.isRequired,
-  playlistId: PropTypes.string.isRequired,
+  projectId: PropTypes.number.isRequired,
+  playlistId: PropTypes.number.isRequired,
 };
 
 ActivityPreviewCardDropdown.defaultProps = {

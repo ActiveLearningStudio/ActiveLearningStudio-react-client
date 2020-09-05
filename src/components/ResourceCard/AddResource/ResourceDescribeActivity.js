@@ -10,9 +10,9 @@ import { required, FadeDiv } from 'utils';
 import {
   showBuildActivityAction,
   onSubmitDescribeActivityAction,
-  showSelectActivity,
-  uploadResourceThumbnailAction,
+  showSelectActivityAction,
   uploadResourceThumbnail,
+  uploadResourceThumbnailAction,
 } from 'store/actions/resource';
 import MetaTitleInputField from 'components/ResourceCard/fields/MetaTitleInputField';
 import MetaSubjectsField from 'components/ResourceCard/fields/MetaSubjectsField';
@@ -23,6 +23,7 @@ import computer from 'assets/images/computer.svg';
 import pexel from 'assets/images/pexel.png';
 import { subjects, educationLevels } from './dropdownData';
 import AddResourceSidebar from './AddResourceSidebar';
+
 import './style.scss';
 
 let imageValidation = '';
@@ -61,7 +62,7 @@ let ResourceDescribeActivity = (props) => {
               <div className="col-md-12">
                 <h2 className="title">
                   <div className="back-button" onClick={goBackToActivity}>
-                    <FontAwesomeIcon icon="chevron-left" />
+                    <FontAwesomeIcon icon="chevron-left" className="mr-2" />
                     Back
                   </div>
                   Describe Activity:
@@ -169,7 +170,7 @@ let ResourceDescribeActivity = (props) => {
                                     : `url(${global.config.resourceUrl}${resource.newResource.metadata.thumbUrl})`,
                                 }}
                               />
-                             </div>
+                            </div>
                           ) : (
                             <div className="new-box">
                               <h2>Default Selected thumbnail</h2>
@@ -278,9 +279,9 @@ ResourceDescribeActivity = reduxForm({
 const mapDispatchToProps = (dispatch) => ({
   showBuildActivity: (editor, editorType) => dispatch(showBuildActivityAction(editor, editorType)),
   onSubmitDescribeActivity: (metadata) => dispatch(onSubmitDescribeActivityAction(metadata)),
-  uploadResourceThumbnailAction: (formData) => dispatch(uploadResourceThumbnailAction(formData)),
-  goBackToActivity: () => dispatch(showSelectActivity()),
   uploadResourceThumbnail: (url) => dispatch(uploadResourceThumbnail(url)),
+  uploadResourceThumbnailAction: (formData) => dispatch(uploadResourceThumbnailAction(formData)),
+  goBackToActivity: () => dispatch(showSelectActivityAction()),
 });
 
 const mapStateToProps = (state) => ({

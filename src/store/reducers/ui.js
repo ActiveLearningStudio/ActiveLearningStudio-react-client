@@ -1,11 +1,11 @@
 import {
   SHOW_DELETE_POPUP,
-  DELETE_RESOURCE,
-  DELETE_PROJECT_SUCCESS,
   HIDE_DELETE_POPUP,
   PAGE_LOADING_COMPLETE,
   PAGE_LOADING,
+  DELETE_PROJECT_SUCCESS,
   DELETE_PLAYLIST_SUCCESS,
+  DELETE_RESOURCE_SUCCESS,
 } from '../actionTypes';
 
 const defaultUIState = () => ({
@@ -39,7 +39,7 @@ export default (state = defaultUIState(), action) => {
         ...state,
         showDeletePlaylistPopup: false,
       };
-    case DELETE_RESOURCE:
+    case DELETE_RESOURCE_SUCCESS:
       return {
         ...state,
         showDeletePlaylistPopup: false,

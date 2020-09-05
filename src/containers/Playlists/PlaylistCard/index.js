@@ -219,7 +219,7 @@ class PlaylistCard extends React.Component {
                   onClick={this.handleAddNewResourceClick}
                 >
                   <FontAwesomeIcon icon="plus-circle" className="mr-2" />
-                  Add new resource
+                  Add new activity
                 </button>
               </div>
             </div>

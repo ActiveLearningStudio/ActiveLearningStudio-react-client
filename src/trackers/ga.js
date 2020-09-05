@@ -1,8 +1,10 @@
-import ReactGA from "react-ga";
+import ReactGA from 'react-ga';
+
+// eslint-disable-next-line import/prefer-default-export
 export const Event = (category, action, label) => {
   ReactGA.event({
-    category: category,
-    action: action,
-    label: label,
+    category,
+    action,
+    label,
   });
 };
