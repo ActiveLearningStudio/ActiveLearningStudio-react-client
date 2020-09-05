@@ -45,6 +45,11 @@ const removeShared = (id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const getShared = (id) => httpService
+  .get(`/${apiVersion}/projects/${id}/get-shared`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -54,4 +59,5 @@ export default {
   upload,
   share,
   removeShared,
+  getShared,
 };

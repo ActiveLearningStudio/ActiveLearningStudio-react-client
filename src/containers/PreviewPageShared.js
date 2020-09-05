@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
+import useBodyClass from 'helpers/BodyClass';
 import { loadMyProjectsAction } from 'store/actions/project';
-import ProjectPreview from 'components/ProjectPreview/ProjectPreviewShared';
-import useBodyClass from '../helpers/BodyClass';
+import ProjectPreview from 'containers/Preview/ProjectPreview/ProjectPreviewShared';
 
 function PreviewPage(props) {
   const { match, project } = props;

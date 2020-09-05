@@ -5,7 +5,7 @@ import { connect, useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { loadMyProjectsActionPreviewShared } from 'store/actions/project';
+import { loadMyProjectsPreviewSharedAction } from 'store/actions/project';
 import ActivityCard from 'components/ActivityCard';
 import Unauthorized from 'components/Unauthorized';
 
@@ -35,14 +35,13 @@ function ProjectPreviewShared(props) {
 
   useEffect(() => {
     try {
-      const acc = document
-        .getElementById('custom_accordion')
-        .getElementsByClassName('accordion');
+      const acc = document.getElementById('custom_accordion');
+      const accordions = acc ? acc.getElementsByClassName('accordion') : [];
 
       let i;
 
-      for (i = 0; i < acc.length; i += 1) {
-        acc[i].addEventListener('click', function () {
+      for (i = 0; i < accordions.length; i += 1) {
+        accordions[i].addEventListener('click', function () {
           // eslint-disable-next-line react/no-this-in-sfc
           this.classList.toggle('active');
         });
@@ -50,7 +49,7 @@ function ProjectPreviewShared(props) {
     } catch (e) {
       console.log(e);
     }
-  });
+  }, []);
 
   useEffect(() => {
     loadMyProjectsPreviewShared(match.params.projectId);
@@ -171,7 +170,7 @@ ProjectPreviewShared.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  loadMyProjectsPreviewShared: (projectId) => dispatch(loadMyProjectsActionPreviewShared(projectId)),
+  loadMyProjectsPreviewShared: (projectId) => dispatch(loadMyProjectsPreviewSharedAction(projectId)),
 });
 
 export default withRouter(

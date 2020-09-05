@@ -181,6 +181,31 @@ export const toggleProjectShareRemovedAction = (projectId, projectName) => async
   });
 };
 
+export const loadMyProjectsPreviewSharedAction = (projectId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.PAGE_LOADING,
+    });
+
+    const { project } = await projectService.getShared(projectId);
+
+    dispatch({
+      type: actionTypes.LOAD_MY_PROJECTS_SELECTED,
+      payload: { project },
+    });
+
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+
+    throw e;
+  }
+};
+
 // TODO: need to refactor bottom functions
 
 // Publishes the project in LEARN
@@ -297,27 +322,6 @@ export const ShareLMS = (
         });
     }
   });
-};
-
-// load project shared view
-export const loadMyProjectsActionPreviewShared = (/* projectId */) => async (/* dispatch */) => {
-  // try {
-  //   const response = await axios.get(`${global.config.laravelAPIUrl}/get-shared-project?projectId=${projectId}`);
-  // {
-  //   type: actionTypes.LOAD_MY_PROJECTS_SELECTED,
-  //     payload: { project },
-  // }
-  //   if (response.data.status === 'success') {
-  //     dispatch(loadMyProjectsSelected(response.data.data.project));
-  //     dispatch({
-  //       type: actionTypes.PAGE_LOADING_COMPLETE,
-  //     });
-  //   } else {
-  //     dispatch(loadMyProjectsSelected(response.data));
-  //   }
-  // } catch (e) {
-  //   throw e;
-  // }
 };
 
 export const getProjectCourseFromLMS = (
