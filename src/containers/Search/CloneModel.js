@@ -23,27 +23,29 @@ export default function LTIProjectShared(props) {
   }, [dispatch]);
 
   useEffect(() => {
-    allProjects.project.projects && setAllproject(allProjects.project.projects);
+    if(!!allProjects.project.projects){
+        setAllproject(allProjects.project.projects);
+    }
   }, [allProjects]);
   return (
     <div className="ltiallproject">
       <Accordion className="top-box-project">
         {!!allproject
-          && allproject.map((data, counter_top) => (
+          && allproject.map((data, counterTop) => (
             <Card>
               <Card.Header className="topcard">
                 <Accordion.Toggle
                   as={Button}
                   variant="link"
-                  eventKey={counter_top + 1}
+                  eventKey={counterTop + 1}
                   className="topcardbtn"
                 >
                   <span
                     onClick={() => {
-                      if (activeProject === counter_top + 1) {
+                      if (activeProject === counterTop + 1) {
                         setActiveProject();
                       } else {
-                        setActiveProject(counter_top + 1);
+                        setActiveProject(counterTop + 1);
                         setCurrentProject(data.id);
                         setCurrentPlaylist();
                         // setactiveactivity();
@@ -53,7 +55,7 @@ export default function LTIProjectShared(props) {
                   >
                     <div className="flex-bar">
                       <div>
-                        {activeProject === counter_top + 1 ? (
+                        {activeProject === counterTop + 1 ? (
 
                           <FontAwesomeIcon icon="check-square" />
                         ) : (
@@ -61,7 +63,7 @@ export default function LTIProjectShared(props) {
                         )}
                         {data.name}
                       </div>
-                      {activeProject === counter_top + 1 ? (
+                      {activeProject === counterTop + 1 ? (
                         <FontAwesomeIcon icon="chevron-up" />
                       ) : (
                         <FontAwesomeIcon icon="chevron-down" />
@@ -70,28 +72,24 @@ export default function LTIProjectShared(props) {
                   </span>
                 </Accordion.Toggle>
               </Card.Header>
-              <Accordion.Collapse eventKey={counter_top + 1}>
+              <Accordion.Collapse eventKey={counterTop + 1}>
                 <Card.Body>
                   {!!data.playlists && data.playlists.length > 0 ? (
                     <Accordion>
-                      {data.playlists.map((data2, counter_playlist) => (
+                      {data.playlists.map((data2, counterPlaylist) => (
                         <Card>
                           <Card.Header className="middlecard">
                               <Accordion.Toggle
                                 as={Button}
                                 variant="link"
-                                eventKey={counter_playlist + counter_top + 1}
+                                eventKey={counterPlaylist + counterTop + 1}
                               >
                                 <span
                                   onClick={() => {
-                                    if (
-                                      activePlaylist
-                                        === counter_playlist + counter_top + 1
-                                    ) {
+                                    if (activePlaylist=== counterPlaylist + counterTop + 1) {
                                       setActivePlaylist();
                                     } else {
-                                      setActivePlaylist(counter_playlist + counter_top + 1);
-
+                                      setActivePlaylist(counterPlaylist + counterTop + 1)
                                       setCurrentPlaylist(data2.id);
                                     }
                                   }}
@@ -100,10 +98,8 @@ export default function LTIProjectShared(props) {
                                     <div>
                                       <span>
 
-                                          {activePlaylist
-                                          === counter_playlist + counter_top + 1 ? (
-
-                                            <FontAwesomeIcon icon="stop-circle" />
+                                          {activePlaylist=== counterPlaylist + counterTop + 1 ? (
+                                              <FontAwesomeIcon icon="stop-circle" />
                                             ) : (
                                               <FontAwesomeIcon icon="circle" />
                                             )}
@@ -132,7 +128,7 @@ export default function LTIProjectShared(props) {
       <button
         className="button-submit"
         onClick={() => {
-          if (true) {
+          
             Swal.fire({
               html: `You have selected <strong>${props.title} 
               </strong> ${props.model}<br>Do you want to continue ?`,
@@ -150,7 +146,7 @@ export default function LTIProjectShared(props) {
                 }
               }
             });
-          }
+          
         }}
       >
         Proceed
