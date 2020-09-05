@@ -608,7 +608,10 @@ PlaylistPreview.propTypes = {
   // projects: PropTypes.array.isRequired,
   loadPlaylist: PropTypes.func.isRequired,
   // loadHP: PropTypes.func.isRequired,
-  activityDetail: PropTypes.object,
+
+  activityDetail: PropTypes.object.isRequired,
+  onClose: PropTypes.func.isRequired,
+
 };
 
 PlaylistPreview.defaultProps = {
