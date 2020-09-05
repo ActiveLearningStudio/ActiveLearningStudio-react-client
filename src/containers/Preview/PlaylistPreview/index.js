@@ -140,7 +140,7 @@ const PlaylistPreview = (props) => {
   // let nextLink = null;
   let nextLink1 = null;
 
-  var currentActivity;
+  let currentActivity;
 
   // const currentProject = projects.find((p) => p.id === projectId);
 
@@ -595,7 +595,7 @@ PlaylistPreview.propTypes = {
   // loadPlaylist: PropTypes.func.isRequired,
   // loadHP: PropTypes.func.isRequired,
   activityDetail: PropTypes.object.isRequired,
-   onClose:PropTypes.func.isRequired
+  onClose: PropTypes.func.isRequired,
 };
 
 PlaylistPreview.defaultProps = {

@@ -29,7 +29,7 @@ function ConfirmEmailPage(props) {
     confirmEmail(query).catch(() => {
       history.push('/login');
     });
-  }, [confirmEmail, history]);
+  }, [confirmEmail, history, query]);
 
   return (
     <div className="auth-page">

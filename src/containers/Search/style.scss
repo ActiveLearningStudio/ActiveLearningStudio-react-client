@@ -269,9 +269,135 @@
   
         .content {
           margin-top: 0px;
-          width: 78%
+          width: 78%;
+          display: flex;
+          justify-content: space-around;
+          .dropdown-menu {
+            padding-left: 10px;
+            cursor: pointer;
+         }
+          button{
+            background-color: #fff;
+            box-shadow: 0px 0px 3px 1px #d3cfcf;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            text-align: center;
+            text-align: center;
+            padding-left: 25px;
+
+                svg{
+                  color:#333
+                }
+               
+
+          }
+          
         }
       }
     }
   
   }
+
+  .clone-lti{
+  .modal-title {
+     font-size:17px;
+     font-weight: 400;
+  }
+  .modal-body{
+    padding: 0px;
+  }
+  .top-box-project{
+    max-height: 500px;
+    min-height: 300px;
+    overflow-y:auto;
+  }
+}
+.ltiallproject {
+  margin: 15px;
+
+  .flex-bar {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .btn {
+    padding: 10px;
+    width:100%
+  }
+
+
+  .card-header {
+    padding: 0px;
+  }
+
+  .topcard.card-header {
+    background-color: #084892;
+
+    span {
+      color: #Fff;
+      font-weight: 600;
+
+      svg {
+        margin-right:10px
+      }
+    }
+
+    ;
+  }
+
+  .middlecard {
+    background-color: #fff;
+    border: none;
+
+
+
+    span {
+      color: #333;
+      font-weight: 600;
+
+      svg {
+        margin-right:10px;
+        color: #084892;
+
+      }
+    }
+
+
+  }
+
+
+
+  .button-submit {
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 5px 1px #ccc;
+    width: 200px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: capitalize;
+
+    cursor: pointer;
+
+    margin: 0 auto;
+    margin-top: 30px;
+    background-color: #fff;
+
+    &:hover {
+
+      color: #084892
+    }
+
+    ;
+
+  }
+}

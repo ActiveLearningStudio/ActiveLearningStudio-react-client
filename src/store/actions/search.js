@@ -14,6 +14,18 @@ export const simpleSearchfunction = (searchquerry, from, size) => async (dispatc
   dispatch(searchredux(response.data, searchquerry, response.meta));
 };
 
+export const cloneProject = (projectID) => {
+  searchService.cloneProject(projectID);
+};
+
+export const clonePlaylist = (projectId, playlistid) => {
+  searchService.clonePlaylist(projectId, playlistid);
+};
+
+export const cloneActivity = (playlistid, activityId) => {
+  searchService.cloneActivity(playlistid, activityId);
+};
+
 // export const advancedSearches = (searchquerry) => {
 //   console.log(searchquerry);
 //   return async (dispatch) => {

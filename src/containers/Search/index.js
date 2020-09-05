@@ -2,25 +2,32 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import {
-  Accordion, Card, Tabs, Tab,
+  Accordion,
+  Card,
+  Tabs,
+  Tab,
+  Modal,
+  Dropdown,
 } from 'react-bootstrap';
-
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
-import { simpleSearchfunction } from 'store/actions/search';
+import { simpleSearchfunction, cloneProject } from 'store/actions/search';
 import { useSelector, useDispatch } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import CloneModel from './CloneModel';
 import './style.scss';
 
 function SearchInterface() {
   const allstate = useSelector((state) => state.search);
-
+  const [modalShow, setModalShow] = useState(false);
   // const more = useRef();
   const [search, setsearch] = useState();
   const [searchquerryes, Setsearchquerry] = useState('');
   const [searchinput, setsearchinput] = useState();
   const [meta, setMeta] = useState();
+  const [clone, setClone] = useState();
   // const [loading, setloading] = useState(false);
 
   useEffect(() => {
@@ -71,6 +78,12 @@ function SearchInterface() {
           <Sidebar />
         </div>
         <div className="content-wrapper">
+          <MyVerticallyCenteredModal
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            className="clone-lti"
+            clone={clone}
+          />
           <div className="content">
             <div className="searchresultmain">
               <div className="totalcount">
@@ -121,6 +134,7 @@ function SearchInterface() {
                                       simpleSearchfunction(searchinput, 0, 100),
                                     );
                                   }
+                                  // setModalShow(true)
                                 }}
                                 className="src-btn"
                               >
@@ -199,38 +213,73 @@ function SearchInterface() {
                                 {/* <h5>CALCULUS</h5> */}
                               </div>
                               <div className="content">
-                                <a
-                                  href={
+                                <div className="search-content">
+                                  <a
+                                    href={
                                       res.model === 'Activity'
                                         ? `/activity/lti/preview/${res._id}`
                                         : res.model === 'Playlist'
                                           ? `/playlist/lti/preview/${res._id}`
                                           : ''
                                     }
-                                  target="_blank"
-                                  rel="noreferrer"
-                                >
-                                  <h2>{res.title || res.name}</h2>
-                                </a>
-                                <ul>
-                                  <li>
-                                    by
-                                    {' '}
-                                    <span className="author">
-                                      {res.user_name}
-                                    </span>
-                                  </li>
-                                  <li>
-                                    Type
-                                    {' '}
-                                    <span className="type">{res.model}</span>
-                                  </li>
-                                  {/* <li>
+                                    target="_blank"
+                                    rel="noreferrer"
+                                  >
+                                    <h2>{res.title || res.name}</h2>
+                                  </a>
+                                  <ul>
+                                    <li>
+                                      by
+                                      {' '}
+                                      <span className="author">
+                                        {res.user_name}
+                                      </span>
+                                    </li>
+                                    <li>
+                                      Type
+                                      {' '}
+                                      <span className="type">{res.model}</span>
+                                    </li>
+                                    {/* <li>
                                           Member Rating{" "}
                                           <span className="type">Project</span>
                                         </li> */}
-                                </ul>
-                                <p>{res.description}</p>
+                                  </ul>
+                                  <p>{res.description}</p>
+                                </div>
+                                <Dropdown>
+                                  <Dropdown.Toggle>
+                                    <FontAwesomeIcon icon="ellipsis-v" />
+                                  </Dropdown.Toggle>
+
+                                  <Dropdown.Menu>
+                                    <div onClick={() => {
+                                      if (res.model === 'Project') {
+                                        Swal.fire({
+                                          html: `You have selected <strong>${res.title} 
+                                       
+                                          </strong> ${res.model}<br>Do you want to continue ?`,
+
+                                          showCancelButton: true,
+                                          confirmButtonColor: '#3085d6',
+                                          cancelButtonColor: '#d33',
+                                          confirmButtonText: 'Ok',
+                                        }).then((result) => {
+                                          if (result.value) {
+                                            cloneProject(res.id);
+                                          }
+                                        });
+                                      } else {
+                                        setModalShow(true);
+                                        setClone(res);
+                                      }
+                                    }}
+                                    >
+                                      Clone
+                                    </div>
+                                  </Dropdown.Menu>
+                                </Dropdown>
+
                               </div>
                             </div>
                           ))
@@ -415,8 +464,35 @@ function SearchInterface() {
           </div>
         </div>
       </div>
+
       <Footer />
     </>
+  );
+}
+function MyVerticallyCenteredModal(props) {
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Please select where you would like
+          {' '}
+          <b>{props.clone ? props.clone.title : ''}</b>
+          {' '}
+          {props.clone ? props.clone.model : ''}
+          {' '}
+          to be cloned
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <CloneModel clone={props} />
+      </Modal.Body>
+
+    </Modal>
   );
 }
 
