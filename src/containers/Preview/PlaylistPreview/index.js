@@ -593,17 +593,12 @@ PlaylistPreview.propTypes = {
   loading: PropTypes.string,
   projects: PropTypes.array.isRequired,
   loadPlaylist: PropTypes.func.isRequired,
-  // loadHP: PropTypes.func.isRequired,
-  activityDetail: PropTypes.object.isRequired,
-  onClose: PropTypes.func.isRequired,
   loadHP: PropTypes.func.isRequired,
-  // activityDetail: PropTypes.object,
 };
 
 PlaylistPreview.defaultProps = {
   loading: '',
   activityId: undefined,
-  // activityDetail: {},
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -615,7 +610,6 @@ const mapStateToProps = (state) => ({
   playlist: state.playlist,
   loading: state.playlist.loadingH5P,
   projects: state.project.projects,
-  // activityDetail: state.resource.selectedResource,
 });
 
 export default withRouter(

@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -21,12 +21,40 @@ import CloneModel from './CloneModel';
 
 import './style.scss';
 
+function MyVerticallyCenteredModal(props) {
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Please select where you would like
+          {' '}
+          <b>{props.clone ? props.clone.title : ''}</b>
+          {' '}
+          {props.clone ? props.clone.model : ''}
+          {' '}
+          to be cloned
+        </Modal.Title>
+      </Modal.Header>
 
+      <Modal.Body>
+        <CloneModel clone={props} />
+      </Modal.Body>
+    </Modal>
+  );
+}
 
 MyVerticallyCenteredModal.propTypes = {
   clone: PropTypes.object,
 };
 
+MyVerticallyCenteredModal.defaultProps = {
+  clone: null,
+};
 
 function SearchInterface() {
   const allState = useSelector((state) => state.search);
@@ -491,32 +519,6 @@ function SearchInterface() {
 
       <Footer />
     </>
-  );
-}
-function MyVerticallyCenteredModal(props) {
-  return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Please select where you would like
-          {' '}
-          <b>{props.clone ? props.clone.title : ''}</b>
-          {' '}
-          {props.clone ? props.clone.model : ''}
-          {' '}
-          to be cloned
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <CloneModel clone={props} />
-      </Modal.Body>
-
-    </Modal>
   );
 }
 

@@ -93,26 +93,25 @@ const ProjectCard = (props) => {
                           <a>Google Classroom</a>
                         </li>
 
-                        {allLms.shareVendors
-                          && allLms.shareVendors.map((data) => (
-                            <li>
-                              <a
-                                onClick={() => {
-                                  dispatch(
-                                    getProjectCourseFromLMS(
-                                      data.lms_name.toLowerCase(),
-                                      data.id,
-                                      project.id,
-                                      project.playlists,
-                                      data.lms_url,
-                                    ),
-                                  );
-                                }}
-                              >
-                                {data.site_name}
-                              </a>
-                            </li>
-                          ))}
+                        {allLms.shareVendors && allLms.shareVendors.map((data) => (
+                          <li>
+                            <a
+                              onClick={() => {
+                                dispatch(
+                                  getProjectCourseFromLMS(
+                                    data.lms_name.toLowerCase(),
+                                    data.id,
+                                    project.id,
+                                    project.playlists,
+                                    data.lms_url,
+                                  ),
+                                );
+                              }}
+                            >
+                              {data.site_name}
+                            </a>
+                          </li>
+                        ))}
                       </ul>
                     </li>
 

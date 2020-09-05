@@ -17,16 +17,15 @@ export const cloneProject = (projectID) => {
   searchService.cloneProject(projectID);
 };
 
-export const clonePlaylist = (projectId, playlistid) => {
-  searchService.clonePlaylist(projectId, playlistid);
+export const clonePlaylist = (projectId, playlistId) => {
+  searchService.clonePlaylist(projectId, playlistId);
 };
 
-export const cloneActivity = (playlistid, activityId) => {
-  searchService.cloneActivity(playlistid, activityId);
+export const cloneActivity = (playlistId, activityId) => {
+  searchService.cloneActivity(playlistId, activityId);
 };
 
-// export const advancedSearches = (searchquerry) => {
-//   console.log(searchquerry);
+// export const advancedSearches = (searchQuery) => {
 //   return async (dispatch) => {
 //     const response = axios
 //       .get(
