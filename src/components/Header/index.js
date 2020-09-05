@@ -27,7 +27,7 @@ function Header(props) {
             <img src={logo} alt="logo" title="" />
           </Link>
         </div>
-        <div className="tophd_right flexdiv searchdiv_  d-flex flex-wrap ">
+        <div className="tophd_right flexdiv search-div  d-flex flex-wrap ">
           <SearchForm />
           <div className="navbar-link">
             <ul className="top-info flex-div">

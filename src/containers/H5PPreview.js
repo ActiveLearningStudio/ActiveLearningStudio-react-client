@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -11,8 +11,11 @@ import {
 
 const H5PPreview = (props) => {
   const [loading, setLoading] = useState(true);
+
   const {
-    activityId, loadH5pResourceProp, showLtiPreview,
+    activityId,
+    loadH5pResourceProp,
+    showLtiPreview,
   } = props;
 
   // eslint-disable-next-line camelcase
@@ -23,7 +26,6 @@ const H5PPreview = (props) => {
   //     if (h5pIFrame.length) {
   //       h5pIFrame[0].remove();
   //     }
-
   //     if (showLtiPreview) {
   //       loadResourceLti(props.activityId);
   //     } else if (showActivityPreview) {
@@ -34,7 +36,6 @@ const H5PPreview = (props) => {
   //   }
   // }
 
-  // load simple preview
 
   const resourceLoaded = async (data) => {
     window.H5PIntegration = data.h5p.settings;
@@ -65,31 +66,44 @@ const H5PPreview = (props) => {
       script.async = false;
       document.body.appendChild(script);
     });
+
     setLoading(false);
   };
-  const loadResource = async (activityIdResorce) => {
-    if (activityIdResorce === 0) { return; }
 
-    const response = await loadH5pResourceProp(activityIdResorce);
-    if (response.activity) {
-      resourceLoaded(response.activity);
+  const loadResource = useCallback(async (activityResourceId) => {
+    if (activityResourceId === 0) {
+      return;
     }
-  };
 
-  const loadResourceLti = async (activityId) => {
-    if (activityId === 0) { return; }
     try {
-      const response = await loadH5pResourceSettingsOpen(activityId);
+      const response = await loadH5pResourceProp(activityResourceId);
+      if (response.activity) {
+        await resourceLoaded(response.activity);
+      }
+    } catch (e) {
+      setLoading(false);
+    }
+  }, [loadH5pResourceProp]);
+
+  const loadResourceLti = useCallback(async (activityResourceId) => {
+    if (activityResourceId === 0) {
+      return;
+    }
+
+    try {
+      const response = await loadH5pResourceSettingsOpen(activityResourceId);
       await resourceLoaded(response);
     } catch (e) {
       setLoading(false);
     }
-  };
-  // load lti preview
+  }, []);
+
   useEffect(() => {
     if (showLtiPreview) {
       loadResourceLti(activityId);
-    } else { loadResource(activityId); }
+    } else {
+      loadResource(activityId);
+    }
   }, [activityId, loadResource, loadResourceLti, showLtiPreview]);
 
   return (
@@ -112,7 +126,6 @@ const H5PPreview = (props) => {
 };
 
 H5PPreview.propTypes = {
-
   activityId: PropTypes.number.isRequired,
   showLtiPreview: PropTypes.bool,
   // showActivityPreview: PropTypes.bool,

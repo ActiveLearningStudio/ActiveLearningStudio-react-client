@@ -121,7 +121,9 @@ export const reorderPlaylistsAction = (projectId, orgPlaylists, playlists) => as
       id: pList.id,
       order: index,
     }));
+
     const { playlists: updatedPlaylists } = await playlistService.reorder(projectId, pLists);
+
     dispatch({
       type: actionTypes.REORDER_PLAYLISTS_SUCCESS,
       payload: { updatedPlaylists },
@@ -131,6 +133,27 @@ export const reorderPlaylistsAction = (projectId, orgPlaylists, playlists) => as
       type: actionTypes.REORDER_PLAYLISTS_FAIL,
       payload: { orgPlaylists },
     });
+  }
+};
+
+export const loadSharedPlaylistAction = (playlistId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.LOAD_PLAYLIST_REQUEST,
+    });
+
+    const { playlist } = await playlistService.loadShared(playlistId);
+
+    dispatch({
+      type: actionTypes.LOAD_PLAYLIST_SUCCESS,
+      payload: { playlist },
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.LOAD_PLAYLIST_FAIL,
+    });
+
+    throw e;
   }
 };
 
@@ -176,19 +199,6 @@ export const loadLtiPlaylistAction = (playlistId) => async (dispatch) => {
 
   if (response.data.status === 'success') {
     dispatch(loadPlaylist(response.data.data.playlist));
-  }
-};
-
-export const loadPlaylistActionShared = (playlistId) => async (dispatch) => {
-  // const { token } = JSON.parse(localStorage.getItem("auth"));
-  const response = await axios.post('/api/load-shared-playlist', {
-    playlistId,
-  });
-
-  if (response.data.status === 'success') {
-    dispatch(loadPlaylist(response.data.data.playlist));
-  } else {
-    dispatch(loadPlaylist(response.data.status));
   }
 };
 

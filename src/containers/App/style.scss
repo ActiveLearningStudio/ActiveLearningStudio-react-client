@@ -2,7 +2,7 @@
   color: #607a9b;
   border: none;
   padding: 5px 10px 5px 35px;
-  background: #fafafa url(/assets/images/create-playlist-plus-icon.png) no-repeat 96px 16px;
+  background: #fafafa url(../../assets/images/create-playlist-plus-icon.png) no-repeat 96px 16px;
   border-radius: 3px;
   margin-top: 20px;
   margin-bottom: 30px;
@@ -154,7 +154,7 @@
 .playlist-search {
   .search {
     border: none;
-    background: url(/assets/images/search-icon.png) no-repeat 0 4px;
+    background: url(../../assets/images/search-icon.png) no-repeat 0 4px;
     padding-left: 25px;
     margin-left: 28px;
 
@@ -169,7 +169,7 @@
 .program-search {
   .search {
     border: none;
-    background: url(/assets/images/search-icon.png) no-repeat 0 4px;
+    background: url(../../assets/images/search-icon.png) no-repeat 0 4px;
     padding-left: 25px;
 
     &:focus {
@@ -437,7 +437,7 @@
         .icon {
           width: 13px;
           height: 13px;
-          background: url(/assets/images/program-lesson-icon.png) no-repeat center;
+          background: url(../../assets/images/program-lesson-icon.png) no-repeat center;
           display: block;
           float: left;
           margin-top: 3px;
@@ -452,7 +452,7 @@
         .icon {
           width: 13px;
           height: 13px;
-          background: url(/assets/images/program-duration-icon.png) no-repeat center;
+          background: url(../../assets/images/program-duration-icon.png) no-repeat center;
           display: block;
           float: left;
           margin-top: 3px;
@@ -478,7 +478,7 @@
 .program-page-title {
   h1 {
     padding-left: 40px;
-    background: url(/assets/images/my-projects-icon.png) no-repeat 0 9px;
+    background: url(../../assets/images/my-projects-icon.png) no-repeat 0 9px;
     color: #607a9b;
     font-family: 'Open Sans', sans-serif;
     font-weight: 700;
@@ -985,18 +985,6 @@ body {
   padding-right: 40px;
 }
 
-.search-block {
-  position: relative;
-  overflow: hidden;
-  width: 269px;
-  height: 36px;
-  margin-right: 30px;
-}
-
-.tophd_left {
-  padding: 15px 0;
-}
-
 .top-info > li > a:hover {
   //  background: #1a73e8;
   //border-color: #1a73e8;
@@ -1004,40 +992,6 @@ body {
 
 .top-info > li > a:hover img {
   // filter: brightness(0) invert(1);
-}
-
-.search-block .search-term {
-}
-
-.search-term {
-  width: 269px;
-  height: 36px;
-  background: #ffffff 0 0 no-repeat padding-box;
-  border: 1px solid #b8b8b8;
-  border-radius: 50px;
-  opacity: 1;
-  text-align: left;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 26px;
-  letter-spacing: 0;
-  color: #929292;
-  padding-left: 20px;
-}
-
-.search-submit {
-  position: absolute;
-  right: -10px;
-  z-index: 99;
-  top: 3px;
-  border: 0;
-  background: transparent;
-  font-size: 18px;
-  color: #fff;
-  width: 27px;
-  height: 12px;
-  border-radius: 0;
-  margin-right: 20px;
 }
 
 /* css for dropdown menu */

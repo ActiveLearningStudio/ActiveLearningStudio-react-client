@@ -5,8 +5,10 @@ import httpService from './http.service';
 const { apiVersion } = config;
 
 const searchResult = (searchquerry, from, size) => httpService
-  .get(`https://refactored.curriki.org/api/api/v1/search/advanced?from=${from}&size=${size}&query=${searchquerry}`)
-  // .get(`/${apiVersion}/search/advanced?from=${from}&size=${size}&query=${searchquerry}`)
+
+  // .get(`https://refactored.curriki.org/api/api/v1/search/advanced?from=${from}&size=${size}&query=${searchquerry}`)
+  .get(`/${apiVersion}/search/advanced?from=${from}&size=${size}&query=${searchquerry}`)
+
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 

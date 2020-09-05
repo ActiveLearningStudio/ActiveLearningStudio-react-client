@@ -21,14 +21,17 @@ import './style.scss';
 
 function SearchInterface() {
   const allstate = useSelector((state) => state.search);
+
   const [modalShow, setModalShow] = useState(false);
+
   // const more = useRef();
   const [search, setsearch] = useState();
   const [searchquerryes, Setsearchquerry] = useState('');
   const [searchinput, setsearchinput] = useState();
   const [meta, setMeta] = useState();
+
   const [clone, setClone] = useState();
-  // const [loading, setloading] = useState(false);
+
 
   useEffect(() => {
     if (allstate.searchResult.length > 0) {
