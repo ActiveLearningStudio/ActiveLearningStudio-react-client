@@ -236,14 +236,14 @@
 
 			.imgbox {
 				width: 20%;
-				height: 100px;
+				height: 130px;
 
 				div {
 					width: 100%;
 					height: 100%;
 					background-size: cover;
 					background-repeat: no-repeat;
-					background-position: top center;
+					background-position:  center;
 				}
 
 				h5 {
@@ -312,6 +312,7 @@
 		width: 100%;
 		flex-direction: row;
 		justify-content: space-between;
+		padding: 10px;
 	}
 
 	.btn {
@@ -334,6 +335,9 @@
 				margin-right: 10px;
 			}
 		}
+		.topcardbtn {
+			padding: 0;
+		}
 	}
 
 	.middlecard {
@@ -348,6 +352,9 @@
 				margin-right: 10px;
 				color: #084892;
 			}
+		}
+		.btn-link{
+			padding: 0px;
 		}
 	}
 

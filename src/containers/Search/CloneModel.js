@@ -7,6 +7,7 @@ import { Accordion, Card, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 
 export default function LTIProjectShared(props) {
+  const { clone } = props;
   const [activeProject, setActiveProject] = useState('');
   const [activePlaylist, setActivePlaylist] = useState('');
   // const [activeactivity, setactiveactivity] = useState("");
@@ -23,8 +24,8 @@ export default function LTIProjectShared(props) {
   }, [dispatch]);
 
   useEffect(() => {
-    if(!!allProjects.project.projects){
-        setAllproject(allProjects.project.projects);
+    if (allProjects.project.projects) {
+      setAllproject(allProjects.project.projects);
     }
   }, [allProjects]);
   return (
@@ -44,9 +45,10 @@ export default function LTIProjectShared(props) {
                     onClick={() => {
                       if (activeProject === counterTop + 1) {
                         setActiveProject();
+                        setCurrentProject();
                       } else {
                         setActiveProject(counterTop + 1);
-                        setCurrentProject(data.id);
+                        setCurrentProject(data);
                         setCurrentPlaylist();
                         // setactiveactivity();
                       }
@@ -59,7 +61,7 @@ export default function LTIProjectShared(props) {
 
                           <FontAwesomeIcon icon="check-square" />
                         ) : (
-                            <FontAwesomeIcon icon="square" />
+                          <FontAwesomeIcon icon="square" />
                         )}
                         {data.name}
                       </div>
@@ -74,50 +76,51 @@ export default function LTIProjectShared(props) {
               </Card.Header>
               <Accordion.Collapse eventKey={counterTop + 1}>
                 <Card.Body>
-                  {!!data.playlists && data.playlists.length > 0 ? (
+                  {clone.clone.model === 'Activity' && !!data.playlists && data.playlists.length > 0 ? (
                     <Accordion>
                       {data.playlists.map((data2, counterPlaylist) => (
                         <Card>
                           <Card.Header className="middlecard">
-                              <Accordion.Toggle
-                                as={Button}
-                                variant="link"
-                                eventKey={counterPlaylist + counterTop + 1}
+                            <Accordion.Toggle
+                              as={Button}
+                              variant="link"
+                              eventKey={counterPlaylist + counterTop + 1}
+                            >
+                              <span
+                                onClick={() => {
+                                  if (activePlaylist === counterPlaylist + counterTop + 1) {
+                                    setActivePlaylist();
+                                    setCurrentPlaylist();
+                                  } else {
+                                    setActivePlaylist(counterPlaylist + counterTop + 1);
+                                    setCurrentPlaylist(data2);
+                                  }
+                                }}
                               >
-                                <span
-                                  onClick={() => {
-                                    if (activePlaylist=== counterPlaylist + counterTop + 1) {
-                                      setActivePlaylist();
-                                    } else {
-                                      setActivePlaylist(counterPlaylist + counterTop + 1)
-                                      setCurrentPlaylist(data2.id);
-                                    }
-                                  }}
-                                >
-                                  <div className="flex-bar">
-                                    <div>
-                                      <span>
+                                <div className="flex-bar">
+                                  <div>
+                                    <span>
 
-                                          {activePlaylist=== counterPlaylist + counterTop + 1 ? (
-                                              <FontAwesomeIcon icon="stop-circle" />
-                                            ) : (
-                                              <FontAwesomeIcon icon="circle" />
-                                            )}
-                                          {data2.title}
-                                        </span>
-                                    </div>
-
+                                      {activePlaylist === counterPlaylist + counterTop + 1 ? (
+                                        <FontAwesomeIcon icon="stop-circle" />
+                                      ) : (
+                                        <FontAwesomeIcon icon="circle" />
+                                      )}
+                                      {data2.title}
+                                    </span>
                                   </div>
-                                </span>
-                              </Accordion.Toggle>
-                            </Card.Header>
+
+                                </div>
+                              </span>
+                            </Accordion.Toggle>
+                          </Card.Header>
 
                         </Card>
                       ))}
                       {' '}
                     </Accordion>
                   ) : (
-                    <span className="error">No Playlists found</span>
+                    clone.clone.model === 'Activity' && (<span className="error">No Playlists found</span>)
                   )}
                 </Card.Body>
               </Accordion.Collapse>
@@ -128,25 +131,32 @@ export default function LTIProjectShared(props) {
       <button
         className="button-submit"
         onClick={() => {
-          
-            Swal.fire({
-              html: `You have selected <strong>${props.title} 
-              </strong> ${props.model}<br>Do you want to continue ?`,
+          if (!currentProject && !currentPlaylist) {
+            Swal.fire('Kindly select Project or playlist');
+            return;
+          }
+          let activeAssetDriection;
+          if (!currentPlaylist) {
+            activeAssetDriection = currentProject.name;
+          } else { activeAssetDriection = currentPlaylist.title; }
 
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Ok',
-            }).then((result) => {
-              if (result.value) {
-                if (currentPlaylist) {
-                  cloneActivity(currentPlaylist, props.id);
-                } else {
-                  clonePlaylist(currentProject, props.id);
-                }
+          Swal.fire({
+            html: `You have selected <strong>${activeAssetDriection} 
+              </strong><br>Do you want to continue ?`,
+
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ok',
+          }).then((result) => {
+            if (result.value) {
+              if (currentPlaylist) {
+                cloneActivity(currentPlaylist.id, props.clone.clone.id);
+              } else {
+                clonePlaylist(currentProject.id, props.clone.clone.id);
               }
-            });
-          
+            }
+          });
         }}
       >
         Proceed

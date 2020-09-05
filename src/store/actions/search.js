@@ -12,7 +12,6 @@ export const searchredux = (result, searchquerry, meta) => ({
 export const simpleSearchfunction = (searchquerry, from, size) => async (dispatch) => {
   const response = await searchService.searchResult(searchquerry, from, size);
   dispatch(searchredux(response.data, searchquerry, response.meta));
-
 };
 
 export const cloneProject = (projectID) => {
@@ -25,7 +24,6 @@ export const clonePlaylist = (projectId, playlistid) => {
 
 export const cloneActivity = (playlistid, activityId) => {
   searchService.cloneActivity(playlistid, activityId);
-
 };
 
 // export const advancedSearches = (searchquerry) => {

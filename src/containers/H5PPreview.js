@@ -36,7 +36,6 @@ const H5PPreview = (props) => {
   //   }
   // }
 
-
   const resourceLoaded = async (data) => {
     window.H5PIntegration = data.h5p.settings;
     const h5pWrapper = document.getElementById('curriki-h5p-wrapper');

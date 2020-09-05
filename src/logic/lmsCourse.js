@@ -1,39 +1,89 @@
-// eslint-disable-next-line import/prefer-default-export
 export const prepareLmsCourse = (action, state) => {
-  const lmsCourse = { ...action.lmsCourse };
-  const playlistsCopyCounter = [];
-
-  const project = { ...state }.projects.find((p) => p.name === lmsCourse.course);
+  const lms_course = { ...action.lmsCourse };
+  console.log(lms_course);
+  const playlists_copy_counter = [];
+  const project = { ...state }.projects.find((p) => p.name === lms_course.course);
   if (project !== undefined) {
-    for (let index = 0; index < project.playlists.length; index += 1) {
+    for (let index = 0; index < project.playlists.length; index++) {
       const playlist = project.playlists[index];
-      const playlistFound = lmsCourse.playlists.find((lp) => lp === playlist.title) !== undefined
+      const playlist_found = lms_course.playlists.find((lp) => lp == playlist.title) !== undefined
         ? playlist.title
         : null;
-      const playlistsCopyCounters = lmsCourse.playlists.map((lp) => {
-        const playlistNameOrig = playlist.title;
-        const playlistName = lp;
-        const space = '\\s';
-        const bracketOpen = '\\(';
-        const bracketClose = '\\)';
-        const num = '\\d+';
-        const regex = `${playlistNameOrig + space + bracketOpen}(${num})${bracketClose}`;
-        const re = new RegExp(regex, 'g');
-        const res = playlistName.match(re);
-        // return res == null ? false : res[0];
-        return res == null ? false : parseInt(res[0].match(/\d+(?!.*\d)/g), 10);
-      }).filter((n) => typeof n === 'number').sort((a, b) => b - a);
-
-      let playlistCounter = 0;
-      if (playlistFound != null && playlistsCopyCounters.length === 0) {
-        playlistCounter = 1;
-      } else if (playlistsCopyCounters.length > 0) {
-        playlistCounter = playlistsCopyCounters[0] + 1;
+      const playlist_copy_counters = lms_course.playlists
+        .map((lp) => {
+          const playlist_name_orig = playlist.title;
+          const playlist_name = lp;
+          const space = '\\s';
+          const bracket_open = '\\(';
+          const bracket_close = '\\)';
+          const num = '\\d+';
+          const regex = `${playlist_name_orig
+            + space
+            + bracket_open
+          }(${
+            num
+          })${
+            bracket_close}`;
+          const re = new RegExp(regex, 'g');
+          const res = playlist_name.match(re);
+          // return res == null ? false : res[0];
+          return res == null ? false : parseInt(res[0].match(/\d+(?!.*\d)/g));
+        })
+        .filter((n) => typeof n === 'number')
+        .sort((a, b) => b - a);
+      let playlist_counter = 0;
+      if (playlist_found != null && playlist_copy_counters.length == 0) {
+        playlist_counter = 1;
+      } else if (playlist_copy_counters.length > 0) {
+        playlist_counter = playlist_copy_counters[0] + 1;
       }
+      playlists_copy_counter.push({
+        playlist_id: playlist._id,
+        counter: playlist_counter,
+      });
+    }
+  } else if (action.allstate) {
+    const { playlists } = { ...action.allstate }.playlist;
 
-      playlistsCopyCounter.push({ playlistId: playlist.id, counter: playlistCounter });
+    for (let index = 0; index < playlists.length; index++) {
+      const playlist = playlists[index];
+      const playlist_found = lms_course.playlists.find((lp) => lp == playlist.title) !== undefined
+        ? playlist.title
+        : null;
+      const playlist_copy_counters = lms_course.playlists
+        .map((lp) => {
+          const playlist_name_orig = playlist.title;
+          const playlist_name = lp;
+          const space = '\\s';
+          const bracket_open = '\\(';
+          const bracket_close = '\\)';
+          const num = '\\d+';
+          const regex = `${playlist_name_orig
+            + space
+            + bracket_open
+          }(${
+            num
+          })${
+            bracket_close}`;
+          const re = new RegExp(regex, 'g');
+          const res = playlist_name.match(re);
+          // return res == null ? false : res[0];
+          return res == null ? false : parseInt(res[0].match(/\d+(?!.*\d)/g));
+        })
+        .filter((n) => typeof n === 'number')
+        .sort((a, b) => b - a);
+      let playlist_counter = 0;
+      if (playlist_found != null && playlist_copy_counters.length == 0) {
+        playlist_counter = 1;
+      } else if (playlist_copy_counters.length > 0) {
+        playlist_counter = playlist_copy_counters[0] + 1;
+      }
+      playlists_copy_counter.push({
+        playlist_id: playlist._id,
+        counter: playlist_counter,
+      });
     }
   }
 
-  return { ...lmsCourse, playlistsCopyCounter };
+  return { ...lms_course, playlists_copy_counter };
 };

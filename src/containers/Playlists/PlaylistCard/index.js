@@ -182,6 +182,7 @@ class PlaylistCard extends React.Component {
                         playlistId={playlist.id}
                         playlistName={playlist.title}
                         projectName={selectedProject && selectedProject.name}
+                        projectId={selectedProject && selectedProject.id}
                       />
 
                       <Dropdown.Item onClick={this.handleDelete}>
