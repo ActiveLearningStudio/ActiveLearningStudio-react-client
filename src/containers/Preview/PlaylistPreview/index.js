@@ -488,7 +488,7 @@ class PlaylistPreview extends React.Component {
                                 }
                               });
                           } else {
-                            await shareActivity(activityId, nameActivity);
+                            await shareActivity(activityId);
                             loadPlaylist(projectId, playlistId);
                           }
                         }}

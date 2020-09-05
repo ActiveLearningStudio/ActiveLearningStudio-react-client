@@ -421,21 +421,21 @@ export const editResourceAction = (
   }
 };
 
-export const shareActivity = async (activityId, resourceName) => {
-  const result = await resourceService.shareActivity(activityId);
+export const shareActivity = async (activityId) => {
+  await resourceService.shareActivity(activityId);
 
-  if (result.activity.id) {
-    const protocol = `${window.location.href.split('/')[0]}//`;
-
-    Swal.fire({
-      html: `You can now share Activity <strong>"${resourceName}"</strong><br>
-        Anyone with the link below can access your activity:<br>
-        <br><a target="_blank" href="/activity/${activityId}/shared">
-        ${protocol + window.location.host}/activity/${activityId}/shared
-        </a>
-      `,
-    });
-  }
+  // if (result.activity.id) {
+  //   const protocol = `${window.location.href.split('/')[0]}//`;
+  //
+  //   Swal.fire({
+  //     html: `You can now share Activity <strong>"${resourceName}"</strong><br>
+  //       Anyone with the link below can access your activity:<br>
+  //       <br><a target="_blank" href="/activity/${activityId}/shared">
+  //       ${protocol + window.location.host}/activity/${activityId}/shared
+  //       </a>
+  //     `,
+  //   });
+  // }
 };
 
 export const removeShareActivity = async (activityId, resourceName) => {
