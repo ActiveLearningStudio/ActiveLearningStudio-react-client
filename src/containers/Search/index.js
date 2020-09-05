@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -22,7 +22,6 @@ import CloneModel from './CloneModel';
 import './style.scss';
 
 function MyVerticallyCenteredModal(props) {
-  const { clone } = props;
   return (
     <Modal
       {...props}
@@ -34,16 +33,16 @@ function MyVerticallyCenteredModal(props) {
         <Modal.Title id="contained-modal-title-vcenter">
           Please select where you would like
           {' '}
-          <b>{clone ? clone.title : ''}</b>
+          <b>{props.clone ? props.clone.title : ''}</b>
           {' '}
-          {clone ? clone.model : ''}
+          {props.clone ? props.clone.model : ''}
           {' '}
           to be cloned
         </Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
-        <CloneModel {...(clone || {})} />
+        <CloneModel clone={props} />
       </Modal.Body>
     </Modal>
   );
@@ -125,7 +124,6 @@ function SearchInterface() {
             className="clone-lti"
             clone={clone}
           />
-
           <div className="content">
             <div className="search-result-main">
               <div className="total-count">
@@ -438,6 +436,7 @@ function SearchInterface() {
                                   </ul>
                                   <p>{res.description}</p>
                                 </div>
+
                               </div>
                               )}
                             </>

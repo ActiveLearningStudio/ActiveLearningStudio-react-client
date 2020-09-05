@@ -45,6 +45,24 @@ const removeShared = (id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const lmsSetting = (id) => httpService
+  .get(`/${apiVersion}/go/lms-settings/user/me`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const fetchLmsDetails = (lms, projectId, settingId) => httpService
+  .post(`/${apiVersion}/go/${lms}/projects/${projectId}/fetch`, {
+    setting_id: settingId,
+  }).then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const lmsPublish = (lms, projectId, settingId, counter, playlistId) => httpService
+  .post(`/${apiVersion}/go/${lms}/projects/${projectId}/playlists/${playlistId}/publish`, {
+    setting_id: settingId,
+    counter,
+  }).then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -54,4 +72,7 @@ export default {
   upload,
   share,
   removeShared,
+  lmsSetting,
+  fetchLmsDetails,
+  lmsPublish,
 };

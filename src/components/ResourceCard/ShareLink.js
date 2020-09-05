@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { ShareLMS } from 'store/actions/project';
+import { getProjectCourseFromLMSPlaylist } from 'store/actions/project';
 
 function ShareLink(props) {
-  const { playlistId, playlistName, projectName } = props;
+  const dispatch = useDispatch();
+  const {
+    playlistId, playlistName, projectName, projectId,
+  } = props;
 
   const AllLms = useSelector((state) => state.defaultShareState);
 
@@ -42,17 +45,18 @@ function ShareLink(props) {
             <a
               href="#"
               onClick={async () => {
-                ShareLMS(
+                dispatch(getProjectCourseFromLMSPlaylist(
                   playlistId,
-                  data._id,
+                  data.id,
                   data.lms_name.toLowerCase(),
                   data.lms_url,
                   playlistName,
                   projectName,
-                );
+                  projectId,
+                ));
               }}
             >
-              {data.description}
+              {data.site_name}
             </a>
           </li>
         ))}

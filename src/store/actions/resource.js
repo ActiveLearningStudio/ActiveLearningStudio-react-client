@@ -449,7 +449,10 @@ export const removeShareActivity = async (activityId, resourceName) => {
   }
 };
 
-export const loadH5pShareResource = (activityId) => resourceService.loadH5pShared(activityId);
+export const loadH5pShareResource = async (activityId) => {
+  const result = await resourceService.loadH5pShared(activityId);
+  return result;
+};
 
 // TODO: refactor bottom
 export const saveGenericResourceAction = (resourceData) => async (dispatch) => {
