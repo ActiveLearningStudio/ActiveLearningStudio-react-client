@@ -22,9 +22,9 @@ const ActivityPreviewCardDropdown = (props) => {
           as={Link}
           to={`/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview/shared`}
         >
-          <div>
+          <div className="d-flex align-items-center">
             <FontAwesomeIcon icon="play-circle" />
-            <div className="title">{activity.title}</div>
+            <div className="ml-2 title">{activity.title}</div>
           </div>
         </Dropdown.Item>
       ) : (
@@ -36,9 +36,9 @@ const ActivityPreviewCardDropdown = (props) => {
               : `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
           }
         >
-          <div>
+          <div className="d-flex align-items-center">
             <FontAwesomeIcon icon="play-circle" />
-            <div className="title">{activity.title}</div>
+            <div className="ml-2 title">{activity.title}</div>
           </div>
         </Dropdown.Item>
       )}

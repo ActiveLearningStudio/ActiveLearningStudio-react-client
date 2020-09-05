@@ -595,6 +595,7 @@ img {
   .dropdown-menu {
     max-height: 400px;
     overflow-y: auto;
+    overflow-x: hidden;
     left: 0 !important;
 
     &.no-activities {
