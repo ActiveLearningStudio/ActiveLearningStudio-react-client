@@ -136,7 +136,7 @@ export const reorderPlaylistsAction = (projectId, orgPlaylists, playlists) => as
   }
 };
 
-export const loadSharedPlaylistAction = (playlistId) => async (dispatch) => {
+export const loadSharedPlaylistAction = (projectId, playlistId) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.LOAD_PLAYLIST_REQUEST,

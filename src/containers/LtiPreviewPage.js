@@ -29,21 +29,22 @@ class LtiPreviewPage extends React.Component {
     if (previewType === 'playlistShared') {
       content = (
         <LtiPlaylistPreviewShared
-          playlistId={parseInt(match.params.playlistId, 10)}
-          resourceId={parseInt(match.params.resourceId, 10)}
           showLti
+          projectId={parseInt(match.params.projectId, 10)}
+          playlistId={parseInt(match.params.playlistId, 10)}
+          activityId={parseInt(match.params.activityId, 10)}
         />
       );
     } else if (previewType === 'activityShared') {
       content = (
-        <ActivityShared resourceId={parseInt(match.params.resourceId, 10)} />
+        <ActivityShared activityId={parseInt(match.params.activityId, 10)} />
       );
     } else {
       content = (
         <LtiPlaylistPreview
-          playlistId={parseInt(match.params.playlistId, 10)}
-          resourceId={parseInt(match.params.resourceId, 10)}
           showLti
+          playlistId={parseInt(match.params.playlistId, 10)}
+          activityId={parseInt(match.params.activityId, 10)}
         />
       );
     }
