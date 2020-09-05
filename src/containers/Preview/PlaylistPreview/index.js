@@ -558,7 +558,7 @@ class PlaylistPreview extends React.Component {
                           });
                         }}
                       >
-                        <FontAwesomeIcon icon="external-link" className="mr-2" />
+                        <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
                         View Shared Link
                       </div>
                     )}
