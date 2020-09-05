@@ -5,15 +5,20 @@ import { Link } from 'react-router-dom';
 import './style.scss';
 
 const ActivityCard = (props) => {
-  const { activity, playlistId, lti } = props;
+  const {
+    activity,
+    projectId,
+    playlistId,
+    lti,
+  } = props;
 
   return (
     <li>
       <Link
         to={
           lti
-            ? `/playlist/${playlistId}/shared/preview/activity/${activity.id}`
-            : `/playlist/${playlistId}/activity/${activity.id}/preview`
+            ? `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview/shared`
+            : `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
         }
       >
         <div
@@ -35,6 +40,7 @@ const ActivityCard = (props) => {
 
 ActivityCard.propTypes = {
   activity: PropTypes.object.isRequired,
+  projectId: PropTypes.number.isRequired,
   playlistId: PropTypes.number.isRequired,
   lti: PropTypes.bool,
 };

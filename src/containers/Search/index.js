@@ -202,9 +202,9 @@ function SearchInterface() {
                                 <a
                                   href={
                                       res.model === 'Activity'
-                                        ? `/activity/lti/preview/${res._id}`
+                                        ? `/activity/${res._id}/preview/lti`
                                         : res.model === 'Playlist'
-                                          ? `/playlist/lti/preview/${res._id}`
+                                          ? `/playlist/${res._id}/preview/lti`
                                           : ''
                                     }
                                   target="_blank"
