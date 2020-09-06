@@ -167,7 +167,7 @@ function SearchInterface() {
                                       },
                                     });
                                     dispatch(
-                                      simpleSearchAction(searchInput, 0, 100),
+                                      simpleSearchAction(searchInput, 0, 1000),
                                     );
                                   }
                                   // setModalShow(true)

@@ -41,7 +41,7 @@ function ShareLink(props) {
 
       <ul className="dropdown-menu check">
         {allLms.shareVendors && allLms.shareVendors.map((data) => (
-          <li key={data._id}>
+          <li key={data.id}>
             <a
               href="#"
               onClick={async () => {

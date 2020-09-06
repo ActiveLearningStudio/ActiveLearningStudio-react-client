@@ -162,7 +162,7 @@ class PlaylistCard extends React.Component {
                       </a>
                       */}
 
-                      <Dropdown.Item
+                      {/* <Dropdown.Item
                         onClick={() => {
                           Swal.fire({
                             title: 'STAY TUNED!',
@@ -176,7 +176,7 @@ class PlaylistCard extends React.Component {
                       >
                         <FontAwesomeIcon icon="share" className="mr-2" />
                         Send To
-                      </Dropdown.Item>
+                      </Dropdown.Item> */}
 
                       <ShareLink
                         playlistId={playlist.id}

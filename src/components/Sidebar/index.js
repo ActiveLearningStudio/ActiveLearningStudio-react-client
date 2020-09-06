@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './style.scss';
 
@@ -7,8 +8,14 @@ function Sidebar() {
   return (
     <aside>
       <ul>
-        <li>
+         <li>
           <Link to="/">
+            <FontAwesomeIcon className="mr-2" icon="tachometer-alt" />
+            Dashboard
+          </Link>
+        </li>
+        <li>
+          <Link to="/projects">
             <span className="sidebar-icon my-resources-icon" />
             My Projects
           </Link>
