@@ -9,7 +9,7 @@ import { getProjectCourseFromLMSPlaylist } from 'store/actions/project';
 function ShareLink(props) {
   const dispatch = useDispatch();
   const {
-    playlistId, playlistName, projectName, projectId,
+    playlistId, projectId,
   } = props;
 
   const AllLms = useSelector((state) => state.defaultShareState);
@@ -50,8 +50,6 @@ function ShareLink(props) {
                   data.id,
                   data.lms_name.toLowerCase(),
                   data.lms_url,
-                  playlistName,
-                  projectName,
                   projectId,
                 ));
               }}
