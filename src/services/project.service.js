@@ -50,7 +50,7 @@ const getShared = (id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const lmsSetting = (id) => httpService
+const lmsSetting = () => httpService
   .get(`/${apiVersion}/go/lms-settings/user/me`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));

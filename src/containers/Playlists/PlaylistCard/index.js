@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown } from 'react-bootstrap';
 
-import logo from 'assets/images/logo.svg';
+// import logo from 'assets/images/logo.svg';
 import {
   changePlaylistTitleAction,
   reorderPlaylistActivitiesAction,

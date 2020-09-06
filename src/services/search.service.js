@@ -13,17 +13,17 @@ const searchResult = (searchQuery, from, size) => httpService
 
 const cloneProject = (projectId) => httpService
   .post(`/${apiVersion}/projects/${projectId}/clone`)
-  .then(({ data }) => Swal.fire("Project Clone is in progress. It will be available soon."))
+  .then(() => Swal.fire('Project Clone is in progress. It will be available soon.'))
   .catch((err) => Swal.fire(err.response.data.errors[0]));
 
 const clonePlaylist = (projectId, playlistId) => httpService
   .post(`/${apiVersion}/projects/${projectId}/playlists/${playlistId}/clone`)
-  .then(({ data }) => Swal.fire("Playlist Clone is in progress. It will be available soon."))
+  .then(() => Swal.fire('Playlist Clone is in progress. It will be available soon.'))
   .catch((err) => Swal.fire(err.response.data.errors[0]));
 
 const cloneActivity = (playlistId, ActivityId) => httpService
   .post(`/${apiVersion}/playlists/${playlistId}/activities/${ActivityId}/clone`)
-  .then(({ data }) => Swal.fire("Activity Clone is in progress. It will be available soon."))
+  .then(() => Swal.fire('Activity Clone is in progress. It will be available soon.'))
   .catch((err) => Swal.fire(err.response.data.errors[0]));
 
 const googleClassShare = (projectId) => httpService
@@ -45,5 +45,5 @@ export default {
   cloneActivity,
   googleClassShare,
   googleShareToken,
-  //searchResults
+  // searchResults
 };

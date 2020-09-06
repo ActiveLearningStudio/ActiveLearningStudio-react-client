@@ -28,11 +28,11 @@ const GoogleModel = ({
   const [showForm, setShowForm] = useState(false);
   // const [rooms, setRooms] = useState(['a', 'b', 'c']);
   useEffect(() => {
-    if (dataRedux.defaultShareState.googleShare === true) {
+    if (dataRedux.share.googleShare === true) {
       setShowForm(true);
-    } else if (dataRedux.defaultShareState.googleShare === false) {
+    } else if (dataRedux.share.googleShare === false) {
       setShowForm(false);
-    } else if (dataRedux.defaultShareState.googleShare === 'close') {
+    } else if (dataRedux.share.googleShare === 'close') {
       onHide();
     }
   }, [dataRedux, onHide]);

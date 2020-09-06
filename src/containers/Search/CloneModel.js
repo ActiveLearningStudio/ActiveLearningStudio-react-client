@@ -1,149 +1,143 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadMyProjectsAction } from 'store/actions/project';
-import { clonePlaylist, cloneActivity } from 'store/actions/search';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Accordion, Card, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 
-export default function LTIProjectShared(props) {
+import { loadMyProjectsAction } from 'store/actions/project';
+import { clonePlaylist, cloneActivity } from 'store/actions/search';
+
+function LtiProjectShared(props) {
   const { clone } = props;
-  const [activeProject, setActiveProject] = useState('');
-  const [activePlaylist, setActivePlaylist] = useState('');
-  // const [activeactivity, setactiveactivity] = useState("");
-  // const [activeactivitydefault, setactiveactivitydefault] = useState(true);
-  const [allproject, setAllproject] = useState(null);
-  const [currentProject, setCurrentProject] = useState();
-  const [currentPlaylist, setCurrentPlaylist] = useState();
+
+  const [activeProject, setActiveProject] = useState(null);
+  const [activePlaylist, setActivePlaylist] = useState(null);
+  const [currentProject, setCurrentProject] = useState(null);
+  const [currentPlaylist, setCurrentPlaylist] = useState(null);
+
   const dispatch = useDispatch();
-  const allProjects = useSelector((state) => state);
+  const project = useSelector((state) => state.project);
+
   useEffect(() => {
     dispatch(
       loadMyProjectsAction(),
     );
   }, [dispatch]);
 
-  useEffect(() => {
-    if (allProjects.project.projects) {
-      setAllproject(allProjects.project.projects);
-    }
-  }, [allProjects]);
   return (
-    <div className="ltiallproject">
+    <div className="lti-all-project">
       <Accordion className="top-box-project">
-        {!!allproject
-          && allproject.map((data, counterTop) => (
-            <Card>
-              <Card.Header className="topcard">
-                <Accordion.Toggle
-                  as={Button}
-                  variant="link"
-                  eventKey={counterTop + 1}
-                  className="topcardbtn"
+        {!!project.projects && project.projects.map((data, counterTop) => (
+          <Card>
+            <Card.Header className="top-card">
+              <Accordion.Toggle
+                as={Button}
+                variant="link"
+                eventKey={counterTop + 1}
+                className="top-card-btn"
+              >
+                <span
+                  onClick={() => {
+                    if (activeProject === counterTop + 1) {
+                      setActiveProject(null);
+                      setCurrentProject(null);
+                    } else {
+                      setActiveProject(counterTop + 1);
+                      setCurrentProject(data);
+                      setCurrentPlaylist(null);
+                    }
+                    // setActivePlaylist(null);
+                  }}
                 >
-                  <span
-                    onClick={() => {
-                      if (activeProject === counterTop + 1) {
-                        setActiveProject();
-                        setCurrentProject();
-                      } else {
-                        setActiveProject(counterTop + 1);
-                        setCurrentProject(data);
-                        setCurrentPlaylist();
-                        // setactiveactivity();
-                      }
-                      // setActivePlaylist();
-                    }}
-                  >
-                    <div className="flex-bar">
-                      <div>
-                        {activeProject === counterTop + 1 ? (
-
-                          <FontAwesomeIcon icon="check-square" />
-                        ) : (
-                          <FontAwesomeIcon icon="square" />
-                        )}
-                        {data.name}
-                      </div>
+                  <div className="flex-bar">
+                    <div>
                       {activeProject === counterTop + 1 ? (
-                        <FontAwesomeIcon icon="chevron-up" />
+
+                        <FontAwesomeIcon icon="check-square" />
                       ) : (
-                        <FontAwesomeIcon icon="chevron-down" />
+                        <FontAwesomeIcon icon="square" />
                       )}
+                      {data.name}
                     </div>
-                  </span>
-                </Accordion.Toggle>
-              </Card.Header>
-              <Accordion.Collapse eventKey={counterTop + 1}>
-                <Card.Body>
-                  {clone.clone.model === 'Activity' && !!data.playlists && data.playlists.length > 0 ? (
-                    <Accordion>
-                      {data.playlists.map((data2, counterPlaylist) => (
-                        <Card>
-                          <Card.Header className="middlecard">
-                            <Accordion.Toggle
-                              as={Button}
-                              variant="link"
-                              eventKey={counterPlaylist + counterTop + 1}
+                    {activeProject === counterTop + 1 ? (
+                      <FontAwesomeIcon icon="chevron-up" />
+                    ) : (
+                      <FontAwesomeIcon icon="chevron-down" />
+                    )}
+                  </div>
+                </span>
+              </Accordion.Toggle>
+            </Card.Header>
+            <Accordion.Collapse eventKey={counterTop + 1}>
+              <Card.Body>
+                {clone.clone.model === 'Activity' && !!data.playlists && data.playlists.length > 0 ? (
+                  <Accordion>
+                    {data.playlists.map((data2, counterPlaylist) => (
+                      <Card>
+                        <Card.Header className="middle-card">
+                          <Accordion.Toggle
+                            as={Button}
+                            variant="link"
+                            eventKey={counterPlaylist + counterTop + 1}
+                          >
+                            <span
+                              onClick={() => {
+                                if (activePlaylist === counterPlaylist + counterTop + 1) {
+                                  setActivePlaylist(null);
+                                  setCurrentPlaylist(null);
+                                } else {
+                                  setActivePlaylist(counterPlaylist + counterTop + 1);
+                                  setCurrentPlaylist(data2);
+                                }
+                              }}
                             >
-                              <span
-                                onClick={() => {
-                                  if (activePlaylist === counterPlaylist + counterTop + 1) {
-                                    setActivePlaylist();
-                                    setCurrentPlaylist();
-                                  } else {
-                                    setActivePlaylist(counterPlaylist + counterTop + 1);
-                                    setCurrentPlaylist(data2);
-                                  }
-                                }}
-                              >
-                                <div className="flex-bar">
-                                  <div>
-                                    <span>
-
-                                      {activePlaylist === counterPlaylist + counterTop + 1 ? (
-                                        <FontAwesomeIcon icon="stop-circle" />
-                                      ) : (
-                                        <FontAwesomeIcon icon="circle" />
-                                      )}
-                                      {data2.title}
-                                    </span>
-                                  </div>
-
+                              <div className="flex-bar">
+                                <div>
+                                  <span>
+                                    {activePlaylist === counterPlaylist + counterTop + 1 ? (
+                                      <FontAwesomeIcon icon="stop-circle" className="mr-2" />
+                                    ) : (
+                                      <FontAwesomeIcon icon="circle" className="mr-2" />
+                                    )}
+                                    {data2.title}
+                                  </span>
                                 </div>
-                              </span>
-                            </Accordion.Toggle>
-                          </Card.Header>
-
-                        </Card>
-                      ))}
-                      {' '}
-                    </Accordion>
-                  ) : (
-                    clone.clone.model === 'Activity' && (<span className="error">No Playlists found</span>)
-                  )}
-                </Card.Body>
-              </Accordion.Collapse>
-            </Card>
-          ))}
+                              </div>
+                            </span>
+                          </Accordion.Toggle>
+                        </Card.Header>
+                      </Card>
+                    ))}
+                    {' '}
+                  </Accordion>
+                ) : (
+                  clone.clone.model === 'Activity' && (<span className="error">No Playlists found</span>)
+                )}
+              </Card.Body>
+            </Accordion.Collapse>
+          </Card>
+        ))}
       </Accordion>
 
       <button
+        type="button"
         className="button-submit"
         onClick={() => {
           if (!currentProject && !currentPlaylist) {
             Swal.fire('Kindly select Project or playlist');
             return;
           }
-          let activeAssetDriection;
+
+          let activeAssetDirection;
           if (!currentPlaylist) {
-            activeAssetDriection = currentProject.name;
-          } else { activeAssetDriection = currentPlaylist.title; }
+            activeAssetDirection = currentProject.name;
+          } else {
+            activeAssetDirection = currentPlaylist.title;
+          }
 
           Swal.fire({
-            html: `You have selected <strong>${activeAssetDriection} 
-              </strong><br>Do you want to continue ?`,
-
+            html: `You have selected <strong>${activeAssetDirection}</strong><br>Do you want to continue ?`,
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -151,9 +145,9 @@ export default function LTIProjectShared(props) {
           }).then((result) => {
             if (result.value) {
               if (currentPlaylist) {
-                cloneActivity(currentPlaylist.id, props.clone.clone.id);
+                cloneActivity(currentPlaylist.id, clone.clone.id);
               } else {
-                clonePlaylist(currentProject.id, props.clone.clone.id);
+                clonePlaylist(currentProject.id, clone.clone.id);
               }
             }
           });
@@ -164,3 +158,9 @@ export default function LTIProjectShared(props) {
     </div>
   );
 }
+
+LtiProjectShared.propTypes = {
+  clone: PropTypes.object.isRequired,
+};
+
+export default LtiProjectShared;

@@ -26,7 +26,7 @@ const ResetPasswordPage = loadable(() => import('../containers/Auth/ResetPasswor
 const ConfirmEmailPage = loadable(() => import('../containers/Auth/ConfirmEmailPage'));
 
 const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
-const DashboardPage = loadable(() => import('../containers/Dashboard/DashboardPage'));
+const DashboardPage = loadable(() => import('../containers/Dashboard'));
 
 const ProjectsPage = loadable(() => import('../containers/Projects'));
 const PlaylistsPage = loadable(() => import('../containers/Playlists'));

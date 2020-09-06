@@ -21,7 +21,7 @@ const ProjectCard = (props) => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const AllLms = useSelector((state) => state.defaultShareState);
+  const AllLms = useSelector((state) => state.share);
 
   const [allLms, setAllLms] = useState([]);
   useEffect(() => {

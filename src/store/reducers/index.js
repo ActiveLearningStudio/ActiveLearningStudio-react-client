@@ -6,11 +6,10 @@ import playlist from './playlist';
 import resource from './resource';
 import project from './project';
 import ui from './ui';
-import defaultShareState from './share';
+import share from './share';
 import gapi from './gapi';
 import search from './search';
 import metrics from './metrics';
-
 
 export default combineReducers({
   auth,
@@ -19,8 +18,8 @@ export default combineReducers({
   resource,
   ui,
   form: formReducer,
-  defaultShareState,
+  share,
   gapi,
   search,
-  metrics
+  metrics,
 });
