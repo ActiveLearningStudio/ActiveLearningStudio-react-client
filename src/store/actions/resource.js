@@ -356,8 +356,8 @@ export const createResourceByH5PUploadAction = (
           metadata.metaContent.metaSubject
           && metadata.metaContent.metaSubject.subject,
         education_level_id:
-          metadata.metaContent.metaEducationalLevels
-          && metadata.metaContent.metaEducationalLevels.name,
+          metadata.metaContent.metaEducationLevels
+          && metadata.metaContent.metaEducationLevels.name,
       };
 
       const responseActivity = await resourceService.create(createActivityUpload);
@@ -398,8 +398,8 @@ export const editResourceAction = (
         metadata.metaContent.metaSubject
         && metadata.metaContent.metaSubject.subject,
       education_level_id:
-        metadata.metaContent.metaEducationalLevels
-        && metadata.metaContent.metaEducationalLevels.name,
+        metadata.metaContent.metaEducationLevels
+        && metadata.metaContent.metaEducationLevels.name,
       h5p_content_id: h5pid.id,
       action: 'create',
     };
