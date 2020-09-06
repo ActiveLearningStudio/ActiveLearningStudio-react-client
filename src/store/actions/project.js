@@ -182,6 +182,31 @@ export const toggleProjectShareRemovedAction = (projectId, projectName) => async
   });
 };
 
+export const loadMyProjectsPreviewSharedAction = (projectId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.PAGE_LOADING,
+    });
+
+    const { project } = await projectService.getShared(projectId);
+
+    dispatch({
+      type: actionTypes.LOAD_MY_PROJECTS_SELECTED,
+      payload: { project },
+    });
+
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+
+    throw e;
+  }
+};
+
 // TODO: need to refactor bottom functions
 
 // Publishes the project in LEARN
@@ -218,15 +243,11 @@ export const showCreateProjectModalAction = () => async (dispatch) => {
 
 // LMS action starts from here
 export const loadLmsAction = () => async (dispatch) => {
-  try {
-    const response = await projectService.lmsSetting();
-    dispatch({
-      type: actionTypes.SHOW_LMS,
-      lmsInfo: response.settings,
-    });
-  } catch (e) {
-     throw e;
-  }
+  const { settings } = await projectService.lmsSetting();
+  dispatch({
+    type: actionTypes.SHOW_LMS,
+    lmsInfo: settings,
+  });
 };
 
 export const ShareLMS = (
@@ -291,27 +312,6 @@ export const ShareLMS = (
   });
 };
 
-// load project shared view
-export const loadMyProjectsActionPreviewShared = (/* projectId */) => async (/* dispatch */) => {
-  // try {
-  //   const response = await axios.get(`${global.config.laravelAPIUrl}/get-shared-project?projectId=${projectId}`);
-  // {
-  //   type: actionTypes.LOAD_MY_PROJECTS_SELECTED,
-  //     payload: { project },
-  // }
-  //   if (response.data.status === 'success') {
-  //     dispatch(loadMyProjectsSelected(response.data.data.project));
-  //     dispatch({
-  //       type: actionTypes.PAGE_LOADING_COMPLETE,
-  //     });
-  //   } else {
-  //     dispatch(loadMyProjectsSelected(response.data));
-  //   }
-  // } catch (e) {
-  //   throw e;
-  // }
-};
-
 export const getProjectCourseFromLMS = (
   lms,
   settingId,
@@ -338,7 +338,7 @@ export const getProjectCourseFromLMS = (
     const globalStoreClone = getState();
 
     Swal.fire({
-      title: `This Project will be added to ${lms}. If the Project does not exist, it will be created. `,
+      title: `This Project will be added to ${lms}. If the Project does not exist, it will be created.`,
       text: 'Would you like to proceed?',
       showCancelButton: true,
       confirmButtonColor: '#5952c6',
@@ -364,6 +364,8 @@ export const getProjectCourseFromLMS = (
               ? globalStoreClone.project.lmsCourse
                 .playlistsCopyCounter[x].counter
               : 0;
+
+            // eslint-disable-next-line no-await-in-loop
             await projectService.lmsPublish(lms, projectId, settingId, counter, playlist[x].id);
 
             if (x + 1 === playlist.length) {
@@ -371,8 +373,8 @@ export const getProjectCourseFromLMS = (
                 icon: 'success',
                 title: 'Published!',
                 confirmButtonColor: '#5952c6',
-                html: `Your Project has been published to <a target="_blank" href="${lmsUrl}"> ${lmsUrl}</a>`,
-                // text: `Yo'ur playlist has been submitted to ${lmsUrl}`,
+                html: `Your Project has been published to <a target="_blank" href="${lmsUrl}">${lmsUrl}</a>`,
+                // text: `Your playlist has been submitted to ${lmsUrl}`,
               });
             }
           }
@@ -394,6 +396,12 @@ export const getProjectCourseFromLMS = (
   // }
 };
 
+export const setLmsCourse = (course, allstate) => ({
+  type: actionTypes.SET_LMS_COURSE,
+  lmsCourse: course,
+  allstate,
+});
+
 export const getProjectCourseFromLMSPlaylist = (
   playlistId,
   settingId,
@@ -404,19 +412,18 @@ export const getProjectCourseFromLMSPlaylist = (
   Swal.fire({
     iconHtml: loaderImg,
     title: 'Fetching Information....',
-
     showCancelButton: false,
     showConfirmButton: false,
     allowOutsideClick: false,
   });
+
   const response = await projectService.fetchLmsDetails(lms, projectId, settingId);
 
   if (response.project) {
-    const globalstoreClone = store.getState();
-    //server store console
-    console.log(globalstoreClone)
-    dispatch(setLmsCourse(response.project, globalstoreClone));
-   
+    const globalStoreClone = store.getState();
+
+    dispatch(setLmsCourse(response.project, globalStoreClone));
+
     Swal.fire({
       title: `This Playlist will be added to ${lms}. If the Playlist does not exist, it will be created. `,
       text: 'Would you like to proceed?',
@@ -429,25 +436,22 @@ export const getProjectCourseFromLMSPlaylist = (
         Swal.fire({
           iconHtml: loaderImg,
           title: 'Publishing....',
-
           showCancelButton: false,
           showConfirmButton: false,
           allowOutsideClick: false,
         });
-        const globalstoreClone = store.getState();
-        const playlistcounter = !!globalstoreClone.project.lmsCourse
-                && globalstoreClone.project.lmsCourse.playlistsCopyCounter
-                  .length > 0
-          ? globalstoreClone.project.lmsCourse.playlistsCopyCounter
-          : 0;
-        console.log(playlistcounter);
+
+        const globalStore = store.getState();
+        const playlistCounter = !!globalStore.project.lmsCourse && globalStore.project.lmsCourse.playlistsCopyCounter
+          ? globalStore.project.lmsCourse.playlistsCopyCounter
+          : [];
+
         let counterId = 0;
-        playlistcounter != 0
-                && playlistcounter.map((playistId_) => {
-                  if (playlistId === playistId_.playlist_id) {
-                    counterId = playistId_.counter;
-                  }
-                });
+        playlistCounter.forEach((p) => {
+          if (playlistId === p.playlist_id) {
+            counterId = p.counter;
+          }
+        });
 
         await projectService.lmsPublish(lms, projectId, settingId, counterId, playlistId);
 
@@ -455,16 +459,10 @@ export const getProjectCourseFromLMSPlaylist = (
           icon: 'success',
           title: 'Published!',
           confirmButtonColor: '#5952c6',
-          html: `Your Project has been published to <a target="_blank" href="${lmsUrl}"> ${lmsUrl}</a>`,
-          // text: `Yo'ur playlist has been submitted to ${lmsUrl}`,
+          html: `Your Project has been published to <a target="_blank" href="${lmsUrl}">${lmsUrl}</a>`,
+          // text: `Your playlist has been submitted to ${lmsUrl}`,
         });
       }
     });
   }
 };
-
-export const setLmsCourse = (course, allstate) => ({
-  type: actionTypes.SET_LMS_COURSE,
-  lmsCourse: course,
-  allstate,
-});

@@ -45,7 +45,12 @@ const removeShared = (id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const lmsSetting = (id) => httpService
+const getShared = (id) => httpService
+  .get(`/${apiVersion}/projects/${id}/get-shared`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const lmsSetting = () => httpService
   .get(`/${apiVersion}/go/lms-settings/user/me`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
@@ -72,6 +77,7 @@ export default {
   upload,
   share,
   removeShared,
+  getShared,
   lmsSetting,
   fetchLmsDetails,
   lmsPublish,

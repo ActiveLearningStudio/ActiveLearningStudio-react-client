@@ -8,7 +8,7 @@ function Sidebar() {
   return (
     <aside>
       <ul>
-         <li>
+        <li>
           <Link to="/">
             <FontAwesomeIcon className="mr-2" icon="tachometer-alt" />
             Dashboard

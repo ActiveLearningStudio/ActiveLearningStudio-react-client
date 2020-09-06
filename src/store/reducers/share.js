@@ -1,12 +1,12 @@
 import { SHOW_LMS, CHANGE_LOADING, GOOGLE_SHARE } from '../actionTypes';
 
-const defaultShareState = () => ({
+const INITIAL_STATE = {
   shareVendors: [],
   loadingShare: false,
   googleShare: false,
-});
+};
 
-export default (state = defaultShareState(), action) => {
+export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SHOW_LMS:
       return {

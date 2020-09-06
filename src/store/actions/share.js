@@ -1,5 +1,4 @@
 import Swal from 'sweetalert2';
-import axios from 'axios';
 
 import searchService from 'services/search.service';
 
@@ -10,15 +9,15 @@ export const copyProject = (projectId) => {
     showConfirmButton: false,
     allowOutsideClick: false,
   });
-  return searchService.googleclassShare(projectId)
 
+  searchService.googleClassShare(projectId)
     .then(() => {
       Swal.fire({
         icon: 'success',
         title: 'Shared!',
         confirmButtonColor: '#5952c6',
         html: 'Your project has been shared to Google Classroom</a>',
-        // text: `Yo'ur playlist has been submitted to ${lmsUrl}`,
+        // text: `Your playlist has been submitted to ${lmsUrl}`,
       });
     })
     .catch((error) => {

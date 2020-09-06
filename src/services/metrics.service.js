@@ -14,6 +14,6 @@ const getUserMembership = (userId) => httpService
   .catch((err) => Promise.reject(err.response.data));
 
 export default {
-    getUserMetrics,
-    getUserMembership
+  getUserMetrics,
+  getUserMembership,
 };

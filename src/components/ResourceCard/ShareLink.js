@@ -8,11 +8,10 @@ import { getProjectCourseFromLMSPlaylist } from 'store/actions/project';
 
 function ShareLink(props) {
   const dispatch = useDispatch();
-  const {
-    playlistId, projectId,
-  } = props;
 
-  const AllLms = useSelector((state) => state.defaultShareState);
+  const { projectId, playlistId } = props;
+
+  const AllLms = useSelector((state) => state.share);
 
   const [allLms, setAllLms] = useState([]);
   useEffect(() => {
@@ -64,9 +63,8 @@ function ShareLink(props) {
 }
 
 ShareLink.propTypes = {
+  projectId: PropTypes.number.isRequired,
   playlistId: PropTypes.number.isRequired,
-  playlistName: PropTypes.string.isRequired,
-  projectName: PropTypes.string.isRequired,
 };
 
 export default ShareLink;

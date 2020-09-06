@@ -26,13 +26,13 @@ const ResetPasswordPage = loadable(() => import('../containers/Auth/ResetPasswor
 const ConfirmEmailPage = loadable(() => import('../containers/Auth/ConfirmEmailPage'));
 
 const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
-const DashboardPage = loadable(() => import('../containers/Dashboard/DashboardPage'));
+const DashboardPage = loadable(() => import('../containers/Dashboard'));
 
 const ProjectsPage = loadable(() => import('../containers/Projects'));
 const PlaylistsPage = loadable(() => import('../containers/Playlists'));
 const PreviewPage = loadable(() => import('../containers/Preview'));
 const LtiPreviewPage = loadable(() => import('../containers/LtiPreviewPage'));
-// const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared'));
+const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared'));
 const SearchResult = loadable(() => import('../containers/Search'));
 
 const AppRouter = () => {
@@ -71,13 +71,11 @@ const AppRouter = () => {
           path="/project/:projectId/preview"
           component={PreviewPage}
         />
-        {/*
         <PrivateRoute
           exact
           path="/project/:projectId/shared"
           component={PreviewPageShared}
         />
-        */}
         <PrivateRoute
           exact
           path="/project/:projectId/edit"

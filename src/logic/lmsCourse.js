@@ -18,13 +18,7 @@ export const prepareLmsCourse = (action, state) => {
           const bracketOpen = '\\(';
           const bracketClose = '\\)';
           const num = '\\d+';
-          const regex = `${playlistNameOrig
-            + space
-            + bracketOpen
-          }(${
-            num
-          })${
-            bracketClose}`;
+          const regex = `${playlistNameOrig + space + bracketOpen}(${num})${bracketClose}`;
           const re = new RegExp(regex, 'g');
           const res = playlistName.match(re);
           // return res == null ? false : res[0];
@@ -60,13 +54,7 @@ export const prepareLmsCourse = (action, state) => {
           const bracketOpen = '\\(';
           const bracketClose = '\\)';
           const num = '\\d+';
-          const regex = `${playlistNameOrig
-            + space
-            + bracketOpen
-          }(${
-            num
-          })${
-            bracketClose}`;
+          const regex = `${playlistNameOrig + space + bracketOpen}(${num})${bracketClose}`;
           const re = new RegExp(regex, 'g');
           const res = playlistName.match(re);
           // return res == null ? false : res[0];
