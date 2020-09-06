@@ -11,7 +11,7 @@ import {
   Dropdown,
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2"
 
 import { simpleSearchAction, cloneProject } from 'store/actions/search';
 import Header from 'components/Header';
@@ -58,15 +58,11 @@ MyVerticallyCenteredModal.defaultProps = {
 
 function SearchInterface() {
   const allState = useSelector((state) => state.search);
-
   const [modalShow, setModalShow] = useState(false);
-
-  // const more = useRef();
-  const [search, setSearch] = useState([]);
-  const [searchQueries, setSearchQueries] = useState('');
-  const [searchInput, setSearchInput] = useState('');
-  const [meta, setMeta] = useState({});
-
+  const [search, setSearch] = useState();
+  const [searchquerryes, SetsearchQuerry] = useState('');
+  const [searchInput, setSearchInput] = useState();
+  const [meta, setMeta] = useState();
   const [clone, setClone] = useState();
 
   useEffect(() => {
@@ -83,7 +79,7 @@ function SearchInterface() {
       localStorage.setItem('loading', 'false');
       Swal.close();
     }
-  }, [allState.searchMeta, allState.searchQuery, allState.searchResult]);
+}, [allState.searchMeta, allState.searchQuery, allState.searchResult]);
 
   useEffect(() => {
     if (localStorage.getItem('loading') === 'true') {
@@ -174,7 +170,7 @@ function SearchInterface() {
                                       simpleSearchAction(searchInput, 0, 100),
                                     );
                                   }
-                                  // setModalShow(true);
+                                  // setModalShow(true)
                                 }}
                                 className="src-btn"
                               >
@@ -259,10 +255,10 @@ function SearchInterface() {
                                   <a
                                     href={
                                       res.model === 'Activity'
-                                        ? `/activity/${res._id}/preview/lti`
+                                        ? `/activity/lti/preview/${res.id}`
                                         : res.model === 'Playlist'
-                                          ? `/playlist/${res._id}/preview/lti`
-                                          : ''
+                                          ? `/playlist/lti/preview/${res.id}`
+                                          : `/project/${res.id}/shared`
                                     }
                                     target="_blank"
                                     rel="noreferrer"
@@ -282,16 +278,13 @@ function SearchInterface() {
                                       {' '}
                                       <span className="type">{res.model}</span>
                                     </li>
-                                    {/*
-                                    <li>
-                                      Member Rating{" "}
-                                      <span className="type">Project</span>
-                                    </li>
-                                    */}
+                                    {/* <li>
+                                          Member Rating{" "}
+                                          <span className="type">Project</span>
+                                        </li> */}
                                   </ul>
                                   <p>{res.description}</p>
                                 </div>
-
                                 <Dropdown>
                                   <Dropdown.Toggle>
                                     <FontAwesomeIcon icon="ellipsis-v" />
@@ -301,8 +294,10 @@ function SearchInterface() {
                                     <div onClick={() => {
                                       if (res.model === 'Project') {
                                         Swal.fire({
-                                          html: `You have selected <strong>${res.title}
-                                            </strong> ${res.model}<br>Do you want to continue ?`,
+                                          html: `You have selected <strong>${res.title} 
+                                       
+                                          </strong> ${res.model}<br>Do you want to continue ?`,
+
                                           showCancelButton: true,
                                           confirmButtonColor: '#3085d6',
                                           cancelButtonColor: '#d33',
@@ -318,6 +313,8 @@ function SearchInterface() {
                                       }
                                     }}
                                     >
+                                      <FontAwesomeIcon className="ml-2" icon="clone" />
+                                      {' '}
                                       Clone
                                     </div>
                                   </Dropdown.Menu>
@@ -344,19 +341,32 @@ function SearchInterface() {
                           search.map((res) => (
                             <>
                               {res.model === 'Project' && (
-                                <div className="box">
-                                  <div className="imgbox">
-                                    <div
-                                      style={{
-                                        backgroundImage: !!res.thumb_url && res.thumb_url.includes('pexels.com')
-                                          ? `url(${res.thumb_url})`
-                                          : `url(${global.config.resourceUrl}${res.thumb_url})`,
-                                      }}
-                                    />
-                                    {/* <h5>CALCULUS</h5> */}
-                                  </div>
-                                  <div className="content">
-                                    <h2>{res.title}</h2>
+                              <div className="box">
+                                <div className="imgbox">
+                                  <div
+                                    style={{
+                                      backgroundImage: !!res.thumb_url && res.thumb_url.includes('pexels.com')
+                                        ? `url(${res.thumb_url})`
+                                        : `url(${global.config.resourceUrl}${res.thumb_url})`,
+                                    }}
+                                  />
+                                  {/* <h5>CALCULUS</h5> */}
+                                </div>
+                                <div className="content">
+                                  <div className="search-content">
+                                    <a
+                                      href={
+                                      res.model === 'Activity'
+                                        ? `/activity/lti/preview/${res.id}`
+                                        : res.model === 'Playlist'
+                                          ? `/playlist/lti/preview/${res.id}`
+                                          : `/project/${res.id}/shared`
+                                    }
+                                      target="_blank"
+                                      rel="noreferrer"
+                                    >
+                                      <h2>{res.title || res.name}</h2>
+                                    </a>
                                     <ul>
                                       <li>
                                         by
@@ -370,15 +380,49 @@ function SearchInterface() {
                                         {' '}
                                         <span className="type">{res.model}</span>
                                       </li>
-                                      {/*
-                                      <li>
-                                        Member Rating{" "}
-                                        <span className="type">Project</span>
-                                      </li>
-                                      */}
+                                      {/* <li>
+                                          Member Rating{" "}
+                                          <span className="type">Project</span>
+                                        </li> */}
                                     </ul>
                                     <p>{res.description}</p>
                                   </div>
+                                  <Dropdown>
+                                    <Dropdown.Toggle>
+                                      <FontAwesomeIcon icon="ellipsis-v" />
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                      <div onClick={() => {
+                                        if (res.model === 'Project') {
+                                          Swal.fire({
+                                            html: `You have selected <strong>${res.title} 
+                                       
+                                          </strong> ${res.model}<br>Do you want to continue ?`,
+
+                                            showCancelButton: true,
+                                            confirmButtonColor: '#3085d6',
+                                            cancelButtonColor: '#d33',
+                                            confirmButtonText: 'Ok',
+                                          }).then((result) => {
+                                            if (result.value) {
+                                              cloneProject(res.id);
+                                            }
+                                          });
+                                        } else {
+                                          setModalShow(true);
+                                          setClone(res);
+                                        }
+                                      }}
+                                      >
+                                        <FontAwesomeIcon className="ml-2" icon="clone" />
+                                        {' '}
+                                        Clone
+                                      </div>
+                                    </Dropdown.Menu>
+                                  </Dropdown>
+
+                                </div>
                                 </div>
                               )}
                             </>
@@ -413,28 +457,74 @@ function SearchInterface() {
                                   {/* <h5>CALCULUS</h5> */}
                                 </div>
                                 <div className="content">
-                                  <h2>{res.title}</h2>
-                                  <ul>
-                                    <li>
-                                      by
-                                      {' '}
-                                      <span className="author">
-                                        {res.user_name}
-                                      </span>
-                                    </li>
-                                    <li>
-                                      Type
-                                      {' '}
-                                      <span className="type">{res.model}</span>
-                                    </li>
-                                    {/*
-                                    <li>
-                                      Member Rating{" "}
-                                      <span className="type">Project</span>
-                                    </li>
-                                    */}
-                                  </ul>
-                                  <p>{res.description}</p>
+                                  <div className="search-content">
+                                    <a
+                                      href={
+                                      res.model === 'Activity'
+                                        ? `/activity/lti/preview/${res.id}`
+                                        : res.model === 'Playlist'
+                                          ? `/playlist/lti/preview/${res.id}`
+                                          : `/project/${res.id}/shared`
+                                    }
+                                      target="_blank"
+                                      rel="noreferrer"
+                                    >
+                                      <h2>{res.title || res.name}</h2>
+                                    </a>
+                                    <ul>
+                                      <li>
+                                        by
+                                        {' '}
+                                        <span className="author">
+                                          {res.user_name}
+                                        </span>
+                                      </li>
+                                      <li>
+                                        Type
+                                        {' '}
+                                        <span className="type">{res.model}</span>
+                                      </li>
+                                      {/* <li>
+                                          Member Rating{" "}
+                                          <span className="type">Project</span>
+                                        </li> */}
+                                    </ul>
+                                    <p>{res.description}</p>
+                                  </div>
+                                  <Dropdown>
+                                    <Dropdown.Toggle>
+                                      <FontAwesomeIcon icon="ellipsis-v" />
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                      <div onClick={() => {
+                                        if (res.model === 'Project') {
+                                          Swal.fire({
+                                            html: `You have selected <strong>${res.title} 
+                                       
+                                          </strong> ${res.model}<br>Do you want to continue ?`,
+
+                                            showCancelButton: true,
+                                            confirmButtonColor: '#3085d6',
+                                            cancelButtonColor: '#d33',
+                                            confirmButtonText: 'Ok',
+                                          }).then((result) => {
+                                            if (result.value) {
+                                              cloneProject(res.id);
+                                            }
+                                          });
+                                        } else {
+                                          setModalShow(true);
+                                          setClone(res);
+                                        }
+                                      }}
+                                      >
+                                        <FontAwesomeIcon className="ml-2" icon="clone" />
+                                        {' '}
+                                        Clone
+                                      </div>
+                                    </Dropdown.Menu>
+                                  </Dropdown>
                                 </div>
 
                               </div>
@@ -455,25 +545,39 @@ function SearchInterface() {
                           : 'activity (0)'
                       }
                     >
-                      <div className="results_search">
-                        {!!search && search.length > 0 ? (
-                          search.map((res) => (
-                            <>
-                              {res.model === 'Activity' && (
+                      <div className="content">
+                        <div className="results_search">
+                          {!!search && search.length > 0 ? (
+                            search.map((res) => (
+                              <>
+                                {res.model === 'Activity' && (
                                 <div className="box">
                                   <div className="imgbox">
                                     <div
                                       style={{
-                                        backgroundImage: !!res.thumb_url && res.thumb_url.includes('pexels.com')
-                                          ? `url(${res.thumb_url})`
-                                          : `url(${global.config.resourceUrl}${res.thumb_url})`,
-                                      }}
+                                      backgroundImage: !!res.thumb_url && res.thumb_url.includes('pexels.com')
+                                        ? `url(${res.thumb_url})`
+                                        : `url(${global.config.resourceUrl}${res.thumb_url})`,
+                                    }}
                                     />
                                     {/* <h5>CALCULUS</h5> */}
                                   </div>
                                   <div className="content">
-                                    <h2>{res.title}</h2>
-                                    <ul>
+                                    <div className="search-content">
+                                      <a
+                                      href={
+                                      res.model === 'Activity'
+                                        ? `/activity/lti/preview/${res.id}`
+                                        : res.model === 'Playlist'
+                                          ? `/playlist/lti/preview/${res.id}`
+                                          : `/project/${res.id}/shared`
+                                    }
+                                      target="_blank"
+                                      rel="noreferrer"
+                                    >
+                                      <h2>{res.title || res.name}</h2>
+                                    </a>
+                                      <ul>
                                       <li>
                                         by
                                         {' '}
@@ -486,22 +590,57 @@ function SearchInterface() {
                                         {' '}
                                         <span className="type">{res.model}</span>
                                       </li>
-                                      {/*
-                                      <li>
-                                        Member Rating{" "}
-                                        <span className="type">Project</span>
-                                      </li>
-                                      */}
+                                      {/* <li>
+                                          Member Rating{" "}
+                                          <span className="type">Project</span>
+                                        </li> */}
                                     </ul>
-                                    <p>{res.description}</p>
+                                      <p>{res.description}</p>
+                                    </div>
+                                    <Dropdown>
+                                      <Dropdown.Toggle>
+                                      <FontAwesomeIcon icon="ellipsis-v" />
+                                    </Dropdown.Toggle>
+
+                                      <Dropdown.Menu>
+                                      <div onClick={() => {
+                                        if (res.model === 'Project') {
+                                          Swal.fire({
+                                            html: `You have selected <strong>${res.title} 
+                                       
+                                          </strong> ${res.model}<br>Do you want to continue ?`,
+
+                                            showCancelButton: true,
+                                            confirmButtonColor: '#3085d6',
+                                            cancelButtonColor: '#d33',
+                                            confirmButtonText: 'Ok',
+                                          }).then((result) => {
+                                            if (result.value) {
+                                              cloneProject(res.id);
+                                            }
+                                          });
+                                        } else {
+                                          setModalShow(true);
+                                          setClone(res);
+                                        }
+                                      }}
+                                      >
+                                        <FontAwesomeIcon className="ml-2" icon="clone" />
+                                        {' '}
+                                        Clone
+                                      </div>
+                                    </Dropdown.Menu>
+                                    </Dropdown>
                                   </div>
                                 </div>
-                              )}
-                            </>
-                          ))
-                        ) : (
-                          <div className="box">No result found !</div>
-                        )}
+
+                                )}
+                              </>
+                            ))
+                          ) : (
+                            <div className="box">no result found !</div>
+                          )}
+                        </div>
                       </div>
                     </Tab>
                   </Tabs>
@@ -521,5 +660,6 @@ function SearchInterface() {
     </>
   );
 }
+
 
 export default SearchInterface;
