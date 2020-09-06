@@ -60,7 +60,7 @@ function SearchInterface() {
   const allState = useSelector((state) => state.search);
   const [modalShow, setModalShow] = useState(false);
   const [search, setSearch] = useState();
-  const [searchquerryes, SetsearchQuerry] = useState('');
+  const [searchQueries, SetSearchQuerry] = useState('');
   const [searchInput, setSearchInput] = useState();
   const [meta, setMeta] = useState();
   const [clone, setClone] = useState();
@@ -68,13 +68,13 @@ function SearchInterface() {
   useEffect(() => {
     if (allState.searchResult.length > 0) {
       setSearch(allState.searchResult);
-      setSearchQueries(allState.searchQuery);
+      SetSearchQuerry(allState.searchQuery);
       setMeta(allState.searchMeta);
       localStorage.setItem('loading', 'false');
       Swal.close();
     } else if (allState.searchResult.length === 0) {
       setSearch([]);
-      setSearchQueries(allState.searchQuery);
+      SetSearchQuerry(allState.searchQuery);
       setMeta({});
       localStorage.setItem('loading', 'false');
       Swal.close();
