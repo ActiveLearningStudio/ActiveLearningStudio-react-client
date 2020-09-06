@@ -220,13 +220,12 @@ export const showCreateProjectModalAction = () => async (dispatch) => {
 export const loadLmsAction = () => async (dispatch) => {
   try {
     const response = await projectService.lmsSetting();
-
     dispatch({
       type: actionTypes.SHOW_LMS,
       lmsInfo: response.settings,
     });
   } catch (e) {
-    // throw e;
+     throw e;
   }
 };
 
@@ -360,12 +359,11 @@ export const getProjectCourseFromLMS = (
           for (let x = 0; x < playlist.length; x += 1) {
             // eslint-disable-next-line no-await-in-loop
             const counter = !!globalStoreClone.project.lmsCourse
-                && globalStoreClone.project.lmsCourse.playlists_copy_counter
+                && globalStoreClone.project.lmsCourse.playlistsCopyCounter
                   .length > 0
               ? globalStoreClone.project.lmsCourse
-                .playlists_copy_counter[x].counter
+                .playlistsCopyCounter[x].counter
               : 0;
-
             await projectService.lmsPublish(lms, projectId, settingId, counter, playlist[x].id);
 
             if (x + 1 === playlist.length) {
@@ -396,19 +394,11 @@ export const getProjectCourseFromLMS = (
   // }
 };
 
-export const setLmsCourse = (course, allstate) => ({
-  type: actionTypes.SET_LMS_COURSE,
-  lmsCourse: course,
-  allstate,
-});
-
 export const getProjectCourseFromLMSPlaylist = (
   playlistId,
   settingId,
   lms,
   lmsUrl,
-  playlistName,
-  projectName,
   projectId,
 ) => async (dispatch) => {
   Swal.fire({
@@ -425,7 +415,7 @@ export const getProjectCourseFromLMSPlaylist = (
     const globalstoreClone = store.getState();
 
     dispatch(setLmsCourse(response.project, globalstoreClone));
-
+   
     Swal.fire({
       title: `This Playlist will be added to ${lms}. If the Playlist does not exist, it will be created. `,
       text: 'Would you like to proceed?',
@@ -443,16 +433,29 @@ export const getProjectCourseFromLMSPlaylist = (
           showConfirmButton: false,
           allowOutsideClick: false,
         });
-        const globalStore = store.getState();
-        const playlistCounter = !!globalStore.project.lmsCourse && globalStore.project.lmsCourse.playlists_copy_counter.length > 0
-          ? globalStore.project.lmsCourse.playlists_copy_counter
+        const globalstoreClone = store.getState();
+        const playlistcounter = !!globalstoreClone.project.lmsCourse
+                && globalstoreClone.project.lmsCourse.playlistsCopyCounter
+                  .length > 0
+          ? globalstoreClone.project.lmsCourse.playlistsCopyCounter
           : 0;
-
+        console.log(playlistcounter);
         let counterId = 0;
-        playlistCounter !== 0 && playlistCounter.map((playistId_) => {
-          if (playlistId === playistId_.playlist_id) {
-            counterId = playistId_.counter;
-          }
+        playlistcounter != 0
+                && playlistcounter.map((playistId_) => {
+                  if (playlistId === playistId_.playlist_id) {
+                    counterId = playistId_.counter;
+                  }
+                });
+
+        await projectService.lmsPublish(lms, projectId, settingId, counterId, playlistId);
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Published!',
+          confirmButtonColor: '#5952c6',
+          html: `Your Project has been published to <a target="_blank" href="${lmsUrl}"> ${lmsUrl}</a>`,
+          //   text: `Yo'ur playlist has been submitted to ${lmsUrl}`,
         });
 
         await projectService.lmsPublish(lms, projectId, settingId, counterId, playlistId);
@@ -468,3 +471,9 @@ export const getProjectCourseFromLMSPlaylist = (
     });
   }
 };
+
+export const setLmsCourse = (course, allstate) => ({
+  type: actionTypes.SET_LMS_COURSE,
+  lmsCourse: course,
+  allstate,
+});
