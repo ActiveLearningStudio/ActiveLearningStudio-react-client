@@ -1,6 +1,6 @@
-import config from 'config';
 import Swal from 'sweetalert2';
 
+import config from 'config';
 import httpService from './http.service';
 
 const { apiVersion } = config;
@@ -46,5 +46,5 @@ export default {
   googleclassShare,
   cloneActivity,
   googleShareToken,
-  // searchResults
+  //searchResults
 };

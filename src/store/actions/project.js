@@ -359,10 +359,10 @@ export const getProjectCourseFromLMS = (
           for (let x = 0; x < playlist.length; x += 1) {
             // eslint-disable-next-line no-await-in-loop
             const counter = !!globalStoreClone.project.lmsCourse
-                && globalStoreClone.project.lmsCourse.playlists_copy_counter
+                && globalStoreClone.project.lmsCourse.playlistsCopyCounter
                   .length > 0
               ? globalStoreClone.project.lmsCourse
-                .playlists_copy_counter[x].counter
+                .playlistsCopyCounter[x].counter
               : 0;
             await projectService.lmsPublish(lms, projectId, settingId, counter, playlist[x].id);
 
@@ -399,8 +399,6 @@ export const getProjectCourseFromLMSPlaylist = (
   settingId,
   lms,
   lmsUrl,
-  playlistName,
-  projectName,
   projectId,
 ) => async (dispatch) => {
   Swal.fire({
@@ -417,9 +415,7 @@ export const getProjectCourseFromLMSPlaylist = (
     const globalstoreClone = store.getState();
 
     dispatch(setLmsCourse(response.project, globalstoreClone));
-    const counterarray = [];
-    const { token } = JSON.parse(localStorage.getItem('auth'));
-
+   
     Swal.fire({
       title: `This Playlist will be added to ${lms}. If the Playlist does not exist, it will be created. `,
       text: 'Would you like to proceed?',
@@ -439,9 +435,9 @@ export const getProjectCourseFromLMSPlaylist = (
         });
         const globalstoreClone = store.getState();
         const playlistcounter = !!globalstoreClone.project.lmsCourse
-                && globalstoreClone.project.lmsCourse.playlists_copy_counter
+                && globalstoreClone.project.lmsCourse.playlistsCopyCounter
                   .length > 0
-          ? globalstoreClone.project.lmsCourse.playlists_copy_counter
+          ? globalstoreClone.project.lmsCourse.playlistsCopyCounter
           : 0;
         console.log(playlistcounter);
         let counterId = 0;
