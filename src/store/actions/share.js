@@ -1,21 +1,17 @@
-import axios from 'axios';
 import Swal from 'sweetalert2';
+import axios from 'axios';
+
+import searchService from 'services/search.service';
 
 export const copyProject = (projectId) => {
-  const { token } = JSON.parse(localStorage.getItem('auth'));
   Swal.fire({
     title: 'Publishing....',
     showCancelButton: false,
     showConfirmButton: false,
     allowOutsideClick: false,
   });
+  return searchService.googleClassShare(projectId)
 
-  axios
-    .post(
-      '/api/gapi/copy-project',
-      { projectId },
-      { headers: { Authorization: `Bearer ${token}` } },
-    )
     .then(() => {
       Swal.fire({
         icon: 'success',
@@ -36,17 +32,5 @@ export const copyProject = (projectId) => {
 };
 
 export const tokenSave = (accessToken) => {
-  const { token } = JSON.parse(localStorage.getItem('auth'));
-  axios
-    .post(
-      '/api/gapi/save-access-token',
-      { access_token: accessToken },
-      { headers: { Authorization: `Bearer ${token}` } },
-    )
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  searchService.googleShareToken(accessToken);
 };

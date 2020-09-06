@@ -100,16 +100,16 @@ const ProjectCard = (props) => {
                                 onClick={() => {
                                   dispatch(
                                     getProjectCourseFromLMS(
-                                      data.lmsName.toLowerCase(),
+                                      data.lms_name.toLowerCase(),
                                       data.id,
                                       project.id,
                                       project.playlists,
-                                      data.lmsUrl,
+                                      data.lms_url,
                                     ),
                                   );
                                 }}
                               >
-                                {data.description}
+                                {data.site_name}
                               </a>
                             </li>
                           ))}
