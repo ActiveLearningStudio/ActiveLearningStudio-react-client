@@ -101,6 +101,10 @@ function Header(props) {
                       </span>
                     </Dropdown.Item>
 
+                    <Dropdown.Item as={Link} to="/dashboard">
+                      Dashboard
+                    </Dropdown.Item>
+
                     <Dropdown.Item as={Link} to="/account">
                       My Account
                     </Dropdown.Item>

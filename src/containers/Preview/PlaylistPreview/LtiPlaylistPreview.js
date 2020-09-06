@@ -56,7 +56,12 @@ class LtiPlaylistPreview extends React.Component {
 
   componentDidUpdate() {
     const { activityId } = this.state;
-    const { match, playlistId, loadLtiPlaylist } = this.props;
+    const {
+      match,
+      projectId,
+      playlistId,
+      loadLtiPlaylist,
+    } = this.props;
 
     if (activityId !== match.params.activityId) {
       // eslint-disable-next-line react/no-did-update-set-state
@@ -64,7 +69,7 @@ class LtiPlaylistPreview extends React.Component {
         activityId: match.params.activityId,
       });
 
-      loadLtiPlaylist(playlistId);
+      loadLtiPlaylist(projectId, playlistId);
     }
   }
 
@@ -79,11 +84,11 @@ class LtiPlaylistPreview extends React.Component {
     const { allProjectsState, currentPlaylist } = this.state;
     const {
       history,
-      playlist,
+      playlist: { selectedPlaylist },
+      projectId,
       playlistId,
       showLti,
     } = this.props;
-    const { selectedPlaylist } = playlist;
 
     if (!selectedPlaylist) {
       return (
@@ -119,21 +124,23 @@ class LtiPlaylistPreview extends React.Component {
     } else {
       activities = selectedPlaylist.activities.map((activity) => (
         <ActivityPreviewCard
-          activity={activity}
           key={activity.id}
-          handleSelect={this.handleSelect}
-          playlistId={playlistId}
           lti
+          activity={activity}
+          projectId={projectId}
+          playlistId={playlistId}
+          handleSelect={this.handleSelect}
         />
       ));
 
       activities1 = selectedPlaylist.activities.map((activity) => (
         <ActivityPreviewCardDropdown
-          activity={activity}
           key={activity.id}
-          handleSelect={this.handleSelect}
-          playlistId={playlistId}
           lti
+          activity={activity}
+          projectId={projectId}
+          playlistId={playlistId}
+          handleSelect={this.handleSelect}
         />
       ));
 
@@ -170,12 +177,12 @@ class LtiPlaylistPreview extends React.Component {
 
       previousLink1 = (
         <div className="slider-hover-section">
-          <Link to={playlistId && `/playlist/lti/preview/${playlistId}/activity/${previousResource.id}`}>
+          <Link to={playlistId && `/project/${projectId}/playlist/${playlistId}/activity/${previousResource.id}/preview/lti`}>
             <FontAwesomeIcon icon="chevron-left" />
           </Link>
 
           <div className="hover-control-caption pointer-cursor">
-            <Link to={playlistId && `/playlist/lti/preview/${playlistId}/activity/${previousResource.id}`}>
+            <Link to={playlistId && `/project/${projectId}/playlist/${playlistId}/activity/${previousResource.id}/preview/lti`}>
               <div
                 className="img-in-hover"
                 style={{
@@ -214,7 +221,7 @@ class LtiPlaylistPreview extends React.Component {
                   for (let data = 0; data < allProjectsState.length; data += 1) {
                     if (allProjectsState[data].id === currentPlaylist.id) {
                       try {
-                        history.push(`/playlist/lti/preview/${allProjectsState[data - 1].id}/activity/${allProjectsState[data - 1].activities[0].id}`);
+                        history.push(`/project/${projectId}/playlist/${allProjectsState[data - 1].id}/activity/${allProjectsState[data - 1].activities[0].id}/preview/lti`);
                       } catch (e) {
                         Swal.fire({
                           text: 'You are at the beginning of this project. Would you like to return to the project preview?',
@@ -224,7 +231,7 @@ class LtiPlaylistPreview extends React.Component {
                           confirmButtonText: 'Yes',
                         }).then((result) => {
                           if (result.value) {
-                            history.push(`/project/preview2/${selectedPlaylist.project.id}`);
+                            history.push(`/project/${projectId}/preview`);
                           }
                         });
                       }
@@ -246,7 +253,7 @@ class LtiPlaylistPreview extends React.Component {
     if (nextResource) {
       // nextLink = (
       //   <div className="slider-hover-section">
-      //     <Link to={playlistId && `/playlist/lti/preview/${playlistId}/activity/${nextResource.id}`}>
+      //     <Link to={playlistId && `/playlist/${playlistId}/activity/${nextResource.id}/preview/lti`}>
       //       <FontAwesomeIcon icon="chevron-right" />
       //     </Link>
       //
@@ -266,11 +273,11 @@ class LtiPlaylistPreview extends React.Component {
 
       nextLink1 = (
         <div className="slider-hover-section">
-          <Link to={playlistId && `/playlist/lti/preview/${playlistId}/activity/${nextResource.id}`}>
+          <Link to={playlistId && `/project/${projectId}/playlist/${playlistId}/activity/${nextResource.id}/preview/lti`}>
             <FontAwesomeIcon icon="chevron-right" />
           </Link>
           <div className="hover-control-caption pointer-cursor">
-            <Link to={playlistId && `/playlist/lti/preview/${playlistId}/activity/${nextResource.id}`}>
+            <Link to={playlistId && `/project/${projectId}/playlist/${playlistId}/activity/${nextResource.id}/preview/lti`}>
               <div
                 style={{
                   backgroundImage: nextResource.metadata.thumbUrl
@@ -313,7 +320,7 @@ class LtiPlaylistPreview extends React.Component {
                   for (let data = 0; data < allProjectsState.length; data += 1) {
                     if (allProjectsState[data].id === currentPlaylist.id) {
                       try {
-                        history.push(`/playlist/lti/preview/${allProjectsState[data + 1].id}/activity/${allProjectsState[data + 1].activities[0].id}`);
+                        history.push(`/project/${projectId}/playlist/${allProjectsState[data + 1].id}/activity/${allProjectsState[data + 1].activities[0].id}/preview/lti`);
                       } catch (e) {
                         Swal.fire({
                           text: 'You are at the end of this project. Would you like to return to the project preview?',
@@ -323,7 +330,7 @@ class LtiPlaylistPreview extends React.Component {
                           confirmButtonText: 'Yes',
                         }).then((result) => {
                           if (result.value) {
-                            history.push(`/project/preview2/${selectedPlaylist.project.id}`);
+                            history.push(`/project/${projectId}/preview`);
                           }
                         });
                       }
@@ -397,7 +404,7 @@ class LtiPlaylistPreview extends React.Component {
                     {/* {nextLink}
                     {previousLink}
                     <Link
-                      to={`/project/preview2/${selectedPlaylist.project.id}`}
+                      to={`/project/${selectedPlaylist.project.id}/preview`}
                       className="slide-control"
                     >
                       <FontAwesomeIcon icon="share" />
@@ -449,7 +456,7 @@ class LtiPlaylistPreview extends React.Component {
               <div>
                 {/* <Link
                   className="go-back-button-preview"
-                  to={`/project/preview2/${selectedPlaylist.project.id}`}
+                  to={`/project/${selectedPlaylist.project.id}/preview`}
                 >
                   <FontAwesomeIcon icon="undo" />
                   Back to Projects
@@ -475,11 +482,11 @@ class LtiPlaylistPreview extends React.Component {
               </div>
 
               {/* <Link
-                to={`/project/preview2/${selectedPlaylist.project.id}`}
+                to={`/project/${selectedPlaylist.project.id}/preview`}
                 className="link"
               >
                 <img src="/images/right-arrow.png" className="back-arrow"></img>
-                Back to {this.props.playlist.selectedPlaylist.project.name}
+                Back to {selectedPlaylist.project.name}
               </Link> */}
             </div>
 
@@ -492,7 +499,7 @@ class LtiPlaylistPreview extends React.Component {
               <div className="sub-heading">
                 <div className="line">
                   <span>From the playlist:</span>
-                  {playlist ? playlist.title : ""}
+                  {selectedPlaylist ? selectedPlaylist.title : ""}
                 </div>
                 <div>
                   <FontAwesomeIcon icon="angle-up" />
@@ -505,7 +512,7 @@ class LtiPlaylistPreview extends React.Component {
                 You are watching from
                 {' '}
                 <span>
-                  {playlist.title}
+                  {selectedPlaylist.title}
                 </span>
               </div>
 
@@ -522,6 +529,7 @@ LtiPlaylistPreview.propTypes = {
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   playlist: PropTypes.object.isRequired,
+  projectId: PropTypes.number.isRequired,
   playlistId: PropTypes.number.isRequired,
   showLti: PropTypes.bool,
   loadLtiPlaylist: PropTypes.func.isRequired,

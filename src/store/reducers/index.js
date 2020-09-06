@@ -9,6 +9,8 @@ import ui from './ui';
 import defaultShareState from './share';
 import gapi from './gapi';
 import search from './search';
+import metrics from './metrics';
+
 
 export default combineReducers({
   auth,
@@ -20,4 +22,5 @@ export default combineReducers({
   defaultShareState,
   gapi,
   search,
+  metrics
 });

@@ -2058,7 +2058,7 @@ a:hover {
   border-radius: 20px;
   text-align: center;
   font-size: 14px;
-  padding: 3px 20px;
+  padding: 3px 20px 3px 0;
   margin-bottom: 10px;
 
   .fa {
@@ -2081,7 +2081,6 @@ a:hover {
 
   .dropdown-menu {
     padding: 10px 20px;
-    left: -75px !important;
     width: 240px;
     background: #FFFFFF 0 0 no-repeat padding-box;
     box-shadow: 0 3px 20px #00000029;
@@ -2797,6 +2796,7 @@ a:hover {
   .shared-link {
     align-items: center;
     display: flex;
+    padding-top: 0;
   }
 
   .google-script {
@@ -3066,7 +3066,7 @@ a:hover {
 
 .main-page-content.preview {
   z-index: 1;
-  height: 105vh
+  //height: 105vh;
 }
 
 .confirm-page {

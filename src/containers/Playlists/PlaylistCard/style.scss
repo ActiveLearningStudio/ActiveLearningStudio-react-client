@@ -70,20 +70,3 @@
     }
   }
 }
-
-.playlist-dropdown {
-  .playlist-dropdown-btn {
-    height: 24px;
-    padding: 0 0 0 10px !important;
-    color: #868686 !important;
-    background: transparent !important;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-
-    &:after {
-      display: none;
-      border-top-color: white !important;
-    }
-  }
-}

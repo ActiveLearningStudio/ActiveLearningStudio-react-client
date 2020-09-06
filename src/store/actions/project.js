@@ -6,7 +6,7 @@ import loaderImg from 'assets/images/loader.svg';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import projectService from 'services/project.service';
 import * as actionTypes from '../actionTypes';
-import store from '../index.js';
+import store from '../index';
 
 export const createProjectAction = (data) => async (dispatch) => {
   try {
@@ -164,7 +164,7 @@ export const toggleProjectShareAction = (projectId, ProjectName) => async (dispa
   });
 
   const protocol = `${window.location.href.split('/')[0]}//`;
-  const url = `${protocol + window.location.host}/project/shared/${projectId}`;
+  const url = `${protocol + window.location.host}/project/${projectId}/shared`;
   return SharePreviewPopup(url, ProjectName);
 };
 
@@ -225,7 +225,7 @@ export const loadLmsAction = () => async (dispatch) => {
       lmsInfo: response.settings,
     });
   } catch (e) {
-    throw e;
+     throw e;
   }
 };
 
@@ -456,6 +456,16 @@ export const getProjectCourseFromLMSPlaylist = (
           confirmButtonColor: '#5952c6',
           html: `Your Project has been published to <a target="_blank" href="${lmsUrl}"> ${lmsUrl}</a>`,
           //   text: `Yo'ur playlist has been submitted to ${lmsUrl}`,
+        });
+
+        await projectService.lmsPublish(lms, projectId, settingId, counterId, playlistId);
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Published!',
+          confirmButtonColor: '#5952c6',
+          html: `Your Project has been published to <a target="_blank" href="${lmsUrl}"> ${lmsUrl}</a>`,
+          // text: `Yo'ur playlist has been submitted to ${lmsUrl}`,
         });
       }
     });

@@ -1,6 +1,7 @@
-/* eslint-disable max-len */
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
-import Swal from 'sweetalert2';
+import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Accordion,
   Card,
@@ -9,41 +10,76 @@ import {
   Modal,
   Dropdown,
 } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Swal from "sweetalert2"
 
+import { simpleSearchAction, cloneProject } from 'store/actions/search';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
-import { simpleSearchfunction, cloneProject } from 'store/actions/search';
 import CloneModel from './CloneModel';
 
 import './style.scss';
 
+function MyVerticallyCenteredModal(props) {
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Please select where you would like
+          {' '}
+          <b>{props.clone ? props.clone.title : ''}</b>
+          {' '}
+          {props.clone ? props.clone.model : ''}
+          {' '}
+          to be cloned
+        </Modal.Title>
+      </Modal.Header>
+
+      <Modal.Body>
+        <CloneModel clone={props} />
+      </Modal.Body>
+    </Modal>
+  );
+}
+
+MyVerticallyCenteredModal.propTypes = {
+  clone: PropTypes.object,
+};
+
+MyVerticallyCenteredModal.defaultProps = {
+  clone: null,
+};
+
 function SearchInterface() {
-  const allstate = useSelector((state) => state.search);
+  const allState = useSelector((state) => state.search);
   const [modalShow, setModalShow] = useState(false);
-  const [search, setsearch] = useState();
-  const [searchquerryes, Setsearchquerry] = useState('');
-  const [searchinput, setsearchinput] = useState();
+  const [search, setSearch] = useState();
+  const [searchquerryes, SetsearchQuerry] = useState('');
+  const [searchInput, setSearchInput] = useState();
   const [meta, setMeta] = useState();
   const [clone, setClone] = useState();
 
   useEffect(() => {
-    if (allstate.searchResult.length > 0) {
-      setsearch(allstate.searchResult);
-      Setsearchquerry(allstate.searchQuerry);
-      setMeta(allstate.searchMeta);
+    if (allState.searchResult.length > 0) {
+      setSearch(allState.searchResult);
+      setSearchQueries(allState.searchQuery);
+      setMeta(allState.searchMeta);
       localStorage.setItem('loading', 'false');
       Swal.close();
-    } else if (allstate.searchResult.length === 0) {
-      setsearch([]);
-      Setsearchquerry(allstate.searchQuerry);
+    } else if (allState.searchResult.length === 0) {
+      setSearch([]);
+      setSearchQueries(allState.searchQuery);
       setMeta({});
       localStorage.setItem('loading', 'false');
       Swal.close();
     }
-  }, [allstate.searchMeta, allstate.searchQuerry, allstate.searchResult]);
+}, [allState.searchMeta, allState.searchQuery, allState.searchResult]);
 
   useEffect(() => {
     if (localStorage.getItem('loading') === 'true') {
@@ -76,6 +112,7 @@ function SearchInterface() {
         <div className="sidebar-wrapper">
           <Sidebar />
         </div>
+
         <div className="content-wrapper">
           <MyVerticallyCenteredModal
             show={modalShow}
@@ -84,8 +121,8 @@ function SearchInterface() {
             clone={clone}
           />
           <div className="content">
-            <div className="searchresultmain">
-              <div className="totalcount">
+            <div className="search-result-main">
+              <div className="total-count">
                 {!!search && (
                   <div>
                     Showing
@@ -94,13 +131,13 @@ function SearchInterface() {
                     {' '}
                     results For
                     {' '}
-                    <span>{searchquerryes}</span>
+                    <span>{searchQueries}</span>
                   </div>
                 )}
               </div>
-              <div className="mian-content-search">
+              <div className="main-content-search">
                 <div className="left-search">
-                  <div className="searchlibrary">
+                  <div className="search-library">
                     <Accordion defaultActiveKey="0">
                       <Card>
                         <Accordion.Toggle as={Card.Header} eventKey="0">
@@ -111,9 +148,9 @@ function SearchInterface() {
                           <Card.Body>
                             <div className="body-search">
                               <input
-                                value={searchinput}
+                                value={searchInput}
                                 onChange={(e) => {
-                                  setsearchinput(e.target.value);
+                                  setSearchInput(e.target.value);
                                 }}
                                 type="text"
                                 placeholder="Search"
@@ -121,7 +158,7 @@ function SearchInterface() {
 
                               <div
                                 onClick={() => {
-                                  if (searchinput) {
+                                  if (searchInput) {
                                     Swal.fire({
                                       html: 'Searching...', // add html attribute if you want or remove
                                       allowOutsideClick: false,
@@ -130,7 +167,7 @@ function SearchInterface() {
                                       },
                                     });
                                     dispatch(
-                                      simpleSearchfunction(searchinput, 0, 100),
+                                      simpleSearchAction(searchInput, 0, 100),
                                     );
                                   }
                                   // setModalShow(true)
@@ -145,47 +182,49 @@ function SearchInterface() {
                       </Card>
                     </Accordion>
                   </div>
-                  {/* <div className="refinesearch">
-                        <div className="headline">Refine your search</div>
-                        <Accordion defaultActiveKey="">
-                          <Card>
-                            <Accordion.Toggle as={Card.Header} eventKey="0">
-                              Subject
-                              <i className="fa fa-plus"></i>
-                            </Accordion.Toggle>
-                            <Accordion.Collapse eventKey="0">
-                              <Card.Body></Card.Body>
-                            </Accordion.Collapse>
-                          </Card>
-                          <Card>
-                            <Accordion.Toggle as={Card.Header} eventKey="1">
-                              Education Level
-                              <i className="fa fa-plus"></i>
-                            </Accordion.Toggle>
-                            <Accordion.Collapse eventKey="1">
-                              <Card.Body></Card.Body>
-                            </Accordion.Collapse>
-                          </Card>
-                          <Card>
-                            <Accordion.Toggle as={Card.Header} eventKey="2">
-                              Rating
-                              <i className="fa fa-plus"></i>
-                            </Accordion.Toggle>
-                            <Accordion.Collapse eventKey="2">
-                              <Card.Body></Card.Body>
-                            </Accordion.Collapse>
-                          </Card>
-                          <Card>
-                            <Accordion.Toggle as={Card.Header} eventKey="3">
-                              Type
-                              <i className="fa fa-plus"></i>
-                            </Accordion.Toggle>
-                            <Accordion.Collapse eventKey="3">
-                              <Card.Body></Card.Body>
-                            </Accordion.Collapse>
-                          </Card>
-                        </Accordion>
-                      </div> */}
+                  {/*
+                  <div className="refine-search">
+                    <div className="headline">Refine your search</div>
+                    <Accordion defaultActiveKey="">
+                      <Card>
+                        <Accordion.Toggle as={Card.Header} eventKey="0">
+                          Subject
+                          <i className="fa fa-plus"></i>
+                        </Accordion.Toggle>
+                        <Accordion.Collapse eventKey="0">
+                          <Card.Body></Card.Body>
+                        </Accordion.Collapse>
+                      </Card>
+                      <Card>
+                        <Accordion.Toggle as={Card.Header} eventKey="1">
+                          Education Level
+                          <i className="fa fa-plus"></i>
+                        </Accordion.Toggle>
+                        <Accordion.Collapse eventKey="1">
+                          <Card.Body></Card.Body>
+                        </Accordion.Collapse>
+                      </Card>
+                      <Card>
+                        <Accordion.Toggle as={Card.Header} eventKey="2">
+                          Rating
+                          <i className="fa fa-plus"></i>
+                        </Accordion.Toggle>
+                        <Accordion.Collapse eventKey="2">
+                          <Card.Body></Card.Body>
+                        </Accordion.Collapse>
+                      </Card>
+                      <Card>
+                        <Accordion.Toggle as={Card.Header} eventKey="3">
+                          Type
+                          <i className="fa fa-plus"></i>
+                        </Accordion.Toggle>
+                        <Accordion.Collapse eventKey="3">
+                          <Card.Body></Card.Body>
+                        </Accordion.Collapse>
+                      </Card>
+                    </Accordion>
+                  </div>
+                  */}
                 </div>
                 <div className="right-search">
                   <Tabs defaultActiveKey="all" id="uncontrolled-tab-example">
@@ -280,15 +319,15 @@ function SearchInterface() {
                                     </div>
                                   </Dropdown.Menu>
                                 </Dropdown>
-
                               </div>
                             </div>
                           ))
                         ) : (
-                          <div className="box">no result found !</div>
+                          <div className="box">No result found !</div>
                         )}
                       </div>
                     </Tab>
+
                     <Tab
                       eventKey="project"
                       title={
@@ -384,12 +423,12 @@ function SearchInterface() {
                                   </Dropdown>
 
                                 </div>
-                              </div>
+                                </div>
                               )}
                             </>
                           ))
                         ) : (
-                          <div className="box">no result found !</div>
+                          <div className="box">No result found !</div>
                         )}
                       </div>
                     </Tab>
@@ -493,7 +532,7 @@ function SearchInterface() {
                             </>
                           ))
                         ) : (
-                          <div className="box">no result found !</div>
+                          <div className="box">No result found !</div>
                         )}
                       </div>
                     </Tab>
@@ -605,9 +644,11 @@ function SearchInterface() {
                       </div>
                     </Tab>
                   </Tabs>
-                  {/* <div ref={more} className="">
-                        Loading More
-                      </div> */}
+                  {/*
+                  <div ref={more} className="">
+                    Loading More
+                  </div>
+                  */}
                 </div>
               </div>
             </div>
@@ -619,31 +660,6 @@ function SearchInterface() {
     </>
   );
 }
-function MyVerticallyCenteredModal(props) {
-  return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Please select where you would like
-          {' '}
-          <b>{props.clone ? props.clone.title : ''}</b>
-          {' '}
-          {props.clone ? props.clone.model : ''}
-          {' '}
-          to be cloned
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <CloneModel clone={props} />
-      </Modal.Body>
 
-    </Modal>
-  );
-}
 
 export default SearchInterface;

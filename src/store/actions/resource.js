@@ -89,15 +89,18 @@ export const loadH5pSettingsActivity = () => async () => {
   });
 };
 
-export const loadH5pResourceSettings = (activityId) => async (dispatch) => {
-  const result = await resourceService.h5pResourceSettings(activityId);
+export const loadH5pResource = (activityId) => async (dispatch) => {
+  const result = await resourceService.h5pResource(activityId);
+
   dispatch({
     type: actionTypes.LOAD_PLAYLIST_SUCCESS,
     payload: result,
   });
+
   return result;
 };
 
+export const loadH5pResourceSettings = (activityId) => resourceService.h5pResourceSettings(activityId);
 export const loadH5pResourceSettingsOpen = (activityId) => resourceService.h5pResourceSettingsOpen(activityId);
 export const loadH5pResourceSettingsShared = (activityId) => resourceService.h5pResourceSettingsShared(activityId);
 
@@ -440,7 +443,7 @@ export const removeShareActivity = async (activityId, resourceName) => {
     Swal.fire({
       title: `You stopped sharing <strong>"${resourceName}"</strong> ! `,
       html: 'Please remember that anyone you have shared this activity with,'
-      + ' will no longer have access to its contents.',
+        + ' will no longer have access to its contents.',
     });
   }
 };

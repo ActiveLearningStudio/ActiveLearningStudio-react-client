@@ -47,7 +47,7 @@ const ResourceCard = (props) => {
             {!!resource.thumb_url && (
               <div className="activity-thumb-wrapper">
                 <Link
-                  to={`/playlist/${playlist.id}/activity/${resource.id}/preview`}
+                  to={`/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview`}
                 >
                   <div
                     className="activity-thumb"
@@ -62,7 +62,7 @@ const ResourceCard = (props) => {
             )}
 
             <div className="title" style={{ flex: 1 }}>
-              <Link to={`/playlist/${playlist.id}/activity/${resource.id}/preview`}>
+              <Link to={`/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview`}>
                 {resource.metadata && resource.metadata.title !== undefined
                   ? resource.metadata.title
                   : resource.title}
@@ -78,7 +78,7 @@ const ResourceCard = (props) => {
                 <Dropdown.Menu>
                   <Dropdown.Item
                     as={Link}
-                    to={`/playlist/${playlist.id}/activity/${resource.id}/preview`}
+                    to={`/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview`}
                   >
                     <FontAwesomeIcon icon="eye" className="mr-2" />
                     Preview
@@ -112,12 +112,12 @@ const ResourceCard = (props) => {
 
                             <a
                               target="_blank"
-                              href={`/shared/activity/${resource.id}`}
+                              href={`/activity/${resource.id}/shared`}
                               rel="noopener noreferrer"
                             >
                               <input
                                 id="urllink_clip"
-                                value={`${protocol + window.location.host}/shared/activity/${resource.id}`}
+                                value={`${protocol + window.location.host}/activity/${resource.id}/shared`}
                               />
                             </a>
 

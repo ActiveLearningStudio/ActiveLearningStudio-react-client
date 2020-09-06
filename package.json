@@ -45,6 +45,7 @@
     "react-slick": "^0.26.1",
     "react-switch": "^5.0.1",
     "react-widgets": "^4.5.0",
+    "recharts": "^1.8.5",
     "redux": "^4.0.5",
     "redux-form": "^8.3.5",
     "redux-thunk": "^2.3.0",

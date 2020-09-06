@@ -1,45 +1,42 @@
-// import Swal from "sweetalert2";
-import { SEARCH_REDUX } from 'store/actionTypes';
 import searchService from 'services/search.service';
+import { SEARCH_REDUX } from '../actionTypes';
 
-export const searchredux = (result, searchquerry, meta) => ({
+export const searchRedux = (data, searchQuery, meta) => ({
   type: SEARCH_REDUX,
-  data: result,
-  searchquerry,
+  data,
+  searchQuery,
   meta,
 });
 
-export const simpleSearchfunction = (searchquerry, from, size) => async (dispatch) => {
-  const response = await searchService.searchResult(searchquerry, from, size);
-  dispatch(searchredux(response.data, searchquerry, response.meta));
+export const simpleSearchAction = (searchQuery, from, size) => async (dispatch) => {
+  const response = await searchService.searchResult(searchQuery, from, size);
+  dispatch(searchRedux(response.data, searchQuery, response.meta));
 };
 
 export const cloneProject = (projectID) => {
   searchService.cloneProject(projectID);
 };
 
-export const clonePlaylist = (projectId, playlistid) => {
-  searchService.clonePlaylist(projectId, playlistid);
+export const clonePlaylist = (projectId, playlistId) => {
+  searchService.clonePlaylist(projectId, playlistId);
 };
 
-export const cloneActivity = (playlistid, activityId) => {
-  searchService.cloneActivity(playlistid, activityId);
+export const cloneActivity = (playlistId, activityId) => {
+  searchService.cloneActivity(playlistId, activityId);
 };
 
-// export const advancedSearches = (searchquerry) => {
-//   console.log(searchquerry);
+// export const advancedSearches = (searchQuery) => {
 //   return async (dispatch) => {
 //     const response = axios
 //       .get(
 //         global.config.laravelAPIUrl +
-//           `/search/advance?query=${searchquerry.phrase}&educationlevelid=${
-//             searchquerry.subject
-//           }&userid=${searchquerry.grade}&negativeQuery=${
-//             searchquerry.no_words
-//           }&sort=${""}&from=${searchquerry.email}&size=${
-//             searchquerry.standard
+//           `/search/advance?query=${searchQuery.phrase}&education_level_id=${
+//             searchQuery.subject
+//           }&userid=${searchQuery.grade}&negativeQuery=${
+//             searchQuery.no_words
+//           }&sort=${""}&from=${searchQuery.email}&size=${
+//             searchQuery.standard
 //           }`,
-
 //         {
 //           headers: {
 //             Authorization: "Bearer " + token,
@@ -47,7 +44,7 @@ export const cloneActivity = (playlistid, activityId) => {
 //         }
 //       )
 //       .then((res) => {
-//         dispatch(searchredux(res.data));
+//         dispatch(searchRedux(res.data));
 //       });
 //   };
 // };
