@@ -22,7 +22,7 @@ function SearchForm() {
           }}
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
-              dispatcher(simpleSearchAction(simpleSearch, 0, 100));
+              dispatcher(simpleSearchAction(simpleSearch, 0, 1000));
               localStorage.setItem('loading', 'true');
               if (simpleSearch) {
                 history.push('/search');
