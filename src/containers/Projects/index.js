@@ -54,9 +54,8 @@ export class ProjectsPage extends React.Component {
 
   handleCloseProjectModal = (e) => {
     e.preventDefault();
-
     const { history } = this.props;
-    history.push('/');
+    history.push('/projects');
   };
 
   handleDeleteProject = (projectId) => {

@@ -71,7 +71,7 @@ const onSubmit = async (values, dispatch, props) => {
       );
     }
 
-    history.push('/');
+    history.push('/projects');
   } catch (e) {
     Swal.fire({
       icon: 'error',
@@ -149,6 +149,7 @@ let CreateProjectPopup = (props) => {
             type="text"
             label="Enter Project Name (Up to 80 characters)"
             validate={[required, maxLength80]}
+            autoComplete="new-password"
           />
         </div>
 
@@ -241,6 +242,7 @@ let CreateProjectPopup = (props) => {
             name="description"
             component={TextareaField}
             validate={[required]}
+            autoComplete="new-password"
           />
         </div>
 

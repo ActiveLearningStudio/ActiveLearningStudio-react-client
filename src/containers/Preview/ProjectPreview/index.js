@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Switch from 'react-switch';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { createBrowserHistory } from 'history';
 
 import {
   loadMyProjectsActionPreview,
@@ -16,6 +17,8 @@ import SharePreviewPopup from 'components/SharePreviewPopup';
 import ActivityCard from 'components/ActivityCard';
 
 import './style.scss';
+
+const history = createBrowserHistory();
 
 function ProjectPreview(props) {
   const { match } = props;
@@ -139,7 +142,7 @@ function ProjectPreview(props) {
                       <div>{currentProject.name}</div>
 
                       <div className="configuration">
-                        <Link to="/" className="go-back-button-preview">
+                        <Link onClick={() => history.go(-1)} className="go-back-button-preview">
                           <FontAwesomeIcon icon="undo" className="mr-2" />
                           Exit Preview Mode
                         </Link>
