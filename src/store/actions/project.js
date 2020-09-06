@@ -413,7 +413,8 @@ export const getProjectCourseFromLMSPlaylist = (
 
   if (response.project) {
     const globalstoreClone = store.getState();
-
+    //server store console
+    console.log(globalstoreClone)
     dispatch(setLmsCourse(response.project, globalstoreClone));
    
     Swal.fire({
@@ -447,16 +448,6 @@ export const getProjectCourseFromLMSPlaylist = (
                     counterId = playistId_.counter;
                   }
                 });
-
-        await projectService.lmsPublish(lms, projectId, settingId, counterId, playlistId);
-
-        Swal.fire({
-          icon: 'success',
-          title: 'Published!',
-          confirmButtonColor: '#5952c6',
-          html: `Your Project has been published to <a target="_blank" href="${lmsUrl}"> ${lmsUrl}</a>`,
-          //   text: `Yo'ur playlist has been submitted to ${lmsUrl}`,
-        });
 
         await projectService.lmsPublish(lms, projectId, settingId, counterId, playlistId);
 
