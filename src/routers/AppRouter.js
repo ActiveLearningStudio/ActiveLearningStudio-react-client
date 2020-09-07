@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import {
-  Route,
+  // Route,
   BrowserRouter as Router,
   Redirect,
   Switch,
@@ -11,6 +11,7 @@ import ReactGA from 'react-ga';
 
 import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
+import OpenRoute from './OpenRoute';
 
 const history = History.createBrowserHistory();
 history.listen((location) => {
@@ -70,7 +71,7 @@ const AppRouter = () => {
           path="/project/:projectId/preview"
           component={PreviewPage}
         />
-        <Route
+        <OpenRoute
           exact
           path="/project/:projectId/shared"
           component={PreviewPageShared}
@@ -95,7 +96,7 @@ const AppRouter = () => {
           component={PreviewPage}
           previewType="playlist"
         />
-        <Route
+        <OpenRoute
           exact
           path="/project/:projectId/playlist/:playlistId/preview/lti"
           component={LtiPreviewPage}
@@ -120,7 +121,7 @@ const AppRouter = () => {
           component={PreviewPage}
           previewType="playlist"
         />
-        <Route
+        <OpenRoute
           path="/project/:projectId/playlist/:playlistId/activity/:activityId/preview/lti"
           exact
           component={LtiPreviewPage}
@@ -144,13 +145,13 @@ const AppRouter = () => {
           component={PreviewPage}
           previewType="activity"
         />
-        <Route
+        <OpenRoute
           exact
           path="/activities/:activityId/preview/lti"
           component={LtiPreviewPage}
           previewType="activitySharedLti"
         />
-        <Route
+        <OpenRoute
           exact
           path="/activity/:activityId/shared"
           component={LtiPreviewPage}
