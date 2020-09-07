@@ -14,15 +14,15 @@ import './style.scss';
 function ProjectPreviewShared(props) {
   const { match, loadMyProjectsPreviewShared } = props;
 
-  const projectFind = useSelector((state) => state);
+  const project = useSelector((state) => state.project);
 
   const [currentProject, setCurrentProject] = useState(null);
 
   useEffect(() => {
-    if (projectFind.project && Object.keys(projectFind.project.selectedProject).length > 0) {
-      setCurrentProject(projectFind.project.selectedProject);
+    if (project && Object.keys(project.projectSelect).length > 0) {
+      setCurrentProject(project.projectSelect);
     }
-  }, [projectFind.project]);
+  }, [project]);
 
   const settings = {
     dots: false,

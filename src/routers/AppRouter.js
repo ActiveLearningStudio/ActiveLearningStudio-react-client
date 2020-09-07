@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import {
-  // Route,
+  Route,
   BrowserRouter as Router,
   Redirect,
   Switch,
@@ -11,7 +11,6 @@ import ReactGA from 'react-ga';
 
 import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
-import OpenRoute from './OpenRouter';
 
 const history = History.createBrowserHistory();
 history.listen((location) => {
@@ -71,7 +70,7 @@ const AppRouter = () => {
           path="/project/:projectId/preview"
           component={PreviewPage}
         />
-        <PrivateRoute
+        <Route
           exact
           path="/project/:projectId/shared"
           component={PreviewPageShared}
@@ -96,14 +95,12 @@ const AppRouter = () => {
           component={PreviewPage}
           previewType="playlist"
         />
-        {/*
-        <PrivateRoute
+        <Route
           exact
           path="/project/:projectId/playlist/:playlistId/preview/lti"
           component={LtiPreviewPage}
           previewType="playlist"
         />
-        */}
 
         <PrivateRoute
           exact
@@ -123,14 +120,12 @@ const AppRouter = () => {
           component={PreviewPage}
           previewType="playlist"
         />
-        {/*
-        <PrivateRoute
+        <Route
           path="/project/:projectId/playlist/:playlistId/activity/:activityId/preview/lti"
           exact
           component={LtiPreviewPage}
           previewType="playlist"
         />
-        */}
         <PrivateRoute
           exact
           path="/project/:projectId/playlist/:playlistId/activity/:activityId/preview/shared"
@@ -149,15 +144,13 @@ const AppRouter = () => {
           component={PreviewPage}
           previewType="activity"
         />
-        {/*
-        <PrivateRoute
+        <Route
           exact
           path="/activities/:activityId/preview/lti"
           component={LtiPreviewPage}
           previewType="activitySharedLti"
         />
-        */}
-        <OpenRoute
+        <Route
           exact
           path="/activity/:activityId/shared"
           component={LtiPreviewPage}
