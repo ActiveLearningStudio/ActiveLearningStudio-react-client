@@ -24,6 +24,19 @@
 }
 
 .create-program-wrapper {
+  .label-toggle{
+    display: flex;
+    justify-content: space-between;
+      .class-toggle{
+        align-items: center;
+        display: flex;
+
+        label{
+          padding-right: 5px;
+        }
+      }
+  }
+
   h1 {
     margin: 0;
     font-family: 'Open Sans', sans-serif;

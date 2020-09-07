@@ -1,9 +1,10 @@
-import { SHOW_LMS, CHANGE_LOADING, GOOGLE_SHARE } from '../actionTypes';
+import { SHOW_LMS, CHANGE_LOADING, GOOGLE_SHARE, ALL_COURSES } from '../actionTypes';
 
 const INITIAL_STATE = {
   shareVendors: [],
   loadingShare: false,
   googleShare: false,
+  courses: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -25,6 +26,12 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         googleShare: action.value,
       };
+
+    case ALL_COURSES:
+      return {
+        ...state,
+        courses: action.payload,
+      };  
 
     default:
       return state;
