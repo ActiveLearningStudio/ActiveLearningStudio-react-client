@@ -12,14 +12,6 @@ import PlaylistPreview from './PlaylistPreview';
 import ActivityShared from './PlaylistPreview/ActivityShared';
 
 class PreviewPage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      playlistId: null,
-    };
-  }
-
   componentDidMount() {
     // scroll to top
     window.scrollTo(0, 0);
@@ -30,40 +22,26 @@ class PreviewPage extends React.Component {
     }
   }
 
-  // componentDidUpdate() {
-  //   if (this.props.selectedPlaylist !== this.state.playlistId) {
-  //     this.setState({ playlistId: this.props.selectedPlaylist });
-  //   }
-  // }
-
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   if (nextProps.selectedPlaylist !== prevState.playlistId) {
-  //     return { playlistId: nextProps.selectedPlaylist.id };
-  //   }
-  //   return null;
-  // }
-
   render() {
-    const { playlistId } = this.state;
     const { match, project, previewType } = this.props;
 
-    let content = null;
+    const { projectId, playlistId, activityId } = match.params;
+
+    let content;
     if (previewType === 'activity') {
       content = (
         <ResourcePreview
-          activityId={parseInt(match.params.activityId, 10)}
+          activityId={parseInt(activityId, 10)}
         />
       );
     } else if (previewType === 'playlist') {
-      if (!playlistId) {
-        content = (
-          <PlaylistPreview
-            projectId={parseInt(match.params.projectId, 10)}
-            playlistId={parseInt(match.params.playlistId, 10)}
-            activityId={parseInt(match.params.activityId, 10)}
-          />
-        );
-      }
+      content = (
+        <PlaylistPreview
+          projectId={parseInt(projectId, 10)}
+          playlistId={parseInt(playlistId, 10)}
+          activityId={activityId ? parseInt(activityId, 10) : null}
+        />
+      );
     } else if (previewType === 'activityShared') {
       content = <ActivityShared />;
     } else {
@@ -71,7 +49,7 @@ class PreviewPage extends React.Component {
         <div className="site-container">
           <ProjectPreview
             {...this.props}
-            key={match.params.projectId}
+            key={projectId}
             project={project}
             showLti={false}
           />
