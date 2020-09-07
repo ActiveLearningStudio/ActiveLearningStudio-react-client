@@ -46,7 +46,7 @@ const removeShared = (id) => httpService
   .catch((err) => Promise.reject(err.response.data));
 
 const getShared = (id) => httpService
-  .get(`/${apiVersion}/projects/${id}/get-shared`)
+  .get(`/${apiVersion}/projects/${id}/load-shared`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
