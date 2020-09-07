@@ -70,7 +70,7 @@ const AppRouter = () => {
           path="/project/:projectId/preview"
           component={PreviewPage}
         />
-        <PrivateRoute
+        <Route
           exact
           path="/project/:projectId/shared"
           component={PreviewPageShared}
