@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import Slider from 'react-slick';
 import { useDispatch, useSelector } from 'react-redux';
 import Switch from 'react-switch';
@@ -18,7 +18,7 @@ import ActivityCard from 'components/ActivityCard';
 import './style.scss';
 
 function ProjectPreview(props) {
-  const { match } = props;
+  const { match, history } = props;
 
   const dispatch = useDispatch();
   const projectState = useSelector((state) => state.project);
@@ -139,7 +139,7 @@ function ProjectPreview(props) {
                       <div>{currentProject.name}</div>
 
                       <div className="configuration">
-                        <Link to="/" className="go-back-button-preview">
+                        <Link onClick={() => history.goBack()} className="go-back-button-preview">
                           <FontAwesomeIcon icon="undo" className="mr-2" />
                           Exit Preview Mode
                         </Link>
@@ -233,6 +233,7 @@ function ProjectPreview(props) {
 
 ProjectPreview.propTypes = {
   match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
-export default ProjectPreview;
+export default withRouter(ProjectPreview);

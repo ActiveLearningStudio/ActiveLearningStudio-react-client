@@ -15,6 +15,7 @@ import {
   createProjectAction,
   updateProjectAction,
   uploadProjectThumbnailAction,
+  showCreateProjectModalAction,
 } from 'store/actions/project';
 import InputField from 'components/InputField';
 import TextareaField from 'components/TextareaField';
@@ -71,7 +72,7 @@ const onSubmit = async (values, dispatch, props) => {
       );
     }
 
-    history.push('/');
+    history.push('/projects');
   } catch (e) {
     Swal.fire({
       icon: 'error',
@@ -104,10 +105,15 @@ let CreateProjectPopup = (props) => {
     editMode,
     handleSubmit,
     handleCloseProjectModal,
+    showCreateProjectModal,
   } = props;
 
   const [modalShow, setModalShow] = useState(false);
   const openFile = useRef();
+
+  if (!editMode) {
+    showCreateProjectModal();
+  }
 
   // remove popup when escape is pressed
   const escFunction = useCallback(
@@ -149,6 +155,7 @@ let CreateProjectPopup = (props) => {
             type="text"
             label="Enter Project Name (Up to 80 characters)"
             validate={[required, maxLength80]}
+            autoComplete="new-password"
           />
         </div>
 
@@ -241,6 +248,7 @@ let CreateProjectPopup = (props) => {
             name="description"
             component={TextareaField}
             validate={[required]}
+            autoComplete="new-password"
           />
         </div>
 
@@ -270,6 +278,7 @@ CreateProjectPopup.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   handleCloseProjectModal: PropTypes.func.isRequired,
+  showCreateProjectModal: PropTypes.func.isRequired,
 };
 
 CreateProjectPopup = reduxForm({
@@ -280,6 +289,7 @@ CreateProjectPopup = reduxForm({
 
 const mapDispatchToProps = (dispatch) => ({
   uploadProjectThumbnail: (formData) => dispatch(uploadProjectThumbnailAction(formData)),
+  showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
 });
 
 const mapStateToProps = (state) => ({
