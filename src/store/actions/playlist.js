@@ -108,6 +108,7 @@ export const changePlaylistTitleAction = (projectId, playlistId, title) => async
   }
 };
 
+// Reorders playlists AND activities
 export const reorderPlaylistsAction = (projectId, orgPlaylists, playlists) => async (dispatch) => {
   try {
     // Optimistically dispatching action with new playlists data
@@ -117,10 +118,17 @@ export const reorderPlaylistsAction = (projectId, orgPlaylists, playlists) => as
       payload: { playlists },
     });
 
-    const pLists = playlists.map((pList, index) => ({
-      id: pList.id,
-      order: index,
-    }));
+    const pLists = playlists.map((pList, index) => {
+      const mapped = {
+        id: pList.id,
+        order: index,
+        activities: pList.activities.map((act, index) => ({
+          id: act.id,
+          order: index
+        }))
+      };
+      return mapped;
+    });
 
     const { playlists: updatedPlaylists } = await playlistService.reorder(projectId, pLists);
 
@@ -163,35 +171,6 @@ export const LoadHP = (show) => ({
   type: actionTypes.LOAD_H5P,
   show,
 });
-
-export const reorderPlaylistActivities = (playlist) => ({
-  type: actionTypes.REORDER_PLAYLIST,
-  playlist,
-});
-
-export const reorderPlaylistActivitiesAction = (playlist) => async (dispatch) => {
-  // Optimistically dispatching action with new playlist data
-  // to avoid waiting for request to go through
-  dispatch(reorderPlaylistActivities(playlist));
-
-  // Then performing request. If something goes wrong,
-  // dispatch loadProjectPlaylistsAction to refresh playlists
-  // with fresh server data
-  const { token } = JSON.parse(localStorage.getItem('auth'));
-  axios.post(
-    '/api/reorder-playlist',
-    { playlist },
-    { headers: { Authorization: `Bearer ${token}` } },
-  )
-    .then((response) => {
-      if (response.data.status === 'error' || response.status !== 200) {
-        dispatch(loadProjectPlaylistsAction(playlist.projectId));
-      }
-    })
-    .catch(() => {
-      dispatch(loadProjectPlaylistsAction(playlist.projectId));
-    });
-};
 
 export const loadLtiPlaylistAction = (playlistId) => async (dispatch) => {
   // const { token } = JSON.parse(localStorage.getItem("auth"));

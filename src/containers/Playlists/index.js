@@ -13,8 +13,7 @@ import {
   showCreatePlaylistModalAction,
   hideCreatePlaylistModalAction,
   loadProjectPlaylistsAction,
-  reorderPlaylistsAction,
-  reorderPlaylistActivitiesAction,
+  reorderPlaylistsAction
 } from 'store/actions/playlist';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import {
@@ -231,49 +230,43 @@ class PlaylistsPage extends React.Component {
     const {
       match,
       playlist: { playlists },
-      reorderPlaylists,
-      reorderPlaylistActivities,
+      reorderPlaylists
     } = this.props;
+    const orgPlaylists = Array.from(playlists);
 
     if (e.type === 'resource') {
       // resource dropped
       if (e.source.droppableId === e.destination.droppableId) {
         // Resource dropped within the same list
-        const playlist = playlists.find((pl) => pl.id === e.source.droppableId);
-        const resources = Array.from(playlist.resources);
-        const [removed] = resources.splice(e.source.index, 1);
-        resources.splice(e.destination.index, 0, removed);
-        reorderPlaylistActivities({
-          ...playlist,
-          resources,
-        });
+        var playlist = playlists.find((pl) => pl.id === parseInt(e.source.droppableId));
+        const activities = Array.from(playlist.activities);
+        const [removed] = activities.splice(e.source.index, 1);
+        activities.splice(e.destination.index, 0, removed);
+        // update playlist with new activities
+        playlist.activities = activities;
       } else {
         // Rsc dropped on a different list
-        const sourceList = playlists.find((pl) => pl.id === e.source.droppableId);
-        const destinationList = playlists.find((pl) => pl.id === e.destination.droppableId);
-        const sourceResources = Array.from(sourceList.resources);
-        const destResources = destinationList.resources
-          ? Array.from(destinationList.resources)
+        var sourceList = playlists.find((pl) => pl.id === parseInt(e.source.droppableId));
+        var destinationList = playlists.find((pl) => pl.id === parseInt(e.destination.droppableId));
+        const sourceActivities = Array.from(sourceList.activities);
+        const destActivities = destinationList.activities
+          ? Array.from(destinationList.activities)
           : [];
 
-        const [removed] = sourceResources.splice(e.source.index, 1);
-        destResources.splice(e.destination.index, 0, removed);
-
-        reorderPlaylistActivities({
-          ...sourceList,
-          resources: sourceResources,
-        });
-        reorderPlaylistActivities({
-          ...destinationList,
-          resources: destResources,
-        });
+        const [removed] = sourceActivities.splice(e.source.index, 1);
+        destActivities.splice(e.destination.index, 0, removed);
+        // Update both playlists with new activities
+        sourceList.activities = sourceActivities;
+        destinationList.activities = destActivities; 
       }
+      // Previous block caused changes to playlists
+      reorderPlaylists(match.params.projectId, orgPlaylists, playlists);
     } else {
       // playlist dropped
       const pLists = Array.from(playlists);
       const [removed] = pLists.splice(e.source.index, 1);
       pLists.splice(e.destination.index, 0, removed);
-      reorderPlaylists(match.params.projectId, playlists, pLists);
+      reorderPlaylists(match.params.projectId, orgPlaylists, pLists);
     }
   };
 
@@ -471,7 +464,6 @@ const mapDispatchToProps = (dispatch) => ({
   onChangeActivity: (e, activity) => dispatch(onChangeActivityAction(e, activity)),
   uploadResourceThumbnail: () => dispatch(uploadResourceThumbnailAction()),
   reorderPlaylists: (projectId, orgPlaylists, playlists) => dispatch(reorderPlaylistsAction(projectId, orgPlaylists, playlists)),
-  reorderPlaylistActivities: (playlist) => dispatch(reorderPlaylistActivitiesAction(playlist)),
   loadLms: () => dispatch(loadLmsAction()),
 });
 
