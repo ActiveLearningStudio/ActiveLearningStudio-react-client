@@ -8,7 +8,7 @@ const ActivityPreviewCard = (props) => {
   const { activity, projectId, playlistId } = props;
 
   return (
-    <Link to={`/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview/shared`}>
+    <Link to={`/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`}>
       <li className="check">
         {activity.thumb_url && (
           <div
