@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import gifloader from 'assets/images/276.gif';
+import gifLoader from 'assets/images/276.gif';
 import {
   loadH5pResource,
   loadH5pResourceSettingsOpen,
@@ -12,29 +12,13 @@ import {
 const H5PPreview = (props) => {
   const [loading, setLoading] = useState(true);
 
+  const [resourceId, setResourceId] = useState(null);
+
   const {
     activityId,
     loadH5pResourceProp,
     showLtiPreview,
   } = props;
-
-  // eslint-disable-next-line camelcase
-  // UNSAFE_componentWillReceiveProps(props) {
-  //   const { activityId, showLtiPreview, showActivityPreview } = props;
-  //   if (activityId !== props.activityId) {
-  //     const h5pIFrame = document.getElementsByClassName('h5p-iframe');
-  //     if (h5pIFrame.length) {
-  //       h5pIFrame[0].remove();
-  //     }
-  //     if (showLtiPreview) {
-  //       loadResourceLti(props.activityId);
-  //     } else if (showActivityPreview) {
-  //       loadResourceActivity(props.activityId);
-  //     } else {
-  //       loadResource(props.activityId);
-  //     }
-  //   }
-  // }
 
   const resourceLoaded = async (data) => {
     window.H5PIntegration = data.h5p.settings;
@@ -69,8 +53,8 @@ const H5PPreview = (props) => {
     setLoading(false);
   };
 
-  const loadResource = useCallback(async (activityResourceId) => {
-    if (activityResourceId === 0) {
+  const loadResource = async (activityResourceId) => {
+    if (!activityResourceId) {
       return;
     }
 
@@ -82,10 +66,10 @@ const H5PPreview = (props) => {
     } catch (e) {
       setLoading(false);
     }
-  }, [loadH5pResourceProp]);
+  };
 
-  const loadResourceLti = useCallback(async (activityResourceId) => {
-    if (activityResourceId === 0) {
+  const loadResourceLti = async (activityResourceId) => {
+    if (!activityResourceId) {
       return;
     }
 
@@ -95,15 +79,21 @@ const H5PPreview = (props) => {
     } catch (e) {
       setLoading(false);
     }
-  }, []);
+  };
 
   useEffect(() => {
-    if (showLtiPreview) {
-      loadResourceLti(activityId);
-    } else {
-      loadResource(activityId);
+    console.log('resourceId: ', resourceId);
+    console.log('activityId: ', activityId);
+    if (resourceId !== activityId) {
+      if (showLtiPreview) {
+        loadResourceLti(activityId);
+      } else {
+        loadResource(activityId);
+      }
+
+      setResourceId(activityId);
     }
-  }, [activityId, loadResource, loadResourceLti, showLtiPreview]);
+  }, [resourceId, activityId, showLtiPreview, loadResourceLti, loadResource]);
 
   return (
     <>
@@ -116,7 +106,7 @@ const H5PPreview = (props) => {
       ) : (
         <div id="curriki-h5p-wrapper">
           <div className="loader_gif">
-            <img src={gifloader} alt="" />
+            <img src={gifLoader} alt="" />
           </div>
         </div>
       )}

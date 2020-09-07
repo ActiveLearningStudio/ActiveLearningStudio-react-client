@@ -35,18 +35,6 @@ class PlaylistPreview extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (!!nextProps.playlist.selectedPlaylist && nextProps.playlist.selectedPlaylist.project) {
-      const selectedProject = nextProps.projects.find((data) => data.id === nextProps.playlist.selectedPlaylist.project.id);
-      if (selectedProject) {
-        const currentActivity = nextProps.playlist.selectedPlaylist.activities.find((a) => a.id === prevState.activityId);
-        const currentActivityShared = currentActivity && currentActivity.shared;
-
-        return {
-          allPlaylists: selectedProject.playlists,
-          currentPlaylist: nextProps.playlist.selectedPlaylist,
-          activityShared: !!currentActivityShared,
-        };
-      }
-
       if (nextProps.loading) {
         if (nextProps.playlist.selectedPlaylist.activities) {
           if (nextProps.playlist.selectedPlaylist.activities.length > 0) {
@@ -63,9 +51,23 @@ class PlaylistPreview extends React.Component {
         }
       }
 
+      const selectedProject = nextProps.projects.find((data) => data.id === nextProps.projectId);
+      if (selectedProject) {
+        const selectedActivities = nextProps.playlist.selectedPlaylist.activities;
+        const currentActivity = selectedActivities.find((a) => a.id === prevState.activityId);
+        const currentActivityShared = currentActivity && currentActivity.shared;
+
+        return {
+          allPlaylists: selectedProject.playlists,
+          currentPlaylist: nextProps.playlist.selectedPlaylist,
+          activityShared: !!currentActivityShared,
+        };
+      }
+
       return {
         allPlaylists: [],
         currentPlaylist: nextProps.playlist.selectedPlaylist,
+        activityShared: false,
       };
     }
 
@@ -106,6 +108,94 @@ class PlaylistPreview extends React.Component {
     }
   };
 
+  shareActivity = async (activityId, currentActivity, activityShared) => {
+    const {
+      projectId,
+      playlistId,
+      loadPlaylist,
+    } = this.props;
+
+    const nameActivity = currentActivity && currentActivity.title;
+    if (activityShared) {
+      Swal.fire({
+        icon: 'warning',
+        title: `You are about to stop sharing <strong>${nameActivity}</strong>
+          Please remember that anyone you have shared this activity with will no longer have access its contents.
+          Do you want to continue?`,
+        showCloseButton: true,
+        showCancelButton: true,
+        focusConfirm: false,
+        confirmButtonText: 'Stop Sharing!',
+        confirmButtonAriaLabel: 'Stop Sharing!',
+        cancelButtonText: 'Cancel',
+        cancelButtonAriaLabel: 'Cancel',
+      })
+        .then(async (resp) => {
+          if (resp.isConfirmed) {
+            await removeShareActivity(activityId, nameActivity);
+            loadPlaylist(projectId, playlistId);
+          }
+        });
+    } else {
+      await shareActivity(activityId);
+      loadPlaylist(projectId, playlistId);
+    }
+  };
+
+  viewSharedLink = (activityId) => {
+    const protocol = `${window.location.href.split('/')[0]}//`;
+    confirmAlert({
+      customUI: ({ onClose }) => (
+        <div className="share-project-preview-url project-share-check">
+          <div className="mt-3 mb-2 d-flex align-items-center">
+            <a
+              href={`/activity/${activityId}/shared`}
+              target="_blank"
+              rel="noreferrer"
+              style={{ flex: 1 }}
+            >
+              <input
+                id="urllink_clip"
+                style={{ width: '100%' }}
+                value={`${protocol}${window.location.host}/activity/${activityId}/shared`}
+              />
+            </a>
+
+            <FontAwesomeIcon
+              title="Copy to clipboard"
+              icon="clipboard"
+              onClick={() => {
+                /* Get the text field */
+                const copyText = document.getElementById('urllink_clip');
+
+                /* Select the text field */
+                copyText.focus();
+                copyText.select();
+                // copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+                /* Copy the text inside the text field */
+                document.execCommand('copy');
+
+                /* Alert the copied text */
+                Swal.fire({
+                  title: 'Link Copied',
+                  showCancelButton: false,
+                  showConfirmButton: false,
+                  timer: 1500,
+                  allowOutsideClick: false,
+                });
+              }}
+            />
+          </div>
+
+          <div className="close-btn">
+            <button type="button" onClick={onClose}>Ok</button>
+          </div>
+        </div>
+      ),
+    });
+  };
+
   render() {
     let { activityId } = this.state;
     const { allPlaylists, currentPlaylist, activityShared } = this.state;
@@ -116,9 +206,13 @@ class PlaylistPreview extends React.Component {
       projects,
       projectId,
       playlistId,
-      playlist: { selectedPlaylist },
-      loadPlaylist,
+      playlist,
     } = this.props;
+
+    let { selectedPlaylist } = playlist;
+    if (selectedPlaylist && selectedPlaylist.id !== playlistId) {
+      selectedPlaylist = null;
+    }
 
     if (!selectedPlaylist) {
       return (
@@ -171,7 +265,7 @@ class PlaylistPreview extends React.Component {
         />
       ));
 
-      if (!activityId) {
+      if (activityId === null || activityId === undefined) {
         activityId = selectedPlaylist.activities[0].id;
       }
 
@@ -424,7 +518,7 @@ class PlaylistPreview extends React.Component {
                     {!!currentActivity && (
                       <Suspense fallback={<div>Loading</div>}>
                         {currentActivity.type === 'h5p' ? (
-                          <H5PPreview {...this.state} activityId={activityId} />
+                          <H5PPreview activityId={currentActivity.id} />
                         ) : (
                           <ImmersiveReaderPreview activity={currentActivity} />
                         )}
@@ -464,33 +558,7 @@ class PlaylistPreview extends React.Component {
                       Share Activity
                       <Switch
                         onColor="#5952c6"
-                        onChange={async () => {
-                          const nameActivity = currentActivity && currentActivity.title;
-                          if (activityShared) {
-                            Swal.fire({
-                              icon: 'warning',
-                              title: `You are about to stop sharing <strong>${nameActivity}</strong>
-                                Please remember that anyone you have shared this activity with will no longer have access its contents.
-                                Do you want to continue?`,
-                              showCloseButton: true,
-                              showCancelButton: true,
-                              focusConfirm: false,
-                              confirmButtonText: 'Stop Sharing!',
-                              confirmButtonAriaLabel: 'Stop Sharing!',
-                              cancelButtonText: 'Cancel',
-                              cancelButtonAriaLabel: 'Cancel',
-                            })
-                              .then(async (resp) => {
-                                if (resp.isConfirmed) {
-                                  await removeShareActivity(activityId, nameActivity);
-                                  loadPlaylist(projectId, playlistId);
-                                }
-                              });
-                          } else {
-                            await shareActivity(activityId);
-                            loadPlaylist(projectId, playlistId);
-                          }
-                        }}
+                        onChange={() => this.shareActivity(activityId, currentActivity, activityShared)}
                         checked={activityShared}
                         className="react-switch"
                         id="material-switch"
@@ -503,59 +571,7 @@ class PlaylistPreview extends React.Component {
                     {activityShared && (
                       <div
                         className="shared-link"
-                        onClick={() => {
-                          const protocol = `${window.location.href.split('/')[0]}//`;
-                          confirmAlert({
-                            customUI: ({ onClose }) => (
-                              <div className="share-project-preview-url project-share-check">
-                                <div className="mt-3 mb-2 d-flex align-items-center">
-                                  <a
-                                    href={`/activity/${activityId}/shared`}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    style={{ flex: 1 }}
-                                  >
-                                    <input
-                                      id="urllink_clip"
-                                      style={{ width: '100%' }}
-                                      value={`${protocol}${window.location.host}/activity/${activityId}/shared`}
-                                    />
-                                  </a>
-
-                                  <FontAwesomeIcon
-                                    title="Copy to clipboard"
-                                    icon="clipboard"
-                                    onClick={() => {
-                                      /* Get the text field */
-                                      const copyText = document.getElementById('urllink_clip');
-
-                                      /* Select the text field */
-                                      copyText.focus();
-                                      copyText.select();
-                                      // copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-
-                                      /* Copy the text inside the text field */
-                                      document.execCommand('copy');
-
-                                      /* Alert the copied text */
-                                      Swal.fire({
-                                        title: 'Link Copied',
-                                        showCancelButton: false,
-                                        showConfirmButton: false,
-                                        timer: 1500,
-                                        allowOutsideClick: false,
-                                      });
-                                    }}
-                                  />
-                                </div>
-
-                                <div className="close-btn">
-                                  <button type="button" onClick={onClose}>Ok</button>
-                                </div>
-                              </div>
-                            ),
-                          });
-                        }}
+                        onClick={() => this.viewSharedLink(activityId)}
                       >
                         <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
                         View Shared Link
