@@ -15,6 +15,7 @@ import {
   createProjectAction,
   updateProjectAction,
   uploadProjectThumbnailAction,
+  showCreateProjectModalAction,
 } from 'store/actions/project';
 import InputField from 'components/InputField';
 import TextareaField from 'components/TextareaField';
@@ -104,10 +105,15 @@ let CreateProjectPopup = (props) => {
     editMode,
     handleSubmit,
     handleCloseProjectModal,
+    showCreateProjectModal,
   } = props;
 
   const [modalShow, setModalShow] = useState(false);
   const openFile = useRef();
+
+  if (!editMode) {
+    showCreateProjectModal();
+  }
 
   // remove popup when escape is pressed
   const escFunction = useCallback(
@@ -272,6 +278,7 @@ CreateProjectPopup.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   handleCloseProjectModal: PropTypes.func.isRequired,
+  showCreateProjectModal: PropTypes.func.isRequired,
 };
 
 CreateProjectPopup = reduxForm({
@@ -282,6 +289,7 @@ CreateProjectPopup = reduxForm({
 
 const mapDispatchToProps = (dispatch) => ({
   uploadProjectThumbnail: (formData) => dispatch(uploadProjectThumbnailAction(formData)),
+  showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
 });
 
 const mapStateToProps = (state) => ({
