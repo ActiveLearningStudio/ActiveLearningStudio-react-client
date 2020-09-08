@@ -22,7 +22,7 @@ function DashboardPage(props) {
     getUserMetrics,
     getUserMembership,
   } = props;
-
+  console.log(metrics);
   const storageData = [
     {
       name: 'Used',
@@ -31,7 +31,7 @@ function DashboardPage(props) {
     },
     {
       name: 'Free',
-      value: metrics.total_storage - metrics.used_storage,
+      value: (1+metrics.total_storage - metrics.used_storage),
       color: '#607a9b',
     },
   ];
@@ -44,7 +44,7 @@ function DashboardPage(props) {
     },
     {
       name: 'Free',
-      value: metrics.total_bandwidth - metrics.used_bandwidth,
+      value: (1 + metrics.total_bandwidth - metrics.used_bandwidth),
       color: '#607a9b',
     },
   ];
@@ -53,6 +53,12 @@ function DashboardPage(props) {
 
   const usedBandwidthPercentage = `${Math.round((metrics.used_bandwidth * 100) / metrics.total_bandwidth)}%`;
 
+  console.log(metrics);
+  console.log(storageData);
+  console.log(bandwidthData);
+  console.log(usedStoragePercentage);
+  console.log(usedBandwidthPercentage);
+
   useEffect(() => {
     if (!userId) {
       return;
@@ -60,7 +66,7 @@ function DashboardPage(props) {
 
     getUserMetrics(userId);
     getUserMembership(userId);
-  }, [userId, getUserMetrics, getUserMembership]);
+  }, [userId /*, getUserMetrics, getUserMembership*/]);
 
   return (
     <>
