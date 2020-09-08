@@ -75,11 +75,7 @@
       "git add"
     ]
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
+ 
   "scripts": {
     "lint": "eslint .",
     "start:dev": "react-scripts start",

@@ -1,25 +1,56 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import { Link } from 'react-router-dom';
+import {useSelector, useDispatch} from "react-redux"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './style.scss';
+import {
+  allSidebarProjects,
+  allUpdateProject,
+  sampleProjects
+} from 'store/actions/project'
 
 function Sidebar() {
+  const dispatch = useDispatch() 
+
+  const allState = useSelector(state=>state)
+
+  const [myProjects,setMyProjects] = useState([])
+  const [sampleProject,setSampleProjects] = useState([])
+  const [updateProject,setUpdateProject] = useState([])
+
+  useEffect(()=>{
+    if(allState.sidebar.allProject.length===0){
+      dispatch(allSidebarProjects())
+      dispatch(sampleProjects())
+      dispatch(allUpdateProject())
+    }
+  },[])
+
+  useEffect(()=>{
+    if(allState.sidebar.allProject.length>0){
+      setMyProjects(allState.sidebar.allProject)
+    }
+  },[allState.sidebar.allProject])
+
+  useEffect(()=>{
+    if(allState.sidebar.sampleProject.length>0){
+      setSampleProjects(allState.sidebar.sampleProject)
+    }
+  },[allState.sidebar.sampleProject])
+
+  useEffect(()=>{
+    if(allState.sidebar.updateProject.length>0){
+      setUpdateProject(allState.sidebar.updateProject)
+    }
+  },[allState.sidebar.updateProject])
+
+
+  
   return (
-    <aside>
+    <aside className="sidebarall">
       <ul>
-        <li>
-          <Link to="/">
-            <FontAwesomeIcon className="mr-2" icon="tachometer-alt" />
-            Dashboard
-          </Link>
-        </li>
-        <li>
-          <Link to="/projects">
-            <span className="sidebar-icon my-resources-icon" />
-            My Projects
-          </Link>
-        </li>
+        
         {/*
         <li>
           <Link to="/">
@@ -51,6 +82,48 @@ function Sidebar() {
         </li>
         */}
       </ul>
+      <div className="menu-title">My Projects</div>
+      <ul className="all-project">
+        {!!myProjects && myProjects.map((data, counter)=>{
+        return (
+          <>
+           {counter <=5 && <li key={data.id}>
+             
+             <Link to={`/project/${data.id}`}>
+               <FontAwesomeIcon icon="angle-right" className="mr-2" />
+               {data.name}
+               </Link></li>}
+          </>
+          )
+        })}
+     </ul>
+
+     <div className="menu-title">Sample Projects</div>
+      <ul className="all-project">
+        {!!sampleProject && sampleProject.map((data, counter)=>{
+        return (
+          <>
+           {counter <=5 && <li key={data.id}><Link to={`/project/${data.id}/shared`}>
+           <FontAwesomeIcon icon="angle-right" className="mr-2" />
+             {data.name}</Link></li>}
+          </>
+          )
+        })}
+     </ul>
+
+     <div className="menu-title">FEATURED Project</div>
+      <ul className="all-project">
+        {!!updateProject && updateProject.map((data, counter)=>{
+        return (
+          <>
+           {counter <=5 && <li key={data.id}><Link to={`/project/${data.id}`}>
+           <FontAwesomeIcon icon="angle-right" className="mr-2" />
+             {data.name}</Link></li>}
+          </>
+          )
+        })}
+     </ul>
+    
     </aside>
   );
 }
