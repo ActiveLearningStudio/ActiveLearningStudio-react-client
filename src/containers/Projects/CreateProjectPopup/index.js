@@ -115,10 +115,6 @@ let CreateProjectPopup = (props) => {
   const [publicProject, setPublicProject]  =  useState(false)
   const openFile = useRef();
 
-  if (!editMode) {
-    showCreateProjectModal();
-  }
-
   // remove popup when escape is pressed
   const escFunction = useCallback(
     (event) => {
@@ -128,6 +124,11 @@ let CreateProjectPopup = (props) => {
     },
     [handleCloseProjectModal],
   );
+
+  useEffect(() => {
+    if (!editMode)
+      showCreateProjectModal();
+  }, []); // Runs only once
 
   useEffect(() => {
     document.addEventListener('keydown', escFunction, false);
