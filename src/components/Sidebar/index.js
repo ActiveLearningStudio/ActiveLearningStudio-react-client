@@ -82,7 +82,14 @@ function Sidebar() {
         </li>
         */}
       </ul>
-      <div className="menu-title">My Projects</div>
+      
+      <Link to={`/`}>
+      <div className="menu-title">
+      My Projects
+      </div>
+        
+        </Link>
+       
       <ul className="all-project">
         {!!myProjects && myProjects.map((data, counter)=>{
         return (
