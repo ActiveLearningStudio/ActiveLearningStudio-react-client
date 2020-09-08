@@ -137,8 +137,8 @@ export const createResourceAction = (
         metadata.metaContent.metaSubject
         && metadata.metaContent.metaSubject.subject,
       education_level_id:
-        metadata.metaContent.metaEducationalLevels
-        && metadata.metaContent.metaEducationalLevels.name,
+        metadata.metaContent.metaEducationLevels
+        && metadata.metaContent.metaEducationLevels.name,
     };
     const insertedResource = await resourceService.create(activity);
 
@@ -342,7 +342,7 @@ export const createResourceByH5PUploadAction = (
     formData.append('action', 'upload');
 
     const responseUpload = await resourceService.h5pToken(formData);
-
+   
     if (responseUpload.id) {
       const createActivityUpload = {
         h5p_content_id: responseUpload.id,
@@ -389,6 +389,7 @@ export const editResourceAction = (
   activityId,
   metadata,
 ) => async (dispatch) => {
+  
   try {
     const dataUpload = {
       title: metadata.metaContent && metadata.metaContent.metaTitle,

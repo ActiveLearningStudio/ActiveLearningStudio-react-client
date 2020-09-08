@@ -4,12 +4,14 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import Swal from 'sweetalert2';
+import { useEffect } from 'react';
 
 import { required, FadeDiv } from 'utils';
 import {
   uploadResourceThumbnailAction,
   showBuildActivityAction,
   onSubmitDescribeActivityAction,
+  uploadResourceThumbnail
 } from 'store/actions/resource';
 import PexelsAPI from 'components/models/pexels';
 import { subjects, educationLevels } from 'components/ResourceCard/AddResource/dropdownData';
@@ -48,6 +50,10 @@ let ResourceDescribeActivity = (props) => {
   const { resource, handleSubmit } = props;
   const [modalShow, setModalShow] = useState(false);
   const openFile = useRef();
+  const {uploadResourceThumbnailDefault}  =   props
+  useEffect(()=>{
+    uploadResourceThumbnailDefault(resource.editResource.metadata.thumbUrl)
+  },[])
 
   return (
     <div className="row">
@@ -228,6 +234,7 @@ ResourceDescribeActivity = reduxForm({
 const mapDispatchToProps = (dispatch) => ({
   showBuildActivity: (editor, editorType, id) => dispatch(showBuildActivityAction(editor, editorType, id)),
   onSubmitDescribeActivity: (metadata, id) => dispatch(onSubmitDescribeActivityAction(metadata, id)),
+  uploadResourceThumbnailDefault: (url) => dispatch(uploadResourceThumbnail(url)),
   uploadResourceThumbnail: (formData) => dispatch(uploadResourceThumbnailAction(formData)),
 });
 

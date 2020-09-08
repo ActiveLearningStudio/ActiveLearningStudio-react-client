@@ -34,6 +34,7 @@ const PreviewPage = loadable(() => import('../containers/Preview'));
 const LtiPreviewPage = loadable(() => import('../containers/LtiPreviewPage'));
 const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared'));
 const SearchResult = loadable(() => import('../containers/Search'));
+const LtiModel = loadable(() => import('../containers/LtiModel'));
 
 const AppRouter = () => {
   useEffect(() => {
@@ -156,6 +157,11 @@ const AppRouter = () => {
           path="/activity/:activityId/shared"
           component={LtiPreviewPage}
           previewType="activityShared"
+        />
+         <OpenRoute
+          exact
+          path="/lti/content/:lms_url/:lti_client_id/:redirect_url"
+          component={LtiModel}
         />
 
         <PrivateRoute

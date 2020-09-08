@@ -8,19 +8,14 @@ import { Dropdown } from 'react-bootstrap';
 import { getProjectId, googleShare } from 'store/actions/gapi';
 import { getProjectCourseFromLMS } from 'store/actions/project';
 import SharePreviewPopup from 'components/SharePreviewPopup';
-import GoogleModel from 'components/models/googleSign';
 import ProjectPreviewModal from '../ProjectPreviewModal';
 
 import './style.scss';
 
 const ProjectCard = (props) => {
-  const { showPreview, project, showDeletePopup } = props;
-
+  const { showPreview, project, showDeletePopup, handleShow,setProjectId } = props;
   const dispatch = useDispatch();
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+ 
   const AllLms = useSelector((state) => state.share);
 
   const [allLms, setAllLms] = useState([]);
@@ -30,8 +25,6 @@ const ProjectCard = (props) => {
 
   return (
     <div className="col-md-3 check">
-      <GoogleModel projectId={project.id} show={show} onHide={handleClose} />
-
       <div className="program-tile">
         <div className="program-thumb">
           <Link to={`/project/${project.id}/preview`}>
@@ -87,6 +80,7 @@ const ProjectCard = (props) => {
                           onClick={() => {
                             handleShow();
                             getProjectId(project.id);
+                            setProjectId(props.project.id)
                             dispatch(googleShare(false));
                           }}
                         >
@@ -185,6 +179,8 @@ ProjectCard.propTypes = {
   project: PropTypes.object.isRequired,
   showPreview: PropTypes.bool,
   showDeletePopup: PropTypes.func.isRequired,
+  handleShow: PropTypes.func.isRequired,
+  setProjectId: PropTypes.func.isRequired,
 };
 
 ProjectCard.defaultProps = {

@@ -22,9 +22,31 @@ import DeletePopup from 'components/DeletePopup';
 import ProjectsLoading from 'components/Loading/ProjectsLoading';
 import ProjectCard from './ProjectCard';
 import NewProjectPage from './NewProjectPage';
-
+import GoogleModel from 'components/models/googleSign';
 // TODO: need to convert to functional component
 export class ProjectsPage extends React.Component {
+
+  constructor(props) {
+    super(props);
+    // define states here...
+     this.state = {
+       show: false,
+       selectedProjectId: 0,
+     };
+  }
+  
+  handleShow = () => {
+    this.setState({ show: true }); //!state.show
+  };
+
+  setProjectId = (projectId) => {
+    this.setState({ selectedProjectId: projectId });
+  };
+
+  handleClose = () => {
+    this.setState({ show: false });
+  };
+
   componentDidMount() {
     const {
       match,
@@ -98,6 +120,9 @@ export class ProjectsPage extends React.Component {
           handleShareProject={this.handleShareProject}
           showDeletePopup={showDeletePopup}
           showPreview={showPreview === proj.id}
+          handleShow={this.handleShow}
+          handleClose={this.handleClose}
+          setProjectId={this.setProjectId}
         />
       );
     });
@@ -151,6 +176,11 @@ export class ProjectsPage extends React.Component {
         </ReactPlaceholder>
 
         <Footer />
+        <GoogleModel
+          projectId={this.state.selectedProjectId}
+          show={this.state.show}//{this.props.show}
+          onHide={() => this.handleClose()}
+        /> 
       </>
     );
   }
