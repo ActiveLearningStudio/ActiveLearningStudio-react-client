@@ -11,7 +11,7 @@ import ReactGA from 'react-ga';
 
 import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
-import OpenRoute from './OpenRouter';
+import OpenRoute from './OpenRoute';
 
 const history = History.createBrowserHistory();
 history.listen((location) => {
@@ -71,7 +71,7 @@ const AppRouter = () => {
           path="/project/:projectId/preview"
           component={PreviewPage}
         />
-        <PrivateRoute
+        <OpenRoute
           exact
           path="/project/:projectId/shared"
           component={PreviewPageShared}
@@ -96,14 +96,12 @@ const AppRouter = () => {
           component={PreviewPage}
           previewType="playlist"
         />
-        {/*
-        <PrivateRoute
+        <OpenRoute
           exact
           path="/project/:projectId/playlist/:playlistId/preview/lti"
           component={LtiPreviewPage}
           previewType="playlist"
         />
-        */}
 
         <PrivateRoute
           exact
@@ -123,14 +121,12 @@ const AppRouter = () => {
           component={PreviewPage}
           previewType="playlist"
         />
-        {/*
-        <PrivateRoute
+        <OpenRoute
           path="/project/:projectId/playlist/:playlistId/activity/:activityId/preview/lti"
           exact
           component={LtiPreviewPage}
           previewType="playlist"
         />
-        */}
         <PrivateRoute
           exact
           path="/project/:projectId/playlist/:playlistId/activity/:activityId/preview/shared"
@@ -149,14 +145,12 @@ const AppRouter = () => {
           component={PreviewPage}
           previewType="activity"
         />
-        {/*
-        <PrivateRoute
+        <OpenRoute
           exact
           path="/activities/:activityId/preview/lti"
           component={LtiPreviewPage}
           previewType="activitySharedLti"
         />
-        */}
         <OpenRoute
           exact
           path="/activity/:activityId/shared"

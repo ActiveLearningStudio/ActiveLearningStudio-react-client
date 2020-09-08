@@ -96,12 +96,10 @@ function DashboardPage(props) {
                     <div className="row">
                       <div className="col">
                         <PieChart width={200} height={200}>
-                          <Pie data={storageData} innerRadius={50} outerRadius={75}>
-                            {
-                              storageData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={entry.color} />
-                              ))
-                            }
+                          <Pie data={storageData} dataKey="name" innerRadius={50} outerRadius={75}>
+                            {storageData.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={entry.color} />
+                            ))}
                             <Label value={usedStoragePercentage} position="center" />
                           </Pie>
                         </PieChart>
@@ -110,16 +108,10 @@ function DashboardPage(props) {
                         <h1 className="title">Storage</h1>
                         <p>
                           <label>Total:</label>
-                          {' '}
-                          {metrics.total_storage}
-                          {' '}
-                          kb
+                          {` ${metrics.total_storage} kb`}
                           <br />
                           <label>Used:</label>
-                          {' '}
-                          {metrics.used_storage}
-                          {' '}
-                          kb
+                          {` ${metrics.used_storage} kb`}
                         </p>
                       </div>
                     </div>
@@ -128,7 +120,7 @@ function DashboardPage(props) {
                     <div className="row">
                       <div className="col">
                         <PieChart width={200} height={200}>
-                          <Pie data={bandwidthData} innerRadius={50} outerRadius={75}>
+                          <Pie data={bandwidthData} dataKey="name" innerRadius={50} outerRadius={75}>
                             {bandwidthData.map((entry, index) => (
                               <Cell key={`cell-${index}`} fill={entry.color} />
                             ))}
@@ -140,14 +132,10 @@ function DashboardPage(props) {
                         <h1 className="title">Views</h1>
                         <p>
                           <label>Total:</label>
-                          {' '}
-                          {metrics.total_bandwidth}
-                          {' '}
-                          kb
+                          {` ${metrics.total_bandwidth} kb`}
                           <br />
                           <label>Used:</label>
-                          {' '}
-                          {metrics.used_bandwidth}
+                          {` ${metrics.used_bandwidth}`}
                         </p>
                       </div>
                     </div>

@@ -1885,23 +1885,23 @@ a:hover {
 
   .slick-prev {
     background: #ffffff 0 0 no-repeat padding-box;
-    box-shadow: 1px 1px 5px 0 #000000;
+    //box-shadow: 1px 1px 5px 0 #000000;
     border-radius: 50%;
     left: -11px;
     border: 1px solid #ccc;
-    width: 25px;
-    height: 25px;
+    width: 22px;
+    height: 22px;
     z-index: 1;
+    overflow: hidden;
 
     &:before {
-      content: "\f053";
-      font-family: FontAwesome;
-      font-size: 12px;
-      text-align: center;
-      padding-top: 3px;
+      //content: "\f053";
       display: block;
+      margin-left: -2px;
+      //font-family: FontAwesome;
+      font-size: 24px;
+      text-align: center;
       color: #333;
-      padding-right: 3px;
     }
   }
 
@@ -1911,22 +1911,22 @@ a:hover {
 
   .slick-next {
     background: #ffffff 0 0 no-repeat padding-box;
-    box-shadow: 1px 1px 5px 0 #000000;
+    //box-shadow: 1px 1px 5px 0 #000000;
     border-radius: 50%;
     right: -15px;
     border: 1px solid #ccc;
-    width: 25px;
-    height: 25px;
+    width: 22px;
+    height: 22px;
+    overflow: hidden;
 
     &:before {
-      content: "\f054";
-      font-family: FontAwesome;
-      color: #333;
-      font-size: 12px;
-      text-align: center;
-      padding-top: 3px;
+      //content: "\f054";
       display: block;
-      padding-left: 2px;
+      margin-left: -2px;
+      //font-family: FontAwesome;
+      font-size: 24px;
+      color: #333;
+      text-align: center;
     }
   }
 
@@ -2058,7 +2058,7 @@ a:hover {
   border-radius: 20px;
   text-align: center;
   font-size: 14px;
-  padding: 3px 20px 3px 0;
+  padding: 3px 20px;
   margin-bottom: 10px;
 
   .fa {

@@ -39,7 +39,7 @@ class PreviewPage extends React.Component {
         <PlaylistPreview
           projectId={parseInt(projectId, 10)}
           playlistId={parseInt(playlistId, 10)}
-          activityId={activityId ? parseInt(activityId, 10) : null}
+          activityId={(activityId !== null && activityId !== undefined) ? parseInt(activityId, 10) : null}
         />
       );
     } else if (previewType === 'activityShared') {
