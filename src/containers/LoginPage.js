@@ -11,7 +11,7 @@ import {
   show_login,
   show_term,
 } from "./../actions/auth";
-import logo from "../images/tfalogo.png";
+import logo from "../images/logo.svg";
 import terms from "../images/terms.png";
 
 import loader from "../images/loader.svg";
@@ -52,51 +52,28 @@ export class LoginPage extends React.Component {
   };
   onSubmit = async (e) => {
     e.preventDefault();
-    this.setState({
-      requiredemail: "",
-    });
-    try {
-      const { email, password } = this.state;
-      if (email == "" && password == "") {
-        this.setState({
-          requiredemail: "Kindly fill all fields",
-        });
-        return;
-      }
-      // else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      //   // this.setState({
-      //   //   requiredemail: "Invalid email",
-      //   // });
-      //   // return;
-      // }
-      else {
-      }
+    window.open(
+      'https://www.currikistudio.org','_self'
+      // <- This is what makes it open in a new window.
+    );
 
-      this.setState({ apiLoading: true });
-      await this.props.startLogin(email, password);
-      this.props.history.push("/");
-      this.setState({ apiLoading: false });
-    } catch (e) {
-      this.setState({ apiLoading: false });
-      return this.setState({ error: e.message });
-    }
   };
 
   onSubmitterms = async (e) => {
     e.preventDefault();
-    this.setState({
-      selectterms: false,
-    });
-    if (this.state.allterms) {
-      this.props.ecceptterms(
-        localStorage.getItem("temp_email"),
-        localStorage.getItem("temp_pass")
-      );
-    } else {
-      this.setState({
-        selectterms: true,
-      });
-    }
+    // this.setState({
+    //   selectterms: false,
+    // });
+    // if (this.state.allterms) {
+    //   this.props.ecceptterms(
+    //     localStorage.getItem("temp_email"),
+    //     localStorage.getItem("temp_pass")
+    //   );
+    // } else {
+    //   this.setState({
+    //     selectterms: true,
+    //   });
+    // }
   };
   isDisabled = () => {
     return !this.state.error &&
@@ -137,7 +114,7 @@ export class LoginPage extends React.Component {
                 autoComplete="off"
                 className="login-form"
               >
-                <div className="form-group username-box">
+                {/* <div className="form-group username-box">
                   <i className="fa fa-user" aria-hidden="true"></i>{" "}
                   <input
                     className="username"
@@ -158,7 +135,7 @@ export class LoginPage extends React.Component {
                     placeholder="Password"
                     onChange={this.onPasswordChange}
                   />
-                </div>
+                </div> */}
                 {/* <div className="form-group rememberme-check-box">
                   <label>
                     <input
@@ -187,11 +164,7 @@ export class LoginPage extends React.Component {
                     className="btn btn-primary login-submit"
                     // disabled={this.isDisabled()}
                   >
-                    {this.state.apiLoading == true ? (
-                      <img src={loader} alt="" />
-                    ) : (
-                      "Login"
-                    )}
+                   CLICK HERE TO LOGIN
                   </button>
                 </div>
               </form>
