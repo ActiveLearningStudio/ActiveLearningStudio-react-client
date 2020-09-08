@@ -4,6 +4,8 @@ import Swal from 'sweetalert2';
 import resourceService from 'services/resource.service';
 import * as actionTypes from '../actionTypes';
 
+import { loadProjectPlaylistsAction } from './playlist';  // Refreshing after deleting
+
 // global variable for h5p object
 let h5pid;
 
@@ -198,20 +200,18 @@ export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
   });
 };
 
-export const deleteResourceAction = (activityId) => async (dispatch) => {
+export const deleteResourceAction = (projectId, activityId) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.DELETE_RESOURCE_REQUEST,
     });
 
-    const response = await resourceService.remove(activityId);
-
-    if (response.data.status === 'success') {
-      dispatch({
-        type: actionTypes.DELETE_RESOURCE_SUCCESS,
-        payload: { activityId },
-      });
-    }
+    await resourceService.remove(activityId);
+    dispatch({
+      type: actionTypes.DELETE_RESOURCE_SUCCESS,
+      payload: { activityId },
+    });
+    dispatch(loadProjectPlaylistsAction(projectId));
   } catch (e) {
     dispatch({
       type: actionTypes.DELETE_RESOURCE_FAIL,
