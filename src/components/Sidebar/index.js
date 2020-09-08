@@ -118,7 +118,7 @@ function Sidebar() {
         })}
      </ul>
 
-     <div className="menu-title">FEATURED Project</div>
+     <div className="menu-title">FEATURED Projects</div>
       <ul className="all-project">
         {!!updateProject && updateProject.map((data, counter)=>{
         return (
