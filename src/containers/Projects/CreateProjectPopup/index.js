@@ -30,7 +30,7 @@ const maxLength80 = maxLength(80);
 // remove unused code,
 
 let imageValidation = '';
-var projectShare = true
+var projectShare = false
 
 const onSubmit = async (values, dispatch, props) => {
   const {
@@ -112,7 +112,7 @@ let CreateProjectPopup = (props) => {
   } = props;
 
   const [modalShow, setModalShow] = useState(false);
-  const [publicProject, setPublicProject]  =  useState(true)
+  const [publicProject, setPublicProject]  =  useState(false)
   const openFile = useRef();
 
   if (!editMode) {

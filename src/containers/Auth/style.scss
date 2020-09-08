@@ -21,7 +21,29 @@
     background: #fff;
     border-radius: 5px;
 
-   
+    &:after {
+      content: "";
+      position: absolute;
+      top: 20%;
+      right: -180px;
+      z-index: -1;
+      width: 330px;
+      height: 330px;
+      background-color: #eadbf0;
+      border-radius: 50%;
+    }
+
+    &:before {
+      content: "";
+      position: absolute;
+      bottom: -80px;
+      left: -80px;
+      z-index: -1;
+      width: 200px;
+      height: 200px;
+      background-color: #eadbf0;
+      border-radius: 50%;
+    }
 
     .auth-title {
       font-weight: Bold;
