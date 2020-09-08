@@ -13,7 +13,11 @@ const getUserMembership = (userId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const logActivityView = (activityId) => httpService
+  .get(`/${apiVersion}/activities/${activityId}/logview`);
+
 export default {
   getUserMetrics,
   getUserMembership,
+  logActivityView
 };

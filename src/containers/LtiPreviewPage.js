@@ -8,6 +8,7 @@ import {
   createProjectAction,
   loadMyProjectsAction,
 } from 'store/actions/project';
+import { logActivityViewAction } from 'store/actions/metrics';
 import Header from 'components/Header';
 import ActivityShared from 'containers/Preview/PlaylistPreview/ActivityShared';
 import LtiPlaylistPreview from 'containers/Preview/PlaylistPreview/LtiPlaylistPreview';
@@ -36,6 +37,7 @@ class LtiPreviewPage extends React.Component {
         />
       );
     } else if (previewType === 'activityShared') {
+      this.props.logActivityView(match.params.activityId);
       content = (
         <ActivityShared activityId={parseInt(match.params.activityId, 10)} />
       );
@@ -71,6 +73,8 @@ const mapDispatchToProps = (dispatch) => ({
   loadMyProjects: () => dispatch(loadMyProjectsAction()),
   createProject: (name, description, thumbUrl) => dispatch(createProjectAction(name, description, thumbUrl)),
   // hideCreateProjectModal: () => dispatch(hideCreateProjectModalAction()),
+
+  logActivityView: (activityId) => dispatch(logActivityViewAction(activityId)),
 });
 
 const mapStateToProps = (state) => ({

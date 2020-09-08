@@ -1,5 +1,5 @@
 import metricsService from 'services/metrics.service';
-import { GET_USER_METRICS, GET_USER_MEMBERSHIP } from '../actionTypes';
+import { GET_USER_METRICS, GET_USER_MEMBERSHIP, ACTIVITY_VIEWED } from '../actionTypes';
 
 export const getUserMetricsAction = (userId) => async (dispatch) => {
   const { metrics } = await metricsService.getUserMetrics(userId);
@@ -15,4 +15,9 @@ export const getUserMembershipAction = (userId) => async (dispatch) => {
     type: GET_USER_MEMBERSHIP,
     membership,
   });
+};
+
+export const logActivityViewAction = (activityId) => async (dispatch) => {
+  metricsService.logActivityView(activityId);
+  dispatch({type: ACTIVITY_VIEWED});
 };
