@@ -400,7 +400,7 @@ export const editResourceAction = (
       education_level_id:
         metadata.metaContent.metaEducationLevels
         && metadata.metaContent.metaEducationLevels.name,
-      h5p_content_id: h5pid.id,
+      h5p_content_id: h5pid.h5p_content.id,
       action: 'create',
     };
 
