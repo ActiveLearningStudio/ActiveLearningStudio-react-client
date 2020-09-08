@@ -7,7 +7,11 @@ import { loadH5pSettingsActivity } from 'store/actions/resource';
 
 const H5PEditorEdit = (props) => {
   const {
-    h5pParams, handleEditResourceSubmit, match, resource, loadH5pSettings,
+    h5pParams,
+    match,
+    resource,
+    loadH5pSettings,
+    handleEditResourceSubmit,
   } = props;
 
   const [submitAction, setSubmitAction] = useState('create');
@@ -30,7 +34,6 @@ const H5PEditorEdit = (props) => {
       resource.editResource.h5pLibType,
       match.params.activityId,
       resource.newResource.metadata,
-      match.params.projectId,
     );
   };
 
