@@ -30,8 +30,10 @@ const  LTIProjectShared = (props) => {
     );
   }, []);
 
-  useEffect(() => {
-    allProjects.project.projects && setAllproject(allProjects.project.projects);
+ useEffect(() => {
+    if(allProjects.project.projects){ 
+      setAllproject(allProjects.project.projects)
+    }
   }, [allProjects]);
 
   return (
