@@ -77,8 +77,8 @@ const H5PPreview = (props) => {
 
     try {
       const response = await loadH5pResourceSettingsOpen(activityResourceId);
-      if (response.activity) {
-        await resourceLoaded(response.activity);
+      if (response.h5p_activity) {
+        await resourceLoaded(response.h5p_activity);
       }
     } catch (e) {
       setLoading(false);

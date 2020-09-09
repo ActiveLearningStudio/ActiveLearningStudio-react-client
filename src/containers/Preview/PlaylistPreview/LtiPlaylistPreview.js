@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Dropdown } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 
 import projectIcon from 'assets/images/project_icon.svg';
@@ -12,7 +13,6 @@ import ActivityPreviewCard from 'components/ActivityPreviewCard';
 import ActivityPreviewCardDropdown from 'components/ActivityPreviewCard/ActivityPreviewCardDropdown';
 
 import './style.scss';
-import { Dropdown } from 'react-bootstrap';
 
 const H5PPreview = React.lazy(() => import('../../H5PPreview'));
 
@@ -128,7 +128,7 @@ class LtiPlaylistPreview extends React.Component {
       activities = selectedPlaylist.activities.map((activity) => (
         <ActivityPreviewCard
           key={activity.id}
-          lti
+          showLti
           activity={activity}
           projectId={projectId}
           playlistId={playlistId}
@@ -139,7 +139,7 @@ class LtiPlaylistPreview extends React.Component {
       activities1 = selectedPlaylist.activities.map((activity) => (
         <ActivityPreviewCardDropdown
           key={activity.id}
-          lti
+          showLti
           activity={activity}
           projectId={projectId}
           playlistId={playlistId}

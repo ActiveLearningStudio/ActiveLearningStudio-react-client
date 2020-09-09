@@ -71,7 +71,8 @@ const h5pResourceSettings = (activityId) => httpService
   .catch((err) => Promise.reject(err.response.data));
 
 const h5pResourceSettingsOpen = (activityId) => httpService
-  .get(`/${apiVersion}/activities/${activityId}/h5p-resource-settings-open`)
+  // .get(`/${apiVersion}/activities/${activityId}/h5p-resource-settings-open`)
+  .get(`/${apiVersion}/h5p/activity/${activityId}/visibility/public`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
