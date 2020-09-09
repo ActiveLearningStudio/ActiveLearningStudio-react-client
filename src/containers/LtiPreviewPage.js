@@ -26,9 +26,8 @@ class LtiPreviewPage extends React.Component {
   render() {
     const { match, previewType } = this.props;
 
-    const { projectId, playlistId, activityId } = match.params;
+    const { playlistId, activityId } = match.params;
 
-    const proId = (projectId !== null && projectId !== undefined) ? parseInt(projectId, 10) : null;
     const plyId = (playlistId !== null && playlistId !== undefined) ? parseInt(playlistId, 10) : null;
     const actId = (activityId !== null && activityId !== undefined) ? parseInt(activityId, 10) : null;
 
@@ -37,7 +36,6 @@ class LtiPreviewPage extends React.Component {
       content = (
         <LtiPlaylistPreviewShared
           showLti
-          projectId={proId}
           playlistId={plyId}
           activityId={actId}
         />
@@ -51,7 +49,6 @@ class LtiPreviewPage extends React.Component {
       content = (
         <LtiPlaylistPreview
           showLti
-          projectId={proId}
           playlistId={plyId}
           activityId={actId}
         />
@@ -60,7 +57,7 @@ class LtiPreviewPage extends React.Component {
 
     return (
       <div>
-        <Header {...this.props} />
+        {!previewType && <Header {...this.props} /> }
 
         {content}
       </div>
@@ -70,7 +67,6 @@ class LtiPreviewPage extends React.Component {
 
 LtiPreviewPage.propTypes = {
   match: PropTypes.object.isRequired,
-  project: PropTypes.object.isRequired,
   previewType: PropTypes.string.isRequired,
   loadMyProjects: PropTypes.func.isRequired,
 };
@@ -84,10 +80,6 @@ const mapDispatchToProps = (dispatch) => ({
   logActivityView: (activityId) => dispatch(logActivityViewAction(activityId)),
 });
 
-const mapStateToProps = (state) => ({
-  project: state,
-});
-
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(LtiPreviewPage),
+  connect(null, mapDispatchToProps)(LtiPreviewPage),
 );

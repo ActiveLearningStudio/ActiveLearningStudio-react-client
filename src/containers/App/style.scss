@@ -1970,13 +1970,18 @@ a:hover {
     border: none;
     text-transform: capitalize;
     padding: 20px 0;
-
+    display: flex;
     width: 100%;
     cursor: pointer;
+    align-items: center;
 
-    i {
-      padding-right: 10px;
-      font-size: 10px;
+    svg {
+      margin-right: 7px;
+    }
+
+    @media (max-width: 767px) {
+      font-weight: 500;
+      font-size: 15px;
     }
   }
 
@@ -2067,6 +2072,7 @@ a:hover {
 }
 
 .back-header {
+  min-height: 57px;
   border-bottom: 1px solid #e3e3e3;
   border-left: 1px solid #e3e3e3;
   padding: 13px 35px;
@@ -2543,11 +2549,11 @@ a:hover {
     color: #fff;
   }
 
-  i {
+  svg {
     font-size: 18px;
     color: #fff;
     opacity: 1;
-    -webkit-text-stroke: 2px #1b2e3d;
+
   }
 
   img {
@@ -2684,8 +2690,7 @@ a:hover {
 }
 
 .full-width-share {
-  margin-left: -290px;
-  margin-top: -80px;
+  margin-top: 30px;
 
   .scene,
   .playlist-div {
@@ -3054,9 +3059,6 @@ a:hover {
   }
 }
 
-.row.check-home {
-  padding: 0 20px;
-}
 
 .main-page-content.preview .slider-scroll-auto {
   max-height: 450px;

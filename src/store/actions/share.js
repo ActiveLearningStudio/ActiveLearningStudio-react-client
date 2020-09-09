@@ -2,7 +2,8 @@ import Swal from 'sweetalert2';
 
 import searchService from 'services/search.service';
 
-export const copyProject = (projectId) => {
+// eslint-disable-next-line import/prefer-default-export
+export const copyProject = async (projectId, courseId) => {
   Swal.fire({
     title: 'Publishing....',
     showCancelButton: false,
@@ -10,26 +11,20 @@ export const copyProject = (projectId) => {
     allowOutsideClick: false,
   });
 
-  searchService.googleClassShare(projectId)
-    .then(() => {
-      Swal.fire({
-        icon: 'success',
-        title: 'Shared!',
-        confirmButtonColor: '#5952c6',
-        html: 'Your project has been shared to Google Classroom</a>',
-        // text: `Your playlist has been submitted to ${lmsUrl}`,
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-      Swal.fire({
-        confirmButtonColor: '#5952c6',
-        icon: 'error',
-        text: 'Something went wrong, Kindly try again',
-      });
+  const result = await searchService.googleClassShare(projectId, courseId);
+  if (result.course) {
+    Swal.fire({
+      icon: 'success',
+      title: 'Shared!',
+      confirmButtonColor: '#5952c6',
+      html: 'Your project has been shared to Google Classroom',
+      // text: `Your playlist has been submitted to ${lmsUrl}`,
     });
-};
-
-export const tokenSave = (accessToken) => {
-  searchService.googleShareToken(accessToken);
+  } else {
+    Swal.fire({
+      confirmButtonColor: '#5952c6',
+      icon: 'error',
+      text: 'Something went wrong, Kindly try again.',
+    });
+  }
 };

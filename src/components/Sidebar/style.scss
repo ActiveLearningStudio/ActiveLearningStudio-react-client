@@ -1,15 +1,15 @@
 aside {
   background: #fff;
   min-height: 900px;
-  padding-top: 50px;
-  padding-right: 30px;
+  padding-top: 30px;
+  padding-right: 0;
 
   & > ul {
     list-style: none;
-    padding-left: 32px;
+    padding: 0 30px;
 
     & > li {
-      border-bottom: 1px solid #e8e8e8;
+      border-top: 1px solid #e8e8e8;
 
       a {
         color: #607a9b;
@@ -80,5 +80,50 @@ aside {
   .recent-resource-icon {
     background: url(../../assets/images/recent-resource-icon.png) no-repeat 0 7px;
   }
+}
 
+.sidebarall {
+  .expand {
+    text-align: left;
+    text-decoration: underline;
+    font: normal normal normal 13px/22px Open Sans;
+    letter-spacing: 0px;
+    color: #0f4392;
+    opacity: 1;
+    border-top: 1px solid #e8e8e8;
+    width: 100%;
+    display: block;
+
+    svg {
+      margin-left: 10px;
+    }
+  }
+
+  .menu-title {
+    text-align: left;
+    font: normal normal bold 16px/25px Open Sans;
+    letter-spacing: 0px;
+    color: #0f4392;
+    text-transform: uppercase;
+    opacity: 1;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-top: 1px solid;
+    border-top: 1px solid #e8e8e8;
+
+    &:hover {
+      cursor: pointer;
+      text-decoration: none !important;
+    }
+  }
+
+  a {
+    text-align: left;
+    font: normal normal 600 14px/25px Open Sans;
+    letter-spacing: 0px;
+    color: #464646;
+    opacity: 1;
+    padding: 10px 0px;
+    font-weight: 400;
+  }
 }

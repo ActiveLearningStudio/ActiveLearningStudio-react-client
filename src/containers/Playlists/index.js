@@ -13,7 +13,7 @@ import {
   showCreatePlaylistModalAction,
   hideCreatePlaylistModalAction,
   loadProjectPlaylistsAction,
-  reorderPlaylistsAction
+  reorderPlaylistsAction,
 } from 'store/actions/playlist';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import {
@@ -230,7 +230,7 @@ class PlaylistsPage extends React.Component {
     const {
       match,
       playlist: { playlists },
-      reorderPlaylists
+      reorderPlaylists,
     } = this.props;
     const orgPlaylists = Array.from(playlists);
 
@@ -238,7 +238,7 @@ class PlaylistsPage extends React.Component {
       // resource dropped
       if (e.source.droppableId === e.destination.droppableId) {
         // Resource dropped within the same list
-        var playlist = playlists.find((pl) => pl.id === parseInt(e.source.droppableId));
+        const playlist = playlists.find((pl) => pl.id === parseInt(e.source.droppableId, 10));
         const activities = Array.from(playlist.activities);
         const [removed] = activities.splice(e.source.index, 1);
         activities.splice(e.destination.index, 0, removed);
@@ -246,8 +246,8 @@ class PlaylistsPage extends React.Component {
         playlist.activities = activities;
       } else {
         // Rsc dropped on a different list
-        var sourceList = playlists.find((pl) => pl.id === parseInt(e.source.droppableId));
-        var destinationList = playlists.find((pl) => pl.id === parseInt(e.destination.droppableId));
+        const sourceList = playlists.find((pl) => pl.id === parseInt(e.source.droppableId, 10));
+        const destinationList = playlists.find((pl) => pl.id === parseInt(e.destination.droppableId, 10));
         const sourceActivities = Array.from(sourceList.activities);
         const destActivities = destinationList.activities
           ? Array.from(destinationList.activities)
@@ -257,8 +257,9 @@ class PlaylistsPage extends React.Component {
         destActivities.splice(e.destination.index, 0, removed);
         // Update both playlists with new activities
         sourceList.activities = sourceActivities;
-        destinationList.activities = destActivities; 
+        destinationList.activities = destActivities;
       }
+
       // Previous block caused changes to playlists
       reorderPlaylists(match.params.projectId, orgPlaylists, playlists);
     } else {

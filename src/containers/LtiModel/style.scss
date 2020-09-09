@@ -1,0 +1,85 @@
+.lti-all-project {
+  margin: 15px;
+
+  .flex-bar {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 0;
+  }
+
+  .card-header {
+    padding: 0;
+  }
+
+  .top-card.card-header {
+    background-color: #084892;
+
+    span {
+      color: #fff;
+      font-weight: 600;
+
+      i {
+        padding-right: 10px;
+      }
+    }
+  }
+
+  .middle-card {
+    background-color: #fff;
+    border: none;
+
+    span {
+      color: #333;
+      font-weight: 600;
+
+      i {
+        padding-right: 10px;
+        color: #084892;
+      }
+    }
+  }
+
+  .last-card {
+    padding: 0 20px;
+
+    li {
+      background-color: #efefef;
+      border-bottom: 1px solid #ccc;
+      padding: 10px 20px;
+      cursor: pointer;
+
+      .fa {
+        padding-right: 10px;
+        color: #333;
+      }
+    }
+  }
+
+  .button-submit {
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 5px 1px #ccc;
+    width: 200px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: capitalize;
+    cursor: pointer;
+    margin: 30px auto 0;
+    background-color: #fff;
+
+    &:hover {
+      color: #084892;
+    }
+  }
+}

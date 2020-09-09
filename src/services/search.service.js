@@ -26,8 +26,8 @@ const cloneActivity = (playlistId, ActivityId) => httpService
   .then(() => Swal.fire('Activity Clone is in progress. It will be available soon.'))
   .catch((err) => Swal.fire(err.response.data.errors[0]));
 
-const googleClassShare = (projectId) => httpService
-  .post(`/${apiVersion}/google-classroom/projects/${projectId}/copy`)
+const googleClassShare = (projectId, courseId) => httpService
+  .post(`/${apiVersion}/google-classroom/projects/${projectId}/copy`, { courseId })
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -38,6 +38,11 @@ const googleShareToken = (accessToken) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const getCourses = () => httpService
+  .get(`/${apiVersion}/google-classroom/courses`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   searchResult,
   cloneProject,
@@ -45,5 +50,5 @@ export default {
   cloneActivity,
   googleClassShare,
   googleShareToken,
-  // searchResults
+  getCourses,
 };

@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect, useSelector, useDispatch } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Modal /* , Button */ } from 'react-bootstrap';
 import { Formik } from 'formik';
@@ -9,7 +9,6 @@ import { GoogleLogin } from 'react-google-login';
 
 import logo from 'assets/images/loginlogo.png';
 import {
-  googleShare,
   googleClassRoomLoginAction,
   googleClassRoomLoginFailureAction,
 } from 'store/actions/gapi';
@@ -23,10 +22,11 @@ const GoogleModel = ({
   projectId,
 }) => {
   const dataRedux = useSelector((state) => state);
-  const dispatch = useDispatch();
 
   const [showForm, setShowForm] = useState(false);
-  // const [rooms, setRooms] = useState(['a', 'b', 'c']);
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     if (dataRedux.share.googleShare === true) {
       setShowForm(true);
@@ -36,6 +36,13 @@ const GoogleModel = ({
       onHide();
     }
   }, [dataRedux, onHide]);
+
+  useEffect(() => {
+    if (dataRedux.share.courses) {
+      setCourses(dataRedux.share.courses);
+      setLoading(false);
+    }
+  }, [dataRedux.share.courses]);
 
   return (
     <Modal
@@ -73,6 +80,7 @@ const GoogleModel = ({
                 <h1>
                   Are you sure you want to share this Project to Google Classroom?
                 </h1>
+                {loading && <p className="loading-classes">Loading Classes....</p>}
                 <Formik
                   initialValues={{
                     course: 'test',
@@ -80,42 +88,33 @@ const GoogleModel = ({
                     description: 'test',
                     room: 'test',
                   }}
-                  validate={(values) => {
-                    const errors = {};
-
-                    if (!values.course) {
-                      errors.course = 'Course Required';
-                    }
-                    if (!values.heading) {
-                      errors.heading = 'Heading Required';
-                    }
-                    if (!values.description) {
-                      errors.description = 'Description Required';
-                    }
-                    if (!values.room) {
-                      errors.room = 'Room Required';
-                    }
-                    if (values.room === 'Select your room') {
-                      errors.room = 'Required';
-                    }
-                    return errors;
-                  }}
-                  onSubmit={(/* values, { setSubmitting } */) => {
-                    dispatch(googleShare('close'));
-                    copyProject(projectId);
+                  onSubmit={(values) => {
+                    onHide();
+                    copyProject(projectId, values.course);
+                    setLoading(false);
                   }}
                 >
                   {({
-                    // values,
+                    values,
                     // errors,
                     // touched,
-                    // handleChange,
-                    // handleBlur,
+                    handleChange,
+                    handleBlur,
                     handleSubmit,
                     // isSubmitting,
                     /* and other goodies */
                   }) => (
                     <form onSubmit={handleSubmit}>
+                      <select
+                        className="form-control select-dropdown"
+                        name="course"
+                        value={values.course}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      >
+                        <option value="">Create a new class</option>
+                        {!!courses && courses.map((item, i) => <option key={i} value={item.id}>{item.name}</option>)}
+                      </select>
                       {/* <input
                         type="text"
                         name="course"
@@ -182,7 +181,7 @@ const GoogleModel = ({
                         Are you sure you want to share this Project to Google Classroom?
                       </p>
                       */}
-                      <button type="submit">Confirm</button>
+                      {!loading && <button type="submit">Confirm</button>}
                     </form>
                   )}
                 </Formik>

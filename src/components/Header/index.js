@@ -55,22 +55,22 @@ function Header(props) {
                     </Dropdown.Item>
 
                     {/*
-                          <Dropdown.Item to="#" className="menuLinks">
-                            <div className="notify-box">
-                              <div className="notify-icon">
-                                <img src={createTeamImg} alt="create-team" />
-                              </div>
-                              <div className="notify-description">
-                                <div className="nav-title">Create Team</div>
-                                <p>
-                                  Increase productivity by making it easy for your
-                                  group to create memorable learning experiences
-                                  together.
-                                </p>
-                              </div>
-                            </div>
-                          </Dropdown.Item>
-                          */}
+                    <Dropdown.Item to="#" className="menuLinks">
+                      <div className="notify-box">
+                        <div className="notify-icon">
+                          <img src={createTeamImg} alt="create-team" />
+                        </div>
+                        <div className="notify-description">
+                          <div className="nav-title">Create Team</div>
+                          <p>
+                            Increase productivity by making it easy for your
+                            group to create memorable learning experiences
+                            together.
+                          </p>
+                        </div>
+                      </div>
+                    </Dropdown.Item>
+                    */}
                   </Dropdown.Menu>
                 </Dropdown>
               </li>

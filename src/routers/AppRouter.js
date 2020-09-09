@@ -34,6 +34,7 @@ const PreviewPage = loadable(() => import('../containers/Preview'));
 const LtiPreviewPage = loadable(() => import('../containers/LtiPreviewPage'));
 const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared'));
 const SearchResult = loadable(() => import('../containers/Search'));
+const LtiModel = loadable(() => import('../containers/LtiModel'));
 
 const AppRouter = () => {
   useEffect(() => {
@@ -98,7 +99,7 @@ const AppRouter = () => {
         />
         <OpenRoute
           exact
-          path="/project/:projectId/playlist/:playlistId/preview/lti"
+          path="/playlist/:playlistId/preview/lti"
           component={LtiPreviewPage}
           previewType="playlist"
         />
@@ -122,7 +123,7 @@ const AppRouter = () => {
           previewType="playlist"
         />
         <OpenRoute
-          path="/project/:projectId/playlist/:playlistId/activity/:activityId/preview/lti"
+          path="/playlist/:playlistId/activity/:activityId/preview/lti"
           exact
           component={LtiPreviewPage}
           previewType="playlist"
@@ -134,28 +135,36 @@ const AppRouter = () => {
           previewType="playlistShared"
         />
 
+        {/*
         <PrivateRoute
           exact
-          path="/activities/:activityId"
+          path="/activity/:activityId"
           component={PlaylistsPage}
         />
         <PrivateRoute
           exact
-          path="/activities/:activityId/preview"
+          path="/activity/:activityId/preview"
           component={PreviewPage}
           previewType="activity"
         />
         <OpenRoute
           exact
-          path="/activities/:activityId/preview/lti"
+          path="/activity/:activityId/preview/lti"
           component={LtiPreviewPage}
           previewType="activitySharedLti"
         />
         <OpenRoute
           exact
-          path="/activity/:activityId/shared"
+          path="/activity/:activityId/preview/shared"
           component={LtiPreviewPage}
           previewType="activityShared"
+        />
+        */}
+
+        <OpenRoute
+          exact
+          path="/lti/content/:lmsUrl/:ltiClientId/:redirectUrl"
+          component={LtiModel}
         />
 
         <PrivateRoute
