@@ -429,8 +429,8 @@ export const shareActivity = async (activityId) => {
   //   Swal.fire({
   //     html: `You can now share Activity <strong>"${resourceName}"</strong><br>
   //         Anyone with the link below can access your activity:<br>
-  //         <br><a target="_blank" href="/shared/activity/${activityId}
-  //         ">${protocol + window.location.host}/shared/activity/${activityId}</a>
+  //         <br><a target="_blank" href="/activity/${activityId}/shared
+  //         ">${protocol + window.location.host}/activity/${activityId}/shared</a>
   //       `,
   //   });
   // }

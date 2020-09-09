@@ -16,7 +16,7 @@ const ActivityPreviewCard = (props) => {
     <Link
       to={
         showLti
-          ? `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview/lti`
+          ? `/playlist/${playlistId}/activity/${activity.id}/preview/lti`
           : `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
       }
     >
@@ -42,12 +42,13 @@ const ActivityPreviewCard = (props) => {
 ActivityPreviewCard.propTypes = {
   showLti: PropTypes.bool,
   activity: PropTypes.object.isRequired,
-  projectId: PropTypes.number.isRequired,
+  projectId: PropTypes.number,
   playlistId: PropTypes.number.isRequired,
 };
 
 ActivityPreviewCard.defaultProps = {
   showLti: false,
+  projectId: undefined,
 };
 
 export default ActivityPreviewCard;
