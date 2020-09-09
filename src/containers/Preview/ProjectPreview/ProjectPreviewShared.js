@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
@@ -15,6 +15,7 @@ function ProjectPreviewShared(props) {
   const { match, loadMyProjectsPreviewShared } = props;
 
   const project = useSelector((state) => state.project);
+  const accordion = useRef([]);
 
   const [currentProject, setCurrentProject] = useState(null);
 
@@ -31,25 +32,51 @@ function ProjectPreviewShared(props) {
     speed: 500,
     slidesToShow: 5.5,
     slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1.5,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
-  useEffect(() => {
-    try {
-      const acc = document.getElementById('custom_accordion');
-      const accordions = acc ? acc.getElementsByClassName('accordion') : [];
+  // useEffect(() => {
+  //   try {
+  //     const acc = document.getElementById('custom_accordion');
+  //     const accordions = acc ? acc.getElementsByClassName('accordion') : [];
 
-      let i;
+  //     let i;
 
-      for (i = 0; i < accordions.length; i += 1) {
-        accordions[i].addEventListener('click', function () {
-          // eslint-disable-next-line react/no-this-in-sfc
-          this.classList.toggle('active');
-        });
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
+  //     for (i = 0; i < accordions.length; i += 1) {
+  //       accordions[i].addEventListener('click', function () {
+  //         // eslint-disable-next-line react/no-this-in-sfc
+  //         this.classList.toggle('active');
+  //       });
+  //     }
+  //   } catch (e) {
+  //     throw e
+  //   }
+  // }, []);
 
   useEffect(() => {
     loadMyProjectsPreviewShared(match.params.projectId);
@@ -84,7 +111,11 @@ function ProjectPreviewShared(props) {
         <div className="check-each" key={playlist.id}>
           <button
             type="button"
+            ref={(el) => { accordion.current[counter] = el; }}
             className={counter === 0 ? 'active accordion' : ' accordion'}
+            onClick={() => {
+              accordion.current[counter].classList.toggle('active');
+            }}
           >
             <FontAwesomeIcon icon="plus" />
             {playlist.title}

@@ -72,6 +72,16 @@ const deepLinking = (dataDeep) => httpService
   .post(`/${apiVersion}/go/lms/projects`, dataDeep).then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const getSampleProject = () => httpService
+  .get(`/${apiVersion}/projects/default`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const getUpdatedProjects = () => httpService
+  .get(`/${apiVersion}/projects/recent`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -86,4 +96,6 @@ export default {
   fetchLmsDetails,
   lmsPublish,
   deepLinking,
+  getSampleProject,
+  getUpdatedProjects,
 };

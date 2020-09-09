@@ -58,7 +58,7 @@ class LtiPreviewPage extends React.Component {
 
     return (
       <div>
-        <Header {...this.props} />
+        {!previewType && <Header {...this.props} /> }
 
         {content}
       </div>
