@@ -10,7 +10,7 @@ import share from './share';
 import gapi from './gapi';
 import search from './search';
 import metrics from './metrics';
-import sidebar from './sidebar' 
+import sidebar from './sidebar';
 
 export default combineReducers({
   auth,
@@ -23,5 +23,5 @@ export default combineReducers({
   gapi,
   search,
   metrics,
-  sidebar
+  sidebar,
 });

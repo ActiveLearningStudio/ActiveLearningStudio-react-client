@@ -28,7 +28,7 @@ function Sidebar() {
       dispatch(sampleProjects());
       dispatch(allUpdateProject());
     }
-  }, []);
+  }, [allState.sidebar.allProject.length, dispatch]);
 
   useEffect(() => {
     if (allState.sidebar.allProject.length > 0) {
@@ -50,50 +50,49 @@ function Sidebar() {
 
   return (
     <aside className="sidebarall">
-      <Link to={`/`}>
+      <Link to="/">
         <div className="menu-title">
-          <FontAwesomeIcon icon="tachometer-alt" className="mr-2" /> Dashboard
+          <FontAwesomeIcon icon="tachometer-alt" className="mr-2" />
+          Dashboard
         </div>
       </Link>
-      <Link to={`/projects`}>
+      <Link to="/projects">
         <div className="menu-title">
-          <FontAwesomeIcon icon="tasks" className="mr-2" /> My Projects
+          <FontAwesomeIcon icon="tasks" className="mr-2" />
+          My Projects
         </div>
       </Link>
 
       <ul className="all-project">
-        {!!myProjects &&
-          myProjects.map((data, counter) => {
-            return (
-              <>
-                {counter <= 5 && (
-                  <li key={data.id}>
-                    <Link to={`/project/${data.id}`}>
-                      <FontAwesomeIcon icon="angle-right" className="mr-2" />
-                      {data.name}
-                    </Link>
-                  </li>
-                )}
-              </>
-            );
-          })}
+        {!!myProjects && myProjects.map((data, counter) => (
+          <>
+            {counter <= 5 && (
+            <li key={data.id}>
+              <Link to={`/project/${data.id}`}>
+                <FontAwesomeIcon icon="angle-right" className="mr-2" />
+                {data.name}
+              </Link>
+            </li>
+            )}
+          </>
+        ))}
         <Link className="expand" to="/projects">
           Explore All
-          <FontAwesomeIcon icon="arrow-right" className="mr-2" />
+          <FontAwesomeIcon icon="arrow-right" className="ml-2" />
         </Link>
       </ul>
       <div
+        className="menu-title"
         onClick={() => {
           Swal.fire({
-            title: "STAY TUNED!",
-            text: "COMING SOON",
+            title: 'STAY TUNED!',
+            text: 'COMING SOON',
             imageUrl: logo,
             imageWidth: 400,
             imageHeight: 200,
-            imageAlt: "Custom image",
+            imageAlt: 'Custom image',
           });
         }}
-        className="menu-title"
       >
         <FontAwesomeIcon icon="user-friends" className="mr-2" />
         My Teams
@@ -105,43 +104,39 @@ function Sidebar() {
       </div>
       {!!sampleProject && (
         <ul className="all-project">
-          {sampleProject.map((data, counter) => {
-            return (
-              <>
-                {counter <= 5 && (
-                  <li key={data.id}>
-                    <Link to={`/project/${data.id}`}>
-                      <FontAwesomeIcon icon="angle-right" className="mr-2" />
-                      {data.name}
-                    </Link>
-                  </li>
-                )}
-              </>
-            );
-          })}
+          {sampleProject.map((data, counter) => (
+            <>
+              {counter <= 5 && (
+                <li key={data.id}>
+                  <Link to={`/project/${data.id}`}>
+                    <FontAwesomeIcon icon="angle-right" className="mr-2" />
+                    {data.name}
+                  </Link>
+                </li>
+              )}
+            </>
+          ))}
         </ul>
       )}
 
       <div className="menu-title">
         <FontAwesomeIcon icon="tasks" className="mr-2" />
-        What's New
+        What&apos;s New
       </div>
       {!!updateProject && (
         <ul className="all-project">
-          {updateProject.map((data, counter) => {
-            return (
-              <>
-                {counter <= 5 && (
-                  <li key={data.id}>
-                    <Link to={`/project/${data.id}`}>
-                      <FontAwesomeIcon icon="angle-right" className="mr-2" />
-                      {data.name}
-                    </Link>
-                  </li>
-                )}
-              </>
-            );
-          })}
+          {updateProject.map((data, counter) => (
+            <>
+              {counter <= 5 && (
+                <li key={data.id}>
+                  <Link to={`/project/${data.id}`}>
+                    <FontAwesomeIcon icon="angle-right" className="mr-2" />
+                    {data.name}
+                  </Link>
+                </li>
+              )}
+            </>
+          ))}
         </ul>
       )}
     </aside>

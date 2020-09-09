@@ -8,7 +8,7 @@ import './style.scss';
 
 const ActivityPreviewCardDropdown = (props) => {
   const {
-    lti,
+    showLti,
     shared,
     activity,
     projectId,
@@ -31,7 +31,7 @@ const ActivityPreviewCardDropdown = (props) => {
         <Dropdown.Item
           as={Link}
           to={
-            lti
+            showLti
               ? `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview/lti`
               : `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
           }
@@ -47,7 +47,7 @@ const ActivityPreviewCardDropdown = (props) => {
 };
 
 ActivityPreviewCardDropdown.propTypes = {
-  lti: PropTypes.bool,
+  showLti: PropTypes.bool,
   shared: PropTypes.bool,
   activity: PropTypes.object.isRequired,
   projectId: PropTypes.number.isRequired,
@@ -55,7 +55,7 @@ ActivityPreviewCardDropdown.propTypes = {
 };
 
 ActivityPreviewCardDropdown.defaultProps = {
-  lti: false,
+  showLti: false,
   shared: false,
 };
 

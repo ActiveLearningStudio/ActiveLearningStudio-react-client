@@ -1,7 +1,7 @@
-import { 
-    SIDEBAR_ALL_PROJECT, 
-    SIDEBAR_SAMPLE_PROJECT, 
-    SIDEBAR_UPDATE_PROJECT
+import {
+  SIDEBAR_ALL_PROJECT,
+  SIDEBAR_SAMPLE_PROJECT,
+  SIDEBAR_UPDATE_PROJECT,
 } from '../actionTypes';
 
 const INITIAL_STATE = {
@@ -15,23 +15,20 @@ const Sidebar = (state = INITIAL_STATE, action) => {
     case SIDEBAR_ALL_PROJECT:
       return {
         ...state,
-        allProject: !!action.data.projects?action.data.projects:[],
-        
+        allProject: action.data.projects ? action.data.projects : [],
       };
 
     case SIDEBAR_SAMPLE_PROJECT:
-        return {
-          ...state,
-          sampleProject: !!action.data.projects?action.data.projects:[]
-          
-        };
-        
+      return {
+        ...state,
+        sampleProject: action.data.projects ? action.data.projects : [],
+      };
+
     case SIDEBAR_UPDATE_PROJECT:
-        return {
-            ...state,
-            updateProject:!!action.data.projects?action.data.projects:[]
-              
-        };    
+      return {
+        ...state,
+        updateProject: action.data.projects ? action.data.projects : [],
+      };
 
     default:
       return state;

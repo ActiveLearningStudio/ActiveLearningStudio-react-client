@@ -158,7 +158,7 @@ const AppRouter = () => {
           component={LtiPreviewPage}
           previewType="activityShared"
         />
-         <OpenRoute
+        <OpenRoute
           exact
           path="/lti/content/:lms_url/:lti_client_id/:redirect_url"
           component={LtiModel}

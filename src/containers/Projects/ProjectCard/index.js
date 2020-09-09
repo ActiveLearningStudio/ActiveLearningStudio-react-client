@@ -13,9 +13,15 @@ import ProjectPreviewModal from '../ProjectPreviewModal';
 import './style.scss';
 
 const ProjectCard = (props) => {
-  const { showPreview, project, showDeletePopup, handleShow,setProjectId } = props;
+  const {
+    showPreview,
+    project,
+    showDeletePopup,
+    handleShow,
+    setProjectId,
+  } = props;
   const dispatch = useDispatch();
- 
+
   const AllLms = useSelector((state) => state.share);
 
   const [allLms, setAllLms] = useState([]);
@@ -80,7 +86,7 @@ const ProjectCard = (props) => {
                           onClick={() => {
                             handleShow();
                             getProjectId(project.id);
-                            setProjectId(props.project.id)
+                            setProjectId(props.project.id);
                             dispatch(googleShare(false));
                           }}
                         >

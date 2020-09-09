@@ -1974,12 +1974,12 @@ a:hover {
     width: 100%;
     cursor: pointer;
     align-items: center;
-    
-    svg{
+
+    svg {
       margin-right: 7px;
     }
-   
-    @media (max-width:767px) {
+
+    @media (max-width: 767px) {
       font-weight: 500;
       font-size: 15px;
     }
@@ -2072,6 +2072,7 @@ a:hover {
 }
 
 .back-header {
+  min-height: 57px;
   border-bottom: 1px solid #e3e3e3;
   border-left: 1px solid #e3e3e3;
   padding: 13px 35px;
@@ -2552,7 +2553,7 @@ a:hover {
     font-size: 18px;
     color: #fff;
     opacity: 1;
-    
+
   }
 
   img {

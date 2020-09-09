@@ -2,9 +2,8 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 import resourceService from 'services/resource.service';
+import { loadProjectPlaylistsAction } from './playlist';
 import * as actionTypes from '../actionTypes';
-
-import { loadProjectPlaylistsAction } from './playlist';  // Refreshing after deleting
 
 // global variable for h5p object
 let h5pid;
@@ -342,7 +341,7 @@ export const createResourceByH5PUploadAction = (
     formData.append('action', 'upload');
 
     const responseUpload = await resourceService.h5pToken(formData);
-   
+
     if (responseUpload.id) {
       const createActivityUpload = {
         h5p_content_id: responseUpload.id,
@@ -389,7 +388,6 @@ export const editResourceAction = (
   activityId,
   metadata,
 ) => async (dispatch) => {
-  
   try {
     const dataUpload = {
       title: metadata.metaContent && metadata.metaContent.metaTitle,
@@ -425,17 +423,17 @@ export const editResourceAction = (
 export const shareActivity = async (activityId) => {
   resourceService.shareActivity(activityId);
 
-  //   if (result.activity.id) {
-  //   //   const protocol = `${window.location.href.split('/')[0]}//`;
-
-//   //   // Swal.fire({
-//   //   //   html: `You can now share Activity <strong>"${resourceName}"</strong><br>
-//   //   //       Anyone with the link below can access your activity:<br>
-//   //   //       <br><a target="_blank" href="/shared/activity/${activityId}
-//   //   //       ">${protocol + window.location.host}/shared/activity/${activityId}</a>
-//   //   //     `,
-//   //   // });
-//   // }
+  // if (result.activity.id) {
+  //   const protocol = `${window.location.href.split('/')[0]}//`;
+  //
+  //   Swal.fire({
+  //     html: `You can now share Activity <strong>"${resourceName}"</strong><br>
+  //         Anyone with the link below can access your activity:<br>
+  //         <br><a target="_blank" href="/shared/activity/${activityId}
+  //         ">${protocol + window.location.host}/shared/activity/${activityId}</a>
+  //       `,
+  //   });
+  // }
 };
 
 export const removeShareActivity = async (activityId, resourceName) => {

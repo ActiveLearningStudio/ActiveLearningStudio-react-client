@@ -118,17 +118,14 @@ export const reorderPlaylistsAction = (projectId, orgPlaylists, playlists) => as
       payload: { playlists },
     });
 
-    const pLists = playlists.map((pList, index) => {
-      const mapped = {
-        id: pList.id,
-        order: index,
-        activities: pList.activities.map((act, index) => ({
-          id: act.id,
-          order: index
-        }))
-      };
-      return mapped;
-    });
+    const pLists = playlists.map((pList, index) => ({
+      id: pList.id,
+      order: index,
+      activities: pList.activities.map((act, idx) => ({
+        id: act.id,
+        order: idx,
+      })),
+    }));
 
     const { playlists: updatedPlaylists } = await playlistService.reorder(projectId, pLists);
 
@@ -165,6 +162,39 @@ export const loadSharedPlaylistAction = (projectId, playlistId) => async (dispat
   }
 };
 
+export const showCreatePlaylistModalAction = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.SHOW_CREATE_PLAYLIST_MODAL,
+  });
+};
+
+export const hideCreatePlaylistModalAction = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.HIDE_CREATE_PLAYLIST_MODAL,
+  });
+};
+
+export const loadLtiPlaylistAction = (playlistId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.LOAD_PLAYLIST_REQUEST,
+    });
+
+    const { playlist } = await playlistService.loadLti(playlistId);
+
+    dispatch({
+      type: actionTypes.LOAD_PLAYLIST_SUCCESS,
+      payload: { playlist },
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.LOAD_PLAYLIST_FAIL,
+    });
+
+    throw e;
+  }
+};
+
 // Refactor bottom
 
 export const LoadHP = (show) => ({
@@ -172,44 +202,31 @@ export const LoadHP = (show) => ({
   show,
 });
 
-export const loadLtiPlaylistAction = (playlistId) => async (dispatch) => {
-  // const { token } = JSON.parse(localStorage.getItem("auth"));
-  const response = await axios.post('/api/load-playlist-lti', { playlistId });
-
-  if (response.data.status === 'success') {
-    dispatch(loadPlaylist(response.data.data.playlist));
-  }
-};
-
-// export const loadPlaylistActionNew = (activityId) => async (dispatch) => {
-//   const { token } = JSON.parse(localStorage.getItem('auth'));
-//   await axios
-//     .post(
-//       `${global.config.laravelAPIUrl}/h5p-resource-settings`,
-//       { activityId },
-//       { headers: { Authorization: `Bearer ${token}` } },
-//     )
-//     .then((response) => {
-//       // if (response.data.status == "success")
-//       // dispatch(loadPlaylist(response.data.data.playlist));
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//     });
-// };
-
-export const showCreatePlaylistModal = () => ({
-  type: actionTypes.SHOW_CREATE_PLAYLIST_MODAL,
+export const reorderPlaylistActivities = (playlist) => ({
+  type: actionTypes.REORDER_PLAYLIST,
+  playlist,
 });
 
-export const showCreatePlaylistModalAction = () => async (dispatch) => {
-  dispatch(showCreatePlaylistModal());
-};
+export const reorderPlaylistActivitiesAction = (playlist) => async (dispatch) => {
+  // Optimistically dispatching action with new playlist data
+  // to avoid waiting for request to go through
+  dispatch(reorderPlaylistActivities(playlist));
 
-export const hideCreatePlaylistModal = () => ({
-  type: actionTypes.HIDE_CREATE_PLAYLIST_MODAL,
-});
-
-export const hideCreatePlaylistModalAction = () => async (dispatch) => {
-  dispatch(hideCreatePlaylistModal());
+  // Then performing request. If something goes wrong,
+  // dispatch loadProjectPlaylistsAction to refresh playlists
+  // with fresh server data
+  const { token } = JSON.parse(localStorage.getItem('auth'));
+  axios.post(
+    '/api/reorder-playlist',
+    { playlist },
+    { headers: { Authorization: `Bearer ${token}` } },
+  )
+    .then((response) => {
+      if (response.data.status === 'error' || response.status !== 200) {
+        dispatch(loadProjectPlaylistsAction(playlist.projectId));
+      }
+    })
+    .catch(() => {
+      dispatch(loadProjectPlaylistsAction(playlist.projectId));
+    });
 };

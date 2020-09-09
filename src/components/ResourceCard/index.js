@@ -18,7 +18,9 @@ import './style.scss';
 const ResourceCard = (props) => {
   const handleDelete = (e) => {
     e.preventDefault();
-    const { resource, projectId, deleteResourceAction} = props;
+
+    const { resource, projectId, deleteResource } = props;
+
     Swal.fire({
       title: 'Are you sure you want to delete this activity?',
       showDenyButton: true,
@@ -26,8 +28,9 @@ const ResourceCard = (props) => {
       confirmButtonText: 'Yes',
       denyButtonText: 'No',
     }).then((result) => {
-      if (result.isConfirmed)
-        deleteResourceAction(projectId, resource.id);
+      if (result.isConfirmed) {
+        deleteResource(projectId, resource.id);
+      }
     });
   };
 
@@ -204,12 +207,14 @@ ResourceCard.propTypes = {
   playlist: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
+  projectId: PropTypes.number.isRequired,
   showDeletePopup: PropTypes.func.isRequired,
   hideDeletePopup: PropTypes.func.isRequired,
+  deleteResource: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteResourceAction: (projectId, activityId) => dispatch(deleteResourceAction(projectId, activityId)),
+  deleteResource: (projectId, activityId) => dispatch(deleteResourceAction(projectId, activityId)),
 });
 
 export default withRouter(connect(null, mapDispatchToProps)(ResourceCard));

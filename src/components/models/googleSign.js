@@ -11,8 +11,8 @@ import logo from 'assets/images/loginlogo.png';
 import {
   googleClassRoomLoginAction,
   googleClassRoomLoginFailureAction,
- } from 'store/actions/gapi';
-import { copyProject  } from 'store/actions/share';
+} from 'store/actions/gapi';
+import { copyProject } from 'store/actions/share';
 
 const GoogleModel = ({
   show,
@@ -21,9 +21,8 @@ const GoogleModel = ({
   googleClassRoomLoginFailure,
   projectId,
 }) => {
-  
   const dataRedux = useSelector((state) => state);
- 
+
   const [showForm, setShowForm] = useState(false);
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -39,11 +38,11 @@ const GoogleModel = ({
   }, [dataRedux, onHide]);
 
   useEffect(() => {
-    if(!!dataRedux.share.courses){
+    if (dataRedux.share.courses) {
       setCourses(dataRedux.share.courses);
-      setLoading(false)
+      setLoading(false);
     }
-  }, [dataRedux.share.courses])
+  }, [dataRedux.share.courses]);
 
   return (
     <Modal
@@ -89,11 +88,10 @@ const GoogleModel = ({
                     description: 'test',
                     room: 'test',
                   }}
-                 
-                  onSubmit={( values ) => {
-                   onHide()
+                  onSubmit={(values) => {
+                    onHide();
                     copyProject(projectId, values.course);
-                    setLoading(false)
+                    setLoading(false);
                   }}
                 >
                   {({
@@ -107,18 +105,16 @@ const GoogleModel = ({
                     /* and other goodies */
                   }) => (
                     <form onSubmit={handleSubmit}>
-                        <select
-                            class="form-control select-dropdown"
-                            name="course"
-                            value={values.course}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        >
-                            <option value="">Create a new class</option>
-                            {!!courses && courses.map((item, i) => {
-                              return <option key={i} value={item.id}>{item.name}</option>;
-                            })}
-                        </select>
+                      <select
+                        className="form-control select-dropdown"
+                        name="course"
+                        value={values.course}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      >
+                        <option value="">Create a new class</option>
+                        {!!courses && courses.map((item, i) => <option key={i} value={item.id}>{item.name}</option>)}
+                      </select>
                       {/* <input
                         type="text"
                         name="course"
@@ -185,7 +181,7 @@ const GoogleModel = ({
                         Are you sure you want to share this Project to Google Classroom?
                       </p>
                       */}
-                      {!loading &&<button type="submit">Confirm</button>}
+                      {!loading && <button type="submit">Confirm</button>}
                     </form>
                   )}
                 </Formik>
