@@ -8,7 +8,7 @@ import {
   createProjectAction,
   loadMyProjectsAction,
 } from 'store/actions/project';
-import { logActivityViewAction } from 'store/actions/metrics';
+import { logActivityViewAction, logPlaylistViewAction } from 'store/actions/metrics';
 import Header from 'components/Header';
 import ActivityShared from 'containers/Preview/PlaylistPreview/ActivityShared';
 import LtiPlaylistPreview from 'containers/Preview/PlaylistPreview/LtiPlaylistPreview';
@@ -18,13 +18,20 @@ class LtiPreviewPage extends React.Component {
   componentDidMount() {
     // scroll to top
     window.scrollTo(0, 0);
-
-    // const { loadMyProjects } = this.props;
-    // loadMyProjects();
+    // Logging the view for metrics
+    const { match, previewType, logActivityView, logPlaylistView } = this.props;
+    const { playlistId, activityId } = match.params;
+    
+    if (previewType === 'activityShared')
+      logActivityView(activityId);
+    else if(previewType === 'playlistShared'){
+      logPlaylistView(playlistId);
+      logActivityView(activityId);
+    }
   }
 
   render() {
-    const { match, previewType } = this.props;
+    const { match, previewType, logActivityView, logPlaylistView } = this.props;
 
     const { playlistId, activityId } = match.params;
 
@@ -78,6 +85,7 @@ const mapDispatchToProps = (dispatch) => ({
   // hideCreateProjectModal: () => dispatch(hideCreateProjectModalAction()),
 
   logActivityView: (activityId) => dispatch(logActivityViewAction(activityId)),
+  logPlaylistView: (playlistId) => dispatch(logPlaylistViewAction(playlistId)),
 });
 
 export default withRouter(
