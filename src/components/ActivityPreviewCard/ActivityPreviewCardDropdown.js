@@ -47,7 +47,7 @@ ActivityPreviewCardDropdown.propTypes = {
 ActivityPreviewCardDropdown.defaultProps = {
   showLti: false,
   shared: false,
-  projectId: undefined,
+  projectId: null,
 };
 
 export default ActivityPreviewCardDropdown;
