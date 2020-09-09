@@ -9,9 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown } from 'react-bootstrap';
 
 import logo from 'assets/images/logo.svg';
-import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
-import { shareActivity } from 'store/actions/resource';
-// import ShareLink from './ShareLink';
+import { shareActivity, deleteResourceAction } from 'store/actions/resource';
 
 import './style.scss';
 
@@ -20,11 +18,17 @@ import './style.scss';
 const ResourceCard = (props) => {
   const handleDelete = (e) => {
     e.preventDefault();
-
-    const { resource, showDeletePopup } = props;
-    // eslint-disable-next-line react/destructuring-assignment
-
-    showDeletePopup(resource.id, resource.title, 'Activity');
+    const { resource, projectId, deleteResourceAction} = props;
+    Swal.fire({
+      title: 'Are you sure you want to delete this activity?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      denyButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed)
+        deleteResourceAction(projectId, resource.id);
+    });
   };
 
   const {
@@ -205,8 +209,7 @@ ResourceCard.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
-  hideDeletePopup: () => dispatch(hideDeletePopupAction()),
+  deleteResourceAction: (projectId, activityId) => dispatch(deleteResourceAction(projectId, activityId)),
 });
 
 export default withRouter(connect(null, mapDispatchToProps)(ResourceCard));
