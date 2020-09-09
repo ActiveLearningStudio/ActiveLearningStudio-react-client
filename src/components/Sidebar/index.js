@@ -50,13 +50,13 @@ function Sidebar() {
 
   return (
     <aside className="sidebarall">
-      <Link to="/">
+      <Link to="/dashboard">
         <div className="menu-title">
           <FontAwesomeIcon icon="tachometer-alt" className="mr-2" />
           Dashboard
         </div>
       </Link>
-      <Link to="/projects">
+      <Link to="/">
         <div className="menu-title">
           <FontAwesomeIcon icon="tasks" className="mr-2" />
           My Projects
@@ -108,10 +108,10 @@ function Sidebar() {
             <>
               {counter <= 5 && (
                 <li key={data.id}>
-                  <Link to={`/project/${data.id}`}>
+                  <a target="_blank" rel="noreferrer" href={`/project/${data.id}/shared`}>
                     <FontAwesomeIcon icon="angle-right" className="mr-2" />
                     {data.name}
-                  </Link>
+                  </a>
                 </li>
               )}
             </>
