@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Swal from 'sweetalert2';
 import {
   PieChart,
   Pie,
@@ -39,28 +40,34 @@ function DashboardPage(props) {
   const bandwidthData = [
     {
       name: 'Used',
-      value: metrics.used_bandwidth,
+      value: (metrics.total_bandwidth === 0) ? 0 : metrics.used_bandwidth,
       color: '#66ddaa',
     },
     {
       name: 'Free',
-      value: metrics.total_bandwidth - metrics.used_bandwidth,
+      value: (metrics.total_bandwidth === 0) ? 1 : (metrics.total_bandwidth - metrics.used_bandwidth),
       color: '#607a9b',
     },
   ];
 
   const usedStoragePercentage = `${Math.round((metrics.used_storage * 100) / metrics.total_storage)}%`;
-
-  const usedBandwidthPercentage = `${Math.round((metrics.used_bandwidth * 100) / metrics.total_bandwidth)}%`;
+  const usedBandwidthPercentage = (metrics.total_bandwidth === 0) ? '0%' : `${Math.round((metrics.used_bandwidth * 100) / metrics.total_bandwidth)}%`;
 
   useEffect(() => {
-    if (!userId) {
+    if (!userId)
       return;
-    }
 
     getUserMetrics(userId);
     getUserMembership(userId);
-  }, [userId, getUserMetrics, getUserMembership]);
+  }, [userId]);
+
+  const handleUpgradeClick = () => {
+    Swal.fire({
+      icon: 'info',
+      title: 'Coming Soon',
+      text: 'Membership upgrade is coming soon. Stay tuned!',
+    });
+  }
 
   return (
     <>
@@ -96,7 +103,7 @@ function DashboardPage(props) {
                     <div className="row">
                       <div className="col">
                         <PieChart width={200} height={200}>
-                          <Pie data={storageData} dataKey="name" innerRadius={50} outerRadius={75}>
+                          <Pie data={storageData} /*dataKey="name"*/ innerRadius={50} outerRadius={75}>
                             {storageData.map((entry, index) => (
                               <Cell key={`cell-${index}`} fill={entry.color} />
                             ))}
@@ -108,10 +115,10 @@ function DashboardPage(props) {
                         <h1 className="title">Storage</h1>
                         <p>
                           <label>Total:</label>
-                          {` ${metrics.total_storage} kb`}
+                          {Math.round(metrics.total_storage / 1048576)} mb
                           <br />
                           <label>Used:</label>
-                          {` ${metrics.used_storage} kb`}
+                          { Math.round(metrics.used_storage / 1048576) } mb
                         </p>
                       </div>
                     </div>
@@ -120,7 +127,7 @@ function DashboardPage(props) {
                     <div className="row">
                       <div className="col">
                         <PieChart width={200} height={200}>
-                          <Pie data={bandwidthData} dataKey="name" innerRadius={50} outerRadius={75}>
+                          <Pie data={bandwidthData} /*dataKey="name"*/ innerRadius={50} outerRadius={75}>
                             {bandwidthData.map((entry, index) => (
                               <Cell key={`cell-${index}`} fill={entry.color} />
                             ))}
@@ -132,10 +139,10 @@ function DashboardPage(props) {
                         <h1 className="title">Views</h1>
                         <p>
                           <label>Total:</label>
-                          {` ${metrics.total_bandwidth} kb`}
+                          { Math.round(metrics.total_bandwidth / 1048576) } mb
                           <br />
                           <label>Used:</label>
-                          {` ${metrics.used_bandwidth}`}
+                          { Math.round(metrics.used_bandwidth / 1048576) } mb
                         </p>
                       </div>
                     </div>
@@ -144,11 +151,10 @@ function DashboardPage(props) {
                 <div className="row mb-3">
                   <div className="col">
                     <label>Current Plan:</label>
-                    {' '}
                     {metrics.membership_type}
                   </div>
                   <div className="col text-right">
-                    <a className="btn btn-primary submit mr-5">Upgrade Now</a>
+                    <a className="btn btn-primary submit mr-5" onClick={handleUpgradeClick}>Upgrade Now</a>
                   </div>
                 </div>
               </div>
@@ -167,7 +173,7 @@ function DashboardPage(props) {
                     </div>
                     <div className="row mt-3">
                       <div className="col">
-                        <a className="btn btn-primary submit">Upgrade to Basic Account</a>
+                        <a className="btn btn-primary submit" onClick={handleUpgradeClick}>Upgrade to Basic Account</a>
                       </div>
                     </div>
                     <div className="row mt-1 mb-3">
@@ -244,6 +250,7 @@ function DashboardPage(props) {
                 </div>
               </div>
             </div>
+{/*            
             <div className="row">
               <div className="col dashboard-panel m-3">
                 <div className="row dashboard-panel-header-row">
@@ -260,6 +267,7 @@ function DashboardPage(props) {
                 </div>
               </div>
             </div>
+*/}            
           </div>
         </div>
       </div>
