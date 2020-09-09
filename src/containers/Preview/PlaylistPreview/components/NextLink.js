@@ -82,7 +82,7 @@ function NextLink(props) {
                     })
                       .then((result) => {
                         if (result.value) {
-                          history.push(`/project/${projectId}/${shared ? 'shared' : 'preview'}`);
+                          history.push(`/project/${projectId}/${shared ? 'preview' : 'preview'}`);
                         }
                       });
                   }

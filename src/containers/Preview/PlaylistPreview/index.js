@@ -132,7 +132,7 @@ function PlaylistPreview(props) {
         <div className="share-project-preview-url project-share-check">
           <div className="mt-3 mb-2 d-flex align-items-center">
             <a
-              href={`/project/${projectId}/playlist/${playlistId}/activity/${currentActivityId}/preview/shared`}
+              href={`/activity/${currentActivityId}/shared`}
               target="_blank"
               rel="noreferrer"
               style={{ flex: 1 }}
@@ -140,7 +140,7 @@ function PlaylistPreview(props) {
               <input
                 id="urllink_clip"
                 style={{ width: '100%' }}
-                value={`${protocol}${window.location.host}/project/${projectId}/playlist/${playlistId}/activity/${currentActivityId}/preview/shared`}
+                value={`${protocol}${window.location.host}/activity/${currentActivityId}/shared`}
               />
             </a>
 
