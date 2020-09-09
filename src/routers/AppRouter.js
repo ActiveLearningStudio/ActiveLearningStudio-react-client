@@ -137,7 +137,7 @@ const AppRouter = () => {
 
         <OpenRoute
           exact
-          path="/activity/:activityId/preview/shared"
+          path="/activity/:activityId/shared"
           component={LtiPreviewPage}
           previewType="activityShared"
         />
