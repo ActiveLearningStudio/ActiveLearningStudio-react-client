@@ -13,14 +13,14 @@ function PreviewPage(props) {
   useBodyClass('hidechat-container');
 
   const content = (
-    <div className="site-container">
-      <ProjectPreview
-        {...props}
-        key={match.params.projectId}
-        project={project}
-        showLti={false}
-      />
-    </div>
+
+    <ProjectPreview
+      {...props}
+      key={match.params.projectId}
+      project={project}
+      showLti={false}
+    />
+
   );
 
   return (
