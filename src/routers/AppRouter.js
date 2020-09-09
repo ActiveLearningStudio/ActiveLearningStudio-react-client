@@ -135,31 +135,12 @@ const AppRouter = () => {
           previewType="playlistShared"
         />
 
-        {/*
-        <PrivateRoute
-          exact
-          path="/activity/:activityId"
-          component={PlaylistsPage}
-        />
-        <PrivateRoute
-          exact
-          path="/activity/:activityId/preview"
-          component={PreviewPage}
-          previewType="activity"
-        />
         <OpenRoute
           exact
-          path="/activity/:activityId/preview/lti"
-          component={LtiPreviewPage}
-          previewType="activitySharedLti"
-        />
-        <OpenRoute
-          exact
-          path="/activity/:activityId/preview/shared"
+          path="/activity/:activityId/shared"
           component={LtiPreviewPage}
           previewType="activityShared"
         />
-        */}
 
         <OpenRoute
           exact

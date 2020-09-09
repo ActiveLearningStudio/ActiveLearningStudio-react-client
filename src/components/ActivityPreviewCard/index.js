@@ -7,6 +7,7 @@ import './style.scss';
 const ActivityPreviewCard = (props) => {
   const {
     showLti,
+    shared,
     activity,
     projectId,
     playlistId,
@@ -15,9 +16,13 @@ const ActivityPreviewCard = (props) => {
   return (
     <Link
       to={
-        showLti
-          ? `/playlist/${playlistId}/activity/${activity.id}/preview/lti`
-          : `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
+        shared
+          ? `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview/shared`
+          : (
+            showLti
+              ? `/playlist/${playlistId}/activity/${activity.id}/preview/lti`
+              : `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
+          )
       }
     >
       <li className="check">
@@ -41,6 +46,7 @@ const ActivityPreviewCard = (props) => {
 
 ActivityPreviewCard.propTypes = {
   showLti: PropTypes.bool,
+  shared: PropTypes.bool,
   activity: PropTypes.object.isRequired,
   projectId: PropTypes.number,
   playlistId: PropTypes.number.isRequired,
@@ -48,7 +54,8 @@ ActivityPreviewCard.propTypes = {
 
 ActivityPreviewCard.defaultProps = {
   showLti: false,
-  projectId: undefined,
+  shared: false,
+  projectId: null,
 };
 
 export default ActivityPreviewCard;
