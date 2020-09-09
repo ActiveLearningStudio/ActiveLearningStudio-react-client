@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 
-const OpenRoute = ({ component: Component, path, previewType }) => (
+const OpenRoute = ({ component: Component, path, ...rest }) => (
   <Route
     path={path}
     exact
-    render={() => <Component previewType={previewType} />}
+    render={(props) => <Component {...props} {...rest} />}
   />
 );
 
@@ -16,7 +16,6 @@ OpenRoute.propTypes = {
     PropTypes.func,
   ]).isRequired,
   path: PropTypes.string.isRequired,
-  previewType: PropTypes.string.isRequired,
 };
 
 export default OpenRoute;

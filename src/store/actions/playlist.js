@@ -157,6 +157,39 @@ export const loadSharedPlaylistAction = (projectId, playlistId) => async (dispat
   }
 };
 
+export const showCreatePlaylistModalAction = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.SHOW_CREATE_PLAYLIST_MODAL,
+  });
+};
+
+export const hideCreatePlaylistModalAction = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.HIDE_CREATE_PLAYLIST_MODAL,
+  });
+};
+
+export const loadLtiPlaylistAction = (playlistId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.LOAD_PLAYLIST_REQUEST,
+    });
+
+    const { playlist } = await playlistService.loadLti(playlistId);
+
+    dispatch({
+      type: actionTypes.LOAD_PLAYLIST_SUCCESS,
+      payload: { playlist },
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.LOAD_PLAYLIST_FAIL,
+    });
+
+    throw e;
+  }
+};
+
 // Refactor bottom
 
 export const LoadHP = (show) => ({
@@ -191,46 +224,4 @@ export const reorderPlaylistActivitiesAction = (playlist) => async (dispatch) =>
     .catch(() => {
       dispatch(loadProjectPlaylistsAction(playlist.projectId));
     });
-};
-
-export const loadLtiPlaylistAction = (playlistId) => async (dispatch) => {
-  // const { token } = JSON.parse(localStorage.getItem("auth"));
-  const response = await axios.post('/api/load-playlist-lti', { playlistId });
-
-  if (response.data.status === 'success') {
-    dispatch(loadPlaylist(response.data.data.playlist));
-  }
-};
-
-// export const loadPlaylistActionNew = (activityId) => async (dispatch) => {
-//   const { token } = JSON.parse(localStorage.getItem('auth'));
-//   await axios
-//     .post(
-//       `${global.config.laravelAPIUrl}/h5p-resource-settings`,
-//       { activityId },
-//       { headers: { Authorization: `Bearer ${token}` } },
-//     )
-//     .then((response) => {
-//       // if (response.data.status == "success")
-//       // dispatch(loadPlaylist(response.data.data.playlist));
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//     });
-// };
-
-export const showCreatePlaylistModal = () => ({
-  type: actionTypes.SHOW_CREATE_PLAYLIST_MODAL,
-});
-
-export const showCreatePlaylistModalAction = () => async (dispatch) => {
-  dispatch(showCreatePlaylistModal());
-};
-
-export const hideCreatePlaylistModal = () => ({
-  type: actionTypes.HIDE_CREATE_PLAYLIST_MODAL,
-});
-
-export const hideCreatePlaylistModalAction = () => async (dispatch) => {
-  dispatch(hideCreatePlaylistModal());
 };

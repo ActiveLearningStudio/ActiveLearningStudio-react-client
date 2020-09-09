@@ -7,6 +7,7 @@ import gifLoader from 'assets/images/276.gif';
 import {
   loadH5pResource,
   loadH5pResourceSettingsOpen,
+  loadH5pResourceSettingsShared,
 } from 'store/actions/resource';
 
 const H5PPreview = (props) => {
@@ -18,6 +19,7 @@ const H5PPreview = (props) => {
     activityId,
     loadH5pResourceProp,
     showLtiPreview,
+    showActivityPreview,
   } = props;
 
   const resourceLoaded = async (data) => {
@@ -54,7 +56,7 @@ const H5PPreview = (props) => {
   };
 
   const loadResource = async (activityResourceId) => {
-    if (!activityResourceId) {
+    if (activityResourceId === null || activityResourceId === undefined) {
       return;
     }
 
@@ -69,31 +71,53 @@ const H5PPreview = (props) => {
   };
 
   const loadResourceLti = async (activityResourceId) => {
-    if (!activityResourceId) {
+    if (activityResourceId === null || activityResourceId === undefined) {
       return;
     }
 
     try {
       const response = await loadH5pResourceSettingsOpen(activityResourceId);
-      await resourceLoaded(response);
+      if (response.activity) {
+        await resourceLoaded(response.activity);
+      }
+    } catch (e) {
+      setLoading(false);
+    }
+  };
+
+  const loadResourceActivity = async (activityResourceId) => {
+    if (activityResourceId === null || activityResourceId === undefined) {
+      return;
+    }
+
+    try {
+      const response = await loadH5pResourceSettingsShared(activityResourceId);
+      if (response.activity) {
+        await resourceLoaded(response.activity);
+      }
     } catch (e) {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    console.log('resourceId: ', resourceId);
-    console.log('activityId: ', activityId);
     if (resourceId !== activityId) {
+      const h5pIFrame = document.getElementsByClassName('h5p-iframe');
+      if (h5pIFrame.length) {
+        h5pIFrame[0].remove();
+      }
+
       if (showLtiPreview) {
         loadResourceLti(activityId);
+      } else if (showActivityPreview) {
+        loadResourceActivity(activityId);
       } else {
         loadResource(activityId);
       }
 
       setResourceId(activityId);
     }
-  }, [resourceId, activityId, showLtiPreview, loadResourceLti, loadResource]);
+  }, [resourceId, activityId, showLtiPreview, showActivityPreview, loadResourceLti, loadResourceActivity, loadResource]);
 
   return (
     <>
@@ -117,13 +141,13 @@ const H5PPreview = (props) => {
 H5PPreview.propTypes = {
   activityId: PropTypes.number.isRequired,
   showLtiPreview: PropTypes.bool,
-  // showActivityPreview: PropTypes.bool,
+  showActivityPreview: PropTypes.bool,
   loadH5pResourceProp: PropTypes.func.isRequired,
 };
 
 H5PPreview.defaultProps = {
   showLtiPreview: false,
-  // showActivityPreview: false,
+  showActivityPreview: false,
 };
 
 const mapDispatchToProps = (dispatch) => ({

@@ -38,6 +38,11 @@ const loadShared = (id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const loadLti = (id) => httpService
+  .get(`/${apiVersion}/playlists/${id}/lti`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -46,4 +51,5 @@ export default {
   remove,
   reorder,
   loadShared,
+  loadLti,
 };
