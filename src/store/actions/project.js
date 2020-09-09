@@ -509,7 +509,7 @@ export const getProjectCourseFromLMSPlaylist = (
   }
 };
 
-export const loadMyProjectsltiAction = (lmsUrl, ltiClientId) => async (dispatch) => {
+export const loadMyProjectsLtiAction = (lmsUrl, ltiClientId) => async (dispatch) => {
   try {
     const data = {
       lms_url: lmsUrl,

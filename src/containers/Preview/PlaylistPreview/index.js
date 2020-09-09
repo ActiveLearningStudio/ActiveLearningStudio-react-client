@@ -299,14 +299,14 @@ class PlaylistPreview extends React.Component {
       previousLink1 = (
         <div className="slider-hover-section">
           <Link
-            to={playlistId && `/project/${projectId}/playlist/${playlistId}/activity/${previousResource.id}/preview`}
+            to={`/project/${projectId}/playlist/${playlistId}/activity/${previousResource.id}/preview`}
           >
             <FontAwesomeIcon icon="chevron-left" />
           </Link>
 
           <div className="hover-control-caption pointer-cursor">
             <Link
-              to={playlistId && `/project/${projectId}/playlist/${playlistId}/activity/${previousResource.id}/preview`}
+              to={`/project/${projectId}/playlist/${playlistId}/activity/${previousResource.id}/preview`}
             >
               <div
                 className="img-in-hover"

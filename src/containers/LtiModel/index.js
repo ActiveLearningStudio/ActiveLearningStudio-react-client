@@ -6,7 +6,7 @@ import { Accordion, Card, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { loadMyProjectsltiAction } from 'store/actions/project';
+import { loadMyProjectsLtiAction } from 'store/actions/project';
 
 import './style.scss';
 
@@ -24,12 +24,12 @@ const LTIProjectShared = (props) => {
 
   useEffect(() => {
     dispatch(
-      loadMyProjectsltiAction(
-        decodeURIComponent(match.params.lms_url),
-        decodeURIComponent(match.params.lti_client_id),
+      loadMyProjectsLtiAction(
+        decodeURIComponent(match.params.lmsUrl),
+        decodeURIComponent(match.params.ltiClientId),
       ),
     );
-  }, [dispatch, match.params.lms_url, match.params.lti_client_id]);
+  }, [dispatch, match.params.lmsUrl, match.params.ltiClientId]);
 
   useEffect(() => {
     if (project.projects) {
@@ -195,7 +195,7 @@ const LTIProjectShared = (props) => {
         type="button"
         className="button-submit"
         onClick={() => {
-          const finalUrl = `${decodeURIComponent(match.params.redirect_url)}&title=${
+          const finalUrl = `${decodeURIComponent(match.params.redirectUrl)}&title=${
             encodeURIComponent(formData.name)}&entity=${formData.entity}&id=${formData._id}`;
           if (formData._id) {
             Swal.fire({
