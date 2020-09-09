@@ -137,6 +137,13 @@ const AppRouter = () => {
 
         <OpenRoute
           exact
+          path="/activity/:activityId/shared"
+          component={LtiPreviewPage}
+          previewType="activityShared"
+        />
+
+        <OpenRoute
+          exact
           path="/lti/content/:lmsUrl/:ltiClientId/:redirectUrl"
           component={LtiModel}
         />
