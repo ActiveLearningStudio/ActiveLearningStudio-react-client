@@ -117,7 +117,7 @@ export const loadMyProjectsAction = () => async (dispatch) => {
       type: actionTypes.LOAD_MY_PROJECTS,
       payload: { projects },
     });
-
+    
     dispatch({
       type: actionTypes.PAGE_LOADING_COMPLETE,
     });
@@ -129,6 +129,44 @@ export const loadMyProjectsAction = () => async (dispatch) => {
     throw e;
   }
 };
+
+export const allSidebarProjects = () => async (dispatch) => {
+  try {
+    const { projects } = await projectService.getAll();
+    dispatch({
+      type: actionTypes.SIDEBAR_ALL_PROJECT,
+      data: { projects },
+    });
+  } catch (e) {
+      throw e;
+  }
+};
+
+export const sampleProjects = () => async (dispatch) => {
+  try {
+    const { projects } = await projectService.getSampleProject();
+    dispatch({
+      type: actionTypes.SIDEBAR_SAMPLE_PROJECT,
+      data: { projects },
+    });
+  } catch (e) {
+      throw e;
+  }
+};
+
+export const allUpdateProject = () => async (dispatch) => {
+  try {
+    const { projects } = await projectService.getUpdatedProjects();
+    dispatch({
+      type: actionTypes.SIDEBAR_UPDATE_PROJECT,
+      data: { projects },
+    });
+  } catch (e) {
+      throw e;
+  }
+};
+
+
 
 export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
   try {
