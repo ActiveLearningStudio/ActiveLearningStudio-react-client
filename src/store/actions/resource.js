@@ -388,6 +388,12 @@ export const editResourceAction = (
   activityId,
   metadata,
 ) => async (dispatch) => {
+  const h5pdata = {
+    library: window.h5peditorCopy.getLibrary(),
+    parameters: JSON.stringify(window.h5peditorCopy.getParams()),
+    action: 'create',
+  };
+
   try {
     const dataUpload = {
       title: metadata.metaContent && metadata.metaContent.metaTitle,
@@ -401,6 +407,7 @@ export const editResourceAction = (
         && metadata.metaContent.metaEducationLevels.name,
       h5p_content_id: h5pid.h5p_content.id,
       action: 'create',
+      data: h5pdata,
     };
 
     const response = await resourceService.h5pSettingsUpdate(activityId, dataUpload);
