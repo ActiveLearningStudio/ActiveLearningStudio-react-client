@@ -607,3 +607,46 @@ img {
     }
   }
 }
+
+@media(max-width:991px){
+  .flex-container.previews{
+    flex-wrap: wrap;
+    
+    @media(max-width:767px){
+      flex-wrap: wrap-reverse;
+    }
+
+    .right-sidegolf-info{
+      width:100%
+    }
+
+    .flex-container-preview{
+      width:100%;
+
+      .slider-btn{
+        display: flex;
+        justify-content: flex-end;
+        width:100%;     
+      }
+      .slider-hover-section{
+        margin:0px 15px
+      }
+    }
+
+    .left-vdo{
+       max-height:100% !important;
+       min-height: auto !important;
+       margin-bottom: 15px;
+      .main-item-wrapper{
+        width:100%;
+        margin-bottom:0px;
+        min-height: auto;
+      }
+     
+    }
+  }
+  .main-page-content.preview{
+    height: auto ;
+
+  }
+}

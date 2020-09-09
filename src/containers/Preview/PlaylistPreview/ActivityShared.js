@@ -55,7 +55,7 @@ const ActivityShared = (props) => {
   return (
     <>
       <section className="main-page-content preview">
-        <div className="flex-container">
+        <div className="flex-container previews">
           <div className="activity-bg left-vdo">
             <div className="main-item-wrapper">
               <div className="item-container">
