@@ -4,7 +4,6 @@ import Swal from 'sweetalert2';
 import resourceService from 'services/resource.service';
 import { loadProjectPlaylistsAction } from './playlist';
 import * as actionTypes from '../actionTypes';
-import store from '../index';
 
 // global variable for h5p object
 let h5pid;
@@ -389,12 +388,10 @@ export const editResourceAction = (
   activityId,
   metadata,
 ) => async (dispatch) => {
-  const globalStore = store.getState();
-
   const h5pdata = {
-    content: 'create',
-    library: globalStore.resource.editResource.editor,
-    parameters: globalStore.resource.editResource.params,
+    library: window.h5peditorCopy.getLibrary(),
+    parameters: JSON.stringify(window.h5peditorCopy.getParams()),
+    action: 'create',
   };
 
   try {
