@@ -2,6 +2,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 import resourceService from 'services/resource.service';
+import { loadProjectPlaylistsAction } from './playlist';
 import * as actionTypes from '../actionTypes';
 
 // global variable for h5p object
@@ -137,8 +138,8 @@ export const createResourceAction = (
         metadata.metaContent.metaSubject
         && metadata.metaContent.metaSubject.subject,
       education_level_id:
-        metadata.metaContent.metaEducationalLevels
-        && metadata.metaContent.metaEducationalLevels.name,
+        metadata.metaContent.metaEducationLevels
+        && metadata.metaContent.metaEducationLevels.name,
     };
     const insertedResource = await resourceService.create(activity);
 
@@ -198,20 +199,18 @@ export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
   });
 };
 
-export const deleteResourceAction = (activityId) => async (dispatch) => {
+export const deleteResourceAction = (projectId, activityId) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.DELETE_RESOURCE_REQUEST,
     });
 
-    const response = await resourceService.remove(activityId);
-
-    if (response.data.status === 'success') {
-      dispatch({
-        type: actionTypes.DELETE_RESOURCE_SUCCESS,
-        payload: { activityId },
-      });
-    }
+    await resourceService.remove(activityId);
+    dispatch({
+      type: actionTypes.DELETE_RESOURCE_SUCCESS,
+      payload: { activityId },
+    });
+    dispatch(loadProjectPlaylistsAction(projectId));
   } catch (e) {
     dispatch({
       type: actionTypes.DELETE_RESOURCE_FAIL,
@@ -424,17 +423,17 @@ export const editResourceAction = (
 export const shareActivity = async (activityId) => {
   resourceService.shareActivity(activityId);
 
-  //   if (result.activity.id) {
-  //   //   const protocol = `${window.location.href.split('/')[0]}//`;
-
-//   //   // Swal.fire({
-//   //   //   html: `You can now share Activity <strong>"${resourceName}"</strong><br>
-//   //   //       Anyone with the link below can access your activity:<br>
-//   //   //       <br><a target="_blank" href="/shared/activity/${activityId}
-//   //   //       ">${protocol + window.location.host}/shared/activity/${activityId}</a>
-//   //   //     `,
-//   //   // });
-//   // }
+  // if (result.activity.id) {
+  //   const protocol = `${window.location.href.split('/')[0]}//`;
+  //
+  //   Swal.fire({
+  //     html: `You can now share Activity <strong>"${resourceName}"</strong><br>
+  //         Anyone with the link below can access your activity:<br>
+  //         <br><a target="_blank" href="/shared/activity/${activityId}
+  //         ">${protocol + window.location.host}/shared/activity/${activityId}</a>
+  //       `,
+  //   });
+  // }
 };
 
 export const removeShareActivity = async (activityId, resourceName) => {

@@ -1,6 +1,10 @@
 import React, {
-  useEffect, useRef, useCallback, useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useState,
 } from 'react';
+import Switch from 'react-switch';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -15,6 +19,7 @@ import {
   createProjectAction,
   updateProjectAction,
   uploadProjectThumbnailAction,
+  showCreateProjectModalAction,
 } from 'store/actions/project';
 import InputField from 'components/InputField';
 import TextareaField from 'components/TextareaField';
@@ -28,6 +33,7 @@ const maxLength80 = maxLength(80);
 // remove unused code,
 
 let imageValidation = '';
+let projectShare = false;
 
 const onSubmit = async (values, dispatch, props) => {
   const {
@@ -36,7 +42,6 @@ const onSubmit = async (values, dispatch, props) => {
     editMode,
   } = props;
   const { name, description } = values;
-
   try {
     // if (!thumbUrl) {
     //   imageValidation = "* Required";
@@ -60,18 +65,19 @@ const onSubmit = async (values, dispatch, props) => {
             name,
             description,
             thumb_url: thumbUrl,
+            is_public: projectShare,
           })
           : createProjectAction({
             name,
             description,
+            is_public: projectShare,
             // eslint-disable-next-line max-len
-            thumb_url:
-                'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+            thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
           }),
       );
     }
 
-    history.push('/');
+    history.push('/projects');
   } catch (e) {
     Swal.fire({
       icon: 'error',
@@ -104,9 +110,11 @@ let CreateProjectPopup = (props) => {
     editMode,
     handleSubmit,
     handleCloseProjectModal,
+    showCreateProjectModal,
   } = props;
 
   const [modalShow, setModalShow] = useState(false);
+  const [publicProject, setPublicProject] = useState(false);
   const openFile = useRef();
 
   // remove popup when escape is pressed
@@ -118,6 +126,10 @@ let CreateProjectPopup = (props) => {
     },
     [handleCloseProjectModal],
   );
+
+  useEffect(() => {
+    if (!editMode) showCreateProjectModal();
+  }, [editMode, showCreateProjectModal]); // Runs only once
 
   useEffect(() => {
     document.addEventListener('keydown', escFunction, false);
@@ -143,13 +155,36 @@ let CreateProjectPopup = (props) => {
         autoComplete="off"
       >
         <div className="project-name">
+          <div className="label-toggle">
+            <label>
+              Enter Project Name (Up to 80 characters)
+            </label>
+            {!editMode && (
+            <div className="class-toggle" title="By default, it is not public">
+              <label>Make Project Public</label>
+              <Switch
+                checkedIcon={false}
+                uncheckedIcon={false}
+                height={25}
+                onChange={() => {
+                  setPublicProject(!publicProject);
+                  projectShare = !publicProject;
+                }}
+                checked={publicProject}
+                value={publicProject}
+              />
+            </div>
+            )}
+          </div>
+
           <Field
             name="name"
             component={InputField}
             type="text"
-            label="Enter Project Name (Up to 80 characters)"
             validate={[required, maxLength80]}
+            autoComplete="new-password"
           />
+
         </div>
 
         <div className="upload-thumbnail check">
@@ -241,6 +276,7 @@ let CreateProjectPopup = (props) => {
             name="description"
             component={TextareaField}
             validate={[required]}
+            autoComplete="new-password"
           />
         </div>
 
@@ -270,6 +306,7 @@ CreateProjectPopup.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   handleCloseProjectModal: PropTypes.func.isRequired,
+  showCreateProjectModal: PropTypes.func.isRequired,
 };
 
 CreateProjectPopup = reduxForm({
@@ -280,6 +317,7 @@ CreateProjectPopup = reduxForm({
 
 const mapDispatchToProps = (dispatch) => ({
   uploadProjectThumbnail: (formData) => dispatch(uploadProjectThumbnailAction(formData)),
+  showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
 });
 
 const mapStateToProps = (state) => ({

@@ -108,6 +108,7 @@ export const changePlaylistTitleAction = (projectId, playlistId, title) => async
   }
 };
 
+// Reorders playlists AND activities
 export const reorderPlaylistsAction = (projectId, orgPlaylists, playlists) => async (dispatch) => {
   try {
     // Optimistically dispatching action with new playlists data
@@ -120,6 +121,10 @@ export const reorderPlaylistsAction = (projectId, orgPlaylists, playlists) => as
     const pLists = playlists.map((pList, index) => ({
       id: pList.id,
       order: index,
+      activities: pList.activities.map((act, idx) => ({
+        id: act.id,
+        order: idx,
+      })),
     }));
 
     const { playlists: updatedPlaylists } = await playlistService.reorder(projectId, pLists);

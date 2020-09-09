@@ -10,7 +10,6 @@ import { Dropdown } from 'react-bootstrap';
 // import logo from 'assets/images/logo.svg';
 import {
   changePlaylistTitleAction,
-  reorderPlaylistActivitiesAction,
 } from 'store/actions/playlist';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import ResourceCard from 'components/ResourceCard';
@@ -248,7 +247,6 @@ PlaylistCard.defaultProps = {
 const mapDispatchToProps = (dispatch) => ({
   showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
   hideDeletePopup: () => dispatch(hideDeletePopupAction()),
-  reorderPlaylistActivities: (playlist) => dispatch(reorderPlaylistActivitiesAction(playlist)),
   changePlaylistTitle: (projectId, id, title) => dispatch(changePlaylistTitleAction(projectId, id, title)),
 });
 

@@ -20,11 +20,21 @@ import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
 import DeletePopup from 'components/DeletePopup';
 import ProjectsLoading from 'components/Loading/ProjectsLoading';
+import GoogleModel from 'components/models/googleSign';
 import ProjectCard from './ProjectCard';
 import NewProjectPage from './NewProjectPage';
 
 // TODO: need to convert to functional component
 export class ProjectsPage extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      show: false,
+      selectedProjectId: 0,
+    };
+  }
+
   componentDidMount() {
     const {
       match,
@@ -52,11 +62,22 @@ export class ProjectsPage extends React.Component {
     }
   }
 
+  handleShow = () => {
+    this.setState({ show: true }); //! state.show
+  };
+
+  setProjectId = (projectId) => {
+    this.setState({ selectedProjectId: projectId });
+  };
+
+  handleClose = () => {
+    this.setState({ show: false });
+  };
+
   handleCloseProjectModal = (e) => {
     e.preventDefault();
-
     const { history } = this.props;
-    history.push('/');
+    history.push('/projects');
   };
 
   handleDeleteProject = (projectId) => {
@@ -72,6 +93,7 @@ export class ProjectsPage extends React.Component {
   };
 
   render() {
+    const { show, selectedProjectId } = this.state;
     const {
       project,
       ui,
@@ -99,6 +121,9 @@ export class ProjectsPage extends React.Component {
           handleShareProject={this.handleShareProject}
           showDeletePopup={showDeletePopup}
           showPreview={showPreview === proj.id}
+          handleShow={this.handleShow}
+          handleClose={this.handleClose}
+          setProjectId={this.setProjectId}
         />
       );
     });
@@ -152,6 +177,11 @@ export class ProjectsPage extends React.Component {
         </ReactPlaceholder>
 
         <Footer />
+        <GoogleModel
+          projectId={selectedProjectId}
+          show={show}// {this.props.show}
+          onHide={this.handleClose}
+        />
       </>
     );
   }

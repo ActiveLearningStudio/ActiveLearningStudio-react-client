@@ -34,7 +34,7 @@ export const prepareLmsCourse = (action, state) => {
         playlistCounter = playlistCopyCounters[0] + 1;
       }
       playlistsCopyCounter.push({
-        playlist_id: playlist._id,
+        playlist_id: playlist.id,
         counter: playlistCounter,
       });
     }

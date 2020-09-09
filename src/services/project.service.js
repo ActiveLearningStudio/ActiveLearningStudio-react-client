@@ -68,6 +68,10 @@ const lmsPublish = (lms, projectId, settingId, counter, playlistId) => httpServi
   }).then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const deepLinking = (dataDeep) => httpService
+  .post(`/${apiVersion}/go/lms/projects`, dataDeep).then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -81,4 +85,5 @@ export default {
   lmsSetting,
   fetchLmsDetails,
   lmsPublish,
+  deepLinking,
 };

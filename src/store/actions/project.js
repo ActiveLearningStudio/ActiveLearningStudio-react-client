@@ -466,3 +466,25 @@ export const getProjectCourseFromLMSPlaylist = (
     });
   }
 };
+
+export const loadMyProjectsltiAction = (lmsUrl, ltiClientId) => async (dispatch) => {
+  try {
+    const data = {
+      lms_url: lmsUrl,
+      lti_client_id: ltiClientId,
+    };
+    const response = await projectService.deepLinking(data);
+
+    if (response.projects) {
+      let projects = [];
+      projects = response.projects;
+
+      dispatch({
+        type: actionTypes.LOAD_MY_PROJECTS,
+        payload: { projects },
+      });
+    }
+  } catch (e) {
+    throw new Error(e);
+  }
+};
