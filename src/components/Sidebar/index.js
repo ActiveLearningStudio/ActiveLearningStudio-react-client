@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
 
-import logo from 'assets/images/logo.svg';
+// import logo from 'assets/images/logo.svg';
 import {
   allSidebarProjects,
   allUpdateProject,
@@ -81,7 +81,7 @@ function Sidebar() {
           <FontAwesomeIcon icon="arrow-right" className="ml-2" />
         </Link>
       </ul>
-      <div
+      {/* <div
         className="menu-title"
         onClick={() => {
           Swal.fire({
@@ -96,7 +96,7 @@ function Sidebar() {
       >
         <FontAwesomeIcon icon="user-friends" className="mr-2" />
         My Teams
-      </div>
+      </div> */}
 
       <div className="menu-title">
         <FontAwesomeIcon icon="tasks" className="mr-2" />
@@ -119,25 +119,28 @@ function Sidebar() {
         </ul>
       )}
 
-      <div className="menu-title">
-        <FontAwesomeIcon icon="tasks" className="mr-2" />
-        What&apos;s New
-      </div>
       {!!updateProject && (
-        <ul className="all-project">
-          {updateProject.map((data, counter) => (
-            <>
-              {counter <= 5 && (
-                <li key={data.id}>
-                  <Link to={`/project/${data.id}`}>
-                    <FontAwesomeIcon icon="angle-right" className="mr-2" />
-                    {data.name}
-                  </Link>
-                </li>
-              )}
-            </>
-          ))}
-        </ul>
+        <>
+          <div className="menu-title">
+            <FontAwesomeIcon icon="tasks" className="mr-2" />
+            What&apos;s New
+          </div>
+
+          <ul className="all-project">
+            {updateProject.map((data, counter) => (
+              <>
+                {counter <= 5 && (
+                  <li key={data.id}>
+                    <Link to={`/project/${data.id}`}>
+                      <FontAwesomeIcon icon="angle-right" className="mr-2" />
+                      {data.name}
+                    </Link>
+                  </li>
+                )}
+              </>
+            ))}
+          </ul>
+        </>
       )}
     </aside>
   );
