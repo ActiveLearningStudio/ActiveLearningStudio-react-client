@@ -9,7 +9,7 @@ import {
   Label,
 } from 'recharts';
 
-import metricsService from '../../services/metrics.service';
+import metricsService from 'services/metrics.service';
 import { getUserMetricsAction, getUserMembershipAction } from 'store/actions/metrics';
 import Header from 'components/Header';
 import Sidebar from 'components/Sidebar';
@@ -203,16 +203,14 @@ function DashboardPage(props) {
                   </div>
                   <div className="col text-right">
                     {
-                      (metrics.membership_type_name === 'demo') ? 
+                      metrics.membership_type_name === 'demo' && 
                         (<a className="btn btn-primary submit mr-5" onClick={handleUpgradeClick}>Upgrade Now</a>)
-                      :
-                        ''
                     }
                   </div>
                 </div>
               </div>
               {
-                (metrics.membership_type_name === 'demo') ? 
+                metrics.membership_type_name === 'demo' && 
                   (
                     <div className="col">
                       <div className="row">
@@ -241,8 +239,6 @@ function DashboardPage(props) {
                       </div>
                     </div>
                   )
-                :
-                  ''
               }
             </div>
             <div className="row metrics-counters">
