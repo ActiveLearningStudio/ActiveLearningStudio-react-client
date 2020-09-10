@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Swal from 'sweetalert2';
 
 import loader from 'assets/images/loader.svg';
 import { updateProfileAction } from 'store/actions/auth';
@@ -15,11 +16,11 @@ import './style.scss';
 function ProfilePage(props) {
   const {
     isLoading,
-    error,
     user,
     updateProfile,
   } = props;
 
+  const [error, setError] = useState(null);
   const [state, setState] = useState({
     firstName: (user && user.first_name) || '',
     lastName: (user && user.last_name) || '',
@@ -70,8 +71,17 @@ function ProfilePage(props) {
         address: state.address,
         phone_number: state.phoneNumber,
       });
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Profile has been updated successfully.',
+        showCancelButton: false,
+        showConfirmButton: false,
+        timer: 1500,
+        allowOutsideClick: false,
+      });
     } catch (err) {
-      // console.log(err);
+      setError(err);
     }
   };
 
@@ -269,13 +279,11 @@ function ProfilePage(props) {
 ProfilePage.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   user: PropTypes.object,
-  error: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   updateProfile: PropTypes.func.isRequired,
 };
 
 ProfilePage.defaultProps = {
   user: null,
-  error: null,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -285,7 +293,6 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
   user: state.auth.user,
-  error: state.auth.error,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);
