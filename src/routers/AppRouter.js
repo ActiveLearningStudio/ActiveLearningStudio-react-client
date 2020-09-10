@@ -56,7 +56,7 @@ const AppRouter = () => {
         <PrivateRoute exact path="/account" component={ProfilePage} />
         <PrivateRoute exact path="/change-password" component={ChangePasswordPage} />
 
-        <PrivateRoute exact path="/dashboard" component={DashboardPage} />
+        {/* <PrivateRoute exact path="/dashboard" component={DashboardPage} /> */}
         <PrivateRoute
           exact
           path="/project/create"
