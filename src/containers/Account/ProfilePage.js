@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import loader from 'assets/images/loader.svg';
 import { updateProfileAction } from 'store/actions/auth';
 import Header from 'components/Header';
+import Footer from 'components/Footer';
+import Sidebar from 'components/Sidebar';
 import Error from '../Auth/Error';
 
 import './style.scss';
@@ -78,16 +80,20 @@ function ProfilePage(props) {
       <Header {...props} />
 
       <div className="account-page main-content-wrapper">
+        <div className="sidebar-wrapper">
+          <Sidebar />
+        </div>
+
         <div className="content-wrapper">
           <div className="content">
             <div className="row">
               <div className="col-md-12">
-                <h1 className="title">My Profile</h1>
+                <h1 className="pl-0 title">My Profile</h1>
               </div>
             </div>
 
             <div className="row justify-content-center">
-              <div className="col-md-8">
+              <div className="col-md-12">
                 <form
                   className="auth-form"
                   onSubmit={onSubmit}
@@ -254,6 +260,8 @@ function ProfilePage(props) {
           </div>
         </div>
       </div>
+
+      <Footer />
     </>
   );
 }
