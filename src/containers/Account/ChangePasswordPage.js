@@ -4,8 +4,10 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import loader from 'assets/images/loader.svg';
-import { updateProfileAction } from 'store/actions/auth';
+import { updatePasswordAction } from 'store/actions/auth';
 import Header from 'components/Header';
+import Footer from 'components/Footer';
+import Sidebar from 'components/Sidebar';
 import Error from '../Auth/Error';
 
 import './style.scss';
@@ -13,11 +15,10 @@ import './style.scss';
 function ChangePasswordPage(props) {
   const {
     isLoading,
-    error,
-    user,
-    updateProfile,
+    updatePassword,
   } = props;
 
+  const [error, setError] = useState(null);
   const [state, setState] = useState({
     currentPassword: '',
     password: '',
@@ -39,14 +40,15 @@ function ChangePasswordPage(props) {
     e.preventDefault();
 
     try {
-      await updateProfile({
-        id: user.id,
-        currentPassword: state.currentPassword,
+      setError(null);
+
+      await updatePassword({
+        current_password: state.currentPassword,
         password: state.password,
-        confirm_password: state.confirmPassword,
+        password_confirmation: state.confirmPassword,
       });
     } catch (err) {
-      // console.log(err);
+      setError(err);
     }
   };
 
@@ -55,16 +57,20 @@ function ChangePasswordPage(props) {
       <Header {...props} />
 
       <div className="account-page main-content-wrapper">
+        <div className="sidebar-wrapper">
+          <Sidebar />
+        </div>
+
         <div className="content-wrapper">
           <div className="content">
             <div className="row">
               <div className="col-md-12">
-                <h1 className="title">Change Password</h1>
+                <h1 className="pl-0 title">Change Password</h1>
               </div>
             </div>
 
             <div className="row justify-content-center">
-              <div className="col-md-8">
+              <div className="col-md-12">
                 <form
                   className="auth-form"
                   onSubmit={onSubmit}
@@ -148,6 +154,8 @@ function ChangePasswordPage(props) {
           </div>
         </div>
       </div>
+
+      <Footer />
     </>
   );
 }
@@ -155,23 +163,20 @@ function ChangePasswordPage(props) {
 ChangePasswordPage.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   user: PropTypes.object,
-  error: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-  updateProfile: PropTypes.func.isRequired,
+  updatePassword: PropTypes.func.isRequired,
 };
 
 ChangePasswordPage.defaultProps = {
   user: null,
-  error: null,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  updateProfile: (data) => dispatch(updateProfileAction(data)),
+  updatePassword: (data) => dispatch(updatePasswordAction(data)),
 });
 
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
   user: state.auth.user,
-  error: state.auth.error,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChangePasswordPage);
