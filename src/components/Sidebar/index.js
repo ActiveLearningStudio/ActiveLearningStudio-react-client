@@ -131,10 +131,10 @@ function Sidebar() {
               <>
                 {counter <= 5 && (
                   <li key={data.id}>
-                    <Link to={`/project/${data.id}`}>
+                    <a target="_blank" rel="noreferrer" href={`/project/${data.id}/shared`}>
                       <FontAwesomeIcon icon="angle-right" className="mr-2" />
                       {data.name}
-                    </Link>
+                    </a>
                   </li>
                 )}
               </>
