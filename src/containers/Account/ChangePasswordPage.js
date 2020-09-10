@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Swal from 'sweetalert2';
 
 import loader from 'assets/images/loader.svg';
 import { updatePasswordAction } from 'store/actions/auth';
@@ -42,10 +43,25 @@ function ChangePasswordPage(props) {
     try {
       setError(null);
 
-      await updatePassword({
+      const message = await updatePassword({
         current_password: state.currentPassword,
         password: state.password,
         password_confirmation: state.confirmPassword,
+      });
+
+      Swal.fire({
+        icon: 'success',
+        title: message,
+        showCancelButton: false,
+        showConfirmButton: false,
+        timer: 1500,
+        allowOutsideClick: false,
+      });
+
+      setState({
+        currentPassword: '',
+        password: '',
+        confirmPassword: '',
       });
     } catch (err) {
       setError(err);
@@ -83,7 +99,7 @@ function ChangePasswordPage(props) {
                         <FontAwesomeIcon icon="lock" />
                         <input
                           className="input-box"
-                          type="text"
+                          type="password"
                           id="current-password"
                           name="currentPassword"
                           placeholder="Current Password*"
@@ -102,7 +118,7 @@ function ChangePasswordPage(props) {
                         <FontAwesomeIcon icon="lock" />
                         <input
                           className="input-box"
-                          type="text"
+                          type="password"
                           id="password"
                           name="password"
                           placeholder="Password*"
@@ -121,7 +137,7 @@ function ChangePasswordPage(props) {
                         <FontAwesomeIcon icon="lock" />
                         <input
                           className="input-box"
-                          type="text"
+                          type="password"
                           id="confirm-password"
                           name="confirmPassword"
                           placeholder="Confirm Password*"
