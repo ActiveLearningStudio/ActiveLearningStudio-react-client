@@ -119,7 +119,7 @@ function Sidebar() {
         </ul>
       )}
 
-      {!!updateProject && (
+      {/* {!!updateProject && (
         <>
           <div className="menu-title">
             <FontAwesomeIcon icon="tasks" className="mr-2" />
@@ -141,7 +141,7 @@ function Sidebar() {
             ))}
           </ul>
         </>
-      )}
+      )} */}
     </aside>
   );
 }
