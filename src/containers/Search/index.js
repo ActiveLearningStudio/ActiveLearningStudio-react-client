@@ -255,9 +255,9 @@ function SearchInterface() {
                                   <a
                                     href={
                                       res.model === 'Activity'
-                                        ? `/activity/lti/preview/${res.id}`
+                                        ? `/activity/${res.id}/shared`
                                         : res.model === 'Playlist'
-                                          ? `/playlist/lti/preview/${res.id}`
+                                          ? `/playlist/${res.id}/preview/lti`
                                           : `/project/${res.id}/shared`
                                     }
                                     target="_blank"
@@ -357,9 +357,9 @@ function SearchInterface() {
                                     <a
                                       href={
                                       res.model === 'Activity'
-                                        ? `/activity/lti/preview/${res.id}`
+                                        ? `/activity/${res.id}/shared`
                                         : res.model === 'Playlist'
-                                          ? `/playlist/lti/preview/${res.id}`
+                                          ? `/playlist/${res.id}/preview/lti`
                                           : `/project/${res.id}/shared`
                                     }
                                       target="_blank"
@@ -461,9 +461,9 @@ function SearchInterface() {
                                     <a
                                       href={
                                       res.model === 'Activity'
-                                        ? `/activity/lti/preview/${res.id}`
+                                        ? `/activity/${res.id}/shared`
                                         : res.model === 'Playlist'
-                                          ? `/playlist/lti/preview/${res.id}`
+                                          ? `/playlist/${res.id}/preview/lti`
                                           : `/project/${res.id}/shared`
                                     }
                                       target="_blank"
@@ -567,9 +567,9 @@ function SearchInterface() {
                                       <a
                                       href={
                                       res.model === 'Activity'
-                                        ? `/activity/lti/preview/${res.id}`
+                                        ? `/activity/${res.id}/shared`
                                         : res.model === 'Playlist'
-                                          ? `/playlist/lti/preview/${res.id}`
+                                          ? `/playlist/${res.id}/preview/lti`
                                           : `/project/${res.id}/shared`
                                     }
                                       target="_blank"

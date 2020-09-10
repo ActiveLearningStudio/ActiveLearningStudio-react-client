@@ -13,6 +13,7 @@ import metricsService from '../../services/metrics.service';
 import { getUserMetricsAction, getUserMembershipAction } from 'store/actions/metrics';
 import Header from 'components/Header';
 import Sidebar from 'components/Sidebar';
+import Footer from 'components/Footer';
 
 import './styles.scss';
 
@@ -55,8 +56,7 @@ function DashboardPage(props) {
   const usedBandwidthPercentage = (metrics.total_bandwidth === 0) ? '0%' : `${Math.round((metrics.used_bandwidth * 100) / metrics.total_bandwidth)}%`;
 
   useEffect(() => {
-    if (!userId)
-      return;
+    if (!userId) return;
 
     getUserMetrics(userId);
     getUserMembership(userId);
@@ -151,7 +151,7 @@ function DashboardPage(props) {
                     <div className="row">
                       <div className="col">
                         <PieChart width={200} height={200}>
-                          <Pie data={storageData} /*dataKey="name"*/ innerRadius={50} outerRadius={75}>
+                          <Pie data={storageData} innerRadius={50} outerRadius={75}>
                             {storageData.map((entry, index) => (
                               <Cell key={`cell-${index}`} fill={entry.color} />
                             ))}
@@ -175,7 +175,7 @@ function DashboardPage(props) {
                     <div className="row">
                       <div className="col">
                         <PieChart width={200} height={200}>
-                          <Pie data={bandwidthData} /*dataKey="name"*/ innerRadius={50} outerRadius={75}>
+                          <Pie data={bandwidthData} innerRadius={50} outerRadius={75}>
                             {bandwidthData.map((entry, index) => (
                               <Cell key={`cell-${index}`} fill={entry.color} />
                             ))}
@@ -310,7 +310,7 @@ function DashboardPage(props) {
                 </div>
               </div>
             </div>
-{/*            
+            {/*
             <div className="row">
               <div className="col dashboard-panel m-3">
                 <div className="row dashboard-panel-header-row">
@@ -327,10 +327,12 @@ function DashboardPage(props) {
                 </div>
               </div>
             </div>
-*/}            
+            */}
           </div>
         </div>
       </div>
+
+      <Footer />
     </>
   );
 }

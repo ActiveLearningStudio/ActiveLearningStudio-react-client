@@ -177,6 +177,7 @@ export class ProjectsPage extends React.Component {
         </ReactPlaceholder>
 
         <Footer />
+
         <GoogleModel
           projectId={selectedProjectId}
           show={show}// {this.props.show}

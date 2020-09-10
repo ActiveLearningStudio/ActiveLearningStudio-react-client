@@ -26,6 +26,7 @@ const ResetPasswordPage = loadable(() => import('../containers/Auth/ResetPasswor
 const ConfirmEmailPage = loadable(() => import('../containers/Auth/ConfirmEmailPage'));
 
 const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
+const ChangePasswordPage = loadable(() => import('../containers/Account/ChangePasswordPage'));
 const DashboardPage = loadable(() => import('../containers/Dashboard'));
 
 const ProjectsPage = loadable(() => import('../containers/Projects'));
@@ -44,7 +45,7 @@ const AppRouter = () => {
   return (
     <Router history={history}>
       <Switch>
-        <PrivateRoute exact path="/projects" component={ProjectsPage} />
+        <PrivateRoute exact path="/" component={ProjectsPage} />
 
         <PublicRoute exact path="/login" component={LoginPage} />
         <PublicRoute exact path="/register" component={RegisterPage} />
@@ -53,8 +54,9 @@ const AppRouter = () => {
         <PublicRoute exact path="/verify-email" component={ConfirmEmailPage} />
 
         <PrivateRoute exact path="/account" component={ProfilePage} />
+        <PrivateRoute exact path="/change-password" component={ChangePasswordPage} />
 
-        <PrivateRoute exact path="/" component={DashboardPage} />
+        <PrivateRoute exact path="/dashboard" component={DashboardPage} />
         <PrivateRoute
           exact
           path="/project/create"

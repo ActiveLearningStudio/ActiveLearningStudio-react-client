@@ -109,6 +109,10 @@ function Header(props) {
                       My Account
                     </Dropdown.Item>
 
+                    <Dropdown.Item as={Link} to="/change-password">
+                      Security
+                    </Dropdown.Item>
+
                     <Dropdown.Item
                       href="#"
                       onClick={() => {

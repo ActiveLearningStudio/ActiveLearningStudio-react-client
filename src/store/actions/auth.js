@@ -231,6 +231,28 @@ export const updateProfileAction = (data) => async (dispatch) => {
   }
 };
 
+export const updatePasswordAction = (data) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.UPDATE_PASSWORD_REQUEST,
+  });
+
+  try {
+    const { message } = await authService.updatePassword(data);
+
+    dispatch({
+      type: actionTypes.UPDATE_PASSWORD_SUCCESS,
+    });
+
+    return message;
+  } catch (e) {
+    dispatch({
+      type: actionTypes.UPDATE_PASSWORD_FAIL,
+    });
+
+    throw e;
+  }
+};
+
 export const acceptTermsAction = () => async (dispatch) => {
   dispatch({
     type: actionTypes.ACCEPT_TERMS_REQUEST,
