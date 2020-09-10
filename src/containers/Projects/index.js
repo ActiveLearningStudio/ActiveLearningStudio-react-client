@@ -20,7 +20,7 @@ import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
 import DeletePopup from 'components/DeletePopup';
 import ProjectsLoading from 'components/Loading/ProjectsLoading';
-import GoogleModel from 'components/models/googleSign';
+import GoogleModel from 'components/models/GoogleLoginModal';
 import ProjectCard from './ProjectCard';
 import NewProjectPage from './NewProjectPage';
 

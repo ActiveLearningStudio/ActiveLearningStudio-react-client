@@ -14,7 +14,7 @@ import {
 } from 'store/actions/gapi';
 import { copyProject } from 'store/actions/share';
 
-const GoogleModel = ({
+const GoogleLoginModal = ({
   show,
   onHide,
   googleClassRoomLogin,
@@ -64,9 +64,9 @@ const GoogleModel = ({
               <p>To start, please log into your Google account.</p>
               <div>
                 <GoogleLogin
-                  clientId="898143939834-9ioui2i9ghgrmcgmgtg0h6rsf83d0t0c.apps.googleusercontent.com"
+                  clientId={global.config.gapiClientId}
                   onSuccess={googleClassRoomLogin}
-                  onFailure={(response) => googleClassRoomLoginFailure(response)}
+                  onFailure={googleClassRoomLoginFailure}
                   scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
                   cookiePolicy="single_host_origin"
                 >
@@ -194,7 +194,7 @@ const GoogleModel = ({
   );
 };
 
-GoogleModel.propTypes = {
+GoogleLoginModal.propTypes = {
   show: PropTypes.bool.isRequired,
   projectId: PropTypes.number.isRequired,
   onHide: PropTypes.func.isRequired,
@@ -203,12 +203,12 @@ GoogleModel.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  googleClassRoomLogin: (response) => dispatch(googleClassRoomLoginAction(response)),
-  googleClassRoomLoginFailure: (response) => dispatch(googleClassRoomLoginFailureAction(response)),
+  googleClassRoomLogin: (data) => dispatch(googleClassRoomLoginAction(data)),
+  googleClassRoomLoginFailure: (data) => dispatch(googleClassRoomLoginFailureAction(data)),
 });
 
 const mapStateToProps = () => ({});
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(GoogleModel),
+  connect(mapStateToProps, mapDispatchToProps)(GoogleLoginModal),
 );

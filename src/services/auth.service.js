@@ -13,6 +13,11 @@ const login = (body) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const loginWithGoogle = (body) => httpService
+  .post('/login/google', body)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const register = (body) => httpService
   .post('/register', body)
   .then(({ data }) => data)
@@ -46,6 +51,7 @@ const subscribe = () => httpService
 export default {
   me,
   login,
+  loginWithGoogle,
   register,
   confirmEmail,
   forgotPassword,
