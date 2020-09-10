@@ -2,6 +2,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 import resourceService from 'services/resource.service';
+import { loadProjectPlaylistsAction } from './playlist';
 import * as actionTypes from '../actionTypes';
 
 // global variable for h5p object
@@ -198,20 +199,18 @@ export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
   });
 };
 
-export const deleteResourceAction = (activityId) => async (dispatch) => {
+export const deleteResourceAction = (projectId, activityId) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.DELETE_RESOURCE_REQUEST,
     });
 
-    const response = await resourceService.remove(activityId);
-
-    if (response.data.status === 'success') {
-      dispatch({
-        type: actionTypes.DELETE_RESOURCE_SUCCESS,
-        payload: { activityId },
-      });
-    }
+    await resourceService.remove(activityId);
+    dispatch({
+      type: actionTypes.DELETE_RESOURCE_SUCCESS,
+      payload: { activityId },
+    });
+    dispatch(loadProjectPlaylistsAction(projectId));
   } catch (e) {
     dispatch({
       type: actionTypes.DELETE_RESOURCE_FAIL,
@@ -342,7 +341,7 @@ export const createResourceByH5PUploadAction = (
     formData.append('action', 'upload');
 
     const responseUpload = await resourceService.h5pToken(formData);
-   
+
     if (responseUpload.id) {
       const createActivityUpload = {
         h5p_content_id: responseUpload.id,
@@ -389,7 +388,12 @@ export const editResourceAction = (
   activityId,
   metadata,
 ) => async (dispatch) => {
-  
+  const h5pdata = {
+    library: window.h5peditorCopy.getLibrary(),
+    parameters: JSON.stringify(window.h5peditorCopy.getParams()),
+    action: 'create',
+  };
+
   try {
     const dataUpload = {
       title: metadata.metaContent && metadata.metaContent.metaTitle,
@@ -401,8 +405,9 @@ export const editResourceAction = (
       education_level_id:
         metadata.metaContent.metaEducationLevels
         && metadata.metaContent.metaEducationLevels.name,
-      h5p_content_id: h5pid.id,
+      h5p_content_id: h5pid.h5p_content.id,
       action: 'create',
+      data: h5pdata,
     };
 
     const response = await resourceService.h5pSettingsUpdate(activityId, dataUpload);
@@ -425,17 +430,17 @@ export const editResourceAction = (
 export const shareActivity = async (activityId) => {
   resourceService.shareActivity(activityId);
 
-  //   if (result.activity.id) {
-  //   //   const protocol = `${window.location.href.split('/')[0]}//`;
-
-//   //   // Swal.fire({
-//   //   //   html: `You can now share Activity <strong>"${resourceName}"</strong><br>
-//   //   //       Anyone with the link below can access your activity:<br>
-//   //   //       <br><a target="_blank" href="/shared/activity/${activityId}
-//   //   //       ">${protocol + window.location.host}/shared/activity/${activityId}</a>
-//   //   //     `,
-//   //   // });
-//   // }
+  // if (result.activity.id) {
+  //   const protocol = `${window.location.href.split('/')[0]}//`;
+  //
+  //   Swal.fire({
+  //     html: `You can now share Activity <strong>"${resourceName}"</strong><br>
+  //         Anyone with the link below can access your activity:<br>
+  //         <br><a target="_blank" href="/activity/${activityId}/shared
+  //         ">${protocol + window.location.host}/activity/${activityId}/shared</a>
+  //       `,
+  //   });
+  // }
 };
 
 export const removeShareActivity = async (activityId, resourceName) => {

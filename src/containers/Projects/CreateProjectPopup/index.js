@@ -1,7 +1,10 @@
 import React, {
-  useEffect, useRef, useCallback, useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useState,
 } from 'react';
-import Switch from "react-switch";
+import Switch from 'react-switch';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -62,15 +65,14 @@ const onSubmit = async (values, dispatch, props) => {
             name,
             description,
             thumb_url: thumbUrl,
-            is_public:projectShare
+            is_public: projectShare,
           })
           : createProjectAction({
             name,
             description,
-            is_public:projectShare,
+            is_public: projectShare,
             // eslint-disable-next-line max-len
-            thumb_url:
-                'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+            thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
           }),
       );
     }
@@ -112,12 +114,8 @@ let CreateProjectPopup = (props) => {
   } = props;
 
   const [modalShow, setModalShow] = useState(false);
-  const [publicProject, setPublicProject]  =  useState(true)
+  const [publicProject, setPublicProject] = useState(true);
   const openFile = useRef();
-
-  if (!editMode) {
-    showCreateProjectModal();
-  }
 
   // remove popup when escape is pressed
   const escFunction = useCallback(
@@ -128,6 +126,10 @@ let CreateProjectPopup = (props) => {
     },
     [handleCloseProjectModal],
   );
+
+  useEffect(() => {
+    if (!editMode) showCreateProjectModal();
+  }, [editMode, showCreateProjectModal]); // Runs only once
 
   useEffect(() => {
     document.addEventListener('keydown', escFunction, false);
@@ -157,25 +159,24 @@ let CreateProjectPopup = (props) => {
             <label>
               Enter Project Name (Up to 80 characters)
             </label>
-            {!editMode &&(
+            {!editMode && (
             <div className="class-toggle" title="By default, it is not public">
               <label>Make Project Public</label>
-              <Switch 
+              <Switch
                 checkedIcon={false}
-                uncheckedIcon={false} 
-                height={25} 
-                onChange={()=>{
-                  setPublicProject(!publicProject)
-                  projectShare = !publicProject
+                uncheckedIcon={false}
+                height={25}
+                onChange={() => {
+                  setPublicProject(!publicProject);
+                  projectShare = !publicProject;
                 }}
-                checked={publicProject} 
+                checked={publicProject}
                 value={publicProject}
-              /> 
+              />
             </div>
-            )
-            }
+            )}
           </div>
-         
+
           <Field
             name="name"
             component={InputField}
@@ -183,7 +184,7 @@ let CreateProjectPopup = (props) => {
             validate={[required, maxLength80]}
             autoComplete="new-password"
           />
-          
+
         </div>
 
         <div className="upload-thumbnail check">

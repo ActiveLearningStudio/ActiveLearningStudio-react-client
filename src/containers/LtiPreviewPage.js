@@ -8,6 +8,7 @@ import {
   createProjectAction,
   loadMyProjectsAction,
 } from 'store/actions/project';
+import { logActivityViewAction, logPlaylistViewAction } from 'store/actions/metrics';
 import Header from 'components/Header';
 import ActivityShared from 'containers/Preview/PlaylistPreview/ActivityShared';
 import LtiPlaylistPreview from 'containers/Preview/PlaylistPreview/LtiPlaylistPreview';
@@ -17,31 +18,38 @@ class LtiPreviewPage extends React.Component {
   componentDidMount() {
     // scroll to top
     window.scrollTo(0, 0);
-
-    // const { loadMyProjects } = this.props;
-    // loadMyProjects();
+    // Logging the view for metrics
+    const { match, previewType, logActivityView, logPlaylistView } = this.props;
+    const { playlistId, activityId } = match.params;
+    
+    if (previewType === 'activityShared')
+      logActivityView(activityId);
+    else if(previewType === 'playlistShared'){
+      logPlaylistView(playlistId);
+      logActivityView(activityId);
+    }
   }
 
   render() {
-    const { match, previewType } = this.props;
+    const { match, previewType, logActivityView, logPlaylistView } = this.props;
 
     const { projectId, playlistId, activityId } = match.params;
 
-    const proId = (projectId !== null && projectId !== undefined) ? parseInt(projectId, 10) : null;
-    const plyId = (playlistId !== null && playlistId !== undefined) ? parseInt(playlistId, 10) : null;
+    const projId = (projectId !== null && projectId !== undefined) ? parseInt(projectId, 10) : null;
+    const plyId = parseInt(playlistId, 10);
     const actId = (activityId !== null && activityId !== undefined) ? parseInt(activityId, 10) : null;
 
     let content;
     if (previewType === 'playlistShared') {
       content = (
         <LtiPlaylistPreviewShared
-          showLti
-          projectId={proId}
+          projectId={projId}
           playlistId={plyId}
           activityId={actId}
         />
       );
     } else if (previewType === 'activityShared') {
+      this.props.logActivityView(match.params.activityId);
       content = (
         <ActivityShared activityId={actId} />
       );
@@ -49,7 +57,6 @@ class LtiPreviewPage extends React.Component {
       content = (
         <LtiPlaylistPreview
           showLti
-          projectId={proId}
           playlistId={plyId}
           activityId={actId}
         />
@@ -58,7 +65,7 @@ class LtiPreviewPage extends React.Component {
 
     return (
       <div>
-        <Header {...this.props} />
+        {!previewType && <Header {...this.props} /> }
 
         {content}
       </div>
@@ -68,9 +75,12 @@ class LtiPreviewPage extends React.Component {
 
 LtiPreviewPage.propTypes = {
   match: PropTypes.object.isRequired,
-  project: PropTypes.object.isRequired,
-  previewType: PropTypes.string.isRequired,
+  previewType: PropTypes.string,
   loadMyProjects: PropTypes.func.isRequired,
+};
+
+LtiPreviewPage.defaultProps = {
+  previewType: null,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -78,12 +88,11 @@ const mapDispatchToProps = (dispatch) => ({
   loadMyProjects: () => dispatch(loadMyProjectsAction()),
   createProject: (name, description, thumbUrl) => dispatch(createProjectAction(name, description, thumbUrl)),
   // hideCreateProjectModal: () => dispatch(hideCreateProjectModalAction()),
-});
 
-const mapStateToProps = (state) => ({
-  project: state,
+  logActivityView: (activityId) => dispatch(logActivityViewAction(activityId)),
+  logPlaylistView: (playlistId) => dispatch(logPlaylistViewAction(playlistId)),
 });
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(LtiPreviewPage),
+  connect(null, mapDispatchToProps)(LtiPreviewPage),
 );

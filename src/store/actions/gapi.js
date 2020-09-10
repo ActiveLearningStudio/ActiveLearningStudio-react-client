@@ -1,14 +1,13 @@
 import Swal from 'sweetalert2';
 
+import searchService from 'services/search.service';
 import {
   GOOGLE_CLASSROOM_LOGIN,
   GOOGLE_CLASSROOM_LOGIN_FAILURE,
   GOOGLE_SHARE,
   LOAD_GOOGLE_CLASSROOM_COURSES,
-  ALL_COURSES
+  ALL_COURSES,
 } from '../actionTypes';
-
-import searchService from 'services/search.service'
 
 export const googleClassRoomLogin = (id) => ({
   type: GOOGLE_CLASSROOM_LOGIN,
@@ -31,15 +30,13 @@ export const getProjectId = (/* id */) => {
 };
 
 export const fetchCourses = () => {
-  
   Swal.fire({
-    title: "Loading...",
+    title: 'Loading...',
     showCancelButton: false,
     showConfirmButton: false,
     allowOutsideClick: false,
   });
-
-}
+};
 
 // shows the delete popup on activities, project, playlists
 export const googleClassRoomLoginAction = (response) => async (dispatch) => {
@@ -48,16 +45,16 @@ export const googleClassRoomLoginAction = (response) => async (dispatch) => {
   try {
     // save access token
     await searchService.googleShareToken(JSON.stringify(response.tokenObj));
-    const getCourses =  await searchService.getCourses();
+    const getCourses = await searchService.getCourses();
     dispatch({
-      type:ALL_COURSES,
-      payload : getCourses.courses
-    })
+      type: ALL_COURSES,
+      payload: getCourses.courses,
+    });
 
-    //dispatch(googleClassRoomLogin(response));
-   } catch (e) {
-      throw new Error(e);
-   }
+    // dispatch(googleClassRoomLogin(response));
+  } catch (e) {
+    throw new Error(e);
+  }
 };
 
 export const googleClassRoomLoginFailure = (id) => ({
@@ -69,12 +66,14 @@ export const googleClassRoomLoginFailure = (id) => ({
 export const googleClassRoomLoginFailureAction = (response) => async (dispatch) => {
   dispatch(googleShare('close'));
   dispatch(googleClassRoomLogin(response));
+
   try {
     Swal.fire({
       confirmButtonColor: '#5952c6',
       icon: 'error',
       text: response.error.replace(/_/g, ' '),
     });
+
     // dispatch(googleShare(true));
     dispatch(googleClassRoomLoginFailure(response));
   } catch (e) {

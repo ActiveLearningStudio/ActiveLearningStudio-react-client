@@ -8,7 +8,7 @@ import './style.scss';
 
 const ActivityPreviewCardDropdown = (props) => {
   const {
-    lti,
+    showLti,
     shared,
     activity,
     projectId,
@@ -16,47 +16,38 @@ const ActivityPreviewCardDropdown = (props) => {
   } = props;
 
   return (
-    <>
-      {shared ? (
-        <Dropdown.Item
-          as={Link}
-          to={`/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview/shared`}
-        >
-          <div className="d-flex align-items-center">
-            <FontAwesomeIcon icon="play-circle" />
-            <div className="ml-2 title">{activity.title}</div>
-          </div>
-        </Dropdown.Item>
-      ) : (
-        <Dropdown.Item
-          as={Link}
-          to={
-            lti
-              ? `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview/lti`
+    <Dropdown.Item
+      as={Link}
+      to={
+        shared
+          ? `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview/shared`
+          : (
+            showLti
+              ? `/playlist/${playlistId}/activity/${activity.id}/preview/lti`
               : `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
-          }
-        >
-          <div className="d-flex align-items-center">
-            <FontAwesomeIcon icon="play-circle" />
-            <div className="ml-2 title">{activity.title}</div>
-          </div>
-        </Dropdown.Item>
-      )}
-    </>
+          )
+      }
+    >
+      <div className="d-flex align-items-center">
+        <FontAwesomeIcon icon="play-circle" />
+        <div className="ml-2 title">{activity.title}</div>
+      </div>
+    </Dropdown.Item>
   );
 };
 
 ActivityPreviewCardDropdown.propTypes = {
-  lti: PropTypes.bool,
+  showLti: PropTypes.bool,
   shared: PropTypes.bool,
   activity: PropTypes.object.isRequired,
-  projectId: PropTypes.number.isRequired,
+  projectId: PropTypes.number,
   playlistId: PropTypes.number.isRequired,
 };
 
 ActivityPreviewCardDropdown.defaultProps = {
-  lti: false,
+  showLti: false,
   shared: false,
+  projectId: null,
 };
 
 export default ActivityPreviewCardDropdown;

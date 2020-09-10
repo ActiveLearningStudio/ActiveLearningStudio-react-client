@@ -3,25 +3,25 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
 import gifloader from 'assets/images/dotsloader.gif';
-import { loadH5pShareResource } from 'store/actions/resource';
+import { loadH5pResourceSettingsShared } from 'store/actions/resource';
 
 import './style.scss';
 
 const ActivityShared = (props) => {
   const { match } = props;
-  const [authorized, setAuthorized] = useState(true);
+  const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
     if (match.params.activityId) {
-      loadH5pShareResource(match.params.activityId)
+      loadH5pResourceSettingsShared(match.params.activityId)
         .then(async (data) => {
-          window.H5PIntegration = data.h5p_activity.h5p.settings;
+          window.H5PIntegration = data.h5p.settings;
           const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
-          h5pWrapper.innerHTML = data.h5p_activity.h5p.embed_code.trim();
-          const newCss = data.h5p_activity.h5p.settings.core.styles.concat(
-            data.h5p_activity.h5p.settings.loadedCss,
+          h5pWrapper.innerHTML = data.h5p.embed_code.trim();
+          const newCss = data.h5p.settings.core.styles.concat(
+            data.h5p.settings.loadedCss,
           );
 
           await Promise.all(
@@ -35,8 +35,8 @@ const ActivityShared = (props) => {
             }),
           );
 
-          const newScripts = data.h5p_activity.h5p.settings.core.scripts.concat(
-            data.h5p_activity.h5p.settings.loadedJs,
+          const newScripts = data.h5p.settings.core.scripts.concat(
+            data.h5p.settings.loadedJs,
           );
 
           newScripts.forEach((value) => {
@@ -55,11 +55,11 @@ const ActivityShared = (props) => {
   return (
     <>
       <section className="main-page-content preview">
-        <div className="flex-container">
+        <div className="flex-container previews">
           <div className="activity-bg left-vdo">
             <div className="main-item-wrapper">
               <div className="item-container">
-                {!authorized ? (
+                {authorized ? (
                   <div id="curriki-h5p-wrapper">
                     <div className="loader_gif" style={{ color: 'black' }}>
                       Activity is not sharable

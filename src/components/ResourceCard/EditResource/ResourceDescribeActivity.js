@@ -1,17 +1,16 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import Swal from 'sweetalert2';
-import { useEffect } from 'react';
 
 import { required, FadeDiv } from 'utils';
 import {
   uploadResourceThumbnailAction,
   showBuildActivityAction,
   onSubmitDescribeActivityAction,
-  uploadResourceThumbnail
+  uploadResourceThumbnail,
 } from 'store/actions/resource';
 import PexelsAPI from 'components/models/pexels';
 import { subjects, educationLevels } from 'components/ResourceCard/AddResource/dropdownData';
@@ -47,13 +46,13 @@ const onSubmit = async (values, dispatch, props) => {
 };
 
 let ResourceDescribeActivity = (props) => {
-  const { resource, handleSubmit } = props;
+  const { resource, handleSubmit, uploadResourceThumbnailDefault } = props;
   const [modalShow, setModalShow] = useState(false);
   const openFile = useRef();
-  const {uploadResourceThumbnailDefault}  =   props
-  useEffect(()=>{
-    uploadResourceThumbnailDefault(resource.editResource.metadata.thumbUrl)
-  },[])
+
+  useEffect(() => {
+    uploadResourceThumbnailDefault(resource.editResource.metadata.thumbUrl);
+  }, [resource.editResource.metadata.thumbUrl, uploadResourceThumbnailDefault]);
 
   return (
     <div className="row">
@@ -223,6 +222,7 @@ let ResourceDescribeActivity = (props) => {
 ResourceDescribeActivity.propTypes = {
   resource: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  uploadResourceThumbnailDefault: PropTypes.func.isRequired,
 };
 
 ResourceDescribeActivity = reduxForm({

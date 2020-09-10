@@ -13,7 +13,19 @@ const getUserMembership = (userId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const logActivityView = (activityId) => httpService
+  .get(`/${apiVersion}/activities/${activityId}/log-view`);
+
+const logPlaylistView = (playlistId) => httpService
+  .get(`/${apiVersion}/playlists/${playlistId}/log-view`);
+
+const logProjectView = (projectId) => httpService
+  .get(`/${apiVersion}/projects/${projectId}/log-view`);
+
 export default {
   getUserMetrics,
   getUserMembership,
+  logActivityView,
+  logPlaylistView,
+  logProjectView
 };

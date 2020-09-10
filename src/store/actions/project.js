@@ -138,7 +138,8 @@ export const allSidebarProjects = () => async (dispatch) => {
       data: { projects },
     });
   } catch (e) {
-      throw e;
+    console.log(e);
+    throw e;
   }
 };
 
@@ -150,7 +151,8 @@ export const sampleProjects = () => async (dispatch) => {
       data: { projects },
     });
   } catch (e) {
-      throw e;
+    console.log(e);
+    throw e;
   }
 };
 
@@ -162,11 +164,10 @@ export const allUpdateProject = () => async (dispatch) => {
       data: { projects },
     });
   } catch (e) {
-      throw e;
+    console.log(e);
+    throw e;
   }
 };
-
-
 
 export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
   try {
@@ -505,28 +506,24 @@ export const getProjectCourseFromLMSPlaylist = (
   }
 };
 
-export const loadMyProjectsltiAction = (lmsUrl, ltiClientId) => {
-  return async (dispatch) => {
-    try {
-      const data = {
-        lms_url: lmsUrl,
-        lti_client_id: ltiClientId,
-      }
-      const response = await projectService.deepLinking(data)
-      
-      if (response.projects) {
-        let projects = [];
-        projects = response.projects;
+export const loadMyProjectsLtiAction = (lmsUrl, ltiClientId) => async (dispatch) => {
+  try {
+    const data = {
+      lms_url: lmsUrl,
+      lti_client_id: ltiClientId,
+    };
+    const response = await projectService.deepLinking(data);
 
-        dispatch({
-          type: actionTypes.LOAD_MY_PROJECTS,
-          payload: { projects },
-        });
-       
-      }
-    } catch (e) {
-     
-      throw new Error(e);
+    if (response.projects) {
+      let projects = [];
+      projects = response.projects;
+
+      dispatch({
+        type: actionTypes.LOAD_MY_PROJECTS,
+        payload: { projects },
+      });
     }
-  };
+  } catch (e) {
+    throw new Error(e);
+  }
 };
