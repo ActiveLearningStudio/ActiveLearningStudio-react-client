@@ -2374,7 +2374,9 @@ a:hover {
 
   .main-item-wrapper {
     background: #fff;
-    min-height: 450px;
+    min-height: 443px;
+    max-height: 593px;
+    overflow-y: auto;
   }
 
   .slider-scroll-auto {
@@ -2390,7 +2392,6 @@ a:hover {
 
   .activity-bg.left-vdo {
     position: relative;
-    overflow-y: auto;
     width: 100%;
     max-height: 650px;
     min-height: 500px;
