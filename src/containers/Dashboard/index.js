@@ -162,10 +162,10 @@ function DashboardPage(props) {
                       <div className="col">
                         <h1 className="title">Storage</h1>
                         <p>
-                          <label>Total:</label>
+                          <label>Total Available:</label>
                           { humanFileSize(metrics.total_storage)}
                           <br />
-                          <label>Used:</label>
+                          <label>Total Used:</label>
                           { humanFileSize(metrics.used_storage) }
                         </p>
                       </div>
@@ -186,10 +186,10 @@ function DashboardPage(props) {
                       <div className="col">
                         <h1 className="title">Bandwidth</h1>
                         <p>
-                          <label>Total:</label>
+                          <label>Total Available:</label>
                           { humanFileSize(metrics.total_bandwidth) } 
                           <br />
-                          <label>Used:</label>
+                          <label>Total Used:</label>
                           { humanFileSize(metrics.used_bandwidth) } 
                         </p>
                       </div>
