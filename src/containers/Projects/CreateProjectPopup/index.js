@@ -81,14 +81,21 @@ const onSubmit = async (values, dispatch, props) => {
     history.push('/projects');
   } catch (e) {
       if(!!e.errors ){
-        if(e.errors.description.length>0){
+        if(e.errors.description){
           Swal.fire({
             icon: 'error',
             title: 'Error',
             text: e.errors.description[0]
           });
         }
-       }else{
+       else if(e.errors.description){
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: e.errors.description[0]
+        });
+      }
+      else{
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -96,6 +103,7 @@ const onSubmit = async (values, dispatch, props) => {
         });
       }
     }
+  }
   };
 
 export const uploadThumb = async (e, props) => {
