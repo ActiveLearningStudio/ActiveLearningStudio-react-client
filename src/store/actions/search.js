@@ -13,7 +13,9 @@ export const searchRedux = (data, searchQuery, meta) => ({
 export const simpleSearchAction = (searchQuery, from, size) => async (dispatch) => {
   const response = await searchService.searchResult(searchQuery, from, size);
   if(response.errors){
-    Swal.fire("character limit must not axceed 255")
+    if(response.errors.query){
+    Swal.fire(response.errors.query[0])
+    }
   }else{
     dispatch(searchRedux(response.data, searchQuery, response.meta));
   }

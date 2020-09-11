@@ -161,8 +161,8 @@ function SearchInterface() {
                               <div
                                 onClick={() => {
                               
-                                  if(!searchInput){
-                                    Swal.fire("Input field is empty")
+                                  if(!searchInput.trim()){
+                                    Swal.fire("Search field is required")
                                   }
                                   else if(searchInput.length>255){
                                     Swal.fire("character limit should be less then 255 ")
@@ -177,7 +177,7 @@ function SearchInterface() {
                                       },
                                     });
                                     dispatch(
-                                      simpleSearchAction(searchInput, 0, 1000),
+                                      simpleSearchAction(searchInput.trim(), 0, 1000),
                                     );
                                   }
                                   // setModalShow(true)
