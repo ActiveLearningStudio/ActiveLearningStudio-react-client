@@ -50,12 +50,12 @@ function Sidebar() {
 
   return (
     <aside className="sidebarall">
-      {/* <Link to="/dashboard">
+      <Link to="/dashboard">
         <div className="menu-title">
           <FontAwesomeIcon icon="tachometer-alt" className="mr-2" />
           Dashboard
         </div>
-      </Link> */}
+      </Link>
       <Link to="/">
         <div className="menu-title">
           <FontAwesomeIcon icon="tasks" className="mr-2" />
@@ -119,7 +119,7 @@ function Sidebar() {
         </ul>
       )}
 
-      {/* {!!updateProject && (
+      {!!updateProject && (
         <>
           <div className="menu-title">
             <FontAwesomeIcon icon="tasks" className="mr-2" />
@@ -141,7 +141,7 @@ function Sidebar() {
             ))}
           </ul>
         </>
-      )} */}
+      )}
     </aside>
   );
 }

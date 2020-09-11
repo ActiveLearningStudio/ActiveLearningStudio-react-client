@@ -75,7 +75,7 @@
       "git add"
     ]
   },
- 
+
   "scripts": {
     "lint": "eslint .",
     "start:dev": "react-scripts start",
