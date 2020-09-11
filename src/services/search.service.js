@@ -9,7 +9,7 @@ const searchResult = (searchQuery, from, size) => httpService
   // .get(`https://refactored.curriki.org/api/api/v1/search/advanced?from=${from}&size=${size}&query=${searchQuery}`)
   .get(`/${apiVersion}/search/advanced?from=${from}&size=${size}&query=${searchQuery}`)
   .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
+  .catch((err) => err.response.data)
 
 const cloneProject = (projectId) => httpService
   .post(`/${apiVersion}/projects/${projectId}/clone`)

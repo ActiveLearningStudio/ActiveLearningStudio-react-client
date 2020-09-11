@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Swal from 'sweetalert2';
 import { Dropdown } from 'react-bootstrap';
 // import { Formik } from "formik";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,11 +23,18 @@ function SearchForm() {
           }}
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
+              if(!simpleSearch){
+                Swal.fire("Input field is empty")
+              }
+              else if(simpleSearch.length>255){
+                Swal.fire("character limit should be less then 255 ")
+              }
+              else{
               dispatcher(simpleSearchAction(simpleSearch, 0, 1000));
               localStorage.setItem('loading', 'true');
-              if (simpleSearch) {
-                history.push('/search');
-              }
+              history.push('/search');
+              
+            }
             }
             return true;
           }}

@@ -28,6 +28,7 @@ import PexelsAPI from 'components/models/pexels';
 import './style.scss';
 
 const maxLength80 = maxLength(80);
+const maxLength255 = maxLength(255);
 
 // TODO: need to restructure code, clean up attributes
 // remove unused code,
@@ -79,13 +80,23 @@ const onSubmit = async (values, dispatch, props) => {
 
     history.push('/projects');
   } catch (e) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: `Failed to ${editMode ? 'update' : 'create'} project.`,
-    });
-  }
-};
+      if(!!e.errors ){
+        if(e.errors.description.length>0){
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: e.errors.description[0]
+          });
+        }
+       }else{
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: e.message,
+        });
+      }
+    }
+  };
 
 export const uploadThumb = async (e, props) => {
   const formData = new FormData();
@@ -193,7 +204,16 @@ let CreateProjectPopup = (props) => {
               <input
                 ref={openFile}
                 type="file"
-                onChange={(e) => uploadThumb(e, props)}
+                onChange={(e) => {
+                  
+                  if(e.target.files.length===0 ){
+                     return 
+                  }else if (e.target.files[0].size>100000){ 
+                    Swal.fire("Selected file size should be less then 100KB")
+                  }else{
+                    uploadThumb(e, props)
+                  }
+                }}
                 accept="image/x-png,image/jpeg"
               />
               <span>Upload</span>
@@ -275,7 +295,7 @@ let CreateProjectPopup = (props) => {
           <Field
             name="description"
             component={TextareaField}
-            validate={[required]}
+            validate={[required,maxLength255]}
             autoComplete="new-password"
           />
         </div>

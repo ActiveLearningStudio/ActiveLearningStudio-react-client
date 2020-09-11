@@ -142,12 +142,23 @@ class PlaylistsPage extends React.Component {
       await createPlaylist(match.params.projectId, title);
 
       history.push(`/project/${match.params.projectId}`);
-    } catch (err) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Failed to create playlist.',
-      });
+    } catch (e) {
+      console.log(e)
+      if(!!e.errors ){
+        if(e.errors.title.length>0){
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: e.errors.title[0]
+          });
+        }
+      }else{
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: e.message,
+        });
+      }
     }
   };
 
@@ -188,9 +199,8 @@ class PlaylistsPage extends React.Component {
         );
       }
 
-      if (!resource.showCreateResourcePopup) {
-        history.push(`/project/${match.params.projectId}`);
-      }
+     history.push(`/project/${match.params.projectId}`);
+      
     } catch (e) {
       // console.log(e.message);
     }

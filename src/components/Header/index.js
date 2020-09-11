@@ -94,12 +94,12 @@ function Header(props) {
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu className="user-dropdown">
-                    <Dropdown.Item to="#">
+                    {/* <Dropdown.Item to="#">
                       Welcome &nbsp;
                       <span className="user-name-login">
                         {user && user.displayName}
                       </span>
-                    </Dropdown.Item>
+                    </Dropdown.Item> */}
 
                     <Dropdown.Item as={Link} to="/dashboard">
                       Dashboard

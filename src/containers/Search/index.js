@@ -61,23 +61,25 @@ function SearchInterface() {
   const [modalShow, setModalShow] = useState(false);
   const [search, setSearch] = useState();
   const [searchQueries, SetSearchQuerry] = useState('');
-  const [searchInput, setSearchInput] = useState();
+  const [searchInput, setSearchInput] = useState("");
   const [meta, setMeta] = useState();
   const [clone, setClone] = useState();
 
   useEffect(() => {
-    if (allState.searchResult.length > 0) {
-      setSearch(allState.searchResult);
-      SetSearchQuerry(allState.searchQuery);
-      setMeta(allState.searchMeta);
-      localStorage.setItem('loading', 'false');
-      Swal.close();
-    } else if (allState.searchResult.length === 0) {
-      setSearch([]);
-      SetSearchQuerry(allState.searchQuery);
-      setMeta({});
-      localStorage.setItem('loading', 'false');
-      Swal.close();
+    if(!!allState.searchResult){
+      if (allState.searchResult.length > 0) {
+        setSearch(allState.searchResult);
+        SetSearchQuerry(allState.searchQuery);
+        setMeta(allState.searchMeta);
+        localStorage.setItem('loading', 'false');
+        Swal.close();
+      } else if (allState.searchResult.length === 0) {
+        setSearch([]);
+        SetSearchQuerry(allState.searchQuery);
+        setMeta({});
+        localStorage.setItem('loading', 'false');
+        Swal.close();
+      }
     }
 }, [allState.searchMeta, allState.searchQuery, allState.searchResult]);
 
@@ -88,7 +90,7 @@ function SearchInterface() {
         allowOutsideClick: false,
         onBeforeOpen: () => {
           Swal.showLoading();
-        },
+        }
       });
     }
   });
@@ -158,7 +160,15 @@ function SearchInterface() {
 
                               <div
                                 onClick={() => {
-                                  if (searchInput) {
+                              
+                                  if(!searchInput){
+                                    Swal.fire("Input field is empty")
+                                  }
+                                  else if(searchInput.length>255){
+                                    Swal.fire("character limit should be less then 255 ")
+                                  }
+                                  else
+                                  {
                                     Swal.fire({
                                       html: 'Searching...', // add html attribute if you want or remove
                                       allowOutsideClick: false,

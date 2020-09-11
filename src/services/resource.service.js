@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2';
+
 import config from 'config';
 import httpService from './http.service';
 
@@ -11,7 +13,21 @@ const getAll = () => httpService
 const create = (activity) => httpService
   .post(`/${apiVersion}/activities`, activity)
   .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
+  .catch((err) => { if(!!err.errors ){
+    if(err.errors.title.length>0){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: err.errors.title[0]
+      });
+    }
+   }else{
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: err.message,
+    });
+  }})
 
 const get = (id) => httpService
   .get(`/${apiVersion}/activities/${id}`)
