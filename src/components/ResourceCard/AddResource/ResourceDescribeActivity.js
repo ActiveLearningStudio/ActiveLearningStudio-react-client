@@ -6,7 +6,7 @@ import { Field, reduxForm } from 'redux-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 
-import { required, FadeDiv } from 'utils';
+import { required, FadeDiv  } from 'utils';
 import {
   showBuildActivityAction,
   onSubmitDescribeActivityAction,
@@ -136,7 +136,15 @@ let ResourceDescribeActivity = (props) => {
                           <input
                             ref={openFile}
                             type="file"
-                            onChange={(e) => uploadThumb(e, props)}
+                            onChange={(e) =>{
+                              if(e.target.files.length===0 ){
+                                return 
+                              }else if (e.target.files[0].size>100000){ 
+                               Swal.fire("Selected file size should be less then 100KB")
+                              }else{
+                               uploadThumb(e, props)
+                              }
+                            }}
                             accept="image/x-png,image/jpeg"
                           />
                           <span>Upload</span>
@@ -257,6 +265,11 @@ ResourceDescribeActivity = reduxForm({
   enableReinitialize: true,
   onSubmit: async (values, dispatch, props) => {
     const { resource, showBuildActivity, onSubmitDescribeActivity } = props;
+    
+    if(values.metaTitle.length>80){
+      Swal.fire("Title must be 80 characters or less")
+      return
+    }
 
     try {
       // image validation

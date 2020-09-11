@@ -98,7 +98,7 @@ function ProfilePage(props) {
           <div className="content">
             <div className="row">
               <div className="col-md-12">
-                <h1 className="pl-0 title">My Profile</h1>
+                <h1 className="pl-0 title">My Account</h1>
               </div>
             </div>
 

@@ -155,7 +155,7 @@ export const createResourceAction = (
     });
     // dispatch(hideCreateResourceModal());
 
-    window.location.href = `/project/${projectId}`;
+   // window.location.href = `/project/${projectId}`;
   } else {
     dispatch({
       type: actionTypes.RESOURCE_VALIDATION_ERRORS,
@@ -372,7 +372,7 @@ export const createResourceByH5PUploadAction = (
         editorType,
       });
 
-      window.location.href = `/project/${projectId}`;
+     // window.location.href = `/project/${projectId}`;
     } else {
       throw new Error('Error occurred while creating resource');
     }
