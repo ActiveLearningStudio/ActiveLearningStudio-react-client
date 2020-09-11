@@ -80,6 +80,7 @@ function ProfilePage(props) {
         timer: 1500,
         allowOutsideClick: false,
       });
+      setError(null);
     } catch (err) {
       setError(err);
     }
@@ -149,14 +150,13 @@ function ProfilePage(props) {
                     <div className="col-md-6">
                       <div className="form-group">
                         <label htmlFor="organization-name">Organization Name</label>
-                        <FontAwesomeIcon icon="user" />
+                        <FontAwesomeIcon icon="building" />
                         <input
                           className="input-box"
                           type="text"
                           id="organization-name"
                           name="organizationName"
-                          placeholder="Organization Name*"
-                          required
+                          placeholder="Organization Name"
                           value={state.organizationName}
                           onChange={onChangeField}
                         />
@@ -166,13 +166,13 @@ function ProfilePage(props) {
                     <div className="col-md-6">
                       <div className="form-group">
                         <label htmlFor="organization-type">Organization Type</label>
-                        <FontAwesomeIcon icon="user" />
+                        <FontAwesomeIcon icon="building" />
                         <input
                           className="input-box"
                           type="text"
                           id="organization-type"
                           name="organizationType"
-                          placeholder="Organization Type*"
+                          placeholder="Organization Type"
                           value={state.organizationType}
                           onChange={onChangeField}
                         />
@@ -184,7 +184,7 @@ function ProfilePage(props) {
                     <div className="col-md-6">
                       <div className="form-group">
                         <label htmlFor="website">Website</label>
-                        <FontAwesomeIcon icon="user" />
+                        <FontAwesomeIcon icon="star" />
                         <input
                           className="input-box"
                           type="text"
@@ -200,7 +200,7 @@ function ProfilePage(props) {
                     <div className="col-md-6">
                       <div className="form-group">
                         <label htmlFor="job-title">Job Title</label>
-                        <FontAwesomeIcon icon="user" />
+                        <FontAwesomeIcon icon="briefcase" />
                         <input
                           className="input-box"
                           type="text"
@@ -218,22 +218,6 @@ function ProfilePage(props) {
                   <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label htmlFor="address">Address</label>
-                        <FontAwesomeIcon icon="home" />
-                        <input
-                          className="input-box"
-                          type="text"
-                          id="address"
-                          name="address"
-                          placeholder="Address"
-                          value={state.address}
-                          onChange={onChangeField}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-md-6">
-                      <div className="form-group">
                         <label htmlFor="phone-number">Phone Number</label>
                         <FontAwesomeIcon icon="phone" />
                         <input
@@ -248,22 +232,26 @@ function ProfilePage(props) {
                       </div>
                     </div>
                   </div>
-
-                  <div className="form-group">
-                    <button
-                      type="submit"
-                      className="btn btn-primary submit"
-                      disabled={isLoading}
-                    >
-                      {isLoading ? (
-                        <img src={loader} alt="" />
-                      ) : (
-                        'Update Profile'
-                      )}
-                    </button>
+                  <div className="row">
+                    <div className="col text-right ml-5">
+                      <button
+                            type="submit"
+                            className="btn btn-primary submit"
+                            disabled={isLoading}
+                          >
+                            {isLoading ? (
+                              <img src={loader} alt="" />
+                            ) : (
+                              'Update Profile'
+                            )}
+                        </button> 
+                    </div>
                   </div>
-
-                  <Error error={error} />
+                  <div className="row">
+                    <div className="col">
+                      <Error error={error} />
+                    </div>
+                  </div>
                 </form>
               </div>
             </div>
