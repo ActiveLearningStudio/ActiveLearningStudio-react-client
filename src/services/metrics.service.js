@@ -22,10 +22,14 @@ const logPlaylistView = (playlistId) => httpService
 const logProjectView = (projectId) => httpService
   .get(`/${apiVersion}/projects/${projectId}/log-view`);
 
+const redeemOffer = (offer) => httpService
+  .get(`/${apiVersion}/users/me/redeem/${offer}`);
+
 export default {
   getUserMetrics,
   getUserMembership,
   logActivityView,
   logPlaylistView,
-  logProjectView
+  logProjectView,
+  redeemOffer
 };
