@@ -110,7 +110,7 @@ function Header(props) {
                     </Dropdown.Item>
 
                     <Dropdown.Item as={Link} to="/change-password">
-                      Security
+                      Change Password
                     </Dropdown.Item>
 
                     <Dropdown.Item

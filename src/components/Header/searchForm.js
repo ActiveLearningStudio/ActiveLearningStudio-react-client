@@ -27,7 +27,9 @@ function SearchForm() {
                 Swal.fire("Search field is required")
               }
               else if(simpleSearch.length>255){
-                Swal.fire("character limit should be less then 255 ")
+
+                Swal.fire("Character limit should be less then 255 ")
+
               }
               else{
               dispatcher(simpleSearchAction(simpleSearch.trim(), 0, 1000));

@@ -165,7 +165,9 @@ function SearchInterface() {
                                     Swal.fire("Search field is required")
                                   }
                                   else if(searchInput.length>255){
-                                    Swal.fire("character limit should be less then 255 ")
+
+                                     Swal.fire("Character limit should be less then 255 ")
+
                                   }
                                   else
                                   {

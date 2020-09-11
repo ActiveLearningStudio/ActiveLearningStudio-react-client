@@ -14,6 +14,8 @@ const INITIAL_STATE = {
   activity_views: 0,
 
   membership_type: '',
+  membership_type_id: 0,
+  membership_type_name: '',
   total_storage: 0,
   total_bandwidth: 0,
   used_storage: 0,
@@ -42,6 +44,8 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         membership_type: action.membership.membership_type,
+        membership_type_id: action.membership.membership_type_id,
+        membership_type_name: action.membership.membership_type_name,
         total_storage: action.membership.total_storage,
         total_bandwidth: action.membership.total_bandwidth,
         used_storage: action.membership.used_storage,

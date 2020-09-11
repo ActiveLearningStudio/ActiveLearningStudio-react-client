@@ -237,11 +237,13 @@ export const updatePasswordAction = (data) => async (dispatch) => {
   });
 
   try {
-    await authService.updatePassword(data);
+    const { message } = await authService.updatePassword(data);
 
     dispatch({
       type: actionTypes.UPDATE_PASSWORD_SUCCESS,
     });
+
+    return message;
   } catch (e) {
     dispatch({
       type: actionTypes.UPDATE_PASSWORD_FAIL,
