@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 
 import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
-import logo from 'assets/images/logo.svg';
+import logo from 'assets/images/tfa-logo.png';
 import loader from 'assets/images/loader.svg';
 import { forgotPasswordAction } from 'store/actions/auth';
 import { getErrors } from 'utils';
@@ -97,8 +97,8 @@ function ForgotPasswordPage(props) {
         </form>
       </div>
 
-      <img src={bg} className="bg1" alt="" />
-      <img src={bg1} className="bg2" alt="" />
+      {/* <img src={bg} className="bg1" alt="" />
+      <img src={bg1} className="bg2" alt="" /> */}
     </div>
   );
 }
