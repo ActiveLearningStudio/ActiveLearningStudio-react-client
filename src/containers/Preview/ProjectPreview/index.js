@@ -14,6 +14,7 @@ import {
 } from 'store/actions/project';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import ActivityCard from 'components/ActivityCard';
+import { loadProjectPlaylistsAction } from 'store/actions/playlist';
 
 import './style.scss';
 
@@ -22,6 +23,7 @@ function ProjectPreview(props) {
 
   const dispatch = useDispatch();
   const projectState = useSelector((state) => state.project);
+  const playlistState = useSelector((state) => state.playlist);
   const accordion = useRef([]);
 
   const [currentProject, setCurrentProject] = useState(null);
@@ -31,6 +33,12 @@ function ProjectPreview(props) {
     setCurrentProject(projectState.projectSelect);
     setActiveShared(projectState.projectSelect.shared);
   }, [projectState.projectSelect]);
+
+  useEffect(() => {
+    if (match.params.projectId) {
+      dispatch(loadProjectPlaylistsAction(match.params.projectId));
+    }
+  }, [match.params.projectId]);
 
   const settings = {
     dots: false,
@@ -61,7 +69,7 @@ function ProjectPreview(props) {
   let playlists;
 
   if (currentProject) {
-    playlists = currentProject.playlists && currentProject.playlists.map((playlist, counter) => {
+    playlists = playlistState.playlists && playlistState.playlists.map((playlist, counter) => {
       let activities;
       if (playlist.activities && playlist.activities.length > 0) {
         activities = playlist.activities.map((activity) => (
