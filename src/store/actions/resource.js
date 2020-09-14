@@ -104,13 +104,14 @@ export const loadH5pResource = (activityId) => async (dispatch) => {
 export const loadH5pResourceSettings = (activityId) => resourceService.h5pResourceSettings(activityId);
 export const loadH5pResourceSettingsOpen = (activityId) => resourceService.h5pResourceSettingsOpen(activityId);
 export const loadH5pResourceSettingsShared = (activityId) => resourceService.h5pResourceSettingsShared(activityId);
+export const loadH5pResourceSettingsEmbed = (activityId) => resourceService.h5pResourceSettingsEmbed(activityId);
 
 export const createResourceAction = (
   playlistId,
   editor,
   editorType,
   metadata,
-  projectId,
+  // projectId,
 ) => async (dispatch) => {
   // try {
   // h5pEditorCopy to be taken from h5papi/storage/h5p/laravel-h5p/js/laravel-h5p.js
@@ -155,7 +156,7 @@ export const createResourceAction = (
     });
     // dispatch(hideCreateResourceModal());
 
-   // window.location.href = `/project/${projectId}`;
+    // window.location.href = `/project/${projectId}`;
   } else {
     dispatch({
       type: actionTypes.RESOURCE_VALIDATION_ERRORS,
@@ -333,7 +334,7 @@ export const createResourceByH5PUploadAction = (
   editorType,
   payload,
   metadata,
-  projectId,
+  // projectId,
 ) => async (dispatch) => {
   try {
     const formData = new FormData();
@@ -372,7 +373,7 @@ export const createResourceByH5PUploadAction = (
         editorType,
       });
 
-     // window.location.href = `/project/${projectId}`;
+      // window.location.href = `/project/${projectId}`;
     } else {
       throw new Error('Error occurred while creating resource');
     }
