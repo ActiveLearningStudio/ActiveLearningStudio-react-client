@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -39,7 +39,7 @@ function ProjectPreviewShared(props) {
           slidesToShow: 3,
           slidesToScroll: 3,
           infinite: true,
-          dots: true,
+          dots: false,
         },
       },
       {
@@ -65,9 +65,7 @@ function ProjectPreviewShared(props) {
   //     const acc = document.getElementById('custom_accordion');
   //     const accordions = acc ? acc.getElementsByClassName('accordion') : [];
 
-  //     let i;
-
-  //     for (i = 0; i < accordions.length; i += 1) {
+  //     for (let i = 0; i < accordions.length; i += 1) {
   //       accordions[i].addEventListener('click', function () {
   //         // eslint-disable-next-line react/no-this-in-sfc
   //         this.classList.toggle('active');
@@ -111,7 +109,9 @@ function ProjectPreviewShared(props) {
         <div className="check-each" key={playlist.id}>
           <button
             type="button"
-            ref={(el) => { accordion.current[counter] = el; }}
+            ref={(el) => {
+              accordion.current[counter] = el;
+            }}
             className={counter === 0 ? 'active accordion' : ' accordion'}
             onClick={() => {
               accordion.current[counter].classList.toggle('active');
@@ -150,13 +150,11 @@ function ProjectPreviewShared(props) {
               <div className="container">
                 <div className="scene flex-wrap">
                   <div className="scene-img">
-                    
-                      {!!currentProject.thumb_url && currentProject.thumb_url.includes('pexels.com') ? (
-                        <img src={currentProject.thumb_url} alt="thumbnail" />
-                      ) : (
-                        <img src={global.config.resourceUrl + currentProject.thumb_url} alt="thumbnail" />
-                      )}
-                   
+                    {!!currentProject.thumb_url && currentProject.thumb_url.includes('pexels.com') ? (
+                      <img src={currentProject.thumb_url} alt="thumbnail" />
+                    ) : (
+                      <img src={global.config.resourceUrl + currentProject.thumb_url} alt="thumbnail" />
+                    )}
                   </div>
                   <div className="sce_cont">
                     {/* <div className="collapse-toggle"><img src="/images/plusblk.png" alt="plusblk" /></div> */}
