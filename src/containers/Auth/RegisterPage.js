@@ -111,10 +111,9 @@ class RegisterPage extends React.Component {
 
         <div className="auth-container">
           <h1 className="auth-title">Register to Curriki Studio</h1>
-          <h2 className="auth-subtitle">Powering the creation of the world’s most immersive learn experiences</h2>
+          <h2 className="auth-subtitle">Powering the creation of the world’s Most Immersive Learning Experience</h2>
           <h3 className="auth-description">
-            CurrikiStudio is changing the way learning experiences are
-            designed, created, and delivered to a new generation of learners.
+            Register below and start making a difference in the way learning experiences are designed, created, and delivered.
           </h3>
 
           <form
@@ -226,7 +225,7 @@ class RegisterPage extends React.Component {
             <Error error={error} />
 
             <div className="form-group text-center">
-              Already have an account?
+              Please check your email after registering. Already have an account?
               {' '}
               <Link to="/login">Login</Link>
             </div>

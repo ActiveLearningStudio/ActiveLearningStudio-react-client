@@ -53,7 +53,8 @@ function ForgotPasswordPage(props) {
       <div className="auth-container">
         <h1 className="auth-title">Reset Password</h1>
         <h3 className="auth-description">
-          We will send reset password link to your email.
+          Please enter your CurrikiStudio account&apos;s email and click the button below,
+          then check your email for instructions on how to reset your password.
         </h3>
 
         <form
