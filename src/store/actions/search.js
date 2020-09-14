@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2';
+
 import searchService from 'services/search.service';
 import { SEARCH_REDUX } from '../actionTypes';
 
@@ -10,7 +12,13 @@ export const searchRedux = (data, searchQuery, meta) => ({
 
 export const simpleSearchAction = (searchQuery, from, size) => async (dispatch) => {
   const response = await searchService.searchResult(searchQuery, from, size);
-  dispatch(searchRedux(response.data, searchQuery, response.meta));
+  if(response.errors){
+    if(response.errors.query){
+    Swal.fire(response.errors.query[0])
+    }
+  }else{
+    dispatch(searchRedux(response.data, searchQuery, response.meta));
+  }
 };
 
 export const cloneProject = (projectID) => {

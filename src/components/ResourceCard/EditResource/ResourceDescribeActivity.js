@@ -37,6 +37,10 @@ export const uploadThumb = async (e, props) => {
 
 const imageValidation = '';
 const onSubmit = async (values, dispatch, props) => {
+  if(values.metaTitle.length>80){
+    Swal.fire("Title must be 80 characters or less")
+    return
+  }
   try {
     props.onSubmitDescribeActivity(values, props.match.params.activityId);
     dispatch(props.showBuildActivity(null, null, props.match.params.activityId)); // show create resource activity wizard
@@ -119,7 +123,15 @@ let ResourceDescribeActivity = (props) => {
                           <input
                             ref={openFile}
                             type="file"
-                            onChange={(e) => uploadThumb(e, props)}
+                            onChange={(e) =>{
+                              if(e.target.files.length===0 ){
+                                return 
+                              }else if (e.target.files[0].size>100000){ 
+                               Swal.fire("Selected file size should be less then 100KB")
+                              }else{
+                               uploadThumb(e, props)
+                              }
+                            }}
                             accept="image/x-png,image/jpeg"
                           />
                           <span>Upload</span>

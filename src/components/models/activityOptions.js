@@ -26,10 +26,10 @@ function MyVerticallyCenteredModal(props) {
       <Modal.Body>
         <Tabs defaultActiveKey={activeType} id="uncontrolled-tab-example">
           <Tab eventKey="demo" title="Demo">
-            {!!activity && activity.demoActivityId ? (
+            {!!activity && activity.demo_activity_id ? (
               <Suspense fallback={<div>Loading</div>}>
                 <H5PPreview
-                  activityId={activity.demoActivityId.trim()}
+                  activityId={activity.demo_activity_id.trim()}
                   tokenrequire={false}
                   showltipreview
                 />
@@ -42,16 +42,16 @@ function MyVerticallyCenteredModal(props) {
             )}
           </Tab>
           <Tab eventKey="video" title="Video">
-            {!!activity && !!activity.demoVideoId ? (
+            {!!activity && !!activity.demo_video_id ? (
               <iframe
                 width="100%"
                 height="400"
                 src={
                   `https://www.youtube.com/embed/${
-                    activity.demoVideoId.split('/').length > 0
-                    && activity.demoVideoId.split('/')[activity.demoVideoId.split('/').length - 1]}`
+                    activity.demo_video_id.split('/').length > 0
+                    && activity.demo_video_id.split('/')[activity.demo_video_id.split('/').length - 1]}`
                 }
-                title={activity.demoVideoId}
+                title={activity.demo_video_id}
               />
             ) : (
               <div className="stayTuned">
