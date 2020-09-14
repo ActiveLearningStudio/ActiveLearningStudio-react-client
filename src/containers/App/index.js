@@ -45,8 +45,9 @@ function App(props) {
 
       <AppRouter />
       {
-        (!window.location.href.includes('/shared') && !window.location.href.includes('/lti'))
-          && (
+
+        (!window.location.href.includes('/shared') && !window.location.href.includes('/lti') && !window.location.href.includes('/embed'))
+         && (
           <div className="mobile-app-alert">
             <img src={logo} alt="" />
             <div className="text-description">

@@ -13,21 +13,23 @@ const getAll = () => httpService
 const create = (activity) => httpService
   .post(`/${apiVersion}/activities`, activity)
   .then(({ data }) => data)
-  .catch((err) => { if(!!err.errors ){
-    if(err.errors.title.length>0){
+  .catch((err) => {
+    if (err.errors) {
+      if (err.errors.title.length > 0) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err.errors.title[0],
+        });
+      }
+    } else {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: err.errors.title[0]
+        text: err.message,
       });
     }
-   }else{
-    Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: err.message,
-    });
-  }})
+  });
 
 const get = (id) => httpService
   .get(`/${apiVersion}/activities/${id}`)
@@ -97,6 +99,11 @@ const h5pResourceSettingsShared = (activityId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const h5pResourceSettingsEmbed = (activityId) => httpService
+  .get(`/${apiVersion}/h5p/embed/${activityId}`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const activityH5p = (activityId) => httpService
   .get(`/${apiVersion}/activities/${activityId}/detail`)
   .then(({ data }) => data)
@@ -133,6 +140,7 @@ export default {
   h5pResourceSettings,
   h5pResourceSettingsOpen,
   h5pResourceSettingsShared,
+  h5pResourceSettingsEmbed,
   activityH5p,
   shareActivity,
   loadH5pShared,
