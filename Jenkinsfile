@@ -9,8 +9,8 @@ pipeline {
         }
         stage("Deploy") {
             steps {
-                sh "sudo rm -rf /var/www/curriki"
-                sh "sudo cp -r ${WORKSPACE}/build/ /var/www/curriki/"
+                sh "sudo rm -rf /root/curriki/client/build"
+                sh "sudo cp -r ${WORKSPACE}/build/ /root/curriki/client/build/"
             }
         }
     }
