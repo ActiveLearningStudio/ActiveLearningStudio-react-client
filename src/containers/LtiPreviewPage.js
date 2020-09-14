@@ -19,19 +19,19 @@ class LtiPreviewPage extends React.Component {
     // scroll to top
     window.scrollTo(0, 0);
     // Logging the view for metrics
-    const { match, previewType, logActivityView, logPlaylistView } = this.props;
+    const {
+      match, previewType, logActivityView, logPlaylistView,
+    } = this.props;
     const { playlistId, activityId } = match.params;
-    
-    if (previewType === 'activityShared')
-      logActivityView(activityId);
-    else if(previewType === 'playlistShared'){
+
+    if (previewType === 'activityShared') { logActivityView(activityId); } else if (previewType === 'playlistShared') {
       logPlaylistView(playlistId);
       logActivityView(activityId);
     }
   }
 
   render() {
-    const { match, previewType, logActivityView, logPlaylistView } = this.props;
+    const { match, previewType, logActivityView } = this.props;
 
     const { projectId, playlistId, activityId } = match.params;
 
@@ -49,9 +49,14 @@ class LtiPreviewPage extends React.Component {
         />
       );
     } else if (previewType === 'activityShared') {
-      this.props.logActivityView(match.params.activityId);
+      logActivityView(match.params.activityId);
       content = (
-        <ActivityShared activityId={actId} />
+        <ActivityShared />
+      );
+    } else if (previewType === 'activitySharedEmbed') {
+      logActivityView(match.params.activityId);
+      content = (
+        <ActivityShared embed />
       );
     } else {
       content = (
@@ -77,6 +82,8 @@ LtiPreviewPage.propTypes = {
   match: PropTypes.object.isRequired,
   previewType: PropTypes.string,
   loadMyProjects: PropTypes.func.isRequired,
+  logActivityView: PropTypes.func.isRequired,
+  logPlaylistView: PropTypes.func.isRequired,
 };
 
 LtiPreviewPage.defaultProps = {

@@ -112,6 +112,11 @@ const removeShareActivity = (activityId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const h5pResourceSettingsEmbed = (activityId) => httpService
+  .get(`/${apiVersion}/h5p/embed/${activityId}`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const loadH5pShared = (activityId) => httpService
   .get(`/${apiVersion}/h5p/activity/${activityId}/visibility/public`)
   .then(({ data }) => data)
@@ -137,4 +142,5 @@ export default {
   shareActivity,
   loadH5pShared,
   removeShareActivity,
+  h5pResourceSettingsEmbed
 };

@@ -149,6 +149,13 @@ const AppRouter = () => {
           path="/lti/content/:lmsUrl/:ltiClientId/:redirectUrl"
           component={LtiModel}
         />
+        
+        <OpenRoute
+          exact
+          path="/h5p/embed/:activityId"
+          component={LtiPreviewPage}
+          previewType="activitySharedEmbed"
+        />
 
         <PrivateRoute
           exact
