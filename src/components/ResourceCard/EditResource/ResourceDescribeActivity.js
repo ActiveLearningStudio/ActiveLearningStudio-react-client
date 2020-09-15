@@ -27,7 +27,11 @@ export const uploadThumb = async (e, props) => {
     formData.append('thumb', e.target.files[0]);
     await props.uploadResourceThumbnail(formData);
   } catch (err) {
-    console.log(err);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Image upload failed, kindly try again',
+    });
   }
 };
 

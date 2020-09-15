@@ -111,7 +111,11 @@ export const uploadThumb = async (e, props) => {
     imageValidation = '';
     await props.uploadProjectThumbnail(formData);
   } catch (err) {
-    console.log(err);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Image upload failed, kindly try again',
+    });
   }
 };
 
