@@ -121,6 +121,7 @@ function ProfilePage(props) {
                           id="first-name"
                           name="firstName"
                           placeholder="First Name*"
+                          maxLength="250"
                           required
                           value={state.firstName}
                           onChange={onChangeField}
@@ -138,6 +139,7 @@ function ProfilePage(props) {
                           id="last-name"
                           name="lastName"
                           placeholder="Last Name*"
+                          maxLength="250"
                           required
                           value={state.lastName}
                           onChange={onChangeField}
@@ -157,6 +159,7 @@ function ProfilePage(props) {
                           id="organization-name"
                           name="organizationName"
                           placeholder="Organization Name"
+                          maxLength="250"
                           value={state.organizationName}
                           onChange={onChangeField}
                         />
@@ -173,6 +176,7 @@ function ProfilePage(props) {
                           id="organization-type"
                           name="organizationType"
                           placeholder="Organization Type"
+                          maxLength="250"
                           value={state.organizationType}
                           onChange={onChangeField}
                         />
@@ -191,6 +195,7 @@ function ProfilePage(props) {
                           id="website"
                           name="website"
                           placeholder="Website"
+                          maxLength="250"
                           value={state.website}
                           onChange={onChangeField}
                         />
@@ -207,6 +212,7 @@ function ProfilePage(props) {
                           id="job-title"
                           name="jobTitle"
                           placeholder="Job Title*"
+                          maxLength="250"
                           required
                           value={state.jobTitle}
                           onChange={onChangeField}
@@ -226,6 +232,7 @@ function ProfilePage(props) {
                           id="phone-number"
                           name="phoneNumber"
                           placeholder="Phone Number"
+                          maxLength="250"
                           value={state.phoneNumber}
                           onChange={onChangeField}
                         />
