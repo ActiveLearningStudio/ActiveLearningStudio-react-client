@@ -108,24 +108,10 @@ export const uploadThumb = async (e, props) => {
   const formData = new FormData();
   try {
     formData.append('thumb', e.target.files[0]);
-
     imageValidation = '';
-    const result = props.uploadProjectThumbnail(formData);
-    result.then().catch((err) => {
-      if (err.errors) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: err.errors[0],
-        });
-      }
-    });
+    await props.uploadProjectThumbnail(formData);
   } catch (err) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: 'Invalid Image',
-    });
+    console.log(err);
   }
 };
 
