@@ -8,6 +8,7 @@ const INITIAL_STATE = {
   thumbUrl: null,
   projectSelect: {},
   lmsCourse: null,
+  clone: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -18,6 +19,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isLoading: true,
+      };
+    case actionTypes.LOAD_MY_CLONE_PROJECTS:
+      return {
+        ...state,
+        clone: action.payload.projects,
       };
     case actionTypes.CREATE_PROJECT_SUCCESS:
       return {

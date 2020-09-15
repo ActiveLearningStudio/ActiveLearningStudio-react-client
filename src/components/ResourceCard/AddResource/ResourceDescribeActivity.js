@@ -6,7 +6,7 @@ import { Field, reduxForm } from 'redux-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 
-import { required, FadeDiv  } from 'utils';
+import { required, FadeDiv } from 'utils';
 import {
   showBuildActivityAction,
   onSubmitDescribeActivityAction,
@@ -34,12 +34,21 @@ export const uploadThumb = async (e, props) => {
     formData.append('thumb', e.target.files[0]);
 
     imageValidation = '';
-    await props.uploadResourceThumbnailAction(formData);
+    const result = props.uploadResourceThumbnailAction(formData);
+    result.then().catch((err) => {
+      if (err.errors) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err.errors[0],
+        });
+      }
+    });
   } catch (err) {
     Swal.fire({
       icon: 'error',
       title: 'Error',
-      text: 'Failed to upload thumb.',
+      text: 'Invalid Image',
     });
   }
 };
@@ -136,13 +145,24 @@ let ResourceDescribeActivity = (props) => {
                           <input
                             ref={openFile}
                             type="file"
-                            onChange={(e) =>{
-                              if(e.target.files.length===0 ){
-                                return 
-                              }else if (e.target.files[0].size>100000){ 
-                               Swal.fire("Selected file size should be less then 100KB")
-                              }else{
-                               uploadThumb(e, props)
+                            onChange={(e) => {
+                              if (e.target.files.length === 0) {
+                                return true;
+                              } if (!(e.target.files[0].type.includes('png') || e.target.files[0].type.includes('jpg')
+                                || e.target.files[0].type.includes('gif') || e.target.files[0].type.includes('jpeg'))) {
+                                Swal.fire({
+                                  icon: 'error',
+                                  title: 'Error',
+                                  text: 'Invalid file selected',
+                                });
+                              } else if (e.target.files[0].size > 100000) {
+                                Swal.fire({
+                                  icon: 'error',
+                                  title: 'Error',
+                                  text: 'Selected file size should be less then 100KB',
+                                });
+                              } else {
+                                uploadThumb(e, props);
                               }
                             }}
                             accept="image/x-png,image/jpeg"
@@ -216,7 +236,14 @@ let ResourceDescribeActivity = (props) => {
                         </div>
                       </div>
                     </div>
-
+                    <p className="disclaimer">
+                      Activity Image dimension should be
+                      {' '}
+                      <strong>290px width and 200px height. </strong>
+                      Maximun File size allowed is
+                      {' '}
+                      <strong>100KB.</strong>
+                    </p>
                     <div className="row">
                       <div className="col-md-12">
                         <button type="submit" className="add-resource-continue-btn">
@@ -265,10 +292,10 @@ ResourceDescribeActivity = reduxForm({
   enableReinitialize: true,
   onSubmit: async (values, dispatch, props) => {
     const { resource, showBuildActivity, onSubmitDescribeActivity } = props;
-    
-    if(values.metaTitle.length>80){
-      Swal.fire("Title must be 80 characters or less")
-      return
+
+    if (values.metaTitle.length > 80) {
+      Swal.fire('Title must be 80 characters or less');
+      return;
     }
 
     try {
