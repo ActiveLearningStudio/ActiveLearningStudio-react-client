@@ -4,6 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactPlaceholder from 'react-placeholder';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Alert } from 'react-bootstrap';
 
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import {
@@ -158,8 +159,17 @@ export class ProjectsPage extends React.Component {
                     </div>
                   </div>
                 </div>
-
-                <div className="row check-home">{projectCards}</div>
+                {!!projectCards && projectCards.length > 0
+                  ? <div className="row check-home">{projectCards}</div>
+                  : (
+                    <Alert variant="success">
+                      Start building your first Project by clicking on
+                      {' '}
+                      <b>Add Project</b>
+                      {' '}
+                      button
+                    </Alert>
+                  )}
               </div>
             </div>
           </div>

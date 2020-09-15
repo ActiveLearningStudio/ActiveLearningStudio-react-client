@@ -30,16 +30,16 @@ export const uploadThumb = async (e, props) => {
     Swal.fire({
       icon: 'error',
       title: 'Error',
-      text: 'Failed to upload thumb.',
+      text: 'Image upload failed, kindly try again',
     });
   }
 };
 
 const imageValidation = '';
 const onSubmit = async (values, dispatch, props) => {
-  if(values.metaTitle.length>80){
-    Swal.fire("Title must be 80 characters or less")
-    return
+  if (values.metaTitle.length > 80) {
+    Swal.fire('Title must be 80 characters or less');
+    return;
   }
   try {
     props.onSubmitDescribeActivity(values, props.match.params.activityId);
@@ -123,13 +123,24 @@ let ResourceDescribeActivity = (props) => {
                           <input
                             ref={openFile}
                             type="file"
-                            onChange={(e) =>{
-                              if(e.target.files.length===0 ){
-                                return 
-                              }else if (e.target.files[0].size>100000){ 
-                               Swal.fire("Selected file size should be less then 100KB")
-                              }else{
-                               uploadThumb(e, props)
+                            onChange={(e) => {
+                              if (e.target.files.length === 0) {
+                                return true;
+                              } if (!(e.target.files[0].type.includes('png') || e.target.files[0].type.includes('jpg')
+                                || e.target.files[0].type.includes('gif') || e.target.files[0].type.includes('jpeg'))) {
+                                Swal.fire({
+                                  icon: 'error',
+                                  title: 'Error',
+                                  text: 'Invalid file selected',
+                                });
+                              } else if (e.target.files[0].size > 100000) {
+                                Swal.fire({
+                                  icon: 'error',
+                                  title: 'Error',
+                                  text: 'Selected file size should be less then 100KB',
+                                });
+                              } else {
+                                uploadThumb(e, props);
                               }
                             }}
                             accept="image/x-png,image/jpeg"
@@ -202,7 +213,14 @@ let ResourceDescribeActivity = (props) => {
                         </div>
                       </div>
                     </div>
-
+                    <p className="disclaimer">
+                      Activity Image dimension should be
+                      {' '}
+                      <strong>290px width and 200px height. </strong>
+                      Maximun File size allowed is
+                      {' '}
+                      <strong>100KB.</strong>
+                    </p>
                     <div className="row">
                       <div className="col-md-12">
                         <button type="submit" className="add-resource-continue-btn">Continue</button>

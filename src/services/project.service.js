@@ -1,10 +1,16 @@
 import config from 'config';
+import Swal from 'sweetalert2';
 import httpService from './http.service';
 
 const { apiVersion } = config;
 
 const getAll = () => httpService
   .get(`/${apiVersion}/projects`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const getClone = () => httpService
+  .get(`/${apiVersion}/projects/detail`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -33,7 +39,15 @@ const upload = (formData, conf) => httpService
     'Content-Type': 'multipart/form-data',
   }, conf)
   .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
+  .catch((err) => {
+    if (err.response.data.errors) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: err.response.data.errors[0],
+      });
+    }
+  });
 
 const share = (id) => httpService
   .post(`/${apiVersion}/projects/${id}/share`)
@@ -98,4 +112,5 @@ export default {
   deepLinking,
   getSampleProject,
   getUpdatedProjects,
+  getClone,
 };

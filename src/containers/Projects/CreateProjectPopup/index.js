@@ -34,7 +34,7 @@ const maxLength255 = maxLength(255);
 // remove unused code,
 
 let imageValidation = '';
-var projectShare = true
+let projectShare = true;
 
 const onSubmit = async (values, dispatch, props) => {
   const {
@@ -80,22 +80,20 @@ const onSubmit = async (values, dispatch, props) => {
 
     history.push('/projects');
   } catch (e) {
-      if(!!e.errors ){
-        if(e.errors.description){
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: e.errors.description[0]
-          });
-        }
-       else if(e.errors.description){
+    if (e.errors) {
+      if (e.errors.description) {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: e.errors.description[0]
+          text: e.errors.description[0],
         });
-      }
-      else{
+      } else if (e.errors.description) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: e.errors.description[0],
+        });
+      } else {
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -104,20 +102,19 @@ const onSubmit = async (values, dispatch, props) => {
       }
     }
   }
-  };
+};
 
 export const uploadThumb = async (e, props) => {
   const formData = new FormData();
   try {
     formData.append('thumb', e.target.files[0]);
-
     imageValidation = '';
     await props.uploadProjectThumbnail(formData);
   } catch (err) {
     Swal.fire({
       icon: 'error',
       title: 'Error',
-      text: 'Failed to upload thumb.',
+      text: 'Image upload failed, kindly try again',
     });
   }
 };
@@ -213,13 +210,24 @@ let CreateProjectPopup = (props) => {
                 ref={openFile}
                 type="file"
                 onChange={(e) => {
-                  
-                  if(e.target.files.length===0 ){
-                     return 
-                  }else if (e.target.files[0].size>100000){ 
-                    Swal.fire("Selected file size should be less then 100KB")
-                  }else{
-                    uploadThumb(e, props)
+                  if (e.target.files.length === 0) {
+                    return true;
+                  }
+                  if (!(e.target.files[0].type.includes('png') || e.target.files[0].type.includes('jpg')
+                    || e.target.files[0].type.includes('gif') || e.target.files[0].type.includes('jpeg'))) {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Error',
+                      text: 'Invalid file selected',
+                    });
+                  } else if (e.target.files[0].size > 100000) {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Error',
+                      text: 'Selected file size should be less then 100KB',
+                    });
+                  } else {
+                    uploadThumb(e, props);
                   }
                 }}
                 accept="image/x-png,image/jpeg"
@@ -293,7 +301,10 @@ let CreateProjectPopup = (props) => {
           <p className="disclaimer">
             Project Image dimension should be
             {' '}
-            <strong>290px width and 200px height.</strong>
+            <strong>290px width and 200px height. </strong>
+            Maximun File size allowed is
+            {' '}
+            <strong>100KB.</strong>
           </p>
         </div>
 
@@ -303,7 +314,7 @@ let CreateProjectPopup = (props) => {
           <Field
             name="description"
             component={TextareaField}
-            validate={[required,maxLength255]}
+            validate={[required, maxLength255]}
             autoComplete="new-password"
           />
         </div>

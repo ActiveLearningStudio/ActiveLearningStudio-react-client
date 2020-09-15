@@ -51,7 +51,15 @@ const upload = (formData, conf) => httpService
     'Content-Type': 'multipart/form-data',
   }, conf)
   .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
+  .catch((err) => {
+    if (err.response.data.errors) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: err.response.data.errors[0],
+      });
+    }
+  });
 
 const getTypes = () => httpService
   .get(`/${apiVersion}/activity-types`)
