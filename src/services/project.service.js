@@ -8,6 +8,11 @@ const getAll = () => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const getClone = () => httpService
+  .get(`/${apiVersion}/projects/detail`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const create = (project) => httpService
   .post(`/${apiVersion}/projects`, project)
   .then(({ data }) => data)
@@ -98,4 +103,5 @@ export default {
   deepLinking,
   getSampleProject,
   getUpdatedProjects,
+  getClone,
 };
