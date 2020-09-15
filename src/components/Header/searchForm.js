@@ -23,18 +23,15 @@ function SearchForm() {
           }}
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
-              if(!simpleSearch.trim()){
-                Swal.fire("Search field is required")
+              if (!simpleSearch.trim()) {
+                Swal.fire('Search field is required');
+              } else if (simpleSearch.length > 255) {
+                Swal.fire('Character limit should be less then 255 ');
+              } else {
+                dispatcher(simpleSearchAction(simpleSearch.trim(), 0, 1000));
+                localStorage.setItem('loading', 'true');
+                history.push('/search');
               }
-              else if(simpleSearch.length>255){
-                Swal.fire("character limit should be less then 255 ")
-              }
-              else{
-              dispatcher(simpleSearchAction(simpleSearch.trim(), 0, 1000));
-              localStorage.setItem('loading', 'true');
-              history.push('/search');
-              
-            }
             }
             return true;
           }}
