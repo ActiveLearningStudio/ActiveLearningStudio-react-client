@@ -83,21 +83,13 @@ export const loadH5pSettingsActivity = () => async () => {
   window.H5PIntegration = response.h5p.settings;
 
   const res = Promise.all(response.h5p.settings.editor.assets.js.map((value) => {
-    console.log('hit');
     const script = document.createElement('script');
     script.src = value;
     script.async = false;
     document.body.appendChild(script);
     return true;
   }));
-  const promisewait = new Promise((resolve) => {
-    setTimeout(() => {
-      console.log('js done');
-      resolve();
-    }, 5000);
-  });
-  await promisewait;
-  console.log('end');
+
   return res;
 };
 
