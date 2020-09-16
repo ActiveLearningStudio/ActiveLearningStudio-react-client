@@ -54,6 +54,14 @@ class RegisterPage extends React.Component {
       } = this.state;
       const { history, register } = this.props;
 
+      if (!validator.isEmail(email)) {
+        this.setState({
+          error: 'Please input valid email.',
+        });
+
+        return;
+      }
+
       this.setState({
         error: null,
       });
@@ -87,7 +95,7 @@ class RegisterPage extends React.Component {
 
     return validator.isEmpty(firstName)
       || validator.isEmpty(lastName)
-      || !validator.isEmail(email)
+      || validator.isEmpty(email)
       || validator.isEmpty(password)
       || validator.isEmpty(organizationName)
       || validator.isEmpty(jobTitle);
@@ -127,7 +135,6 @@ class RegisterPage extends React.Component {
                 <input
                   autoFocus
                   className="input-box"
-                  type="text"
                   name="firstName"
                   placeholder="First Name*"
                   required
@@ -139,9 +146,7 @@ class RegisterPage extends React.Component {
               <div className="input-wrapper">
                 <FontAwesomeIcon icon="user" />
                 <input
-                  autoFocus
                   className="input-box"
-                  type="text"
                   name="lastName"
                   placeholder="Last Name*"
                   required
@@ -154,9 +159,8 @@ class RegisterPage extends React.Component {
             <div className="form-group">
               <FontAwesomeIcon icon="envelope" />
               <input
-                autoFocus
                 className="input-box"
-                type="email"
+                // type="email"
                 name="email"
                 placeholder="Email*"
                 required
@@ -182,9 +186,7 @@ class RegisterPage extends React.Component {
               <div className="input-wrapper">
                 <FontAwesomeIcon icon="user" />
                 <input
-                  autoFocus
                   className="input-box"
-                  type="text"
                   name="organizationName"
                   placeholder="Organization Name*"
                   required
@@ -196,9 +198,7 @@ class RegisterPage extends React.Component {
               <div className="input-wrapper">
                 <FontAwesomeIcon icon="user" />
                 <input
-                  autoFocus
                   className="input-box"
-                  type="text"
                   name="jobTitle"
                   placeholder="Job Title*"
                   required
@@ -207,6 +207,8 @@ class RegisterPage extends React.Component {
                 />
               </div>
             </div>
+
+            <Error error={error} />
 
             <div className="form-group">
               <button
@@ -221,8 +223,6 @@ class RegisterPage extends React.Component {
                 )}
               </button>
             </div>
-
-            <Error error={error} />
 
             <div className="form-group text-center">
               Please check your email after registering. Already have an account?
