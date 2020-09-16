@@ -213,7 +213,6 @@ function ProfilePage(props) {
                           name="jobTitle"
                           placeholder="Job Title*"
                           maxLength="250"
-                          required
                           value={state.jobTitle}
                           onChange={onChangeField}
                         />
