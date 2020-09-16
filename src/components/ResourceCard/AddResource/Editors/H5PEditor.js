@@ -23,7 +23,11 @@ const H5PEditor = (props) => {
   };
 
   useEffect(() => {
-    loadH5pSettings();
+    async function fetchData() {
+      await loadH5pSettings();
+      console.log('ok');
+    }
+    fetchData();
   }, [loadH5pSettings]);
 
   const onSubmitActionRadioChange = (e) => {

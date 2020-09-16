@@ -82,12 +82,23 @@ export const loadH5pSettingsActivity = () => async () => {
 
   window.H5PIntegration = response.h5p.settings;
 
-  response.h5p.settings.editor.assets.js.forEach((value) => {
+  const res = Promise.all(response.h5p.settings.editor.assets.js.map((value) => {
+    console.log('hit');
     const script = document.createElement('script');
     script.src = value;
     script.async = false;
     document.body.appendChild(script);
+    return true;
+  }));
+  const promisewait = new Promise((resolve) => {
+    setTimeout(() => {
+      console.log('js done');
+      resolve();
+    }, 5000);
   });
+  await promisewait;
+  console.log('end');
+  return res;
 };
 
 export const loadH5pResource = (activityId) => async (dispatch) => {
@@ -111,7 +122,7 @@ export const createResourceAction = (
   editor,
   editorType,
   metadata,
-  projectId,
+  // projectId,
 ) => async (dispatch) => {
   // try {
   // h5pEditorCopy to be taken from h5papi/storage/h5p/laravel-h5p/js/laravel-h5p.js
@@ -156,7 +167,7 @@ export const createResourceAction = (
     });
     // dispatch(hideCreateResourceModal());
 
-   // window.location.href = `/project/${projectId}`;
+    // window.location.href = `/project/${projectId}`;
   } else {
     dispatch({
       type: actionTypes.RESOURCE_VALIDATION_ERRORS,
@@ -334,7 +345,7 @@ export const createResourceByH5PUploadAction = (
   editorType,
   payload,
   metadata,
-  projectId,
+  // projectId,
 ) => async (dispatch) => {
   try {
     const formData = new FormData();
@@ -373,7 +384,7 @@ export const createResourceByH5PUploadAction = (
         editorType,
       });
 
-     // window.location.href = `/project/${projectId}`;
+      // window.location.href = `/project/${projectId}`;
     } else {
       throw new Error('Error occurred while creating resource');
     }
