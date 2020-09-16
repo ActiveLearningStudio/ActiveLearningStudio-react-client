@@ -123,6 +123,7 @@ let ResourceDescribeActivity = (props) => {
                           <input
                             ref={openFile}
                             type="file"
+                            accept="image/x-png,image/jpeg"
                             onChange={(e) => {
                               if (e.target.files.length === 0) {
                                 return true;
@@ -131,19 +132,18 @@ let ResourceDescribeActivity = (props) => {
                                 Swal.fire({
                                   icon: 'error',
                                   title: 'Error',
-                                  text: 'Invalid file selected',
+                                  text: 'Invalid file selected.',
                                 });
-                              } else if (e.target.files[0].size > 100000) {
+                              } else if (e.target.files[0].size > 100000000) {
                                 Swal.fire({
                                   icon: 'error',
                                   title: 'Error',
-                                  text: 'Selected file size should be less then 100KB',
+                                  text: 'Selected file size should be less then 100MB.',
                                 });
                               } else {
                                 uploadThumb(e, props);
                               }
                             }}
-                            accept="image/x-png,image/jpeg"
                           />
                           <span>Upload</span>
                         </label>
