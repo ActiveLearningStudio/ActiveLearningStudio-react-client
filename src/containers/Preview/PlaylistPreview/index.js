@@ -10,7 +10,7 @@ import Switch from 'react-switch';
 import { confirmAlert } from 'react-confirm-alert';
 
 import projectIcon from 'assets/images/project_icon.svg';
-import { loadPlaylistAction, LoadHP } from 'store/actions/playlist';
+import { loadPlaylistAction, loadProjectPlaylistsAction, LoadHP } from 'store/actions/playlist';
 import { shareActivity, removeShareActivity, loadH5pResourceSettings } from 'store/actions/resource';
 import Unauthorized from 'components/Unauthorized';
 import PreviousLink from './components/PreviousLink';
@@ -32,11 +32,11 @@ function PlaylistPreview(props) {
     playlist,
     loadHP,
     loadPlaylist,
+    loadProjectPlaylists,
   } = props;
 
   useEffect(() => {
     window.scrollTo(0, 0);
-
     loadPlaylist(projectId, playlistId);
   }, [
     projectId,
@@ -44,6 +44,10 @@ function PlaylistPreview(props) {
     activityId,
     loadPlaylist,
   ]);
+
+  useEffect(() => {
+    loadProjectPlaylists(projectId);
+  }, [projectId, loadProjectPlaylists]);
 
   let { selectedPlaylist } = playlist;
   if (selectedPlaylist && selectedPlaylist.id !== playlistId) {
@@ -93,7 +97,8 @@ function PlaylistPreview(props) {
     );
   }
 
-  const allPlaylists = selectedPlaylist.project.playlists;
+  // const allPlaylists = selectedPlaylist.project.playlists;
+  const allPlaylists = playlist.playlists;
   const activityShared = currentActivity && currentActivity.shared;
 
   const share = async () => {
@@ -101,7 +106,7 @@ function PlaylistPreview(props) {
     if (activityShared) {
       Swal.fire({
         icon: 'warning',
-        title: `You are about to stop sharing <strong>${nameActivity}</strong>
+        title: `You are about to stop sharing <strong>${nameActivity}</strong>.
           Please remember that anyone you have shared this activity with will no longer have access its contents.
           Do you want to continue?`,
         showCloseButton: true,
@@ -332,6 +337,7 @@ PlaylistPreview.propTypes = {
   activityId: PropTypes.number,
   loading: PropTypes.string,
   loadPlaylist: PropTypes.func.isRequired,
+  loadProjectPlaylists: PropTypes.func.isRequired,
   loadHP: PropTypes.func.isRequired,
 };
 
@@ -342,6 +348,7 @@ PlaylistPreview.defaultProps = {
 
 const mapDispatchToProps = (dispatch) => ({
   loadPlaylist: (projectId, playlistId) => dispatch(loadPlaylistAction(projectId, playlistId)),
+  loadProjectPlaylists: (projectId) => dispatch(loadProjectPlaylistsAction(projectId)),
   loadHP: (show) => dispatch(LoadHP(show)),
 });
 

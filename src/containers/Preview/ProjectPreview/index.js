@@ -28,6 +28,7 @@ function ProjectPreview(props) {
 
   const [currentProject, setCurrentProject] = useState(null);
   const [activeShared, setActiveShared] = useState(true);
+  const [collapsed, setCollapsed] = useState([true]);
 
   useEffect(() => {
     setCurrentProject(projectState.projectSelect);
@@ -100,9 +101,12 @@ function ProjectPreview(props) {
             className={counter === 0 ? 'active accordion' : ' accordion'}
             onClick={() => {
               accordion.current[counter].classList.toggle('active');
+              const tempCollapsed = [...collapsed];
+              tempCollapsed[counter] = !tempCollapsed[counter];
+              setCollapsed(tempCollapsed);
             }}
           >
-            <FontAwesomeIcon icon="plus" className="mr-2" />
+            <FontAwesomeIcon icon={collapsed[counter] ? 'minus' : 'plus'} className="mr-2" />
             {playlist.title}
           </button>
 
@@ -147,7 +151,7 @@ function ProjectPreview(props) {
                       <div>{currentProject.name}</div>
 
                       <div className="configuration">
-                        <Link onClick={() => history.goBack()} className="go-back-button-preview">
+                        <Link to="#" onClick={history.goBack} className="go-back-button-preview">
                           <FontAwesomeIcon icon="undo" className="mr-2" />
                           Exit Preview Mode
                         </Link>
