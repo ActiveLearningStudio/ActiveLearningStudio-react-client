@@ -211,7 +211,7 @@ function ProfilePage(props) {
                           type="text"
                           id="job-title"
                           name="jobTitle"
-                          placeholder="Job Title*"
+                          placeholder="Job Title"
                           maxLength="250"
                           value={state.jobTitle}
                           onChange={onChangeField}
@@ -241,16 +241,16 @@ function ProfilePage(props) {
                   <div className="row">
                     <div className="col text-right ml-5">
                       <button
-                            type="submit"
-                            className="btn btn-primary submit"
-                            disabled={isLoading}
-                          >
-                            {isLoading ? (
-                              <img src={loader} alt="" />
-                            ) : (
-                              'Update Profile'
-                            )}
-                        </button> 
+                        type="submit"
+                        className="btn btn-primary submit"
+                        disabled={isLoading}
+                      >
+                        {isLoading ? (
+                          <img src={loader} alt="" />
+                        ) : (
+                          'Update Profile'
+                        )}
+                      </button> 
                     </div>
                   </div>
                   <div className="row">
