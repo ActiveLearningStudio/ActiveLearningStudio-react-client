@@ -1,54 +1,9 @@
-import axios from 'axios';
 import Swal from 'sweetalert2';
 
 import authService from 'services/auth.service';
 import storageService from 'services/storage.service';
 import { USER_TOKEN_KEY } from 'constants/index';
 import * as actionTypes from '../actionTypes';
-
-export const registrationAction = (
-  firstName,
-  LastName,
-  email,
-  password,
-  phone,
-  jobTitle,
-  school,
-  websiteUrl,
-  organization,
-  message,
-  captchaGoogle,
-) => {
-  axios
-    .post(`${global.config.laravelAPIUrl}/auth/signup`, {
-      first_name: firstName,
-      last_name: LastName,
-      email,
-      password,
-      gapi_access_token: captchaGoogle,
-      phone,
-      job_title: jobTitle,
-      school_district_organization: school,
-      website: websiteUrl,
-      organization_type: organization,
-      studio_interest: message,
-    })
-    .then((res) => {
-      if (res.data.status === 'success') {
-        Swal.fire({
-          text: 'Thanks for requesting early access! Please check your email for next steps.',
-          icon: 'success',
-          title: 'Request Demo Access',
-        });
-      }
-    })
-    .catch((res) => {
-      Swal.fire({
-        icon: 'error',
-        title: res.response.data.message,
-      });
-    });
-};
 
 export const getUserAction = () => async (dispatch) => {
   const token = storageService.getItem(USER_TOKEN_KEY);
@@ -162,9 +117,9 @@ export const registerAction = (data) => async (dispatch) => {
     const response = await authService.register(data);
 
     Swal.fire({
-      text: response.message,
       icon: 'success',
       title: 'Registration Success',
+      html: response.message,
     });
 
     dispatch({
