@@ -17,7 +17,7 @@ import SearchForm from './searchForm';
 import './style.scss';
 
 function Header(props) {
-  const { user, logout } = props;
+  const { /* user, */ logout } = props;
 
   return (
     <header>
@@ -94,12 +94,12 @@ function Header(props) {
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu className="user-dropdown">
-                    <Dropdown.Item to="#">
+                    {/* <Dropdown.Item to="#">
                       Welcome &nbsp;
                       <span className="user-name-login">
                         {user && user.displayName}
                       </span>
-                    </Dropdown.Item>
+                    </Dropdown.Item> */}
 
                     <Dropdown.Item as={Link} to="/dashboard">
                       Dashboard
@@ -107,6 +107,10 @@ function Header(props) {
 
                     <Dropdown.Item as={Link} to="/account">
                       My Account
+                    </Dropdown.Item>
+
+                    <Dropdown.Item as={Link} to="/change-password">
+                      Change Password
                     </Dropdown.Item>
 
                     <Dropdown.Item
@@ -130,12 +134,12 @@ function Header(props) {
 }
 
 Header.propTypes = {
-  user: PropTypes.object,
+  // user: PropTypes.object,
   logout: PropTypes.func.isRequired,
 };
 
 Header.defaultProps = {
-  user: null,
+  // user: null,
 };
 
 const mapStateToProps = (state) => ({

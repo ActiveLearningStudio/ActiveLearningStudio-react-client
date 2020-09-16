@@ -447,7 +447,7 @@ img {
   }
 }
 
-@media(max-width: 1080px) {
+@media(max-width: 991px) {
   .right-control {
     position: relative;
     height: 50px;
@@ -641,7 +641,7 @@ img {
 
       .main-item-wrapper {
         width: 100%;
-        margin-bottom: 0px;
+        margin-bottom: 0;
         min-height: auto;
       }
     }
@@ -649,5 +649,23 @@ img {
 
   .main-page-content.preview {
     height: auto;
+  }
+}
+
+.main-page-content.preview.embed{
+  padding: 0px;
+  background-color: #fff;
+
+  @media (max-width:991px){
+    padding: 10px;
+  }
+
+  .flex-container.previews{
+    max-width:100%;
+    height: 100%;
+  }
+
+  .main-item-wrapper,.activity-bg.left-vdo{
+    min-height: 100%;
   }
 }

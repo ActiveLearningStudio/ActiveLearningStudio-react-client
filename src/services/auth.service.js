@@ -38,8 +38,13 @@ const resetPassword = (body) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const updateProfile = (body) => httpService
-  .put(`/${apiVersion}/users/${body.id}`, body)
+const updateProfile = (user) => httpService
+  .put(`/${apiVersion}/users/${user.id}`, user)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const updatePassword = (body) => httpService
+  .post(`/${apiVersion}/users/update-password`, body)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -57,5 +62,6 @@ export default {
   forgotPassword,
   resetPassword,
   updateProfile,
+  updatePassword,
   subscribe,
 };

@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2';
+
 import config from 'config';
 import httpService from './http.service';
 
@@ -11,7 +13,23 @@ const getAll = () => httpService
 const create = (activity) => httpService
   .post(`/${apiVersion}/activities`, activity)
   .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
+  .catch((err) => {
+    if (err.errors) {
+      if (err.errors.title.length > 0) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err.errors.title[0],
+        });
+      }
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: err.message,
+      });
+    }
+  });
 
 const get = (id) => httpService
   .get(`/${apiVersion}/activities/${id}`)
@@ -33,7 +51,15 @@ const upload = (formData, conf) => httpService
     'Content-Type': 'multipart/form-data',
   }, conf)
   .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
+  .catch((err) => {
+    if (err.response.data.errors) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: err.response.data.errors[0],
+      });
+    }
+  });
 
 const getTypes = () => httpService
   .get(`/${apiVersion}/activity-types`)
@@ -81,6 +107,11 @@ const h5pResourceSettingsShared = (activityId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const h5pResourceSettingsEmbed = (activityId) => httpService
+  .get(`/${apiVersion}/h5p/embed/${activityId}`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const activityH5p = (activityId) => httpService
   .get(`/${apiVersion}/activities/${activityId}/detail`)
   .then(({ data }) => data)
@@ -117,6 +148,7 @@ export default {
   h5pResourceSettings,
   h5pResourceSettingsOpen,
   h5pResourceSettingsShared,
+  h5pResourceSettingsEmbed,
   activityH5p,
   shareActivity,
   loadH5pShared,

@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Swal from 'sweetalert2';
 
 import loader from 'assets/images/loader.svg';
 import { updateProfileAction } from 'store/actions/auth';
 import Header from 'components/Header';
+import Footer from 'components/Footer';
+import Sidebar from 'components/Sidebar';
 import Error from '../Auth/Error';
 
 import './style.scss';
@@ -13,11 +16,11 @@ import './style.scss';
 function ProfilePage(props) {
   const {
     isLoading,
-    error,
     user,
     updateProfile,
   } = props;
 
+  const [error, setError] = useState(null);
   const [state, setState] = useState({
     firstName: (user && user.first_name) || '',
     lastName: (user && user.last_name) || '',
@@ -68,8 +71,17 @@ function ProfilePage(props) {
         address: state.address,
         phone_number: state.phoneNumber,
       });
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Profile has been updated successfully.',
+        showCancelButton: false,
+        showConfirmButton: false,
+        timer: 1500,
+        allowOutsideClick: false,
+      });
     } catch (err) {
-      // console.log(err);
+      setError(err);
     }
   };
 
@@ -78,16 +90,20 @@ function ProfilePage(props) {
       <Header {...props} />
 
       <div className="account-page main-content-wrapper">
+        <div className="sidebar-wrapper">
+          <Sidebar />
+        </div>
+
         <div className="content-wrapper">
           <div className="content">
             <div className="row">
               <div className="col-md-12">
-                <h1 className="title">My Profile</h1>
+                <h1 className="pl-0 title">My Account</h1>
               </div>
             </div>
 
             <div className="row justify-content-center">
-              <div className="col-md-8">
+              <div className="col-md-12">
                 <form
                   className="auth-form"
                   onSubmit={onSubmit}
@@ -254,6 +270,8 @@ function ProfilePage(props) {
           </div>
         </div>
       </div>
+
+      <Footer />
     </>
   );
 }
@@ -261,13 +279,11 @@ function ProfilePage(props) {
 ProfilePage.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   user: PropTypes.object,
-  error: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   updateProfile: PropTypes.func.isRequired,
 };
 
 ProfilePage.defaultProps = {
   user: null,
-  error: null,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -277,7 +293,6 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
   user: state.auth.user,
-  error: state.auth.error,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);

@@ -23,13 +23,18 @@ function ForgotPasswordPage(props) {
   const [error, setError] = useState(null);
 
   const onChangeEmail = useCallback((e) => {
-    setEmail(e.target.value);
+    setEmail(e.target.value.trim());
   }, [setEmail]);
 
   const onSubmit = useCallback(async (e) => {
     e.preventDefault();
 
     try {
+      if (!validator.isEmail(email)) {
+        setError('Please input valid email.');
+        return;
+      }
+
       setError(null);
 
       await forgotPassword({ email });
@@ -44,7 +49,7 @@ function ForgotPasswordPage(props) {
     }
   }, [email, forgotPassword]);
 
-  const isDisabled = !validator.isEmail(email);
+  const isDisabled = validator.isEmpty(email);
 
   return (
     <div className="auth-page">
@@ -53,7 +58,8 @@ function ForgotPasswordPage(props) {
       <div className="auth-container">
         <h1 className="auth-title">Reset Password</h1>
         <h3 className="auth-description">
-          We will send reset password link to your email.
+          Please enter your CurrikiStudio account&apos;s email and click the button below,
+          then check your email for instructions on how to reset your password.
         </h3>
 
         <form
@@ -66,7 +72,7 @@ function ForgotPasswordPage(props) {
             <input
               autoFocus
               className="input-box"
-              type="email"
+              // type="email"
               name="email"
               placeholder="Email*"
               required
@@ -74,6 +80,8 @@ function ForgotPasswordPage(props) {
               onChange={onChangeEmail}
             />
           </div>
+
+          <Error error={error} />
 
           <div className="form-group">
             <button
@@ -88,8 +96,6 @@ function ForgotPasswordPage(props) {
               )}
             </button>
           </div>
-
-          <Error error={error} />
 
           <div className="form-group text-center">
             <Link to="/login">Back to Login</Link>

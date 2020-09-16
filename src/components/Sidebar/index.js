@@ -20,7 +20,7 @@ function Sidebar() {
 
   const [myProjects, setMyProjects] = useState([]);
   const [sampleProject, setSampleProjects] = useState([]);
-  const [updateProject, setUpdateProject] = useState([]);
+  // const [updateProject, setUpdateProject] = useState([]);
 
   useEffect(() => {
     if (allState.sidebar.allProject.length === 0) {
@@ -42,20 +42,14 @@ function Sidebar() {
     }
   }, [allState.sidebar.sampleProject]);
 
-  useEffect(() => {
-    if (allState.sidebar.updateProject.length > 0) {
-      setUpdateProject(allState.sidebar.updateProject);
-    }
-  }, [allState.sidebar.updateProject]);
+  // useEffect(() => {
+  //   if (allState.sidebar.updateProject.length > 0) {
+  //     setUpdateProject(allState.sidebar.updateProject);
+  //   }
+  // }, [allState.sidebar.updateProject]);
 
   return (
     <aside className="sidebarall">
-      <Link to="/dashboard">
-        <div className="menu-title">
-          <FontAwesomeIcon icon="tachometer-alt" className="mr-2" />
-          Dashboard
-        </div>
-      </Link>
       <Link to="/">
         <div className="menu-title">
           <FontAwesomeIcon icon="tasks" className="mr-2" />
@@ -119,7 +113,8 @@ function Sidebar() {
         </ul>
       )}
 
-      {!!updateProject && (
+      {/*
+      !!updateProject && (
         <>
           <div className="menu-title">
             <FontAwesomeIcon icon="tasks" className="mr-2" />
@@ -131,17 +126,25 @@ function Sidebar() {
               <>
                 {counter <= 5 && (
                   <li key={data.id}>
-                    <Link to={`/project/${data.id}`}>
+                    <a target="_blank" rel="noreferrer" href={`/project/${data.id}/shared`}>
                       <FontAwesomeIcon icon="angle-right" className="mr-2" />
                       {data.name}
-                    </Link>
+                    </a>
                   </li>
                 )}
               </>
             ))}
           </ul>
         </>
-      )}
+      )
+      */}
+
+      <Link to="/dashboard">
+        <div className="menu-title">
+          <FontAwesomeIcon icon="tachometer-alt" className="mr-2" />
+          Utilization Dashboard
+        </div>
+      </Link>
     </aside>
   );
 }

@@ -78,13 +78,24 @@ class PlaylistCard extends React.Component {
     });
 
     if (playlist.title !== title) {
-      changePlaylistTitle(projectId, playlist.id, title).catch(() => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Failed to update playlist title',
+      changePlaylistTitle(projectId, playlist.id, title)
+        .catch((err) => {
+          if (err.errors) {
+            if (err.errors.title.length > 0) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: err.errors.title[0],
+              });
+            }
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: err.message,
+            });
+          }
         });
-      });
     }
   };
 

@@ -46,11 +46,23 @@ class LoginPage extends React.Component {
       const { email, password } = this.state;
       const { history, login } = this.props;
 
+      if (!validator.isEmail(email.trim())) {
+        this.setState({
+          error: 'Please input valid email.',
+        });
+
+        return;
+      }
+
       this.setState({
         error: null,
       });
 
-      await login({ email, password });
+      await login({
+        email: email.trim(),
+        password: password.trim(),
+      });
+
       history.push('/');
     } catch (err) {
       this.setState({
@@ -70,8 +82,8 @@ class LoginPage extends React.Component {
 
   isDisabled = () => {
     const { email, password } = this.state;
-    return !validator.isEmail(email) || validator.isEmpty(password);
-  }
+    return validator.isEmpty(email.trim()) || validator.isEmpty(password.trim());
+  };
 
   render() {
     const {
@@ -88,7 +100,7 @@ class LoginPage extends React.Component {
 
         <div className="auth-container">
           <h1 className="auth-title">Login to Curriki Studio</h1>
-          <h2 className="auth-subtitle">Powering the creation of the world’s most immersive learn experiences</h2>
+          <h2 className="auth-subtitle">Powering the creation of the world’s Most Immersive Learning Experience</h2>
           <h3 className="auth-description">
             CurrikiStudio is changing the way learning experiences are
             designed, created, and delivered to a new generation of learners.
@@ -104,7 +116,7 @@ class LoginPage extends React.Component {
               <input
                 autoFocus
                 className="input-box"
-                type="email"
+                // type="email"
                 name="email"
                 placeholder="Email*"
                 required
@@ -141,6 +153,8 @@ class LoginPage extends React.Component {
               </div>
             </div>
 
+            <Error error={error} />
+
             <div className="form-group">
               <button
                 type="submit"
@@ -168,10 +182,8 @@ class LoginPage extends React.Component {
               </GoogleLogin>
             </div>
 
-            <Error error={error} />
-
             <div className="form-group text-center">
-              New to here?
+              New to CurrikiStudio?
               {' '}
               <Link to="/register">Sign Up</Link>
             </div>

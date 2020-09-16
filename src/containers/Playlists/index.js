@@ -143,11 +143,21 @@ class PlaylistsPage extends React.Component {
 
       history.push(`/project/${match.params.projectId}`);
     } catch (err) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Failed to create playlist.',
-      });
+      if (err.errors) {
+        if (err.errors.title.length > 0) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: err.errors.title[0],
+          });
+        }
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err.message,
+        });
+      }
     }
   };
 
@@ -161,7 +171,7 @@ class PlaylistsPage extends React.Component {
   ) => {
     try {
       const {
-        resource,
+        // resource,
         match,
         history,
         createResource,
@@ -188,9 +198,7 @@ class PlaylistsPage extends React.Component {
         );
       }
 
-      if (!resource.showCreateResourcePopup) {
-        history.push(`/project/${match.params.projectId}`);
-      }
+      history.push(`/project/${match.params.projectId}`);
     } catch (e) {
       // console.log(e.message);
     }

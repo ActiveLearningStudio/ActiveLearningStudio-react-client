@@ -123,6 +123,22 @@ export default (state = INITIAL_STATE, action) => {
         isLoading: false,
       };
 
+    case actionTypes.UPDATE_PASSWORD_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case actionTypes.UPDATE_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+      };
+    case actionTypes.UPDATE_PASSWORD_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
     case actionTypes.ACCEPT_TERMS_REQUEST:
       return {
         ...state,

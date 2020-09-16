@@ -122,7 +122,7 @@
     border: none;
     letter-spacing: 0;
     color: #FFFFFF;
-    width: 102px;
+    //width: 102px;
     height: 37px;
     text-align: center;
     cursor: pointer;
@@ -136,7 +136,12 @@
 }
 
 .tophd_left {
-  padding: 15px 0;
+ // padding: 15px 0;
+  img{
+
+    width:170px;
+
+  }
 }
 
 .search-term {

@@ -151,9 +151,9 @@ export const registerAction = (data) => async (dispatch) => {
     const response = await authService.register(data);
 
     Swal.fire({
-      text: response.message,
       icon: 'success',
       title: 'Registration Success',
+      html: response.message,
     });
 
     dispatch({
@@ -214,6 +214,28 @@ export const updateProfileAction = (data) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: actionTypes.UPDATE_PROFILE_FAIL,
+    });
+
+    throw e;
+  }
+};
+
+export const updatePasswordAction = (data) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.UPDATE_PASSWORD_REQUEST,
+  });
+
+  try {
+    const { message } = await authService.updatePassword(data);
+
+    dispatch({
+      type: actionTypes.UPDATE_PASSWORD_SUCCESS,
+    });
+
+    return message;
+  } catch (e) {
+    dispatch({
+      type: actionTypes.UPDATE_PASSWORD_FAIL,
     });
 
     throw e;

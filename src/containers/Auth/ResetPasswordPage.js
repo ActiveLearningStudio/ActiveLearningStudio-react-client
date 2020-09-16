@@ -50,14 +50,28 @@ function ResetPasswordPage(props) {
   const onSubmit = useCallback(async (e) => {
     e.preventDefault();
 
+    const email = state.email.trim();
+    const password = state.password.trim();
+    const confirmPassword = state.confirmPassword.trim();
+
     try {
+      if (!validator.isEmail(email)) {
+        setError('Please input valid email.');
+        return;
+      }
+
+      if (!password !== confirmPassword) {
+        setError('Password does not match.');
+        return;
+      }
+
       setError(null);
 
       await resetPassword({
         token: query.token,
-        email: state.email,
-        password: state.password,
-        password_confirmation: state.confirmPassword,
+        email,
+        password,
+        password_confirmation: confirmPassword,
       });
 
       Swal.fire({
@@ -70,9 +84,9 @@ function ResetPasswordPage(props) {
     }
   }, [query.token, state, resetPassword]);
 
-  const isDisabled = !state.email || !state.password || !state.confirmPassword
-    || !validator.isEmail(state.email)
-    || (state.password !== state.confirmPassword);
+  const isDisabled = validator.isEmpty(state.email.trim())
+    || validator.isEmpty(state.password.trim())
+    || validator.isEmpty(state.confirmPassword.trim());
 
   return (
     <div className="auth-page">
@@ -91,7 +105,7 @@ function ResetPasswordPage(props) {
             <FontAwesomeIcon icon="envelope" />
             <input
               className="input-box"
-              type="email"
+              // type="email"
               name="email"
               placeholder="Email*"
               required
@@ -127,6 +141,8 @@ function ResetPasswordPage(props) {
             />
           </div>
 
+          <Error error={error} />
+
           <div className="form-group">
             <button
               type="submit"
@@ -140,8 +156,6 @@ function ResetPasswordPage(props) {
               )}
             </button>
           </div>
-
-          <Error error={error} />
 
           <div className="form-group text-center">
             <Link to="/login">Back to Login</Link>

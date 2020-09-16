@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Accordion, Card, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 
-import { loadMyProjectsAction } from 'store/actions/project';
+import { loadMyCloneProjectsAction } from 'store/actions/project';
 import { clonePlaylist, cloneActivity } from 'store/actions/search';
 
 function LtiProjectShared(props) {
@@ -21,14 +21,14 @@ function LtiProjectShared(props) {
 
   useEffect(() => {
     dispatch(
-      loadMyProjectsAction(),
+      loadMyCloneProjectsAction(),
     );
   }, [dispatch]);
 
   return (
     <div className="lti-all-project">
       <Accordion className="top-box-project">
-        {!!project.projects && project.projects.map((data, counterTop) => (
+        {!!project.clone && project.clone.map((data, counterTop) => (
           <Card>
             <Card.Header className="top-card">
               <Accordion.Toggle
@@ -60,18 +60,18 @@ function LtiProjectShared(props) {
                       )}
                       {data.name}
                     </div>
-                    {activeProject === counterTop + 1 ? (
+                    {clone.clone.model === 'Activity' && (activeProject === counterTop + 1 ? (
                       <FontAwesomeIcon icon="chevron-up" />
                     ) : (
                       <FontAwesomeIcon icon="chevron-down" />
-                    )}
+                    ))}
                   </div>
                 </span>
               </Accordion.Toggle>
             </Card.Header>
             <Accordion.Collapse eventKey={counterTop + 1}>
               <Card.Body>
-                {clone.clone.model === 'Activity' && !!data.playlists && data.playlists.length > 0 ? (
+                {clone.clone.model === 'Activity' && (!!data.playlists && data.playlists.length > 0 ? (
                   <Accordion>
                     {data.playlists.map((data2, counterPlaylist) => (
                       <Card>
@@ -113,7 +113,7 @@ function LtiProjectShared(props) {
                   </Accordion>
                 ) : (
                   clone.clone.model === 'Activity' && (<span className="error">No Playlists found</span>)
-                )}
+                ))}
               </Card.Body>
             </Accordion.Collapse>
           </Card>

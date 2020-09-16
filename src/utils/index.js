@@ -18,7 +18,7 @@ export function getErrors(e) {
   return e;
 }
 
-export const required = (value) => (value ? undefined : '* Required');
+export const required = (value) => (!!value && value.trim() ? undefined : '* Required');
 
 export const maxLength = (max) => (value) => (value && value.length > max
   ? `* Must be ${max} characters or less`

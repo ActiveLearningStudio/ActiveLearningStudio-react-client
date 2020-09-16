@@ -54,17 +54,25 @@ class RegisterPage extends React.Component {
       } = this.state;
       const { history, register } = this.props;
 
+      if (!validator.isEmail(email.trim())) {
+        this.setState({
+          error: 'Please input valid email.',
+        });
+
+        return;
+      }
+
       this.setState({
         error: null,
       });
 
       await register({
-        first_name: firstName,
-        last_name: lastName,
-        email,
-        password,
-        organization_name: organizationName,
-        job_title: jobTitle,
+        first_name: firstName.trim(),
+        last_name: lastName.trim(),
+        email: email.trim(),
+        password: password.trim(),
+        organization_name: organizationName.trim(),
+        job_title: jobTitle.trim(),
       });
 
       history.push('/login');
@@ -85,12 +93,12 @@ class RegisterPage extends React.Component {
       jobTitle,
     } = this.state;
 
-    return validator.isEmpty(firstName)
-      || validator.isEmpty(lastName)
-      || !validator.isEmail(email)
-      || validator.isEmpty(password)
-      || validator.isEmpty(organizationName)
-      || validator.isEmpty(jobTitle);
+    return validator.isEmpty(firstName.trim())
+      || validator.isEmpty(lastName.trim())
+      || validator.isEmpty(email.trim())
+      || validator.isEmpty(password.trim())
+      || validator.isEmpty(organizationName.trim())
+      || validator.isEmpty(jobTitle.trim());
   }
 
   render() {
@@ -111,10 +119,9 @@ class RegisterPage extends React.Component {
 
         <div className="auth-container">
           <h1 className="auth-title">Register to Curriki Studio</h1>
-          <h2 className="auth-subtitle">Powering the creation of the world’s most immersive learn experiences</h2>
+          <h2 className="auth-subtitle">Powering the creation of the world’s Most Immersive Learning Experience</h2>
           <h3 className="auth-description">
-            CurrikiStudio is changing the way learning experiences are
-            designed, created, and delivered to a new generation of learners.
+            Register below and start making a difference in the way learning experiences are designed, created, and delivered.
           </h3>
 
           <form
@@ -128,7 +135,6 @@ class RegisterPage extends React.Component {
                 <input
                   autoFocus
                   className="input-box"
-                  type="text"
                   name="firstName"
                   placeholder="First Name*"
                   required
@@ -140,9 +146,7 @@ class RegisterPage extends React.Component {
               <div className="input-wrapper">
                 <FontAwesomeIcon icon="user" />
                 <input
-                  autoFocus
                   className="input-box"
-                  type="text"
                   name="lastName"
                   placeholder="Last Name*"
                   required
@@ -155,9 +159,8 @@ class RegisterPage extends React.Component {
             <div className="form-group">
               <FontAwesomeIcon icon="envelope" />
               <input
-                autoFocus
                 className="input-box"
-                type="email"
+                // type="email"
                 name="email"
                 placeholder="Email*"
                 required
@@ -183,9 +186,7 @@ class RegisterPage extends React.Component {
               <div className="input-wrapper">
                 <FontAwesomeIcon icon="user" />
                 <input
-                  autoFocus
                   className="input-box"
-                  type="text"
                   name="organizationName"
                   placeholder="Organization Name*"
                   required
@@ -197,9 +198,7 @@ class RegisterPage extends React.Component {
               <div className="input-wrapper">
                 <FontAwesomeIcon icon="user" />
                 <input
-                  autoFocus
                   className="input-box"
-                  type="text"
                   name="jobTitle"
                   placeholder="Job Title*"
                   required
@@ -208,6 +207,8 @@ class RegisterPage extends React.Component {
                 />
               </div>
             </div>
+
+            <Error error={error} />
 
             <div className="form-group">
               <button
@@ -223,10 +224,8 @@ class RegisterPage extends React.Component {
               </button>
             </div>
 
-            <Error error={error} />
-
             <div className="form-group text-center">
-              Already have an account?
+              Please check your email after registering. Already have an account?
               {' '}
               <Link to="/login">Login</Link>
             </div>

@@ -1,7 +1,7 @@
 .account-page {
   .title {
     padding-left: 40px;
-    background: url(/assets/images/my-projects-icon.png) no-repeat 0 9px;
+    background: url(../../assets/images/my-projects-icon.png) no-repeat 0 9px;
     color: #607a9b;
     font-family: 'Open Sans', sans-serif;
     font-weight: 700;
@@ -45,14 +45,6 @@
     &:focus {
       outline: none;
     }
-  }
-
-  .password-icon {
-    width: 54px;
-    height: 54px;
-    background: #fff url(/assets/images/password-icon.png) no-repeat center;
-    border: 1px solid #d9dfe8;
-    float: left;
   }
 
   .password-box {
