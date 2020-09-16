@@ -23,7 +23,7 @@ function ForgotPasswordPage(props) {
   const [error, setError] = useState(null);
 
   const onChangeEmail = useCallback((e) => {
-    setEmail(e.target.value);
+    setEmail(e.target.value.trim());
   }, [setEmail]);
 
   const onSubmit = useCallback(async (e) => {

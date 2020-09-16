@@ -50,13 +50,17 @@ function ResetPasswordPage(props) {
   const onSubmit = useCallback(async (e) => {
     e.preventDefault();
 
+    const email = state.email.trim();
+    const password = state.password.trim();
+    const confirmPassword = state.confirmPassword.trim();
+
     try {
-      if (!validator.isEmail(state.email)) {
+      if (!validator.isEmail(email)) {
         setError('Please input valid email.');
         return;
       }
 
-      if (!state.password !== state.confirmPassword) {
+      if (!password !== confirmPassword) {
         setError('Password does not match.');
         return;
       }
@@ -65,9 +69,9 @@ function ResetPasswordPage(props) {
 
       await resetPassword({
         token: query.token,
-        email: state.email,
-        password: state.password,
-        password_confirmation: state.confirmPassword,
+        email,
+        password,
+        password_confirmation: confirmPassword,
       });
 
       Swal.fire({
@@ -80,9 +84,9 @@ function ResetPasswordPage(props) {
     }
   }, [query.token, state, resetPassword]);
 
-  const isDisabled = validator.isEmpty(state.email)
-    || validator.isEmpty(state.password)
-    || validator.isEmpty(state.confirmPassword);
+  const isDisabled = validator.isEmpty(state.email.trim())
+    || validator.isEmpty(state.password.trim())
+    || validator.isEmpty(state.confirmPassword.trim());
 
   return (
     <div className="auth-page">

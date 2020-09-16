@@ -54,7 +54,7 @@ class RegisterPage extends React.Component {
       } = this.state;
       const { history, register } = this.props;
 
-      if (!validator.isEmail(email)) {
+      if (!validator.isEmail(email.trim())) {
         this.setState({
           error: 'Please input valid email.',
         });
@@ -67,12 +67,12 @@ class RegisterPage extends React.Component {
       });
 
       await register({
-        first_name: firstName,
-        last_name: lastName,
-        email,
-        password,
-        organization_name: organizationName,
-        job_title: jobTitle,
+        first_name: firstName.trim(),
+        last_name: lastName.trim(),
+        email: email.trim(),
+        password: password.trim(),
+        organization_name: organizationName.trim(),
+        job_title: jobTitle.trim(),
       });
 
       history.push('/login');
@@ -93,12 +93,12 @@ class RegisterPage extends React.Component {
       jobTitle,
     } = this.state;
 
-    return validator.isEmpty(firstName)
-      || validator.isEmpty(lastName)
-      || validator.isEmpty(email)
-      || validator.isEmpty(password)
-      || validator.isEmpty(organizationName)
-      || validator.isEmpty(jobTitle);
+    return validator.isEmpty(firstName.trim())
+      || validator.isEmpty(lastName.trim())
+      || validator.isEmpty(email.trim())
+      || validator.isEmpty(password.trim())
+      || validator.isEmpty(organizationName.trim())
+      || validator.isEmpty(jobTitle.trim());
   }
 
   render() {

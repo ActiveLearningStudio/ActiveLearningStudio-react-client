@@ -44,7 +44,7 @@ class LoginPage extends React.Component {
       const { email, password } = this.state;
       const { history, login } = this.props;
 
-      if (!validator.isEmail(email)) {
+      if (!validator.isEmail(email.trim())) {
         this.setState({
           error: 'Please input valid email.',
         });
@@ -56,7 +56,10 @@ class LoginPage extends React.Component {
         error: null,
       });
 
-      await login({ email, password });
+      await login({
+        email: email.trim(),
+        password: password.trim(),
+      });
 
       history.push('/');
     } catch (err) {
@@ -68,7 +71,7 @@ class LoginPage extends React.Component {
 
   isDisabled = () => {
     const { email, password } = this.state;
-    return validator.isEmpty(email) || validator.isEmpty(password);
+    return validator.isEmpty(email.trim()) || validator.isEmpty(password.trim());
   };
 
   render() {
