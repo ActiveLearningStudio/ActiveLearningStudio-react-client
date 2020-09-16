@@ -30,6 +30,11 @@ function ForgotPasswordPage(props) {
     e.preventDefault();
 
     try {
+      if (!validator.isEmail(email)) {
+        setError('Please input valid email.');
+        return;
+      }
+
       setError(null);
 
       await forgotPassword({ email });
@@ -44,7 +49,7 @@ function ForgotPasswordPage(props) {
     }
   }, [email, forgotPassword]);
 
-  const isDisabled = !validator.isEmail(email);
+  const isDisabled = validator.isEmpty(email);
 
   return (
     <div className="auth-page">
@@ -67,7 +72,7 @@ function ForgotPasswordPage(props) {
             <input
               autoFocus
               className="input-box"
-              type="email"
+              // type="email"
               name="email"
               placeholder="Email*"
               required
@@ -75,6 +80,8 @@ function ForgotPasswordPage(props) {
               onChange={onChangeEmail}
             />
           </div>
+
+          <Error error={error} />
 
           <div className="form-group">
             <button
@@ -89,8 +96,6 @@ function ForgotPasswordPage(props) {
               )}
             </button>
           </div>
-
-          <Error error={error} />
 
           <div className="form-group text-center">
             <Link to="/login">Back to Login</Link>

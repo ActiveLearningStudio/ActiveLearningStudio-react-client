@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import Swal from 'sweetalert2';
-import { Dropdown } from 'react-bootstrap';
-// import { Formik } from "formik";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import Swal from 'sweetalert2';
+import { Dropdown } from 'react-bootstrap';
+// import { Formik } from 'formik';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import { simpleSearchAction } from 'store/actions/search';
 
 function SearchForm() {
@@ -18,32 +18,26 @@ function SearchForm() {
     <Dropdown>
       <div className="search-block navbtn">
         <input
+          className="search-term"
+          placeholder="Search existing content"
+          value={simpleSearch}
           onChange={(e) => {
             setSimpleSearch(e.target.value);
           }}
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
-              if(!simpleSearch.trim()){
-                Swal.fire("Search field is required")
+              if (!simpleSearch.trim()) {
+                Swal.fire('Search field is required');
+              } else if (simpleSearch.length > 255) {
+                Swal.fire('Character limit should be less then 255 ');
+              } else {
+                dispatcher(simpleSearchAction(simpleSearch.trim(), 0, 1000));
+                localStorage.setItem('loading', 'true');
+                history.push('/search');
               }
-              else if(simpleSearch.length>255){
-
-                Swal.fire("Character limit should be less then 255 ")
-
-              }
-              else{
-              dispatcher(simpleSearchAction(simpleSearch.trim(), 0, 1000));
-              localStorage.setItem('loading', 'true');
-              history.push('/search');
-              
-            }
             }
             return true;
           }}
-          value={simpleSearch}
-          type="text"
-          className="search-term"
-          placeholder="Search existing content"
         />
 
         <Dropdown.Toggle variant="" id="dropdown-basic">
@@ -57,13 +51,13 @@ function SearchForm() {
           <h4>Advanced Search</h4>
           <Formik
             initialValues={{
-              phrase: "",
-              subject: "",
-              grade: "",
-              standard: "",
-              email: "",
-              words: "",
-              no_words: "",
+              phrase: '',
+              subject: '',
+              grade: '',
+              standard: '',
+              email: '',
+              words: '',
+              no_words: '',
             }}
             validate={(values) => {
               const errors = {};
@@ -71,7 +65,7 @@ function SearchForm() {
             }}
             onSubmit={(values, { setSubmitting }) => {
               dispatcher(advancedSearches(values));
-              history.push("/search");
+              history.push('/search');
             }}
           >
             {({
@@ -86,70 +80,63 @@ function SearchForm() {
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <input
-                    type="text"
                     name="phrase"
+                    placeholder="Enter search phrase"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.phrase}
-                    placeholder="Enter search phrase"
                   />
                 </div>
                 <div className="form-group">
                   <input
-                    type="text"
                     name="subject"
+                    placeholder="Subject + Subject Area"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.subject}
-                    placeholder="Subject + Subject Area"
                   />
                 </div>
                 <div className="form-group dual">
                   <input
-                    type="text"
                     name="grade"
+                    placeholder="Grade Level"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.grade}
-                    placeholder="Grade Level"
                   />
                   <input
-                    type="text"
                     name="standard"
+                    placeholder="Standard"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.standard}
-                    placeholder="Standard"
                   />
                 </div>
                 <div className="form-group">
                   <input
-                    type="text"
                     name="email"
+                    placeholder="From User:Enter Email"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.email}
-                    placeholder="From User:Enter Email"
                   />
                 </div>
                 <div className="form-group">
                   <input
-                    type="text"
                     name="words"
+                    placeholder="Has the words"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.words}
-                    placeholder="Has the words"
                   />
                 </div>
                 <div className="form-group">
                   <input
-                    type="text"
                     name="no_words"
+                    placeholder="Doesn't have the words"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.no_words}
-                    placeholder="Doesn't have the words"
                   />
                 </div>
                 <div className="dual_activity">

@@ -51,6 +51,16 @@ function ResetPasswordPage(props) {
     e.preventDefault();
 
     try {
+      if (!validator.isEmail(state.email)) {
+        setError('Please input valid email.');
+        return;
+      }
+
+      if (!state.password !== state.confirmPassword) {
+        setError('Password does not match.');
+        return;
+      }
+
       setError(null);
 
       await resetPassword({
@@ -70,9 +80,9 @@ function ResetPasswordPage(props) {
     }
   }, [query.token, state, resetPassword]);
 
-  const isDisabled = !state.email || !state.password || !state.confirmPassword
-    || !validator.isEmail(state.email)
-    || (state.password !== state.confirmPassword);
+  const isDisabled = validator.isEmpty(state.email)
+    || validator.isEmpty(state.password)
+    || validator.isEmpty(state.confirmPassword);
 
   return (
     <div className="auth-page">
@@ -91,7 +101,7 @@ function ResetPasswordPage(props) {
             <FontAwesomeIcon icon="envelope" />
             <input
               className="input-box"
-              type="email"
+              // type="email"
               name="email"
               placeholder="Email*"
               required
@@ -127,6 +137,8 @@ function ResetPasswordPage(props) {
             />
           </div>
 
+          <Error error={error} />
+
           <div className="form-group">
             <button
               type="submit"
@@ -140,8 +152,6 @@ function ResetPasswordPage(props) {
               )}
             </button>
           </div>
-
-          <Error error={error} />
 
           <div className="form-group text-center">
             <Link to="/login">Back to Login</Link>

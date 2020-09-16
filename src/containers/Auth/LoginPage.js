@@ -44,11 +44,20 @@ class LoginPage extends React.Component {
       const { email, password } = this.state;
       const { history, login } = this.props;
 
+      if (!validator.isEmail(email)) {
+        this.setState({
+          error: 'Please input valid email.',
+        });
+
+        return;
+      }
+
       this.setState({
         error: null,
       });
 
       await login({ email, password });
+
       history.push('/');
     } catch (err) {
       this.setState({
@@ -59,8 +68,8 @@ class LoginPage extends React.Component {
 
   isDisabled = () => {
     const { email, password } = this.state;
-    return !validator.isEmail(email) || validator.isEmpty(password);
-  }
+    return validator.isEmpty(email) || validator.isEmpty(password);
+  };
 
   render() {
     const {
@@ -93,7 +102,7 @@ class LoginPage extends React.Component {
               <input
                 autoFocus
                 className="input-box"
-                type="email"
+                // type="email"
                 name="email"
                 placeholder="Email*"
                 required
@@ -130,6 +139,8 @@ class LoginPage extends React.Component {
               </div>
             </div>
 
+            <Error error={error} />
+
             <div className="form-group">
               <button
                 type="submit"
@@ -143,8 +154,6 @@ class LoginPage extends React.Component {
                 )}
               </button>
             </div>
-
-            <Error error={error} />
 
             <div className="form-group text-center">
               New to CurrikiStudio?

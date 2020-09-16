@@ -21,31 +21,31 @@
     background: #fff;
     border-radius: 5px;
 
-    &:after {	
-      content: "";	
-      position: absolute;	
-      top: 20%;	
-      right: -180px;	
-      z-index: -1;	
-      width: 330px;	
-      height: 330px;	
-      background-color: #eadbf0;	
-      border-radius: 50%;	
-    }	
-
-    &:before {	
-      content: "";	
-      position: absolute;	
-      bottom: -80px;	
-      left: -80px;	
-      z-index: -1;	
-      width: 200px;	
-      height: 200px;	
-      background-color: #eadbf0;	
-      border-radius: 50%;	
+    &:after {
+      content: "";
+      position: absolute;
+      top: 20%;
+      right: -180px;
+      z-index: -1;
+      width: 330px;
+      height: 330px;
+      background-color: #eadbf0;
+      border-radius: 50%;
     }
 
-   .auth-title {
+    &:before {
+      content: "";
+      position: absolute;
+      bottom: -80px;
+      left: -80px;
+      z-index: -1;
+      width: 200px;
+      height: 200px;
+      background-color: #eadbf0;
+      border-radius: 50%;
+    }
+
+    .auth-title {
       font-weight: Bold;
       font-size: 18px;
       line-height: 25px;
@@ -120,14 +120,6 @@
       }
     }
 
-    .password-icon {
-      width: 54px;
-      height: 54px;
-      background: #fff url(/assets/images/password-icon.png) no-repeat center;
-      border: 1px solid #d9dfe8;
-      float: left;
-    }
-
     .password-box {
       width: 100%;
       height: 50px;
@@ -154,11 +146,11 @@
 
       a,
       label {
+        margin-bottom: 0;
         font-weight: 400;
         font-size: 14px;
         line-height: 26px;
         font-family: 'Hind Siliguri', sans-serif;
-
         letter-spacing: 0;
         color: #464646 !important;
         opacity: 0.8;
