@@ -68,7 +68,7 @@ function DashboardPage(props) {
       title: 'WHAT DO I GET WITH MY FREE ACCOUNT?',
       confirmButtonText: 'Sign Up',
       html: '<ul>'
-        + '<li>Free access to Curriki Studio, designed for the individual user building experiences for their classes</li>'
+        + '<li>Free access to CurrikiStudio, designed for the individual user building experiences for their classes</li>'
         + '<li>1GB of Hosting and Services</li>'
         + '<li>Build a portfolio of more than 10 Projects and 100 Playlists</li>'
         + '<li>No loss of work – transfer any or all projects from your demo account</li>'
@@ -141,7 +141,7 @@ function DashboardPage(props) {
                 </div>
                 <div className="row m-3">
                   <div className="col">
-                    Welcome to the Curriki Studio Dashboard. Here you will find metrics and general information about your account.
+                    Welcome to the CurrikiStudio Dashboard. Here you will find metrics and general information about your account.
                   </div>
                 </div>
                 <div className="row m-3">
