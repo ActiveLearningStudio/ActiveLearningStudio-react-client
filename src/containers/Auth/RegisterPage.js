@@ -72,13 +72,9 @@ class RegisterPage extends React.Component {
         last_name: lastName.trim(),
         email: email.trim(),
         password: password.trim(),
+        organization_name: organizationName.trim() ? organizationName.trim() : null,
+        job_title: jobTitle.trim() ? jobTitle.trim() : null,
       };
-      if (organizationName.trim()) {
-        data.organization_name = organizationName.trim();
-      }
-      if (jobTitle.trim()) {
-        data.job_title = jobTitle.trim();
-      }
 
       const message = await register(data);
 
