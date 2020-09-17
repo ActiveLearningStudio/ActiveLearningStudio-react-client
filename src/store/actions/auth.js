@@ -148,17 +148,13 @@ export const registerAction = (data) => async (dispatch) => {
   });
 
   try {
-    const response = await authService.register(data);
-
-    Swal.fire({
-      icon: 'success',
-      title: 'Registration Success',
-      html: response.message,
-    });
+    const { message } = await authService.register(data);
 
     dispatch({
       type: actionTypes.SIGNUP_SUCCESS,
     });
+
+    return message;
   } catch (e) {
     dispatch({
       type: actionTypes.SIGNUP_FAIL,

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Swal from 'sweetalert2';
 
 import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
@@ -66,16 +67,34 @@ class RegisterPage extends React.Component {
         error: null,
       });
 
-      await register({
+      const data = {
         first_name: firstName.trim(),
         last_name: lastName.trim(),
         email: email.trim(),
         password: password.trim(),
-        organization_name: organizationName.trim(),
-        job_title: jobTitle.trim(),
-      });
+      };
+      if (organizationName.trim()) {
+        data.organization_name = organizationName.trim();
+      }
+      if (jobTitle.trim()) {
+        data.job_title = jobTitle.trim();
+      }
 
-      history.push('/login');
+      const message = await register(data);
+
+      Swal.fire({
+        icon: 'success',
+        title: 'YOU ARE REGISTERED!',
+        html: message,
+        showConfirmButton: true,
+        confirmButtonText: 'Login to CurrikiStudio',
+      })
+        .then((result) => {
+          if (result.isConfirmed) {
+            history.push('/login');
+          }
+        });
+      // history.push('/login');
     } catch (err) {
       this.setState({
         error: getErrors(err),
@@ -89,17 +108,13 @@ class RegisterPage extends React.Component {
       lastName,
       email,
       password,
-      organizationName,
-      jobTitle,
     } = this.state;
 
     return validator.isEmpty(firstName.trim())
       || validator.isEmpty(lastName.trim())
       || validator.isEmpty(email.trim())
-      || validator.isEmpty(password.trim())
-      || validator.isEmpty(organizationName.trim())
-      || validator.isEmpty(jobTitle.trim());
-  }
+      || validator.isEmpty(password.trim());
+  };
 
   render() {
     const {
@@ -138,6 +153,7 @@ class RegisterPage extends React.Component {
                   name="firstName"
                   placeholder="First Name*"
                   required
+                  maxLength="250"
                   value={firstName}
                   onChange={this.onChangeField}
                 />
@@ -150,6 +166,7 @@ class RegisterPage extends React.Component {
                   name="lastName"
                   placeholder="Last Name*"
                   required
+                  maxLength="250"
                   value={lastName}
                   onChange={this.onChangeField}
                 />
@@ -164,6 +181,7 @@ class RegisterPage extends React.Component {
                 name="email"
                 placeholder="Email*"
                 required
+                maxLength="250"
                 value={email}
                 onChange={this.onChangeField}
               />
@@ -177,6 +195,7 @@ class RegisterPage extends React.Component {
                 name="password"
                 placeholder="Password*"
                 required
+                maxLength="250"
                 value={password}
                 onChange={this.onChangeField}
               />
@@ -184,24 +203,24 @@ class RegisterPage extends React.Component {
 
             <div className="form-group d-flex">
               <div className="input-wrapper">
-                <FontAwesomeIcon icon="user" />
+                <FontAwesomeIcon icon="building" />
                 <input
                   className="input-box"
                   name="organizationName"
-                  placeholder="Organization Name*"
-                  required
+                  placeholder="Organization Name"
+                  maxLength="250"
                   value={organizationName}
                   onChange={this.onChangeField}
                 />
               </div>
 
               <div className="input-wrapper">
-                <FontAwesomeIcon icon="user" />
+                <FontAwesomeIcon icon="briefcase" />
                 <input
                   className="input-box"
                   name="jobTitle"
-                  placeholder="Job Title*"
-                  required
+                  placeholder="Job Title"
+                  maxLength="250"
                   value={jobTitle}
                   onChange={this.onChangeField}
                 />

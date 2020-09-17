@@ -41,6 +41,7 @@ function ResetPasswordPage(props) {
 
   const onChangeField = useCallback((e) => {
     e.persist();
+
     setState((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,

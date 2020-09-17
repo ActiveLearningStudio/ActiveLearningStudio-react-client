@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 
 import loader from 'assets/images/loader.svg';
+import { getErrors } from 'utils';
 import { updatePasswordAction } from 'store/actions/auth';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -37,16 +39,22 @@ function ChangePasswordPage(props) {
     });
   };
 
-  const onSubmit = async (e) => {
+  const {
+    currentPassword,
+    password,
+    confirmPassword,
+  } = state;
+
+  const onSubmit = useCallback(async (e) => {
     e.preventDefault();
 
     try {
       setError(null);
 
       const message = await updatePassword({
-        current_password: state.currentPassword,
-        password: state.password,
-        password_confirmation: state.confirmPassword,
+        current_password: currentPassword.trim(),
+        password: password.trim(),
+        password_confirmation: confirmPassword.trim(),
       });
 
       Swal.fire({
@@ -64,9 +72,13 @@ function ChangePasswordPage(props) {
         confirmPassword: '',
       });
     } catch (err) {
-      setError(err);
+      setError(getErrors(err));
     }
-  };
+  }, [currentPassword, password, confirmPassword, updatePassword]);
+
+  const isDisabled = validator.isEmpty(currentPassword.trim())
+    || validator.isEmpty(password.trim())
+    || validator.isEmpty(confirmPassword.trim());
 
   return (
     <>
@@ -81,7 +93,7 @@ function ChangePasswordPage(props) {
           <div className="content">
             <div className="row">
               <div className="col-md-12">
-                <h1 className="pl-0 title">Change Password</h1>
+                <h1 className="title">Change Password</h1>
               </div>
             </div>
 
@@ -104,7 +116,7 @@ function ChangePasswordPage(props) {
                           name="currentPassword"
                           placeholder="Current Password*"
                           required
-                          value={state.currentPassword}
+                          value={currentPassword}
                           onChange={onChangeField}
                         />
                       </div>
@@ -123,7 +135,7 @@ function ChangePasswordPage(props) {
                           name="password"
                           placeholder="Password*"
                           required
-                          value={state.password}
+                          value={password}
                           onChange={onChangeField}
                         />
                       </div>
@@ -142,7 +154,7 @@ function ChangePasswordPage(props) {
                           name="confirmPassword"
                           placeholder="Confirm Password*"
                           required
-                          value={state.confirmPassword}
+                          value={confirmPassword}
                           onChange={onChangeField}
                         />
                       </div>
@@ -153,7 +165,7 @@ function ChangePasswordPage(props) {
                     <button
                       type="submit"
                       className="btn btn-primary submit"
-                      disabled={isLoading}
+                      disabled={isLoading || isDisabled}
                     >
                       {isLoading ? (
                         <img src={loader} alt="" />
