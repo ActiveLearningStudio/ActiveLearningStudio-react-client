@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import logo from 'assets/images/logo.svg';
+import logo from 'assets/images/tfa-new.png';
 import searchImg from 'assets/images/search.png';
 import createProjectIcon from 'assets/images/create-project-icon.png';
 import notificationImg from 'assets/images/notification.png';
@@ -101,9 +101,9 @@ function Header(props) {
                       </span>
                     </Dropdown.Item> */}
 
-                    <Dropdown.Item as={Link} to="/dashboard">
+                    {/* <Dropdown.Item as={Link} to="/dashboard">
                       Dashboard
-                    </Dropdown.Item>
+                    </Dropdown.Item> */}
 
                     <Dropdown.Item as={Link} to="/account">
                       My Account

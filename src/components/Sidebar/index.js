@@ -129,12 +129,12 @@ function Sidebar() {
       )}
       */}
 
-      <Link to="/dashboard">
+      {/* <Link to="/dashboard">
         <div className="menu-title">
           <FontAwesomeIcon icon="tachometer-alt" className="mr-2" />
           Utilization Dashboard
         </div>
-      </Link>
+      </Link> */}
     </aside>
   );
 }

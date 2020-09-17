@@ -6,9 +6,9 @@ import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 
-import bg from 'assets/images/loginbg.png';
-import bg1 from 'assets/images/loginbg2.png';
-import logo from 'assets/images/logo.svg';
+// import bg from 'assets/images/loginbg.png';
+// import bg1 from 'assets/images/loginbg2.png';
+import logo from 'assets/images/tfa-logo.png';
 import loader from 'assets/images/loader.svg';
 import { forgotPasswordAction } from 'store/actions/auth';
 import { getErrors } from 'utils';
@@ -58,7 +58,7 @@ function ForgotPasswordPage(props) {
       <div className="auth-container">
         <h1 className="auth-title">Reset Password</h1>
         <h3 className="auth-description">
-          Please enter your CurrikiStudio account&apos;s email and click the button below,
+          Please enter your TFA account&apos;s email and click the button below,
           then check your email for instructions on how to reset your password.
         </h3>
 
@@ -103,8 +103,8 @@ function ForgotPasswordPage(props) {
         </form>
       </div>
 
-      <img src={bg} className="bg1" alt="" />
-      <img src={bg1} className="bg2" alt="" />
+      {/* <img src={bg} className="bg1" alt="" />
+      <img src={bg1} className="bg2" alt="" /> */}
     </div>
   );
 }

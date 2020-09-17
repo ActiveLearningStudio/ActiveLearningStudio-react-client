@@ -6,9 +6,9 @@ import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 
-import bg from 'assets/images/loginbg.png';
-import bg1 from 'assets/images/loginbg2.png';
-import logo from 'assets/images/logo.svg';
+// import bg from 'assets/images/loginbg.png';
+// import bg1 from 'assets/images/loginbg2.png';
+import logo from 'assets/images/tfa-logo.png';
 import loader from 'assets/images/loader.svg';
 import { registerAction } from 'store/actions/auth';
 import { getErrors } from 'utils';
@@ -133,7 +133,7 @@ class RegisterPage extends React.Component {
         <img className="auth-header-logo" src={logo} alt="" />
 
         <div className="auth-container">
-          <h1 className="auth-title">Register to Curriki Studio</h1>
+          {/* <h1 className="auth-title">Register to Curriki Studio</h1> */}
           <h2 className="auth-subtitle">Powering the creation of the world’s Most Immersive Learning Experience</h2>
           <h3 className="auth-description">
             Register below and start making a difference in the way learning experiences are designed, created, and delivered.
@@ -251,8 +251,8 @@ class RegisterPage extends React.Component {
           </form>
         </div>
 
-        <img src={bg} className="bg1" alt="" />
-        <img src={bg1} className="bg2" alt="" />
+        {/* <img src={bg} className="bg1" alt="" />
+        <img src={bg1} className="bg2" alt="" /> */}
       </div>
     );
   }

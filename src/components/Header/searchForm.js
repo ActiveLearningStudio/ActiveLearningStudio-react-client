@@ -29,7 +29,7 @@ function SearchForm() {
               if (!simpleSearch.trim()) {
                 Swal.fire('Search field is required');
               } else if (simpleSearch.length > 255) {
-                Swal.fire('Character limit should be less then 255 ');
+                Swal.fire('Character limit should be less than 255 ');
               } else {
                 dispatcher(simpleSearchAction(simpleSearch.trim(), 0, 1000));
                 localStorage.setItem('loading', 'true');
