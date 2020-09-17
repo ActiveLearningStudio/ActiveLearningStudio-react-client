@@ -45,6 +45,10 @@
     &:focus {
       outline: none;
     }
+
+    &:disabled {
+      background-color: #ddd;
+    }
   }
 
   .password-box {
