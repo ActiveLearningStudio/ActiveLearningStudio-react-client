@@ -142,21 +142,20 @@ class PlaylistsPage extends React.Component {
       await createPlaylist(match.params.projectId, title);
 
       history.push(`/project/${match.params.projectId}`);
-    } catch (e) {
-      console.log(e)
-      if(!!e.errors ){
-        if(e.errors.title.length>0){
+    } catch (err) {
+      if (err.errors) {
+        if (err.errors.title.length > 0) {
           Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: e.errors.title[0]
+            text: err.errors.title[0],
           });
         }
-      }else{
+      } else {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: e.message,
+          text: err.message,
         });
       }
     }
@@ -172,7 +171,7 @@ class PlaylistsPage extends React.Component {
   ) => {
     try {
       const {
-        resource,
+        // resource,
         match,
         history,
         createResource,
@@ -199,8 +198,7 @@ class PlaylistsPage extends React.Component {
         );
       }
 
-     history.push(`/project/${match.params.projectId}`);
-      
+      history.push(`/project/${match.params.projectId}`);
     } catch (e) {
       // console.log(e.message);
     }

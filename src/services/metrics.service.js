@@ -31,5 +31,5 @@ export default {
   logActivityView,
   logPlaylistView,
   logProjectView,
-  redeemOffer
+  redeemOffer,
 };

@@ -17,7 +17,7 @@ import SearchForm from './searchForm';
 import './style.scss';
 
 function Header(props) {
-  const { user, logout } = props;
+  const { /* user, */ logout } = props;
 
   return (
     <header>
@@ -134,12 +134,12 @@ function Header(props) {
 }
 
 Header.propTypes = {
-  user: PropTypes.object,
+  // user: PropTypes.object,
   logout: PropTypes.func.isRequired,
 };
 
 Header.defaultProps = {
-  user: null,
+  // user: null,
 };
 
 const mapStateToProps = (state) => ({

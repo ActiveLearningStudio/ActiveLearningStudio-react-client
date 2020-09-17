@@ -1,15 +1,17 @@
+/* eslint-disable max-len */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { GoogleLogin } from 'react-google-login';
 
 import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
 import logo from 'assets/images/logo.svg';
 import loader from 'assets/images/loader.svg';
-import { loginAction } from 'store/actions/auth';
+import { loginAction, googleLoginAction } from 'store/actions/auth';
 import { getErrors } from 'utils';
 import Error from './Error';
 
@@ -67,6 +69,15 @@ class LoginPage extends React.Component {
         error: getErrors(err),
       });
     }
+  };
+
+  onGoogleLoginSuccess = (response) => {
+    const { googleLogin } = this.props;
+    googleLogin(response);
+  };
+
+  onGoogleLoginFailure = (response) => {
+    console.log(response);
   };
 
   isDisabled = () => {
@@ -159,6 +170,19 @@ class LoginPage extends React.Component {
             </div>
 
             <div className="form-group text-center">
+              <GoogleLogin
+                clientId={global.config.gapiClientId}
+                theme="dark"
+                onSuccess={this.onGoogleLoginSuccess}
+                onFailure={this.onGoogleLoginFailure}
+                scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
+                cookiePolicy="single_host_origin"
+              >
+                <span>Login with Google</span>
+              </GoogleLogin>
+            </div>
+
+            <div className="form-group text-center">
               New to CurrikiStudio?
               {' '}
               <Link to="/register">Sign Up</Link>
@@ -177,10 +201,12 @@ LoginPage.propTypes = {
   history: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
   login: PropTypes.func.isRequired,
+  googleLogin: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   login: (data) => dispatch(loginAction(data)),
+  googleLogin: (data) => dispatch(googleLoginAction(data)),
 });
 
 const mapStateToProps = (state) => ({

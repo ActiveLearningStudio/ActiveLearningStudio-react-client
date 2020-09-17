@@ -12,11 +12,11 @@ export const searchRedux = (data, searchQuery, meta) => ({
 
 export const simpleSearchAction = (searchQuery, from, size) => async (dispatch) => {
   const response = await searchService.searchResult(searchQuery, from, size);
-  if(response.errors){
-    if(response.errors.query){
-    Swal.fire(response.errors.query[0])
+  if (response.errors) {
+    if (response.errors.query) {
+      Swal.fire(response.errors.query[0]);
     }
-  }else{
+  } else {
     dispatch(searchRedux(response.data, searchQuery, response.meta));
   }
 };

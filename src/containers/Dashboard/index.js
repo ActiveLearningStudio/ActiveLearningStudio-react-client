@@ -60,59 +60,57 @@ function DashboardPage(props) {
 
     getUserMetrics(userId);
     getUserMembership(userId);
-  }, [userId]);
+  }, [getUserMembership, getUserMetrics, userId]);
 
   const handleUpgradeClick = () => {
     Swal.fire({
       icon: 'info',
       title: 'WHAT DO I GET WITH MY FREE ACCOUNT?',
       confirmButtonText: 'Sign Up',
-      html: '<ul>'+
-        '<li>Free access to Curriki Studio, designed for the individual user building experiences for their classes</li>'+
-        '<li>1GB of Hosting and Services</li>'+
-        '<li>Build a portfolio of more than 10 Projects and 100 Playlists</li>'+
-        '<li>No loss of work – transfer any or all projects from your demo account</li>'+
-        '<li>Publish your projects to Certified LMS Providers, Google Classroom, CMS platforms and websites via CurrikiGo</li>'+
-        '<li>Share and access Projects and Playlists with the Curriki Community via CurrikiLibrary</li>'+
-        '<ul>',
-        preConfirm: () => {
-          return metricsService.redeemOffer('linodeFREE')
-          .catch(error => { Swal.showValidationMessage(`Request failed: ${error}`);});
-        },
+      html: '<ul>'
+        + '<li>Free access to Curriki Studio, designed for the individual user building experiences for their classes</li>'
+        + '<li>1GB of Hosting and Services</li>'
+        + '<li>Build a portfolio of more than 10 Projects and 100 Playlists</li>'
+        + '<li>No loss of work – transfer any or all projects from your demo account</li>'
+        + '<li>Publish your projects to Certified LMS Providers, Google Classroom, CMS platforms and websites via CurrikiGo</li>'
+        + '<li>Share and access Projects and Playlists with the Curriki Community via CurrikiLibrary</li>'
+        + '<ul>',
+      preConfirm: () => metricsService.redeemOffer('linodeFREE')
+        .catch((error) => { Swal.showValidationMessage(`Request failed: ${error}`); }),
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
           title: 'Conragtulations!',
-          text: 'Account upgrade successful.'
+          text: 'Account upgrade successful.',
         }).then(() => {
           getUserMetrics(userId);
           getUserMembership(userId);
         });
       }
     });
-  }
+  };
 
-  const humanFileSize = (bytes, si=false, dp=1) => {
+  const humanFileSize = (bytes, si = false, dp = 1) => {
     const thresh = si ? 1000 : 1024;
-  
+
     if (Math.abs(bytes) < thresh) {
-      return bytes + ' B';
+      return `${bytes} B`;
     }
-  
-    const units = si 
-      ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'] 
+
+    const units = si
+      ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
       : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
     let u = -1;
-    const r = 10**dp;
-  
+    const r = 10 ** dp;
+
     do {
+      // eslint-disable-next-line no-param-reassign
       bytes /= thresh;
-      ++u;
+      u += 1;
     } while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < units.length - 1);
-  
-  
-    return bytes.toFixed(dp) + ' ' + units[u];
-  }
+
+    return `${bytes.toFixed(dp)} ${units[u]}`;
+  };
 
   return (
     <>
@@ -127,13 +125,13 @@ function DashboardPage(props) {
             <div className="row">
               <div className="col-md-12">
                 <h1 className="title">
-                  {(metrics.membership_type) ? metrics.membership_type + ' Account - ':''}
+                  {(metrics.membership_type) ? `${metrics.membership_type} Account - ` : ''}
                   Dashboard
                 </h1>
               </div>
             </div>
             <div className="row">
-              <div className={ (metrics.membership_type_name === 'demo') ? "col-8 dashboard-panel m-3" : "col dashboard-panel m-3" }>
+              <div className={(metrics.membership_type_name === 'demo') ? 'col-8 dashboard-panel m-3' : 'col dashboard-panel m-3'}>
                 <div className="row dashboard-panel-header-row">
                   <div className="col">
                     <h1 className="title">
@@ -163,10 +161,10 @@ function DashboardPage(props) {
                         <h1 className="title">Storage</h1>
                         <p>
                           <label>Total Available:</label>
-                          { humanFileSize(metrics.total_storage)}
+                          {humanFileSize(metrics.total_storage)}
                           <br />
                           <label>Total Used:</label>
-                          { humanFileSize(metrics.used_storage) }
+                          {humanFileSize(metrics.used_storage)}
                         </p>
                       </div>
                     </div>
@@ -187,10 +185,10 @@ function DashboardPage(props) {
                         <h1 className="title">Bandwidth</h1>
                         <p>
                           <label>Total Available:</label>
-                          { humanFileSize(metrics.total_bandwidth) } 
+                          {humanFileSize(metrics.total_bandwidth)}
                           <br />
                           <label>Total Used:</label>
-                          { humanFileSize(metrics.used_bandwidth) } 
+                          {humanFileSize(metrics.used_bandwidth)}
                         </p>
                       </div>
                     </div>
@@ -202,44 +200,40 @@ function DashboardPage(props) {
                     {metrics.membership_type}
                   </div>
                   <div className="col text-right">
-                    {
-                      metrics.membership_type_name === 'demo' && 
-                        (<a className="btn btn-primary submit mr-5" onClick={handleUpgradeClick}>Upgrade Now</a>)
-                    }
+                    {metrics.membership_type_name === 'demo' && (
+                      <a className="btn btn-primary submit mr-5" onClick={handleUpgradeClick}>Upgrade Now</a>
+                    )}
                   </div>
                 </div>
               </div>
-              {
-                metrics.membership_type_name === 'demo' && 
-                  (
-                    <div className="col">
+              {metrics.membership_type_name === 'demo' && (
+                <div className="col">
+                  <div className="row">
+                    <div className="col dashboard-panel m-3 text-center offer-panel">
                       <div className="row">
-                        <div className="col dashboard-panel m-3 text-center offer-panel">
-                          <div className="row">
-                            <div className="col">
-                              <h1 className="title">Need more storage, views or publishing options?</h1>
-                            </div>
-                          </div>
-                          <div className="row">
-                            <div className="col">
-                              We offer you unlimited storage space for all your needs. You can always upgrade to get more space.
-                            </div>
-                          </div>
-                          <div className="row mt-3">
-                            <div className="col">
-                              <a className="btn btn-primary submit" onClick={handleUpgradeClick}>Upgrade to Basic Account</a>
-                            </div>
-                          </div>
-                          <div className="row mt-1 mb-3">
-                            <div className="col">
-                              It&apos;s FREE. Courtesy of Linode.com
-                            </div>
-                          </div>
+                        <div className="col">
+                          <h1 className="title">Need more storage, views or publishing options?</h1>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col">
+                          We offer you unlimited storage space for all your needs. You can always upgrade to get more space.
+                        </div>
+                      </div>
+                      <div className="row mt-3">
+                        <div className="col">
+                          <a className="btn btn-primary submit" onClick={handleUpgradeClick}>Upgrade to Basic Account</a>
+                        </div>
+                      </div>
+                      <div className="row mt-1 mb-3">
+                        <div className="col">
+                          It&apos;s FREE. Courtesy of Linode.com
                         </div>
                       </div>
                     </div>
-                  )
-              }
+                  </div>
+                </div>
+              )}
             </div>
             <div className="row metrics-counters">
               <div className="col dashboard-panel m-3">

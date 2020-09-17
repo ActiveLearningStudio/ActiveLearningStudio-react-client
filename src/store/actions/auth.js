@@ -65,6 +65,40 @@ export const loginAction = (data) => async (dispatch) => {
   }
 };
 
+export const googleLoginAction = (data) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.LOGIN_REQUEST,
+  });
+
+  try {
+    const response = await authService.loginWithGoogle(data);
+
+    // hubspot email tacking
+    // eslint-disable-next-line no-multi-assign
+    const _hsq = (window._hsq = window._hsq || []);
+    _hsq.push([
+      'identify',
+      {
+        email: response.user.email,
+        user_name: `${response.user.first_name} ${response.user.last_name}`,
+      },
+    ]);
+
+    storageService.setItem(USER_TOKEN_KEY, response.access_token);
+
+    dispatch({
+      type: actionTypes.LOGIN_SUCCESS,
+      payload: { user: response.user },
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.LOGIN_FAIL,
+    });
+
+    throw e;
+  }
+};
+
 export const forgotPasswordAction = (data) => async (dispatch) => {
   dispatch({
     type: actionTypes.FORGOT_PASSWORD_REQUEST,

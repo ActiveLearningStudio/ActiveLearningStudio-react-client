@@ -20,7 +20,7 @@ function Sidebar() {
 
   const [myProjects, setMyProjects] = useState([]);
   const [sampleProject, setSampleProjects] = useState([]);
-  const [updateProject, setUpdateProject] = useState([]);
+  // const [updateProject, setUpdateProject] = useState([]);
 
   useEffect(() => {
     if (allState.sidebar.allProject.length === 0) {
@@ -42,11 +42,11 @@ function Sidebar() {
     }
   }, [allState.sidebar.sampleProject]);
 
-  useEffect(() => {
-    if (allState.sidebar.updateProject.length > 0) {
-      setUpdateProject(allState.sidebar.updateProject);
-    }
-  }, [allState.sidebar.updateProject]);
+  // useEffect(() => {
+  //   if (allState.sidebar.updateProject.length > 0) {
+  //     setUpdateProject(allState.sidebar.updateProject);
+  //   }
+  // }, [allState.sidebar.updateProject]);
 
   return (
     <aside className="sidebarall">
@@ -138,6 +138,7 @@ function Sidebar() {
         </>
       )
       */}
+
       <Link to="/dashboard">
         <div className="menu-title">
           <FontAwesomeIcon icon="tachometer-alt" className="mr-2" />
