@@ -26,6 +26,7 @@ function ProfilePage(props) {
   const [state, setState] = useState({
     firstName: (user && user.first_name) || '',
     lastName: (user && user.last_name) || '',
+    email: (user && user.email) || '',
     organizationName: (user && user.organization_name) || '',
     organizationType: (user && user.organization_type) || '',
     website: (user && user.website) || '',
@@ -42,6 +43,7 @@ function ProfilePage(props) {
     setState({
       firstName: (user && user.first_name) || '',
       lastName: (user && user.last_name) || '',
+      email: (user && user.email) || '',
       organizationName: (user && user.organization_name) || '',
       organizationType: (user && user.organization_type) || '',
       website: (user && user.website) || '',
@@ -178,6 +180,40 @@ function ProfilePage(props) {
                   <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
+                        <label htmlFor="email">Email</label>
+                        <FontAwesomeIcon icon="envelope" />
+                        <input
+                          className="input-box"
+                          id="email"
+                          name="email"
+                          placeholder="Email"
+                          maxLength="250"
+                          disabled
+                          value={state.email}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="phone-number">Phone Number</label>
+                        <FontAwesomeIcon icon="phone" />
+                        <input
+                          className="input-box"
+                          id="phone-number"
+                          name="phoneNumber"
+                          placeholder="Phone Number"
+                          maxLength="250"
+                          value={state.phoneNumber}
+                          onChange={onChangeField}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
                         <label htmlFor="organization-name">Organization Name</label>
                         <FontAwesomeIcon icon="building" />
                         <input
@@ -237,24 +273,6 @@ function ProfilePage(props) {
                           placeholder="Job Title"
                           maxLength="250"
                           value={state.jobTitle}
-                          onChange={onChangeField}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label htmlFor="phone-number">Phone Number</label>
-                        <FontAwesomeIcon icon="phone" />
-                        <input
-                          className="input-box"
-                          id="phone-number"
-                          name="phoneNumber"
-                          placeholder="Phone Number"
-                          maxLength="250"
-                          value={state.phoneNumber}
                           onChange={onChangeField}
                         />
                       </div>
