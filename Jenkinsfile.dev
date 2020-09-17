@@ -12,7 +12,7 @@ node(){
     }
     stage('Build') {
         nodejs('nodejs') {
-            sh 'cp /root/curriki/client/.env.local .env.local'
+            sh 'cp /root/envs/.env.local.dev .env.local'
             sh 'npm run build'
             echo "Build completed"
         }
