@@ -75,29 +75,25 @@ function ProfilePage(props) {
     } = state;
 
     try {
+      if (website.trim() && !validator.isURL(website.trim())) {
+        setError('Please input valid website url.');
+
+        return;
+      }
+
+      setError(null);
+
       const data = {
         id: user.id,
         first_name: firstName.trim(),
         last_name: lastName.trim(),
+        organization_name: organizationName.trim() ? organizationName.trim() : null,
+        organization_type: organizationType.trim() ? organizationType.trim() : null,
+        website: website.trim() ? website.trim() : null,
+        job_title: jobTitle.trim() ? jobTitle.trim() : null,
+        address: address.trim() ? address.trim() : null,
+        phone_number: phoneNumber.trim() ? phoneNumber.trim() : null,
       };
-      if (organizationName.trim()) {
-        data.organization_name = organizationName.trim();
-      }
-      if (organizationType.trim()) {
-        data.organization_type = organizationType.trim();
-      }
-      if (website.trim()) {
-        data.website = website.trim();
-      }
-      if (jobTitle.trim()) {
-        data.job_title = jobTitle.trim();
-      }
-      if (address.trim()) {
-        data.address = address.trim();
-      }
-      if (phoneNumber.trim()) {
-        data.phone_number = phoneNumber.trim();
-      }
 
       await updateProfile(data);
 
@@ -109,7 +105,6 @@ function ProfilePage(props) {
         timer: 1500,
         allowOutsideClick: false,
       });
-      setError(null);
     } catch (err) {
       setError(getErrors(err));
     }
