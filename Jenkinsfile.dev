@@ -33,7 +33,7 @@ node(){
         stash allowEmpty: true, includes: 'bundle.tar.gz', name: 'buildArtifacts'
     }
 }
-
+ 
 node('currikidev') {
     echo 'Unstash'
     unstash 'buildArtifacts'
