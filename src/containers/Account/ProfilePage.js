@@ -250,7 +250,7 @@ function ProfilePage(props) {
                         ) : (
                           'Update Profile'
                         )}
-                      </button> 
+                      </button>
                     </div>
                   </div>
                   <div className="row">

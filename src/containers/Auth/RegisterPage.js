@@ -66,14 +66,21 @@ class RegisterPage extends React.Component {
         error: null,
       });
 
-      await register({
+      const data = {
         first_name: firstName.trim(),
         last_name: lastName.trim(),
         email: email.trim(),
         password: password.trim(),
-        organization_name: organizationName.trim(),
-        job_title: jobTitle.trim(),
-      });
+      };
+
+      if (organizationName.trim()) {
+        data.organization_name = organizationName.trim();
+      }
+      if (jobTitle.trim()) {
+        data.job_title = jobTitle.trim();
+      }
+
+      await register(data);
 
       history.push('/login');
     } catch (err) {
@@ -89,16 +96,12 @@ class RegisterPage extends React.Component {
       lastName,
       email,
       password,
-      organizationName,
-      jobTitle,
     } = this.state;
 
     return validator.isEmpty(firstName.trim())
       || validator.isEmpty(lastName.trim())
       || validator.isEmpty(email.trim())
-      || validator.isEmpty(password.trim())
-      || validator.isEmpty(organizationName.trim())
-      || validator.isEmpty(jobTitle.trim());
+      || validator.isEmpty(password.trim());
   }
 
   render() {
