@@ -129,7 +129,7 @@ class RegisterPage extends React.Component {
         <img className="auth-header-logo" src={logo} alt="" />
 
         <div className="auth-container">
-          <h1 className="auth-title">Register to Curriki Studio</h1>
+          <h1 className="auth-title">Register for CurrikiStudio</h1>
           <h2 className="auth-subtitle">Powering the creation of the world’s Most Immersive Learning Experience</h2>
           <h3 className="auth-description">
             Register below and start making a difference in the way learning experiences are designed, created, and delivered.
