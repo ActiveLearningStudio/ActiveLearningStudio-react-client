@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 
@@ -56,21 +57,47 @@ function ProfilePage(props) {
     });
   };
 
-  const onSubmit = async (e) => {
+  const onSubmit = useCallback(async (e) => {
     e.preventDefault();
 
+    const {
+      firstName,
+      lastName,
+      organizationName,
+      organizationType,
+      website,
+      jobTitle,
+      address,
+      phoneNumber,
+    } = state;
+
     try {
-      await updateProfile({
+      const data = {
         id: user.id,
-        first_name: state.firstName,
-        last_name: state.lastName,
-        organization_name: state.organizationName,
-        organization_type: state.organizationType,
-        website: state.website,
-        job_title: state.jobTitle,
-        address: state.address,
-        phone_number: state.phoneNumber,
-      });
+        first_name: firstName.trim(),
+        last_name: lastName.trim(),
+      };
+
+      if (organizationName.trim()) {
+        data.organization_name = organizationName.trim();
+      }
+      if (organizationType.trim()) {
+        data.organization_type = organizationType.trim();
+      }
+      if (website.trim()) {
+        data.website = website.trim();
+      }
+      if (jobTitle.trim()) {
+        data.job_title = jobTitle.trim();
+      }
+      if (address.trim()) {
+        data.address = address.trim();
+      }
+      if (phoneNumber.trim()) {
+        data.phone_number = phoneNumber.trim();
+      }
+
+      await updateProfile(data);
 
       Swal.fire({
         icon: 'success',
@@ -84,7 +111,9 @@ function ProfilePage(props) {
     } catch (err) {
       setError(err);
     }
-  };
+  }, [user.id, state, updateProfile]);
+
+  const isDisabled = validator.isEmpty(state.firstName.trim()) || validator.isEmpty(state.lastName.trim());
 
   return (
     <>
@@ -117,7 +146,6 @@ function ProfilePage(props) {
                         <FontAwesomeIcon icon="user" />
                         <input
                           className="input-box"
-                          type="text"
                           id="first-name"
                           name="firstName"
                           placeholder="First Name*"
@@ -135,7 +163,6 @@ function ProfilePage(props) {
                         <FontAwesomeIcon icon="user" />
                         <input
                           className="input-box"
-                          type="text"
                           id="last-name"
                           name="lastName"
                           placeholder="Last Name*"
@@ -155,7 +182,6 @@ function ProfilePage(props) {
                         <FontAwesomeIcon icon="building" />
                         <input
                           className="input-box"
-                          type="text"
                           id="organization-name"
                           name="organizationName"
                           placeholder="Organization Name"
@@ -172,7 +198,6 @@ function ProfilePage(props) {
                         <FontAwesomeIcon icon="building" />
                         <input
                           className="input-box"
-                          type="text"
                           id="organization-type"
                           name="organizationType"
                           placeholder="Organization Type"
@@ -191,7 +216,6 @@ function ProfilePage(props) {
                         <FontAwesomeIcon icon="star" />
                         <input
                           className="input-box"
-                          type="text"
                           id="website"
                           name="website"
                           placeholder="Website"
@@ -208,7 +232,6 @@ function ProfilePage(props) {
                         <FontAwesomeIcon icon="briefcase" />
                         <input
                           className="input-box"
-                          type="text"
                           id="job-title"
                           name="jobTitle"
                           placeholder="Job Title"
@@ -227,7 +250,6 @@ function ProfilePage(props) {
                         <FontAwesomeIcon icon="phone" />
                         <input
                           className="input-box"
-                          type="text"
                           id="phone-number"
                           name="phoneNumber"
                           placeholder="Phone Number"
@@ -243,7 +265,7 @@ function ProfilePage(props) {
                       <button
                         type="submit"
                         className="btn btn-primary submit"
-                        disabled={isLoading}
+                        disabled={isLoading || isDisabled}
                       >
                         {isLoading ? (
                           <img src={loader} alt="" />

@@ -102,7 +102,7 @@ class RegisterPage extends React.Component {
       || validator.isEmpty(lastName.trim())
       || validator.isEmpty(email.trim())
       || validator.isEmpty(password.trim());
-  }
+  };
 
   render() {
     const {
@@ -141,6 +141,7 @@ class RegisterPage extends React.Component {
                   name="firstName"
                   placeholder="First Name*"
                   required
+                  maxLength="250"
                   value={firstName}
                   onChange={this.onChangeField}
                 />
@@ -153,6 +154,7 @@ class RegisterPage extends React.Component {
                   name="lastName"
                   placeholder="Last Name*"
                   required
+                  maxLength="250"
                   value={lastName}
                   onChange={this.onChangeField}
                 />
@@ -167,6 +169,7 @@ class RegisterPage extends React.Component {
                 name="email"
                 placeholder="Email*"
                 required
+                maxLength="250"
                 value={email}
                 onChange={this.onChangeField}
               />
@@ -180,6 +183,7 @@ class RegisterPage extends React.Component {
                 name="password"
                 placeholder="Password*"
                 required
+                maxLength="250"
                 value={password}
                 onChange={this.onChangeField}
               />
@@ -187,24 +191,24 @@ class RegisterPage extends React.Component {
 
             <div className="form-group d-flex">
               <div className="input-wrapper">
-                <FontAwesomeIcon icon="user" />
+                <FontAwesomeIcon icon="building" />
                 <input
                   className="input-box"
                   name="organizationName"
-                  placeholder="Organization Name*"
-                  required
+                  placeholder="Organization Name"
+                  maxLength="250"
                   value={organizationName}
                   onChange={this.onChangeField}
                 />
               </div>
 
               <div className="input-wrapper">
-                <FontAwesomeIcon icon="user" />
+                <FontAwesomeIcon icon="briefcase" />
                 <input
                   className="input-box"
                   name="jobTitle"
-                  placeholder="Job Title*"
-                  required
+                  placeholder="Job Title"
+                  maxLength="250"
                   value={jobTitle}
                   onChange={this.onChangeField}
                 />
