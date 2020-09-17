@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
@@ -112,6 +112,11 @@ class RegisterPage extends React.Component {
       || validator.isEmpty(password.trim());
   };
 
+  goToLogin = () => {
+    const { history } = this.props;
+    history.push('/login');
+  };
+
   render() {
     const {
       firstName,
@@ -129,8 +134,22 @@ class RegisterPage extends React.Component {
         <img className="auth-header-logo" src={logo} alt="" />
 
         <div className="auth-container">
-          <h1 className="auth-title">Register for CurrikiStudio</h1>
+          <div className="d-flex align-items-center justify-content-between">
+            <h1 className="auth-title mb-0">Register for CurrikiStudio</h1>
+
+            <strong>OR</strong>
+
+            <button
+              type="button"
+              className="btn btn-outline-primary text-uppercase"
+              onClick={this.goToLogin}
+            >
+              Login
+            </button>
+          </div>
+
           <h2 className="auth-subtitle">Powering the creation of the world’s Most Immersive Learning Experience</h2>
+
           <h3 className="auth-description">
             Register below and start making a difference in the way learning experiences are designed, created, and delivered.
           </h3>
@@ -225,7 +244,7 @@ class RegisterPage extends React.Component {
 
             <Error error={error} />
 
-            <div className="form-group">
+            <div className="form-group mb-0">
               <button
                 type="submit"
                 className="btn btn-primary submit"
@@ -237,12 +256,6 @@ class RegisterPage extends React.Component {
                   'Register'
                 )}
               </button>
-            </div>
-
-            <div className="form-group text-center">
-              Please check your email after registering. Already have an account?
-              {' '}
-              <Link to="/login">Login</Link>
             </div>
           </form>
         </div>

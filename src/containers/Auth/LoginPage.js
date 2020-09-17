@@ -85,6 +85,11 @@ class LoginPage extends React.Component {
     return validator.isEmpty(email.trim()) || validator.isEmpty(password.trim());
   };
 
+  goToRegister = () => {
+    const { history } = this.props;
+    history.push('/register');
+  };
+
   render() {
     const {
       email,
@@ -99,8 +104,22 @@ class LoginPage extends React.Component {
         <img className="auth-header-logo" src={logo} alt="" />
 
         <div className="auth-container">
-          <h1 className="auth-title">Login to CurrikiStudio</h1>
+          <div className="d-flex align-items-center justify-content-between">
+            <h1 className="auth-title mb-0">Login to CurrikiStudio</h1>
+
+            <strong>OR</strong>
+
+            <button
+              type="button"
+              className="btn btn-outline-primary text-uppercase"
+              onClick={this.goToRegister}
+            >
+              Sign Up
+            </button>
+          </div>
+
           <h2 className="auth-subtitle">Powering the creation of the world’s Most Immersive Learning Experience</h2>
+
           <h3 className="auth-description">
             CurrikiStudio is changing the way learning experiences are
             designed, created, and delivered to a new generation of learners.
@@ -169,7 +188,7 @@ class LoginPage extends React.Component {
               </button>
             </div>
 
-            <div className="form-group text-center">
+            <div className="form-group text-center mb-0">
               <GoogleLogin
                 clientId={global.config.gapiClientId}
                 theme="dark"
@@ -180,12 +199,6 @@ class LoginPage extends React.Component {
               >
                 <span>Login with Google</span>
               </GoogleLogin>
-            </div>
-
-            <div className="form-group text-center">
-              New to CurrikiStudio?
-              {' '}
-              <Link to="/register">Sign Up</Link>
             </div>
           </form>
         </div>
