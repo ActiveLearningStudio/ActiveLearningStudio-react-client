@@ -58,18 +58,15 @@ function Sidebar() {
       </Link>
 
       <ul className="all-project">
-        {!!myProjects && myProjects.map((data, counter) => (
-          <>
-            {counter <= 5 && (
-            <li key={data.id}>
-              <Link to={`/project/${data.id}`}>
-                <FontAwesomeIcon icon="angle-right" className="mr-2" />
-                {data.name}
-              </Link>
-            </li>
-            )}
-          </>
+        {!!myProjects && myProjects.slice(0, 5).map((data) => (
+          <li key={data.id}>
+            <Link to={`/project/${data.id}`}>
+              <FontAwesomeIcon icon="angle-right" className="mr-2" />
+              {data.name}
+            </Link>
+          </li>
         ))}
+
         <Link className="expand" to="/projects">
           Explore All
           <FontAwesomeIcon icon="arrow-right" className="ml-2" />
@@ -96,25 +93,22 @@ function Sidebar() {
         <FontAwesomeIcon icon="tasks" className="mr-2" />
         Sample Projects
       </div>
+
       {!!sampleProject && (
         <ul className="all-project">
-          {sampleProject.map((data, counter) => (
-            <>
-              {counter <= 5 && (
-                <li key={data.id}>
-                  <a target="_blank" rel="noreferrer" href={`/project/${data.id}/shared`}>
-                    <FontAwesomeIcon icon="angle-right" className="mr-2" />
-                    {data.name}
-                  </a>
-                </li>
-              )}
-            </>
+          {sampleProject.slice(0, 5).map((data) => (
+            <li key={data.id}>
+              <a target="_blank" rel="noreferrer" href={`/project/${data.id}/shared`}>
+                <FontAwesomeIcon icon="angle-right" className="mr-2" />
+                {data.name}
+              </a>
+            </li>
           ))}
         </ul>
       )}
 
       {/*
-      !!updateProject && (
+      {!!updateProject && (
         <>
           <div className="menu-title">
             <FontAwesomeIcon icon="tasks" className="mr-2" />
@@ -122,21 +116,17 @@ function Sidebar() {
           </div>
 
           <ul className="all-project">
-            {updateProject.map((data, counter) => (
-              <>
-                {counter <= 5 && (
-                  <li key={data.id}>
-                    <a target="_blank" rel="noreferrer" href={`/project/${data.id}/shared`}>
-                      <FontAwesomeIcon icon="angle-right" className="mr-2" />
-                      {data.name}
-                    </a>
-                  </li>
-                )}
-              </>
+            {updateProject.slice(0, 5).map((data, counter) => (
+              <li key={data.id}>
+                <a target="_blank" rel="noreferrer" href={`/project/${data.id}/shared`}>
+                  <FontAwesomeIcon icon="angle-right" className="mr-2" />
+                  {data.name}
+                </a>
+              </li>
             ))}
           </ul>
         </>
-      )
+      )}
       */}
 
       <Link to="/dashboard">
