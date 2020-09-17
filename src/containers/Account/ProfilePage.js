@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 
 import loader from 'assets/images/loader.svg';
+import { getErrors } from 'utils';
 import { updateProfileAction } from 'store/actions/auth';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -77,7 +78,6 @@ function ProfilePage(props) {
         first_name: firstName.trim(),
         last_name: lastName.trim(),
       };
-
       if (organizationName.trim()) {
         data.organization_name = organizationName.trim();
       }
@@ -109,9 +109,9 @@ function ProfilePage(props) {
       });
       setError(null);
     } catch (err) {
-      setError(err);
+      setError(getErrors(err));
     }
-  }, [user.id, state, updateProfile]);
+  }, [user, state, updateProfile]);
 
   const isDisabled = validator.isEmpty(state.firstName.trim()) || validator.isEmpty(state.lastName.trim());
 
@@ -128,7 +128,7 @@ function ProfilePage(props) {
           <div className="content">
             <div className="row">
               <div className="col-md-12">
-                <h1 className="pl-0 title">My Account</h1>
+                <h1 className="title">My Account</h1>
               </div>
             </div>
 
@@ -260,6 +260,13 @@ function ProfilePage(props) {
                       </div>
                     </div>
                   </div>
+
+                  <div className="row">
+                    <div className="col">
+                      <Error error={error} />
+                    </div>
+                  </div>
+
                   <div className="row">
                     <div className="col text-right ml-5">
                       <button
@@ -273,11 +280,6 @@ function ProfilePage(props) {
                           'Update Profile'
                         )}
                       </button>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col">
-                      <Error error={error} />
                     </div>
                   </div>
                 </form>

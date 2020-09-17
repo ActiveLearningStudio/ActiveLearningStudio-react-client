@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 
 import loader from 'assets/images/loader.svg';
+import { getErrors } from 'utils';
 import { updatePasswordAction } from 'store/actions/auth';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -71,7 +72,7 @@ function ChangePasswordPage(props) {
         confirmPassword: '',
       });
     } catch (err) {
-      setError(err);
+      setError(getErrors(err));
     }
   }, [currentPassword, password, confirmPassword, updatePassword]);
 
@@ -92,7 +93,7 @@ function ChangePasswordPage(props) {
           <div className="content">
             <div className="row">
               <div className="col-md-12">
-                <h1 className="pl-0 title">Change Password</h1>
+                <h1 className="title">Change Password</h1>
               </div>
             </div>
 

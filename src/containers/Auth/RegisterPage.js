@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Swal from 'sweetalert2';
 
 import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
@@ -72,7 +73,6 @@ class RegisterPage extends React.Component {
         email: email.trim(),
         password: password.trim(),
       };
-
       if (organizationName.trim()) {
         data.organization_name = organizationName.trim();
       }
@@ -80,9 +80,21 @@ class RegisterPage extends React.Component {
         data.job_title = jobTitle.trim();
       }
 
-      await register(data);
+      const message = await register(data);
 
-      history.push('/login');
+      Swal.fire({
+        icon: 'success',
+        title: 'YOU ARE REGISTERED!',
+        html: message,
+        showConfirmButton: true,
+        confirmButtonText: 'Login to CurrikiStudio',
+      })
+        .then((result) => {
+          if (result.isConfirmed) {
+            history.push('/login');
+          }
+        });
+      // history.push('/login');
     } catch (err) {
       this.setState({
         error: getErrors(err),
