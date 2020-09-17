@@ -161,6 +161,12 @@ function ChangePasswordPage(props) {
                     </div>
                   </div>
 
+                  <div className="row">
+                    <div className="col-md-6">
+                      <Error error={error} />
+                    </div>
+                  </div>
+
                   <div className="form-group">
                     <button
                       type="submit"
@@ -174,8 +180,6 @@ function ChangePasswordPage(props) {
                       )}
                     </button>
                   </div>
-
-                  <Error error={error} />
                 </form>
               </div>
             </div>
