@@ -15,7 +15,7 @@ node(){
     }
     stage('Build') {
         nodejs('nodejs') {
-            sh 'cp /root/.env.local .env.local'
+            sh 'cp /root/curriki/client/.env.local .env.local'
             sh 'npm run build'
             echo "Build completed"
         }
@@ -44,6 +44,6 @@ node('currikiprod') {
     echo 'Artifacts copied'
 
     echo 'Copy'
-    sh "yes | sudo cp -R bundle.tar.gz /var/www/html && cd /var/www/html && sudo tar -xvf bundle.tar.gz"
+    sh "yes | sudo cp -R bundle.tar.gz /root/curriki/client && cd /root/curriki/client && sudo tar -xvf bundle.tar.gz"
     echo 'Copy completed'
 }
