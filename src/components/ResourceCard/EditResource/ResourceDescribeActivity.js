@@ -5,6 +5,8 @@ import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import Swal from 'sweetalert2';
 
+import computer from 'assets/images/computer.svg';
+import pexel from 'assets/images/pexel.png';
 import { required, FadeDiv } from 'utils';
 import {
   uploadResourceThumbnailAction,
@@ -14,8 +16,6 @@ import {
 } from 'store/actions/resource';
 import PexelsAPI from 'components/models/pexels';
 import { subjects, educationLevels } from 'components/ResourceCard/AddResource/dropdownData';
-import computer from 'assets/images/computer.svg';
-import pexel from 'assets/images/pexel.png';
 import EditResourceSidebar from './EditResourceSidebar';
 import MetaTitleInputField from '../fields/MetaTitleInputField';
 import MetaSubjectsField from '../fields/MetaSubjectsField';
@@ -30,7 +30,7 @@ export const uploadThumb = async (e, props) => {
     Swal.fire({
       icon: 'error',
       title: 'Error',
-      text: 'Image upload failed, kindly try again',
+      text: 'Image upload failed, kindly try again.',
     });
   }
 };
@@ -38,9 +38,10 @@ export const uploadThumb = async (e, props) => {
 const imageValidation = '';
 const onSubmit = async (values, dispatch, props) => {
   if (values.metaTitle.length > 80) {
-    Swal.fire('Title must be 80 characters or less');
+    Swal.fire('Title must be 80 characters or less.');
     return;
   }
+
   try {
     props.onSubmitDescribeActivity(values, props.match.params.activityId);
     dispatch(props.showBuildActivity(null, null, props.match.params.activityId)); // show create resource activity wizard
@@ -90,6 +91,7 @@ let ResourceDescribeActivity = (props) => {
                         </div>
                       </div>
                     </div>
+
                     <div className="row">
                       <div className="col-md-6">
                         <div className="meta-subjects">
@@ -117,6 +119,7 @@ let ResourceDescribeActivity = (props) => {
                         </div>
                       </div>
                     </div>
+
                     <div className="upload-thumbnail check">
                       <div className="upload_placeholder">
                         <label style={{ display: 'none' }}>
@@ -127,7 +130,8 @@ let ResourceDescribeActivity = (props) => {
                             onChange={(e) => {
                               if (e.target.files.length === 0) {
                                 return true;
-                              } if (!(e.target.files[0].type.includes('png') || e.target.files[0].type.includes('jpg')
+                              }
+                              if (!(e.target.files[0].type.includes('png') || e.target.files[0].type.includes('jpg')
                                 || e.target.files[0].type.includes('gif') || e.target.files[0].type.includes('jpeg'))) {
                                 Swal.fire({
                                   icon: 'error',
@@ -213,13 +217,14 @@ let ResourceDescribeActivity = (props) => {
                         </div>
                       </div>
                     </div>
+
                     <p className="disclaimer">
                       Activity Image dimension should be
                       {' '}
                       <strong>290px width and 200px height. </strong>
                       Maximun File size allowed is
                       {' '}
-                      <strong>100KB.</strong>
+                      <strong>100MB.</strong>
                     </p>
                     <div className="row">
                       <div className="col-md-12">

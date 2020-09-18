@@ -429,7 +429,6 @@ PlaylistsPage.propTypes = {
   loadProject: PropTypes.func.isRequired,
   loadProjectPlaylists: PropTypes.func.isRequired,
   reorderPlaylists: PropTypes.func.isRequired,
-  reorderPlaylistActivities: PropTypes.func.isRequired,
   editResource: PropTypes.func.isRequired,
   createResource: PropTypes.func.isRequired,
   createResourceByH5PUpload: PropTypes.func.isRequired,

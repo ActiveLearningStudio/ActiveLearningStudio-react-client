@@ -158,7 +158,7 @@ let CreateProjectPopup = (props) => {
     <div className="create-program-wrapper">
       <PexelsAPI
         show={modalShow}
-        project
+        project={project}
         onHide={() => {
           setModalShow(false);
         }}
@@ -175,21 +175,22 @@ let CreateProjectPopup = (props) => {
             <label>
               Enter Project Name (Up to 80 characters)
             </label>
+
             {!editMode && (
-            <div className="class-toggle" title="By default, it is not public">
-              <label>Make Project Public</label>
-              <Switch
-                checkedIcon={false}
-                uncheckedIcon={false}
-                height={25}
-                onChange={() => {
-                  setPublicProject(!publicProject);
-                  projectShare = !publicProject;
-                }}
-                checked={publicProject}
-                value={publicProject}
-              />
-            </div>
+              <div className="class-toggle" title="By default, it is not public">
+                <label>Make Project Public</label>
+                <Switch
+                  checkedIcon={false}
+                  uncheckedIcon={false}
+                  height={25}
+                  onChange={() => {
+                    setPublicProject(!publicProject);
+                    projectShare = !publicProject;
+                  }}
+                  checked={publicProject}
+                  value={publicProject}
+                />
+              </div>
             )}
           </div>
 
@@ -200,7 +201,6 @@ let CreateProjectPopup = (props) => {
             validate={[required, maxLength80]}
             autoComplete="new-password"
           />
-
         </div>
 
         <div className="upload-thumbnail check">
@@ -239,6 +239,7 @@ let CreateProjectPopup = (props) => {
 
             <div>
               {project.progress}
+
               {project.thumbUrl ? (
                 <div className="thumb-display">
                   <div
@@ -286,9 +287,7 @@ let CreateProjectPopup = (props) => {
 
               <div
                 className="gallery"
-                onClick={() => {
-                  openFile.current.click();
-                }}
+                onClick={openFile.current.click}
               >
                 <img src={computer} alt="" />
                 <p>Upload a Photo From your computer</p>
@@ -304,7 +303,7 @@ let CreateProjectPopup = (props) => {
             <strong>290px width and 200px height. </strong>
             Maximun File size allowed is
             {' '}
-            <strong>100KB.</strong>
+            <strong>100MB.</strong>
           </p>
         </div>
 

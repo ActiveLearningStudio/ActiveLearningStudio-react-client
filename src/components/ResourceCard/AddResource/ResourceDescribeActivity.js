@@ -6,6 +6,8 @@ import { Field, reduxForm } from 'redux-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 
+import computer from 'assets/images/computer.svg';
+import pexel from 'assets/images/pexel.png';
 import { required, FadeDiv } from 'utils';
 import {
   showBuildActivityAction,
@@ -15,14 +17,11 @@ import {
   uploadResourceThumbnailAction,
 } from 'store/actions/resource';
 import MetaTitleInputField from 'components/ResourceCard/fields/MetaTitleInputField';
-import MetaSubjectsField from 'components/ResourceCard/fields/MetaSubjectsField';
-import MetaEducationLevelInputField from 'components/ResourceCard/fields/MetaEducationLevelInputField';
 import PexelsAPI from 'components/models/pexels';
-
-import computer from 'assets/images/computer.svg';
-import pexel from 'assets/images/pexel.png';
 import { subjects, educationLevels } from './dropdownData';
 import AddResourceSidebar from './AddResourceSidebar';
+import MetaSubjectsField from '../fields/MetaSubjectsField';
+import MetaEducationLevelInputField from '../fields/MetaEducationLevelInputField';
 
 import './style.scss';
 
@@ -38,7 +37,7 @@ export const uploadThumb = async (e, props) => {
     Swal.fire({
       icon: 'error',
       title: 'Error',
-      text: 'Image upload failed, kindly try again',
+      text: 'Image upload failed, kindly try again.',
     });
   }
 };
@@ -139,7 +138,8 @@ let ResourceDescribeActivity = (props) => {
                             onChange={(e) => {
                               if (e.target.files.length === 0) {
                                 return true;
-                              } if (!(e.target.files[0].type.includes('png') || e.target.files[0].type.includes('jpg')
+                              }
+                              if (!(e.target.files[0].type.includes('png') || e.target.files[0].type.includes('jpg')
                                 || e.target.files[0].type.includes('gif') || e.target.files[0].type.includes('jpeg'))) {
                                 Swal.fire({
                                   icon: 'error',
@@ -226,14 +226,16 @@ let ResourceDescribeActivity = (props) => {
                         </div>
                       </div>
                     </div>
+
                     <p className="disclaimer">
                       Activity Image dimension should be
                       {' '}
                       <strong>290px width and 200px height. </strong>
                       Maximun File size allowed is
                       {' '}
-                      <strong>100KB.</strong>
+                      <strong>100MB.</strong>
                     </p>
+
                     <div className="row">
                       <div className="col-md-12">
                         <button type="submit" className="add-resource-continue-btn">

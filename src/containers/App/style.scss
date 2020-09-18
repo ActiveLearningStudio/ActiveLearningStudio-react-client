@@ -2373,10 +2373,12 @@ a:hover {
   }
 
   .main-item-wrapper {
+    position: relative;
     background: #fff;
     min-height: 443px;
     max-height: 593px;
     overflow-y: auto;
+    z-index: 0;
   }
 
   .slider-scroll-auto {
@@ -3354,7 +3356,7 @@ a:hover {
       display: flex;
       justify-content: center;
       align-items: center;
-      
+
     }
 
   }
