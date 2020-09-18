@@ -45,10 +45,25 @@ const H5PPreview = (props) => {
       data.h5p.settings.loadedJs,
     );
 
+    // declare H5P global variable
+    window.h5pLibCount = 0;
+    window.H5P = {};
+    // H5P prevent initializing when loadedJs available
+    if (data.h5p.settings.loadedJs.length > 0) {
+      window.H5P.preventInit = true;
+    }
+
     newScripts.forEach((value) => {
       const script = document.createElement('script');
       script.src = value;
       script.async = false;
+      script.onload = () => {
+        window.h5pLibCount += 1;
+        // initializ H5P when last lib loaded from loadedJs
+        if (data.h5p.settings.loadedJs.length > 0 && window.h5pLibCount === newScripts.length) {
+          window.H5P.init(document.body);
+        }
+      };
       document.body.appendChild(script);
     });
 
