@@ -14,6 +14,7 @@ const LTIProjectShared = (props) => {
   const [activeProject, setActiveProject] = useState(null);
   const [activePlaylist, setActivePlaylist] = useState(null);
   const [activeActivity, setActiveActivity] = useState(null);
+  const [defaultPlaylist, setDefaultPlaylist] = useState(null);
   const [allProjects, setAllProjects] = useState([]);
   const [formData, setFormData] = useState({});
 
@@ -103,6 +104,7 @@ const LTIProjectShared = (props) => {
                                     setActivePlaylist(counterPlaylist + counterTop + 1);
                                   }
                                   setActiveActivity(null);
+                                  setDefaultPlaylist(data2.id);
                                   setFormData({
                                     name: data2.title,
                                     _id: data2.id,
@@ -143,6 +145,7 @@ const LTIProjectShared = (props) => {
                                         if (activeActivity === counter3) {
                                           setActiveActivity(null);
                                           setFormData(null);
+                                          setDefaultPlaylist(data2.id);
                                           setActivePlaylist(counterPlaylist + counterTop + 1);
                                           setFormData({
                                             name: data2.title,
@@ -196,7 +199,7 @@ const LTIProjectShared = (props) => {
         className="button-submit"
         onClick={() => {
           const finalUrl = `${decodeURIComponent(match.params.redirectUrl)}&title=${
-            encodeURIComponent(formData.name)}&entity=${formData.entity}&id=${formData._id}`;
+            encodeURIComponent(formData.name)}&entity=${formData.entity}&id=${formData._id}&playlist=${defaultPlaylist}`;
           if (formData._id) {
             Swal.fire({
               html: `You have selected <strong>${formData.entity}: ${formData.name}</strong><br>Do you want to continue ?`,
