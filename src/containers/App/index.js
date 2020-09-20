@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 
-import logo from 'assets/images/logo.svg';
+import logo from 'assets/images/tfa-logo.png';
 import { getUserAction } from 'store/actions/auth';
 import AppRouter from 'routers/AppRouter';
 
@@ -126,7 +126,7 @@ function App(props) {
           <br />
           <p>
             To learn more click here
-            <a href="https://curriki.org">curriki</a>
+            <a href="https://curriki.org"> curriki</a>
           </p>
         </div>
       </div>
