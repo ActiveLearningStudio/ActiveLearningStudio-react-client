@@ -51,6 +51,7 @@ export class ProjectsPage extends React.Component {
 
     // scroll to top
     window.scrollTo(0, 0);
+    document.body.classList.remove('mobile-responsive');
 
     if (!showCreateProjectPopup && !showEditProjectPopup) {
       loadMyProjects();
