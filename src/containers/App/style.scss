@@ -3337,7 +3337,7 @@ a:hover {
       color: #464646;
     }
 
-    a{
+    .reg-btn{
       width: 100%;
       min-width: 150px;
       height: 40px;
@@ -3358,4 +3358,8 @@ a:hover {
     }
 
   }
+  .mobile-responsive .mobile-app-alert{
+    display: none;
+  }
+
 }

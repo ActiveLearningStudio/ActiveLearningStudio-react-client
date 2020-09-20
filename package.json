@@ -37,6 +37,7 @@
     "react-google-login": "^5.1.21",
     "react-google-recaptcha": "^2.1.0",
     "react-helmet": "^6.1.0",
+    "react-js-pagination": "^3.0.3",
     "react-placeholder": "^4.0.1",
     "react-redux": "^7.1.3",
     "react-router-dom": "^5.1.2",
