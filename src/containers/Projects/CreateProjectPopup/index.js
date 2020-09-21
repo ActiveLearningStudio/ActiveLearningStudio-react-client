@@ -309,7 +309,7 @@ let CreateProjectPopup = (props) => {
         </div>
 
         <div className="project-description">
-          <h2 className="mt-4 mb-0">Program Description</h2>
+          <h2 className="mt-4 mb-0">Project Description</h2>
 
           <Field
             name="description"
