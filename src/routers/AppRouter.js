@@ -42,6 +42,12 @@ const AppRouter = () => {
     ReactGA.pageview(window.location.pathname);
   });
 
+  if (window.location.href.includes('/shared') || window.location.href.includes('/lti')
+    || window.location.href.includes('/embed') || window.location.href.includes('/register')
+    || window.location.href.includes('/forgot-password')) {
+    document.body.classList.add('mobile-responsive');
+  }
+
   return (
     <Router history={history}>
       <Switch>

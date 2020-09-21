@@ -12,10 +12,16 @@
     margin-bottom: 30px;
   }
 
+  @media (max-width: 767px){
+    .auth-header-logo {
+      margin-bottom: 0px;
+    }
+  }
+
   .auth-container {
     position: relative;
     max-width: 580px;
-    min-width: 400px;
+    min-width: 300px;
     margin: 0 auto;
     padding: 40px 60px;
     background: #fff;
@@ -54,6 +60,15 @@
       text-transform: uppercase;
     }
 
+    @media (max-width: 767px){
+      padding: 25px;
+      margin:15px;
+      .auth-title {
+        width:min-content
+      }
+    }
+
+
     .auth-subtitle {
       padding: 12px 0 18px;
       font-weight: 600;
@@ -73,9 +88,12 @@
     }
 
     @media (max-width: 767px) {
-      .auth-subtitle,
-      .auth-description {
+      .auth-subtitle{
         display: none;
+      }
+
+      .auth-description{
+        padding-top: 10px;
       }
     }
 

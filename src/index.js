@@ -21,7 +21,7 @@ import './style.scss';
 library.add(fas);
 library.add(far);
 
-const trackingId = 'UA-1841781-12';
+const trackingId = 'UA-1841781-14';
 ReactGA.initialize(trackingId, {
   debug: true,
 });
