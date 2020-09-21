@@ -287,7 +287,9 @@ let CreateProjectPopup = (props) => {
 
               <div
                 className="gallery"
-                onClick={openFile.current.click}
+                onClick={() => {
+                  openFile.current.click();
+                }}
               >
                 <img src={computer} alt="" />
                 <p>Upload a Photo From your computer</p>

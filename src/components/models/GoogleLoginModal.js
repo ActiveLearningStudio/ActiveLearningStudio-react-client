@@ -143,7 +143,7 @@ const GoogleLoginModal = ({
                       >
                         <option>Select your room</option>
                         {rooms.map((data) => (
-                          <option>{data}</option>
+                          <option key={data.id}>{data}</option>
                         ))}
                       </select> */}
 
