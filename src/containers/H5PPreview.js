@@ -55,51 +55,6 @@ const H5PPreview = (props) => {
     setLoading(false);
   };
 
-  const loadResource = async (activityResourceId) => {
-    if (activityResourceId === null || activityResourceId === undefined) {
-      return;
-    }
-
-    try {
-      const response = await loadH5pResourceProp(activityResourceId);
-      if (response.activity) {
-        await resourceLoaded(response.activity);
-      }
-    } catch (e) {
-      setLoading(false);
-    }
-  };
-
-  const loadResourceLti = async (activityResourceId) => {
-    if (activityResourceId === null || activityResourceId === undefined) {
-      return;
-    }
-
-    try {
-      const response = await loadH5pResourceSettingsOpen(activityResourceId);
-      if (response.h5p_activity) {
-        await resourceLoaded(response.h5p_activity);
-      }
-    } catch (e) {
-      setLoading(false);
-    }
-  };
-
-  const loadResourceActivity = async (activityResourceId) => {
-    if (activityResourceId === null || activityResourceId === undefined) {
-      return;
-    }
-
-    try {
-      const response = await loadH5pResourceSettingsShared(activityResourceId);
-      if (response.activity) {
-        await resourceLoaded(response.activity);
-      }
-    } catch (e) {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
     if (resourceId !== activityId) {
       const h5pIFrame = document.getElementsByClassName('h5p-iframe');
@@ -107,17 +62,38 @@ const H5PPreview = (props) => {
         h5pIFrame[0].remove();
       }
 
-      if (showLtiPreview) {
-        loadResourceLti(activityId);
-      } else if (showActivityPreview) {
-        loadResourceActivity(activityId);
-      } else {
-        loadResource(activityId);
+      if (activityId === null || activityId === undefined) {
+        return;
       }
+
+      const loadResource = async () => {
+        try {
+          if (showLtiPreview) {
+            const response = await loadH5pResourceSettingsOpen(activityId);
+            if (response.h5p_activity) {
+              await resourceLoaded(response.h5p_activity);
+            }
+          } else if (showActivityPreview) {
+            const response = await loadH5pResourceSettingsShared(activityId);
+            if (response.activity) {
+              await resourceLoaded(response.activity);
+            }
+          } else {
+            const response = await loadH5pResourceProp(activityId);
+            if (response.activity) {
+              await resourceLoaded(response.activity);
+            }
+          }
+        } catch (e) {
+          setLoading(false);
+        }
+      };
+
+      loadResource();
 
       setResourceId(activityId);
     }
-  }, [resourceId, activityId, showLtiPreview, showActivityPreview, loadResourceLti, loadResourceActivity, loadResource]);
+  }, [resourceId, activityId, showLtiPreview, showActivityPreview, loadH5pResourceProp]);
 
   return (
     <>
