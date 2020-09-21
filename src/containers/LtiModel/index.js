@@ -198,8 +198,15 @@ const LTIProjectShared = (props) => {
         type="button"
         className="button-submit"
         onClick={() => {
-          const finalUrl = `${decodeURIComponent(match.params.redirectUrl)}&title=${
-            encodeURIComponent(formData.name)}&entity=${formData.entity}&id=${formData._id}&playlist=${defaultPlaylist}`;
+          let finalUrl;
+          if (activePlaylist) {
+            finalUrl = `${decodeURIComponent(match.params.redirectUrl)}&title=${
+              encodeURIComponent(formData.name)}&entity=${formData.entity}&id=${formData.id}`;
+          } else {
+            finalUrl = `${decodeURIComponent(match.params.redirectUrl)}&title=${
+              encodeURIComponent(formData.name)}&entity=${formData.entity}&id=${formData.id}&playlist=${defaultPlaylist}`;
+          }
+
           if (formData.id) {
             Swal.fire({
               html: `You have selected <strong>${formData.entity}: ${formData.name}</strong><br>Do you want to continue ?`,

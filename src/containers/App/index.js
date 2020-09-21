@@ -126,7 +126,7 @@ function App(props) {
           <br />
           <p>
             To learn more click here
-            <a href="https://curriki.org">curriki</a>
+            <a href="https://curriki.org"> curriki</a>
           </p>
         </div>
       </div>
