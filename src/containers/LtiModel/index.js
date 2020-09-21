@@ -107,7 +107,7 @@ const LTIProjectShared = (props) => {
                                   setDefaultPlaylist(data2.id);
                                   setFormData({
                                     name: data2.title,
-                                    _id: data2.id,
+                                    id: data2.id,
                                     entity: 'playlist',
                                   });
                                 }
@@ -149,7 +149,7 @@ const LTIProjectShared = (props) => {
                                           setActivePlaylist(counterPlaylist + counterTop + 1);
                                           setFormData({
                                             name: data2.title,
-                                            _id: data2.id,
+                                            id: data2.id,
                                             entity: 'playlist',
                                           });
                                         } else {
@@ -157,7 +157,7 @@ const LTIProjectShared = (props) => {
                                           setActivePlaylist(null);
                                           setFormData({
                                             name: data3.title,
-                                            _id: data3.id,
+                                            id: data3.id,
                                             entity: 'activity',
                                           });
                                         }
@@ -198,9 +198,16 @@ const LTIProjectShared = (props) => {
         type="button"
         className="button-submit"
         onClick={() => {
-          const finalUrl = `${decodeURIComponent(match.params.redirectUrl)}&title=${
-            encodeURIComponent(formData.name)}&entity=${formData.entity}&id=${formData._id}&playlist=${defaultPlaylist}`;
-          if (formData._id) {
+          let finalUrl;
+          if (activePlaylist) {
+            finalUrl = `${decodeURIComponent(match.params.redirectUrl)}&title=${
+              encodeURIComponent(formData.name)}&entity=${formData.entity}&id=${formData.id}`;
+          } else {
+            finalUrl = `${decodeURIComponent(match.params.redirectUrl)}&title=${
+              encodeURIComponent(formData.name)}&entity=${formData.entity}&id=${formData.id}&playlist=${defaultPlaylist}`;
+          }
+
+          if (formData.id) {
             Swal.fire({
               html: `You have selected <strong>${formData.entity}: ${formData.name}</strong><br>Do you want to continue ?`,
               showCancelButton: true,

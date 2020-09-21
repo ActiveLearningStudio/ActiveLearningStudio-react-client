@@ -107,26 +107,29 @@ function App(props) {
 
       <AppRouter />
 
-      {(!window.location.href.includes('/shared') && !window.location.href.includes('/lti') && !window.location.href.includes('/embed')) && (
-        <div className="mobile-app-alert">
-          <img src={logo} alt="" />
+      <div className="mobile-app-alert">
+        <img src={logo} alt="" />
 
-          <div className="text-description">
-            <h2>CurrikiStudio</h2>
+        <div className="text-description">
+          <h2>CurrikiStudio</h2>
 
-            <p>
-              We are changing the way the world creates and interacts with learning content.
-              Currently it is not possible to build the world&apos;s most immersive learning experiences on a mobile phone,
-              tablet or iPad.  We recommend that you use either a desktop or laptop computer.
-            </p>
-            <p>
-              If you don&apos;t already have a CurrikiStudio account
-            </p>
+          <p>
+            We are changing the way the world creates and interacts with learning content.
+            Currently it is not possible to build the world&apos;s most immersive learning experiences on a mobile phone,
+            tablet or iPad.  We recommend that you use either a desktop or laptop computer.
+          </p>
+          <p>
+            If you don&apos;t already have a CurrikiStudio account
+          </p>
 
-            <a href="https://curriki.org">CLICK HERE TO LEARN MORE</a>
-          </div>
+          <a className="reg-btn" href="/register">CLICK HERE TO REGISTER</a>
+          <br />
+          <p>
+            To learn more click here
+            <a href="https://curriki.org">curriki</a>
+          </p>
         </div>
-      )}
+      </div>
     </div>
   );
 }
