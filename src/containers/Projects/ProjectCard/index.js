@@ -7,6 +7,8 @@ import { Dropdown } from 'react-bootstrap';
 
 import { getProjectId, googleShare } from 'store/actions/gapi';
 import { getProjectCourseFromLMS } from 'store/actions/project';
+import { lmsPlaylist } from 'store/actions/playlist';
+
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import ProjectPreviewModal from '../ProjectPreviewModal';
 
@@ -20,10 +22,9 @@ const ProjectCard = (props) => {
     handleShow,
     setProjectId,
   } = props;
+
   const dispatch = useDispatch();
-
   const AllLms = useSelector((state) => state.share);
-
   const [allLms, setAllLms] = useState([]);
   useEffect(() => {
     setAllLms(AllLms);
@@ -97,16 +98,19 @@ const ProjectCard = (props) => {
                           && allLms.shareVendors.map((data) => (
                             <li>
                               <a
-                                onClick={() => {
-                                  dispatch(
-                                    getProjectCourseFromLMS(
-                                      data.lms_name.toLowerCase(),
-                                      data.id,
-                                      project.id,
-                                      project.playlists,
-                                      data.lms_url,
-                                    ),
-                                  );
+                                onClick={async () => {
+                                  const allPlaylist = await dispatch(lmsPlaylist(project.id));
+                                  if (allPlaylist) {
+                                    dispatch(
+                                      getProjectCourseFromLMS(
+                                        data.lms_name.toLowerCase(),
+                                        data.id,
+                                        project.id,
+                                        allPlaylist.playlists,
+                                        data.lms_url,
+                                      ),
+                                    );
+                                  }
                                 }}
                               >
                                 {data.site_name}
