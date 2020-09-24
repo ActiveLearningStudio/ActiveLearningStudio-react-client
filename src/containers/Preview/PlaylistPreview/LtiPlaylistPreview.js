@@ -69,7 +69,7 @@ function LtiPlaylistPreview(props) {
   }
 
   return (
-    <section className="main-page-content preview">
+    <section className="main-page-content preview iframe-height-resource">
       <div className="container-flex-upper">
         <div className="project-title">
           <img src={projectIcon} alt="" />
@@ -79,7 +79,7 @@ function LtiPlaylistPreview(props) {
         </div>
       </div>
 
-      <div className="flex-container previews">
+      <div className="flex-container previews ">
         <div className="activity-bg left-vdo">
           <div className="flex-container-preview">
             <div className="act-top-header">
@@ -120,37 +120,39 @@ function LtiPlaylistPreview(props) {
         </div>
 
         <div className="right-sidegolf-info">
-          <div className="back-header align-items-center justify-content-between">
-            <Dropdown className="ml-auto playlist-dropdown check">
-              <Dropdown.Toggle className="playlist-dropdown-btn">
-                <FontAwesomeIcon icon="ellipsis-v" />
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <ActivitiesDropdown
+          <div className="abs-div">
+            <div className="back-header align-items-center justify-content-between">
+              <Dropdown className="ml-auto playlist-dropdown check">
+                <Dropdown.Toggle className="playlist-dropdown-btn">
+                  <FontAwesomeIcon icon="ellipsis-v" />
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <ActivitiesDropdown
+                    showLti
+                    playlistId={playlistId}
+                    activities={selectedPlaylist.activities}
+                  />
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
+
+            <div className="scrollDiv long">
+              <div className="watcher">
+                You are watching from
+                {' '}
+                <span>
+                  {selectedPlaylist.title}
+                </span>
+              </div>
+
+              <ul className="slider-scroll-auto">
+                <ActivitiesList
                   showLti
                   playlistId={playlistId}
                   activities={selectedPlaylist.activities}
                 />
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
-
-          <div className="scrollDiv long">
-            <div className="watcher">
-              You are watching from
-              {' '}
-              <span>
-                {selectedPlaylist.title}
-              </span>
+              </ul>
             </div>
-
-            <ul className="slider-scroll-auto">
-              <ActivitiesList
-                showLti
-                playlistId={playlistId}
-                activities={selectedPlaylist.activities}
-              />
-            </ul>
           </div>
         </div>
       </div>

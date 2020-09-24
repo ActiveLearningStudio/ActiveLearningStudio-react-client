@@ -669,3 +669,62 @@ img {
     min-height: 100%;
   }
 }
+
+@media(min-width:992px){
+
+  .iframe-height-resource-shared{
+    padding: 50px 15px 20px;
+    background-image: linear-gradient(#1b2e3d , #eee ) !important;
+
+    .main-item-wrapper {
+      max-height: initial !important;
+      min-height: 526px !important;
+    }
+  }
+
+  .iframe-height-resource
+  {
+
+    padding: 50px 15px 20px;
+    background-image: linear-gradient(#1b2e3d , #eee ) !important;
+
+    .container-flex-upper{
+      opacity: 1;
+      position: fixed;
+      display: flex;
+      width: 100%;
+      left: 50%;
+      transform: translate(-50%);
+      top: 12px;
+      
+    }
+
+    .flex-container.previews{
+      position: relative;
+      margin-top: 30px;
+    }
+
+    .main-item-wrapper {
+      max-height: initial !important;
+      min-height: 526px !important;
+    }
+
+    .right-sidegolf-info{
+      width:30% !important;
+      position:absolute;
+      right:0;
+      background-color:transparent !important;
+
+      .abs-div{
+        position: fixed;
+        width:390px !important;
+        background-color: #fff;
+      }
+    }
+
+    .activity-bg.left-vdo{
+      width:70% !important;
+    }
+
+  }
+}

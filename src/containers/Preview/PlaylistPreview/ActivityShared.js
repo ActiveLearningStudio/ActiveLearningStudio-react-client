@@ -71,16 +71,16 @@ const ActivityShared = (props) => {
 
   return (
     <>
-      <section className={embed ? 'embed main-page-content preview ' : 'main-page-content preview'}>
+      <section className={embed ? 'embed main-page-content preview iframe-height-resource-shared ' : 'main-page-content preview iframe-height-resource-shared'}>
         {!!embed
           && (
           <Helmet>
             <script src="https://dev.currikistudio.org/api/storage/h5p/h5p-core/js/h5p-resizer.js" charset="UTF-8" />
           </Helmet>
           )}
-        <div className="flex-container previews">
+        <div className="flex-container previews ">
           <div className="activity-bg left-vdo">
-            <div className="main-item-wrapper">
+            <div className="main-item-wrapper desktop-view">
               <div className="item-container">
                 {authorized ? (
                   <div id="curriki-h5p-wrapper">
