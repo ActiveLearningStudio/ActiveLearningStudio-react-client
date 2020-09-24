@@ -195,7 +195,7 @@ function PlaylistPreview(props) {
           )}
         </div>
       ) : (
-        <section className="main-page-content preview">
+        <section className="main-page-content preview iframe-height-resource">
           <div className="container-flex-upper">
             <Link to={`/project/${selectedPlaylist.project.id}/preview`}>
               <div className="project-title">
@@ -254,48 +254,49 @@ function PlaylistPreview(props) {
             </div>
 
             <div className="right-sidegolf-info">
-              <div className="back-header align-items-center justify-content-between">
-                <div>
-                  <Link
-                    className="go-back-button-preview"
-                    to={`/project/${selectedPlaylist.project.id}/preview`}
-                  >
-                    <FontAwesomeIcon icon="undo" className="mr-2" />
-                    Back to Project
-                  </Link>
-                </div>
-
-                <Dropdown className="ml-auto playlist-dropdown check">
-                  <Dropdown.Toggle className="playlist-dropdown-btn">
-                    <FontAwesomeIcon icon="ellipsis-v" />
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <ActivitiesDropdown
-                      projectId={projectId}
-                      playlistId={playlistId}
-                      activities={selectedPlaylist.activities}
-                    />
-                  </Dropdown.Menu>
-                </Dropdown>
-              </div>
-
-              <div className="scrollDiv long">
-                <div className="watcher spaner">
+              <div className="abs-div">
+                <div className="back-header align-items-center justify-content-between">
                   <div>
-                    Share Activity
-                    <Switch
-                      onColor="#5952c6"
-                      onChange={share}
-                      checked={activityShared}
-                      className="react-switch"
-                      id="material-switch"
-                      handleDiameter={30}
-                      uncheckedIcon={false}
-                      checkedIcon={false}
-                    />
+                    <Link
+                      className="go-back-button-preview"
+                      to={`/project/${selectedPlaylist.project.id}/preview`}
+                    >
+                      <FontAwesomeIcon icon="undo" className="mr-2" />
+                      Back to Project
+                    </Link>
                   </div>
 
-                  {activityShared && (
+                  <Dropdown className="ml-auto playlist-dropdown check">
+                    <Dropdown.Toggle className="playlist-dropdown-btn">
+                      <FontAwesomeIcon icon="ellipsis-v" />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <ActivitiesDropdown
+                        projectId={projectId}
+                        playlistId={playlistId}
+                        activities={selectedPlaylist.activities}
+                      />
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+
+                <div className="scrollDiv long">
+                  <div className="watcher spaner">
+                    <div>
+                      Share Activity
+                      <Switch
+                        onColor="#5952c6"
+                        onChange={share}
+                        checked={activityShared}
+                        className="react-switch"
+                        id="material-switch"
+                        handleDiameter={30}
+                        uncheckedIcon={false}
+                        checkedIcon={false}
+                      />
+                    </div>
+
+                    {activityShared && (
                     <div
                       className="shared-link"
                       onClick={viewSharedLink}
@@ -303,24 +304,25 @@ function PlaylistPreview(props) {
                       <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
                       View Shared Link
                     </div>
-                  )}
-                </div>
+                    )}
+                  </div>
 
-                <div className="watcher">
-                  You are watching from
-                  {' '}
-                  <span>
-                    {selectedPlaylist.title}
-                  </span>
-                </div>
+                  <div className="watcher">
+                    You are watching from
+                    {' '}
+                    <span>
+                      {selectedPlaylist.title}
+                    </span>
+                  </div>
 
-                <ul className="slider-scroll-auto">
-                  <ActivitiesList
-                    projectId={projectId}
-                    playlistId={playlistId}
-                    activities={selectedPlaylist.activities}
-                  />
-                </ul>
+                  <ul className="slider-scroll-auto">
+                    <ActivitiesList
+                      projectId={projectId}
+                      playlistId={playlistId}
+                      activities={selectedPlaylist.activities}
+                    />
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
