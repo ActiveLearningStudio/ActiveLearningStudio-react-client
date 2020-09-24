@@ -79,7 +79,7 @@ function LtiPlaylistPreview(props) {
         </div>
       </div>
 
-      <div className="flex-container previews ">
+      <div className="flex-container previews">
         <div className="activity-bg left-vdo">
           <div className="flex-container-preview">
             <div className="act-top-header">

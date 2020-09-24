@@ -670,61 +670,58 @@ img {
   }
 }
 
-@media(min-width:992px){
+@media (min-width: 992px) {
+	.iframe-height-resource-shared {
+		padding: 50px 15px 20px;
+		background-image: linear-gradient(#1b2e3d, #eee) !important;
 
-  .iframe-height-resource-shared{
-    padding: 50px 15px 20px;
-    background-image: linear-gradient(#1b2e3d , #eee ) !important;
+		.main-item-wrapper {
+			max-height: initial !important;
+			min-height: 526px !important;
+		}
+	}
 
-    .main-item-wrapper {
-      max-height: initial !important;
-      min-height: 526px !important;
-    }
-  }
+	.iframe-height-resource {
+		padding: 50px 15px 20px;
+		background-image: linear-gradient(#1b2e3d, #eee) !important;
 
-  .iframe-height-resource
-  {
+		.container-flex-upper {
+			opacity: 1;
+			position: fixed;
+			display: flex;
+			width: 100%;
+			left: 50%;
+			transform: translate(-50%);
+			top: 12px;
+		}
 
-    padding: 50px 15px 20px;
-    background-image: linear-gradient(#1b2e3d , #eee ) !important;
+		.flex-container.previews {
+			position: relative;
+			margin-top: 30px;
+		}
 
-    .container-flex-upper{
-      opacity: 1;
-      position: fixed;
-      display: flex;
-      width: 100%;
-      left: 50%;
-      transform: translate(-50%);
-      top: 12px;
-      
-    }
+		.main-item-wrapper {
+			max-height: initial !important;
+			min-height: 526px !important;
+		}
 
-    .flex-container.previews{
-      position: relative;
-      margin-top: 30px;
-    }
+		.right-sidegolf-info {
+			width: 30% !important;
+			position: absolute;
+			right: 0;
+			background-color: transparent !important;
 
-    .main-item-wrapper {
-      max-height: initial !important;
-      min-height: 526px !important;
-    }
+			.abs-div {
+				position: fixed;
+				width: 390px !important;
+				background-color: #fff;
+			}
+		}
 
-    .right-sidegolf-info{
-      width:30% !important;
-      position:absolute;
-      right:0;
-      background-color:transparent !important;
-
-      .abs-div{
-        position: fixed;
-        width:390px !important;
-        background-color: #fff;
-      }
-    }
-
-    .activity-bg.left-vdo{
-      width:70% !important;
-    }
-
-  }
+		.activity-bg.left-vdo {
+			width: 70% !important;
+		}
+	}
 }
+
+
