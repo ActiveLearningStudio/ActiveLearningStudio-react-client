@@ -89,3 +89,16 @@ code {
     width: 300px;
   }
 }
+
+.welcome-video{
+  width:60%;
+ }
+
+.alert-link-ref{
+  color: #155724;
+  text-decoration: underline;
+
+  &:hover{
+    color: #155724;
+  }
+}

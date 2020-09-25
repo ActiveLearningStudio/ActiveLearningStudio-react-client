@@ -6,6 +6,7 @@ import ReactPlaceholder from 'react-placeholder';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert } from 'react-bootstrap';
 
+import welcomVideo from "assets/video/welcome.mp4"
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import {
   deleteProjectAction,
@@ -163,13 +164,16 @@ export class ProjectsPage extends React.Component {
                 {!!projectCards && projectCards.length > 0
                   ? <div className="row check-home">{projectCards}</div>
                   : (
-                    <Alert variant="success">
-                      Start building your first Project by clicking on
-                      {' '}
-                      <b>Add Project</b>
-                      {' '}
-                      button
-                    </Alert>
+                    <>
+                      <Alert variant="success">
+                        Start building your first Project by clicking on the <b>Add Project</b>button.<br />
+                        For more information click here:
+                        <a target="_blank" ref="noreferrer noopener" className="alert-link-ref" href="https://support.curriki.org/creating-learning-projects"><b>Getting Started.</b> </a>
+                      </Alert>
+                      <video  controls className="welcome-video">
+                        <source src={welcomVideo} type="video/mp4" />
+                      </video>
+                    </>
                   )}
               </div>
             </div>
