@@ -12,6 +12,7 @@ import {
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from "sweetalert2"
+import Pagination from "react-js-pagination";
 
 import { simpleSearchAction, cloneProject } from 'store/actions/search';
 import Header from 'components/Header';
@@ -20,6 +21,8 @@ import Sidebar from 'components/Sidebar';
 import CloneModel from './CloneModel';
 
 import './style.scss';
+
+var paginationStarter =  true
 
 function MyVerticallyCenteredModal(props) {
   return (
@@ -64,7 +67,10 @@ function SearchInterface() {
   const [searchInput, setSearchInput] = useState("");
   const [meta, setMeta] = useState();
   const [clone, setClone] = useState();
-
+  const [activePage, setActivePage] =  useState(1)
+  const [totalCount,setTotalCount] = useState(0)
+  const [activeModel, setActiveModel] =  useState("")
+ 
   useEffect(() => {
     if(!!allState.searchResult){
       if (allState.searchResult.length > 0) {
@@ -82,6 +88,15 @@ function SearchInterface() {
       }
     }
 }, [allState.searchMeta, allState.searchQuery, allState.searchResult]);
+
+useEffect(() => {
+   if(!!allState.searchResult){
+    if (allState.searchResult.length > 0 && paginationStarter) {
+      paginationStarter =  false
+      setTotalCount(allState.searchMeta.total)
+   } 
+  }
+}, [allState.searchMeta]);
 
   useEffect(() => {
     if (localStorage.getItem('loading') === 'true') {
@@ -178,9 +193,7 @@ function SearchInterface() {
                                         Swal.showLoading();
                                       },
                                     });
-                                    dispatch(
-                                      simpleSearchAction(searchInput.trim(), 0, 1000),
-                                    );
+                                    dispatch(simpleSearchAction(searchInput.trim(), 0, 20))
                                   }
                                   // setModalShow(true)
                                 }}
@@ -239,9 +252,23 @@ function SearchInterface() {
                   */}
                 </div>
                 <div className="right-search">
-                  <Tabs defaultActiveKey="all" id="uncontrolled-tab-example">
+                  <Tabs defaultActiveKey="total" id="uncontrolled-tab-example"
+                    onSelect={async e=> { 
+                      if(e==="total"){
+                        const resultModel =  await dispatch(simpleSearchAction(searchQueries.trim(), 0, 20))
+                        setTotalCount(resultModel.meta[e])
+                        setActiveModel(e)
+                        setActivePage(1)
+                      }else{
+                        const resultModel =  await dispatch(simpleSearchAction(searchQueries.trim(), 0, 20, e))
+                        setTotalCount(resultModel.meta[e])
+                        setActiveModel(e)
+                        setActivePage(1)
+                      }
+                    }}
+                    >
                     <Tab
-                      eventKey="all"
+                      eventKey="total"
                       title={
                         !!search && !!meta.total
                           ? `all (${meta.total})`
@@ -341,7 +368,7 @@ function SearchInterface() {
                     </Tab>
 
                     <Tab
-                      eventKey="project"
+                      eventKey="projects"
                       title={
                         !!search && !!meta.projects
                           ? `project (${meta.projects})`
@@ -445,7 +472,7 @@ function SearchInterface() {
                       </div>
                     </Tab>
                     <Tab
-                      eventKey="playlist"
+                      eventKey="playlists"
                       title={
                         !!search && !!meta.playlists
                           ? `playlist (${meta.playlists})`
@@ -550,7 +577,7 @@ function SearchInterface() {
                     </Tab>
 
                     <Tab
-                      eventKey="activity"
+                      eventKey="activities"
                       title={
                         !!search && !!meta.activities
                           ? `activity (${meta.activities})`
@@ -661,6 +688,24 @@ function SearchInterface() {
                     Loading More
                   </div>
                   */}
+                  {totalCount>20 && (
+                   <Pagination
+                      activePage={activePage}
+                      itemsCountPerPage={20}
+                      totalItemsCount={totalCount}
+                      pageRangeDisplayed={8}
+                      onChange={e=>{
+                        setActivePage(e)
+                        if(activeModel === "total"){
+                          dispatch(simpleSearchAction(searchQueries.trim(), e*20-20, 20))
+                        }else{
+                          dispatch(simpleSearchAction(searchQueries.trim(), e*20-20, 20, activeModel))
+                        }
+                      }}
+                      itemClass="page-item"
+                      linkClass="page-link"
+                  />)
+                    }
                 </div>
               </div>
             </div>
