@@ -144,6 +144,8 @@ export const createResourceAction = (
     };
     const insertedResource = await resourceService.create(activity);
 
+    this.resourceSaved(true);
+
     resource.id = insertedResource.id;
     resource.mysqlid = insertedResource.mysqlid;
 
@@ -413,6 +415,8 @@ export const editResourceAction = (
 
     const response = await resourceService.h5pSettingsUpdate(activityId, dataUpload);
 
+    this.resourceSaved(true);
+
     const resource = {};
     resource.id = response.id;
 
@@ -478,4 +482,27 @@ export const saveGenericResourceAction = (resourceData) => async (dispatch) => {
       type: actionTypes.HIDE_CREATE_RESOURCE_MODAL,
     });
   }
+};
+
+export const resourceSaved = (saved) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.SAVE_SEARCH_KEY_IN_CREATION,
+    saved,
+  });
+};
+
+export const saveSearchKeyInCreation = (searchKey) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.SAVE_SEARCH_KEY_IN_CREATION,
+    searchKey,
+  });
+};
+
+export const saveFormDataInCreation = (formData) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.SAVE_FORM_DATA_IN_CREATION,
+    metaTitle: formData.metaTitle,
+    metaSubject: formData.metaSubject,
+    metaEducationLevels: formData.metaEducationLevels,
+  });
 };

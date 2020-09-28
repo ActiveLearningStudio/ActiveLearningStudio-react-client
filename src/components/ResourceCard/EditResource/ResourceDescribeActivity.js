@@ -13,6 +13,7 @@ import {
   showBuildActivityAction,
   onSubmitDescribeActivityAction,
   uploadResourceThumbnail,
+  saveFormDataInCreation,
 } from 'store/actions/resource';
 import PexelsAPI from 'components/models/pexels';
 import { subjects, educationLevels } from 'components/ResourceCard/AddResource/dropdownData';
@@ -36,11 +37,21 @@ export const uploadThumb = async (e, props) => {
 };
 
 const imageValidation = '';
-const onSubmit = async (values, dispatch, props) => {
-  if (values.metaTitle.length > 80) {
+const onSubmit = async (val, dispatch, props) => {
+  if (val.metaTitle.length > 80) {
     Swal.fire('Title must be 80 characters or less.');
     return;
   }
+
+  const values = { ...val };
+  const { resource, saveFormData } = props;
+  if (typeof values.metaSubject !== 'object' || values.metaSubject === null) {
+    values.metaSubject = resource.formData.metaSubject;
+  }
+  if (typeof values.metaEducationLevels !== 'object' || values.metaEducationLevels === null) {
+    values.metaEducationLevels = resource.formData.metaEducationLevels;
+  }
+  saveFormData(values);
 
   try {
     props.onSubmitDescribeActivity(values, props.match.params.activityId);
@@ -51,13 +62,29 @@ const onSubmit = async (values, dispatch, props) => {
 };
 
 let ResourceDescribeActivity = (props) => {
-  const { resource, handleSubmit, uploadResourceThumbnailDefault } = props;
+  const {
+    resource,
+    handleSubmit,
+    uploadResourceThumbnailDefault,
+    saveFormData,
+  } = props;
+
   const [modalShow, setModalShow] = useState(false);
   const openFile = useRef();
 
   useEffect(() => {
     uploadResourceThumbnailDefault(resource.editResource.metadata.thumbUrl);
   }, [resource.editResource.metadata.thumbUrl, uploadResourceThumbnailDefault]);
+
+  useEffect(() => {
+    const values = {
+      metaEducationLevels: { value: resource.editResource.metadata.educationLevelId },
+      metaSubject: { value: resource.editResource.metadata.subjectId },
+      metaTitle: resource.editResource.metadata.title,
+    };
+
+    saveFormData(values);
+  }, [saveFormData, resource.editResource.metadata]);
 
   return (
     <div className="row">
@@ -87,6 +114,7 @@ let ResourceDescribeActivity = (props) => {
                             type="text"
                             label="Title"
                             validate={[required]}
+                            defaultValue={resource.formData.metaTitle}
                           />
                         </div>
                       </div>
@@ -102,6 +130,7 @@ let ResourceDescribeActivity = (props) => {
                             data={subjects}
                             valueField="value"
                             textField="subject"
+                            defaultValue={resource.formData.metaSubject.value}
                           />
                         </div>
                       </div>
@@ -115,6 +144,7 @@ let ResourceDescribeActivity = (props) => {
                             data={educationLevels}
                             valueField="value"
                             textField="name"
+                            defaultValue={resource.formData.metaEducationLevels.value}
                           />
                         </div>
                       </div>
@@ -258,6 +288,7 @@ ResourceDescribeActivity.propTypes = {
   resource: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   uploadResourceThumbnailDefault: PropTypes.func.isRequired,
+  saveFormData: PropTypes.func.isRequired,
 };
 
 ResourceDescribeActivity = reduxForm({
@@ -271,6 +302,7 @@ const mapDispatchToProps = (dispatch) => ({
   onSubmitDescribeActivity: (metadata, id) => dispatch(onSubmitDescribeActivityAction(metadata, id)),
   uploadResourceThumbnailDefault: (url) => dispatch(uploadResourceThumbnail(url)),
   uploadResourceThumbnail: (formData) => dispatch(uploadResourceThumbnailAction(formData)),
+  saveFormData: (formData) => dispatch(saveFormDataInCreation(formData)),
 });
 
 const mapStateToProps = (state) => ({

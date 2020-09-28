@@ -4,7 +4,6 @@ import { slideInRight } from 'react-animations';
 import styled, { keyframes } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-// import { showCreateResourceActivityAction, showBuildActivityAction } from './store.actions/resource';
 import ResourceActivityType from './ResourceActivityType';
 import ResourceSelectActivity from './ResourceSelectActivity';
 import ResourceDescribeActivity from './ResourceDescribeActivity';

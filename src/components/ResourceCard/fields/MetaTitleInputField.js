@@ -5,6 +5,7 @@ const MetaTitleInputField = ({
   input,
   label,
   type,
+  defaultValue,
   meta: { touched, error, warning },
 }) => (
   <div>
@@ -12,7 +13,7 @@ const MetaTitleInputField = ({
       <h2>{label}</h2>
     </label>
     <div>
-      <input {...input} type={type} />
+      <input {...input} type={type} value={input.value || defaultValue} />
       {touched && ((error && <span className="validation-error">{error}</span>) || (warning && <span>{warning}</span>))}
     </div>
   </div>
@@ -23,6 +24,11 @@ MetaTitleInputField.propTypes = {
   label: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   meta: PropTypes.object.isRequired,
+  defaultValue: PropTypes.string,
+};
+
+MetaTitleInputField.defaultProps = {
+  defaultValue: null,
 };
 
 export default MetaTitleInputField;

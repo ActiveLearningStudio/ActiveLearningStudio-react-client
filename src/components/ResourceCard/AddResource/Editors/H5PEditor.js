@@ -87,6 +87,18 @@ const H5PEditor = (props) => {
         className="form-horizontal"
         id="laravel-h5p-form"
       >
+        <div className="form-group" style={{ position: 'inherit' }}>
+          <div className="col-md-9 col-md-offset-3" style={{ position: 'inherit' }}>
+            <button
+              type="submit"
+              className="add-resource-submit-btn top"
+              onClick={submitResource}
+            >
+              Save
+            </button>
+          </div>
+        </div>
+
         <input
           name="_token"
           type="hidden"
@@ -175,7 +187,7 @@ const H5PEditor = (props) => {
                 className="add-resource-submit-btn"
                 onClick={submitResource}
               >
-                Finish
+                Save
               </button>
             </div>
           </div>

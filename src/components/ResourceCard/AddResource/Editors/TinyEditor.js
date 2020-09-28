@@ -40,6 +40,18 @@ export class TinyEditor extends React.Component {
   render() {
     return (
       <div className="post">
+        <div className="form-group" style={{ position: 'inherit' }}>
+          <div className="col-md-9 col-md-offset-3" style={{ position: 'inherit' }}>
+            <button
+              type="submit"
+              className="add-resource-submit-btn top"
+              onClick={this.handleSubmit}
+            >
+              Save
+            </button>
+          </div>
+        </div>
+
         <h1>New Immersive Reader Resource</h1>
 
         <div className="post-title">
@@ -72,7 +84,7 @@ export class TinyEditor extends React.Component {
               className="add-resource-submit-btn"
               onClick={this.handleSubmit}
             >
-              Finish
+              Save
             </button>
           </div>
         </div>

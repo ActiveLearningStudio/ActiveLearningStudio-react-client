@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import DropdownList from 'react-widgets/lib/DropdownList';
 
 const MetaSubjectsField = ({ input, ...rest }) => (
-  <DropdownList {...input} {...rest} />
+  <DropdownList {...input} {...rest} value={input.value || rest.defaultValue} />
 );
 
 MetaSubjectsField.propTypes = {

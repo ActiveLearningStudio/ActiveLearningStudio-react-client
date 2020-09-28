@@ -25,6 +25,13 @@ const INITIAL_STATE = {
     },
   },
   selectedResource: null,
+  searchKey: '',
+  formData: {
+    metaTitle: '',
+    metaSubject: { value: '' },
+    metaEducationLevels: { value: '' },
+  },
+  saved: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -122,11 +129,17 @@ export default (state = INITIAL_STATE, action) => {
             thumbUrl: null,
           },
         },
+        formData: {
+          metaTitle: '',
+          metaSubject: { value: '' },
+          metaEducationLevels: { value: '' },
+        },
       };
 
     case actionTypes.SHOW_RESOURCE_ACTIVITY_TYPE:
       return {
         ...state,
+        saved: false,
         isResourceActivityType: true,
         isResourceSelectActivity: false,
         isResourceDescribeActivity: false,
@@ -149,6 +162,7 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.SHOW_RESOURCE_DESCRIBE_ACTIVITY:
       return {
         ...state,
+        saved: false,
         isResourceActivityType: false,
         isResourceSelectActivity: false,
         isResourceDescribeActivity: true,
@@ -182,6 +196,7 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.HIDE_RESOURCE_ACTIVITY_BUILD:
       return {
         ...state,
+        saved: false,
         isResourceActivityType: false,
         isResourceSelectActivity: false,
         isResourceDescribeActivity: true,
@@ -272,6 +287,28 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         progress: action.progress,
+      };
+
+    case actionTypes.SAVE_SEARCH_KEY_IN_CREATION:
+      return {
+        ...state,
+        searchKey: action.searchKey,
+      };
+
+    case actionTypes.SAVE_FORM_DATA_IN_CREATION:
+      return {
+        ...state,
+        formData: {
+          metaTitle: action.metaTitle,
+          metaSubject: typeof action.metaSubject === 'object' ? action.metaSubject : state.formData.metaSubject,
+          metaEducationLevels: typeof action.metaEducationLevels === 'object' ? action.metaEducationLevels : state.formData.metaEducationLevels,
+        },
+      };
+
+    case actionTypes.RESOURCE_SAVED:
+      return {
+        ...state,
+        saved: true,
       };
 
     default:
