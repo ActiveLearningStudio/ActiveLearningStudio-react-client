@@ -165,8 +165,7 @@ export const createResourceAction = (
     });
   }
   // } catch (e) {
-  //   alert("dsf");
-  //   throw new Error(e);
+  //   throw e;
   // }
 };
 
@@ -298,7 +297,7 @@ export const showBuildActivityAction = (
       dispatch(showBuildActivity(editor, editorType, ''));
     }
   } catch (e) {
-    throw new Error(e);
+    console.log(e);
   }
 };
 
@@ -326,7 +325,7 @@ export const showDescribeActivityAction = (activity, activityId = null) => async
       dispatch(showDescribeActivity(activity));
     }
   } catch (e) {
-    throw new Error(e);
+    console.log(e);
   }
 };
 
@@ -380,7 +379,7 @@ export const createResourceByH5PUploadAction = (
       throw new Error('Error occurred while creating resource');
     }
   } catch (e) {
-    throw new Error(e);
+    console.log(e);
   }
 };
 
@@ -428,7 +427,7 @@ export const editResourceAction = (
       editorType,
     });
   } catch (e) {
-    throw new Error(e);
+    console.log(e);
   }
 };
 

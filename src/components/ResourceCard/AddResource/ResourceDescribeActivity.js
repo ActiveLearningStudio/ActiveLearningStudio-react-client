@@ -87,7 +87,7 @@ let ResourceDescribeActivity = (props) => {
                                 component={MetaTitleInputField}
                                 type="text"
                                 label="Title"
-                                validate={[required]}
+                                validate={!resource.formData.metaTitle ? [required] : undefined}
                                 defaultValue={resource.formData.metaTitle}
                               />
                             </div>
@@ -296,6 +296,9 @@ ResourceDescribeActivity = reduxForm({
       saveFormData,
     } = props;
 
+    if (!values.metaTitle) {
+      values.metaTitle = resource.formData.metaTitle;
+    }
     if (typeof values.metaSubject !== 'object' || values.metaSubject === null) {
       values.metaSubject = resource.formData.metaSubject;
     }
@@ -303,6 +306,10 @@ ResourceDescribeActivity = reduxForm({
       values.metaEducationLevels = resource.formData.metaEducationLevels;
     }
     saveFormData(values);
+
+    if (val.metaTitle.length === 0) {
+      return;
+    }
 
     if (values.metaTitle.length > 80) {
       Swal.fire('Title must be 80 characters or less');

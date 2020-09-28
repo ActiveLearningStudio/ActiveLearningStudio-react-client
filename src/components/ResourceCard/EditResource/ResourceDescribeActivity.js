@@ -45,6 +45,7 @@ const onSubmit = async (val, dispatch, props) => {
 
   const values = { ...val };
   const { resource, saveFormData } = props;
+
   if (typeof values.metaSubject !== 'object' || values.metaSubject === null) {
     values.metaSubject = resource.formData.metaSubject;
   }
@@ -77,9 +78,11 @@ let ResourceDescribeActivity = (props) => {
   }, [resource.editResource.metadata.thumbUrl, uploadResourceThumbnailDefault]);
 
   useEffect(() => {
+    const subject = subjects.find((subj) => subj.subject === resource.editResource.metadata.subjectId);
+    const educationLvl = educationLevels.find((eduLvl) => eduLvl.name === resource.editResource.metadata.subjectId);
     const values = {
-      metaEducationLevels: { value: resource.editResource.metadata.educationLevelId },
-      metaSubject: { value: resource.editResource.metadata.subjectId },
+      metaEducationLevels: { ...educationLvl },
+      metaSubject: { ...subject },
       metaTitle: resource.editResource.metadata.title,
     };
 
