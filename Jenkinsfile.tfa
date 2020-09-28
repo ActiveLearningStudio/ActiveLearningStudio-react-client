@@ -15,7 +15,7 @@ node(){
     }
     stage('Build') {
         nodejs('nodejs') {
-            sh 'cp /root/envs/.env.local.prod .env.local'
+            sh 'cp /root/envs/.env.local.tfa .env.local'
             sh 'npm run build'
             echo "Build completed"
         }
