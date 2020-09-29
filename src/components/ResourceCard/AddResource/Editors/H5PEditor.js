@@ -94,7 +94,7 @@ const H5PEditor = (props) => {
               className="add-resource-submit-btn top"
               onClick={submitResource}
             >
-              Save
+              Save & Exit
             </button>
           </div>
         </div>
@@ -187,7 +187,7 @@ const H5PEditor = (props) => {
                 className="add-resource-submit-btn"
                 onClick={submitResource}
               >
-                Save
+                Save & Exit
               </button>
             </div>
           </div>

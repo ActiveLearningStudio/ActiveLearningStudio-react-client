@@ -47,7 +47,7 @@ export class TinyEditor extends React.Component {
               className="add-resource-submit-btn top"
               onClick={this.handleSubmit}
             >
-              Save
+              Save & Exit
             </button>
           </div>
         </div>
@@ -84,7 +84,7 @@ export class TinyEditor extends React.Component {
               className="add-resource-submit-btn"
               onClick={this.handleSubmit}
             >
-              Save
+              Save & Exit
             </button>
           </div>
         </div>
