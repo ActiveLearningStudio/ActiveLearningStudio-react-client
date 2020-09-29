@@ -46,6 +46,7 @@ const onSubmit = async (val, dispatch, props) => {
   const values = { ...val };
   const { resource, saveFormData } = props;
 
+  values.metaTitle = resource.formData.metaTitle;
   if (typeof values.metaSubject !== 'object' || values.metaSubject === null) {
     values.metaSubject = resource.formData.metaSubject;
   }
@@ -78,16 +79,28 @@ let ResourceDescribeActivity = (props) => {
   }, [resource.editResource.metadata.thumbUrl, uploadResourceThumbnailDefault]);
 
   useEffect(() => {
-    const subject = subjects.find((subj) => subj.subject === resource.editResource.metadata.subjectId);
-    const educationLvl = educationLevels.find((eduLvl) => eduLvl.name === resource.editResource.metadata.subjectId);
+    const { title, subjectId, educationLevelId } = resource.editResource.metadata;
+    const subject = subjectId
+      ? subjects.find((subj) => subj.subject === subjectId)
+      : { subject: title ? ' ' : '', value: '' };
+    const educationLvl = educationLevelId
+      ? educationLevels.find((eduLvl) => eduLvl.name === educationLevelId)
+      : { name: title ? ' ' : '', value: '' };
+    const { metaTitle: savedTitle, metaEducationLevels: savedEduLvl, metaSubject: savedSubj } = resource.formData;
     const values = {
-      metaEducationLevels: { ...educationLvl },
-      metaSubject: { ...subject },
-      metaTitle: resource.editResource.metadata.title,
+      metaTitle: savedTitle || title,
+      metaSubject: savedSubj.subject ? savedSubj : { ...subject },
+      metaEducationLevels: savedEduLvl.name ? savedEduLvl : { ...educationLvl },
     };
 
     saveFormData(values);
-  }, [saveFormData, resource.editResource.metadata]);
+  }, [saveFormData, resource.editResource.metadata, resource.formData]);
+
+  if (!resource.formData.metaTitle) {
+    return (
+      <h2>Loading...</h2>
+    );
+  }
 
   return (
     <div className="row">

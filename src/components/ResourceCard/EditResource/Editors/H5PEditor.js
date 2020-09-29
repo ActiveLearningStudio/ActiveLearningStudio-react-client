@@ -55,7 +55,7 @@ const H5PEditorEdit = (props) => {
         <div className="col-md-9 col-md-offset-3" style={{ position: 'inherit' }}>
           <button
             type="submit"
-            className="add-resource-submit-btn"
+            className="add-resource-submit-btn top"
             onClick={submitResource}
           >
             Save

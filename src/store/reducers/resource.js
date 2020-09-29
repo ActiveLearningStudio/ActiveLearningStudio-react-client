@@ -131,15 +131,15 @@ export default (state = INITIAL_STATE, action) => {
         },
         formData: {
           metaTitle: '',
-          metaSubject: { value: '' },
-          metaEducationLevels: { value: '' },
+          metaSubject: { subject: '', value: '' },
+          metaEducationLevels: { name: '', value: '' },
         },
       };
 
     case actionTypes.SHOW_RESOURCE_ACTIVITY_TYPE:
       return {
         ...state,
-        saved: false,
+        saved: true,
         isResourceActivityType: true,
         isResourceSelectActivity: false,
         isResourceDescribeActivity: false,
@@ -299,7 +299,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         formData: {
-          metaTitle: action.metaTitle,
+          metaTitle: action.metaTitle || '',
           metaSubject: typeof action.metaSubject === 'object' ? action.metaSubject : state.formData.metaSubject,
           metaEducationLevels: typeof action.metaEducationLevels === 'object' ? action.metaEducationLevels : state.formData.metaEducationLevels,
         },

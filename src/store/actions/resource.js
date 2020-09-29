@@ -106,6 +106,13 @@ export const loadH5pResourceSettingsOpen = (activityId) => resourceService.h5pRe
 export const loadH5pResourceSettingsShared = (activityId) => resourceService.h5pResourceSettingsShared(activityId);
 export const loadH5pResourceSettingsEmbed = (activityId) => resourceService.h5pResourceSettingsEmbed(activityId);
 
+export const resourceSaved = (saved) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.SAVE_SEARCH_KEY_IN_CREATION,
+    saved,
+  });
+};
+
 export const createResourceAction = (
   playlistId,
   editor,
@@ -144,7 +151,7 @@ export const createResourceAction = (
     };
     const insertedResource = await resourceService.create(activity);
 
-    this.resourceSaved(true);
+    resourceSaved(true);
 
     resource.id = insertedResource.id;
     resource.mysqlid = insertedResource.mysqlid;
@@ -414,7 +421,7 @@ export const editResourceAction = (
 
     const response = await resourceService.h5pSettingsUpdate(activityId, dataUpload);
 
-    this.resourceSaved(true);
+    resourceSaved(true);
 
     const resource = {};
     resource.id = response.id;
@@ -481,13 +488,6 @@ export const saveGenericResourceAction = (resourceData) => async (dispatch) => {
       type: actionTypes.HIDE_CREATE_RESOURCE_MODAL,
     });
   }
-};
-
-export const resourceSaved = (saved) => async (dispatch) => {
-  dispatch({
-    type: actionTypes.SAVE_SEARCH_KEY_IN_CREATION,
-    saved,
-  });
 };
 
 export const saveSearchKeyInCreation = (searchKey) => async (dispatch) => {
