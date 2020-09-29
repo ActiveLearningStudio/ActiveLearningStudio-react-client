@@ -514,6 +514,6 @@ export const loadMyProjectsLtiAction = (lmsUrl, ltiClientId) => async (dispatch)
       });
     }
   } catch (e) {
-    throw new Error(e);
+    console.log(e);
   }
 };

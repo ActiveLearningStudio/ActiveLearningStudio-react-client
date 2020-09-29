@@ -119,12 +119,34 @@ class PlaylistsPage extends React.Component {
   handleHideCreateResourceModal = async (e) => {
     e.preventDefault();
 
-    try {
-      const { match, history, hideCreateResourceModal } = this.props;
-      await hideCreateResourceModal();
-      history.push(`/project/${match.params.projectId}`);
-    } catch (err) {
-      // console.log(err.message);
+    const { resource } = this.props;
+    if (!resource.saved) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'You are exiting without saving your data. Are you sure to exit?',
+        showCloseButton: true,
+        showCancelButton: true,
+        focusConfirm: false,
+        confirmButtonText: 'Yes',
+        confirmButtonAriaLabel: 'Yes',
+        cancelButtonText: 'Cancel',
+        cancelButtonAriaLabel: 'Cancel',
+      })
+        .then(async (resp) => {
+          if (resp.isConfirmed) {
+            const { match, history, hideCreateResourceModal } = this.props;
+            await hideCreateResourceModal();
+            history.push(`/project/${match.params.projectId}`);
+          }
+        });
+    } else {
+      try {
+        const { match, history, hideCreateResourceModal } = this.props;
+        await hideCreateResourceModal();
+        history.push(`/project/${match.params.projectId}`);
+      } catch (err) {
+        // console.log(err.message);
+      }
     }
   };
 
