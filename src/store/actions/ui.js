@@ -9,11 +9,7 @@ export const showDeletePopup = (id, title, deleteType) => ({
 
 // shows the delete popup on activities, project, playlists
 export const showDeletePopupAction = (id, title, deleteType) => async (dispatch) => {
-  try {
-    dispatch(showDeletePopup(id, title, deleteType));
-  } catch (e) {
-    throw new Error(e);
-  }
+  dispatch(showDeletePopup(id, title, deleteType));
 };
 
 export const hideDeletePopup = () => ({
@@ -22,9 +18,5 @@ export const hideDeletePopup = () => ({
 
 // hides the delete popup on activities, project, playlists
 export const hideDeletePopupAction = () => async (dispatch) => {
-  try {
-    dispatch(hideDeletePopup());
-  } catch (e) {
-    throw new Error(e);
-  }
+  dispatch(hideDeletePopup());
 };

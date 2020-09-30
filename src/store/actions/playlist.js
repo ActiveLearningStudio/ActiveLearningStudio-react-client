@@ -88,13 +88,22 @@ export const loadProjectPlaylistsAction = (projectId) => async (dispatch) => {
   }
 };
 
+export const lmsPlaylist = (projectId) => async (dispatch) => {
+  const { playlists } = await playlistService.getAll(projectId);
+  dispatch({
+    type: actionTypes.LOAD_PROJECT_PLAYLISTS,
+    payload: { playlists },
+  });
+  return { playlists };
+};
+
 export const changePlaylistTitleAction = (projectId, playlistId, title) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.UPDATE_PLAYLIST_REQUEST,
     });
 
-    const { playlist } = await playlistService.update(projectId, playlistId, { title });
+    const playlist = await playlistService.update(projectId, playlistId, { title });
     dispatch({
       type: actionTypes.UPDATE_PLAYLIST_SUCCESS,
       payload: { playlist },

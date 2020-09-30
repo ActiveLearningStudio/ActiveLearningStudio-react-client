@@ -8,9 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown } from 'react-bootstrap';
 
 // import logo from 'assets/images/logo.svg';
-import {
-  changePlaylistTitleAction,
-} from 'store/actions/playlist';
+import { changePlaylistTitleAction } from 'store/actions/playlist';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import ResourceCard from 'components/ResourceCard';
 import ShareLink from 'components/ResourceCard/ShareLink';
@@ -246,7 +244,6 @@ PlaylistCard.propTypes = {
   selectedProject: PropTypes.object.isRequired,
   showDeletePopup: PropTypes.func.isRequired,
   hideDeletePopup: PropTypes.func.isRequired,
-  reorderPlaylistActivities: PropTypes.func.isRequired,
   changePlaylistTitle: PropTypes.func.isRequired,
   handleCreateResource: PropTypes.func,
 };
