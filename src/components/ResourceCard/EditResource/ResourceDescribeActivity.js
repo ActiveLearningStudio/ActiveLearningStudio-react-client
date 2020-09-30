@@ -274,7 +274,7 @@ let ResourceDescribeActivity = (props) => {
                     </p>
                     <div className="row">
                       <div className="col-md-12">
-                        <button type="submit" className="add-resource-continue-btn">Continue</button>
+                        <button type="submit" className="add-resource-continue-btn">Save & Continue</button>
                       </div>
                     </div>
                   </form>
