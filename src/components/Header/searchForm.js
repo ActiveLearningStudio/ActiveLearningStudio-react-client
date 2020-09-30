@@ -31,7 +31,7 @@ function SearchForm() {
               } else if (simpleSearch.length > 255) {
                 Swal.fire('Character limit should be less than 255 ');
               } else {
-                dispatcher(simpleSearchAction(simpleSearch.trim(), 0, 1000));
+                dispatcher(simpleSearchAction(simpleSearch.trim(), 0, 20));
                 localStorage.setItem('loading', 'true');
                 history.push('/search');
               }

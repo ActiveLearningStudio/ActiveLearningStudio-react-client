@@ -6,6 +6,8 @@ import { Field, reduxForm } from 'redux-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 
+import computer from 'assets/images/computer.svg';
+import pexel from 'assets/images/pexel.png';
 import { required, FadeDiv } from 'utils';
 import {
   showBuildActivityAction,
@@ -13,16 +15,14 @@ import {
   showSelectActivityAction,
   uploadResourceThumbnail,
   uploadResourceThumbnailAction,
+  saveFormDataInCreation,
 } from 'store/actions/resource';
 import MetaTitleInputField from 'components/ResourceCard/fields/MetaTitleInputField';
-import MetaSubjectsField from 'components/ResourceCard/fields/MetaSubjectsField';
-import MetaEducationLevelInputField from 'components/ResourceCard/fields/MetaEducationLevelInputField';
 import PexelsAPI from 'components/models/pexels';
-
-import computer from 'assets/images/computer.svg';
-import pexel from 'assets/images/pexel.png';
 import { subjects, educationLevels } from './dropdownData';
 import AddResourceSidebar from './AddResourceSidebar';
+import MetaSubjectsField from '../fields/MetaSubjectsField';
+import MetaEducationLevelInputField from '../fields/MetaEducationLevelInputField';
 
 import './style.scss';
 
@@ -38,7 +38,7 @@ export const uploadThumb = async (e, props) => {
     Swal.fire({
       icon: 'error',
       title: 'Error',
-      text: 'Image upload failed, kindly try again',
+      text: 'Image upload failed, kindly try again.',
     });
   }
 };
@@ -78,7 +78,7 @@ let ResourceDescribeActivity = (props) => {
                     autoComplete="off"
                   >
                     <div className="flex-form-imag-upload">
-                      <div className="">
+                      <div>
                         <div className="row">
                           <div className="col-md-12">
                             <div className="meta-title">
@@ -87,7 +87,8 @@ let ResourceDescribeActivity = (props) => {
                                 component={MetaTitleInputField}
                                 type="text"
                                 label="Title"
-                                validate={[required]}
+                                validate={!resource.formData.metaTitle ? [required] : undefined}
+                                defaultValue={resource.formData.metaTitle}
                               />
                             </div>
                           </div>
@@ -106,6 +107,7 @@ let ResourceDescribeActivity = (props) => {
                                 data={subjects}
                                 valueField="value"
                                 textField="subject"
+                                defaultValue={resource.formData.metaSubject.value}
                               />
                             </div>
                           </div>
@@ -122,6 +124,7 @@ let ResourceDescribeActivity = (props) => {
                                 data={educationLevels}
                                 valueField="value"
                                 textField="name"
+                                defaultValue={resource.formData.metaEducationLevels.value}
                               />
                             </div>
                           </div>
@@ -139,7 +142,8 @@ let ResourceDescribeActivity = (props) => {
                             onChange={(e) => {
                               if (e.target.files.length === 0) {
                                 return true;
-                              } if (!(e.target.files[0].type.includes('png') || e.target.files[0].type.includes('jpg')
+                              }
+                              if (!(e.target.files[0].type.includes('png') || e.target.files[0].type.includes('jpg')
                                 || e.target.files[0].type.includes('gif') || e.target.files[0].type.includes('jpeg'))) {
                                 Swal.fire({
                                   icon: 'error',
@@ -226,18 +230,20 @@ let ResourceDescribeActivity = (props) => {
                         </div>
                       </div>
                     </div>
+
                     <p className="disclaimer">
                       Activity Image dimension should be
                       {' '}
                       <strong>290px width and 200px height. </strong>
                       Maximun File size allowed is
                       {' '}
-                      <strong>100KB.</strong>
+                      <strong>100MB.</strong>
                     </p>
+
                     <div className="row">
                       <div className="col-md-12">
                         <button type="submit" className="add-resource-continue-btn">
-                          Continue
+                          Save & Continue
                         </button>
                       </div>
                     </div>
@@ -275,13 +281,35 @@ ResourceDescribeActivity.propTypes = {
   resource: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   goBackToActivity: PropTypes.func.isRequired,
+  saveFormData: PropTypes.func.isRequired,
 };
 
 ResourceDescribeActivity = reduxForm({
   form: 'describeActivityForm',
   enableReinitialize: true,
-  onSubmit: async (values, dispatch, props) => {
-    const { resource, showBuildActivity, onSubmitDescribeActivity } = props;
+  onSubmit: async (val, dispatch, props) => {
+    const values = val;
+    const {
+      resource,
+      showBuildActivity,
+      onSubmitDescribeActivity,
+      saveFormData,
+    } = props;
+
+    if (!values.metaTitle) {
+      values.metaTitle = resource.formData.metaTitle;
+    }
+    if (typeof values.metaSubject !== 'object' || values.metaSubject === null) {
+      values.metaSubject = resource.formData.metaSubject;
+    }
+    if (typeof values.metaEducationLevels !== 'object' || values.metaEducationLevels === null) {
+      values.metaEducationLevels = resource.formData.metaEducationLevels;
+    }
+    saveFormData(values);
+
+    if (val.metaTitle.length === 0) {
+      return;
+    }
 
     if (values.metaTitle.length > 80) {
       Swal.fire('Title must be 80 characters or less');
@@ -312,6 +340,7 @@ const mapDispatchToProps = (dispatch) => ({
   uploadResourceThumbnail: (url) => dispatch(uploadResourceThumbnail(url)),
   uploadResourceThumbnailAction: (formData) => dispatch(uploadResourceThumbnailAction(formData)),
   goBackToActivity: () => dispatch(showSelectActivityAction()),
+  saveFormData: (formData) => dispatch(saveFormDataInCreation(formData)),
 });
 
 const mapStateToProps = (state) => ({

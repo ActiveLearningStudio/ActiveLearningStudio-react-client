@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
+import { Alert } from 'react-bootstrap';
 
-import loaderImg from 'assets/images/loader.svg';
 import {
   createPlaylistAction,
   deletePlaylistAction,
@@ -47,15 +47,6 @@ import PreviewResourcePage from './PreviewResourcePage';
 import CreatePlaylistPopup from './CreatePlaylistPopup';
 
 class PlaylistsPage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      title: '',
-      shareLoading: false,
-    };
-  }
-
   componentDidMount() {
     const {
       match,
@@ -119,12 +110,34 @@ class PlaylistsPage extends React.Component {
   handleHideCreateResourceModal = async (e) => {
     e.preventDefault();
 
-    try {
-      const { match, history, hideCreateResourceModal } = this.props;
-      await hideCreateResourceModal();
-      history.push(`/project/${match.params.projectId}`);
-    } catch (err) {
-      // console.log(err.message);
+    const { resource } = this.props;
+    if (!resource.saved) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'You are exiting without saving your data. Are you sure to exit?',
+        showCloseButton: true,
+        showCancelButton: true,
+        focusConfirm: false,
+        confirmButtonText: 'Yes',
+        confirmButtonAriaLabel: 'Yes',
+        cancelButtonText: 'Cancel',
+        cancelButtonAriaLabel: 'Cancel',
+      })
+        .then(async (resp) => {
+          if (resp.isConfirmed) {
+            const { match, history, hideCreateResourceModal } = this.props;
+            await hideCreateResourceModal();
+            history.push(`/project/${match.params.projectId}`);
+          }
+        });
+    } else {
+      try {
+        const { match, history, hideCreateResourceModal } = this.props;
+        await hideCreateResourceModal();
+        history.push(`/project/${match.params.projectId}`);
+      } catch (err) {
+        // console.log(err.message);
+      }
     }
   };
 
@@ -280,7 +293,6 @@ class PlaylistsPage extends React.Component {
   };
 
   render() {
-    const { shareLoading } = this.state;
     const {
       match,
       project: { selectedProject },
@@ -292,124 +304,123 @@ class PlaylistsPage extends React.Component {
       openEditResourcePopup,
     } = this.props;
 
-    const { showDeletePlaylistPopup } = ui;
+    const { showDeletePlaylistPopup, pageLoading } = ui;
 
     return (
       <>
         <Header {...this.props} />
-
-        {shareLoading ? (
-          <div className="loader-share">
-            <img src={loaderImg} alt="" />
-            <h1>Sharing...</h1>
+        <div className="main-content-wrapper">
+          <div className="sidebar-wrapper">
+            <Sidebar />
           </div>
-        ) : (
-          <>
-            <div className="main-content-wrapper">
-              <div className="sidebar-wrapper">
-                <Sidebar />
-              </div>
 
-              <div className="content-wrapper">
-                <div className="content">
-                  <div className="row ">
-                    <div className="col playlist-page-project-title project-each-view">
-                      <div className="flex-se">
-                        <h1>{selectedProject ? selectedProject.name : ''}</h1>
+          <div className="content-wrapper">
+            <div className="content">
+              <div className="row ">
+                {pageLoading !== false ? (
+                  <Alert variant="primary">Loading ...</Alert>
+                ) : (
+                  <>
+                    {!pageLoading && !!playlists && playlists.length === 0 ? (
+                      <Alert variant="danger">Project not found.</Alert>
+                    ) : (
+                      <div className="col playlist-page-project-title project-each-view">
+                        <div className="flex-se">
+                          <h1>{selectedProject ? selectedProject.name : ''}</h1>
 
-                        <button
-                          type="button"
-                          className="create-playlist-btn"
-                          onClick={this.handleShowCreatePlaylistModal}
-                        >
-                          <FontAwesomeIcon icon="plus" className="mr-2" />
-                          Create new playlist
-                        </button>
-                      </div>
-
-                      <span>
-                        <Link
-                          className="dropdown-item"
-                          to={`/project/${match.params.projectId}/preview`}
-                        >
-                          <FontAwesomeIcon icon="eye" className="mr-2" />
-                          Project Preview
-                        </Link>
-                      </span>
-                    </div>
-                  </div>
-
-                  <DragDropContext onDragEnd={this.onDragEnd}>
-                    <Droppable
-                      droppableId="project-droppable-id"
-                      direction="horizontal"
-                      type="column"
-                    >
-                      {(provided) => (
-                        <div
-                          id="board"
-                          className="board-custom"
-                          {...provided.droppableProps}
-                          ref={provided.innerRef}
-                        >
-                          {playlists.map((playlist, index) => (
-                            <PlaylistCard
-                              key={playlist.id}
-                              index={index}
-                              playlist={playlist}
-                              projectId={parseInt(match.params.projectId, 10)}
-                              handleCreateResource={this.handleShowCreateResourceModal}
-                            />
-                          ))}
-                          {provided.placeholder}
+                          <button
+                            type="button"
+                            className="create-playlist-btn"
+                            onClick={this.handleShowCreatePlaylistModal}
+                          >
+                            <FontAwesomeIcon icon="plus" className="mr-2" />
+                            Create new playlist
+                          </button>
                         </div>
-                      )}
-                    </Droppable>
-                  </DragDropContext>
-                </div>
+
+                        <span>
+                          <Link
+                            className="dropdown-item"
+                            to={`/project/${match.params.projectId}/preview`}
+                          >
+                            <FontAwesomeIcon icon="eye" className="mr-2" />
+                            Project Preview
+                          </Link>
+                        </span>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
+
+              <DragDropContext onDragEnd={this.onDragEnd}>
+                <Droppable
+                  droppableId="project-droppable-id"
+                  direction="horizontal"
+                  type="column"
+                >
+                  {(provided) => (
+                    <div
+                      id="board"
+                      className="board-custom"
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                    >
+                      {playlists.map((playlist, index) => (
+                        <PlaylistCard
+                          key={playlist.id}
+                          index={index}
+                          playlist={playlist}
+                          projectId={parseInt(match.params.projectId, 10)}
+                          handleCreateResource={this.handleShowCreateResourceModal}
+                        />
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
             </div>
+          </div>
+        </div>
 
-            {openCreatePopup && (
-              <CreatePlaylistPopup
-                handleHideCreatePlaylistModal={this.handleHideCreatePlaylistModal}
-                handleCreatePlaylistSubmit={this.handleCreatePlaylistSubmit}
-                onPlaylistTitleChange={this.onPlaylistTitleChange}
-              />
-            )}
-
-            {openCreateResourcePopup && (
-              <AddResource
-                {...this.props}
-                handleHideCreateResourceModal={this.handleHideCreateResourceModal}
-                handleCreateResourceSubmit={this.handleCreateResourceSubmit}
-                handleEditResourceSubmit={this.handleEditResourceSubmit}
-              />
-            )}
-
-            {openEditResourcePopup && (
-              <EditResource
-                {...this.props}
-                handleHideCreateResourceModal={this.handleHideCreateResourceModal}
-                handleCreateResourceSubmit={this.handleCreateResourceSubmit}
-                handleEditResourceSubmit={this.handleEditResourceSubmit}
-              />
-            )}
-
-            {resource.showPreviewResourcePopup && (
-              <PreviewResourcePage {...this.props} />
-            )}
-
-            {showDeletePlaylistPopup && (
-              <DeletePopup
-                {...this.props}
-                deleteType="Playlist"
-                selectedProject={selectedProject}
-              />
-            )}
-          </>
+        {openCreatePopup && (
+          <CreatePlaylistPopup
+            handleHideCreatePlaylistModal={this.handleHideCreatePlaylistModal}
+            handleCreatePlaylistSubmit={this.handleCreatePlaylistSubmit}
+            onPlaylistTitleChange={this.onPlaylistTitleChange}
+          />
         )}
 
+        {openCreateResourcePopup && (
+          <AddResource
+            {...this.props}
+            handleHideCreateResourceModal={this.handleHideCreateResourceModal}
+            handleCreateResourceSubmit={this.handleCreateResourceSubmit}
+            handleEditResourceSubmit={this.handleEditResourceSubmit}
+          />
+        )}
+
+        {openEditResourcePopup && (
+          <EditResource
+            {...this.props}
+            handleHideCreateResourceModal={this.handleHideCreateResourceModal}
+            handleCreateResourceSubmit={this.handleCreateResourceSubmit}
+            handleEditResourceSubmit={this.handleEditResourceSubmit}
+          />
+        )}
+
+        {resource.showPreviewResourcePopup && (
+          <PreviewResourcePage {...this.props} />
+        )}
+
+        {showDeletePlaylistPopup && (
+          <DeletePopup
+            {...this.props}
+            deleteType="Playlist"
+            selectedProject={selectedProject}
+          />
+        )}
         <Footer />
       </>
     );
@@ -429,7 +440,6 @@ PlaylistsPage.propTypes = {
   loadProject: PropTypes.func.isRequired,
   loadProjectPlaylists: PropTypes.func.isRequired,
   reorderPlaylists: PropTypes.func.isRequired,
-  reorderPlaylistActivities: PropTypes.func.isRequired,
   editResource: PropTypes.func.isRequired,
   createResource: PropTypes.func.isRequired,
   createResourceByH5PUpload: PropTypes.func.isRequired,

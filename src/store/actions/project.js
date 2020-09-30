@@ -360,14 +360,13 @@ export const getProjectCourseFromLMS = (
   });
 
   const response = await projectService.fetchLmsDetails(lms, projectId, settingId);
-
+  const globalStoreClone = getState();
   if (response) {
     dispatch({
       type: actionTypes.SET_LMS_COURSE,
       lmsCourse: response.project,
+      allstate: globalStoreClone,
     });
-
-    const globalStoreClone = getState();
 
     Swal.fire({
       title: `This Project will be added to ${lms}. If the Project does not exist, it will be created.`,
@@ -385,15 +384,15 @@ export const getProjectCourseFromLMS = (
           showConfirmButton: false,
           allowOutsideClick: false,
         });
-
+        const globalStoreCloneUpdated = getState();
         // eslint-disable-next-line no-inner-declarations
         async function asyncFunc() {
           for (let x = 0; x < playlist.length; x += 1) {
             // eslint-disable-next-line no-await-in-loop
-            const counter = !!globalStoreClone.project.lmsCourse
-                && globalStoreClone.project.lmsCourse.playlistsCopyCounter
+            const counter = !!globalStoreCloneUpdated.project.lmsCourse
+                && globalStoreCloneUpdated.project.lmsCourse.playlistsCopyCounter
                   .length > 0
-              ? globalStoreClone.project.lmsCourse
+              ? globalStoreCloneUpdated.project.lmsCourse
                 .playlistsCopyCounter[x].counter
               : 0;
 
@@ -450,10 +449,8 @@ export const getProjectCourseFromLMSPlaylist = (
   });
 
   const response = await projectService.fetchLmsDetails(lms, projectId, settingId);
-
   if (response.project) {
     const globalStoreClone = store.getState();
-
     dispatch(setLmsCourse(response.project, globalStoreClone));
 
     Swal.fire({
@@ -517,6 +514,6 @@ export const loadMyProjectsLtiAction = (lmsUrl, ltiClientId) => async (dispatch)
       });
     }
   } catch (e) {
-    throw new Error(e);
+    console.log(e);
   }
 };

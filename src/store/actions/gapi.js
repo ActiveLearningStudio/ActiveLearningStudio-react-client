@@ -53,7 +53,7 @@ export const googleClassRoomLoginAction = (response) => async (dispatch) => {
 
     // dispatch(googleClassRoomLogin(response));
   } catch (e) {
-    throw new Error(e);
+    console.log(e);
   }
 };
 
@@ -77,6 +77,6 @@ export const googleClassRoomLoginFailureAction = (response) => async (dispatch) 
     // dispatch(googleShare(true));
     dispatch(googleClassRoomLoginFailure(response));
   } catch (e) {
-    throw new Error(e);
+    console.log(e);
   }
 };

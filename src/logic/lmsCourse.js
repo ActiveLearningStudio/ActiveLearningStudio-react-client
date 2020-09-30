@@ -1,12 +1,11 @@
 // eslint-disable-next-line import/prefer-default-export
 export const prepareLmsCourse = (action, state) => {
   const lmsCourse = { ...action.lmsCourse };
-
   const playlistsCopyCounter = [];
   const project = { ...state }.projects.find((p) => p.name === lmsCourse.course);
   if (project !== undefined) {
-    for (let index = 0; index < project.playlists.length; index += 1) {
-      const playlist = project.playlists[index];
+    for (let index = 0; index < action.allstate.playlist.playlists.length; index += 1) {
+      const playlist = action.allstate.playlist.playlists[index];
       const playlistFound = lmsCourse.playlists.find((lp) => lp === playlist.title) !== undefined
         ? playlist.title
         : null;

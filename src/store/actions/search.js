@@ -10,8 +10,8 @@ export const searchRedux = (data, searchQuery, meta) => ({
   meta,
 });
 
-export const simpleSearchAction = (searchQuery, from, size) => async (dispatch) => {
-  const response = await searchService.searchResult(searchQuery, from, size);
+export const simpleSearchAction = (searchQuery, from, size, model) => async (dispatch) => {
+  const response = await searchService.searchResult(searchQuery, from, size, model);
   if (response.errors) {
     if (response.errors.query) {
       Swal.fire(response.errors.query[0]);
@@ -19,6 +19,7 @@ export const simpleSearchAction = (searchQuery, from, size) => async (dispatch) 
   } else {
     dispatch(searchRedux(response.data, searchQuery, response.meta));
   }
+  return response;
 };
 
 export const cloneProject = (projectID) => {

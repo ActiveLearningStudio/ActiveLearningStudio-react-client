@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -14,19 +14,17 @@ function PreviewPage(props) {
   useBodyClass('hidechat-container');
 
   const content = (
-
     <ProjectPreview
       {...props}
       key={match.params.projectId}
       project={project}
       showLti={false}
     />
-
   );
 
   useEffect(() => {
     logProjectView(match.params.projectId);
-  }, []);
+  }, [logProjectView, match.params.projectId]);
 
   return (
     <div>{content}</div>
@@ -36,6 +34,7 @@ function PreviewPage(props) {
 PreviewPage.propTypes = {
   match: PropTypes.object.isRequired,
   project: PropTypes.object.isRequired,
+  logProjectView: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

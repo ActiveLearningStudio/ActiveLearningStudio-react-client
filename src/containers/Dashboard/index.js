@@ -243,7 +243,7 @@ function DashboardPage(props) {
                   </div>
                 </div>
                 <div className="row text-center">
-                  <div className="col ">
+                  <div className="col">
                     <span className="">{metrics.project_count}</span>
                     <label>COUNT</label>
                   </div>
@@ -264,7 +264,7 @@ function DashboardPage(props) {
                   </div>
                 </div>
                 <div className="row text-center">
-                  <div className="col ">
+                  <div className="col">
                     <span className="">{metrics.playlist_count}</span>
                     <label>COUNT</label>
                   </div>
@@ -285,7 +285,7 @@ function DashboardPage(props) {
                   </div>
                 </div>
                 <div className="row text-center">
-                  <div className="col ">
+                  <div className="col">
                     <span className="">{metrics.activity_count}</span>
                     <label>COUNT</label>
                   </div>
