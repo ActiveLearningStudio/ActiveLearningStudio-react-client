@@ -76,6 +76,10 @@
   overflow-y: hidden;
   padding-bottom: 50px;
   margin-top: 5px;
+
+ .list-body{
+    min-height:400px
+  }
 }
 
 .list-wrapper {
@@ -1197,7 +1201,7 @@ header {
   clear: both;
   background: #fff;
   position: relative;
-  z-index: 1;
+  z-index: 1001;
 }
 
 .menuoverlay:before {
@@ -2925,7 +2929,7 @@ a:hover {
 .footer-all {
   position: fixed;
   bottom: 0;
-  z-index: 111;
+  z-index: 1001;
   width: 100%;
   height: 45px;
   padding: 10px 30px;
