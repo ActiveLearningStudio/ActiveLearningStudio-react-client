@@ -316,70 +316,81 @@ class PlaylistsPage extends React.Component {
 
           <div className="content-wrapper">
             <div className="content">
-              <div className="row ">
+              <div>
                 {pageLoading !== false ? (
                   <Alert variant="primary">Loading ...</Alert>
                 ) : (
                   <>
-                    {!pageLoading && !!playlists && playlists.length === 0 ? (
+                    {!pageLoading && !selectedProject.name ? (
                       <Alert variant="danger">Project not found.</Alert>
                     ) : (
-                      <div className="col playlist-page-project-title project-each-view">
-                        <div className="flex-se">
-                          <h1>{selectedProject ? selectedProject.name : ''}</h1>
+                      <>
+                        <div className="col playlist-page-project-title project-each-view">
+                          <div className="flex-se">
+                            <h1>{selectedProject ? selectedProject.name : ''}</h1>
 
-                          <button
-                            type="button"
-                            className="create-playlist-btn"
-                            onClick={this.handleShowCreatePlaylistModal}
-                          >
-                            <FontAwesomeIcon icon="plus" className="mr-2" />
-                            Create new playlist
-                          </button>
+                            <button
+                              type="button"
+                              className="create-playlist-btn"
+                              onClick={this.handleShowCreatePlaylistModal}
+                            >
+                              <FontAwesomeIcon icon="plus" className="mr-2" />
+                              Create new playlist
+                            </button>
+                          </div>
+
+                          <span>
+                            <Link
+                              className="dropdown-item"
+                              to={`/project/${match.params.projectId}/preview`}
+                            >
+                              <FontAwesomeIcon icon="eye" className="mr-2" />
+                              Project Preview
+                            </Link>
+                          </span>
                         </div>
-
-                        <span>
-                          <Link
-                            className="dropdown-item"
-                            to={`/project/${match.params.projectId}/preview`}
-                          >
-                            <FontAwesomeIcon icon="eye" className="mr-2" />
-                            Project Preview
-                          </Link>
-                        </span>
-                      </div>
+                        <>
+                          {!!playlists && playlists.length > 0
+                            ? (
+                              <DragDropContext onDragEnd={this.onDragEnd}>
+                                <Droppable
+                                  droppableId="project-droppable-id"
+                                  direction="horizontal"
+                                  type="column"
+                                >
+                                  {(provided) => (
+                                    <div
+                                      id="board"
+                                      className="board-custom"
+                                      {...provided.droppableProps}
+                                      ref={provided.innerRef}
+                                    >
+                                      {playlists.map((playlist, index) => (
+                                        <PlaylistCard
+                                          key={playlist.id}
+                                          index={index}
+                                          playlist={playlist}
+                                          projectId={parseInt(match.params.projectId, 10)}
+                                          handleCreateResource={this.handleShowCreateResourceModal}
+                                        />
+                                      ))}
+                                      {provided.placeholder}
+                                    </div>
+                                  )}
+                                </Droppable>
+                              </DragDropContext>
+                            ) : (
+                              <Alert variant="success">
+                                No playlist available, kindly create your playlist.
+                              </Alert>
+                            )}
+                        </>
+                      </>
                     )}
                   </>
                 )}
               </div>
 
-              <DragDropContext onDragEnd={this.onDragEnd}>
-                <Droppable
-                  droppableId="project-droppable-id"
-                  direction="horizontal"
-                  type="column"
-                >
-                  {(provided) => (
-                    <div
-                      id="board"
-                      className="board-custom"
-                      {...provided.droppableProps}
-                      ref={provided.innerRef}
-                    >
-                      {playlists.map((playlist, index) => (
-                        <PlaylistCard
-                          key={playlist.id}
-                          index={index}
-                          playlist={playlist}
-                          projectId={parseInt(match.params.projectId, 10)}
-                          handleCreateResource={this.handleShowCreateResourceModal}
-                        />
-                      ))}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              </DragDropContext>
             </div>
           </div>
         </div>
