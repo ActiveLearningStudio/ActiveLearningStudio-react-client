@@ -172,7 +172,7 @@ let ResourceDescribeActivity = (props) => {
                           <input
                             ref={openFile}
                             type="file"
-                            accept="image/x-png,image/jpeg"
+                            accept="image/png,image/jpeg"
                             onChange={(e) => {
                               if (e.target.files.length === 0) {
                                 return true;
