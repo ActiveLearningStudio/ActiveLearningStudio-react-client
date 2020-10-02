@@ -104,12 +104,16 @@ class RegisterPage extends React.Component {
       lastName,
       email,
       password,
+      organizationName,
+      jobTitle,
     } = this.state;
 
     return validator.isEmpty(firstName.trim())
       || validator.isEmpty(lastName.trim())
       || validator.isEmpty(email.trim())
-      || validator.isEmpty(password.trim());
+      || validator.isEmpty(password.trim())
+      || validator.isEmpty(organizationName.trim())
+      || validator.isEmpty(jobTitle.trim());
   };
 
   goToLogin = () => {
@@ -222,7 +226,7 @@ class RegisterPage extends React.Component {
                 <input
                   className="input-box"
                   name="organizationName"
-                  placeholder="Organization Name"
+                  placeholder="Organization Name*"
                   maxLength="250"
                   value={organizationName}
                   onChange={this.onChangeField}
@@ -234,7 +238,7 @@ class RegisterPage extends React.Component {
                 <input
                   className="input-box"
                   name="jobTitle"
-                  placeholder="Job Title"
+                  placeholder="Job Title*"
                   maxLength="250"
                   value={jobTitle}
                   onChange={this.onChangeField}
