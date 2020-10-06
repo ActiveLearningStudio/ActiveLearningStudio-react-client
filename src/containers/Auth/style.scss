@@ -122,6 +122,7 @@
         }
       }
     }
+    
 
     .input-box {
       width: 100%;
@@ -136,6 +137,10 @@
       &:focus {
         outline: none;
       }
+    }
+
+    .organization-type{
+      padding: 10px 18px 10px 40px;
     }
 
     .password-box {
