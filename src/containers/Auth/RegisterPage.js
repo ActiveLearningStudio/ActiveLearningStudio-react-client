@@ -26,6 +26,7 @@ class RegisterPage extends React.Component {
       email: '',
       password: '',
       organizationName: '',
+      organizationType: '',
       jobTitle: '',
       error: null,
     };
@@ -51,6 +52,7 @@ class RegisterPage extends React.Component {
         email,
         password,
         organizationName,
+        organizationType,
         jobTitle,
       } = this.state;
       const { history, register } = this.props;
@@ -72,8 +74,9 @@ class RegisterPage extends React.Component {
         last_name: lastName.trim(),
         email: email.trim(),
         password: password.trim(),
-        organization_name: organizationName.trim() ? organizationName.trim() : null,
-        job_title: jobTitle.trim() ? jobTitle.trim() : null,
+        organization_name: organizationName.trim(),
+        organization_type: organizationType.trim(),
+        job_title: jobTitle.trim(),
       };
 
       const message = await register(data);
@@ -106,6 +109,7 @@ class RegisterPage extends React.Component {
       password,
       organizationName,
       jobTitle,
+      organizationType,
     } = this.state;
 
     return validator.isEmpty(firstName.trim())
@@ -113,7 +117,8 @@ class RegisterPage extends React.Component {
       || validator.isEmpty(email.trim())
       || validator.isEmpty(password.trim())
       || validator.isEmpty(organizationName.trim())
-      || validator.isEmpty(jobTitle.trim());
+      || validator.isEmpty(jobTitle.trim())
+      || validator.isEmpty(organizationType.trim());
   };
 
   goToLogin = () => {
@@ -130,6 +135,7 @@ class RegisterPage extends React.Component {
       organizationName,
       jobTitle,
       error,
+      organizationType,
     } = this.state;
     const { isLoading } = this.props;
 
@@ -218,6 +224,24 @@ class RegisterPage extends React.Component {
                 value={password}
                 onChange={this.onChangeField}
               />
+            </div>
+
+            <div className="form-group ">
+              <FontAwesomeIcon icon="building" />
+              <select
+                className="input-box organization-type"
+                name="organizationType"
+                placeholder="Organization Type*"
+                value={organizationType}
+                onChange={this.onChangeField}
+              >
+                <option value="K-12">K-12</option>
+                <option value="Higher Education">Higher Education</option>
+                <option value="Business/Corporation">Business/Corporation</option>
+                <option value="Nonprofit">Nonprofit</option>
+                <option value="Government/EDU">Government/EDU</option>
+                <option value="Other">Other</option>
+              </select>
             </div>
 
             <div className="form-group d-flex">
