@@ -484,6 +484,47 @@
   justify-content: space-between;
   align-items: center;
 
+  .project-page-settings{
+    display: flex;
+    align-items: center;
+    
+    .sort-project-btns{
+      display: flex;
+      border:1px solid #ccc;
+      border-radius: 60px;
+      height: 35px;
+      width: 150px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      margin-right: 15px;
+      background-color: #fff;
+      overflow: hidden;
+     
+      .sort-btn{
+        border-right: 1px solid #ccc;
+        flex:1;
+        justify-content: center;
+        display: flex;
+        cursor: pointer;
+        height: 100%;
+        align-items: center;
+        
+
+        &:last-child{
+          border-right: none;
+        }
+      }
+
+      .sort-btn.active{
+        background-color: #6e6d6d;
+        svg{
+          color:#fff;
+        }
+      }
+    }
+  }
+
   h1 {
     padding-left: 40px;
     background: url(../../assets/images/my-projects-icon.png) no-repeat 0 9px;
