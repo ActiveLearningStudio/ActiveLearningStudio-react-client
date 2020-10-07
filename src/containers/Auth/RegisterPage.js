@@ -235,7 +235,7 @@ class RegisterPage extends React.Component {
                 value={organizationType}
                 onChange={this.onChangeField}
               >
-                <option disabled selected value> -- select an option -- </option>
+                <option selected> -- select an option -- </option>
                 <option value="K-12">K-12</option>
                 <option value="Higher Education">Higher Education</option>
                 <option value="Business/Corporation">Business/Corporation</option>
