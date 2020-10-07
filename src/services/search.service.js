@@ -14,17 +14,44 @@ const searchResult = (searchQuery, from, size, model) => httpService
 const cloneProject = (projectId) => httpService
   .post(`/${apiVersion}/projects/${projectId}/clone`)
   .then(() => Swal.fire('Project Clone is in progress. It will be available soon.'))
-  .catch((err) => Swal.fire(err.response.data.errors[0]));
+  .catch((err) => {
+    if (err.response.data.errors) {
+      Swal.fire(err.response.data.errors[0]);
+    } else {
+      Swal.fire({
+        icon: 'error',
+        text: 'Something went wrong!',
+      });
+    }
+  });
 
 const clonePlaylist = (projectId, playlistId) => httpService
   .post(`/${apiVersion}/projects/${projectId}/playlists/${playlistId}/clone`)
   .then(() => Swal.fire('Playlist Clone is in progress. It will be available soon.'))
-  .catch((err) => Swal.fire(err.response.data.errors[0]));
+  .catch((err) => {
+    if (err.response.data.errors) {
+      Swal.fire(err.response.data.errors[0]);
+    } else {
+      Swal.fire({
+        icon: 'error',
+        text: 'Something went wrong!',
+      });
+    }
+  });
 
 const cloneActivity = (playlistId, ActivityId) => httpService
   .post(`/${apiVersion}/playlists/${playlistId}/activities/${ActivityId}/clone`)
   .then(() => Swal.fire('Activity Clone is in progress. It will be available soon.'))
-  .catch((err) => Swal.fire(err.response.data.errors[0]));
+  .catch((err) => {
+    if (err.response.data.errors) {
+      Swal.fire(err.response.data.errors[0]);
+    } else {
+      Swal.fire({
+        icon: 'error',
+        text: 'Something went wrong!',
+      });
+    }
+  });
 
 const googleClassShare = (projectId, courseId) => httpService
   .post(`/${apiVersion}/google-classroom/projects/${projectId}/copy`, { courseId })

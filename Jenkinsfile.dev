@@ -1,4 +1,5 @@
-node(){
+
+node('currikidev') {
     stage('Cloning Git') {
         checkout scm
     } 
@@ -32,16 +33,15 @@ node(){
     stage('Stash changes') {
         stash allowEmpty: true, includes: 'bundle.tar.gz', name: 'buildArtifacts'
     }
-}
- 
-node('currikidev') {
-    echo 'Unstash'
-    unstash 'buildArtifacts'
-    echo 'Artifacts copied'
+    stage('Copying Build') {
+        echo 'Unstash'
+        unstash 'buildArtifacts'
+        echo 'Artifacts copied'
 
-    echo 'Copy'
-    sh "yes | sudo cp -R bundle.tar.gz /root/curriki/client && cd /root/curriki/client && sudo tar -xvf bundle.tar.gz"
-    echo 'Copy completed'
+        echo 'Copy'
+        sh "yes | sudo cp -R bundle.tar.gz /root/curriki/client && cd /root/curriki/client && sudo tar -xvf bundle.tar.gz"
+        echo 'Copy completed'
+    }
 }
 
 

@@ -31,7 +31,7 @@ function App(props) {
   useEffect(() => {
     const newScripts = [
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/jquery.js`,
-      //`${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p.js`,
+      // `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p.js`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p-event-dispatcher.js`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p-x-api-event.js`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p-x-api.js`,
@@ -40,7 +40,7 @@ function App(props) {
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p-action-bar.js`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/request-queue.js`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-editor/scripts/h5peditor-editor.js`,
-      //`${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/laravel-h5p/js/laravel-h5p.js`,
+      // `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/laravel-h5p/js/laravel-h5p.js`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-help-dialog.js?ver=1.3.9`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-message-dialog.js?ver=1.3.9`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-progress-circle.js?ver=1.3.9`,
@@ -56,7 +56,7 @@ function App(props) {
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.Question-1.4/scripts/question.js?ver=1.4.7`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.Question-1.4/scripts/explainer.js?ver=1.4.7`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.Question-1.4/scripts/score-points.js?ver=1.4.7`,
-      //`${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/Drop-1.0/js/drop.min.js?ver=1.0.2`,
+      // `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/Drop-1.0/js/drop.min.js?ver=1.0.2`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.Transition-1.0/transition.js?ver=1.0.4`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-help-dialog.js?ver=1.3.9`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-message-dialog.js?ver=1.3.9`,

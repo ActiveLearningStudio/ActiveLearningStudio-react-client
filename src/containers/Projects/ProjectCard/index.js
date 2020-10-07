@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown } from 'react-bootstrap';
+// import Swal from 'sweetalert2';
 
 import { getProjectId, googleShare } from 'store/actions/gapi';
+// import { cloneProject } from 'store/actions/search';
 import { getProjectCourseFromLMS } from 'store/actions/project';
 import { lmsPlaylist } from 'store/actions/playlist';
 
@@ -76,6 +78,17 @@ const ProjectCard = (props) => {
                       <FontAwesomeIcon icon="pen" className="mr-2" />
                       Edit
                     </Dropdown.Item>
+
+                    {/* <Dropdown.Item
+                      to="#"
+                      onClick={() => {
+                        Swal.showLoading();
+                        cloneProject(project.id);
+                      }}
+                    >
+                      <FontAwesomeIcon icon="clone" className="mr-2" />
+                      Duplicate
+                    </Dropdown.Item> */}
 
                     <li className="dropdown-submenu send">
                       <a tabIndex="-1">

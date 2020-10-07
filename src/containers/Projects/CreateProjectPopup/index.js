@@ -28,7 +28,7 @@ import PexelsAPI from 'components/models/pexels';
 import './style.scss';
 
 const maxLength80 = maxLength(80);
-const maxLength255 = maxLength(255);
+const maxLength1000 = maxLength(1000);
 
 // TODO: need to restructure code, clean up attributes
 // remove unused code,
@@ -252,16 +252,15 @@ let CreateProjectPopup = (props) => {
                   >
                     Image Uploaded:
                   </div>
-                  <div className="imgbox">
-                    {project.thumbUrl.includes('pexels.com') ? (
-                      <img src={project.thumbUrl} alt="thumbnail" />
-                    ) : (
-                      <img
-                        src={global.config.resourceUrl + project.thumbUrl}
-                        alt="thumbnail"
-                      />
-                    )}
-                  </div>
+
+                  <div
+                    className="imgbox"
+                    style={{
+                      backgroundImage: project.thumbUrl.includes('pexels.com')
+                        ? `url(${project.thumbUrl})`
+                        : `url(${global.config.resourceUrl}${project.thumbUrl})`,
+                    }}
+                  />
                 </div>
               ) : (
                 <div className="new-box">
@@ -315,7 +314,7 @@ let CreateProjectPopup = (props) => {
           <Field
             name="description"
             component={TextareaField}
-            validate={[required, maxLength255]}
+            validate={[required, maxLength1000]}
             autoComplete="new-password"
           />
         </div>

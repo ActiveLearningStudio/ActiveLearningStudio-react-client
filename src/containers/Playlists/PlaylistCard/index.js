@@ -12,6 +12,7 @@ import { changePlaylistTitleAction } from 'store/actions/playlist';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import ResourceCard from 'components/ResourceCard';
 import ShareLink from 'components/ResourceCard/ShareLink';
+// import { clonePlaylist } from 'store/actions/search';
 
 import './style.scss';
 
@@ -190,6 +191,17 @@ class PlaylistCard extends React.Component {
                         playlistId={playlist.id}
                         projectId={selectedProject && selectedProject.id}
                       />
+
+                      {/* <Dropdown.Item
+                        to="#"
+                        onClick={() => {
+                          Swal.showLoading();
+                          clonePlaylist(selectedProject.id, playlist.id);
+                        }}
+                      >
+                        <FontAwesomeIcon icon="clone" className="mr-2" />
+                        Duplicate
+                      </Dropdown.Item> */}
 
                       <Dropdown.Item onClick={this.handleDelete}>
                         <FontAwesomeIcon icon="times-circle" className="mr-2" />

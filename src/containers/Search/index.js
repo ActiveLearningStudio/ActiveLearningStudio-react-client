@@ -34,13 +34,12 @@ function MyVerticallyCenteredModal(props) {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Please select where you would like
+          Clone
           {' '}
           <b>{props.clone ? props.clone.title : ''}</b>
           {' '}
           {props.clone ? props.clone.model : ''}
           {' '}
-          to be cloned
         </Modal.Title>
       </Modal.Header>
 

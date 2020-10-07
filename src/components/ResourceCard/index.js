@@ -10,6 +10,7 @@ import { Dropdown } from 'react-bootstrap';
 
 import logo from 'assets/images/logo.svg';
 import { shareActivity, deleteResourceAction } from 'store/actions/resource';
+// import { cloneActivity } from 'store/actions/search';
 
 import './style.scss';
 
@@ -98,6 +99,17 @@ const ResourceCard = (props) => {
                     <FontAwesomeIcon icon="pen" className="mr-2" />
                     Edit
                   </Dropdown.Item>
+
+                  {/* <Dropdown.Item
+                    to="#"
+                    onClick={() => {
+                      Swal.showLoading();
+                      cloneActivity(playlist.id, resource.id);
+                    }}
+                  >
+                    <FontAwesomeIcon icon="clone" className="mr-2" />
+                    Duplicate
+                  </Dropdown.Item> */}
 
                   <Dropdown.Item
                     onClick={() => {
