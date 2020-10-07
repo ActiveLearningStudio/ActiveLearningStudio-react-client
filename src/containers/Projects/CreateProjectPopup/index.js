@@ -28,7 +28,7 @@ import PexelsAPI from 'components/models/pexels';
 import './style.scss';
 
 const maxLength80 = maxLength(80);
-const maxLength255 = maxLength(255);
+const maxLength1000 = maxLength(1000);
 
 // TODO: need to restructure code, clean up attributes
 // remove unused code,
@@ -314,7 +314,7 @@ let CreateProjectPopup = (props) => {
           <Field
             name="description"
             component={TextareaField}
-            validate={[required, maxLength255]}
+            validate={[required, maxLength1000]}
             autoComplete="new-password"
           />
         </div>
