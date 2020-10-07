@@ -61,7 +61,7 @@ function ResetPasswordPage(props) {
         return;
       }
 
-      if (!password !== confirmPassword) {
+      if (password !== confirmPassword) {
         setError('Password does not match.');
         return;
       }

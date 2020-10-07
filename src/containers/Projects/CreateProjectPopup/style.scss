@@ -24,17 +24,18 @@
 }
 
 .create-program-wrapper {
-  .label-toggle{
+  .label-toggle {
     display: flex;
     justify-content: space-between;
-      .class-toggle{
-        align-items: center;
-        display: flex;
 
-        label{
-          padding-right: 5px;
-        }
+    .class-toggle {
+      align-items: center;
+      display: flex;
+
+      label {
+        padding-right: 5px;
       }
+    }
   }
 
   h1 {

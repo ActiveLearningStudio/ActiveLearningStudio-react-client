@@ -26,6 +26,7 @@ function ProfilePage(props) {
   const [state, setState] = useState({
     firstName: (user && user.first_name) || '',
     lastName: (user && user.last_name) || '',
+    email: (user && user.email) || '',
     organizationName: (user && user.organization_name) || '',
     organizationType: (user && user.organization_type) || '',
     website: (user && user.website) || '',
@@ -42,6 +43,7 @@ function ProfilePage(props) {
     setState({
       firstName: (user && user.first_name) || '',
       lastName: (user && user.last_name) || '',
+      email: (user && user.email) || '',
       organizationName: (user && user.organization_name) || '',
       organizationType: (user && user.organization_type) || '',
       website: (user && user.website) || '',
@@ -73,29 +75,25 @@ function ProfilePage(props) {
     } = state;
 
     try {
+      if (website.trim() && !validator.isURL(website.trim())) {
+        setError('Please input valid website url.');
+
+        return;
+      }
+
+      setError(null);
+
       const data = {
         id: user.id,
         first_name: firstName.trim(),
         last_name: lastName.trim(),
+        organization_name: organizationName.trim() ? organizationName.trim() : null,
+        organization_type: organizationType.trim() ? organizationType.trim() : null,
+        website: website.trim() ? website.trim() : null,
+        job_title: jobTitle.trim() ? jobTitle.trim() : null,
+        address: address.trim() ? address.trim() : null,
+        phone_number: phoneNumber.trim() ? phoneNumber.trim() : null,
       };
-      if (organizationName.trim()) {
-        data.organization_name = organizationName.trim();
-      }
-      if (organizationType.trim()) {
-        data.organization_type = organizationType.trim();
-      }
-      if (website.trim()) {
-        data.website = website.trim();
-      }
-      if (jobTitle.trim()) {
-        data.job_title = jobTitle.trim();
-      }
-      if (address.trim()) {
-        data.address = address.trim();
-      }
-      if (phoneNumber.trim()) {
-        data.phone_number = phoneNumber.trim();
-      }
 
       await updateProfile(data);
 
@@ -107,7 +105,6 @@ function ProfilePage(props) {
         timer: 1500,
         allowOutsideClick: false,
       });
-      setError(null);
     } catch (err) {
       setError(getErrors(err));
     }
@@ -178,6 +175,40 @@ function ProfilePage(props) {
                   <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
+                        <label htmlFor="email">Email</label>
+                        <FontAwesomeIcon icon="envelope" />
+                        <input
+                          className="input-box"
+                          id="email"
+                          name="email"
+                          placeholder="Email"
+                          maxLength="250"
+                          disabled
+                          value={state.email}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="phone-number">Phone Number</label>
+                        <FontAwesomeIcon icon="phone" />
+                        <input
+                          className="input-box"
+                          id="phone-number"
+                          name="phoneNumber"
+                          placeholder="Phone Number"
+                          maxLength="250"
+                          value={state.phoneNumber}
+                          onChange={onChangeField}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
                         <label htmlFor="organization-name">Organization Name</label>
                         <FontAwesomeIcon icon="building" />
                         <input
@@ -237,24 +268,6 @@ function ProfilePage(props) {
                           placeholder="Job Title"
                           maxLength="250"
                           value={state.jobTitle}
-                          onChange={onChangeField}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label htmlFor="phone-number">Phone Number</label>
-                        <FontAwesomeIcon icon="phone" />
-                        <input
-                          className="input-box"
-                          id="phone-number"
-                          name="phoneNumber"
-                          placeholder="Phone Number"
-                          maxLength="250"
-                          value={state.phoneNumber}
                           onChange={onChangeField}
                         />
                       </div>

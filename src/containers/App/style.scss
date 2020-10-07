@@ -76,6 +76,10 @@
   overflow-y: hidden;
   padding-bottom: 50px;
   margin-top: 5px;
+
+ .list-body{
+    min-height:400px
+  }
 }
 
 .list-wrapper {
@@ -476,6 +480,10 @@
 }
 
 .program-page-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
   h1 {
     padding-left: 40px;
     background: url(../../assets/images/my-projects-icon.png) no-repeat 0 9px;
@@ -488,10 +496,6 @@
     margin-top: 15px;
     margin-bottom: 15px;
   }
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 
   .btn-top-page {
     background-color: #5952c6;
@@ -537,7 +541,6 @@
   .h5p-iframe-wrapper {
     & > iframe {
       width: 100%;
-
       // min-height: 600px !important;
     }
   }
@@ -1198,7 +1201,7 @@ header {
   clear: both;
   background: #fff;
   position: relative;
-  z-index: 1;
+  z-index: 1001;
 }
 
 .menuoverlay:before {
@@ -2373,10 +2376,12 @@ a:hover {
   }
 
   .main-item-wrapper {
+    position: relative;
     background: #fff;
     min-height: 443px;
     max-height: 593px;
     overflow-y: auto;
+    z-index: 0;
   }
 
   .slider-scroll-auto {
@@ -2924,7 +2929,7 @@ a:hover {
 .footer-all {
   position: fixed;
   bottom: 0;
-  z-index: 111;
+  z-index: 1001;
   width: 100%;
   height: 45px;
   padding: 10px 30px;
@@ -3292,35 +3297,36 @@ a:hover {
   border-top: 0;
 }
 
-.mobile-app-alert{
+.mobile-app-alert {
   display: none;
 }
 
-@media (max-width:991px){
-  .mobile-app-alert{
+@media (max-width: 991px) {
+  .mobile-app-alert {
     background-color: #eee;
-    color:#333;
+    color: #333;
     height: 100%;
     width: 100%;
-    z-index:111;
+    z-index: 111;
     position: fixed;
-    top:0;
+    top: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding: 0px 10px;
+    padding: 0 10px;
 
-    img{
-      width:260px;
-      margin-bottom:15px;
-    }
-    .text-description{
-       background-color: #fff;
-       padding: 35px 20px;
+    img {
+      width: 260px;
+      margin-bottom: 15px;
     }
 
-    h2{
+    .text-description {
+      background-color: #fff;
+      padding: 35px 20px;
+    }
+
+    h2 {
       font-weight: Bold;
       font-size: 18px;
       line-height: 25px;
@@ -3329,7 +3335,7 @@ a:hover {
       text-transform: uppercase;
     }
 
-    p{
+    p {
       font-weight: 300;
       font-size: 16px;
       line-height: 26px;
@@ -3337,7 +3343,7 @@ a:hover {
       color: #464646;
     }
 
-    a{
+    .reg-btn {
       width: 100%;
       min-width: 150px;
       height: 40px;
@@ -3350,12 +3356,14 @@ a:hover {
       letter-spacing: 0.76px;
       color: #ffffff;
       opacity: 1;
-      margin:0 auto;
+      margin: 0 auto;
       display: flex;
       justify-content: center;
       align-items: center;
-      
     }
+  }
 
+  .mobile-responsive .mobile-app-alert {
+    display: none;
   }
 }

@@ -147,11 +147,17 @@ function Pexels(props) {
 }
 
 Pexels.propTypes = {
-  project: PropTypes.object.isRequired,
+  show: PropTypes.bool,
+  project: PropTypes.object,
   searchName: PropTypes.string.isRequired,
-  resourceName: PropTypes.string.isRequired,
+  resourceName: PropTypes.string,
   onHide: PropTypes.func.isRequired,
-  show: PropTypes.func.isRequired,
+};
+
+Pexels.defaultProps = {
+  show: false,
+  project: null,
+  resourceName: null,
 };
 
 export default Pexels;

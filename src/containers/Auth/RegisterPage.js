@@ -74,8 +74,8 @@ class RegisterPage extends React.Component {
         last_name: lastName.trim(),
         email: email.trim(),
         password: password.trim(),
-        organization_name: organizationName.trim() ,
-        organization_type: organizationType.trim() ,
+        organization_name: organizationName.trim(),
+        organization_type: organizationType.trim(),
         job_title: jobTitle.trim(),
       };
 
@@ -109,7 +109,7 @@ class RegisterPage extends React.Component {
       password,
       organizationName,
       jobTitle,
-      organizationType
+      organizationType,
     } = this.state;
 
     return validator.isEmpty(firstName.trim())
@@ -135,7 +135,7 @@ class RegisterPage extends React.Component {
       organizationName,
       jobTitle,
       error,
-      organizationType
+      organizationType,
     } = this.state;
     const { isLoading } = this.props;
 
@@ -229,10 +229,9 @@ class RegisterPage extends React.Component {
             <div className="form-group ">
               <FontAwesomeIcon icon="building" />
               <select
-                className="input-box"
+                className="input-box organization-type"
                 name="organizationType"
                 placeholder="Organization Type*"
-                maxLength="250"
                 value={organizationType}
                 onChange={this.onChangeField}
               >
@@ -243,7 +242,7 @@ class RegisterPage extends React.Component {
                 <option value="Nonprofit">Nonprofit</option>
                 <option value="Government/EDU">Government/EDU</option>
                 <option value="Other">Other</option>
-              </select>  
+              </select>
             </div>
 
             <div className="form-group d-flex">

@@ -4,9 +4,13 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown } from 'react-bootstrap';
+import Swal from 'sweetalert2';
 
 import { getProjectId, googleShare } from 'store/actions/gapi';
+import { cloneProject } from 'store/actions/search';
 import { getProjectCourseFromLMS } from 'store/actions/project';
+import { lmsPlaylist } from 'store/actions/playlist';
+
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import ProjectPreviewModal from '../ProjectPreviewModal';
 
@@ -20,10 +24,9 @@ const ProjectCard = (props) => {
     handleShow,
     setProjectId,
   } = props;
+
   const dispatch = useDispatch();
-
   const AllLms = useSelector((state) => state.share);
-
   const [allLms, setAllLms] = useState([]);
   useEffect(() => {
     setAllLms(AllLms);
@@ -76,6 +79,17 @@ const ProjectCard = (props) => {
                       Edit
                     </Dropdown.Item>
 
+                    <Dropdown.Item
+                      to="#"
+                      onClick={() => {
+                        Swal.showLoading();
+                        cloneProject(project.id);
+                      }}
+                    >
+                      <FontAwesomeIcon icon="clone" className="mr-2" />
+                      Duplicate
+                    </Dropdown.Item>
+
                     <li className="dropdown-submenu send">
                       <a tabIndex="-1">
                         <FontAwesomeIcon icon="newspaper" className="mr-2" />
@@ -97,16 +111,19 @@ const ProjectCard = (props) => {
                           && allLms.shareVendors.map((data) => (
                             <li>
                               <a
-                                onClick={() => {
-                                  dispatch(
-                                    getProjectCourseFromLMS(
-                                      data.lms_name.toLowerCase(),
-                                      data.id,
-                                      project.id,
-                                      project.playlists,
-                                      data.lms_url,
-                                    ),
-                                  );
+                                onClick={async () => {
+                                  const allPlaylist = await dispatch(lmsPlaylist(project.id));
+                                  if (allPlaylist) {
+                                    dispatch(
+                                      getProjectCourseFromLMS(
+                                        data.lms_name.toLowerCase(),
+                                        data.id,
+                                        project.id,
+                                        allPlaylist.playlists,
+                                        data.lms_url,
+                                      ),
+                                    );
+                                  }
                                 }}
                               >
                                 {data.site_name}
