@@ -345,6 +345,7 @@ export const createResourceByH5PUploadAction = (
   // projectId,
 ) => async (dispatch) => {
   try {
+    Swal.showLoading();
     const formData = new FormData();
     formData.append('h5p_file', payload.h5pFile);
     formData.append('action', 'upload');
@@ -369,7 +370,7 @@ export const createResourceByH5PUploadAction = (
       };
 
       const responseActivity = await resourceService.create(createActivityUpload);
-
+      Swal.close();
       const resource = { ...responseActivity };
       resource.id = responseActivity.activity.id;
 
