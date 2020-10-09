@@ -130,6 +130,31 @@ export const loadMyProjectsAction = () => async (dispatch) => {
   }
 };
 
+export const loadMyReorderProjectsAction = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.PAGE_LOADING,
+    });
+
+    const { projects } = await projectService.getReorderAll();
+
+    dispatch({
+      type: actionTypes.LOAD_MY_PROJECTS,
+      payload: { projects },
+    });
+
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+
+    throw e;
+  }
+};
+
 export const loadMyCloneProjectsAction = () => async (dispatch) => {
   const projects = await projectService.getClone();
   dispatch({

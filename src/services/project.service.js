@@ -75,6 +75,12 @@ const fetchLmsDetails = (lms, projectId, settingId) => httpService
   }).then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const getReorderAll = (data) => httpService
+  .post(`projects/{project}/reorder`, {
+    projects: data,
+  }).then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const lmsPublish = (lms, projectId, settingId, counter, playlistId) => httpService
   .post(`/${apiVersion}/go/${lms}/projects/${projectId}/playlists/${playlistId}/publish`, {
     setting_id: settingId,
@@ -113,4 +119,5 @@ export default {
   getSampleProject,
   getUpdatedProjects,
   getClone,
+  getReorderAll
 };

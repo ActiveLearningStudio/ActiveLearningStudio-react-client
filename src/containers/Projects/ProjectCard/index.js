@@ -23,6 +23,7 @@ const ProjectCard = (props) => {
     showDeletePopup,
     handleShow,
     setProjectId,
+    activeFilter
   } = props;
 
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ const ProjectCard = (props) => {
   }, [AllLms]);
 
   return (
-    <div className="col-md-3 check">
+    <div className="col-md-3 check" id={activeFilter}>
       <div className="program-tile">
         <div className="program-thumb">
           <Link to={`/project/${project.id}/preview`}>
@@ -204,6 +205,7 @@ ProjectCard.propTypes = {
   showDeletePopup: PropTypes.func.isRequired,
   handleShow: PropTypes.func.isRequired,
   setProjectId: PropTypes.func.isRequired,
+  activeFilter:PropTypes.string.isRequired
 };
 
 ProjectCard.defaultProps = {

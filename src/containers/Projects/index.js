@@ -33,6 +33,9 @@ export const ProjectsPage = (props) => {
   const [selectedProjectId, setSelectedProjectId] = useState(0);
   const [activeFilter, setActiveFilter] = useState('normal-grid');
   const [allProjects, setAllProjects] = useState(null);
+  const [value, setValue] = useState(0);
+  const [projectDivider, setProjectDivider] = useState([]);
+  const [sortNumber, setSortNumber] = useState(4);
 
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -42,24 +45,134 @@ export const ProjectsPage = (props) => {
     return result;
   };
 
+  const move = (source, destination, droppableSource, droppableDestination) => {
+    const sourceClone = Array.from(source);
+    const destClone = Array.from(destination);
+    const [removed] = sourceClone.splice(droppableSource.index, 1);
+
+    destClone.splice(droppableDestination.index, 0, removed);
+
+    const result = {};
+    result[droppableSource.droppableId] = sourceClone;
+    result[droppableDestination.droppableId] = destClone;
+    return result;
+  };
+
+  var array6 = [];
+  var allchunk = [];
+  const divideProjects = (divderProjects) => {
+    divderProjects.map((data, counter) => {
+      if ((counter + 1) % sortNumber === 0) {
+        array6.push(data);
+        allchunk.push({
+          id: `project_chunk${counter}`,
+          collection: array6,
+        });
+        // setProjectDivider([...projectDivider,{
+        //   id:`project_chunk${counter}`,
+        //   collection:array6
+        // }])
+        // setProjectDivider(()=>{
+
+        //   return    [...projectDivider,{
+        //     id:`project_chunk${counter}`,
+        //     collection:array6
+        //   }]
+        // })
+        array6 = [];
+      } else if (allStateProject.projects.length === counter + 1) {
+        array6.push(data);
+        allchunk.push({
+          id: `project_chunk${counter}`,
+          collection: array6,
+        });
+        array6 = [];
+      } else {
+        array6.push(data);
+      }
+    });
+    setProjectDivider(allchunk);
+  };
+
   const onDragEnd = (result) => {
+    const { source, destination } = result;
+
     // dropped outside the list
-    if (!result.destination) {
+    if (!destination) {
       return;
     }
 
-    const items = reorder(
-      allProjects,
-      result.source.index,
-      result.destination.index,
-    );
+    if (source.droppableId === destination.droppableId) {
+      projectDivider.map((data, index) => {
+        if (data.id === source.droppableId) {
+          const items = reorder(
+            data.collection,
+            source.index,
+            destination.index
+          );
+          // let state = { items };
 
-    setAllProjects(items);
+          // if (source.droppableId === 'droppable2') {
+          //     state = { selected: items };
+          // }
+          projectDivider[index] = {
+            id: data.id,
+            collection: items,
+          };
+          setProjectDivider(projectDivider);
+          setValue((value) => ++value);
+        }
+      });
+    } else {
+      var verticalsource = '';
+      // var verticalsourceIndex =""
+      var verticaldestination = '';
+      // var verticaldestinationIndex = ""
+
+      projectDivider.map((data, index) => {
+        if (data.id === source.droppableId) {
+          verticalsource = data.collection;
+          // verticalsourceIndex =index
+        }
+        if (data.id === destination.droppableId) {
+          verticaldestination = data.collection;
+          //  verticaldestinationIndex =  index
+        }
+      });
+
+      const result = move(
+        verticalsource,
+        verticaldestination,
+        source,
+        destination
+      );
+      Object.keys(result).map((key) => {
+        projectDivider.map((data, index) => {
+          if (data.id === key) {
+            projectDivider[index] = {
+              id: data.id,
+              collection: result[key],
+            };
+          }
+        });
+      });
+      var updateProjectList = [];
+      projectDivider.map((data) => {
+        return data.collection.map((arrrays) => {
+          updateProjectList.push(arrrays);
+        });
+      });
+
+      setProjectDivider(projectDivider);
+      divideProjects(updateProjectList);
+      // setValue(value => ++value)
+    }
   };
 
   useEffect(() => {
     if (allStateProject.projects.length > 0) {
       setAllProjects(allStateProject.projects);
+      divideProjects(allStateProject.projects);
     }
   }, [allStateProject]);
 
@@ -89,8 +202,13 @@ export const ProjectsPage = (props) => {
     } else if (showCreateProjectPopup) {
       showCreateProjectModal();
     }
-  }, [props]);
+  }, []);
 
+  useEffect(() => {
+    if (!!allProjects) {
+      divideProjects(allProjects);
+    }
+  }, [sortNumber]);
   const handleShow = () => {
     setShow(true); //! state.show
   };
@@ -121,6 +239,13 @@ export const ProjectsPage = (props) => {
     shareProject(projectId);
   };
 
+  // const  id2List = {
+  //   droppable: 'items',
+  //   droppable2: 'selected'
+  // };
+
+  // const getList = (id) => this.state[this.id2List[id]];
+
   const {
     ui,
     showPreview,
@@ -131,8 +256,9 @@ export const ProjectsPage = (props) => {
 
   const { pageLoading, showDeletePlaylistPopup } = ui;
 
-  const projectCards = !!allProjects
-    && allProjects.map((proj, index) => {
+  const projectCards =
+    !!allProjects &&
+    allProjects.map((proj, index) => {
       const res = {
         title: proj.name,
         id: proj.id,
@@ -158,6 +284,7 @@ export const ProjectsPage = (props) => {
                 handleShow={handleShow}
                 handleClose={handleClose}
                 setProjectId={setProjectId}
+                activeFilter={activeFilter}
               />
             </div>
           )}
@@ -194,7 +321,9 @@ export const ProjectsPage = (props) => {
                               ? 'sort-btn active'
                               : 'sort-btn'
                           }
-                          onClick={() => setActiveFilter('list-grid')}
+                          onClick={() => {
+                            setActiveFilter('list-grid');
+                          }}
                         >
                           <FontAwesomeIcon icon="bars" />
                         </div>
@@ -204,7 +333,12 @@ export const ProjectsPage = (props) => {
                               ? 'sort-btn active'
                               : 'sort-btn'
                           }
-                          onClick={() => setActiveFilter('small-grid')}
+                          onClick={() => {
+                            setActiveFilter('small-grid');
+                            setSortNumber(6, () => {
+                              divideProjects(allProjects);
+                            });
+                          }}
                         >
                           <FontAwesomeIcon icon="grip-horizontal" />
                         </div>
@@ -214,7 +348,10 @@ export const ProjectsPage = (props) => {
                               ? 'sort-btn active'
                               : 'sort-btn'
                           }
-                          onClick={() => setActiveFilter('normal-grid')}
+                          onClick={() => {
+                            setActiveFilter('normal-grid');
+                            setSortNumber(4);
+                          }}
                         >
                           <FontAwesomeIcon icon="th-large" />
                         </div>
@@ -229,47 +366,97 @@ export const ProjectsPage = (props) => {
                   </div>
                 </div>
               </div>
-              {!!projectCards && projectCards.length > 0 ? (
-                <DragDropContext onDragEnd={onDragEnd}>
-                  <Droppable
-                    droppableId="project-droppable-id"
-                    direction="horizontal"
-                    type="column"
-                  >
-                    {(provided) => (
-                      <div {...provided.droppableProps} ref={provided.innerRef}>
-                        <div className="row check-home">{projectCards}</div>
-                        {provided.placeholder}
-                      </div>
-                    )}
-                  </Droppable>
-                </DragDropContext>
-              ) : (
-                <>
-                  <Alert variant="success">
-                    Start building your first Project by clicking on the
-                    {' '}
-                    <b>Add Project</b>
-                    {' '}
-                    button.
-                    <br />
-                    For more information click here:
-                    <a
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      className="alert-link-ref"
-                      href="https://support.curriki.org/creating-learning-projects"
-                    >
-                      <b>Getting Started.</b>
-                      {' '}
-                    </a>
-                  </Alert>
-                  {/* eslint-disable-next-line */}
-                  <video controls className="welcome-video">
-                    <source src={welcomVideo} type="video/mp4" />
-                  </video>
-                </>
-              )}
+              {
+                //!!projectCards && projectCards.length > 0
+                !!projectDivider && projectDivider.length > 0 ? (
+                  <DragDropContext onDragEnd={onDragEnd}>
+                    {projectDivider.map((rowData) => {
+                      return (
+                        <Droppable
+                          droppableId={rowData.id}
+                          //direction="horizontal"
+                          //type="row"
+                          direction="horizontal"
+                        >
+                          {(provided) => (
+                            <div
+                              {...provided.droppableProps}
+                              ref={provided.innerRef}
+                            >
+                              <div className="row check-home" id={value}>
+                                {rowData.collection.map((proj, index) => {
+                                  const res = {
+                                    title: proj.name,
+                                    id: proj.id,
+                                    deleteType: 'Project',
+                                  };
+                                  return (
+                                    <Draggable
+                                      key={proj.id}
+                                      draggableId={`${proj.id}`}
+                                      index={index}
+                                    >
+                                      {(provided) => (
+                                        <div
+                                          className="playlist-resource"
+                                          ref={provided.innerRef}
+                                          {...provided.draggableProps}
+                                          {...provided.dragHandleProps}
+                                        >
+                                          <ProjectCard
+                                            key={proj.id}
+                                            project={proj}
+                                            res={res}
+                                            handleDeleteProject={
+                                              handleDeleteProject
+                                            }
+                                            handleShareProject={
+                                              handleShareProject
+                                            }
+                                            showDeletePopup={showDeletePopup}
+                                            showPreview={
+                                              showPreview === proj.id
+                                            }
+                                            handleShow={handleShow}
+                                            handleClose={handleClose}
+                                            setProjectId={setProjectId}
+                                          />
+                                        </div>
+                                      )}
+                                    </Draggable>
+                                  );
+                                })}
+                              </div>
+                              {provided.placeholder}
+                            </div>
+                          )}
+                        </Droppable>
+                      );
+                    })}
+                  </DragDropContext>
+                ) : (
+                  <>
+                    <Alert variant="success">
+                      Start building your first Project by clicking on the{' '}
+                      <b>Add Project</b> button.
+                      <br />
+                      For more information click here:
+                      <a
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="alert-link-ref"
+                        href="https://support.curriki.org/creating-learning-projects"
+                      >
+                        <b>Getting Started.</b>{' '}
+                      </a>
+                    </Alert>
+                    {/* eslint-disable-next-line */}
+                    <video controls className="welcome-video">
+                      <source src={welcomVideo} type="video/mp4" />
+                    </video>
+                  </>
+                )
+              }
             </div>
           </div>
         </div>
@@ -328,8 +515,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
   loadMyProjects: () => dispatch(loadMyProjectsAction()),
-  createProject: (name, description, thumbUrl) => dispatch(createProjectAction(name, description, thumbUrl)),
-  showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
+  createProject: (name, description, thumbUrl) =>
+    dispatch(createProjectAction(name, description, thumbUrl)),
+  showDeletePopup: (id, title, deleteType) =>
+    dispatch(showDeletePopupAction(id, title, deleteType)),
   deleteProject: (id) => dispatch(deleteProjectAction(id)),
   hideDeletePopup: () => dispatch(hideDeletePopupAction()),
   loadProject: (id) => dispatch(loadProjectAction(id)),
@@ -338,5 +527,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ProjectsPage),
+  connect(mapStateToProps, mapDispatchToProps)(ProjectsPage)
 );
