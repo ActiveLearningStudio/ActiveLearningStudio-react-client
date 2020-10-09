@@ -10,7 +10,7 @@ import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
 import logo from 'assets/images/logo.svg';
 import loader from 'assets/images/loader.svg';
-import { registerAction } from 'store/actions/auth';
+import { registerAction, loadOrganizationTypesAction } from 'store/actions/auth';
 import { getErrors } from 'utils';
 import Error from './Error';
 
@@ -34,6 +34,12 @@ class RegisterPage extends React.Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
+    this.props.loadOrganizationTypes();
+    console.log(this.props);
+  }
+
+  componentDidUpdate() {
+    console.log(this.props);
   }
 
   onChangeField = (e) => {
@@ -236,12 +242,14 @@ class RegisterPage extends React.Component {
                 onChange={this.onChangeField}
               >
                 <option selected> -- select an option -- </option>
-                <option value="K-12">K-12</option>
-                <option value="Higher Education">Higher Education</option>
-                <option value="Business/Corporation">Business/Corporation</option>
-                <option value="Nonprofit">Nonprofit</option>
-                <option value="Government/EDU">Government/EDU</option>
-                <option value="Other">Other</option>
+
+                {
+                  this.props.organizationTypes.map((type) =>{
+                    return (
+                      <option value={type.label}>{type.label}</option>
+                    )
+                  })
+                }
               </select>
             </div>
 
@@ -304,10 +312,12 @@ RegisterPage.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   register: (data) => dispatch(registerAction(data)),
+  loadOrganizationTypes: () => dispatch(loadOrganizationTypesAction()),
 });
 
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
+  organizationTypes: state.auth.organizationTypes
 });
 
 export default withRouter(
