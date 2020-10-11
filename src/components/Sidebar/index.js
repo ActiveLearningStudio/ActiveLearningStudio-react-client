@@ -13,6 +13,16 @@ import {
 
 import './style.scss';
 
+// TODO need to fetch from backend. This is just dump data.
+const teams = [
+  { title: 'Maths Team', id: 11 },
+  { title: 'AI Team', id: 12 },
+  { title: 'Mechanics Team', id: 15 },
+];
+const PROJECTS = 'projects';
+const CHANNEL = 'channel';
+const TEAM = 'team';
+
 function Sidebar() {
   const dispatch = useDispatch();
 
@@ -21,6 +31,23 @@ function Sidebar() {
   const [myProjects, setMyProjects] = useState([]);
   const [sampleProject, setSampleProjects] = useState([]);
   // const [updateProject, setUpdateProject] = useState([]);
+  // TODO need to be refactored below states which are for team functionality
+  const [selectedTeam, setSelectedTeam] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path.includes('teams/')) {
+      setSelectedTeam(parseInt(window.location.pathname.split('teams/')[1], 10));
+      if (path.includes(PROJECTS)) {
+        setSelectedCategory(PROJECTS);
+      } else if (path.includes(CHANNEL)) {
+        setSelectedCategory(CHANNEL);
+      } else {
+        setSelectedCategory(TEAM);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (allState.sidebar.allProject.length === 0) {
@@ -49,7 +76,7 @@ function Sidebar() {
   // }, [allState.sidebar.updateProject]);
 
   return (
-    <aside className="sidebarall">
+    <aside className="sidebar-all">
       <Link to="/">
         <div className="menu-title">
           <FontAwesomeIcon icon="tasks" className="mr-2" />
@@ -72,6 +99,7 @@ function Sidebar() {
           <FontAwesomeIcon icon="arrow-right" className="ml-2" />
         </Link>
       </ul>
+
       {/* <div
         className="menu-title"
         onClick={() => {
@@ -135,6 +163,66 @@ function Sidebar() {
           Utilization Dashboard
         </div>
       </Link>
+
+      <Link to="/teams">
+        <div className="menu-title">
+          <FontAwesomeIcon icon="user-friends" className="mr-2" />
+          Teams
+        </div>
+      </Link>
+
+      {teams.map((team) => (
+        <div key={team.title} className={`team-item${selectedTeam === team.id ? '' : ' collapsed'}`}>
+          <div
+            className="team-label"
+            onClick={() => {
+              window.location = (`/teams/${team.id}`);
+              if (selectedTeam === team.id) {
+                setSelectedTeam(team.id);
+              }
+            }}
+          >
+            {team.title}
+            <FontAwesomeIcon
+              icon={selectedTeam === team.id ? 'angle-up' : 'angle-down'}
+              className="ml-2 mt-1"
+            />
+          </div>
+
+          <div className="team-detail-labels">
+            <Link
+              to={`/teams/${team.id}`}
+              className={selectedCategory === TEAM ? 'active-label' : ''}
+            >
+              <FontAwesomeIcon icon="user-friends" className="mr-2" />
+              Team Members
+            </Link>
+
+            <Link
+              to={`/teams/${team.id}/projects`}
+              className={selectedCategory === PROJECTS ? 'active-label' : ''}
+            >
+              <FontAwesomeIcon icon="layer-group" className="mr-2" />
+              Projects
+            </Link>
+
+            <Link
+              to={`/teams/${team.id}/channel`}
+              className={selectedCategory === CHANNEL ? 'active-label' : ''}
+            >
+              <FontAwesomeIcon icon="network-wired" className="mr-2" />
+              Channels
+            </Link>
+          </div>
+        </div>
+      ))}
+
+      <div className="menu-title create-button">
+        <Link to="/teams/createTeam">
+          <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
+          Create Team
+        </Link>
+      </div>
     </aside>
   );
 }

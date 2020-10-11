@@ -1,12 +1,12 @@
 aside {
-  background: #fff;
   min-height: 900px;
   padding-top: 30px;
   padding-right: 0;
+  background: #fff;
 
   & > ul {
-    list-style: none;
     padding: 0 30px;
+    list-style: none;
 
     & > li {
       border-top: 1px solid #e8e8e8;
@@ -16,10 +16,10 @@ aside {
       }
 
       & > a {
-        font-size: 20px;
-        display: block;
         padding-top: 20px;
         padding-bottom: 20px;
+        display: block;
+        font-size: 20px;
 
         &:hover {
           text-decoration: none;
@@ -31,13 +31,13 @@ aside {
       }
 
       .sublist {
-        list-style: none;
         padding-left: 25px;
+        list-style: none;
 
         a {
-          display: block;
           padding-top: 5px;
           padding-bottom: 5px;
+          display: block;
           font-size: 14px;
         }
       }
@@ -46,14 +46,14 @@ aside {
         padding-left: 25px;
 
         button {
-          color: #607a9b;
-          border: 1px solid #bfbfbf;
-          cursor: pointer;
-          padding: 5px 10px 5px 35px;
-          background: #fafafa url(../../assets/images/add-member-icon.png) no-repeat 10px 9px;
-          border-radius: 2px;
           margin-top: 20px;
           margin-bottom: 50px;
+          padding: 5px 10px 5px 35px;
+          background: #fafafa url(../../assets/images/add-member-icon.png) no-repeat 10px 9px;
+          border: 1px solid #bfbfbf;
+          border-radius: 2px;
+          color: #607a9b;
+          cursor: pointer;
         }
       }
     }
@@ -82,17 +82,17 @@ aside {
   }
 }
 
-.sidebarall {
+.sidebar-all {
   .expand {
-    text-align: left;
-    text-decoration: underline;
-    font: normal normal normal 13px/22px Open Sans;
-    letter-spacing: 0px;
-    color: #0f4392;
-    opacity: 1;
-    border-top: 1px solid #e8e8e8;
     width: 100%;
     display: block;
+    border-top: 1px solid #e8e8e8;
+    font: normal normal normal 13px/22px Open Sans;
+    letter-spacing: 0;
+    color: #0f4392;
+    text-align: left;
+    text-decoration: underline;
+    opacity: 1;
 
     svg {
       margin-left: 10px;
@@ -100,16 +100,15 @@ aside {
   }
 
   .menu-title {
-    text-align: left;
+    padding: 12px 20px;
+    border-top: 1px solid #e8e8e8;
     font: normal normal bold 16px/25px Open Sans;
-    letter-spacing: 0px;
+    font-weight: 600;
+    letter-spacing: 0;
     color: #0f4392;
+    text-align: left;
     text-transform: uppercase;
     opacity: 1;
-    font-weight: 600;
-    padding: 12px 20px;
-    border-top: 1px solid;
-    border-top: 1px solid #e8e8e8;
 
     &:hover {
       cursor: pointer;
@@ -117,14 +116,80 @@ aside {
     }
   }
 
+  .team-item {
+    margin: 12px 20px;
+    border: solid 1px #e6e6e6;
+
+    &:hover {
+      cursor: pointer;
+      text-decoration: none !important;
+    }
+
+    .team-label {
+      padding: 10px 15px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: solid 1px #e6e6e6;
+      font-size: 14px;
+    }
+
+    .team-detail-labels {
+      display: flex;
+      flex-direction: column;
+
+      a {
+        padding: 10px 15px;
+        font-size: 12px;
+
+        &.active-label {
+          color: #0F4392;
+        }
+
+        svg {
+          margin-right: 8px;
+        }
+      }
+    }
+
+    &.collapsed {
+      .team-label {
+        background: #EEEEEE;
+      }
+
+      .team-detail-labels {
+        display: none;
+      }
+    }
+  }
+
+  .create-button {
+    text-align: center;
+
+    a {
+      padding: 7px 65px;
+      background: none;
+      border: solid 1px;
+      border-radius: 5px;
+      font-size: 14px;
+      line-height: 25px;
+      color: #0f4392;
+      //font-style: normal;
+      //font-variant-ligatures: normal;
+      //font-variant-caps: normal;
+      //font-variant-numeric: normal;
+      //font-variant-east-asian: normal;
+      //font-stretch: normal;
+    }
+  }
+
   a {
-    text-align: left;
+    padding: 10px 0;
     font: normal normal 600 14px/25px Open Sans;
-    letter-spacing: 0px;
-    color: #464646;
-    opacity: 1;
-    padding: 10px 0px;
     font-weight: 400;
+    letter-spacing: 0;
+    color: #464646;
+    text-align: left;
+    opacity: 1;
   }
 }
 

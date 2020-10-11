@@ -1,0 +1,61 @@
+.teams-page {
+  .title {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #084892;
+  }
+
+  .dashboard-panel {
+    background: white;
+    border-radius: 8px;
+  }
+
+  .dashboard-panel-header-row {
+    border-left: solid 5px #084892;
+  }
+
+  .btn {
+    background-color: mediumaquamarine;
+    border-color: mediumaquamarine;
+  }
+
+  label {
+    margin-right: 0.5em;
+    font-weight: bold;
+  }
+
+  .offer-panel {
+    border: solid 3px #084892;
+  }
+
+  .metrics-counters span {
+    display: block;
+    font-size: xx-large;
+    font-weight: bold;
+    color: cadetblue;
+  }
+
+  .content {
+    margin: 30px;
+
+    .overview {
+      display: flex;
+    }
+
+    .sub-content {
+      padding: 55px 40px;
+      background: #fff;
+    }
+  }
+}
+
+.swal2-html-container ul {
+  font-weight: normal;
+  text-align: initial;
+  list-style: circle;
+}

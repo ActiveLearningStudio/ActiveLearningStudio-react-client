@@ -6,7 +6,7 @@ import { launchAsync } from '@microsoft/immersive-reader-sdk';
 
 import './style.scss';
 
-export class ImmersiveReaderPreview extends React.Component {
+class ImmersiveReaderPreview extends React.Component {
   doLaunch = () => {
     const { activity } = this.props;
     const { token } = JSON.parse(localStorage.getItem('auth'));

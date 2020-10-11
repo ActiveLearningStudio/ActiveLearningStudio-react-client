@@ -1,0 +1,69 @@
+$selected_color: #084892;
+$filled: #44ca92;
+
+.team-card-content {
+  max-width: 280px;
+  margin: 0 25px 0 0;
+  padding: 10px 25px;
+  background: #fff;
+  border: solid 1px #e2e2e2;
+
+  & > div {
+    padding: 15px 0;
+  }
+
+  .sub-title {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+  }
+
+  .team-member-content {
+    &.mid-border {
+      border-width: 1px 0;
+      border-style: solid;
+      border-color: #e2e2e2;
+    }
+
+    .member-mark-container {
+      margin-top: 15px;
+      display: flex;
+
+      .member-name-mark {
+        position: relative;
+        width: 30px;
+        height: 30px;
+        background: #fff;
+        border: solid 1px #e2e2e2;
+        border-radius: 50%;
+        font-weight: bold;
+        text-align: center;
+        text-transform: uppercase;
+        color: #a5a5a5;
+
+        &.over {
+          margin-left: -7px;
+        }
+
+        span {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          margin: 0;
+          transform: translate(-50%, -50%);
+          font-size: 12px;
+        }
+      }
+    }
+  }
+
+  .title {
+    margin: 0 0 15px 0;
+    padding: 0;
+  }
+
+  .describe {
+    margin-bottom: 0;
+    font-size: 14px;
+  }
+}

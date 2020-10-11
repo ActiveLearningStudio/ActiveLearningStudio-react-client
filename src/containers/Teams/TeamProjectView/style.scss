@@ -1,0 +1,93 @@
+$selected_color: #084892;
+$filled: #44ca92;
+
+.team-information {
+  .projects-wrapper {
+    .project-list {
+      display: flex;
+
+      .project-content-item {
+        position: relative;
+        margin: 0 10px 0 0;
+        background: #fff;
+        border: solid 1px #e2e2e2;
+
+        img {
+          min-width: 240px;
+          min-height: 170px;
+        }
+
+        .project-title {
+          width: 100%;
+          padding: 9px 20px;
+          display: flex;
+          justify-content: space-between;
+          border-top: solid 1px #e2e2e2;
+
+          span {
+            width: 150px;
+            max-height: 48px;
+            min-height: 48px;
+            font-size: 16px;
+            color: #0F4392;
+          }
+
+          div {
+            width: calc(100% - 150px);
+            height: 42px;
+            padding: 5px 0 0 0;
+            text-align: right;
+          }
+        }
+
+        .team-member-content {
+          background: #fafafa;
+
+          .sub-title {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+          }
+
+          &.mid-border {
+            padding: 9px 22px;
+            border-width: 1px 0 0 0;
+            border-style: solid;
+            border-color: #e2e2e2;
+          }
+
+          .member-mark-container {
+            margin-top: 15px;
+            display: flex;
+
+            .member-name-mark {
+              position: relative;
+              width: 30px;
+              height: 30px;
+              background: #fff;
+              border: solid 1px #e2e2e2;
+              border-radius: 50%;
+              font-weight: bold;
+              text-align: center;
+              text-transform: uppercase;
+              color: #a5a5a5;
+
+              &.over {
+                margin-left: -7px;
+              }
+
+              span {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin: 0;
+                transform: translate(-50%, -50%);
+                font-size: 12px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -27,7 +27,7 @@ import ProjectCard from './ProjectCard';
 import NewProjectPage from './NewProjectPage';
 
 // TODO: need to convert to functional component
-export class ProjectsPage extends React.Component {
+class ProjectsPage extends React.Component {
   constructor(props) {
     super(props);
 
