@@ -66,7 +66,7 @@ const AppRouter = () => {
         <PrivateRoute exact path="/dashboard" component={DashboardPage} />
 
         <PrivateRoute exact path="/teams" component={TeamsPage} overview />
-        <PrivateRoute exact path="/teams/createTeam" component={TeamsPage} creation />
+        <PrivateRoute exact path="/teams/create-team" component={TeamsPage} creation />
         <PrivateRoute exact path="/teams/:teamId" component={TeamsPage} teamShow />
         <PrivateRoute exact path="/teams/:teamId/projects" component={TeamsPage} projectShow />
         <PrivateRoute exact path="/teams/:teamId/channel" component={TeamsPage} channelShow />

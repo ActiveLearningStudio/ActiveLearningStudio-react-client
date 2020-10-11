@@ -218,7 +218,7 @@ function Sidebar() {
       ))}
 
       <div className="menu-title create-button">
-        <Link to="/teams/createTeam">
+        <Link to="/teams/create-team">
           <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
           Create Team
         </Link>
