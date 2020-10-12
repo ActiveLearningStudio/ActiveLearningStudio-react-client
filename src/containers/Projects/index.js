@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import ReactPlaceholder from 'react-placeholder';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert } from 'react-bootstrap';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import welcomVideo from 'assets/video/welcome.mp4';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
@@ -15,8 +16,10 @@ import {
   createProjectAction,
   loadMyProjectsAction,
   shareProjectAction,
+  loadMyReorderProjectsAction,
   loadLmsAction,
 } from 'store/actions/project';
+import {allSidebarProjects} from 'store/actions/project';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
@@ -26,18 +29,152 @@ import GoogleModel from 'components/models/GoogleLoginModal';
 import ProjectCard from './ProjectCard';
 import NewProjectPage from './NewProjectPage';
 
-// TODO: need to convert to functional component
-export class ProjectsPage extends React.Component {
-  constructor(props) {
-    super(props);
+export const ProjectsPage = (props) => {
+  const allStateProject = useSelector((state) => state.project);
+  const [show, setShow] = useState(false);
+  const [selectedProjectId, setSelectedProjectId] = useState(0);
+  const [activeFilter, setActiveFilter] = useState('normal-grid');
+  const [allProjects, setAllProjects] = useState(null);
+  const [value, setValue] = useState(0);
+  const [projectDivider, setProjectDivider] = useState([]);
+  const [sortNumber, setSortNumber] = useState(4);
 
-    this.state = {
-      show: false,
-      selectedProjectId: 0,
-    };
-  }
+  const {
+    ui,
+    showPreview,
+    showCreateProjectPopup,
+    showEditProjectPopup,
+    showDeletePopup,
+    loadMyReorderProjectsActionMethod,
+    allSidebarProjectsUpdate
+  } = props;
 
-  componentDidMount() {
+  const reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+  };
+
+  const move = (source, destination, droppableSource, droppableDestination) => {
+    const sourceClone = Array.from(source);
+    const destClone = Array.from(destination);
+    const [removed] = sourceClone.splice(droppableSource.index, 1);
+
+    destClone.splice(droppableDestination.index, 0, removed);
+
+    const result = {};
+    result[droppableSource.droppableId] = sourceClone;
+    result[droppableDestination.droppableId] = destClone;
+    return result;
+  };
+
+  var array6 = [];
+  var allchunk = [];
+  const divideProjects = (divderProjects) => {
+    divderProjects.map((data, counter) => {
+      if ((counter + 1) % sortNumber === 0) {
+        array6.push(data);
+        allchunk.push({
+          id: `project_chunk${counter}`,
+          collection: array6,
+        });
+        array6 = [];
+      } else if (allStateProject.projects.length === counter + 1) {
+        array6.push(data);
+        allchunk.push({
+          id: `project_chunk${counter}`,
+          collection: array6,
+        });
+        array6 = [];
+      } else {
+        array6.push(data);
+      }
+    });
+    setProjectDivider(allchunk);
+  };
+
+  const onDragEnd = (result) => {
+    const { source, destination } = result;
+
+    // dropped outside the list
+    if (!destination) {
+      return;
+    }
+
+    if (source.droppableId === destination.droppableId) {
+      projectDivider.map((data, index) => {
+        if (data.id === source.droppableId) {
+          const items = reorder(
+            data.collection,
+            source.index,
+            destination.index
+          );
+
+          projectDivider[index] = {
+            id: data.id,
+            collection: items,
+          };
+        
+          loadMyReorderProjectsActionMethod(projectDivider)
+          setProjectDivider(projectDivider);
+          setValue((value) => value=value+1);
+          allSidebarProjectsUpdate()
+        }
+      });
+    } else {
+      var verticalsource = '';
+      var verticaldestination = '';
+      projectDivider.map((data) => {
+        if (data.id === source.droppableId) {
+          verticalsource = data.collection
+        }
+        if (data.id === destination.droppableId) {
+          verticaldestination = data.collection
+        }
+      });
+
+      const result = move(
+        verticalsource,
+        verticaldestination,
+        source,
+        destination
+      );
+
+      Object.keys(result).map((key) => {
+        projectDivider.map((data, index) => {
+          if (data.id === key) {
+            projectDivider[index] = {
+              id: data.id,
+              collection: result[key],
+            };
+          }
+        });
+      });
+
+      var updateProjectList = [];
+      projectDivider.map((data) => {
+        return data.collection.map((arrrays) => {
+          updateProjectList.push(arrrays);
+        });
+      });
+      loadMyReorderProjectsActionMethod(projectDivider)
+      setProjectDivider(projectDivider);
+      divideProjects(updateProjectList);
+      allSidebarProjectsUpdate()
+     
+    }
+  };
+
+  useEffect(() => {
+    if (allStateProject.projects.length > 0) {
+      setAllProjects(allStateProject.projects);
+      divideProjects(allStateProject.projects);
+    }
+  }, [allStateProject]);
+
+  useEffect(() => {
     const {
       match,
       showCreateProjectPopup,
@@ -46,7 +183,7 @@ export class ProjectsPage extends React.Component {
       loadProject,
       loadMyProjects,
       loadLms,
-    } = this.props;
+      } = props;
 
     loadLms();
 
@@ -63,95 +200,109 @@ export class ProjectsPage extends React.Component {
     } else if (showCreateProjectPopup) {
       showCreateProjectModal();
     }
-  }
+  }, []);
 
-  handleShow = () => {
-    this.setState({ show: true }); //! state.show
+  useEffect(() => {
+    if (!!allProjects) {
+      divideProjects(allProjects);
+    }
+  }, [sortNumber]);
+  const handleShow = () => {
+    setShow(true); //! state.show
   };
 
-  setProjectId = (projectId) => {
-    this.setState({ selectedProjectId: projectId });
+  const setProjectId = (projectId) => {
+    setSelectedProjectId(projectId);
   };
 
-  handleClose = () => {
-    this.setState({ show: false });
+  const handleClose = () => {
+    setShow(false);
   };
 
-  handleCloseProjectModal = (e) => {
+  const handleCloseProjectModal = (e) => {
     e.preventDefault();
-    const { history } = this.props;
+    const { history } = props;
     history.push('/projects');
   };
 
-  handleDeleteProject = (projectId) => {
-    const { deleteProject } = this.props;
+  const handleDeleteProject = (projectId) => {
+    const { deleteProject } = props;
     if (window.confirm('Are you Sure?')) {
       deleteProject(projectId);
     }
   };
 
-  handleShareProject = (projectId) => {
-    const { shareProject } = this.props;
+  const handleShareProject = (projectId) => {
+    const { shareProject } = props;
     shareProject(projectId);
   };
 
-  render() {
-    const { show, selectedProjectId } = this.state;
-    const {
-      project,
-      ui,
-      showPreview,
-      showCreateProjectPopup,
-      showEditProjectPopup,
-      showDeletePopup,
-    } = this.props;
+  const { pageLoading, showDeletePlaylistPopup } = ui;
 
-    const { projects } = project;
-    const { pageLoading, showDeletePlaylistPopup } = ui;
+  return (
+    <>
+      <Header {...props} />
 
-    const projectCards = projects.map((proj) => {
-      const res = {
-        title: proj.name,
-        id: proj.id,
-        deleteType: 'Project',
-      };
-      return (
-        <ProjectCard
-          key={proj.id}
-          project={proj}
-          res={res}
-          handleDeleteProject={this.handleDeleteProject}
-          handleShareProject={this.handleShareProject}
-          showDeletePopup={showDeletePopup}
-          showPreview={showPreview === proj.id}
-          handleShow={this.handleShow}
-          handleClose={this.handleClose}
-          setProjectId={this.setProjectId}
-        />
-      );
-    });
+      <ReactPlaceholder
+        type="media"
+        showLoadingAnimation
+        customPlaceholder={<ProjectsLoading />}
+        ready={!pageLoading}
+      >
+        <div className="main-content-wrapper">
+          <div className="sidebar-wrapper">
+            <Sidebar />
+          </div>
 
-    return (
-      <>
-        <Header {...this.props} />
-
-        <ReactPlaceholder
-          type="media"
-          showLoadingAnimation
-          customPlaceholder={<ProjectsLoading />}
-          ready={!pageLoading}
-        >
-          <div className="main-content-wrapper">
-            <div className="sidebar-wrapper">
-              <Sidebar />
-            </div>
-
-            <div className="content-wrapper">
-              <div className="content">
-                <div className="row">
-                  <div className="col-md-12">
-                    <div className="program-page-title">
-                      <h1>My Projects</h1>
+          <div className={`content-wrapper ${activeFilter}`}>
+            <div className="content">
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="program-page-title">
+                    <h1>My Projects</h1>
+                    <div className="project-page-settings">
+                      <div className="sort-project-btns">
+                        <div
+                          className={
+                            activeFilter === 'list-grid'
+                              ? 'sort-btn active'
+                              : 'sort-btn'
+                          }
+                          onClick={() => {
+                            setActiveFilter('list-grid');
+                          }}
+                        >
+                          <FontAwesomeIcon icon="bars" />
+                        </div>
+                        <div
+                          className={
+                            activeFilter === 'small-grid'
+                              ? 'sort-btn active'
+                              : 'sort-btn'
+                          }
+                          onClick={() => {
+                            setActiveFilter('small-grid');
+                            setSortNumber(6, () => {
+                              divideProjects(allProjects);
+                            });
+                          }}
+                        >
+                          <FontAwesomeIcon icon="grip-horizontal" />
+                        </div>
+                        <div
+                          className={
+                            activeFilter === 'normal-grid'
+                              ? 'sort-btn active'
+                              : 'sort-btn'
+                          }
+                          onClick={() => {
+                            setActiveFilter('normal-grid');
+                            setSortNumber(4);
+                          }}
+                        >
+                          <FontAwesomeIcon icon="th-large" />
+                        </div>
+                      </div>
                       <Link to="/project/create">
                         <div className="btn-top-page">
                           <FontAwesomeIcon icon="plus" className="mr-2" />
@@ -161,56 +312,119 @@ export class ProjectsPage extends React.Component {
                     </div>
                   </div>
                 </div>
-                {!!projectCards && projectCards.length > 0
-                  ? <div className="row check-home">{projectCards}</div>
-                  : (
-                    <>
-                      <Alert variant="success">
-                        Start building your first Project by clicking on the
-                        {' '}
-                        <b>Add Project</b>
-                        {' '}
-                        button.
-                        <br />
-                        For more information click here:
-                        <a target="_blank" rel="noreferrer noopener" className="alert-link-ref" href="https://support.curriki.org/creating-learning-projects">
-                          <b>Getting Started.</b>
-                          {' '}
-                        </a>
-                      </Alert>
-                      {/* eslint-disable-next-line */}
-                      <video  controls className="welcome-video">
-                        <source src={welcomVideo} type="video/mp4" />
-                      </video>
-                    </>
-                  )}
               </div>
+              {
+                //!!projectCards && projectCards.length > 0
+                !!projectDivider && projectDivider.length > 0 ? (
+                  <DragDropContext onDragEnd={onDragEnd}>
+                    {projectDivider.map((rowData) => {
+                      return (
+                        <Droppable
+                          droppableId={rowData.id}
+                          //direction="horizontal"
+                          //type="row"
+                          direction="horizontal"
+                        >
+                          {(provided) => (
+                            <div
+                              {...provided.droppableProps}
+                              ref={provided.innerRef}
+                            >
+                              <div className="row check-home" id={value}>
+                                {rowData.collection.map((proj, index) => {
+                                  const res = {
+                                    title: proj.name,
+                                    id: proj.id,
+                                    deleteType: 'Project',
+                                  };
+                                return (
+                                  <Draggable
+                                    key={proj.id}
+                                    draggableId={`${proj.id}`}
+                                    index={index}
+                                  >
+                                    {(provided) => (
+                                      <div
+                                        className="playlist-resource"
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                      >
+                                        <ProjectCard
+                                          key={proj.id}
+                                          project={proj}
+                                          res={res}
+                                          handleDeleteProject={handleDeleteProject}
+                                          handleShareProject={handleShareProject}
+                                          showDeletePopup={showDeletePopup}
+                                          showPreview={showPreview === proj.id}
+                                          handleShow={handleShow}
+                                          handleClose={handleClose}
+                                          setProjectId={setProjectId}
+                                          activeFilter={activeFilter}
+                                        />
+                                      </div>
+                                    )}
+                                  </Draggable>
+                                );
+                                })}
+                              </div>
+                              {provided.placeholder}
+                            </div>
+                          )}
+                        </Droppable>
+                      );
+                    })}
+                  </DragDropContext>
+                ) : (
+                  <>
+                    <Alert variant="success">
+                      Start building your first Project by clicking on the{' '}
+                      <b>Add Project</b> button.
+                      <br />
+                      For more information click here:
+                      <a
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="alert-link-ref"
+                        href="https://support.curriki.org/creating-learning-projects"
+                      >
+                        <b>Getting Started.</b>{' '}
+                      </a>
+                    </Alert>
+                    {/* eslint-disable-next-line */}
+                    <video controls className="welcome-video">
+                      <source src={welcomVideo} type="video/mp4" />
+                    </video>
+                  </>
+                )
+              }
             </div>
           </div>
+        </div>
 
-          {(showCreateProjectPopup || showEditProjectPopup) && (
-            <NewProjectPage
-              {...this.props}
-              handleCloseProjectModal={this.handleCloseProjectModal}
-            />
-          )}
+        {(showCreateProjectPopup || showEditProjectPopup) && (
+          <NewProjectPage
+            {...props}
+            handleCloseProjectModal={handleCloseProjectModal}
+          />
+        )}
 
-          {showDeletePlaylistPopup && (
-            <DeletePopup {...this.props} deleteType="Project" />
-          )}
-        </ReactPlaceholder>
+        {showDeletePlaylistPopup && (
+          <DeletePopup {...props} deleteType="Project" />
+        )}
+      </ReactPlaceholder>
 
-        <Footer />
+      <Footer />
 
-        <GoogleModel
-          projectId={selectedProjectId}
-          show={show}// {this.props.show}
-          onHide={this.handleClose}
-        />
-      </>
-    );
-  }
-}
+      <GoogleModel
+        projectId={selectedProjectId}
+        show={show} // {props.show}
+        onHide={handleClose}
+      />
+    </>
+  );
+};
 
 ProjectsPage.propTypes = {
   match: PropTypes.object.isRequired,
@@ -227,6 +441,8 @@ ProjectsPage.propTypes = {
   loadMyProjects: PropTypes.func.isRequired,
   shareProject: PropTypes.func.isRequired,
   loadLms: PropTypes.func.isRequired,
+  loadMyReorderProjectsActionMethod:PropTypes.func.isRequired,
+  allSidebarProjectsUpdate:PropTypes.func.isRequired
 };
 
 ProjectsPage.defaultProps = {
@@ -243,15 +459,19 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
   loadMyProjects: () => dispatch(loadMyProjectsAction()),
-  createProject: (name, description, thumbUrl) => dispatch(createProjectAction(name, description, thumbUrl)),
-  showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
+  createProject: (name, description, thumbUrl) =>
+    dispatch(createProjectAction(name, description, thumbUrl)),
+  showDeletePopup: (id, title, deleteType) =>
+    dispatch(showDeletePopupAction(id, title, deleteType)),
   deleteProject: (id) => dispatch(deleteProjectAction(id)),
   hideDeletePopup: () => dispatch(hideDeletePopupAction()),
   loadProject: (id) => dispatch(loadProjectAction(id)),
   shareProject: (id) => dispatch(shareProjectAction(id)),
   loadLms: () => dispatch(loadLmsAction()),
+  loadMyReorderProjectsActionMethod:(projectDivider)=>dispatch(loadMyReorderProjectsAction(projectDivider)),
+  allSidebarProjectsUpdate:()=>dispatch(allSidebarProjects())
 });
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ProjectsPage),
+  connect(mapStateToProps, mapDispatchToProps)(ProjectsPage)
 );

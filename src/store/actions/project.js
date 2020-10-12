@@ -130,6 +130,24 @@ export const loadMyProjectsAction = () => async (dispatch) => {
   }
 };
 
+export const loadMyReorderProjectsAction = (projectDivider) => async () => {
+
+  const reorderProject = []
+  var reorderindex = 0
+  projectDivider.map((data)=>{
+    data.collection.map((collections)=>{
+      reorderProject.push({
+        order:reorderindex,
+        id:collections.id,
+        project:collections 
+      })
+      reorderindex= reorderindex+1
+    })
+  })
+
+  projectService.getReorderAll(reorderProject);
+}
+
 export const loadMyCloneProjectsAction = () => async (dispatch) => {
   const projects = await projectService.getClone();
   dispatch({
