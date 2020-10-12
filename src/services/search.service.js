@@ -13,7 +13,7 @@ const searchResult = (searchQuery, from, size, model) => httpService
 
 const cloneProject = (projectId) => httpService
   .post(`/${apiVersion}/projects/${projectId}/clone`)
-  .then((res) => Swal.fire(res.response.data.message))
+  .then((res) => Swal.fire(res.data.message))
   .catch((err) => {
     if (err.response.data.errors) {
       Swal.fire(err.response.data.errors[0]);
@@ -27,7 +27,7 @@ const cloneProject = (projectId) => httpService
 
 const clonePlaylist = (projectId, playlistId) => httpService
   .post(`/${apiVersion}/projects/${projectId}/playlists/${playlistId}/clone`)
-  .then((res) => Swal.fire(res.response.data.message))
+  .then((res) => Swal.fire(res.data.message))
   .catch((err) => {
     if (err.response.data.errors) {
       Swal.fire(err.response.data.errors[0]);
@@ -41,7 +41,7 @@ const clonePlaylist = (projectId, playlistId) => httpService
 
 const cloneActivity = (playlistId, ActivityId) => httpService
   .post(`/${apiVersion}/playlists/${playlistId}/activities/${ActivityId}/clone`)
-  .then((res) => Swal.fire(res.response.data.message))
+  .then((res) => Swal.fire(res.data.message))
   .catch((err) => {
     if (err.response.data.errors) {
       Swal.fire(err.response.data.errors[0]);
@@ -54,7 +54,7 @@ const cloneActivity = (playlistId, ActivityId) => httpService
   });
 
 const googleClassShare = (projectId, courseId) => httpService
-  .post(`/${apiVersion}/google-classroom/projects/${projectId}/copy`, { courseId })
+  .post(`/${apiVersion}/google-classroom/projects/${projectId}/copy`, { course_id: courseId })
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
