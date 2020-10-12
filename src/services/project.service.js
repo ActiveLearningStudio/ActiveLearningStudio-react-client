@@ -75,9 +75,9 @@ const fetchLmsDetails = (lms, projectId, settingId) => httpService
   }).then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const getReorderAll = (data) => httpService
-  .post(`projects/{project}/reorder`, {
-    projects: data,
+const getReorderAll = (projectData) => httpService
+  .post(`/${apiVersion}/projects/reorder`, {
+    projects: projectData,
   }).then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 

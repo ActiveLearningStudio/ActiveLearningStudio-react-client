@@ -163,11 +163,19 @@ const ProjectCard = (props) => {
             <div className="lessons-duration">
               <div className="row">
                 <div className="col-md-12">
-                  <p>
-                    {project.description && project.description.length > 130
-                      ? `${project.description.substring(0, 130)} ...`
-                      : project.description}
-                  </p>
+                  {activeFilter === "small-grid" ? (
+                    <p>
+                      {project.description && project.description.length > 80
+                        ? `${project.description.substring(0, 80)} ...`
+                        : project.description}
+                    </p>
+                  ) : (
+                    <p>
+                      {project.description && project.description.length > 130
+                        ? `${project.description.substring(0, 130)} ...`
+                        : project.description}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>

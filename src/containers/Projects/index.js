@@ -16,6 +16,7 @@ import {
   createProjectAction,
   loadMyProjectsAction,
   shareProjectAction,
+  loadMyReorderProjectsAction,
   loadLmsAction,
 } from 'store/actions/project';
 import Header from 'components/Header';
@@ -36,6 +37,15 @@ export const ProjectsPage = (props) => {
   const [value, setValue] = useState(0);
   const [projectDivider, setProjectDivider] = useState([]);
   const [sortNumber, setSortNumber] = useState(4);
+
+  const {
+    ui,
+    showPreview,
+    showCreateProjectPopup,
+    showEditProjectPopup,
+    showDeletePopup,
+    loadMyReorderProjectsActionMethod
+  } = props;
 
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -68,17 +78,6 @@ export const ProjectsPage = (props) => {
           id: `project_chunk${counter}`,
           collection: array6,
         });
-        // setProjectDivider([...projectDivider,{
-        //   id:`project_chunk${counter}`,
-        //   collection:array6
-        // }])
-        // setProjectDivider(()=>{
-
-        //   return    [...projectDivider,{
-        //     id:`project_chunk${counter}`,
-        //     collection:array6
-        //   }]
-        // })
         array6 = [];
       } else if (allStateProject.projects.length === counter + 1) {
         array6.push(data);
@@ -110,33 +109,27 @@ export const ProjectsPage = (props) => {
             source.index,
             destination.index
           );
-          // let state = { items };
 
-          // if (source.droppableId === 'droppable2') {
-          //     state = { selected: items };
-          // }
           projectDivider[index] = {
             id: data.id,
             collection: items,
           };
+        
+          loadMyReorderProjectsActionMethod(projectDivider)
           setProjectDivider(projectDivider);
-          setValue((value) => ++value);
+          setValue((value) => value=value+1);
+          
         }
       });
     } else {
       var verticalsource = '';
-      // var verticalsourceIndex =""
       var verticaldestination = '';
-      // var verticaldestinationIndex = ""
-
-      projectDivider.map((data, index) => {
+      projectDivider.map((data) => {
         if (data.id === source.droppableId) {
-          verticalsource = data.collection;
-          // verticalsourceIndex =index
+          verticalsource = data.collection
         }
         if (data.id === destination.droppableId) {
-          verticaldestination = data.collection;
-          //  verticaldestinationIndex =  index
+          verticaldestination = data.collection
         }
       });
 
@@ -146,6 +139,7 @@ export const ProjectsPage = (props) => {
         source,
         destination
       );
+
       Object.keys(result).map((key) => {
         projectDivider.map((data, index) => {
           if (data.id === key) {
@@ -156,16 +150,17 @@ export const ProjectsPage = (props) => {
           }
         });
       });
+
       var updateProjectList = [];
       projectDivider.map((data) => {
         return data.collection.map((arrrays) => {
           updateProjectList.push(arrrays);
         });
       });
-
+      loadMyReorderProjectsActionMethod(projectDivider)
       setProjectDivider(projectDivider);
       divideProjects(updateProjectList);
-      // setValue(value => ++value)
+     
     }
   };
 
@@ -185,7 +180,7 @@ export const ProjectsPage = (props) => {
       loadProject,
       loadMyProjects,
       loadLms,
-    } = props;
+      } = props;
 
     loadLms();
 
@@ -239,58 +234,7 @@ export const ProjectsPage = (props) => {
     shareProject(projectId);
   };
 
-  // const  id2List = {
-  //   droppable: 'items',
-  //   droppable2: 'selected'
-  // };
-
-  // const getList = (id) => this.state[this.id2List[id]];
-
-  const {
-    ui,
-    showPreview,
-    showCreateProjectPopup,
-    showEditProjectPopup,
-    showDeletePopup,
-  } = props;
-
   const { pageLoading, showDeletePlaylistPopup } = ui;
-
-  const projectCards =
-    !!allProjects &&
-    allProjects.map((proj, index) => {
-      const res = {
-        title: proj.name,
-        id: proj.id,
-        deleteType: 'Project',
-      };
-      return (
-        <Draggable key={proj.id} draggableId={`${proj.id}`} index={index}>
-          {(provided) => (
-            <div
-              className="playlist-resource"
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-            >
-              <ProjectCard
-                key={proj.id}
-                project={proj}
-                res={res}
-                handleDeleteProject={handleDeleteProject}
-                handleShareProject={handleShareProject}
-                showDeletePopup={showDeletePopup}
-                showPreview={showPreview === proj.id}
-                handleShow={handleShow}
-                handleClose={handleClose}
-                setProjectId={setProjectId}
-                activeFilter={activeFilter}
-              />
-            </div>
-          )}
-        </Draggable>
-      );
-    });
 
   return (
     <>
@@ -390,41 +334,36 @@ export const ProjectsPage = (props) => {
                                     id: proj.id,
                                     deleteType: 'Project',
                                   };
-                                  return (
-                                    <Draggable
-                                      key={proj.id}
-                                      draggableId={`${proj.id}`}
-                                      index={index}
-                                    >
-                                      {(provided) => (
-                                        <div
-                                          className="playlist-resource"
-                                          ref={provided.innerRef}
-                                          {...provided.draggableProps}
-                                          {...provided.dragHandleProps}
-                                        >
-                                          <ProjectCard
-                                            key={proj.id}
-                                            project={proj}
-                                            res={res}
-                                            handleDeleteProject={
-                                              handleDeleteProject
-                                            }
-                                            handleShareProject={
-                                              handleShareProject
-                                            }
-                                            showDeletePopup={showDeletePopup}
-                                            showPreview={
-                                              showPreview === proj.id
-                                            }
-                                            handleShow={handleShow}
-                                            handleClose={handleClose}
-                                            setProjectId={setProjectId}
-                                          />
-                                        </div>
-                                      )}
-                                    </Draggable>
-                                  );
+                                return (
+                                  <Draggable
+                                    key={proj.id}
+                                    draggableId={`${proj.id}`}
+                                    index={index}
+                                  >
+                                    {(provided) => (
+                                      <div
+                                        className="playlist-resource"
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                      >
+                                        <ProjectCard
+                                          key={proj.id}
+                                          project={proj}
+                                          res={res}
+                                          handleDeleteProject={handleDeleteProject}
+                                          handleShareProject={handleShareProject}
+                                          showDeletePopup={showDeletePopup}
+                                          showPreview={showPreview === proj.id}
+                                          handleShow={handleShow}
+                                          handleClose={handleClose}
+                                          setProjectId={setProjectId}
+                                          activeFilter={activeFilter}
+                                        />
+                                      </div>
+                                    )}
+                                  </Draggable>
+                                );
                                 })}
                               </div>
                               {provided.placeholder}
@@ -499,6 +438,7 @@ ProjectsPage.propTypes = {
   loadMyProjects: PropTypes.func.isRequired,
   shareProject: PropTypes.func.isRequired,
   loadLms: PropTypes.func.isRequired,
+  loadMyReorderProjectsActionMethod:PropTypes.func.isRequired
 };
 
 ProjectsPage.defaultProps = {
@@ -524,6 +464,7 @@ const mapDispatchToProps = (dispatch) => ({
   loadProject: (id) => dispatch(loadProjectAction(id)),
   shareProject: (id) => dispatch(shareProjectAction(id)),
   loadLms: () => dispatch(loadLmsAction()),
+  loadMyReorderProjectsActionMethod:(projectDivider)=>dispatch(loadMyReorderProjectsAction(projectDivider))
 });
 
 export default withRouter(
