@@ -35,11 +35,6 @@ class RegisterPage extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     this.props.loadOrganizationTypes();
-    console.log(this.props);
-  }
-
-  componentDidUpdate() {
-    console.log(this.props);
   }
 
   onChangeField = (e) => {
