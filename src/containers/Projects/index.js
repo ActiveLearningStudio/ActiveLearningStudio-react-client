@@ -19,6 +19,7 @@ import {
   loadMyReorderProjectsAction,
   loadLmsAction,
 } from 'store/actions/project';
+import {allSidebarProjects} from 'store/actions/project';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
@@ -44,7 +45,8 @@ export const ProjectsPage = (props) => {
     showCreateProjectPopup,
     showEditProjectPopup,
     showDeletePopup,
-    loadMyReorderProjectsActionMethod
+    loadMyReorderProjectsActionMethod,
+    allSidebarProjectsUpdate
   } = props;
 
   const reorder = (list, startIndex, endIndex) => {
@@ -118,7 +120,7 @@ export const ProjectsPage = (props) => {
           loadMyReorderProjectsActionMethod(projectDivider)
           setProjectDivider(projectDivider);
           setValue((value) => value=value+1);
-          
+          allSidebarProjectsUpdate()
         }
       });
     } else {
@@ -160,6 +162,7 @@ export const ProjectsPage = (props) => {
       loadMyReorderProjectsActionMethod(projectDivider)
       setProjectDivider(projectDivider);
       divideProjects(updateProjectList);
+      allSidebarProjectsUpdate()
      
     }
   };
@@ -438,7 +441,8 @@ ProjectsPage.propTypes = {
   loadMyProjects: PropTypes.func.isRequired,
   shareProject: PropTypes.func.isRequired,
   loadLms: PropTypes.func.isRequired,
-  loadMyReorderProjectsActionMethod:PropTypes.func.isRequired
+  loadMyReorderProjectsActionMethod:PropTypes.func.isRequired,
+  allSidebarProjectsUpdate:PropTypes.func.isRequired
 };
 
 ProjectsPage.defaultProps = {
@@ -464,7 +468,8 @@ const mapDispatchToProps = (dispatch) => ({
   loadProject: (id) => dispatch(loadProjectAction(id)),
   shareProject: (id) => dispatch(shareProjectAction(id)),
   loadLms: () => dispatch(loadLmsAction()),
-  loadMyReorderProjectsActionMethod:(projectDivider)=>dispatch(loadMyReorderProjectsAction(projectDivider))
+  loadMyReorderProjectsActionMethod:(projectDivider)=>dispatch(loadMyReorderProjectsAction(projectDivider)),
+  allSidebarProjectsUpdate:()=>dispatch(allSidebarProjects())
 });
 
 export default withRouter(
