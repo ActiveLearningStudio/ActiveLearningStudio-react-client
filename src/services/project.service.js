@@ -24,6 +24,16 @@ const get = (id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const getIndexed = (id) => httpService
+  .get(`/${apiVersion}/projects/${id}/status-update`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const getelastic = (id) => httpService
+  .get(`/${apiVersion}/projects/${id}/indexing`)
+  .then(({ data }) => data)
+  .catch((err) => err.response.data);
+
 const update = (id, project) => httpService
   .put(`/${apiVersion}/projects/${id}`, project)
   .then(({ data }) => data)
@@ -119,5 +129,7 @@ export default {
   getSampleProject,
   getUpdatedProjects,
   getClone,
-  getReorderAll
+  getReorderAll,
+  getIndexed,
+  getelastic,
 };

@@ -44,6 +44,16 @@ export const loadProjectAction = (projectId) => async (dispatch) => {
   }
 };
 
+export const getIndexed = (projectId) => async () => {
+  const result = await projectService.getIndexed(projectId);
+  return result;
+};
+
+export const getElastic = (projectId) => async () => {
+  const result = await projectService.getelastic(projectId);
+  return result;
+};
+
 export const updateProjectAction = (projectId, data) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.UPDATE_PROJECT_REQUEST });
@@ -130,12 +140,13 @@ export const loadMyProjectsAction = () => async (dispatch) => {
   }
 };
 
+/* eslint-disable */
 export const loadMyReorderProjectsAction = (projectDivider) => async () => {
 
   const reorderProject = []
   var reorderindex = 0
   projectDivider.map((data)=>{
-    data.collection.map((collections)=>{
+   return data.collection.map((collections)=>{
       reorderProject.push({
         order:reorderindex,
         id:collections.id,
@@ -147,6 +158,7 @@ export const loadMyReorderProjectsAction = (projectDivider) => async () => {
 
   projectService.getReorderAll(reorderProject);
 }
+/* eslint-disable */
 
 export const loadMyCloneProjectsAction = () => async (dispatch) => {
   const projects = await projectService.getClone();

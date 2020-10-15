@@ -1809,6 +1809,9 @@ a:hover {
 }
 
 //project-each-view
+.index-text{
+  margin:0 5px 0px 15px;
+}
 
 .project-each-view {
   display: flex;
@@ -1825,16 +1828,62 @@ a:hover {
     opacity: 1;
     padding-top: 5px;
   }
-
+ 
   .flex-se {
     display: flex;
     justify-content: space-between;
     width: 100%;
     margin-right: 20px;
+    align-items: center;
 
     h1 {
       display: flex;
-      flex: 70%;
+      flex: 50%;
+    }
+
+    .react-touch{
+      background: #fff 0 0 no-repeat padding-box;
+      border-radius: 30px;
+      width: 201px;
+      height: 40px;
+      letter-spacing: 0;
+      color: #ffffff;
+      opacity: 1;
+      font-weight: 400;
+      font-size: 15px;
+      border: 1px solid #b8b8b8;
+      line-height: 20px;
+      padding: 0;
+      text-transform: unset;
+      margin-right: 20px;
+
+      .publish-btn{
+       display: flex;
+       align-items: center;
+       justify-content: space-between;
+       margin: 0 15px;
+       height: 100%;
+      }
+
+      span{
+        color:green;
+        font-weight: bold;
+      }
+    }
+    
+    .react-touch.indexed{
+      cursor: pointer;
+      background-color: #ce4a4a;
+      border-color:#ce4a4a;
+      
+     .publish-btn{
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      span{
+        color:#fff;
+      }
     }
 
     .borderline {
