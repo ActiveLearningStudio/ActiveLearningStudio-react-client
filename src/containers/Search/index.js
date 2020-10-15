@@ -15,6 +15,8 @@ import Swal from 'sweetalert2'
 import Pagination from 'react-js-pagination';
 
 import { simpleSearchAction, cloneProject } from 'store/actions/search';
+import { loadResourceTypesAction } from 'store/actions/resource'
+import { educationLevels, subjects} from 'components/ResourceCard/AddResource/dropdownData'
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
@@ -60,7 +62,10 @@ MyVerticallyCenteredModal.defaultProps = {
 
 function SearchInterface() {
   const allState = useSelector((state) => state.search);
+  const activityTypesState = useSelector(state=>state.resource.types)
+  const dispatch = useDispatch();
 
+  const [activityTypes, setActivityTypes] =  useState([])
   const [modalShow, setModalShow] = useState(false);
   const [search, setSearch] = useState([]);
   const [searchQueries, SetSearchQuery] = useState('');
@@ -70,6 +75,10 @@ function SearchInterface() {
   const [activePage, setActivePage] =  useState(1)
   const [totalCount,setTotalCount] = useState(0)
   const [activeModel, setActiveModel] =  useState('')
+  const [activeType, setActiveType] =  useState([])
+  const [activeSubject, setActiveSubject] =  useState([])
+  const [activeEducation, setActiveEducation] =  useState([])
+  const [searchType,setSearchType] =  useState('public')
 
   useEffect(() => {
     if(!!allState.searchResult){
@@ -117,11 +126,15 @@ function SearchInterface() {
     }, 5000);
   });
 
-  // useEffect(() => {
-  //   console.log(more.current.getBoundingClientRect());
-  // }, [window.screenY]);
+  useEffect(()=>{
+    if(activityTypesState.length===0){
+      dispatch(loadResourceTypesAction())
+    }
+  },[])
 
-  const dispatch = useDispatch();
+  useEffect( ()=>{
+    setActivityTypes(activityTypesState)
+  },[activityTypesState])
 
   return (
     <>
@@ -177,6 +190,30 @@ function SearchInterface() {
                                 type="text"
                                 placeholder="Search"
                               />
+                              <div className="form-group">
+                                <div className="radio-btns">
+                                  <label> 
+                                    <input
+                                      name="type"
+                                      onChange={e=>setSearchType(e.target.value)}
+                                      value="private"
+                                      checked={searchType==='private'?true:false}
+                                      type="radio"  
+                                    />
+                                    <span>Search Own Projects</span>
+                                  </label>
+                                  <label> 
+                                    <input
+                                      name="type"
+                                      onChange={e=>setSearchType(e.target.value)}
+                                      value="public"
+                                      checked={searchType==='public'?true:false}
+                                      type="radio"  
+                                    /> 
+                                    <span>Search All Projects</span>
+                                  </label>    
+                                </div>
+                              </div>
 
                               <div
                                 className="src-btn"
@@ -193,7 +230,16 @@ function SearchInterface() {
                                         Swal.showLoading();
                                       },
                                     });
-                                    dispatch(simpleSearchAction(searchInput.trim(), 0, 20));
+                                    const dataSend={
+                                      phrase: searchInput.trim(),
+                                      subjectArray: activeSubject,
+                                      gradeArray: activeEducation,
+                                      standardArray:activeType,
+                                      type:searchType,
+                                      from:0,
+                                      size:20,
+                                    }
+                                    dispatch(simpleSearchAction(dataSend));
                                   }
                                   // setModalShow(true);
                                 }}
@@ -207,18 +253,40 @@ function SearchInterface() {
                     </Accordion>
                   </div>
 
-                  {/*
+                  
                   <div className="refine-search">
                     <div className="headline">Refine your search</div>
 
-                    <Accordion defaultActiveKey="">
+                    <Accordion defaultActiveKey="0">
                       <Card>
                         <Accordion.Toggle as={Card.Header} eventKey="0">
                           Subject
                           <FontAwesomeIcon className="ml-2" icon="plus" />
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey="0">
-                          <Card.Body></Card.Body>
+                          <Card.Body>
+                            {subjects.map(data=>{
+                              return(
+                                <div 
+                                  className="list-item-keys"
+                                  key={data.value} 
+                                  value={data.subject}
+                                  onClick={()=>{
+                                    if(activeSubject.includes(data.subject)){
+                                      setActiveSubject(activeSubject.filter(index=>index!=data.subject))
+                                    }else{
+                                      setActiveSubject([...activeSubject,data.subject])
+                                    }
+                                  }}
+                                >
+                                  {activeSubject.includes(data.subject)?
+                                    <FontAwesomeIcon icon="check-square" />:<FontAwesomeIcon icon="square" />
+                                  }
+                                  <span>{data.subject}</span>
+                                </div>
+                              )
+                            })}
+                          </Card.Body>
                         </Accordion.Collapse>
                       </Card>
                       <Card>
@@ -227,16 +295,29 @@ function SearchInterface() {
                           <FontAwesomeIcon className="ml-2" icon="plus" />
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey="1">
-                          <Card.Body></Card.Body>
-                        </Accordion.Collapse>
-                      </Card>
-                      <Card>
-                        <Accordion.Toggle as={Card.Header} eventKey="2">
-                          Rating
-                          <FontAwesomeIcon className="ml-2" icon="plus" />
-                        </Accordion.Toggle>
-                        <Accordion.Collapse eventKey="2">
-                          <Card.Body></Card.Body>
+                          <Card.Body>
+                            {educationLevels.map(data=>{
+                              return(
+                                <div 
+                                  className="list-item-keys"  
+                                  key={data.value}
+                                  value={data.name}
+                                  onClick={()=>{
+                                    if(activeEducation.includes(data.name)){
+                                      setActiveEducation(activeEducation.filter(index=>index!=data.name))
+                                    }else{
+                                      setActiveEducation([...activeEducation,data.name])
+                                    }
+                                  }}
+                                >
+                                  {activeEducation.includes(data.name)?
+                                    <FontAwesomeIcon icon="check-square" />:<FontAwesomeIcon icon="square" />
+                                  }
+                                  <span>{data.name}</span>
+                                </div>
+                              )
+                            })}
+                          </Card.Body>
                         </Accordion.Collapse>
                       </Card>
                       <Card>
@@ -245,12 +326,34 @@ function SearchInterface() {
                           <FontAwesomeIcon className="ml-2" icon="plus" />
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey="3">
-                          <Card.Body></Card.Body>
+                          <Card.Body>
+                            {activityTypes.map(data=>{
+                              return(
+                                <div 
+                                  className="list-item-keys"
+                                  key={data.id} 
+                                  value={data.title}
+                                  onClick={()=>{
+                                    if(activeType.includes(data.title)){
+                                      setActiveType(activeType.filter(index=>index!=data.title))
+                                    }else{
+                                      setActiveType([...activeType,data.title])
+                                    }
+                                  }}
+                                >
+                                  {activeType.includes(data.title)?
+                                    <FontAwesomeIcon icon="check-square" />:<FontAwesomeIcon icon="square" />
+                                  }
+                                  <span>{data.title}</span>
+                                </div>
+                              )
+                            })}
+                          </Card.Body>
                         </Accordion.Collapse>
                       </Card>
                     </Accordion>
                   </div>
-                  */}
+                 
                 </div>
 
                 <div className="right-search">
@@ -732,9 +835,20 @@ function SearchInterface() {
                       onChange={e => {
                         setActivePage(e);
                         if (activeModel === 'total') {
-                          dispatch(simpleSearchAction(searchQueries.trim(), e * 20 - 20, 20));
+                          const searchData={
+                            phrase:searchQueries.trim(),
+                            from:e * 20 - 20,
+                            size:20
+                          }
+                          dispatch(simpleSearchAction(searchData))
                         } else {
-                          dispatch(simpleSearchAction(searchQueries.trim(), e * 20 - 20, 20, activeModel));
+                          const searchData={
+                            phrase:searchQueries.trim(),
+                            from:e * 20 - 20,
+                            size:20,
+                            model:activeModel
+                          }
+                          dispatch(simpleSearchAction(searchData));
                         }
                       }}
                       itemClass="page-item"

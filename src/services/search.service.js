@@ -5,9 +5,15 @@ import httpService from './http.service';
 
 const { apiVersion } = config;
 
-const searchResult = (searchQuery, from, size, model) => httpService
+const searchResult = (sendData) => httpService
   // .get(`https://dev.currikistudio.org/api/api/v1/search/advanced?from=${from}&size=${size}&query=${searchQuery}&${!!model && 'model='+model}`)
-  .get(`/${apiVersion}/search/advanced?from=${from}&size=${size}&query=${searchQuery}&${!!model && `model=${model}`}`)
+  .get(`/${apiVersion}/search/advanced`,"",sendData)
+  .then(({ data }) => data)
+  .catch((err) => err.response.data);
+
+const advancedSearch = (sendData) => httpService
+  // .get(`https://dev.currikistudio.org/api/api/v1/search/advanced?from=${from}&size=${size}&query=${searchQuery}&${!!model && 'model='+model}`)
+  .get(`/${apiVersion}/search/dashboard`,'',sendData)
   .then(({ data }) => data)
   .catch((err) => err.response.data);
 
@@ -78,4 +84,5 @@ export default {
   googleClassShare,
   googleShareToken,
   getCourses,
+  advancedSearch
 };

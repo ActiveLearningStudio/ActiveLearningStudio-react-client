@@ -51,6 +51,21 @@
     .card-body {
       padding: 0 20px;
 
+      .radio-btns{
+        display: flex;
+
+        label{
+          display: flex;
+          cursor: pointer;
+        }
+
+        input{
+          width:13px;
+          background-color: #464646;
+          margin-right: 10px;
+        }
+      }
+
       input {
         background: #ffffff 0% 0% no-repeat padding-box;
         border: 1px solid #b8b8b8;
@@ -118,6 +133,28 @@
       display: flex;
       align-items: center;
       padding-left: 20px;
+    }
+
+    .list-item-keys{
+      padding: 5px 10px;
+
+      span{
+        margin: 0 10px;
+        background: #ffffff 0% 0% no-repeat padding-box;
+        box-shadow: 0 0 2px #0000000d;
+        opacity: 1;
+        font: normal normal 600 14px/20px Open Sans;
+        letter-spacing: 0;
+        cursor: pointer;
+      }
+
+      svg.fa-square{
+        color:#fff;
+        border:1px solid #333;
+      }
+      svg.fa-check-square{
+        color:#0f4392;
+      }
     }
 
     .card-header {

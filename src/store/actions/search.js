@@ -10,14 +10,34 @@ export const searchRedux = (data, searchQuery, meta) => ({
   meta,
 });
 
-export const simpleSearchAction = (searchQuery, from, size, model) => async (dispatch) => {
-  const response = await searchService.searchResult(searchQuery, from, size, model);
+export const simpleSearchAction = (values) => async (dispatch) => {
+ 
+  const sendData={
+    query:values.phrase,
+    h5pLibraries:values.standardArray,
+    from:values.from,
+    size:values.size,
+    model:values.model ,
+    negativeQuery:values.no_words, 
+    subjectIds :values.subjectArray,
+    educationLevelIds :values.gradeArray,
+    startDate :values.fromDate,
+    endDate:values.toDate
+  }
+
+  var response
+  if(values.type==="public"){
+    response = await searchService.searchResult(sendData);
+  }else{
+    response = await searchService.advancedSearch(sendData);
+  }
+   
   if (response.errors) {
     if (response.errors.query) {
       Swal.fire(response.errors.query[0]);
     }
   } else {
-    dispatch(searchRedux(response.data, searchQuery, response.meta));
+    dispatch(searchRedux(response.data, values.phrase, response.meta));
   }
   return response;
 };
@@ -34,26 +54,3 @@ export const cloneActivity = (playlistId, activityId) => {
   searchService.cloneActivity(playlistId, activityId);
 };
 
-// export const advancedSearches = (searchQuery) => {
-//   return async (dispatch) => {
-//     const response = axios
-//       .get(
-//         global.config.laravelAPIUrl +
-//           `/search/advance?query=${searchQuery.phrase}&education_level_id=${
-//             searchQuery.subject
-//           }&userid=${searchQuery.grade}&negativeQuery=${
-//             searchQuery.no_words
-//           }&sort=${""}&from=${searchQuery.email}&size=${
-//             searchQuery.standard
-//           }`,
-//         {
-//           headers: {
-//             Authorization: "Bearer " + token,
-//           },
-//         }
-//       )
-//       .then((res) => {
-//         dispatch(searchRedux(res.data));
-//       });
-//   };
-// };
