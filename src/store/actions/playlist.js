@@ -106,7 +106,7 @@ export const changePlaylistTitleAction = (projectId, playlistId, title) => async
     const playlist = await playlistService.update(projectId, playlistId, { title });
     dispatch({
       type: actionTypes.UPDATE_PLAYLIST_SUCCESS,
-      payload: { playlist },
+      payload: playlist,
     });
   } catch (e) {
     dispatch({
