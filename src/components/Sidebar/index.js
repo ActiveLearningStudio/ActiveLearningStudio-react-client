@@ -99,7 +99,6 @@ function Sidebar() {
           <FontAwesomeIcon icon="arrow-right" className="ml-2" />
         </Link>
       </ul>
-
       {/* <div
         className="menu-title"
         onClick={() => {
@@ -197,21 +196,17 @@ function Sidebar() {
               <FontAwesomeIcon icon="user-friends" className="mr-2" />
               Team Members
             </Link>
-
             <Link
               to={`/teams/${team.id}/projects`}
               className={selectedCategory === PROJECTS ? 'active-label' : ''}
             >
-              <FontAwesomeIcon icon="layer-group" className="mr-2" />
-              Projects
+              <span className="project-title">Projects</span>
             </Link>
-
             <Link
               to={`/teams/${team.id}/channel`}
               className={selectedCategory === CHANNEL ? 'active-label' : ''}
             >
-              <FontAwesomeIcon icon="network-wired" className="mr-2" />
-              Channels
+              <span className="channel-title">Channels</span>
             </Link>
           </div>
         </div>

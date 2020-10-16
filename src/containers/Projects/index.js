@@ -26,6 +26,8 @@ import GoogleModel from 'components/models/GoogleLoginModal';
 import ProjectCard from './ProjectCard';
 import NewProjectPage from './NewProjectPage';
 
+import './style.scss';
+
 // TODO: need to convert to functional component
 class ProjectsPage extends React.Component {
   constructor(props) {

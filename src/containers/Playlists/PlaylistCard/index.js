@@ -128,9 +128,9 @@ class PlaylistCard extends React.Component {
           >
             <div className="list">
               <div className="list-header" {...provided.dragHandleProps}>
-                <h2 className="list-header-name d-flex align-items-center">
+                <h2 className="playlist-header-name d-flex align-items-center">
                   <div
-                    className={`list-title-wrapper d-flex align-items-center ${editMode ? 'hide' : 'show'}`}
+                    className={`playlist-title-wrapper d-flex align-items-center ${editMode ? 'hide' : 'show'}`}
                     onClick={this.handleClickPlaylistTitle}
                   >
                     <span>{playlist.title}</span>

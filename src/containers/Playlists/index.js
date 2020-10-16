@@ -46,6 +46,8 @@ import PlaylistCard from './PlaylistCard';
 import PreviewResourcePage from './PreviewResourcePage';
 import CreatePlaylistPopup from './CreatePlaylistPopup';
 
+import './style.scss';
+
 class PlaylistsPage extends React.Component {
   componentDidMount() {
     const {

@@ -141,6 +141,22 @@ aside {
         padding: 10px 15px;
         font-size: 12px;
 
+        .project-title {
+          padding-top: 0;
+          padding-left: 24px;
+          background: url(../../assets/images/project.svg) no-repeat;
+          background-size: 25% 100%;
+          letter-spacing: -0.5px;
+        }
+
+        .channel-title {
+          padding-top: 0;
+          padding-left: 24px;
+          background: url(../../assets/images/users_net.svg) no-repeat;
+          background-size: 25% 100%;
+          letter-spacing: -0.5px;
+        }
+
         &.active-label {
           color: #0F4392;
         }
@@ -184,7 +200,7 @@ aside {
 
   a {
     padding: 10px 0;
-    font: normal normal 600 14px/25px Open Sans;
+    font: normal normal 400 14px/25px Open Sans;
     font-weight: 400;
     letter-spacing: 0;
     color: #464646;
