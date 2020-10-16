@@ -1,21 +1,40 @@
 import Swal from 'sweetalert2';
-
+// import axios from 'axios';
 import config from 'config';
 import httpService from './http.service';
 
 const { apiVersion } = config;
 
 const searchResult = (sendData) => httpService
-  // .get(`https://dev.currikistudio.org/api/api/v1/search/advanced?from=${from}&size=${size}&query=${searchQuery}&${!!model && 'model='+model}`)
-  .get(`/${apiVersion}/search/advanced`,"",sendData)
+  .get(`/${apiVersion}/search/advanced`, '', sendData)
   .then(({ data }) => data)
   .catch((err) => err.response.data);
 
 const advancedSearch = (sendData) => httpService
-  // .get(`https://dev.currikistudio.org/api/api/v1/search/advanced?from=${from}&size=${size}&query=${searchQuery}&${!!model && 'model='+model}`)
-  .get(`/${apiVersion}/search/dashboard`,'',sendData)
+  .get(`/${apiVersion}/search/dashboard`, '', sendData)
   .then(({ data }) => data)
   .catch((err) => err.response.data);
+
+// const searchResult = (sendData) => axios
+//   .get(`https://dev.currikistudio.org/api/api/v1/search/advanced`,{
+//     headers:{
+//       Authorization: `Bearer `
+//     },
+//     params:sendData
+//   })
+//   .then(({ data }) => data)
+//   .catch((err) => err.response.data);
+
+// const advancedSearch = (sendData) => axios
+//   .get(`https://dev.currikistudio.org/api/api/v1/search/dashboard`,
+//   {
+//     headers:{
+//       Authorization: `Bearer `
+//     },
+//     params:sendData
+//   })
+//   .then(({ data }) => data)
+//   .catch((err) => err.response.data);
 
 const cloneProject = (projectId) => httpService
   .post(`/${apiVersion}/projects/${projectId}/clone`)
@@ -84,5 +103,5 @@ export default {
   googleClassShare,
   googleShareToken,
   getCourses,
-  advancedSearch
+  advancedSearch,
 };

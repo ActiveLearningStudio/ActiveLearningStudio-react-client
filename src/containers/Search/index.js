@@ -13,6 +13,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2'
 import Pagination from 'react-js-pagination';
+import QueryString from 'query-string';
 
 import { simpleSearchAction, cloneProject } from 'store/actions/search';
 import { loadResourceTypesAction } from 'store/actions/resource'
@@ -60,7 +61,9 @@ MyVerticallyCenteredModal.defaultProps = {
   clone: null,
 };
 
-function SearchInterface() {
+function SearchInterface(props) {
+
+  const { history } =  props
   const allState = useSelector((state) => state.search);
   const activityTypesState = useSelector(state=>state.resource.types)
   const dispatch = useDispatch();
@@ -79,6 +82,28 @@ function SearchInterface() {
   const [activeSubject, setActiveSubject] =  useState([])
   const [activeEducation, setActiveEducation] =  useState([])
   const [searchType,setSearchType] =  useState('public')
+  
+  useEffect(()=>{
+    const query = QueryString.parse(location.search);
+    console.log(query)
+    if(query.type){
+      if(query.type==='private'){
+        setSearchType('private')
+      }else{
+        setSearchType('public')
+      }
+    }
+    if(query.h5p){
+      setActiveType(query.h5p.split(','))
+    }
+    if(query.grade){
+      setActiveSubject(query.grade.split(','))
+    }
+    if(query.education){
+      setActiveEducation(query.education.split(','))
+    }
+     
+  },[allState])
 
   useEffect(() => {
     if(!!allState.searchResult){
@@ -133,7 +158,11 @@ function SearchInterface() {
   },[])
 
   useEffect( ()=>{
-    setActivityTypes(activityTypesState)
+    const allItems = [];
+    activityTypesState.map((data) => {
+      return data.activityItems.map((itm) => allItems.push(itm));
+    });
+    setActivityTypes(allItems)
   },[activityTypesState])
 
   return (
@@ -156,7 +185,7 @@ function SearchInterface() {
           <div className="content">
             <div className="search-result-main">
               <div className="total-count">
-                {!!search && (
+                {!!searchQueries && (
                   <div>
                     Showing
                     {' '}
@@ -200,7 +229,7 @@ function SearchInterface() {
                                       checked={searchType==='private'?true:false}
                                       type="radio"  
                                     />
-                                    <span>Search Own Projects</span>
+                                    <span>Search My Projects</span>
                                   </label>
                                   <label> 
                                     <input
@@ -210,7 +239,7 @@ function SearchInterface() {
                                       checked={searchType==='public'?true:false}
                                       type="radio"  
                                     /> 
-                                    <span>Search All Projects</span>
+                                    <span>Search Projects Showcase</span>
                                   </label>    
                                 </div>
                               </div>
@@ -240,6 +269,7 @@ function SearchInterface() {
                                       size:20,
                                     }
                                     dispatch(simpleSearchAction(dataSend));
+                                    history.push('/search')
                                   }
                                   // setModalShow(true);
                                 }}
@@ -326,22 +356,22 @@ function SearchInterface() {
                           <FontAwesomeIcon className="ml-2" icon="plus" />
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey="3">
-                          <Card.Body>
+                          <Card.Body style={{'max-height': '300px','overflow-y': 'auto'}}>
                             {activityTypes.map(data=>{
                               return(
                                 <div 
                                   className="list-item-keys"
                                   key={data.id} 
-                                  value={data.title}
+                                  value={data.h5pLib}
                                   onClick={()=>{
-                                    if(activeType.includes(data.title)){
-                                      setActiveType(activeType.filter(index=>index!=data.title))
+                                    if(activeType.includes(data.h5pLib)){
+                                      setActiveType(activeType.filter(index=>index!=data.h5pLib))
                                     }else{
-                                      setActiveType([...activeType,data.title])
+                                      setActiveType([...activeType,data.h5pLib])
                                     }
                                   }}
                                 >
-                                  {activeType.includes(data.title)?
+                                  {activeType.includes(data.h5pLib)?
                                     <FontAwesomeIcon icon="check-square" />:<FontAwesomeIcon icon="square" />
                                   }
                                   <span>{data.title}</span>
@@ -362,12 +392,25 @@ function SearchInterface() {
                     id="uncontrolled-tab-example"
                     onSelect={async e => {
                       if (e === 'total') {
-                        const resultModel = await dispatch(simpleSearchAction(searchQueries.trim(), 0, 20));
+                        const searchData={
+                          phrase:searchQueries.trim(),
+                          from:0,
+                          size:20,
+                          type:searchType
+                        }
+                        const resultModel = await dispatch(simpleSearchAction(searchData));
                         setTotalCount(resultModel.meta[e]);
                         setActiveModel(e);
                         setActivePage(1);
                       } else {
-                        const resultModel = await dispatch(simpleSearchAction(searchQueries.trim(), 0, 20, e));
+                        const searchData={
+                          phrase:searchQueries.trim(),
+                          from:0,
+                          size:20,
+                          model:e,
+                          type:searchType
+                        }
+                        const resultModel = await dispatch(simpleSearchAction(searchData));
                         setTotalCount(resultModel.meta[e]);
                         setActiveModel(e);
                         setActivePage(1);
@@ -838,7 +881,8 @@ function SearchInterface() {
                           const searchData={
                             phrase:searchQueries.trim(),
                             from:e * 20 - 20,
-                            size:20
+                            size:20,
+                            type:searchType
                           }
                           dispatch(simpleSearchAction(searchData))
                         } else {
@@ -846,6 +890,7 @@ function SearchInterface() {
                             phrase:searchQueries.trim(),
                             from:e * 20 - 20,
                             size:20,
+                            type:searchType,
                             model:activeModel
                           }
                           dispatch(simpleSearchAction(searchData));
