@@ -274,6 +274,6 @@ export const loadOrganizationTypesAction = () => async (dispatch) => {
   const orgnanizationTypes = await authService.loadOrganizationTypes();
   dispatch({
     type: actionTypes.LOAD_ORGANIZATION_TYPES,
-    payload : orgnanizationTypes
+    payload : orgnanizationTypes.data
   });
 };
