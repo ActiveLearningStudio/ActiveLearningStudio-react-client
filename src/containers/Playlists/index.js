@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable */
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -6,6 +7,8 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import { Alert } from 'react-bootstrap';
+import Switch from "react-switch";
+import { useSelector } from "react-redux"
 
 import {
   createPlaylistAction,
@@ -35,6 +38,8 @@ import {
   showCreateProjectModalAction,
   loadProjectAction,
   loadLmsAction,
+  getIndexed,
+  getElastic,
 } from 'store/actions/project';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -46,8 +51,25 @@ import PlaylistCard from './PlaylistCard';
 import PreviewResourcePage from './PreviewResourcePage';
 import CreatePlaylistPopup from './CreatePlaylistPopup';
 
-class PlaylistsPage extends React.Component {
-  componentDidMount() {
+const  PlaylistsPage = (props)=> {
+
+    const [checked,setChecked] = useState(false)
+    const [title,setTitle] =  useState(false)
+    const [indexStatus,setIndexStatus] =  useState(null)
+
+    const state = useSelector(state=>state.project.selectedProject)
+
+    useEffect(()=>{
+      if(state.status===2){
+        setChecked(true)
+      }else{
+        setChecked(false)
+      }
+
+      setIndexStatus(state.indexing)
+    
+    },[state])
+    
     const {
       match,
       openCreatePopup,
@@ -56,27 +78,68 @@ class PlaylistsPage extends React.Component {
       loadProject,
       loadProjectPlaylists,
       loadLms,
-    } = this.props;
+      project: { selectedProject },
+      resource,
+      playlist: { playlists },
+      ui,
+      getIndexedData,
+      getElasticData
+    } = props;
 
-    // scroll to top
-    loadLms();
-    window.scrollTo(0, 0);
+    useEffect(()=>{
+      loadLms();
+      window.scrollTo(0, 0);
+  
+      if (
+        !openCreatePopup
+        && !openCreateResourcePopup
+        && !openEditResourcePopup
+      ) {
+        loadProject(match.params.projectId);
+        loadProjectPlaylists(match.params.projectId);
+      }
+    },[])
+   
+  
 
-    if (
-      !openCreatePopup
-      && !openCreateResourcePopup
-      && !openEditResourcePopup
-    ) {
-      loadProject(match.params.projectId);
-      loadProjectPlaylists(match.params.projectId);
+  const handleChange = (checked)=> {
+    //setChecked(checked);
+    getIndexedData(match.params.projectId)
+    if(checked){
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You are going to indexed it ",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Continue'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          Swal.showLoading()
+          const result  =   await getElasticData(match.params.projectId)
+          loadProject(match.params.projectId);
+          if(result.message){
+            Swal.fire(result.message)
+          }else if (result.errors){
+            Swal.fire(result.errors[0])
+          }
+        }else{
+          Swal.showLoading()
+          loadProject(match.params.projectId)
+        }
+      })
+    }else{
+      Swal.showLoading()
+      loadProject(match.params.projectId)
     }
   }
-
-  handleShowCreatePlaylistModal = async (e) => {
+  
+  const handleShowCreatePlaylistModal = async (e) => {
     e.preventDefault();
 
     try {
-      const { match, history, showCreatePlaylistModal } = this.props;
+      const { match, history, showCreatePlaylistModal } = props;
       await showCreatePlaylistModal();
 
       history.push(`/project/${match.params.projectId}/playlist/create`);
@@ -85,9 +148,9 @@ class PlaylistsPage extends React.Component {
     }
   };
 
-  handleShowCreateResourceModal = (playlist) => {
+  const handleShowCreateResourceModal = (playlist) => {
     try {
-      const { match, history, showCreateResourceModal } = this.props;
+      const { match, history, showCreateResourceModal } = props;
       showCreateResourceModal(playlist.id);
       history.push(`/project/${match.params.projectId}/playlist/${playlist.id}/activity/create`);
     } catch (e) {
@@ -95,11 +158,11 @@ class PlaylistsPage extends React.Component {
     }
   };
 
-  handleHideCreatePlaylistModal = async (e) => {
+  const handleHideCreatePlaylistModal = async (e) => {
     e.preventDefault();
 
     try {
-      const { match, history, hideCreatePlaylistModal } = this.props;
+      const { match, history, hideCreatePlaylistModal } = props;
       await hideCreatePlaylistModal();
       history.push(`/project/${match.params.projectId}`);
     } catch (err) {
@@ -107,10 +170,10 @@ class PlaylistsPage extends React.Component {
     }
   };
 
-  handleHideCreateResourceModal = async (e) => {
+  const handleHideCreateResourceModal = async (e) => {
     e.preventDefault();
 
-    const { resource } = this.props;
+    const { resource } = props;
     if (!resource.saved) {
       Swal.fire({
         icon: 'warning',
@@ -125,14 +188,14 @@ class PlaylistsPage extends React.Component {
       })
         .then(async (resp) => {
           if (resp.isConfirmed) {
-            const { match, history, hideCreateResourceModal } = this.props;
+            const { match, history, hideCreateResourceModal } = props;
             await hideCreateResourceModal();
             history.push(`/project/${match.params.projectId}`);
           }
         });
     } else {
       try {
-        const { match, history, hideCreateResourceModal } = this.props;
+        const { match, history, hideCreateResourceModal } = props;
         await hideCreateResourceModal();
         history.push(`/project/${match.params.projectId}`);
       } catch (err) {
@@ -141,16 +204,16 @@ class PlaylistsPage extends React.Component {
     }
   };
 
-  onPlaylistTitleChange = (e) => {
-    this.setState({ title: e.target.value });
+  const onPlaylistTitleChange = (e) => {
+    setTitle(e.target.value);
   };
 
-  handleCreatePlaylistSubmit = async (e) => {
+  const handleCreatePlaylistSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const { title } = this.state;
-      const { match, history, createPlaylist } = this.props;
+      
+      const { match, history, createPlaylist } = props;
 
       await createPlaylist(match.params.projectId, title);
 
@@ -174,7 +237,7 @@ class PlaylistsPage extends React.Component {
     }
   };
 
-  handleCreateResourceSubmit = async (
+  const handleCreateResourceSubmit = async (
     currentPlaylistId,
     editor,
     editorType,
@@ -189,7 +252,7 @@ class PlaylistsPage extends React.Component {
         history,
         createResource,
         createResourceByH5PUpload,
-      } = this.props;
+      } = props;
 
       if (payload.submitAction === 'upload') {
         payload.event.preventDefault();
@@ -217,7 +280,7 @@ class PlaylistsPage extends React.Component {
     }
   };
 
-  handleEditResourceSubmit = async (
+  const handleEditResourceSubmit = async (
     currentPlaylistId,
     editor,
     editorType,
@@ -225,7 +288,7 @@ class PlaylistsPage extends React.Component {
     metadata,
   ) => {
     try {
-      const { match, history, editResource } = this.props;
+      const { match, history, editResource } = props;
       await editResource(
         currentPlaylistId,
         editor,
@@ -240,7 +303,7 @@ class PlaylistsPage extends React.Component {
     }
   };
 
-  onDragEnd = (e) => {
+  const onDragEnd = (e) => {
     if (
       !e.destination
       || (e.destination.index === e.source.index && e.source.droppableId === e.destination.droppableId)
@@ -252,7 +315,7 @@ class PlaylistsPage extends React.Component {
       match,
       playlist: { playlists },
       reorderPlaylists,
-    } = this.props;
+    } = props;
     const orgPlaylists = Array.from(playlists);
 
     if (e.type === 'resource') {
@@ -292,23 +355,16 @@ class PlaylistsPage extends React.Component {
     }
   };
 
-  render() {
-    const {
-      match,
-      project: { selectedProject },
-      resource,
-      playlist: { playlists },
-      ui,
-      openCreatePopup,
-      openCreateResourcePopup,
-      openEditResourcePopup,
-    } = this.props;
+ 
+  const { showDeletePlaylistPopup, pageLoading } = ui;
 
-    const { showDeletePlaylistPopup, pageLoading } = ui;
+  // if(project.status===2){
+      
+  // }
 
     return (
       <>
-        <Header {...this.props} />
+        <Header {...props} />
         <div className="main-content-wrapper">
           <div className="sidebar-wrapper">
             <Sidebar />
@@ -328,11 +384,38 @@ class PlaylistsPage extends React.Component {
                         <div className="col playlist-page-project-title project-each-view">
                           <div className="flex-se">
                             <h1>{selectedProject ? selectedProject.name : ''}</h1>
-
+                            {checked  && indexStatus=== null &&
+                              <div 
+                                className="react-touch indexed"
+                                onClick={async()=>{
+                                  Swal.showLoading()
+                                  const result  =   await getElasticData(match.params.projectId)
+                                  loadProject(match.params.projectId);
+                                  if(result.message){
+                                    Swal.fire(result.message)
+                                  }else if (result.errors){
+                                    Swal.fire(result.errors[0])
+                                  }
+                                }}
+                              >
+                                <div className="publish-btn ">
+                                <span> Get Indexed</span>                                
+                                </div>
+                              </div>
+                            } 
+                            <div className="react-touch">
+                              <div className="publish-btn">
+                                <span>{checked?"Published":"Publish"}</span>
+                                <Switch
+                                  onChange={handleChange}
+                                  checked={checked}
+                                />
+                              </div>
+                            </div>
                             <button
                               type="button"
                               className="create-playlist-btn"
-                              onClick={this.handleShowCreatePlaylistModal}
+                              onClick={handleShowCreatePlaylistModal}
                             >
                               <FontAwesomeIcon icon="plus" className="mr-2" />
                               Create new playlist
@@ -349,10 +432,27 @@ class PlaylistsPage extends React.Component {
                             </Link>
                           </span>
                         </div>
+                        <div className="index-text">
+                          {indexStatus===1 &&
+                            <Alert variant="warning">
+                              Your Published Request is bieng reviewed by Our customer support
+                            </Alert>
+                          }
+                          {indexStatus===2 &&
+                            <Alert variant="danger">
+                              Not approved
+                            </Alert>
+                          } 
+                          {indexStatus===3 &&
+                            <Alert variant="success">
+                              Approved
+                            </Alert>
+                          } 
+                        </div> 
                         <>
                           {!!playlists && playlists.length > 0
                             ? (
-                              <DragDropContext onDragEnd={this.onDragEnd}>
+                              <DragDropContext onDragEnd={onDragEnd}>
                                 <Droppable
                                   droppableId="project-droppable-id"
                                   direction="horizontal"
@@ -371,7 +471,7 @@ class PlaylistsPage extends React.Component {
                                           index={index}
                                           playlist={playlist}
                                           projectId={parseInt(match.params.projectId, 10)}
-                                          handleCreateResource={this.handleShowCreateResourceModal}
+                                          handleCreateResource={handleShowCreateResourceModal}
                                         />
                                       ))}
                                       {provided.placeholder}
@@ -397,37 +497,37 @@ class PlaylistsPage extends React.Component {
 
         {openCreatePopup && (
           <CreatePlaylistPopup
-            handleHideCreatePlaylistModal={this.handleHideCreatePlaylistModal}
-            handleCreatePlaylistSubmit={this.handleCreatePlaylistSubmit}
-            onPlaylistTitleChange={this.onPlaylistTitleChange}
+            handleHideCreatePlaylistModal={handleHideCreatePlaylistModal}
+            handleCreatePlaylistSubmit={handleCreatePlaylistSubmit}
+            onPlaylistTitleChange={onPlaylistTitleChange}
           />
         )}
 
         {openCreateResourcePopup && (
           <AddResource
-            {...this.props}
-            handleHideCreateResourceModal={this.handleHideCreateResourceModal}
-            handleCreateResourceSubmit={this.handleCreateResourceSubmit}
-            handleEditResourceSubmit={this.handleEditResourceSubmit}
+            {...props}
+            handleHideCreateResourceModal={handleHideCreateResourceModal}
+            handleCreateResourceSubmit={handleCreateResourceSubmit}
+            handleEditResourceSubmit={handleEditResourceSubmit}
           />
         )}
 
         {openEditResourcePopup && (
           <EditResource
-            {...this.props}
-            handleHideCreateResourceModal={this.handleHideCreateResourceModal}
-            handleCreateResourceSubmit={this.handleCreateResourceSubmit}
-            handleEditResourceSubmit={this.handleEditResourceSubmit}
+            {...props}
+            handleHideCreateResourceModal={handleHideCreateResourceModal}
+            handleCreateResourceSubmit={handleCreateResourceSubmit}
+            handleEditResourceSubmit={handleEditResourceSubmit}
           />
         )}
 
         {resource.showPreviewResourcePopup && (
-          <PreviewResourcePage {...this.props} />
+          <PreviewResourcePage {...props} />
         )}
 
         {showDeletePlaylistPopup && (
           <DeletePopup
-            {...this.props}
+            {...props}
             deleteType="Playlist"
             selectedProject={selectedProject}
           />
@@ -435,7 +535,7 @@ class PlaylistsPage extends React.Component {
         <Footer />
       </>
     );
-  }
+  
 }
 
 PlaylistsPage.propTypes = {
@@ -462,6 +562,8 @@ PlaylistsPage.propTypes = {
   showCreateResourceActivity: PropTypes.func.isRequired,
   showResourceDescribeActivity: PropTypes.func.isRequired,
   loadLms: PropTypes.func.isRequired,
+  getIndexedData:PropTypes.func.isRequired,
+  getElasticData:PropTypes.func.isRequired,
 };
 
 PlaylistsPage.defaultProps = {
@@ -495,6 +597,8 @@ const mapDispatchToProps = (dispatch) => ({
   uploadResourceThumbnail: () => dispatch(uploadResourceThumbnailAction()),
   reorderPlaylists: (projectId, orgPlaylists, playlists) => dispatch(reorderPlaylistsAction(projectId, orgPlaylists, playlists)),
   loadLms: () => dispatch(loadLmsAction()),
+  getIndexedData:(id)=>dispatch(getIndexed(id)),
+  getElasticData :(id)=>dispatch(getElastic(id))
 });
 
 const mapStateToProps = (state) => ({

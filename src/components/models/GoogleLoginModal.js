@@ -92,7 +92,7 @@ const GoogleLoginModal = ({
                   }}
                   onSubmit={(values) => {
                     onHide();
-                    if (values.course === true) {
+                    if (values.course === 'Create a new class') {
                       copyProject(projectId);
                     } else {
                       copyProject(projectId, values.course);
@@ -118,7 +118,7 @@ const GoogleLoginModal = ({
                         onChange={handleChange}
                         onBlur={handleBlur}
                       >
-                        <option value>Create a new class</option>
+                        <option>Create a new class</option>
                         {!!courses && courses.map((item) => (
                           <option key={item.id} value={item.id}>{item.name}</option>
                         ))}
