@@ -32,7 +32,7 @@ export const loadProjectAction = (projectId) => async (dispatch) => {
     });
 
     const { project } = await projectService.get(projectId);
-
+    Swal.close();
     dispatch({
       type: actionTypes.LOAD_PROJECT_SUCCESS,
       payload: { project },

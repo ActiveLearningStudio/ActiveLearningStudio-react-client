@@ -103,12 +103,12 @@ const  PlaylistsPage = (props)=> {
   
 
   const handleChange = (checked)=> {
-    setChecked(checked);
+    //setChecked(checked);
     getIndexedData(match.params.projectId)
     if(checked){
       Swal.fire({
         title: 'Are you sure?',
-        text: "You are goin to indexed it ",
+        text: "You are going to indexed it ",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -125,10 +125,12 @@ const  PlaylistsPage = (props)=> {
             Swal.fire(result.errors[0])
           }
         }else{
+          Swal.showLoading()
           loadProject(match.params.projectId)
         }
       })
     }else{
+      Swal.showLoading()
       loadProject(match.params.projectId)
     }
   }
