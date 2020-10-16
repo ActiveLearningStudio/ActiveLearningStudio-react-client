@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -107,7 +108,7 @@ function SearchForm() {
               Swal.showLoading();
               dispatcher(simpleSearchAction(values));
               closeModel.current.click();
-              history.push('/search');
+              history.push(`/search?type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${values.standardArray}`);
               resetForm({
                 phrase: '',
                 subjectArray: [],
@@ -148,7 +149,7 @@ function SearchForm() {
                         checked={values.type === 'private' ? true : false}
                         type="radio"
                       />
-                      <span>Search Own Projects</span>
+                      <span>Search My Projects</span>
                     </label>
                     <label>
                       <input
@@ -159,7 +160,7 @@ function SearchForm() {
                         checked={values.type === 'public' ? true : false}
                         type="radio"
                       />
-                      <span>Search All Projects</span>
+                      <span>Search Project Showcase</span>
                     </label>
                   </div>
                 </div>
@@ -273,7 +274,7 @@ function SearchForm() {
                     <option value={'Standard'}>Standard</option>
                     {activityTypes.map((data) => {
                       return (
-                        <option key={data.id} value={data.title}>
+                        <option key={data.id} value={data.h5pLib}>
                           {data.title}
                         </option>
                       );

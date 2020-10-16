@@ -1883,6 +1883,7 @@ a:hover {
 
       span{
         color:#fff;
+        white-space: nowrap;
       }
     }
 
@@ -2755,6 +2756,10 @@ a:hover {
 .swal2-html-container {
   font-size: 14px !important;
   font-weight: bold !important;
+
+  p{
+    font-weight: 400 !important;
+  }
 }
 
 .swal2-actions {

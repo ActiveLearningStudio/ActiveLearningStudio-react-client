@@ -108,13 +108,12 @@ const  PlaylistsPage = (props)=> {
     await getIndexedData(match.params.projectId)
     if(checked){
       Swal.fire({
-        title: 'Are you sure?',
-        text: "You are going to indexed it ",
-        icon: 'warning',
+        html: "<b>SHOWCASE THIS PROJECT?</b><br><br><p>The Curriki Team is reviewing and selecting projects likes yours to be showcased in the CurrikiStudio repository.</p><p>If selected, your project will be available for other authors to search, preview and reuse/remix.</p>",
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Continue'
+        confirmButtonText: 'Yes! Review This Project',
+        cancelButtonText: 'Not Right Now'
       }).then(async (result) => {
         if (result.isConfirmed) {
           Swal.showLoading()
@@ -359,11 +358,7 @@ const  PlaylistsPage = (props)=> {
  
   const { showDeletePlaylistPopup, pageLoading } = ui;
 
-  // if(project.status===2){
-      
-  // }
-
-    return (
+  return (
       <>
         <Header {...props} />
         <div className="main-content-wrapper">
@@ -389,18 +384,29 @@ const  PlaylistsPage = (props)=> {
                               <div 
                                 className="react-touch indexed"
                                 onClick={async()=>{
-                                  Swal.showLoading()
-                                  const result  =   await getElasticData(match.params.projectId)
-                                  loadProject(match.params.projectId);
-                                  if(result.message){
-                                    Swal.fire(result.message)
-                                  }else if (result.errors){
-                                    Swal.fire(result.errors[0])
-                                  }
+                                  Swal.fire({
+                                    html: "<b>SHOWCASE THIS PROJECT?</b><br><br><p>The Curriki Team is reviewing and selecting projects likes yours to be showcased in the CurrikiStudio repository.</p><p>If selected, your project will be available for other authors to search, preview and reuse/remix.</p>",
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Yes! Review This Project',
+                                    cancelButtonText: 'Not Right Now'
+                                  }).then(async (result) => {
+                                    if (result.isConfirmed) {
+                                      Swal.showLoading()
+                                      const result  =   await getElasticData(match.params.projectId)
+                                      loadProject(match.params.projectId);
+                                      if(result.message){
+                                        Swal.fire(result.message)
+                                      }else if (result.errors){
+                                        Swal.fire(result.errors[0])
+                                      }
+                                    }
+                                  })
                                 }}
                               >
                                 <div className="publish-btn ">
-                                <span> Get Indexed</span>                                
+                                <span>Submit to Showcase</span>                                
                                 </div>
                               </div>
                             } 
@@ -436,17 +442,17 @@ const  PlaylistsPage = (props)=> {
                         <div className="index-text">
                           {indexStatus===1 &&
                             <Alert variant="warning">
-                              Your Published Request is bieng reviewed by Our customer support
+                              Thank you for submitting this project for inclusion in our Showcase! Your project has been queued up! As soon as our review is completed, we will notify you right here.
                             </Alert>
                           }
                           {indexStatus===2 &&
                             <Alert variant="danger">
-                              Not approved
+                              Your project was not selected for inclusion in the Showcase. You are welcome to contact our support team, and revise and resubmit your project at any time.
                             </Alert>
                           } 
                           {indexStatus===3 &&
                             <Alert variant="success">
-                              Approved
+                              This project has been selected for inclusion in the CurrikiStudio Showcase and is available for other content authors to find, preview, reuse and remix.
                             </Alert>
                           } 
                         </div> 

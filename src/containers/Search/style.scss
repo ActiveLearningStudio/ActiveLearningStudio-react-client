@@ -53,16 +53,20 @@
 
       .radio-btns{
         display: flex;
-
+        flex-direction: column;
+        
         label{
           display: flex;
           cursor: pointer;
+          align-items: center;
+          margin-bottom: 0;
         }
 
         input{
           width:13px;
           background-color: #464646;
           margin-right: 10px;
+          margin-bottom: 0;
         }
       }
 
