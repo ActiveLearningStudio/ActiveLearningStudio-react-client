@@ -102,9 +102,10 @@ const  PlaylistsPage = (props)=> {
    
   
 
-  const handleChange = (checked)=> {
+  const handleChange = async (checked)=> {
     //setChecked(checked);
-    getIndexedData(match.params.projectId)
+    Swal.showLoading()
+    await getIndexedData(match.params.projectId)
     if(checked){
       Swal.fire({
         title: 'Are you sure?',
