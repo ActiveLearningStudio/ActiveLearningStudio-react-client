@@ -1,0 +1,52 @@
+.assign-project-wrapper {
+  .assign-projects {
+    height: 480px;
+    padding-top: 19px;
+    margin-bottom: 16px;
+    display: flex;
+
+    .assign-project-item {
+      position: relative;
+      height: 190px;
+      margin-right: 18px;
+      margin-bottom: 18px;
+      border: solid 1px #e2e2e2;
+
+      img {
+        min-width: 180px;
+        max-width: 180px;
+        min-height: 123px;
+      }
+
+      .assign-project-radio {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        width: 26px;
+        height: 26px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        border: 2px solid #084892;
+        border-radius: 50%;
+        cursor: pointer;
+
+        .checkmark {
+          width: 14px;
+          height: 14px;
+          background-color: #084892;
+          box-shadow: 0 3px 6px #00000029;
+          border-radius: 50%;
+        }
+      }
+
+      .assign-project-title {
+        width: 180px;
+        padding: 14px 22px 14px 13px;
+        border-top: solid 1px #e2e2e2;
+        line-height: 18px;
+      }
+    }
+  }
+}

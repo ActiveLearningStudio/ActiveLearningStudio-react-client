@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import './style.scss';
 
 function TeamViewCard(props) {
-  const { teamInfo } = props;
   const {
-    title,
-    description,
-    members,
-    projects,
-  } = teamInfo;
+    teamInfo: {
+      title,
+      description,
+      members,
+      projects,
+    },
+  } = props;
 
   let memCnt = `00${members.length}`;
   memCnt = memCnt.slice(memCnt.length - 2, memCnt.length);
@@ -21,9 +21,12 @@ function TeamViewCard(props) {
 
   return (
     <div className="team-card-content">
-      <div>
+      <div className="team-title">
         <h2 className="title">{title}</h2>
-        <h2 className="describe">{description}</h2>
+        <h2 className="describe">
+          {description.split('.')[0]}
+          ...
+        </h2>
       </div>
 
       <div className="team-member-content mid-border">
@@ -34,7 +37,7 @@ function TeamViewCard(props) {
 
         <div className="member-mark-container">
           {members.map(({ firstName, lastName }, index) => (
-            <div className={`member-name-mark${index > 0 ? ' over' : ''}`}>
+            <div key={firstName + lastName} className={`member-name-mark${index > 0 ? ' over' : ''}`}>
               <span>{`${firstName[0]}${lastName[0]}`}</span>
             </div>
           ))}
@@ -53,11 +56,4 @@ TeamViewCard.propTypes = {
   teamInfo: PropTypes.object.isRequired,
 };
 
-TeamViewCard.defaultProps = {
-};
-
-const mapDispatchToProps = () => ({});
-
-const mapStateToProps = () => ({});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TeamViewCard);
+export default TeamViewCard;

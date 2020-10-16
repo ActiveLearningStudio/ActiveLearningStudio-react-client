@@ -1,66 +1,64 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import validator from 'validator';
 
 function MemberItem(props) {
   const {
-    user,
-    selectMe,
-    deselectMe,
-    selected,
-  } = props;
-  const {
-    firstName,
-    lastName,
-    role,
     invited,
-    projects,
-  } = user;
+    isInviting,
+    selected,
+    user,
+    selectMember,
+    inviteUser,
+  } = props;
 
-  const inviteDialog = () => (
-    <div className="invite-dialog" onBlur={deselectMe}>
-      <h2 className="font-weight-bold">Invite Team Member</h2>
+  const [email, setEmail] = useState('');
 
-      <div>
-        <h2>Enter Email</h2>
+  const onChangeEmail = useCallback((e) => {
+    setEmail(e.target.value);
+  }, []);
 
-        <div className="row">
-          <div className="col-md-12 email-input">
-            <input
-              type="text"
-              placeholder="e.g. leo"
-              onChange={() => {}}
-            />
-          </div>
-        </div>
+  const handleInvite = useCallback(() => {
+    inviteUser({ ...user, email });
+  }, [email, user, inviteUser]);
 
-        <div className="row">
-          <div className="col-md-12 email-input">
-            <button type="button" onClick={() => {}} className="dialog-invite">
-              Invite
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  const toggle = useCallback(() => {
+    if (selected) {
+      selectMember(null);
+      setEmail('');
+    } else {
+      selectMember(user.id);
+    }
+  }, [user, selected, selectMember]);
+
+  const handleBlur = useCallback((e) => {
+    const { currentTarget } = e;
+
+    // Check the newly focused element in the next tick of the event loop
+    setTimeout(() => {
+      // Check if the new activeElement is a child of the original container
+      if (!currentTarget.contains(document.activeElement)) {
+        selectMember(null);
+        setEmail('');
+      }
+    }, 0);
+  }, [selectMember]);
 
   return (
-    <div className="col-md-12 member-item">
+    <div className="member-item">
       <div className="member-name-mark">
-        <span>{`${firstName[0]}${lastName[0]}`}</span>
+        <span>{`${user.first_name.charAt(0)}${user.last_name.charAt(0)}`}</span>
       </div>
 
       <div className="member-info">
-        <h2 className="member-name">{`${firstName} ${lastName}`}</h2>
-
+        <h2 className="member-name">{`${user.first_name} ${user.last_name}`}</h2>
         <div className="member-data">
           <h2>
-            {`${role}  `}
+            {`${user.role}  `}
             <span>●</span>
-            {`  Assigned to ${projects.length} Projects`}
+            {`  Assigned to ${user.projects ? user.projects.length : 0} Projects`}
           </h2>
         </div>
       </div>
@@ -72,33 +70,61 @@ function MemberItem(props) {
             checked: invited,
           })}
           disabled={invited}
-          onClick={selected ? deselectMe : selectMe}
+          onClick={toggle}
         >
-          {invited
-            ? (
-              <>
-                <FontAwesomeIcon icon="check" className="mr-2" />
-                <span>Invited</span>
-              </>
-            )
-            : 'Invite'}
+          {invited && (
+            <FontAwesomeIcon icon="check" className="mr-2" />
+          )}
+          <span>{invited ? 'Invited' : 'Invite'}</span>
         </button>
 
-        {selected && inviteDialog()}
+        {selected && (
+          <div className="invite-dialog" onBlur={handleBlur}>
+            <h2 className="font-weight-bold">Invite Team Member</h2>
+            <div>
+              <h2>Enter Email</h2>
+
+              <div className="email-input">
+                <input
+                  type="text"
+                  placeholder="e.g. abby@curriki.org"
+                  value={email}
+                  onChange={onChangeEmail}
+                />
+              </div>
+
+              <button
+                type="button"
+                disabled={!email || !validator.isEmail(email) || isInviting}
+                onClick={handleInvite}
+              >
+                Invite
+
+                {isInviting && (
+                  <FontAwesomeIcon icon="spinner" />
+                )}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
 MemberItem.propTypes = {
-  user: PropTypes.object.isRequired,
-  selectMe: PropTypes.func.isRequired,
-  deselectMe: PropTypes.func.isRequired,
+  invited: PropTypes.bool.isRequired,
+  isInviting: PropTypes.bool.isRequired,
   selected: PropTypes.bool,
+  user: PropTypes.object.isRequired,
+  selectMember: PropTypes.func,
+  inviteUser: PropTypes.func,
 };
 
 MemberItem.defaultProps = {
   selected: false,
+  selectMember: () => {},
+  inviteUser: () => {},
 };
 
-export default withRouter(MemberItem);
+export default MemberItem;

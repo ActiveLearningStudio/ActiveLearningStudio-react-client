@@ -1,15 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 
+import './style.scss';
+
 function CreateTeamSidebar(props) {
-  const { team } = props;
   const {
-    showCreation,
-    showInviting,
-    showAssigning,
-  } = team;
+    team: {
+      showCreation,
+      showInviting,
+      showAssigning,
+    },
+  } = props;
 
   return (
     <div className="create-team-sidebar">
@@ -23,6 +25,7 @@ function CreateTeamSidebar(props) {
           <div className="number-box">
             <span className="number">1</span>
           </div>
+
           <span className="bottom-vertical-line" />
         </div>
 
@@ -37,9 +40,11 @@ function CreateTeamSidebar(props) {
       >
         <div className="btn-box">
           <span className="top-vertical-line" />
+
           <div className="number-box">
             <span className="number">2</span>
           </div>
+
           <span className="bottom-vertical-line" />
         </div>
 
@@ -54,6 +59,7 @@ function CreateTeamSidebar(props) {
       >
         <div className="btn-box">
           <span className="top-vertical-line" />
+
           <div className="number-box">
             <span className="number">3</span>
           </div>
@@ -69,4 +75,4 @@ CreateTeamSidebar.propTypes = {
   team: PropTypes.object.isRequired,
 };
 
-export default withRouter(CreateTeamSidebar);
+export default CreateTeamSidebar;

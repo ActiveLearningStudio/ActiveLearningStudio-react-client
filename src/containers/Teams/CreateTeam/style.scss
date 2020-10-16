@@ -1,419 +1,39 @@
-$selected_color: #084892;
-$filled: #44ca92;
-
 .create-team {
   width: 100%;
   display: flex;
 
-  .title {
-    margin: 0;
+  .create-team-content {
+    width: calc(100% - 213px);
+  }
+
+  .title-box {
+    display: flex;
+
+    .title {
+      margin: 0;
+      letter-spacing: -0.6px;
+    }
+
+    .title-cross {
+      width: 58%;
+      height: 0;
+      margin: 22px 0 0 27px;
+      border-top: solid 1px #cbcbcb;
+    }
   }
 
   .describe {
     margin-bottom: 0;
     font-size: 14px;
+    line-height: 19px;
   }
 
   .team-information {
-    .create-team-wrapper {
-      h2 {
-        font-size: 16px;
-      }
-
-      .create-team-form {
-        .team-info-input {
-          & > div {
-            margin-top: 20px;
-
-            h2 {
-              margin: 0;
-            }
-          }
-
-          .team-name {
-            input {
-              width: 100%;
-              padding-left: 5px;
-            }
-          }
-
-          .team-description {
-            textarea {
-              width: 100%;
-              min-height: 200px;
-              max-height: 200px;
-              padding: 5px;
-              border: 1px solid #d9dfe8;
-              border-radius: 0;
-            }
-          }
-        }
-      }
-    }
-
-    .invite-member-wrapper {
-      .search-box {
-        margin: 15px 0 25px 0;
-
-        input {
-          padding: 7px;
-          background: #F3F3F3;
-          border: solid 1px #C4C4C4;
-
-          &::placeholder {
-            font-size: 10px;
-          }
-        }
-      }
-
-      .member-list {
-        overflow-y: auto;
-        border-top: solid 1px;
-        border-color: #e2e2e2;
-
-        .member-item {
-          padding: 9px 2px;
-          display: flex;
-          border-width: 1px 0 0 0;
-          border-style: solid;
-          border-color: #e2e2e2;
-
-          h2 {
-            margin: 0;
-          }
-
-          .member-name-mark {
-            position: relative;
-            width: 40px;
-            height: 40px;
-            border: solid 2px #e2e2e2;
-            border-radius: 50%;
-            font-weight: bold;
-            text-align: center;
-            text-transform: uppercase;
-            color: #a5a5a5;
-
-            span {
-              position: absolute;
-              top: 50%;
-              left: 50%;
-              margin: 0;
-              transform: translate(-50%, -50%);
-              font-size: 16px;
-            }
-          }
-
-          .member-info {
-            margin-left: 13px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            color: #464646;
-
-            .member-name {
-              font-size: 14px;
-            }
-
-            .member-data {
-              display: flex;
-
-              h2 {
-                font-size: 12px;
-
-                span {
-                  vertical-align: text-bottom;
-                  font-size: 10px;
-                  color: #a5a5a5;
-                }
-              }
-            }
-          }
-
-          .button-container {
-            position: relative;
-            padding: 4px 0;
-            flex: 1;
-            text-align: end;
-
-            .invite-btn {
-              height: 100%;
-              background: none;
-
-              &:not(.checked) {
-                padding: 0 10px;
-                border: solid 1px #44CA92;
-                color: #44CA92;
-
-                &:hover {
-                  background: #44CA92;
-                  color: #ffffff;
-                }
-              }
-
-              &.checked {
-                border: solid 1px #e2e2e2;
-              }
-            }
-
-            .invite-dialog {
-              position: absolute;
-              right: 0;
-              background: white;
-              border: solid 1px #e2e2e2;
-              text-align: left;
-              z-index: 1;
-
-              h2 {
-                font-size: 14px;
-              }
-
-              h2.font-weight-bold {
-                padding: 15px;
-                border-bottom: solid 1px;
-                border-color: #e2e2e2;
-              }
-
-              & > div {
-                padding: 23px 55px 35px 15px;
-
-                .row {
-                  margin-top: 12px;
-                }
-
-                button {
-                  padding: 5px 15px;
-                  background: #0F4392;
-                  border: none;
-                  border-radius: 2px;
-                  font-size: 15px;
-                  color: #fff;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-
-    .assign-project-wrapper {
-      .create-team-form {
-        .assign-projects {
-          display: flex;
-
-          .assign-project-item {
-            position: relative;
-            margin: 5px;
-            border: solid 1px #e2e2e2;
-
-            img {
-              min-width: 180px;
-              min-height: 125px;
-            }
-
-            .assign-project-radio {
-              position: absolute;
-              right: 15px;
-              top: 15px;
-            }
-
-            .assign-project-title {
-              width: 180px;
-              padding: 18px 20px;
-              border-top: solid 1px #e2e2e2;
-            }
-
-            .container {
-              position: unset;
-              margin-bottom: 0;
-              padding-left: 35px;
-              display: block;
-              cursor: pointer;
-              font-size: 22px;
-              -webkit-user-select: none;
-              -moz-user-select: none;
-              -ms-user-select: none;
-              user-select: none;
-
-              .checkmark {
-                position: absolute;
-                top: 15px;
-                right: 15px;
-                width: 25px;
-                height: 25px;
-                background: none;
-                border: solid 2px $selected_color;
-                border-radius: 50%;
-              }
-
-              input {
-                position: absolute;
-                opacity: 0;
-                cursor: pointer;
-              }
-
-              &:hover input ~ .checkmark {
-                background-color: $selected_color;
-              }
-
-              input:checked ~ .checkmark {
-                background: none;
-              }
-
-              .checkmark:after {
-                content: "";
-                position: absolute;
-                display: none;
-              }
-
-              input:checked ~ .checkmark:after {
-                display: block;
-              }
-
-              .checkmark:after {
-                top: 4px;
-                left: 4px;
-                width: 13px;
-                height: 13px;
-                background: $selected_color;
-                border-radius: 50%;
-              }
-            }
-          }
-        }
-      }
-    }
+    margin: 0 0 0 55px;
   }
 }
 
-.create-team-sidebar {
-  width: 190px;
-  min-width: max-content;
-  height: 500px;
-  margin-right: 40px;
-  border-right: 1px solid #f6f6f6;
 
-  .team-sidebar-btn {
-    height: 114px;
-
-    &.selected {
-      .btn-box {
-        .number-box {
-          border: 2px solid $selected_color;
-
-          span.number {
-            background: $selected_color;
-            color: #fff;
-          }
-        }
-
-        span.bottom-vertical-line {
-          background: $selected_color;
-        }
-
-        span.top-vertical-line {
-          background: $selected_color;
-        }
-      }
-
-      span.name {
-        color: $selected_color;
-      }
-    }
-
-    &.filled {
-      .btn-box {
-        .number-box {
-          border: 2px solid $filled;
-
-          span.number {
-            background: $filled;
-            color: #fff;
-          }
-        }
-
-        span.top-vertical-line {
-          background: $filled;
-        }
-
-        span.bottom-vertical-line {
-          background: $filled;
-        }
-      }
-
-      span.name {
-        color: $filled;
-      }
-    }
-
-    &.filled.selected {
-      span.name {
-        border-right: 3px solid #084892;
-      }
-    }
-
-    .btn-box {
-      position: relative;
-
-      .number-box {
-        position: absolute;
-        padding: 3px;
-        display: inline-block;
-        border: 5px solid #efefef;
-        border-radius: 50%;
-
-        span.number {
-          width: 30px;
-          height: 30px;
-          padding-top: 4px;
-          display: inline-block;
-          border-radius: 50%;
-          font-weight: bold;
-          text-align: center;
-          color: #efefef;
-        }
-      }
-
-      span.top-vertical-line {
-        position: absolute;
-        top: -38px;
-        left: 20px;
-        width: 3px;
-        height: 38px;
-        display: inline-block;
-        background: #efefef;
-      }
-
-      span.bottom-vertical-line {
-        position: absolute;
-        bottom: -116px;
-        left: 20px;
-        width: 3px;
-        height: 76px;
-        display: inline-block;
-        background: #efefef;
-      }
-    }
-
-    span.name {
-      margin-left: 50px;
-      padding-top: 7px;
-      padding-bottom: 10px;
-      display: block;
-      font-family: "Open Sans", sans-serif;
-      font-size: 14px;
-      font-weight: 400;
-      cursor: pointer;
-    }
-  }
-
-  .select-question {
-    height: 114px;
-  }
-
-  .select-description {
-    height: 114px;
-  }
-}
 
 .form-group {
   &:first-child .add-resource-submit-btn {
@@ -428,8 +48,9 @@ $filled: #44ca92;
 }
 
 .create-team-submit-btn {
-  width: 138px;
-  height: 56px;
+  width: 94px;
+  height: 40px;
+  /* margin-left: 9px; */
   background: #2ecf43;
   border: 0;
   border-radius: 3px;
@@ -440,22 +61,27 @@ $filled: #44ca92;
   color: #fff;
   text-transform: uppercase;
   cursor: pointer;
+
+  svg {
+    margin-left: 8px;
+    animation: spin 1s linear infinite;
+  }
 }
 
 .create-team-continue-btn {
   width: 163px;
-  height: 56px;
-  margin-top: 30px;
-  padding-left: 35px;
-  background: url(../../../assets/images/btn-arrow.png) #2ecf43 no-repeat right 20px top 20px;
+  height: 40px;
+  margin-top: 20px;
+  padding-left: 32px;
+  background: url(../../../assets/images/btn-arrow.png) #2ecf43 no-repeat right 23px top 13px;
   border: 0;
   border-radius: 3px;
   box-shadow: none;
-  text-align: left;
   font-family: "Open Sans", sans-serif;
   font-size: 14px;
   font-weight: 600;
   color: #fff;
+  text-align: left;
   text-transform: uppercase;
   cursor: pointer;
 }

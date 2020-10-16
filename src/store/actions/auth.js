@@ -269,3 +269,24 @@ export const acceptTermsAction = () => async (dispatch) => {
     throw e;
   }
 };
+
+export const searchUsersAction = (data) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.SEARCH_USERS_REQUEST,
+  });
+
+  try {
+    const response = await authService.searchUsers(data);
+
+    dispatch({
+      type: actionTypes.SEARCH_USERS_SUCCESS,
+      payload: { users: response.users },
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.SEARCH_USERS_FAIL,
+    });
+
+    throw e;
+  }
+};

@@ -1,20 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import proImage from 'assets/images/program-thumb.png';
 
 import './style.scss';
 
 function TeamProjectView(props) {
-  const { teamInfo } = props;
-  const { members, projects } = teamInfo;
+  const { teamInfo: { members, projects } } = props;
 
   let memCnt = `00${members.length}`;
   memCnt = memCnt.slice(memCnt.length - 2, memCnt.length);
 
   const projectCard = (project) => (
     <div key={project.title} className="project-content-item">
-      <img src={project.thumbUrl} alt={project.thumbUrl} />
+      {/* TODO src must be url of project - "project.thumbUrl" */}
+      <img src={proImage} alt={project.thumbUrl} />
 
       <div className="project-title">
         <span>{project.title}</span>
@@ -39,18 +40,10 @@ function TeamProjectView(props) {
   );
 
   return (
-    <div className="row">
-      <div className="col-md-12">
-        <div className="team-information">
-          <div className="projects-wrapper">
-            <div className="row">
-              <div className="col-md-12">
-                <div className="project-list">
-                  {projects.map((proj) => projectCard(proj))}
-                </div>
-              </div>
-            </div>
-          </div>
+    <div className="team-information">
+      <div className="projects-wrapper">
+        <div className="project-list">
+          {projects.map((proj) => projectCard(proj))}
         </div>
       </div>
     </div>
@@ -61,10 +54,4 @@ TeamProjectView.propTypes = {
   teamInfo: PropTypes.object.isRequired,
 };
 
-TeamProjectView.defaultProps = {};
-
-const mapDispatchToProps = () => ({});
-
-const mapStateToProps = () => ({});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TeamProjectView);
+export default TeamProjectView;

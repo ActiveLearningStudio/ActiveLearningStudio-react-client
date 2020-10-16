@@ -3,23 +3,26 @@ $filled: #44ca92;
 
 .team-information {
   .projects-wrapper {
+    margin: 8px 0 0 -15px;
+
     .project-list {
       display: flex;
 
       .project-content-item {
         position: relative;
-        margin: 0 10px 0 0;
+        margin: 0 8px 0 0;
         background: #fff;
         border: solid 1px #e2e2e2;
 
         img {
-          min-width: 240px;
+          min-width: 245px;
+          max-width: 245px;
           min-height: 170px;
         }
 
         .project-title {
           width: 100%;
-          padding: 9px 20px;
+          padding: 14px 20px 4px 27px;
           display: flex;
           justify-content: space-between;
           border-top: solid 1px #e2e2e2;
@@ -28,7 +31,8 @@ $filled: #44ca92;
             width: 150px;
             max-height: 48px;
             min-height: 48px;
-            font-size: 16px;
+            letter-spacing: 0.3px;
+            font-size: 15px;
             color: #0F4392;
           }
 
@@ -36,6 +40,7 @@ $filled: #44ca92;
             width: calc(100% - 150px);
             height: 42px;
             padding: 5px 0 0 0;
+            font-size: 13px;
             text-align: right;
           }
         }
@@ -50,7 +55,7 @@ $filled: #44ca92;
           }
 
           &.mid-border {
-            padding: 9px 22px;
+            padding: 15px 21px 20px 26px;
             border-width: 1px 0 0 0;
             border-style: solid;
             border-color: #e2e2e2;
@@ -73,7 +78,7 @@ $filled: #44ca92;
               color: #a5a5a5;
 
               &.over {
-                margin-left: -7px;
+                margin-left: -4px;
               }
 
               span {
