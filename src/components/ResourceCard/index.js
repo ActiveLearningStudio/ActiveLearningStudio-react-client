@@ -6,7 +6,7 @@ import { Draggable } from 'react-beautiful-dnd';
 import Swal from 'sweetalert2';
 import { confirmAlert } from 'react-confirm-alert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown, Badge } from 'react-bootstrap';
 
 import logo from 'assets/images/logo.svg';
 import { shareActivity, deleteResourceAction } from 'store/actions/resource';
@@ -74,7 +74,11 @@ const ResourceCard = (props) => {
                   : resource.title}
               </Link>
             </div>
-
+            {resource.shared && (
+                <Badge pill variant="success" className="p-1">
+                  Shared
+                </Badge>
+              )}
             <div className="activity-options-wrapper check">
               <Dropdown className="pull-right resource-dropdown">
                 <Dropdown.Toggle className="resource-dropdown-btn">
