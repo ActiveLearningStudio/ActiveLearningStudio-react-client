@@ -157,12 +157,26 @@ function SearchInterface(props) {
     }
   },[])
 
+  const compare = (a, b) => {
+    // Use toUpperCase() to ignore character casing
+    const bandA = a.title.toUpperCase();
+    const bandB = b.title.toUpperCase();
+  
+    let comparison = 0;
+    if (bandA > bandB) {
+      comparison = 1;
+    } else if (bandA < bandB) {
+      comparison = -1;
+    }
+    return comparison;
+  }
+
   useEffect( ()=>{
     const allItems = [];
     activityTypesState.map((data) => {
       return data.activityItems.map((itm) => allItems.push(itm));
     });
-    setActivityTypes(allItems)
+    setActivityTypes(allItems.sort(compare))
   },[activityTypesState])
 
   return (
@@ -352,7 +366,7 @@ function SearchInterface(props) {
                       </Card>
                       <Card>
                         <Accordion.Toggle as={Card.Header} eventKey="3">
-                          Type
+                          Type of Activity
                           <FontAwesomeIcon className="ml-2" icon="plus" />
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey="3">

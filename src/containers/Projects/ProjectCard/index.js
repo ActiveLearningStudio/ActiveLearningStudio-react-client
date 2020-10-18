@@ -56,7 +56,7 @@ const ProjectCard = (props) => {
             <div className="row">
               <div className="col-md-10">
                 <h3 className="program-title">
-                  <Link to={`/project/${project.id}`}>{project.name}</Link>
+                  <Link to={`/project/${project.id}/preview`}>{project.name}</Link>
                 </h3>
               </div>
 
