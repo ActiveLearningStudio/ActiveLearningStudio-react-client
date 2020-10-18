@@ -113,7 +113,7 @@ export const ProjectsPage = (props) => {
     setProjectDivider(allchunk);
   };
 
-  const onDragEnd = (result) => {
+  const onDragEnd = async  (result) => {
     const { source, destination } = result;
 
     // dropped outside the list
@@ -122,7 +122,7 @@ export const ProjectsPage = (props) => {
     }
 
     if (source.droppableId === destination.droppableId) {
-      projectDivider.map((data, index) => {
+      projectDivider.map(async (data, index) => {
         if (data.id === source.droppableId) {
           const items = reorder(
             data.collection,
@@ -135,10 +135,13 @@ export const ProjectsPage = (props) => {
             collection: items,
           };
         
-          loadMyReorderProjectsActionMethod(projectDivider)
+          
           setProjectDivider(projectDivider);
           setValue((value) => value=value+1);
+          const reorderData =  await loadMyReorderProjectsActionMethod(projectDivider)
+          
           allSidebarProjectsUpdate()
+          setAllProjects(reorderData.projects)
         }
       });
     } else {
@@ -177,10 +180,13 @@ export const ProjectsPage = (props) => {
           updateProjectList.push(arrrays);
         });
       });
-      loadMyReorderProjectsActionMethod(projectDivider)
+
       setProjectDivider(projectDivider);
       divideProjects(updateProjectList);
+      const reorderData =  await loadMyReorderProjectsActionMethod(projectDivider)
+      
       allSidebarProjectsUpdate()
+      setAllProjects(reorderData.projects)
      
     }
   };
@@ -191,6 +197,8 @@ export const ProjectsPage = (props) => {
       divideProjects(allStateProject.projects);
     }
   }, [allStateProject]);
+
+  
 
   useEffect(() => {
     const {
@@ -289,8 +297,12 @@ export const ProjectsPage = (props) => {
                                   : 'sort-btn'
                               }
                               onClick={() => {
+                                const allchunk = []
+                                var counterSimpl= 0
                                 setActiveFilter('list-grid');
-                              }}
+                                setSortNumber(-1)
+                                divideProjects(allProjects);
+                             }}
                             >
                               <FontAwesomeIcon icon="bars" />
                             </div>
@@ -302,9 +314,9 @@ export const ProjectsPage = (props) => {
                               }
                               onClick={() => {
                                 setActiveFilter('small-grid');
-                                setSortNumber(6, () => {
-                                  divideProjects(allProjects);
-                                });
+                                setSortNumber(6)
+                                divideProjects(allProjects);
+                               
                               }}
                             >
                               <FontAwesomeIcon icon="grip-horizontal" />
@@ -317,7 +329,8 @@ export const ProjectsPage = (props) => {
                               }
                               onClick={() => {
                                 setActiveFilter('normal-grid');
-                                setSortNumber(4);
+                                setSortNumber(4)
+                                divideProjects(allProjects);
                               }}
                             >
                               <FontAwesomeIcon icon="th-large" />

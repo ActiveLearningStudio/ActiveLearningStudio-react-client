@@ -13,17 +13,17 @@
   .navbar-link li .dropdown-menu {
     width: 200px;
   }
-}
-
-.active {
-  .dropdown-menu {
-    display: block;
+  
+  .active {
+    .dropdown-menu {
+      display: block;
+    }
   }
-}
 
-.hide {
-  .dropdown-menu {
-    display: none;
+  .hide {
+    .dropdown-menu {
+      display: none;
+    }
   }
 }
 
