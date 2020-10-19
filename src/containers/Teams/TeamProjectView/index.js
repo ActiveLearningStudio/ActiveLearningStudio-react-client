@@ -2,48 +2,47 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import proImage from 'assets/images/program-thumb.png';
+import { zeroFill } from 'utils';
 
 import './style.scss';
 
 function TeamProjectView(props) {
-  const { teamInfo: { members, projects } } = props;
-
-  let memCnt = `00${members.length}`;
-  memCnt = memCnt.slice(memCnt.length - 2, memCnt.length);
-
-  const projectCard = (project) => (
-    <div key={project.title} className="project-content-item">
-      {/* TODO src must be url of project - "project.thumbUrl" */}
-      <img src={proImage} alt={project.thumbUrl} />
-
-      <div className="project-title">
-        <span>{project.title}</span>
-        <div><FontAwesomeIcon icon="ellipsis-v" /></div>
-      </div>
-
-      <div className="team-member-content mid-border">
-        <div className="sub-title">
-          <span>Team Members</span>
-          <span>{`(${memCnt})`}</span>
-        </div>
-
-        <div className="member-mark-container">
-          {members.map(({ firstName, lastName }, index) => (
-            <div className={`member-name-mark${index > 0 ? ' over' : ''}`}>
-              <span>{`${firstName[0]}${lastName[0]}`}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+  const { team: { projects } } = props;
 
   return (
     <div className="team-information">
       <div className="projects-wrapper">
         <div className="project-list">
-          {projects.map((proj) => projectCard(proj))}
+          {projects.map((project) => (
+            <div key={project.title} className="project-content-item">
+              <img
+                src={project.thumb_url.includes('pexels.com')
+                  ? `url(${project.thumb_url})`
+                  : `url(${global.config.resourceUrl}${project.thumb_url})`}
+                alt={project.name}
+              />
+
+              <div className="project-title">
+                <span>{project.name}</span>
+                <div><FontAwesomeIcon icon="ellipsis-v" /></div>
+              </div>
+
+              <div className="team-member-content mid-border">
+                <div className="sub-title">
+                  <span>Team Members</span>
+                  <span>{`(${zeroFill(project.users.length)})`}</span>
+                </div>
+
+                <div className="member-mark-container">
+                  {project.users.map((user, index) => (
+                    <div key={user.id} className={`member-name-mark${index > 0 ? ' over' : ''}`}>
+                      <span>{`${user.first_name.charAt(0)}${user.last_name.charAt(0)}`}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -51,7 +50,7 @@ function TeamProjectView(props) {
 }
 
 TeamProjectView.propTypes = {
-  teamInfo: PropTypes.object.isRequired,
+  team: PropTypes.object.isRequired,
 };
 
 export default TeamProjectView;

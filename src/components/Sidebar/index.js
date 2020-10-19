@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { Link, withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import Swal from 'sweetalert2';
@@ -10,70 +11,75 @@ import {
   allUpdateProject,
   sampleProjects,
 } from 'store/actions/project';
+import { loadTeamsAction } from 'store/actions/team';
 
 import './style.scss';
 
-// TODO need to fetch from backend. This is just dump data.
-const teams = [
-  { title: 'Maths Team', id: 11 },
-  { title: 'AI Team', id: 12 },
-  { title: 'Mechanics Team', id: 15 },
-];
 const PROJECTS = 'projects';
 const CHANNEL = 'channel';
 const TEAM = 'team';
 
-function Sidebar() {
+function Sidebar(props) {
+  const { history, location } = props;
+
   const dispatch = useDispatch();
 
   const allState = useSelector((state) => state);
 
-  const [myProjects, setMyProjects] = useState([]);
-  const [sampleProject, setSampleProjects] = useState([]);
+  // const [myProjects, setMyProjects] = useState([]);
+  // const [sampleProject, setSampleProjects] = useState([]);
   // const [updateProject, setUpdateProject] = useState([]);
-  // TODO need to be refactored below states which are for team functionality
+
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   useEffect(() => {
-    const path = window.location.pathname;
-    if (path.includes('teams/')) {
-      setSelectedTeam(parseInt(window.location.pathname.split('teams/')[1], 10));
-      if (path.includes(PROJECTS)) {
-        setSelectedCategory(PROJECTS);
-      } else if (path.includes(CHANNEL)) {
-        setSelectedCategory(CHANNEL);
-      } else {
-        setSelectedCategory(TEAM);
+    if (location.pathname.includes('teams/')) {
+      const teamId = parseInt(location.pathname.split('teams/')[1], 10);
+      if (teamId) {
+        setSelectedTeam(teamId);
+
+        if (location.pathname.includes(PROJECTS)) {
+          setSelectedCategory(PROJECTS);
+        } else if (location.pathname.includes(CHANNEL)) {
+          setSelectedCategory(CHANNEL);
+        } else {
+          setSelectedCategory(TEAM);
+        }
       }
     }
-  }, []);
+  }, [location.pathname]);
 
   useEffect(() => {
-    if (allState.sidebar.allProject.length === 0) {
+    if (!allState.sidebar.isLoaded) {
       dispatch(allSidebarProjects());
       dispatch(sampleProjects());
       dispatch(allUpdateProject());
+      dispatch(loadTeamsAction());
     }
-  }, [allState.sidebar.allProject.length, dispatch]);
+  }, [allState.sidebar.isLoaded, dispatch]);
 
-  useEffect(() => {
-    if (allState.sidebar.allProject.length > 0) {
-      setMyProjects(allState.sidebar.allProject);
-    }
-  }, [allState.sidebar.allProject]);
+  // useEffect(() => {
+  //   if (allState.sidebar.allProject.length > 0) {
+  //     setMyProjects(allState.sidebar.allProject);
+  //   }
+  // }, [allState.sidebar.allProject]);
 
-  useEffect(() => {
-    if (allState.sidebar.sampleProject.length > 0) {
-      setSampleProjects(allState.sidebar.sampleProject);
-    }
-  }, [allState.sidebar.sampleProject]);
+  // useEffect(() => {
+  //   if (allState.sidebar.sampleProject.length > 0) {
+  //     setSampleProjects(allState.sidebar.sampleProject);
+  //   }
+  // }, [allState.sidebar.sampleProject]);
 
   // useEffect(() => {
   //   if (allState.sidebar.updateProject.length > 0) {
   //     setUpdateProject(allState.sidebar.updateProject);
   //   }
   // }, [allState.sidebar.updateProject]);
+
+  const handleClickTeam = useCallback((team) => {
+    history.push(`/teams/${team.id}`);
+  }, [history]);
 
   return (
     <aside className="sidebar-all">
@@ -85,7 +91,7 @@ function Sidebar() {
       </Link>
 
       <ul className="all-project">
-        {!!myProjects && myProjects.slice(0, 5).map((data) => (
+        {allState.sidebar.allProject.slice(0, 5).map((data) => (
           <li key={data.id}>
             <Link to={`/project/${data.id}`}>
               <FontAwesomeIcon icon="angle-right" className="mr-2" />
@@ -121,18 +127,16 @@ function Sidebar() {
         Sample Projects
       </div>
 
-      {!!sampleProject && (
-        <ul className="all-project">
-          {sampleProject.slice(0, 5).map((data) => (
-            <li key={data.id}>
-              <a target="_blank" rel="noreferrer" href={`/project/${data.id}/shared`}>
-                <FontAwesomeIcon icon="angle-right" className="mr-2" />
-                {data.name}
-              </a>
-            </li>
-          ))}
-        </ul>
-      )}
+      <ul className="all-project">
+        {allState.sidebar.sampleProject.slice(0, 5).map((data) => (
+          <li key={data.id}>
+            <a target="_blank" rel="noreferrer" href={`/project/${data.id}/shared`}>
+              <FontAwesomeIcon icon="angle-right" className="mr-2" />
+              {data.name}
+            </a>
+          </li>
+        ))}
+      </ul>
 
       {/*
       {!!updateProject && (
@@ -170,18 +174,10 @@ function Sidebar() {
         </div>
       </Link>
 
-      {teams.map((team) => (
-        <div key={team.title} className={`team-item${selectedTeam === team.id ? '' : ' collapsed'}`}>
-          <div
-            className="team-label"
-            onClick={() => {
-              window.location = (`/teams/${team.id}`);
-              if (selectedTeam === team.id) {
-                setSelectedTeam(team.id);
-              }
-            }}
-          >
-            {team.title}
+      {allState.team.teams.map((team) => (
+        <div key={team.id} className={`team-item${selectedTeam === team.id ? '' : ' collapsed'}`}>
+          <div className="team-label" onClick={() => handleClickTeam(team)}>
+            {team.name}
             <FontAwesomeIcon
               icon={selectedTeam === team.id ? 'angle-up' : 'angle-down'}
               className="ml-2 mt-1"
@@ -222,4 +218,9 @@ function Sidebar() {
   );
 }
 
-export default Sidebar;
+Sidebar.propTypes = {
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+};
+
+export default withRouter(Sidebar);

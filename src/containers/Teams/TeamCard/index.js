@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 
 import './style.scss';
 
-function TeamViewCard(props) {
+function TeamCard(props) {
   const {
-    teamInfo: {
-      title,
+    team: {
+      name,
       description,
-      members,
+      users,
       projects,
     },
   } = props;
 
-  let memCnt = `00${members.length}`;
+  let memCnt = `00${users.length}`;
   memCnt = memCnt.slice(memCnt.length - 2, memCnt.length);
 
   let projCnt = `00${projects.length}`;
@@ -22,11 +22,8 @@ function TeamViewCard(props) {
   return (
     <div className="team-card-content">
       <div className="team-title">
-        <h2 className="title">{title}</h2>
-        <h2 className="describe">
-          {description.split('.')[0]}
-          ...
-        </h2>
+        <h2 className="title m-0">{name}</h2>
+        <h2 className="describe">{description}</h2>
       </div>
 
       <div className="team-member-content mid-border">
@@ -36,9 +33,9 @@ function TeamViewCard(props) {
         </div>
 
         <div className="member-mark-container">
-          {members.map(({ firstName, lastName }, index) => (
-            <div key={firstName + lastName} className={`member-name-mark${index > 0 ? ' over' : ''}`}>
-              <span>{`${firstName[0]}${lastName[0]}`}</span>
+          {users.map((user, index) => (
+            <div key={user.id} className={`member-name-mark${index > 0 ? ' over' : ''}`}>
+              <span>{`${user.first_name.charAt(0)}${user.last_name.charAt(0)}`}</span>
             </div>
           ))}
         </div>
@@ -52,8 +49,8 @@ function TeamViewCard(props) {
   );
 }
 
-TeamViewCard.propTypes = {
-  teamInfo: PropTypes.object.isRequired,
+TeamCard.propTypes = {
+  team: PropTypes.object.isRequired,
 };
 
-export default TeamViewCard;
+export default TeamCard;
