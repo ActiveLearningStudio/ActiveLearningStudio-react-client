@@ -156,7 +156,7 @@ export const loadMyReorderProjectsAction = (projectDivider) => async () => {
     })
   })
 
-  projectService.getReorderAll(reorderProject);
+return await projectService.getReorderAll(reorderProject);
 }
 /* eslint-disable */
 

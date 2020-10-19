@@ -16,10 +16,10 @@ class PreviewPage extends React.Component {
     // scroll to top
     window.scrollTo(0, 0);
 
-    const { loadMyProjects, previewType } = this.props;
-    if (previewType !== 'activityShared') {
-      loadMyProjects();
-    }
+    // const { loadMyProjects, previewType } = this.props;
+    // if (previewType !== 'activityShared') {
+    //   //loadMyProjects();
+    // }
   }
 
   render() {
