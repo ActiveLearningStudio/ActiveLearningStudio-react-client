@@ -74,10 +74,11 @@ function SearchForm() {
                   phrase: simpleSearch.trim(),
                   from: 0,
                   size: 20,
+                  type:'public'
                 };
                 dispatcher(simpleSearchAction(searchData));
                 localStorage.setItem('loading', 'true');
-                history.push('/search');
+                history.push('/search?type=public');
               }
             }
             return true;

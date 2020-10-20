@@ -410,9 +410,9 @@ const  PlaylistsPage = (props)=> {
                                 </div>
                               </div>
                             } 
-                            <div className="react-touch">
+                            <div className="react-touch" style={{width:'150px'}}>
                               <div className="publish-btn">
-                                <span>{checked?"Published":"Publish"}</span>
+                                <span>{checked?"Final":<span style={{color:'#464646'}} >Draft</span>}</span>
                                 <Switch
                                   onChange={handleChange}
                                   checked={checked}

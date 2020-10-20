@@ -36,6 +36,11 @@ const get = (id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const getXapi = (xapiData) => httpService
+  .post(`/${apiVersion}/xapi/statements`,xapiData)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));  
+
 const update = (id, activity) => httpService
   .put(`/${apiVersion}/activities/${id}`, activity)
   .then(({ data }) => data)
@@ -153,4 +158,5 @@ export default {
   shareActivity,
   loadH5pShared,
   removeShareActivity,
+  getXapi
 };

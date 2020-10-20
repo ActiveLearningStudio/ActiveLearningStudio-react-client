@@ -2,13 +2,17 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { useDispatch } from 'react-redux'
 
 import gifLoader from 'assets/images/276.gif';
 import {
   loadH5pResource,
   loadH5pResourceSettingsOpen,
   loadH5pResourceSettingsShared,
+  loadH5pResourceXapi
 } from 'store/actions/resource';
+
+var counter =0;
 
 const H5PPreview = (props) => {
   const [loading, setLoading] = useState(true);
@@ -21,6 +25,8 @@ const H5PPreview = (props) => {
     showLtiPreview,
     showActivityPreview,
   } = props;
+
+  const dispatch =  useDispatch()
 
   const resourceLoaded = async (data) => {
     window.H5PIntegration = data.h5p.settings;
@@ -54,6 +60,7 @@ const H5PPreview = (props) => {
 
     setLoading(false);
   };
+  
 
   useEffect(() => {
     if (resourceId !== activityId) {
@@ -87,6 +94,29 @@ const H5PPreview = (props) => {
         } catch (e) {
           setLoading(false);
         }
+       
+        const checkXapi = setInterval(() => {
+          try{
+            const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
+            if(x.H5P){
+              if(x.H5P.externalDispatcher){
+                stopXapi()
+                x.H5P.externalDispatcher.on('xAPI', function(event) {
+                if(counter>0){
+                dispatch(loadH5pResourceXapi(JSON.stringify(event.data.statement)))
+                }
+                counter= counter+1
+                });
+              }
+            }
+          }catch(e){
+            console.log(e)
+          }
+        });
+
+        const stopXapi = ()=>clearInterval(checkXapi)
+        
+
       };
 
       loadResource();
