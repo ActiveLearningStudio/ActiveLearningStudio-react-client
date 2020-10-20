@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Alert } from 'react-bootstrap';
 
 import { loadMyProjectsPreviewSharedAction } from 'store/actions/project';
 import ActivityCard from 'components/ActivityCard';
@@ -12,7 +13,14 @@ import Unauthorized from 'components/Unauthorized';
 import './style.scss';
 
 function ProjectPreviewShared(props) {
-  const { match, loadMyProjectsPreviewShared } = props;
+  
+  const { 
+    match,
+    sampleId,
+    loadMyProjectsPreviewShared,
+    setModalShow,
+    setCurrentActivity
+  } = props;
 
   const project = useSelector((state) => state.project);
   const accordion = useRef([]);
@@ -77,8 +85,13 @@ function ProjectPreviewShared(props) {
   // }, []);
 
   useEffect(() => {
-    loadMyProjectsPreviewShared(match.params.projectId);
-  }, [match.params.projectId, loadMyProjectsPreviewShared]);
+    if(sampleId){
+      loadMyProjectsPreviewShared(sampleId);
+    }else{
+      loadMyProjectsPreviewShared(match.params.projectId);
+    }
+    
+  }, [match.params.projectId, sampleId]);
 
   let playlists;
 
@@ -92,6 +105,9 @@ function ProjectPreviewShared(props) {
             projectId={parseInt(match.params.projectId, 10)}
             playlistId={playlist.id}
             key={activity.id}
+            sampleID={sampleId}
+            setModalShow={setModalShow}
+            setCurrentActivity={setCurrentActivity}
             lti
           />
         ));
@@ -145,7 +161,7 @@ function ProjectPreviewShared(props) {
         <Unauthorized text="Project is not Public" />
       ) : (
         <>
-          {currentProject && (
+          {currentProject ? (
             <div>
               <div className="container">
                 <div className="scene flex-wrap">
@@ -186,7 +202,7 @@ function ProjectPreviewShared(props) {
                 </div>
               </div>
             </div>
-          )}
+          ):<Alert variant="primary" style={{margin:'20px'}}>Loading ...</Alert>}
         </>
       )}
     </div>
@@ -195,6 +211,7 @@ function ProjectPreviewShared(props) {
 
 ProjectPreviewShared.propTypes = {
   match: PropTypes.object.isRequired,
+  setCurrentActivity:PropTypes.func.isRequired,
   loadMyProjectsPreviewShared: PropTypes.func.isRequired,
 };
 

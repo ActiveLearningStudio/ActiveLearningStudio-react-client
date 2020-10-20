@@ -246,9 +246,9 @@ export const toggleProjectShareRemovedAction = (projectId, projectName) => async
 
 export const loadMyProjectsPreviewSharedAction = (projectId) => async (dispatch) => {
   try {
-    dispatch({
-      type: actionTypes.PAGE_LOADING,
-    });
+    // dispatch({
+    //   type: actionTypes.PAGE_LOADING,
+    // });
 
     const { project } = await projectService.getShared(projectId);
 
@@ -257,9 +257,9 @@ export const loadMyProjectsPreviewSharedAction = (projectId) => async (dispatch)
       payload: { project },
     });
 
-    dispatch({
-      type: actionTypes.PAGE_LOADING_COMPLETE,
-    });
+    // dispatch({
+    //   type: actionTypes.PAGE_LOADING_COMPLETE,
+    // });
   } catch (e) {
     dispatch({
       type: actionTypes.PAGE_LOADING_COMPLETE,
