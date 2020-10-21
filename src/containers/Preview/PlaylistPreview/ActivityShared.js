@@ -2,15 +2,20 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import {useDispatch} from 'react-redux'
 
 import gifloader from 'assets/images/dotsloader.gif';
-import { loadH5pResourceSettingsShared, loadH5pResourceSettingsEmbed } from 'store/actions/resource';
+import { loadH5pResourceSettingsShared, loadH5pResourceSettingsEmbed, loadH5pResourceXapi } from 'store/actions/resource';
 
 import './style.scss';
+
+var counter =0;
 
 const ActivityShared = (props) => {
   const { match, embed } = props;
   const [authorized, setAuthorized] = useState(false);
+
+  const dispatch =  useDispatch()
 
   const h5pInsertion = async (data) => {
     window.H5PIntegration = data.h5p.settings;
@@ -66,6 +71,28 @@ const ActivityShared = (props) => {
             setAuthorized(true);
           });
       }
+   
+        
+      const checkXapi = setInterval(() => {
+       try{ 
+        const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
+        if(x.H5P){
+          if(x.H5P.externalDispatcher){
+            stopXapi()
+            x.H5P.externalDispatcher.on('xAPI', function(event) {
+            if(counter>0){
+            dispatch(loadH5pResourceXapi(JSON.stringify(event.data.statement)))
+            }
+            counter= counter+1
+            });
+          }
+        }
+      }catch(e){
+        console.log(e)
+      }
+      });
+
+      const stopXapi = ()=>clearInterval(checkXapi)
     }
   }, [embed, match.params.activityId]);
 

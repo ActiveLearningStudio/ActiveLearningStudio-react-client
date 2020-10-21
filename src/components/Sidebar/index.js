@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   allSidebarProjects,
   allUpdateProject,
-  sampleProjects,
+  //sampleProjects,
 } from 'store/actions/project';
 
 import './style.scss';
@@ -19,13 +19,13 @@ function Sidebar() {
   const allState = useSelector((state) => state);
 
   const [myProjects, setMyProjects] = useState([]);
-  const [sampleProject, setSampleProjects] = useState([]);
+  //const [sampleProject, setSampleProjects] = useState([]);
   // const [updateProject, setUpdateProject] = useState([]);
 
   useEffect(() => {
     if (allState.sidebar.allProject.length === 0) {
       dispatch(allSidebarProjects());
-      dispatch(sampleProjects());
+     // dispatch(sampleProjects());
       dispatch(allUpdateProject());
     }
   }, [allState.sidebar.allProject.length, dispatch]);
@@ -36,11 +36,11 @@ function Sidebar() {
     }
   }, [allState.sidebar.allProject]);
 
-  useEffect(() => {
-    if (allState.sidebar.sampleProject.length > 0) {
-      setSampleProjects(allState.sidebar.sampleProject);
-    }
-  }, [allState.sidebar.sampleProject]);
+  // useEffect(() => {
+  //   if (allState.sidebar.sampleProject.length > 0) {
+  //     setSampleProjects(allState.sidebar.sampleProject);
+  //   }
+  // }, [allState.sidebar.sampleProject]);
 
   // useEffect(() => {
   //   if (allState.sidebar.updateProject.length > 0) {
@@ -89,7 +89,7 @@ function Sidebar() {
         My Teams
       </div> */}
 
-      <div className="menu-title">
+      {/* <div className="menu-title">
         <FontAwesomeIcon icon="tasks" className="mr-2" />
         Sample Projects
       </div>
@@ -105,7 +105,7 @@ function Sidebar() {
             </li>
           ))}
         </ul>
-      )}
+      )} */}
 
       {/*
       {!!updateProject && (

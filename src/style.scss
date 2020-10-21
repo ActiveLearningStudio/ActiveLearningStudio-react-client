@@ -141,9 +141,14 @@ code {
 }
 
 .content-wrapper.normal-grid {
-  .row.check-home {
-    margin: 0;
-    flex-wrap: nowrap;
+  .check-home {
+    margin-top: 10px;;
+    flex-wrap: nowrap;  
+    display: flex;
+  }
+
+  .drag-class{
+    display: inline-flex;
   }
 
   .playlist-resource {
@@ -186,9 +191,10 @@ code {
 }
 
 .content-wrapper.small-grid {
-  .row.check-home {
+   .check-home {
     margin: 0;
     flex-wrap: nowrap;
+    display: flex;
   }
 
   .playlist-resource {

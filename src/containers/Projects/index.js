@@ -4,7 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import ReactPlaceholder from 'react-placeholder';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Alert } from 'react-bootstrap';
+import { Alert, Tabs, Tab } from 'react-bootstrap';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import welcomVideo from 'assets/video/welcome.mp4';
@@ -18,7 +18,9 @@ import {
   shareProjectAction,
   loadMyReorderProjectsAction,
   loadLmsAction,
+  sampleProjects
 } from 'store/actions/project';
+import SampleProjectCard from "./sampleProject"
 import {allSidebarProjects} from 'store/actions/project';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -38,6 +40,7 @@ export const ProjectsPage = (props) => {
   const [value, setValue] = useState(0);
   const [projectDivider, setProjectDivider] = useState([]);
   const [sortNumber, setSortNumber] = useState(4);
+  const [sampleProject, setSampleProjects] = useState([]);
 
   const {
     ui,
@@ -46,8 +49,23 @@ export const ProjectsPage = (props) => {
     showEditProjectPopup,
     showDeletePopup,
     loadMyReorderProjectsActionMethod,
-    allSidebarProjectsUpdate
+    allSidebarProjectsUpdate,
+    sampleProjectsData
   } = props;
+  
+  const allState = useSelector((state) => state);
+  
+  useEffect(() => {
+    if (allState.sidebar.sampleProject.length === 0) {
+      sampleProjectsData()
+    }
+  }, [allState.sidebar.sampleProject]);
+
+  useEffect(() => {
+    if (allState.sidebar.sampleProject.length >  0) {
+      setSampleProjects(allState.sidebar.sampleProject);
+    }
+  }, [allState.sidebar.sampleProject]);
 
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -95,7 +113,7 @@ export const ProjectsPage = (props) => {
     setProjectDivider(allchunk);
   };
 
-  const onDragEnd = (result) => {
+  const onDragEnd = async  (result) => {
     const { source, destination } = result;
 
     // dropped outside the list
@@ -104,7 +122,7 @@ export const ProjectsPage = (props) => {
     }
 
     if (source.droppableId === destination.droppableId) {
-      projectDivider.map((data, index) => {
+      projectDivider.map(async (data, index) => {
         if (data.id === source.droppableId) {
           const items = reorder(
             data.collection,
@@ -117,10 +135,13 @@ export const ProjectsPage = (props) => {
             collection: items,
           };
         
-          loadMyReorderProjectsActionMethod(projectDivider)
+          
           setProjectDivider(projectDivider);
           setValue((value) => value=value+1);
+          const reorderData =  await loadMyReorderProjectsActionMethod(projectDivider)
+          
           allSidebarProjectsUpdate()
+          setAllProjects(reorderData.projects)
         }
       });
     } else {
@@ -159,10 +180,13 @@ export const ProjectsPage = (props) => {
           updateProjectList.push(arrrays);
         });
       });
-      loadMyReorderProjectsActionMethod(projectDivider)
+
       setProjectDivider(projectDivider);
       divideProjects(updateProjectList);
+      const reorderData =  await loadMyReorderProjectsActionMethod(projectDivider)
+      
       allSidebarProjectsUpdate()
+      setAllProjects(reorderData.projects)
      
     }
   };
@@ -173,6 +197,8 @@ export const ProjectsPage = (props) => {
       divideProjects(allStateProject.projects);
     }
   }, [allStateProject]);
+
+  
 
   useEffect(() => {
     const {
@@ -256,149 +282,180 @@ export const ProjectsPage = (props) => {
 
           <div className={`content-wrapper ${activeFilter}`}>
             <div className="content">
-              <div className="row">
-                <div className="col-md-12">
-                  <div className="program-page-title">
-                    <h1>My Projects</h1>
-                    <div className="project-page-settings">
-                      <div className="sort-project-btns">
-                        <div
-                          className={
-                            activeFilter === 'list-grid'
-                              ? 'sort-btn active'
-                              : 'sort-btn'
-                          }
-                          onClick={() => {
-                            setActiveFilter('list-grid');
-                          }}
-                        >
-                          <FontAwesomeIcon icon="bars" />
-                        </div>
-                        <div
-                          className={
-                            activeFilter === 'small-grid'
-                              ? 'sort-btn active'
-                              : 'sort-btn'
-                          }
-                          onClick={() => {
-                            setActiveFilter('small-grid');
-                            setSortNumber(6, () => {
-                              divideProjects(allProjects);
-                            });
-                          }}
-                        >
-                          <FontAwesomeIcon icon="grip-horizontal" />
-                        </div>
-                        <div
-                          className={
-                            activeFilter === 'normal-grid'
-                              ? 'sort-btn active'
-                              : 'sort-btn'
-                          }
-                          onClick={() => {
-                            setActiveFilter('normal-grid');
-                            setSortNumber(4);
-                          }}
-                        >
-                          <FontAwesomeIcon icon="th-large" />
+              <Tabs className="main-tabs"  defaultActiveKey="my-projects" id="uncontrolled-tab-example">
+                <Tab eventKey="my-projects" title="My Projects">
+                  <div className="row">
+                    <div className="col-md-12">
+                      <div className="program-page-title">
+                        <h1>My Projects</h1>
+                        <div className="project-page-settings">
+                          <div className="sort-project-btns">
+                            <div
+                              className={
+                                activeFilter === 'list-grid'
+                                  ? 'sort-btn active'
+                                  : 'sort-btn'
+                              }
+                              onClick={() => {
+                                const allchunk = []
+                                var counterSimpl= 0
+                                setActiveFilter('list-grid');
+                                setSortNumber(-1)
+                                divideProjects(allProjects);
+                             }}
+                            >
+                              <FontAwesomeIcon icon="bars" />
+                            </div>
+                            <div
+                              className={
+                                activeFilter === 'small-grid'
+                                  ? 'sort-btn active'
+                                  : 'sort-btn'
+                              }
+                              onClick={() => {
+                                setActiveFilter('small-grid');
+                                setSortNumber(6)
+                                divideProjects(allProjects);
+                               
+                              }}
+                            >
+                              <FontAwesomeIcon icon="grip-horizontal" />
+                            </div>
+                            <div
+                              className={
+                                activeFilter === 'normal-grid'
+                                  ? 'sort-btn active'
+                                  : 'sort-btn'
+                              }
+                              onClick={() => {
+                                setActiveFilter('normal-grid');
+                                setSortNumber(4)
+                                divideProjects(allProjects);
+                              }}
+                            >
+                              <FontAwesomeIcon icon="th-large" />
+                            </div>
+                          </div>
+                          <Link to="/project/create">
+                            <div className="btn-top-page">
+                              <FontAwesomeIcon icon="plus" className="mr-2" />
+                              Add Project
+                            </div>
+                          </Link>
                         </div>
                       </div>
-                      <Link to="/project/create">
-                        <div className="btn-top-page">
-                          <FontAwesomeIcon icon="plus" className="mr-2" />
-                          Add Project
-                        </div>
-                      </Link>
                     </div>
                   </div>
-                </div>
-              </div>
-              {
-                //!!projectCards && projectCards.length > 0
-                !!projectDivider && projectDivider.length > 0 ? (
-                  <DragDropContext onDragEnd={onDragEnd}>
-                    {projectDivider.map((rowData) => {
-                      return (
-                        <Droppable
-                          droppableId={rowData.id}
-                          //direction="horizontal"
-                          //type="row"
-                          direction="horizontal"
-                        >
-                          {(provided) => (
-                            <div
-                              {...provided.droppableProps}
-                              ref={provided.innerRef}
-                            >
-                              <div className="row check-home" id={value}>
-                                {rowData.collection.map((proj, index) => {
-                                  const res = {
-                                    title: proj.name,
-                                    id: proj.id,
-                                    deleteType: 'Project',
-                                  };
-                                return (
-                                  <Draggable
-                                    key={proj.id}
-                                    draggableId={`${proj.id}`}
-                                    index={index}
-                                  >
-                                    {(provided) => (
-                                      <div
-                                        className="playlist-resource"
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                      >
-                                        <ProjectCard
-                                          key={proj.id}
-                                          project={proj}
-                                          res={res}
-                                          handleDeleteProject={handleDeleteProject}
-                                          handleShareProject={handleShareProject}
-                                          showDeletePopup={showDeletePopup}
-                                          showPreview={showPreview === proj.id}
-                                          handleShow={handleShow}
-                                          handleClose={handleClose}
-                                          setProjectId={setProjectId}
-                                          activeFilter={activeFilter}
-                                        />
-                                      </div>
-                                    )}
-                                  </Draggable>
-                                );
-                                })}
+           
+                  {
+                  //!!projectCards && projectCards.length > 0
+                  !!projectDivider && projectDivider.length > 0 ? (
+                    <DragDropContext onDragEnd={onDragEnd}>
+                      {projectDivider.map((rowData) => {
+                        return (
+                          <Droppable
+                            droppableId={rowData.id}
+                            //direction="horizontal"
+                            //type="row"
+                            className="drag-class"
+                            direction="horizontal"
+                          >
+                            {(provided) => (
+                              <div
+                                {...provided.droppableProps}
+                                ref={provided.innerRef}
+                              >
+                                <div className="check-home" id={value}>
+                                  {rowData.collection.map((proj, index) => {
+                                    const res = {
+                                      title: proj.name,
+                                      id: proj.id,
+                                      deleteType: 'Project',
+                                    };
+                                  return (
+                                    <Draggable
+                                      key={proj.id}
+                                      draggableId={`${proj.id}`}
+                                      index={index}
+                                    >
+                                      {(provided) => (
+                                        <div
+                                          className="playlist-resource"
+                                          ref={provided.innerRef}
+                                          {...provided.draggableProps}
+                                          {...provided.dragHandleProps}
+                                        >
+                                          <ProjectCard
+                                            key={proj.id}
+                                            project={proj}
+                                            res={res}
+                                            handleDeleteProject={handleDeleteProject}
+                                            handleShareProject={handleShareProject}
+                                            showDeletePopup={showDeletePopup}
+                                            showPreview={showPreview === proj.id}
+                                            handleShow={handleShow}
+                                            handleClose={handleClose}
+                                            setProjectId={setProjectId}
+                                            activeFilter={activeFilter}
+                                          />
+                                        </div>
+                                      )}
+                                    </Draggable>
+                                  );
+                                  })}
+                                </div>
+                                {provided.placeholder}
                               </div>
-                              {provided.placeholder}
-                            </div>
-                          )}
-                        </Droppable>
-                      );
-                    })}
-                  </DragDropContext>
-                ) : (
-                  <>
-                    <Alert variant="success">
-                      Start building your first Project by clicking on the{' '}
-                      <b>Add Project</b> button.
-                      <br />
-                      For more information click here:
-                      <a
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        className="alert-link-ref"
-                        href="https://support.curriki.org/creating-learning-projects"
-                      >
-                        <b>Getting Started.</b>{' '}
-                      </a>
-                    </Alert>
-                    {/* eslint-disable-next-line */}
-                    <video controls className="welcome-video">
-                      <source src={welcomVideo} type="video/mp4" />
-                    </video>
-                  </>
-                )
-              }
+                            )}
+                          </Droppable>
+                        );
+                      })}
+                    </DragDropContext>
+                  ) : (
+                    <>
+                      <Alert variant="success">
+                        Start building your first Project by clicking on the{' '}
+                        <b>Add Project</b> button.
+                        <br />
+                        For more information click here:
+                        <a
+                          target="_blank"
+                          rel="noreferrer noopener"
+                          className="alert-link-ref"
+                          href="https://support.curriki.org/creating-learning-projects"
+                        >
+                          <b>Getting Started.</b>{' '}
+                        </a>
+                      </Alert>
+                      {/* eslint-disable-next-line */}
+                      <video controls className="welcome-video">
+                        <source src={welcomVideo} type="video/mp4" />
+                      </video>
+                    </>
+                  )
+                }
+                </Tab>
+                <Tab eventKey="sample-project" title="Sample Projects">
+                  <div className="row">
+                    <div className="col-md-12">
+                      <div className="program-page-title">
+                        <h1>Sample Projects</h1>
+                        
+                      </div>
+                    </div>
+                    <SampleProjectCard projects={sampleProject} />
+                  </div>
+                </Tab>
+                <Tab eventKey="fav-project" title="Favorite Projects">
+                  <div className="row">
+                    <div className="col-md-12">
+                      <div className="program-page-title">
+                        <h1>Favorite Projects</h1>
+                      </div>
+                    </div>
+                  </div>  
+                </Tab>
+              </Tabs>
             </div>
           </div>
         </div>
@@ -469,7 +526,8 @@ const mapDispatchToProps = (dispatch) => ({
   shareProject: (id) => dispatch(shareProjectAction(id)),
   loadLms: () => dispatch(loadLmsAction()),
   loadMyReorderProjectsActionMethod:(projectDivider)=>dispatch(loadMyReorderProjectsAction(projectDivider)),
-  allSidebarProjectsUpdate:()=>dispatch(allSidebarProjects())
+  allSidebarProjectsUpdate:()=>dispatch(allSidebarProjects()),
+  sampleProjectsData:()=>dispatch(sampleProjects())
 });
 
 export default withRouter(

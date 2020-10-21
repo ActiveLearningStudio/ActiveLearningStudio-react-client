@@ -29,12 +29,26 @@ function SearchForm() {
     }
   }, []);
 
+  const compare = (a, b) => {
+    // Use toUpperCase() to ignore character casing
+    const bandA = a.title.toUpperCase();
+    const bandB = b.title.toUpperCase();
+  
+    let comparison = 0;
+    if (bandA > bandB) {
+      comparison = 1;
+    } else if (bandA < bandB) {
+      comparison = -1;
+    }
+    return comparison;
+  }
+
   useEffect(() => {
     const allItems = [];
     activityTypesState.map((data) => {
       return data.activityItems.map((itm) => allItems.push(itm));
     });
-    setActivityTypes(allItems);
+    setActivityTypes(allItems.sort(compare));
   }, [activityTypesState]);
 
   const closeModel = useRef();
@@ -60,10 +74,11 @@ function SearchForm() {
                   phrase: simpleSearch.trim(),
                   from: 0,
                   size: 20,
+                  type:'public'
                 };
                 dispatcher(simpleSearchAction(searchData));
                 localStorage.setItem('loading', 'true');
-                history.push('/search');
+                history.push('/search?type=public');
               }
             }
             return true;
@@ -200,25 +215,27 @@ function SearchForm() {
                     })}
                   </select>
                 </div>
-                <div className="form-group wrap-keyword" data-name={value}>
-                  {values.subjectArray.map((data) => {
-                    return (
-                      <div className="keywords-de">
-                        {data}
-                        <div
-                          className="iocns"
-                          // eslint-disable-next-line
-                          onClick={() => {
-                            values.subjectArray = values.subjectArray.filter(index => index !== data);
-                            setValue(value + 1);
-                          }}
-                        >
-                          <FontAwesomeIcon icon="times" />
+                {values.subjectArray.length > 0 &&
+                  <div className="form-group wrap-keyword" data-name={value}>
+                    {values.subjectArray.map((data) => {
+                      return (
+                        <div className="keywords-de">
+                          {data}
+                          <div
+                            className="iocns"
+                            // eslint-disable-next-line
+                            onClick={() => {
+                              values.subjectArray = values.subjectArray.filter(index => index !== data);
+                              setValue(value + 1);
+                            }}
+                          >
+                            <FontAwesomeIcon icon="times" />
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
+                }
                 <div className="form-group">
                   <select
                     name="grade"
@@ -239,25 +256,27 @@ function SearchForm() {
                     })}
                   </select>
                 </div>
-                <div className="form-group wrap-keyword">
-                  {values.gradeArray.map((data) => {
-                    return (
-                      <div className="keywords-de" data-name={value}>
-                        {data}
-                        <div
-                          className="iocns"
-                          // eslint-disable-next-line
-                          onClick={() => {
-                            values.gradeArray = values.gradeArray.filter(index=> index !== data);
-                            setValue(value + 1);
-                          }}
-                        >
-                          <FontAwesomeIcon icon="times" />
+                {values.gradeArray.length > 0 &&
+                  <div className="form-group wrap-keyword">
+                    {values.gradeArray.map((data) => {
+                      return (
+                        <div className="keywords-de" data-name={value}>
+                          {data}
+                          <div
+                            className="iocns"
+                            // eslint-disable-next-line
+                            onClick={() => {
+                              values.gradeArray = values.gradeArray.filter(index=> index !== data);
+                              setValue(value + 1);
+                            }}
+                          >
+                            <FontAwesomeIcon icon="times" />
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
+                 }
                 <div className="form-group">
                   <select
                     name="standard"
@@ -271,7 +290,7 @@ function SearchForm() {
                     onBlur={handleBlur}
                     value={values.standard}
                   >
-                    <option value={'Standard'}>Standard</option>
+                    <option value={'Standard'}>Type of Activity</option>
                     {activityTypes.map((data) => {
                       return (
                         <option key={data.id} value={data.h5pLib}>
@@ -281,25 +300,27 @@ function SearchForm() {
                     })}
                   </select>
                 </div>
-                <div className="form-group wrap-keyword" data-name={value}>
-                  {values.standardArray.map((data) => {
-                    return (
-                      <div className="keywords-de">
-                        {data}
-                        <div
-                          className="iocns"
-                          // eslint-disable-next-line
-                          onClick={() => {
-                            values.standardArray = values.standardArray.filter(index => index !== data);
-                            setValue(value + 1);
-                          }}
-                        >
-                          <FontAwesomeIcon icon="times" />
+                {values.standardArray.length > 0 &&
+                  <div className="form-group wrap-keyword" data-name={value}>
+                    {values.standardArray.map((data) => {
+                      return (
+                        <div className="keywords-de">
+                          {data}
+                          <div
+                            className="iocns"
+                            // eslint-disable-next-line
+                            onClick={() => {
+                              values.standardArray = values.standardArray.filter(index => index !== data);
+                              setValue(value + 1);
+                            }}
+                          >
+                            <FontAwesomeIcon icon="times" />
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
+                }
                 <div className="form-group dual">
                   <input
                     name="toDate"
