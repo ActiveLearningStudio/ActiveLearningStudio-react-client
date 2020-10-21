@@ -28,19 +28,74 @@ $filled: #44ca92;
           border: solid 1px #C4C4C4;
         }
 
-        .invite-btn {
-          min-width: 20.5%;
-          padding: 1px 17px 0;
-          background: none;
-          border: solid 1px #44CA92;
-          font-size: 14px;
-          letter-spacing: 0.3px;
-          text-align: left;
-          color: #44CA92;
+        .invite-wrapper {
+          position: relative;
 
-          &:hover {
-            background: #44CA92;
-            color: #ffffff;
+          .invite-btn {
+            width: 190px;
+            height: 41px;
+            padding: 1px 17px 0;
+            background: none;
+            border: solid 1px #44CA92;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+            text-align: left;
+            color: #44CA92;
+
+            &:hover {
+              background: #44CA92;
+              color: #ffffff;
+            }
+          }
+
+          .invite-dialog {
+            position: absolute;
+            right: 0;
+            background: white;
+            border: solid 1px #e2e2e2;
+            text-align: left;
+            z-index: 1;
+
+            h2 {
+              font-size: 14px;
+            }
+
+            h2.font-weight-bold {
+              padding: 15px 24px;
+              border-bottom: solid 1px;
+              border-color: #e2e2e2;
+            }
+
+            & > div {
+              padding: 35px 23px 53px;
+              letter-spacing: -0.5px;
+
+              .email-input {
+                margin: 10px 0;
+
+                input {
+                  min-width: 263px;
+                  padding: 8px 11px;
+                }
+              }
+
+              button {
+                padding: 7px 17px;
+                border-radius: 2px;
+                font-size: 15px;
+
+                &:not(:disabled) {
+                  background: #0f4392;
+                  border: none;
+                  color: #fff;
+                }
+
+                svg {
+                  margin-left: 8px;
+                  animation: spin 1s linear infinite;
+                }
+              }
+            }
           }
         }
       }
@@ -160,62 +215,6 @@ $filled: #44ca92;
               }
             }
 
-          }
-        }
-
-        .invite-dialog {
-          position: relative;
-          max-width: 40%;
-          margin: 2px 0 3rem 4rem;
-          padding: 31px 20px 10px 24px;
-          background: white;
-          border: solid 1px #e2e2e2;
-          text-align: left;
-
-          &::after {
-            content: "";
-            position: absolute;
-            top: -21px;
-            left: 7%;
-            border-width: 11px;
-            border-style: solid;
-            border-color: transparent transparent #ffffff transparent;
-            filter: drop-shadow(0px -1px 0px #e2e2e2);
-          }
-
-          &.empty {
-            h2 {
-              text-align: center;
-              font-size: 32px;
-            }
-          }
-
-          & > div {
-            position: absolute;
-            top: 1em;
-            right: 0.7em;
-            width: fit-content;
-            font-size: 11px;
-
-            &:hover {
-              color: red;
-              cursor: pointer;
-            }
-
-            svg {
-              transform: rotate(45deg);
-            }
-          }
-
-          h2 {
-            margin: 0;
-            padding: 16px 0 15px;
-            font-size: 14px;
-            color: #464646;
-          }
-
-          .border-top {
-            border-top: solid 1px #EEEEEE;
           }
         }
       }

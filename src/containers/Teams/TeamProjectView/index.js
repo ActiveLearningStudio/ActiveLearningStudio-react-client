@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { zeroFill } from 'utils';
 
 import './style.scss';
+import { Link } from 'react-router-dom';
 
 function TeamProjectView(props) {
   const { team: { projects } } = props;
@@ -14,7 +15,7 @@ function TeamProjectView(props) {
       <div className="projects-wrapper">
         <div className="project-list">
           {projects.map((project) => (
-            <div key={project.title} className="project-content-item">
+            <div key={project.id} className="project-content-item">
               <img
                 src={project.thumb_url.includes('pexels.com')
                   ? `url(${project.thumb_url})`
@@ -23,7 +24,7 @@ function TeamProjectView(props) {
               />
 
               <div className="project-title">
-                <span>{project.name}</span>
+                <Link to={`/project/${project.id}`}>{project.name}</Link>
                 <div><FontAwesomeIcon icon="ellipsis-v" /></div>
               </div>
 

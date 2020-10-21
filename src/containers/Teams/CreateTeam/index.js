@@ -1,10 +1,13 @@
 import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Swal from 'sweetalert2';
 
 import { searchUsersAction } from 'store/actions/auth';
 import { loadMyProjectsAction } from 'store/actions/project';
 import {
+  resetSelectedTeamAction,
   updateSelectedTeamAction,
   showCreationAction,
   showInvitingAction,
@@ -21,12 +24,14 @@ import './style.scss';
 
 function CreateTeam(props) {
   const {
+    history,
     team,
     isSearching,
     searchedUsers,
     projects,
     searchUsers,
     loadProjects,
+    resetSelectedTeam,
     updateSelectedTeam,
     showCreate,
     showInvite,
@@ -43,17 +48,27 @@ function CreateTeam(props) {
 
   useEffect(() => {
     loadProjects();
-    updateSelectedTeam({});
+    resetSelectedTeam();
     showCreate();
-  }, [loadProjects, updateSelectedTeam, showCreate]);
+  }, [loadProjects, resetSelectedTeam, showCreate]);
 
   const handleSubmit = useCallback((projectIds) => {
     createTeam({
       ...team.selectedTeam,
       users: team.selectedTeam.users.map((u) => u.id),
       projects: projectIds,
-    });
-  }, [team.selectedTeam, createTeam]);
+    })
+      .then(() => {
+        history.push('/teams');
+      })
+      .catch(() => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Create Team failed, kindly try again.',
+        });
+      });
+  }, [createTeam, team.selectedTeam, history]);
 
   return (
     <div className="create-team">
@@ -91,12 +106,14 @@ function CreateTeam(props) {
 }
 
 CreateTeam.propTypes = {
+  history: PropTypes.object.isRequired,
   team: PropTypes.object.isRequired,
   isSearching: PropTypes.bool.isRequired,
   searchedUsers: PropTypes.array.isRequired,
   projects: PropTypes.array.isRequired,
   searchUsers: PropTypes.func.isRequired,
   loadProjects: PropTypes.func.isRequired,
+  resetSelectedTeam: PropTypes.func.isRequired,
   updateSelectedTeam: PropTypes.func.isRequired,
   showCreate: PropTypes.func.isRequired,
   showInvite: PropTypes.func.isRequired,
@@ -115,6 +132,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   searchUsers: (search) => dispatch(searchUsersAction(search)),
   loadProjects: () => dispatch(loadMyProjectsAction()),
+  resetSelectedTeam: () => dispatch(resetSelectedTeamAction()),
   updateSelectedTeam: (team) => dispatch(updateSelectedTeamAction(team)),
   showCreate: () => dispatch(showCreationAction()),
   showInvite: () => dispatch(showInvitingAction()),
@@ -123,4 +141,4 @@ const mapDispatchToProps = (dispatch) => ({
   createTeam: (data) => dispatch(createTeamAction(data)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateTeam);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CreateTeam));

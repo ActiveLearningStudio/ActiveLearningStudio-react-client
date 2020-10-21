@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { loadTeamsAction } from 'store/actions/team';
+import { inviteMemberAction, loadTeamsAction, removeMemberAction } from 'store/actions/team';
 import Header from 'components/Header';
 import Sidebar from 'components/Sidebar';
 import Footer from 'components/Footer';
@@ -26,6 +26,7 @@ const breadCrumbData = {
 function TeamsPage(props) {
   const {
     location,
+    isInviting,
     user,
     teams,
     overview,
@@ -34,6 +35,8 @@ function TeamsPage(props) {
     projectShow,
     channelShow,
     loadTeams,
+    inviteMember,
+    removeMember,
   } = props;
 
   const [breadCrumb, setBreadCrumb] = useState([]);
@@ -106,7 +109,7 @@ function TeamsPage(props) {
           <div className="content">
             <div className="row">
               <h1 className={`title${projectShow ? ' project-title' : ''}${channelShow ? ' channel-title' : ''}`}>
-                {title[status] || 'Teams'}
+                {overview ? 'Teams' : (title[status] || 'Teams')}
               </h1>
             </div>
 
@@ -123,7 +126,13 @@ function TeamsPage(props) {
             )}
 
             {teamShow && selectedTeam && (
-              <TeamMemberView user={user} team={selectedTeam} />
+              <TeamMemberView
+                isInviting={isInviting}
+                inviteMember={inviteMember}
+                removeMember={removeMember}
+                user={user}
+                team={selectedTeam}
+              />
             )}
 
             {projectShow && selectedTeam && (
@@ -144,7 +153,8 @@ function TeamsPage(props) {
 
 TeamsPage.propTypes = {
   location: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
+  isInviting: PropTypes.bool.isRequired,
+  user: PropTypes.object,
   teams: PropTypes.array.isRequired,
   overview: PropTypes.bool,
   creation: PropTypes.bool,
@@ -152,9 +162,12 @@ TeamsPage.propTypes = {
   projectShow: PropTypes.bool,
   channelShow: PropTypes.bool,
   loadTeams: PropTypes.func.isRequired,
+  inviteMember: PropTypes.func.isRequired,
+  removeMember: PropTypes.func.isRequired,
 };
 
 TeamsPage.defaultProps = {
+  user: null,
   overview: false,
   creation: false,
   teamShow: false,
@@ -163,12 +176,15 @@ TeamsPage.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
+  isInviting: state.team.isInviting,
   user: state.auth.user,
   teams: state.team.teams,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   loadTeams: () => dispatch(loadTeamsAction()),
+  inviteMember: (teamId, email) => dispatch(inviteMemberAction(teamId, email)),
+  removeMember: (teamId, userId) => dispatch(removeMemberAction(teamId, userId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamsPage);

@@ -1,9 +1,10 @@
 .assign-project-wrapper {
   .assign-projects {
-    height: 480px;
+    min-height: 360px;
     padding-top: 19px;
     margin-bottom: 16px;
     display: flex;
+    flex-wrap: wrap;
 
     .assign-project-item {
       position: relative;

@@ -33,6 +33,16 @@ const inviteConfirm = (user) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const inviteMember = (teamId, email) => httpService
+  .post(`/${apiVersion}/teams/${teamId}/invite`, { email })
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const removeMember = (teamId, id) => httpService
+  .post(`/${apiVersion}/teams/${teamId}/remove`, { id })
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -40,4 +50,6 @@ export default {
   update,
   remove,
   inviteConfirm,
+  inviteMember,
+  removeMember,
 };

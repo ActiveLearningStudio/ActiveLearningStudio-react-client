@@ -14,6 +14,12 @@ export default (state = INITIAL_STATE, action) => {
   const { teams } = state;
 
   switch (action.type) {
+    case actionTypes.RESET_SELECTED_TEAM:
+      return {
+        ...state,
+        selectedTeam: {},
+      };
+
     case actionTypes.UPDATE_SELECTED_TEAM:
       return {
         ...state,
@@ -90,9 +96,20 @@ export default (state = INITIAL_STATE, action) => {
         isLoading: true,
       };
     case actionTypes.LOAD_TEAM_SUCCESS:
+      const idx = teams.findIndex((p) => p.id === action.payload.team.id);
+      if (idx > -1) {
+        teams.splice(idx, 1, action.payload.team);
+        return {
+          ...state,
+          isLoading: false,
+          teams,
+          selectedTeam: action.payload.team,
+        };
+      }
       return {
         ...state,
         isLoading: false,
+        teams: [...teams, action.payload.team],
         selectedTeam: action.payload.team,
       };
     case actionTypes.LOAD_TEAM_FAIL:
@@ -148,6 +165,22 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         teams: action.payload.teams,
+      };
+
+    case actionTypes.INVITE_MEMBER_REQUEST:
+      return {
+        ...state,
+        isInviting: true,
+      };
+    case actionTypes.INVITE_MEMBER_SUCCESS:
+      return {
+        ...state,
+        isInviting: false,
+      };
+    case actionTypes.INVITE_MEMBER_FAIL:
+      return {
+        ...state,
+        isInviting: false,
       };
 
     default:

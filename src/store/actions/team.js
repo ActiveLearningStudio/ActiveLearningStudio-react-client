@@ -1,6 +1,12 @@
 import teamService from 'services/team.service';
 import * as actionTypes from '../actionTypes';
 
+export const resetSelectedTeamAction = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.RESET_SELECTED_TEAM,
+  });
+};
+
 export const updateSelectedTeamAction = (payload) => async (dispatch) => {
   dispatch({
     type: actionTypes.UPDATE_SELECTED_TEAM,
@@ -61,6 +67,8 @@ export const createTeamAction = (data) => async (dispatch) => {
       type: actionTypes.CREATE_TEAM_SUCCESS,
       payload: { team },
     });
+
+    return team;
   } catch (e) {
     dispatch({ type: actionTypes.CREATE_TEAM_FAIL });
 
@@ -139,6 +147,46 @@ export const inviteTeamMemberAction = (user) => async (dispatch) => {
     return invited;
   } catch (e) {
     dispatch({ type: actionTypes.INVITE_MEMBER_CONFIRM_FAIL });
+
+    throw e;
+  }
+};
+
+export const inviteMemberAction = (teamId, email) => async (dispatch) => {
+  try {
+    dispatch({ type: actionTypes.INVITE_MEMBER_REQUEST });
+
+    const { invited } = await teamService.inviteMember(teamId, email);
+
+    if (invited) {
+      dispatch({
+        type: actionTypes.INVITE_MEMBER_SUCCESS,
+      });
+
+      dispatch(loadTeamAction(teamId));
+    } else {
+      dispatch({ type: actionTypes.INVITE_MEMBER_FAIL });
+    }
+
+    return invited;
+  } catch (e) {
+    dispatch({ type: actionTypes.INVITE_MEMBER_FAIL });
+
+    throw e;
+  }
+};
+
+export const removeMemberAction = (teamId, userId) => async (dispatch) => {
+  try {
+    dispatch({ type: actionTypes.REMOVE_MEMBER_REQUEST });
+
+    await teamService.removeMember(teamId, userId);
+
+    dispatch({
+      type: actionTypes.REMOVE_MEMBER_SUCCESS,
+    });
+  } catch (e) {
+    dispatch({ type: actionTypes.REMOVE_MEMBER_FAIL });
 
     throw e;
   }
