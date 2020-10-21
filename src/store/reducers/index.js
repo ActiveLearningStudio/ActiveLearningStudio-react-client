@@ -12,6 +12,7 @@ import search from './search';
 import metrics from './metrics';
 import sidebar from './sidebar';
 import account from './account';
+import dashboard from './dashboard';
 
 export default combineReducers({
   auth,
@@ -25,5 +26,6 @@ export default combineReducers({
   search,
   metrics,
   sidebar,
-  account
+  account,
+  dashboard
 });
