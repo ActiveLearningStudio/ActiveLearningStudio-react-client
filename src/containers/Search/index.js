@@ -479,13 +479,15 @@ function SearchInterface(props) {
                                     <h2>{res.title || res.name}</h2>
                                   </a>
                                   <ul>
-                                    <li>
-                                      by
-                                      {' '}
-                                      <span className="author">
-                                        {res.user_name}
-                                      </span>
-                                    </li>
+                                    {res.user &&
+                                      <li>
+                                        by
+                                        {' '}
+                                        <span className="author">
+                                          {res.user.first_name}
+                                        </span>
+                                      </li>
+                                    }
                                     <li>
                                       Type
                                       {' '}
@@ -603,13 +605,15 @@ function SearchInterface(props) {
                                         <h2>{res.title || res.name}</h2>
                                       </a>
                                       <ul>
+                                        {res.user &&
                                         <li>
                                           by
                                           {' '}
                                           <span className="author">
-                                            {res.user_name}
+                                            {res.user.first_name}
                                           </span>
                                         </li>
+                                        }
                                         <li>
                                           Type
                                           {' '}
@@ -728,13 +732,15 @@ function SearchInterface(props) {
                                         <h2>{res.title || res.name}</h2>
                                       </a>
                                       <ul>
+                                        {res.user &&
                                         <li>
                                           by
                                           {' '}
                                           <span className="author">
-                                            {res.user_name}
+                                            {res.user.first_name}
                                           </span>
                                         </li>
+                                        }
                                         <li>
                                           Type
                                           {' '}
@@ -842,13 +848,15 @@ function SearchInterface(props) {
                                           <h2>{res.title || res.name}</h2>
                                         </a>
                                         <ul>
-                                          <li>
-                                            by
-                                            {' '}
-                                            <span className="author">
-                                              {res.user_name}
-                                            </span>
-                                          </li>
+                                          {res.user &&
+                                            <li>
+                                              by
+                                              {' '}
+                                              <span className="author">
+                                                {res.user.first_name}
+                                              </span>
+                                            </li>
+                                          }
                                           <li>
                                             Type
                                             {' '}
