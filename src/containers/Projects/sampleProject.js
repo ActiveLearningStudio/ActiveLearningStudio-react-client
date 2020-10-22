@@ -4,12 +4,21 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import ProjectPreviewShared from 'containers/Preview/ProjectPreview/ProjectPreviewShared'
 import MyVerticallyCenteredModal from 'components/models/activitySample';
+import { Dropdown } from 'react-bootstrap';
+import Swal from 'sweetalert2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {useDispatch} from 'react-redux'
+
+import { addProjectFav } from 'store/actions/project'
+import { cloneProject } from 'store/actions/search';
 
 const SampleProjectCard = (props) => {
   const {
     projects,
+    type
   } = props;
 
+  const dispatch =  useDispatch()
   const [selectId,setSelectId] = useState(null)
   const [modalShow, setModalShow] = useState(false);
   const [currentActivity, setCurrentActivity] = useState(null);
@@ -17,7 +26,7 @@ const SampleProjectCard = (props) => {
   return (
     <>{!selectId?
       projects.map(project=>{  
-      return <div className="col-md-3 check">
+      return <div className="playlist-resource"><div className="col-md-3 check">
         <div className="program-tile">
           <div 
             className="program-thumb"
@@ -41,9 +50,48 @@ const SampleProjectCard = (props) => {
               <div className="row">
                 <div className="col-md-10">
                   <h3 className="program-title">
-                    <Link to={`/project/${project.id}/shared`}>{project.name}</Link>
+                    <Link onClick={()=>setSelectId(project.id)} >{project.name}</Link>
                   </h3>
                 </div>
+                
+                  <div className="col-md-2">
+                  <Dropdown className="project-dropdown check d-flex justify-content-center align-items-center">
+                    <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
+                      <FontAwesomeIcon icon="ellipsis-v" />
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item
+                        as={Link}
+                        onClick={()=>setSelectId(project.id)}  
+                      >
+                        <FontAwesomeIcon icon="eye" className="mr-2" />
+                        Preview
+                      </Dropdown.Item>
+
+                      <Dropdown.Item
+                        to="#"
+                        onClick={() => {
+                          Swal.showLoading();
+                          cloneProject(project.id);
+                        }}
+                      >
+                        <FontAwesomeIcon icon="clone" className="mr-2" />
+                        Clone
+                      </Dropdown.Item>
+                      {type &&
+                        <Dropdown.Item
+                          to="#"
+                          onClick={() => dispatch(addProjectFav(project.id))}
+                        >
+                          <FontAwesomeIcon icon="times-circle" className="mr-2" />
+                          Delete
+                        </Dropdown.Item>
+                          }
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+              
               </div>
 
               <div className="lessons-duration">
@@ -59,6 +107,7 @@ const SampleProjectCard = (props) => {
             </div>
           </div>
         </div>
+      </div>
       </div>
       })
     :
@@ -82,6 +131,7 @@ const SampleProjectCard = (props) => {
 
 SampleProjectCard.propTypes = {
   projects: PropTypes.object.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default SampleProjectCard;

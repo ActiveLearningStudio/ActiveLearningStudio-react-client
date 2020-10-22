@@ -294,6 +294,23 @@
         display: flex;
         justify-content: space-between;
 
+        .btn-fav{
+          border: 1px solid #eee;
+          height: 35px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-width: 130px;
+          box-shadow: 0px 0px 7px 2px #eee;
+          cursor: pointer;
+        }
+        
+        .btn-fav.true{
+         
+          svg{
+            color:goldenrod
+          }
+        }
         .dropdown-menu {
           padding-left: 10px;
           cursor: pointer;
