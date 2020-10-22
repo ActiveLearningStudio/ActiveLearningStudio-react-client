@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {useDispatch} from 'react-redux'
 
-import { addProjectFav } from 'store/actions/project'
+import { deleteFavObj } from 'store/actions/project'
 import { cloneProject } from 'store/actions/search';
 
 const SampleProjectCard = (props) => {
@@ -89,7 +89,7 @@ const SampleProjectCard = (props) => {
                       {type &&
                         <Dropdown.Item
                           to="#"
-                          onClick={() => dispatch(addProjectFav(project.id))}
+                          onClick={() => dispatch(deleteFavObj(project.id))}
                         >
                           <FontAwesomeIcon icon="times-circle" className="mr-2" />
                           Delete
