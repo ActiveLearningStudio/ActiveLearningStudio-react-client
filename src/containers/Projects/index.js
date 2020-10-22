@@ -45,6 +45,7 @@ export const ProjectsPage = (props) => {
   const [sampleProject, setSampleProjects] = useState([]);
   const [favProject, setFavProjects] = useState([]);
   const [activeTab, setActiveTab] = useState('my-projects');
+  const [showSampleSort, setShowSampleSort] =  useState(true);
 
   const {
     ui,
@@ -466,61 +467,62 @@ export const ProjectsPage = (props) => {
                     <div className="col-md-12">
                       <div className="program-page-title">
                         <h1>Sample Projects</h1>
-                        <div className="project-page-settings">
-                          <div className="sort-project-btns">
-                            <div
-                              className={
-                                activeFilter === 'list-grid'
-                                  ? 'sort-btn active'
-                                  : 'sort-btn'
-                              }
-                              onClick={() => {
-                                const allchunk = []
-                                var counterSimpl= 0
-                                setActiveFilter('list-grid');
-                                setSortNumber(-1)
-                                divideProjects(allProjects);
-                             }}
-                            >
-                              <FontAwesomeIcon icon="bars" />
-                            </div>
-                            <div
-                              className={
-                                activeFilter === 'small-grid'
-                                  ? 'sort-btn active'
-                                  : 'sort-btn'
-                              }
-                              onClick={() => {
-                                setActiveFilter('small-grid');
-                                setSortNumber(6)
-                                divideProjects(allProjects);
-                               
+                        {showSampleSort &&
+                          <div className="project-page-settings">
+                            <div className="sort-project-btns">
+                              <div
+                                className={
+                                  activeFilter === 'list-grid'
+                                    ? 'sort-btn active'
+                                    : 'sort-btn'
+                                }
+                                onClick={() => {
+                                  const allchunk = []
+                                  var counterSimpl= 0
+                                  setActiveFilter('list-grid');
+                                  setSortNumber(-1)
+                                  divideProjects(allProjects);
                               }}
-                            >
-                              <FontAwesomeIcon icon="grip-horizontal" />
-                            </div>
-                            <div
-                              className={
-                                activeFilter === 'normal-grid'
-                                  ? 'sort-btn active'
-                                  : 'sort-btn'
-                              }
-                              onClick={() => {
-                                setActiveFilter('normal-grid');
-                                setSortNumber(4)
-                                divideProjects(allProjects);
-                              }}
-                            >
-                              <FontAwesomeIcon icon="th-large" />
+                              >
+                                <FontAwesomeIcon icon="bars" />
+                              </div>
+                              <div
+                                className={
+                                  activeFilter === 'small-grid'
+                                    ? 'sort-btn active'
+                                    : 'sort-btn'
+                                }
+                                onClick={() => {
+                                  setActiveFilter('small-grid');
+                                  setSortNumber(6)
+                                  divideProjects(allProjects);
+                                
+                                }}
+                              >
+                                <FontAwesomeIcon icon="grip-horizontal" />
+                              </div>
+                              <div
+                                className={
+                                  activeFilter === 'normal-grid'
+                                    ? 'sort-btn active'
+                                    : 'sort-btn'
+                                }
+                                onClick={() => {
+                                  setActiveFilter('normal-grid');
+                                  setSortNumber(4)
+                                  divideProjects(allProjects);
+                                }}
+                              >
+                                <FontAwesomeIcon icon="th-large" />
+                              </div>
                             </div>
                           </div>
-                        
-                        </div>
+                        }
                       </div>
                     </div>
                       <div className="col-md-12">
                         <div className="flex-smaple">
-                            <SampleProjectCard projects={sampleProject} type="" />
+                            <SampleProjectCard projects={sampleProject} type="" setShowSampleSort={setShowSampleSort} />
                         </div>   
                       </div>
                   </div>

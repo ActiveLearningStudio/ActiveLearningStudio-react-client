@@ -15,7 +15,8 @@ import { cloneProject } from 'store/actions/search';
 const SampleProjectCard = (props) => {
   const {
     projects,
-    type
+    type,
+    setShowSampleSort
   } = props;
 
   const dispatch =  useDispatch()
@@ -30,7 +31,10 @@ const SampleProjectCard = (props) => {
         <div className="program-tile">
           <div 
             className="program-thumb"
-            onClick={()=>setSelectId(project.id)}  
+            onClick={()=>{
+              setSelectId(project.id)
+              setShowSampleSort(false)
+            }}  
           >
               {project.thumb_url && (
                 <div
@@ -50,7 +54,10 @@ const SampleProjectCard = (props) => {
               <div className="row">
                 <div className="col-md-10">
                   <h3 className="program-title">
-                    <Link onClick={()=>setSelectId(project.id)} >{project.name}</Link>
+                    <Link onClick={()=>{
+                      setSelectId(project.id)
+                      setShowSampleSort(false)
+                      }} >{project.name}</Link>
                   </h3>
                 </div>
                 
@@ -112,7 +119,10 @@ const SampleProjectCard = (props) => {
       })
     :
     <div className="project-sample-share">
-      <div className="btn-back" onClick={()=>setSelectId(null)} >Back</div>
+      <div className="btn-back" onClick={()=>{
+        setShowSampleSort(true)
+        setSelectId(null)}
+       } >Back</div>
       <ProjectPreviewShared
         sampleId={selectId}
         setModalShow={setModalShow}
@@ -132,6 +142,7 @@ const SampleProjectCard = (props) => {
 SampleProjectCard.propTypes = {
   projects: PropTypes.object.isRequired,
   type: PropTypes.string.isRequired,
+  setShowSampleSort:PropTypes.func.isRequired,
 };
 
 export default SampleProjectCard;
