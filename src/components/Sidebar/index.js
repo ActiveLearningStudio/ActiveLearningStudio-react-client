@@ -7,8 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import logo from 'assets/images/logo.svg';
 import {
   allSidebarProjects,
-  allUpdateProject,
-  //sampleProjects,
+  // allUpdateProject,
+  // sampleProjects,
 } from 'store/actions/project';
 
 import './style.scss';
@@ -19,14 +19,14 @@ function Sidebar() {
   const allState = useSelector((state) => state);
 
   const [myProjects, setMyProjects] = useState([]);
-  //const [sampleProject, setSampleProjects] = useState([]);
+  // const [sampleProject, setSampleProjects] = useState([]);
   // const [updateProject, setUpdateProject] = useState([]);
 
   useEffect(() => {
     if (allState.sidebar.allProject.length === 0) {
       dispatch(allSidebarProjects());
-     // dispatch(sampleProjects());
-      dispatch(allUpdateProject());
+      // dispatch(sampleProjects());
+      // dispatch(allUpdateProject());
     }
   }, [allState.sidebar.allProject.length, dispatch]);
 

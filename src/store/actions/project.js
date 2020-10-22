@@ -141,13 +141,11 @@ export const loadMyProjectsAction = () => async (dispatch) => {
 };
 
 export const loadMyFavProjectsAction = () => async (dispatch) => {
-
-    const { projects }  = await projectService.getAllFav();
-    dispatch({
-      type: actionTypes.SIDEBAR_UPDATE_PROJECT,
-      data: { projects },
-    });
-
+  const { projects } = await projectService.getAllFav();
+  dispatch({
+    type: actionTypes.SIDEBAR_UPDATE_PROJECT,
+    data: { projects },
+  });
 };
 
 /* eslint-disable */
@@ -194,13 +192,13 @@ export const sampleProjects = () => async (dispatch) => {
   });
 };
 
-export const allUpdateProject = () => async (dispatch) => {
-  const { projects } = await projectService.getUpdatedProjects();
-  dispatch({
-    type: actionTypes.SIDEBAR_UPDATE_PROJECT,
-    data: { projects },
-  });
-};
+// export const allUpdateProject = () => async (dispatch) => {
+//   const { projects } = await projectService.getUpdatedProjects();
+//   dispatch({
+//     type: actionTypes.SIDEBAR_UPDATE_PROJECT,
+//     data: { projects },
+//   });
+// };
 
 export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
   try {
