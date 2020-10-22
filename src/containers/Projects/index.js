@@ -71,21 +71,21 @@ export const ProjectsPage = (props) => {
     }
   },[])
   useEffect(() => {
-    if (allState.sidebar.sampleProject.length === 0) {
+  //  if (allState.sidebar.sampleProject.length === 0) {
       sampleProjectsData()
-    }
-  }, [allState.sidebar.sampleProject]);
+ //   }
+  }, []);
 
   useEffect(() => {
-    if (allState.sidebar.updateProject.length === 0) {
+   // if (allState.sidebar.updateProject.length === 0) {
       loadMyFavProjectsActionData()
-    }
-  }, [allState.sidebar.updateProject]);
+  //  }
+  }, []);
 
   useEffect(() => {
-    if (allState.sidebar.updateProject.length > 0) {
+   // if (allState.sidebar.updateProject.length > 0) {
       setFavProjects(allState.sidebar.updateProject)
-    }
+   // }
   }, [allState.sidebar.updateProject]);
 
   useEffect(() => {

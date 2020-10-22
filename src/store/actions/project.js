@@ -254,6 +254,25 @@ export const toggleProjectShareRemovedAction = (projectId, projectName) => async
   });
 };
 
+
+export const deleteFavObj = (projectId) => async (dispatch) => {
+  
+  Swal.fire({
+  showCancelButton: true,
+  confirmButtonColor: '#5952c6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Delete',
+  title:"Are you sure you want to remove this ?",
+  }).then( async (result) => {
+    if (result.value) {
+      Swal.showLoading()
+      await projectService.addToFav(projectId);
+      Swal.close()
+      dispatch(loadMyFavProjectsAction())
+  }})
+}
+
+
 export const addProjectFav = (projectId) => async (dispatch) => {
   
   Swal.showLoading()
