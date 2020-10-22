@@ -1,0 +1,24 @@
+.dashboard-project-list {
+    .img-col img {
+        max-width: 150px;
+        max-height: 150px;
+    }
+
+    .project-row{
+        border-bottom: solid #0f4392 1px;
+    }
+
+    .project-row a{
+        color:#0f4392;
+        font: normal normal 600 16px/22px Open Sans;
+    }
+
+    .project-row p {
+        color:#777;
+        font: normal normal 600 16px/22px Open Sans;
+    }
+
+    .project-go-icon {
+        font-size: xx-large;
+    }
+}

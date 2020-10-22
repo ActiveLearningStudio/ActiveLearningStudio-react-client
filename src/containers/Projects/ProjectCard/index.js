@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown, Badge } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 
 import { getProjectId, googleShare } from 'store/actions/gapi';
@@ -33,6 +33,10 @@ const ProjectCard = (props) => {
     setAllLms(AllLms);
   }, [AllLms]);
 
+  useEffect(() => {
+    console.log(project);
+  },[project]);
+
   return (
     <div className="col-md-3 check" id={activeFilter}>
       <div className="program-tile">
@@ -54,12 +58,16 @@ const ProjectCard = (props) => {
         <div className="program-content">
           <div>
             <div className="row">
-              <div className="col-md-10">
+              <div className='col-md-10'>
                 <h3 className="program-title">
                   <Link to={`/project/${project.id}/preview`}>{project.name}</Link>
                 </h3>
+                {(project.shared && activeFilter === 'list-grid') && (
+                    <Badge pill variant="success">
+                      Shared
+                    </Badge>
+                  )}
               </div>
-
               <div className="col-md-2">
                 <Dropdown className="project-dropdown check d-flex justify-content-center align-items-center">
                   <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
@@ -159,7 +167,15 @@ const ProjectCard = (props) => {
                 </Dropdown>
               </div>
             </div>
-
+            {(project.shared && activeFilter !== 'list-grid') && (
+              <div className="row">
+                <div className="col-md-12 text-right">
+                  <Badge pill variant="success">
+                    Shared
+                  </Badge>
+                </div>
+              </div>
+            )}
             <div className="lessons-duration">
               <div className="row">
                 <div className="col-md-12">
