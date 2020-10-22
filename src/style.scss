@@ -23,13 +23,13 @@ code {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 3px;
-  height: 5px;
+  width: 6px;
+  height: 7px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #fff;
 }
 
 /* Handle */
@@ -40,6 +40,7 @@ code {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+  cursor:pointer;
 }
 
 .clearfix {
@@ -106,6 +107,7 @@ code {
 
 
 .content-wrapper.list-grid {
+  
   .playlist-resource {
     width: 100%;
 
@@ -147,13 +149,18 @@ code {
     display: flex;
   }
 
+  .flex-smaple{
+    display: flex;
+    flex-wrap: wrap;
+  }
+
   .drag-class{
     display: inline-flex;
   }
 
   .playlist-resource {
-    max-width: 24%;
-    width: 24%;
+    max-width: 23%;
+    width: 23%;
     margin-right: 17px;
     padding: 0;
 
@@ -197,9 +204,14 @@ code {
     display: flex;
   }
 
+  .flex-smaple{
+    display: flex;
+    flex-wrap: wrap;
+  } 
+
   .playlist-resource {
-    max-width: 16%;
-    width: 16%;
+    max-width: 15%;
+    width: 15%;
     margin-right: 10px;
 
     &:last-child {

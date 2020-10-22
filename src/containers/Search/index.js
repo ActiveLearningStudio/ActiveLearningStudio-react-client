@@ -17,6 +17,7 @@ import QueryString from 'query-string';
 
 import { simpleSearchAction, cloneProject } from 'store/actions/search';
 import { loadResourceTypesAction } from 'store/actions/resource'
+import { addProjectFav } from 'store/actions/project'
 import { educationLevels, subjects} from 'components/ResourceCard/AddResource/dropdownData'
 import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -37,7 +38,7 @@ function MyVerticallyCenteredModal(props) {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Clone
+          Duplicate
           {' '}
           <b>{props.clone ? props.clone.title : ''}</b>
           {' '}
@@ -497,7 +498,21 @@ function SearchInterface(props) {
                                   </ul>
                                   <p>{res.description}</p>
                                 </div>
-                                <Dropdown>
+                                {res.model === 'Project'?
+                                <div className={"btn-fav "+ res.favored } onClick={((e)=>{
+                                  if(e.target.classList.contains(' true')){
+                                    e.target.classList.remove('true')
+                                  }else{
+                                    e.target.classList.add('true')
+                                  }
+                                  dispatch(addProjectFav(res.id))
+                                 })}>
+                                <FontAwesomeIcon
+                                  className="mr-2"
+                                  icon="star"
+                                 /> Favorite
+                                </div>:
+                                 <Dropdown>
                                   <Dropdown.Toggle>
                                     <FontAwesomeIcon icon="ellipsis-v" />
                                   </Dropdown.Toggle>
@@ -525,10 +540,11 @@ function SearchInterface(props) {
                                       }}
                                     >
                                       <FontAwesomeIcon className="mr-2" icon="clone" />
-                                      Clone
+                                      Duplicate
                                     </div>
                                   </Dropdown.Menu>
-                                </Dropdown>
+                                </Dropdown> 
+                                } 
                               </div>
                             </div>
                           ))
@@ -606,7 +622,20 @@ function SearchInterface(props) {
                                       </ul>
                                       <p>{res.description}</p>
                                     </div>
-                                    <Dropdown>
+                                    <div className={"btn-fav "+ res.favored } onClick={((e)=>{
+                                      if(e.target.classList.contains(' true')){
+                                        e.target.classList.remove('true')
+                                      }else{
+                                        e.target.classList.add('true')
+                                      }
+                                      dispatch(addProjectFav(res.id))
+                                    })}>
+                                    <FontAwesomeIcon
+                                      className="mr-2"
+                                      icon="star"
+                                    /> Favorite
+                                  </div>
+                                    {/* <Dropdown>
                                       <Dropdown.Toggle>
                                         <FontAwesomeIcon icon="ellipsis-v" />
                                       </Dropdown.Toggle>
@@ -637,7 +666,7 @@ function SearchInterface(props) {
                                           Clone
                                         </div>
                                       </Dropdown.Menu>
-                                    </Dropdown>
+                                    </Dropdown> */}
                                   </div>
                                 </div>
                               )}
@@ -747,7 +776,7 @@ function SearchInterface(props) {
                                           }}
                                         >
                                           <FontAwesomeIcon className="mr-2" icon="clone" />
-                                          Clone
+                                          Duplicate
                                         </div>
                                       </Dropdown.Menu>
                                     </Dropdown>
@@ -860,7 +889,7 @@ function SearchInterface(props) {
                                             }}
                                           >
                                             <FontAwesomeIcon className="mr-2" icon="clone" />
-                                            Clone
+                                            Duplicate
                                           </div>
                                         </Dropdown.Menu>
                                       </Dropdown>

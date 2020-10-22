@@ -4,6 +4,11 @@ import httpService from './http.service';
 
 const { apiVersion } = config;
 
+const getAllFav = () => httpService
+  .get(`/${apiVersion}/projects/favorites`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const getAll = () => httpService
   .get(`/${apiVersion}/projects`)
   .then(({ data }) => data)
@@ -66,6 +71,11 @@ const share = (id) => httpService
 
 const removeShared = (id) => httpService
   .post(`/${apiVersion}/projects/${id}/remove-share`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const addToFav = (id) => httpService
+  .post(`/${apiVersion}/projects/${id}/favorite`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -132,4 +142,6 @@ export default {
   getReorderAll,
   getIndexed,
   getelastic,
+  addToFav,
+  getAllFav
 };

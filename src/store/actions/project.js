@@ -140,6 +140,16 @@ export const loadMyProjectsAction = () => async (dispatch) => {
   }
 };
 
+export const loadMyFavProjectsAction = () => async (dispatch) => {
+
+    const { projects }  = await projectService.getAllFav();
+    dispatch({
+      type: actionTypes.SIDEBAR_UPDATE_PROJECT,
+      data: { projects },
+    });
+
+};
+
 /* eslint-disable */
 export const loadMyReorderProjectsAction = (projectDivider) => async () => {
 
@@ -243,6 +253,26 @@ export const toggleProjectShareRemovedAction = (projectId, projectName) => async
     html: 'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
   });
 };
+
+export const addProjectFav = (projectId) => async (dispatch) => {
+  
+  Swal.showLoading()
+  const  project  = await projectService.addToFav(projectId);
+  
+  if(project.message){
+    Swal.fire({
+      showCancelButton: true,
+      confirmButtonColor: '#5952c6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'My Favorites Projects',
+      icon:"success",
+      title: project.message,
+      }).then((result) => {
+        if (result.value) {
+          window.location.href = "/?active=fav";
+      }})
+  };
+}
 
 export const loadMyProjectsPreviewSharedAction = (projectId) => async (dispatch) => {
   try {
