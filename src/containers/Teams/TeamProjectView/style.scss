@@ -22,10 +22,14 @@ $filled: #44ca92;
 
         .project-title {
           width: 100%;
-          padding: 14px 20px 4px 27px;
+          padding: 14px 20px;
           display: flex;
           justify-content: space-between;
           border-top: solid 1px #e2e2e2;
+
+          a {
+            line-height: 24px;
+          }
 
           span {
             width: 150px;
@@ -36,12 +40,23 @@ $filled: #44ca92;
             color: #0F4392;
           }
 
-          div {
-            width: calc(100% - 150px);
-            height: 42px;
-            padding: 5px 0 0 0;
-            font-size: 13px;
-            text-align: right;
+          .project-dropdown.check {
+            width: unset;
+            margin-left: 1rem;
+
+            button {
+              height: 24px;
+              padding: 0 0 0 10px !important;
+              color: #868686 !important;
+              background: transparent !important;
+              border: none !important;
+              outline: none !important;
+              box-shadow: none !important;
+
+              &:after {
+                display: none;
+              }
+            }
           }
         }
 

@@ -1,9 +1,16 @@
-import React, { useCallback, useState } from 'react';
+import React, {
+  createRef,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 
+import { inviteMemberAction, removeMemberAction } from 'store/actions/team';
 import TeamMember from './TeamMember';
 
 import './style.scss';
@@ -11,6 +18,7 @@ import './style.scss';
 function TeamMemberView(props) {
   const {
     isInviting,
+    removingUserId,
     user,
     team: {
       id,
@@ -19,7 +27,7 @@ function TeamMemberView(props) {
       description,
     },
     inviteMember,
-    // removeMember,
+    removeMember,
   } = props;
 
   const [search, setSearch] = useState('');
@@ -30,14 +38,23 @@ function TeamMemberView(props) {
   const [email, setEmail] = useState('');
   const [showInvite, setShowInvite] = useState(false);
 
-  const handleBlur = useCallback(() => {
-    setShowInvite(false);
-  }, []);
+  const inviteRef = createRef();
+
+  const onClickOutsideHandler = (event) => {
+    if (inviteRef.current && !inviteRef.current.contains(event.target)) {
+      setShowInvite(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('click', onClickOutsideHandler);
+  });
 
   const handleInvite = useCallback(() => {
     inviteMember(id, email)
       .then(() => {
         setShowInvite(false);
+        setSearch('');
       })
       .catch(() => {
         Swal.fire({
@@ -51,6 +68,8 @@ function TeamMemberView(props) {
   const [selectedMember, setSelectedMember] = useState(null);
 
   const filteredUsers = users.filter((u) => `${u.first_name} ${u.last_name}`.indexOf(search) > -1);
+
+  const authUser = users.find((u) => u.id === user.id);
 
   return (
     <div className="row member-manage">
@@ -66,7 +85,7 @@ function TeamMemberView(props) {
                   onChange={handleChangeSearch}
                 />
 
-                <div className="invite-wrapper">
+                <div className="invite-wrapper" ref={inviteRef}>
                   <button
                     type="button"
                     className="invite-btn"
@@ -76,7 +95,7 @@ function TeamMemberView(props) {
                   </button>
 
                   {showInvite && (
-                    <div className="invite-dialog" onBlur={handleBlur}>
+                    <div className="invite-dialog">
                       <h2 className="font-weight-bold">Invite Team Member</h2>
                       <div>
                         <h2>Enter Email</h2>
@@ -115,11 +134,14 @@ function TeamMemberView(props) {
                 {filteredUsers.map((u) => (
                   <TeamMember
                     key={u.id}
-                    authUser={user}
+                    teamId={id}
+                    authUser={authUser}
+                    removingUserId={removingUserId}
                     selected={selectedMember === u.id}
                     user={u}
                     selectMe={() => setSelectedMember(u.id)}
                     deselectMe={() => setSelectedMember(null)}
+                    removeMember={removeMember}
                   />
                 ))}
               </div>
@@ -142,10 +164,22 @@ function TeamMemberView(props) {
 
 TeamMemberView.propTypes = {
   isInviting: PropTypes.bool.isRequired,
+  removingUserId: PropTypes.number.isRequired,
   user: PropTypes.object.isRequired,
   team: PropTypes.object.isRequired,
   inviteMember: PropTypes.func.isRequired,
-  // removeMember: PropTypes.func.isRequired,
+  removeMember: PropTypes.func.isRequired,
 };
 
-export default TeamMemberView;
+const mapStateToProps = (state) => ({
+  isInviting: state.team.isInviting,
+  removingUserId: state.team.removingUserId,
+  user: state.auth.user,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  inviteMember: (teamId, email) => dispatch(inviteMemberAction(teamId, email)),
+  removeMember: (teamId, userId) => dispatch(removeMemberAction(teamId, userId)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TeamMemberView);

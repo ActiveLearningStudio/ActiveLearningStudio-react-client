@@ -1883,11 +1883,11 @@ a:hover {
 .playlist-dropdown.check,
 .project-dropdown.check {
   .dropdown-menu {
-    box-shadow: 0 3px 20px #00000029;
-    border: none;
     min-width: 130px;
     margin: 0;
     padding: 0;
+    border: none;
+    box-shadow: 0 3px 20px #00000029;
 
     a {
       font-weight: 400;

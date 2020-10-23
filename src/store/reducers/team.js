@@ -3,6 +3,7 @@ import * as actionTypes from '../actionTypes';
 const INITIAL_STATE = {
   isLoading: false,
   isInviting: false,
+  removingUserId: null,
   showCreation: false,
   showInviting: false,
   showAssigning: false,
@@ -102,7 +103,7 @@ export default (state = INITIAL_STATE, action) => {
         return {
           ...state,
           isLoading: false,
-          teams,
+          teams: [...teams],
           selectedTeam: action.payload.team,
         };
       }
@@ -181,6 +182,22 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isInviting: false,
+      };
+
+    case actionTypes.REMOVE_MEMBER_REQUEST:
+      return {
+        ...state,
+        removingUserId: action.payload.userId,
+      };
+    case actionTypes.REMOVE_MEMBER_SUCCESS:
+      return {
+        ...state,
+        removingUserId: null,
+      };
+    case actionTypes.REMOVE_MEMBER_FAIL:
+      return {
+        ...state,
+        removingUserId: null,
       };
 
     default:

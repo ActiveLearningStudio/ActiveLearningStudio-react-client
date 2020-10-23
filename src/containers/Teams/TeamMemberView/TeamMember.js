@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Swal from 'sweetalert2';
 
 function TeamMember(props) {
   const {
+    teamId,
     authUser,
+    removingUserId,
+    selected,
     user: {
       id,
       first_name: firstName,
@@ -14,8 +18,21 @@ function TeamMember(props) {
     },
     selectMe,
     deselectMe,
-    selected,
+    removeMember,
   } = props;
+
+  const handleRemove = useCallback(() => {
+    removeMember(teamId, id)
+      .then(() => {
+      })
+      .catch(() => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to remove user.',
+        });
+      });
+  }, [teamId, id, removeMember]);
 
   return (
     <>
@@ -48,19 +65,31 @@ function TeamMember(props) {
           </div>
         </div>
 
-        <div className="button-container">
-          <button type="button" className="eliminate-btn">
-            <FontAwesomeIcon icon="plus" className="mr-2" />
-            <span>{authUser.id === id ? 'Leave' : 'Remove'}</span>
-          </button>
-        </div>
+        {authUser.role === 'owner' && authUser.id !== id && (
+          <div className="button-container">
+            <button
+              type="button"
+              className="eliminate-btn"
+              disabled={removingUserId}
+              onClick={handleRemove}
+            >
+              <FontAwesomeIcon icon="plus" className="mr-2" />
+              <span>{authUser.id === id ? 'Leave' : 'Remove'}</span>
+
+              {removingUserId === id && (
+                <FontAwesomeIcon icon="spinner" className="spinner" />
+              )}
+            </button>
+          </div>
+        )}
       </div>
 
       {selected && (
-        <div className="invite-dialog" onBlur={deselectMe}>
+        <div className="member-project-dialog" onBlur={deselectMe}>
           <div onClick={deselectMe}>
             <FontAwesomeIcon icon="plus" className="mr-2" />
           </div>
+
           {projects.map((project, index) => (
             <h2 key={project.id} className={`${index > 0 ? 'border-top' : ''}`}>
               {project.name}
@@ -73,11 +102,14 @@ function TeamMember(props) {
 }
 
 TeamMember.propTypes = {
+  teamId: PropTypes.number.isRequired,
   authUser: PropTypes.object.isRequired,
+  removingUserId: PropTypes.number.isRequired,
   selected: PropTypes.bool,
   user: PropTypes.object.isRequired,
   selectMe: PropTypes.func.isRequired,
   deselectMe: PropTypes.func.isRequired,
+  removeMember: PropTypes.func.isRequired,
 };
 
 TeamMember.defaultProps = {

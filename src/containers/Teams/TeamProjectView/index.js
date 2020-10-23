@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { zeroFill } from 'utils';
 
 import './style.scss';
-import { Link } from 'react-router-dom';
 
 function TeamProjectView(props) {
   const { team: { projects } } = props;
@@ -25,7 +26,32 @@ function TeamProjectView(props) {
 
               <div className="project-title">
                 <Link to={`/project/${project.id}`}>{project.name}</Link>
-                <div><FontAwesomeIcon icon="ellipsis-v" /></div>
+
+                <Dropdown className="project-dropdown check d-flex justify-content-center align-items-center">
+                  <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
+                    <FontAwesomeIcon icon="ellipsis-v" />
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    <Dropdown.Item
+                      as={Link}
+                      to={`/project/${project.id}/preview`}
+                    >
+                      <FontAwesomeIcon icon="eye" className="mr-2" />
+                      Preview
+                    </Dropdown.Item>
+
+                    <Dropdown.Item as={Link} to={`/project/${project.id}`}>
+                      <FontAwesomeIcon icon="globe" className="mr-2" />
+                      Build
+                    </Dropdown.Item>
+
+                    <Dropdown.Item as={Link} to={`/project/${project.id}/edit`}>
+                      <FontAwesomeIcon icon="pen" className="mr-2" />
+                      Edit
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </div>
 
               <div className="team-member-content mid-border">

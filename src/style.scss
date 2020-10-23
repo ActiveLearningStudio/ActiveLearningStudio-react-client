@@ -83,22 +83,21 @@ code {
 }
 
 .slick-slider {
-  
   .alert-info {
-    white-space: nowrap;
     width: 300px;
+    white-space: nowrap;
   }
 }
 
-.welcome-video{
-  width:60%;
- }
+.welcome-video {
+  width: 60%;
+}
 
-.alert-link-ref{
+.alert-link-ref {
   color: #155724;
   text-decoration: underline;
 
-  &:hover{
+  &:hover {
     color: #155724;
   }
 }
