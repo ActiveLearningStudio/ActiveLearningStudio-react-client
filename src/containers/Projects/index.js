@@ -44,7 +44,7 @@ export const ProjectsPage = (props) => {
   const [sortNumber, setSortNumber] = useState(4);
   const [sampleProject, setSampleProjects] = useState([]);
   const [favProject, setFavProjects] = useState([]);
-  const [activeTab, setActiveTab] = useState('my-projects');
+  const [activeTab, setActiveTab] = useState('My Projects');
   const [showSampleSort, setShowSampleSort] =  useState(true);
 
   const {
@@ -65,9 +65,9 @@ export const ProjectsPage = (props) => {
   useEffect(()=>{
     const query = QueryString.parse(location.search);
     if (query.active==='fav') {
-      setActiveTab('fav-project')
+      setActiveTab('Favorite Projects')
     }else{
-      setActiveTab('my-projects')
+      setActiveTab('My Projects')
     }
   },[])
   useEffect(() => {
@@ -309,8 +309,14 @@ export const ProjectsPage = (props) => {
 
           <div className={`content-wrapper ${activeFilter}`}>
             <div className="content">
-              <Tabs className="main-tabs"  defaultActiveKey={activeTab} id="uncontrolled-tab-example">
-                <Tab eventKey="my-projects" title="My Projects">
+              <Tabs 
+                onSelect={(e)=>{
+                  setShowSampleSort(true)
+                 }} 
+                className="main-tabs"  
+                defaultActiveKey={activeTab} 
+                id="uncontrolled-tab-example">
+                <Tab eventKey="My Projects" title="My Projects">
                   <div className="row">
                     <div className="col-md-12">
                       <div className="program-page-title">
@@ -462,7 +468,7 @@ export const ProjectsPage = (props) => {
                   )
                 }
                 </Tab>
-                <Tab eventKey="sample-project" title="Sample Projects">
+                <Tab eventKey="Sample Projects" title="Sample Projects" >
                   <div className="row">
                     <div className="col-md-12">
                       <div className="program-page-title">
@@ -527,12 +533,13 @@ export const ProjectsPage = (props) => {
                       </div>
                   </div>
                 </Tab>
-                <Tab eventKey="fav-project" title="Favorite Projects">
+                <Tab eventKey="Favorite Projects" title="Favorite Projects">
              
                   <div className="row">
                     <div className="col-md-12">
                       <div className="program-page-title">
                       <h1>Favorite Projects</h1>
+                      {showSampleSort &&
                         <div className="project-page-settings">
                           <div className="sort-project-btns">
                             <div
@@ -583,13 +590,14 @@ export const ProjectsPage = (props) => {
                           </div>
                         
                         </div>
+                      }
                       </div>
                     </div>
                    
                       <div className="col-md-12">
                         <div className="flex-smaple">
                               {favProject.length>0?
-                            <SampleProjectCard projects={favProject} type="fav"/>:
+                            <SampleProjectCard projects={favProject} type="fav" setShowSampleSort={setShowSampleSort} />:
                             <Alert variant="warning">No Favorite Projects Found.</Alert>
                           }
                         </div>   
