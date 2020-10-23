@@ -4,6 +4,8 @@ import styled, { keyframes } from 'styled-components';
 import { slideInRight } from 'react-animations';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProjectList from 'containers/Dashboard/ProjectList';
+import ActivityList from 'containers/Dashboard/ActivityList';
+import PlaylistList from 'containers/Dashboard/PlaylistList';
 import './styles.scss';
 
 const bounceAnimation = keyframes`${slideInRight}`;
@@ -20,6 +22,15 @@ function SlideModal(props) {
   } else if(modalSection == 'project-shared-count'){
     var content = (<ProjectList shared/>);
     var title = 'Shared Project List';
+  } else if(modalSection == 'activity-shared-count'){
+    var content = (<ActivityList shared/>);
+    var title = 'Shared Activities List';
+  } else if(modalSection == 'activity-count'){
+    var content = (<ActivityList/>);
+    var title = 'Activities List';
+  } else if(modalSection == 'playlist-count'){
+    var content = (<PlaylistList/>);
+    var title = 'Playlists List';
   }
 
   useEffect(() => {
