@@ -156,19 +156,13 @@ export const inviteMemberAction = (teamId, email) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.INVITE_MEMBER_REQUEST });
 
-    const { invited } = await teamService.inviteMember(teamId, email);
+    await teamService.inviteMember(teamId, email);
 
-    if (invited) {
-      dispatch({
-        type: actionTypes.INVITE_MEMBER_SUCCESS,
-      });
+    dispatch({
+      type: actionTypes.INVITE_MEMBER_SUCCESS,
+    });
 
-      dispatch(loadTeamAction(teamId));
-    } else {
-      dispatch({ type: actionTypes.INVITE_MEMBER_FAIL });
-    }
-
-    return invited;
+    dispatch(loadTeamAction(teamId));
   } catch (e) {
     dispatch({ type: actionTypes.INVITE_MEMBER_FAIL });
 
