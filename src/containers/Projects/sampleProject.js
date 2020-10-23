@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import ProjectPreviewShared from 'containers/Preview/ProjectPreview/ProjectPreviewShared'
@@ -23,6 +23,12 @@ const SampleProjectCard = (props) => {
   const [selectId,setSelectId] = useState(null)
   const [modalShow, setModalShow] = useState(false);
   const [currentActivity, setCurrentActivity] = useState(null);
+
+  useEffect(()=>{
+    if(selectId){
+      setShowSampleSort(false)
+    }
+  },[selectId])
 
   return (
     <>{!selectId?
