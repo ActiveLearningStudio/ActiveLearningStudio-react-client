@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import gifLoader from 'assets/images/276.gif';
@@ -8,7 +8,10 @@ import {
   loadH5pResource,
   loadH5pResourceSettingsOpen,
   loadH5pResourceSettingsShared,
+  loadH5pResourceXapi,
 } from 'store/actions/resource';
+
+let counter = 0;
 
 const H5PPreview = (props) => {
   const [loading, setLoading] = useState(true);
@@ -21,6 +24,8 @@ const H5PPreview = (props) => {
     showLtiPreview,
     showActivityPreview,
   } = props;
+
+  const dispatch = useDispatch();
 
   const resourceLoaded = async (data) => {
     window.H5PIntegration = data.h5p.settings;
@@ -87,13 +92,36 @@ const H5PPreview = (props) => {
         } catch (e) {
           setLoading(false);
         }
+
+        const checkXapi = setInterval(() => {
+          try {
+            const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
+            if (x.H5P) {
+              if (x.H5P.externalDispatcher) {
+                // eslint-disable-next-line no-use-before-define
+                stopXapi();
+
+                x.H5P.externalDispatcher.on('xAPI', (event) => {
+                  if (counter > 0) {
+                    dispatch(loadH5pResourceXapi(JSON.stringify(event.data.statement)));
+                  }
+                  counter += 1;
+                });
+              }
+            }
+          } catch (e) {
+            console.log(e);
+          }
+        });
+
+        const stopXapi = () => clearInterval(checkXapi);
       };
 
       loadResource();
 
       setResourceId(activityId);
     }
-  }, [resourceId, activityId, showLtiPreview, showActivityPreview, loadH5pResourceProp]);
+  }, [resourceId, activityId, showLtiPreview, showActivityPreview, loadH5pResourceProp, dispatch]);
 
   return (
     <>

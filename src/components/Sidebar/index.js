@@ -8,8 +8,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import logo from 'assets/images/logo.svg';
 import {
   allSidebarProjects,
-  allUpdateProject,
-  sampleProjects,
+  // allUpdateProject,
+  // sampleProjects,
 } from 'store/actions/project';
 import { loadTeamsAction } from 'store/actions/team';
 
@@ -53,8 +53,8 @@ function Sidebar(props) {
   useEffect(() => {
     if (!allState.sidebar.isLoaded) {
       dispatch(allSidebarProjects());
-      dispatch(sampleProjects());
-      dispatch(allUpdateProject());
+      // dispatch(sampleProjects());
+      // dispatch(allUpdateProject());
       dispatch(loadTeamsAction());
     }
   }, [allState.sidebar.isLoaded, dispatch]);
@@ -122,6 +122,7 @@ function Sidebar(props) {
         My Teams
       </div> */}
 
+      {/*
       <div className="menu-title">
         <FontAwesomeIcon icon="tasks" className="mr-2" />
         Sample Projects
@@ -137,6 +138,7 @@ function Sidebar(props) {
           </li>
         ))}
       </ul>
+      */}
 
       {/*
       {!!updateProject && (

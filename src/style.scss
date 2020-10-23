@@ -23,13 +23,13 @@ code {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 3px;
-  height: 5px;
+  width: 6px;
+  height: 7px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #fff;
 }
 
 /* Handle */
@@ -40,6 +40,7 @@ code {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+  cursor: pointer;
 }
 
 .clearfix {
@@ -99,5 +100,151 @@ code {
 
   &:hover {
     color: #155724;
+  }
+}
+
+.content-wrapper.list-grid {
+  .playlist-resource {
+    width: 100%;
+
+    .col-md-3.check {
+      max-width: 100%;
+
+      .program-tile {
+        min-height: 100%;
+        display: flex;
+        flex-direction: row;
+      }
+
+      .program-content {
+        width: 100%;
+      }
+
+      .program-thumb {
+        width: 260px;
+        height: 140px;
+      }
+
+      .button-bottom {
+        justify-content: flex-end;
+
+        a {
+          width: 80px;
+          display: flex;
+          border: 0;
+        }
+      }
+    }
+  }
+}
+
+.content-wrapper.normal-grid {
+  .check-home {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: nowrap;
+  }
+
+  .flex-smaple {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .drag-class {
+    display: inline-flex;
+  }
+
+  .playlist-resource {
+    max-width: 23%;
+    width: 23%;
+    margin-right: 17px;
+    padding: 0;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    .col-md-3.check {
+      max-width: 100%;
+      margin-bottom: 17px;
+      padding: 0;
+    }
+
+    .program-tile {
+      position: relative;
+    }
+
+    .program-tile {
+      position: relative;
+    }
+
+    .button-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      margin: 0;
+
+      a {
+        width: 33.3%;
+        flex: 1;
+      }
+    }
+  }
+}
+
+.content-wrapper.small-grid {
+  .check-home {
+    margin: 0;
+    display: flex;
+    flex-wrap: nowrap;
+  }
+
+  .flex-smaple {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .playlist-resource {
+    max-width: 15%;
+    width: 15%;
+    margin-right: 10px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    .col-md-3.check {
+      max-width: 100%;
+      margin-bottom: 12px;
+      padding: 0;
+    }
+
+    .program-thumb {
+      height: 150px;
+    }
+
+    .program-tile {
+      position: relative;
+      min-height: 380px;
+      height: 300px;
+    }
+
+    .button-bottom {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      margin: 0;
+
+      a {
+        width: 33.3%;
+        flex: 1;
+      }
+
+      svg {
+        display: none;
+      }
+    }
   }
 }

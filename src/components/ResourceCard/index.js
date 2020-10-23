@@ -6,15 +6,14 @@ import { Draggable } from 'react-beautiful-dnd';
 import Swal from 'sweetalert2';
 import { confirmAlert } from 'react-confirm-alert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown, Badge } from 'react-bootstrap';
 
 import logo from 'assets/images/logo.svg';
 import { shareActivity, deleteResourceAction } from 'store/actions/resource';
+import { cloneActivity } from 'store/actions/search';
 
 import './style.scss';
 
-// TODO: need to convert to functional component
-// need to clean up attribute, remove template functions
 const ResourceCard = (props) => {
   const handleDelete = (e) => {
     e.preventDefault();
@@ -75,7 +74,11 @@ const ResourceCard = (props) => {
                   : resource.title}
               </Link>
             </div>
-
+            {resource.shared && (
+              <Badge pill variant="success" className="p-1">
+                Shared
+              </Badge>
+            )}
             <div className="activity-options-wrapper check">
               <Dropdown className="pull-right resource-dropdown">
                 <Dropdown.Toggle className="resource-dropdown-btn">
@@ -97,6 +100,17 @@ const ResourceCard = (props) => {
                   >
                     <FontAwesomeIcon icon="pen" className="mr-2" />
                     Edit
+                  </Dropdown.Item>
+
+                  <Dropdown.Item
+                    to="#"
+                    onClick={() => {
+                      Swal.showLoading();
+                      cloneActivity(playlist.id, resource.id);
+                    }}
+                  >
+                    <FontAwesomeIcon icon="clone" className="mr-2" />
+                    Duplicate
                   </Dropdown.Item>
 
                   <Dropdown.Item

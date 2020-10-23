@@ -58,6 +58,11 @@ const searchUsers = (search) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const loadOrganizationTypes = () => httpService
+  .get(`/${apiVersion}/organization-types`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   me,
   login,
@@ -70,4 +75,5 @@ export default {
   updatePassword,
   subscribe,
   searchUsers,
+  loadOrganizationTypes,
 };

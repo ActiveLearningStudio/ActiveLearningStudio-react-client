@@ -3,7 +3,7 @@
 }
 
 .content {
-  margin-top: 25px;
+  margin-top: 5px;
   padding: 0 15px;
   overflow: hidden;
 }
@@ -107,7 +107,7 @@
 }
 
 .list-body {
-  max-height: 561px;
+  max-height: 400px;
   min-height: 230px;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -235,6 +235,314 @@
   .post-title {
     & > label {
       display: block;
+    }
+  }
+}
+
+.program-tile {
+  height: 100%;
+  min-height: 450px;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+
+  .button-bottom {
+    margin: -10px;
+    display: flex;
+
+    .fa {
+      padding-right: 3px;
+      font-size: 12px;
+    }
+
+    a {
+      width: 33.33%;
+      padding: 5px 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #ece9e9;
+      font-size: 14px;
+      font-weight: 400;
+      text-align: center;
+      color: #5952c6;
+      letter-spacing: 0;
+      opacity: 1;
+
+      &:hover {
+        background-color: #5952c6;
+        color: #fff;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .program-thumb {
+    height: 200px;
+    overflow: hidden;
+
+    a {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .project-thumb {
+      min-height: 200px;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    img {
+      min-width: 100%;
+      min-height: 100%;
+      height: auto;
+      margin: auto;
+      display: block;
+    }
+  }
+
+  .program-content {
+    padding: 10px;
+    height: calc(100% - 200px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    h3 {
+      margin-top: 10px;
+
+      a {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 24px;
+        font-weight: 300;
+        color: #607a9b;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+
+    i {
+      font-size: 20px;
+    }
+
+    button {
+      box-shadow: none;
+    }
+
+    .program-creator {
+      font-size: 14px;
+      color: #aaa;
+
+      a {
+        color: inherit;
+      }
+    }
+
+    .lessons-duration {
+      margin-top: 10px;
+
+      p {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 26px;
+        letter-spacing: 0;
+        text-align: justify;
+        color: #464646;
+      }
+
+      .lessons {
+        display: inline-block;
+
+        .icon {
+          width: 13px;
+          height: 13px;
+          margin-top: 3px;
+          margin-right: 8px;
+          display: block;
+          background: url(../../assets/images/program-lesson-icon.png) no-repeat center;
+          float: left;
+        }
+      }
+
+      .duration {
+        margin-left: 15px;
+        display: inline-block;
+
+        .icon {
+          width: 13px;
+          height: 13px;
+          margin-top: 3px;
+          margin-right: 8px;
+          display: block;
+          background: url(../../assets/images/program-duration-icon.png) no-repeat center;
+          float: left;
+        }
+      }
+    }
+
+    .go-to-playlist {
+      position: absolute;
+      bottom: 10px;
+      right: 30px;
+      margin-top: 25px;
+      text-align: right;
+    }
+  }
+
+  &:hover .button-bottom {
+    display: flex;
+  }
+}
+
+.program-page-title {
+  padding: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .project-page-settings {
+    display: flex;
+    align-items: center;
+
+    .sort-project-btns {
+      width: 150px;
+      height: 35px;
+      margin-bottom: 10px;
+      margin-right: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 60px;
+      overflow: hidden;
+
+      .sort-btn {
+        height: 100%;
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        align-items: center;
+        border-right: 1px solid #ccc;
+        cursor: pointer;
+
+        &:last-child {
+          border-right: none;
+        }
+      }
+
+      .sort-btn.active {
+        background-color: #6e6d6d;
+
+        svg {
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  h1 {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 40px;
+    background: url(../../assets/images/my-projects-icon.png) no-repeat 0 9px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #607a9b;
+  }
+
+  .btn-top-page {
+    width: -moz-fit-content;
+    width: 150px;
+    height: 35px;
+    margin-bottom: 10px;
+    /* padding: 3px 20px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #5952c6;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+
+    .fa {
+      padding-right: 5px;
+    }
+  }
+}
+
+.project-sample-share {
+  width: 100%;
+
+  .btn-back {
+    position: relative;
+    z-index: 11;
+    width: -moz-fit-content;
+    width: 70px;
+    height: 35px;
+    margin: -35px 10px 10px 0px;
+    /* padding: 3px 20px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: right;
+    background-color: #5952c6;
+    border-radius: 20px;
+    font-size: 14px;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  .full-width-share {
+    margin-top: 20px;
+    clear: both;
+  }
+}
+
+.main-tabs {
+  width: 100%;
+  margin-top: 30px;
+
+  .nav-item {
+    position: relative;
+    margin-right: 15px;
+    padding: 12px 30px;
+    background-color: #fff !important;
+    font-size: 16px;
+    font-weight: 500;
+    color: #0f4392 !important;
+  }
+
+  .nav-item.active {
+    background-color: #6e6d6d !important;
+    color: #fff !important;
+
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 10px solid #6e6d6d;
+      border-bottom-color: #6e6d6d;
+      transform: translate(-50%);
     }
   }
 }
@@ -1469,6 +1777,9 @@ a:hover {
 }
 
 //project-each-view
+.index-text {
+  margin: 0 5px 0px 15px;
+}
 
 .project-each-view {
   display: flex;
@@ -1491,10 +1802,57 @@ a:hover {
     justify-content: space-between;
     width: 100%;
     margin-right: 20px;
+    align-items: center;
 
     h1 {
       display: flex;
-      flex: 70%;
+      flex: 50%;
+    }
+
+    .react-touch {
+      background: #fff 0 0 no-repeat padding-box;
+      border-radius: 30px;
+      width: 201px;
+      height: 40px;
+      letter-spacing: 0;
+      color: #ffffff;
+      opacity: 1;
+      font-weight: 400;
+      font-size: 15px;
+      border: 1px solid #b8b8b8;
+      line-height: 20px;
+      padding: 0;
+      text-transform: unset;
+      margin-right: 20px;
+
+      .publish-btn {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 15px;
+        height: 100%;
+      }
+
+      span {
+        color: green;
+        font-weight: bold;
+      }
+    }
+
+    .react-touch.indexed{
+      cursor: pointer;
+      background-color: #ce4a4a;
+      border-color:#ce4a4a;
+
+     .publish-btn{
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      span{
+        color:#fff;
+        white-space: nowrap;
+      }
     }
 
     .borderline {
@@ -1909,11 +2267,6 @@ a:hover {
       }
     }
   }
-}
-
-.row.check-home {
-  margin-bottom: 40px;
-  // display: flex;
 }
 
 .col-md-3.check {
@@ -2371,6 +2724,10 @@ a:hover {
 .swal2-html-container {
   font-size: 14px !important;
   font-weight: bold !important;
+
+  p {
+    font-weight: 400 !important;
+  }
 }
 
 .swal2-actions {
@@ -2632,7 +2989,7 @@ a:hover {
   bottom: 0;
   z-index: 1001;
   width: 100%;
-  height: 45px;
+  height: 25px;
   padding: 10px 30px;
   display: flex;
   justify-content: center;
@@ -3008,7 +3365,7 @@ a:hover {
     color: #333;
     height: 100%;
     width: 100%;
-    z-index: 111;
+    z-index: 1111;
     position: fixed;
     top: 0;
     display: flex;

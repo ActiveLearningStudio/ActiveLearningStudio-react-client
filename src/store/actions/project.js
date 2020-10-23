@@ -30,7 +30,7 @@ export const loadProjectAction = (projectId) => async (dispatch) => {
     });
 
     const { project } = await projectService.get(projectId);
-
+    Swal.close();
     dispatch({
       type: actionTypes.LOAD_PROJECT_SUCCESS,
       payload: { project },
@@ -40,6 +40,16 @@ export const loadProjectAction = (projectId) => async (dispatch) => {
       type: actionTypes.LOAD_PROJECT_FAIL,
     });
   }
+};
+
+export const getIndexed = (projectId) => async () => {
+  const result = await projectService.getIndexed(projectId);
+  return result;
+};
+
+export const getElastic = (projectId) => async () => {
+  const result = await projectService.getelastic(projectId);
+  return result;
 };
 
 export const updateProjectAction = (projectId, data) => async (dispatch) => {
@@ -122,6 +132,34 @@ export const loadMyProjectsAction = () => async (dispatch) => {
   }
 };
 
+export const loadMyFavProjectsAction = () => async (dispatch) => {
+  const { projects } = await projectService.getAllFav();
+  dispatch({
+    type: actionTypes.SIDEBAR_UPDATE_PROJECT,
+    data: { projects },
+  });
+};
+
+/* eslint-disable */
+export const loadMyReorderProjectsAction = (projectDivider) => async () => {
+
+  const reorderProject = []
+  var reorderindex = 0
+  projectDivider.map((data)=>{
+   return data.collection.map((collections)=>{
+      reorderProject.push({
+        order:reorderindex,
+        id:collections.id,
+        project:collections 
+      })
+      reorderindex= reorderindex+1
+    })
+  })
+
+return await projectService.getReorderAll(reorderProject);
+}
+/* eslint-disable */
+
 export const loadMyCloneProjectsAction = () => async (dispatch) => {
   const projects = await projectService.getClone();
   dispatch({
@@ -146,13 +184,13 @@ export const sampleProjects = () => async (dispatch) => {
   });
 };
 
-export const allUpdateProject = () => async (dispatch) => {
-  const { projects } = await projectService.getUpdatedProjects();
-  dispatch({
-    type: actionTypes.SIDEBAR_UPDATE_PROJECT,
-    data: { projects },
-  });
-};
+// export const allUpdateProject = () => async (dispatch) => {
+//   const { projects } = await projectService.getUpdatedProjects();
+//   dispatch({
+//     type: actionTypes.SIDEBAR_UPDATE_PROJECT,
+//     data: { projects },
+//   });
+// };
 
 export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
   try {
@@ -206,11 +244,50 @@ export const toggleProjectShareRemovedAction = (projectId, projectName) => async
   });
 };
 
+
+export const deleteFavObj = (projectId) => async (dispatch) => {
+  
+  Swal.fire({
+  showCancelButton: true,
+  confirmButtonColor: '#5952c6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Delete',
+  title:"Are you sure you want to remove this ?",
+  }).then( async (result) => {
+    if (result.value) {
+      Swal.showLoading()
+      await projectService.addToFav(projectId);
+      Swal.close()
+      dispatch(loadMyFavProjectsAction())
+  }})
+}
+
+
+export const addProjectFav = (projectId) => async (dispatch) => {
+  
+  Swal.showLoading()
+  const  project  = await projectService.addToFav(projectId);
+  
+  if(project.message){
+    Swal.fire({
+      showCancelButton: true,
+      confirmButtonColor: '#5952c6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'My Favorites Projects',
+      icon:"success",
+      title: project.message,
+      }).then((result) => {
+        if (result.value) {
+          window.location.href = "/?active=fav";
+      }})
+  };
+}
+
 export const loadMyProjectsPreviewSharedAction = (projectId) => async (dispatch) => {
   try {
-    dispatch({
-      type: actionTypes.PAGE_LOADING,
-    });
+    // dispatch({
+    //   type: actionTypes.PAGE_LOADING,
+    // });
 
     const { project } = await projectService.getShared(projectId);
 
@@ -219,9 +296,9 @@ export const loadMyProjectsPreviewSharedAction = (projectId) => async (dispatch)
       payload: { project },
     });
 
-    dispatch({
-      type: actionTypes.PAGE_LOADING_COMPLETE,
-    });
+    // dispatch({
+    //   type: actionTypes.PAGE_LOADING_COMPLETE,
+    // });
   } catch (e) {
     dispatch({
       type: actionTypes.PAGE_LOADING_COMPLETE,

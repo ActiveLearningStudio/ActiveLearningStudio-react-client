@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   user: null,
   forgotPasswordEmail: null,
   searchedUsers: [],
+  organizationTypes: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -174,6 +175,12 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isLoading: false,
+      };
+
+    case actionTypes.LOAD_ORGANIZATION_TYPES:
+      return {
+        ...state,
+        organizationTypes: action.payload,
       };
 
     case actionTypes.LOG_OUT:

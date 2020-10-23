@@ -10,30 +10,53 @@ const ActivityCard = (props) => {
     projectId,
     playlistId,
     lti,
+    sampleID,
+    setModalShow,
+    setCurrentActivity,
   } = props;
 
   return (
     <li>
-      <Link
-        to={
-          lti
-            ? `/playlist/${playlistId}/activity/${activity.id}/preview/lti`
-            : `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
-        }
-      >
-        <div
-          className="playimg"
-          style={{
-            backgroundImage:
-              !!activity.thumb_url && activity.thumb_url.includes('pexels.com')
+      {sampleID ? (
+        <a
+          onClick={() => {
+            setCurrentActivity(activity.id);
+            setModalShow(true);
+          }}
+        >
+          <div
+            className="playimg"
+            style={{
+              backgroundImage: !!activity.thumb_url && activity.thumb_url.includes('pexels.com')
                 ? `url(${activity.thumb_url})`
                 : `url(${global.config.resourceUrl}${activity.thumb_url})`,
-          }}
-        />
-        <div className="plydet">
-          {activity.metadata ? activity.metadata.title : activity.title}
-        </div>
-      </Link>
+            }}
+          />
+          <div className="plydet">
+            {activity.metadata ? activity.metadata.title : activity.title}
+          </div>
+        </a>
+      ) : (
+        <Link
+          to={
+            lti
+              ? `/playlist/${playlistId}/activity/${activity.id}/preview/lti`
+              : `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
+          }
+        >
+          <div
+            className="playimg"
+            style={{
+              backgroundImage: !!activity.thumb_url && activity.thumb_url.includes('pexels.com')
+                ? `url(${activity.thumb_url})`
+                : `url(${global.config.resourceUrl}${activity.thumb_url})`,
+            }}
+          />
+          <div className="plydet">
+            {activity.metadata ? activity.metadata.title : activity.title}
+          </div>
+        </Link>
+      )}
     </li>
   );
 };
@@ -43,10 +66,16 @@ ActivityCard.propTypes = {
   projectId: PropTypes.number.isRequired,
   playlistId: PropTypes.number.isRequired,
   lti: PropTypes.bool,
+  sampleID: PropTypes.number,
+  setModalShow: PropTypes.func,
+  setCurrentActivity: PropTypes.func,
 };
 
 ActivityCard.defaultProps = {
   lti: false,
+  sampleID: null,
+  setModalShow: () => {},
+  setCurrentActivity: () => {},
 };
 
 export default ActivityCard;

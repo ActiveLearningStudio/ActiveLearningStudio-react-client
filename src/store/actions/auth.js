@@ -290,3 +290,11 @@ export const searchUsersAction = (data) => async (dispatch) => {
     throw e;
   }
 };
+
+export const loadOrganizationTypesAction = () => async (dispatch) => {
+  const organizationTypes = await authService.loadOrganizationTypes();
+  dispatch({
+    type: actionTypes.LOAD_ORGANIZATION_TYPES,
+    payload: organizationTypes.data,
+  });
+};

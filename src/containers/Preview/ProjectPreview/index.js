@@ -36,10 +36,10 @@ function ProjectPreview(props) {
   }, [projectState.projectSelect]);
 
   useEffect(() => {
-    if (match.params.projectId) {
+    if (playlistState.playlists.length === 0) {
       dispatch(loadProjectPlaylistsAction(match.params.projectId));
     }
-  }, [dispatch, match.params.projectId]);
+  }, [playlistState.playlists]);
 
   const settings = {
     dots: false,

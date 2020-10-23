@@ -4,7 +4,7 @@ import React, {
   useCallback,
   useState,
 } from 'react';
-import Switch from 'react-switch';
+// import Switch from 'react-switch';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -28,13 +28,13 @@ import PexelsAPI from 'components/models/pexels';
 import './style.scss';
 
 const maxLength80 = maxLength(80);
-const maxLength255 = maxLength(255);
+const maxLength1000 = maxLength(1000);
 
 // TODO: need to restructure code, clean up attributes
 // remove unused code,
 
 let imageValidation = '';
-let projectShare = true;
+const projectShare = true;
 
 const onSubmit = async (values, dispatch, props) => {
   const {
@@ -130,7 +130,7 @@ let CreateProjectPopup = (props) => {
   } = props;
 
   const [modalShow, setModalShow] = useState(false);
-  const [publicProject, setPublicProject] = useState(true);
+  // const [publicProject, setPublicProject] = useState(true);
   const openFile = useRef();
 
   // remove popup when escape is pressed
@@ -176,7 +176,7 @@ let CreateProjectPopup = (props) => {
               Enter Project Name (Up to 80 characters)
             </label>
 
-            {!editMode && (
+            {/* {!editMode && (
               <div className="class-toggle" title="By default, it is not public">
                 <label>Make Project Public</label>
                 <Switch
@@ -191,7 +191,7 @@ let CreateProjectPopup = (props) => {
                   value={publicProject}
                 />
               </div>
-            )}
+            )} */}
           </div>
 
           <Field
@@ -314,7 +314,7 @@ let CreateProjectPopup = (props) => {
           <Field
             name="description"
             component={TextareaField}
-            validate={[required, maxLength255]}
+            validate={[required, maxLength1000]}
             autoComplete="new-password"
           />
         </div>

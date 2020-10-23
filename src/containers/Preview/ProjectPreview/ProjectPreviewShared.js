@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Alert } from 'react-bootstrap';
 
 import { loadMyProjectsPreviewSharedAction } from 'store/actions/project';
 import ActivityCard from 'components/ActivityCard';
@@ -12,7 +13,13 @@ import Unauthorized from 'components/Unauthorized';
 import './style.scss';
 
 function ProjectPreviewShared(props) {
-  const { match, loadMyProjectsPreviewShared } = props;
+  const {
+    match,
+    sampleId,
+    loadMyProjectsPreviewShared,
+    setModalShow,
+    setCurrentActivity,
+  } = props;
 
   const project = useSelector((state) => state.project);
   const accordion = useRef([]);
@@ -64,7 +71,7 @@ function ProjectPreviewShared(props) {
   //   try {
   //     const acc = document.getElementById('custom_accordion');
   //     const accordions = acc ? acc.getElementsByClassName('accordion') : [];
-
+  //
   //     for (let i = 0; i < accordions.length; i += 1) {
   //       accordions[i].addEventListener('click', function () {
   //         // eslint-disable-next-line react/no-this-in-sfc
@@ -77,8 +84,12 @@ function ProjectPreviewShared(props) {
   // }, []);
 
   useEffect(() => {
-    loadMyProjectsPreviewShared(match.params.projectId);
-  }, [match.params.projectId, loadMyProjectsPreviewShared]);
+    if (sampleId) {
+      loadMyProjectsPreviewShared(sampleId);
+    } else {
+      loadMyProjectsPreviewShared(match.params.projectId);
+    }
+  }, [match.params.projectId, sampleId]);
 
   let playlists;
 
@@ -92,6 +103,9 @@ function ProjectPreviewShared(props) {
             projectId={parseInt(match.params.projectId, 10)}
             playlistId={playlist.id}
             key={activity.id}
+            sampleID={sampleId}
+            setModalShow={setModalShow}
+            setCurrentActivity={setCurrentActivity}
             lti
           />
         ));
@@ -145,7 +159,7 @@ function ProjectPreviewShared(props) {
         <Unauthorized text="Project is not Public" />
       ) : (
         <>
-          {currentProject && (
+          {currentProject ? (
             <div>
               <div className="container">
                 <div className="scene flex-wrap">
@@ -186,6 +200,8 @@ function ProjectPreviewShared(props) {
                 </div>
               </div>
             </div>
+          ) : (
+            <Alert variant="primary" style={{ margin: '20px' }}>Loading ...</Alert>
           )}
         </>
       )}
@@ -195,7 +211,14 @@ function ProjectPreviewShared(props) {
 
 ProjectPreviewShared.propTypes = {
   match: PropTypes.object.isRequired,
+  sampleId: PropTypes.number,
+  setCurrentActivity: PropTypes.func.isRequired,
+  setModalShow: PropTypes.func.isRequired,
   loadMyProjectsPreviewShared: PropTypes.func.isRequired,
+};
+
+ProjectPreviewShared.defaultProps = {
+  sampleId: null,
 };
 
 const mapDispatchToProps = (dispatch) => ({

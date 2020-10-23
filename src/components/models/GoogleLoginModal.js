@@ -85,14 +85,18 @@ const GoogleLoginModal = ({
 
                 <Formik
                   initialValues={{
-                    course: 'test',
+                    course: undefined,
                     heading: 'test',
                     description: 'test',
                     room: 'test',
                   }}
                   onSubmit={(values) => {
                     onHide();
-                    copyProject(projectId, values.course);
+                    if (values.course === 'Create a new class') {
+                      copyProject(projectId);
+                    } else {
+                      copyProject(projectId, values.course);
+                    }
                     setLoading(false);
                   }}
                 >
@@ -114,7 +118,7 @@ const GoogleLoginModal = ({
                         onChange={handleChange}
                         onBlur={handleBlur}
                       >
-                        <option value="">Create a new class</option>
+                        <option>Create a new class</option>
                         {!!courses && courses.map((item) => (
                           <option key={item.id} value={item.id}>{item.name}</option>
                         ))}

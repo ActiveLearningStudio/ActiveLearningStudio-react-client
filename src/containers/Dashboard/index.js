@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Swal from 'sweetalert2';
@@ -14,6 +14,7 @@ import { getUserMetricsAction, getUserMembershipAction } from 'store/actions/met
 import Header from 'components/Header';
 import Sidebar from 'components/Sidebar';
 import Footer from 'components/Footer';
+import SlideModal from 'containers/Dashboard/SlideModal';
 
 import './styles.scss';
 
@@ -25,6 +26,9 @@ function DashboardPage(props) {
     getUserMetrics,
     getUserMembership,
   } = props;
+
+  const [showModal, setShowModal] = useState(false);
+  const [modalSection, setModalSection] = useState(null);
 
   const storageData = [
     {
@@ -88,6 +92,11 @@ function DashboardPage(props) {
         });
       }
     });
+  };
+
+  const handleCounterClick = (section) => {
+    setModalSection(section);
+    setShowModal(true);
   };
 
   const humanFileSize = (bytes, si = false, dp = 1) => {
@@ -244,7 +253,7 @@ function DashboardPage(props) {
                 </div>
                 <div className="row text-center">
                   <div className="col">
-                    <span className="">{metrics.project_count}</span>
+                    <span className="count" onClick={() => handleCounterClick('project-count')}>{metrics.project_count}</span>
                     <label>COUNT</label>
                   </div>
                   <div className="col">
@@ -252,7 +261,7 @@ function DashboardPage(props) {
                     <label>VIEWS</label>
                   </div>
                   <div className="col">
-                    <span>{metrics.project_shares}</span>
+                    <span className="count" onClick={() => handleCounterClick('project-shared-count')}>{metrics.project_shares}</span>
                     <label>SHARED</label>
                   </div>
                 </div>
@@ -265,7 +274,7 @@ function DashboardPage(props) {
                 </div>
                 <div className="row text-center">
                   <div className="col">
-                    <span className="">{metrics.playlist_count}</span>
+                    <span className="count" onClick={() => handleCounterClick('playlist-count')}>{metrics.playlist_count}</span>
                     <label>COUNT</label>
                   </div>
                   <div className="col">
@@ -286,41 +295,27 @@ function DashboardPage(props) {
                 </div>
                 <div className="row text-center">
                   <div className="col">
-                    <span className="">{metrics.activity_count}</span>
+                    <span className="count" onClick={() => handleCounterClick('activity-count')}>{metrics.activity_count}</span>
                     <label>COUNT</label>
                   </div>
                   <div className="col">
                     <span>{metrics.activity_views}</span>
                     <label>VIEWS</label>
                   </div>
-                  <div className="col">
-                    <span>{metrics.activity_shares}</span>
+                  <div className="col" onClick={() => handleCounterClick('activity-shared-count')}>
+                    <span className="count">{metrics.activity_shares}</span>
                     <label>SHARED</label>
                   </div>
                 </div>
               </div>
             </div>
-            {/*
-            <div className="row">
-              <div className="col dashboard-panel m-3">
-                <div className="row dashboard-panel-header-row">
-                  <div className="col">
-                    <h1 className="title">My Traffic</h1>
-                  </div>
-                </div>
-              </div>
-              <div className="col dashboard-panel m-3">
-                <div className="row dashboard-panel-header-row">
-                  <div className="col">
-                    <h1 className="title">Teams</h1>
-                  </div>
-                </div>
-              </div>
-            </div>
-            */}
           </div>
         </div>
       </div>
+
+      {(showModal) && (
+        <SlideModal modalSection={modalSection} closeModal={() => setShowModal(false)} />
+      )}
 
       <Footer />
     </>
