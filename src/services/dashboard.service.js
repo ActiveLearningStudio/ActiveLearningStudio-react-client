@@ -8,6 +8,12 @@ const getUserProjects = () => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const getProject = (id) => httpService
+  .get(`/${apiVersion}/projects/${id}/playlists`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
-    getUserProjects
+    getUserProjects,
+    getProject
 };

@@ -20,6 +20,7 @@
 
     .project-go-icon {
         font-size: xx-large;
+        color: #0f4392;
     }
 
     .search-box {
@@ -51,5 +52,26 @@
     .search-box button:hover {
         background-color: #0f4392;
         color: white;
+    }
+
+    .activity-card-title {
+        font-size: medium;
+    }
+
+    .activity-card {
+        min-height: 180px;
+    }
+
+    .activity {
+        min-height: 180px;
+    }
+
+    .playlist {
+        border-bottom: solid #0f4392 1px;
+    }
+
+    .playlist-title {
+        color: #0f4392;
+        font-size: x-large;
     }
 }
