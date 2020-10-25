@@ -86,13 +86,15 @@ function TeamMemberView(props) {
                 />
 
                 <div className="invite-wrapper" ref={inviteRef}>
-                  <button
-                    type="button"
-                    className="invite-btn"
-                    onClick={() => setShowInvite(!showInvite)}
-                  >
-                    Invite the team member
-                  </button>
+                  {authUser && authUser.role === 'owner' && (
+                    <button
+                      type="button"
+                      className="invite-btn"
+                      onClick={() => setShowInvite(!showInvite)}
+                    >
+                      Invite the team member
+                    </button>
+                  )}
 
                   {showInvite && (
                     <div className="invite-dialog">
@@ -164,11 +166,15 @@ function TeamMemberView(props) {
 
 TeamMemberView.propTypes = {
   isInviting: PropTypes.bool.isRequired,
-  removingUserId: PropTypes.number.isRequired,
+  removingUserId: PropTypes.number,
   user: PropTypes.object.isRequired,
   team: PropTypes.object.isRequired,
   inviteMember: PropTypes.func.isRequired,
   removeMember: PropTypes.func.isRequired,
+};
+
+TeamMemberView.defaultProps = {
+  removingUserId: null,
 };
 
 const mapStateToProps = (state) => ({

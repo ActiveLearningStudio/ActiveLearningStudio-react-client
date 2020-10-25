@@ -1,15 +1,20 @@
 import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { FadeDiv } from 'utils';
 
 import './style.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function AssignProject(props) {
   const { isSaving, projects, handleSubmit } = props;
 
   const [selectedProjects, setSelectedProjects] = useState([]);
+  const [search, setSearch] = useState('');
+
+  const onChange = useCallback((e) => {
+    setSearch(e.target.value);
+  }, []);
 
   const selectProject = useCallback((projectId) => {
     const newProjects = [...selectedProjects];
@@ -26,17 +31,44 @@ function AssignProject(props) {
     handleSubmit(selectedProjects);
   }, [selectedProjects, handleSubmit]);
 
+  const filteredProjects = projects.filter((project) => project.name.includes(search));
+
+  const finishButton = () => (
+    <button
+      type="button"
+      className="create-team-submit-btn"
+      disabled={isSaving}
+      onClick={onFinish}
+    >
+      Finish
+
+      {isSaving && (
+        <FontAwesomeIcon icon="spinner" />
+      )}
+    </button>
+  );
+
   return (
     <div className="team-information">
       <FadeDiv>
         <div className="title-box">
           <h2 className="title">Add/Assign Project</h2>
           <div className="title-cross" />
+          {finishButton()}
         </div>
 
         <div className="assign-project-wrapper">
+          <div className="search-box">
+            <input
+              type="text"
+              placeholder="Filter by name"
+              value={search}
+              onChange={onChange}
+            />
+          </div>
+
           <div className="assign-projects">
-            {projects.map((project) => (
+            {filteredProjects.map((project) => (
               <div
                 key={project.id}
                 className="assign-project-item"
@@ -62,18 +94,7 @@ function AssignProject(props) {
             ))}
           </div>
 
-          <button
-            type="button"
-            className="create-team-submit-btn"
-            disabled={isSaving}
-            onClick={onFinish}
-          >
-            Finish
-
-            {isSaving && (
-              <FontAwesomeIcon icon="spinner" />
-            )}
-          </button>
+          {finishButton()}
         </div>
       </FadeDiv>
     </div>

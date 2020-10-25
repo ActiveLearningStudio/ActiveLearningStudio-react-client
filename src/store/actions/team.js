@@ -190,3 +190,23 @@ export const removeMemberAction = (teamId, userId) => async (dispatch) => {
     throw e;
   }
 };
+
+export const assignProjectsAction = (teamId, ids) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.ASSIGN_PROJECTS_REQUEST,
+    });
+
+    await teamService.assignProjects(teamId, ids);
+
+    dispatch({
+      type: actionTypes.ASSIGN_PROJECTS_SUCCESS,
+    });
+
+    dispatch(loadTeamAction(teamId));
+  } catch (e) {
+    dispatch({ type: actionTypes.ASSIGN_PROJECTS_FAIL });
+
+    throw e;
+  }
+};

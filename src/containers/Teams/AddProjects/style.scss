@@ -1,9 +1,25 @@
-.create-team {
-  width: 100%;
+.assign-projects {
+  margin-top: 5em;
   display: flex;
 
-  .create-team-content {
-    width: calc(100% - 213px);
+  .title {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding-top: 11px;
+    padding-bottom: 10px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: #084892;
+  }
+
+  .assign-projects-content {
+    //width: calc(100% - 213px);
+    width: 100%;
+
+    .assign-project-item {
+      background: #ffffff;
+    }
   }
 
   .title-box {
@@ -15,9 +31,10 @@
     }
 
     .title-cross {
-      width: 58%;
+      //width: 58%;
       height: 0;
       margin: 22px 20px 0 27px;
+      flex: 1;
       border-top: solid 1px #cbcbcb;
     }
   }
@@ -29,7 +46,7 @@
   }
 
   .team-information {
-    margin: 0 0 0 55px;
+    margin: 0 55px;
   }
 }
 

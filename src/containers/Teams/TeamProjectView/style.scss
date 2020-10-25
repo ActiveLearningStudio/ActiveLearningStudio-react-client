@@ -7,16 +7,18 @@ $filled: #44ca92;
 
     .project-list {
       display: flex;
+      flex-wrap: wrap;
 
       .project-content-item {
         position: relative;
-        margin: 0 8px 0 0;
+        width: 260px;
+        margin: 0 8px 8px 0;
         background: #fff;
         border: solid 1px #e2e2e2;
 
         img {
           min-width: 245px;
-          max-width: 245px;
+          max-width: 100%;
           min-height: 170px;
         }
 

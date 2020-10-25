@@ -159,7 +159,7 @@ const SampleProjectCard = (props) => {
 };
 
 SampleProjectCard.propTypes = {
-  projects: PropTypes.object.isRequired,
+  projects: PropTypes.array.isRequired,
   type: PropTypes.string.isRequired,
   setShowSampleSort: PropTypes.func.isRequired,
 };

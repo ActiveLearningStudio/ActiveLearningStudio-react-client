@@ -104,7 +104,7 @@ function TeamMember(props) {
 TeamMember.propTypes = {
   teamId: PropTypes.number.isRequired,
   authUser: PropTypes.object.isRequired,
-  removingUserId: PropTypes.number.isRequired,
+  removingUserId: PropTypes.number,
   selected: PropTypes.bool,
   user: PropTypes.object.isRequired,
   selectMe: PropTypes.func.isRequired,
@@ -114,6 +114,7 @@ TeamMember.propTypes = {
 
 TeamMember.defaultProps = {
   selected: false,
+  removingUserId: null,
 };
 
 export default TeamMember;

@@ -200,6 +200,22 @@ export default (state = INITIAL_STATE, action) => {
         removingUserId: null,
       };
 
+    case actionTypes.ASSIGN_PROJECTS_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case actionTypes.ASSIGN_PROJECTS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+      };
+    case actionTypes.ASSIGN_PROJECTS_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
     default:
       return state;
   }

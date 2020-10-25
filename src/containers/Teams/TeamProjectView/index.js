@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,10 +10,22 @@ import { zeroFill } from 'utils';
 import './style.scss';
 
 function TeamProjectView(props) {
-  const { team: { projects } } = props;
+  const { team: { users, projects, id }, user } = props;
+
+  const authUser = users.find((u) => u.id === user.id);
+  const role = authUser ? authUser.role : '';
 
   return (
     <div className="team-information">
+      {role === 'owner' && (
+        <Link to={`/teams/${id}/assign`}>
+          <div className="btn-top-page">
+            <FontAwesomeIcon icon="plus" className="mr-2" />
+            Add project
+          </div>
+        </Link>
+      )}
+
       <div className="projects-wrapper">
         <div className="project-list">
           {projects.map((project) => (
@@ -33,10 +46,7 @@ function TeamProjectView(props) {
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                    <Dropdown.Item
-                      as={Link}
-                      to={`/project/${project.id}/preview`}
-                    >
+                    <Dropdown.Item as={Link} to={`/project/${project.id}/preview`}>
                       <FontAwesomeIcon icon="eye" className="mr-2" />
                       Preview
                     </Dropdown.Item>
@@ -50,6 +60,20 @@ function TeamProjectView(props) {
                       <FontAwesomeIcon icon="pen" className="mr-2" />
                       Edit
                     </Dropdown.Item>
+
+                    {role === 'owner' && (
+                      <>
+                        <Dropdown.Item as={Link} to="/">
+                          <FontAwesomeIcon icon="times-circle" className="mr-2" />
+                          Remove project
+                        </Dropdown.Item>
+
+                        <Dropdown.Item as={Link} to="">
+                          <FontAwesomeIcon icon="crosshairs" className="mr-2" />
+                          Assign member
+                        </Dropdown.Item>
+                      </>
+                    )}
                   </Dropdown.Menu>
                 </Dropdown>
               </div>
@@ -61,9 +85,9 @@ function TeamProjectView(props) {
                 </div>
 
                 <div className="member-mark-container">
-                  {project.users.map((user, index) => (
-                    <div key={user.id} className={`member-name-mark${index > 0 ? ' over' : ''}`}>
-                      <span>{`${user.first_name.charAt(0)}${user.last_name.charAt(0)}`}</span>
+                  {project.users.map((u, index) => (
+                    <div key={u.id} className={`member-name-mark${index > 0 ? ' over' : ''}`}>
+                      <span>{`${u.first_name.charAt(0)}${u.last_name.charAt(0)}`}</span>
                     </div>
                   ))}
                 </div>
@@ -78,6 +102,11 @@ function TeamProjectView(props) {
 
 TeamProjectView.propTypes = {
   team: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
-export default TeamProjectView;
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+});
+
+export default connect(mapStateToProps, null)(TeamProjectView);

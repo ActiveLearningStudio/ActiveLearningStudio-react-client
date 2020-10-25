@@ -30,7 +30,7 @@ import DeletePopup from 'components/DeletePopup';
 import ProjectsLoading from 'components/Loading/ProjectsLoading';
 import GoogleModel from 'components/models/GoogleLoginModal';
 import ProjectCard from './ProjectCard';
-import SampleProjectCard from './sampleProject';
+import SampleProjectCard from './SampleProjectCard';
 import NewProjectPage from './NewProjectPage';
 
 import './style.scss';
@@ -229,7 +229,7 @@ export const ProjectsPage = (props) => {
       setAllProjects(allStateProject.projects);
       divideProjects(allStateProject.projects);
     }
-  }, [allStateProject, divideProjects]);
+  }, [allStateProject]);
 
   useEffect(() => {
     loadLms();
@@ -253,7 +253,8 @@ export const ProjectsPage = (props) => {
     if (allProjects) {
       divideProjects(allProjects);
     }
-  }, [allProjects, divideProjects, sortNumber]);
+  }, [allProjects, sortNumber]);
+
   const handleShow = () => {
     setShow(true); //! state.show
   };
@@ -369,6 +370,7 @@ export const ProjectsPage = (props) => {
                     <DragDropContext onDragEnd={onDragEnd}>
                       {projectDivider.map((rowData) => (
                         <Droppable
+                          key={rowData.id}
                           droppableId={rowData.id}
                           // direction="horizontal"
                           // type="row"

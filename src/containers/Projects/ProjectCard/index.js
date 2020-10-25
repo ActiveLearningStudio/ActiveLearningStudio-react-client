@@ -33,10 +33,6 @@ const ProjectCard = (props) => {
     setAllLms(AllLms);
   }, [AllLms]);
 
-  useEffect(() => {
-    console.log(project);
-  }, [project]);
-
   return (
     <div className="col-md-3 check" id={activeFilter}>
       <div className="program-tile">

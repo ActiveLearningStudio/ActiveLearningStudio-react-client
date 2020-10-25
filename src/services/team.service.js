@@ -43,6 +43,11 @@ const removeMember = (teamId, id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const assignProjects = (teamId, ids) => httpService
+  .post(`/${apiVersion}/teams/${teamId}/add-projects`, { ids })
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -52,4 +57,5 @@ export default {
   inviteConfirm,
   inviteMember,
   removeMember,
+  assignProjects,
 };
