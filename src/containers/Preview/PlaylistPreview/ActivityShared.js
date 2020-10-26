@@ -2,20 +2,21 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux';
 
 import gifloader from 'assets/images/dotsloader.gif';
 import { loadH5pResourceSettingsShared, loadH5pResourceSettingsEmbed, loadH5pResourceXapi } from 'store/actions/resource';
 
 import './style.scss';
+import * as xAPIHelper from '../../../helpers/xapi';
 
-var counter =0;
+let counter = 0;
 
 const ActivityShared = (props) => {
   const { match, embed } = props;
   const [authorized, setAuthorized] = useState(false);
 
-  const dispatch =  useDispatch()
+  const dispatch = useDispatch();
 
   const h5pInsertion = async (data) => {
     window.H5PIntegration = data.h5p.settings;
@@ -71,17 +72,17 @@ const ActivityShared = (props) => {
             setAuthorized(true);
           });
       }
-   
-        
+
+      /*eslint-disable */  
       const checkXapi = setInterval(() => {
        try{ 
         const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
         if(x.H5P){
-          if(x.H5P.externalDispatcher){
+          if(x.H5P.externalDispatcher && xAPIHelper.isxAPINeeded(props.match.path)){
             stopXapi()
             x.H5P.externalDispatcher.on('xAPI', function(event) {
             if(counter>0){
-            dispatch(loadH5pResourceXapi(JSON.stringify(event.data.statement)))
+            dispatch(loadH5pResourceXapi(JSON.stringify(xAPIHelper.extendStatement(event.data.statement, {...props}))))
             }
             counter= counter+1
             });
@@ -91,10 +92,11 @@ const ActivityShared = (props) => {
         console.log(e)
       }
       });
-
-      const stopXapi = ()=>clearInterval(checkXapi)
+      
+      const stopXapi = ()=>clearInterval(checkXapi);
+      /* eslint-enable */
     }
-  }, [embed, match.params.activityId]);
+  }, [dispatch, embed, match.params.activityId, props]);
 
   return (
     <>
