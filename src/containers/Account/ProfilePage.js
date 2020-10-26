@@ -23,7 +23,7 @@ function ProfilePage(props) {
     user,
     updateProfile,
     userLmsSettings,
-    getUserLmsSettings
+    getUserLmsSettings,
   } = props;
 
   const [error, setError] = useState(null);
@@ -310,11 +310,11 @@ function ProfilePage(props) {
                         </div>
                       </div>
                     </form>
-                  </div>                  
+                  </div>
                 </div>
-
               </div>
             </div>
+
             <div className="row account-panel m-1 mt-4 mb-4">
               <div className="col">
                 <div className="row account-panel-header-row">
@@ -327,12 +327,12 @@ function ProfilePage(props) {
                 <div className="row mt-2 mb-2">
                   <div className="col">
                     {userLmsSettings.length === 0 && (
-                      <Alert variant='info'>No LMS publishing options have been configured for your account.</Alert>
+                      <Alert variant="info">No LMS publishing options have been configured for your account.</Alert>
                     )}
 
                     {userLmsSettings.length > 0 && (
                       <>
-                        <Alert variant='info'>LMS publishing options available to your account.</Alert>
+                        <Alert variant="info">LMS publishing options available to your account.</Alert>
                         <Table striped bordered hover>
                           <thead>
                             <tr>
@@ -342,7 +342,7 @@ function ProfilePage(props) {
                             </tr>
                           </thead>
                           <tbody>
-                            {userLmsSettings.map((lms)=>(
+                            {userLmsSettings.map((lms) => (
                               <tr>
                                 <td>{lms.site_name}</td>
                                 <td>{lms.description}</td>
@@ -369,7 +369,9 @@ function ProfilePage(props) {
 ProfilePage.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   user: PropTypes.object,
+  userLmsSettings: PropTypes.array.isRequired,
   updateProfile: PropTypes.func.isRequired,
+  getUserLmsSettings: PropTypes.func.isRequired,
 };
 
 ProfilePage.defaultProps = {
@@ -384,7 +386,7 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
   user: state.auth.user,
-  userLmsSettings: (state.account) ? state.account.userLmsSettings : []
+  userLmsSettings: (state.account) ? state.account.userLmsSettings : [],
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);

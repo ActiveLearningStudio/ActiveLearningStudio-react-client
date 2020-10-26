@@ -8,7 +8,7 @@ import { Alert, Tabs, Tab } from 'react-bootstrap';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import QueryString from 'query-string';
 
-import welcomVideo from 'assets/video/welcome.mp4';
+import WelcomeVideo from 'assets/video/welcome.mp4';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import {
   deleteProjectAction,
@@ -20,10 +20,9 @@ import {
   loadMyReorderProjectsAction,
   loadLmsAction,
   sampleProjects,
-  loadMyFavProjectsAction
+  loadMyFavProjectsAction,
+  allSidebarProjects,
 } from 'store/actions/project';
-import SampleProjectCard from "./sampleProject"
-import {allSidebarProjects} from 'store/actions/project';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
@@ -31,7 +30,10 @@ import DeletePopup from 'components/DeletePopup';
 import ProjectsLoading from 'components/Loading/ProjectsLoading';
 import GoogleModel from 'components/models/GoogleLoginModal';
 import ProjectCard from './ProjectCard';
+import SampleProjectCard from './SampleProjectCard';
 import NewProjectPage from './NewProjectPage';
+
+import './style.scss';
 
 export const ProjectsPage = (props) => {
   const allStateProject = useSelector((state) => state.project);
@@ -45,10 +47,11 @@ export const ProjectsPage = (props) => {
   const [sampleProject, setSampleProjects] = useState([]);
   const [favProject, setFavProjects] = useState([]);
   const [activeTab, setActiveTab] = useState('My Projects');
-  const [showSampleSort, setShowSampleSort] =  useState(true);
+  const [showSampleSort, setShowSampleSort] = useState(true);
 
   const {
     ui,
+    match,
     showPreview,
     showCreateProjectPopup,
     showEditProjectPopup,
@@ -57,39 +60,44 @@ export const ProjectsPage = (props) => {
     allSidebarProjectsUpdate,
     sampleProjectsData,
     loadMyFavProjectsActionData,
-    location
+    location,
+    showCreateProjectModal,
+    loadProject,
+    loadMyProjects,
+    loadLms,
   } = props;
-  
+
   const allState = useSelector((state) => state);
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     const query = QueryString.parse(location.search);
-    if (query.active==='fav') {
-      setActiveTab('Favorite Projects')
-    }else{
-      setActiveTab('My Projects')
+    if (query.active === 'fav') {
+      setActiveTab('Favorite Projects');
+    } else {
+      setActiveTab('My Projects');
     }
-  },[])
-  useEffect(() => {
-  //  if (allState.sidebar.sampleProject.length === 0) {
-      sampleProjectsData()
- //   }
   }, []);
 
   useEffect(() => {
-   // if (allState.sidebar.updateProject.length === 0) {
-      loadMyFavProjectsActionData()
-  //  }
-  }, []);
+    // if (allState.sidebar.sampleProject.length === 0) {
+    sampleProjectsData();
+    // }
+  }, [sampleProjectsData]);
 
   useEffect(() => {
-   // if (allState.sidebar.updateProject.length > 0) {
-      setFavProjects(allState.sidebar.updateProject)
-   // }
+    // if (allState.sidebar.updateProject.length === 0) {
+    loadMyFavProjectsActionData();
+    // }
+  }, [loadMyFavProjectsActionData]);
+
+  useEffect(() => {
+    // if (allState.sidebar.updateProject.length > 0) {
+    setFavProjects(allState.sidebar.updateProject);
+    // }
   }, [allState.sidebar.updateProject]);
 
   useEffect(() => {
-    if (allState.sidebar.sampleProject.length >  0) {
+    if (allState.sidebar.sampleProject.length > 0) {
       setSampleProjects(allState.sidebar.sampleProject);
     }
   }, [allState.sidebar.sampleProject]);
@@ -98,7 +106,6 @@ export const ProjectsPage = (props) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
-
     return result;
   };
 
@@ -112,23 +119,25 @@ export const ProjectsPage = (props) => {
     const result = {};
     result[droppableSource.droppableId] = sourceClone;
     result[droppableDestination.droppableId] = destClone;
+
     return result;
   };
 
-  var array6 = [];
-  var allchunk = [];
-  const divideProjects = (divderProjects) => {
-    divderProjects.map((data, counter) => {
+  let array6 = [];
+  const allChunk = [];
+
+  const divideProjects = (dividerProjects) => {
+    dividerProjects.forEach((data, counter) => {
       if ((counter + 1) % sortNumber === 0) {
         array6.push(data);
-        allchunk.push({
+        allChunk.push({
           id: `project_chunk${counter}`,
           collection: array6,
         });
         array6 = [];
       } else if (allStateProject.projects.length === counter + 1) {
         array6.push(data);
-        allchunk.push({
+        allChunk.push({
           id: `project_chunk${counter}`,
           collection: array6,
         });
@@ -137,10 +146,11 @@ export const ProjectsPage = (props) => {
         array6.push(data);
       }
     });
-    setProjectDivider(allchunk);
+
+    setProjectDivider(allChunk);
   };
 
-  const onDragEnd = async  (result) => {
+  const onDragEnd = async (result) => {
     const { source, destination } = result;
 
     // dropped outside the list
@@ -149,72 +159,68 @@ export const ProjectsPage = (props) => {
     }
 
     if (source.droppableId === destination.droppableId) {
-      projectDivider.map(async (data, index) => {
+      projectDivider.forEach(async (data, index) => {
         if (data.id === source.droppableId) {
           const items = reorder(
             data.collection,
             source.index,
-            destination.index
+            destination.index,
           );
 
           projectDivider[index] = {
             id: data.id,
             collection: items,
           };
-        
-          
+
           setProjectDivider(projectDivider);
-          setValue((value) => value=value+1);
-          const reorderData =  await loadMyReorderProjectsActionMethod(projectDivider)
-          
-          allSidebarProjectsUpdate()
-          setAllProjects(reorderData.projects)
+          setValue((v) => v + 1);
+          const reorderData = await loadMyReorderProjectsActionMethod(projectDivider);
+
+          allSidebarProjectsUpdate();
+          setAllProjects(reorderData.projects);
         }
       });
     } else {
-      var verticalsource = '';
-      var verticaldestination = '';
-      projectDivider.map((data) => {
+      let verticalSource = '';
+      let verticalDestination = '';
+      projectDivider.forEach((data) => {
         if (data.id === source.droppableId) {
-          verticalsource = data.collection
+          verticalSource = data.collection;
         }
         if (data.id === destination.droppableId) {
-          verticaldestination = data.collection
+          verticalDestination = data.collection;
         }
       });
 
-      const result = move(
-        verticalsource,
-        verticaldestination,
+      const res = move(
+        verticalSource,
+        verticalDestination,
         source,
-        destination
+        destination,
       );
 
-      Object.keys(result).map((key) => {
-        projectDivider.map((data, index) => {
+      Object.keys(res).forEach((key) => {
+        projectDivider.forEach((data, index) => {
           if (data.id === key) {
             projectDivider[index] = {
               id: data.id,
-              collection: result[key],
+              collection: res[key],
             };
           }
         });
       });
 
-      var updateProjectList = [];
-      projectDivider.map((data) => {
-        return data.collection.map((arrrays) => {
-          updateProjectList.push(arrrays);
-        });
-      });
+      const updateProjectList = [];
+      projectDivider.forEach((data) => data.collection.forEach((arrays) => {
+        updateProjectList.push(arrays);
+      }));
 
       setProjectDivider(projectDivider);
       divideProjects(updateProjectList);
-      const reorderData =  await loadMyReorderProjectsActionMethod(projectDivider)
-      
-      allSidebarProjectsUpdate()
-      setAllProjects(reorderData.projects)
-     
+      const reorderData = await loadMyReorderProjectsActionMethod(projectDivider);
+
+      allSidebarProjectsUpdate();
+      setAllProjects(reorderData.projects);
     }
   };
 
@@ -225,19 +231,7 @@ export const ProjectsPage = (props) => {
     }
   }, [allStateProject]);
 
-  
-
   useEffect(() => {
-    const {
-      match,
-      showCreateProjectPopup,
-      showEditProjectPopup,
-      showCreateProjectModal,
-      loadProject,
-      loadMyProjects,
-      loadLms,
-      } = props;
-
     loadLms();
 
     // scroll to top
@@ -253,13 +247,14 @@ export const ProjectsPage = (props) => {
     } else if (showCreateProjectPopup) {
       showCreateProjectModal();
     }
-  }, []);
+  }, [match.params.projectId, loadLms, loadMyProjects, loadProject, showCreateProjectPopup, showCreateProjectModal, showEditProjectPopup]);
 
   useEffect(() => {
-    if (!!allProjects) {
+    if (allProjects) {
       divideProjects(allProjects);
     }
-  }, [sortNumber]);
+  }, [allProjects, sortNumber]);
+
   const handleShow = () => {
     setShow(true); //! state.show
   };
@@ -309,60 +304,49 @@ export const ProjectsPage = (props) => {
 
           <div className={`content-wrapper ${activeFilter}`}>
             <div className="content">
-              <Tabs 
-                onSelect={(e)=>{
-                  setShowSampleSort(true)
-                 }} 
-                className="main-tabs"  
-                defaultActiveKey={activeTab} 
-                id="uncontrolled-tab-example">
+              <Tabs
+                onSelect={() => {
+                  setShowSampleSort(true);
+                }}
+                className="main-tabs"
+                defaultActiveKey={activeTab}
+                id="uncontrolled-tab-example"
+              >
                 <Tab eventKey="My Projects" title="My Projects">
                   <div className="row">
                     <div className="col-md-12">
                       <div className="program-page-title">
                         <h1>My Projects</h1>
+
                         <div className="project-page-settings">
                           <div className="sort-project-btns">
                             <div
-                              className={
-                                activeFilter === 'list-grid'
-                                  ? 'sort-btn active'
-                                  : 'sort-btn'
-                              }
+                              className={activeFilter === 'list-grid' ? 'sort-btn active' : 'sort-btn'}
                               onClick={() => {
-                                const allchunk = []
-                                var counterSimpl= 0
+                                // const allchunk = [];
+                                // let counterSimpl = 0;
                                 setActiveFilter('list-grid');
-                                setSortNumber(-1)
+                                setSortNumber(-1);
                                 divideProjects(allProjects);
-                             }}
+                              }}
                             >
                               <FontAwesomeIcon icon="bars" />
                             </div>
                             <div
-                              className={
-                                activeFilter === 'small-grid'
-                                  ? 'sort-btn active'
-                                  : 'sort-btn'
-                              }
+                              className={activeFilter === 'small-grid' ? 'sort-btn active' : 'sort-btn'}
                               onClick={() => {
                                 setActiveFilter('small-grid');
-                                setSortNumber(6)
+                                setSortNumber(6);
                                 divideProjects(allProjects);
-                               
                               }}
                             >
                               <FontAwesomeIcon icon="grip-horizontal" />
                             </div>
                             <div
-                              className={
-                                activeFilter === 'normal-grid'
-                                  ? 'sort-btn active'
-                                  : 'sort-btn'
-                              }
+                              className={activeFilter === 'normal-grid' ? 'sort-btn active' : 'sort-btn'}
                               onClick={() => {
                                 setActiveFilter('normal-grid');
-                                setSortNumber(4)
+                                setSortNumber(4);
                                 divideProjects(allProjects);
                               }}
                             >
@@ -379,44 +363,44 @@ export const ProjectsPage = (props) => {
                       </div>
                     </div>
                   </div>
-           
+
                   {
-                  //!!projectCards && projectCards.length > 0
+                  //! !projectCards && projectCards.length > 0
                   !!projectDivider && projectDivider.length > 0 ? (
                     <DragDropContext onDragEnd={onDragEnd}>
-                      {projectDivider.map((rowData) => {
-                        return (
-                          <Droppable
-                            droppableId={rowData.id}
-                            //direction="horizontal"
-                            //type="row"
-                            className="drag-class"
-                            direction="horizontal"
-                          >
-                            {(provided) => (
-                              <div
-                                {...provided.droppableProps}
-                                ref={provided.innerRef}
-                              >
-                                <div className="check-home" id={value}>
-                                  {rowData.collection.map((proj, index) => {
-                                    const res = {
-                                      title: proj.name,
-                                      id: proj.id,
-                                      deleteType: 'Project',
-                                    };
+                      {projectDivider.map((rowData) => (
+                        <Droppable
+                          key={rowData.id}
+                          droppableId={rowData.id}
+                          // direction="horizontal"
+                          // type="row"
+                          className="drag-class"
+                          direction="horizontal"
+                        >
+                          {(provided) => (
+                            <div
+                              {...provided.droppableProps}
+                              ref={provided.innerRef}
+                            >
+                              <div className="check-home" id={value}>
+                                {rowData.collection.map((proj, index) => {
+                                  const res = {
+                                    title: proj.name,
+                                    id: proj.id,
+                                    deleteType: 'Project',
+                                  };
                                   return (
                                     <Draggable
                                       key={proj.id}
                                       draggableId={`${proj.id}`}
                                       index={index}
                                     >
-                                      {(provided) => (
+                                      {(provid) => (
                                         <div
                                           className="playlist-resource"
-                                          ref={provided.innerRef}
-                                          {...provided.draggableProps}
-                                          {...provided.dragHandleProps}
+                                          ref={provid.innerRef}
+                                          {...provid.draggableProps}
+                                          {...provid.dragHandleProps}
                                         >
                                           <ProjectCard
                                             key={proj.id}
@@ -435,20 +419,22 @@ export const ProjectsPage = (props) => {
                                       )}
                                     </Draggable>
                                   );
-                                  })}
-                                </div>
-                                {provided.placeholder}
+                                })}
                               </div>
-                            )}
-                          </Droppable>
-                        );
-                      })}
+                              {provided.placeholder}
+                            </div>
+                          )}
+                        </Droppable>
+                      ))}
                     </DragDropContext>
                   ) : (
                     <>
                       <Alert variant="success">
-                        Start building your first Project by clicking on the{' '}
-                        <b>Add Project</b> button.
+                        Start building your first Project by clicking on the
+                        {' '}
+                        <b>Add Project</b>
+                        {' '}
+                        button.
                         <br />
                         For more information click here:
                         <a
@@ -457,65 +443,56 @@ export const ProjectsPage = (props) => {
                           className="alert-link-ref"
                           href="https://support.curriki.org/creating-learning-projects"
                         >
-                          <b>Getting Started.</b>{' '}
+                          <b>Getting Started.</b>
+                          {' '}
                         </a>
                       </Alert>
-                      {/* eslint-disable-next-line */}
+
+                      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
                       <video controls className="welcome-video">
-                        <source src={welcomVideo} type="video/mp4" />
+                        <source src={WelcomeVideo} type="video/mp4" />
                       </video>
                     </>
                   )
                 }
                 </Tab>
-                <Tab eventKey="Sample Projects" title="Sample Projects" >
+
+                <Tab eventKey="Sample Projects" title="Sample Projects">
                   <div className="row">
                     <div className="col-md-12">
                       <div className="program-page-title">
                         <h1>Sample Projects</h1>
-                        {showSampleSort &&
+
+                        {showSampleSort && (
                           <div className="project-page-settings">
                             <div className="sort-project-btns">
                               <div
-                                className={
-                                  activeFilter === 'list-grid'
-                                    ? 'sort-btn active'
-                                    : 'sort-btn'
-                                }
+                                className={activeFilter === 'list-grid' ? 'sort-btn active' : 'sort-btn'}
                                 onClick={() => {
-                                  const allchunk = []
-                                  var counterSimpl= 0
+                                  // const allchunk = [];
+                                  // let counterSimpl = 0;
                                   setActiveFilter('list-grid');
-                                  setSortNumber(-1)
+                                  setSortNumber(-1);
                                   divideProjects(allProjects);
-                              }}
+                                }}
                               >
                                 <FontAwesomeIcon icon="bars" />
                               </div>
                               <div
-                                className={
-                                  activeFilter === 'small-grid'
-                                    ? 'sort-btn active'
-                                    : 'sort-btn'
-                                }
+                                className={activeFilter === 'small-grid' ? 'sort-btn active' : 'sort-btn'}
                                 onClick={() => {
                                   setActiveFilter('small-grid');
-                                  setSortNumber(6)
+                                  setSortNumber(6);
                                   divideProjects(allProjects);
-                                
                                 }}
                               >
                                 <FontAwesomeIcon icon="grip-horizontal" />
                               </div>
                               <div
-                                className={
-                                  activeFilter === 'normal-grid'
-                                    ? 'sort-btn active'
-                                    : 'sort-btn'
-                                }
+                                className={activeFilter === 'normal-grid' ? 'sort-btn active' : 'sort-btn'}
                                 onClick={() => {
                                   setActiveFilter('normal-grid');
-                                  setSortNumber(4)
+                                  setSortNumber(4);
                                   divideProjects(allProjects);
                                 }}
                               >
@@ -523,90 +500,77 @@ export const ProjectsPage = (props) => {
                               </div>
                             </div>
                           </div>
-                        }
+                        )}
                       </div>
                     </div>
-                      <div className="col-md-12">
-                        <div className="flex-smaple">
-                            <SampleProjectCard projects={sampleProject} type="" setShowSampleSort={setShowSampleSort} />
-                        </div>   
+
+                    <div className="col-md-12">
+                      <div className="flex-smaple">
+                        <SampleProjectCard projects={sampleProject} type="" setShowSampleSort={setShowSampleSort} />
                       </div>
+                    </div>
                   </div>
                 </Tab>
+
                 <Tab eventKey="Favorite Projects" title="Favorite Projects">
-             
                   <div className="row">
                     <div className="col-md-12">
                       <div className="program-page-title">
-                      <h1>Favorite Projects</h1>
-                      {showSampleSort &&
-                        <div className="project-page-settings">
-                          <div className="sort-project-btns">
-                            <div
-                              className={
-                                activeFilter === 'list-grid'
-                                  ? 'sort-btn active'
-                                  : 'sort-btn'
-                              }
-                              onClick={() => {
-                                const allchunk = []
-                                var counterSimpl= 0
-                                setActiveFilter('list-grid');
-                                setSortNumber(-1)
-                                divideProjects(allProjects);
-                             }}
-                            >
-                              <FontAwesomeIcon icon="bars" />
-                            </div>
-                            <div
-                              className={
-                                activeFilter === 'small-grid'
-                                  ? 'sort-btn active'
-                                  : 'sort-btn'
-                              }
-                              onClick={() => {
-                                setActiveFilter('small-grid');
-                                setSortNumber(6)
-                                divideProjects(allProjects);
-                               
-                              }}
-                            >
-                              <FontAwesomeIcon icon="grip-horizontal" />
-                            </div>
-                            <div
-                              className={
-                                activeFilter === 'normal-grid'
-                                  ? 'sort-btn active'
-                                  : 'sort-btn'
-                              }
-                              onClick={() => {
-                                setActiveFilter('normal-grid');
-                                setSortNumber(4)
-                                divideProjects(allProjects);
-                              }}
-                            >
-                              <FontAwesomeIcon icon="th-large" />
+                        <h1>Favorite Projects</h1>
+
+                        {showSampleSort && (
+                          <div className="project-page-settings">
+                            <div className="sort-project-btns">
+                              <div
+                                className={activeFilter === 'list-grid' ? 'sort-btn active' : 'sort-btn'}
+                                onClick={() => {
+                                  // const allchunk = [];
+                                  // let counterSimpl = 0;
+                                  setActiveFilter('list-grid');
+                                  setSortNumber(-1);
+                                  divideProjects(allProjects);
+                                }}
+                              >
+                                <FontAwesomeIcon icon="bars" />
+                              </div>
+                              <div
+                                className={activeFilter === 'small-grid' ? 'sort-btn active' : 'sort-btn'}
+                                onClick={() => {
+                                  setActiveFilter('small-grid');
+                                  setSortNumber(6);
+                                  divideProjects(allProjects);
+                                }}
+                              >
+                                <FontAwesomeIcon icon="grip-horizontal" />
+                              </div>
+                              <div
+                                className={activeFilter === 'normal-grid' ? 'sort-btn active' : 'sort-btn'}
+                                onClick={() => {
+                                  setActiveFilter('normal-grid');
+                                  setSortNumber(4);
+                                  divideProjects(allProjects);
+                                }}
+                              >
+                                <FontAwesomeIcon icon="th-large" />
+                              </div>
                             </div>
                           </div>
-                        
-                        </div>
-                      }
+                        )}
                       </div>
                     </div>
-                   
-                      <div className="col-md-12">
-                        <div className="flex-smaple">
-                              {favProject.length>0?
-                            <SampleProjectCard projects={favProject} type="fav" setShowSampleSort={setShowSampleSort} />:
-                            <Alert variant="warning">No Favorite Projects Found.</Alert>
-                          }
-                        </div>   
+
+                    <div className="col-md-12">
+                      <div className="flex-smaple">
+                        {favProject.length > 0 ? (
+                          <SampleProjectCard projects={favProject} type="fav" setShowSampleSort={setShowSampleSort} />
+                        ) : (
+                          <Alert variant="warning">No Favorite Projects Found.</Alert>
+                        )}
                       </div>
+                    </div>
                   </div>
-                  <div className="row">
-                    
-                  
-                  </div>  
+
+                  <div className="row" />
                 </Tab>
               </Tabs>
             </div>
@@ -651,9 +615,11 @@ ProjectsPage.propTypes = {
   loadMyProjects: PropTypes.func.isRequired,
   shareProject: PropTypes.func.isRequired,
   loadLms: PropTypes.func.isRequired,
-  loadMyReorderProjectsActionMethod:PropTypes.func.isRequired,
-  allSidebarProjectsUpdate:PropTypes.func.isRequired,
-  location:PropTypes.object.isRequired
+  loadMyReorderProjectsActionMethod: PropTypes.func.isRequired,
+  allSidebarProjectsUpdate: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired,
+  sampleProjectsData: PropTypes.func.isRequired,
+  loadMyFavProjectsActionData: PropTypes.func.isRequired,
 };
 
 ProjectsPage.defaultProps = {
@@ -670,21 +636,19 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
   loadMyProjects: () => dispatch(loadMyProjectsAction()),
-  createProject: (name, description, thumbUrl) =>
-    dispatch(createProjectAction(name, description, thumbUrl)),
-  showDeletePopup: (id, title, deleteType) =>
-    dispatch(showDeletePopupAction(id, title, deleteType)),
+  createProject: (name, description, thumbUrl) => dispatch(createProjectAction(name, description, thumbUrl)),
+  showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
   deleteProject: (id) => dispatch(deleteProjectAction(id)),
   hideDeletePopup: () => dispatch(hideDeletePopupAction()),
   loadProject: (id) => dispatch(loadProjectAction(id)),
   shareProject: (id) => dispatch(shareProjectAction(id)),
   loadLms: () => dispatch(loadLmsAction()),
-  loadMyReorderProjectsActionMethod:(projectDivider)=>dispatch(loadMyReorderProjectsAction(projectDivider)),
-  allSidebarProjectsUpdate:()=>dispatch(allSidebarProjects()),
-  sampleProjectsData:()=>dispatch(sampleProjects()),
-  loadMyFavProjectsActionData:()=>dispatch(loadMyFavProjectsAction())
+  loadMyReorderProjectsActionMethod: (projectDivider) => dispatch(loadMyReorderProjectsAction(projectDivider)),
+  allSidebarProjectsUpdate: () => dispatch(allSidebarProjects()),
+  sampleProjectsData: () => dispatch(sampleProjects()),
+  loadMyFavProjectsActionData: () => dispatch(loadMyFavProjectsAction()),
 });
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ProjectsPage)
+  connect(mapStateToProps, mapDispatchToProps)(ProjectsPage),
 );

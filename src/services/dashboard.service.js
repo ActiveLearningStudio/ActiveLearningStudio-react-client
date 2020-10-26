@@ -14,6 +14,6 @@ const getProject = (id) => httpService
   .catch((err) => Promise.reject(err.response.data));
 
 export default {
-    getUserProjects,
-    getProject
+  getUserProjects,
+  getProject,
 };

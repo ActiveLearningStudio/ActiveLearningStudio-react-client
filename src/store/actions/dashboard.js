@@ -1,10 +1,10 @@
 import dashboardService from 'services/dashboard.service';
 import {
-    GET_USER_PROJECTS,
-    GET_SHARED_USER_PROJECTS,
-    GET_USER_ACTIVITIES,
-    GET_SHARED_USER_ACTIVITIES,
-    GET_USER_PLAYLISTS,
+  GET_USER_PROJECTS,
+  GET_SHARED_USER_PROJECTS,
+  GET_USER_ACTIVITIES,
+  GET_SHARED_USER_ACTIVITIES,
+  GET_USER_PLAYLISTS,
 } from '../actionTypes';
 
 export const getUserProjectsAction = (shared, query) => async (dispatch) => {
@@ -12,51 +12,54 @@ export const getUserProjectsAction = (shared, query) => async (dispatch) => {
   dispatch({
     type: shared ? GET_SHARED_USER_PROJECTS : GET_USER_PROJECTS,
     projects,
-    query
+    query,
   });
 };
 
+// TODO: fix eslint issues
+/* eslint-disable */
 export const getUserActivitiesAction = (shared, query) => async (dispatch) => {
-  var activities = [];
+  const activities = [];
   const projects = await dashboardService.getUserProjects();
-  for(const project of projects.projects){
-    const playlists = await dashboardService.getProject(project.id);
-    for(const playlist of playlists.playlists){
-      for(const activity of playlist.activities){
-        if(shared && activity.shared == false)
-          continue;
 
-        if(query !== '' &&  activity.h5p_content.title.search(new RegExp(query, "i")) === -1)
-          continue;
+  for (const project of projects.projects) {
+    const playlists = await dashboardService.getProject(project.id);
+    for (const playlist of playlists.playlists) {
+      for (const activity of playlist.activities) {
+        if (shared && activity.shared == false) continue;
+
+        if (query !== '' && activity.h5p_content.title.search(new RegExp(query, 'i')) === -1) continue;
 
         activities.push({
           ...activity,
-          project_id: project.id
+          project_id: project.id,
         });
       }
     }
   }
+
   dispatch({
     type: shared ? GET_SHARED_USER_ACTIVITIES : GET_USER_ACTIVITIES,
-    activities
+    activities,
   });
 };
 
 export const getUserPlaylistsAction = (shared, query) => async (dispatch) => {
-  var allPlaylists = [];
+  const allPlaylists = [];
   const projects = await dashboardService.getUserProjects();
-  for(const project of projects.projects){
+
+  for (const project of projects.projects) {
     const playlists = await dashboardService.getProject(project.id);
 
-    for(const playlist of playlists.playlists){
-      if(query !== '' &&  playlist.title.search(new RegExp(query, "i")) === -1)
-        continue;
-        
+    for (const playlist of playlists.playlists) {
+      if (query !== '' && playlist.title.search(new RegExp(query, 'i')) === -1) continue;
+
       allPlaylists.push(playlist);
     }
   }
+
   dispatch({
     type: GET_USER_PLAYLISTS,
-    playlists: allPlaylists
+    playlists: allPlaylists,
   });
 };

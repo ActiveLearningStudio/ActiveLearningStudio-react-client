@@ -53,6 +53,11 @@ const subscribe = () => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const searchUsers = (search) => httpService
+  .post(`/${apiVersion}/users/search`, { search })
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const loadOrganizationTypes = () => httpService
   .get(`/${apiVersion}/organization-types`)
   .then(({ data }) => data)
@@ -69,5 +74,6 @@ export default {
   updateProfile,
   updatePassword,
   subscribe,
-  loadOrganizationTypes
+  searchUsers,
+  loadOrganizationTypes,
 };

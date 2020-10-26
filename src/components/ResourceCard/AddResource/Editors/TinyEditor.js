@@ -9,7 +9,7 @@ import { saveGenericResourceAction } from 'store/actions/resource';
 
 // TODO: need to convert to functional component
 // set API key via .env.local
-export class TinyEditor extends React.Component {
+class TinyEditor extends React.Component {
   constructor(props) {
     super(props);
 

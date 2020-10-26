@@ -1,14 +1,12 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import { Alert } from 'react-bootstrap';
-import Switch from "react-switch";
-import { useSelector } from "react-redux"
+import Switch from 'react-switch';
 
 import {
   createPlaylistAction,
@@ -51,97 +49,107 @@ import PlaylistCard from './PlaylistCard';
 import PreviewResourcePage from './PreviewResourcePage';
 import CreatePlaylistPopup from './CreatePlaylistPopup';
 
-const  PlaylistsPage = (props)=> {
+import './style.scss';
 
-    const [checked,setChecked] = useState(false)
-    const [title,setTitle] =  useState(false)
-    const [indexStatus,setIndexStatus] =  useState(null)
+function PlaylistsPage(props) {
+  const [checked, setChecked] = useState(false);
+  const [title, setTitle] = useState(false);
+  const [indexStatus, setIndexStatus] = useState(null);
 
-    const state = useSelector(state=>state.project.selectedProject)
+  const state = useSelector((s) => s.project.selectedProject);
 
-    useEffect(()=>{
-      if(state.status===2){
-        setChecked(true)
-      }else{
-        setChecked(false)
-      }
+  useEffect(() => {
+    if (state.status === 2) {
+      setChecked(true);
+    } else {
+      setChecked(false);
+    }
 
-      setIndexStatus(state.indexing)
-    
-    },[state])
-    
-    const {
-      match,
-      openCreatePopup,
-      openCreateResourcePopup,
-      openEditResourcePopup,
-      loadProject,
-      loadProjectPlaylists,
-      loadLms,
-      project: { selectedProject },
-      resource,
-      playlist: { playlists },
-      ui,
-      getIndexedData,
-      getElasticData
-    } = props;
+    setIndexStatus(state.indexing);
+  }, [state]);
 
-    useEffect(()=>{
-      loadLms();
-      window.scrollTo(0, 0);
-  
-      if (
-        !openCreatePopup
-        && !openCreateResourcePopup
-        && !openEditResourcePopup
-      ) {
-        loadProject(match.params.projectId);
-        loadProjectPlaylists(match.params.projectId);
-      }
-    },[])
-   
-  
+  const {
+    match,
+    history,
+    showCreatePlaylistModal,
+    showCreateResourceModal,
+    hideCreatePlaylistModal,
+    hideCreateResourceModal,
+    openCreatePopup,
+    openCreateResourcePopup,
+    openEditResourcePopup,
+    loadProject,
+    loadProjectPlaylists,
+    createPlaylist,
+    createResource,
+    createResourceByH5PUpload,
+    editResource,
+    reorderPlaylists,
+    loadLms,
+    project: { selectedProject },
+    resource,
+    playlist: { playlists },
+    ui,
+    getIndexedData,
+    getElasticData,
+  } = props;
 
-  const handleChange = async (checked)=> {
-    //setChecked(checked);
-    Swal.showLoading()
-    await getIndexedData(match.params.projectId)
-    if(checked){
+  useEffect(() => {
+    loadLms();
+    window.scrollTo(0, 0);
+
+    if (
+      !openCreatePopup
+      && !openCreateResourcePopup
+      && !openEditResourcePopup
+    ) {
+      loadProject(match.params.projectId);
+      loadProjectPlaylists(match.params.projectId);
+    }
+  }, []);
+
+  const handleChange = async (chked) => {
+    // setChecked(chked);
+    Swal.showLoading();
+    await getIndexedData(match.params.projectId);
+    if (chked) {
       Swal.fire({
-        html: "<b>SHOWCASE THIS PROJECT?</b><br><br><p>The Curriki Team is reviewing and selecting projects likes yours to be showcased in the CurrikiStudio repository.</p><p>If selected, your project will be available for other authors to search, preview and reuse/remix.</p>",
+        html: '<b>SHOWCASE THIS PROJECT?</b><br><br><p>The Curriki Team is reviewing and selecting projects likes yours'
+          + ' to be showcased in the CurrikiStudio repository.</p><p>If selected, your project will be available for other authors'
+          + ' to search, preview and reuse/remix.</p>',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes! Review This Project',
-        cancelButtonText: 'Not Right Now'
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          Swal.showLoading()
-          const result  =   await getElasticData(match.params.projectId)
-          loadProject(match.params.projectId);
-          if(result.message){
-            Swal.fire(result.message)
-          }else if (result.errors){
-            Swal.fire(result.errors[0])
-          }
-        }else{
-          Swal.showLoading()
-          loadProject(match.params.projectId)
-        }
+        cancelButtonText: 'Not Right Now',
       })
-    }else{
-      Swal.showLoading()
-      loadProject(match.params.projectId)
+        .then(async (result) => {
+          if (result.isConfirmed) {
+            Swal.showLoading();
+
+            const res = await getElasticData(match.params.projectId);
+            loadProject(match.params.projectId);
+            if (res.message) {
+              Swal.fire(res.message);
+            } else if (res.errors) {
+              Swal.fire(res.errors[0]);
+            }
+          } else {
+            Swal.showLoading();
+            loadProject(match.params.projectId);
+          }
+        });
+    } else {
+      Swal.showLoading();
+      loadProject(match.params.projectId);
     }
-  }
-  
+  };
+
   const handleShowCreatePlaylistModal = async (e) => {
     e.preventDefault();
 
     try {
-      const { match, history, showCreatePlaylistModal } = props;
       await showCreatePlaylistModal();
-
       history.push(`/project/${match.params.projectId}/playlist/create`);
     } catch (err) {
       // console.log(err.message);
@@ -150,7 +158,6 @@ const  PlaylistsPage = (props)=> {
 
   const handleShowCreateResourceModal = (playlist) => {
     try {
-      const { match, history, showCreateResourceModal } = props;
       showCreateResourceModal(playlist.id);
       history.push(`/project/${match.params.projectId}/playlist/${playlist.id}/activity/create`);
     } catch (e) {
@@ -162,7 +169,6 @@ const  PlaylistsPage = (props)=> {
     e.preventDefault();
 
     try {
-      const { match, history, hideCreatePlaylistModal } = props;
       await hideCreatePlaylistModal();
       history.push(`/project/${match.params.projectId}`);
     } catch (err) {
@@ -173,7 +179,6 @@ const  PlaylistsPage = (props)=> {
   const handleHideCreateResourceModal = async (e) => {
     e.preventDefault();
 
-    const { resource } = props;
     if (!resource.saved) {
       Swal.fire({
         icon: 'warning',
@@ -188,14 +193,12 @@ const  PlaylistsPage = (props)=> {
       })
         .then(async (resp) => {
           if (resp.isConfirmed) {
-            const { match, history, hideCreateResourceModal } = props;
             await hideCreateResourceModal();
             history.push(`/project/${match.params.projectId}`);
           }
         });
     } else {
       try {
-        const { match, history, hideCreateResourceModal } = props;
         await hideCreateResourceModal();
         history.push(`/project/${match.params.projectId}`);
       } catch (err) {
@@ -212,9 +215,6 @@ const  PlaylistsPage = (props)=> {
     e.preventDefault();
 
     try {
-      
-      const { match, history, createPlaylist } = props;
-
       await createPlaylist(match.params.projectId, title);
 
       history.push(`/project/${match.params.projectId}`);
@@ -246,16 +246,9 @@ const  PlaylistsPage = (props)=> {
     projectId,
   ) => {
     try {
-      const {
-        // resource,
-        match,
-        history,
-        createResource,
-        createResourceByH5PUpload,
-      } = props;
-
       if (payload.submitAction === 'upload') {
         payload.event.preventDefault();
+
         await createResourceByH5PUpload(
           currentPlaylistId,
           editor,
@@ -288,7 +281,6 @@ const  PlaylistsPage = (props)=> {
     metadata,
   ) => {
     try {
-      const { match, history, editResource } = props;
       await editResource(
         currentPlaylistId,
         editor,
@@ -311,11 +303,6 @@ const  PlaylistsPage = (props)=> {
       return;
     }
 
-    const {
-      match,
-      playlist: { playlists },
-      reorderPlaylists,
-    } = props;
     const orgPlaylists = Array.from(playlists);
 
     if (e.type === 'resource') {
@@ -355,194 +342,202 @@ const  PlaylistsPage = (props)=> {
     }
   };
 
- 
   const { showDeletePlaylistPopup, pageLoading } = ui;
 
   return (
-      <>
-        <Header {...props} />
-        <div className="main-content-wrapper">
-          <div className="sidebar-wrapper">
-            <Sidebar />
-          </div>
+    <>
+      <Header {...props} />
 
-          <div className="content-wrapper">
-            <div className="content">
-              <div>
-                {pageLoading !== false ? (
-                  <Alert variant="primary">Loading ...</Alert>
-                ) : (
-                  <>
-                    {!pageLoading && !selectedProject.name ? (
-                      <Alert variant="danger">Project not found.</Alert>
-                    ) : (
-                      <>
-                        <div className="col playlist-page-project-title project-each-view">
-                          <div className="flex-se">
-                            <h1>{selectedProject ? selectedProject.name : ''}</h1>
-                            {checked  && indexStatus=== null &&
-                              <div 
-                                className="react-touch indexed"
-                                onClick={async()=>{
-                                  Swal.fire({
-                                    html: "<b>SHOWCASE THIS PROJECT?</b><br><br><p>The Curriki Team is reviewing and selecting projects likes yours to be showcased in the CurrikiStudio repository.</p><p>If selected, your project will be available for other authors to search, preview and reuse/remix.</p>",
-                                    showCancelButton: true,
-                                    confirmButtonColor: '#3085d6',
-                                    cancelButtonColor: '#d33',
-                                    confirmButtonText: 'Yes! Review This Project',
-                                    cancelButtonText: 'Not Right Now'
-                                  }).then(async (result) => {
+      <div className="main-content-wrapper">
+        <div className="sidebar-wrapper">
+          <Sidebar />
+        </div>
+
+        <div className="content-wrapper">
+          <div className="content">
+            <div>
+              {pageLoading !== false ? (
+                <Alert variant="primary">Loading ...</Alert>
+              ) : (
+                <>
+                  {!pageLoading && !selectedProject.name ? (
+                    <Alert variant="danger">Project not found.</Alert>
+                  ) : (
+                    <>
+                      <div className="col playlist-page-project-title project-each-view">
+                        <div className="flex-se">
+                          <h1>{selectedProject ? selectedProject.name : ''}</h1>
+
+                          {checked && indexStatus === null && (
+                            <div
+                              className="react-touch indexed"
+                              onClick={async () => {
+                                Swal.fire({
+                                  html: '<b>SHOWCASE THIS PROJECT?</b><br><br><p>The Curriki Team is reviewing and selecting projects'
+                                    + ' likes yours to be showcased in the CurrikiStudio repository.</p><p>If selected, your project will be available'
+                                    + ' for other authors to search, preview and reuse/remix.</p>',
+                                  showCancelButton: true,
+                                  confirmButtonColor: '#3085d6',
+                                  cancelButtonColor: '#d33',
+                                  confirmButtonText: 'Yes! Review This Project',
+                                  cancelButtonText: 'Not Right Now',
+                                })
+                                  .then(async (result) => {
                                     if (result.isConfirmed) {
-                                      Swal.showLoading()
-                                      const result  =   await getElasticData(match.params.projectId)
+                                      Swal.showLoading();
+
+                                      const res = await getElasticData(match.params.projectId);
                                       loadProject(match.params.projectId);
-                                      if(result.message){
-                                        Swal.fire(result.message)
-                                      }else if (result.errors){
-                                        Swal.fire(result.errors[0])
+
+                                      if (res.message) {
+                                        Swal.fire(res.message);
+                                      } else if (res.errors) {
+                                        Swal.fire(res.errors[0]);
                                       }
                                     }
-                                  })
-                                }}
-                              >
-                                <div className="publish-btn ">
-                                <span>Submit to Showcase</span>                                
-                                </div>
-                              </div>
-                            } 
-                            <div className="react-touch">
+                                  });
+                              }}
+                            >
                               <div className="publish-btn">
-                                <span>{checked?"Showcase":<span style={{color:'#464646'}} >Showcase</span>}</span>
-                                <Switch
-                                  onChange={handleChange}
-                                  checked={checked}
-                                />
+                                <span>Submit to Showcase</span>
                               </div>
                             </div>
-                            <button
-                              type="button"
-                              className="create-playlist-btn"
-                              onClick={handleShowCreatePlaylistModal}
-                            >
-                              <FontAwesomeIcon icon="plus" className="mr-2" />
-                              Create new playlist
-                            </button>
+                          )}
+
+                          <div className="react-touch">
+                            <div className="publish-btn">
+                              <span>{checked ? 'Showcase' : <span style={{ color: '#464646' }}>Showcase</span>}</span>
+                              <Switch checked={checked} onChange={handleChange} />
+                            </div>
                           </div>
 
-                          <span>
-                            <Link
-                              className="dropdown-item"
-                              to={`/project/${match.params.projectId}/preview`}
-                            >
-                              <FontAwesomeIcon icon="eye" className="mr-2" />
-                              Project Preview
-                            </Link>
-                          </span>
+                          <button
+                            type="button"
+                            className="create-playlist-btn"
+                            onClick={handleShowCreatePlaylistModal}
+                          >
+                            <FontAwesomeIcon icon="plus" className="mr-2" />
+                            Create new playlist
+                          </button>
                         </div>
-                        <div className="index-text">
-                          {indexStatus===1 &&
-                            <Alert variant="warning">
-                              Thank you for submitting this project for inclusion in our Showcase! Your project has been queued up! As soon as our review is completed, we will notify you right here.
-                            </Alert>
-                          }
-                          {indexStatus===2 &&
-                            <Alert variant="danger">
-                              Your project was not selected for inclusion in the Showcase. You are welcome to contact our support team, and revise and resubmit your project at any time.
-                            </Alert>
-                          } 
-                          {indexStatus===3 &&
-                            <Alert variant="success">
-                              This project has been selected for inclusion in the CurrikiStudio Showcase and is available for other content authors to find, preview, reuse and remix.
-                            </Alert>
-                          } 
-                        </div> 
-                        <>
-                          {!!playlists && playlists.length > 0
-                            ? (
-                              <DragDropContext onDragEnd={onDragEnd}>
-                                <Droppable
-                                  droppableId="project-droppable-id"
-                                  direction="horizontal"
-                                  type="column"
-                                >
-                                  {(provided) => (
-                                    <div
-                                      id="board"
-                                      className="board-custom"
-                                      {...provided.droppableProps}
-                                      ref={provided.innerRef}
-                                    >
-                                      {playlists.map((playlist, index) => (
-                                        <PlaylistCard
-                                          key={playlist.id}
-                                          index={index}
-                                          playlist={playlist}
-                                          projectId={parseInt(match.params.projectId, 10)}
-                                          handleCreateResource={handleShowCreateResourceModal}
-                                        />
-                                      ))}
-                                      {provided.placeholder}
-                                    </div>
-                                  )}
-                                </Droppable>
-                              </DragDropContext>
-                            ) : (
-                              <Alert variant="success">
-                                No playlist available, kindly create your playlist.
-                              </Alert>
-                            )}
-                        </>
-                      </>
-                    )}
-                  </>
-                )}
-              </div>
 
+                        <span>
+                          <Link
+                            className="dropdown-item"
+                            to={`/project/${match.params.projectId}/preview`}
+                          >
+                            <FontAwesomeIcon icon="eye" className="mr-2" />
+                            Project Preview
+                          </Link>
+                        </span>
+                      </div>
+
+                      <div className="index-text">
+                        {indexStatus === 1 && (
+                          <Alert variant="warning">
+                            Thank you for submitting this project for inclusion in our Showcase!
+                            Your project has been queued up! As soon as our review is completed,
+                            we will notify you right here.
+                          </Alert>
+                        )}
+                        {indexStatus === 2 && (
+                          <Alert variant="danger">
+                            Your project was not selected for inclusion in the Showcase.
+                            You are welcome to contact our support team, and revise
+                            and resubmit your project at any time.
+                          </Alert>
+                        )}
+                        {indexStatus === 3 && (
+                          <Alert variant="success">
+                            This project has been selected for inclusion in the CurrikiStudio Showcase
+                            and is available for other content authors to find, preview, reuse and remix.
+                          </Alert>
+                        )}
+                      </div>
+
+                      {!!playlists && playlists.length > 0 ? (
+                        <DragDropContext onDragEnd={onDragEnd}>
+                          <Droppable
+                            droppableId="project-droppable-id"
+                            direction="horizontal"
+                            type="column"
+                          >
+                            {(provided) => (
+                              <div
+                                id="board"
+                                className="board-custom"
+                                {...provided.droppableProps}
+                                ref={provided.innerRef}
+                              >
+                                {playlists.map((playlist, index) => (
+                                  <PlaylistCard
+                                    key={playlist.id}
+                                    index={index}
+                                    playlist={playlist}
+                                    projectId={parseInt(match.params.projectId, 10)}
+                                    handleCreateResource={handleShowCreateResourceModal}
+                                  />
+                                ))}
+                                {provided.placeholder}
+                              </div>
+                            )}
+                          </Droppable>
+                        </DragDropContext>
+                      ) : (
+                        <Alert variant="success">
+                          No playlist available, kindly create your playlist.
+                        </Alert>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </div>
+      </div>
 
-        {openCreatePopup && (
-          <CreatePlaylistPopup
-            handleHideCreatePlaylistModal={handleHideCreatePlaylistModal}
-            handleCreatePlaylistSubmit={handleCreatePlaylistSubmit}
-            onPlaylistTitleChange={onPlaylistTitleChange}
-          />
-        )}
+      {openCreatePopup && (
+        <CreatePlaylistPopup
+          handleHideCreatePlaylistModal={handleHideCreatePlaylistModal}
+          handleCreatePlaylistSubmit={handleCreatePlaylistSubmit}
+          onPlaylistTitleChange={onPlaylistTitleChange}
+        />
+      )}
 
-        {openCreateResourcePopup && (
-          <AddResource
-            {...props}
-            handleHideCreateResourceModal={handleHideCreateResourceModal}
-            handleCreateResourceSubmit={handleCreateResourceSubmit}
-            handleEditResourceSubmit={handleEditResourceSubmit}
-          />
-        )}
+      {openCreateResourcePopup && (
+        <AddResource
+          {...props}
+          handleHideCreateResourceModal={handleHideCreateResourceModal}
+          handleCreateResourceSubmit={handleCreateResourceSubmit}
+          handleEditResourceSubmit={handleEditResourceSubmit}
+        />
+      )}
 
-        {openEditResourcePopup && (
-          <EditResource
-            {...props}
-            handleHideCreateResourceModal={handleHideCreateResourceModal}
-            handleCreateResourceSubmit={handleCreateResourceSubmit}
-            handleEditResourceSubmit={handleEditResourceSubmit}
-          />
-        )}
+      {openEditResourcePopup && (
+        <EditResource
+          {...props}
+          handleHideCreateResourceModal={handleHideCreateResourceModal}
+          handleCreateResourceSubmit={handleCreateResourceSubmit}
+          handleEditResourceSubmit={handleEditResourceSubmit}
+        />
+      )}
 
-        {resource.showPreviewResourcePopup && (
-          <PreviewResourcePage {...props} />
-        )}
+      {resource.showPreviewResourcePopup && (
+        <PreviewResourcePage {...props} />
+      )}
 
-        {showDeletePlaylistPopup && (
-          <DeletePopup
-            {...props}
-            deleteType="Playlist"
-            selectedProject={selectedProject}
-          />
-        )}
-        <Footer />
-      </>
-    );
-  
+      {showDeletePlaylistPopup && (
+        <DeletePopup
+          {...props}
+          deleteType="Playlist"
+          selectedProject={selectedProject}
+        />
+      )}
+
+      <Footer />
+    </>
+  );
 }
 
 PlaylistsPage.propTypes = {
@@ -569,8 +564,8 @@ PlaylistsPage.propTypes = {
   showCreateResourceActivity: PropTypes.func.isRequired,
   showResourceDescribeActivity: PropTypes.func.isRequired,
   loadLms: PropTypes.func.isRequired,
-  getIndexedData:PropTypes.func.isRequired,
-  getElasticData:PropTypes.func.isRequired,
+  getIndexedData: PropTypes.func.isRequired,
+  getElasticData: PropTypes.func.isRequired,
 };
 
 PlaylistsPage.defaultProps = {
@@ -604,8 +599,8 @@ const mapDispatchToProps = (dispatch) => ({
   uploadResourceThumbnail: () => dispatch(uploadResourceThumbnailAction()),
   reorderPlaylists: (projectId, orgPlaylists, playlists) => dispatch(reorderPlaylistsAction(projectId, orgPlaylists, playlists)),
   loadLms: () => dispatch(loadLmsAction()),
-  getIndexedData:(id)=>dispatch(getIndexed(id)),
-  getElasticData :(id)=>dispatch(getElastic(id))
+  getIndexedData: (id) => dispatch(getIndexed(id)),
+  getElasticData: (id) => dispatch(getElastic(id)),
 });
 
 const mapStateToProps = (state) => ({

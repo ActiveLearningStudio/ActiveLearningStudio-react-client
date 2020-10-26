@@ -5,6 +5,7 @@ import {
 } from '../actionTypes';
 
 const INITIAL_STATE = {
+  isLoaded: false,
   allProject: [],
   sampleProject: [],
   updateProject: [],
@@ -16,6 +17,7 @@ const Sidebar = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         allProject: action.data.projects ? action.data.projects : [],
+        isLoaded: true,
       };
 
     case SIDEBAR_SAMPLE_PROJECT:

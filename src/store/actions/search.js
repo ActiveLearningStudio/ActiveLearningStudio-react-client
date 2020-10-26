@@ -11,27 +11,26 @@ export const searchRedux = (data, searchQuery, meta) => ({
 });
 
 export const simpleSearchAction = (values) => async (dispatch) => {
- 
-  const sendData={
-    query:values.phrase,
-    h5pLibraries:values.standardArray,
-    from:values.from,
-    size:values.size,
-    model:values.model ,
-    negativeQuery:values.no_words, 
-    subjectIds :values.subjectArray,
-    educationLevelIds :values.gradeArray,
-    startDate :values.fromDate,
-    endDate:values.toDate
-  }
+  const sendData = {
+    query: values.phrase,
+    h5pLibraries: values.standardArray,
+    from: values.from,
+    size: values.size,
+    model: values.model,
+    negativeQuery: values.no_words,
+    subjectIds: values.subjectArray,
+    educationLevelIds: values.gradeArray,
+    startDate: values.fromDate,
+    endDate: values.toDate,
+  };
 
-  var response
-  if(values.type==="public"){
+  let response;
+  if (values.type === 'public') {
     response = await searchService.searchResult(sendData);
-  }else{
+  } else {
     response = await searchService.advancedSearch(sendData);
   }
-   
+
   if (response.errors) {
     if (response.errors.query) {
       Swal.fire(response.errors.query[0]);
@@ -39,6 +38,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
   } else {
     dispatch(searchRedux(response.data, values.phrase, response.meta));
   }
+
   return response;
 };
 
@@ -53,4 +53,3 @@ export const clonePlaylist = (projectId, playlistId) => {
 export const cloneActivity = (playlistId, activityId) => {
   searchService.cloneActivity(playlistId, activityId);
 };
-

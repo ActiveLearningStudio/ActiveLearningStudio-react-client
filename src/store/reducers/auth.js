@@ -2,9 +2,11 @@ import * as actionTypes from '../actionTypes';
 
 const INITIAL_STATE = {
   isLoading: true,
+  isSearching: false,
   user: null,
   forgotPasswordEmail: null,
-  organizationTypes: []
+  searchedUsers: [],
+  organizationTypes: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -24,6 +26,24 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isLoading: false,
+      };
+
+    case actionTypes.SEARCH_USERS_REQUEST:
+      return {
+        ...state,
+        isSearching: true,
+      };
+    case actionTypes.SEARCH_USERS_SUCCESS:
+      return {
+        ...state,
+        isSearching: false,
+        searchedUsers: action.payload.users,
+      };
+    case actionTypes.SEARCH_USERS_FAIL:
+      return {
+        ...state,
+        isSearching: false,
+        searchedUsers: [],
       };
 
     case actionTypes.LOGIN_REQUEST:
@@ -160,7 +180,7 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.LOAD_ORGANIZATION_TYPES:
       return {
         ...state,
-        organizationTypes: action.payload
+        organizationTypes: action.payload,
       };
 
     case actionTypes.LOG_OUT:

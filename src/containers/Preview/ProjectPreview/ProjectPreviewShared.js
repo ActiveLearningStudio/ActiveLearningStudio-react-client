@@ -13,13 +13,12 @@ import Unauthorized from 'components/Unauthorized';
 import './style.scss';
 
 function ProjectPreviewShared(props) {
-  
-  const { 
+  const {
     match,
     sampleId,
     loadMyProjectsPreviewShared,
     setModalShow,
-    setCurrentActivity
+    setCurrentActivity,
   } = props;
 
   const project = useSelector((state) => state.project);
@@ -72,7 +71,7 @@ function ProjectPreviewShared(props) {
   //   try {
   //     const acc = document.getElementById('custom_accordion');
   //     const accordions = acc ? acc.getElementsByClassName('accordion') : [];
-
+  //
   //     for (let i = 0; i < accordions.length; i += 1) {
   //       accordions[i].addEventListener('click', function () {
   //         // eslint-disable-next-line react/no-this-in-sfc
@@ -85,12 +84,11 @@ function ProjectPreviewShared(props) {
   // }, []);
 
   useEffect(() => {
-    if(sampleId){
+    if (sampleId) {
       loadMyProjectsPreviewShared(sampleId);
-    }else{
+    } else {
       loadMyProjectsPreviewShared(match.params.projectId);
     }
-    
   }, [match.params.projectId, sampleId]);
 
   let playlists;
@@ -202,7 +200,9 @@ function ProjectPreviewShared(props) {
                 </div>
               </div>
             </div>
-          ):<Alert variant="primary" style={{margin:'20px'}}>Loading ...</Alert>}
+          ) : (
+            <Alert variant="primary" style={{ margin: '20px' }}>Loading ...</Alert>
+          )}
         </>
       )}
     </div>
@@ -211,8 +211,14 @@ function ProjectPreviewShared(props) {
 
 ProjectPreviewShared.propTypes = {
   match: PropTypes.object.isRequired,
-  setCurrentActivity:PropTypes.func.isRequired,
+  sampleId: PropTypes.number,
+  setCurrentActivity: PropTypes.func.isRequired,
+  setModalShow: PropTypes.func.isRequired,
   loadMyProjectsPreviewShared: PropTypes.func.isRequired,
+};
+
+ProjectPreviewShared.defaultProps = {
+  sampleId: null,
 };
 
 const mapDispatchToProps = (dispatch) => ({

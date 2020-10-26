@@ -8,7 +8,7 @@ const H5PPreview = React.lazy(() => import('../../containers/H5PPreview'));
 
 function MyVerticallyCenteredModal(props) {
   const { activity } = props;
-  
+
   return (
     <Modal
       {...props}
@@ -24,7 +24,7 @@ function MyVerticallyCenteredModal(props) {
       </Modal.Header>
 
       <Modal.Body>
-      {!!activity &&(
+        {!!activity && (
           <Suspense fallback={<div>Loading</div>}>
             <H5PPreview
               activityId={activity}
@@ -32,8 +32,7 @@ function MyVerticallyCenteredModal(props) {
               showltipreview
             />
           </Suspense>
-        )
-      }
+        )}
       </Modal.Body>
     </Modal>
   );

@@ -270,10 +270,31 @@ export const acceptTermsAction = () => async (dispatch) => {
   }
 };
 
+export const searchUsersAction = (data) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.SEARCH_USERS_REQUEST,
+  });
+
+  try {
+    const response = await authService.searchUsers(data);
+
+    dispatch({
+      type: actionTypes.SEARCH_USERS_SUCCESS,
+      payload: { users: response.users },
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.SEARCH_USERS_FAIL,
+    });
+
+    throw e;
+  }
+};
+
 export const loadOrganizationTypesAction = () => async (dispatch) => {
-  const orgnanizationTypes = await authService.loadOrganizationTypes();
+  const organizationTypes = await authService.loadOrganizationTypes();
   dispatch({
     type: actionTypes.LOAD_ORGANIZATION_TYPES,
-    payload : orgnanizationTypes.data
+    payload: organizationTypes.data,
   });
 };

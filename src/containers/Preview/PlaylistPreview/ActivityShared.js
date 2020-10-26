@@ -6,9 +6,9 @@ import { useDispatch } from 'react-redux';
 
 import gifloader from 'assets/images/dotsloader.gif';
 import { loadH5pResourceSettingsShared, loadH5pResourceSettingsEmbed, loadH5pResourceXapi } from 'store/actions/resource';
+import * as xAPIHelper from 'helpers/xapi';
 
 import './style.scss';
-import * as xAPIHelper from '../../../helpers/xapi';
 
 let counter = 0;
 
@@ -73,40 +73,40 @@ const ActivityShared = (props) => {
           });
       }
 
-      /*eslint-disable */  
       const checkXapi = setInterval(() => {
-       try{ 
-        const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
-        if(x.H5P){
-          if(x.H5P.externalDispatcher && xAPIHelper.isxAPINeeded(props.match.path)){
-            stopXapi()
-            x.H5P.externalDispatcher.on('xAPI', function(event) {
-            if(counter>0){
-            dispatch(loadH5pResourceXapi(JSON.stringify(xAPIHelper.extendStatement(event.data.statement, {...props}))))
+        try {
+          const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
+          if (x.H5P) {
+            if (x.H5P.externalDispatcher && xAPIHelper.isxAPINeeded(props.match.path)) {
+              // eslint-disable-next-line no-use-before-define
+              stopXapi();
+
+              x.H5P.externalDispatcher.on('xAPI', (event) => {
+                if (counter > 0) {
+                  dispatch(loadH5pResourceXapi(JSON.stringify(xAPIHelper.extendStatement(event.data.statement, { ...props }))));
+                }
+                counter += 1;
+              });
             }
-            counter= counter+1
-            });
           }
+        } catch (e) {
+          console.log(e);
         }
-      }catch(e){
-        console.log(e)
-      }
       });
-      
-      const stopXapi = ()=>clearInterval(checkXapi);
-      /* eslint-enable */
+
+      const stopXapi = () => clearInterval(checkXapi);
     }
   }, [dispatch, embed, match.params.activityId, props]);
 
   return (
     <>
       <section className={embed ? 'embed main-page-content preview iframe-height-resource-shared ' : 'main-page-content preview iframe-height-resource-shared'}>
-        {!!embed
-          && (
+        {!!embed && (
           <Helmet>
             <script src="https://dev.currikistudio.org/api/storage/h5p/h5p-core/js/h5p-resizer.js" charset="UTF-8" />
           </Helmet>
-          )}
+        )}
+
         <div className="flex-container previews">
           <div className="activity-bg left-vdo">
             <div className="main-item-wrapper desktop-view">

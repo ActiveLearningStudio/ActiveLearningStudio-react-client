@@ -102,7 +102,7 @@ export const loadH5pResource = (activityId) => async (dispatch) => {
 };
 
 export const loadH5pResourceXapi = (xapiData) => async () => {
-  resourceService.getXapi({statement:xapiData});
+  resourceService.getXapi({ statement: xapiData });
 };
 
 export const loadH5pResourceSettings = (activityId) => resourceService.h5pResourceSettings(activityId);
@@ -110,7 +110,7 @@ export const loadH5pResourceSettingsOpen = (activityId) => resourceService.h5pRe
 export const loadH5pResourceSettingsShared = (activityId) => resourceService.h5pResourceSettingsShared(activityId);
 export const loadH5pResourceSettingsEmbed = (activityId) => resourceService.h5pResourceSettingsEmbed(activityId);
 
-//export const loadH5pResourceXapi = (data) => resourceService.getXapi(data);
+// export const loadH5pResourceXapi = (data) => resourceService.getXapi(data);
 
 export const resourceSaved = (saved) => async (dispatch) => {
   dispatch({

@@ -36,6 +36,8 @@ const LtiPreviewPage = loadable(() => import('../containers/LtiPreviewPage'));
 const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared'));
 const SearchResult = loadable(() => import('../containers/Search'));
 const LtiModel = loadable(() => import('../containers/LtiModel'));
+const TeamsPage = loadable(() => import('../containers/Teams'));
+const AssignProjectPage = loadable(() => import('../containers/Teams/AddProjects'));
 
 const AppRouter = () => {
   useEffect(() => {
@@ -63,6 +65,14 @@ const AppRouter = () => {
         <PrivateRoute exact path="/change-password" component={ChangePasswordPage} />
 
         <PrivateRoute exact path="/dashboard" component={DashboardPage} />
+
+        <PrivateRoute exact path="/teams" component={TeamsPage} overview />
+        <PrivateRoute exact path="/teams/create-team" component={TeamsPage} creation />
+        <PrivateRoute exact path="/teams/:teamId" component={TeamsPage} teamShow />
+        <PrivateRoute exact path="/teams/:teamId/projects" component={TeamsPage} projectShow />
+        <PrivateRoute exact path="/teams/:teamId/channel" component={TeamsPage} channelShow />
+        <PrivateRoute exact path="/teams/:teamId/assign" component={AssignProjectPage} />
+
         <PrivateRoute
           exact
           path="/project/create"

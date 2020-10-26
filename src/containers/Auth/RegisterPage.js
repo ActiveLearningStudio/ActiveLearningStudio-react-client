@@ -34,7 +34,9 @@ class RegisterPage extends React.Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
-    this.props.loadOrganizationTypes();
+
+    const { loadOrganizationTypes } = this.props;
+    loadOrganizationTypes();
   }
 
   onChangeField = (e) => {
@@ -138,7 +140,7 @@ class RegisterPage extends React.Component {
       error,
       organizationType,
     } = this.state;
-    const { isLoading } = this.props;
+    const { isLoading, organizationTypes } = this.props;
 
     return (
       <div className="auth-page">
@@ -238,13 +240,9 @@ class RegisterPage extends React.Component {
               >
                 <option selected> -- select an option -- </option>
 
-                {
-                  this.props.organizationTypes.map((type) =>{
-                    return (
-                      <option value={type.label}>{type.label}</option>
-                    )
-                  })
-                }
+                {organizationTypes.map((type) => (
+                  <option value={type.label}>{type.label}</option>
+                ))}
               </select>
             </div>
 
@@ -302,7 +300,9 @@ class RegisterPage extends React.Component {
 RegisterPage.propTypes = {
   history: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  organizationTypes: PropTypes.array.isRequired,
   register: PropTypes.func.isRequired,
+  loadOrganizationTypes: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -312,7 +312,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
-  organizationTypes: state.auth.organizationTypes
+  organizationTypes: state.auth.organizationTypes,
 });
 
 export default withRouter(

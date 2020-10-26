@@ -36,7 +36,7 @@ function ProjectPreview(props) {
   }, [projectState.projectSelect]);
 
   useEffect(() => {
-    if (playlistState.playlists.length===0) {
+    if (playlistState.playlists.length === 0) {
       dispatch(loadProjectPlaylistsAction(match.params.projectId));
     }
   }, [playlistState.playlists]);
@@ -64,7 +64,7 @@ function ProjectPreview(props) {
   // });
 
   useEffect(() => {
-     dispatch(loadMyProjectsActionPreview(match.params.projectId));
+    dispatch(loadMyProjectsActionPreview(match.params.projectId));
   }, [dispatch, match.params.projectId]);
 
   let playlists;

@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 import { slideInRight } from 'react-animations';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import ProjectList from 'containers/Dashboard/ProjectList';
 import ActivityList from 'containers/Dashboard/ActivityList';
 import PlaylistList from 'containers/Dashboard/PlaylistList';
+
 import './styles.scss';
 
 const bounceAnimation = keyframes`${slideInRight}`;
@@ -16,21 +18,23 @@ const BouncyDiv = styled.div`
 function SlideModal(props) {
   const { modalSection, closeModal } = props;
 
-  if(modalSection === 'project-count'){
-    var content = (<ProjectList/>);
-    var title = 'Project List';
-  } else if(modalSection == 'project-shared-count'){
-    var content = (<ProjectList shared/>);
-    var title = 'Shared Project List';
-  } else if(modalSection == 'activity-shared-count'){
-    var content = (<ActivityList shared/>);
-    var title = 'Shared Activities List';
-  } else if(modalSection == 'activity-count'){
-    var content = (<ActivityList/>);
-    var title = 'Activities List';
-  } else if(modalSection == 'playlist-count'){
-    var content = (<PlaylistList/>);
-    var title = 'Playlists List';
+  let content;
+  let title;
+  if (modalSection === 'project-count') {
+    content = (<ProjectList />);
+    title = 'Project List';
+  } else if (modalSection === 'project-shared-count') {
+    content = (<ProjectList shared />);
+    title = 'Shared Project List';
+  } else if (modalSection === 'activity-shared-count') {
+    content = (<ActivityList shared />);
+    title = 'Shared Activities List';
+  } else if (modalSection === 'activity-count') {
+    content = (<ActivityList />);
+    title = 'Activities List';
+  } else if (modalSection === 'playlist-count') {
+    content = (<PlaylistList />);
+    title = 'Playlists List';
   }
 
   useEffect(() => {
@@ -49,27 +53,28 @@ function SlideModal(props) {
             <div className="modal-title">
               <div className="row dashboard-modal-title-row">
                 <div className="col">
-                  <h1>
-                    {title}
-                  </h1>
+                  <h1>{title}</h1>
                 </div>
+
                 <div className="col text-right">
                   <button type="button" className="close-btn" data-dismiss="modal" onClick={closeModal}>
-                    <FontAwesomeIcon icon="times"
-                          style={{
-                            WebkitTextStroke: '4px #fff',
-                            color: '#333',
-                            cursor: 'pointer',
-                          }}
+                    <FontAwesomeIcon
+                      icon="times"
+                      style={{
+                        WebkitTextStroke: '4px #fff',
+                        color: '#333',
+                        cursor: 'pointer',
+                      }}
                     />
                   </button>
                 </div>
               </div>
             </div>
+
             <div className="modal-body">
               <div className="row">
                 <div className="col-md-12">
-                    {content}
+                  {content}
                 </div>
               </div>
             </div>
@@ -80,9 +85,9 @@ function SlideModal(props) {
   );
 }
 
-export default SlideModal;
-
 SlideModal.propTypes = {
   modalSection: PropTypes.string.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
+
+export default SlideModal;

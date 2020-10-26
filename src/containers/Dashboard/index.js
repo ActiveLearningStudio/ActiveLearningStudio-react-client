@@ -253,7 +253,7 @@ function DashboardPage(props) {
                 </div>
                 <div className="row text-center">
                   <div className="col">
-                    <span className="count" onClick={()=> handleCounterClick('project-count')}>{metrics.project_count}</span>
+                    <span className="count" onClick={() => handleCounterClick('project-count')}>{metrics.project_count}</span>
                     <label>COUNT</label>
                   </div>
                   <div className="col">
@@ -261,7 +261,7 @@ function DashboardPage(props) {
                     <label>VIEWS</label>
                   </div>
                   <div className="col">
-                    <span className='count' onClick={()=> handleCounterClick('project-shared-count')}>{metrics.project_shares}</span>
+                    <span className="count" onClick={() => handleCounterClick('project-shared-count')}>{metrics.project_shares}</span>
                     <label>SHARED</label>
                   </div>
                 </div>
@@ -274,7 +274,7 @@ function DashboardPage(props) {
                 </div>
                 <div className="row text-center">
                   <div className="col">
-                    <span className="count" onClick={()=> handleCounterClick('playlist-count')}>{metrics.playlist_count}</span>
+                    <span className="count" onClick={() => handleCounterClick('playlist-count')}>{metrics.playlist_count}</span>
                     <label>COUNT</label>
                   </div>
                   <div className="col">
@@ -295,15 +295,15 @@ function DashboardPage(props) {
                 </div>
                 <div className="row text-center">
                   <div className="col">
-                    <span className='count' onClick={()=> handleCounterClick('activity-count')}>{metrics.activity_count}</span>
+                    <span className="count" onClick={() => handleCounterClick('activity-count')}>{metrics.activity_count}</span>
                     <label>COUNT</label>
                   </div>
                   <div className="col">
                     <span>{metrics.activity_views}</span>
                     <label>VIEWS</label>
                   </div>
-                  <div className="col" onClick={()=> handleCounterClick('activity-shared-count')}>
-                    <span className='count'>{metrics.activity_shares}</span>
+                  <div className="col" onClick={() => handleCounterClick('activity-shared-count')}>
+                    <span className="count">{metrics.activity_shares}</span>
                     <label>SHARED</label>
                   </div>
                 </div>
@@ -314,7 +314,7 @@ function DashboardPage(props) {
       </div>
 
       {(showModal) && (
-        <SlideModal modalSection={modalSection} closeModal={() => setShowModal(false)}/>
+        <SlideModal modalSection={modalSection} closeModal={() => setShowModal(false)} />
       )}
 
       <Footer />

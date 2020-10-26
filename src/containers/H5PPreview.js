@@ -10,7 +10,7 @@ import {
   loadH5pResourceSettingsShared,
   loadH5pResourceXapi,
 } from 'store/actions/resource';
-import * as xAPIHelper from '../helpers/xapi';
+import * as xAPIHelper from 'helpers/xapi';
 
 let counter = 0;
 
@@ -94,29 +94,28 @@ const H5PPreview = (props) => {
           setLoading(false);
         }
 
-        /*eslint-disable */        
         const checkXapi = setInterval(() => {
-          try{
+          try {
             const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
-            if(x.H5P){
-              if(x.H5P.externalDispatcher && xAPIHelper.isxAPINeeded(props.match.path)){
-                stopXapi()
-                x.H5P.externalDispatcher.on('xAPI', function(event) {
-                if(counter>0){
-                dispatch(loadH5pResourceXapi(JSON.stringify( xAPIHelper.extendStatement(event.data.statement, {...props}) )))
-                }
-                counter= counter+1
+            if (x.H5P) {
+              if (x.H5P.externalDispatcher && xAPIHelper.isxAPINeeded(props.match.path)) {
+                // eslint-disable-next-line no-use-before-define
+                stopXapi();
+
+                x.H5P.externalDispatcher.on('xAPI', (event) => {
+                  if (counter > 0) {
+                    dispatch(loadH5pResourceXapi(JSON.stringify(xAPIHelper.extendStatement(event.data.statement, { ...props }))));
+                  }
+                  counter += 1;
                 });
               }
             }
-          }catch(e){
-            console.log(e)
+          } catch (e) {
+            console.log(e);
           }
         });
-        
-        
-        const stopXapi = ()=>clearInterval(checkXapi);
-        /* eslint-enable */
+
+        const stopXapi = () => clearInterval(checkXapi);
       };
 
       loadResource();
@@ -145,11 +144,11 @@ const H5PPreview = (props) => {
 };
 
 H5PPreview.propTypes = {
+  match: PropTypes.shape({ path: PropTypes.string }),
   activityId: PropTypes.number.isRequired,
   showLtiPreview: PropTypes.bool,
   showActivityPreview: PropTypes.bool,
   loadH5pResourceProp: PropTypes.func.isRequired,
-  match: PropTypes.shape({ path: PropTypes.string }),
 };
 
 H5PPreview.defaultProps = {

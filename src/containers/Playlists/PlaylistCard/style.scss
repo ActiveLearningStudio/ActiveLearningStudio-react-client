@@ -1,12 +1,40 @@
+// TODO: didn't used, need to remove after confirm
 .playlist-drag-gray {
   background-color: lightgray !important;
 }
 
+// TODO: didn't used, need to remove after confirm
 .playlist-drag-dashed {
   border-style: dashed;
 }
 
-.list-title-wrapper {
+.playlist-add-res-button {
+  background: #f9f9f9;
+  border-top: 1px solid #d6d6d6;
+
+  .add-resource-to-playlist-btn {
+    width: 328px;
+    height: 48px;
+    margin: 15px;
+    display: block;
+    background: #ffffff 0 0 no-repeat padding-box;
+    border: 1px dashed #d6d6d6;
+    border-radius: 2px;
+    opacity: 1;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0;
+    color: #607a9b;
+    cursor: pointer;
+
+    i {
+      margin-right: 5px;
+    }
+  }
+}
+
+.playlist-title-wrapper {
   height: 30px;
   flex: auto;
 
@@ -22,26 +50,26 @@
   }
 }
 
-.list-header-name {
-  border-radius: 3px;
-  box-shadow: none;
-  font-weight: 700;
+.playlist-header-name {
   min-height: 20px;
-  resize: none;
   max-height: 256px;
-  font-size: 16px;
-  background: #fff;
+  margin: 0;
   padding: 10px 25px;
+  background: #fff;
   border-top: 3px solid #fdc558;
   border-bottom: 1px solid #ebebeb;
-  margin: 0;
-  color: #000;
+  border-radius: 3px;
+  box-shadow: none;
   font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #000;
+  resize: none;
 
   & > span {
-    display: block;
-    padding-top: 10px;
     height: 40px;
+    padding-top: 10px;
+    display: block;
   }
 
   .show {
@@ -56,8 +84,8 @@
     height: 30px;
     flex: auto;
     border: 1px solid blue;
-    resize: none;
     border-radius: 3px;
+    resize: none;
   }
 
   i {

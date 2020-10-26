@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FadeDiv } from 'utils';
 import { showDescribeActivity } from 'store/actions/resource';
 import AddResourceSidebar from './AddResourceSidebar';
-import { TinyEditor } from './Editors/TinyEditor';
+import TinyEditor from './Editors/TinyEditor';
 import H5PEditor from './Editors/H5PEditor';
 
 const ResourceActivityBuild = (props) => {

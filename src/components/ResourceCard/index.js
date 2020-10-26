@@ -75,10 +75,10 @@ const ResourceCard = (props) => {
               </Link>
             </div>
             {resource.shared && (
-                <Badge pill variant="success" className="p-1">
-                  Shared
-                </Badge>
-              )}
+              <Badge pill variant="success" className="p-1">
+                Shared
+              </Badge>
+            )}
             <div className="activity-options-wrapper check">
               <Dropdown className="pull-right resource-dropdown">
                 <Dropdown.Toggle className="resource-dropdown-btn">

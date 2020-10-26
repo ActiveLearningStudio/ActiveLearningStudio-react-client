@@ -20,8 +20,6 @@ export const createProjectAction = (data) => async (dispatch) => {
     });
   } catch (e) {
     dispatch({ type: actionTypes.CREATE_PROJECT_FAIL });
-
-    throw e;
   }
 };
 
@@ -66,8 +64,6 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
     });
   } catch (e) {
     dispatch({ type: actionTypes.UPDATE_PROJECT_FAIL });
-
-    throw e;
   }
 };
 
@@ -83,8 +79,6 @@ export const deleteProjectAction = (projectId) => async (dispatch) => {
     });
   } catch (e) {
     dispatch({ type: actionTypes.DELETE_PROJECT_FAIL });
-
-    throw e;
   }
 };
 
@@ -135,8 +129,6 @@ export const loadMyProjectsAction = () => async (dispatch) => {
     dispatch({
       type: actionTypes.PAGE_LOADING_COMPLETE,
     });
-
-    throw e;
   }
 };
 

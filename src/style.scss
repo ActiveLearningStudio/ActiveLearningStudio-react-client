@@ -40,7 +40,7 @@ code {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
-  cursor:pointer;
+  cursor: pointer;
 }
 
 .clearfix {
@@ -84,77 +84,73 @@ code {
 }
 
 .slick-slider {
-  
   .alert-info {
-    white-space: nowrap;
     width: 300px;
+    white-space: nowrap;
   }
 }
 
-.welcome-video{
-  width:60%;
- }
+.welcome-video {
+  width: 60%;
+}
 
-.alert-link-ref{
+.alert-link-ref {
   color: #155724;
   text-decoration: underline;
 
-  &:hover{
+  &:hover {
     color: #155724;
   }
 }
 
-
-
 .content-wrapper.list-grid {
-  
   .playlist-resource {
     width: 100%;
 
     .col-md-3.check {
       max-width: 100%;
 
-    .program-tile {
-      display: flex;
-      flex-direction: row;
-      min-height: 100%;
-    }
-
-    .program-content {
-      width: 100%;
-    }
-
-    .program-thumb {
-      width: 260px;
-      height: 140px;
-    }
-
-    .button-bottom {
-      justify-content: flex-end;
-
-      a {
-        border: 0px;
+      .program-tile {
+        min-height: 100%;
         display: flex;
-        width: 80px;
+        flex-direction: row;
       }
-    }
+
+      .program-content {
+        width: 100%;
+      }
+
+      .program-thumb {
+        width: 260px;
+        height: 140px;
+      }
+
+      .button-bottom {
+        justify-content: flex-end;
+
+        a {
+          width: 80px;
+          display: flex;
+          border: 0;
+        }
+      }
     }
   }
 }
 
 .content-wrapper.normal-grid {
   .check-home {
-    margin-top: 10px;;
-    flex-wrap: nowrap;  
+    margin-top: 10px;
     display: flex;
+    flex-wrap: nowrap;
   }
 
-  .flex-smaple{
+  .flex-smaple {
     display: flex;
     flex-wrap: wrap;
   }
 
-  .drag-class{
+  .drag-class {
     display: inline-flex;
   }
 
@@ -165,13 +161,13 @@ code {
     padding: 0;
 
     &:last-child {
-      margin-right: 0px;
+      margin-right: 0;
     }
 
     .col-md-3.check {
       max-width: 100%;
-      padding: 0px;
       margin-bottom: 17px;
+      padding: 0;
     }
 
     .program-tile {
@@ -185,29 +181,29 @@ code {
     .button-bottom {
       position: absolute;
       bottom: 0;
-      margin: 0;
       left: 0;
       width: 100%;
+      margin: 0;
 
       a {
-        flex: 1;
         width: 33.3%;
+        flex: 1;
       }
     }
   }
 }
 
 .content-wrapper.small-grid {
-   .check-home {
+  .check-home {
     margin: 0;
-    flex-wrap: nowrap;
     display: flex;
+    flex-wrap: nowrap;
   }
 
-  .flex-smaple{
+  .flex-smaple {
     display: flex;
     flex-wrap: wrap;
-  } 
+  }
 
   .playlist-resource {
     max-width: 15%;
@@ -215,13 +211,13 @@ code {
     margin-right: 10px;
 
     &:last-child {
-      margin-right: 0px;
+      margin-right: 0;
     }
 
     .col-md-3.check {
       max-width: 100%;
-      padding: 0px;
       margin-bottom: 12px;
+      padding: 0;
     }
 
     .program-thumb {
@@ -230,20 +226,20 @@ code {
 
     .program-tile {
       position: relative;
-      height: 300px;
       min-height: 380px;
+      height: 300px;
     }
 
     .button-bottom {
       position: absolute;
-      bottom: 0;
-      margin: 0;
       left: 0;
+      bottom: 0;
       width: 100%;
+      margin: 0;
 
       a {
-        flex: 1;
         width: 33.3%;
+        flex: 1;
       }
 
       svg {
@@ -252,5 +248,3 @@ code {
     }
   }
 }
-
- 

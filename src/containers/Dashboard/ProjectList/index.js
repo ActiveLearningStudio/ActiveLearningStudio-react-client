@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert } from 'react-bootstrap';
 
 import { getUserProjectsAction } from 'store/actions/dashboard';
+
 import './styles.scss';
 
 function ProjectList(props) {
@@ -17,11 +18,17 @@ function ProjectList(props) {
 
   return (
     <div className="dashboard-project-list">
-      { shared ? 
-          <Alert variant='info'>A list of your <strong>shared</strong> shared projects.</Alert>
-        :
-          <Alert variant='info'>A list of all your projects</Alert>
-      }
+      {shared ? (
+        <Alert variant="info">
+          A list of your
+          <strong>shared</strong>
+          {' '}
+          shared projects.
+        </Alert>
+      ) : (
+        <Alert variant="info">A list of all your projects</Alert>
+      )}
+
       <div className="row">
         <div className="col-4">
           <div className="search-box container">
@@ -32,40 +39,44 @@ function ProjectList(props) {
                     <h2>Search My Projects</h2>
                   </div>
                   <div className="col text-right">
-                    <FontAwesomeIcon icon="search"/>
+                    <FontAwesomeIcon icon="search" />
                   </div>
                 </div>
               </div>
             </div>
+
             <div className="row">
               <div className="col p-4">
-                <input type="text" placeholder="Search" onChange={(e) => setQuery(e.currentTarget.value)}/>
-                <button className="btn src-btn mt-4">Search</button>
+                <input type="text" placeholder="Search" onChange={(e) => setQuery(e.currentTarget.value)} />
+                <button type="button" className="btn src-btn mt-4">Search</button>
               </div>
             </div>
           </div>
         </div>
+
         <div className="col-8">
-          {projects.length > 0 && projects.map(project => (
+          {projects.length > 0 && projects.map((project) => (
             <div className="row m-4 pb-4 project-row">
               <div className="col-2 img-col">
                 {project.thumb_url ? (
-                  <img src={project.thumb_url.includes('pexels.com') ? project.thumb_url : global.config.resourceUrl + project.thumb_url }/>
+                  <img src={project.thumb_url.includes('pexels.com') ? project.thumb_url : global.config.resourceUrl + project.thumb_url} alt="" />
                 ) : (
-                  <img src='https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280'/>
+                  <img src="https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280" alt="" />
                 )}
               </div>
+
               <div className="col">
                 <h2>
-                  <a href={`/project/${project.id}`} target="_blank" >
+                  <a href={`/project/${project.id}`} target="_blank" rel="noreferrer">
                     {project.name}
                   </a>
                 </h2>
                 <p>{project.description}</p>
               </div>
+
               <div className="col-2 text-right">
-                <a href={`/project/${project.id}`} target="_blank" >
-                  <FontAwesomeIcon className="project-go-icon" icon="arrow-right"/>
+                <a href={`/project/${project.id}`} target="_blank" rel="noreferrer">
+                  <FontAwesomeIcon className="project-go-icon" icon="arrow-right" />
                 </a>
               </div>
             </div>
@@ -77,7 +88,9 @@ function ProjectList(props) {
 }
 
 ProjectList.propTypes = {
-    shared: PropTypes.bool,
+  shared: PropTypes.bool,
+  projects: PropTypes.array.isRequired,
+  getUserProjects: PropTypes.func.isRequired,
 };
 
 ProjectList.defaultProps = {
@@ -85,7 +98,7 @@ ProjectList.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  projects: (state.dashboard) ? state.dashboard.projects : []
+  projects: (state.dashboard) ? state.dashboard.projects : [],
 });
 
 const mapDispatchToProps = (dispatch) => ({

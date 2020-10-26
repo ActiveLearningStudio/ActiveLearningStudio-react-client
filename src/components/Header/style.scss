@@ -13,7 +13,7 @@
   .navbar-link li .dropdown-menu {
     width: 200px;
   }
-  
+
   .active {
     .dropdown-menu {
       display: block;
@@ -75,7 +75,7 @@
       justify-content: space-between;
       margin-bottom: 25px;
 
-      input,select {
+      input, select {
         border: none;
         width: 100%;
         text-align: left;
@@ -87,54 +87,54 @@
         opacity: 1;
         padding-bottom: 5px;
       }
-      
-      .error{
-        color:red;
+
+      .error {
+        color: red;
         display: block;
       }
 
-      .keywords-de{
-        background-color:#0F4392 ;
-        color:#fff;
+      .keywords-de {
+        background-color: #0F4392;
+        color: #fff;
         border-radius: 30px;
         padding: 6px 10px;
         font-size: 12px;
         position: relative;
         margin: 5px 5px 0px 0px;
 
-        .iocns{
-          color:#fff;
+        .iocns {
+          color: #fff;
           background-color: #ff0000d1;
           position: absolute;
-          height:100%;
-          width:100%;
-          left:0;
-          top:0;
+          height: 100%;
+          width: 100%;
+          left: 0;
+          top: 0;
           border-radius: 30px;
-          stroke-width: 1px #fff;
+          stroke-width: 1px;
           cursor: pointer;
           display: none;
 
-          svg{
-            margin:10px auto;
+          svg {
+            margin: 10px auto;
             display: flex;
           }
         }
 
-        &:hover .iocns{
+        &:hover .iocns {
           display: block;
         }
       }
 
-      input[type='date'],input[type='select']{
+      input[type='date'], input[type='select'] {
         cursor: pointer;
       }
 
-      .radio-btns{
-        width:100%;
+      .radio-btns {
+        width: 100%;
         display: flex;
-        
-        label{
+
+        label {
           display: flex;
           align-items: center;
           cursor: pointer;
@@ -143,11 +143,11 @@
           color: #636363;
           font-weight: bold;
 
-          input{
-            width:25px
+          input {
+            width: 25px
           }
 
-          &:first-child{
+          &:first-child {
             margin-right: 30px;
           }
         }
@@ -155,7 +155,7 @@
     }
   }
 
-  .dual select,.dual input {
+  .dual select, .dual input {
     width: 48% !important;
   }
 
@@ -202,18 +202,18 @@
     display: flex;
     justify-content: flex-end;
     margin-top: 30px;
-    
-    button{
+
+    button {
       width: 120px;
     }
   }
 }
 
 .tophd_left {
- // padding: 15px 0;
-  img{
+  // padding: 15px 0;
+  img {
 
-    width:170px;
+    width: 170px;
 
   }
 }
