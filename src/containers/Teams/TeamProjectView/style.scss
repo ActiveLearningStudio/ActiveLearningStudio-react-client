@@ -83,29 +83,80 @@ $filled: #44ca92;
             margin-top: 15px;
             display: flex;
 
-            .member-name-mark {
-              position: relative;
-              width: 30px;
-              height: 30px;
-              background: #fff;
-              border: solid 1px #e2e2e2;
-              border-radius: 50%;
-              font-weight: bold;
-              text-align: center;
-              text-transform: uppercase;
-              color: #a5a5a5;
-
-              &.over {
+            .member-dropdown {
+              .member-dropdown-btn {
                 margin-left: -4px;
+                padding: 0;
+                background: none;
+                border-radius: 50%;
+
+                &::after {
+                  content: none;
+                }
               }
 
-              span {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                margin: 0;
-                transform: translate(-50%, -50%);
+              .member-name-mark {
+                position: relative;
+                min-width: 30px;
+                min-height: 30px;
+                background: #fff;
+                border: solid 1px #e2e2e2;
+                border-radius: 50%;
+                font-weight: bold;
+                text-align: center;
+                text-transform: uppercase;
+                color: #a5a5a5;
+
+                &.over {
+                  //margin-left: -4px;
+
+                  &:hover {
+                    background: #5952c6;
+                    border-color: #5952c6;
+                    color: #ffffff;
+                  }
+                }
+
+                span {
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  margin: 0;
+                  transform: translate(-50%, -50%);
+                  font-size: 12px;
+                }
+              }
+
+              .dropdown-menu {
+                padding-right: 1em;
+                padding-left: 1em;
                 font-size: 12px;
+
+                .dropdown-divider {
+                  width: calc(100% + 2em);
+                  margin-left: -1em;
+                }
+
+                .drop-title {
+                  display: flex;
+                  color: #868686;
+
+                  & > .member-name-mark {
+                    margin-right: 11px;
+                  }
+
+                  & > * {
+                    align-self: center;
+                  }
+                }
+
+                a {
+                  color: #868686;
+
+                  svg {
+                    color: #343434;
+                  }
+                }
               }
             }
           }

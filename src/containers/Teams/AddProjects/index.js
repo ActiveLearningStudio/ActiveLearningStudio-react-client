@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { FadeDiv } from 'utils';
 import { loadMyProjectsAction } from 'store/actions/project';
-import { loadTeamAction, assignProjectsAction } from 'store/actions/team';
+import { loadTeamAction, addProjectsAction } from 'store/actions/team';
 import Sidebar from 'components/Sidebar';
 import Header from 'components/Header';
 import AssignProject from '../CreateTeam/components/AssignProject';
@@ -20,7 +20,7 @@ function AddProjectsPage(props) {
     projects,
     loadProjects,
     loadTeam,
-    assignProjects,
+    addProjects,
   } = props;
 
   useEffect(() => {
@@ -33,7 +33,7 @@ function AddProjectsPage(props) {
   );
 
   const handleSubmit = useCallback((projectIds) => {
-    assignProjects(
+    addProjects(
       teamId,
       projectIds,
     )
@@ -41,7 +41,7 @@ function AddProjectsPage(props) {
         history.push(`/teams/${teamId}/projects`);
       })
       .catch(() => {});
-  }, [assignProjects, teamId, history]);
+  }, [addProjects, teamId, history]);
 
   return (
     <>
@@ -73,7 +73,7 @@ AddProjectsPage.propTypes = {
   projects: PropTypes.array.isRequired,
   loadProjects: PropTypes.func.isRequired,
   loadTeam: PropTypes.func.isRequired,
-  assignProjects: PropTypes.func.isRequired,
+  addProjects: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -84,7 +84,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   loadProjects: () => dispatch(loadMyProjectsAction()),
   loadTeam: (teamId) => dispatch(loadTeamAction(teamId)),
-  assignProjects: (teamId, ids) => dispatch(assignProjectsAction(teamId, ids)),
+  addProjects: (teamId, ids) => dispatch(addProjectsAction(teamId, ids)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddProjectsPage));

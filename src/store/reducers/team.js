@@ -200,17 +200,65 @@ export default (state = INITIAL_STATE, action) => {
         removingUserId: null,
       };
 
-    case actionTypes.ASSIGN_PROJECTS_REQUEST:
+    case actionTypes.ADD_TEAM_PROJECTS_REQUEST:
       return {
         ...state,
         isLoading: true,
       };
-    case actionTypes.ASSIGN_PROJECTS_SUCCESS:
+    case actionTypes.ADD_TEAM_PROJECTS_SUCCESS:
       return {
         ...state,
         isLoading: false,
       };
-    case actionTypes.ASSIGN_PROJECTS_FAIL:
+    case actionTypes.ADD_TEAM_PROJECTS_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case actionTypes.REMOVE_PROJECT_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case actionTypes.REMOVE_PROJECT_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+      };
+    case actionTypes.REMOVE_PROJECT_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case actionTypes.ADD_MEMBERS_TO_PROJECT_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case actionTypes.ADD_MEMBERS_TO_PROJECT_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+      };
+    case actionTypes.ADD_MEMBERS_TO_PROJECT_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case actionTypes.REMOVE_MEMBER_FROM_PROJECT_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case actionTypes.REMOVE_MEMBER_FROM_PROJECT_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+      };
+    case actionTypes.REMOVE_MEMBER_FROM_PROJECT_FAIL:
       return {
         ...state,
         isLoading: false,
