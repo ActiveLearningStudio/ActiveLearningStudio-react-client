@@ -10,6 +10,7 @@ import ProjectPreview from './ProjectPreview';
 import ResourcePreview from './ResourcePreview';
 import PlaylistPreview from './PlaylistPreview';
 import ActivityShared from './PlaylistPreview/ActivityShared';
+import Sidebar from 'components/Sidebar';
 
 class PreviewPage extends React.Component {
   componentDidMount() {
@@ -46,7 +47,7 @@ class PreviewPage extends React.Component {
       content = <ActivityShared />;
     } else {
       content = (
-        <div className="site-container">
+        <div className="site-container-preview">
           <ProjectPreview
             {...this.props}
             key={projectId}
@@ -60,7 +61,14 @@ class PreviewPage extends React.Component {
     return (
       <div>
         {!previewType && <Header {...this.props} />}
-        {content}
+        {!previewType ? 
+          <div className="main-content-wrapper">
+            <div className="sidebar-wrapper">
+              <Sidebar />
+            </div>
+            {content}
+          </div>:content
+        }
       </div>
     );
   }

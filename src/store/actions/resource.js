@@ -2,7 +2,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 import resourceService from 'services/resource.service';
-import { loadProjectPlaylistsAction } from './playlist';
+//import { loadProjectPlaylistsAction } from './playlist';
 import * as actionTypes from '../actionTypes';
 
 // global variable for h5p object
@@ -214,7 +214,7 @@ export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
   });
 };
 
-export const deleteResourceAction = (projectId, activityId) => async (dispatch) => {
+export const deleteResourceAction = (activityId) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.DELETE_RESOURCE_REQUEST,
@@ -225,7 +225,7 @@ export const deleteResourceAction = (projectId, activityId) => async (dispatch) 
       type: actionTypes.DELETE_RESOURCE_SUCCESS,
       payload: { activityId },
     });
-    dispatch(loadProjectPlaylistsAction(projectId));
+   // dispatch(loadProjectPlaylistsAction(projectId));
   } catch (e) {
     dispatch({
       type: actionTypes.DELETE_RESOURCE_FAIL,

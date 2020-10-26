@@ -18,5 +18,5 @@ export const hideDeletePopup = () => ({
 
 // hides the delete popup on activities, project, playlists
 export const hideDeletePopupAction = () => async (dispatch) => {
-  dispatch(hideDeletePopup());
+  dispatch(hideDeletePopup());       
 };
