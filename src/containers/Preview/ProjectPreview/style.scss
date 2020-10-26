@@ -8,7 +8,7 @@
 .scene {
   margin-bottom: 25px;
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.07);
-  margin-right: 50px;
+  //margin-right: 50px;
   background-color: #fff;
 
   .img-project-preview {
@@ -28,6 +28,31 @@
     font-family: 'Hind Siliguri', sans-serif;
     color: #464646;
     padding-top: 10px;
+  }
+}
+
+.check-each{
+  position: relative;
+
+  .playlist-dropdown{
+    position: absolute;
+    top: 0;
+    right:0;
+    box-shadow: 0px 0px 1px 1px #ddd !important;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-top: 15px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 !important;
+
+    li{
+     min-height: auto;
+     border:none;
+     box-shadow: 0px 0px 0px 0px transparent
+    }
   }
 }
 
@@ -55,11 +80,26 @@ img {
 
 .sce_cont {
   width: calc(100% - 290px);
-  padding: 30px;
+  padding: 10px 20px;
   background: #fff;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+
+  .configuration{
+    .project-dropdown{
+      justify-content: flex-end;
+      margin-bottom: 5px;
+    }
+
+    .project-dropdown-btn{
+      box-shadow: 0px 0px 1px 1px #ddd !important;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      padding: 0 !important;
+    }
+  }
 }
 
 .usrcmt i {
@@ -200,7 +240,7 @@ img {
 .playlist-div {
   background: #fff;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05);
-  margin-right: 50px;
+  //margin-right: 50px;
 }
 
 .playlist-title-div {
