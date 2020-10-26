@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 
 import gifloader from 'assets/images/dotsloader.gif';
 import { loadH5pResourceSettingsShared, loadH5pResourceSettingsEmbed, loadH5pResourceXapi } from 'store/actions/resource';
+import * as xAPIHelper from 'helpers/xapi';
 
 import './style.scss';
 
@@ -76,13 +77,13 @@ const ActivityShared = (props) => {
         try {
           const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
           if (x.H5P) {
-            if (x.H5P.externalDispatcher) {
+            if (x.H5P.externalDispatcher && xAPIHelper.isxAPINeeded(props.match.path)) {
               // eslint-disable-next-line no-use-before-define
               stopXapi();
 
               x.H5P.externalDispatcher.on('xAPI', (event) => {
                 if (counter > 0) {
-                  dispatch(loadH5pResourceXapi(JSON.stringify(event.data.statement)));
+                  dispatch(loadH5pResourceXapi(JSON.stringify(xAPIHelper.extendStatement(event.data.statement, { ...props }))));
                 }
                 counter += 1;
               });
@@ -95,7 +96,7 @@ const ActivityShared = (props) => {
 
       const stopXapi = () => clearInterval(checkXapi);
     }
-  }, [dispatch, embed, match.params.activityId]);
+  }, [dispatch, embed, match.params.activityId, props]);
 
   return (
     <>

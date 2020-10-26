@@ -10,6 +10,7 @@ import {
   loadH5pResourceSettingsShared,
   loadH5pResourceXapi,
 } from 'store/actions/resource';
+import * as xAPIHelper from 'helpers/xapi';
 
 let counter = 0;
 
@@ -97,13 +98,13 @@ const H5PPreview = (props) => {
           try {
             const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
             if (x.H5P) {
-              if (x.H5P.externalDispatcher) {
+              if (x.H5P.externalDispatcher && xAPIHelper.isxAPINeeded(props.match.path)) {
                 // eslint-disable-next-line no-use-before-define
                 stopXapi();
 
                 x.H5P.externalDispatcher.on('xAPI', (event) => {
                   if (counter > 0) {
-                    dispatch(loadH5pResourceXapi(JSON.stringify(event.data.statement)));
+                    dispatch(loadH5pResourceXapi(JSON.stringify(xAPIHelper.extendStatement(event.data.statement, { ...props }))));
                   }
                   counter += 1;
                 });
@@ -121,7 +122,7 @@ const H5PPreview = (props) => {
 
       setResourceId(activityId);
     }
-  }, [resourceId, activityId, showLtiPreview, showActivityPreview, loadH5pResourceProp, dispatch]);
+  }, [resourceId, activityId, showLtiPreview, showActivityPreview, loadH5pResourceProp, props, dispatch]);
 
   return (
     <>
@@ -143,6 +144,7 @@ const H5PPreview = (props) => {
 };
 
 H5PPreview.propTypes = {
+  match: PropTypes.shape({ path: PropTypes.string }),
   activityId: PropTypes.number.isRequired,
   showLtiPreview: PropTypes.bool,
   showActivityPreview: PropTypes.bool,
@@ -152,6 +154,7 @@ H5PPreview.propTypes = {
 H5PPreview.defaultProps = {
   showLtiPreview: false,
   showActivityPreview: false,
+  match: PropTypes.shape({ path: PropTypes.string }),
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -160,6 +163,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   resource: state.resource,
+  parentPlaylist: state.playlist.selectedPlaylist,
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(H5PPreview));
