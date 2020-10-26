@@ -1,8 +1,8 @@
 // list of H5P activities links (react routes) where xAPI dispatch need to initialized
 export function allowedH5PActvityPaths() {
   return [
-    '/project/:projectId/playlist/:playlistId/activity/:activityId/preview',
-    '/activity/:activityId/shared',
+    // '/project/:projectId/playlist/:playlistId/activity/:activityId/preview',
+    // '/activity/:activityId/shared',
   ];
 }
 
