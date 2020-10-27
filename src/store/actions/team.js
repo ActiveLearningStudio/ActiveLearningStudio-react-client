@@ -191,21 +191,81 @@ export const removeMemberAction = (teamId, userId) => async (dispatch) => {
   }
 };
 
-export const assignProjectsAction = (teamId, ids) => async (dispatch) => {
+export const addProjectsAction = (teamId, ids) => async (dispatch) => {
   try {
     dispatch({
-      type: actionTypes.ASSIGN_PROJECTS_REQUEST,
+      type: actionTypes.ADD_TEAM_PROJECTS_REQUEST,
     });
 
-    await teamService.assignProjects(teamId, ids);
+    await teamService.addProjects(teamId, ids);
 
     dispatch({
-      type: actionTypes.ASSIGN_PROJECTS_SUCCESS,
+      type: actionTypes.ADD_TEAM_PROJECTS_SUCCESS,
     });
 
     dispatch(loadTeamAction(teamId));
   } catch (e) {
-    dispatch({ type: actionTypes.ASSIGN_PROJECTS_FAIL });
+    dispatch({ type: actionTypes.ADD_TEAM_PROJECTS_FAIL });
+
+    throw e;
+  }
+};
+
+export const removeProjectAction = (teamId, id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.REMOVE_PROJECT_REQUEST,
+    });
+
+    await teamService.removeProject(teamId, id);
+
+    dispatch({
+      type: actionTypes.REMOVE_PROJECT_SUCCESS,
+    });
+
+    dispatch(loadTeamAction(teamId));
+  } catch (e) {
+    dispatch({ type: actionTypes.REMOVE_PROJECT_FAIL });
+
+    throw e;
+  }
+};
+
+export const addMembersToProjectAction = (teamId, projectId, ids) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.ADD_MEMBERS_TO_PROJECT_REQUEST,
+    });
+
+    await teamService.addMembersToProject(teamId, projectId, ids);
+
+    dispatch({
+      type: actionTypes.ADD_MEMBERS_TO_PROJECT_SUCCESS,
+    });
+
+    dispatch(loadTeamAction(teamId));
+  } catch (e) {
+    dispatch({ type: actionTypes.ADD_MEMBERS_TO_PROJECT_FAIL });
+
+    throw e;
+  }
+};
+
+export const removeMemberFromProjectAction = (teamId, projectId, id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.REMOVE_MEMBER_FROM_PROJECT_REQUEST,
+    });
+
+    await teamService.removeMemberFromProject(teamId, projectId, id);
+
+    dispatch({
+      type: actionTypes.REMOVE_MEMBER_FROM_PROJECT_SUCCESS,
+    });
+
+    dispatch(loadTeamAction(teamId));
+  } catch (e) {
+    dispatch({ type: actionTypes.REMOVE_MEMBER_FROM_PROJECT_FAIL });
 
     throw e;
   }
