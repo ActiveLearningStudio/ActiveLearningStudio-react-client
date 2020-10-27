@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,7 +32,7 @@ function SearchForm() {
     // Use toUpperCase() to ignore character casing
     const bandA = a.title.toUpperCase();
     const bandB = b.title.toUpperCase();
-  
+
     let comparison = 0;
     if (bandA > bandB) {
       comparison = 1;
@@ -41,13 +40,11 @@ function SearchForm() {
       comparison = -1;
     }
     return comparison;
-  }
+  };
 
   useEffect(() => {
     const allItems = [];
-    activityTypesState.map((data) => {
-      return data.activityItems.map((itm) => allItems.push(itm));
-    });
+    activityTypesState.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
     setActivityTypes(allItems.sort(compare));
   }, [activityTypesState]);
 
@@ -74,7 +71,7 @@ function SearchForm() {
                   phrase: simpleSearch.trim(),
                   from: 0,
                   size: 20,
-                  type:'public'
+                  type: 'public',
                 };
                 dispatcher(simpleSearchAction(searchData));
                 localStorage.setItem('loading', 'true');
@@ -161,7 +158,7 @@ function SearchForm() {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         value="private"
-                        checked={values.type === 'private' ? true : false}
+                        checked={values.type === 'private'}
                         type="radio"
                       />
                       <span>Search My Projects</span>
@@ -172,13 +169,14 @@ function SearchForm() {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         value="public"
-                        checked={values.type === 'public' ? true : false}
+                        checked={values.type === 'public'}
                         type="radio"
                       />
                       <span>Search Project Showcase</span>
                     </label>
                   </div>
                 </div>
+
                 <div className="form-group">
                   <input
                     name="phrase"
@@ -191,6 +189,7 @@ function SearchForm() {
                     {errors.phrase && touched.phrase && errors.phrase}
                   </div>
                 </div>
+
                 <div className="form-group">
                   <select
                     name="subject"
@@ -202,40 +201,38 @@ function SearchForm() {
                     onBlur={handleBlur}
                     value={values.subject}
                   >
-                    <option value={'Subject + Subject Area'}>
+                    <option value="Subject + Subject Area">
                       {' '}
                       Subject + Subject Area
                     </option>
-                    {subjects.map((data) => {
-                      return (
-                        <option key={data.value} value={data.subject}>
-                          {data.subject}
-                        </option>
-                      );
-                    })}
+                    {subjects.map((data) => (
+                      <option key={data.value} value={data.subject}>
+                        {data.subject}
+                      </option>
+                    ))}
                   </select>
                 </div>
-                {values.subjectArray.length > 0 &&
+
+                {values.subjectArray.length > 0 && (
                   <div className="form-group wrap-keyword" data-name={value}>
-                    {values.subjectArray.map((data) => {
-                      return (
-                        <div className="keywords-de">
-                          {data}
-                          <div
-                            className="iocns"
-                            // eslint-disable-next-line
-                            onClick={() => {
-                              values.subjectArray = values.subjectArray.filter(index => index !== data);
-                              setValue(value + 1);
-                            }}
-                          >
-                            <FontAwesomeIcon icon="times" />
-                          </div>
+                    {values.subjectArray.map((data) => (
+                      <div className="keywords-de">
+                        {data}
+                        <div
+                          className="iocns"
+                          onClick={() => {
+                            // eslint-disable-next-line no-param-reassign
+                            values.subjectArray = values.subjectArray.filter((index) => index !== data);
+                            setValue(value + 1);
+                          }}
+                        >
+                          <FontAwesomeIcon icon="times" />
                         </div>
-                      );
-                    })}
+                      </div>
+                    ))}
                   </div>
-                }
+                )}
+
                 <div className="form-group">
                   <select
                     name="grade"
@@ -246,37 +243,35 @@ function SearchForm() {
                     }}
                     value={values.grade}
                   >
-                    <option value={'Education Level'}> Education Level</option>
-                    {educationLevels.map((data) => {
-                      return (
-                        <option key={data.value} value={data.name}>
-                          {data.name}
-                        </option>
-                      );
-                    })}
+                    <option value="Education Level">Education Level</option>
+                    {educationLevels.map((data) => (
+                      <option key={data.value} value={data.name}>
+                        {data.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
-                {values.gradeArray.length > 0 &&
+
+                {values.gradeArray.length > 0 && (
                   <div className="form-group wrap-keyword">
-                    {values.gradeArray.map((data) => {
-                      return (
-                        <div className="keywords-de" data-name={value}>
-                          {data}
-                          <div
-                            className="iocns"
-                            // eslint-disable-next-line
-                            onClick={() => {
-                              values.gradeArray = values.gradeArray.filter(index=> index !== data);
-                              setValue(value + 1);
-                            }}
-                          >
-                            <FontAwesomeIcon icon="times" />
-                          </div>
+                    {values.gradeArray.map((data) => (
+                      <div className="keywords-de" data-name={value}>
+                        {data}
+                        <div
+                          className="iocns"
+                          onClick={() => {
+                            // eslint-disable-next-line no-param-reassign
+                            values.gradeArray = values.gradeArray.filter((index) => index !== data);
+                            setValue(value + 1);
+                          }}
+                        >
+                          <FontAwesomeIcon icon="times" />
                         </div>
-                      );
-                    })}
+                      </div>
+                    ))}
                   </div>
-                 }
+                )}
+
                 <div className="form-group">
                   <select
                     name="standard"
@@ -290,37 +285,35 @@ function SearchForm() {
                     onBlur={handleBlur}
                     value={values.standard}
                   >
-                    <option value={'Standard'}>Type of Activity</option>
-                    {activityTypes.map((data) => {
-                      return (
-                        <option key={data.id} value={data.h5pLib}>
-                          {data.title}
-                        </option>
-                      );
-                    })}
+                    <option value="Standard">Type of Activity</option>
+                    {activityTypes.map((data) => (
+                      <option key={data.id} value={data.h5pLib}>
+                        {data.title}
+                      </option>
+                    ))}
                   </select>
                 </div>
-                {values.standardArray.length > 0 &&
+
+                {values.standardArray.length > 0 && (
                   <div className="form-group wrap-keyword" data-name={value}>
-                    {values.standardArray.map((data) => {
-                      return (
-                        <div className="keywords-de">
-                          {data}
-                          <div
-                            className="iocns"
-                            // eslint-disable-next-line
-                            onClick={() => {
-                              values.standardArray = values.standardArray.filter(index => index !== data);
-                              setValue(value + 1);
-                            }}
-                          >
-                            <FontAwesomeIcon icon="times" />
-                          </div>
+                    {values.standardArray.map((data) => (
+                      <div className="keywords-de">
+                        {data}
+                        <div
+                          className="iocns"
+                          onClick={() => {
+                            // eslint-disable-next-line no-param-reassign
+                            values.standardArray = values.standardArray.filter((index) => index !== data);
+                            setValue(value + 1);
+                          }}
+                        >
+                          <FontAwesomeIcon icon="times" />
                         </div>
-                      );
-                    })}
+                      </div>
+                    ))}
                   </div>
-                }
+                )}
+
                 <div className="form-group dual">
                   <input
                     name="toDate"
@@ -328,7 +321,9 @@ function SearchForm() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.toDate}
-                    onFocus={(e) => (e.target.type = 'date')}
+                    onFocus={(e) => {
+                      e.target.type = 'date';
+                    }}
                   />
                   <input
                     name="fromDate"
@@ -336,7 +331,9 @@ function SearchForm() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.fromDate}
-                    onFocus={(e) => (e.target.type = 'date')}
+                    onFocus={(e) => {
+                      e.target.type = 'date';
+                    }}
                   />
                 </div>
                 {/* <div className="form-group">
