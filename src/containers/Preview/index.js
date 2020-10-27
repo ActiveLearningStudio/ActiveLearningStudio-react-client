@@ -6,11 +6,11 @@ import { withRouter } from 'react-router-dom';
 import { createProjectAction, loadMyProjectsAction, showCreateProjectModalAction } from 'store/actions/project';
 import { loadPlaylistAction } from 'store/actions/playlist';
 import Header from 'components/Header';
+import Sidebar from 'components/Sidebar';
 import ProjectPreview from './ProjectPreview';
 import ResourcePreview from './ResourcePreview';
 import PlaylistPreview from './PlaylistPreview';
 import ActivityShared from './PlaylistPreview/ActivityShared';
-import Sidebar from 'components/Sidebar';
 
 class PreviewPage extends React.Component {
   componentDidMount() {
@@ -61,14 +61,14 @@ class PreviewPage extends React.Component {
     return (
       <div>
         {!previewType && <Header {...this.props} />}
-        {!previewType ? 
+        {!previewType ? (
           <div className="main-content-wrapper">
             <div className="sidebar-wrapper">
               <Sidebar />
             </div>
             {content}
-          </div>:content
-        }
+          </div>
+        ) : content}
       </div>
     );
   }

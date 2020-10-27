@@ -54,49 +54,49 @@
     font-weight: bold;
     font-size: xx-large;
   }
+
+  .content {
+    position: relative;
+    margin: 55px 55px 0 55px;
+    overflow: visible;
+
+    .overview {
+      margin-top: 3px;
+      display: flex;
+    }
+
+    .sub-content {
+      background: #fff;
+      padding: 71px 20px 100px 47px;
+    }
+  }
+
+  .btn-top-page {
+    position: absolute;
+    top: 1em;
+    right: 0;
+    width: -moz-fit-content;
+    height: 35px;
+    margin-bottom: 10px;
+    padding: 3px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #5952c6;
+    border-radius: 20px;
+    font-size: 14px;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+
+    .fa {
+      padding-right: 5px;
+    }
+  }
 }
 
 .swal2-html-container ul {
   font-weight: normal;
   list-style: circle;
   text-align: initial;
-}
-
-.content {
-  position: relative;
-  //margin: 55px 55px 0 55px;
-  overflow: visible;
-
-  .overview {
-    margin-top: 3px;
-    display: flex;
-  }
-
-  .sub-content {
-    background: #fff;
-    padding: 71px 20px 100px 47px;
-  }
-}
-
-.btn-top-page {
-  position: absolute;
-  top: 1em;
-  right: 0;
-  width: -moz-fit-content;
-  height: 35px;
-  margin-bottom: 10px;
-  padding: 3px 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #5952c6;
-  border-radius: 20px;
-  font-size: 14px;
-  text-align: center;
-  color: #fff;
-  cursor: pointer;
-
-  .fa {
-    padding-right: 5px;
-  }
 }
