@@ -104,8 +104,7 @@ const  PlaylistsPage = (props)=> {
 
   const handleChange = async (checked)=> {
     //setChecked(checked);
-    Swal.showLoading()
-    await getIndexedData(match.params.projectId)
+    
     if(checked){
       Swal.fire({
         html: "<b>SHOWCASE THIS PROJECT?</b><br><br><p>The Curriki Team is reviewing and selecting projects likes yours to be showcased in the CurrikiStudio repository.</p><p>If selected, your project will be available for other authors to search, preview and reuse/remix.</p>",
@@ -117,6 +116,7 @@ const  PlaylistsPage = (props)=> {
       }).then(async (result) => {
         if (result.isConfirmed) {
           Swal.showLoading()
+          await getIndexedData(match.params.projectId)
           const result  =   await getElasticData(match.params.projectId)
           loadProject(match.params.projectId);
           if(result.message){
@@ -125,12 +125,13 @@ const  PlaylistsPage = (props)=> {
             Swal.fire(result.errors[0])
           }
         }else{
-          Swal.showLoading()
-          loadProject(match.params.projectId)
+        //  Swal.showLoading()
+         // loadProject(match.params.projectId)
         }
       })
     }else{
       Swal.showLoading()
+      await getIndexedData(match.params.projectId)
       loadProject(match.params.projectId)
     }
   }
@@ -380,7 +381,7 @@ const  PlaylistsPage = (props)=> {
                         <div className="col playlist-page-project-title project-each-view">
                           <div className="flex-se">
                             <h1>{selectedProject ? selectedProject.name : ''}</h1>
-                            {checked  && indexStatus=== null &&
+                            {/* {checked  && indexStatus=== null &&
                               <div 
                                 className="react-touch indexed"
                                 onClick={async()=>{
@@ -409,7 +410,7 @@ const  PlaylistsPage = (props)=> {
                                 <span>Submit to Showcase</span>                                
                                 </div>
                               </div>
-                            } 
+                            }  */}
                             <div className="react-touch">
                               <div className="publish-btn">
                                 <span>{checked?"Showcase":<span style={{color:'#464646'}} >Showcase</span>}</span>
