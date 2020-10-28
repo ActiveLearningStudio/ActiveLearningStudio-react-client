@@ -6,31 +6,35 @@ import { useDispatch, useSelector } from 'react-redux';
 import Switch from 'react-switch';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { deletePlaylistAction } from 'store/actions/playlist';
+
+import { deletePlaylistAction, loadProjectPlaylistsAction } from 'store/actions/playlist';
 import {
   loadMyProjectsActionPreview,
   toggleProjectShareAction,
   toggleProjectShareRemovedAction,
-  deleteProjectAction
+  deleteProjectAction,
 } from 'store/actions/project';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import ActivityCard from 'components/ActivityCard';
-import { loadProjectPlaylistsAction } from 'store/actions/playlist';
-import DropdownProject from 'containers/Projects/ProjectCard/dropdown'
-import PlaylistCardDropdown from 'containers/Playlists/PlaylistCard/dropdown'
+import DropdownProject from 'containers/Projects/ProjectCard/ProjectCardDropdown';
+import PlaylistCardDropdown from 'containers/Playlists/PlaylistCard/PlaylistCardDropdown';
 import GoogleModel from 'components/models/GoogleLoginModal';
 import DeletePopup from 'components/DeletePopup';
-import {hideDeletePopupAction,showDeletePopupAction } from 'store/actions/ui';
+import { hideDeletePopupAction, showDeletePopupAction } from 'store/actions/ui';
 
 import './style.scss';
 
 function ProjectPreview(props) {
   const { match, history } = props;
+
   const dispatch = useDispatch();
+
   const projectState = useSelector((state) => state.project);
   const playlistState = useSelector((state) => state.playlist);
   const ui = useSelector((state) => state.ui);
+
   const accordion = useRef([]);
+
   const { showDeletePlaylistPopup } = ui;
   const [currentProject, setCurrentProject] = useState(null);
   const [activeShared, setActiveShared] = useState(true);
@@ -48,18 +52,18 @@ function ProjectPreview(props) {
       dispatch(loadProjectPlaylistsAction(match.params.projectId));
     }
   }, []);
-  
+
   const handleShow = () => {
     setShow(true); //! state.show
   };
 
-  const deletePlaylist = (projectId,id) => {
-    dispatch(deletePlaylistAction(projectId,id)); //! state.show
+  const deletePlaylist = (projectId, id) => {
+    dispatch(deletePlaylistAction(projectId, id)); //! state.show
   };
 
   const deleteProject = async (projectId) => {
     await dispatch(deleteProjectAction(projectId)); //! state.show
-    history.push('/')
+    history.push('/');
   };
 
   const hideDeletePopup = () => {
@@ -140,7 +144,7 @@ function ProjectPreview(props) {
               <Slider {...settings}>{activities}</Slider>
             </ul>
           </div>
-          <PlaylistCardDropdown 
+          <PlaylistCardDropdown
             playlist={playlist}
             projectId={playlist.project_id}
             selectedProject={playlist.project}
@@ -179,12 +183,12 @@ function ProjectPreview(props) {
                   <li>
                     <div className="title_lg check">
                       <div>{currentProject.name}</div>
-                      
-                      <div className="configuration ">
+
+                      <div className="configuration">
                         <DropdownProject
                           project={currentProject}
                           handleShow={handleShow}
-                          setProjectId={setProjectId} 
+                          setProjectId={setProjectId}
                           showDeletePopup={showDeletePopup}
                         />
                         <Link to="#" onClick={history.goBack} className="go-back-button-preview">
@@ -278,17 +282,17 @@ function ProjectPreview(props) {
             show={show} // {props.show}
             onHide={handleClose}
           />
-             {showDeletePlaylistPopup && (
-          <DeletePopup
-            ui={ui}
-            selectedProject={currentProject}
-            deletePlaylist={deletePlaylist}
-            hideDeletePopup={hideDeletePopup}
-            deleteProject={deleteProject}
-            //deleteType="project"
-           // showDeletePopup={showDeletePopup}
-          />
-      )}
+          {showDeletePlaylistPopup && (
+            <DeletePopup
+              ui={ui}
+              selectedProject={currentProject}
+              deletePlaylist={deletePlaylist}
+              hideDeletePopup={hideDeletePopup}
+              deleteProject={deleteProject}
+              // deleteType="project"
+              // showDeletePopup={showDeletePopup}
+            />
+          )}
         </>
       )}
     </div>

@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Badge } from 'react-bootstrap';
 
 import ProjectPreviewModal from '../ProjectPreviewModal';
-import ProjectCardDropdown from './dropdown'
+import ProjectCardDropdown from './ProjectCardDropdown';
 
 import './style.scss';
 
@@ -17,7 +17,7 @@ const ProjectCard = (props) => {
     handleShow,
     setProjectId,
     activeFilter,
- } = props;
+  } = props;
 
   return (
     <div className="col-md-3 check" id={activeFilter}>
@@ -44,22 +44,24 @@ const ProjectCard = (props) => {
                 <h3 className="program-title">
                   <Link to={`/project/${project.id}/preview`}>{project.name}</Link>
                 </h3>
+
                 {(project.shared && activeFilter === 'list-grid') && (
                   <Badge pill variant="success">
                     Shared
                   </Badge>
                 )}
               </div>
+
               <div className="col-md-2">
-              <ProjectCardDropdown   
-                project={project}
-                showDeletePopup={showDeletePopup}
-                handleShow={handleShow}
-                setProjectId={setProjectId} 
-              />
-              
+                <ProjectCardDropdown
+                  project={project}
+                  showDeletePopup={showDeletePopup}
+                  handleShow={handleShow}
+                  setProjectId={setProjectId}
+                />
               </div>
             </div>
+
             {(project.shared && activeFilter !== 'list-grid') && (
               <div className="row">
                 <div className="col-md-12 text-right">
@@ -69,6 +71,7 @@ const ProjectCard = (props) => {
                 </div>
               </div>
             )}
+
             <div className="lessons-duration">
               <div className="row">
                 <div className="col-md-12">

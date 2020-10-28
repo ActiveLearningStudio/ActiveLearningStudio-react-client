@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
@@ -142,23 +141,22 @@ export const loadMyFavProjectsAction = () => async (dispatch) => {
 
 /* eslint-disable */
 export const loadMyReorderProjectsAction = (projectDivider) => async () => {
-
-  const reorderProject = []
-  var reorderindex = 0
-  projectDivider.map((data)=>{
-   return data.collection.map((collections)=>{
+  const reorderProject = [];
+  let reorderIndex = 0;
+  projectDivider.map((data) => {
+    return data.collection.map((collections) => {
       reorderProject.push({
-        order:reorderindex,
-        id:collections.id,
-        project:collections 
-      })
-      reorderindex= reorderindex+1
-    })
-  })
+        order: reorderIndex,
+        id: collections.id,
+        project: collections
+      });
+      reorderIndex = reorderIndex + 1;
+    });
+  });
 
-return await projectService.getReorderAll(reorderProject);
-}
-/* eslint-disable */
+  return await projectService.getReorderAll(reorderProject);
+};
+/* eslint-enable */
 
 export const loadMyCloneProjectsAction = () => async (dispatch) => {
   const projects = await projectService.getClone();
@@ -244,44 +242,44 @@ export const toggleProjectShareRemovedAction = (projectId, projectName) => async
   });
 };
 
-
 export const deleteFavObj = (projectId) => async (dispatch) => {
-  
   Swal.fire({
-  showCancelButton: true,
-  confirmButtonColor: '#5952c6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Delete',
-  title:"Are you sure you want to remove this ?",
-  }).then( async (result) => {
-    if (result.value) {
-      Swal.showLoading()
-      await projectService.addToFav(projectId);
-      Swal.close()
-      dispatch(loadMyFavProjectsAction())
-  }})
-}
+    showCancelButton: true,
+    confirmButtonColor: '#5952c6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Delete',
+    title: 'Are you sure you want to remove this ?',
+  })
+    .then(async (result) => {
+      if (result.value) {
+        Swal.showLoading();
+        await projectService.addToFav(projectId);
+        Swal.close();
+        dispatch(loadMyFavProjectsAction());
+      }
+    });
+};
 
+export const addProjectFav = (projectId) => async (/* dispatch */) => {
+  Swal.showLoading();
+  const project = await projectService.addToFav(projectId);
 
-export const addProjectFav = (projectId) => async (dispatch) => {
-  
-  Swal.showLoading()
-  const  project  = await projectService.addToFav(projectId);
-  
-  if(project.message){
+  if (project.message) {
     Swal.fire({
       showCancelButton: true,
       confirmButtonColor: '#5952c6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'My Favorites Projects',
-      icon:"success",
+      icon: 'success',
       title: project.message,
-      }).then((result) => {
+    })
+      .then((result) => {
         if (result.value) {
-          window.location.href = "/?active=fav";
-      }})
-  };
-}
+          window.location.href = '/?active=fav';
+        }
+      });
+  }
+};
 
 export const loadMyProjectsPreviewSharedAction = (projectId) => async (dispatch) => {
   try {

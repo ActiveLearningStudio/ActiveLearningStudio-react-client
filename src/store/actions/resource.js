@@ -2,7 +2,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 import resourceService from 'services/resource.service';
-//import { loadProjectPlaylistsAction } from './playlist';
+// import { loadProjectPlaylistsAction } from './playlist';
 import * as actionTypes from '../actionTypes';
 
 // global variable for h5p object
@@ -225,7 +225,7 @@ export const deleteResourceAction = (activityId) => async (dispatch) => {
       type: actionTypes.DELETE_RESOURCE_SUCCESS,
       payload: { activityId },
     });
-   // dispatch(loadProjectPlaylistsAction(projectId));
+    // dispatch(loadProjectPlaylistsAction(projectId));
   } catch (e) {
     dispatch({
       type: actionTypes.DELETE_RESOURCE_FAIL,

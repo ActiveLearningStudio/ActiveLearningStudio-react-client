@@ -5,19 +5,17 @@ import { withRouter, Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown } from 'react-bootstrap';
-import {deletePlaylistAction} from 'store/actions/playlist';
-import { changePlaylistTitleAction } from 'store/actions/playlist';
-import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 
-import ShareLink from 'components/ResourceCard/ShareLink';
+import { changePlaylistTitleAction, deletePlaylistAction } from 'store/actions/playlist';
+import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import { clonePlaylist } from 'store/actions/search';
+import ShareLink from 'components/ResourceCard/ShareLink';
 
 import './style.scss';
 
 // TODO: need to clean up attributes, update to functional component
 // need to refactor template functions
 class PlaylistCardDropdown extends React.Component {
- 
   handleDelete = (e) => {
     e.preventDefault();
     const { playlist, showDeletePopup } = this.props;
@@ -25,14 +23,12 @@ class PlaylistCardDropdown extends React.Component {
   };
 
   render() {
-   
     const {
       playlist,
       projectId,
     } = this.props;
-   
+
     return (
-     
       <Dropdown className="pull-right playlist-dropdown check">
         <Dropdown.Toggle className="playlist-dropdown-btn">
           <FontAwesomeIcon icon="ellipsis-v" />
@@ -44,7 +40,7 @@ class PlaylistCardDropdown extends React.Component {
             className="hidden"
             to={`/project/${projectId}/playlist/${playlist.id}/preview`}
           >
-          <FontAwesomeIcon icon="eye" className="mr-2" />
+            <FontAwesomeIcon icon="eye" className="mr-2" />
             Preview
           </Dropdown.Item>
           <ShareLink
@@ -55,11 +51,11 @@ class PlaylistCardDropdown extends React.Component {
           <Dropdown.Item
             to="#"
             onClick={() => {
-                Swal.showLoading();
-                clonePlaylist(projectId, playlist.id);
+              Swal.showLoading();
+              clonePlaylist(projectId, playlist.id);
             }}
           >
-          <FontAwesomeIcon icon="clone" className="mr-2" />
+            <FontAwesomeIcon icon="clone" className="mr-2" />
             Duplicate
           </Dropdown.Item>
 
@@ -87,7 +83,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = () => ({
- // selectedProject: state.project.selectedProject,
+  // selectedProject: state.project.selectedProject,
 });
 
 export default withRouter(
