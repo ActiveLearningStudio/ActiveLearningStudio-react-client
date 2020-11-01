@@ -174,17 +174,22 @@ export default (state = INITIAL_STATE, action) => {
 
     case actionTypes.DELETE_RESOURCE_SUCCESS:
       const plists = [];
+      let selectedPlists = state.selectedPlaylist;
       state.playlists.forEach((playlist) => {
         const newResources = playlist.activities.filter((res) => res.id !== action.payload.activityId);
         const p = playlist;
         p.activities = newResources;
         plists.push(p);
       });
+      if (state.selectedPlaylist) {
+        selectedPlists = state.selectedPlaylist.activities.filter((res) => res.id !== action.payload.activityId);
+      }
       return {
         ...state,
         playlists: plists,
         showCreateResourcePopup: false,
         showDeletePlaylistPopup: false,
+        selectedPlaylist: { ...state.selectedPlaylist, activities: selectedPlists },
       };
 
     case actionTypes.LOAD_PLAYLIST:

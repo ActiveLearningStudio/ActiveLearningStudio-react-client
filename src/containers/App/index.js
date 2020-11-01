@@ -1,19 +1,29 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
 
 import logo from 'assets/images/logo.svg';
 import { getUserAction } from 'store/actions/auth';
+import { cloneDuplicationRequest } from 'store/actions/notification';
 import AppRouter from 'routers/AppRouter';
 
 import './style.scss';
 
 function App(props) {
+  const dispatch = useDispatch();
   const { getUser } = props;
+
+  const userDetails = useSelector((state) => state.auth.user);
   useEffect(() => {
     getUser();
   }, [getUser]);
+
+  useEffect(() => {
+    if (userDetails) {
+      dispatch(cloneDuplicationRequest(userDetails.id));
+    }
+  }, [dispatch, userDetails]);
 
   useEffect(() => {
     if (window.HubSpotConversations) {

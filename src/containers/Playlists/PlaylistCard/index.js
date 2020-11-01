@@ -6,11 +6,10 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-
 import { changePlaylistTitleAction } from 'store/actions/playlist';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import ResourceCard from 'components/ResourceCard';
-import PlaylistCardDropdown from './dropdown'
+import PlaylistCardDropdown from './dropdown';
 
 import './style.scss';
 
@@ -19,7 +18,7 @@ import './style.scss';
 class PlaylistCard extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       editMode: false,
     };
@@ -146,10 +145,10 @@ class PlaylistCard extends React.Component {
                   />
 
                   <PlaylistCardDropdown
-                     playlist={playlist}
+                    playlist={playlist}
+                    handleClickPlaylistTitle={this.handleClickPlaylistTitle}
                   />
-              
-                
+
                 </h2>
               </div>
 

@@ -1,3 +1,29 @@
 .activity-preview-card {
   width: 14rem;
 }
+
+.preview-activity-dropdown{
+  position: relative;
+  display: flex;
+
+  .resource-dropdown{
+    position: absolute;
+    right: 20px;
+    top:10px;
+  }
+  
+  a{
+    width:100%;
+  }
+
+  .dropdown-menu a{
+    width:100%;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 19px;
+    letter-spacing: 0;
+    color: #464646;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+  }
+}
