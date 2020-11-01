@@ -9,9 +9,9 @@ import { Dropdown } from 'react-bootstrap';
 import ShareLink from 'components/ResourceCard/ShareLink';
 import ResourceCardDropdownShare from 'components/ResourceCard/shareResource';
 import { deletePlaylistAction, changePlaylistTitleAction } from 'store/actions/playlist';
-
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import { clonePlaylist } from 'store/actions/search';
+
 
 import './style.scss';
 

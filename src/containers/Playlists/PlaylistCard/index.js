@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { changePlaylistTitleAction } from 'store/actions/playlist';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import ResourceCard from 'components/ResourceCard';
-import PlaylistCardDropdown from './dropdown';
+import PlaylistCardDropdown from './PlaylistCardDropdown';
 
 import './style.scss';
 

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,14 +10,14 @@ import {
   Dropdown,
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 import Pagination from 'react-js-pagination';
 import QueryString from 'query-string';
 
 import { simpleSearchAction, cloneProject } from 'store/actions/search';
-import { loadResourceTypesAction } from 'store/actions/resource'
-import { addProjectFav } from 'store/actions/project'
-import { educationLevels, subjects} from 'components/ResourceCard/AddResource/dropdownData'
+import { loadResourceTypesAction } from 'store/actions/resource';
+import { addProjectFav } from 'store/actions/project';
+import { educationLevels, subjects } from 'components/ResourceCard/AddResource/dropdownData';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
@@ -26,9 +25,10 @@ import CloneModel from './CloneModel';
 
 import './style.scss';
 
-var paginationStarter =  true
+let paginationStarter = true;
 
 function MyVerticallyCenteredModal(props) {
+  const { clone } = props;
   return (
     <Modal
       {...props}
@@ -40,9 +40,9 @@ function MyVerticallyCenteredModal(props) {
         <Modal.Title id="contained-modal-title-vcenter">
           Duplicate
           {' '}
-          <b>{props.clone ? props.clone.title : ''}</b>
+          <b>{clone ? clone.title : ''}</b>
           {' '}
-          {props.clone ? props.clone.model : ''}
+          {clone ? clone.model : ''}
           {' '}
         </Modal.Title>
       </Modal.Header>
@@ -63,51 +63,49 @@ MyVerticallyCenteredModal.defaultProps = {
 };
 
 function SearchInterface(props) {
-
-  const { history } =  props
+  const { history } = props;
   const allState = useSelector((state) => state.search);
-  const activityTypesState = useSelector(state=>state.resource.types)
+  const activityTypesState = useSelector((state) => state.resource.types);
   const dispatch = useDispatch();
 
-  const [activityTypes, setActivityTypes] =  useState([])
+  const [activityTypes, setActivityTypes] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const [search, setSearch] = useState([]);
   const [searchQueries, SetSearchQuery] = useState('');
   const [searchInput, setSearchInput] = useState('');
   const [meta, setMeta] = useState({});
   const [clone, setClone] = useState();
-  const [activePage, setActivePage] =  useState(1)
-  const [totalCount,setTotalCount] = useState(0)
-  const [activeModel, setActiveModel] =  useState('')
-  const [activeType, setActiveType] =  useState([])
-  const [activeSubject, setActiveSubject] =  useState([])
-  const [activeEducation, setActiveEducation] =  useState([])
-  const [searchType,setSearchType] =  useState('public')
-  
-  useEffect(()=>{
-    const query = QueryString.parse(location.search);
-    console.log(query)
-    if(query.type){
-      if(query.type==='private'){
-        setSearchType('private')
-      }else{
-        setSearchType('public')
-      }
-    }
-    if(query.h5p){
-      setActiveType(query.h5p.split(','))
-    }
-    if(query.grade){
-      setActiveSubject(query.grade.split(','))
-    }
-    if(query.education){
-      setActiveEducation(query.education.split(','))
-    }
-     
-  },[allState])
+  const [activePage, setActivePage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [activeModel, setActiveModel] = useState('');
+  const [activeType, setActiveType] = useState([]);
+  const [activeSubject, setActiveSubject] = useState([]);
+  const [activeEducation, setActiveEducation] = useState([]);
+  const [searchType, setSearchType] = useState('public');
 
   useEffect(() => {
-    if(!!allState.searchResult){
+    // eslint-disable-next-line no-restricted-globals
+    const query = QueryString.parse(location.search);
+    if (query.type) {
+      if (query.type === 'private') {
+        setSearchType('private');
+      } else {
+        setSearchType('public');
+      }
+    }
+    if (query.h5p) {
+      setActiveType(query.h5p.split(','));
+    }
+    if (query.grade) {
+      setActiveSubject(query.grade.split(','));
+    }
+    if (query.education) {
+      setActiveEducation(query.education.split(','));
+    }
+  }, [allState]);
+
+  useEffect(() => {
+    if (allState.searchResult) {
       if (allState.searchResult.length > 0) {
         setSearch(allState.searchResult);
         SetSearchQuery(allState.searchQuery);
@@ -125,7 +123,7 @@ function SearchInterface(props) {
   }, [allState.searchMeta, allState.searchQuery, allState.searchResult]);
 
   useEffect(() => {
-    if (!!allState.searchResult) {
+    if (allState.searchResult) {
       if (allState.searchResult.length > 0 && paginationStarter) {
         paginationStarter = false;
         setTotalCount(allState.searchMeta.total);
@@ -140,7 +138,7 @@ function SearchInterface(props) {
         allowOutsideClick: false,
         onBeforeOpen: () => {
           Swal.showLoading();
-        }
+        },
       });
     }
   });
@@ -152,17 +150,17 @@ function SearchInterface(props) {
     }, 5000);
   });
 
-  useEffect(()=>{
-    if(activityTypesState.length===0){
-      dispatch(loadResourceTypesAction())
+  useEffect(() => {
+    if (activityTypesState.length === 0) {
+      dispatch(loadResourceTypesAction());
     }
-  },[])
+  }, []);
 
   const compare = (a, b) => {
     // Use toUpperCase() to ignore character casing
     const bandA = a.title.toUpperCase();
     const bandB = b.title.toUpperCase();
-  
+
     let comparison = 0;
     if (bandA > bandB) {
       comparison = 1;
@@ -170,15 +168,13 @@ function SearchInterface(props) {
       comparison = -1;
     }
     return comparison;
-  }
+  };
 
-  useEffect( ()=>{
+  useEffect(() => {
     const allItems = [];
-    activityTypesState.map((data) => {
-      return data.activityItems.map((itm) => allItems.push(itm));
-    });
-    setActivityTypes(allItems.sort(compare))
-  },[activityTypesState])
+    activityTypesState.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
+    setActivityTypes(allItems.sort(compare));
+  }, [activityTypesState]);
 
   return (
     <>
@@ -234,28 +230,33 @@ function SearchInterface(props) {
                                 type="text"
                                 placeholder="Search"
                               />
+
                               <div className="form-group">
                                 <div className="radio-btns">
-                                  <label> 
+                                  <label>
                                     <input
                                       name="type"
-                                      onChange={e=>setSearchType(e.target.value)}
+                                      onChange={(e) => {
+                                        setSearchType(e.target.value);
+                                      }}
                                       value="private"
-                                      checked={searchType==='private'?true:false}
-                                      type="radio"  
+                                      checked={searchType === 'private'}
+                                      type="radio"
                                     />
                                     <span>Search My Projects</span>
                                   </label>
-                                  <label> 
+                                  <label>
                                     <input
                                       name="type"
-                                      onChange={e=>setSearchType(e.target.value)}
+                                      onChange={(e) => {
+                                        setSearchType(e.target.value);
+                                      }}
                                       value="public"
-                                      checked={searchType==='public'?true:false}
-                                      type="radio"  
-                                    /> 
+                                      checked={searchType === 'public'}
+                                      type="radio"
+                                    />
                                     <span>Search Projects Showcase</span>
-                                  </label>    
+                                  </label>
                                 </div>
                               </div>
 
@@ -274,17 +275,17 @@ function SearchInterface(props) {
                                         Swal.showLoading();
                                       },
                                     });
-                                    const dataSend={
+                                    const dataSend = {
                                       phrase: searchInput.trim(),
                                       subjectArray: activeSubject,
                                       gradeArray: activeEducation,
-                                      standardArray:activeType,
-                                      type:searchType,
-                                      from:0,
-                                      size:20,
-                                    }
+                                      standardArray: activeType,
+                                      type: searchType,
+                                      from: 0,
+                                      size: 20,
+                                    };
                                     dispatch(simpleSearchAction(dataSend));
-                                    history.push('/search')
+                                    history.push('/search');
                                   }
                                   // setModalShow(true);
                                 }}
@@ -298,7 +299,6 @@ function SearchInterface(props) {
                     </Accordion>
                   </div>
 
-                  
                   <div className="refine-search">
                     <div className="headline">Refine your search</div>
 
@@ -310,121 +310,129 @@ function SearchInterface(props) {
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey="0">
                           <Card.Body>
-                            {subjects.map(data=>{
-                              return(
-                                <div 
-                                  className="list-item-keys"
-                                  key={data.value} 
-                                  value={data.subject}
-                                  onClick={()=>{
-                                    if(activeSubject.includes(data.subject)){
-                                      setActiveSubject(activeSubject.filter(index=>index!=data.subject))
-                                    }else{
-                                      setActiveSubject([...activeSubject,data.subject])
-                                    }
-                                  }}
-                                >
-                                  {activeSubject.includes(data.subject)?
-                                    <FontAwesomeIcon icon="check-square" />:<FontAwesomeIcon icon="square" />
+                            {subjects.map((data) => (
+                              <div
+                                className="list-item-keys"
+                                key={data.value}
+                                value={data.subject}
+                                onClick={() => {
+                                  if (activeSubject.includes(data.subject)) {
+                                    setActiveSubject(activeSubject.filter((index) => index !== data.subject));
+                                  } else {
+                                    setActiveSubject([...activeSubject, data.subject]);
                                   }
-                                  <span>{data.subject}</span>
-                                </div>
-                              )
-                            })}
+                                }}
+                              >
+                                {activeSubject.includes(data.subject) ? (
+                                  <FontAwesomeIcon icon="check-square" />
+                                ) : (
+                                  <FontAwesomeIcon icon="square" />
+                                )}
+                                <span>{data.subject}</span>
+                              </div>
+                            ))}
                           </Card.Body>
                         </Accordion.Collapse>
                       </Card>
+
                       <Card>
                         <Accordion.Toggle as={Card.Header} eventKey="1">
                           Education Level
                           <FontAwesomeIcon className="ml-2" icon="plus" />
                         </Accordion.Toggle>
+
                         <Accordion.Collapse eventKey="1">
                           <Card.Body>
-                            {educationLevels.map(data=>{
-                              return(
-                                <div 
-                                  className="list-item-keys"  
-                                  key={data.value}
-                                  value={data.name}
-                                  onClick={()=>{
-                                    if(activeEducation.includes(data.name)){
-                                      setActiveEducation(activeEducation.filter(index=>index!=data.name))
-                                    }else{
-                                      setActiveEducation([...activeEducation,data.name])
-                                    }
-                                  }}
-                                >
-                                  {activeEducation.includes(data.name)?
-                                    <FontAwesomeIcon icon="check-square" />:<FontAwesomeIcon icon="square" />
+                            {educationLevels.map((data) => (
+                              <div
+                                className="list-item-keys"
+                                key={data.value}
+                                value={data.name}
+                                onClick={() => {
+                                  if (activeEducation.includes(data.name)) {
+                                    setActiveEducation(activeEducation.filter((index) => index !== data.name));
+                                  } else {
+                                    setActiveEducation([...activeEducation, data.name]);
                                   }
-                                  <span>{data.name}</span>
-                                </div>
-                              )
-                            })}
+                                }}
+                              >
+                                {activeEducation.includes(data.name) ? (
+                                  <FontAwesomeIcon icon="check-square" />
+                                ) : (
+                                  <FontAwesomeIcon icon="square" />
+                                )}
+                                <span>{data.name}</span>
+                              </div>
+                            ))}
                           </Card.Body>
                         </Accordion.Collapse>
                       </Card>
+
                       <Card>
                         <Accordion.Toggle as={Card.Header} eventKey="3">
                           Type of Activity
                           <FontAwesomeIcon className="ml-2" icon="plus" />
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey="3">
-                          <Card.Body style={{'max-height': '300px','overflow-y': 'auto'}}>
-                            {activityTypes.map(data=>{
-                              return(
-                                <div 
-                                  className="list-item-keys"
-                                  key={data.id} 
-                                  value={data.h5pLib}
-                                  onClick={()=>{
-                                    if(activeType.includes(data.h5pLib)){
-                                      setActiveType(activeType.filter(index=>index!=data.h5pLib))
-                                    }else{
-                                      setActiveType([...activeType,data.h5pLib])
-                                    }
-                                  }}
-                                >
-                                  {activeType.includes(data.h5pLib)?
-                                    <FontAwesomeIcon icon="check-square" />:<FontAwesomeIcon icon="square" />
+                          <Card.Body
+                            style={{
+                              'max-height': '300px',
+                              'overflow-y': 'auto',
+                            }}
+                          >
+                            {activityTypes.map((data) => (
+                              <div
+                                className="list-item-keys"
+                                key={data.id}
+                                value={data.h5pLib}
+                                onClick={() => {
+                                  if (activeType.includes(data.h5pLib)) {
+                                    // eslint-disable-next-line eqeqeq
+                                    setActiveType(activeType.filter((index) => index != data.h5pLib));
+                                  } else {
+                                    setActiveType([...activeType, data.h5pLib]);
                                   }
-                                  <span>{data.title}</span>
-                                </div>
-                              )
-                            })}
+                                }}
+                              >
+                                {activeType.includes(data.h5pLib) ? (
+                                  <FontAwesomeIcon icon="check-square" />
+                                ) : (
+                                  <FontAwesomeIcon icon="square" />
+                                )}
+                                <span>{data.title}</span>
+                              </div>
+                            ))}
                           </Card.Body>
                         </Accordion.Collapse>
                       </Card>
                     </Accordion>
                   </div>
-                 
                 </div>
 
                 <div className="right-search">
                   <Tabs
                     defaultActiveKey="total"
                     id="uncontrolled-tab-example"
-                    onSelect={async e => {
+                    onSelect={async (e) => {
                       if (e === 'total') {
-                        const searchData={
-                          phrase:searchQueries.trim(),
-                          from:0,
-                          size:20,
-                          type:searchType
-                        }
+                        const searchData = {
+                          phrase: searchQueries.trim(),
+                          from: 0,
+                          size: 20,
+                          type: searchType,
+                        };
                         const resultModel = await dispatch(simpleSearchAction(searchData));
                         setTotalCount(resultModel.meta[e]);
                         setActiveModel(e);
                         setActivePage(1);
                       } else {
-                        const searchData={
-                          phrase:searchQueries.trim(),
-                          from:0,
-                          size:20,
-                          model:e,
-                          type:searchType
-                        }
+                        const searchData = {
+                          phrase: searchQueries.trim(),
+                          from: 0,
+                          size: 20,
+                          model: e,
+                          type: searchType,
+                        };
                         const resultModel = await dispatch(simpleSearchAction(searchData));
                         setTotalCount(resultModel.meta[e]);
                         setActiveModel(e);
@@ -456,6 +464,7 @@ function SearchInterface(props) {
                                 ) : (
                                   <div
                                     style={{
+                                      // eslint-disable-next-line max-len
                                       backgroundImage: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
                                     }}
                                   />
@@ -479,7 +488,7 @@ function SearchInterface(props) {
                                     <h2>{res.title || res.name}</h2>
                                   </a>
                                   <ul>
-                                    {res.user &&
+                                    {res.user && (
                                       <li>
                                         by
                                         {' '}
@@ -487,7 +496,7 @@ function SearchInterface(props) {
                                           {res.user.first_name}
                                         </span>
                                       </li>
-                                    }
+                                    )}
                                     <li>
                                       Type
                                       {' '}
@@ -500,53 +509,59 @@ function SearchInterface(props) {
                                   </ul>
                                   <p>{res.description}</p>
                                 </div>
-                                {res.model === 'Project'?
-                                <div className={"btn-fav "+ res.favored } onClick={((e)=>{
-                                  if(e.target.classList.contains(' true')){
-                                    e.target.classList.remove('true')
-                                  }else{
-                                    e.target.classList.add('true')
-                                  }
-                                  dispatch(addProjectFav(res.id))
-                                 })}>
-                                <FontAwesomeIcon
-                                  className="mr-2"
-                                  icon="star"
-                                 /> Favorite
-                                </div>:
-                                 <Dropdown>
-                                  <Dropdown.Toggle>
-                                    <FontAwesomeIcon icon="ellipsis-v" />
-                                  </Dropdown.Toggle>
+                                {res.model === 'Project' ? (
+                                  <div
+                                    className={`btn-fav ${res.favored}`}
+                                    onClick={((e) => {
+                                      if (e.target.classList.contains(' true')) {
+                                        e.target.classList.remove('true');
+                                      } else {
+                                        e.target.classList.add('true');
+                                      }
+                                      dispatch(addProjectFav(res.id));
+                                    })}
+                                  >
+                                    <FontAwesomeIcon
+                                      className="mr-2"
+                                      icon="star"
+                                    />
+                                    {' '}
+                                    Favorite
+                                  </div>
+                                ) : (
+                                  <Dropdown>
+                                    <Dropdown.Toggle>
+                                      <FontAwesomeIcon icon="ellipsis-v" />
+                                    </Dropdown.Toggle>
 
-                                  <Dropdown.Menu>
-                                    <div
-                                      onClick={() => {
-                                        if (res.model === 'Project') {
-                                          Swal.fire({
-                                            html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
-                                            showCancelButton: true,
-                                            confirmButtonColor: '#3085d6',
-                                            cancelButtonColor: '#d33',
-                                            confirmButtonText: 'Ok',
-                                          })
-                                            .then((result) => {
-                                              if (result.value) {
-                                                cloneProject(res.id);
-                                              }
-                                            });
-                                        } else {
-                                          setModalShow(true);
-                                          setClone(res);
-                                        }
-                                      }}
-                                    >
-                                      <FontAwesomeIcon className="mr-2" icon="clone" />
-                                      Duplicate
-                                    </div>
-                                  </Dropdown.Menu>
-                                </Dropdown> 
-                                } 
+                                    <Dropdown.Menu>
+                                      <div
+                                        onClick={() => {
+                                          if (res.model === 'Project') {
+                                            Swal.fire({
+                                              html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
+                                              showCancelButton: true,
+                                              confirmButtonColor: '#3085d6',
+                                              cancelButtonColor: '#d33',
+                                              confirmButtonText: 'Ok',
+                                            })
+                                              .then((result) => {
+                                                if (result.value) {
+                                                  cloneProject(res.id);
+                                                }
+                                              });
+                                          } else {
+                                            setModalShow(true);
+                                            setClone(res);
+                                          }
+                                        }}
+                                      >
+                                        <FontAwesomeIcon className="mr-2" icon="clone" />
+                                        Duplicate
+                                      </div>
+                                    </Dropdown.Menu>
+                                  </Dropdown>
+                                )}
                               </div>
                             </div>
                           ))
@@ -582,6 +597,7 @@ function SearchInterface(props) {
                                     ) : (
                                       <div
                                         style={{
+                                          // eslint-disable-next-line max-len
                                           backgroundImage: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
                                         }}
                                       />
@@ -605,15 +621,15 @@ function SearchInterface(props) {
                                         <h2>{res.title || res.name}</h2>
                                       </a>
                                       <ul>
-                                        {res.user &&
-                                        <li>
-                                          by
-                                          {' '}
-                                          <span className="author">
-                                            {res.user.first_name}
-                                          </span>
-                                        </li>
-                                        }
+                                        {res.user && (
+                                          <li>
+                                            by
+                                            {' '}
+                                            <span className="author">
+                                              {res.user.first_name}
+                                            </span>
+                                          </li>
+                                        )}
                                         <li>
                                           Type
                                           {' '}
@@ -626,19 +642,23 @@ function SearchInterface(props) {
                                       </ul>
                                       <p>{res.description}</p>
                                     </div>
-                                    <div className={"btn-fav "+ res.favored } onClick={((e)=>{
-                                      if(e.target.classList.contains(' true')){
-                                        e.target.classList.remove('true')
-                                      }else{
-                                        e.target.classList.add('true')
-                                      }
-                                      dispatch(addProjectFav(res.id))
-                                    })}>
-                                    <FontAwesomeIcon
-                                      className="mr-2"
-                                      icon="star"
-                                    /> Favorite
-                                  </div>
+                                    <div
+                                      className={`btn-fav ${res.favored}`}
+                                      onClick={((e) => {
+                                        if (e.target.classList.contains(' true')) {
+                                          e.target.classList.remove('true');
+                                        } else {
+                                          e.target.classList.add('true');
+                                        }
+                                        dispatch(addProjectFav(res.id));
+                                      })}
+                                    >
+                                      <FontAwesomeIcon
+                                        className="mr-2"
+                                        icon="star"
+                                      />
+                                      Favorite
+                                    </div>
                                     {/* <Dropdown>
                                       <Dropdown.Toggle>
                                         <FontAwesomeIcon icon="ellipsis-v" />
@@ -708,6 +728,7 @@ function SearchInterface(props) {
                                     ) : (
                                       <div
                                         style={{
+                                          // eslint-disable-next-line max-len
                                           backgroundImage: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
                                         }}
                                       />
@@ -732,15 +753,15 @@ function SearchInterface(props) {
                                         <h2>{res.title || res.name}</h2>
                                       </a>
                                       <ul>
-                                        {res.user &&
-                                        <li>
-                                          by
-                                          {' '}
-                                          <span className="author">
-                                            {res.user.first_name}
-                                          </span>
-                                        </li>
-                                        }
+                                        {res.user && (
+                                          <li>
+                                            by
+                                            {' '}
+                                            <span className="author">
+                                              {res.user.first_name}
+                                            </span>
+                                          </li>
+                                        )}
                                         <li>
                                           Type
                                           {' '}
@@ -824,6 +845,7 @@ function SearchInterface(props) {
                                       ) : (
                                         <div
                                           style={{
+                                            // eslint-disable-next-line max-len
                                             backgroundImage: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
                                           }}
                                         />
@@ -848,7 +870,7 @@ function SearchInterface(props) {
                                           <h2>{res.title || res.name}</h2>
                                         </a>
                                         <ul>
-                                          {res.user &&
+                                          {res.user && (
                                             <li>
                                               by
                                               {' '}
@@ -856,7 +878,7 @@ function SearchInterface(props) {
                                                 {res.user.first_name}
                                               </span>
                                             </li>
-                                          }
+                                          )}
                                           <li>
                                             Type
                                             {' '}
@@ -926,24 +948,24 @@ function SearchInterface(props) {
                       itemsCountPerPage={20}
                       totalItemsCount={totalCount}
                       pageRangeDisplayed={8}
-                      onChange={e => {
+                      onChange={(e) => {
                         setActivePage(e);
                         if (activeModel === 'total') {
-                          const searchData={
-                            phrase:searchQueries.trim(),
-                            from:e * 20 - 20,
-                            size:20,
-                            type:searchType
-                          }
-                          dispatch(simpleSearchAction(searchData))
+                          const searchData = {
+                            phrase: searchQueries.trim(),
+                            from: e * 20 - 20,
+                            size: 20,
+                            type: searchType,
+                          };
+                          dispatch(simpleSearchAction(searchData));
                         } else {
-                          const searchData={
-                            phrase:searchQueries.trim(),
-                            from:e * 20 - 20,
-                            size:20,
-                            type:searchType,
-                            model:activeModel
-                          }
+                          const searchData = {
+                            phrase: searchQueries.trim(),
+                            from: e * 20 - 20,
+                            size: 20,
+                            type: searchType,
+                            model: activeModel,
+                          };
                           dispatch(simpleSearchAction(searchData));
                         }
                       }}
@@ -962,5 +984,9 @@ function SearchInterface(props) {
     </>
   );
 }
+
+SearchInterface.propTypes = {
+  history: PropTypes.object.isRequired,
+};
 
 export default SearchInterface;

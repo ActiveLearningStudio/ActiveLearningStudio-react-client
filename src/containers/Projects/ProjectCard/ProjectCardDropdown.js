@@ -20,7 +20,6 @@ const ProjectCardDropdown = (props) => {
     handleShow,
     setProjectId,
     showDeletePopup,
-
   } = props;
 
   const dispatch = useDispatch();
@@ -31,7 +30,6 @@ const ProjectCardDropdown = (props) => {
   }, [AllLms]);
 
   return (
-
     <Dropdown className="project-dropdown check d-flex  align-items-center">
       <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
         <FontAwesomeIcon icon="ellipsis-v" />
@@ -98,29 +96,28 @@ const ProjectCardDropdown = (props) => {
               <a>Google Classroom</a>
             </li>
 
-            {allLms.shareVendors
-                && allLms.shareVendors.map((data) => (
-                  <li>
-                    <a
-                      onClick={async () => {
-                        const allPlaylist = await dispatch(lmsPlaylist(project.id));
-                        if (allPlaylist) {
-                          dispatch(
-                            getProjectCourseFromLMS(
-                              data.lms_name.toLowerCase(),
-                              data.id,
-                              project.id,
-                              allPlaylist.playlists,
-                              data.lms_url,
-                            ),
-                          );
-                        }
-                      }}
-                    >
-                      {data.site_name}
-                    </a>
-                  </li>
-                ))}
+            {allLms.shareVendors && allLms.shareVendors.map((data) => (
+              <li>
+                <a
+                  onClick={async () => {
+                    const allPlaylist = await dispatch(lmsPlaylist(project.id));
+                    if (allPlaylist) {
+                      dispatch(
+                        getProjectCourseFromLMS(
+                          data.lms_name.toLowerCase(),
+                          data.id,
+                          project.id,
+                          allPlaylist.playlists,
+                          data.lms_url,
+                        ),
+                      );
+                    }
+                  }}
+                >
+                  {data.site_name}
+                </a>
+              </li>
+            ))}
           </ul>
         </li>
 
@@ -141,7 +138,6 @@ ProjectCardDropdown.propTypes = {
   showDeletePopup: PropTypes.func.isRequired,
   handleShow: PropTypes.func.isRequired,
   setProjectId: PropTypes.func.isRequired,
-
 };
 
 export default ProjectCardDropdown;
