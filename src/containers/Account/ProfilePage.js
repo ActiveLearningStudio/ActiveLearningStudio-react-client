@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
@@ -8,7 +8,7 @@ import { Table, Alert } from 'react-bootstrap';
 
 import loader from 'assets/images/loader.svg';
 import { getErrors } from 'utils';
-import { updateProfileAction } from 'store/actions/auth';
+import { updateProfileAction, loadOrganizationTypesAction } from 'store/actions/auth';
 import { getUserLmsSettingsAction } from 'store/actions/account';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -24,7 +24,10 @@ function ProfilePage(props) {
     updateProfile,
     userLmsSettings,
     getUserLmsSettings,
+    loadOrganizationTypes,
   } = props;
+
+  const organizationTypes = useSelector((state) => state.auth.organizationTypes);
 
   const [error, setError] = useState(null);
   const [state, setState] = useState({
@@ -42,7 +45,8 @@ function ProfilePage(props) {
   useEffect(() => {
     window.scrollTo(0, 0);
     getUserLmsSettings();
-  }, []);
+    loadOrganizationTypes();
+  }, [getUserLmsSettings, loadOrganizationTypes]);
 
   useEffect(() => {
     setState({
@@ -241,15 +245,18 @@ function ProfilePage(props) {
                           <div className="form-group">
                             <label htmlFor="organization-type">Organization Type</label>
                             <FontAwesomeIcon icon="building" />
-                            <input
-                              className="input-box"
-                              id="organization-type"
+                            <select
+                              className="input-box organization-type"
                               name="organizationType"
-                              placeholder="Organization Type"
-                              maxLength="250"
+                              placeholder="Organization Type*"
                               value={state.organizationType}
                               onChange={onChangeField}
-                            />
+                            >
+                              <option> -- select an option -- </option>
+                              {organizationTypes.map((type) => (
+                                <option selected={type.label === state.organizationType} value={type.label}>{type.label}</option>
+                              ))}
+                            </select>
                           </div>
                         </div>
                       </div>
@@ -372,6 +379,7 @@ ProfilePage.propTypes = {
   userLmsSettings: PropTypes.array.isRequired,
   updateProfile: PropTypes.func.isRequired,
   getUserLmsSettings: PropTypes.func.isRequired,
+  loadOrganizationTypes: PropTypes.func.isRequired,
 };
 
 ProfilePage.defaultProps = {
@@ -381,6 +389,7 @@ ProfilePage.defaultProps = {
 const mapDispatchToProps = (dispatch) => ({
   updateProfile: (data) => dispatch(updateProfileAction(data)),
   getUserLmsSettings: () => dispatch(getUserLmsSettingsAction()),
+  loadOrganizationTypes: () => dispatch(loadOrganizationTypesAction()),
 });
 
 const mapStateToProps = (state) => ({
