@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
-import { Dropdown } from 'react-bootstrap';
 import Switch from 'react-switch';
 import { confirmAlert } from 'react-confirm-alert';
 
@@ -15,7 +14,6 @@ import { shareActivity, removeShareActivity, loadH5pResourceSettings } from 'sto
 import Unauthorized from 'components/Unauthorized';
 import PreviousLink from './components/PreviousLink';
 import NextLink from './components/NextLink';
-import ActivitiesDropdown from './components/ActivitiesDropdown';
 import ActivitiesList from './components/ActivitiesList';
 
 import './style.scss';
@@ -266,7 +264,7 @@ function PlaylistPreview(props) {
                     </Link>
                   </div>
 
-                  <Dropdown className="ml-auto playlist-dropdown check">
+                  {/* <Dropdown className="ml-auto playlist-dropdown check">
                     <Dropdown.Toggle className="playlist-dropdown-btn">
                       <FontAwesomeIcon icon="ellipsis-v" />
                     </Dropdown.Toggle>
@@ -277,7 +275,7 @@ function PlaylistPreview(props) {
                         activities={selectedPlaylist.activities}
                       />
                     </Dropdown.Menu>
-                  </Dropdown>
+                  </Dropdown> */}
                 </div>
 
                 <div className="scrollDiv long">
@@ -320,6 +318,7 @@ function PlaylistPreview(props) {
                       projectId={projectId}
                       playlistId={playlistId}
                       activities={selectedPlaylist.activities}
+                      playlist={playlist.selectedPlaylist}
                     />
                   </ul>
                 </div>
