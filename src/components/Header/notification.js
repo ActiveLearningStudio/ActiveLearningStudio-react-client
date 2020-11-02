@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
-import notificationImg from 'assets/images/notification.png';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import NotificationArea from 'containers/Notification/notificationArea';
 import { getAllnotification, clearAllNotification } from 'store/actions/notification';
+import NotificationArea from 'containers/Notification/NotificationArea';
+import notificationImg from 'assets/images/notification.png';
 
 import './style.scss';
 
@@ -16,10 +16,8 @@ function HeaderNotification() {
   const [notificationData, setNotificationData] = useState([]);
 
   useEffect(() => {
-    if (allNotifications.notification.length === 0) {
-      dispatch(getAllnotification());
-    }
-  }, [allNotifications.notification.length, dispatch]);
+    dispatch(getAllnotification());
+  }, [dispatch]);
 
   useEffect(() => {
     setNotificationData(allNotifications.notification);
@@ -49,7 +47,6 @@ function HeaderNotification() {
           </div>
           <div className="btn-all-notification">
             <Dropdown.Item className="all-notification" as={Link} to="/notification">
-
               see All notification
             </Dropdown.Item>
             <Dropdown.Item className="notification-setting" as={Link} to="/notification">

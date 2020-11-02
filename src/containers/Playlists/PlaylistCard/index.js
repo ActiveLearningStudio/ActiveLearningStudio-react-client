@@ -148,7 +148,6 @@ class PlaylistCard extends React.Component {
                     playlist={playlist}
                     handleClickPlaylistTitle={this.handleClickPlaylistTitle}
                   />
-
                 </h2>
               </div>
 

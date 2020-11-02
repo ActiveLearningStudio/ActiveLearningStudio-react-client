@@ -5,6 +5,7 @@ import { withRouter, Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown } from 'react-bootstrap';
+
 import { deleteResourceAction } from 'store/actions/resource';
 import { cloneActivity } from 'store/actions/search';
 import ResourceCardDropdownShare from './shareResource';
@@ -33,7 +34,6 @@ const ResourceCardDropdown = (props) => {
       }
     });
   };
-
   return (
 
     <Dropdown className="pull-right resource-dropdown check">
@@ -77,7 +77,6 @@ const ResourceCardDropdown = (props) => {
         </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
-
   );
 };
 

@@ -2,21 +2,21 @@
   width: 14rem;
 }
 
-.preview-activity-dropdown{
+.preview-activity-dropdown {
   position: relative;
   display: flex;
 
-  .resource-dropdown{
+  .resource-dropdown {
     position: absolute;
     right: 20px;
     top:10px;
   }
   
-  a{
+  a {
     width:100%;
   }
 
-  .dropdown-menu a{
+  .dropdown-menu a {
     width:100%;
     font-weight: 400;
     font-size: 14px;

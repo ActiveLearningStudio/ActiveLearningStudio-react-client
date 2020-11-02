@@ -3,7 +3,7 @@ import Header from 'components/Header';
 import Sidebar from 'components/Sidebar';
 import { useSelector } from 'react-redux';
 
-import NotificationArea from './notificationArea';
+import NotificationArea from './NotificationArea';
 
 import './style.scss';
 
@@ -24,7 +24,7 @@ const Notification = (props) => {
         </div>
         <div className="content-wrapper">
           <div className="notification-wapper">
-            { notificationData.map((msg) => <NotificationArea content={msg} type="header" />)}
+            {notificationData.map((msg) => <NotificationArea content={msg} type="header" />)}
           </div>
         </div>
       </div>
