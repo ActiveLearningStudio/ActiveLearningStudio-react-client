@@ -34,8 +34,8 @@ const ResourceCardDropdown = (props) => {
       }
     });
   };
-  return (
 
+  return (
     <Dropdown className="pull-right resource-dropdown check">
       <Dropdown.Toggle className="resource-dropdown-btn">
         <FontAwesomeIcon icon="ellipsis-v" />
