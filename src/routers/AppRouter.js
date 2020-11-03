@@ -38,6 +38,7 @@ const SearchResult = loadable(() => import('../containers/Search'));
 const LtiModel = loadable(() => import('../containers/LtiModel'));
 const TeamsPage = loadable(() => import('../containers/Teams'));
 const AssignProjectPage = loadable(() => import('../containers/Teams/AddProjects'));
+const GclassActivityPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassActivityPage'));
 
 const AppRouter = () => {
   useEffect(() => {
@@ -171,6 +172,12 @@ const AppRouter = () => {
           exact
           path="/lti/content/:lmsUrl/:ltiClientId/:redirectUrl"
           component={LtiModel}
+        />
+
+        <OpenRoute
+          exact
+          path="/gclass/launch/:userId/:courseId/:activityId/:classworkId"
+          component={GclassActivityPage}
         />
 
         <PrivateRoute
