@@ -12,7 +12,6 @@ import { deletePlaylistAction, changePlaylistTitleAction } from 'store/actions/p
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import { clonePlaylist } from 'store/actions/search';
 
-
 import './style.scss';
 
 // TODO: need to clean up attributes, update to functional component

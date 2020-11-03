@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Swal from 'sweetalert2';
 
 import { loadH5pSettingsActivity } from 'store/actions/resource';
 
@@ -41,6 +42,7 @@ const H5PEditor = (props) => {
       const fileArr = h5pFile.name.split('.');
       const fileExtension = fileArr.length > 0 ? fileArr[fileArr.length - 1] : '';
       if (fileExtension !== 'h5p') {
+        Swal.fire('Invalid file selected, kindly select h5p file.');
         return true;
       }
       const payload = {
