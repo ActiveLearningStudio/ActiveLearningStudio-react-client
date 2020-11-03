@@ -28,7 +28,7 @@ const ConfirmEmailPage = loadable(() => import('../containers/Auth/ConfirmEmailP
 const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
 const ChangePasswordPage = loadable(() => import('../containers/Account/ChangePasswordPage'));
 const DashboardPage = loadable(() => import('../containers/Dashboard'));
-// const NotificationPage = loadable(() => import('../containers/Notification'));
+const NotificationPage = loadable(() => import('../containers/Notification'));
 
 const ProjectsPage = loadable(() => import('../containers/Projects'));
 const PlaylistsPage = loadable(() => import('../containers/Playlists'));
@@ -68,7 +68,9 @@ const AppRouter = () => {
         <PrivateRoute exact path="/change-password" component={ChangePasswordPage} />
 
         <PrivateRoute exact path="/dashboard" component={DashboardPage} />
-
+        
+        <PrivateRoute exact path="/notification" component={NotificationPage} />
+        
         <PrivateRoute exact path="/teams" component={TeamsPage} overview />
         <PrivateRoute exact path="/teams/create-team" component={TeamsPage} creation />
         <PrivateRoute exact path="/teams/:teamId" component={TeamsPage} teamShow />

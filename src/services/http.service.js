@@ -43,7 +43,7 @@ function remove(url, data, headers = {}) {
 
 function notifcatonSocket() {
   return {
-    host: `http://${window.location.host}:4003`,
+    host: `${window.location.origin}:4003`,
     auth: {
       headers: { ...getAuthHeader(), Accept: 'application/json' },
     },
