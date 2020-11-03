@@ -40,6 +40,7 @@ const LtiModel = loadable(() => import('../containers/LtiModel'));
 const TeamsPage = loadable(() => import('../containers/Teams'));
 const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
 const AddTeamProjectMemberPage = loadable(() => import('../containers/Teams/AddMembers'));
+const GclassActivityPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassActivityPage'));
 
 const AppRouter = () => {
   useEffect(() => {
@@ -67,8 +68,6 @@ const AppRouter = () => {
         <PrivateRoute exact path="/change-password" component={ChangePasswordPage} />
 
         <PrivateRoute exact path="/dashboard" component={DashboardPage} />
-
-        <PrivateRoute exact path="/notification" component={NotificationPage} />
 
         <PrivateRoute exact path="/teams" component={TeamsPage} overview />
         <PrivateRoute exact path="/teams/create-team" component={TeamsPage} creation />
@@ -176,6 +175,12 @@ const AppRouter = () => {
           exact
           path="/lti/content/:lmsUrl/:ltiClientId/:redirectUrl"
           component={LtiModel}
+        />
+
+        <OpenRoute
+          exact
+          path="/gclass/launch/:userId/:courseId/:activityId/:classworkId"
+          component={GclassActivityPage}
         />
 
         <PrivateRoute

@@ -1,12 +1,14 @@
 import Swal from 'sweetalert2';
 
 import searchService from 'services/search.service';
+import gapiService from 'services/gapi.service';
 import {
   GOOGLE_CLASSROOM_LOGIN,
   GOOGLE_CLASSROOM_LOGIN_FAILURE,
   GOOGLE_SHARE,
   LOAD_GOOGLE_CLASSROOM_COURSES,
   ALL_COURSES,
+  GET_STUDENT_COURSES
 } from '../actionTypes';
 
 export const googleClassRoomLogin = (id) => ({
@@ -79,4 +81,13 @@ export const googleClassRoomLoginFailureAction = (response) => async (dispatch) 
   } catch (e) {
     console.log(e);
   }
+};
+
+// Gets courses for student
+export const getStudentCoursesAction = (token) => async (dispatch) => {
+  const coursesResponse = await gapiService.getStudentCourses(token);
+  dispatch({
+    type: GET_STUDENT_COURSES,
+    coursesResponse
+  });
 };
