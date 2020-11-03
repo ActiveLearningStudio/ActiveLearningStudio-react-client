@@ -8,11 +8,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import logo from 'assets/images/logo.svg';
 import searchImg from 'assets/images/search.png';
 import createProjectIcon from 'assets/images/create-project-icon.png';
-import notificationImg from 'assets/images/notification.png';
 import userImg from 'assets/images/user.png';
 import { logoutAction } from 'store/actions/auth';
 import { Event } from 'trackers/ga';
 import SearchForm from './searchForm';
+import HeaderNotification from './notification';
 
 import './style.scss';
 
@@ -53,33 +53,11 @@ function Header(props) {
                         </div>
                       </div>
                     </Dropdown.Item>
-
-                    {/*
-                    <Dropdown.Item to="#" className="menuLinks">
-                      <div className="notify-box">
-                        <div className="notify-icon">
-                          <img src={createTeamImg} alt="create-team" />
-                        </div>
-                        <div className="notify-description">
-                          <div className="nav-title">Create Team</div>
-                          <p>
-                            Increase productivity by making it easy for your
-                            group to create memorable learning experiences
-                            together.
-                          </p>
-                        </div>
-                      </div>
-                    </Dropdown.Item>
-                    */}
                   </Dropdown.Menu>
                 </Dropdown>
               </li>
 
-              <li className="d-flex align-items-center justify-content-center">
-                <Link to="#">
-                  <img src={notificationImg} alt="notification" />
-                </Link>
-              </li>
+              <HeaderNotification />
 
               <li className="mobile-links">
                 <Link to="#">
@@ -134,12 +112,7 @@ function Header(props) {
 }
 
 Header.propTypes = {
-  // user: PropTypes.object,
   logout: PropTypes.func.isRequired,
-};
-
-Header.defaultProps = {
-  // user: null,
 };
 
 const mapStateToProps = (state) => ({

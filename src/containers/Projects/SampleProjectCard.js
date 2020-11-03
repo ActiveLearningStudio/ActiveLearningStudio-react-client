@@ -27,7 +27,7 @@ const SampleProjectCard = (props) => {
     if (selectId) {
       setShowSampleSort(false);
     }
-  }, [selectId]);
+  }, [selectId, setShowSampleSort]);
 
   return (
     <>
@@ -94,7 +94,7 @@ const SampleProjectCard = (props) => {
                               }}
                             >
                               <FontAwesomeIcon icon="clone" className="mr-2" />
-                              Clone
+                              Duplicate
                             </Dropdown.Item>
 
                             {type && (
@@ -103,7 +103,7 @@ const SampleProjectCard = (props) => {
                                 onClick={() => dispatch(deleteFavObj(project.id))}
                               >
                                 <FontAwesomeIcon icon="times-circle" className="mr-2" />
-                                Delete
+                                Remove
                               </Dropdown.Item>
                             )}
                           </Dropdown.Menu>

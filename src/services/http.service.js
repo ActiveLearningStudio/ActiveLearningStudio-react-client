@@ -1,4 +1,5 @@
 import axios from 'axios';
+import socketio from 'socket.io-client';
 
 import { USER_TOKEN_KEY } from '../constants';
 
@@ -40,10 +41,22 @@ function remove(url, data, headers = {}) {
   });
 }
 
+function notifcatonSocket() {
+  return {
+    host: `http://${window.location.host}:4003`,
+    auth: {
+      headers: { ...getAuthHeader(), Accept: 'application/json' },
+    },
+    broadcaster: 'socket.io',
+    client: socketio,
+  };
+}
+
 export default {
   http,
   get,
   post,
   put,
   remove,
+  notifcatonSocket,
 };

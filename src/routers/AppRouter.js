@@ -28,6 +28,7 @@ const ConfirmEmailPage = loadable(() => import('../containers/Auth/ConfirmEmailP
 const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
 const ChangePasswordPage = loadable(() => import('../containers/Account/ChangePasswordPage'));
 const DashboardPage = loadable(() => import('../containers/Dashboard'));
+// const NotificationPage = loadable(() => import('../containers/Notification'));
 
 const ProjectsPage = loadable(() => import('../containers/Projects'));
 const PlaylistsPage = loadable(() => import('../containers/Playlists'));
@@ -39,6 +40,7 @@ const LtiModel = loadable(() => import('../containers/LtiModel'));
 const TeamsPage = loadable(() => import('../containers/Teams'));
 const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
 const AddTeamProjectMemberPage = loadable(() => import('../containers/Teams/AddMembers'));
+const GclassActivityPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassActivityPage'));
 
 const AppRouter = () => {
   useEffect(() => {
@@ -173,6 +175,12 @@ const AppRouter = () => {
           exact
           path="/lti/content/:lmsUrl/:ltiClientId/:redirectUrl"
           component={LtiModel}
+        />
+
+        <OpenRoute
+          exact
+          path="/gclass/launch/:userId/:courseId/:activityId/:classworkId"
+          component={GclassActivityPage}
         />
 
         <PrivateRoute

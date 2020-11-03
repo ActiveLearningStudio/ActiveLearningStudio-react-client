@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 
 import { getProjectId, googleShare } from 'store/actions/gapi';
 import { cloneProject } from 'store/actions/search';
-import { getProjectCourseFromLMS } from 'store/actions/project';
+import { getProjectCourseFromLMS, toggleProjectShareAction } from 'store/actions/project';
 import { lmsPlaylist } from 'store/actions/playlist';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 
@@ -60,6 +60,25 @@ const ProjectCardDropdown = (props) => {
           Duplicate
         </Dropdown.Item>
 
+        <Dropdown.Item
+          to="#"
+          onClick={async () => {
+            const protocol = `${window.location.href.split('/')[0]}//`;
+            const url = `${protocol + window.location.host}/project/${project.id}/shared`;
+            if (!project.shared) {
+              Swal.showLoading();
+              await dispatch(toggleProjectShareAction(project.id, project.name));
+              Swal.close();
+              SharePreviewPopup(url, project.name);
+            } else {
+              SharePreviewPopup(url, project.name);
+            }
+          }}
+        >
+          <FontAwesomeIcon icon="share" className="mr-2" />
+          Share
+        </Dropdown.Item>
+
         <li className="dropdown-submenu send">
           <a tabIndex="-1">
             <FontAwesomeIcon icon="newspaper" className="mr-2" />
@@ -101,20 +120,6 @@ const ProjectCardDropdown = (props) => {
             ))}
           </ul>
         </li>
-
-        {project.shared && (
-          <Dropdown.Item
-            to="#"
-            onClick={() => {
-              const protocol = `${window.location.href.split('/')[0]}//`;
-              const url = `${protocol + window.location.host}/project/${project.id}/shared`;
-              SharePreviewPopup(url, project.name);
-            }}
-          >
-            <FontAwesomeIcon icon="share" className="mr-2" />
-            Share
-          </Dropdown.Item>
-        )}
 
         <Dropdown.Item
           to="#"

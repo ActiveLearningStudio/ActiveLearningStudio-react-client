@@ -144,7 +144,10 @@ class PlaylistCard extends React.Component {
                     defaultValue={playlist.title}
                   />
 
-                  <PlaylistCardDropdown playlist={playlist} />
+                  <PlaylistCardDropdown
+                    playlist={playlist}
+                    handleClickPlaylistTitle={this.handleClickPlaylistTitle}
+                  />
                 </h2>
               </div>
 
