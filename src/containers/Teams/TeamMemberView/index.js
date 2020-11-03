@@ -134,17 +134,18 @@ function TeamMemberView(props) {
             <div className="col-md-12">
               <div className="member-list">
                 {filteredUsers.map((u) => (
-                  <TeamMember
-                    key={u.id}
-                    teamId={id}
-                    authUser={authUser}
-                    removingUserId={removingUserId}
-                    selected={selectedMember === u.id}
-                    user={u}
-                    selectMe={() => setSelectedMember(u.id)}
-                    deselectMe={() => setSelectedMember(null)}
-                    removeMember={removeMember}
-                  />
+                  <div key={u.id}>
+                    <TeamMember
+                      teamId={id}
+                      authUser={authUser}
+                      removingUserId={removingUserId}
+                      selected={selectedMember === u.id}
+                      user={u}
+                      selectMe={() => setSelectedMember(u.id)}
+                      deselectMe={() => setSelectedMember(null)}
+                      removeMember={removeMember}
+                    />
+                  </div>
                 ))}
               </div>
             </div>

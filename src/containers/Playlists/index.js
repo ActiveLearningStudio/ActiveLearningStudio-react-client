@@ -106,12 +106,9 @@ function PlaylistsPage(props) {
       loadProject(match.params.projectId);
       loadProjectPlaylists(match.params.projectId);
     }
-  }, []);
+  }, [loadLms, loadProject, loadProjectPlaylists, match.params.projectId, openCreatePopup, openCreateResourcePopup, openEditResourcePopup]);
 
   const handleChange = async (chked) => {
-    // setChecked(chked);
-    Swal.showLoading();
-    await getIndexedData(match.params.projectId);
     if (chked) {
       Swal.fire({
         html: '<b>SHOWCASE THIS PROJECT?</b><br><br><p>The Curriki Team is reviewing and selecting projects likes yours'
@@ -126,7 +123,8 @@ function PlaylistsPage(props) {
         .then(async (result) => {
           if (result.isConfirmed) {
             Swal.showLoading();
-
+            await getIndexedData(match.params.projectId);
+            Swal.showLoading();
             const res = await getElasticData(match.params.projectId);
             loadProject(match.params.projectId);
             if (res.message) {
@@ -134,13 +132,11 @@ function PlaylistsPage(props) {
             } else if (res.errors) {
               Swal.fire(res.errors[0]);
             }
-          } else {
-            Swal.showLoading();
-            loadProject(match.params.projectId);
           }
         });
     } else {
       Swal.showLoading();
+      await getIndexedData(match.params.projectId);
       loadProject(match.params.projectId);
     }
   };
@@ -368,7 +364,7 @@ function PlaylistsPage(props) {
                         <div className="flex-se">
                           <h1>{selectedProject ? selectedProject.name : ''}</h1>
 
-                          {checked && indexStatus === null && (
+                          {/* {checked && indexStatus === null && (
                             <div
                               className="react-touch indexed"
                               onClick={async () => {
@@ -402,7 +398,7 @@ function PlaylistsPage(props) {
                                 <span>Submit to Showcase</span>
                               </div>
                             </div>
-                          )}
+                          )} */}
 
                           <div className="react-touch">
                             <div className="publish-btn">

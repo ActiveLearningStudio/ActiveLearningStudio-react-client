@@ -14,6 +14,7 @@ import sidebar from './sidebar';
 import team from './team';
 import account from './account';
 import dashboard from './dashboard';
+import notification from './notification';
 
 export default combineReducers({
   auth,
@@ -30,4 +31,5 @@ export default combineReducers({
   team,
   account,
   dashboard,
+  notification,
 });

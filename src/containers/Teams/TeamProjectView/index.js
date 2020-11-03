@@ -1,27 +1,56 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Swal from 'sweetalert2';
 
 import { zeroFill } from 'utils';
+import { removeMemberFromProjectAction, removeProjectAction } from 'store/actions/team';
 
 import './style.scss';
 
 function TeamProjectView(props) {
-  const { team: { users, projects, id }, user } = props;
+  const {
+    team: { users, projects, id },
+    user,
+    removeProject,
+    removeMember,
+  } = props;
 
   const authUser = users.find((u) => u.id === user.id);
   const role = authUser ? authUser.role : '';
 
+  const removeProjectSubmit = useCallback((projectId) => {
+    removeProject(id, projectId)
+      .catch(() => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to remove project.',
+        });
+      });
+  }, [id, removeProject]);
+
+  const removeMemberSubmit = useCallback((projectId, userId) => {
+    removeMember(id, projectId, userId)
+      .catch(() => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to remove member.',
+        });
+      });
+  }, [id, removeMember]);
+
   return (
     <div className="team-information">
       {role === 'owner' && (
-        <Link to={`/teams/${id}/assign`}>
+        <Link to={`/teams/${id}/add-projects`}>
           <div className="btn-top-page">
             <FontAwesomeIcon icon="plus" className="mr-2" />
-            Add project
+            Add projects
           </div>
         </Link>
       )}
@@ -63,14 +92,14 @@ function TeamProjectView(props) {
 
                     {role === 'owner' && (
                       <>
-                        <Dropdown.Item as={Link} to="/">
-                          <FontAwesomeIcon icon="times-circle" className="mr-2" />
-                          Remove project
+                        <Dropdown.Item as={Link} to={`/teams/${id}/projects/${project.id}/add-member`}>
+                          <FontAwesomeIcon icon="crosshairs" className="mr-2" />
+                          Add member
                         </Dropdown.Item>
 
-                        <Dropdown.Item as={Link} to="">
-                          <FontAwesomeIcon icon="crosshairs" className="mr-2" />
-                          Assign member
+                        <Dropdown.Item onClick={() => removeProjectSubmit(project.id)}>
+                          <FontAwesomeIcon icon="times-circle" className="mr-2" />
+                          Remove project
                         </Dropdown.Item>
                       </>
                     )}
@@ -86,9 +115,34 @@ function TeamProjectView(props) {
 
                 <div className="member-mark-container">
                   {project.users.map((u, index) => (
-                    <div key={u.id} className={`member-name-mark${index > 0 ? ' over' : ''}`}>
-                      <span>{`${u.first_name.charAt(0)}${u.last_name.charAt(0)}`}</span>
-                    </div>
+                    <Dropdown key={u.id} className="member-dropdown">
+                      <Dropdown.Toggle className="member-dropdown-btn">
+                        <div className={`member-name-mark${index > 0 ? ' over' : ''}`}>
+                          <span>{`${u.first_name.charAt(0)}${u.last_name.charAt(0)}`}</span>
+                        </div>
+                      </Dropdown.Toggle>
+
+                      {authUser.id !== u.id && (
+                        <Dropdown.Menu>
+                          <div className="drop-title">
+                            <div className="member-name-mark">
+                              <span>{`${u.first_name.charAt(0)}${u.last_name.charAt(0)}`}</span>
+                            </div>
+                            <div>
+                              <span>{`${u.first_name} ${u.last_name}`}</span>
+                              <span>{u.email}</span>
+                            </div>
+                          </div>
+
+                          <div className="dropdown-divider" />
+
+                          <Dropdown.Item onClick={() => removeMemberSubmit(project.id, u.id)}>
+                            <FontAwesomeIcon icon="times" className="mr-2" />
+                            Remove from project
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      )}
+                    </Dropdown>
                   ))}
                 </div>
               </div>
@@ -103,10 +157,17 @@ function TeamProjectView(props) {
 TeamProjectView.propTypes = {
   team: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
+  removeProject: PropTypes.func.isRequired,
+  removeMember: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps, null)(TeamProjectView);
+const mapDispatchToProps = (dispatch) => ({
+  removeProject: (teamId, projectId) => dispatch(removeProjectAction(teamId, projectId)),
+  removeMember: (teamId, projectId, userId) => dispatch(removeMemberFromProjectAction(teamId, projectId, userId)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TeamProjectView);

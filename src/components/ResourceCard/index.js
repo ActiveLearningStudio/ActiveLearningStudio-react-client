@@ -5,13 +5,12 @@ import { withRouter, Link } from 'react-router-dom';
 import { Draggable } from 'react-beautiful-dnd';
 import { Badge } from 'react-bootstrap';
 
-import {deleteResourceAction } from 'store/actions/resource';
-import ResourceCardDropdown from './dropdown';
+import { deleteResourceAction } from 'store/actions/resource';
+import ResourceCardDropdown from './ResourceCardDropdown';
 
 import './style.scss';
 
 const ResourceCard = (props) => {
-
   const {
     resource,
     playlist,
@@ -59,9 +58,9 @@ const ResourceCard = (props) => {
               </Badge>
             )}
             <div className="activity-options-wrapper check">
-              <ResourceCardDropdown 
+              <ResourceCardDropdown
                 resource={resource}
-                playlist= {playlist}
+                playlist={playlist}
               />
             </div>
           </div>

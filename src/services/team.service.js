@@ -43,8 +43,23 @@ const removeMember = (teamId, id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const assignProjects = (teamId, ids) => httpService
+const addProjects = (teamId, ids) => httpService
   .post(`/${apiVersion}/teams/${teamId}/add-projects`, { ids })
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const removeProject = (teamId, id) => httpService
+  .post(`/${apiVersion}/teams/${teamId}/remove-project`, { id })
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const addMembersToProject = (teamId, projectId, ids) => httpService
+  .post(`/${apiVersion}/teams/${teamId}/projects/${projectId}/add-members`, { ids })
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const removeMemberFromProject = (teamId, projectId, id) => httpService
+  .post(`/${apiVersion}/teams/${teamId}/projects/${projectId}/remove-member`, { id })
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -57,5 +72,8 @@ export default {
   inviteConfirm,
   inviteMember,
   removeMember,
-  assignProjects,
+  addProjects,
+  removeProject,
+  addMembersToProject,
+  removeMemberFromProject,
 };

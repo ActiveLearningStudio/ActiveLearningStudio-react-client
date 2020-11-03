@@ -10,6 +10,93 @@
     }
   }
 
+  .notification-bar {
+    .notification-alert {
+      position: relative;
+      
+      .alert-added {
+        width: 10px;
+        height: 10px;
+        background-color:#d54646 ;
+        border-radius: 50%;
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+    }
+
+    .user-dropdown {
+      width: 480px !important;
+      box-shadow: 0px 0px 99px #00000021;
+      border-radius: 5px;
+
+      .scroll-notification {
+        max-height: 480px;
+        overflow-y: auto;
+        
+        .header-data {
+          display: flex;
+          justify-content: space-between;
+          padding: 15px 25px;
+          border-bottom: 1px solid #f2f0f0;
+
+          h2 {
+            font: normal normal 600 18px/20px Open Sans;
+            letter-spacing: 0px;
+            color: #0F0F0F;
+            margin-bottom: 0px;
+          }
+
+          h3 {
+            font: normal normal 600 14px/20px Open Sans;
+            letter-spacing: 0px;
+            color: #5250C1;
+            margin-bottom: 0px;
+          }
+        }
+
+        .dropdown-item {
+          padding: 0;
+
+          &:nth-of-type(odd) {
+            .user-detail .user-icons {
+              background: #C3C0E7 0% 0% no-repeat padding-box;
+              color: #6D629A;
+            }
+          }
+        }
+
+        p {
+          white-space: pre-wrap;
+        }
+      }
+
+     .btn-all-notification {
+        border-top: 1px solid #f2f0f0;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        padding: 10px 0px;
+
+        .all-notification {
+          text-decoration: underline;
+          font: normal normal 600 14px/20px Open Sans;
+          color: #5250C1;
+          width: 100%;
+        }
+
+        .notification-setting {
+          font: normal normal 600 14px/20px Open Sans;
+          letter-spacing: 0px;
+          color: #5250C1;
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+        }
+      }
+    }
+  }
+
   .navbar-link li .dropdown-menu {
     width: 200px;
   }

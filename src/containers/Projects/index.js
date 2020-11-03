@@ -47,7 +47,7 @@ export const ProjectsPage = (props) => {
   const [sampleProject, setSampleProjects] = useState([]);
   const [favProject, setFavProjects] = useState([]);
   const [activeTab, setActiveTab] = useState('My Projects');
-  const [showSampleSort, setShowSampleSort] =  useState(true);
+  const [showSampleSort, setShowSampleSort] = useState(true);
 
   const {
     ui,
@@ -71,10 +71,10 @@ export const ProjectsPage = (props) => {
 
   useEffect(() => {
     const query = QueryString.parse(location.search);
-    if (query.active==='fav') {
-      setActiveTab('Favorite Projects')
-    }else{
-      setActiveTab('My Projects')
+    if (query.active === 'fav') {
+      setActiveTab('Favorite Projects');
+    } else {
+      setActiveTab('My Projects');
     }
   }, []);
 
@@ -304,13 +304,14 @@ export const ProjectsPage = (props) => {
 
           <div className={`content-wrapper ${activeFilter}`}>
             <div className="content">
-              <Tabs 
-                onSelect={()=>{
-                  setShowSampleSort(true)
-                 }} 
-                className="main-tabs"  
-                defaultActiveKey={activeTab} 
-                id="uncontrolled-tab-example">
+              <Tabs
+                onSelect={() => {
+                  setShowSampleSort(true);
+                }}
+                className="main-tabs"
+                defaultActiveKey={activeTab}
+                id="uncontrolled-tab-example"
+              >
                 <Tab eventKey="My Projects" title="My Projects">
                   <div className="row">
                     <div className="col-md-12">
@@ -335,7 +336,7 @@ export const ProjectsPage = (props) => {
                               className={activeFilter === 'small-grid' ? 'sort-btn active' : 'sort-btn'}
                               onClick={() => {
                                 setActiveFilter('small-grid');
-                                setSortNumber(5)
+                                setSortNumber(5);
                                 divideProjects(allProjects);
                               }}
                             >
@@ -455,7 +456,7 @@ export const ProjectsPage = (props) => {
                   )
                 }
                 </Tab>
-                <Tab eventKey="Sample Projects" title="Sample Projects" >
+                <Tab eventKey="Sample Projects" title="Sample Projects">
                   <div className="row">
                     <div className="col-md-12">
                       <div className="program-page-title">
@@ -480,7 +481,7 @@ export const ProjectsPage = (props) => {
                                 className={activeFilter === 'small-grid' ? 'sort-btn active' : 'sort-btn'}
                                 onClick={() => {
                                   setActiveFilter('small-grid');
-                                  setSortNumber(5)
+                                  setSortNumber(5);
                                   divideProjects(allProjects);
                                 }}
                               >
@@ -509,77 +510,76 @@ export const ProjectsPage = (props) => {
                     </div>
                   </div>
                 </Tab>
+
                 <Tab eventKey="Favorite Projects" title="Favorite Projects">
-             
                   <div className="row">
                     <div className="col-md-12">
                       <div className="program-page-title">
-                      <h1>Favorite Projects</h1>
-                      {showSampleSort &&
-                        <div className="project-page-settings">
-                          <div className="sort-project-btns">
-                            <div
-                              className={
-                                activeFilter === 'list-grid'
-                                  ? 'sort-btn active'
-                                  : 'sort-btn'
-                              }
-                              onClick={() => {
-                                //const allchunk = []
-                                //var counterSimpl= 0
-                                setActiveFilter('list-grid');
-                                setSortNumber(-1)
-                                divideProjects(allProjects);
-                             }}
-                            >
-                              <FontAwesomeIcon icon="bars" />
-                            </div>
-                            <div
-                              className={
-                                activeFilter === 'small-grid'
-                                  ? 'sort-btn active'
-                                  : 'sort-btn'
-                              }
-                              onClick={() => {
-                                setActiveFilter('small-grid');
-                                setSortNumber(5)
-                                divideProjects(allProjects);
-                               
-                              }}
-                            >
-                              <FontAwesomeIcon icon="grip-horizontal" />
-                            </div>
-                            <div
-                              className={
-                                activeFilter === 'normal-grid'
-                                  ? 'sort-btn active'
-                                  : 'sort-btn'
-                              }
-                              onClick={() => {
-                                setActiveFilter('normal-grid');
-                                setSortNumber(4)
-                                divideProjects(allProjects);
-                              }}
-                            >
-                              <FontAwesomeIcon icon="th-large" />
+                        <h1>Favorite Projects</h1>
+                        {showSampleSort && (
+                          <div className="project-page-settings">
+                            <div className="sort-project-btns">
+                              <div
+                                className={
+                                  activeFilter === 'list-grid'
+                                    ? 'sort-btn active'
+                                    : 'sort-btn'
+                                }
+                                onClick={() => {
+                                  // const allchunk = [];
+                                  // var counterSimpl = 0;
+                                  setActiveFilter('list-grid');
+                                  setSortNumber(-1);
+                                  divideProjects(allProjects);
+                                }}
+                              >
+                                <FontAwesomeIcon icon="bars" />
+                              </div>
+                              <div
+                                className={
+                                  activeFilter === 'small-grid'
+                                    ? 'sort-btn active'
+                                    : 'sort-btn'
+                                }
+                                onClick={() => {
+                                  setActiveFilter('small-grid');
+                                  setSortNumber(5);
+                                  divideProjects(allProjects);
+                                }}
+                              >
+                                <FontAwesomeIcon icon="grip-horizontal" />
+                              </div>
+                              <div
+                                className={
+                                  activeFilter === 'normal-grid'
+                                    ? 'sort-btn active'
+                                    : 'sort-btn'
+                                }
+                                onClick={() => {
+                                  setActiveFilter('normal-grid');
+                                  setSortNumber(4);
+                                  divideProjects(allProjects);
+                                }}
+                              >
+                                <FontAwesomeIcon icon="th-large" />
+                              </div>
                             </div>
                           </div>
-                        
-                        </div>
-                      }
+                        )}
                       </div>
                     </div>
-                   
-                      <div className="col-md-12">
-                        <div className="flex-smaple">
-                              {favProject.length>0?
-                            <SampleProjectCard projects={favProject} type="fav" setShowSampleSort={setShowSampleSort} />:
-                            <Alert variant="warning">No Favorite Projects Found.</Alert>
-                          }
-                        </div>   
+
+                    <div className="col-md-12">
+                      <div className="flex-smaple">
+                        {favProject.length > 0 ? (
+                          <SampleProjectCard projects={favProject} type="fav" setShowSampleSort={setShowSampleSort} />
+                        ) : (
+                          <Alert variant="warning">No Favorite Projects Found.</Alert>
+                        )}
                       </div>
                     </div>
-                  </Tab>
+                  </div>
+                </Tab>
               </Tabs>
             </div>
           </div>
