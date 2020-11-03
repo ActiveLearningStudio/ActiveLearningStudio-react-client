@@ -184,6 +184,22 @@ export default (state = INITIAL_STATE, action) => {
         isInviting: false,
       };
 
+    case actionTypes.INVITE_MEMBERS_REQUEST:
+      return {
+        ...state,
+        isInviting: true,
+      };
+    case actionTypes.INVITE_MEMBERS_SUCCESS:
+      return {
+        ...state,
+        isInviting: false,
+      };
+    case actionTypes.INVITE_MEMBERS_FAIL:
+      return {
+        ...state,
+        isInviting: false,
+      };
+
     case actionTypes.REMOVE_MEMBER_REQUEST:
       return {
         ...state,

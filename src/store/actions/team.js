@@ -170,6 +170,24 @@ export const inviteMemberAction = (teamId, email) => async (dispatch) => {
   }
 };
 
+export const inviteMembersAction = (teamId, users, note) => async (dispatch) => {
+  try {
+    dispatch({ type: actionTypes.INVITE_MEMBERS_REQUEST });
+
+    await teamService.inviteMembers(teamId, users, note);
+
+    dispatch({
+      type: actionTypes.INVITE_MEMBERS_SUCCESS,
+    });
+
+    dispatch(loadTeamAction(teamId));
+  } catch (e) {
+    dispatch({ type: actionTypes.INVITE_MEMBERS_FAIL });
+
+    throw e;
+  }
+};
+
 export const removeMemberAction = (teamId, userId) => async (dispatch) => {
   try {
     dispatch({
