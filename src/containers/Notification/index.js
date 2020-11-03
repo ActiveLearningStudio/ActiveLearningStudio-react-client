@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Header from 'components/Header';
-import Sidebar from 'components/Sidebar';
 import { useSelector } from 'react-redux';
 
+import Header from 'components/Header';
+import Sidebar from 'components/Sidebar';
 import NotificationArea from './NotificationArea';
 
 import './style.scss';
@@ -24,7 +24,39 @@ const Notification = (props) => {
         </div>
         <div className="content-wrapper">
           <div className="notification-wapper">
-            {notificationData.map((msg) => <NotificationArea content={msg} type="header" />)}
+            {notificationData.today && Object.keys(notificationData.today).length > 0
+              && (
+              <>
+                <div className="notification-status"> Today </div>
+                {notificationData.today.map((msg) => (
+                  <NotificationArea content={msg} type="header" />
+                ))}
+              </>
+              )}
+          </div>
+
+          <div className="notification-wapper">
+            {notificationData.yesterday && Object.keys(notificationData.yesterday).length > 0
+              && (
+              <>
+                <div className="notification-status"> Yesterday </div>
+                {notificationData.yesterday.map((msg) => (
+                  <NotificationArea content={msg} type="header" />
+                ))}
+              </>
+              )}
+          </div>
+
+          <div className="notification-wapper">
+            {notificationData.older && Object.keys(notificationData.older).length > 0
+              && (
+              <>
+                <div className="notification-status"> Older </div>
+                {notificationData.older.map((msg) => (
+                  <NotificationArea content={msg} type="header" />
+                ))}
+              </>
+              )}
           </div>
         </div>
       </div>

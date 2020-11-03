@@ -29,7 +29,7 @@ function HeaderNotification() {
         <Dropdown.Toggle className="d-flex align-items-center">
           <div className="notification-alert" onClick={() => dispatch(clearAllNotification())}>
             <img src={notificationImg} alt="notification" />
-            {allNotifications.notificationAlert && <div className="alert-added" />}
+            {allNotifications.notificationAlert > 0 && <div className="alert-added" />}
           </div>
         </Dropdown.Toggle>
 
@@ -39,11 +39,42 @@ function HeaderNotification() {
               <h2>Notifications</h2>
               <h3>Mark all as read</h3>
             </div>
-            {notificationData.map((msg) => (
-              <Dropdown.Item key={msg.id}>
-                <NotificationArea content={msg} />
-              </Dropdown.Item>
-            ))}
+
+            {notificationData.today && Object.keys(notificationData.today).length > 0
+              && (
+              <>
+                <div className="notification-status"> Today </div>
+                {notificationData.today.map((msg) => (
+                  <Dropdown.Item key={msg.id}>
+                    <NotificationArea content={msg} />
+                  </Dropdown.Item>
+                ))}
+              </>
+              )}
+
+            {notificationData.yesterday && Object.keys(notificationData.yesterday).length > 0
+              && (
+              <>
+                <div className="notification-status"> Yesterday </div>
+                {notificationData.yesterday.map((msg) => (
+                  <Dropdown.Item key={msg.id}>
+                    <NotificationArea content={msg} />
+                  </Dropdown.Item>
+                ))}
+              </>
+              )}
+
+            {notificationData.older && Object.keys(notificationData.older).length > 0
+              && (
+              <>
+                <div className="notification-status"> Older </div>
+                {notificationData.older.map((msg) => (
+                  <Dropdown.Item key={msg.id}>
+                    <NotificationArea content={msg} />
+                  </Dropdown.Item>
+                ))}
+              </>
+              )}
           </div>
           <div className="btn-all-notification">
             <Dropdown.Item className="all-notification" as={Link} to="/notification">
