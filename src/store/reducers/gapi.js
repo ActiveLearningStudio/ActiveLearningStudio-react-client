@@ -6,7 +6,7 @@ const defaultAuthState = () => {
   }
 
   return {
-    courses : null
+    courses: null,
   };
 };
 
@@ -23,7 +23,7 @@ const gapiReducer = (state = defaultAuthState(), action) => {
     case GET_STUDENT_COURSES:
       return {
         ...state,
-        courses: action.coursesResponse.data.courses
+        courses: action.coursesResponse.data.courses,
       };
 
     default:

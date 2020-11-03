@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
 
 import gifloader from 'assets/images/dotsloader.gif';
-import { loadH5pResourceSettingsShared, loadH5pResourceXapi } from 'store/actions/resource';
-import * as xAPIHelper from 'helpers/xapi';
+// import * as xAPIHelper from 'helpers/xapi';
+import {
+  loadH5pResourceSettingsShared,
+  // loadH5pResourceXapi,
+} from 'store/actions/resource';
 
 import './style.scss';
 
-let counter = 0;
+// let counter = 0;
 
 const Activity = (props) => {
   const { activityId } = props;
@@ -51,40 +54,40 @@ const Activity = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     loadH5pResourceSettingsShared(activityId)
-    .then(async (data) => {
-      h5pInsertion(data);
-    });
-/*
-    const checkXapi = setInterval(() => {
-        try {
-          const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
-          if (x.H5P) {
-            if (x.H5P.externalDispatcher && xAPIHelper.isxAPINeeded(match.path)) {
-              // eslint-disable-next-line no-use-before-define
-              stopXapi();
-
-              x.H5P.externalDispatcher.on('xAPI', (event) => {
-                if (counter > 0) {
-                  dispatch(loadH5pResourceXapi(JSON.stringify(xAPIHelper.extendStatement(event.data.statement, { ...props }))));
-                }
-                counter += 1;
-              });
-            }
-          }
-        } catch (e) {
-          console.log(e);
-        }
+      .then(async (data) => {
+        h5pInsertion(data);
       });
+    /*
+    const checkXapi = setInterval(() => {
+      try {
+        const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
+        if (x.H5P) {
+          if (x.H5P.externalDispatcher && xAPIHelper.isxAPINeeded(match.path)) {
+            // eslint-disable-next-line no-use-before-define
+            stopXapi();
 
-      const stopXapi = () => clearInterval(checkXapi);
-*/
+            x.H5P.externalDispatcher.on('xAPI', (event) => {
+              if (counter > 0) {
+                dispatch(loadH5pResourceXapi(JSON.stringify(xAPIHelper.extendStatement(event.data.statement, { ...props }))));
+              }
+              counter += 1;
+            });
+          }
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    });
+
+    const stopXapi = () => clearInterval(checkXapi);
+    */
   }, [dispatch, activityId, props]);
 
   return (
     <div id="curriki-h5p-wrapper">
-        <div className="loader_gif">
-            <img style={{ width: '50px' }} src={gifloader} alt="" />
-        </div>
+      <div className="loader_gif">
+        <img style={{ width: '50px' }} src={gifloader} alt="" />
+      </div>
     </div>
   );
 };

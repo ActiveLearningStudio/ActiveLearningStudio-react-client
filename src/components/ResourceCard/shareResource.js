@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
 import Swal from 'sweetalert2';
@@ -16,7 +17,6 @@ const ResourceCardDropdownShare = (props) => {
         shareActivity(resource.id);
         const protocol = `${window.location.href.split('/')[0]}//`;
         confirmAlert({
-          // eslint-disable-next-line react/prop-types
           customUI: ({ onClose }) => (
             <div className="share-project-preview-url project-share-check">
               <br />
@@ -35,9 +35,7 @@ const ResourceCardDropdownShare = (props) => {
               >
                 <input
                   id="urllink_clip"
-                  value={`${protocol + window.location.host}/activity/${
-                    resource.id
-                  }/shared`}
+                  value={`${protocol + window.location.host}/activity/${resource.id}/shared`}
                 />
               </a>
 
