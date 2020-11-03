@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import { GoogleLogin } from 'react-google-login';
 import { Alert } from 'react-bootstrap';
-
 import { getStudentCoursesAction } from 'store/actions/gapi';
 import Activity from 'containers/LMS/GoogleClassroom/Activity';
 import logo from 'assets/images/logo.svg';
