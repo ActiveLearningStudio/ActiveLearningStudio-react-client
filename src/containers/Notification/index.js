@@ -29,7 +29,7 @@ const Notification = (props) => {
               <>
                 <div className="notification-status"> Today </div>
                 {notificationData.today.map((msg) => (
-                  <NotificationArea content={msg} type="header" />
+                  <NotificationArea key={msg.id} content={msg} type="header" />
                 ))}
               </>
               )}
@@ -41,7 +41,7 @@ const Notification = (props) => {
               <>
                 <div className="notification-status"> Yesterday </div>
                 {notificationData.yesterday.map((msg) => (
-                  <NotificationArea content={msg} type="header" />
+                  <NotificationArea key={msg.id} content={msg} type="header" />
                 ))}
               </>
               )}
@@ -53,7 +53,7 @@ const Notification = (props) => {
               <>
                 <div className="notification-status"> Older </div>
                 {notificationData.older.map((msg) => (
-                  <NotificationArea content={msg} type="header" />
+                  <NotificationArea key={msg.id} content={msg} type="header" />
                 ))}
               </>
               )}
