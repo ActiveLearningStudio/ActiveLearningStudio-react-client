@@ -67,24 +67,18 @@ function PreviousLink(props) {
               to={prevLink}
               onClick={() => {
                 if (!prevPlaylist) {
-                  if (showLti) {
-                    Swal.fire({
-                      text: 'You are at the beginning of this project.',
+                  Swal.fire({
+                    text: 'You are at the beginning of this project. Would you like to return to the project preview?',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes',
+                  })
+                    .then((result) => {
+                      if (result.value) {
+                        history.push(`/project/${projectId}/${shared ? 'preview' : 'preview'}`);
+                      }
                     });
-                  } else {
-                    Swal.fire({
-                      text: 'You are at the beginning of this project. Would you like to return to the project preview?',
-                      showCancelButton: true,
-                      confirmButtonColor: '#3085d6',
-                      cancelButtonColor: '#d33',
-                      confirmButtonText: 'Yes',
-                    })
-                      .then((result) => {
-                        if (result.value) {
-                          history.push(`/project/${projectId}/${shared ? 'preview' : 'preview'}`);
-                        }
-                      });
-                  }
                 }
               }}
             >
