@@ -15,9 +15,6 @@ function GclassActivityPage(props) {
   const [authorized, setAuthorized] = useState(null);
 
   useEffect(() => {
-    console.log('courses?');
-    console.log(courses);
-    console.log(courseId);
     if(courses === null)
         return;
 
@@ -27,11 +24,9 @@ function GclassActivityPage(props) {
             found = true;
     }
     setAuthorized(found);
-  }, [courses]);
+  }, [courses, courseId]);
 
   const handleLogin = (data) => {
-    console.log("logged in");
-    console.log(data);
     getStudentCourses(data.accessToken);
   };
 
