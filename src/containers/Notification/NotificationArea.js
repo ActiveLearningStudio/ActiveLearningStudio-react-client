@@ -2,17 +2,35 @@ import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
-// import flashCards from 'assets/images/flash-cards.png';
+import { deleteNotification } from 'store/actions/notification';
+
+import './style.scss';
 
 const NotificationArea = (props) => {
   const { content, type } = props;
+  const dispatch = useDispatch();
+
+  let userNameImg = '';
+  let firstLetter = '';
+  let lastLetter = '';
+
+  if (content.notifiable) {
+    if (content.notifiable.first_name) {
+      [firstLetter] = content.notifiable.first_name;
+    }
+    if (content.notifiable.last_name) {
+      [lastLetter] = content.notifiable.last_name;
+    }
+    userNameImg = firstLetter + lastLetter;
+  }
 
   return (
     <div className="notification-area">
       <div className="user-detail">
         {/* <img src={flashCards} alt="" /> */}
-        <div className="user-icons">MQ</div>
+        <div className="user-icons">{userNameImg.toUpperCase()}</div>
         <p>{!!content.data && content.data.message}</p>
       </div>
 
@@ -23,7 +41,7 @@ const NotificationArea = (props) => {
               <FontAwesomeIcon icon="ellipsis-v" />
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item>
+              <Dropdown.Item onClick={() => dispatch(deleteNotification(content.id))}>
                 <FontAwesomeIcon icon="times-circle" className="mr-2" />
                 Delete
               </Dropdown.Item>
@@ -31,7 +49,7 @@ const NotificationArea = (props) => {
           </Dropdown>
         )}
         <div className="timer">
-          20 min
+          {content.created_at}
         </div>
       </div>
     </div>
