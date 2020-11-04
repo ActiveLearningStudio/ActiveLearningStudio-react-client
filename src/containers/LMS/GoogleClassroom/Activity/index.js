@@ -1,15 +1,11 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-
 import { useDispatch } from 'react-redux';
-
 import gifloader from 'assets/images/dotsloader.gif';
 import * as xAPIHelper from 'helpers/xapi';
-import {
-  loadH5pResourceSettingsShared,
-  loadH5pResourceXapi,
-} from 'store/actions/resource';
+import { loadH5pResourceXapi } from 'store/actions/resource';
+import { loadH5pResourceSettings } from 'store/actions/gapi';
 
 import './style.scss';
 
@@ -53,7 +49,7 @@ const Activity = (props) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    loadH5pResourceSettingsShared(activityId)
+    loadH5pResourceSettings(activityId)
       .then(async (data) => {
         h5pInsertion(data);
       });

@@ -91,3 +91,5 @@ export const getStudentCoursesAction = (token) => async (dispatch) => {
     coursesResponse,
   });
 };
+
+export const loadH5pResourceSettings = (activityId) => gapiService.h5pResourceSettings(activityId);
