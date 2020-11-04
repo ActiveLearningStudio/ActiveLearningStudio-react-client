@@ -34,15 +34,10 @@ export const deleteNotification = (id) => async (dispatch) => {
 
 export const cloneDuplicationRequest = (userId) => async (dispatch) => {
   const echo = new Echo(socketConnection.notificationSocket());
-  echo.private(`user-channel.${userId}`).listen('.UserEvent', (ev) => {
-    const addedData = {
-      data: {
-        message: ev.message,
-      },
-    };
+  echo.private(`App.User.${userId}`).notification((msg) => {
     dispatch({
       type: actionTypes.ADD_SINGLE_NOTIFICATION,
-      newNotifications: addedData,
+      newNotifications: msg,
     });
   });
 };
