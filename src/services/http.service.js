@@ -41,7 +41,7 @@ function remove(url, data, headers = {}) {
   });
 }
 
-function notifcatonSocket() {
+function notificationSocket() {
   return {
     host: `${window.location.origin}:4003`,
     auth: {
@@ -58,5 +58,5 @@ export default {
   post,
   put,
   remove,
-  notifcatonSocket,
+  notificationSocket,
 };

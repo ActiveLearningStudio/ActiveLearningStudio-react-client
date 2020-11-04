@@ -154,17 +154,35 @@ export const inviteTeamMemberAction = (user) => async (dispatch) => {
 
 export const inviteMemberAction = (teamId, email) => async (dispatch) => {
   try {
-    dispatch({ type: actionTypes.INVITE_MEMBER_REQUEST });
+    dispatch({ type: actionTypes.INVITE_MEMBERS_REQUEST });
 
     await teamService.inviteMember(teamId, email);
 
     dispatch({
-      type: actionTypes.INVITE_MEMBER_SUCCESS,
+      type: actionTypes.INVITE_MEMBERS_SUCCESS,
     });
 
     dispatch(loadTeamAction(teamId));
   } catch (e) {
-    dispatch({ type: actionTypes.INVITE_MEMBER_FAIL });
+    dispatch({ type: actionTypes.INVITE_MEMBERS_FAIL });
+
+    throw e;
+  }
+};
+
+export const inviteMembersAction = (teamId, users, note) => async (dispatch) => {
+  try {
+    dispatch({ type: actionTypes.INVITE_MEMBERS_REQUEST });
+
+    await teamService.inviteMembers(teamId, users, note);
+
+    dispatch({
+      type: actionTypes.INVITE_MEMBERS_SUCCESS,
+    });
+
+    dispatch(loadTeamAction(teamId));
+  } catch (e) {
+    dispatch({ type: actionTypes.INVITE_MEMBERS_FAIL });
 
     throw e;
   }
