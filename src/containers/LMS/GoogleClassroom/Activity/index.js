@@ -5,18 +5,18 @@ import { withRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import gifloader from 'assets/images/dotsloader.gif';
-// import * as xAPIHelper from 'helpers/xapi';
+import * as xAPIHelper from 'helpers/xapi';
 import {
   loadH5pResourceSettingsShared,
-  // loadH5pResourceXapi,
+  loadH5pResourceXapi,
 } from 'store/actions/resource';
 
 import './style.scss';
 
-// let counter = 0;
+let counter = 0;
 
 const Activity = (props) => {
-  const { activityId } = props;
+  const { activityId, match } = props;
 
   const dispatch = useDispatch();
 
@@ -57,7 +57,7 @@ const Activity = (props) => {
       .then(async (data) => {
         h5pInsertion(data);
       });
-    /*
+
     const checkXapi = setInterval(() => {
       try {
         const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
@@ -80,8 +80,8 @@ const Activity = (props) => {
     });
 
     const stopXapi = () => clearInterval(checkXapi);
-    */
-  }, [dispatch, activityId, props]);
+
+  }, [dispatch, activityId, props, match.path]);
 
   return (
     <div id="curriki-h5p-wrapper">
