@@ -111,6 +111,11 @@
     overflow-y: auto;
     overflow-x: hidden;
 
+    .responsive-pad{
+      padding-left: 2px;
+      padding-right: 2px;
+    }
+
     .row {
       padding: 0 20px;
     }
