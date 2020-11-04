@@ -68,7 +68,7 @@ const AppRouter = () => {
         <PrivateRoute exact path="/change-password" component={ChangePasswordPage} />
 
         <PrivateRoute exact path="/dashboard" component={DashboardPage} />
-
+        <PrivateRoute exact path="/notification" component={NotificationPage} />
         <PrivateRoute exact path="/teams" component={TeamsPage} overview />
         <PrivateRoute exact path="/teams/create-team" component={TeamsPage} creation />
         <PrivateRoute exact path="/teams/:teamId" component={TeamsPage} teamShow />

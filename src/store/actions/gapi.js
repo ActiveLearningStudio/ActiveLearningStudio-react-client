@@ -8,7 +8,7 @@ import {
   GOOGLE_SHARE,
   LOAD_GOOGLE_CLASSROOM_COURSES,
   ALL_COURSES,
-  GET_STUDENT_COURSES
+  GET_STUDENT_COURSES,
 } from '../actionTypes';
 
 export const googleClassRoomLogin = (id) => ({
@@ -88,6 +88,6 @@ export const getStudentCoursesAction = (token) => async (dispatch) => {
   const coursesResponse = await gapiService.getStudentCourses(token);
   dispatch({
     type: GET_STUDENT_COURSES,
-    coursesResponse
+    coursesResponse,
   });
 };

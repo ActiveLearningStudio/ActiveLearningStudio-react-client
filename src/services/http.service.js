@@ -43,9 +43,9 @@ function remove(url, data, headers = {}) {
 
 function notifcatonSocket() {
   return {
-    host: `http://${'dev.currikistudio.org'}:4003/`,
+    host: `${window.location.origin}:4003`,
     auth: {
-      headers: getAuthHeader(),
+      headers: { ...getAuthHeader(), Accept: 'application/json' },
     },
     broadcaster: 'socket.io',
     client: socketio,
