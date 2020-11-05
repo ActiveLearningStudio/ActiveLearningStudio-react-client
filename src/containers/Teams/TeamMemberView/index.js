@@ -5,8 +5,8 @@ import Swal from 'sweetalert2';
 
 import { inviteMembersAction, removeMemberAction } from 'store/actions/team';
 import { searchUsersAction } from 'store/actions/auth';
+import InviteDialog from 'components/InviteDialog';
 import TeamMember from './TeamMember';
-import InviteDialog from './InviteDialog';
 
 import './style.scss';
 

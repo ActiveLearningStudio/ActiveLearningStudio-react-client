@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 
 import { FadeDiv } from 'utils';
 import { inviteTeamMembersAction } from 'store/actions/team';
+import InviteDialog from 'components/InviteDialog';
 import MemberItem from './MemberItem';
-import InviteDialog from '../../../TeamMemberView/InviteDialog';
 
 import './style.scss';
 
