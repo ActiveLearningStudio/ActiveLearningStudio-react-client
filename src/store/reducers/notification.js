@@ -1,7 +1,9 @@
 import * as actionTypes from '../actionTypes';
 
 const INITIAL_STATE = {
-  notification: {},
+  notification: {
+    today: [],
+  },
   notificationAlert: 0,
 };
 

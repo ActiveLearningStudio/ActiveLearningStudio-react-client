@@ -45,6 +45,7 @@
         font-size: 24px;
         font-weight: 300;
         color: #607a9b;
+        word-break: break-word;
 
         &:hover {
           text-decoration: none;
@@ -79,6 +80,7 @@
         letter-spacing: 0;
         color: #464646;
         text-align: justify;
+        word-break: break-word;
       }
 
       .lessons {
@@ -122,7 +124,7 @@
 
   .button-bottom {
     margin: -10px;
-    display: none;
+    display: flex;
 
     .fa {
       padding-right: 3px;
@@ -142,6 +144,7 @@
       color: #5952c6;
       letter-spacing: 0;
       opacity: 1;
+      background-color: #fff;
 
       &:hover {
         background-color: #5952c6;

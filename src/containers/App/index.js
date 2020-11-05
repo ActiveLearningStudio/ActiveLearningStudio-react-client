@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 
 import logo from 'assets/images/logo.svg';
 import { getUserAction } from 'store/actions/auth';
-// import { cloneDuplicationRequest } from 'store/actions/notification';
+import { cloneDuplicationRequest } from 'store/actions/notification';
 import AppRouter from 'routers/AppRouter';
 
 import './style.scss';
@@ -21,7 +21,7 @@ function App(props) {
 
   useEffect(() => {
     if (userDetails) {
-      // dispatch(cloneDuplicationRequest(userDetails.id));
+      dispatch(cloneDuplicationRequest(userDetails.id));
     }
   }, [dispatch, userDetails]);
 
@@ -90,6 +90,7 @@ function App(props) {
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.GeoGebraIM68Math-1.0/scripts/deployggb.js?ver=1.0.2`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.GeoGebraIM68Math-1.0/scripts/geogebra.js?ver=1.0.2`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.DocumentsUpload-1.0/scripts/DocumentsUpload.js`,
+      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.MemoryGame-1.3/memory-game.js?ver=1.3.5`,
     ];
 
     newScripts.forEach((value) => {
