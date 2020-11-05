@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 import playlistService from 'services/playlist.service';
 import * as actionTypes from '../actionTypes';
@@ -6,9 +7,13 @@ import * as actionTypes from '../actionTypes';
 export const createPlaylistAction = (projectId, title) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.CREATE_PLAYLIST_REQUEST });
-
+    Swal.fire({
+      allowOutsideClick: false,
+      onRender: () => {
+        Swal.showLoading();
+      },
+    });
     const { playlist } = await playlistService.create(projectId, { title });
-
     dispatch({
       type: actionTypes.CREATE_PLAYLIST_SUCCESS,
       payload: { playlist },

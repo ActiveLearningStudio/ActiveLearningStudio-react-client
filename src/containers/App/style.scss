@@ -97,13 +97,7 @@
 .list-header {
   position: relative;
   min-height: 20px;
-  //padding: 10px 8px;
   flex: 0 0 auto;
-
-  &.is-menu-shown,
-  &.is-subscribe-shown {
-    //padding-right: 36px;
-  }
 }
 
 .list-body {
@@ -187,6 +181,7 @@
         color: #464646;
         opacity: 1;
         text-transform: capitalize;
+        word-break: break-word;
       }
     }
   }
@@ -1933,6 +1928,7 @@ a:hover {
     height: auto;
     padding: 0;
     max-width: 268px;
+    word-break: break-all;
   }
 
   .list {

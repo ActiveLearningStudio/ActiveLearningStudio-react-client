@@ -59,7 +59,7 @@ let ResourceSelectActivity = (props) => {
   }, [loadResourceItems, resource.newResource.activityTypeId]);
 
   const questionsContent = activities.map((activity) => (
-    <div className="col-md-3" key={activity.id}>
+    <div className="col-lg-4 col-xl-3 responsive-pad" key={activity.id}>
       <div className="activity-item with_options">
         <label className="question-label">
           <Field

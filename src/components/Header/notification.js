@@ -4,7 +4,7 @@ import { Dropdown } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { getAllnotification, clearAllNotification } from 'store/actions/notification';
+import { getAllNotifications, clearAllNotification } from 'store/actions/notification';
 import NotificationArea from 'containers/Notification/NotificationArea';
 import notificationImg from 'assets/images/notification.png';
 
@@ -16,7 +16,7 @@ function HeaderNotification() {
   const [notificationData, setNotificationData] = useState([]);
 
   useEffect(() => {
-    dispatch(getAllnotification());
+    dispatch(getAllNotifications());
   }, [dispatch]);
 
   useEffect(() => {

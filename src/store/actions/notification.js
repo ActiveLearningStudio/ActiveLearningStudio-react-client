@@ -5,7 +5,7 @@ import notification from 'services/notification.service';
 import socketConnection from 'services/http.service';
 import * as actionTypes from '../actionTypes';
 
-export const getAllnotification = () => async (dispatch) => {
+export const getAllNotifications = () => async (dispatch) => {
   const notificationData = await notification.allNotifications();
   if (notificationData) {
     dispatch({
@@ -33,16 +33,11 @@ export const deleteNotification = (id) => async (dispatch) => {
 };
 
 export const cloneDuplicationRequest = (userId) => async (dispatch) => {
-  const echo = new Echo(socketConnection.notifcatonSocket());
-  echo.private(`user-channel.${userId}`).listen('.UserEvent', (ev) => {
-    const addedData = {
-      data: {
-        message: ev.message,
-      },
-    };
+  const echo = new Echo(socketConnection.notificationSocket());
+  echo.private(`App.User.${userId}`).notification((msg) => {
     dispatch({
       type: actionTypes.ADD_SINGLE_NOTIFICATION,
-      newNotifications: addedData,
+      newNotifications: msg,
     });
   });
 };

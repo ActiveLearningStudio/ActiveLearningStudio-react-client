@@ -168,17 +168,17 @@ export default (state = INITIAL_STATE, action) => {
         teams: action.payload.teams,
       };
 
-    case actionTypes.INVITE_MEMBER_REQUEST:
+    case actionTypes.INVITE_MEMBERS_REQUEST:
       return {
         ...state,
         isInviting: true,
       };
-    case actionTypes.INVITE_MEMBER_SUCCESS:
+    case actionTypes.INVITE_MEMBERS_SUCCESS:
       return {
         ...state,
         isInviting: false,
       };
-    case actionTypes.INVITE_MEMBER_FAIL:
+    case actionTypes.INVITE_MEMBERS_FAIL:
       return {
         ...state,
         isInviting: false,
@@ -201,63 +201,26 @@ export default (state = INITIAL_STATE, action) => {
       };
 
     case actionTypes.ADD_TEAM_PROJECTS_REQUEST:
-      return {
-        ...state,
-        isLoading: true,
-      };
-    case actionTypes.ADD_TEAM_PROJECTS_SUCCESS:
-      return {
-        ...state,
-        isLoading: false,
-      };
-    case actionTypes.ADD_TEAM_PROJECTS_FAIL:
-      return {
-        ...state,
-        isLoading: false,
-      };
-
     case actionTypes.REMOVE_PROJECT_REQUEST:
-      return {
-        ...state,
-        isLoading: true,
-      };
-    case actionTypes.REMOVE_PROJECT_SUCCESS:
-      return {
-        ...state,
-        isLoading: false,
-      };
-    case actionTypes.REMOVE_PROJECT_FAIL:
-      return {
-        ...state,
-        isLoading: false,
-      };
-
     case actionTypes.ADD_MEMBERS_TO_PROJECT_REQUEST:
-      return {
-        ...state,
-        isLoading: true,
-      };
-    case actionTypes.ADD_MEMBERS_TO_PROJECT_SUCCESS:
-      return {
-        ...state,
-        isLoading: false,
-      };
-    case actionTypes.ADD_MEMBERS_TO_PROJECT_FAIL:
-      return {
-        ...state,
-        isLoading: false,
-      };
-
     case actionTypes.REMOVE_MEMBER_FROM_PROJECT_REQUEST:
       return {
         ...state,
         isLoading: true,
       };
+
+    case actionTypes.ADD_TEAM_PROJECTS_SUCCESS:
+    case actionTypes.REMOVE_PROJECT_SUCCESS:
+    case actionTypes.ADD_MEMBERS_TO_PROJECT_SUCCESS:
     case actionTypes.REMOVE_MEMBER_FROM_PROJECT_SUCCESS:
       return {
         ...state,
         isLoading: false,
       };
+
+    case actionTypes.ADD_TEAM_PROJECTS_FAIL:
+    case actionTypes.REMOVE_PROJECT_FAIL:
+    case actionTypes.ADD_MEMBERS_TO_PROJECT_FAIL:
     case actionTypes.REMOVE_MEMBER_FROM_PROJECT_FAIL:
       return {
         ...state,
