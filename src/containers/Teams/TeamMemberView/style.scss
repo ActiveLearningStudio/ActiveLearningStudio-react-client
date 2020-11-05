@@ -64,6 +64,11 @@ $filled: #44ca92;
                 background: #FFFFFF !important;
                 border: solid 1px #a4a4a4 !important;
                 color: #a4a4a4 !important;
+
+                &:hover {
+                  background: #A4A4A4 !important;
+                  color: #FFFFFF !important;
+                }
               }
 
               &:disabled {
@@ -92,20 +97,27 @@ $filled: #44ca92;
               .email-input {
                 position: relative;
                 margin: 10px 0;
-                padding: 0 1em;
+                padding: 0 1.5em 0 0.5em;
                 background: #FFFFFF;
                 border: solid 1px #C4C4C4;
 
                 .input-box {
-                  padding: 8px 0;
+                  padding: 5px 0;
                   display: flex;
                   flex-wrap: wrap;
+                  cursor: text;
 
                   input {
-                    padding: 0 11px;
+                    max-width: 145px;
+                    padding: 0 10px 0 5px;
                     background: #FFFFFF;
                     border: solid 1px #FFFFFF;
                     flex: 1;
+                  }
+
+                  svg {
+                    margin: 0 -17.5px -1px 0;
+                    animation: spin 1s linear infinite;
                   }
 
                   .user-chip {
@@ -132,9 +144,8 @@ $filled: #44ca92;
                     }
 
                     &:hover {
-                      background: #333333;
                       border-radius: 50%;
-                      color: #ffffff;
+                      color: #252525;
                     }
                   }
 
@@ -163,12 +174,12 @@ $filled: #44ca92;
                   background: #fff;
                   border: solid 1px #e5e5e5;
 
-                  .member-item {
+                  .invite-member-item {
                     margin: 0;
                     padding: 7px 1em;
                     display: flex;
 
-                    .member-name-mark {
+                    .invite-member-name-mark {
                       position: relative;
                       width: 30px;
                       height: 30px;
@@ -189,7 +200,7 @@ $filled: #44ca92;
                       }
                     }
 
-                    .member-info {
+                    .invite-member-info {
                       margin: 0 0 0 13px;
                       display: flex;
                       flex-direction: column;
@@ -197,7 +208,7 @@ $filled: #44ca92;
                       align-self: center;
                       color: #636363;
 
-                      .member-name {
+                      .invite-member-name {
                         margin: 0;
                         font-size: 14px;
                         color: #464646;

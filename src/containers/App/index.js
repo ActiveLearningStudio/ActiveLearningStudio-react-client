@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 
 import logo from 'assets/images/logo.svg';
 import { getUserAction } from 'store/actions/auth';
-import { cloneDuplicationRequest } from 'store/actions/notification';
+// import { cloneDuplicationRequest } from 'store/actions/notification';
 import AppRouter from 'routers/AppRouter';
 
 import './style.scss';
@@ -21,7 +21,7 @@ function App(props) {
 
   useEffect(() => {
     if (userDetails) {
-      dispatch(cloneDuplicationRequest(userDetails.id));
+      // dispatch(cloneDuplicationRequest(userDetails.id));
     }
   }, [dispatch, userDetails]);
 
