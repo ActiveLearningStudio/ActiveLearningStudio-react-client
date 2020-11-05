@@ -1,4 +1,4 @@
-import { GOOGLE_CLASSROOM_LOGIN, GET_STUDENT_COURSES } from '../actionTypes';
+import { GOOGLE_CLASSROOM_LOGIN, GET_STUDENT_COURSES, SET_STUDENT_AUTH } from '../actionTypes';
 
 const defaultAuthState = () => {
   if (localStorage.getItem('gapi')) {
@@ -18,6 +18,12 @@ const gapiReducer = (state = defaultAuthState(), action) => {
         displayName: action.displayName,
         id: action.id,
         role: action.role,
+      };
+
+    case SET_STUDENT_AUTH:
+      return {
+        ...state,
+        student: action.studentData,
       };
 
     case GET_STUDENT_COURSES:

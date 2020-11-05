@@ -4,35 +4,43 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { GoogleLogin } from 'react-google-login';
 import { Alert } from 'react-bootstrap';
-
 import logo from 'assets/images/logo.svg';
-import { getStudentCoursesAction } from 'store/actions/gapi';
+import { setStudentAuthAction, getStudentCoursesAction } from 'store/actions/gapi';
 import Activity from 'containers/LMS/GoogleClassroom/Activity';
-
 import './styles.scss';
 
 function GclassActivityPage(props) {
-  const { match, getStudentCourses, courses } = props;
+  const { 
+    match, 
+    student,
+    courses, 
+    setStudentAuth, 
+    getStudentCourses 
+  } = props;
   const { activityId, courseId } = match.params;
   const [authorized, setAuthorized] = useState(null);
 
+  // Gets student courses
   useEffect(() => {
-    if (courses === null) {
+    getStudentCourses(student.access_token);
+  },[student]);
+
+  // Checks user membership in the course
+  useEffect(() => {
+    if (courses === null)
       return;
-    }
 
     let found = false;
     // eslint-disable-next-line no-restricted-syntax
     for (const i in courses) {
-      if (courses[i].id === courseId) {
+      if (courses[i].id === courseId)
         found = true;
-      }
     }
     setAuthorized(found);
-  }, [courses]);
+  }, [courses, courseId]);
 
   const handleLogin = (data) => {
-    getStudentCourses(data.accessToken);
+    setStudentAuth(data);
   };
 
   return (
@@ -74,6 +82,7 @@ function GclassActivityPage(props) {
                           buttonText="Login"
                           onSuccess={handleLogin}
                           onFailure={handleLogin}
+                          scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students  https://www.googleapis.com/auth/classroom.rosters.readonly"
                           cookiePolicy="single_host_origin"
                         />
                       </div>
@@ -91,8 +100,10 @@ function GclassActivityPage(props) {
 
 GclassActivityPage.propTypes = {
   match: PropTypes.object.isRequired,
+  student: PropTypes.object.isRequired,
   courses: PropTypes.array.isRequired,
   getStudentCourses: PropTypes.func.isRequired,
+  setStudentAuth: PropTypes.func.isRequired,
 };
 
 GclassActivityPage.defaultProps = {
@@ -103,6 +114,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  setStudentAuth: (authData) => dispatch(setStudentAuthAction(authData)),
   getStudentCourses: (token) => dispatch(getStudentCoursesAction(token)),
 });
 

@@ -5,6 +5,15 @@ import httpService from './http.service';
 const { apiVersion } = config;
 const gapiBaseUrl = 'https://classroom.googleapis.com/v1';
 
+const getStudentProfile = (token) => axios({
+  method: 'get',
+  url: `${gapiBaseUrl}/userProfiles/me`,
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+})
+.then((response) => response);
+
 const getStudentCourses = (token) => axios({
   method: 'get',
   url: `${gapiBaseUrl}/courses`,
@@ -12,7 +21,7 @@ const getStudentCourses = (token) => axios({
     Authorization: `Bearer ${token}`,
   },
 })
-  .then((response) => response);
+.then((response) => response);
 
 const h5pResourceSettings = (activityId) => httpService
 .get(`/${apiVersion}/google-classroom/activities/${activityId}/h5p-resource-settings`)
@@ -20,6 +29,7 @@ const h5pResourceSettings = (activityId) => httpService
 .catch((err) => Promise.reject(err.response.data));
 
 export default {
+  getStudentProfile,
   getStudentCourses,
   h5pResourceSettings
 };

@@ -1,5 +1,4 @@
 import Swal from 'sweetalert2';
-
 import searchService from 'services/search.service';
 import gapiService from 'services/gapi.service';
 import {
@@ -9,6 +8,7 @@ import {
   LOAD_GOOGLE_CLASSROOM_COURSES,
   ALL_COURSES,
   GET_STUDENT_COURSES,
+  SET_STUDENT_AUTH
 } from '../actionTypes';
 
 export const googleClassRoomLogin = (id) => ({
@@ -81,6 +81,20 @@ export const googleClassRoomLoginFailureAction = (response) => async (dispatch) 
   } catch (e) {
     console.log(e);
   }
+};
+
+// Set student auth data
+export const setStudentAuthAction = (data) => async (dispatch) => {
+  // Auth data doesn't provide the google user ID so we get profile data
+  const studentProfile = await gapiService.getStudentProfile(studentData.access_token);
+
+  dispatch({
+    type: SET_STUDENT_AUTH,
+    studentData: {
+      ...data,
+      ...studentProfile
+    }
+  });
 };
 
 // Gets courses for student
