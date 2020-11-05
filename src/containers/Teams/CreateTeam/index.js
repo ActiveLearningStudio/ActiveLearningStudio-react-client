@@ -55,7 +55,7 @@ function CreateTeam(props) {
   const handleSubmit = useCallback((projectIds) => {
     createTeam({
       ...team.selectedTeam,
-      users: team.selectedTeam.users ? team.selectedTeam.users.map((u) => u.id) : [],
+      users: team.selectedTeam.users || [],
       projects: projectIds,
     })
       .then(() => {
