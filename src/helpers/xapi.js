@@ -21,36 +21,32 @@ export function isxAPINeeded(currentRoute) {
   return allowedH5PActvityPaths().includes(currentRoute);
 }
 
-export function extendStatement(statement, props) {
-  const statementExtended = statement;
-  const platform = H5PActvityPathMapToPlatform().find((el) => el[props.match.path]);
-  if (platform !== undefined) {
-    const platformName = platform[props.match.path];
-    statementExtended.context.platform = platformName;
-  }
+export function extendStatement(statement, params) {
+  const {
+    path,
+    activityId,
+    submissionId,
+    studentId,
+  } = params;
+  const platform = H5PActvityPathMapToPlatform().find((el) => el[path]);
+  if (platform === undefined) return;
 
-  // TODO (1) - in new prevew we will not have 'parentPlaylist' in props so handle it accordingly. probably need to remove if statment
-  if (props.parentPlaylist !== undefined) {
-    // TODO (2) - need to set ativityPreviewUrl constant on new pattren of http://localhost:3000/activity/18041/submission/Cg4I4uew5KIEEL_tuLHoBQ
-    // it hold the debate of getting submission id
-    const ativityPreviewUrl = `${window.location.origin}/project/${props.parentPlaylist.project_id
-    }/playlist/${props.parentPlaylist.id
-    }/activity/${props.activityId}/preview`;
-    const grouping = [{ objectType: 'Activity', id: ativityPreviewUrl }];
-    statementExtended.context.contextActivities.grouping = grouping;
-  }
-
-  // TODO (3) - update prop "statementExtended.actor" according to requirment mentioned below. This is xAPI statement 'Agent' property enhancement
-  // it holds the debate we have around getting gc-user-id
-  /*
+  const statementExtended = { ...statement };
+  const grouping = [
     {
-      "objectType": "Agent",
-      "account": {
-        "homePage": "https://classroom.google.com"
-        "name": "[gc-user-id]"
-      }
-    }
-  */
-
+      objectType: 'Activity',
+      id: `${window.location.origin}/activity/${activityId}/submission/${submissionId}`,
+    },
+  ];
+  const actor = {
+    objectType: 'Agent',
+    account: {
+      homePage: 'https://classroom.google.com',
+      name: studentId,
+    },
+  };
+  statementExtended.context.platform = platform[path];
+  statementExtended.context.contextActivities.grouping = grouping;
+  statementExtended.actor = actor;
   return statementExtended;
 }

@@ -8,7 +8,12 @@ import {
   LOAD_GOOGLE_CLASSROOM_COURSES,
   ALL_COURSES,
   GET_STUDENT_COURSES,
-  SET_STUDENT_AUTH
+  SET_STUDENT_AUTH,
+  GET_H5P_SETTINGS,
+  GET_SUBMISSION,
+  TURNED_IN_ACTIVITY,
+  GET_SUMMARY_AUTH,
+  GET_OUTCOME_SUMMARY,
 } from '../actionTypes';
 
 export const googleClassRoomLogin = (id) => ({
@@ -86,14 +91,14 @@ export const googleClassRoomLoginFailureAction = (response) => async (dispatch) 
 // Set student auth data
 export const setStudentAuthAction = (data) => async (dispatch) => {
   // Auth data doesn't provide the google user ID so we get profile data
-  const studentProfile = await gapiService.getStudentProfile(studentData.access_token);
+  const studentProfile = await gapiService.getStudentProfile(data.accessToken);
 
   dispatch({
     type: SET_STUDENT_AUTH,
     studentData: {
-      ...data,
-      ...studentProfile
-    }
+      auth: data,
+      profile: studentProfile,
+    },
   });
 };
 
@@ -106,4 +111,42 @@ export const getStudentCoursesAction = (token) => async (dispatch) => {
   });
 };
 
-export const loadH5pResourceSettings = (activityId) => gapiService.h5pResourceSettings(activityId);
+export const loadH5pResourceSettings = (activityId) => async (dispatch) => {
+  const h5pSettings = await gapiService.h5pResourceSettings(activityId);
+  dispatch({
+    type: GET_H5P_SETTINGS,
+    h5pSettings,
+  });
+};
+
+export const getSubmissionAction = (classworkId, courseId, auth) => async (dispatch) => {
+  const submission = await gapiService.getSubmission(classworkId, courseId, JSON.stringify(auth.tokenObj));
+  dispatch({
+    type: GET_SUBMISSION,
+    submission,
+  });
+};
+
+export const turnInAction = (classworkId, courseId, auth) => async (dispatch) => {
+  const turnedIn = await gapiService.turnIn(classworkId, courseId, JSON.stringify(auth.tokenObj));
+  dispatch({
+    type: TURNED_IN_ACTIVITY,
+    turnedIn,
+  });
+};
+
+export const getSummaryAuthAction = (auth, courseId, classworkId, submissionId) => async (dispatch) => {
+  const summaryAuth = await gapiService.getSummaryAuth(JSON.stringify(auth.tokenObj), courseId, classworkId, submissionId);
+  dispatch({
+    type: GET_SUMMARY_AUTH,
+    summaryAuth,
+  });
+};
+
+export const getOutcomeSummaryAction = (studentId, activityId) => async (dispatch) => {
+  const outcomeSummary = await gapiService.getOutcomeSummary(studentId, activityId);
+  dispatch({
+    type: GET_OUTCOME_SUMMARY,
+    outcomeSummary,
+  });
+};

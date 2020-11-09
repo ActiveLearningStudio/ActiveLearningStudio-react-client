@@ -1,4 +1,13 @@
-import { GOOGLE_CLASSROOM_LOGIN, GET_STUDENT_COURSES, SET_STUDENT_AUTH } from '../actionTypes';
+import {
+  GOOGLE_CLASSROOM_LOGIN,
+  GET_STUDENT_COURSES,
+  SET_STUDENT_AUTH,
+  GET_H5P_SETTINGS,
+  GET_SUBMISSION,
+  TURNED_IN_ACTIVITY,
+  GET_SUMMARY_AUTH,
+  GET_OUTCOME_SUMMARY,
+} from '../actionTypes';
 
 const defaultAuthState = () => {
   if (localStorage.getItem('gapi')) {
@@ -7,6 +16,11 @@ const defaultAuthState = () => {
 
   return {
     courses: null,
+    student: null,
+    submission: null,
+    h5pSettings: null,
+    summaryAuth: null,
+    outcomeSummary: null,
   };
 };
 
@@ -30,6 +44,33 @@ const gapiReducer = (state = defaultAuthState(), action) => {
       return {
         ...state,
         courses: action.coursesResponse.data.courses,
+      };
+
+    case GET_SUBMISSION:
+      return {
+        ...state,
+        submission: action.submission.submission,
+      };
+
+    case GET_H5P_SETTINGS:
+      return {
+        ...state,
+        h5pSettings: action.h5pSettings,
+      };
+
+    case TURNED_IN_ACTIVITY:
+      return state;
+
+    case GET_SUMMARY_AUTH:
+      return {
+        ...state,
+        summaryAuth: action.summaryAuth,
+      };
+
+    case GET_OUTCOME_SUMMARY:
+      return {
+        ...state,
+        outcomeSummary: action.outcomeSummary,
       };
 
     default:

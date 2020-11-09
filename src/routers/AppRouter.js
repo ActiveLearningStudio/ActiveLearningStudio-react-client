@@ -41,6 +41,7 @@ const TeamsPage = loadable(() => import('../containers/Teams'));
 const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
 const AddTeamProjectMemberPage = loadable(() => import('../containers/Teams/AddMembers'));
 const GclassActivityPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassActivityPage'));
+const GclassSummaryPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassSummaryPage'));
 
 const AppRouter = () => {
   useEffect(() => {
@@ -181,6 +182,12 @@ const AppRouter = () => {
           exact
           path="/gclass/launch/:userId/:courseId/:activityId/:classworkId"
           component={GclassActivityPage}
+        />
+
+        <OpenRoute
+          exact
+          path="/gclass/summary/:userId/:courseId/:activityId/:gClassworkId/:submissionId"
+          component={GclassSummaryPage}
         />
 
         <PrivateRoute

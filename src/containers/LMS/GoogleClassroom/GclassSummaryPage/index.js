@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -6,44 +6,16 @@ import { GoogleLogin } from 'react-google-login';
 import { Alert } from 'react-bootstrap';
 import logo from 'assets/images/logo.svg';
 import {
-  setStudentAuthAction,
-  getStudentCoursesAction,
+  getSummaryAuthAction,
 } from 'store/actions/gapi';
-import Activity from 'containers/LMS/GoogleClassroom/Activity';
+import ActivitySummary from 'containers/LMS/GoogleClassroom/ActivitySummary';
 import './styles.scss';
 
-function GclassActivityPage(props) {
-  const {
-    match,
-    student,
-    courses,
-    setStudentAuth,
-    getStudentCourses,
-  } = props;
-  const { activityId, courseId } = match.params;
-  const [authorized, setAuthorized] = useState(null);
-
-  // Gets student courses
-  useEffect(() => {
-    if (student === null) return;
-
-    getStudentCourses(student.auth.accessToken);
-  }, [student]);
-
-  // Checks user membership in the course
-  useEffect(() => {
-    if (courses === null) return;
-
-    let found = false;
-    // eslint-disable-next-line no-restricted-syntax
-    for (const i in courses) {
-      if (courses[i].id === courseId) found = true;
-    }
-    setAuthorized(found);
-  }, [courses, courseId]);
+function GclassSummaryPage(props) {
+  const { match, student, getSummaryAuth } = props;
 
   const handleLogin = (data) => {
-    setStudentAuth({ ...data });
+    getSummaryAuth(data, match.params.courseId, match.params.gClassworkId, match.params.submissionId);
   };
 
   return (
@@ -57,12 +29,12 @@ function GclassActivityPage(props) {
         </Helmet>
 
         <div className="flex-container previews">
-          <div className="activity-bg left-vdo">
-            <div className="main-item-wrapper desktop-view">
+          <div className="activity-bg left-vdo reset-min-height">
+            <div className="main-item-wrapper desktop-view reset-min-height">
               <div className="item-container">
-                {authorized && <Activity activityId={activityId} />}
+                {student && <ActivitySummary /> }
 
-                {!authorized && (
+                {!student && (
                   <div className="container">
                     <div className="row">
                       <div className="col text-center">
@@ -70,12 +42,12 @@ function GclassActivityPage(props) {
                       </div>
                     </div>
 
-                    {authorized === false && (
+                    {student === false && (
                       <div className="row m-4">
                         <div className="col text-center">
                           <Alert variant="warning">
-                            You don&apos;t seem to be authorized to take this
-                            activity.
+                            You don&apos;t seem to be authorized to view this
+                            summary.
                           </Alert>
                         </div>
                       </div>
@@ -83,7 +55,7 @@ function GclassActivityPage(props) {
 
                     <div className="row m-4">
                       <div className="col text-center">
-                        <h2>Please log in to take this activity.</h2>
+                        <h2>Please log in to view this summary.</h2>
                         <GoogleLogin
                           clientId={global.config.gapiClientId}
                           buttonText="Login"
@@ -112,22 +84,18 @@ function GclassActivityPage(props) {
   );
 }
 
-GclassActivityPage.propTypes = {
+GclassSummaryPage.propTypes = {
   match: PropTypes.object.isRequired,
   student: PropTypes.object.isRequired,
-  courses: PropTypes.array.isRequired,
-  getStudentCourses: PropTypes.func.isRequired,
-  setStudentAuth: PropTypes.func.isRequired,
+  getSummaryAuth: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  courses: state.gapi.courses,
-  student: state.gapi.student,
+  student: state.gapi.summaryAuth,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setStudentAuth: (authData) => dispatch(setStudentAuthAction(authData)),
-  getStudentCourses: (token) => dispatch(getStudentCoursesAction(token)),
+  getSummaryAuth: (auth, courseId, classworkId, submissionId) => dispatch(getSummaryAuthAction(auth, courseId, classworkId, submissionId)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(GclassActivityPage);
+export default connect(mapStateToProps, mapDispatchToProps)(GclassSummaryPage);
