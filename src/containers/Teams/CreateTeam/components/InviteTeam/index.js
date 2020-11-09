@@ -1,11 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import _debounce from 'lodash/debounce';
-import _sortBy from 'lodash/sortBy';
-import Swal from 'sweetalert2';
+import { connect } from 'react-redux';
 
 import { FadeDiv } from 'utils';
+import { inviteTeamMembersAction } from 'store/actions/team';
+import InviteDialog from 'components/InviteDialog';
 import MemberItem from './MemberItem';
 
 import './style.scss';
@@ -13,44 +12,31 @@ import './style.scss';
 function InviteTeam(props) {
   const {
     team,
-    isSearching,
-    searchedUsers,
     isInviting,
-    searchUsers,
-    inviteUser,
     nextStep,
+    user: authUser,
+    setInvitedMembers,
   } = props;
 
   const [search, setSearch] = useState('');
-  const [selectedMember, setSelectedMember] = useState(null);
-
-  const searchMembers = _debounce((value) => {
-    searchUsers(value);
-  }, 1000);
+  const [selectedMember, setSelectedMember] = useState([]);
+  const [filteredMember, setFilteredMember] = useState([]);
+  const [showInvite, setShowInvite] = useState(false);
 
   const onChange = useCallback((e) => {
     setSearch(e.target.value);
-    searchMembers(e.target.value);
-  }, [searchMembers]);
+  }, []);
+
+  useEffect(() => {
+    setFilteredMember(selectedMember.filter((mem) => mem.name.includes(search) || mem.email.includes(search)));
+  }, [search, selectedMember]);
 
   const invitedUsers = team.users || [];
-  const usersNotInvited = _sortBy(searchedUsers.filter(
-    (user) => invitedUsers.findIndex((u) => u.id === user.id) === -1,
-  ), ['name']);
 
-  const handleInvite = useCallback((user) => {
-    inviteUser(user)
-      .then(() => {
-        setSelectedMember(null);
-      })
-      .catch(() => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Failed to invite user.',
-        });
-      });
-  }, [inviteUser]);
+  const handleInvite = useCallback((user, note) => {
+    setSelectedMember([...selectedMember, ...user.map((u) => ({ ...u, note }))]);
+    setShowInvite(false);
+  }, [selectedMember]);
 
   return (
     <div className="team-information">
@@ -69,9 +55,13 @@ function InviteTeam(props) {
               onChange={onChange}
             />
 
-            {isSearching && (
-              <FontAwesomeIcon icon="spinner" />
-            )}
+            <InviteDialog
+              handleInvite={handleInvite}
+              visible={showInvite}
+              setShowInvite={setShowInvite}
+              authUser={{ ...authUser, role: 'owner' }}
+              users={selectedMember}
+            />
           </div>
 
           <div className="member-list">
@@ -87,21 +77,31 @@ function InviteTeam(props) {
             </div>
 
             <div className="member-list-content">
-              {usersNotInvited.map((user) => (
+              {filteredMember.map((user) => (
                 <MemberItem
                   key={user.id}
-                  invited={false}
+                  invited
                   isInviting={isInviting}
                   selected={selectedMember === user.id}
                   user={user}
                   selectMember={setSelectedMember}
-                  inviteUser={handleInvite}
+                  // inviteUser={handleInvite}
                 />
               ))}
             </div>
           </div>
 
-          <button type="button" className="create-team-continue-btn" onClick={nextStep}>
+          <button
+            type="button"
+            className="create-team-continue-btn"
+            onClick={() => {
+              setInvitedMembers(selectedMember.map(
+                // eslint-disable-next-line no-restricted-globals
+                ({ id, ...mem }) => ({ id: isNaN(id) ? 0 : id, ...mem }),
+              ));
+              nextStep();
+            }}
+          >
             Continue
           </button>
         </div>
@@ -111,13 +111,19 @@ function InviteTeam(props) {
 }
 
 InviteTeam.propTypes = {
+  user: PropTypes.object.isRequired,
   team: PropTypes.object.isRequired,
-  isSearching: PropTypes.bool.isRequired,
-  searchedUsers: PropTypes.array.isRequired,
   isInviting: PropTypes.bool.isRequired,
-  searchUsers: PropTypes.func.isRequired,
-  inviteUser: PropTypes.func.isRequired,
   nextStep: PropTypes.func.isRequired,
+  setInvitedMembers: PropTypes.func.isRequired,
 };
 
-export default InviteTeam;
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setInvitedMembers: (users) => dispatch(inviteTeamMembersAction(users)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(InviteTeam);

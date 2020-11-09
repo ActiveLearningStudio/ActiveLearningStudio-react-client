@@ -53,7 +53,8 @@ function MemberItem(props) {
       </div>
 
       <div className="member-info">
-        <h2 className="member-name">{`${user.first_name} ${user.last_name}`}</h2>
+        <h2 className="member-name">{`${user.name || user.email}`}</h2>
+
         <div className="member-data">
           <h2>
             {/* {`${user.role}  `} */}

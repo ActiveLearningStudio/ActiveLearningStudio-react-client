@@ -27,7 +27,7 @@
     "react/forbid-prop-types": 0,
     "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
     "react/jsx-props-no-spreading": 0,
-    "react/no-array-index-key": 1,
+    "react/no-array-index-key": 1
     //"linebreak-style": ["error", "windows"],
   }
 }

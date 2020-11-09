@@ -138,7 +138,7 @@ export const inviteTeamMemberAction = (user) => async (dispatch) => {
     if (invited) {
       dispatch({
         type: actionTypes.INVITE_MEMBER_CONFIRM_SUCCESS,
-        payload: { user },
+        payload: { users: [user] },
       });
     } else {
       dispatch({ type: actionTypes.INVITE_MEMBER_CONFIRM_FAIL });
@@ -150,6 +150,13 @@ export const inviteTeamMemberAction = (user) => async (dispatch) => {
 
     throw e;
   }
+};
+
+export const inviteTeamMembersAction = (users) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.INVITE_MEMBER_CONFIRM_SUCCESS,
+    payload: { users },
+  });
 };
 
 export const inviteMemberAction = (teamId, email) => async (dispatch) => {
