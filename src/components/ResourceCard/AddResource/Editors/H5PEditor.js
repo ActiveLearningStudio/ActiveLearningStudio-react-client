@@ -73,6 +73,7 @@ const H5PEditor = (props) => {
         payload,
         resource.newResource.metadata,
         match.params.projectId,
+        props,
       );
     }
   };

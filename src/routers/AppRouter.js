@@ -41,6 +41,7 @@ const TeamsPage = loadable(() => import('../containers/Teams'));
 const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
 const AddTeamProjectMemberPage = loadable(() => import('../containers/Teams/AddMembers'));
 const GclassActivityPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassActivityPage'));
+const ActivityCreate = loadable(() => import('../containers/CreateActivity'));
 
 const AppRouter = () => {
   useEffect(() => {
@@ -129,8 +130,8 @@ const AppRouter = () => {
         <PrivateRoute
           exact
           path="/project/:projectId/playlist/:playlistId/activity/create"
-          component={PlaylistsPage}
-          openCreateResourcePopup
+          component={ActivityCreate}
+          // openCreateResourcePopup
         />
         <PrivateRoute
           exact

@@ -1,0 +1,180 @@
+.create-activity {
+    padding: 30px 15px;
+
+    .intro-header {
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 40px;
+
+        .title-line{
+            display: flex;
+            align-items: center;
+            width:100%;
+        }
+
+        h2 {
+            font: normal normal 600 24px/33px Open Sans;
+            letter-spacing: 0px;
+            color: #0F4392;
+            white-space: nowrap;
+        }
+
+        .line {
+            border-bottom: 1px solid #DCDCDC;
+            width: 100%;
+            margin: 0px 20px;
+        }
+
+        .back-playlist {
+            width: 175px;
+            height: 40px;
+            background: #FFFFFF 0% 0% no-repeat padding-box;
+            border: 1px solid #B8B8B8;
+            border-radius: 30px;
+            font: normal normal normal 15px/20px Open Sans;
+            letter-spacing: 0px;
+            color: #464646;
+            display: flex;
+            justify-content: center;
+            align-items:center;
+
+            svg {
+                margin-right: 5px;
+            }
+        }
+    }
+
+    .nav-pills {
+
+        .nav-item {
+          height: 80px;
+          background: #FFFFFF 0% 0% no-repeat padding-box;
+          margin-bottom: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            font: normal normal normal 16px/26px Hind Siliguri;
+            letter-spacing: 0px;
+            color: #084892;
+            align-items: center;
+            height: 100%;
+            border-left: 2px solid #5952C6 ;
+
+            svg{
+              margin-right: 10px;
+            }
+        }
+
+        .nav-link.active {
+            background: #0F4392 0% 0% no-repeat padding-box;
+            color:#fff;
+            position: relative;
+
+            &:after {
+                content: "";
+                position: absolute;
+                right: -11px;
+                width: 0;
+                height: 0;
+                border-top: 10px solid transparent;
+                border-left: 20px solid #0F4392;
+                border-bottom: 10px solid transparent;
+            }
+        }
+    }
+
+    .activity-wizard {
+        
+        h2 {
+            font: normal normal normal 26px/36px Open Sans;
+            letter-spacing: 0px;
+            color: #084892;
+        }
+
+        .Activity-meter {
+            background: #F1F1F1 0% 0% no-repeat padding-box;
+            box-shadow: 0px 1px 2px #0000000D;
+            display: flex;
+            align-items: center;
+            padding-left: 30px;
+            justify-content: space-between;
+
+            .activity-progress {
+                display: flex;
+                height: 105px;
+                justify-content: space-between;
+                align-items:center;
+            }
+
+            h3 {
+                font: normal normal 600 16px/25px Open Sans;
+                letter-spacing: 0px;
+                color: #707070;
+                padding: 0px 15px;
+                margin-bottom: 0px;
+            }
+
+            svg{
+                font-size: 40px;
+            }
+
+            .round-counter {
+              border:1px solid #084892; 
+              width: 35px;
+              height: 35px;
+              border-radius: 50%;
+              display: flex;
+              justify-content: center;
+              align-items: center; 
+            }
+
+            .counter {
+                border:1px solid #fff;
+                background-color: #084892;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font: normal normal 600 16px/28px Hind Siliguri;
+                letter-spacing: 0.32px;
+                color: #FFFFFF;
+                width: 30px;
+                height: 30px; 
+            }
+
+            .activity-progress.active {
+         
+                h3 {
+                    color: #44CA92;
+                }
+    
+                .round-counter {
+                  border:1px solid #44CA92; 
+                }
+    
+                .counter {
+                  background-color: #44CA92;
+                }
+            }
+        }
+    }
+
+    .resource-activity {
+        padding-top:40px;
+
+        h2{
+            font: normal normal 600 24px/33px Open Sans;
+            letter-spacing: 0px;
+            color: #464646;
+            padding-bottom: 0px;
+        }
+
+        .activity-item{
+            background: #FFFFFF 0% 0% no-repeat padding-box;
+            border: 1px solid #E9E9E9;
+            border-radius: 4px;
+        }
+
+    }
+}
