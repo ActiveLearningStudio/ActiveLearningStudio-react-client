@@ -14,9 +14,13 @@ const H5PEditor = (props) => {
     resource,
     loadH5pSettings,
     handleCreateResourceSubmit,
+    upload,
   } = props;
-
-  const [submitAction, setSubmitAction] = useState('create');
+  let defaultState = 'create';
+  if (upload) {
+    defaultState = 'upload';
+  }
+  const [submitAction, setSubmitAction] = useState(defaultState);
   const [h5pFile, setH5pFile] = useState(null);
 
   const setH5pFileUpload = (e) => {
@@ -207,6 +211,7 @@ H5PEditor.propTypes = {
   h5pParams: PropTypes.string,
   handleCreateResourceSubmit: PropTypes.func.isRequired,
   loadH5pSettings: PropTypes.func.isRequired,
+  upload: PropTypes.bool.isRequired,
 };
 
 H5PEditor.defaultProps = {

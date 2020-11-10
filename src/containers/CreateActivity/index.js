@@ -13,6 +13,7 @@ import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
 import Header from 'components/Header';
 import ActivityWizard from './ActivityWizard';
+import UploadActivity from './UploadActivity';
 
 import './style.scss';
 
@@ -71,7 +72,7 @@ function ActivityCreate(props) {
                       pl
                     </Tab.Pane>
                     <Tab.Pane eventKey="upload">
-                      kl
+                      <UploadActivity />
                     </Tab.Pane>
                     <Tab.Pane eventKey="create">
                       <ActivityWizard />
