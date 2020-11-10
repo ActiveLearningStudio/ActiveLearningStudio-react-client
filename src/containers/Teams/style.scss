@@ -1,0 +1,102 @@
+.teams-page {
+  .title {
+    padding-top: 11px;
+    padding-bottom: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: #084892;
+
+    &.project-title {
+      padding-top: 7px;
+      padding-left: 31px;
+      background: url(../../assets/images/project.svg) no-repeat 0 9px;
+      letter-spacing: -0.5px;
+    }
+
+    &.channel-title {
+      padding-top: 7px;
+      padding-left: 31px;
+      background: url(../../assets/images/users_net.svg) no-repeat 0 3px;
+      letter-spacing: -0.5px;
+    }
+  }
+
+  .dashboard-panel {
+    background: white;
+    border-radius: 8px;
+  }
+
+  .dashboard-panel-header-row {
+    border-left: solid 5px #084892;
+  }
+
+  .btn {
+    background-color: mediumaquamarine;
+    border-color: mediumaquamarine;
+  }
+
+  label {
+    font-weight: bold;
+    margin-right: 0.5em;
+    margin-bottom: 0.3em;
+  }
+
+  .offer-panel {
+    border: solid 3px #084892;
+  }
+
+  .metrics-counters span {
+    display: block;
+    color: cadetblue;
+    font-weight: bold;
+    font-size: xx-large;
+  }
+
+  .content {
+    position: relative;
+    margin: 55px 55px 0 55px;
+    overflow: visible;
+
+    .overview {
+      margin-top: 3px;
+      display: flex;
+    }
+
+    .sub-content {
+      background: #fff;
+      padding: 71px 20px 100px 47px;
+    }
+  }
+
+  .btn-top-page {
+    position: absolute;
+    top: 1em;
+    right: 0;
+    width: -moz-fit-content;
+    height: 35px;
+    margin-bottom: 10px;
+    padding: 3px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #5952c6;
+    border-radius: 20px;
+    font-size: 14px;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+
+    .fa {
+      padding-right: 5px;
+    }
+  }
+}
+
+.swal2-html-container ul {
+  font-weight: normal;
+  list-style: circle;
+  text-align: initial;
+}

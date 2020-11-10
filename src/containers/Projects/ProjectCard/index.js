@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Dropdown } from 'react-bootstrap';
+import { Badge } from 'react-bootstrap';
 
-import { getProjectId, googleShare } from 'store/actions/gapi';
-import { getProjectCourseFromLMS } from 'store/actions/project';
-import SharePreviewPopup from 'components/SharePreviewPopup';
 import ProjectPreviewModal from '../ProjectPreviewModal';
+import ProjectCardDropdown from './ProjectCardDropdown';
 
 import './style.scss';
 
@@ -19,18 +16,11 @@ const ProjectCard = (props) => {
     showDeletePopup,
     handleShow,
     setProjectId,
+    activeFilter,
   } = props;
-  const dispatch = useDispatch();
-
-  const AllLms = useSelector((state) => state.share);
-
-  const [allLms, setAllLms] = useState([]);
-  useEffect(() => {
-    setAllLms(AllLms);
-  }, [AllLms]);
 
   return (
-    <div className="col-md-3 check">
+    <div className="col-md-3 check" id={activeFilter}>
       <div className="program-tile">
         <div className="program-thumb">
           <Link to={`/project/${project.id}/preview`}>
@@ -48,108 +38,56 @@ const ProjectCard = (props) => {
         </div>
 
         <div className="program-content">
-          <div>
+          <div className="container">
             <div className="row">
               <div className="col-md-10">
                 <h3 className="program-title">
-                  <Link to={`/project/${project.id}`}>{project.name}</Link>
+                  <Link to={`/project/${project.id}/preview`}>{project.name}</Link>
                 </h3>
+
+                {(project.shared && activeFilter === 'list-grid') && (
+                  <Badge pill variant="success">
+                    Shared
+                  </Badge>
+                )}
               </div>
 
               <div className="col-md-2">
-                <Dropdown className="project-dropdown check d-flex justify-content-center align-items-center">
-                  <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
-                    <FontAwesomeIcon icon="ellipsis-v" />
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    <Dropdown.Item
-                      as={Link}
-                      to={`/project/${project.id}/preview`}
-                    >
-                      <FontAwesomeIcon icon="eye" className="mr-2" />
-                      Preview
-                    </Dropdown.Item>
-
-                    <Dropdown.Item as={Link} to={`/project/${project.id}/edit`}>
-                      <FontAwesomeIcon icon="pen" className="mr-2" />
-                      Edit
-                    </Dropdown.Item>
-
-                    <li className="dropdown-submenu send">
-                      <a tabIndex="-1">
-                        <FontAwesomeIcon icon="newspaper" className="mr-2" />
-                        Publish
-                      </a>
-                      <ul className="dropdown-menu check">
-                        <li
-                          onClick={() => {
-                            handleShow();
-                            getProjectId(project.id);
-                            setProjectId(props.project.id);
-                            dispatch(googleShare(false));
-                          }}
-                        >
-                          <a>Google Classroom</a>
-                        </li>
-
-                        {allLms.shareVendors
-                          && allLms.shareVendors.map((data) => (
-                            <li>
-                              <a
-                                onClick={() => {
-                                  dispatch(
-                                    getProjectCourseFromLMS(
-                                      data.lms_name.toLowerCase(),
-                                      data.id,
-                                      project.id,
-                                      project.playlists,
-                                      data.lms_url,
-                                    ),
-                                  );
-                                }}
-                              >
-                                {data.site_name}
-                              </a>
-                            </li>
-                          ))}
-                      </ul>
-                    </li>
-
-                    {project.shared && (
-                      <Dropdown.Item
-                        to="#"
-                        onClick={() => {
-                          const protocol = `${window.location.href.split('/')[0]}//`;
-                          const url = `${protocol + window.location.host}/project/${project.id}/shared`;
-                          SharePreviewPopup(url, project.name);
-                        }}
-                      >
-                        <FontAwesomeIcon icon="share" className="mr-2" />
-                        Share
-                      </Dropdown.Item>
-                    )}
-
-                    <Dropdown.Item
-                      to="#"
-                      onClick={() => showDeletePopup(project.id, project.name, 'Project')}
-                    >
-                      <FontAwesomeIcon icon="times-circle" className="mr-2" />
-                      Delete
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+                <ProjectCardDropdown
+                  project={project}
+                  showDeletePopup={showDeletePopup}
+                  handleShow={handleShow}
+                  setProjectId={setProjectId}
+                />
               </div>
             </div>
+
+            {(project.shared && activeFilter !== 'list-grid') && (
+              <div className="row">
+                <div className="col-md-12 text-right">
+                  <Badge pill variant="success">
+                    Shared
+                  </Badge>
+                </div>
+              </div>
+            )}
 
             <div className="lessons-duration">
               <div className="row">
                 <div className="col-md-12">
-                  <p>
-                    {project.description && project.description.length > 130
-                      ? `${project.description.substring(0, 130)} ...`
-                      : project.description}
-                  </p>
+                  {activeFilter === 'small-grid' ? (
+                    <p>
+                      {project.description && project.description.length > 80
+                        ? `${project.description.substring(0, 80)} ...`
+                        : project.description}
+                    </p>
+                  ) : (
+                    <p>
+                      {project.description && project.description.length > 130
+                        ? `${project.description.substring(0, 130)} ...`
+                        : project.description}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -187,6 +125,7 @@ ProjectCard.propTypes = {
   showDeletePopup: PropTypes.func.isRequired,
   handleShow: PropTypes.func.isRequired,
   setProjectId: PropTypes.func.isRequired,
+  activeFilter: PropTypes.string.isRequired,
 };
 
 ProjectCard.defaultProps = {

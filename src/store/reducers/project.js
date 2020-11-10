@@ -20,11 +20,6 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         isLoading: true,
       };
-    case actionTypes.LOAD_MY_CLONE_PROJECTS:
-      return {
-        ...state,
-        clone: action.payload.projects,
-      };
     case actionTypes.CREATE_PROJECT_SUCCESS:
       return {
         ...state,
@@ -106,6 +101,13 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         projects: action.payload.projects,
       };
+
+    case actionTypes.LOAD_MY_CLONE_PROJECTS:
+      return {
+        ...state,
+        clone: action.payload.projects,
+      };
+
     case actionTypes.LOAD_MY_PROJECTS_SELECTED:
     case actionTypes.SHARE_PROJECT:
       return {

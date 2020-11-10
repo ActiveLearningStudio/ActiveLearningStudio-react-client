@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import gifLoader from 'assets/images/276.gif';
@@ -8,7 +8,11 @@ import {
   loadH5pResource,
   loadH5pResourceSettingsOpen,
   loadH5pResourceSettingsShared,
+  loadH5pResourceXapi,
 } from 'store/actions/resource';
+import * as xAPIHelper from 'helpers/xapi';
+
+let counter = 0;
 
 const H5PPreview = (props) => {
   const [loading, setLoading] = useState(true);
@@ -21,6 +25,8 @@ const H5PPreview = (props) => {
     showLtiPreview,
     showActivityPreview,
   } = props;
+
+  const dispatch = useDispatch();
 
   const resourceLoaded = async (data) => {
     window.H5PIntegration = data.h5p.settings;
@@ -70,51 +76,6 @@ const H5PPreview = (props) => {
     setLoading(false);
   };
 
-  const loadResource = async (activityResourceId) => {
-    if (activityResourceId === null || activityResourceId === undefined) {
-      return;
-    }
-
-    try {
-      const response = await loadH5pResourceProp(activityResourceId);
-      if (response.activity) {
-        await resourceLoaded(response.activity);
-      }
-    } catch (e) {
-      setLoading(false);
-    }
-  };
-
-  const loadResourceLti = async (activityResourceId) => {
-    if (activityResourceId === null || activityResourceId === undefined) {
-      return;
-    }
-
-    try {
-      const response = await loadH5pResourceSettingsOpen(activityResourceId);
-      if (response.h5p_activity) {
-        await resourceLoaded(response.h5p_activity);
-      }
-    } catch (e) {
-      setLoading(false);
-    }
-  };
-
-  const loadResourceActivity = async (activityResourceId) => {
-    if (activityResourceId === null || activityResourceId === undefined) {
-      return;
-    }
-
-    try {
-      const response = await loadH5pResourceSettingsShared(activityResourceId);
-      if (response.activity) {
-        await resourceLoaded(response.activity);
-      }
-    } catch (e) {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
     if (resourceId !== activityId) {
       const h5pIFrame = document.getElementsByClassName('h5p-iframe');
@@ -122,17 +83,61 @@ const H5PPreview = (props) => {
         h5pIFrame[0].remove();
       }
 
-      if (showLtiPreview) {
-        loadResourceLti(activityId);
-      } else if (showActivityPreview) {
-        loadResourceActivity(activityId);
-      } else {
-        loadResource(activityId);
+      if (activityId === null || activityId === undefined) {
+        return;
       }
+
+      const loadResource = async () => {
+        try {
+          if (showLtiPreview) {
+            const response = await loadH5pResourceSettingsOpen(activityId);
+            if (response.h5p_activity) {
+              await resourceLoaded(response.h5p_activity);
+            }
+          } else if (showActivityPreview) {
+            const response = await loadH5pResourceSettingsShared(activityId);
+            if (response.activity) {
+              await resourceLoaded(response.activity);
+            }
+          } else {
+            const response = await loadH5pResourceProp(activityId);
+            if (response.activity) {
+              await resourceLoaded(response.activity);
+            }
+          }
+        } catch (e) {
+          setLoading(false);
+        }
+
+        const checkXapi = setInterval(() => {
+          try {
+            const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
+            if (x.H5P) {
+              if (x.H5P.externalDispatcher && xAPIHelper.isxAPINeeded(props.match.path)) {
+                // eslint-disable-next-line no-use-before-define
+                stopXapi();
+
+                x.H5P.externalDispatcher.on('xAPI', (event) => {
+                  if (counter > 0) {
+                    dispatch(loadH5pResourceXapi(JSON.stringify(xAPIHelper.extendStatement(event.data.statement, { ...props }))));
+                  }
+                  counter += 1;
+                });
+              }
+            }
+          } catch (e) {
+            console.log(e);
+          }
+        });
+
+        const stopXapi = () => clearInterval(checkXapi);
+      };
+
+      loadResource();
 
       setResourceId(activityId);
     }
-  }, [resourceId, activityId, showLtiPreview, showActivityPreview, loadResourceLti, loadResourceActivity, loadResource]);
+  }, [resourceId, activityId, showLtiPreview, showActivityPreview, loadH5pResourceProp, props, dispatch]);
 
   return (
     <>
@@ -154,6 +159,7 @@ const H5PPreview = (props) => {
 };
 
 H5PPreview.propTypes = {
+  match: PropTypes.shape({ path: PropTypes.string }),
   activityId: PropTypes.number.isRequired,
   showLtiPreview: PropTypes.bool,
   showActivityPreview: PropTypes.bool,
@@ -163,6 +169,7 @@ H5PPreview.propTypes = {
 H5PPreview.defaultProps = {
   showLtiPreview: false,
   showActivityPreview: false,
+  match: PropTypes.shape({ path: PropTypes.string }),
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -171,6 +178,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   resource: state.resource,
+  parentPlaylist: state.playlist.selectedPlaylist,
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(H5PPreview));

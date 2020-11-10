@@ -28,3 +28,8 @@ const fadeAnimation = keyframes`${fadeIn}`;
 export const FadeDiv = styled.div`
   animation: 0.8s ${fadeAnimation};
 `;
+
+export const zeroFill = (value) => {
+  const newValue = `00${value}`;
+  return newValue.slice(newValue.length - 2, newValue.length);
+};

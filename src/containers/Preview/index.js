@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { createProjectAction, loadMyProjectsAction, showCreateProjectModalAction } from 'store/actions/project';
 import { loadPlaylistAction } from 'store/actions/playlist';
 import Header from 'components/Header';
+import Sidebar from 'components/Sidebar';
 import ProjectPreview from './ProjectPreview';
 import ResourcePreview from './ResourcePreview';
 import PlaylistPreview from './PlaylistPreview';
@@ -16,10 +17,10 @@ class PreviewPage extends React.Component {
     // scroll to top
     window.scrollTo(0, 0);
 
-    const { loadMyProjects, previewType } = this.props;
-    if (previewType !== 'activityShared') {
-      loadMyProjects();
-    }
+    // const { loadMyProjects, previewType } = this.props;
+    // if (previewType !== 'activityShared') {
+    //   //loadMyProjects();
+    // }
   }
 
   render() {
@@ -46,7 +47,7 @@ class PreviewPage extends React.Component {
       content = <ActivityShared />;
     } else {
       content = (
-        <div className="site-container">
+        <div className="site-container-preview">
           <ProjectPreview
             {...this.props}
             key={projectId}
@@ -60,7 +61,14 @@ class PreviewPage extends React.Component {
     return (
       <div>
         {!previewType && <Header {...this.props} />}
-        {content}
+        {!previewType ? (
+          <div className="main-content-wrapper">
+            <div className="sidebar-wrapper">
+              <Sidebar />
+            </div>
+            {content}
+          </div>
+        ) : content}
       </div>
     );
   }

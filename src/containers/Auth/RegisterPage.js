@@ -10,7 +10,7 @@ import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
 import logo from 'assets/images/logo.svg';
 import loader from 'assets/images/loader.svg';
-import { registerAction } from 'store/actions/auth';
+import { registerAction, loadOrganizationTypesAction } from 'store/actions/auth';
 import { getErrors } from 'utils';
 import Error from './Error';
 
@@ -26,6 +26,7 @@ class RegisterPage extends React.Component {
       email: '',
       password: '',
       organizationName: '',
+      organizationType: '',
       jobTitle: '',
       error: null,
     };
@@ -33,6 +34,9 @@ class RegisterPage extends React.Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
+
+    const { loadOrganizationTypes } = this.props;
+    loadOrganizationTypes();
   }
 
   onChangeField = (e) => {
@@ -51,6 +55,7 @@ class RegisterPage extends React.Component {
         email,
         password,
         organizationName,
+        organizationType,
         jobTitle,
       } = this.state;
       const { history, register } = this.props;
@@ -72,8 +77,9 @@ class RegisterPage extends React.Component {
         last_name: lastName.trim(),
         email: email.trim(),
         password: password.trim(),
-        organization_name: organizationName.trim() ? organizationName.trim() : null,
-        job_title: jobTitle.trim() ? jobTitle.trim() : null,
+        organization_name: organizationName.trim(),
+        organization_type: organizationType.trim(),
+        job_title: jobTitle.trim(),
       };
 
       const message = await register(data);
@@ -104,12 +110,18 @@ class RegisterPage extends React.Component {
       lastName,
       email,
       password,
+      organizationName,
+      jobTitle,
+      organizationType,
     } = this.state;
 
     return validator.isEmpty(firstName.trim())
       || validator.isEmpty(lastName.trim())
       || validator.isEmpty(email.trim())
-      || validator.isEmpty(password.trim());
+      || validator.isEmpty(password.trim())
+      || validator.isEmpty(organizationName.trim())
+      || validator.isEmpty(jobTitle.trim())
+      || validator.isEmpty(organizationType.trim());
   };
 
   goToLogin = () => {
@@ -126,8 +138,9 @@ class RegisterPage extends React.Component {
       organizationName,
       jobTitle,
       error,
+      organizationType,
     } = this.state;
-    const { isLoading } = this.props;
+    const { isLoading, organizationTypes } = this.props;
 
     return (
       <div className="auth-page">
@@ -216,13 +229,30 @@ class RegisterPage extends React.Component {
               />
             </div>
 
+            <div className="form-group ">
+              <FontAwesomeIcon icon="building" />
+              <select
+                className="input-box organization-type"
+                name="organizationType"
+                placeholder="Organization Type*"
+                value={organizationType}
+                onChange={this.onChangeField}
+              >
+                <option selected> -- select an option -- </option>
+
+                {organizationTypes.map((type) => (
+                  <option value={type.label}>{type.label}</option>
+                ))}
+              </select>
+            </div>
+
             <div className="form-group d-flex">
               <div className="input-wrapper">
                 <FontAwesomeIcon icon="building" />
                 <input
                   className="input-box"
                   name="organizationName"
-                  placeholder="Organization Name"
+                  placeholder="Organization Name*"
                   maxLength="250"
                   value={organizationName}
                   onChange={this.onChangeField}
@@ -234,7 +264,7 @@ class RegisterPage extends React.Component {
                 <input
                   className="input-box"
                   name="jobTitle"
-                  placeholder="Job Title"
+                  placeholder="Job Title*"
                   maxLength="250"
                   value={jobTitle}
                   onChange={this.onChangeField}
@@ -270,15 +300,19 @@ class RegisterPage extends React.Component {
 RegisterPage.propTypes = {
   history: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  organizationTypes: PropTypes.array.isRequired,
   register: PropTypes.func.isRequired,
+  loadOrganizationTypes: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   register: (data) => dispatch(registerAction(data)),
+  loadOrganizationTypes: () => dispatch(loadOrganizationTypesAction()),
 });
 
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
+  organizationTypes: state.auth.organizationTypes,
 });
 
 export default withRouter(

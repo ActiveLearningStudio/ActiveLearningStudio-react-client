@@ -1,4 +1,24 @@
 .account-page {
+  .account-panel {
+    background: white;
+    border-radius: 8px;
+  }
+
+  .account-panel-header-row {
+    border-left: solid 5px #607a9b;
+  }
+
+  .panel-title {
+    color: #607a9b;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
   .title {
     padding-left: 40px;
     background: url(../../assets/images/my-projects-icon.png) no-repeat 0 9px;
@@ -49,6 +69,10 @@
     &:disabled {
       background-color: #ddd;
     }
+  }
+
+  select.input-box {
+    padding: 14px 10px 14px 40px;
   }
 
   .password-box {

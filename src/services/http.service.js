@@ -1,4 +1,5 @@
 import axios from 'axios';
+import socketio from 'socket.io-client';
 
 import { USER_TOKEN_KEY } from '../constants';
 
@@ -17,7 +18,7 @@ function getAuthHeader() {
 
 function get(url, headers = {}, params = {}) {
   return http.get(url, {
-    ...params,
+    params,
     headers: { ...getAuthHeader(), ...headers },
   });
 }
@@ -40,10 +41,22 @@ function remove(url, data, headers = {}) {
   });
 }
 
+function notificationSocket() {
+  return {
+    host: `${window.location.origin}:4003`,
+    auth: {
+      headers: { ...getAuthHeader(), Accept: 'application/json' },
+    },
+    broadcaster: 'socket.io',
+    client: socketio,
+  };
+}
+
 export default {
   http,
   get,
   post,
   put,
   remove,
+  notificationSocket,
 };

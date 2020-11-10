@@ -2,7 +2,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 import resourceService from 'services/resource.service';
-import { loadProjectPlaylistsAction } from './playlist';
+// import { loadProjectPlaylistsAction } from './playlist';
 import * as actionTypes from '../actionTypes';
 
 // global variable for h5p object
@@ -101,10 +101,23 @@ export const loadH5pResource = (activityId) => async (dispatch) => {
   return result;
 };
 
+export const loadH5pResourceXapi = (xapiData) => async () => {
+  resourceService.getXapi({ statement: xapiData });
+};
+
 export const loadH5pResourceSettings = (activityId) => resourceService.h5pResourceSettings(activityId);
 export const loadH5pResourceSettingsOpen = (activityId) => resourceService.h5pResourceSettingsOpen(activityId);
 export const loadH5pResourceSettingsShared = (activityId) => resourceService.h5pResourceSettingsShared(activityId);
 export const loadH5pResourceSettingsEmbed = (activityId) => resourceService.h5pResourceSettingsEmbed(activityId);
+
+// export const loadH5pResourceXapi = (data) => resourceService.getXapi(data);
+
+export const resourceSaved = (saved) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.SAVE_SEARCH_KEY_IN_CREATION,
+    saved,
+  });
+};
 
 export const createResourceAction = (
   playlistId,
@@ -144,6 +157,8 @@ export const createResourceAction = (
     };
     const insertedResource = await resourceService.create(activity);
 
+    resourceSaved(true);
+
     resource.id = insertedResource.id;
     resource.mysqlid = insertedResource.mysqlid;
 
@@ -163,8 +178,7 @@ export const createResourceAction = (
     });
   }
   // } catch (e) {
-  //   alert("dsf");
-  //   throw new Error(e);
+  //   throw e;
   // }
 };
 
@@ -200,7 +214,7 @@ export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
   });
 };
 
-export const deleteResourceAction = (projectId, activityId) => async (dispatch) => {
+export const deleteResourceAction = (activityId) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.DELETE_RESOURCE_REQUEST,
@@ -211,7 +225,7 @@ export const deleteResourceAction = (projectId, activityId) => async (dispatch) 
       type: actionTypes.DELETE_RESOURCE_SUCCESS,
       payload: { activityId },
     });
-    dispatch(loadProjectPlaylistsAction(projectId));
+    // dispatch(loadProjectPlaylistsAction(projectId));
   } catch (e) {
     dispatch({
       type: actionTypes.DELETE_RESOURCE_FAIL,
@@ -296,7 +310,7 @@ export const showBuildActivityAction = (
       dispatch(showBuildActivity(editor, editorType, ''));
     }
   } catch (e) {
-    throw new Error(e);
+    console.log(e);
   }
 };
 
@@ -324,7 +338,7 @@ export const showDescribeActivityAction = (activity, activityId = null) => async
       dispatch(showDescribeActivity(activity));
     }
   } catch (e) {
-    throw new Error(e);
+    console.log(e);
   }
 };
 
@@ -337,6 +351,7 @@ export const createResourceByH5PUploadAction = (
   // projectId,
 ) => async (dispatch) => {
   try {
+    Swal.showLoading();
     const formData = new FormData();
     formData.append('h5p_file', payload.h5pFile);
     formData.append('action', 'upload');
@@ -361,7 +376,7 @@ export const createResourceByH5PUploadAction = (
       };
 
       const responseActivity = await resourceService.create(createActivityUpload);
-
+      Swal.close();
       const resource = { ...responseActivity };
       resource.id = responseActivity.activity.id;
 
@@ -378,7 +393,7 @@ export const createResourceByH5PUploadAction = (
       throw new Error('Error occurred while creating resource');
     }
   } catch (e) {
-    throw new Error(e);
+    console.log(e);
   }
 };
 
@@ -413,6 +428,8 @@ export const editResourceAction = (
 
     const response = await resourceService.h5pSettingsUpdate(activityId, dataUpload);
 
+    resourceSaved(true);
+
     const resource = {};
     resource.id = response.id;
 
@@ -424,7 +441,7 @@ export const editResourceAction = (
       editorType,
     });
   } catch (e) {
-    throw new Error(e);
+    console.log(e);
   }
 };
 
@@ -478,4 +495,20 @@ export const saveGenericResourceAction = (resourceData) => async (dispatch) => {
       type: actionTypes.HIDE_CREATE_RESOURCE_MODAL,
     });
   }
+};
+
+export const saveSearchKeyInCreation = (searchKey) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.SAVE_SEARCH_KEY_IN_CREATION,
+    searchKey,
+  });
+};
+
+export const saveFormDataInCreation = (formData) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.SAVE_FORM_DATA_IN_CREATION,
+    metaTitle: formData.metaTitle,
+    metaSubject: formData.metaSubject,
+    metaEducationLevels: formData.metaEducationLevels,
+  });
 };

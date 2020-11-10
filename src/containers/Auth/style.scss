@@ -12,9 +12,9 @@
     margin-bottom: 30px;
   }
 
-  @media (max-width: 767px){
+  @media (max-width: 767px) {
     .auth-header-logo {
-      margin-bottom: 0px;
+      margin-bottom: 0;
     }
   }
 
@@ -60,14 +60,14 @@
       text-transform: uppercase;
     }
 
-    @media (max-width: 767px){
+    @media (max-width: 767px) {
       padding: 25px;
-      margin:15px;
+      margin: 15px;
+
       .auth-title {
-        width:min-content
+        width: min-content;
       }
     }
-
 
     .auth-subtitle {
       padding: 12px 0 18px;
@@ -88,11 +88,11 @@
     }
 
     @media (max-width: 767px) {
-      .auth-subtitle{
+      .auth-subtitle {
         display: none;
       }
 
-      .auth-description{
+      .auth-description {
         padding-top: 10px;
       }
     }
@@ -122,7 +122,7 @@
         }
       }
     }
-
+    
     .input-box {
       width: 100%;
       height: 50px;
@@ -136,6 +136,10 @@
       &:focus {
         outline: none;
       }
+    }
+
+    .organization-type{
+      padding: 10px 18px 10px 40px;
     }
 
     .password-box {
@@ -191,30 +195,30 @@
         width: 18px;
         height: 18px;
         background: #374761;
-      }
 
-      [type="checkbox"]:checked + span::before {
-        position: absolute;
-        left: 2px;
-        bottom: 3px;
-        height: 8px;
-        width: 3px;
-        background-color: #fff;
-        content: "";
-        transform: translateX(5px) rotate(-45deg);
-        transform-origin: left bottom;
-      }
+        &::before {
+          position: absolute;
+          left: 2px;
+          bottom: 3px;
+          height: 8px;
+          width: 3px;
+          background-color: #fff;
+          content: "";
+          transform: translateX(5px) rotate(-45deg);
+          transform-origin: left bottom;
+        }
 
-      [type="checkbox"]:checked + span::after {
-        position: absolute;
-        left: 3px;
-        bottom: 4px;
-        height: 3px;
-        width: 12px;
-        background-color: #fff;
-        content: "";
-        transform: translateX(5px) rotate(-45deg);
-        transform-origin: left bottom;
+        &::after {
+          position: absolute;
+          left: 3px;
+          bottom: 4px;
+          height: 3px;
+          width: 12px;
+          background-color: #fff;
+          content: "";
+          transform: translateX(5px) rotate(-45deg);
+          transform-origin: left bottom;
+        }
       }
     }
 

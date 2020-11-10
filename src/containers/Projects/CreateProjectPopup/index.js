@@ -4,7 +4,7 @@ import React, {
   useCallback,
   useState,
 } from 'react';
-import Switch from 'react-switch';
+// import Switch from 'react-switch';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -28,13 +28,13 @@ import PexelsAPI from 'components/models/pexels';
 import './style.scss';
 
 const maxLength80 = maxLength(80);
-const maxLength255 = maxLength(255);
+const maxLength1000 = maxLength(1000);
 
 // TODO: need to restructure code, clean up attributes
 // remove unused code,
 
 let imageValidation = '';
-let projectShare = true;
+const projectShare = true;
 
 const onSubmit = async (values, dispatch, props) => {
   const {
@@ -130,7 +130,7 @@ let CreateProjectPopup = (props) => {
   } = props;
 
   const [modalShow, setModalShow] = useState(false);
-  const [publicProject, setPublicProject] = useState(true);
+  // const [publicProject, setPublicProject] = useState(true);
   const openFile = useRef();
 
   // remove popup when escape is pressed
@@ -158,7 +158,7 @@ let CreateProjectPopup = (props) => {
     <div className="create-program-wrapper">
       <PexelsAPI
         show={modalShow}
-        project
+        project={project}
         onHide={() => {
           setModalShow(false);
         }}
@@ -175,22 +175,23 @@ let CreateProjectPopup = (props) => {
             <label>
               Enter Project Name (Up to 80 characters)
             </label>
-            {!editMode && (
-            <div className="class-toggle" title="By default, it is not public">
-              <label>Make Project Public</label>
-              <Switch
-                checkedIcon={false}
-                uncheckedIcon={false}
-                height={25}
-                onChange={() => {
-                  setPublicProject(!publicProject);
-                  projectShare = !publicProject;
-                }}
-                checked={publicProject}
-                value={publicProject}
-              />
-            </div>
-            )}
+
+            {/* {!editMode && (
+              <div className="class-toggle" title="By default, it is not public">
+                <label>Make Project Public</label>
+                <Switch
+                  checkedIcon={false}
+                  uncheckedIcon={false}
+                  height={25}
+                  onChange={() => {
+                    setPublicProject(!publicProject);
+                    projectShare = !publicProject;
+                  }}
+                  checked={publicProject}
+                  value={publicProject}
+                />
+              </div>
+            )} */}
           </div>
 
           <Field
@@ -200,7 +201,6 @@ let CreateProjectPopup = (props) => {
             validate={[required, maxLength80]}
             autoComplete="new-password"
           />
-
         </div>
 
         <div className="upload-thumbnail check">
@@ -239,6 +239,7 @@ let CreateProjectPopup = (props) => {
 
             <div>
               {project.progress}
+
               {project.thumbUrl ? (
                 <div className="thumb-display">
                   <div
@@ -251,16 +252,15 @@ let CreateProjectPopup = (props) => {
                   >
                     Image Uploaded:
                   </div>
-                  <div className="imgbox">
-                    {project.thumbUrl.includes('pexels.com') ? (
-                      <img src={project.thumbUrl} alt="thumbnail" />
-                    ) : (
-                      <img
-                        src={global.config.resourceUrl + project.thumbUrl}
-                        alt="thumbnail"
-                      />
-                    )}
-                  </div>
+
+                  <div
+                    className="imgbox"
+                    style={{
+                      backgroundImage: project.thumbUrl.includes('pexels.com')
+                        ? `url(${project.thumbUrl})`
+                        : `url(${global.config.resourceUrl}${project.thumbUrl})`,
+                    }}
+                  />
                 </div>
               ) : (
                 <div className="new-box">
@@ -304,17 +304,17 @@ let CreateProjectPopup = (props) => {
             <strong>290px width and 200px height. </strong>
             Maximun File size allowed is
             {' '}
-            <strong>100KB.</strong>
+            <strong>100MB.</strong>
           </p>
         </div>
 
         <div className="project-description">
-          <h2 className="mt-4 mb-0">Program Description</h2>
+          <h2 className="mt-4 mb-0">Project Description</h2>
 
           <Field
             name="description"
             component={TextareaField}
-            validate={[required, maxLength255]}
+            validate={[required, maxLength1000]}
             autoComplete="new-password"
           />
         </div>

@@ -1,8 +1,14 @@
-import config from 'config';
 import Swal from 'sweetalert2';
+
+import config from 'config';
 import httpService from './http.service';
 
 const { apiVersion } = config;
+
+const getAllFav = () => httpService
+  .get(`/${apiVersion}/projects/favorites`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
 
 const getAll = () => httpService
   .get(`/${apiVersion}/projects`)
@@ -23,6 +29,16 @@ const get = (id) => httpService
   .get(`/${apiVersion}/projects/${id}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
+
+const getIndexed = (id) => httpService
+  .get(`/${apiVersion}/projects/${id}/status-update`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const getelastic = (id) => httpService
+  .get(`/${apiVersion}/projects/${id}/indexing`)
+  .then(({ data }) => data)
+  .catch((err) => err.response.data);
 
 const update = (id, project) => httpService
   .put(`/${apiVersion}/projects/${id}`, project)
@@ -59,6 +75,11 @@ const removeShared = (id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const addToFav = (id) => httpService
+  .post(`/${apiVersion}/projects/${id}/favorite`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const getShared = (id) => httpService
   .get(`/${apiVersion}/projects/${id}/load-shared`)
   .then(({ data }) => data)
@@ -72,6 +93,12 @@ const lmsSetting = () => httpService
 const fetchLmsDetails = (lms, projectId, settingId) => httpService
   .post(`/${apiVersion}/go/${lms}/projects/${projectId}/fetch`, {
     setting_id: settingId,
+  }).then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const getReorderAll = (projectData) => httpService
+  .post(`/${apiVersion}/projects/reorder`, {
+    projects: projectData,
   }).then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -113,4 +140,9 @@ export default {
   getSampleProject,
   getUpdatedProjects,
   getClone,
+  getReorderAll,
+  getIndexed,
+  getelastic,
+  addToFav,
+  getAllFav,
 };

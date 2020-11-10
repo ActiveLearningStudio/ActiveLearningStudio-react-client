@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Swal from 'sweetalert2';
 
 import { loadH5pSettingsActivity } from 'store/actions/resource';
 
@@ -41,6 +42,7 @@ const H5PEditor = (props) => {
       const fileArr = h5pFile.name.split('.');
       const fileExtension = fileArr.length > 0 ? fileArr[fileArr.length - 1] : '';
       if (fileExtension !== 'h5p') {
+        Swal.fire('Invalid file selected, kindly select h5p file.');
         return true;
       }
       const payload = {
@@ -87,6 +89,18 @@ const H5PEditor = (props) => {
         className="form-horizontal"
         id="laravel-h5p-form"
       >
+        <div className="form-group" style={{ position: 'inherit' }}>
+          <div className="col-md-9 col-md-offset-3" style={{ position: 'inherit' }}>
+            <button
+              type="submit"
+              className="add-resource-submit-btn top"
+              onClick={submitResource}
+            >
+              Save & Exit
+            </button>
+          </div>
+        </div>
+
         <input
           name="_token"
           type="hidden"
@@ -175,7 +189,7 @@ const H5PEditor = (props) => {
                 className="add-resource-submit-btn"
                 onClick={submitResource}
               >
-                Finish
+                Save & Exit
               </button>
             </div>
           </div>

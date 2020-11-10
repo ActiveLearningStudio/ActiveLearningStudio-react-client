@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
@@ -20,8 +19,6 @@ export const createProjectAction = (data) => async (dispatch) => {
     });
   } catch (e) {
     dispatch({ type: actionTypes.CREATE_PROJECT_FAIL });
-
-    throw e;
   }
 };
 
@@ -32,7 +29,7 @@ export const loadProjectAction = (projectId) => async (dispatch) => {
     });
 
     const { project } = await projectService.get(projectId);
-
+    Swal.close();
     dispatch({
       type: actionTypes.LOAD_PROJECT_SUCCESS,
       payload: { project },
@@ -42,6 +39,16 @@ export const loadProjectAction = (projectId) => async (dispatch) => {
       type: actionTypes.LOAD_PROJECT_FAIL,
     });
   }
+};
+
+export const getIndexed = (projectId) => async () => {
+  const result = await projectService.getIndexed(projectId);
+  return result;
+};
+
+export const getElastic = (projectId) => async () => {
+  const result = await projectService.getelastic(projectId);
+  return result;
 };
 
 export const updateProjectAction = (projectId, data) => async (dispatch) => {
@@ -56,8 +63,6 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
     });
   } catch (e) {
     dispatch({ type: actionTypes.UPDATE_PROJECT_FAIL });
-
-    throw e;
   }
 };
 
@@ -73,8 +78,6 @@ export const deleteProjectAction = (projectId) => async (dispatch) => {
     });
   } catch (e) {
     dispatch({ type: actionTypes.DELETE_PROJECT_FAIL });
-
-    throw e;
   }
 };
 
@@ -125,10 +128,35 @@ export const loadMyProjectsAction = () => async (dispatch) => {
     dispatch({
       type: actionTypes.PAGE_LOADING_COMPLETE,
     });
-
-    throw e;
   }
 };
+
+export const loadMyFavProjectsAction = () => async (dispatch) => {
+  const { projects } = await projectService.getAllFav();
+  dispatch({
+    type: actionTypes.SIDEBAR_UPDATE_PROJECT,
+    data: { projects },
+  });
+};
+
+/* eslint-disable */
+export const loadMyReorderProjectsAction = (projectDivider) => async () => {
+  const reorderProject = [];
+  let reorderIndex = 0;
+  projectDivider.map((data) => {
+    return data.collection.map((collections) => {
+      reorderProject.push({
+        order: reorderIndex,
+        id: collections.id,
+        project: collections
+      });
+      reorderIndex = reorderIndex + 1;
+    });
+  });
+
+  return await projectService.getReorderAll(reorderProject);
+};
+/* eslint-enable */
 
 export const loadMyCloneProjectsAction = () => async (dispatch) => {
   const projects = await projectService.getClone();
@@ -154,13 +182,13 @@ export const sampleProjects = () => async (dispatch) => {
   });
 };
 
-export const allUpdateProject = () => async (dispatch) => {
-  const { projects } = await projectService.getUpdatedProjects();
-  dispatch({
-    type: actionTypes.SIDEBAR_UPDATE_PROJECT,
-    data: { projects },
-  });
-};
+// export const allUpdateProject = () => async (dispatch) => {
+//   const { projects } = await projectService.getUpdatedProjects();
+//   dispatch({
+//     type: actionTypes.SIDEBAR_UPDATE_PROJECT,
+//     data: { projects },
+//   });
+// };
 
 export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
   try {
@@ -214,11 +242,50 @@ export const toggleProjectShareRemovedAction = (projectId, projectName) => async
   });
 };
 
+export const deleteFavObj = (projectId) => async (dispatch) => {
+  Swal.fire({
+    showCancelButton: true,
+    confirmButtonColor: '#5952c6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Delete',
+    title: 'Are you sure you want to remove this ?',
+  })
+    .then(async (result) => {
+      if (result.value) {
+        Swal.showLoading();
+        await projectService.addToFav(projectId);
+        Swal.close();
+        dispatch(loadMyFavProjectsAction());
+      }
+    });
+};
+
+export const addProjectFav = (projectId) => async (/* dispatch */) => {
+  Swal.showLoading();
+  const project = await projectService.addToFav(projectId);
+
+  if (project.message) {
+    Swal.fire({
+      showCancelButton: true,
+      confirmButtonColor: '#5952c6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'My Favorites Projects',
+      icon: 'success',
+      title: project.message,
+    })
+      .then((result) => {
+        if (result.value) {
+          window.location.href = '/?active=fav';
+        }
+      });
+  }
+};
+
 export const loadMyProjectsPreviewSharedAction = (projectId) => async (dispatch) => {
   try {
-    dispatch({
-      type: actionTypes.PAGE_LOADING,
-    });
+    // dispatch({
+    //   type: actionTypes.PAGE_LOADING,
+    // });
 
     const { project } = await projectService.getShared(projectId);
 
@@ -227,9 +294,9 @@ export const loadMyProjectsPreviewSharedAction = (projectId) => async (dispatch)
       payload: { project },
     });
 
-    dispatch({
-      type: actionTypes.PAGE_LOADING_COMPLETE,
-    });
+    // dispatch({
+    //   type: actionTypes.PAGE_LOADING_COMPLETE,
+    // });
   } catch (e) {
     dispatch({
       type: actionTypes.PAGE_LOADING_COMPLETE,
@@ -360,14 +427,13 @@ export const getProjectCourseFromLMS = (
   });
 
   const response = await projectService.fetchLmsDetails(lms, projectId, settingId);
-
+  const globalStoreClone = getState();
   if (response) {
     dispatch({
       type: actionTypes.SET_LMS_COURSE,
       lmsCourse: response.project,
+      allstate: globalStoreClone,
     });
-
-    const globalStoreClone = getState();
 
     Swal.fire({
       title: `This Project will be added to ${lms}. If the Project does not exist, it will be created.`,
@@ -385,15 +451,15 @@ export const getProjectCourseFromLMS = (
           showConfirmButton: false,
           allowOutsideClick: false,
         });
-
+        const globalStoreCloneUpdated = getState();
         // eslint-disable-next-line no-inner-declarations
         async function asyncFunc() {
           for (let x = 0; x < playlist.length; x += 1) {
             // eslint-disable-next-line no-await-in-loop
-            const counter = !!globalStoreClone.project.lmsCourse
-                && globalStoreClone.project.lmsCourse.playlistsCopyCounter
+            const counter = !!globalStoreCloneUpdated.project.lmsCourse
+                && globalStoreCloneUpdated.project.lmsCourse.playlistsCopyCounter
                   .length > 0
-              ? globalStoreClone.project.lmsCourse
+              ? globalStoreCloneUpdated.project.lmsCourse
                 .playlistsCopyCounter[x].counter
               : 0;
 
@@ -450,10 +516,8 @@ export const getProjectCourseFromLMSPlaylist = (
   });
 
   const response = await projectService.fetchLmsDetails(lms, projectId, settingId);
-
   if (response.project) {
     const globalStoreClone = store.getState();
-
     dispatch(setLmsCourse(response.project, globalStoreClone));
 
     Swal.fire({
@@ -517,6 +581,6 @@ export const loadMyProjectsLtiAction = (lmsUrl, ltiClientId) => async (dispatch)
       });
     }
   } catch (e) {
-    throw new Error(e);
+    console.log(e);
   }
 };

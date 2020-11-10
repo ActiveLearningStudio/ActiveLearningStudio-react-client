@@ -11,6 +11,7 @@ import {
   showDescribeActivityAction,
   onChangeActivityAction,
   showCreateResourceActivityAction,
+  saveSearchKeyInCreation,
 } from 'store/actions/resource';
 import ResourceActivityTypeField from '../fields/ResourceActivityTypeField';
 import MyVerticallyCenteredModal from '../../models/activityOptions';
@@ -25,6 +26,7 @@ let ResourceSelectActivity = (props) => {
     goBackToActivity,
     onChangeActivity,
     loadResourceItems,
+    saveSearchKey,
   } = props;
 
   const [activities, setActivities] = useState([]);
@@ -37,9 +39,14 @@ let ResourceSelectActivity = (props) => {
     (e) => {
       const data = searchActivities.filter((activity) => activity.title.toLowerCase().includes(e.target.value.toLowerCase()));
       setActivities(data);
+      saveSearchKey(e.target.value.toLowerCase());
     },
-    [searchActivities],
+    [saveSearchKey, searchActivities],
   );
+
+  // useEffect(() => {
+  //   searchActivity({ target: { value: resource.searchKey } });
+  // }, [resource.searchKey, searchActivities, searchActivity]);
 
   useEffect(() => {
     // get activity type items
@@ -52,7 +59,7 @@ let ResourceSelectActivity = (props) => {
   }, [loadResourceItems, resource.newResource.activityTypeId]);
 
   const questionsContent = activities.map((activity) => (
-    <div className="col-md-3" key={activity.id}>
+    <div className="col-lg-4 col-xl-3 responsive-pad" key={activity.id}>
       <div className="activity-item with_options">
         <label className="question-label">
           <Field
@@ -67,7 +74,6 @@ let ResourceSelectActivity = (props) => {
           <div className="content">
             <div
               className="activity-img"
-
               style={{
                 backgroundImage: activity.image.includes('pexels.com')
                   ? `url(${activity.image})`
@@ -140,6 +146,7 @@ let ResourceSelectActivity = (props) => {
                         type="text"
                         placeholder="Search activity"
                         onChange={searchActivity}
+                        defaultValue={resource.searchKey}
                       />
                       <FontAwesomeIcon icon="search" />
                     </div>
@@ -179,6 +186,7 @@ ResourceSelectActivity.propTypes = {
   loadResourceItems: PropTypes.func.isRequired,
   onChangeActivity: PropTypes.func.isRequired,
   goBackToActivity: PropTypes.func.isRequired,
+  saveSearchKey: PropTypes.func.isRequired,
 };
 
 ResourceSelectActivity = reduxForm({
@@ -204,6 +212,7 @@ const mapDispatchToProps = (dispatch) => ({
   showDescribeActivity: (activity) => dispatch(showDescribeActivityAction(activity)),
   onChangeActivity: (e, activity) => dispatch(onChangeActivityAction(e, activity)),
   goBackToActivity: () => dispatch(showCreateResourceActivityAction()),
+  saveSearchKey: (searchKey) => dispatch(saveSearchKeyInCreation(searchKey)),
 });
 
 const mapStateToProps = (state) => ({

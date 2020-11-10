@@ -77,20 +77,26 @@ const GoogleLoginModal = ({
           ) : (
             <div className="classroom-form">
               <div>
-                <h1>
-                  Are you sure you want to share this Project to Google Classroom?
-                </h1>
-                {loading && <p className="loading-classes">Loading Classes....</p>}
+                <h1>Are you sure you want to share this Project to Google Classroom?</h1>
+
+                {loading && (
+                  <p className="loading-classes">Loading Classes....</p>
+                )}
+
                 <Formik
                   initialValues={{
-                    course: 'test',
+                    course: undefined,
                     heading: 'test',
                     description: 'test',
                     room: 'test',
                   }}
                   onSubmit={(values) => {
                     onHide();
-                    copyProject(projectId, values.course);
+                    if (values.course === 'Create a new class') {
+                      copyProject(projectId);
+                    } else {
+                      copyProject(projectId, values.course);
+                    }
                     setLoading(false);
                   }}
                 >
@@ -112,8 +118,10 @@ const GoogleLoginModal = ({
                         onChange={handleChange}
                         onBlur={handleBlur}
                       >
-                        <option value="">Create a new class</option>
-                        {!!courses && courses.map((item, i) => <option key={i} value={item.id}>{item.name}</option>)}
+                        <option>Create a new class</option>
+                        {!!courses && courses.map((item) => (
+                          <option key={item.id} value={item.id}>{item.name}</option>
+                        ))}
                       </select>
                       {/* <input
                         type="text"
@@ -138,9 +146,9 @@ const GoogleLoginModal = ({
                         placeholder="Course Name"
                       >
                         <option>Select your room</option>
-                        {rooms.map((data) => {
-                          return <option>{data}</option>;
-                        })}
+                        {rooms.map((data) => (
+                          <option key={data.id}>{data}</option>
+                        ))}
                       </select> */}
 
                       {/* {errors.room && touched.room && (
@@ -181,7 +189,9 @@ const GoogleLoginModal = ({
                         Are you sure you want to share this Project to Google Classroom?
                       </p>
                       */}
-                      {!loading && <button type="submit">Confirm</button>}
+                      {!loading && (
+                        <button type="submit">Confirm</button>
+                      )}
                     </form>
                   )}
                 </Formik>
@@ -207,8 +217,6 @@ const mapDispatchToProps = (dispatch) => ({
   googleClassRoomLoginFailure: (data) => dispatch(googleClassRoomLoginFailureAction(data)),
 });
 
-const mapStateToProps = () => ({});
-
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(GoogleLoginModal),
+  connect(null, mapDispatchToProps)(GoogleLoginModal),
 );

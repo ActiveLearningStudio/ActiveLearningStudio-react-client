@@ -1,0 +1,77 @@
+.dashboard-project-list {
+    .img-col img {
+        max-width: 150px;
+        max-height: 150px;
+    }
+
+    .project-row{
+        border-bottom: solid #0f4392 1px;
+    }
+
+    .project-row a{
+        color:#0f4392;
+        font: normal normal 600 16px/22px Open Sans;
+    }
+
+    .project-row p {
+        color:#777;
+        font: normal normal 600 16px/22px Open Sans;
+    }
+
+    .project-go-icon {
+        font-size: xx-large;
+        color: #0f4392;
+    }
+
+    .search-box {
+        background-color: whitesmoke;
+    }
+
+    .search-box .header {
+        background-color: #0f4392;
+        font-size: x-large;
+        color: white;
+    }
+
+    .search-box .header h2 {
+        font-size: x-large;
+    }
+
+    .search-box input {
+        display: block;
+        width: 100%;
+        padding: 0.5em;
+    }
+
+    .search-box button {
+        border: solid #0f4392 2px;
+        display: block;
+        width: 100%;
+    }
+
+    .search-box button:hover {
+        background-color: #0f4392;
+        color: white;
+    }
+
+    .activity-card-title {
+        font-size: medium;
+    }
+
+    .activity-card {
+        min-height: 180px;
+    }
+
+    .activity {
+        min-height: 180px;
+    }
+
+    .playlist {
+        border-bottom: solid #0f4392 1px;
+    }
+
+    .playlist-title {
+        color: #0f4392;
+        font-size: x-large;
+    }
+}

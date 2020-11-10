@@ -1,19 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Dropdown } from 'react-bootstrap';
 
-// import logo from 'assets/images/logo.svg';
-import {
-  changePlaylistTitleAction,
-} from 'store/actions/playlist';
+import { changePlaylistTitleAction } from 'store/actions/playlist';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import ResourceCard from 'components/ResourceCard';
-import ShareLink from 'components/ResourceCard/ShareLink';
+import PlaylistCardDropdown from './PlaylistCardDropdown';
 
 import './style.scss';
 
@@ -112,8 +108,6 @@ class PlaylistCard extends React.Component {
     const {
       index,
       playlist,
-      projectId,
-      selectedProject,
     } = this.props;
 
     return (
@@ -130,9 +124,9 @@ class PlaylistCard extends React.Component {
           >
             <div className="list">
               <div className="list-header" {...provided.dragHandleProps}>
-                <h2 className="list-header-name d-flex align-items-center">
+                <h2 className="playlist-header-name d-flex align-items-center">
                   <div
-                    className={`list-title-wrapper d-flex align-items-center ${editMode ? 'hide' : 'show'}`}
+                    className={`playlist-title-wrapper d-flex align-items-center ${editMode ? 'hide' : 'show'}`}
                     onClick={this.handleClickPlaylistTitle}
                   >
                     <span>{playlist.title}</span>
@@ -150,55 +144,10 @@ class PlaylistCard extends React.Component {
                     defaultValue={playlist.title}
                   />
 
-                  <Dropdown className="pull-right playlist-dropdown check">
-                    <Dropdown.Toggle className="playlist-dropdown-btn">
-                      <FontAwesomeIcon icon="ellipsis-v" />
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                      <Dropdown.Item
-                        as={Link}
-                        className="hidden"
-                        to={`/project/${projectId}/playlist/${playlist.id}/preview`}
-                      >
-                        <FontAwesomeIcon icon="eye" className="mr-2" />
-                        Preview
-                      </Dropdown.Item>
-
-                      {/*
-                      <Dropdown.Item href="#">
-                        <FontAwesomeIcon icon="pen" className="mr-2" />
-                        Edit
-                      </a>
-                      */}
-
-                      {/* <Dropdown.Item
-                        onClick={() => {
-                          Swal.fire({
-                            title: 'STAY TUNED!',
-                            text: 'COMING SOON',
-                            imageUrl: logo,
-                            imageWidth: 400,
-                            imageHeight: 200,
-                            imageAlt: 'Custom image',
-                          });
-                        }}
-                      >
-                        <FontAwesomeIcon icon="share" className="mr-2" />
-                        Send To
-                      </Dropdown.Item> */}
-
-                      <ShareLink
-                        playlistId={playlist.id}
-                        projectId={selectedProject && selectedProject.id}
-                      />
-
-                      <Dropdown.Item onClick={this.handleDelete}>
-                        <FontAwesomeIcon icon="times-circle" className="mr-2" />
-                        Delete
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
+                  <PlaylistCardDropdown
+                    playlist={playlist}
+                    handleClickPlaylistTitle={this.handleClickPlaylistTitle}
+                  />
                 </h2>
               </div>
 
@@ -246,7 +195,6 @@ PlaylistCard.propTypes = {
   selectedProject: PropTypes.object.isRequired,
   showDeletePopup: PropTypes.func.isRequired,
   hideDeletePopup: PropTypes.func.isRequired,
-  reorderPlaylistActivities: PropTypes.func.isRequired,
   changePlaylistTitle: PropTypes.func.isRequired,
   handleCreateResource: PropTypes.func,
 };

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { Link, withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import Swal from 'sweetalert2';
@@ -7,40 +8,68 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import logo from 'assets/images/logo.svg';
 import {
   allSidebarProjects,
-  allUpdateProject,
-  sampleProjects,
+  // allUpdateProject,
+  // sampleProjects,
 } from 'store/actions/project';
+import { loadTeamsAction } from 'store/actions/team';
 
 import './style.scss';
 
-function Sidebar() {
+const PROJECTS = 'projects';
+const CHANNEL = 'channel';
+const TEAM = 'team';
+
+function Sidebar(props) {
+  const { history, location } = props;
+
   const dispatch = useDispatch();
 
   const allState = useSelector((state) => state);
 
-  const [myProjects, setMyProjects] = useState([]);
-  const [sampleProject, setSampleProjects] = useState([]);
+  // const [myProjects, setMyProjects] = useState([]);
+  // const [sampleProject, setSampleProjects] = useState([]);
   // const [updateProject, setUpdateProject] = useState([]);
 
+  const [selectedTeam, setSelectedTeam] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
   useEffect(() => {
-    if (allState.sidebar.allProject.length === 0) {
+    if (location.pathname.includes('teams/')) {
+      const teamId = parseInt(location.pathname.split('teams/')[1], 10);
+      if (teamId) {
+        setSelectedTeam(teamId);
+
+        if (location.pathname.includes(PROJECTS)) {
+          setSelectedCategory(PROJECTS);
+        } else if (location.pathname.includes(CHANNEL)) {
+          setSelectedCategory(CHANNEL);
+        } else {
+          setSelectedCategory(TEAM);
+        }
+      }
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!allState.sidebar.isLoaded) {
       dispatch(allSidebarProjects());
-      dispatch(sampleProjects());
-      dispatch(allUpdateProject());
+      // dispatch(sampleProjects());
+      // dispatch(allUpdateProject());
+      dispatch(loadTeamsAction());
     }
-  }, [allState.sidebar.allProject.length, dispatch]);
+  }, [allState.sidebar.isLoaded, dispatch]);
 
-  useEffect(() => {
-    if (allState.sidebar.allProject.length > 0) {
-      setMyProjects(allState.sidebar.allProject);
-    }
-  }, [allState.sidebar.allProject]);
+  // useEffect(() => {
+  //   if (allState.sidebar.allProject.length > 0) {
+  //     setMyProjects(allState.sidebar.allProject);
+  //   }
+  // }, [allState.sidebar.allProject]);
 
-  useEffect(() => {
-    if (allState.sidebar.sampleProject.length > 0) {
-      setSampleProjects(allState.sidebar.sampleProject);
-    }
-  }, [allState.sidebar.sampleProject]);
+  // useEffect(() => {
+  //   if (allState.sidebar.sampleProject.length > 0) {
+  //     setSampleProjects(allState.sidebar.sampleProject);
+  //   }
+  // }, [allState.sidebar.sampleProject]);
 
   // useEffect(() => {
   //   if (allState.sidebar.updateProject.length > 0) {
@@ -48,8 +77,12 @@ function Sidebar() {
   //   }
   // }, [allState.sidebar.updateProject]);
 
+  const handleClickTeam = useCallback((team) => {
+    history.push(`/teams/${team.id}`);
+  }, [history]);
+
   return (
-    <aside className="sidebarall">
+    <aside className="sidebar-all">
       <Link to="/">
         <div className="menu-title">
           <FontAwesomeIcon icon="tasks" className="mr-2" />
@@ -58,7 +91,7 @@ function Sidebar() {
       </Link>
 
       <ul className="all-project">
-        {!!myProjects && myProjects.slice(0, 5).map((data) => (
+        {allState.sidebar.allProject.slice(0, 5).map((data) => (
           <li key={data.id}>
             <Link to={`/project/${data.id}`}>
               <FontAwesomeIcon icon="angle-right" className="mr-2" />
@@ -89,23 +122,23 @@ function Sidebar() {
         My Teams
       </div> */}
 
+      {/*
       <div className="menu-title">
         <FontAwesomeIcon icon="tasks" className="mr-2" />
         Sample Projects
       </div>
 
-      {!!sampleProject && (
-        <ul className="all-project">
-          {sampleProject.slice(0, 5).map((data) => (
-            <li key={data.id}>
-              <a target="_blank" rel="noreferrer" href={`/project/${data.id}/shared`}>
-                <FontAwesomeIcon icon="angle-right" className="mr-2" />
-                {data.name}
-              </a>
-            </li>
-          ))}
-        </ul>
-      )}
+      <ul className="all-project">
+        {allState.sidebar.sampleProject.slice(0, 5).map((data) => (
+          <li key={data.id}>
+            <a target="_blank" rel="noreferrer" href={`/project/${data.id}/shared`}>
+              <FontAwesomeIcon icon="angle-right" className="mr-2" />
+              {data.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+      */}
 
       {/*
       {!!updateProject && (
@@ -135,8 +168,61 @@ function Sidebar() {
           Utilization Dashboard
         </div>
       </Link>
+
+      <Link to="/teams">
+        <div className="menu-title">
+          <FontAwesomeIcon icon="user-friends" className="mr-2" />
+          Teams
+        </div>
+      </Link>
+
+      {allState.team.teams.map((team) => (
+        <div key={team.id} className={`team-item${selectedTeam === team.id ? '' : ' collapsed'}`}>
+          <div className="team-label" onClick={() => handleClickTeam(team)}>
+            {team.name}
+            <FontAwesomeIcon
+              icon={selectedTeam === team.id ? 'angle-up' : 'angle-down'}
+              className="ml-2 mt-1"
+            />
+          </div>
+
+          <div className="team-detail-labels">
+            <Link
+              to={`/teams/${team.id}`}
+              className={selectedCategory === TEAM ? 'active-label' : ''}
+            >
+              <FontAwesomeIcon icon="user-friends" className="mr-2" />
+              Team Members
+            </Link>
+            <Link
+              to={`/teams/${team.id}/projects`}
+              className={selectedCategory === PROJECTS ? 'active-label' : ''}
+            >
+              <span className="project-title">Projects</span>
+            </Link>
+            <Link
+              to={`/teams/${team.id}/channel`}
+              className={selectedCategory === CHANNEL ? 'active-label' : ''}
+            >
+              <span className="channel-title">Channels</span>
+            </Link>
+          </div>
+        </div>
+      ))}
+
+      <div className="menu-title create-button">
+        <Link to="/teams/create-team">
+          <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
+          Create Team
+        </Link>
+      </div>
     </aside>
   );
 }
 
-export default Sidebar;
+Sidebar.propTypes = {
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+};
+
+export default withRouter(Sidebar);

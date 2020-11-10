@@ -1,0 +1,167 @@
+$selected_color: #084892;
+$filled: #44ca92;
+
+.team-information {
+  .projects-wrapper {
+    margin: 8px 0 0 -15px;
+
+    .project-list {
+      display: flex;
+      flex-wrap: wrap;
+
+      .project-content-item {
+        position: relative;
+        width: 260px;
+        margin: 0 8px 8px 0;
+        background: #fff;
+        border: solid 1px #e2e2e2;
+
+        img {
+          min-width: 245px;
+          max-width: 100%;
+          min-height: 170px;
+        }
+
+        .project-title {
+          width: 100%;
+          padding: 14px 20px;
+          display: flex;
+          justify-content: space-between;
+          border-top: solid 1px #e2e2e2;
+
+          a {
+            line-height: 24px;
+          }
+
+          span {
+            width: 150px;
+            max-height: 48px;
+            min-height: 48px;
+            letter-spacing: 0.3px;
+            font-size: 15px;
+            color: #0F4392;
+          }
+
+          .project-dropdown.check {
+            width: unset;
+            margin-left: 1rem;
+
+            button {
+              height: 24px;
+              padding: 0 0 0 10px !important;
+              color: #868686 !important;
+              background: transparent !important;
+              border: none !important;
+              outline: none !important;
+              box-shadow: none !important;
+
+              &:after {
+                display: none;
+              }
+            }
+          }
+        }
+
+        .team-member-content {
+          background: #fafafa;
+
+          .sub-title {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+          }
+
+          &.mid-border {
+            padding: 15px 21px 20px 26px;
+            border-width: 1px 0 0 0;
+            border-style: solid;
+            border-color: #e2e2e2;
+          }
+
+          .member-mark-container {
+            height: 30px;
+            margin-top: 15px;
+            display: flex;
+
+            .member-dropdown {
+              .member-dropdown-btn {
+                margin-left: -4px;
+                padding: 0;
+                background: none;
+                border-radius: 50%;
+
+                &::after {
+                  content: none;
+                }
+              }
+
+              .member-name-mark {
+                position: relative;
+                min-width: 30px;
+                min-height: 30px;
+                background: #fff;
+                border: solid 1px #e2e2e2;
+                border-radius: 50%;
+                font-weight: bold;
+                text-align: center;
+                text-transform: uppercase;
+                color: #a5a5a5;
+
+                &.over {
+                  //margin-left: -4px;
+
+                  &:hover {
+                    background: #5952c6;
+                    border-color: #5952c6;
+                    color: #ffffff;
+                  }
+                }
+
+                span {
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  margin: 0;
+                  transform: translate(-50%, -50%);
+                  font-size: 12px;
+                }
+              }
+
+              .dropdown-menu {
+                padding-right: 1em;
+                padding-left: 1em;
+                font-size: 12px;
+
+                .dropdown-divider {
+                  width: calc(100% + 2em);
+                  margin-left: -1em;
+                }
+
+                .drop-title {
+                  display: flex;
+                  color: #868686;
+
+                  & > .member-name-mark {
+                    margin-right: 11px;
+                  }
+
+                  & > * {
+                    align-self: center;
+                  }
+                }
+
+                a {
+                  color: #868686;
+
+                  svg {
+                    color: #343434;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -11,6 +11,10 @@ import gapi from './gapi';
 import search from './search';
 import metrics from './metrics';
 import sidebar from './sidebar';
+import team from './team';
+import account from './account';
+import dashboard from './dashboard';
+import notification from './notification';
 
 export default combineReducers({
   auth,
@@ -24,4 +28,8 @@ export default combineReducers({
   search,
   metrics,
   sidebar,
+  team,
+  account,
+  dashboard,
+  notification,
 });

@@ -1,18 +1,19 @@
 .resource-activity {
   // padding-left: 25px;
-   #laravel-h5p-form{
-     .methods .control-label{
-      font-weight: bold;
-     }
 
-     .methods .radio-inline{
+  #laravel-h5p-form {
+    .methods .control-label {
+      font-weight: bold;
+    }
+
+    .methods .radio-inline {
       padding-right: 10px;
       cursor: pointer;
-     }
-     
-     .methods .radio-inline input{
+    }
+
+    .methods .radio-inline input {
       margin-right: 2px;
-     }
+    }
   }
 
   .back-button {
@@ -29,7 +30,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     padding: 0 15px;
 
     .fa {
@@ -109,6 +110,11 @@
     width: 100%;
     overflow-y: auto;
     overflow-x: hidden;
+
+    .responsive-pad {
+      padding-left: 2px;
+      padding-right: 2px;
+    }
 
     .row {
       padding: 0 20px;
@@ -196,7 +202,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     padding: 0 15px;
 
     .fa {
@@ -217,7 +223,7 @@
         line-height: 20px;
         letter-spacing: 0.28px;
         color: #707070;
-        padding: 5px 0px 0;
+        padding: 5px 0 0;
       }
 
       span {
@@ -660,6 +666,14 @@ input[type="radio"]:checked + .activity-item {
   font-size: 14px;
   font-family: "Open Sans", sans-serif;
   font-weight: 600;
+
+  &.top {
+    position: absolute;
+    right: 50px;
+    top: -1.1em;
+    margin-top: 0;
+    margin-right: -20px;
+  }
 }
 
 .add-resource-continue-btn {
@@ -671,11 +685,11 @@ input[type="radio"]:checked + .activity-item {
   /* margin-left: 9px; */
   cursor: pointer;
   margin-top: 30px;
-  width: 163px;
+  width: 195px;
   height: 56px;
-  background: url(../../../assets/images/btn-arrow.png) #2ecf43 no-repeat right 20px top 20px;
+  background: url(../../../assets/images/btn-arrow.png) #2ecf43 no-repeat right 20px top 21px;
   text-align: left;
-  padding-left: 35px;
+  padding-left: 20px;
   font-size: 14px;
   font-family: "Open Sans", sans-serif;
   font-weight: 600;
