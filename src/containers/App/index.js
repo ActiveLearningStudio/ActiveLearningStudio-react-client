@@ -6,6 +6,9 @@ import { Helmet } from 'react-helmet';
 import logo from 'assets/images/logo.svg';
 import { getUserAction } from 'store/actions/auth';
 import { cloneDuplicationRequest } from 'store/actions/notification';
+import { updatedActivity } from 'store/actions/resource';
+import { updatedProject } from 'store/actions/project';
+import { updatedPlaylist } from 'store/actions/playlist';
 import AppRouter from 'routers/AppRouter';
 
 import './style.scss';
@@ -24,6 +27,12 @@ function App(props) {
       dispatch(cloneDuplicationRequest(userDetails.id));
     }
   }, [dispatch, userDetails]);
+
+  useEffect(() => {
+    dispatch(updatedActivity());
+    dispatch(updatedProject());
+    dispatch(updatedPlaylist());
+  }, [dispatch]);
 
   useEffect(() => {
     if (window.HubSpotConversations) {
@@ -135,9 +144,10 @@ function App(props) {
 
           <a className="reg-btn" href="/register">CLICK HERE TO REGISTER</a>
           <br />
+
           <p>
             To learn more click here
-            <a href="https://curriki.org"> curriki</a>
+            <a href="https://curriki.org"> Curriki</a>
           </p>
         </div>
       </div>
