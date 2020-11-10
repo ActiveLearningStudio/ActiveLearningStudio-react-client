@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown } from 'react-bootstrap';
 
 import projectIcon from 'assets/images/project_icon.svg';
-import { loadLtiPlaylistAction } from 'store/actions/playlist';
+import { loadLtiPlaylistAction, loadProjectPlaylistsAction } from 'store/actions/playlist';
 import PreviousLink from './components/PreviousLink';
 import NextLink from './components/NextLink';
 import ActivitiesDropdown from './components/ActivitiesDropdown';
@@ -22,6 +22,7 @@ function LtiPlaylistPreview(props) {
     activityId,
     showLti,
     loadLtiPlaylist,
+    loadProjectPlaylists,
   } = props;
 
   useEffect(() => {
@@ -31,6 +32,11 @@ function LtiPlaylistPreview(props) {
   }, [playlistId, activityId, loadLtiPlaylist]);
 
   let { selectedPlaylist } = playlist;
+  useEffect(() => {
+    if (selectedPlaylist) {
+      loadProjectPlaylists(selectedPlaylist.project_id);
+    }
+  }, [selectedPlaylist]);
   if (selectedPlaylist && selectedPlaylist.id !== playlistId) {
     selectedPlaylist = null;
   }
@@ -43,7 +49,7 @@ function LtiPlaylistPreview(props) {
     );
   }
 
-  const allPlaylists = selectedPlaylist.project.playlists;
+  const allPlaylists = playlist.playlists;
 
   let currentActivityId = activityId;
   let currentActivity;
@@ -97,12 +103,14 @@ function LtiPlaylistPreview(props) {
                   playlistId={playlistId}
                   previousResource={previousResource}
                   allPlaylists={allPlaylists}
+                  projectId={selectedPlaylist.project_id}
                 />
                 <NextLink
                   showLti
                   playlistId={playlistId}
                   nextResource={nextResource}
                   allPlaylists={allPlaylists}
+                  projectId={selectedPlaylist.project_id}
                 />
               </div>
             </div>
@@ -166,6 +174,7 @@ LtiPlaylistPreview.propTypes = {
   activityId: PropTypes.number,
   showLti: PropTypes.bool,
   loadLtiPlaylist: PropTypes.func.isRequired,
+  loadProjectPlaylists: PropTypes.func.isRequired,
 };
 
 LtiPlaylistPreview.defaultProps = {
@@ -175,6 +184,7 @@ LtiPlaylistPreview.defaultProps = {
 
 const mapDispatchToProps = (dispatch) => ({
   loadLtiPlaylist: (playlistId) => dispatch(loadLtiPlaylistAction(playlistId)),
+  loadProjectPlaylists: (projectId) => dispatch(loadProjectPlaylistsAction(projectId)),
 });
 
 const mapStateToProps = (state) => ({
