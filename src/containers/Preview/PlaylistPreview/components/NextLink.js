@@ -80,7 +80,7 @@ function NextLink(props) {
                         if (showLti) {
                           history.push(`/project/${projectId}/shared`);
                         } else {
-                          history.push(`/project/${projectId}/${shared ? 'preview' : 'preview'}`);
+                          history.push(`/project/${projectId}/preview`);
                         }
                       }
                     });
