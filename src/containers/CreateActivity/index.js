@@ -55,7 +55,7 @@ function ActivityCreate(props) {
                     <Nav.Item>
                       <Nav.Link eventKey="upload">
                         <FontAwesomeIcon icon="upload" />
-                        Search for an Existing Activity
+                        Upload a Saved Activity
                       </Nav.Link>
                     </Nav.Item>
                     <Nav.Item>

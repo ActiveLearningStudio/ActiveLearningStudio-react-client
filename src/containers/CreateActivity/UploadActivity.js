@@ -10,8 +10,8 @@ import ActivityMeter from './ActivityMeter';
 
 function ActivityWizard(props) {
   const { match, history } = props;
-  const [activeState, setActiveState] = useState(['describe']);
-  const [activeView, setActiveView] = useState('describe');
+  const [activeStateUpload, setActiveStateUpload] = useState(['describe']);
+  const [activeViewUpload, setActiveViewUpload] = useState('describe');
   const resource = useSelector((state) => state.resource);
   const dispatch = useDispatch();
 
@@ -44,24 +44,24 @@ function ActivityWizard(props) {
   };
 
   return (
-    <div className="activity-wizard">
-      <h2>Create a New  Activity</h2>
-      <ActivityMeter activeState={activeState} />
-      {activeView === 'describe'
+    <div className="activity-wizard upload-wizard">
+      <h2>Load a Saved Activity</h2>
+      <ActivityMeter activeState={activeStateUpload} upload />
+      {activeViewUpload === 'describe'
       && (
       <ResourceDescribe
-        selectType={setActiveState}
-        type={activeState}
-        setActiveView={setActiveView}
+        selectType={setActiveStateUpload}
+        type={activeStateUpload}
+        setActiveView={setActiveViewUpload}
       />
       )}
 
-      {activeView === 'build'
+      {activeViewUpload === 'build'
       && (
       <H5PEditor
-        selectType={setActiveState}
-        type={activeState}
-        setActiveView={setActiveView}
+        selectType={setActiveStateUpload}
+        type={activeStateUpload}
+        setActiveView={setActiveViewUpload}
         resource={resource}
         handleCreateResourceSubmit={handleCreateResourceSubmit}
         upload

@@ -136,6 +136,7 @@ let ResourceSelectActivity = (props) => {
               <div className="row">
                 <div className="col-md-12">
                   <h2 className="title">
+                    Select the activity you want to build from the options below:
                     <div
                       className="back-button"
                       onClick={() => {
@@ -147,7 +148,6 @@ let ResourceSelectActivity = (props) => {
                       <FontAwesomeIcon icon="chevron-left" className="mr-2" />
                       Back
                     </div>
-                    Select the activity you want to build from the options below:
                   </h2>
                 </div>
               </div>

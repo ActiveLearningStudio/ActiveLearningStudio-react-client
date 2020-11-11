@@ -67,6 +67,7 @@ let ResourceDescribeActivity = (props) => {
             <div className="row">
               <div className="col-md-12">
                 <h2 className="title">
+                  Describe Activity:
                   <div
                     className="back-button"
                     onClick={() => {
@@ -78,7 +79,6 @@ let ResourceDescribeActivity = (props) => {
                     <FontAwesomeIcon icon="chevron-left" className="mr-2" />
                     Back
                   </div>
-                  Describe Activity:
                 </h2>
               </div>
             </div>

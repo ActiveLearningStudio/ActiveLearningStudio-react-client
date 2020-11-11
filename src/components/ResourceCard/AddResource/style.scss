@@ -121,6 +121,15 @@
     }
   }
 
+   h2 {
+    margin-bottom: 0 !important;
+    font: normal normal 600 18px/29px Hind Siliguri !important;
+    color: #464646 !important;
+  }
+
+  .pexel, .gallery {
+    background-color: #fff !important;
+  }
   .shadowbox {
     display: flex;
     justify-content: space-between;
@@ -812,4 +821,8 @@ input[type="radio"]:checked + .activity-item {
       }
     }
   }
+}
+
+.option-choose-way {
+  display: none;
 }

@@ -84,6 +84,13 @@
         }
     }
 
+    .laravel-h5p-upload{
+        height: 240px;
+        background: #EEEEEE 0% 0% no-repeat padding-box;
+        border: 3px dashed #ddd;
+        border-radius: 10px;
+    }
+
     .activity-wizard {
         
         h2 {
@@ -102,7 +109,7 @@
 
             .activity-progress {
                 display: flex;
-                height: 105px;
+                height: 80px;
                 justify-content: space-between;
                 align-items:center;
             }
@@ -118,6 +125,11 @@
             svg{
                 font-size: 40px;
             }
+
+            .fixed-number{
+                width:40px;
+            }
+
 
             .round-counter {
               border:1px solid #084892; 
@@ -175,6 +187,65 @@
             border: 1px solid #E9E9E9;
             border-radius: 4px;
         }
+    }
 
+    .drop-area {
+       position: relative;
+
+       .upload-holder {
+           position: absolute;
+           left:50%;
+           top:50%;
+           transform: translate(-50%,-50%);
+           text-align: center;
+           font: normal normal normal 16px/22px Open Sans;
+           letter-spacing: 0px;
+           color: #5A5A5A;
+
+           svg{
+           color:#084892
+           }
+
+           span{
+            font: normal normal normal 16px/22px Open Sans;
+            letter-spacing: 0px;
+            color: #084892;
+            text-decoration: underline;
+           }
+        }
+    }
+
+    .resource-question {
+        h2.title {
+            font: normal normal normal 24px/33px Open Sans;
+            letter-spacing: 0px;
+            color: #464646;
+            font-size: 18px;
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0px;
+        }
+
+        .shadowbox {
+            background: transparent;
+            justify-content: flex-end;
+            height: 40px;
+            align-items: center;
+            padding: 0px 0px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            margin-top: 0px;
+        }
+    }
+
+    .upload-wizard {
+        .Activity-meter {
+           justify-content: left;
+
+           svg{
+               margin-right: 20px;
+           }
+        }
     }
 }
