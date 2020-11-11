@@ -1,6 +1,8 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import Echo from 'laravel-echo';
 
+import socketConnection from 'services/http.service';
 import playlistService from 'services/playlist.service';
 import * as actionTypes from '../actionTypes';
 
@@ -243,4 +245,24 @@ export const reorderPlaylistActivitiesAction = (playlist) => async (dispatch) =>
     .catch(() => {
       dispatch(loadProjectPlaylistsAction(playlist.projectId));
     });
+};
+
+export const updatedPlaylist = () => async () => {
+  const echo = new Echo(socketConnection.notificationSocket());
+  echo.private('playlist-update').notification((msg) => {
+    const path = window.location.pathname;
+    if (path.includes(`project/${msg.playlist.id}/playlist/${msg.playlist.id}`)) {
+      Swal.fire({
+        title: 'This playlist has modified by other user. Are you ok to refresh page to see what is updated ?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        denyButtonText: 'No',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      });
+    }
+  });
 };
