@@ -14,7 +14,7 @@ function ActivityMeter(props) {
             <div className="fixed-number">
               <div className="round-counter">
                 <div className="counter">
-                  3
+                  1
                 </div>
               </div>
             </div>
@@ -25,7 +25,7 @@ function ActivityMeter(props) {
             <div className="fixed-number">
               <div className="round-counter">
                 <div className="counter">
-                  3
+                  2
                 </div>
               </div>
             </div>
@@ -49,7 +49,7 @@ function ActivityMeter(props) {
         <div className="fixed-number">
           <div className="round-counter">
             <div className="counter">
-              3
+              4
             </div>
           </div>
         </div>

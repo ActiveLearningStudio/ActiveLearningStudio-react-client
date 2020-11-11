@@ -6,7 +6,7 @@
         justify-content: space-between;
         padding-bottom: 40px;
 
-        .title-line{
+        .title-line {
             display: flex;
             align-items: center;
             width:100%;
@@ -84,7 +84,7 @@
         }
     }
 
-    .laravel-h5p-upload{
+    .laravel-h5p-upload {
         height: 240px;
         background: #EEEEEE 0% 0% no-repeat padding-box;
         border: 3px dashed #ddd;
@@ -122,14 +122,13 @@
                 margin-bottom: 0px;
             }
 
-            svg{
+            svg {
                 font-size: 40px;
             }
 
-            .fixed-number{
+            .fixed-number {
                 width:40px;
             }
-
 
             .round-counter {
               border:1px solid #084892; 
@@ -142,7 +141,7 @@
             }
 
             .counter {
-                border:1px solid #fff;
+                border: 1px solid #fff;
                 background-color: #084892;
                 border-radius: 50%;
                 display: flex;
@@ -162,7 +161,7 @@
                 }
     
                 .round-counter {
-                  border:1px solid #44CA92; 
+                  border: 1px solid #44CA92; 
                 }
     
                 .counter {
@@ -173,7 +172,7 @@
     }
 
     .resource-activity {
-        padding-top:40px;
+        padding-top: 40px;
 
         h2{
             font: normal normal 600 24px/33px Open Sans;
@@ -182,7 +181,7 @@
             padding-bottom: 0px;
         }
 
-        .activity-item{
+        .activity-item {
             background: #FFFFFF 0% 0% no-repeat padding-box;
             border: 1px solid #E9E9E9;
             border-radius: 4px;
@@ -194,23 +193,26 @@
 
        .upload-holder {
            position: absolute;
-           left:50%;
-           top:50%;
+           left: 50%;
+           top: 50%;
            transform: translate(-50%,-50%);
            text-align: center;
            font: normal normal normal 16px/22px Open Sans;
            letter-spacing: 0px;
            color: #5A5A5A;
 
-           svg{
-           color:#084892
+           svg {
+            color:#084892;
+            font-size: 30px;
+            margin-bottom: 15px;
            }
 
-           span{
+           span {
             font: normal normal normal 16px/22px Open Sans;
             letter-spacing: 0px;
             color: #084892;
             text-decoration: underline;
+            cursor: pointer;
            }
         }
     }

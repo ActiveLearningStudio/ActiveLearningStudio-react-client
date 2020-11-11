@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -17,6 +17,8 @@ const H5PEditor = (props) => {
     handleCreateResourceSubmit,
     upload,
   } = props;
+
+  const uploadFile = useRef();
   let defaultState = 'create';
   if (upload) {
     defaultState = 'upload';
@@ -147,13 +149,26 @@ const H5PEditor = (props) => {
                     id="h5p-file"
                     className="laravel-h5p-upload form-control"
                     onChange={setH5pFileUpload}
+                    ref={uploadFile}
+                    // style={{ display: 'none' }}
                   />
                   <div className="upload-holder">
                     <FontAwesomeIcon icon="file-upload" className="mr-2" />
                     <p>
                       Drag & Drop File or
-                      <span> Browse to upload</span>
+                      <span
+                        onClick={() => uploadFile.current.click()}
+                      >
+                        &nbsp;Browse to upload
+                      </span>
                     </p>
+                    {!!h5pFile
+                    && (
+                      <p>
+                        Selected File:&nbsp;
+                        {h5pFile.name}
+                      </p>
+                    )}
                   </div>
                 </div>
                 {/* <small className="h5p-disable-file-check helper-block">
