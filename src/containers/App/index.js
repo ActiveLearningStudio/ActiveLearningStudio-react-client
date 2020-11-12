@@ -17,22 +17,20 @@ function App(props) {
   const dispatch = useDispatch();
   const { getUser } = props;
 
-  const userDetails = useSelector((state) => state.auth.user);
   useEffect(() => {
     getUser();
   }, [getUser]);
 
+  const userDetails = useSelector((state) => state.auth.user);
+
   useEffect(() => {
     if (userDetails) {
       dispatch(cloneDuplicationRequest(userDetails.id));
+      dispatch(updatedProject(userDetails.id));
+      dispatch(updatedPlaylist(userDetails.id));
+      dispatch(updatedActivity(userDetails.id));
     }
   }, [dispatch, userDetails]);
-
-  useEffect(() => {
-    dispatch(updatedActivity());
-    dispatch(updatedProject());
-    dispatch(updatedPlaylist());
-  }, [dispatch]);
 
   useEffect(() => {
     if (window.HubSpotConversations) {
