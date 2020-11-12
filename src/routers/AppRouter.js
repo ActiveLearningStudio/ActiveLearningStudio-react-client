@@ -24,6 +24,10 @@ const RegisterPage = loadable(() => import('../containers/Auth/RegisterPage'));
 const ForgotPasswordPage = loadable(() => import('../containers/Auth/ForgotPasswordPage'));
 const ResetPasswordPage = loadable(() => import('../containers/Auth/ResetPasswordPage'));
 const ConfirmEmailPage = loadable(() => import('../containers/Auth/ConfirmEmailPage'));
+const NeafRegister = loadable(() => import('../containers/Auth/NeafRegistration'));
+const NeafLogin = loadable(() => import('../containers/Auth/NeafLogin'));
+const VevensityRegister = loadable(() => import('../containers/Auth/VevinsityRegistration'));
+const VevensityLogin = loadable(() => import('../containers/Auth/VevinsityLogin'));
 
 const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
 const ChangePasswordPage = loadable(() => import('../containers/Account/ChangePasswordPage'));
@@ -63,7 +67,10 @@ const AppRouter = () => {
         <PublicRoute exact path="/forgot-password" component={ForgotPasswordPage} />
         <PublicRoute exact path="/reset-password" component={ResetPasswordPage} />
         <PublicRoute exact path="/verify-email" component={ConfirmEmailPage} />
-
+        <PublicRoute exact path="/neaf-register" component={NeafRegister} />
+        <PublicRoute exact path="/neaf-login" component={NeafLogin} />
+        <PublicRoute exact path="/vivensity-register" component={VevensityRegister} />
+        <PublicRoute exact path="/vivensity-login" component={VevensityLogin} />
         <PrivateRoute exact path="/account" component={ProfilePage} />
         <PrivateRoute exact path="/change-password" component={ChangePasswordPage} />
 
