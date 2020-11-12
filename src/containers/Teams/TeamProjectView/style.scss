@@ -16,10 +16,12 @@ $filled: #44ca92;
         background: #fff;
         border: solid 1px #e2e2e2;
 
-        img {
+        .project-img {
           min-width: 245px;
           max-width: 100%;
           min-height: 170px;
+          background-position: center;
+          background-size: cover;
         }
 
         .project-title {
