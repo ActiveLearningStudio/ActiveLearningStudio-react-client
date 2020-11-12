@@ -515,13 +515,13 @@ export const saveFormDataInCreation = (formData) => async (dispatch) => {
   });
 };
 
-export const updatedActivity = () => async () => {
+export const updatedActivity = (userId) => async () => {
   const echo = new Echo(socketConnection.notificationSocket());
-  echo.private('activity-update').notification((msg) => {
+  echo.private(`User.${userId}.activity-update`).notification((msg) => {
     const path = window.location.pathname;
     if (path.includes(`activity/${msg.activity.id}`)) {
       Swal.fire({
-        title: 'This activity has modified by other team member. Are you ok to refresh page to see what is updated?',
+        title: 'This activity has been modified by other team member. Are you ok to refresh page to see what is updated?',
         showDenyButton: true,
         showCancelButton: true,
         confirmButtonText: 'Yes',

@@ -247,13 +247,13 @@ export const reorderPlaylistActivitiesAction = (playlist) => async (dispatch) =>
     });
 };
 
-export const updatedPlaylist = () => async () => {
+export const updatedPlaylist = (userId) => async () => {
   const echo = new Echo(socketConnection.notificationSocket());
-  echo.private('playlist-update').notification((msg) => {
+  echo.private(`User.${userId}.playlist-update`).notification((msg) => {
     const path = window.location.pathname;
     if (path.includes(`project/${msg.playlist.id}/playlist/${msg.playlist.id}`)) {
       Swal.fire({
-        title: 'This playlist has modified by other user. Are you ok to refresh page to see what is updated ?',
+        title: 'This playlist has been modified by other team member. Are you ok to refresh page to see what is updated?',
         showDenyButton: true,
         showCancelButton: true,
         confirmButtonText: 'Yes',
