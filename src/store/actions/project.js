@@ -589,20 +589,23 @@ export const loadMyProjectsLtiAction = (lmsUrl, ltiClientId) => async (dispatch)
 
 export const updatedProject = (userId) => async () => {
   const echo = new Echo(socketConnection.notificationSocket());
-  echo.private(`User.${userId}.project-update`).notification((msg) => {
-    const path = window.location.pathname;
-    if (path.includes(`project/${msg.project.id}`)) {
-      Swal.fire({
-        title: 'This project has been modified by other team member. Are you ok to refresh page to see what is updated?',
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: 'Yes',
-        denyButtonText: 'No',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.reload();
-        }
-      });
+  echo.private('project-update').notification((msg) => {
+    if (msg.userId !== userId) {
+      const path = window.location.pathname;
+      if (path.includes(`project/${msg.project.id}`)) {
+        Swal.fire({
+          title: 'This project has been modified by other team member. Are you ok to refresh page to see what is updated?',
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          denyButtonText: 'No',
+        })
+          .then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+      }
     }
   });
 };
