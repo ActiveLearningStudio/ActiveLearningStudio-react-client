@@ -20,6 +20,7 @@
  <li>Record activities to a Learning Record Store (LRS)</li>
  </ul>
 <p />
+
 ## Installation
 A Docker image is available to install the CurrikiStudio API here: https://hub.docker.com/r/curriki/client
 
