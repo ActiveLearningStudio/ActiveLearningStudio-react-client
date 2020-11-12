@@ -33,10 +33,12 @@
       margin-bottom: 18px;
       border: solid 1px #e2e2e2;
 
-      img {
+      .project-img {
         min-width: 180px;
         max-width: 180px;
         min-height: 123px;
+        background-position: center;
+        background-size: cover;
       }
 
       .assign-project-radio {
