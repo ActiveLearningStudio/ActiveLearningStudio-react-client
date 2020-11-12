@@ -5,8 +5,9 @@
  Learn more about CurrikiStudio at https://www.curriki.org
  
  ## About the CurrikiStudion ReactJs Client
- The CurrikiStudio client application communicates with the CurrikiStudion API. The application supports following functionality to manage the following:
- 
+ The CurrikiStudio client application communicates with the CurrikiStudio API. The application supports following functionality to manage the following:
+ <img src="https://www.curriki.org/wp-content/uploads/2020/11/react-client-01.png" />
+ <br /><br />
  <ul>
  <li>Users</li>
  <li>Teams of Users</li>
