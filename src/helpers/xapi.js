@@ -21,11 +21,12 @@ export function isxAPINeeded(currentRoute) {
   return allowedH5PActvityPaths().includes(currentRoute);
 }
 
-export function extendStatement(statement, params) {
+export function extendStatement(statement, params, skipped = false) {
   const {
     path,
     activityId,
     submissionId,
+    attemptId,
     studentId,
   } = params;
   const platform = H5PActvityPathMapToPlatform().find((el) => el[path]);
@@ -38,6 +39,12 @@ export function extendStatement(statement, params) {
       id: `${window.location.origin}/activity/${activityId}/submission/${submissionId}`,
     },
   ];
+  const other = [
+    {
+      objectType: 'Activity',
+      id: `${window.location.origin}/activity/${activityId}/submission/${submissionId}/${attemptId}`,
+    },
+  ];
   const actor = {
     objectType: 'Agent',
     account: {
@@ -47,6 +54,15 @@ export function extendStatement(statement, params) {
   };
   statementExtended.context.platform = platform[path];
   statementExtended.context.contextActivities.grouping = grouping;
+  statementExtended.context.contextActivities.other = other;
   statementExtended.actor = actor;
+  if (skipped) {
+    statementExtended.verb = {
+      id: 'http://id.tincanapi.com/verb/skipped',
+      display: {
+        'en-US': 'skipped',
+      },
+    };
+  }
   return statementExtended;
 }

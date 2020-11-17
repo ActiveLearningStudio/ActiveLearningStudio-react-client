@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Alert } from 'react-bootstrap';
+import { Alert, Badge } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getOutcomeSummaryAction, loadH5pResourceSettings } from 'store/actions/gapi';
 import gifloader from 'assets/images/dotsloader.gif';
@@ -84,7 +84,12 @@ const Activity = (props) => {
                 <tbody>
                   {outcome.summary.map((question) => (
                     <tr>
-                      <td>{`${question.duration} - ${question.name}`}</td>
+                      <td>
+                        {`${question.duration} - ${question.name}`}
+                        {question.verb === 'skipped' && (
+                          <Badge className="skipped-badge" variant="warning">Skipped</Badge>
+                        )}
+                      </td>
                       <td>{`${question.score.raw}/${question.score.max}`}</td>
                     </tr>
                   ))}

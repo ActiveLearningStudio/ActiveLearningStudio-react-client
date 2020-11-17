@@ -28,54 +28,52 @@ function GclassSummaryPage(props) {
           />
         </Helmet>
 
-        <div className="flex-container previews">
-          <div className="activity-bg left-vdo reset-min-height">
-            <div className="main-item-wrapper desktop-view reset-min-height">
-              <div className="item-container">
-                {student && <ActivitySummary /> }
+        <div className="container">
+          <div className="row">
+            <div className="col">
+              {student && <ActivitySummary /> }
 
-                {!student && (
-                  <div className="container">
-                    <div className="row">
-                      <div className="col text-center">
-                        <img className="curriki-logo" src={logo} alt="" />
-                      </div>
-                    </div>
-
-                    {student === false && (
-                      <div className="row m-4">
-                        <div className="col text-center">
-                          <Alert variant="warning">
-                            You don&apos;t seem to be authorized to view this
-                            summary.
-                          </Alert>
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="row m-4">
-                      <div className="col text-center">
-                        <h2>Please log in to view this summary.</h2>
-                        <GoogleLogin
-                          clientId={global.config.gapiClientId}
-                          buttonText="Login"
-                          onSuccess={handleLogin}
-                          onFailure={handleLogin}
-                          scope="
-                            https://www.googleapis.com/auth/classroom.courses.readonly
-                            https://www.googleapis.com/auth/classroom.courses
-                            https://www.googleapis.com/auth/classroom.topics
-                            https://www.googleapis.com/auth/classroom.coursework.me
-                            https://www.googleapis.com/auth/classroom.coursework.students
-                            https://www.googleapis.com/auth/classroom.rosters.readonly
-                          "
-                          cookiePolicy="single_host_origin"
-                        />
-                      </div>
+              {!student && (
+                <div className="auth-container">
+                  <div className="row">
+                    <div className="col text-center">
+                      <img className="curriki-logo" src={logo} alt="" />
                     </div>
                   </div>
-                )}
-              </div>
+
+                  {student === false && (
+                    <div className="row m-4">
+                      <div className="col text-center">
+                        <Alert variant="warning">
+                          You don&apos;t seem to be authorized to view this
+                          summary.
+                        </Alert>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="row m-4">
+                    <div className="col text-center">
+                      <h2>Please log in to view this summary.</h2>
+                      <GoogleLogin
+                        clientId={global.config.gapiClientId}
+                        buttonText="Login"
+                        onSuccess={handleLogin}
+                        onFailure={handleLogin}
+                        scope="
+                          https://www.googleapis.com/auth/classroom.courses.readonly
+                          https://www.googleapis.com/auth/classroom.courses
+                          https://www.googleapis.com/auth/classroom.topics
+                          https://www.googleapis.com/auth/classroom.coursework.me
+                          https://www.googleapis.com/auth/classroom.coursework.students
+                          https://www.googleapis.com/auth/classroom.rosters.readonly
+                        "
+                        cookiePolicy="single_host_origin"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

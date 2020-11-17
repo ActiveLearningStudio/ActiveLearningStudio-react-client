@@ -49,7 +49,10 @@ const gapiReducer = (state = defaultAuthState(), action) => {
     case GET_SUBMISSION:
       return {
         ...state,
-        submission: action.submission.submission,
+        submission: {
+          ...action.submission.submission,
+          attemptId: Date.now(),
+        },
       };
 
     case GET_H5P_SETTINGS:

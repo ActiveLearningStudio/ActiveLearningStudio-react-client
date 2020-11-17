@@ -1,7 +1,9 @@
+/* eslint-disable react/no-this-in-sfc */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Swal from 'sweetalert2';
 import gifloader from 'assets/images/dotsloader.gif';
 import * as xAPIHelper from 'helpers/xapi';
 import { loadH5pResourceXapi } from 'store/actions/resource';
@@ -12,14 +14,14 @@ const Activity = (props) => {
   const {
     activityId,
     match,
+    history,
     student,
     submission,
     h5pSettings,
     loadH5pSettings,
-    loadH5pXapi,
     getSubmission,
+    sendStatement,
     turnIn,
-    history,
   } = props;
   const [xAPILoaded, setXAPILoaded] = useState(false);
   const [intervalPointer, setIntervalPointer] = useState(null);
@@ -83,20 +85,55 @@ const Activity = (props) => {
     const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
     if (!x.H5P.externalDispatcher || xAPIHelper.isxAPINeeded(match.path) === false) return;
 
-    x.H5P.externalDispatcher.on('xAPI', (event) => {
+    x.H5P.externalDispatcher.on('xAPI', function (event) {
       const params = {
         path: match.path,
         activityId,
         submissionId: submission.id,
+        attemptId: submission.attemptId,
         studentId: student.profile.data.id,
+        classworkId: match.params.classworkId,
+        courseId: match.params.courseId,
+        auth: student.auth,
       };
+
+      // Extending the xAPI statement with our custom values and sending it off to LRS
       const xapiData = JSON.stringify(
         xAPIHelper.extendStatement(event.data.statement, params),
       );
-      loadH5pXapi(xapiData);
 
       if (event.data.statement.verb.display['en-US'] === 'completed') {
-        turnIn(match.params.classworkId, match.params.courseId, student.auth);
+        // Check if all questions/interactions have been accounted for in LRS
+        // If the user skips one of the questions, no xAPI statement is generated.
+        // We need statements for all questions for proper summary accounting.
+        // Fire off an artificial "answered" statement if necessary
+        if (this.parent === undefined && this.interactions) {
+          this.interactions.forEach((interaction) => {
+            if (interaction.getLastXAPIVerb()) return; // Already initialized
+
+            const iXAPIStatement = JSON.stringify(
+              xAPIHelper.extendStatement(interaction.getXAPIData().statement, params, true),
+            );
+            sendStatement(iXAPIStatement);
+          }, this);
+        }
+
+        sendStatement(xapiData);
+
+        // Ask the user if he wants to turn-in the work to google classroom
+        Swal.fire({
+          title: 'Do you want to turn in your work to Google Classroom?',
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: 'Turn In',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            turnIn(params.classworkId, params.courseId, params.auth);
+            Swal.fire('Saved!', '', 'success');
+          }
+        });
+      } else {
+        sendStatement(xapiData);
       }
     });
   }, [xAPILoaded, match.path, match.params, activityId, student, submission]);
@@ -121,14 +158,14 @@ const Activity = (props) => {
 Activity.propTypes = {
   activityId: PropTypes.string.isRequired,
   match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
   student: PropTypes.object.isRequired,
   submission: PropTypes.object.isRequired,
   h5pSettings: PropTypes.object.isRequired,
   loadH5pSettings: PropTypes.func.isRequired,
-  loadH5pXapi: PropTypes.func.isRequired,
   getSubmission: PropTypes.func.isRequired,
+  sendStatement: PropTypes.func.isRequired,
   turnIn: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -139,8 +176,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   loadH5pSettings: (activityId) => dispatch(loadH5pResourceSettings(activityId)),
-  loadH5pXapi: (xapiData) => dispatch(loadH5pResourceXapi(xapiData)),
   getSubmission: (classworkId, courseId, auth) => dispatch(getSubmissionAction(classworkId, courseId, auth)),
+  sendStatement: (statement) => dispatch(loadH5pResourceXapi(statement)),
   turnIn: (classworkId, courseId, auth) => dispatch(turnInAction(classworkId, courseId, auth)),
 });
 
