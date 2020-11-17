@@ -13,7 +13,7 @@
   .notification-bar {
     .notification-alert {
       position: relative;
-      
+
       .alert-added {
         width: 10px;
         height: 10px;
@@ -24,23 +24,23 @@
         right: 0;
       }
     }
-    
+
     .notification-status {
       font: normal normal 600 14px/20px Open Sans;
-      letter-spacing: 0px;
+      letter-spacing: 0;
       color: #8F8FA1;
-      padding: 15px 0px 5px 25px;
+      padding: 15px 0 5px 25px;
     }
 
     .user-dropdown {
       width: 480px !important;
-      box-shadow: 0px 0px 99px #00000021;
+      box-shadow: 0 0 99px #00000021;
       border-radius: 5px;
 
       .scroll-notification {
         max-height: 480px;
         overflow-y: auto;
-        
+
         .header-data {
           display: flex;
           justify-content: space-between;
@@ -49,16 +49,16 @@
 
           h2 {
             font: normal normal 600 18px/20px Open Sans;
-            letter-spacing: 0px;
+            letter-spacing: 0;
             color: #0F0F0F;
-            margin-bottom: 0px;
+            margin-bottom: 0;
           }
 
           h3 {
             font: normal normal 600 14px/20px Open Sans;
-            letter-spacing: 0px;
+            letter-spacing: 0;
             color: #5250C1;
-            margin-bottom: 0px;
+            margin-bottom: 0;
           }
         }
 
@@ -83,7 +83,7 @@
         display: flex;
         justify-content: space-between;
         width: 100%;
-        padding: 10px 0px;
+        padding: 10px 0;
 
         .all-notification {
           text-decoration: underline;
@@ -94,7 +94,7 @@
 
         .notification-setting {
           font: normal normal 600 14px/20px Open Sans;
-          letter-spacing: 0px;
+          letter-spacing: 0;
           color: #5250C1;
           display: flex;
           justify-content: flex-end;
@@ -194,7 +194,7 @@
         padding: 6px 10px;
         font-size: 12px;
         position: relative;
-        margin: 5px 5px 0px 0px;
+        margin: 5px 5px 0 0;
 
         .iocns {
           color: #fff;

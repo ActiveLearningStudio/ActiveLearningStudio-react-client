@@ -6,6 +6,9 @@ import { Helmet } from 'react-helmet';
 import logo from 'assets/images/logo.svg';
 import { getUserAction } from 'store/actions/auth';
 import { cloneDuplicationRequest } from 'store/actions/notification';
+import { updatedActivity } from 'store/actions/resource';
+import { updatedProject } from 'store/actions/project';
+import { updatedPlaylist } from 'store/actions/playlist';
 import AppRouter from 'routers/AppRouter';
 
 import './style.scss';
@@ -14,14 +17,18 @@ function App(props) {
   const dispatch = useDispatch();
   const { getUser } = props;
 
-  const userDetails = useSelector((state) => state.auth.user);
   useEffect(() => {
     getUser();
   }, [getUser]);
 
+  const userDetails = useSelector((state) => state.auth.user);
+
   useEffect(() => {
     if (userDetails) {
       dispatch(cloneDuplicationRequest(userDetails.id));
+      dispatch(updatedProject(userDetails.id));
+      dispatch(updatedPlaylist(userDetails.id));
+      dispatch(updatedActivity(userDetails.id));
     }
   }, [dispatch, userDetails]);
 
@@ -91,6 +98,7 @@ function App(props) {
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.GeoGebraIM68Math-1.0/scripts/geogebra.js?ver=1.0.2`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.DocumentsUpload-1.0/scripts/DocumentsUpload.js`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.MemoryGame-1.3/memory-game.js?ver=1.3.5`,
+      'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML',
     ];
 
     newScripts.forEach((value) => {
@@ -100,6 +108,21 @@ function App(props) {
       document.body.appendChild(script);
     });
   }, []);
+  // useEffect(() => {
+  //   function myStopFunction() {
+  //     // eslint-disable-next-line no-use-before-define
+  //     clearTimeout(timerMath);
+  //   }
+
+  //   const timerMath = setInterval(() => {
+  //     try {
+  //       window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
+  //       myStopFunction();
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   }, 1000);
+  // }, []);
 
   return (
     <div>
@@ -135,9 +158,10 @@ function App(props) {
 
           <a className="reg-btn" href="/register">CLICK HERE TO REGISTER</a>
           <br />
+
           <p>
             To learn more click here
-            <a href="https://curriki.org"> curriki</a>
+            <a href="https://curriki.org"> Curriki</a>
           </p>
         </div>
       </div>
