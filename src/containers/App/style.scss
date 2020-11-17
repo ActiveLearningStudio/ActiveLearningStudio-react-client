@@ -1788,24 +1788,26 @@ a:hover {
   align-items: center;
 
   h1 {
-    text-align: left;
+    padding-top: 5px;
     font-size: 24px;
     line-height: 33px;
     font-weight: 600;
     letter-spacing: 0;
     color: #0f4392;
+    text-align: left;
     opacity: 1;
-    padding-top: 5px;
   }
 
   .flex-se {
-    display: flex;
-    justify-content: space-between;
     width: 100%;
     margin-right: 20px;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
 
     h1 {
+      margin: 0;
+      padding-top: 0;
       display: flex;
       flex: 50%;
     }

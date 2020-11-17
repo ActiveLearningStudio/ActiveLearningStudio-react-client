@@ -31,7 +31,7 @@ function AssignProject(props) {
     handleSubmit(selectedProjects);
   }, [selectedProjects, handleSubmit]);
 
-  const filteredProjects = projects.filter((project) => project.name.includes(search));
+  const filteredProjects = projects.filter((project) => project.name.toLowerCase().includes(search.toLowerCase()));
 
   const finishButton = () => (
     <button
