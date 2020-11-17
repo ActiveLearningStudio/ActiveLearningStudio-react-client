@@ -200,12 +200,14 @@ function Sidebar(props) {
             >
               <span className="project-title">Projects</span>
             </Link>
+            {/*
             <Link
               to={`/teams/${team.id}/channel`}
               className={selectedCategory === CHANNEL ? 'active-label' : ''}
             >
               <span className="channel-title">Channels</span>
             </Link>
+            */}
           </div>
         </div>
       ))}

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -18,25 +18,28 @@ function InviteTeam(props) {
     setInvitedMembers,
   } = props;
 
-  const [search, setSearch] = useState('');
-  const [selectedMember, setSelectedMember] = useState([]);
-  const [filteredMember, setFilteredMember] = useState([]);
+  // const [search, setSearch] = useState('');
+  const [selectedMembers, setSelectedMembers] = useState([]);
+  // const [filteredMembers, setFilteredMembers] = useState([]);
   const [showInvite, setShowInvite] = useState(false);
 
-  const onChange = useCallback((e) => {
-    setSearch(e.target.value);
-  }, []);
+  // const onChange = useCallback((e) => {
+  //   setSearch(e.target.value);
+  // }, []);
 
-  useEffect(() => {
-    setFilteredMember(selectedMember.filter((mem) => mem.name.includes(search) || mem.email.includes(search)));
-  }, [search, selectedMember]);
+  // useEffect(() => {
+  //   setFilteredMembers(selectedMembers.filter((mem) => (
+  //     mem.name.toLowerCase().includes(search.toLowerCase())
+  //     || mem.email.toLowerCase().includes(search.toLowerCase())
+  //   )));
+  // }, [search, selectedMember]);
 
   const invitedUsers = team.users || [];
 
-  const handleInvite = useCallback((user, note) => {
-    setSelectedMember([...selectedMember, ...user.map((u) => ({ ...u, note }))]);
+  const handleInvite = useCallback((users, note) => {
+    setSelectedMembers([...selectedMembers, ...users.map((u) => ({ ...u, note }))]);
     setShowInvite(false);
-  }, [selectedMember]);
+  }, [selectedMembers]);
 
   return (
     <div className="team-information">
@@ -48,19 +51,21 @@ function InviteTeam(props) {
 
         <div className="invite-member-wrapper">
           <div className="search-box">
+            {/*
             <input
               type="text"
               placeholder="Filter by name"
               value={search}
               onChange={onChange}
             />
+            */}
 
             <InviteDialog
               handleInvite={handleInvite}
               visible={showInvite}
               setShowInvite={setShowInvite}
               authUser={{ ...authUser, role: 'owner' }}
-              users={selectedMember}
+              users={selectedMembers}
             />
           </div>
 
@@ -77,14 +82,14 @@ function InviteTeam(props) {
             </div>
 
             <div className="member-list-content">
-              {filteredMember.map((user) => (
+              {selectedMembers.map((user) => (
                 <MemberItem
                   key={user.id}
                   invited
                   isInviting={isInviting}
-                  selected={selectedMember === user.id}
+                  selected={false}
                   user={user}
-                  selectMember={setSelectedMember}
+                  selectMember={setSelectedMembers}
                   // inviteUser={handleInvite}
                 />
               ))}
@@ -95,7 +100,7 @@ function InviteTeam(props) {
             type="button"
             className="create-team-continue-btn"
             onClick={() => {
-              setInvitedMembers(selectedMember.map(
+              setInvitedMembers(selectedMembers.map(
                 // eslint-disable-next-line no-restricted-globals
                 ({ id, ...mem }) => ({ id: isNaN(id) ? 0 : id, ...mem }),
               ));
