@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Tab,
@@ -8,17 +8,24 @@ import {
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
 import Header from 'components/Header';
+import { loadPlaylistAction } from 'store/actions/playlist';
 import ActivityWizard from './ActivityWizard';
 import UploadActivity from './UploadActivity';
+import SearchIndex from './SearchIndex';
 
 import './style.scss';
 
 function ActivityCreate(props) {
   const { match } = props;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadPlaylistAction(match.params.projectId, match.params.playlistId));
+  }, []);
   return (
     <>
       <Header {...props} />
@@ -69,7 +76,7 @@ function ActivityCreate(props) {
                 <Col sm={9}>
                   <Tab.Content>
                     <Tab.Pane eventKey="search">
-                      pl
+                      <SearchIndex />
                     </Tab.Pane>
                     <Tab.Pane eventKey="upload">
                       <UploadActivity />
