@@ -518,6 +518,7 @@ export const saveFormDataInCreation = (formData) => async (dispatch) => {
 export const updatedActivity = (userId) => async () => {
   const echo = new Echo(socketConnection.notificationSocket());
   echo.private('activity-update').notification((msg) => {
+    console.log('activity-update', msg);
     if (msg.userId !== userId) {
       const path = window.location.pathname;
       if (path.includes(`activity/${msg.activity.id}`)) {

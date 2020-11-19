@@ -590,6 +590,7 @@ export const loadMyProjectsLtiAction = (lmsUrl, ltiClientId) => async (dispatch)
 export const updatedProject = (userId) => async () => {
   const echo = new Echo(socketConnection.notificationSocket());
   echo.private('project-update').notification((msg) => {
+    console.log('project-update', msg);
     if (msg.userId !== userId) {
       const path = window.location.pathname;
       if (path.includes(`project/${msg.project.id}`)) {

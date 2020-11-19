@@ -50,8 +50,8 @@ function TeamMemberView(props) {
   }, [inviteMembers, id]);
 
   const filteredUsers = [
-    ...users.filter((u) => `${u.first_name} ${u.last_name}`.indexOf(search) > -1),
-    ...invitedEmails.filter((u) => u.invited_email.indexOf(search) > -1),
+    ...users.filter((u) => `${u.first_name} ${u.last_name}`.toLowerCase().indexOf(search.toLowerCase()) > -1),
+    ...invitedEmails.filter((u) => u.invited_email.toLowerCase().indexOf(search.toLowerCase()) > -1),
   ];
 
   const authUser = users.find((u) => u.id === user.id);

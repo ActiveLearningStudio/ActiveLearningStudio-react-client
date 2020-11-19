@@ -250,6 +250,7 @@ export const reorderPlaylistActivitiesAction = (playlist) => async (dispatch) =>
 export const updatedPlaylist = (userId) => async () => {
   const echo = new Echo(socketConnection.notificationSocket());
   echo.private('playlist-update').notification((msg) => {
+    console.log('playlist-update', msg);
     if (msg.userId !== userId) {
       const path = window.location.pathname;
       if (path.includes(`playlist/${msg.playlist.id}`)) {

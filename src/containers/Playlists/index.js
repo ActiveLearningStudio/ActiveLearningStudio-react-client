@@ -361,7 +361,7 @@ function PlaylistsPage(props) {
                       <h1>{selectedProject ? selectedProject.name : ''}</h1>
                       <div className="react-touch">
                         <div className="publish-btn">
-                          <span>{checked ? 'Showcase' : <span style={{ color: '#464646' }}>Showcase</span>}</span>
+                          <span style={{ color: checked ? 'inherit' : '#464646' }}>Showcase</span>
                           <Switch checked={checked} onChange={handleChange} />
                         </div>
                       </div>
@@ -376,7 +376,7 @@ function PlaylistsPage(props) {
                       </button>
                     </div>
 
-                    <span>
+                    <div className="project-preview">
                       <Link
                         className="dropdown-item"
                         to={`/project/${match.params.projectId}/preview`}
@@ -384,7 +384,7 @@ function PlaylistsPage(props) {
                         <FontAwesomeIcon icon="eye" className="mr-2" />
                         Project Preview
                       </Link>
-                    </span>
+                    </div>
                   </div>
 
                   <div className="index-text">
