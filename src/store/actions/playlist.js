@@ -249,14 +249,22 @@ export const reorderPlaylistActivitiesAction = (playlist) => async (dispatch) =>
 
 export const updatedPlaylist = (userId) => async () => {
   const echo = new Echo(socketConnection.notificationSocket());
+
   echo.private('playlist-update')
-    .notification((msg) => {
-      console.log('playlist-update', msg);
+    .listen('PlaylistUpdatedEvent', (msg) => {
       if (msg.userId !== userId) {
         const path = window.location.pathname;
-        if (path.includes(`playlist/${msg.playlist.id}`)) {
+
+        let message = '';
+        if (path.includes(`playlist/${msg.playlistId}`)) {
+          message = 'This playlist has been modified by other team member. Are you ok to refresh page to see what is updated?';
+        } else if (path.includes(`project/${msg.projectId}`)) {
+          message = 'This project has been modified by other team member. Are you ok to refresh page to see what is updated?';
+        }
+
+        if (message) {
           Swal.fire({
-            title: 'This playlist has been modified by other team member. Are you ok to refresh page to see what is updated?',
+            title: message,
             showDenyButton: true,
             showCancelButton: true,
             confirmButtonText: 'Yes',
@@ -269,10 +277,5 @@ export const updatedPlaylist = (userId) => async () => {
             });
         }
       }
-    });
-
-  echo.private('playlist-update')
-    .listen('PlaylistUpdatedEvent', (e) => {
-      console.log(e);
     });
 };

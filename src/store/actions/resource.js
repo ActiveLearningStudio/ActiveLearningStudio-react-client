@@ -517,24 +517,35 @@ export const saveFormDataInCreation = (formData) => async (dispatch) => {
 
 export const updatedActivity = (userId) => async () => {
   const echo = new Echo(socketConnection.notificationSocket());
-  echo.private('activity-update').notification((msg) => {
-    console.log('activity-update', msg);
-    if (msg.userId !== userId) {
-      const path = window.location.pathname;
-      if (path.includes(`activity/${msg.activity.id}`)) {
-        Swal.fire({
-          title: 'This activity has been modified by other team member. Are you ok to refresh page to see what is updated?',
-          showDenyButton: true,
-          showCancelButton: true,
-          confirmButtonText: 'Yes',
-          denyButtonText: 'No',
-        })
-          .then((result) => {
-            if (result.isConfirmed) {
-              window.location.reload();
-            }
-          });
+
+  echo.private('activity-update')
+    .listen('ActivityUpdatedEvent', (msg) => {
+      if (msg.userId !== userId) {
+        const path = window.location.pathname;
+
+        let message = '';
+        if (path.includes(`activity/${msg.activityId}`)) {
+          message = 'This activity has been modified by other team member. Are you ok to refresh page to see what is updated?';
+        } else if (path.includes(`playlist/${msg.playlistId}`)) {
+          message = 'This playlist has been modified by other team member. Are you ok to refresh page to see what is updated?';
+        } else if (path.includes(`project/${msg.projectId}`)) {
+          message = 'This project has been modified by other team member. Are you ok to refresh page to see what is updated?';
+        }
+
+        if (message) {
+          Swal.fire({
+            title: message,
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            denyButtonText: 'No',
+          })
+            .then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+        }
       }
-    }
-  });
+    });
 };
