@@ -56,6 +56,8 @@ export function extendStatement(statement, params, skipped = false) {
   statementExtended.context.contextActivities.grouping = grouping;
   statementExtended.context.contextActivities.other = other;
   statementExtended.actor = actor;
+
+  // If the statement is marked as skipped, we supply the proper verb
   if (skipped) {
     statementExtended.verb = {
       id: 'http://id.tincanapi.com/verb/skipped',
@@ -64,5 +66,11 @@ export function extendStatement(statement, params, skipped = false) {
       },
     };
   }
+
+  // Some H5Ps provide incompatible interaction types. Mapping those to valid ones here
+  if (statementExtended.object && statementExtended.object.definition.interactionType === 'compound') {
+    statementExtended.object.definition.interactionType = 'choice';
+  }
+
   return statementExtended;
 }
