@@ -6,12 +6,13 @@ import { Droppable, DragDropContext, Draggable } from 'react-beautiful-dnd';
 import Swal from 'sweetalert2';
 
 import ResourceCard from 'components/ResourceCard';
-import { reorderPlaylistsAction } from 'store/actions/playlist';
+import { reorderPlaylistsAction, loadProjectPlaylistsAction } from 'store/actions/playlist';
 import SearchActivity from './SearchActivity';
 
 function SearchIndex(props) {
   const { match } = props;
   const playlistBuilder = useSelector((state) => state.playlist.selectedPlaylist);
+  const origPlaylist = useSelector((state) => state.playlist.playlists);
   const searchBuilder = useSelector((state) => state.search);
   const [playlist, setPlaylist] = useState();
   const [search, setSearch] = useState([]);
@@ -42,6 +43,10 @@ function SearchIndex(props) {
   }, [playlistBuilder]);
 
   useEffect(() => {
+    dispatch(loadProjectPlaylistsAction(match.params.projectId));
+  }, []);
+
+  useEffect(() => {
     setSearch(searchBuilder.searchResult);
     Swal.close();
   }, [searchBuilder.searchResult]);
@@ -59,7 +64,13 @@ function SearchIndex(props) {
           source.index,
           destination.index,
         );
-        dispatch(reorderPlaylistsAction(match.params.projectId, result.droppable2, playlist));
+        const updatedOrder = origPlaylist.map((play) => {
+          if (String(play.id) === match.params.playlistId) {
+            return { ...play, activities: items };
+          }
+          return play;
+        });
+        dispatch(reorderPlaylistsAction(match.params.projectId, origPlaylist, updatedOrder));
         setPlaylist({ ...playlist, activities: items });
       // eslint-disable-next-line
       } }
@@ -70,10 +81,15 @@ function SearchIndex(props) {
         source,
         destination,
       );
-
-      dispatch(reorderPlaylistsAction(match.params.projectId, resultHorizantal.droppable2, playlist));
+      const updatedOrder = origPlaylist.map((play) => {
+        if (String(play.id) === match.params.playlistId) {
+          return { ...play, activities: resultHorizantal.droppable2 };
+        }
+        return play;
+      });
+      dispatch(reorderPlaylistsAction(match.params.projectId, origPlaylist, updatedOrder));
       setPlaylist({ ...playlist, activities: resultHorizantal.droppable2 });
-      setSearch(resultHorizantal.droppable);
+      // setSearch(resultHorizantal.droppable);
     }
   };
   return (

@@ -265,7 +265,7 @@
 
             form {
                 display: flex;
-                // justify-content: space-between;
+                justify-content: space-between;
                 align-items: center;
                 flex-wrap: wrap;
             }
@@ -280,7 +280,7 @@
                 color: #777777;
                 padding-left: 20px;
                 margin-right: 20px;
-                width: 200px;
+                width: 240px;
                 margin-bottom: 10px;
             }
 
@@ -302,6 +302,7 @@
           display: flex;
           border-top: 1px solid #ccc;
           margin-top: 30px;
+          padding-top: 30px;
         
           div[data-rbd-droppable-id='droppable2'] {
               width: 50%;
@@ -310,7 +311,7 @@
           div[data-rbd-droppable-id='droppable'] {
             width: 50%;
             border-right: 1px solid #ccc;
-            max-height: 500px;
+            max-height: 700px;
             overflow-y: auto;
             border-left: 3px solid #084892;
             padding: 20px;
@@ -384,6 +385,7 @@
             border-radius: 3px;
             margin:30px auto;
             max-height: 600px;
+            min-height: 500px;
             overflow-y: auto;
 
             h6 {

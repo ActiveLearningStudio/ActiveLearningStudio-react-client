@@ -16,7 +16,7 @@ const ResourceCard = (props) => {
     playlist,
     match,
     index,
-    wizard,
+    // wizard,
   } = props;
 
   return (
@@ -58,14 +58,13 @@ const ResourceCard = (props) => {
                 Shared
               </Badge>
             )}
-            {!wizard && (
-              <div className="activity-options-wrapper check">
-                <ResourceCardDropdown
-                  resource={resource}
-                  playlist={playlist}
-                />
-              </div>
-            )}
+            <div className="activity-options-wrapper check">
+              <ResourceCardDropdown
+                resource={resource}
+                playlist={playlist}
+                // wizard
+              />
+            </div>
           </div>
         </div>
       )}
@@ -81,7 +80,7 @@ ResourceCard.propTypes = {
   showDeletePopup: PropTypes.func.isRequired,
   hideDeletePopup: PropTypes.func.isRequired,
   deleteResource: PropTypes.func.isRequired,
-  wizard: PropTypes.func.isRequired,
+  // wizard: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
