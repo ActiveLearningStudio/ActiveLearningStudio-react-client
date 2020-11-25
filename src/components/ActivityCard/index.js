@@ -64,10 +64,13 @@ const ActivityCard = (props) => {
                 {activity.metadata ? activity.metadata.title : activity.title}
               </div>
             </Link>
-            <ResourceCardDropdown
-              playlist={playlist}
-              resource={activity}
-            />
+            {!lti
+            && (
+              <ResourceCardDropdown
+                playlist={playlist}
+                resource={activity}
+              />
+            )}
           </>
         )}
     </li>

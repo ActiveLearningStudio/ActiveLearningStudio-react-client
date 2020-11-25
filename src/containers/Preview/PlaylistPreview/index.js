@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { Suspense, lazy, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -11,6 +10,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import projectIcon from 'assets/images/project_icon.svg';
 import { loadPlaylistAction, loadProjectPlaylistsAction, LoadHP } from 'store/actions/playlist';
 import { shareActivity, removeShareActivity, loadH5pResourceSettings } from 'store/actions/resource';
+import { collapsedSideBar } from 'store/actions/ui';
 import Unauthorized from 'components/Unauthorized';
 import PreviousLink from './components/PreviousLink';
 import NextLink from './components/NextLink';
@@ -31,6 +31,8 @@ function PlaylistPreview(props) {
     loadHP,
     loadPlaylist,
     loadProjectPlaylists,
+    collapsed,
+    setCollapsed,
   } = props;
 
   useEffect(() => {
@@ -208,7 +210,7 @@ function PlaylistPreview(props) {
           </div>
 
           <div className="flex-container previews">
-            <div className="activity-bg left-vdo">
+            <div className={`activity-bg left-vdo${collapsed ? ' collapsed' : ''}`}>
               <div className="flex-container-preview">
                 <div className="act-top-header">
                   <div className="heading-wrapper">
@@ -251,7 +253,14 @@ function PlaylistPreview(props) {
               </div>
             </div>
 
-            <div className="right-sidegolf-info">
+            <div className={`right-sidegolf-info${collapsed ? ' collapsed' : ''}`}>
+              <a
+                onClick={() => setCollapsed()}
+                className={`btn-expand-collapse${collapsed ? ' collapsed' : ''}`}
+              >
+                <FontAwesomeIcon icon="play-circle" />
+              </a>
+
               <div className="abs-div">
                 <div className="back-header align-items-center justify-content-between">
                   <div>
@@ -295,13 +304,10 @@ function PlaylistPreview(props) {
                     </div>
 
                     {activityShared && (
-                    <div
-                      className="shared-link"
-                      onClick={viewSharedLink}
-                    >
-                      <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
-                      View Shared Link
-                    </div>
+                      <div className="shared-link" onClick={viewSharedLink}>
+                        <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
+                        View Shared Link
+                      </div>
                     )}
                   </div>
 
@@ -340,6 +346,8 @@ PlaylistPreview.propTypes = {
   loadPlaylist: PropTypes.func.isRequired,
   loadProjectPlaylists: PropTypes.func.isRequired,
   loadHP: PropTypes.func.isRequired,
+  collapsed: PropTypes.bool.isRequired,
+  setCollapsed: PropTypes.func.isRequired,
 };
 
 PlaylistPreview.defaultProps = {
@@ -351,9 +359,11 @@ const mapDispatchToProps = (dispatch) => ({
   loadPlaylist: (projectId, playlistId) => dispatch(loadPlaylistAction(projectId, playlistId)),
   loadProjectPlaylists: (projectId) => dispatch(loadProjectPlaylistsAction(projectId)),
   loadHP: (show) => dispatch(LoadHP(show)),
+  setCollapsed: () => dispatch(collapsedSideBar()),
 });
 
 const mapStateToProps = (state) => ({
+  collapsed: state.ui.sideBarCollapsed,
   playlist: state.playlist,
   loading: state.playlist.loadingH5P,
 });

@@ -1,9 +1,11 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import Echo from 'laravel-echo';
 
 import loaderImg from 'assets/images/loader.svg';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import projectService from 'services/project.service';
+import socketConnection from 'services/http.service';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
 
@@ -457,8 +459,8 @@ export const getProjectCourseFromLMS = (
           for (let x = 0; x < playlist.length; x += 1) {
             // eslint-disable-next-line no-await-in-loop
             const counter = !!globalStoreCloneUpdated.project.lmsCourse
-                && globalStoreCloneUpdated.project.lmsCourse.playlistsCopyCounter
-                  .length > 0
+            && globalStoreCloneUpdated.project.lmsCourse.playlistsCopyCounter
+              .length > 0
               ? globalStoreCloneUpdated.project.lmsCourse
                 .playlistsCopyCounter[x].counter
               : 0;
@@ -583,4 +585,27 @@ export const loadMyProjectsLtiAction = (lmsUrl, ltiClientId) => async (dispatch)
   } catch (e) {
     console.log(e);
   }
+};
+
+export const updatedProject = (userId) => async () => {
+  const echo = new Echo(socketConnection.notificationSocket());
+  echo.private('project-update').notification((msg) => {
+    if (msg.userId !== userId) {
+      const path = window.location.pathname;
+      if (path.includes(`project/${msg.project.id}`)) {
+        Swal.fire({
+          title: 'This project has been modified by other team member. Are you ok to refresh page to see what is updated?',
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          denyButtonText: 'No',
+        })
+          .then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+      }
+    }
+  });
 };

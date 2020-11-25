@@ -94,7 +94,7 @@ const SampleProjectCard = (props) => {
                               }}
                             >
                               <FontAwesomeIcon icon="clone" className="mr-2" />
-                              Clone
+                              Duplicate
                             </Dropdown.Item>
                             {type && (
                               <Dropdown.Item

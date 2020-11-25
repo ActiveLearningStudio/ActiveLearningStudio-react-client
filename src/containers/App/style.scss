@@ -484,7 +484,7 @@
     width: -moz-fit-content;
     width: 70px;
     height: 35px;
-    margin: -35px 10px 10px 0px;
+    margin: -35px 10px 10px 0;
     /* padding: 3px 20px; */
     display: flex;
     justify-content: center;
@@ -1231,7 +1231,7 @@ header {
 }
 
 /* .dropdown-menu li:hover>a {
-    color: #ffffff;
+  color: #ffffff;
 } */
 
 .dropdown-menu li {
@@ -1403,7 +1403,7 @@ header.head_mobile {
   transition: all ease-out 0.3s !important;
 }
 
-.site-container-preview{
+.site-container-preview {
   width: calc(100% - 290px);
   margin: 30px 0 0 290px;
   transition: all ease-out 0.3s !important;
@@ -1779,7 +1779,7 @@ a:hover {
 
 //project-each-view
 .index-text {
-  margin: 0 5px 0px 15px;
+  margin: 0 5px 0 15px;
 }
 
 .project-each-view {
@@ -1788,24 +1788,26 @@ a:hover {
   align-items: center;
 
   h1 {
-    text-align: left;
+    padding-top: 5px;
     font-size: 24px;
     line-height: 33px;
     font-weight: 600;
     letter-spacing: 0;
     color: #0f4392;
+    text-align: left;
     opacity: 1;
-    padding-top: 5px;
   }
 
   .flex-se {
-    display: flex;
-    justify-content: space-between;
     width: 100%;
     margin-right: 20px;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
 
     h1 {
+      margin: 0;
+      padding-top: 0;
       display: flex;
       flex: 50%;
     }
@@ -1840,18 +1842,18 @@ a:hover {
       }
     }
 
-    .react-touch.indexed{
+    .react-touch.indexed {
       cursor: pointer;
       background-color: #ce4a4a;
-      border-color:#ce4a4a;
+      border-color: #ce4a4a;
 
-     .publish-btn{
+      .publish-btn {
         justify-content: center;
         cursor: pointer;
       }
 
-      span{
-        color:#fff;
+      span {
+        color: #fff;
         white-space: nowrap;
       }
     }
@@ -2003,32 +2005,30 @@ a:hover {
     background-color: white;
     overflow: hidden;
 
-    .slick-list{
+    .slick-list {
       overflow: visible;
 
       .resource-dropdown {
         position: absolute;
         top: 0;
-        right:5px;
-        box-shadow: 0px 0px 1px 1px #ddd !important;
+        right: 5px;
+        box-shadow: 0 0 1px 1px #ddd !important;
         width: 30px;
         height: 30px;
         border-radius: 50%;
         margin-top: 5px !important;
         background-color: #fff;
 
-        button{
+        button {
           padding: 0 !important;
           display: flex;
           justify-content: center;
           align-items: center;
-          width:100%;
+          width: 100%;
           height: 100%;
         }
-        
       }
     }
-
   }
 }
 
@@ -2049,10 +2049,10 @@ a:hover {
     border-bottom: 1px solid #efefef;
   }
 
-  li{
+  li {
     position: relative;
   }
-  
+
   .accordion {
     background-color: #fff;
     text-align: left;
@@ -2405,11 +2405,11 @@ a:hover {
   }
 
   .right-sidegolf-info {
-    background-color: #fff;
     min-height: 160px;
-    border-bottom: 1px solid #989da1;
-    cursor: pointer;
     padding: 0 !important;
+    background-color: #fff;
+    //border-bottom: 1px solid #989da1;
+    cursor: pointer;
 
     .drpdown {
       border-bottom: 1px solid #ddd;
@@ -2423,7 +2423,7 @@ a:hover {
       // font-weight: 600;
       // font-size: 16px;
       // line-height: 22px;
-      // letter-spacing: 0px;
+      // letter-spacing: 0;
       // color: #FAFAFA;
       // opacity: 1;
       // width: 100%;
@@ -2495,6 +2495,7 @@ a:hover {
     width: 40%;
     max-height: 650px;
     min-height: 500px;
+    height: 100%;
   }
 
   .act-top-header {
@@ -2511,7 +2512,7 @@ a:hover {
 
     .slider-btn {
       display: flex;
-      width: 60px;
+      width: 80px;
       justify-content: space-between;
 
       i {
@@ -2816,7 +2817,7 @@ a:hover {
 
 .slider-hover-section {
   position: relative;
-  padding: 18px 0;
+  padding: 18px 20px;
   // width: 20px;
 
   // &:hover {
@@ -3156,9 +3157,8 @@ a:hover {
   }
 }
 
-
 .main-page-content.preview .slider-scroll-auto {
-  max-height: 450px;
+  max-height: 420px;
   overflow-y: auto;
   min-height: 400px;
 }
