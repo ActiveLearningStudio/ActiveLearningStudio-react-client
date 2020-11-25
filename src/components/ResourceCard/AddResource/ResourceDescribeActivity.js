@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 
 import computer from 'assets/images/computer.svg';
 import pexel from 'assets/images/pexel.png';
-import { required, FadeDiv } from 'utils';
+import { FadeDiv } from 'utils';
 import {
   showBuildActivityAction,
   onSubmitDescribeActivityAction,
@@ -54,7 +54,6 @@ let ResourceDescribeActivity = (props) => {
   } = props;
   const [modalShow, setModalShow] = useState(false);
   const openFile = useRef();
-
   return (
     <div className="row">
       {/* <div className="col-md-3">
@@ -101,7 +100,7 @@ let ResourceDescribeActivity = (props) => {
                                 component={MetaTitleInputField}
                                 type="text"
                                 label="Title"
-                                validate={!resource.formData.metaTitle ? [required] : undefined}
+                                // validate={!resource.formData.metaTitle ? null : undefined}
                                 defaultValue={resource.formData.metaTitle}
                               />
                             </div>
@@ -328,6 +327,7 @@ ResourceDescribeActivity = reduxForm({
     saveFormData(values);
 
     if (val.metaTitle.length === 0) {
+      Swal.fire('Title is required.');
       return;
     }
 

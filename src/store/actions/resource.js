@@ -136,9 +136,7 @@ export const createResourceAction = (
     parameters: JSON.stringify(window.h5peditorCopy.getParams()),
     action: 'create',
   };
-  Swal.showLoading();
   const insertedH5pResource = await resourceService.h5pToken(data);
-  Swal.close();
   if (!insertedH5pResource.fail) {
     const resource = insertedH5pResource;
 
@@ -171,9 +169,9 @@ export const createResourceAction = (
       editor,
       editorType,
     });
-    // dispatch(hideCreateResourceModal());
-
-    // window.location.href = `/project/${projectId}`;
+    dispatch({
+      type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
+    });
   } else {
     dispatch({
       type: actionTypes.RESOURCE_VALIDATION_ERRORS,
@@ -389,8 +387,9 @@ export const createResourceByH5PUploadAction = (
         editor,
         editorType,
       });
-
-      // window.location.href = `/project/${projectId}`;
+      dispatch({
+        type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
+      });
     } else {
       throw new Error('Error occurred while creating resource');
     }
@@ -441,6 +440,10 @@ export const editResourceAction = (
       resource,
       editor,
       editorType,
+    });
+
+    dispatch({
+      type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
     });
   } catch (e) {
     console.log(e);
