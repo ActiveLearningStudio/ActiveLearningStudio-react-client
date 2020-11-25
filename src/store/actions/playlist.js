@@ -249,23 +249,33 @@ export const reorderPlaylistActivitiesAction = (playlist) => async (dispatch) =>
 
 export const updatedPlaylist = (userId) => async () => {
   const echo = new Echo(socketConnection.notificationSocket());
-  echo.private('playlist-update').notification((msg) => {
-    if (msg.userId !== userId) {
-      const path = window.location.pathname;
-      if (path.includes(`playlist/${msg.playlist.id}`)) {
-        Swal.fire({
-          title: 'This playlist has been modified by other team member. Are you ok to refresh page to see what is updated?',
-          showDenyButton: true,
-          showCancelButton: true,
-          confirmButtonText: 'Yes',
-          denyButtonText: 'No',
-        })
-          .then((result) => {
-            if (result.isConfirmed) {
-              window.location.reload();
-            }
-          });
+
+  echo.private('playlist-update')
+    .listen('PlaylistUpdatedEvent', (msg) => {
+      if (msg.userId !== userId) {
+        const path = window.location.pathname;
+
+        let message = '';
+        if (path.includes(`playlist/${msg.playlistId}`)) {
+          message = 'This playlist has been modified by other team member. Are you ok to refresh page to see what is updated?';
+        } else if (path.includes(`project/${msg.projectId}`)) {
+          message = 'This project has been modified by other team member. Are you ok to refresh page to see what is updated?';
+        }
+
+        if (message) {
+          Swal.fire({
+            title: message,
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            denyButtonText: 'No',
+          })
+            .then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+        }
       }
-    }
-  });
+    });
 };

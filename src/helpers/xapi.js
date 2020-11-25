@@ -3,6 +3,7 @@ export function allowedH5PActvityPaths() {
   return [
     // '/project/:projectId/playlist/:playlistId/activity/:activityId/preview',
     // '/activity/:activityId/shared',
+    '/gclass/launch/:userId/:courseId/:activityId/:classworkId',
   ];
 }
 
@@ -11,6 +12,7 @@ export function H5PActvityPathMapToPlatform() {
   return [
     { '/project/:projectId/playlist/:playlistId/activity/:activityId/preview': 'CurrikiStudio' },
     { '/activity/:activityId/shared': 'CurrikiStudio' },
+    { '/gclass/launch/:userId/:courseId/:activityId/:classworkId': 'Google Classroom' },
   ];
 }
 
@@ -19,20 +21,55 @@ export function isxAPINeeded(currentRoute) {
   return allowedH5PActvityPaths().includes(currentRoute);
 }
 
-export function extendStatement(statement, props) {
-  const statementExtended = statement;
-  const platform = H5PActvityPathMapToPlatform().find((el) => el[props.match.path]);
-  if (platform !== undefined) {
-    const platformName = platform[props.match.path];
-    statementExtended.context.platform = platformName;
+export function extendStatement(statement, params, skipped = false) {
+  const {
+    path,
+    activityId,
+    submissionId,
+    attemptId,
+    studentId,
+  } = params;
+  const platform = H5PActvityPathMapToPlatform().find((el) => el[path]);
+  if (platform === undefined) return;
+
+  const statementExtended = { ...statement };
+  const grouping = [
+    {
+      objectType: 'Activity',
+      id: `${window.location.origin}/activity/${activityId}/submission/${submissionId}`,
+    },
+  ];
+  const other = [
+    {
+      objectType: 'Activity',
+      id: `${window.location.origin}/activity/${activityId}/submission/${submissionId}/${attemptId}`,
+    },
+  ];
+  const actor = {
+    objectType: 'Agent',
+    account: {
+      homePage: 'https://classroom.google.com',
+      name: studentId,
+    },
+  };
+  statementExtended.context.platform = platform[path];
+  statementExtended.context.contextActivities.grouping = grouping;
+  statementExtended.context.contextActivities.other = other;
+  statementExtended.actor = actor;
+
+  // If the statement is marked as skipped, we supply the proper verb
+  if (skipped) {
+    statementExtended.verb = {
+      id: 'http://id.tincanapi.com/verb/skipped',
+      display: {
+        'en-US': 'skipped',
+      },
+    };
   }
 
-  if (props.parentPlaylist !== undefined) {
-    const ativityPreviewUrl = `${window.location.origin}/project/${props.parentPlaylist.project_id
-    }/playlist/${props.parentPlaylist.id
-    }/activity/${props.activityId}/preview`;
-    const grouping = [{ objectType: 'Activity', id: ativityPreviewUrl }];
-    statementExtended.context.contextActivities.grouping = grouping;
+  // Some H5Ps provide incompatible interaction types. Mapping those to valid ones here
+  if (statementExtended.object && statementExtended.object.definition.interactionType === 'compound') {
+    statementExtended.object.definition.interactionType = 'choice';
   }
 
   return statementExtended;
