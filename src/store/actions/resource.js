@@ -136,9 +136,9 @@ export const createResourceAction = (
     parameters: JSON.stringify(window.h5peditorCopy.getParams()),
     action: 'create',
   };
-
+  Swal.showLoading();
   const insertedH5pResource = await resourceService.h5pToken(data);
-
+  Swal.close();
   if (!insertedH5pResource.fail) {
     const resource = insertedH5pResource;
 

@@ -7,25 +7,35 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { FadeDiv } from 'utils';
 import { showDescribeActivity } from 'store/actions/resource';
-import AddResourceSidebar from './AddResourceSidebar';
+// import AddResourceSidebar from './AddResourceSidebar';
 import TinyEditor from './Editors/TinyEditor';
 import H5PEditor from './Editors/H5PEditor';
 
 const ResourceActivityBuild = (props) => {
-  const { resource, editResourcePopup, goBackToActivity } = props;
+  const {
+    resource,
+    editResourcePopup,
+    selectType,
+    type,
+    setActiveView,
+  } = props;
 
   return (
     <div className="row">
-      <div className="col-md-3">
+      {/* <div className="col-md-3">
         <AddResourceSidebar {...props} />
-      </div>
+      </div> */}
 
-      <div className="col-md-9">
+      <div className="col-md-12">
         <div className="resource-activity">
           <div
             className="back-button"
             style={{ marginLeft: '15px' }}
-            onClick={goBackToActivity}
+            onClick={() => {
+              setActiveView('describe');
+              type.splice(type.indexOf('build', 1));
+              selectType(type);
+            }}
           >
             <FontAwesomeIcon icon="chevron-left" className="mr-2" />
             Back
@@ -61,6 +71,9 @@ ResourceActivityBuild.propTypes = {
   goBackToActivity: PropTypes.func.isRequired,
   handleCreateResourceSubmit: PropTypes.func.isRequired,
   handleEditResourceSubmit: PropTypes.func.isRequired,
+  selectType: PropTypes.func.isRequired,
+  type: PropTypes.array.isRequired,
+  setActiveView: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

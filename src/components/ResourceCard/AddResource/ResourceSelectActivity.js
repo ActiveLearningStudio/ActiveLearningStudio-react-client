@@ -15,7 +15,7 @@ import {
 } from 'store/actions/resource';
 import ResourceActivityTypeField from '../fields/ResourceActivityTypeField';
 import MyVerticallyCenteredModal from '../../models/activityOptions';
-import AddResourceSidebar from './AddResourceSidebar';
+// import AddResourceSidebar from './AddResourceSidebar';
 
 // TODO: need to refactor code
 
@@ -23,10 +23,13 @@ let ResourceSelectActivity = (props) => {
   const {
     resource,
     handleSubmit,
-    goBackToActivity,
+    // goBackToActivity,
     onChangeActivity,
     loadResourceItems,
     saveSearchKey,
+    selectType,
+    type,
+    setActiveView,
   } = props;
 
   const [activities, setActivities] = useState([]);
@@ -67,7 +70,11 @@ let ResourceSelectActivity = (props) => {
             component={ResourceActivityTypeField}
             type="radio"
             value={activity.h5pLib || activity.type}
-            onChange={(e) => onChangeActivity(activity, e)}
+            onChange={(e) => {
+              onChangeActivity(activity, e);
+              setActiveView('describe');
+              selectType([...type, 'describe']);
+            }}
             validate={[required]}
           />
 
@@ -119,21 +126,28 @@ let ResourceSelectActivity = (props) => {
   return (
     <>
       <div className="row">
-        <div className="col-md-3">
+        {/* <div className="col-md-3">
           <AddResourceSidebar {...props} />
-        </div>
+        </div> */}
 
-        <div className="col-md-9">
+        <div className="col-md-12">
           <div className="resource-question">
             <FadeDiv>
               <div className="row">
                 <div className="col-md-12">
                   <h2 className="title">
-                    <div className="back-button" onClick={goBackToActivity}>
+                    Select the activity you want to build from the options below:
+                    <div
+                      className="back-button"
+                      onClick={() => {
+                        setActiveView('type');
+                        type.splice(type.indexOf('select', 1));
+                        selectType(type);
+                      }}
+                    >
                       <FontAwesomeIcon icon="chevron-left" className="mr-2" />
                       Back
                     </div>
-                    Select the activity you want to build from the options below:
                   </h2>
                 </div>
               </div>
@@ -185,8 +199,11 @@ ResourceSelectActivity.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   loadResourceItems: PropTypes.func.isRequired,
   onChangeActivity: PropTypes.func.isRequired,
-  goBackToActivity: PropTypes.func.isRequired,
+  // goBackToActivity: PropTypes.func.isRequired,
   saveSearchKey: PropTypes.func.isRequired,
+  selectType: PropTypes.func.isRequired,
+  type: PropTypes.array.isRequired,
+  setActiveView: PropTypes.func.isRequired,
 };
 
 ResourceSelectActivity = reduxForm({
