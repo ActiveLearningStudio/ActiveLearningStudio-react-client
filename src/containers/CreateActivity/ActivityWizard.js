@@ -26,7 +26,7 @@ function ActivityWizard(props) {
     projectId,
   ) => {
     try {
-      if (payload.submitAction === 'upload') {
+      if (payload.submitAction === 'create') {
         await dispatch(createResourceAction(
           currentPlaylistId,
           editor,

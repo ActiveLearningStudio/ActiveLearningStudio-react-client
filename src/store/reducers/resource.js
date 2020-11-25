@@ -305,6 +305,16 @@ export default (state = INITIAL_STATE, action) => {
         },
       };
 
+    case actionTypes.CLEAR_FORM_DATA_IN_CREATION:
+      return {
+        ...state,
+        formData: {
+          metaTitle: '',
+          metaSubject: { value: '' },
+          metaEducationLevels: { value: '' },
+        },
+      };
+
     case actionTypes.RESOURCE_SAVED:
       return {
         ...state,
