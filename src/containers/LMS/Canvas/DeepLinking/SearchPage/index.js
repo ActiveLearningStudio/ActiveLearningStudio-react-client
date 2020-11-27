@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import SearchForm from 'containers/LMS/Canvas/DeepLinking/SearchForm';
+import SearchResults from 'containers/LMS/Canvas/DeepLinking/SearchResults';
 import './style.scss';
 
 const SearchPage = (props) => {
@@ -20,7 +21,8 @@ const SearchPage = (props) => {
     <div className="container canvas-search-page">
       <div className="row">
         <div className="col">
-            { currentPage === 'search' && <SearchForm /> }
+          { currentPage === 'search' && <SearchForm /> }
+          { currentPage === 'results' && <SearchResults /> }
         </div>
       </div>
     </div>
@@ -33,7 +35,7 @@ SearchPage.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    currentPage: state.canvas.currentPage,
+  currentPage: state.canvas.currentPage,
 });
 
 export default withRouter(connect(mapStateToProps)(SearchPage));

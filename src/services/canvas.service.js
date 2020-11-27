@@ -4,7 +4,7 @@ import httpService from './http.service';
 const { apiVersion } = config;
 
 const search = (params) => httpService
-  .get(
+  .post(
     `/${apiVersion}/go/lms/projects`,
     { params },
   )
@@ -12,6 +12,5 @@ const search = (params) => httpService
   .catch((err) => Promise.reject(err.response.data));
 
 export default {
-    search,
+  search,
 };
-  
