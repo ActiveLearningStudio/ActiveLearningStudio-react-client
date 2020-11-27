@@ -124,6 +124,12 @@ export const changePlaylistTitleAction = (projectId, playlistId, title) => async
   }
 };
 
+export const clearFormData = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
+  });
+};
+
 // Reorders playlists AND activities
 export const reorderPlaylistsAction = (projectId, orgPlaylists, playlists) => async (dispatch) => {
   try {

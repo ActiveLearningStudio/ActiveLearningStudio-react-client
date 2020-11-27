@@ -46,6 +46,7 @@ const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjec
 const AddTeamProjectMemberPage = loadable(() => import('../containers/Teams/AddMembers'));
 const GclassActivityPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassActivityPage'));
 const ActivityCreate = loadable(() => import('../containers/CreateActivity'));
+const EditActivity = loadable(() => import('../containers/EditActivity'));
 const GclassSummaryPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassSummaryPage'));
 
 const AppRouter = () => {
@@ -144,7 +145,7 @@ const AppRouter = () => {
         <PrivateRoute
           exact
           path="/project/:projectId/playlist/:playlistId/activity/:activityId/edit"
-          component={PlaylistsPage}
+          component={EditActivity}
           openEditResourcePopup
         />
         <PrivateRoute
