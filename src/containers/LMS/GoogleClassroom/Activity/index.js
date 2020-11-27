@@ -111,8 +111,11 @@ const Activity = (props) => {
           this.interactions.forEach((interaction) => {
             if (interaction.getLastXAPIVerb()) return; // Already initialized
 
+            const xAPIData = interaction.getXAPIData();
+            if (!xAPIData) return; // Some interactions have no data to report
+
             const iXAPIStatement = JSON.stringify(
-              xAPIHelper.extendStatement(interaction.getXAPIData().statement, params, true),
+              xAPIHelper.extendStatement(xAPIData.statement, params, true),
             );
             sendStatement(iXAPIStatement);
           }, this);
@@ -123,7 +126,6 @@ const Activity = (props) => {
         // Ask the user if he wants to turn-in the work to google classroom
         Swal.fire({
           title: 'Do you want to turn in your work to Google Classroom?',
-          showDenyButton: true,
           showCancelButton: true,
           confirmButtonText: 'Turn In',
         }).then((result) => {
