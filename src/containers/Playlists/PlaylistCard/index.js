@@ -6,7 +6,7 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { changePlaylistTitleAction } from 'store/actions/playlist';
+import { changePlaylistTitleAction, clearFormData } from 'store/actions/playlist';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import ResourceCard from 'components/ResourceCard';
 import PlaylistCardDropdown from './PlaylistCardDropdown';
@@ -32,7 +32,8 @@ class PlaylistCard extends React.Component {
   };
 
   handleAddNewResourceClick = () => {
-    const { playlist, handleCreateResource } = this.props;
+    const { playlist, handleCreateResource, clearForm } = this.props;
+    clearForm();
     if (!handleCreateResource) {
       // console.log('Event handler handleCreateResource() not defined.');
     } else {
@@ -197,6 +198,7 @@ PlaylistCard.propTypes = {
   hideDeletePopup: PropTypes.func.isRequired,
   changePlaylistTitle: PropTypes.func.isRequired,
   handleCreateResource: PropTypes.func,
+  clearForm: PropTypes.func.isRequired,
 };
 
 PlaylistCard.defaultProps = {
@@ -207,6 +209,7 @@ const mapDispatchToProps = (dispatch) => ({
   showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
   hideDeletePopup: () => dispatch(hideDeletePopupAction()),
   changePlaylistTitle: (projectId, id, title) => dispatch(changePlaylistTitleAction(projectId, id, title)),
+  clearForm: () => dispatch(clearFormData()),
 });
 
 const mapStateToProps = (state) => ({

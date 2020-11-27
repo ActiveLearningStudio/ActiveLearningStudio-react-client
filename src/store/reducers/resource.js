@@ -28,8 +28,8 @@ const INITIAL_STATE = {
   searchKey: '',
   formData: {
     metaTitle: '',
-    metaSubject: { value: '' },
-    metaEducationLevels: { value: '' },
+    metaSubject: '',
+    metaEducationLevels: '',
   },
   saved: false,
 };
@@ -228,6 +228,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         showEditResourcePopup: false,
         editResource: {
+          ...state.editResource,
           params: {
             data: '',
           },
@@ -296,6 +297,7 @@ export default (state = INITIAL_STATE, action) => {
       };
 
     case actionTypes.SAVE_FORM_DATA_IN_CREATION:
+      console.log(action);
       return {
         ...state,
         formData: {
@@ -308,10 +310,21 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.CLEAR_FORM_DATA_IN_CREATION:
       return {
         ...state,
+        editResource: {
+          params: {
+            data: '',
+          },
+          metadata: {
+            title: null,
+            subjectId: null,
+            educationLevelId: null,
+            thumbUrl: null,
+          },
+        },
         formData: {
           metaTitle: '',
-          metaSubject: { value: '' },
-          metaEducationLevels: { value: '' },
+          metaSubject: '',
+          metaEducationLevels: '',
         },
       };
 

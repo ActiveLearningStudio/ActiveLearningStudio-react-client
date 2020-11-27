@@ -120,7 +120,7 @@ let ResourceDescribeActivity = (props) => {
                                 data={subjects}
                                 valueField="value"
                                 textField="subject"
-                                defaultValue={resource.formData.metaSubject.value}
+                                defaultValue={resource.formData.metaSubject}
                               />
                             </div>
                           </div>
@@ -137,7 +137,7 @@ let ResourceDescribeActivity = (props) => {
                                 data={educationLevels}
                                 valueField="value"
                                 textField="name"
-                                defaultValue={resource.formData.metaEducationLevels.value}
+                                defaultValue={resource.formData.metaEducationLevels}
                               />
                             </div>
                           </div>
