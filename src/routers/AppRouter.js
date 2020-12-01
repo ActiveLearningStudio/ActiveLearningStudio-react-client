@@ -24,6 +24,10 @@ const RegisterPage = loadable(() => import('../containers/Auth/RegisterPage'));
 const ForgotPasswordPage = loadable(() => import('../containers/Auth/ForgotPasswordPage'));
 const ResetPasswordPage = loadable(() => import('../containers/Auth/ResetPasswordPage'));
 const ConfirmEmailPage = loadable(() => import('../containers/Auth/ConfirmEmailPage'));
+const NeafRegister = loadable(() => import('../containers/Auth/NeafRegistration'));
+const NeafLogin = loadable(() => import('../containers/Auth/NeafLogin'));
+const VevensityRegister = loadable(() => import('../containers/Auth/VevinsityRegistration'));
+const VevensityLogin = loadable(() => import('../containers/Auth/VevinsityLogin'));
 
 const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
 const ChangePasswordPage = loadable(() => import('../containers/Account/ChangePasswordPage'));
@@ -37,10 +41,13 @@ const LtiPreviewPage = loadable(() => import('../containers/LtiPreviewPage'));
 const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared'));
 const SearchResult = loadable(() => import('../containers/Search'));
 const LtiModel = loadable(() => import('../containers/LtiModel'));
-// const TeamsPage = loadable(() => import('../containers/Teams'));
-// const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
-// const AddTeamProjectMemberPage = loadable(() => import('../containers/Teams/AddMembers'));
+const TeamsPage = loadable(() => import('../containers/Teams'));
+const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
+const AddTeamProjectMemberPage = loadable(() => import('../containers/Teams/AddMembers'));
 const GclassActivityPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassActivityPage'));
+const ActivityCreate = loadable(() => import('../containers/CreateActivity'));
+const EditActivity = loadable(() => import('../containers/EditActivity'));
+const GclassSummaryPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassSummaryPage'));
 
 const AppRouter = () => {
   useEffect(() => {
@@ -63,22 +70,23 @@ const AppRouter = () => {
         <PublicRoute exact path="/forgot-password" component={ForgotPasswordPage} />
         <PublicRoute exact path="/reset-password" component={ResetPasswordPage} />
         <PublicRoute exact path="/verify-email" component={ConfirmEmailPage} />
-
+        <PublicRoute exact path="/neaf-register" component={NeafRegister} />
+        <PublicRoute exact path="/neaf-login" component={NeafLogin} />
+        <PublicRoute exact path="/vivensity-register" component={VevensityRegister} />
+        <PublicRoute exact path="/vivensity-login" component={VevensityLogin} />
         <PrivateRoute exact path="/account" component={ProfilePage} />
         <PrivateRoute exact path="/change-password" component={ChangePasswordPage} />
 
         <PrivateRoute exact path="/dashboard" component={DashboardPage} />
         <PrivateRoute exact path="/notification" component={NotificationPage} />
 
-        {/*
         <PrivateRoute exact path="/teams" component={TeamsPage} overview />
         <PrivateRoute exact path="/teams/create-team" component={TeamsPage} creation />
         <PrivateRoute exact path="/teams/:teamId" component={TeamsPage} teamShow />
         <PrivateRoute exact path="/teams/:teamId/projects" component={TeamsPage} projectShow />
-        <PrivateRoute exact path="/teams/:teamId/channel" component={TeamsPage} channelShow />
+        {/* <PrivateRoute exact path="/teams/:teamId/channel" component={TeamsPage} channelShow /> */}
         <PrivateRoute exact path="/teams/:teamId/add-projects" component={AddTeamProjectsPage} />
         <PrivateRoute exact path="/teams/:teamId/projects/:projectId/add-member" component={AddTeamProjectMemberPage} />
-        */}
 
         <PrivateRoute
           exact
@@ -132,13 +140,13 @@ const AppRouter = () => {
         <PrivateRoute
           exact
           path="/project/:projectId/playlist/:playlistId/activity/create"
-          component={PlaylistsPage}
-          openCreateResourcePopup
+          component={ActivityCreate}
+          // openCreateResourcePopup
         />
         <PrivateRoute
           exact
           path="/project/:projectId/playlist/:playlistId/activity/:activityId/edit"
-          component={PlaylistsPage}
+          component={EditActivity}
           openEditResourcePopup
         />
         <PrivateRoute
@@ -184,6 +192,12 @@ const AppRouter = () => {
           exact
           path="/gclass/launch/:userId/:courseId/:activityId/:classworkId"
           component={GclassActivityPage}
+        />
+
+        <OpenRoute
+          exact
+          path="/gclass/summary/:userId/:courseId/:activityId/:gClassworkId/:submissionId"
+          component={GclassSummaryPage}
         />
 
         <PrivateRoute

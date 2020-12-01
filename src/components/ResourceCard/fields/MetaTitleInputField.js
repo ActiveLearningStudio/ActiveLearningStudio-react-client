@@ -20,7 +20,7 @@ const MetaTitleInputField = ({
       <input
         {...input}
         type={type}
-        defaultValue={defaultValue || (value || '')}
+        value={defaultValue}
         onChange={(e) => saveFormData({ metaTitle: e.target.value })}
       />
       {touched && ((error && <span className="validation-error">{error}</span>) || (warning && <span>{warning}</span>))}

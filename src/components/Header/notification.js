@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { getAllNotifications, clearAllNotification } from 'store/actions/notification';
 import NotificationArea from 'containers/Notification/NotificationArea';
@@ -14,10 +14,19 @@ function HeaderNotification() {
   const dispatch = useDispatch();
   const allNotifications = useSelector((state) => state.notification);
   const [notificationData, setNotificationData] = useState([]);
+  const [errorNotification, setErrorNotification] = useState('');
 
   useEffect(() => {
     dispatch(getAllNotifications());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (notificationData.yesterday) {
+      if (notificationData.today.length === 0 && notificationData.yesterday.length === 0 && notificationData.older.length === 0) {
+        setErrorNotification('Currently no Notifications are available.');
+      }
+    }
+  }, [notificationData]);
 
   useEffect(() => {
     setNotificationData(allNotifications.notification);
@@ -37,9 +46,8 @@ function HeaderNotification() {
           <div className="scroll-notification">
             <div className="header-data">
               <h2>Notifications</h2>
-              <h3>Mark all as read</h3>
+              {/* <h3>Mark all as read</h3> */}
             </div>
-
             {notificationData.today && Object.keys(notificationData.today).length > 0
               && (
               <>
@@ -75,15 +83,16 @@ function HeaderNotification() {
                 ))}
               </>
               )}
+            {errorNotification && <div className="error-notification">{errorNotification}</div> }
           </div>
           <div className="btn-all-notification">
             <Dropdown.Item className="all-notification" as={Link} to="/notification">
               see All notification
             </Dropdown.Item>
-            <Dropdown.Item className="notification-setting" as={Link} to="/notification">
+            {/* <Dropdown.Item className="notification-setting" as={Link} to="/notification">
               <FontAwesomeIcon icon="cog" className="mr-2" />
               settings
-            </Dropdown.Item>
+            </Dropdown.Item> */}
           </div>
         </Dropdown.Menu>
       </Dropdown>

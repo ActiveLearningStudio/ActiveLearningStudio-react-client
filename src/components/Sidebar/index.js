@@ -1,5 +1,5 @@
-import React, { useEffect /* , useCallback, useState */ } from 'react';
-// import PropTypes from 'prop-types';
+import React, { useCallback, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,16 +11,16 @@ import {
   // allUpdateProject,
   // sampleProjects,
 } from 'store/actions/project';
-// import { loadTeamsAction } from 'store/actions/team';
+import { loadTeamsAction } from 'store/actions/team';
 
 import './style.scss';
 
-// const PROJECTS = 'projects';
-// const CHANNEL = 'channel';
-// const TEAM = 'team';
+const PROJECTS = 'projects';
+const CHANNEL = 'channel';
+const TEAM = 'team';
 
-function Sidebar(/* props */) {
-  // const { history, location } = props;
+function Sidebar(props) {
+  const { history, location } = props;
 
   const dispatch = useDispatch();
 
@@ -30,32 +30,32 @@ function Sidebar(/* props */) {
   // const [sampleProject, setSampleProjects] = useState([]);
   // const [updateProject, setUpdateProject] = useState([]);
 
-  // const [selectedTeam, setSelectedTeam] = useState(null);
-  // const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedTeam, setSelectedTeam] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
-  // useEffect(() => {
-  //   if (location.pathname.includes('teams/')) {
-  //     const teamId = parseInt(location.pathname.split('teams/')[1], 10);
-  //     if (teamId) {
-  //       setSelectedTeam(teamId);
-  //
-  //       if (location.pathname.includes(PROJECTS)) {
-  //         setSelectedCategory(PROJECTS);
-  //       } else if (location.pathname.includes(CHANNEL)) {
-  //         setSelectedCategory(CHANNEL);
-  //       } else {
-  //         setSelectedCategory(TEAM);
-  //       }
-  //     }
-  //   }
-  // }, [location.pathname]);
+  useEffect(() => {
+    if (location.pathname.includes('teams/')) {
+      const teamId = parseInt(location.pathname.split('teams/')[1], 10);
+      if (teamId) {
+        setSelectedTeam(teamId);
+
+        if (location.pathname.includes(PROJECTS)) {
+          setSelectedCategory(PROJECTS);
+        } else if (location.pathname.includes(CHANNEL)) {
+          setSelectedCategory(CHANNEL);
+        } else {
+          setSelectedCategory(TEAM);
+        }
+      }
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     if (!allState.sidebar.isLoaded) {
       dispatch(allSidebarProjects());
       // dispatch(sampleProjects());
       // dispatch(allUpdateProject());
-      // dispatch(loadTeamsAction());
+      dispatch(loadTeamsAction());
     }
   }, [allState.sidebar.isLoaded, dispatch]);
 
@@ -77,9 +77,9 @@ function Sidebar(/* props */) {
   //   }
   // }, [allState.sidebar.updateProject]);
 
-  // const handleClickTeam = useCallback((team) => {
-  //   history.push(`/teams/${team.id}`);
-  // }, [history]);
+  const handleClickTeam = useCallback((team) => {
+    history.push(`/teams/${team.id}`);
+  }, [history]);
 
   return (
     <aside className="sidebar-all">
@@ -170,7 +170,6 @@ function Sidebar(/* props */) {
         </div>
       </Link>
 
-      {/*
       <Link to="/teams">
         <div className="menu-title">
           <FontAwesomeIcon icon="user-friends" className="mr-2" />
@@ -202,12 +201,14 @@ function Sidebar(/* props */) {
             >
               <span className="project-title">Projects</span>
             </Link>
+            {/*
             <Link
               to={`/teams/${team.id}/channel`}
               className={selectedCategory === CHANNEL ? 'active-label' : ''}
             >
               <span className="channel-title">Channels</span>
             </Link>
+            */}
           </div>
         </div>
       ))}
@@ -218,14 +219,13 @@ function Sidebar(/* props */) {
           Create Team
         </Link>
       </div>
-      */}
     </aside>
   );
 }
 
 Sidebar.propTypes = {
-  // history: PropTypes.object.isRequired,
-  // location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
 };
 
 export default withRouter(Sidebar);

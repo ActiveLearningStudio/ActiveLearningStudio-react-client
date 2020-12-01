@@ -10,10 +10,19 @@ import './style.scss';
 const Notification = (props) => {
   const allNotifications = useSelector((state) => state.notification);
   const [notificationData, setNotificationData] = useState([]);
+  const [errorNotification, setErrorNotification] = useState('');
 
   useEffect(() => {
     setNotificationData(allNotifications.notification);
   }, [allNotifications]);
+
+  useEffect(() => {
+    if (notificationData.yesterday) {
+      if (notificationData.today.length === 0 && notificationData.yesterday.length === 0 && notificationData.older.length === 0) {
+        setErrorNotification('Currently no Notifications are available.');
+      }
+    }
+  }, [notificationData]);
 
   return (
     <>
@@ -58,6 +67,7 @@ const Notification = (props) => {
               </>
               )}
           </div>
+          {errorNotification && <div className="error-notification">{errorNotification}</div> }
         </div>
       </div>
     </>

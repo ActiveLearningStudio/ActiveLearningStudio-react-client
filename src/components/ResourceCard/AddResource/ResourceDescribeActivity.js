@@ -8,11 +8,11 @@ import Swal from 'sweetalert2';
 
 import computer from 'assets/images/computer.svg';
 import pexel from 'assets/images/pexel.png';
-import { required, FadeDiv } from 'utils';
+import { FadeDiv } from 'utils';
 import {
   showBuildActivityAction,
   onSubmitDescribeActivityAction,
-  showSelectActivityAction,
+  // showSelectActivityAction,
   uploadResourceThumbnail,
   uploadResourceThumbnailAction,
   saveFormDataInCreation,
@@ -20,7 +20,7 @@ import {
 import MetaTitleInputField from 'components/ResourceCard/fields/MetaTitleInputField';
 import PexelsAPI from 'components/models/pexels';
 import { subjects, educationLevels } from './dropdownData';
-import AddResourceSidebar from './AddResourceSidebar';
+// import AddResourceSidebar from './AddResourceSidebar';
 import MetaSubjectsField from '../fields/MetaSubjectsField';
 import MetaEducationLevelInputField from '../fields/MetaEducationLevelInputField';
 
@@ -44,27 +44,40 @@ export const uploadThumb = async (e, props) => {
 };
 
 let ResourceDescribeActivity = (props) => {
-  const { resource, handleSubmit, goBackToActivity } = props;
+  const {
+    resource,
+    handleSubmit,
+    // goBackToActivity,
+    selectType,
+    type,
+    setActiveView,
+  } = props;
   const [modalShow, setModalShow] = useState(false);
   const openFile = useRef();
-
   return (
     <div className="row">
-      <div className="col-md-3">
+      {/* <div className="col-md-3">
         <AddResourceSidebar {...props} />
-      </div>
+      </div> */}
 
-      <div className="col-md-9">
+      <div className="col-md-12">
         <div className="resource-question">
           <FadeDiv>
             <div className="row">
               <div className="col-md-12">
                 <h2 className="title">
-                  <div className="back-button" onClick={goBackToActivity}>
+                  Describe Activity:
+                  <div
+                    className="back-button"
+                    onClick={() => {
+                      setActiveView('select');
+                      type.splice(type.indexOf('describe', 1));
+                      selectType(type);
+                    }}
+                  >
                     <FontAwesomeIcon icon="chevron-left" className="mr-2" />
                     Back
                   </div>
-                  Describe Activity:
                 </h2>
               </div>
             </div>
@@ -87,7 +100,7 @@ let ResourceDescribeActivity = (props) => {
                                 component={MetaTitleInputField}
                                 type="text"
                                 label="Title"
-                                validate={!resource.formData.metaTitle ? [required] : undefined}
+                                // validate={!resource.formData.metaTitle ? null : undefined}
                                 defaultValue={resource.formData.metaTitle}
                               />
                             </div>
@@ -107,7 +120,7 @@ let ResourceDescribeActivity = (props) => {
                                 data={subjects}
                                 valueField="value"
                                 textField="subject"
-                                defaultValue={resource.formData.metaSubject.value}
+                                defaultValue={resource.formData.metaSubject}
                               />
                             </div>
                           </div>
@@ -124,7 +137,7 @@ let ResourceDescribeActivity = (props) => {
                                 data={educationLevels}
                                 valueField="value"
                                 textField="name"
-                                defaultValue={resource.formData.metaEducationLevels.value}
+                                defaultValue={resource.formData.metaEducationLevels}
                               />
                             </div>
                           </div>
@@ -280,8 +293,11 @@ let ResourceDescribeActivity = (props) => {
 ResourceDescribeActivity.propTypes = {
   resource: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  goBackToActivity: PropTypes.func.isRequired,
-  saveFormData: PropTypes.func.isRequired,
+  // goBackToActivity: PropTypes.func.isRequired,
+  // saveFormData: PropTypes.func.isRequired,
+  selectType: PropTypes.func.isRequired,
+  type: PropTypes.array.isRequired,
+  setActiveView: PropTypes.func.isRequired,
 };
 
 ResourceDescribeActivity = reduxForm({
@@ -294,6 +310,9 @@ ResourceDescribeActivity = reduxForm({
       showBuildActivity,
       onSubmitDescribeActivity,
       saveFormData,
+      selectType,
+      type,
+      setActiveView,
     } = props;
 
     if (!values.metaTitle) {
@@ -308,6 +327,7 @@ ResourceDescribeActivity = reduxForm({
     saveFormData(values);
 
     if (val.metaTitle.length === 0) {
+      Swal.fire('Title is required.');
       return;
     }
 
@@ -328,6 +348,8 @@ ResourceDescribeActivity = reduxForm({
         resource.newResource.activity.h5pLib,
         resource.newResource.activity.type,
       );
+      setActiveView('build');
+      selectType([...type, 'build']);
     } catch (e) {
       // console.log(e.message);
     }
@@ -339,7 +361,7 @@ const mapDispatchToProps = (dispatch) => ({
   onSubmitDescribeActivity: (metadata) => dispatch(onSubmitDescribeActivityAction(metadata)),
   uploadResourceThumbnail: (url) => dispatch(uploadResourceThumbnail(url)),
   uploadResourceThumbnailAction: (formData) => dispatch(uploadResourceThumbnailAction(formData)),
-  goBackToActivity: () => dispatch(showSelectActivityAction()),
+  // goBackToActivity: () => dispatch(showSelectActivityAction()),
   saveFormData: (formData) => dispatch(saveFormDataInCreation(formData)),
 });
 

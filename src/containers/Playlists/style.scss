@@ -2,8 +2,7 @@
   left: 1467px;
   width: 201px !important;
   height: 40px !important;
-  margin-top: 20px;
-  margin-bottom: 30px;
+  margin: 20px 0;
   padding: 5px 10px 5px 35px;
   background: #fafafa url(../../assets/images/create-playlist-plus-icon.png) no-repeat 96px 16px;
   border: none;
@@ -88,13 +87,13 @@
     text-transform: capitalize;
   }
 
-  span {
+  .project-preview {
+    height: 40px;
     float: right;
 
     a {
+      margin-top: 0;
       margin-right: 32px;
-      display: inline;
-      float: none;
       background: #fff;
       box-shadow: 1px 1px 8px #ccc;
       font-size: 16px;

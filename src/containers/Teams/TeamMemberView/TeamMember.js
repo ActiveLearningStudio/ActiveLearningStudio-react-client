@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 
@@ -13,6 +14,7 @@ function TeamMember(props) {
       id,
       first_name: firstName,
       last_name: lastName,
+      invited_email: iEmail,
       role,
       projects = [],
     },
@@ -38,11 +40,14 @@ function TeamMember(props) {
     <>
       <div className="col-md-12 member-item">
         <div className="member-name-mark">
-          <span>{`${firstName[0]}${lastName[0]}`}</span>
+          <span>{`${firstName ? firstName[0] : ''}${lastName ? lastName[0] : ''}`}</span>
         </div>
 
         <div className="member-info">
-          <h2 className="member-name">{`${firstName} ${lastName}`}</h2>
+          <h2 className="member-name">
+            {`${firstName || ''} ${lastName || ''}`}
+            {!(firstName && lastName) ? iEmail : ''}
+          </h2>
 
           <div className="member-data d-flex align-items-center">
             <h2 className="m-0">
@@ -67,6 +72,17 @@ function TeamMember(props) {
 
         {authUser.role === 'owner' && authUser.id !== id && (
           <div className="button-container">
+            {iEmail && (
+              <button
+                type="button"
+                className={classnames('invite-btn', { checked: true })}
+                disabled
+              >
+                <FontAwesomeIcon icon="check" className="mr-2" />
+                <span>Invited</span>
+              </button>
+            )}
+
             <button
               type="button"
               className="eliminate-btn"

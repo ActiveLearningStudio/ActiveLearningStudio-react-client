@@ -16,6 +16,7 @@ const ResourceCard = (props) => {
     playlist,
     match,
     index,
+    // wizard,
   } = props;
 
   return (
@@ -61,6 +62,7 @@ const ResourceCard = (props) => {
               <ResourceCardDropdown
                 resource={resource}
                 playlist={playlist}
+                // wizard
               />
             </div>
           </div>
@@ -78,6 +80,7 @@ ResourceCard.propTypes = {
   showDeletePopup: PropTypes.func.isRequired,
   hideDeletePopup: PropTypes.func.isRequired,
   deleteResource: PropTypes.func.isRequired,
+  // wizard: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
