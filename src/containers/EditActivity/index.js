@@ -16,6 +16,8 @@ import Header from 'components/Header';
 import { loadPlaylistAction } from 'store/actions/playlist';
 import ActivityWizard from './ActivityWizard';
 
+import 'containers/CreateActivity/style.scss';
+
 function ActivityCreate(props) {
   const { match } = props;
   const dispatch = useDispatch();
