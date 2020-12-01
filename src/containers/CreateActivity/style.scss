@@ -265,9 +265,16 @@
 
             form {
                 display: flex;
-                justify-content: space-between;
+                // justify-content: space-between;
                 align-items: center;
                 flex-wrap: wrap;
+            }
+            .error {
+                color:red
+            }
+
+            .keywords-de {
+              display: none;
             }
 
             input, select {
