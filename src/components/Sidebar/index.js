@@ -105,6 +105,7 @@ function Sidebar(props) {
           <FontAwesomeIcon icon="arrow-right" className="ml-2" />
         </Link>
       </ul>
+
       {/* <div
         className="menu-title"
         onClick={() => {

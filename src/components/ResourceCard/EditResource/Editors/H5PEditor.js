@@ -51,7 +51,7 @@ const H5PEditorEdit = (props) => {
       className="form-horizontal"
       id="laravel-h5p-form"
     >
-      <div className="form-group" style={{ position: 'inherit' }}>
+      {/* <div className="form-group" style={{ position: 'inherit' }}>
         <div className="col-md-9 col-md-offset-3" style={{ position: 'inherit' }}>
           <button
             type="submit"
@@ -61,7 +61,7 @@ const H5PEditorEdit = (props) => {
             Save & Exit
           </button>
         </div>
-      </div>
+      </div> */}
 
       <input
         name="_token"
@@ -87,30 +87,6 @@ const H5PEditorEdit = (props) => {
             <div>
               <div id="laravel-h5p-editor">Loading...</div>
             </div>
-          </div>
-        </div>
-
-        <div className="form-group laravel-h5p-upload-container">
-          <label htmlFor="inputUpload" className="control-label col-md-3">
-            Upload
-          </label>
-          <div className="col-md-12">
-            <input
-              type="file"
-              name="h5p_file"
-              id="h5p-file"
-              className="laravel-h5p-upload form-control"
-            />
-            <small className="h5p-disable-file-check helper-block">
-              <label>
-                <input
-                  type="checkbox"
-                  name="h5p_disable_file_check"
-                  id="h5p-disable-file-check"
-                />
-                Disable file extension check
-              </label>
-            </small>
           </div>
         </div>
 

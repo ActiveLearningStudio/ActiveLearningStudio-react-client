@@ -108,12 +108,13 @@ function App(props) {
       document.body.appendChild(script);
     });
   }, []);
+
   // useEffect(() => {
   //   function myStopFunction() {
   //     // eslint-disable-next-line no-use-before-define
   //     clearTimeout(timerMath);
   //   }
-
+  //
   //   const timerMath = setInterval(() => {
   //     try {
   //       window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);

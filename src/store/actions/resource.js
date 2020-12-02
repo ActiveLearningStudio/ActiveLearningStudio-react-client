@@ -136,9 +136,7 @@ export const createResourceAction = (
     parameters: JSON.stringify(window.h5peditorCopy.getParams()),
     action: 'create',
   };
-
   const insertedH5pResource = await resourceService.h5pToken(data);
-
   if (!insertedH5pResource.fail) {
     const resource = insertedH5pResource;
 
@@ -171,9 +169,9 @@ export const createResourceAction = (
       editor,
       editorType,
     });
-    // dispatch(hideCreateResourceModal());
-
-    // window.location.href = `/project/${projectId}`;
+    dispatch({
+      type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
+    });
   } else {
     dispatch({
       type: actionTypes.RESOURCE_VALIDATION_ERRORS,
@@ -389,8 +387,9 @@ export const createResourceByH5PUploadAction = (
         editor,
         editorType,
       });
-
-      // window.location.href = `/project/${projectId}`;
+      dispatch({
+        type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
+      });
     } else {
       throw new Error('Error occurred while creating resource');
     }
@@ -441,6 +440,10 @@ export const editResourceAction = (
       resource,
       editor,
       editorType,
+    });
+
+    dispatch({
+      type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
     });
   } catch (e) {
     console.log(e);
@@ -517,24 +520,35 @@ export const saveFormDataInCreation = (formData) => async (dispatch) => {
 
 export const updatedActivity = (userId) => async () => {
   const echo = new Echo(socketConnection.notificationSocket());
-  echo.private('activity-update').notification((msg) => {
-    console.log('activity-update', msg);
-    if (msg.userId !== userId) {
-      const path = window.location.pathname;
-      if (path.includes(`activity/${msg.activity.id}`)) {
-        Swal.fire({
-          title: 'This activity has been modified by other team member. Are you ok to refresh page to see what is updated?',
-          showDenyButton: true,
-          showCancelButton: true,
-          confirmButtonText: 'Yes',
-          denyButtonText: 'No',
-        })
-          .then((result) => {
-            if (result.isConfirmed) {
-              window.location.reload();
-            }
-          });
+
+  echo.private('activity-update')
+    .listen('ActivityUpdatedEvent', (msg) => {
+      if (msg.userId !== userId) {
+        const path = window.location.pathname;
+
+        let message = '';
+        if (path.includes(`activity/${msg.activityId}`)) {
+          message = 'This activity has been modified by other team member. Are you ok to refresh page to see what is updated?';
+        } else if (path.includes(`playlist/${msg.playlistId}`)) {
+          message = 'This playlist has been modified by other team member. Are you ok to refresh page to see what is updated?';
+        } else if (path.includes(`project/${msg.projectId}`)) {
+          message = 'This project has been modified by other team member. Are you ok to refresh page to see what is updated?';
+        }
+
+        if (message) {
+          Swal.fire({
+            title: message,
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            denyButtonText: 'No',
+          })
+            .then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+        }
       }
-    }
-  });
+    });
 };
