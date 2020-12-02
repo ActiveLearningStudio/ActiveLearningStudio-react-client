@@ -21,6 +21,11 @@
   color: #737373;
 }
 
+.results img {
+  width: 175px;
+  height: 125px;
+}
+
 .results {
   padding-top: 2em;
   padding-bottom: 2em;
@@ -38,4 +43,10 @@
 
 .back-action {
   color: #0f4392;
+}
+
+.pagination-buttons {
+  border-radius: 1.5rem;
+  background-color: #0f4392;
+  color: white;
 }

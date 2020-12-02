@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
-import { searchAction } from 'store/actions/canvas';
+import { showResultsAction, updateParamsAction } from 'store/actions/canvas';
 import {
   educationLevels as levels,
   subjects,
@@ -14,7 +14,9 @@ import './style.scss';
 const SearchForm = (props) => {
   const {
     match,
-    search,
+    showResults,
+    params,
+    updateParams,
   } = props;
 
   const [advanced, setAdvanced] = useState(false);
@@ -25,7 +27,14 @@ const SearchForm = (props) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    search({});
+    showResults();
+  };
+
+  const fieldChanged = (e) => {
+    updateParams({
+      ...params,
+      [e.target.name]: e.target.value,
+    });
   };
 
   return (
@@ -41,7 +50,7 @@ const SearchForm = (props) => {
       <div className="row mt-2">
         <div className="col">
           <div className="form-group">
-            <input type="text" className="form-control" placeholder="Search Phrase" />
+            <input type="text" className="form-control" placeholder="Search Phrase" name="query" onChange={fieldChanged} />
           </div>
         </div>
       </div>
@@ -50,19 +59,7 @@ const SearchForm = (props) => {
           <div className="row">
             <div className="col">
               <div className="form-group">
-                <select className="form-control">
-                  <option value="" disabled selected>Resource Type</option>
-                  <option value="project">Project</option>
-                  <option value="playlist">Playlist</option>
-                  <option value="activity">Activity</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <div className="form-group">
-                <select className="form-control">
+                <select className="form-control" name="subject" onChange={fieldChanged}>
                   <option value="" disabled selected>Subject Area</option>
                   {subjects.map((subject) => <option value={subject.value}>{subject.subject}</option>)}
                 </select>
@@ -72,7 +69,7 @@ const SearchForm = (props) => {
           <div className="row">
             <div className="col">
               <div className="form-group">
-                <select className="form-control">
+                <select className="form-control" name="level" onChange={fieldChanged}>
                   <option value="" disabled selected>Education Level</option>
                   {levels.map((level) => <option value={level.value}>{level.name}</option>)}
                 </select>
@@ -82,19 +79,19 @@ const SearchForm = (props) => {
           <div className="row">
             <div className="col">
               <div className="form-group">
-                <input type="date" className="form-control" placeholder="From Date" />
+                <input type="date" className="form-control" placeholder="From Date" name="start" onChange={fieldChanged} />
               </div>
             </div>
             <div className="col">
               <div className="form-group">
-                <input type="date" className="form-control" placeholder="To Date" />
+                <input type="date" className="form-control" placeholder="To Date" name="end" onChange={fieldChanged} />
               </div>
             </div>
           </div>
           <div className="row">
             <div className="col">
               <div className="form-group">
-                <input type="text" className="form-control" placeholder="Author" />
+                <input type="text" className="form-control" placeholder="Author" name="author" onChange={fieldChanged} />
               </div>
             </div>
           </div>
@@ -120,15 +117,18 @@ const SearchForm = (props) => {
 
 SearchForm.propTypes = {
   match: PropTypes.object.isRequired,
-  search: PropTypes.func.isRequired,
+  params: PropTypes.object.isRequired,
+  showResults: PropTypes.func.isRequired,
+  updateParams: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  params: state.canvas.params,
+  params: state.canvas.searchParams,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  search: (params) => dispatch(searchAction(params)),
+  showResults: () => dispatch(showResultsAction()),
+  updateParams: (params) => dispatch(updateParamsAction(params)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SearchForm));
