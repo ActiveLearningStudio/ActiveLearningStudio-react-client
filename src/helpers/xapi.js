@@ -65,6 +65,16 @@ export function extendStatement(statement, params, skipped = false) {
         'en-US': 'skipped',
       },
     };
+
+    // Some skipped statements come with score.min = 0 and score.max = 0
+    // This causes an error in the backend
+    if (
+      statementExtended.result
+      && statementExtended.result.score
+      && statementExtended.result.score.min === statementExtended.result.score.max
+    ) {
+      statementExtended.result.score.max += 1;
+    }
   }
 
   // Some H5Ps provide incompatible interaction types. Mapping those to valid ones here
