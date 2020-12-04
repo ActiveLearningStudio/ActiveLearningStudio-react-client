@@ -190,6 +190,7 @@ function ProjectPreview(props) {
                           handleShow={handleShow}
                           setProjectId={setProjectId}
                           showDeletePopup={showDeletePopup}
+                          previewMode
                         />
                         <Link to="#" onClick={history.goBack} className="go-back-button-preview">
                           <FontAwesomeIcon icon="undo" className="mr-2" />
