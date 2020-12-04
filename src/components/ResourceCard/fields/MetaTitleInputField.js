@@ -11,6 +11,7 @@ const MetaTitleInputField = ({
   defaultValue,
   meta: { touched, error, warning },
   saveFormData,
+  resource,
 }) => (
   <div>
     <label>
@@ -21,7 +22,13 @@ const MetaTitleInputField = ({
         {...input}
         type={type}
         value={defaultValue}
-        onChange={(e) => saveFormData({ metaTitle: e.target.value })}
+        onChange={(e) => saveFormData(
+          {
+            metaTitle: e.target.value,
+            metaSubject: resource.metaSubject,
+            metaEducationLevels: resource.metaEducationLevels,
+          },
+        )}
       />
       {touched && ((error && <span className="validation-error">{error}</span>) || (warning && <span>{warning}</span>))}
     </div>
@@ -35,6 +42,7 @@ MetaTitleInputField.propTypes = {
   meta: PropTypes.object.isRequired,
   defaultValue: PropTypes.string,
   saveFormData: PropTypes.func.isRequired,
+  resource: PropTypes.object.isRequired,
 };
 
 MetaTitleInputField.defaultProps = {

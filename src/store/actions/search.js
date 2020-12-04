@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2';
 
 import searchService from 'services/search.service';
-import { SEARCH_REDUX } from '../actionTypes';
+import { SEARCH_REDUX, CLEAR_SEARCH } from '../actionTypes';
 
 export const searchRedux = (data, searchQuery, meta) => ({
   type: SEARCH_REDUX,
@@ -44,6 +44,12 @@ export const simpleSearchAction = (values) => async (dispatch) => {
 
 export const cloneProject = (projectID) => {
   searchService.cloneProject(projectID);
+};
+
+export const clearSearch = () => async (dispatch) => {
+  dispatch({
+    type: CLEAR_SEARCH,
+  });
 };
 
 export const clonePlaylist = (projectId, playlistId) => {

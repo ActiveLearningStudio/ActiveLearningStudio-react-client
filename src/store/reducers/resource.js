@@ -302,8 +302,9 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         formData: {
           metaTitle: action.metaTitle || '',
-          metaSubject: typeof action.metaSubject === 'object' ? action.metaSubject : state.formData.metaSubject,
-          metaEducationLevels: typeof action.metaEducationLevels === 'object' ? action.metaEducationLevels : state.formData.metaEducationLevels,
+          metaSubject: (typeof action.metaSubject === 'object' && !!action.metaSubject) ? action.metaSubject.value : action.metaSubject,
+          metaEducationLevels: (typeof action.metaEducationLevels === 'object' && !!action.metaEducationLevels)
+            ? action.metaEducationLevels.value : action.metaEducationLevels,
         },
       };
 
@@ -318,6 +319,12 @@ export default (state = INITIAL_STATE, action) => {
             title: null,
             subjectId: null,
             educationLevelId: null,
+            thumbUrl: null,
+          },
+        },
+        newResource: {
+          ...state.newResource,
+          metadata: {
             thumbUrl: null,
           },
         },
