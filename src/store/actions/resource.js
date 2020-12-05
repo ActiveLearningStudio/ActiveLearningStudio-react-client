@@ -150,10 +150,10 @@ export const createResourceAction = (
       content: 'place_holder',
       subject_id:
         metadata.metaContent.metaSubject
-        && metadata.metaContent.metaSubject.subject,
+        && metadata.metaContent.metaSubject,
       education_level_id:
         metadata.metaContent.metaEducationLevels
-        && metadata.metaContent.metaEducationLevels.name,
+        && metadata.metaContent.metaEducationLevels,
     };
     const insertedResource = await resourceService.create(activity);
 
@@ -410,7 +410,6 @@ export const editResourceAction = (
     parameters: JSON.stringify(window.h5peditorCopy.getParams()),
     action: 'create',
   };
-
   try {
     const dataUpload = {
       title: metadata.metaContent && metadata.metaContent.metaTitle,
@@ -418,10 +417,10 @@ export const editResourceAction = (
       thumb_url: metadata.thumbUrl,
       subject_id:
         metadata.metaContent.metaSubject
-        && metadata.metaContent.metaSubject.subject,
+        && metadata.metaContent.metaSubject,
       education_level_id:
         metadata.metaContent.metaEducationLevels
-        && metadata.metaContent.metaEducationLevels.name,
+        && metadata.metaContent.metaEducationLevels,
       h5p_content_id: h5pid.h5p_content.id,
       action: 'create',
       data: h5pdata,
