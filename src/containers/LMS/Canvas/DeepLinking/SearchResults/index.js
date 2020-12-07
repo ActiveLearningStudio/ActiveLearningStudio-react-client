@@ -88,7 +88,7 @@ const SearchResults = (props) => {
           <div className="col">
             <div key={activity.id} className="row result">
               <div className="col-2">
-                <Image src={activity.thumb_url} thumbnail />
+                <Image src={activity.thumb_url.includes('pexels.com') ? activity.thumb_url : `${global.config.resourceUrl}${activity.thumb_url}`} thumbnail />
               </div>
               <div className="col">
                 <h3>
