@@ -49,26 +49,26 @@ function ActivityCreate(props) {
               </Link>
             </div>
             {/* Tabs */}
-            <Tab.Container id="left-tabs-example" defaultActiveKey="search">
+            <Tab.Container id="left-tabs-example" defaultActiveKey="create">
               <Row>
                 <Col sm={3}>
                   <Nav variant="pills" className="flex-column">
-                    <Nav.Item>
+                    {/* <Nav.Item>
                       <Nav.Link eventKey="search">
                         <FontAwesomeIcon icon="search" />
                         Search for an Existing Activity
+                      </Nav.Link>
+                    </Nav.Item> */}
+                    <Nav.Item>
+                      <Nav.Link eventKey="create">
+                        <FontAwesomeIcon icon="plus" />
+                        Create A New Activity
                       </Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
                       <Nav.Link eventKey="upload">
                         <FontAwesomeIcon icon="upload" />
                         Upload a Saved Activity
-                      </Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                      <Nav.Link eventKey="create">
-                        <FontAwesomeIcon icon="plus" />
-                        Create A New Activity
                       </Nav.Link>
                     </Nav.Item>
                   </Nav>

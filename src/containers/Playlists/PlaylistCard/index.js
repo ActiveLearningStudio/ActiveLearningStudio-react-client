@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { changePlaylistTitleAction, clearFormData } from 'store/actions/playlist';
+import { clearSearch } from 'store/actions/search';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import ResourceCard from 'components/ResourceCard';
 import PlaylistCardDropdown from './PlaylistCardDropdown';
@@ -175,7 +176,11 @@ class PlaylistCard extends React.Component {
                 <button
                   type="button"
                   className="add-resource-to-playlist-btn"
-                  onClick={this.handleAddNewResourceClick}
+                  onClick={() => {
+                    const { clearSearchform } = this.props;
+                    this.handleAddNewResourceClick();
+                    clearSearchform();
+                  }}
                 >
                   <FontAwesomeIcon icon="plus-circle" className="mr-2" />
                   Add new activity
@@ -199,6 +204,7 @@ PlaylistCard.propTypes = {
   changePlaylistTitle: PropTypes.func.isRequired,
   handleCreateResource: PropTypes.func,
   clearForm: PropTypes.func.isRequired,
+  clearSearchform: PropTypes.func.isRequired,
 };
 
 PlaylistCard.defaultProps = {
@@ -210,6 +216,7 @@ const mapDispatchToProps = (dispatch) => ({
   hideDeletePopup: () => dispatch(hideDeletePopupAction()),
   changePlaylistTitle: (projectId, id, title) => dispatch(changePlaylistTitleAction(projectId, id, title)),
   clearForm: () => dispatch(clearFormData()),
+  clearSearchform: () => dispatch(clearSearch()),
 });
 
 const mapStateToProps = (state) => ({

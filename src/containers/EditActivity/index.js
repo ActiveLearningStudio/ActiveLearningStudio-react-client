@@ -54,7 +54,7 @@ function ActivityCreate(props) {
                     <Nav.Item>
                       <Nav.Link eventKey="edit">
                         <FontAwesomeIcon icon="edit" />
-                        Edit for an Existing Activity
+                        Edit Activity
                       </Nav.Link>
                     </Nav.Item>
                   </Nav>

@@ -112,6 +112,7 @@ function SearchIndex(props) {
                     <>
                       <h2>
                         Your Search Result for
+                        {' '}
                         {searchBuilder.searchQuery}
                       </h2>
                       <p>Drag & drop activity to build your playlist.</p>

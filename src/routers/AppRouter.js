@@ -40,7 +40,7 @@ const PreviewPage = loadable(() => import('../containers/Preview'));
 const LtiPreviewPage = loadable(() => import('../containers/LtiPreviewPage'));
 const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared'));
 const SearchResult = loadable(() => import('../containers/Search'));
-const LtiModel = loadable(() => import('../containers/LtiModel'));
+// const LtiModel = loadable(() => import('../containers/LtiModel'));
 const TeamsPage = loadable(() => import('../containers/Teams'));
 const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
 const AddTeamProjectMemberPage = loadable(() => import('../containers/Teams/AddMembers'));
@@ -48,6 +48,7 @@ const GclassActivityPage = loadable(() => import('../containers/LMS/GoogleClassr
 const ActivityCreate = loadable(() => import('../containers/CreateActivity'));
 const EditActivity = loadable(() => import('../containers/EditActivity'));
 const GclassSummaryPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassSummaryPage'));
+const SearchPage = loadable(() => import('../containers/LMS/Canvas/DeepLinking/SearchPage'));
 
 const AppRouter = () => {
   useEffect(() => {
@@ -185,7 +186,8 @@ const AppRouter = () => {
         <OpenRoute
           exact
           path="/lti/content/:lmsUrl/:ltiClientId/:redirectUrl"
-          component={LtiModel}
+          // component={LtiModel}
+          component={SearchPage}
         />
 
         <OpenRoute
