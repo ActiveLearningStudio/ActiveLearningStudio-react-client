@@ -95,10 +95,6 @@ const SearchResults = (props) => {
                   {activity.title.length > 0 && activity.title}
                   {activity.title.length === 0 && 'Activity title not available'}
                 </h3>
-                <p>
-                  {activity.content.length > 0 && activity.content}
-                  {activity.content.length === 0 && 'Activity description not available'}
-                </p>
                 {activity.user && (
                   <p className="text-right">
                     <label>Author:</label>
@@ -136,7 +132,7 @@ const SearchResults = (props) => {
       ))}
       <div className="row">
         <div className="col text-left">
-          {(searchParams.from && searchParams.from !== 0) && (
+          {(!!searchParams.from && searchParams.from !== 0) && (
             <button type="button" className="pagination-buttons" onClick={previousPage}>Previous</button>
           )}
         </div>
