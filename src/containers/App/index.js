@@ -101,21 +101,21 @@ function App(props) {
       document.body.appendChild(script);
     });
   }, []);
-  useEffect(() => {
-    function myStopFunction() {
-      // eslint-disable-next-line no-use-before-define
-      clearTimeout(timerMath);
-    }
+  // useEffect(() => {
+  //   function myStopFunction() {
+  //     // eslint-disable-next-line no-use-before-define
+  //     clearTimeout(timerMath);
+  //   }
 
-    const timerMath = setInterval(() => {
-      try {
-        window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
-        myStopFunction();
-      } catch (e) {
-        console.log(e);
-      }
-    }, 1000);
-  }, []);
+  //   const timerMath = setInterval(() => {
+  //     try {
+  //       window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
+  //       myStopFunction();
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   }, 1000);
+  // }, []);
 
   return (
     <div>

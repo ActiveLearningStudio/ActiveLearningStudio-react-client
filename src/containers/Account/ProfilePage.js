@@ -223,43 +223,44 @@ function ProfilePage(props) {
                           </div>
                         </div>
                       </div>
+                      {!(state.organizationName === 'NEAF' || state.organizationName === 'vivensity') && (
+                        <div className="row">
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="organization-name">Organization Name</label>
+                              <FontAwesomeIcon icon="building" />
+                              <input
+                                className="input-box"
+                                id="organization-name"
+                                name="organizationName"
+                                placeholder="Organization Name"
+                                maxLength="250"
+                                value={state.organizationName}
+                                onChange={onChangeField}
+                              />
+                            </div>
+                          </div>
 
-                      <div className="row">
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label htmlFor="organization-name">Organization Name</label>
-                            <FontAwesomeIcon icon="building" />
-                            <input
-                              className="input-box"
-                              id="organization-name"
-                              name="organizationName"
-                              placeholder="Organization Name"
-                              maxLength="250"
-                              value={state.organizationName}
-                              onChange={onChangeField}
-                            />
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="organization-type">Organization Type</label>
+                              <FontAwesomeIcon icon="building" />
+                              <select
+                                className="input-box organization-type"
+                                name="organizationType"
+                                placeholder="Organization Type*"
+                                value={state.organizationType}
+                                onChange={onChangeField}
+                              >
+                                <option> -- select an option -- </option>
+                                {organizationTypes.map((type) => (
+                                  <option selected={type.label === state.organizationType} value={type.label}>{type.label}</option>
+                                ))}
+                              </select>
+                            </div>
                           </div>
                         </div>
-
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label htmlFor="organization-type">Organization Type</label>
-                            <FontAwesomeIcon icon="building" />
-                            <select
-                              className="input-box organization-type"
-                              name="organizationType"
-                              placeholder="Organization Type*"
-                              value={state.organizationType}
-                              onChange={onChangeField}
-                            >
-                              <option> -- select an option -- </option>
-                              {organizationTypes.map((type) => (
-                                <option selected={type.label === state.organizationType} value={type.label}>{type.label}</option>
-                              ))}
-                            </select>
-                          </div>
-                        </div>
-                      </div>
+                      )}
 
                       <div className="row">
                         <div className="col-md-6">
