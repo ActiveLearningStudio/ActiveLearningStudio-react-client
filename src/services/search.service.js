@@ -1,5 +1,6 @@
+/*eslint-disable */
 import Swal from 'sweetalert2';
-// import axios from 'axios';
+import axios from 'axios';
 import config from 'config';
 import httpService from './http.service';
 
@@ -19,6 +20,7 @@ const advancedSearch = (sendData) => httpService
 //   .get(`https://dev.currikistudio.org/api/api/v1/search/advanced`,{
 //     headers:{
 //       Authorization: `Bearer `
+      
 //     },
 //     params:sendData
 //   })

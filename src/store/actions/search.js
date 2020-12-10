@@ -11,19 +11,43 @@ export const searchRedux = (data, searchQuery, meta) => ({
 });
 
 export const simpleSearchAction = (values) => async (dispatch) => {
-  const sendData = {
-    query: values.phrase,
-    h5pLibraries: values.standardArray,
-    from: values.from,
-    size: values.size,
-    model: values.model,
-    negativeQuery: values.no_words,
-    subjectIds: values.subjectArray,
-    educationLevelIds: values.gradeArray,
-    startDate: values.fromDate,
-    endDate: values.toDate,
-  };
-
+  const activityType = [];
+  if (values.standardArray) {
+    values.standardArray.map((data) => {
+      if (typeof (data) === 'object') {
+        activityType.push(data.value);
+      }
+      return true;
+    });
+  }
+  let sendData;
+  if (activityType.length > 0) {
+    sendData = {
+      query: values.phrase,
+      h5pLibraries: activityType,
+      from: values.from,
+      size: values.size,
+      model: values.model || undefined,
+      negativeQuery: values.no_words,
+      subjectIds: values.subjectArray,
+      educationLevelIds: values.gradeArray,
+      startDate: values.fromDate,
+      endDate: values.toDate,
+    };
+  } else {
+    sendData = {
+      query: values.phrase,
+      h5pLibraries: values.standardArray,
+      from: values.from,
+      size: values.size,
+      model: values.model || undefined,
+      negativeQuery: values.no_words,
+      subjectIds: values.subjectArray,
+      educationLevelIds: values.gradeArray,
+      startDate: values.fromDate,
+      endDate: values.toDate,
+    };
+  }
   let response;
   if (values.type === 'public') {
     response = await searchService.searchResult(sendData);

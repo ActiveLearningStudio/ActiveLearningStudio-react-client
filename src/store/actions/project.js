@@ -53,6 +53,14 @@ export const getElastic = (projectId) => async () => {
   return result;
 };
 
+export const allSidebarProjects = () => async (dispatch) => {
+  const { projects } = await projectService.getAll();
+  dispatch({
+    type: actionTypes.SIDEBAR_ALL_PROJECT,
+    data: { projects },
+  });
+};
+
 export const updateProjectAction = (projectId, data) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.UPDATE_PROJECT_REQUEST });
@@ -63,6 +71,7 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
       type: actionTypes.UPDATE_PROJECT_SUCCESS,
       payload: { project },
     });
+    dispatch(allSidebarProjects());
   } catch (e) {
     dispatch({ type: actionTypes.UPDATE_PROJECT_FAIL });
   }
@@ -165,14 +174,6 @@ export const loadMyCloneProjectsAction = () => async (dispatch) => {
   dispatch({
     type: actionTypes.LOAD_MY_CLONE_PROJECTS,
     payload: projects,
-  });
-};
-
-export const allSidebarProjects = () => async (dispatch) => {
-  const { projects } = await projectService.getAll();
-  dispatch({
-    type: actionTypes.SIDEBAR_ALL_PROJECT,
-    data: { projects },
   });
 };
 
