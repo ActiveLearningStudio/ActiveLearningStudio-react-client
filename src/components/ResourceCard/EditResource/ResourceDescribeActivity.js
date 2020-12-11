@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 
 import computer from 'assets/images/computer.svg';
 import pexel from 'assets/images/pexel.png';
-import { required, FadeDiv } from 'utils';
+import { FadeDiv } from 'utils';
 import {
   uploadResourceThumbnailAction,
   showBuildActivityAction,
@@ -17,10 +17,11 @@ import {
 } from 'store/actions/resource';
 import PexelsAPI from 'components/models/pexels';
 import { subjects, educationLevels } from 'components/ResourceCard/AddResource/dropdownData';
-import EditResourceSidebar from './EditResourceSidebar';
 import MetaTitleInputField from '../fields/MetaTitleInputField';
 import MetaSubjectsField from '../fields/MetaSubjectsField';
 import MetaEducationLevelInputField from '../fields/MetaEducationLevelInputField';
+
+import 'components/ResourceCard/AddResource/style.scss';
 
 export const uploadThumb = async (e, props) => {
   const formData = new FormData();
@@ -38,23 +39,33 @@ export const uploadThumb = async (e, props) => {
 
 const imageValidation = '';
 const onSubmit = async (val, dispatch, props) => {
+  if (val.metaTitle.length === 0) {
+    Swal.fire('Title is required.');
+    return;
+  }
+
   if (val.metaTitle.length > 80) {
     Swal.fire('Title must be 80 characters or less.');
     return;
   }
-
   const values = { ...val };
-  const { resource, saveFormData } = props;
-
+  const {
+    resource,
+    saveFormData,
+    selectType,
+    type,
+    setActiveView,
+  } = props;
   values.metaTitle = resource.formData.metaTitle;
   if (typeof values.metaSubject !== 'object' || values.metaSubject === null) {
-    values.metaSubject = resource.formData.metaSubject;
+    values.metaSubject = resource.formData.metaSubject || val.metaSubject;
   }
   if (typeof values.metaEducationLevels !== 'object' || values.metaEducationLevels === null) {
-    values.metaEducationLevels = resource.formData.metaEducationLevels;
+    values.metaEducationLevels = resource.formData.metaEducationLevels || val.metaEducationLevels;
   }
   saveFormData(values);
-
+  setActiveView('build');
+  selectType([...type, 'build']);
   try {
     props.onSubmitDescribeActivity(values, props.match.params.activityId);
     dispatch(props.showBuildActivity(null, null, props.match.params.activityId)); // show create resource activity wizard
@@ -86,29 +97,18 @@ let ResourceDescribeActivity = (props) => {
     const educationLvl = educationLevelId
       ? educationLevels.find((eduLvl) => eduLvl.name === educationLevelId)
       : { name: title ? ' ' : '', value: '' };
-    const { metaTitle: savedTitle, metaEducationLevels: savedEduLvl, metaSubject: savedSubj } = resource.formData;
+    const { metaTitle: savedTitle, metaEducationLevels, metaSubject } = resource.formData;
     const values = {
       metaTitle: savedTitle || title,
-      metaSubject: savedSubj.subject ? savedSubj : { ...subject },
-      metaEducationLevels: savedEduLvl.name ? savedEduLvl : { ...educationLvl },
+      metaSubject: metaSubject || { ...subject },
+      metaEducationLevels: metaEducationLevels || { ...educationLvl },
     };
-
     saveFormData(values);
   }, [saveFormData, resource.editResource.metadata, resource.formData]);
 
-  if (!resource.formData.metaTitle) {
-    return (
-      <h2>Loading...</h2>
-    );
-  }
-
   return (
     <div className="row">
-      <div className="col-md-3">
-        <EditResourceSidebar {...props} />
-      </div>
-
-      <div className="col-md-9">
+      <div className="col-md-12">
         <div className="resource-question">
           <FadeDiv>
             <div className="row">
@@ -129,8 +129,9 @@ let ResourceDescribeActivity = (props) => {
                             component={MetaTitleInputField}
                             type="text"
                             label="Title"
-                            validate={[required]}
+                            // validate={[required]}
                             defaultValue={resource.formData.metaTitle}
+                            resource={resource.formData}
                           />
                         </div>
                       </div>
@@ -146,7 +147,8 @@ let ResourceDescribeActivity = (props) => {
                             data={subjects}
                             valueField="value"
                             textField="subject"
-                            defaultValue={resource.formData.metaSubject.value}
+                            defaultValue={resource.formData.metaSubject}
+                            resource={resource.formData}
                           />
                         </div>
                       </div>
@@ -160,7 +162,8 @@ let ResourceDescribeActivity = (props) => {
                             data={educationLevels}
                             valueField="value"
                             textField="name"
-                            defaultValue={resource.formData.metaEducationLevels.value}
+                            defaultValue={resource.formData.metaEducationLevels}
+                            resource={resource.formData}
                           />
                         </div>
                       </div>

@@ -6,7 +6,8 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { changePlaylistTitleAction } from 'store/actions/playlist';
+import { changePlaylistTitleAction, clearFormData } from 'store/actions/playlist';
+import { clearSearch } from 'store/actions/search';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import ResourceCard from 'components/ResourceCard';
 import PlaylistCardDropdown from './PlaylistCardDropdown';
@@ -32,7 +33,8 @@ class PlaylistCard extends React.Component {
   };
 
   handleAddNewResourceClick = () => {
-    const { playlist, handleCreateResource } = this.props;
+    const { playlist, handleCreateResource, clearForm } = this.props;
+    clearForm();
     if (!handleCreateResource) {
       // console.log('Event handler handleCreateResource() not defined.');
     } else {
@@ -174,7 +176,11 @@ class PlaylistCard extends React.Component {
                 <button
                   type="button"
                   className="add-resource-to-playlist-btn"
-                  onClick={this.handleAddNewResourceClick}
+                  onClick={() => {
+                    const { clearSearchform } = this.props;
+                    this.handleAddNewResourceClick();
+                    clearSearchform();
+                  }}
                 >
                   <FontAwesomeIcon icon="plus-circle" className="mr-2" />
                   Add new activity
@@ -197,6 +203,8 @@ PlaylistCard.propTypes = {
   hideDeletePopup: PropTypes.func.isRequired,
   changePlaylistTitle: PropTypes.func.isRequired,
   handleCreateResource: PropTypes.func,
+  clearForm: PropTypes.func.isRequired,
+  clearSearchform: PropTypes.func.isRequired,
 };
 
 PlaylistCard.defaultProps = {
@@ -207,6 +215,8 @@ const mapDispatchToProps = (dispatch) => ({
   showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
   hideDeletePopup: () => dispatch(hideDeletePopupAction()),
   changePlaylistTitle: (projectId, id, title) => dispatch(changePlaylistTitleAction(projectId, id, title)),
+  clearForm: () => dispatch(clearFormData()),
+  clearSearchform: () => dispatch(clearSearch()),
 });
 
 const mapStateToProps = (state) => ({

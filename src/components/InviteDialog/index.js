@@ -92,19 +92,6 @@ function InviteDialog(props) {
     initDialog();
   }, [visible]);
 
-  const onClickOutsideHandler = (event) => {
-    if (inviteRef.current && !event.path.includes(inviteRef.current)) {
-      setShowInvite(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('click', onClickOutsideHandler);
-    return () => {
-      window.removeEventListener('click', onClickOutsideHandler);
-    };
-  });
-
   return (
     <div className="invite-wrapper" ref={inviteRef}>
       {authUser && authUser.role === 'owner' && (
@@ -113,17 +100,22 @@ function InviteDialog(props) {
           className="invite-btn"
           onClick={() => setShowInvite(!visible)}
         >
-          Invite the team member
+          Invite a Team Member
         </button>
       )}
 
       {visible && (
         <div onFocus={() => toggleInvitableUsers(false)} className="invite-dialog">
-          <h2 className="font-weight-bold">
-            {mode === INPUT_MODE && 'Invite Team Member'}
-            {mode === INVITE_MODE && 'Invite Team Member with Custom Message'}
-            {mode === ADD_NOTE_MODE && `Invite ${selectedUsers[0].name || selectedUsers[0].email}...`}
-          </h2>
+          <div className="popup-header">
+            <h2 className="font-weight-bold">
+              {mode === INPUT_MODE && 'Invite a Team Member'}
+              {mode === INVITE_MODE && 'Invite a Team Member with Custom Message'}
+              {mode === ADD_NOTE_MODE && `Invite ${selectedUsers[0].name || selectedUsers[0].email}...`}
+            </h2>
+
+            <span className="close-circle" onClick={() => setShowInvite(false)} />
+          </div>
+
           <div>
             <h2>
               {mode === INPUT_MODE && 'Team Members'}
@@ -184,11 +176,11 @@ function InviteDialog(props) {
                         }}
                       >
                         <div className="invite-member-name-mark">
-                          <span>{ `${u.first_name[0] || ''}${u.last_name[0] || ''}` }</span>
+                          <span>{`${u.first_name[0] || ''}${u.last_name[0] || ''}` }</span>
                         </div>
 
                         <div className="invite-member-info">
-                          <h2 className="invite-member-name">{ `${u.name}` }</h2>
+                          <h2 className="invite-member-name">{`${u.name} (${u.email})`}</h2>
                         </div>
                       </div>
                     ))}

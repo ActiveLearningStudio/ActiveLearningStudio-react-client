@@ -1,4 +1,8 @@
-import { SHOW_DELETE_POPUP, HIDE_DELETE_POPUP } from '../actionTypes';
+import {
+  SHOW_DELETE_POPUP,
+  HIDE_DELETE_POPUP,
+  SIDE_BAR_COLLAPSE_TOGGLE,
+} from '../actionTypes';
 
 export const showDeletePopup = (id, title, deleteType) => ({
   type: SHOW_DELETE_POPUP,
@@ -19,4 +23,8 @@ export const hideDeletePopup = () => ({
 // hides the delete popup on activities, project, playlists
 export const hideDeletePopupAction = () => async (dispatch) => {
   dispatch(hideDeletePopup());
+};
+
+export const collapsedSideBar = () => async (dispatch) => {
+  dispatch({ type: SIDE_BAR_COLLAPSE_TOGGLE });
 };

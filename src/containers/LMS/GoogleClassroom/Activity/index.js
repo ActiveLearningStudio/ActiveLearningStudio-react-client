@@ -1,34 +1,50 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable react/no-this-in-sfc */
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-
-import { useDispatch } from 'react-redux';
-
+import PropTypes from 'prop-types';
+import Swal from 'sweetalert2';
 import gifloader from 'assets/images/dotsloader.gif';
-// import * as xAPIHelper from 'helpers/xapi';
-import {
-  loadH5pResourceSettingsShared,
-  // loadH5pResourceXapi,
-} from 'store/actions/resource';
-
+import * as xAPIHelper from 'helpers/xapi';
+import { loadH5pResourceXapi } from 'store/actions/resource';
+import { loadH5pResourceSettings, getSubmissionAction, turnInAction } from 'store/actions/gapi';
 import './style.scss';
 
-// let counter = 0;
-
 const Activity = (props) => {
-  const { activityId } = props;
+  const {
+    activityId,
+    match,
+    history,
+    student,
+    submission,
+    h5pSettings,
+    loadH5pSettings,
+    getSubmission,
+    sendStatement,
+    turnIn,
+  } = props;
+  const [xAPILoaded, setXAPILoaded] = useState(false);
+  const [intervalPointer, setIntervalPointer] = useState(null);
 
-  const dispatch = useDispatch();
+  // Init
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    loadH5pSettings(activityId);
+    getSubmission(match.params.classworkId, match.params.courseId, student.auth);
+  }, [activityId, match]);
 
-  const h5pInsertion = async (data) => {
-    window.H5PIntegration = data.h5p.settings;
+  // Load H5P
+  useEffect(() => {
+    if (h5pSettings === null) return;
+
+    window.H5PIntegration = h5pSettings.h5p.settings;
     const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
-    h5pWrapper.innerHTML = data.h5p.embed_code.trim();
-    const newCss = data.h5p.settings.core.styles.concat(
-      data.h5p.settings.loadedCss,
+    h5pWrapper.innerHTML = h5pSettings.h5p.embed_code.trim();
+    const newCss = h5pSettings.h5p.settings.core.styles.concat(
+      h5pSettings.h5p.settings.loadedCss,
     );
 
-    await Promise.all(
+    Promise.all(
       newCss.map((value) => {
         const link = document.createElement('link');
         link.href = value;
@@ -39,8 +55,8 @@ const Activity = (props) => {
       }),
     );
 
-    const newScripts = data.h5p.settings.core.scripts.concat(
-      data.h5p.settings.loadedJs,
+    const newScripts = h5pSettings.h5p.settings.core.scripts.concat(
+      h5pSettings.h5p.settings.loadedJs,
     );
 
     newScripts.forEach((value) => {
@@ -49,39 +65,88 @@ const Activity = (props) => {
       script.async = false;
       document.body.appendChild(script);
     });
-  };
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    loadH5pResourceSettingsShared(activityId)
-      .then(async (data) => {
-        h5pInsertion(data);
-      });
-    /*
+    // Loops until it finds H5P object
     const checkXapi = setInterval(() => {
-      try {
-        const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
-        if (x.H5P) {
-          if (x.H5P.externalDispatcher && xAPIHelper.isxAPINeeded(match.path)) {
-            // eslint-disable-next-line no-use-before-define
-            stopXapi();
+      const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
+      if (!x.H5P) return;
 
-            x.H5P.externalDispatcher.on('xAPI', (event) => {
-              if (counter > 0) {
-                dispatch(loadH5pResourceXapi(JSON.stringify(xAPIHelper.extendStatement(event.data.statement, { ...props }))));
-              }
-              counter += 1;
-            });
-          }
+      clearInterval(checkXapi);
+      setIntervalPointer(null);
+      setXAPILoaded(true);
+    });
+    setIntervalPointer(checkXapi);
+  }, [h5pSettings]);
+
+  // Patch into xAPI events
+  useEffect(() => {
+    if (!xAPILoaded || !submission) return;
+
+    const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
+    if (!x.H5P.externalDispatcher || xAPIHelper.isxAPINeeded(match.path) === false) return;
+
+    x.H5P.externalDispatcher.on('xAPI', function (event) {
+      const params = {
+        path: match.path,
+        activityId,
+        submissionId: submission.id,
+        attemptId: submission.attemptId,
+        studentId: student.profile.data.id,
+        classworkId: match.params.classworkId,
+        courseId: match.params.courseId,
+        auth: student.auth,
+      };
+
+      // Extending the xAPI statement with our custom values and sending it off to LRS
+      const xapiData = JSON.stringify(
+        xAPIHelper.extendStatement(event.data.statement, params),
+      );
+
+      if (event.data.statement.verb.display['en-US'] === 'completed') {
+        // Check if all questions/interactions have been accounted for in LRS
+        // If the user skips one of the questions, no xAPI statement is generated.
+        // We need statements for all questions for proper summary accounting.
+        // Fire off an artificial "answered" statement if necessary
+        if (this.parent === undefined && this.interactions) {
+          this.interactions.forEach((interaction) => {
+            if (interaction.getLastXAPIVerb()) return; // Already initialized
+
+            const xAPIData = interaction.getXAPIData();
+            if (!xAPIData) return; // Some interactions have no data to report
+
+            const iXAPIStatement = JSON.stringify(
+              xAPIHelper.extendStatement(xAPIData.statement, params, true),
+            );
+            sendStatement(iXAPIStatement);
+          }, this);
         }
-      } catch (e) {
-        console.log(e);
+
+        sendStatement(xapiData);
+
+        // Ask the user if he wants to turn-in the work to google classroom
+        Swal.fire({
+          title: 'Do you want to turn in your work to Google Classroom?',
+          showCancelButton: true,
+          confirmButtonText: 'Turn In',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            turnIn(params.classworkId, params.courseId, params.auth);
+            Swal.fire('Saved!', '', 'success');
+          }
+        });
+      } else {
+        sendStatement(xapiData);
       }
     });
+  }, [xAPILoaded, match.path, match.params, activityId, student, submission]);
 
-    const stopXapi = () => clearInterval(checkXapi);
-    */
-  }, [dispatch, activityId, props]);
+  // If the activity has already been submitted to google classroom, redirect to summary page
+  useEffect(() => {
+    if (submission && submission.state === 'TURNED_IN') {
+      clearInterval(intervalPointer);
+      history.push(`/gclass/summary/${match.params.userId}/${match.params.courseId}/${match.params.activityId}/${submission.coursework_id}/${submission.id}`);
+    }
+  }, [submission, match]);
 
   return (
     <div id="curriki-h5p-wrapper">
@@ -94,6 +159,28 @@ const Activity = (props) => {
 
 Activity.propTypes = {
   activityId: PropTypes.string.isRequired,
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  student: PropTypes.object.isRequired,
+  submission: PropTypes.object.isRequired,
+  h5pSettings: PropTypes.object.isRequired,
+  loadH5pSettings: PropTypes.func.isRequired,
+  getSubmission: PropTypes.func.isRequired,
+  sendStatement: PropTypes.func.isRequired,
+  turnIn: PropTypes.func.isRequired,
 };
 
-export default withRouter(Activity);
+const mapStateToProps = (state) => ({
+  student: state.gapi.student,
+  submission: state.gapi.submission,
+  h5pSettings: state.gapi.h5pSettings,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  loadH5pSettings: (activityId) => dispatch(loadH5pResourceSettings(activityId)),
+  getSubmission: (classworkId, courseId, auth) => dispatch(getSubmissionAction(classworkId, courseId, auth)),
+  sendStatement: (statement) => dispatch(loadH5pResourceXapi(statement)),
+  turnIn: (classworkId, courseId, auth) => dispatch(turnInAction(classworkId, courseId, auth)),
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Activity));

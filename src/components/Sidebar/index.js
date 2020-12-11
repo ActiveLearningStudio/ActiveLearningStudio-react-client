@@ -1,4 +1,8 @@
-import React, { useEffect /* , useCallback, useState */ } from 'react';
+import React, {
+  // useCallback,
+  useEffect,
+  // useState,
+} from 'react';
 // import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -105,23 +109,6 @@ function Sidebar(/* props */) {
           <FontAwesomeIcon icon="arrow-right" className="ml-2" />
         </Link>
       </ul>
-
-      {/* <div
-        className="menu-title"
-        onClick={() => {
-          Swal.fire({
-            title: 'STAY TUNED!',
-            text: 'COMING SOON',
-            imageUrl: logo,
-            imageWidth: 400,
-            imageHeight: 200,
-            imageAlt: 'Custom image',
-          });
-        }}
-      >
-        <FontAwesomeIcon icon="user-friends" className="mr-2" />
-        My Teams
-      </div> */}
 
       {/*
       <div className="menu-title">

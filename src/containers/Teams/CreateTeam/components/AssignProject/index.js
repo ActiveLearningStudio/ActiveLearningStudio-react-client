@@ -31,7 +31,7 @@ function AssignProject(props) {
     handleSubmit(selectedProjects);
   }, [selectedProjects, handleSubmit]);
 
-  const filteredProjects = projects.filter((project) => project.name.includes(search));
+  const filteredProjects = projects.filter((project) => project.name.toLowerCase().includes(search.toLowerCase()));
 
   const finishButton = () => (
     <button
@@ -74,11 +74,13 @@ function AssignProject(props) {
                 className="assign-project-item"
                 onClick={() => selectProject(project.id)}
               >
-                <img
-                  src={project.thumb_url.includes('pexels.com')
-                    ? `url(${project.thumb_url})`
-                    : `url(${global.config.resourceUrl}${project.thumb_url})`}
-                  alt={project.name}
+                <div
+                  className="project-img"
+                  style={{
+                    backgroundImage: project.thumb_url.includes('pexels.com')
+                      ? `url(${project.thumb_url})`
+                      : `url(${global.config.resourceUrl}${project.thumb_url})`,
+                  }}
                 />
 
                 <div className="assign-project-radio">
