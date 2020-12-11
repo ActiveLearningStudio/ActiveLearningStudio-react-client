@@ -6,9 +6,9 @@ import { Helmet } from 'react-helmet';
 import logo from 'assets/images/logo.svg';
 import { getUserAction } from 'store/actions/auth';
 import { cloneDuplicationRequest } from 'store/actions/notification';
-import { updatedActivity } from 'store/actions/resource';
-import { updatedProject } from 'store/actions/project';
-import { updatedPlaylist } from 'store/actions/playlist';
+// import { updatedActivity } from 'store/actions/resource';
+// import { updatedProject } from 'store/actions/project';
+// import { updatedPlaylist } from 'store/actions/playlist';
 import AppRouter from 'routers/AppRouter';
 
 import './style.scss';
@@ -26,9 +26,9 @@ function App(props) {
   useEffect(() => {
     if (userDetails) {
       dispatch(cloneDuplicationRequest(userDetails.id));
-      dispatch(updatedProject(userDetails.id));
-      dispatch(updatedPlaylist(userDetails.id));
-      dispatch(updatedActivity(userDetails.id));
+      // dispatch(updatedProject(userDetails.id));
+      // dispatch(updatedPlaylist(userDetails.id));
+      // dispatch(updatedActivity(userDetails.id));
     }
   }, [dispatch, userDetails]);
 

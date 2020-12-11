@@ -16,7 +16,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
     h5pLibraries: values.standardArray,
     from: values.from,
     size: values.size,
-    model: values.model,
+    model: values.model || undefined,
     negativeQuery: values.no_words,
     subjectIds: values.subjectArray,
     educationLevelIds: values.gradeArray,
