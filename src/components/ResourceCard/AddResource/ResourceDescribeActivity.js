@@ -102,6 +102,7 @@ let ResourceDescribeActivity = (props) => {
                                 label="Title"
                                 // validate={!resource.formData.metaTitle ? null : undefined}
                                 defaultValue={resource.formData.metaTitle}
+                                resource={resource.formData}
                               />
                             </div>
                           </div>
@@ -121,6 +122,7 @@ let ResourceDescribeActivity = (props) => {
                                 valueField="value"
                                 textField="subject"
                                 defaultValue={resource.formData.metaSubject}
+                                resource={resource.formData}
                               />
                             </div>
                           </div>
@@ -138,6 +140,7 @@ let ResourceDescribeActivity = (props) => {
                                 valueField="value"
                                 textField="name"
                                 defaultValue={resource.formData.metaEducationLevels}
+                                resource={resource.formData}
                               />
                             </div>
                           </div>

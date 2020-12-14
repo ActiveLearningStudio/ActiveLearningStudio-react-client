@@ -20,6 +20,7 @@ const ProjectCardDropdown = (props) => {
     handleShow,
     setProjectId,
     showDeletePopup,
+    previewMode,
   } = props;
 
   const dispatch = useDispatch();
@@ -36,29 +37,33 @@ const ProjectCardDropdown = (props) => {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item
-          as={Link}
-          to={`/project/${project.id}/preview`}
-        >
-          <FontAwesomeIcon icon="eye" className="mr-2" />
-          Preview
-        </Dropdown.Item>
+        {!previewMode && (
+          <Dropdown.Item
+            as={Link}
+            to={`/project/${project.id}/preview`}
+          >
+            <FontAwesomeIcon icon="eye" className="mr-2" />
+            Preview
+          </Dropdown.Item>
+        )}
 
         <Dropdown.Item as={Link} to={`/project/${project.id}/edit`}>
           <FontAwesomeIcon icon="pen" className="mr-2" />
           Edit
         </Dropdown.Item>
 
-        <Dropdown.Item
-          to="#"
-          onClick={() => {
-            Swal.showLoading();
-            cloneProject(project.id);
-          }}
-        >
-          <FontAwesomeIcon icon="clone" className="mr-2" />
-          Duplicate
-        </Dropdown.Item>
+        {!previewMode && (
+          <Dropdown.Item
+            to="#"
+            onClick={() => {
+              Swal.showLoading();
+              cloneProject(project.id);
+            }}
+          >
+            <FontAwesomeIcon icon="clone" className="mr-2" />
+            Duplicate
+          </Dropdown.Item>
+        )}
 
         <Dropdown.Item
           to="#"
@@ -138,6 +143,7 @@ ProjectCardDropdown.propTypes = {
   showDeletePopup: PropTypes.func.isRequired,
   handleShow: PropTypes.func.isRequired,
   setProjectId: PropTypes.func.isRequired,
+  previewMode: PropTypes.bool.isRequired,
 };
 
 export default ProjectCardDropdown;

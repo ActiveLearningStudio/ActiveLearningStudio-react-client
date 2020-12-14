@@ -120,7 +120,7 @@ function SearchForm() {
               Swal.showLoading();
               dispatcher(simpleSearchAction(values));
               closeModel.current.click();
-              history.push(`/search?type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${values.standardArray}`);
+              history.push(`/search?type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${values.standardArray.name}`);
               resetForm({
                 phrase: '',
                 subjectArray: [],
@@ -201,7 +201,7 @@ function SearchForm() {
                     onBlur={handleBlur}
                     value={values.subject}
                   >
-                    <option value="Subject + Subject Area">
+                    <option value="" disabled selected hidden>
                       {' '}
                       Subject + Subject Area
                     </option>
@@ -243,7 +243,7 @@ function SearchForm() {
                     }}
                     value={values.grade}
                   >
-                    <option value="Education Level">Education Level</option>
+                    <option value="" disabled selected hidden>Education Level</option>
                     {educationLevels.map((data) => (
                       <option key={data.value} value={data.name}>
                         {data.name}
@@ -279,13 +279,19 @@ function SearchForm() {
                     onChange={(e) => {
                       handleChange(e);
                       if (!values.standardArray.includes(e.target.value)) {
-                        values.standardArray.push(e.target.value);
+                        const nameSelected = activityTypes.filter((data) => {
+                          if (data.h5pLib === e.target.value) {
+                            return data;
+                          }
+                          return false;
+                        });
+                        values.standardArray.push({ value: e.target.value, name: nameSelected[0].title });
                       }
                     }}
                     onBlur={handleBlur}
                     value={values.standard}
                   >
-                    <option value="Standard">Type of Activity</option>
+                    <option value="" disabled selected hidden>Type of Activity</option>
                     {activityTypes.map((data) => (
                       <option key={data.id} value={data.h5pLib}>
                         {data.title}
@@ -298,7 +304,7 @@ function SearchForm() {
                   <div className="form-group wrap-keyword" data-name={value}>
                     {values.standardArray.map((data) => (
                       <div className="keywords-de">
-                        {data}
+                        {data.name}
                         <div
                           className="iocns"
                           onClick={() => {
@@ -316,21 +322,21 @@ function SearchForm() {
 
                 <div className="form-group dual">
                   <input
-                    name="toDate"
-                    placeholder="To Date"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.toDate}
-                    onFocus={(e) => {
-                      e.target.type = 'date';
-                    }}
-                  />
-                  <input
                     name="fromDate"
                     placeholder="From Date"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.fromDate}
+                    onFocus={(e) => {
+                      e.target.type = 'date';
+                    }}
+                  />
+                  <input
+                    name="toDate"
+                    placeholder="To Date"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.toDate}
                     onFocus={(e) => {
                       e.target.type = 'date';
                     }}
@@ -357,7 +363,7 @@ function SearchForm() {
                 <div className="form-group">
                   <input
                     name="no_words"
-                    placeholder="Doesn't have the words"
+                    placeholder="Do not have the words"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.no_words}

@@ -48,7 +48,6 @@ const onSubmit = async (val, dispatch, props) => {
     Swal.fire('Title must be 80 characters or less.');
     return;
   }
-
   const values = { ...val };
   const {
     resource,
@@ -59,10 +58,10 @@ const onSubmit = async (val, dispatch, props) => {
   } = props;
   values.metaTitle = resource.formData.metaTitle;
   if (typeof values.metaSubject !== 'object' || values.metaSubject === null) {
-    values.metaSubject = resource.formData.metaSubject;
+    values.metaSubject = resource.formData.metaSubject || val.metaSubject;
   }
   if (typeof values.metaEducationLevels !== 'object' || values.metaEducationLevels === null) {
-    values.metaEducationLevels = resource.formData.metaEducationLevels;
+    values.metaEducationLevels = resource.formData.metaEducationLevels || val.metaEducationLevels;
   }
   saveFormData(values);
   setActiveView('build');
@@ -92,27 +91,20 @@ let ResourceDescribeActivity = (props) => {
 
   useEffect(() => {
     const { title, subjectId, educationLevelId } = resource.editResource.metadata;
-    // const subject = subjectId
-    //   ? subjects.find((subj) => subj.subject === subjectId)
-    //   : { subject: title ? ' ' : '', value: '' };
-    // const educationLvl = educationLevelId
-    //   ? educationLevels.find((eduLvl) => eduLvl.name === educationLevelId)
-    //   : { name: title ? ' ' : '', value: '' };
-    // const { metaEducationLevels: savedEduLvl, metaSubject: savedSubj } = resource.formData;
+    const subject = subjectId
+      ? subjects.find((subj) => subj.subject === subjectId)
+      : { subject: title ? ' ' : '', value: '' };
+    const educationLvl = educationLevelId
+      ? educationLevels.find((eduLvl) => eduLvl.name === educationLevelId)
+      : { name: title ? ' ' : '', value: '' };
+    const { metaTitle: savedTitle, metaEducationLevels, metaSubject } = resource.formData;
     const values = {
-      metaTitle: title,
-      metaSubject: subjectId,
-      metaEducationLevels: educationLevelId,
+      metaTitle: savedTitle || title,
+      metaSubject: metaSubject || { ...subject },
+      metaEducationLevels: metaEducationLevels || { ...educationLvl },
     };
-
     saveFormData(values);
-  }, [saveFormData, resource.editResource.metadata]);
-
-  // if (!resource.formData.metaTitle) {
-  //   return (
-  //     <h2>Loading...</h2>
-  //   );
-  // }
+  }, [saveFormData, resource.editResource.metadata, resource.formData]);
 
   return (
     <div className="row">
@@ -139,6 +131,7 @@ let ResourceDescribeActivity = (props) => {
                             label="Title"
                             // validate={[required]}
                             defaultValue={resource.formData.metaTitle}
+                            resource={resource.formData}
                           />
                         </div>
                       </div>
@@ -154,7 +147,8 @@ let ResourceDescribeActivity = (props) => {
                             data={subjects}
                             valueField="value"
                             textField="subject"
-                            defaultValue={resource.formData.metaSubject && resource.formData.metaSubject.value}
+                            defaultValue={resource.formData.metaSubject}
+                            resource={resource.formData}
                           />
                         </div>
                       </div>
@@ -168,7 +162,8 @@ let ResourceDescribeActivity = (props) => {
                             data={educationLevels}
                             valueField="value"
                             textField="name"
-                            defaultValue={resource.formData.metaSubject && resource.formData.metaEducationLevels.value}
+                            defaultValue={resource.formData.metaEducationLevels}
+                            resource={resource.formData}
                           />
                         </div>
                       </div>
