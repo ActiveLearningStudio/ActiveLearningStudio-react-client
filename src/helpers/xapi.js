@@ -4,6 +4,7 @@ export function allowedH5PActvityPaths() {
     // '/project/:projectId/playlist/:playlistId/activity/:activityId/preview',
     // '/activity/:activityId/shared',
     '/gclass/launch/:userId/:courseId/:activityId/:classworkId',
+    '/lti-tools/activity/:activityId',
   ];
 }
 
@@ -13,6 +14,7 @@ export function H5PActvityPathMapToPlatform() {
     { '/project/:projectId/playlist/:playlistId/activity/:activityId/preview': 'CurrikiStudio' },
     { '/activity/:activityId/shared': 'CurrikiStudio' },
     { '/gclass/launch/:userId/:courseId/:activityId/:classworkId': 'Google Classroom' },
+    { '/lti-tools/activity/:activityId': 'LTI client' },
   ];
 }
 
