@@ -49,6 +49,7 @@ const ActivityCreate = loadable(() => import('../containers/CreateActivity'));
 const EditActivity = loadable(() => import('../containers/EditActivity'));
 const GclassSummaryPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassSummaryPage'));
 const SearchPage = loadable(() => import('../containers/LMS/Canvas/DeepLinking/SearchPage'));
+const LtiActivity = loadable(() => import('../containers/LMS/LTI/Activity'));
 
 const AppRouter = () => {
   useEffect(() => {
@@ -206,6 +207,12 @@ const AppRouter = () => {
           exact
           path="/search"
           component={SearchResult}
+        />
+
+        <OpenRoute
+          exact
+          path="/lti-tools/activity/:activityId"
+          component={LtiActivity}
         />
 
         <Redirect to="/" />
