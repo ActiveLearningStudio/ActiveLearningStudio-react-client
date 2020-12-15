@@ -9,6 +9,13 @@ import socketConnection from 'services/http.service';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
 
+export const allSidebarProjects = () => async (dispatch) => {
+  const { projects } = await projectService.getAll();
+  dispatch({
+    type: actionTypes.SIDEBAR_ALL_PROJECT,
+    data: { projects },
+  });
+};
 export const createProjectAction = (data) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.CREATE_PROJECT_REQUEST });
@@ -19,6 +26,7 @@ export const createProjectAction = (data) => async (dispatch) => {
       type: actionTypes.CREATE_PROJECT_SUCCESS,
       payload: { project },
     });
+    dispatch(allSidebarProjects());
   } catch (e) {
     dispatch({ type: actionTypes.CREATE_PROJECT_FAIL });
   }
@@ -53,14 +61,6 @@ export const getElastic = (projectId) => async () => {
   return result;
 };
 
-export const allSidebarProjects = () => async (dispatch) => {
-  const { projects } = await projectService.getAll();
-  dispatch({
-    type: actionTypes.SIDEBAR_ALL_PROJECT,
-    data: { projects },
-  });
-};
-
 export const updateProjectAction = (projectId, data) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.UPDATE_PROJECT_REQUEST });
@@ -87,6 +87,7 @@ export const deleteProjectAction = (projectId) => async (dispatch) => {
       type: actionTypes.DELETE_PROJECT_SUCCESS,
       payload: { projectId },
     });
+    dispatch(allSidebarProjects());
   } catch (e) {
     dispatch({ type: actionTypes.DELETE_PROJECT_FAIL });
   }
