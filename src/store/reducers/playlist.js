@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   showCreatePlaylistPopup: false,
   selectedPlaylist: null,
   loadingH5P: 'loading...',
+  isNonAvailablePlaylist: false,
 };
 
 let newPlaylists = [];
@@ -41,12 +42,14 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isLoading: false,
+        isNonAvailablePlaylist: false,
         selectedPlaylist: action.payload.playlist,
       };
     case actionTypes.LOAD_PLAYLIST_FAIL:
       return {
         ...state,
         isLoading: false,
+        isNonAvailablePlaylist: true,
       };
 
     case actionTypes.UPDATE_PLAYLIST_REQUEST:
@@ -196,6 +199,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         selectedPlaylist: action.playlist,
+        isNonAvailablePlaylist: false,
       };
 
     case actionTypes.REORDER_PLAYLIST:

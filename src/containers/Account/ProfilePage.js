@@ -90,6 +90,12 @@ function ProfilePage(props) {
         return;
       }
 
+      if (!validator.isMobilePhone(phoneNumber) || !validator.isNumeric(phoneNumber)) {
+        setError('Please input valid phone number.');
+
+        return;
+      }
+
       setError(null);
 
       const data = {
