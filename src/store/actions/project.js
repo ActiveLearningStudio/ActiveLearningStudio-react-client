@@ -302,7 +302,8 @@ export const loadMyProjectsPreviewSharedAction = (projectId) => async (dispatch)
     // });
   } catch (e) {
     dispatch({
-      type: actionTypes.PAGE_LOADING_COMPLETE,
+      type: actionTypes.LOAD_MY_PROJECTS_FAILED,
+      payload: { error: e },
     });
 
     throw e;
