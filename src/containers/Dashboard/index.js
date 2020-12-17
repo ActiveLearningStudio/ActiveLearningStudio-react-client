@@ -11,8 +11,8 @@ import {
 
 import metricsService from 'services/metrics.service';
 import { getUserMetricsAction, getUserMembershipAction } from 'store/actions/metrics';
-import Header from 'components/Header';
-import Sidebar from 'components/Sidebar';
+// import Header from 'components/Header';
+// import Sidebar from 'components/Sidebar';
 import Footer from 'components/Footer';
 import SlideModal from 'containers/Dashboard/SlideModal';
 
@@ -123,12 +123,7 @@ function DashboardPage(props) {
 
   return (
     <>
-      <Header {...props} />
-
-      <div className="dashboard-page main-content-wrapper">
-        <div className="sidebar-wrapper">
-          <Sidebar />
-        </div>
+      <div className="dashboard-page">
         <div className="content-wrapper">
           <div className="content">
             <div className="row">
