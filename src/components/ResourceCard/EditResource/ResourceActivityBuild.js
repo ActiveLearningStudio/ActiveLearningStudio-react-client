@@ -6,24 +6,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { FadeDiv } from 'utils';
 import { hideBuildActivityAction } from 'store/actions/resource';
-import EditResourceSidebar from './EditResourceSidebar';
 import H5PEditor from './Editors/H5PEditor';
 
 const ResourceActivityBuild = (props) => {
-  const { resource: { /* newResource, */ editResource }, goBackToActivity } = props;
-
+  const {
+    resource: { editResource },
+    selectType,
+    type,
+    setActiveView,
+  } = props;
   return (
     <div className="row">
-      <div className="col-md-3">
-        <EditResourceSidebar {...props} />
-      </div>
-
-      <div className="col-md-9">
+      <div className="col-md-12">
         <div className="resource-activity">
           <div
             className="back-button"
             style={{ marginLeft: 15 }}
-            onClick={goBackToActivity}
+            onClick={() => {
+              setActiveView('describe');
+              type.splice(type.indexOf('build', 1));
+              selectType(type);
+            }}
           >
             <FontAwesomeIcon icon="chevron-left" className="mr-2" />
             Back
@@ -36,7 +39,7 @@ const ResourceActivityBuild = (props) => {
             )}
             */}
 
-            {editResource.params.data !== '' ? (
+            {editResource.params && editResource.params.data !== '' ? (
               <H5PEditor
                 {...props}
                 h5pParams={JSON.stringify(editResource.params)}
@@ -54,7 +57,9 @@ const ResourceActivityBuild = (props) => {
 
 ResourceActivityBuild.propTypes = {
   resource: PropTypes.object.isRequired,
-  goBackToActivity: PropTypes.func.isRequired,
+  selectType: PropTypes.func.isRequired,
+  type: PropTypes.array.isRequired,
+  setActiveView: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

@@ -28,8 +28,8 @@ const INITIAL_STATE = {
   searchKey: '',
   formData: {
     metaTitle: '',
-    metaSubject: { value: '' },
-    metaEducationLevels: { value: '' },
+    metaSubject: '',
+    metaEducationLevels: '',
   },
   saved: false,
 };
@@ -228,6 +228,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         showEditResourcePopup: false,
         editResource: {
+          ...state.editResource,
           params: {
             data: '',
           },
@@ -296,12 +297,41 @@ export default (state = INITIAL_STATE, action) => {
       };
 
     case actionTypes.SAVE_FORM_DATA_IN_CREATION:
+      console.log(action);
       return {
         ...state,
         formData: {
           metaTitle: action.metaTitle || '',
-          metaSubject: typeof action.metaSubject === 'object' ? action.metaSubject : state.formData.metaSubject,
-          metaEducationLevels: typeof action.metaEducationLevels === 'object' ? action.metaEducationLevels : state.formData.metaEducationLevels,
+          metaSubject: (typeof action.metaSubject === 'object' && !!action.metaSubject) ? action.metaSubject.value : action.metaSubject,
+          metaEducationLevels: (typeof action.metaEducationLevels === 'object' && !!action.metaEducationLevels)
+            ? action.metaEducationLevels.value : action.metaEducationLevels,
+        },
+      };
+
+    case actionTypes.CLEAR_FORM_DATA_IN_CREATION:
+      return {
+        ...state,
+        editResource: {
+          params: {
+            data: '',
+          },
+          metadata: {
+            title: null,
+            subjectId: null,
+            educationLevelId: null,
+            thumbUrl: null,
+          },
+        },
+        newResource: {
+          ...state.newResource,
+          metadata: {
+            thumbUrl: null,
+          },
+        },
+        formData: {
+          metaTitle: '',
+          metaSubject: '',
+          metaEducationLevels: '',
         },
       };
 

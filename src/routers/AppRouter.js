@@ -45,6 +45,10 @@ const LtiModel = loadable(() => import('../containers/LtiModel'));
 // const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
 // const AddTeamProjectMemberPage = loadable(() => import('../containers/Teams/AddMembers'));
 const GclassActivityPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassActivityPage'));
+const ActivityCreate = loadable(() => import('../containers/CreateActivity'));
+const EditActivity = loadable(() => import('../containers/EditActivity'));
+const GclassSummaryPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassSummaryPage'));
+// const SearchPage = loadable(() => import('../containers/LMS/Canvas/DeepLinking/SearchPage'));
 
 const AppRouter = () => {
   useEffect(() => {
@@ -53,7 +57,9 @@ const AppRouter = () => {
 
   if (window.location.href.includes('/shared') || window.location.href.includes('/lti')
     || window.location.href.includes('/embed') || window.location.href.includes('/register')
-    || window.location.href.includes('/forgot-password')) {
+    || window.location.href.includes('/forgot-password') || window.location.href.includes('/neaf-login')
+    || window.location.href.includes('/neaf-register') || window.location.href.includes('/vivensity-login')
+    || window.location.href.includes('/vivensity-register') || window.location.href.includes('/login')) {
     document.body.classList.add('mobile-responsive');
   }
 
@@ -77,15 +83,13 @@ const AppRouter = () => {
         <PrivateRoute exact path="/dashboard" component={DashboardPage} />
         <PrivateRoute exact path="/notification" component={NotificationPage} />
 
-        {/*
-        <PrivateRoute exact path="/teams" component={TeamsPage} overview />
-        <PrivateRoute exact path="/teams/create-team" component={TeamsPage} creation />
-        <PrivateRoute exact path="/teams/:teamId" component={TeamsPage} teamShow />
-        <PrivateRoute exact path="/teams/:teamId/projects" component={TeamsPage} projectShow />
-        <PrivateRoute exact path="/teams/:teamId/channel" component={TeamsPage} channelShow />
-        <PrivateRoute exact path="/teams/:teamId/add-projects" component={AddTeamProjectsPage} />
-        <PrivateRoute exact path="/teams/:teamId/projects/:projectId/add-member" component={AddTeamProjectMemberPage} />
-        */}
+        {/* <PrivateRoute exact path="/teams" component={TeamsPage} overview /> */}
+        {/* <PrivateRoute exact path="/teams/create-team" component={TeamsPage} creation /> */}
+        {/* <PrivateRoute exact path="/teams/:teamId" component={TeamsPage} teamShow /> */}
+        {/* <PrivateRoute exact path="/teams/:teamId/projects" component={TeamsPage} projectShow /> */}
+        {/* <PrivateRoute exact path="/teams/:teamId/channel" component={TeamsPage} channelShow /> */}
+        {/* <PrivateRoute exact path="/teams/:teamId/add-projects" component={AddTeamProjectsPage} /> */}
+        {/* <PrivateRoute exact path="/teams/:teamId/projects/:projectId/add-member" component={AddTeamProjectMemberPage} /> */}
 
         <PrivateRoute
           exact
@@ -139,13 +143,13 @@ const AppRouter = () => {
         <PrivateRoute
           exact
           path="/project/:projectId/playlist/:playlistId/activity/create"
-          component={PlaylistsPage}
-          openCreateResourcePopup
+          component={ActivityCreate}
+          // openCreateResourcePopup
         />
         <PrivateRoute
           exact
           path="/project/:projectId/playlist/:playlistId/activity/:activityId/edit"
-          component={PlaylistsPage}
+          component={EditActivity}
           openEditResourcePopup
         />
         <PrivateRoute
@@ -185,12 +189,19 @@ const AppRouter = () => {
           exact
           path="/lti/content/:lmsUrl/:ltiClientId/:redirectUrl"
           component={LtiModel}
+          // component={SearchPage}
         />
 
         <OpenRoute
           exact
           path="/gclass/launch/:userId/:courseId/:activityId/:classworkId"
           component={GclassActivityPage}
+        />
+
+        <OpenRoute
+          exact
+          path="/gclass/summary/:userId/:courseId/:activityId/:gClassworkId/:submissionId"
+          component={GclassSummaryPage}
         />
 
         <PrivateRoute

@@ -82,7 +82,9 @@ function AddMembersPage(props) {
     (p) => (thisUsers || []).findIndex((u) => p.id === u.id) === -1,
   );
 
-  filteredUsers = filteredUsers ? filteredUsers.filter((u) => `${u.first_name} ${u.last_name}`.indexOf(search) > -1) : [];
+  filteredUsers = filteredUsers
+    ? filteredUsers.filter((u) => `${u.first_name} ${u.last_name}`.toLowerCase().indexOf(search.toLowerCase()) > -1)
+    : [];
 
   const authUser = users ? users.find((u) => u.id === user.id) : [];
 

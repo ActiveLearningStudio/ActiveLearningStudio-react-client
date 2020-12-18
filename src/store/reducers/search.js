@@ -1,4 +1,4 @@
-import { SEARCH_REDUX } from '../actionTypes';
+import { SEARCH_REDUX, CLEAR_SEARCH } from '../actionTypes';
 
 const INITIAL_STATE = {
   searchResult: {},
@@ -16,6 +16,12 @@ const SearchReducer = (state = INITIAL_STATE, action) => {
         searchMeta: action.meta,
       };
 
+    case CLEAR_SEARCH:
+      return {
+        searchResult: {},
+        searchQuery: '',
+        searchMeta: {},
+      };
     default:
       return state;
   }

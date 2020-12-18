@@ -6,6 +6,9 @@ import { Helmet } from 'react-helmet';
 import logo from 'assets/images/logo.svg';
 import { getUserAction } from 'store/actions/auth';
 import { cloneDuplicationRequest } from 'store/actions/notification';
+// import { updatedActivity } from 'store/actions/resource';
+// import { updatedProject } from 'store/actions/project';
+// import { updatedPlaylist } from 'store/actions/playlist';
 import AppRouter from 'routers/AppRouter';
 
 import './style.scss';
@@ -14,14 +17,18 @@ function App(props) {
   const dispatch = useDispatch();
   const { getUser } = props;
 
-  const userDetails = useSelector((state) => state.auth.user);
   useEffect(() => {
     getUser();
   }, [getUser]);
 
+  const userDetails = useSelector((state) => state.auth.user);
+
   useEffect(() => {
     if (userDetails) {
       dispatch(cloneDuplicationRequest(userDetails.id));
+      // dispatch(updatedProject(userDetails.id));
+      // dispatch(updatedPlaylist(userDetails.id));
+      // dispatch(updatedActivity(userDetails.id));
     }
   }, [dispatch, userDetails]);
 
@@ -101,12 +108,13 @@ function App(props) {
       document.body.appendChild(script);
     });
   }, []);
+
   // useEffect(() => {
   //   function myStopFunction() {
   //     // eslint-disable-next-line no-use-before-define
   //     clearTimeout(timerMath);
   //   }
-
+  //
   //   const timerMath = setInterval(() => {
   //     try {
   //       window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub]);
@@ -151,9 +159,10 @@ function App(props) {
 
           <a className="reg-btn" href="/register">CLICK HERE TO REGISTER</a>
           <br />
+
           <p>
             To learn more click here
-            <a href="https://curriki.org"> curriki</a>
+            <a href="https://curriki.org"> Curriki</a>
           </p>
         </div>
       </div>

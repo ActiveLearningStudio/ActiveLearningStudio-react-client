@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import './style.scss';
 
 function TeamCard(props) {
   const {
     team: {
+      id,
       name,
       description,
       users,
@@ -22,7 +24,7 @@ function TeamCard(props) {
   return (
     <div className="team-card-content">
       <div className="team-title">
-        <h2 className="title m-0">{name}</h2>
+        <Link to={`/teams/${id}`} className="title m-0">{name}</Link>
         <h2 className="describe">{description}</h2>
       </div>
 
@@ -42,7 +44,7 @@ function TeamCard(props) {
       </div>
 
       <div className="sub-title">
-        <span>Projects to the Team</span>
+        <span>Projects for the Team</span>
         <span>{`(${projCnt})`}</span>
       </div>
     </div>

@@ -20,7 +20,7 @@
   }
 
   .assign-projects {
-    min-height: 360px;
+    //min-height: 360px;
     padding-top: 19px;
     margin-bottom: 16px;
     display: flex;
@@ -33,10 +33,12 @@
       margin-bottom: 18px;
       border: solid 1px #e2e2e2;
 
-      img {
+      .project-img {
         min-width: 180px;
         max-width: 180px;
         min-height: 123px;
+        background-position: center;
+        background-size: cover;
       }
 
       .assign-project-radio {
