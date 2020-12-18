@@ -327,7 +327,6 @@ export const showDescribeActivityAction = (activity, activityId = null) => async
       const response = await resourceService.activityH5p(activityId);
       Swal.close();
       if (response.activity) {
-        Swal.showLoading();
         const metadata = {
           title: response.activity.title,
           subjectId: response.activity.subject_id,
