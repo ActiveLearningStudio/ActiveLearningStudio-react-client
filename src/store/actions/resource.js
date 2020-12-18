@@ -323,8 +323,11 @@ export const showDescribeActivity = (activity, metadata = null) => ({
 export const showDescribeActivityAction = (activity, activityId = null) => async (dispatch) => {
   try {
     if (activityId) {
+      Swal.showLoading();
       const response = await resourceService.activityH5p(activityId);
+      Swal.close();
       if (response.activity) {
+        Swal.showLoading();
         const metadata = {
           title: response.activity.title,
           subjectId: response.activity.subject_id,
@@ -339,6 +342,7 @@ export const showDescribeActivityAction = (activity, activityId = null) => async
     }
   } catch (e) {
     console.log(e);
+    Swal.close();
   }
 };
 
