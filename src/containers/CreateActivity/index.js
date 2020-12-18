@@ -11,8 +11,8 @@ import { Link, withRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import Footer from 'components/Footer';
-import Sidebar from 'components/Sidebar';
-import Header from 'components/Header';
+// import Sidebar from 'components/Sidebar';
+// import Header from 'components/Header';
 import { loadPlaylistAction } from 'store/actions/playlist';
 import ActivityWizard from './ActivityWizard';
 import UploadActivity from './UploadActivity';
@@ -28,11 +28,7 @@ function ActivityCreate(props) {
   }, []);
   return (
     <>
-      <Header {...props} />
-      <div className="main-content-wrapper">
-        <div className="sidebar-wrapper">
-          <Sidebar />
-        </div>
+      <div>
         <div className="content-wrapper create-activity">
           <div className="content">
             {/* header */}

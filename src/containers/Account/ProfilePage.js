@@ -10,9 +10,9 @@ import loader from 'assets/images/loader.svg';
 import { getErrors } from 'utils';
 import { updateProfileAction, loadOrganizationTypesAction } from 'store/actions/auth';
 import { getUserLmsSettingsAction } from 'store/actions/account';
-import Header from 'components/Header';
+// import Header from 'components/Header';
 import Footer from 'components/Footer';
-import Sidebar from 'components/Sidebar';
+// import Sidebar from 'components/Sidebar';
 import Error from '../Auth/Error';
 
 import './style.scss';
@@ -129,13 +129,7 @@ function ProfilePage(props) {
 
   return (
     <>
-      <Header {...props} />
-
-      <div className="account-page main-content-wrapper">
-        <div className="sidebar-wrapper">
-          <Sidebar />
-        </div>
-
+      <div className="account-page">
         <div className="content-wrapper">
           <div className="content">
             <div className="row">

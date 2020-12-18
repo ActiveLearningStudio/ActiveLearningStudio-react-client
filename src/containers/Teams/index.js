@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { loadTeamsAction } from 'store/actions/team';
-import Header from 'components/Header';
-import Sidebar from 'components/Sidebar';
+// import Header from 'components/Header';
+// import Sidebar from 'components/Sidebar';
 import Footer from 'components/Footer';
 import CreateTeam from './CreateTeam';
 import TeamView from './TeamCard';
@@ -77,12 +77,8 @@ function TeamsPage(props) {
 
   return (
     <>
-      <Header {...props} />
-
-      <div className="teams-page main-content-wrapper">
+      <div className="teams-page">
         <div className="sidebar-wrapper">
-          <Sidebar />
-
           <div className="collapse-button">
             <FontAwesomeIcon icon="angle-left" />
           </div>
