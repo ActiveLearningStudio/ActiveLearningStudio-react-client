@@ -2,11 +2,7 @@ import React from 'react';
 import { TextRow, RectShape } from 'react-placeholder/lib/placeholders';
 
 const ProjectsLoading = () => (
-  <div className="main-content-wrapper">
-    <div className="sidebar-wrapper">
-      <aside />
-    </div>
-
+  <div>
     <div className="content-wrapper">
       <div className="content">
         <div className="row">

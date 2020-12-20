@@ -8,6 +8,7 @@ import {
   PREVIOUS_PAGE,
   NEXT_PAGE,
   SHOW_RESULTS,
+  GRADE_PASS_BACK,
 } from '../actionTypes';
 
 const INITIAL_STATE = {
@@ -17,6 +18,7 @@ const INITIAL_STATE = {
   previewActivity: null,
   h5pSettings: null,
   hasMoreResults: false,
+  ltiFinished: false,
 };
 
 const canvasReducer = (state = INITIAL_STATE, action) => {
@@ -82,6 +84,12 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
           ...state.searchParams,
           from: (state.searchParams.from) ? state.searchParams.from + 10 : 10,
         },
+      };
+
+    case GRADE_PASS_BACK:
+      return {
+        ...state,
+        ltiFinished: true,
       };
 
     default:
