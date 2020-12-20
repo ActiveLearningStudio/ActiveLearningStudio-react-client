@@ -13,8 +13,8 @@ import {
   loadTeamAction,
   addMembersToProjectAction,
 } from 'store/actions/team';
-import Header from 'components/Header';
-import Sidebar from 'components/Sidebar';
+// import Header from 'components/Header';
+// import Sidebar from 'components/Sidebar';
 import TeamMember from './TeamMember';
 
 import './style.scss';
@@ -105,12 +105,10 @@ function AddMembersPage(props) {
 
   return (
     <>
-      <Header {...props} />
-
-      <div className="teams-page main-content-wrapper">
-        <div className="sidebar-wrapper">
+      <div className="teams-page">
+        {/* <div className="sidebar-wrapper">
           <Sidebar />
-        </div>
+        </div> */}
 
         <div className="content-wrapper">
           <div className="content">

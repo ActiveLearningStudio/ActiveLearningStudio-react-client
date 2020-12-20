@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import { FadeDiv } from 'utils';
 import { loadMyProjectsAction } from 'store/actions/project';
 import { loadTeamAction, addProjectsAction } from 'store/actions/team';
-import Sidebar from 'components/Sidebar';
-import Header from 'components/Header';
+// import Sidebar from 'components/Sidebar';
+// import Header from 'components/Header';
 import AssignProject from '../CreateTeam/components/AssignProject';
 
 import './style.scss';
@@ -45,13 +45,7 @@ function AddProjectsPage(props) {
 
   return (
     <>
-      <Header {...props} />
-
-      <div className="teams-page main-content-wrapper">
-        <div className="sidebar-wrapper">
-          <Sidebar />
-        </div>
-
+      <div className="teams-page">
         <FadeDiv className="assign-projects">
           <div className="assign-projects-content">
             <AssignProject

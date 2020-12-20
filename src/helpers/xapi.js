@@ -4,6 +4,7 @@ export function allowedH5PActvityPaths() {
     // '/project/:projectId/playlist/:playlistId/activity/:activityId/preview',
     // '/activity/:activityId/shared',
     '/gclass/launch/:userId/:courseId/:activityId/:classworkId',
+    '/lti-tools/activity/:activityId',
   ];
 }
 
@@ -13,6 +14,7 @@ export function H5PActvityPathMapToPlatform() {
     { '/project/:projectId/playlist/:playlistId/activity/:activityId/preview': 'CurrikiStudio' },
     { '/activity/:activityId/shared': 'CurrikiStudio' },
     { '/gclass/launch/:userId/:courseId/:activityId/:classworkId': 'Google Classroom' },
+    { '/lti-tools/activity/:activityId': 'LTI client' },
   ];
 }
 
@@ -65,6 +67,16 @@ export function extendStatement(statement, params, skipped = false) {
         'en-US': 'skipped',
       },
     };
+
+    // Some skipped statements come with score.min = 0 and score.max = 0
+    // This causes an error in the backend
+    if (
+      statementExtended.result
+      && statementExtended.result.score
+      && statementExtended.result.score.min === statementExtended.result.score.max
+    ) {
+      statementExtended.result.score.max += 1;
+    }
   }
 
   // Some H5Ps provide incompatible interaction types. Mapping those to valid ones here

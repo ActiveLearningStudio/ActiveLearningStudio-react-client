@@ -5,8 +5,8 @@ import { withRouter } from 'react-router-dom';
 
 import { createProjectAction, loadMyProjectsAction, showCreateProjectModalAction } from 'store/actions/project';
 import { loadPlaylistAction } from 'store/actions/playlist';
-import Header from 'components/Header';
-import Sidebar from 'components/Sidebar';
+// import Header from 'components/Header';
+// import Sidebar from 'components/Sidebar';
 import ProjectPreview from './ProjectPreview';
 import ResourcePreview from './ResourcePreview';
 import PlaylistPreview from './PlaylistPreview';
@@ -60,15 +60,16 @@ class PreviewPage extends React.Component {
 
     return (
       <div>
-        {!previewType && <Header {...this.props} />}
-        {!previewType ? (
+        {/* {!previewType && <Header {...this.props} />} */}
+        {/* {!previewType ? (
           <div className="main-content-wrapper">
             <div className="sidebar-wrapper">
               <Sidebar />
             </div>
             {content}
           </div>
-        ) : content}
+        ) : content} */}
+        {content}
       </div>
     );
   }
