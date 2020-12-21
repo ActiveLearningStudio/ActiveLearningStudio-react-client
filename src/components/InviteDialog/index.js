@@ -67,7 +67,7 @@ function InviteDialog(props) {
 
   const invitedUsers = users || [];
   const usersNotInvited = _sortBy(searchedUsers.filter(
-    (usr) => [...invitedUsers, ...selectedUsers].findIndex((u) => usr.id === u.id) === -1,
+    (usr) => [...invitedUsers, ...selectedUsers].findIndex((u) => usr.id === u.id) === -1 && usr.id !== authUser.id,
   ), ['name']);
 
   const deselectUser = (u) => {
@@ -144,7 +144,11 @@ function InviteDialog(props) {
                       onKeyPress={({ key }) => {
                         if (validator.isEmail(email) && key === 'Enter') {
                           selectUser({
-                            id: email, name: '', first_name: '', last_name: '', email,
+                            id: selectedUsers.length * -1,
+                            name: '',
+                            first_name: '',
+                            last_name: '',
+                            email,
                           });
                         }
                       }}
