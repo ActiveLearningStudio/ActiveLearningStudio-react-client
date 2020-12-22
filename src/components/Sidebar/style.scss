@@ -181,11 +181,12 @@ aside {
   .create-button {
     text-align: center;
 
-    a {
-      padding: 7px 65px;
+    div {
+      padding: 7px;
       background: none;
       border: solid 1px;
       border-radius: 5px;
+      text-align: center;
       font-size: 14px;
       line-height: 25px;
       color: #0f4392;

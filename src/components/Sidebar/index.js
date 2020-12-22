@@ -215,8 +215,10 @@ function Sidebar(props) {
 
       <div className="menu-title create-button">
         <Link to="/teams/create-team">
-          <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
-          Create Team
+          <div>
+            <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
+            Create Team
+          </div>
         </Link>
       </div>
     </aside>
