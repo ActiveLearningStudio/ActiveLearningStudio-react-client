@@ -37,6 +37,10 @@ function TeamMemberView(props) {
   const handleInvite = useCallback((selectedUsers, emailNote) => {
     inviteMembers(id, selectedUsers, emailNote)
       .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Successfully invited.',
+        });
         setShowInvite(false);
         setSearch('');
       })
@@ -54,7 +58,7 @@ function TeamMemberView(props) {
     ...invitedEmails.filter((u) => u.invited_email.toLowerCase().indexOf(search.toLowerCase()) > -1),
   ];
 
-  const authUser = users.find((u) => u.id === user.id);
+  const authUser = users.find((u) => u.id === (user || {}).id);
 
   return (
     <div className="row member-manage">
@@ -69,14 +73,15 @@ function TeamMemberView(props) {
                   value={search}
                   onChange={handleChangeSearch}
                 />
-
-                <InviteDialog
-                  users={users}
-                  visible={showInvite}
-                  authUser={authUser}
-                  setShowInvite={setShowInvite}
-                  handleInvite={handleInvite}
-                />
+                {user && (
+                  <InviteDialog
+                    users={users}
+                    visible={showInvite}
+                    authUser={authUser}
+                    setShowInvite={setShowInvite}
+                    handleInvite={handleInvite}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -84,20 +89,22 @@ function TeamMemberView(props) {
           <div className="row">
             <div className="col-md-12">
               <div className="member-list">
-                {filteredUsers.map((u) => (
-                  <div key={u.id}>
-                    <TeamMember
-                      teamId={id}
-                      authUser={authUser}
-                      removingUserId={removingUserId}
-                      selected={selectedMember === u.id}
-                      user={u}
-                      selectMe={() => setSelectedMember(u.id)}
-                      deselectMe={() => setSelectedMember(null)}
-                      removeMember={removeMember}
-                    />
-                  </div>
-                ))}
+                {user && (
+                  filteredUsers.map((u) => (
+                    <div key={u.id}>
+                      <TeamMember
+                        teamId={id}
+                        authUser={authUser}
+                        removingUserId={removingUserId}
+                        selected={selectedMember === u.id}
+                        user={u}
+                        selectMe={() => setSelectedMember(u.id)}
+                        deselectMe={() => setSelectedMember(null)}
+                        removeMember={removeMember}
+                      />
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </div>

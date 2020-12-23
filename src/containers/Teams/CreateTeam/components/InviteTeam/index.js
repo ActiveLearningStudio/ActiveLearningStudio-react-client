@@ -11,15 +11,17 @@ import './style.scss';
 
 function InviteTeam(props) {
   const {
-    team,
+    // team,
     isInviting,
     nextStep,
     user: authUser,
-    setInvitedMembers,
+    selectedMembers,
+    setSelectedMembers,
+    // setInvitedMembers,
   } = props;
 
   // const [search, setSearch] = useState('');
-  const [selectedMembers, setSelectedMembers] = useState([]);
+  // const [selectedMembers, setSelectedMembers] = useState([]);
   // const [filteredMembers, setFilteredMembers] = useState([]);
   const [showInvite, setShowInvite] = useState(false);
 
@@ -34,7 +36,7 @@ function InviteTeam(props) {
   //   )));
   // }, [search, selectedMember]);
 
-  const invitedUsers = team.users || [];
+  // const invitedUsers = selectedMembers || [];
 
   const handleInvite = useCallback((users, note) => {
     setSelectedMembers([...selectedMembers, ...users.map((u) => ({ ...u, note }))]);
@@ -70,6 +72,7 @@ function InviteTeam(props) {
           </div>
 
           <div className="member-list">
+            {/*
             <div className="member-list-content">
               {invitedUsers.map((user) => (
                 <MemberItem
@@ -80,6 +83,7 @@ function InviteTeam(props) {
                 />
               ))}
             </div>
+            */}
 
             <div className="member-list-content">
               {selectedMembers.map((user) => (
@@ -100,10 +104,10 @@ function InviteTeam(props) {
             type="button"
             className="create-team-continue-btn"
             onClick={() => {
-              setInvitedMembers(selectedMembers.map(
-                // eslint-disable-next-line no-restricted-globals
-                ({ id, ...mem }) => ({ id: isNaN(id) ? 0 : id, ...mem }),
-              ));
+              // setInvitedMembers(selectedMembers.map(
+              //   // eslint-disable-next-line no-restricted-globals
+              //   ({ id, ...mem }) => ({ id: isNaN(id) ? 0 : id, ...mem }),
+              // ));
               nextStep();
             }}
           >
@@ -117,10 +121,12 @@ function InviteTeam(props) {
 
 InviteTeam.propTypes = {
   user: PropTypes.object.isRequired,
-  team: PropTypes.object.isRequired,
+  // team: PropTypes.object.isRequired,
   isInviting: PropTypes.bool.isRequired,
   nextStep: PropTypes.func.isRequired,
-  setInvitedMembers: PropTypes.func.isRequired,
+  selectedMembers: PropTypes.func.isRequired,
+  setSelectedMembers: PropTypes.func.isRequired,
+  // setInvitedMembers: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

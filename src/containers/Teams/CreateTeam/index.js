@@ -8,13 +8,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { searchUsersAction } from 'store/actions/auth';
 import { loadMyProjectsAction } from 'store/actions/project';
 import {
+  createTeamAction,
+  inviteTeamMemberAction,
+  inviteTeamMembersAction,
   resetSelectedTeamAction,
-  updateSelectedTeamAction,
+  showAssigningAction,
   showCreationAction,
   showInvitingAction,
-  inviteTeamMemberAction,
-  showAssigningAction,
-  createTeamAction,
+  updateSelectedTeamAction,
 } from 'store/actions/team';
 import CreateTeamSidebar from './components/CreateTeamSidebar';
 import Creation from './components/Creation';
@@ -39,6 +40,7 @@ function CreateTeam(props) {
     inviteUser,
     showAssign,
     createTeam,
+    setInvitedMembers,
   } = props;
 
   const {
@@ -46,6 +48,8 @@ function CreateTeam(props) {
     showInviting,
     showAssigning,
   } = team;
+
+  const [selectedMembers, setSelectedMembers] = useState([]);
 
   const [selectedProjects, setSelectedProjects] = useState([]);
   const [searchProject, setSearchProject] = useState('');
@@ -77,12 +81,21 @@ function CreateTeam(props) {
   );
 
   const handleSubmit = useCallback((projectIds) => {
+    setInvitedMembers(selectedMembers.map(
+      // eslint-disable-next-line no-restricted-globals
+      ({ id, ...mem }) => ({ id: isNaN(id) ? 0 : id, ...mem }),
+    ));
+
     createTeam({
       ...team.selectedTeam,
-      users: team.selectedTeam.users || [],
+      users: selectedMembers || [],
       projects: projectIds,
     })
       .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Successfully created.',
+        });
         history.push('/teams');
       })
       .catch(() => {
@@ -92,7 +105,7 @@ function CreateTeam(props) {
           text: 'Create Team failed, kindly try again.',
         });
       });
-  }, [createTeam, team.selectedTeam, history]);
+  }, [createTeam, team.selectedTeam, history, selectedMembers]);
 
   return (
     <div className="create-team">
@@ -114,6 +127,8 @@ function CreateTeam(props) {
             isInviting={team.isInviting}
             searchUsers={searchUsers}
             inviteUser={inviteUser}
+            selectedMembers={selectedMembers}
+            setSelectedMembers={setSelectedMembers}
             nextStep={showAssign}
           />
         )}
@@ -149,6 +164,7 @@ CreateTeam.propTypes = {
   inviteUser: PropTypes.func.isRequired,
   showAssign: PropTypes.func.isRequired,
   createTeam: PropTypes.func.isRequired,
+  setInvitedMembers: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -156,6 +172,7 @@ const mapStateToProps = (state) => ({
   isSearching: state.auth.isSearching,
   searchedUsers: state.auth.searchedUsers,
   projects: state.project.projects,
+  setInvitedMembers: PropTypes.func.isRequired,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -168,6 +185,7 @@ const mapDispatchToProps = (dispatch) => ({
   inviteUser: (user) => dispatch(inviteTeamMemberAction(user)),
   showAssign: () => dispatch(showAssigningAction()),
   createTeam: (data) => dispatch(createTeamAction(data)),
+  setInvitedMembers: (users) => dispatch(inviteTeamMembersAction(users)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CreateTeam));

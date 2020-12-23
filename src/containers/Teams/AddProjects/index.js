@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -28,6 +28,9 @@ function AddProjectsPage(props) {
     loadTeam(teamId);
   }, [loadProjects, loadTeam, teamId]);
 
+  const [selectedProjects, setSelectedProjects] = useState([]);
+  const [searchProject, setSearchProject] = useState('');
+
   const filteredProjects = projects.filter(
     (p) => (team.selectedTeam.projects || []).findIndex((proj) => p.id === proj.id) === -1,
   );
@@ -52,6 +55,10 @@ function AddProjectsPage(props) {
               isSaving={team.isLoading}
               projects={filteredProjects}
               handleSubmit={handleSubmit}
+              selectedProjects={selectedProjects}
+              setSelectedProjects={setSelectedProjects}
+              search={searchProject}
+              setSearch={setSearchProject}
             />
           </div>
         </FadeDiv>
