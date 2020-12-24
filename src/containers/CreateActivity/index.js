@@ -21,7 +21,7 @@ import SearchIndex from './SearchIndex';
 import './style.scss';
 
 function ActivityCreate(props) {
-  const { match } = props;
+  const { match, history } = props;
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadPlaylistAction(match.params.projectId, match.params.playlistId));
@@ -41,7 +41,7 @@ function ActivityCreate(props) {
                 <h2>Create New Resource</h2>
                 <div className="line" />
               </div>
-              <Link to={`/project/${match.params.projectId}`}>
+              <Link to={() => history.goBack()}>
                 <div className="back-playlist">
                   <FontAwesomeIcon icon="arrow-left" />
                   Back to Playlist
@@ -98,6 +98,7 @@ function ActivityCreate(props) {
 
 ActivityCreate.propTypes = {
   match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 export default withRouter(ActivityCreate);
