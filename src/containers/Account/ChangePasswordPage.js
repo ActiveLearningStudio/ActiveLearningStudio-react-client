@@ -8,9 +8,9 @@ import Swal from 'sweetalert2';
 import loader from 'assets/images/loader.svg';
 import { getErrors } from 'utils';
 import { updatePasswordAction } from 'store/actions/auth';
-import Header from 'components/Header';
+// import Header from 'components/Header';
 import Footer from 'components/Footer';
-import Sidebar from 'components/Sidebar';
+// import Sidebar from 'components/Sidebar';
 import Error from '../Auth/Error';
 
 import './style.scss';
@@ -82,13 +82,7 @@ function ChangePasswordPage(props) {
 
   return (
     <>
-      <Header {...props} />
-
-      <div className="account-page main-content-wrapper">
-        <div className="sidebar-wrapper">
-          <Sidebar />
-        </div>
-
+      <div className="account-page">
         <div className="content-wrapper">
           <div className="content">
             <div className="row">
@@ -194,13 +188,13 @@ function ChangePasswordPage(props) {
 
 ChangePasswordPage.propTypes = {
   isLoading: PropTypes.bool.isRequired,
-  user: PropTypes.object,
+  // user: PropTypes.object,
   updatePassword: PropTypes.func.isRequired,
 };
 
-ChangePasswordPage.defaultProps = {
-  user: null,
-};
+// ChangePasswordPage.defaultProps = {
+//   user: null,
+// };
 
 const mapDispatchToProps = (dispatch) => ({
   updatePassword: (data) => dispatch(updatePasswordAction(data)),
@@ -208,7 +202,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
-  user: state.auth.user,
+  // user: state.auth.user,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChangePasswordPage);

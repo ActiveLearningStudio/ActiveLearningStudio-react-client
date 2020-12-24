@@ -41,6 +41,18 @@ function LtiPlaylistPreview(props) {
     selectedPlaylist = null;
   }
 
+  if (playlist.isNonAvailablePlaylist) {
+    return (
+      <div
+        className="alert alert-danger"
+        role="alert"
+        style={{ fontSize: '1.5em' }}
+      >
+        Playlist is not available.
+      </div>
+    );
+  }
+
   if (!selectedPlaylist) {
     return (
       <div className="alert alert-info" role="alert">

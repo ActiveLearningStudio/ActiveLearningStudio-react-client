@@ -9,6 +9,7 @@ import {
   PREVIOUS_PAGE,
   NEXT_PAGE,
   SHOW_RESULTS,
+  GRADE_PASS_BACK,
 } from '../actionTypes';
 
 export const searchAction = (params) => async (dispatch) => {
@@ -69,4 +70,11 @@ export const nextPageAction = () => async (dispatch) => {
   dispatch({
     type: NEXT_PAGE,
   });
+};
+
+export const gradePassBackAction = (session, gpb, score) => async (dispatch) => {
+  dispatch({
+    type: GRADE_PASS_BACK,
+  });
+  await canvasService.tsugiGradePassback(session, gpb, score);
 };

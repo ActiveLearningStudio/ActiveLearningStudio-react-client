@@ -161,6 +161,8 @@
     right: auto !important;
     left: initial !important;
     border-radius: 5px;
+    overflow-y: auto;
+    max-height: 615px;
   }
 
   .overlay-search-form {
@@ -326,6 +328,7 @@
   letter-spacing: 0;
   color: #929292;
   padding-left: 20px;
+  padding-right: 50px;
 }
 
 .search-submit {
