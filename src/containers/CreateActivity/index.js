@@ -37,7 +37,7 @@ function ActivityCreate(props) {
                 <h2>Create New Resource</h2>
                 <div className="line" />
               </div>
-              <Link to={() => history.goBack()}>
+              <Link onClick={() => history.goBack()}>
                 <div className="back-playlist">
                   <FontAwesomeIcon icon="arrow-left" />
                   Back to Playlist
