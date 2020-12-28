@@ -9,6 +9,7 @@ import {
   NEXT_PAGE,
   SHOW_RESULTS,
   GRADE_PASS_BACK,
+  LTI_ACTIVITY_INIT,
 } from '../actionTypes';
 
 const INITIAL_STATE = {
@@ -19,6 +20,7 @@ const INITIAL_STATE = {
   h5pSettings: null,
   hasMoreResults: false,
   ltiFinished: false,
+  attemptId: null,
 };
 
 const canvasReducer = (state = INITIAL_STATE, action) => {
@@ -90,6 +92,12 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         ltiFinished: true,
+      };
+
+    case LTI_ACTIVITY_INIT:
+      return {
+        ...state,
+        attemptId: (state.attemptId) ? state.attemptId : Date.now(),
       };
 
     default:
