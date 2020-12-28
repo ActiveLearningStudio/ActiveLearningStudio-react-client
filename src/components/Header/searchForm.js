@@ -65,7 +65,7 @@ function SearchForm() {
               if (!simpleSearch.trim()) {
                 Swal.fire('Search field is required');
               } else if (simpleSearch.length > 255) {
-                Swal.fire('Character limit should be less then 255 ');
+                Swal.fire('Character limit should be less than 255 ');
               } else {
                 const searchData = {
                   phrase: simpleSearch.trim(),
@@ -196,7 +196,9 @@ function SearchForm() {
                     placeholder="Subject + Subject Area"
                     onChange={(e) => {
                       handleChange(e);
-                      values.subjectArray.push(e.target.value);
+                      if (!values.subjectArray.includes(e.target.value)) {
+                        values.subjectArray.push(e.target.value);
+                      }
                     }}
                     onBlur={handleBlur}
                     value={values.subject}
@@ -239,7 +241,9 @@ function SearchForm() {
                     placeholder="Grade Level"
                     onChange={(e) => {
                       handleChange(e);
-                      values.gradeArray.push(e.target.value);
+                      if (!values.gradeArray.includes(e.target.value)) {
+                        values.gradeArray.push(e.target.value);
+                      }
                     }}
                     value={values.grade}
                   >
@@ -278,13 +282,20 @@ function SearchForm() {
                     placeholder="Standard"
                     onChange={(e) => {
                       handleChange(e);
-                      if (!values.standardArray.includes(e.target.value)) {
-                        const nameSelected = activityTypes.filter((data) => {
-                          if (data.h5pLib === e.target.value) {
-                            return data;
-                          }
-                          return false;
-                        });
+                      const nameSelected = activityTypes.filter((data) => {
+                        if (data.h5pLib === e.target.value) {
+                          return data;
+                        }
+                        return false;
+                      });
+                      let found = true;
+                      values.standardArray.map((data) => {
+                        if (data.value === e.target.value) {
+                          found = false;
+                        }
+                        return true;
+                      });
+                      if (found) {
                         values.standardArray.push({ value: e.target.value, name: nameSelected[0].title });
                       }
                     }}

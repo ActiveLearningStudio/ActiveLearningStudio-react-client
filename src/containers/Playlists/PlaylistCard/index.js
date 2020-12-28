@@ -69,6 +69,10 @@ class PlaylistCard extends React.Component {
 
   onBlur = (e) => {
     const title = e.target.value;
+    if (title.length > 50) {
+      Swal.fire('Character limit should be less than 50.');
+      return;
+    }
     const { playlist, projectId, changePlaylistTitle } = this.props;
 
     this.setState({

@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { loadTeamsAction } from 'store/actions/team';
-import Header from 'components/Header';
-import Sidebar from 'components/Sidebar';
+// import Header from 'components/Header';
+// import Sidebar from 'components/Sidebar';
 import Footer from 'components/Footer';
 import CreateTeam from './CreateTeam';
 import TeamView from './TeamCard';
@@ -77,29 +77,25 @@ function TeamsPage(props) {
 
   return (
     <>
-      <Header {...props} />
-
-      <div className="teams-page main-content-wrapper">
-        <div className="sidebar-wrapper">
-          <Sidebar />
-
-          <div className="collapse-button">
-            <FontAwesomeIcon icon="angle-left" />
-          </div>
-
-          <div className="bread-crumb d-flex align-items-center">
-            {breadCrumb.map((node, index, these) => (
-              <div key={node}>
-                <span className={index + 1 < these.length ? 'parent' : 'child'}>
-                  {node}
-                </span>
-                {index + 1 < these.length && (
-                  <FontAwesomeIcon icon="angle-right" />
-                )}
-              </div>
-            ))}
-          </div>
+      <div className="side-wrapper">
+        <div className="collapse-button">
+          <FontAwesomeIcon icon="angle-left" />
         </div>
+
+        <div className="bread-crumb d-flex align-items-center">
+          {breadCrumb.map((node, index, these) => (
+            <div key={node}>
+              <span className={index + 1 < these.length ? 'parent' : 'child'}>
+                {node}
+              </span>
+              {index + 1 < these.length && (
+                <FontAwesomeIcon icon="angle-right" />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="teams-page">
 
         <div className="content-wrapper">
           <div className="content">

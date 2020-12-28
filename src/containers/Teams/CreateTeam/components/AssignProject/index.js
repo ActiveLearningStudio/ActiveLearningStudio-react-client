@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -7,14 +7,19 @@ import { FadeDiv } from 'utils';
 import './style.scss';
 
 function AssignProject(props) {
-  const { isSaving, projects, handleSubmit } = props;
-
-  const [selectedProjects, setSelectedProjects] = useState([]);
-  const [search, setSearch] = useState('');
+  const {
+    isSaving,
+    projects,
+    handleSubmit,
+    selectedProjects,
+    setSelectedProjects,
+    search,
+    setSearch,
+  } = props;
 
   const onChange = useCallback((e) => {
     setSearch(e.target.value);
-  }, []);
+  }, [setSearch]);
 
   const selectProject = useCallback((projectId) => {
     const newProjects = [...selectedProjects];
@@ -33,7 +38,7 @@ function AssignProject(props) {
 
   const filteredProjects = projects.filter((project) => project.name.toLowerCase().includes(search.toLowerCase()));
 
-  const finishButton = () => (
+  const finishButton = (
     <button
       type="button"
       className="create-team-submit-btn"
@@ -54,7 +59,7 @@ function AssignProject(props) {
         <div className="title-box">
           <h2 className="title">Add/Assign Project</h2>
           <div className="title-cross" />
-          {finishButton()}
+          {finishButton}
         </div>
 
         <div className="assign-project-wrapper">
@@ -96,7 +101,7 @@ function AssignProject(props) {
             ))}
           </div>
 
-          {finishButton()}
+          {finishButton}
         </div>
       </FadeDiv>
     </div>
@@ -106,7 +111,16 @@ function AssignProject(props) {
 AssignProject.propTypes = {
   isSaving: PropTypes.bool.isRequired,
   projects: PropTypes.array.isRequired,
+  selectedProjects: PropTypes.array,
+  search: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
+  setSearch: PropTypes.func.isRequired,
+  setSelectedProjects: PropTypes.func.isRequired,
+};
+
+AssignProject.defaultProps = {
+  selectedProjects: [],
+  search: '',
 };
 
 export default AssignProject;

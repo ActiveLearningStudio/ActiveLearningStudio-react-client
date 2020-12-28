@@ -11,8 +11,8 @@ import { Link, withRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import Footer from 'components/Footer';
-import Sidebar from 'components/Sidebar';
-import Header from 'components/Header';
+// import Sidebar from 'components/Sidebar';
+// import Header from 'components/Header';
 import { loadPlaylistAction } from 'store/actions/playlist';
 import ActivityWizard from './ActivityWizard';
 import UploadActivity from './UploadActivity';
@@ -21,18 +21,14 @@ import SearchIndex from './SearchIndex';
 import './style.scss';
 
 function ActivityCreate(props) {
-  const { match } = props;
+  const { match, history } = props;
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadPlaylistAction(match.params.projectId, match.params.playlistId));
   }, []);
   return (
     <>
-      <Header {...props} />
-      <div className="main-content-wrapper">
-        <div className="sidebar-wrapper">
-          <Sidebar />
-        </div>
+      <div>
         <div className="content-wrapper create-activity">
           <div className="content">
             {/* header */}
@@ -41,7 +37,7 @@ function ActivityCreate(props) {
                 <h2>Create New Resource</h2>
                 <div className="line" />
               </div>
-              <Link to={`/project/${match.params.projectId}`}>
+              <Link onClick={() => history.goBack()}>
                 <div className="back-playlist">
                   <FontAwesomeIcon icon="arrow-left" />
                   Back to Playlist
@@ -98,6 +94,7 @@ function ActivityCreate(props) {
 
 ActivityCreate.propTypes = {
   match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 export default withRouter(ActivityCreate);
