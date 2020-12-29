@@ -89,6 +89,9 @@ const Activity = (props) => {
                         {question.verb === 'skipped' && (
                           <Badge className="skipped-badge" variant="warning">Skipped</Badge>
                         )}
+                        {question.verb === 'attempted' && (
+                          <Badge className="skipped-badge" variant="warning">Attempted</Badge>
+                        )}
                       </td>
                       <td>{`${question.score.raw}/${question.score.max}`}</td>
                     </tr>
