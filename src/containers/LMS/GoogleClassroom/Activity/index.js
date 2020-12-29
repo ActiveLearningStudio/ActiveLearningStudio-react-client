@@ -31,7 +31,7 @@ const Activity = (props) => {
     window.scrollTo(0, 0);
     loadH5pSettings(activityId);
     getSubmission(match.params.classworkId, match.params.courseId, student.auth);
-  }, [activityId, match]);
+  }, [activityId]);
 
   // Load H5P
   useEffect(() => {
@@ -138,7 +138,7 @@ const Activity = (props) => {
         sendStatement(xapiData);
       }
     });
-  }, [xAPILoaded, match.path, match.params, activityId, student, submission]);
+  }, [xAPILoaded, activityId, student, submission]);
 
   // If the activity has already been submitted to google classroom, redirect to summary page
   useEffect(() => {
@@ -146,7 +146,7 @@ const Activity = (props) => {
       clearInterval(intervalPointer);
       history.push(`/gclass/summary/${match.params.userId}/${match.params.courseId}/${match.params.activityId}/${submission.coursework_id}/${submission.id}`);
     }
-  }, [submission, match]);
+  }, [submission]);
 
   return (
     <div id="curriki-h5p-wrapper">
