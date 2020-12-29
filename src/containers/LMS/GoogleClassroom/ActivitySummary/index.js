@@ -85,12 +85,20 @@ const Activity = (props) => {
                   {outcome.summary.map((question) => (
                     <tr>
                       <td>
-                        {`${question.duration} - ${question.name}`}
                         {question.verb === 'skipped' && (
-                          <Badge className="skipped-badge" variant="warning">Skipped</Badge>
+                          <>
+                            <Badge className="skipped-badge" variant="warning">Skipped</Badge>
+                            {` - ${question.name}`}
+                          </>
                         )}
                         {question.verb === 'attempted' && (
-                          <Badge className="skipped-badge" variant="warning">Attempted</Badge>
+                          <>
+                            <Badge className="skipped-badge" variant="warning">Attempted</Badge>
+                            {` - ${question.name}`}
+                          </>
+                        )}
+                        {question.verb !== 'attempted' && question.verb !== 'skipped' && (
+                          `${question.duration} - ${question.name}`
                         )}
                       </td>
                       <td>{`${question.score.raw}/${question.score.max}`}</td>
