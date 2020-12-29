@@ -175,6 +175,11 @@ export default (state = INITIAL_STATE, action) => {
           editorType: action.editorType,
           metadata: action.metadata,
         },
+        formData: {
+          metaTitle: '',
+          metaSubject: '',
+          metaEducationLevels: '',
+        },
       };
 
     case actionTypes.SHOW_RESOURCE_ACTIVITY_BUILD:
