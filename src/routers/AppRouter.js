@@ -131,6 +131,12 @@ const AppRouter = () => {
           component={LtiPreviewPage}
           previewType="playlistShared"
         />
+        <PrivateRoute
+          exact
+          path="/project/:projectId/playlist/:playlistId/preview"
+          component={PreviewPage}
+          previewType="playlist"
+        />
         <PublicRoute exact path="/login" component={LoginPage} />
         <PublicRoute exact path="/register" component={RegisterPage} />
         <PublicRoute exact path="/forgot-password" component={ForgotPasswordPage} />
@@ -192,12 +198,6 @@ const AppRouter = () => {
                 path="/project/:projectId/playlist/create"
                 component={PlaylistsPage}
                 openCreatePopup
-              />
-              <PrivateRoute
-                exact
-                path="/project/:projectId/playlist/:playlistId/preview"
-                component={PreviewPage}
-                previewType="playlist"
               />
               <PrivateRoute
                 exact
