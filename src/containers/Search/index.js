@@ -18,9 +18,9 @@ import { simpleSearchAction, cloneProject } from 'store/actions/search';
 import { loadResourceTypesAction } from 'store/actions/resource';
 import { addProjectFav } from 'store/actions/project';
 import { educationLevels, subjects } from 'components/ResourceCard/AddResource/dropdownData';
-import Header from 'components/Header';
+// import Header from 'components/Header';
 import Footer from 'components/Footer';
-import Sidebar from 'components/Sidebar';
+// import Sidebar from 'components/Sidebar';
 import CloneModel from './CloneModel';
 
 import './style.scss';
@@ -112,7 +112,7 @@ function SearchInterface(props) {
         setMeta(allState.searchMeta);
         localStorage.setItem('loading', 'false');
         Swal.close();
-      } else if (allState.searchResult.length === 0) {
+      } else if (allState.searchMeta.total === 0) {
         setSearch([]);
         SetSearchQuery(allState.searchQuery);
         setMeta({});
@@ -178,13 +178,7 @@ function SearchInterface(props) {
 
   return (
     <>
-      <Header />
-
-      <div className="main-content-wrapper">
-        <div className="sidebar-wrapper">
-          <Sidebar />
-        </div>
-
+      <div>
         <div className="content-wrapper">
           <MyVerticallyCenteredModal
             show={modalShow}
@@ -266,7 +260,7 @@ function SearchInterface(props) {
                                   if (!searchInput.trim()) {
                                     Swal.fire('Search field is required.');
                                   } else if (searchInput.length > 255) {
-                                    Swal.fire('Character limit should be less then 255.');
+                                    Swal.fire('Character limit should be less than 255.');
                                   } else {
                                     Swal.fire({
                                       html: 'Searching...', // add html attribute if you want or remove
@@ -434,7 +428,7 @@ function SearchInterface(props) {
                           type: searchType,
                         };
                         const resultModel = await dispatch(simpleSearchAction(searchData));
-                        setTotalCount(resultModel.meta[e]);
+                        setTotalCount(resultModel.meta.total);
                         setActiveModel(e);
                         setActivePage(1);
                       }

@@ -88,17 +88,13 @@ const SearchResults = (props) => {
           <div className="col">
             <div key={activity.id} className="row result">
               <div className="col-2">
-                <Image src={activity.thumb_url} thumbnail />
+                <Image src={activity.thumb_url.includes('pexels.com') ? activity.thumb_url : `${global.config.resourceUrl}${activity.thumb_url}`} thumbnail />
               </div>
               <div className="col">
                 <h3>
                   {activity.title.length > 0 && activity.title}
                   {activity.title.length === 0 && 'Activity title not available'}
                 </h3>
-                <p>
-                  {activity.content.length > 0 && activity.content}
-                  {activity.content.length === 0 && 'Activity description not available'}
-                </p>
                 {activity.user && (
                   <p className="text-right">
                     <label>Author:</label>
@@ -136,7 +132,7 @@ const SearchResults = (props) => {
       ))}
       <div className="row">
         <div className="col text-left">
-          {(searchParams.from && searchParams.from !== 0) && (
+          {(!!searchParams.from && searchParams.from !== 0) && (
             <button type="button" className="pagination-buttons" onClick={previousPage}>Previous</button>
           )}
         </div>

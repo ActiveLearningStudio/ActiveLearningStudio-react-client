@@ -518,3 +518,29 @@ img {
     font-size: 20px;
   }
 }
+
+.check-each {
+  // display: flex;
+  .add-btn-activity {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 45px;
+  }
+
+  .add-resource-to-playlist-btn {
+    width: 175px;
+    height: 48px;
+    margin-top: 10px;
+    display: block;
+    background: #ffffff 0 0 no-repeat padding-box;
+    border: 1px dashed #d6d6d6;
+    border-radius: 2px;
+    opacity: 1;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0;
+    color: #607a9b;
+    cursor: pointer;
+  }
+}

@@ -122,7 +122,7 @@ const H5PPreview = (props) => {
 
       setResourceId(activityId);
     }
-  }, [resourceId, activityId, showLtiPreview, showActivityPreview, loadH5pResourceProp, props, dispatch]);
+  }, [resourceId, activityId, showLtiPreview, showActivityPreview, loadH5pResourceProp]);
 
   return (
     <>

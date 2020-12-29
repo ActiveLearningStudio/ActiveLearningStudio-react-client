@@ -7,31 +7,31 @@ import Swal from 'sweetalert2';
 import gifloader from 'assets/images/dotsloader.gif';
 import * as xAPIHelper from 'helpers/xapi';
 import { loadH5pResourceXapi } from 'store/actions/resource';
-import { loadH5pResourceSettings, getSubmissionAction, turnInAction } from 'store/actions/gapi';
+import { loadH5pResourceSettings } from 'store/actions/gapi';
+import { gradePassBackAction } from 'store/actions/canvas';
 import './style.scss';
 
 const Activity = (props) => {
   const {
     activityId,
     match,
-    history,
-    student,
-    submission,
     h5pSettings,
+    ltiFinished,
     loadH5pSettings,
-    getSubmission,
     sendStatement,
-    turnIn,
+    gradePassBack,
   } = props;
+  const searchParams = new URLSearchParams(window.location.search);
+  const session = searchParams.get('PHPSESSID');
+  const studentId = searchParams.get('user_id');
+  const isLearner = searchParams.get('is_learner') !== '';
   const [xAPILoaded, setXAPILoaded] = useState(false);
-  const [intervalPointer, setIntervalPointer] = useState(null);
 
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
-    loadH5pSettings(activityId);
-    getSubmission(match.params.classworkId, match.params.courseId, student.auth);
-  }, [activityId]);
+    loadH5pSettings(match.params.activityId);
+  }, [match]);
 
   // Load H5P
   useEffect(() => {
@@ -72,15 +72,14 @@ const Activity = (props) => {
       if (!x.H5P) return;
 
       clearInterval(checkXapi);
-      setIntervalPointer(null);
       setXAPILoaded(true);
     });
-    setIntervalPointer(checkXapi);
+    // setIntervalPointer(checkXapi);
   }, [h5pSettings]);
 
   // Patch into xAPI events
   useEffect(() => {
-    if (!xAPILoaded || !submission) return;
+    if (!xAPILoaded || !isLearner) return;
 
     const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
     if (!x.H5P.externalDispatcher || xAPIHelper.isxAPINeeded(match.path) === false) return;
@@ -88,19 +87,12 @@ const Activity = (props) => {
     x.H5P.externalDispatcher.on('xAPI', function (event) {
       const params = {
         path: match.path,
+        studentId,
         activityId,
-        submissionId: submission.id,
-        attemptId: submission.attemptId,
-        studentId: student.profile.data.id,
-        classworkId: match.params.classworkId,
-        courseId: match.params.courseId,
-        auth: student.auth,
       };
 
       // Extending the xAPI statement with our custom values and sending it off to LRS
-      const xapiData = JSON.stringify(
-        xAPIHelper.extendStatement(event.data.statement, params),
-      );
+      const xapiData = xAPIHelper.extendStatement(event.data.statement, params);
 
       if (event.data.statement.verb.display['en-US'] === 'completed') {
         // Check if all questions/interactions have been accounted for in LRS
@@ -121,38 +113,35 @@ const Activity = (props) => {
           }, this);
         }
 
-        sendStatement(xapiData);
+        sendStatement(JSON.stringify(xapiData));
 
-        // Ask the user if he wants to turn-in the work to google classroom
         Swal.fire({
-          title: 'Do you want to turn in your work to Google Classroom?',
-          showCancelButton: true,
-          confirmButtonText: 'Turn In',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            turnIn(params.classworkId, params.courseId, params.auth);
-            Swal.fire('Saved!', '', 'success');
-          }
+          title: 'You have completed this activity.',
+          confirmButtonText: 'OK',
         });
+
+        // Sending grade passback
+        const score = xapiData.result.score.scaled;
+        gradePassBack(session, 1, score);
       } else {
-        sendStatement(xapiData);
+        sendStatement(JSON.stringify(xapiData));
       }
     });
-  }, [xAPILoaded, activityId, student, submission]);
-
-  // If the activity has already been submitted to google classroom, redirect to summary page
-  useEffect(() => {
-    if (submission && submission.state === 'TURNED_IN') {
-      clearInterval(intervalPointer);
-      history.push(`/gclass/summary/${match.params.userId}/${match.params.courseId}/${match.params.activityId}/${submission.coursework_id}/${submission.id}`);
-    }
-  }, [submission]);
+  }, [xAPILoaded, match.path, match.params, activityId]);
 
   return (
-    <div id="curriki-h5p-wrapper">
-      <div className="loader_gif">
-        <img style={{ width: '50px' }} src={gifloader} alt="" />
-      </div>
+    <div>
+      {ltiFinished && (
+        <div>Finished</div>
+      )}
+
+      {!ltiFinished && (
+        <div id="curriki-h5p-wrapper">
+          <div className="loader_gif">
+            <img style={{ width: '50px' }} src={gifloader} alt="" />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -160,27 +149,22 @@ const Activity = (props) => {
 Activity.propTypes = {
   activityId: PropTypes.string.isRequired,
   match: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
-  student: PropTypes.object.isRequired,
-  submission: PropTypes.object.isRequired,
   h5pSettings: PropTypes.object.isRequired,
+  ltiFinished: PropTypes.bool.isRequired,
   loadH5pSettings: PropTypes.func.isRequired,
-  getSubmission: PropTypes.func.isRequired,
   sendStatement: PropTypes.func.isRequired,
-  turnIn: PropTypes.func.isRequired,
+  gradePassBack: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  student: state.gapi.student,
-  submission: state.gapi.submission,
   h5pSettings: state.gapi.h5pSettings,
+  ltiFinished: state.canvas.ltiFinished,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   loadH5pSettings: (activityId) => dispatch(loadH5pResourceSettings(activityId)),
-  getSubmission: (classworkId, courseId, auth) => dispatch(getSubmissionAction(classworkId, courseId, auth)),
   sendStatement: (statement) => dispatch(loadH5pResourceXapi(statement)),
-  turnIn: (classworkId, courseId, auth) => dispatch(turnInAction(classworkId, courseId, auth)),
+  gradePassBack: (session, gpb, score) => dispatch(gradePassBackAction(session, gpb, score)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Activity));

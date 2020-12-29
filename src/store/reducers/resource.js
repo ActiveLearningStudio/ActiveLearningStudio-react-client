@@ -176,9 +176,9 @@ export default (state = INITIAL_STATE, action) => {
           metadata: action.metadata,
         },
         formData: {
-          metaTitle: '',
-          metaSubject: '',
-          metaEducationLevels: '',
+          metaTitle: action.metadata.title,
+          metaSubject: action.metadata.subjectId,
+          metaEducationLevels: action.metadata.educationLevelId,
         },
       };
 

@@ -104,7 +104,7 @@ let ResourceDescribeActivity = (props) => {
       metaEducationLevels: metaEducationLevels || { ...educationLvl },
     };
     saveFormData(values);
-  }, [saveFormData, resource.editResource.metadata, resource.formData]);
+  }, [saveFormData, resource.editResource.metadata]);
 
   return (
     <div className="row">
