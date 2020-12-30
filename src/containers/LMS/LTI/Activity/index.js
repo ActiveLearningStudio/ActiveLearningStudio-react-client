@@ -4,26 +4,31 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Swal from 'sweetalert2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import gifloader from 'assets/images/dotsloader.gif';
 import * as xAPIHelper from 'helpers/xapi';
 import { loadH5pResourceXapi } from 'store/actions/resource';
 import { loadH5pResourceSettings } from 'store/actions/gapi';
-import { gradePassBackAction } from 'store/actions/canvas';
+import { gradePassBackAction, activityInitAction } from 'store/actions/canvas';
 import './style.scss';
 
 const Activity = (props) => {
   const {
-    activityId,
     match,
     h5pSettings,
     ltiFinished,
+    attemptId,
     loadH5pSettings,
     sendStatement,
     gradePassBack,
+    activityInit,
   } = props;
+  const { activityId } = match.params;
   const searchParams = new URLSearchParams(window.location.search);
   const session = searchParams.get('PHPSESSID');
   const studentId = searchParams.get('user_id');
+  const submissionId = searchParams.get('submission_id');
+  const homepage = searchParams.get('homepage');
   const isLearner = searchParams.get('is_learner') !== '';
   const [xAPILoaded, setXAPILoaded] = useState(false);
 
@@ -31,6 +36,7 @@ const Activity = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     loadH5pSettings(match.params.activityId);
+    activityInit();
   }, [match]);
 
   // Load H5P
@@ -89,6 +95,9 @@ const Activity = (props) => {
         path: match.path,
         studentId,
         activityId,
+        submissionId,
+        attemptId,
+        homepage,
       };
 
       // Extending the xAPI statement with our custom values and sending it off to LRS
@@ -122,7 +131,7 @@ const Activity = (props) => {
 
         // Sending grade passback
         const score = xapiData.result.score.scaled;
-        gradePassBack(session, 1, score);
+        gradePassBack(session, 1, score, isLearner);
       } else {
         sendStatement(JSON.stringify(xapiData));
       }
@@ -132,7 +141,10 @@ const Activity = (props) => {
   return (
     <div>
       {ltiFinished && (
-        <div>Finished</div>
+        <div className="p-5 text-center finished-div">
+          <h1>You have completed this activity!</h1>
+          <FontAwesomeIcon icon="thumbs-o-up" className="action-icon ml-1" />
+        </div>
       )}
 
       {!ltiFinished && (
@@ -147,24 +159,27 @@ const Activity = (props) => {
 };
 
 Activity.propTypes = {
-  activityId: PropTypes.string.isRequired,
   match: PropTypes.object.isRequired,
   h5pSettings: PropTypes.object.isRequired,
   ltiFinished: PropTypes.bool.isRequired,
+  attemptId: PropTypes.number.isRequired,
   loadH5pSettings: PropTypes.func.isRequired,
   sendStatement: PropTypes.func.isRequired,
   gradePassBack: PropTypes.func.isRequired,
+  activityInit: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   h5pSettings: state.gapi.h5pSettings,
   ltiFinished: state.canvas.ltiFinished,
+  attemptId: state.canvas.attemptId,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   loadH5pSettings: (activityId) => dispatch(loadH5pResourceSettings(activityId)),
   sendStatement: (statement) => dispatch(loadH5pResourceXapi(statement)),
-  gradePassBack: (session, gpb, score) => dispatch(gradePassBackAction(session, gpb, score)),
+  gradePassBack: (session, gpb, score, isLearner) => dispatch(gradePassBackAction(session, gpb, score, isLearner)),
+  activityInit: () => dispatch(activityInitAction()),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Activity));

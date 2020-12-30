@@ -123,17 +123,11 @@ const AppRouter = () => {
           component={PreviewPage}
           previewType="playlist"
         />
-        <PrivateRoute
+
+        <OpenRoute
           exact
-          path="/project/:projectId/playlist/:playlistId/activity/:activityId/preview/shared"
-          component={LtiPreviewPage}
-          previewType="playlistShared"
-        />
-        <PrivateRoute
-          exact
-          path="/project/:projectId/playlist/:playlistId/preview"
-          component={PreviewPage}
-          previewType="playlist"
+          path="/lti-tools/activity/:activityId"
+          component={LtiActivity}
         />
         <PublicRoute exact path="/login" component={LoginPage} />
         <PublicRoute exact path="/register" component={RegisterPage} />

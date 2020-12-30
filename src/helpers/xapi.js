@@ -30,6 +30,7 @@ export function extendStatement(statement, params, skipped = false) {
     submissionId,
     attemptId,
     studentId,
+    homepage,
   } = params;
   const platform = H5PActvityPathMapToPlatform().find((el) => el[path]);
   if (platform === undefined) return;
@@ -50,7 +51,7 @@ export function extendStatement(statement, params, skipped = false) {
   const actor = {
     objectType: 'Agent',
     account: {
-      homePage: 'https://classroom.google.com',
+      homePage: homepage || 'https://classroom.google.com',
       name: studentId,
     },
   };

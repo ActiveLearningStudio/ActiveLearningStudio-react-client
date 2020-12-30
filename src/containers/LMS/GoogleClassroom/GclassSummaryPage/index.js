@@ -45,8 +45,7 @@ function GclassSummaryPage(props) {
                     <div className="row m-4">
                       <div className="col text-center">
                         <Alert variant="warning">
-                          You don&apos;t seem to be authorized to view this
-                          summary.
+                          The summary page is unavailable or the assignment is not turned in.
                         </Alert>
                       </div>
                     </div>
