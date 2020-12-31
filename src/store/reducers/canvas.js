@@ -14,7 +14,9 @@ import {
 
 const INITIAL_STATE = {
   currentPage: 'search',
-  searchParams: {},
+  searchParams: {
+    private: '0',
+  },
   activities: [],
   previewActivity: null,
   h5pSettings: null,
@@ -43,7 +45,7 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currentPage: 'search',
-        searchParams: {},
+        searchParams: INITIAL_STATE.searchParams,
       };
 
     case UPDATE_PARAMS:
