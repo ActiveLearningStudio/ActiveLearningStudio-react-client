@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import Header from 'components/Header';
-import Sidebar from 'components/Sidebar';
+// import Header from 'components/Header';
+// import Sidebar from 'components/Sidebar';
 import NotificationArea from './NotificationArea';
 
 import './style.scss';
 
-const Notification = (props) => {
+const Notification = () => {
   const allNotifications = useSelector((state) => state.notification);
   const [notificationData, setNotificationData] = useState([]);
   const [errorNotification, setErrorNotification] = useState('');
@@ -26,11 +26,7 @@ const Notification = (props) => {
 
   return (
     <>
-      <Header {...props} />
-      <div className="main-content-wrapper">
-        <div className="sidebar-wrapper">
-          <Sidebar />
-        </div>
+      <div>
         <div className="content-wrapper">
           <div className="notification-wapper">
             {notificationData.today && Object.keys(notificationData.today).length > 0

@@ -65,7 +65,7 @@ function SearchForm() {
               if (!simpleSearch.trim()) {
                 Swal.fire('Search field is required');
               } else if (simpleSearch.length > 255) {
-                Swal.fire('Character limit should be less then 255 ');
+                Swal.fire('Character limit should be less than 255 ');
               } else {
                 const searchData = {
                   phrase: simpleSearch.trim(),
@@ -120,7 +120,7 @@ function SearchForm() {
               Swal.showLoading();
               dispatcher(simpleSearchAction(values));
               closeModel.current.click();
-              history.push(`/search?type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${values.standardArray}`);
+              history.push(`/search?type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${values.standardArray.name}`);
               resetForm({
                 phrase: '',
                 subjectArray: [],
@@ -196,12 +196,14 @@ function SearchForm() {
                     placeholder="Subject + Subject Area"
                     onChange={(e) => {
                       handleChange(e);
-                      values.subjectArray.push(e.target.value);
+                      if (!values.subjectArray.includes(e.target.value)) {
+                        values.subjectArray.push(e.target.value);
+                      }
                     }}
                     onBlur={handleBlur}
                     value={values.subject}
                   >
-                    <option value="Subject + Subject Area">
+                    <option value="" disabled selected hidden>
                       {' '}
                       Subject + Subject Area
                     </option>
@@ -239,11 +241,13 @@ function SearchForm() {
                     placeholder="Grade Level"
                     onChange={(e) => {
                       handleChange(e);
-                      values.gradeArray.push(e.target.value);
+                      if (!values.gradeArray.includes(e.target.value)) {
+                        values.gradeArray.push(e.target.value);
+                      }
                     }}
                     value={values.grade}
                   >
-                    <option value="Education Level">Education Level</option>
+                    <option value="" disabled selected hidden>Education Level</option>
                     {educationLevels.map((data) => (
                       <option key={data.value} value={data.name}>
                         {data.name}
@@ -278,14 +282,27 @@ function SearchForm() {
                     placeholder="Standard"
                     onChange={(e) => {
                       handleChange(e);
-                      if (!values.standardArray.includes(e.target.value)) {
-                        values.standardArray.push(e.target.value);
+                      const nameSelected = activityTypes.filter((data) => {
+                        if (data.h5pLib === e.target.value) {
+                          return data;
+                        }
+                        return false;
+                      });
+                      let found = true;
+                      values.standardArray.map((data) => {
+                        if (data.value === e.target.value) {
+                          found = false;
+                        }
+                        return true;
+                      });
+                      if (found) {
+                        values.standardArray.push({ value: e.target.value, name: nameSelected[0].title });
                       }
                     }}
                     onBlur={handleBlur}
                     value={values.standard}
                   >
-                    <option value="Standard">Type of Activity</option>
+                    <option value="" disabled selected hidden>Type of Activity</option>
                     {activityTypes.map((data) => (
                       <option key={data.id} value={data.h5pLib}>
                         {data.title}
@@ -298,7 +315,7 @@ function SearchForm() {
                   <div className="form-group wrap-keyword" data-name={value}>
                     {values.standardArray.map((data) => (
                       <div className="keywords-de">
-                        {data}
+                        {data.name}
                         <div
                           className="iocns"
                           onClick={() => {
@@ -316,21 +333,21 @@ function SearchForm() {
 
                 <div className="form-group dual">
                   <input
-                    name="toDate"
-                    placeholder="To Date"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.toDate}
-                    onFocus={(e) => {
-                      e.target.type = 'date';
-                    }}
-                  />
-                  <input
                     name="fromDate"
                     placeholder="From Date"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.fromDate}
+                    onFocus={(e) => {
+                      e.target.type = 'date';
+                    }}
+                  />
+                  <input
+                    name="toDate"
+                    placeholder="To Date"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.toDate}
                     onFocus={(e) => {
                       e.target.type = 'date';
                     }}
@@ -357,7 +374,7 @@ function SearchForm() {
                 <div className="form-group">
                   <input
                     name="no_words"
-                    placeholder="Doesn't have the words"
+                    placeholder="Do not have the words"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.no_words}
