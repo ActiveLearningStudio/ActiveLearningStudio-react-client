@@ -60,9 +60,7 @@ const AppRouter = () => {
 
   if (window.location.href.includes('/shared') || window.location.href.includes('/lti')
     || window.location.href.includes('/embed') || window.location.href.includes('/register')
-    || window.location.href.includes('/forgot-password') || window.location.href.includes('/neaf-login')
-    || window.location.href.includes('/neaf-register') || window.location.href.includes('/vivensity-login')
-    || window.location.href.includes('/vivensity-register') || window.location.href.includes('/login')) {
+    || window.location.href.includes('/forgot-password') || window.location.href.includes('gclass/launch')) {
     document.body.classList.add('mobile-responsive');
   }
 

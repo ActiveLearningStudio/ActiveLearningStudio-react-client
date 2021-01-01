@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { GoogleLogin } from 'react-google-login';
 import { Alert } from 'react-bootstrap';
+
 import logo from 'assets/images/logo.svg';
 import {
   setStudentAuthAction,
   getStudentCoursesAction,
 } from 'store/actions/gapi';
 import Activity from 'containers/LMS/GoogleClassroom/Activity';
+import thumb from 'assets/images/thumb.png';
+
 import './styles.scss';
 
 function GclassActivityPage(props) {
@@ -22,7 +25,7 @@ function GclassActivityPage(props) {
   } = props;
   const { activityId, courseId } = match.params;
   const [authorized, setAuthorized] = useState(null);
-
+  const authState = useSelector((state) => state.auth.user);
   // Gets student courses
   useEffect(() => {
     if (student === null) return;
@@ -55,7 +58,15 @@ function GclassActivityPage(props) {
             charset="UTF-8"
           />
         </Helmet>
-
+        { !!authState && (authState.id === 1608 || authState.id === 2560) && (
+          <Helmet>
+            <title>ImSparked powered by CurrikiStudio</title>
+            <meta name="title" content="ImSparked powered by CurrikiStudio" />
+            <meta property="og:image" content={thumb} />
+            <meta property="twitter:image" content={thumb} />
+            <meta name="thumbnail" content={thumb} />
+          </Helmet>
+        )}
         <div className="flex-container previews">
           <div className="activity-bg left-vdo">
             <div className="main-item-wrapper desktop-view">
