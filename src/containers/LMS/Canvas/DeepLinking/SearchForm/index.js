@@ -63,7 +63,7 @@ const SearchForm = (props) => {
           <div className="form-group">
             <select className="form-control" name="private" onChange={fieldChanged}>
               <option value="0" selected>Public Activities</option>
-              <option value="1" >Private Activities</option>
+              <option value="1">Private Activities</option>
             </select>
           </div>
         </div>
