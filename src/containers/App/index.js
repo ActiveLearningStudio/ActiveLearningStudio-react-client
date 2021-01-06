@@ -10,6 +10,7 @@ import { updatedActivity } from 'store/actions/resource';
 import { updatedProject } from 'store/actions/project';
 import { updatedPlaylist } from 'store/actions/playlist';
 import AppRouter from 'routers/AppRouter';
+import thumb from 'assets/images/thumb.png';
 
 import './style.scss';
 
@@ -127,6 +128,13 @@ function App(props) {
 
   return (
     <div>
+      <Helmet>
+        <title>ImSparked powered by CurrikiStudio</title>
+        <meta name="title" content="ImSparked powered by CurrikiStudio" />
+        <meta property="og:image" content={thumb} />
+        <meta property="twitter:image" content={thumb} />
+        <meta name="thumbnail" content={thumb} />
+      </Helmet>
       <Helmet>
         <meta name="description" content="CurrikiStudio" />
         <meta name="theme-color" content="#008f68" />
