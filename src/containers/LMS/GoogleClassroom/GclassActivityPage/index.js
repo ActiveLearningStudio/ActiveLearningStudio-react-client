@@ -58,7 +58,7 @@ function GclassActivityPage(props) {
             charset="UTF-8"
           />
         </Helmet>
-        { !!authState && (authState.id === 1608 || authState.id === 2560) && (
+        { !!authState && (
           <Helmet>
             <title>ImSparked powered by CurrikiStudio</title>
             <meta name="title" content="ImSparked powered by CurrikiStudio" />
