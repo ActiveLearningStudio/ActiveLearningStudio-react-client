@@ -78,7 +78,7 @@ const Activity = (props) => {
       if (!x.H5P) return;
 
       clearInterval(checkXapi);
-      setTimeout(setXAPILoaded(true), 1000);
+      setTimeout(() => { setXAPILoaded(true); }, 1000);
     });
     // setIntervalPointer(checkXapi);
   }, [h5pSettings]);
