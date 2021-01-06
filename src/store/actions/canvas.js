@@ -1,3 +1,4 @@
+import config from 'config';
 import canvasService from 'services/canvas.service';
 import {
   DO_SEARCH,
@@ -74,6 +75,9 @@ export const nextPageAction = () => async (dispatch) => {
 };
 
 export const gradePassBackAction = (session, gpb, score, isLearner) => async (dispatch) => {
+  const { tsugiBaseUrl } = config;
+  console.log('Grade passback:');
+  console.log(tsugiBaseUrl);
   dispatch({
     type: GRADE_PASS_BACK,
   });
