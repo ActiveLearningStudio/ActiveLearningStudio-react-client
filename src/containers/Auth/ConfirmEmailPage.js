@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import QueryString from 'query-string';
 
-import logo from 'assets/images/logo.svg';
+import logo from 'assets/images/vivensity.png';
 import dotsloader from 'assets/images/dotsloader.gif';
 import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import logo from 'assets/images/logo.svg';
+import logo from 'assets/images/vivensity.png';
 import searchImg from 'assets/images/search.png';
 import createProjectIcon from 'assets/images/create-project-icon.png';
 import userImg from 'assets/images/user.png';

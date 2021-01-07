@@ -128,9 +128,6 @@ function App(props) {
   return (
     <div>
       <Helmet>
-        <meta name="description" content="CurrikiStudio" />
-        <meta name="theme-color" content="#008f68" />
-
         <script
           type="text/javascript"
           id="hs-script-loader"
