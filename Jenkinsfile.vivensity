@@ -1,4 +1,4 @@
-node('currikistage') {
+node('currikivivensity') {
 
     stage('Cloning Git') {
         checkout scm
