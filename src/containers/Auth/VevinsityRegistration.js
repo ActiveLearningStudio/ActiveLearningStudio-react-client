@@ -90,7 +90,7 @@ class NeafRegister extends React.Component {
       })
         .then((result) => {
           if (result.isConfirmed) {
-            history.push('/vivensity-login');
+            history.push('/login');
           }
         });
       // history.push('/login');
