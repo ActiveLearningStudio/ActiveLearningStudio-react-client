@@ -73,7 +73,10 @@ const gapiReducer = (state = defaultAuthState(), action) => {
     case GET_OUTCOME_SUMMARY:
       return {
         ...state,
-        outcomeSummary: action.outcomeSummary,
+        outcomeSummary: {
+          summary: action.outcomeSummary.summary,
+          nonScoring: action.outcomeSummary['non-scoring'],
+        },
       };
 
     default:

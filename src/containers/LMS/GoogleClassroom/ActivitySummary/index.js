@@ -2,7 +2,12 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Alert, Badge } from 'react-bootstrap';
+import {
+  Alert,
+  Badge,
+  Tabs,
+  Tab,
+} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getOutcomeSummaryAction, loadH5pResourceSettings } from 'store/actions/gapi';
 import gifloader from 'assets/images/dotsloader.gif';
@@ -74,38 +79,109 @@ const Activity = (props) => {
           </div>
           <div className="row">
             <div className="col">
-              <table className="table table-dark">
-                <thead>
-                  <tr>
-                    <th>Answered Questions</th>
-                    <th>Score</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {outcome.summary.map((question) => (
+              {outcome.nonScoring && outcome.nonScoring.length > 0 && (
+                <Tabs defaultActiveKey="summary" id="summary-tabs">
+                  <Tab eventKey="summary" title="Summary">
+                    <table className="table table-dark">
+                      <thead>
+                        <tr>
+                          <th>Answered Questions</th>
+                          <th>Score</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {outcome.summary.map((question) => (
+                          <tr>
+                            <td>
+                              {question.verb === 'skipped' && (
+                                <>
+                                  <Badge className="skipped-badge" variant="warning">Skipped</Badge>
+                                  {` - ${question.name}`}
+                                </>
+                              )}
+                              {question.verb === 'attempted' && (
+                                <>
+                                  <Badge className="skipped-badge" variant="warning">Attempted</Badge>
+                                  {` - ${question.name}`}
+                                </>
+                              )}
+                              {question.verb !== 'attempted' && question.verb !== 'skipped' && (
+                                `${question.duration} - ${question.name}`
+                              )}
+                            </td>
+                            <td>{`${question.score.raw}/${question.score.max}`}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </Tab>
+                  <Tab eventKey="answers" title="Answers">
+                    <table className="table table-dark answers-table">
+                      <thead>
+                        <tr>
+                          <th>Question</th>
+                          <th>Answer</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {outcome.nonScoring.map((question) => (
+                          <tr>
+                            <td>
+                              {question.description}
+                            </td>
+                            <td>
+                              {Array.isArray(question.response) && question.response.map((response) => (
+                                <p>
+                                  {response}
+                                </p>
+                              ))}
+                              {typeof question.response === 'string' && (
+                                <p>
+                                  {question.response}
+                                </p>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </Tab>
+                </Tabs>
+              )}
+              {(outcome.nonScoring === undefined || outcome.nonScoring.length === 0) && (
+                <table className="table table-dark">
+                  <thead>
                     <tr>
-                      <td>
-                        {question.verb === 'skipped' && (
-                          <>
-                            <Badge className="skipped-badge" variant="warning">Skipped</Badge>
-                            {` - ${question.name}`}
-                          </>
-                        )}
-                        {question.verb === 'attempted' && (
-                          <>
-                            <Badge className="skipped-badge" variant="warning">Attempted</Badge>
-                            {` - ${question.name}`}
-                          </>
-                        )}
-                        {question.verb !== 'attempted' && question.verb !== 'skipped' && (
-                          `${question.duration} - ${question.name}`
-                        )}
-                      </td>
-                      <td>{`${question.score.raw}/${question.score.max}`}</td>
+                      <th>Answered Questions</th>
+                      <th>Score</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {outcome.summary.map((question) => (
+                      <tr>
+                        <td>
+                          {question.verb === 'skipped' && (
+                            <>
+                              <Badge className="skipped-badge" variant="warning">Skipped</Badge>
+                              {` - ${question.name}`}
+                            </>
+                          )}
+                          {question.verb === 'attempted' && (
+                            <>
+                              <Badge className="skipped-badge" variant="warning">Attempted</Badge>
+                              {` - ${question.name}`}
+                            </>
+                          )}
+                          {question.verb !== 'attempted' && question.verb !== 'skipped' && (
+                            `${question.duration} - ${question.name}`
+                          )}
+                        </td>
+                        <td>{`${question.score.raw}/${question.score.max}`}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
           </div>
         </div>

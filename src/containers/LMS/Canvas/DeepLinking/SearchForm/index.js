@@ -18,7 +18,8 @@ const SearchForm = (props) => {
     params,
     updateParams,
   } = props;
-
+  const searchParams = new URLSearchParams(window.location.search);
+  const userEmail = searchParams.get('user_email'); // LMS user email
   const [advanced, setAdvanced] = useState(false);
   // Init
   useEffect(() => {
@@ -26,6 +27,7 @@ const SearchForm = (props) => {
     updateParams({
       ...params,
       ltiClientId: match.params.ltiClientId,
+      userEmail,
     });
   }, [match]);
 
