@@ -69,8 +69,12 @@ export function extendStatement(statement, params, skipped = false) {
       name: studentId,
     },
   };
-  statementExtended.context.platform = platform[path];
-  statementExtended.context.contextActivities.other = other;
+
+  if (statementExtended.context) {
+    statementExtended.context.platform = platform[path];
+    statementExtended.context.contextActivities.other = other;
+  }
+
   statementExtended.actor = actor;
 
   // If the statement is marked as skipped, we supply the proper verb
