@@ -30,24 +30,38 @@ export function extendStatement(statement, params, skipped = false) {
     submissionId,
     attemptId,
     studentId,
+    courseId, // LMS course id
     homepage,
   } = params;
   const platform = H5PActvityPathMapToPlatform().find((el) => el[path]);
   if (platform === undefined) return;
 
   const statementExtended = { ...statement };
-  const grouping = [
-    {
-      objectType: 'Activity',
-      id: `${window.location.origin}/activity/${activityId}/submission/${submissionId}`,
-    },
-  ];
   const other = [
     {
       objectType: 'Activity',
       id: `${window.location.origin}/activity/${activityId}/submission/${submissionId}/${attemptId}`,
     },
+    {
+      objectType: 'Activity',
+      id: `${window.location.origin}/activity/${activityId}/submission/${submissionId}`,
+    },
   ];
+
+  if (platform[path] === 'Google Classroom') {
+    other.push({
+      objectType: 'Activity',
+      id: `${window.location.origin}/gclass/${courseId}`,
+    });
+  }
+
+  if (platform[path] === 'LTI Client') {
+    other.push({
+      objectType: 'Activity',
+      id: `${window.location.origin}/lti/${courseId}`,
+    });
+  }
+
   const actor = {
     objectType: 'Agent',
     account: {
@@ -56,7 +70,6 @@ export function extendStatement(statement, params, skipped = false) {
     },
   };
   statementExtended.context.platform = platform[path];
-  statementExtended.context.contextActivities.grouping = grouping;
   statementExtended.context.contextActivities.other = other;
   statementExtended.actor = actor;
 
