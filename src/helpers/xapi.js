@@ -55,7 +55,7 @@ export function extendStatement(statement, params, skipped = false) {
     });
   }
 
-  if (platform[path] === 'LTI Client') {
+  if (platform[path] === 'LTI client') {
     other.push({
       objectType: 'Activity',
       id: `${window.location.origin}/lti/${courseId}`,
