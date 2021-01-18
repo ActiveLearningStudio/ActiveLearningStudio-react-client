@@ -30,7 +30,9 @@ export function extendStatement(statement, params, skipped = false) {
     studentId,
     courseId, // LMS course id
     homepage,
+    toolPlatform,
   } = params;
+
   const platform = H5PActvityPathMapToPlatform().find((el) => el[path]);
   if (platform === undefined) return;
 
@@ -69,7 +71,12 @@ export function extendStatement(statement, params, skipped = false) {
   };
 
   if (statementExtended.context) {
-    statementExtended.context.platform = platform[path];
+    if (platform[path] === 'LTI client') {
+      statementExtended.context.platform = toolPlatform;
+    } else {
+      statementExtended.context.platform = platform[path];
+    }
+
     statementExtended.context.contextActivities.other = other;
   }
 
