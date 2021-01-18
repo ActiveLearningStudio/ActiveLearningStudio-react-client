@@ -30,7 +30,7 @@ const Activity = (props) => {
   const submissionId = searchParams.get('submission_id');
   const homepage = searchParams.get('homepage');
   const isLearner = searchParams.get('is_learner') !== '';
-  const courseId = searchParams.get('course_id') !== '';
+  const courseId = searchParams.get('course_id');
   const [xAPILoaded, setXAPILoaded] = useState(false);
 
   // Init
