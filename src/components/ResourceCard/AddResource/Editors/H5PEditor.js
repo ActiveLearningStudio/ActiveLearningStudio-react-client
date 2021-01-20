@@ -19,7 +19,7 @@ const H5PEditor = (props) => {
   } = props;
 
   const uploadFile = useRef();
-  const submitButtonRef = useRef();
+  // const submitButtonRef = useRef();
   let defaultState = 'create';
   if (upload) {
     defaultState = 'upload';
@@ -40,9 +40,9 @@ const H5PEditor = (props) => {
   };
 
   const submitResource = (event) => {
-    if (submitButtonRef.current) {
-      submitButtonRef.current.setAttribute('disabled', 'disabled');
-    }
+    // if (submitButtonRef.current) {
+    //   submitButtonRef.current.setAttribute('disabled', 'disabled');
+    // }
     event.preventDefault();
 
     if (submitAction === 'upload' && h5pFile === null) {
@@ -222,7 +222,7 @@ const H5PEditor = (props) => {
           <div className="form-group">
             <div className="col-md-9 col-md-offset-3">
               <button
-                ref={submitButtonRef}
+                // ref={submitButtonRef}
                 type="submit"
                 className="add-resource-submit-btn"
                 onClick={submitResource}
