@@ -19,7 +19,7 @@ function TeamProjectView(props) {
     removeMember,
   } = props;
 
-  const authUser = users.find((u) => u.id === user.id);
+  const authUser = users.find((u) => u.id === (user || {}).id);
   const role = authUser ? authUser.role : '';
 
   const removeProjectSubmit = useCallback((projectId) => {
@@ -124,7 +124,7 @@ function TeamProjectView(props) {
                         </div>
                       </Dropdown.Toggle>
 
-                      {authUser.id !== u.id && (
+                      {authUser && authUser.id !== u.id && (
                         <Dropdown.Menu>
                           <div className="drop-title">
                             <div className="member-name-mark">

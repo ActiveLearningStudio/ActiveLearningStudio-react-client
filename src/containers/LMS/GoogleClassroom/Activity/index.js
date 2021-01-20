@@ -123,27 +123,25 @@ const Activity = (props) => {
 
         sendStatement(xapiData);
 
-        const contentProps = Object.keys(h5pSettings.h5p.settings.contents);
-        let contentData = null;
-        let h5pLibName = null;
+        /* const contentProps = Object.keys(h5pSettings.h5p.settings.contents);
+         let contentData = null;
+        // let h5pLibName = null;
         if (contentProps.length > 0) {
           contentData = h5pSettings.h5p.settings.contents[contentProps[0]];
-          h5pLibName = contentData.library;
-        }
+          // h5pLibName = contentData.library;
+        } */
 
-        if (h5pLibName !== 'H5P.InteractiveBook 1.2') {
-          // Ask the user if he wants to turn-in the work to google classroom
-          Swal.fire({
-            title: 'Do you want to turn in your work to Google Classroom?',
-            showCancelButton: true,
-            confirmButtonText: 'Turn In',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              turnIn(params.classworkId, params.courseId, params.auth);
-              Swal.fire('Saved!', '', 'success');
-            }
-          });
-        }
+        // Ask the user if he wants to turn-in the work to google classroom
+        Swal.fire({
+          title: 'Do you want to turn in your work to Google Classroom?',
+          showCancelButton: true,
+          confirmButtonText: 'Turn In',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            turnIn(params.classworkId, params.courseId, params.auth);
+            Swal.fire('Saved!', '', 'success');
+          }
+        });
       } else {
         sendStatement(xapiData);
       }

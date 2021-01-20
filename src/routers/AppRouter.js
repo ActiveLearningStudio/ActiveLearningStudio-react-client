@@ -42,7 +42,7 @@ const PreviewPage = loadable(() => import('../containers/Preview'));
 const LtiPreviewPage = loadable(() => import('../containers/LtiPreviewPage'));
 const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared'));
 const SearchResult = loadable(() => import('../containers/Search'));
-const LtiModel = loadable(() => import('../containers/LtiModel'));
+// const LtiModel = loadable(() => import('../containers/LtiModel'));
 // const TeamsPage = loadable(() => import('../containers/Teams'));
 // const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
 // const AddTeamProjectMemberPage = loadable(() => import('../containers/Teams/AddMembers'));
@@ -50,7 +50,7 @@ const GclassActivityPage = loadable(() => import('../containers/LMS/GoogleClassr
 const ActivityCreate = loadable(() => import('../containers/CreateActivity'));
 const EditActivity = loadable(() => import('../containers/EditActivity'));
 const GclassSummaryPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassSummaryPage'));
-// const SearchPage = loadable(() => import('../containers/LMS/Canvas/DeepLinking/SearchPage'));
+const SearchPage = loadable(() => import('../containers/LMS/Canvas/DeepLinking/SearchPage'));
 const LtiActivity = loadable(() => import('../containers/LMS/LTI/Activity'));
 
 const AppRouter = () => {
@@ -92,8 +92,8 @@ const AppRouter = () => {
         <OpenRoute
           exact
           path="/lti/content/:lmsUrl/:ltiClientId/:redirectUrl"
-          component={LtiModel}
-          // component={SearchPage}
+          // component={LtiModel}
+          component={SearchPage}
         />
         <OpenRoute
           exact
@@ -123,17 +123,11 @@ const AppRouter = () => {
           component={PreviewPage}
           previewType="playlist"
         />
-        <PrivateRoute
+
+        <OpenRoute
           exact
-          path="/project/:projectId/playlist/:playlistId/activity/:activityId/preview/shared"
-          component={LtiPreviewPage}
-          previewType="playlistShared"
-        />
-        <PrivateRoute
-          exact
-          path="/project/:projectId/playlist/:playlistId/preview"
-          component={PreviewPage}
-          previewType="playlist"
+          path="/lti-tools/activity/:activityId"
+          component={LtiActivity}
         />
         <PublicRoute exact path="/login" component={LoginPage} />
         <PublicRoute exact path="/register" component={RegisterPage} />

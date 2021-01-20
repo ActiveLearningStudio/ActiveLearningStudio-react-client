@@ -5,5 +5,5 @@ export default global.config = {
   resourceUrl: process.env.REACT_APP_RESOURCE_URL,
   apiVersion: process.env.REACT_APP_API_VERSION,
   gapiClientId: process.env.REACT_APP_GAPI_CLIENT_ID,
-  tsugiBaseUrl: process.env.TSUGI_SERVER_URL,
+  tsugiBaseUrl: process.env.REACT_APP_TSUGI_SERVER_URL,
 };
