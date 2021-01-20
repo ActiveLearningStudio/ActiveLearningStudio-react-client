@@ -77,25 +77,25 @@ function TeamsPage(props) {
 
   return (
     <>
-      <div className="teams-page">
-        <div className="sidebar-wrapper">
-          <div className="collapse-button">
-            <FontAwesomeIcon icon="angle-left" />
-          </div>
-
-          <div className="bread-crumb d-flex align-items-center">
-            {breadCrumb.map((node, index, these) => (
-              <div key={node}>
-                <span className={index + 1 < these.length ? 'parent' : 'child'}>
-                  {node}
-                </span>
-                {index + 1 < these.length && (
-                  <FontAwesomeIcon icon="angle-right" />
-                )}
-              </div>
-            ))}
-          </div>
+      <div className="side-wrapper">
+        <div className="collapse-button">
+          <FontAwesomeIcon icon="angle-left" />
         </div>
+
+        <div className="bread-crumb d-flex align-items-center">
+          {breadCrumb.map((node, index, these) => (
+            <div key={node}>
+              <span className={index + 1 < these.length ? 'parent' : 'child'}>
+                {node}
+              </span>
+              {index + 1 < these.length && (
+                <FontAwesomeIcon icon="angle-right" />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="teams-page">
 
         <div className="content-wrapper">
           <div className="content">

@@ -9,16 +9,20 @@ import {
   NEXT_PAGE,
   SHOW_RESULTS,
   GRADE_PASS_BACK,
+  LTI_ACTIVITY_INIT,
 } from '../actionTypes';
 
 const INITIAL_STATE = {
   currentPage: 'search',
-  searchParams: {},
+  searchParams: {
+    private: '0',
+  },
   activities: [],
   previewActivity: null,
   h5pSettings: null,
   hasMoreResults: false,
   ltiFinished: false,
+  attemptId: null,
 };
 
 const canvasReducer = (state = INITIAL_STATE, action) => {
@@ -41,7 +45,7 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currentPage: 'search',
-        searchParams: {},
+        searchParams: INITIAL_STATE.searchParams,
       };
 
     case UPDATE_PARAMS:
@@ -60,6 +64,7 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         previewActivity: null,
+        h5pSettings: null,
       };
 
     case GET_H5P_SETTINGS:
@@ -90,6 +95,12 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         ltiFinished: true,
+      };
+
+    case LTI_ACTIVITY_INIT:
+      return {
+        ...state,
+        attemptId: (state.attemptId) ? state.attemptId : Date.now(),
       };
 
     default:

@@ -115,7 +115,6 @@ function Sidebar(/* props */) {
         <FontAwesomeIcon icon="tasks" className="mr-2" />
         Sample Projects
       </div>
-
       <ul className="all-project">
         {allState.sidebar.sampleProject.slice(0, 5).map((data) => (
           <li key={data.id}>
@@ -135,7 +134,6 @@ function Sidebar(/* props */) {
             <FontAwesomeIcon icon="tasks" className="mr-2" />
             What&apos;s New
           </div>
-
           <ul className="all-project">
             {updateProject.slice(0, 5).map((data, counter) => (
               <li key={data.id}>
@@ -164,7 +162,6 @@ function Sidebar(/* props */) {
           Teams
         </div>
       </Link>
-
       {allState.team.teams.map((team) => (
         <div key={team.id} className={`team-item${selectedTeam === team.id ? '' : ' collapsed'}`}>
           <div className="team-label" onClick={() => handleClickTeam(team)}>
@@ -174,7 +171,6 @@ function Sidebar(/* props */) {
               className="ml-2 mt-1"
             />
           </div>
-
           <div className="team-detail-labels">
             <Link
               to={`/teams/${team.id}`}
@@ -198,7 +194,6 @@ function Sidebar(/* props */) {
           </div>
         </div>
       ))}
-
       <div className="menu-title create-button">
         <Link to="/teams/create-team">
           <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />

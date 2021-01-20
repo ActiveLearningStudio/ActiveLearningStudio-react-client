@@ -18,11 +18,17 @@ const SearchForm = (props) => {
     params,
     updateParams,
   } = props;
-
+  const searchParams = new URLSearchParams(window.location.search);
+  const userEmail = searchParams.get('user_email'); // LMS user email
   const [advanced, setAdvanced] = useState(false);
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
+    updateParams({
+      ...params,
+      ltiClientId: match.params.ltiClientId,
+      userEmail,
+    });
   }, [match]);
 
   const onSubmit = (e) => {
@@ -51,6 +57,16 @@ const SearchForm = (props) => {
         <div className="col">
           <div className="form-group">
             <input type="text" className="form-control" placeholder="Search Phrase" name="query" onChange={fieldChanged} />
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col">
+          <div className="form-group">
+            <select className="form-control" name="private" onChange={fieldChanged}>
+              <option value="0" selected>Public Activities</option>
+              <option value="1">Private Activities</option>
+            </select>
           </div>
         </div>
       </div>
@@ -88,13 +104,15 @@ const SearchForm = (props) => {
               </div>
             </div>
           </div>
-          <div className="row">
-            <div className="col">
-              <div className="form-group">
-                <input type="text" className="form-control" placeholder="Author" name="author" onChange={fieldChanged} />
+          { params.private !== '1' && (
+            <div className="row">
+              <div className="col">
+                <div className="form-group">
+                  <input type="text" className="form-control" placeholder="Author" name="author" onChange={fieldChanged} />
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       )}
       <Form.Check

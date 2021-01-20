@@ -55,7 +55,13 @@ let ResourceSelectActivity = (props) => {
     // get activity type items
     loadResourceItems(resource.newResource.activityTypeId)
       .then((activityItems) => {
-        setActivities(activityItems);
+        const { searchKey } = resource;
+        if (searchKey) {
+          const data = activityItems.filter((activity) => activity.title.toLowerCase().includes(searchKey));
+          setActivities(data);
+        } else {
+          setActivities(activityItems);
+        }
         setSearchActivities(activityItems);
       })
       .catch(() => { });

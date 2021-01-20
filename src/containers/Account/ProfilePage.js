@@ -252,7 +252,6 @@ function ProfilePage(props) {
                                 value={state.organizationType}
                                 onChange={onChangeField}
                               >
-                                <option> -- select an option -- </option>
                                 {organizationTypes.map((type) => (
                                   <option selected={type.label === state.organizationType} value={type.label}>{type.label}</option>
                                 ))}
