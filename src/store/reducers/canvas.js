@@ -64,6 +64,7 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         previewActivity: null,
+        h5pSettings: null,
       };
 
     case GET_H5P_SETTINGS:

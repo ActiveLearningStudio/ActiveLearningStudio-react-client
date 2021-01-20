@@ -67,11 +67,14 @@ const PreviewActivity = (props) => {
       </div>
       <div className="row">
         <div className="col">
-          <div id="curriki-h5p-wrapper">
+          {h5pSettings === null && (
             <div className="loader_gif">
               <img style={{ width: '50px' }} src={gifloader} alt="" />
             </div>
-          </div>
+          )}
+          {h5pSettings !== null && (
+            <div id="curriki-h5p-wrapper" />
+          )}
         </div>
       </div>
     </div>
