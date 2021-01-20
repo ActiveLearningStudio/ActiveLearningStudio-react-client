@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -16,7 +16,7 @@ const H5PEditorEdit = (props) => {
 
   const [submitAction, setSubmitAction] = useState('create');
   // const [h5pFile, setH5pFile] = useState(null);
-  const submitButtonRef = useRef();
+  // const submitButtonRef = useRef();
   useEffect(() => {
     loadH5pSettings();
   }, [loadH5pSettings]);
@@ -26,9 +26,9 @@ const H5PEditorEdit = (props) => {
   };
 
   const submitResource = (event) => {
-    if (submitButtonRef.current) {
-      submitButtonRef.current.setAttribute('disabled', 'disabled');
-    }
+    // if (submitButtonRef.current) {
+    //   submitButtonRef.current.setAttribute('disabled', 'disabled');
+    // }
     event.preventDefault();
 
     handleEditResourceSubmit(
@@ -125,7 +125,7 @@ const H5PEditorEdit = (props) => {
         <div className="form-group">
           <div className="col-md-9 col-md-offset-3">
             <button
-              ref={submitButtonRef}
+              // ref={submitButtonRef}
               type="submit"
               className="add-resource-submit-btn"
               onClick={submitResource}
