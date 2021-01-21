@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import { GoogleLogin } from 'react-google-login';
 import { Alert } from 'react-bootstrap';
 
-import logo from 'assets/images/logo.svg';
+import logo from 'assets/images/vivensityloader.png';
 import {
   setStudentAuthAction,
   getStudentCoursesAction,
@@ -66,7 +66,7 @@ function GclassActivityPage(props) {
                   <div className="container">
                     <div className="row">
                       <div className="col text-center">
-                        <img className="curriki-logo" src={logo} alt="" />
+                        <img style={{ width: '100%' }} className="curriki-logo" src={logo} alt="" />
                       </div>
                     </div>
 
@@ -83,7 +83,7 @@ function GclassActivityPage(props) {
 
                     <div className="row m-4">
                       <div className="col text-center">
-                        <h2>Please log in to take this activity.</h2>
+                        {/* <h2>Please log in to take this activity.</h2> */}
                         <GoogleLogin
                           clientId={global.config.gapiClientId}
                           buttonText="Login"

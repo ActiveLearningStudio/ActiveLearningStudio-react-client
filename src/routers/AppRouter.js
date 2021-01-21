@@ -21,8 +21,8 @@ history.listen((location) => {
   ReactGA.set({ page: location.pathname });
   ReactGA.pageview(location.pathname);
 });
-const LoginPage = loadable(() => import('../containers/Auth/LoginPage'));
-const RegisterPage = loadable(() => import('../containers/Auth/RegisterPage'));
+// const LoginPage = loadable(() => import('../containers/Auth/LoginPage'));
+// const RegisterPage = loadable(() => import('../containers/Auth/RegisterPage'));
 const ForgotPasswordPage = loadable(() => import('../containers/Auth/ForgotPasswordPage'));
 const ResetPasswordPage = loadable(() => import('../containers/Auth/ResetPasswordPage'));
 const ConfirmEmailPage = loadable(() => import('../containers/Auth/ConfirmEmailPage'));
@@ -129,15 +129,15 @@ const AppRouter = () => {
           path="/lti-tools/activity/:activityId"
           component={LtiActivity}
         />
-        <PublicRoute exact path="/login" component={LoginPage} />
-        <PublicRoute exact path="/register" component={RegisterPage} />
+        <PublicRoute exact path="/login" component={VevensityLogin} />
+        <PublicRoute exact path="/register" component={VevensityRegister} />
         <PublicRoute exact path="/forgot-password" component={ForgotPasswordPage} />
         <PublicRoute exact path="/reset-password" component={ResetPasswordPage} />
         <PublicRoute exact path="/verify-email" component={ConfirmEmailPage} />
         <PublicRoute exact path="/neaf-register" component={NeafRegister} />
         <PublicRoute exact path="/neaf-login" component={NeafLogin} />
-        <PublicRoute exact path="/vivensity-register" component={VevensityRegister} />
-        <PublicRoute exact path="/vivensity-login" component={VevensityLogin} />
+        {/* <PublicRoute exact path="/vivensity-register" component={VevensityRegister} />
+        <PublicRoute exact path="/vivensity-login" component={VevensityLogin} /> */}
         <Route>
           <Header />
           <div className="main-content-wrapper">

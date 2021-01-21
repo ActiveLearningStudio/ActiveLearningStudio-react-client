@@ -87,7 +87,7 @@ class LoginPage extends React.Component {
 
   goToRegister = () => {
     const { history } = this.props;
-    history.push('/vivensity-register');
+    history.push('/register');
   };
 
   render() {

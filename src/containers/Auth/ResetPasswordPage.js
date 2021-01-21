@@ -7,7 +7,7 @@ import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import QueryString from 'query-string';
 
-import logo from 'assets/images/logo.svg';
+import logo from 'assets/images/vivensity.png';
 import loader from 'assets/images/loader.svg';
 import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
