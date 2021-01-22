@@ -17,7 +17,7 @@ const INITIAL_STATE = {
   searchParams: {
     private: '0',
   },
-  activities: [],
+  activities: null,
   previewActivity: null,
   h5pSettings: null,
   hasMoreResults: false,
@@ -46,6 +46,7 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
         ...state,
         currentPage: 'search',
         searchParams: INITIAL_STATE.searchParams,
+        activities: null,
       };
 
     case UPDATE_PARAMS:
