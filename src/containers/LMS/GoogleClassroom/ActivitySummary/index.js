@@ -70,11 +70,13 @@ const Activity = (props) => {
             <div className="col">
               <h2>
                 <FontAwesomeIcon icon="star" />
-                {`${outcome.summary.length} Question(s) Answered`}
+                {`${outcome.totalAnswered} Question(s) Answered`}
               </h2>
-              <p className="ml-4">
-                {`You have answered ${outcome.summary.length} questions.`}
-              </p>
+              {outcome.totalSkipped > 0 && (
+                <p className="ml-4">
+                  {`You skipped ${outcome.totalSkipped} questions.`}
+                </p>
+              )}
             </div>
           </div>
           <div className="row">
