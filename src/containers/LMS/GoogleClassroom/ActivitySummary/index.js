@@ -129,18 +129,14 @@ const Activity = (props) => {
                         {outcome.nonScoring.map((question) => (
                           <tr>
                             <td>
-                              {question.description}
+                              <p dangerouslySetInnerHTML={{ __html: ` - ${question.description}` }} />
                             </td>
                             <td>
                               {Array.isArray(question.response) && question.response.map((response) => (
-                                <p>
-                                  {response}
-                                </p>
+                                <p dangerouslySetInnerHTML={{ __html: ` - ${response}` }} />
                               ))}
                               {typeof question.response === 'string' && (
-                                <p>
-                                  {question.response}
-                                </p>
+                                <p dangerouslySetInnerHTML={{ __html: ` - ${question.response}` }} />
                               )}
                             </td>
                           </tr>
@@ -165,17 +161,17 @@ const Activity = (props) => {
                           {question.verb === 'skipped' && (
                             <>
                               <Badge className="skipped-badge" variant="warning">Skipped</Badge>
-                              {` - ${question.name}`}
+                              <span dangerouslySetInnerHTML={{ __html: ` - ${question.name}` }} />
                             </>
                           )}
                           {question.verb === 'attempted' && (
                             <>
                               <Badge className="skipped-badge" variant="warning">Attempted</Badge>
-                              {` - ${question.name}`}
+                              <span dangerouslySetInnerHTML={{ __html: ` - ${question.name}` }} />
                             </>
                           )}
                           {question.verb !== 'attempted' && question.verb !== 'skipped' && (
-                            `${question.duration} - ${question.name}`
+                            <span dangerouslySetInnerHTML={{ __html: `${question.duration} - ${question.name}` }} />
                           )}
                         </td>
                         <td>{`${question.score.raw}/${question.score.max}`}</td>
