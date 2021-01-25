@@ -256,7 +256,7 @@ function SearchInterface(props) {
 
                               <div
                                 className="src-btn"
-                                onClick={() => {
+                                onClick={async () => {
                                   if (!searchInput.trim()) {
                                     Swal.fire('Search field is required.');
                                   } else if (searchInput.length > 255) {
@@ -278,7 +278,8 @@ function SearchInterface(props) {
                                       from: 0,
                                       size: 20,
                                     };
-                                    dispatch(simpleSearchAction(dataSend));
+                                    const result = await dispatch(simpleSearchAction(dataSend));
+                                    setTotalCount(result.meta.total);
                                     history.push('/search');
                                   }
                                   // setModalShow(true);
@@ -942,7 +943,7 @@ function SearchInterface(props) {
                       itemsCountPerPage={20}
                       totalItemsCount={totalCount}
                       pageRangeDisplayed={8}
-                      onChange={(e) => {
+                      onChange={async (e) => {
                         setActivePage(e);
                         if (activeModel === 'total') {
                           const searchData = {
@@ -951,7 +952,9 @@ function SearchInterface(props) {
                             size: 20,
                             type: searchType,
                           };
-                          dispatch(simpleSearchAction(searchData));
+                          Swal.showLoading();
+                          await dispatch(simpleSearchAction(searchData));
+                          Swal.close();
                         } else {
                           const searchData = {
                             phrase: searchQueries.trim(),
@@ -960,7 +963,9 @@ function SearchInterface(props) {
                             type: searchType,
                             model: activeModel,
                           };
-                          dispatch(simpleSearchAction(searchData));
+                          Swal.showLoading();
+                          await dispatch(simpleSearchAction(searchData));
+                          Swal.close();
                         }
                       }}
                       itemClass="page-item"
