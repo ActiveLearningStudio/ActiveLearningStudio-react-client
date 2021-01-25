@@ -71,8 +71,9 @@ const gapiReducer = (state = defaultAuthState(), action) => {
       };
 
     case GET_OUTCOME_SUMMARY:
-      const totalAnswered = action.outcomeSummary.summary.filter((question) => question.verb !== 'skipped').length + action.outcomeSummary['non-scoring'].length;
-      const totalSkipped = action.outcomeSummary.summary.length - totalAnswered;
+      const totalAnswered = action.outcomeSummary.summary.filter((question) => (question.verb !== 'skipped' && question.verb !== 'attempted')).length;
+      const totalAttempted = action.outcomeSummary.summary.filter((question) => question.verb === 'attempted').length + action.outcomeSummary['non-scoring'].length;
+      const totalSkipped = action.outcomeSummary.summary.filter((question) => question.verb === 'skipped').length;
 
       return {
         ...state,
@@ -81,6 +82,7 @@ const gapiReducer = (state = defaultAuthState(), action) => {
           nonScoring: action.outcomeSummary['non-scoring'],
           totalAnswered,
           totalSkipped,
+          totalAttempted,
         },
       };
 
