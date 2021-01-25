@@ -74,7 +74,7 @@ const SearchResults = (props) => {
           </button>
         </div>
       </div>
-      {activities.length === 0 && (
+      {activities !== null && activities.length === 0 && (
         <div className="row">
           <div className="col">
             <Alert variant="warning">
@@ -83,7 +83,7 @@ const SearchResults = (props) => {
           </div>
         </div>
       )}
-      {activities.length > 0 && activities.map((activity) => (
+      {activities !== null && activities.length > 0 && activities.map((activity) => (
         <div className="row">
           <div className="col">
             <div key={activity.id} className="row result">
