@@ -155,7 +155,6 @@ export const createResourceAction = (
         metadata.metaContent.metaEducationLevels
         && metadata.metaContent.metaEducationLevels,
     };
-    Swal.showLoading();
     const insertedResource = await resourceService.create(activity);
     Swal.close();
 
@@ -430,7 +429,6 @@ export const editResourceAction = (
       action: 'create',
       data: h5pdata,
     };
-    Swal.showLoading();
     const response = await resourceService.h5pSettingsUpdate(activityId, dataUpload);
     Swal.close();
 
