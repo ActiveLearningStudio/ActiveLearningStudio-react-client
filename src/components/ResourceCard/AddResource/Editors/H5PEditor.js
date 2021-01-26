@@ -40,6 +40,31 @@ const H5PEditor = (props) => {
 
   const submitResource = (event) => {
     event.preventDefault();
+    if (submitAction === 'upload' && h5pFile === null) {
+      return true;
+    }
+    if (submitAction === 'upload' && h5pFile !== null) {
+      const fileArr = h5pFile.name.split('.');
+      const fileExtension = fileArr.length > 0 ? fileArr[fileArr.length - 1] : '';
+      if (fileExtension !== 'h5p') {
+        Swal.fire('Invalid file selected, kindly select h5p file.');
+        return true;
+      }
+      const payload = {
+        event,
+        submitAction,
+        h5pFile,
+      };
+      handleCreateResourceSubmit(
+        match.params.playlistId,
+        resource.newResource.activity.h5pLib,
+        resource.newResource.activity.h5pLibType,
+        payload,
+        resource.newResource.metadata,
+        match.params.projectId,
+      );
+      return;
+    }
     const parameters = window.h5peditorCopy.getParams();
     const { metadata } = parameters;
     if (metadata.title !== undefined) {
@@ -49,30 +74,7 @@ const H5PEditor = (props) => {
           Swal.showLoading();
         },
       });
-      if (submitAction === 'upload' && h5pFile === null) {
-        return true;
-      }
-      if (submitAction === 'upload' && h5pFile !== null) {
-        const fileArr = h5pFile.name.split('.');
-        const fileExtension = fileArr.length > 0 ? fileArr[fileArr.length - 1] : '';
-        if (fileExtension !== 'h5p') {
-          Swal.fire('Invalid file selected, kindly select h5p file.');
-          return true;
-        }
-        const payload = {
-          event,
-          submitAction,
-          h5pFile,
-        };
-        handleCreateResourceSubmit(
-          match.params.playlistId,
-          resource.newResource.activity.h5pLib,
-          resource.newResource.activity.h5pLibType,
-          payload,
-          resource.newResource.metadata,
-          match.params.projectId,
-        );
-      } else if (submitAction === 'create') {
+      if (submitAction === 'create') {
         const payload = {
           event,
           submitAction,
