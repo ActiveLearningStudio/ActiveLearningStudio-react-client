@@ -107,7 +107,7 @@ const Activity = (props) => {
       // Extending the xAPI statement with our custom values and sending it off to LRS
       const xapiData = xAPIHelper.extendStatement(event.data.statement, params);
 
-      if (event.data.statement.verb.display['en-US'] === 'completed') {
+      if (event.data.statement.verb.display['en-US'] === 'submitted-curriki') {
         // Check if all questions/interactions have been accounted for in LRS
         // If the user skips one of the questions, no xAPI statement is generated.
         // We need statements for all questions for proper summary accounting.
