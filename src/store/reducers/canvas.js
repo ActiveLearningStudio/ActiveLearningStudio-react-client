@@ -10,6 +10,7 @@ import {
   SHOW_RESULTS,
   GRADE_PASS_BACK,
   LTI_ACTIVITY_INIT,
+  DO_BROWSE,
 } from '../actionTypes';
 
 const INITIAL_STATE = {
@@ -23,10 +24,17 @@ const INITIAL_STATE = {
   hasMoreResults: false,
   ltiFinished: false,
   attemptId: null,
+  browseResults: null,
 };
 
 const canvasReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case DO_BROWSE:
+      return {
+        ...state,
+        browseResults: action.results.projects.slice(0, 10),
+      };
+
     case DO_SEARCH:
       return {
         ...state,

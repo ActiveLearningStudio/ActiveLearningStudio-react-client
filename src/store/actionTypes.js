@@ -290,3 +290,4 @@ export const PREVIOUS_PAGE = 'PREVIOUS_PAGE';
 export const NEXT_PAGE = 'NEXT_PAGE';
 export const GRADE_PASS_BACK = 'GRADE_PASS_BACK';
 export const LTI_ACTIVITY_INIT = 'LTI_ACTIVITY_INIT';
+export const DO_BROWSE = 'DO_BROWSE';
