@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import { GoogleLogin } from 'react-google-login';
 import { Alert } from 'react-bootstrap';
 
-import logo from 'assets/images/vivensityloader.png';
+import logo from 'assets/images/newvivensity.png';
 import {
   setStudentAuthAction,
   getStudentCoursesAction,
