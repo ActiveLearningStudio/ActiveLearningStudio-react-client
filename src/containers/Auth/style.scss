@@ -11,7 +11,13 @@
     width: 281px;
     margin-bottom: 30px;
   }
-
+  
+  .auth-header-logo.nevada {
+    background: #205a9c;
+    border-radius: 10px;
+    padding: 10px 0px;
+  }
+ 
   @media (max-width: 767px) {
     .auth-header-logo {
       margin-bottom: 0;

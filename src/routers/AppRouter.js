@@ -136,8 +136,8 @@ const AppRouter = () => {
         <PublicRoute exact path="/verify-email" component={ConfirmEmailPage} />
         <PublicRoute exact path="/neaf-register" component={NeafRegister} />
         <PublicRoute exact path="/neaf-login" component={NeafLogin} />
-        <PublicRoute exact path="/vivensity-register" component={VevensityRegister} />
-        <PublicRoute exact path="/vivensity-login" component={VevensityLogin} />
+        <PublicRoute exact path="/nevada-register" component={VevensityRegister} />
+        <PublicRoute exact path="/nevada-login" component={VevensityLogin} />
         <Route>
           <Header />
           <div className="main-content-wrapper">
