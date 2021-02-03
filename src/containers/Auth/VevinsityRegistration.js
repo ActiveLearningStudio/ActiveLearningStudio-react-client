@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 
 import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
-import logo from 'assets/images/vivensity.png';
+import logo from 'assets/images/nevada.png';
 import loader from 'assets/images/loader.svg';
 import { registerAction } from 'store/actions/auth';
 import { getErrors } from 'utils';
@@ -25,7 +25,7 @@ class NeafRegister extends React.Component {
       lastName: '',
       email: '',
       password: '',
-      organizationName: 'vivensity',
+      organizationName: 'NVDOE',
       organizationType: 'K-12',
       jobTitle: '',
       error: null,
@@ -90,7 +90,7 @@ class NeafRegister extends React.Component {
       })
         .then((result) => {
           if (result.isConfirmed) {
-            history.push('/vivensity-login');
+            history.push('/nevada-login');
           }
         });
       // history.push('/login');
@@ -123,7 +123,7 @@ class NeafRegister extends React.Component {
 
   goToLogin = () => {
     const { history } = this.props;
-    history.push('/vivensity-login');
+    history.push('/nevada-login');
   };
 
   render() {
@@ -139,7 +139,7 @@ class NeafRegister extends React.Component {
 
     return (
       <div className="auth-page">
-        <img className="auth-header-logo" src={logo} alt="" />
+        <img className="auth-header-logo nevada" src={logo} alt="" />
 
         <div className="auth-container">
           <div className="d-flex align-items-center justify-content-between">
