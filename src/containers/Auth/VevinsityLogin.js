@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
-import logo from 'assets/images/vivensity.png';
+import logo from 'assets/images/nevada.png';
 import loader from 'assets/images/loader.svg';
 import { loginAction, googleLoginAction } from 'store/actions/auth';
 import { getErrors } from 'utils';
@@ -87,7 +87,7 @@ class LoginPage extends React.Component {
 
   goToRegister = () => {
     const { history } = this.props;
-    history.push('/vivensity-register');
+    history.push('/nevada-register');
   };
 
   render() {
@@ -101,7 +101,7 @@ class LoginPage extends React.Component {
 
     return (
       <div className="auth-page">
-        <img className="auth-header-logo" src={logo} alt="" />
+        <img className="auth-header-logo nevada" src={logo} alt="" />
 
         <div className="auth-container">
           <div className="d-flex align-items-center justify-content-between">
