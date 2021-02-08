@@ -63,8 +63,11 @@ const getOutcomeSummary = (studentId, activityId) => httpService
   .then(({ data }) => data)
   .catch(() => false);
 
-const h5pResourceSettings = (activityId) => httpService
-  .get(`/${apiVersion}/google-classroom/activities/${activityId}/h5p-resource-settings`)
+const h5pResourceSettings = (activityId, studentId = null) => httpService
+  .get(
+    `/${apiVersion}/google-classroom/activities/${activityId}/h5p-resource-settings`,
+    { studentId },
+  )
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
