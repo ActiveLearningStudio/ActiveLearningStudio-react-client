@@ -4,6 +4,14 @@ import httpService from './http.service';
 
 const { apiVersion, tsugiBaseUrl } = config;
 
+const browse = (params) => httpService
+  .post(
+    `/${apiVersion}/go/lms/projects`,
+    { ...params },
+  )
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const search = (params) => httpService
   .post(
     `/${apiVersion}/go/lms/activities`,
@@ -25,6 +33,7 @@ const tsugiGradePassback = (session, gpb, score) => axios({
   .then((response) => response);
 
 export default {
+  browse,
   search,
   getH5pSettings,
   tsugiGradePassback,

@@ -140,8 +140,8 @@ const AppRouter = (props) => {
         <PublicRoute exact path="/verify-email" component={ConfirmEmailPage} />
         <PublicRoute exact path="/neaf-register" component={NeafRegister} />
         <PublicRoute exact path="/neaf-login" component={NeafLogin} />
-        <PublicRoute exact path="/vivensity-register" component={VevensityRegister} />
-        <PublicRoute exact path="/vivensity-login" component={VevensityLogin} />
+        <PublicRoute exact path="/nevada-register" component={VevensityRegister} />
+        <PublicRoute exact path="/nevada-login" component={VevensityLogin} />
         <Route>
           {
            (user && !user.subscribed)
@@ -165,7 +165,7 @@ const AppRouter = (props) => {
                      <PrivateRoute exact path="/teams/create-team" component={TeamsPage} creation />
                      <PrivateRoute exact path="/teams/:teamId" component={TeamsPage} teamShow />
                      <PrivateRoute exact path="/teams/:teamId/projects" component={TeamsPage} projectShow />
-                     {/* <PrivateRoute exact path="/teams/:teamId/channel" component={TeamsPage} channelShow /> */}
+                     <PrivateRoute exact path="/teams/:teamId/channel" component={TeamsPage} channelShow />
                      <PrivateRoute exact path="/teams/:teamId/add-projects" component={AddTeamProjectsPage} />
                      <PrivateRoute exact path="/teams/:teamId/projects/:projectId/add-member" component={AddTeamProjectMemberPage} />
 

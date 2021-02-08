@@ -10,6 +10,7 @@ import {
   SHOW_RESULTS,
   GRADE_PASS_BACK,
   LTI_ACTIVITY_INIT,
+  DO_BROWSE,
 } from '../actionTypes';
 
 const INITIAL_STATE = {
@@ -17,16 +18,23 @@ const INITIAL_STATE = {
   searchParams: {
     private: '0',
   },
-  activities: [],
+  activities: null,
   previewActivity: null,
   h5pSettings: null,
   hasMoreResults: false,
   ltiFinished: false,
   attemptId: null,
+  browseResults: null,
 };
 
 const canvasReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case DO_BROWSE:
+      return {
+        ...state,
+        browseResults: action.results.projects.slice(0, 10),
+      };
+
     case DO_SEARCH:
       return {
         ...state,
@@ -46,6 +54,7 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
         ...state,
         currentPage: 'search',
         searchParams: INITIAL_STATE.searchParams,
+        activities: null,
       };
 
     case UPDATE_PARAMS:
@@ -64,6 +73,7 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         previewActivity: null,
+        h5pSettings: null,
       };
 
     case GET_H5P_SETTINGS:

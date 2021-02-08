@@ -128,7 +128,6 @@ function Sidebar(props) {
         <FontAwesomeIcon icon="tasks" className="mr-2" />
         Sample Projects
       </div>
-
       <ul className="all-project">
         {allState.sidebar.sampleProject.slice(0, 5).map((data) => (
           <li key={data.id}>
@@ -148,7 +147,6 @@ function Sidebar(props) {
             <FontAwesomeIcon icon="tasks" className="mr-2" />
             What&apos;s New
           </div>
-
           <ul className="all-project">
             {updateProject.slice(0, 5).map((data, counter) => (
               <li key={data.id}>
