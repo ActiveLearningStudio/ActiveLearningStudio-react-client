@@ -9,6 +9,8 @@ import {
 import * as History from 'history';
 import loadable from '@loadable/component';
 import ReactGA from 'react-ga';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import Header from 'components/Header';
 import Sidebar from 'components/Sidebar';
@@ -22,6 +24,7 @@ history.listen((location) => {
   ReactGA.pageview(location.pathname);
 });
 const LoginPage = loadable(() => import('../containers/Auth/LoginPage'));
+const SubscribePage = loadable(() => import('../containers/Auth/SubscribePage'));
 const RegisterPage = loadable(() => import('../containers/Auth/RegisterPage'));
 const ForgotPasswordPage = loadable(() => import('../containers/Auth/ForgotPasswordPage'));
 const ResetPasswordPage = loadable(() => import('../containers/Auth/ResetPasswordPage'));
@@ -53,7 +56,7 @@ const GclassSummaryPage = loadable(() => import('../containers/LMS/GoogleClassro
 const SearchPage = loadable(() => import('../containers/LMS/Canvas/DeepLinking/SearchPage'));
 const LtiActivity = loadable(() => import('../containers/LMS/LTI/Activity'));
 
-const AppRouter = () => {
+const AppRouter = (props) => {
   useEffect(() => {
     ReactGA.pageview(window.location.pathname);
   });
@@ -64,6 +67,7 @@ const AppRouter = () => {
     document.body.classList.add('mobile-responsive');
   }
 
+  const { user } = props;
   return (
     <Router history={history}>
       <Switch>
@@ -136,86 +140,103 @@ const AppRouter = () => {
         <PublicRoute exact path="/verify-email" component={ConfirmEmailPage} />
         <PublicRoute exact path="/neaf-register" component={NeafRegister} />
         <PublicRoute exact path="/neaf-login" component={NeafLogin} />
-        <PublicRoute exact path="/vivensity-register" component={VevensityRegister} />
-        <PublicRoute exact path="/vivensity-login" component={VevensityLogin} />
+        <PublicRoute exact path="/nevada-register" component={VevensityRegister} />
+        <PublicRoute exact path="/nevada-login" component={VevensityLogin} />
         <Route>
-          <Header />
-          <div className="main-content-wrapper">
-            <div className="sidebar-wrapper">
-              <Sidebar />
-            </div>
-            <Switch>
-              <PrivateRoute exact path="/" component={ProjectsPage} />
-              <PrivateRoute exact path="/account" component={ProfilePage} />
-              <PrivateRoute exact path="/change-password" component={ChangePasswordPage} />
+          {
+           (user && !user.subscribed)
+             ? <SubscribePage />
+             : (
+               <>
+                 <Header />
+                 <div className="main-content-wrapper">
+                   <div className="sidebar-wrapper">
+                     <Sidebar />
+                   </div>
+                   <Switch>
+                     <PrivateRoute exact path="/" component={ProjectsPage} />
+                     <PrivateRoute exact path="/account" component={ProfilePage} />
+                     <PrivateRoute exact path="/change-password" component={ChangePasswordPage} />
 
-              <PrivateRoute exact path="/dashboard" component={DashboardPage} />
-              <PrivateRoute exact path="/notification" component={NotificationPage} />
+                     <PrivateRoute exact path="/dashboard" component={DashboardPage} />
+                     <PrivateRoute exact path="/notification" component={NotificationPage} />
 
-              <PrivateRoute exact path="/teams" component={TeamsPage} overview />
-              <PrivateRoute exact path="/teams/create-team" component={TeamsPage} creation />
-              <PrivateRoute exact path="/teams/:teamId" component={TeamsPage} teamShow />
-              <PrivateRoute exact path="/teams/:teamId/projects" component={TeamsPage} projectShow />
-              <PrivateRoute exact path="/teams/:teamId/channel" component={TeamsPage} channelShow />
-              <PrivateRoute exact path="/teams/:teamId/add-projects" component={AddTeamProjectsPage} />
-              <PrivateRoute exact path="/teams/:teamId/projects/:projectId/add-member" component={AddTeamProjectMemberPage} />
+                     <PrivateRoute exact path="/teams" component={TeamsPage} overview />
+                     <PrivateRoute exact path="/teams/create-team" component={TeamsPage} creation />
+                     <PrivateRoute exact path="/teams/:teamId" component={TeamsPage} teamShow />
+                     <PrivateRoute exact path="/teams/:teamId/projects" component={TeamsPage} projectShow />
+                     <PrivateRoute exact path="/teams/:teamId/channel" component={TeamsPage} channelShow />
+                     <PrivateRoute exact path="/teams/:teamId/add-projects" component={AddTeamProjectsPage} />
+                     <PrivateRoute exact path="/teams/:teamId/projects/:projectId/add-member" component={AddTeamProjectMemberPage} />
 
-              <PrivateRoute
-                exact
-                path="/project/create"
-                component={ProjectsPage}
-                showCreateProjectPopup
-                editMode={false}
-              />
-              <PrivateRoute
-                exact
-                path="/project/:projectId"
-                component={PlaylistsPage}
-              />
-              <PrivateRoute
-                exact
-                path="/project/:projectId/preview"
-                component={PreviewPage}
-              />
-              <PrivateRoute
-                exact
-                path="/project/:projectId/edit"
-                component={ProjectsPage}
-                showEditProjectPopup
-                editMode
-              />
+                     <PrivateRoute
+                       exact
+                       path="/project/create"
+                       component={ProjectsPage}
+                       showCreateProjectPopup
+                       editMode={false}
+                     />
+                     <PrivateRoute
+                       exact
+                       path="/project/:projectId"
+                       component={PlaylistsPage}
+                     />
+                     <PrivateRoute
+                       exact
+                       path="/project/:projectId/preview"
+                       component={PreviewPage}
+                     />
+                     <PrivateRoute
+                       exact
+                       path="/project/:projectId/edit"
+                       component={ProjectsPage}
+                       showEditProjectPopup
+                       editMode
+                     />
 
-              <PrivateRoute
-                exact
-                path="/project/:projectId/playlist/create"
-                component={PlaylistsPage}
-                openCreatePopup
-              />
-              <PrivateRoute
-                exact
-                path="/project/:projectId/playlist/:playlistId/activity/create"
-                component={ActivityCreate}
-                // openCreateResourcePopup
-              />
-              <PrivateRoute
-                exact
-                path="/project/:projectId/playlist/:playlistId/activity/:activityId/edit"
-                component={EditActivity}
-                openEditResourcePopup
-              />
+                     <PrivateRoute
+                       exact
+                       path="/project/:projectId/playlist/create"
+                       component={PlaylistsPage}
+                       openCreatePopup
+                     />
+                     <PrivateRoute
+                       exact
+                       path="/project/:projectId/playlist/:playlistId/activity/create"
+                       component={ActivityCreate}
+                       // openCreateResourcePopup
+                     />
+                     <PrivateRoute
+                       exact
+                       path="/project/:projectId/playlist/:playlistId/activity/:activityId/edit"
+                       component={EditActivity}
+                       openEditResourcePopup
+                     />
 
-              <PrivateRoute
-                exact
-                path="/search"
-                component={SearchResult}
-              />
-              <Redirect to="/" />
-            </Switch>
-          </div>
+                     <PrivateRoute
+                       exact
+                       path="/search"
+                       component={SearchResult}
+                     />
+                     <Redirect to="/" />
+                   </Switch>
+                 </div>
+               </>
+             )
+           }
         </Route>
       </Switch>
     </Router>
   );
 };
+AppRouter.propTypes = {
+  user: PropTypes.object,
+};
+AppRouter.defaultProps = {
+  user: null,
+};
 
-export default AppRouter;
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+});
+export default connect(mapStateToProps)(AppRouter);
