@@ -25,6 +25,7 @@ const Activity = (props) => {
   } = props;
   const [xAPILoaded, setXAPILoaded] = useState(false);
   const [intervalPointer, setIntervalPointer] = useState(null);
+  const [xAPIEventHooked, setXAPIEventHooked] = useState(false);
 
   // Init
   useEffect(() => {
@@ -68,9 +69,16 @@ const Activity = (props) => {
 
     // Loops until it finds H5P object
     const checkXapi = setInterval(() => {
+      if (xAPILoaded) {
+        console.log('Loaded hit, returning');
+        return;
+      }
+
       const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
       if (!x.H5P) return;
+      if (!x.H5P.externalDispatcher) return;
 
+      console.log('AE H5P supposedly ready');
       clearInterval(checkXapi);
       setIntervalPointer(null);
       setXAPILoaded(true);
@@ -80,12 +88,18 @@ const Activity = (props) => {
 
   // Patch into xAPI events
   useEffect(() => {
-    if (!xAPILoaded || !submission) return;
+    console.log('AE entered hook func');
+    if (!xAPILoaded || !submission || xAPIEventHooked) return;
 
     const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
-    if (!x.H5P.externalDispatcher || xAPIHelper.isxAPINeeded(match.path) === false) return;
+    if (!x.H5P.externalDispatcher || xAPIHelper.isxAPINeeded(match.path) === false) {
+      console.log('missing dispatcher');
+      return;
+    }
 
+    console.log('AE found dispatcher, trying to hook');
     x.H5P.externalDispatcher.on('xAPI', function (event) {
+      console.log('AE running listener');
       const params = {
         path: match.path,
         activityId,
@@ -146,6 +160,8 @@ const Activity = (props) => {
         sendStatement(xapiData);
       }
     });
+    console.log('AE maybe hooked?');
+    setXAPIEventHooked(true);
   }, [xAPILoaded, activityId, student, submission]);
 
   // If the activity has already been submitted to google classroom, redirect to summary page

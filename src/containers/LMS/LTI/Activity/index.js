@@ -29,10 +29,12 @@ const Activity = (props) => {
   const studentId = searchParams.get('user_id');
   const submissionId = searchParams.get('submission_id');
   const homepage = searchParams.get('homepage');
-  const isLearner = searchParams.get('is_learner') !== '';
+  // const isLearner = searchParams.get('is_learner') !== '';
+  const isLearner = true;
   const courseId = searchParams.get('course_id');
   const toolPlatform = searchParams.get('tool_platform');
   const [xAPILoaded, setXAPILoaded] = useState(false);
+  const [xAPIEventHooked, setXAPIEventHooked] = useState(false);
 
   // Init
   useEffect(() => {
@@ -76,23 +78,39 @@ const Activity = (props) => {
 
     // Loops until it finds H5P object
     const checkXapi = setInterval(() => {
+      if (xAPILoaded) {
+        console.log('Loaded hit, returning');
+        return;
+      }
+
       const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
       if (!x.H5P) return;
+      if (!x.H5P.externalDispatcher) return;
 
+      console.log('AE H5P supposedly ready');
       clearInterval(checkXapi);
-      setTimeout(() => { setXAPILoaded(true); }, 1000);
+      setTimeout(() => { setXAPILoaded(true); });
     });
     // setIntervalPointer(checkXapi);
   }, [h5pSettings]);
 
   // Patch into xAPI events
   useEffect(() => {
-    if (!xAPILoaded || !isLearner) return;
+    console.log('AE entered hook func');
+    if (!xAPILoaded || !isLearner || xAPIEventHooked) {
+      console.log('hit over here');
+      return;
+    }
 
     const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
-    if (!x.H5P.externalDispatcher || xAPIHelper.isxAPINeeded(match.path) === false) return;
-
+    // if (!x.H5P.externalDispatcher || xAPIHelper.isxAPINeeded(match.path) === false) return;
+    if (!x.H5P.externalDispatcher || xAPIHelper.isxAPINeeded(match.path) === false) {
+      console.log('AE missing dispatcher');
+      return;
+    }
+    console.log('AE found dispatcher, trying to hook');
     x.H5P.externalDispatcher.on('xAPI', function (event) {
+      console.log('AE running listener');
       const params = {
         path: match.path,
         studentId,
@@ -140,6 +158,8 @@ const Activity = (props) => {
         sendStatement(JSON.stringify(xapiData));
       }
     });
+    console.log('AE maybe hooked?');
+    setXAPIEventHooked(true);
   }, [xAPILoaded, match.path, match.params, activityId]);
 
   return (
