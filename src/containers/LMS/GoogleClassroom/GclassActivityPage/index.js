@@ -89,6 +89,7 @@ function GclassActivityPage(props) {
                           buttonText="Login"
                           onSuccess={handleLogin}
                           onFailure={handleLogin}
+                          isSignedIn
                           scope="
                             https://www.googleapis.com/auth/classroom.courses.readonly
                             https://www.googleapis.com/auth/classroom.courses
