@@ -111,11 +111,16 @@ function AssignProject(props) {
 AssignProject.propTypes = {
   isSaving: PropTypes.bool.isRequired,
   projects: PropTypes.array.isRequired,
-  selectedProjects: PropTypes.array.isRequired,
+  selectedProjects: PropTypes.array,
+  search: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
-  search: PropTypes.func.isRequired,
   setSearch: PropTypes.func.isRequired,
   setSelectedProjects: PropTypes.func.isRequired,
+};
+
+AssignProject.defaultProps = {
+  selectedProjects: [],
+  search: '',
 };
 
 export default AssignProject;

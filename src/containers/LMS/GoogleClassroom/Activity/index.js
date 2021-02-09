@@ -25,13 +25,14 @@ const Activity = (props) => {
   } = props;
   const [xAPILoaded, setXAPILoaded] = useState(false);
   const [intervalPointer, setIntervalPointer] = useState(null);
+  const [xAPIEventHooked, setXAPIEventHooked] = useState(false);
 
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
-    loadH5pSettings(activityId);
+    loadH5pSettings(activityId, student.auth.googleId);
     getSubmission(match.params.classworkId, match.params.courseId, student.auth);
-  }, [activityId, match]);
+  }, [activityId]);
 
   // Load H5P
   useEffect(() => {
@@ -68,9 +69,16 @@ const Activity = (props) => {
 
     // Loops until it finds H5P object
     const checkXapi = setInterval(() => {
+      if (xAPILoaded) {
+        console.log('Loaded hit, returning');
+        return;
+      }
+
       const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
       if (!x.H5P) return;
+      if (!x.H5P.externalDispatcher) return;
 
+      console.log('AE H5P supposedly ready');
       clearInterval(checkXapi);
       setIntervalPointer(null);
       setXAPILoaded(true);
@@ -80,12 +88,18 @@ const Activity = (props) => {
 
   // Patch into xAPI events
   useEffect(() => {
-    if (!xAPILoaded || !submission) return;
+    console.log('AE entered hook func');
+    if (!xAPILoaded || !submission || xAPIEventHooked) return;
 
     const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
-    if (!x.H5P.externalDispatcher || xAPIHelper.isxAPINeeded(match.path) === false) return;
+    if (!x.H5P.externalDispatcher || xAPIHelper.isxAPINeeded(match.path) === false) {
+      console.log('missing dispatcher');
+      return;
+    }
 
+    console.log('AE found dispatcher, trying to hook');
     x.H5P.externalDispatcher.on('xAPI', function (event) {
+      console.log('AE running listener');
       const params = {
         path: match.path,
         activityId,
@@ -102,7 +116,7 @@ const Activity = (props) => {
         xAPIHelper.extendStatement(event.data.statement, params),
       );
 
-      if (event.data.statement.verb.display['en-US'] === 'completed') {
+      if (event.data.statement.verb.display['en-US'] === 'submitted-curriki') {
         // Check if all questions/interactions have been accounted for in LRS
         // If the user skips one of the questions, no xAPI statement is generated.
         // We need statements for all questions for proper summary accounting.
@@ -123,6 +137,14 @@ const Activity = (props) => {
 
         sendStatement(xapiData);
 
+        /* const contentProps = Object.keys(h5pSettings.h5p.settings.contents);
+         let contentData = null;
+        // let h5pLibName = null;
+        if (contentProps.length > 0) {
+          contentData = h5pSettings.h5p.settings.contents[contentProps[0]];
+          // h5pLibName = contentData.library;
+        } */
+
         // Ask the user if he wants to turn-in the work to google classroom
         Swal.fire({
           title: 'Do you want to turn in your work to Google Classroom?',
@@ -138,7 +160,9 @@ const Activity = (props) => {
         sendStatement(xapiData);
       }
     });
-  }, [xAPILoaded, match.path, match.params, activityId, student, submission]);
+    console.log('AE maybe hooked?');
+    setXAPIEventHooked(true);
+  }, [xAPILoaded, activityId, student, submission]);
 
   // If the activity has already been submitted to google classroom, redirect to summary page
   useEffect(() => {
@@ -146,7 +170,7 @@ const Activity = (props) => {
       clearInterval(intervalPointer);
       history.push(`/gclass/summary/${match.params.userId}/${match.params.courseId}/${match.params.activityId}/${submission.coursework_id}/${submission.id}`);
     }
-  }, [submission, match]);
+  }, [submission]);
 
   return (
     <div id="curriki-h5p-wrapper">
@@ -177,7 +201,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  loadH5pSettings: (activityId) => dispatch(loadH5pResourceSettings(activityId)),
+  loadH5pSettings: (activityId, studentId) => dispatch(loadH5pResourceSettings(activityId, studentId)),
   getSubmission: (classworkId, courseId, auth) => dispatch(getSubmissionAction(classworkId, courseId, auth)),
   sendStatement: (statement) => dispatch(loadH5pResourceXapi(statement)),
   turnIn: (classworkId, courseId, auth) => dispatch(turnInAction(classworkId, courseId, auth)),

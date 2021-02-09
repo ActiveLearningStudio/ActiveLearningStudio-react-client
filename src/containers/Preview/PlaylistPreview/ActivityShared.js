@@ -96,7 +96,7 @@ const ActivityShared = (props) => {
 
       const stopXapi = () => clearInterval(checkXapi);
     }
-  }, [dispatch, embed, match.params.activityId, props]);
+  }, [dispatch, embed, match.params.activityId]);
 
   return (
     <>

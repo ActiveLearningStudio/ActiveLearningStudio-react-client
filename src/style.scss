@@ -248,3 +248,15 @@ code {
     }
   }
 }
+
+.react-confirm-alert-overlay {
+  background: rgba(0, 0, 0, 0.5) !important;
+  z-index: 1050;
+}
+
+.react-confirm-alert {
+  min-width: 650px;
+  background: #fff !important;
+  padding: 25px;
+  border-radius: 5px;
+}

@@ -10,7 +10,17 @@ import {
   NEXT_PAGE,
   SHOW_RESULTS,
   GRADE_PASS_BACK,
+  LTI_ACTIVITY_INIT,
+  DO_BROWSE,
 } from '../actionTypes';
+
+export const browseAction = (params) => async (dispatch) => {
+  const results = await canvasService.browse(params);
+  dispatch({
+    type: DO_BROWSE,
+    results,
+  });
+};
 
 export const searchAction = (params) => async (dispatch) => {
   const results = await canvasService.search(params);
@@ -72,9 +82,15 @@ export const nextPageAction = () => async (dispatch) => {
   });
 };
 
-export const gradePassBackAction = (session, gpb, score) => async (dispatch) => {
+export const gradePassBackAction = (session, gpb, score, isLearner) => async (dispatch) => {
   dispatch({
     type: GRADE_PASS_BACK,
   });
-  await canvasService.tsugiGradePassback(session, gpb, score);
+  if (isLearner) await canvasService.tsugiGradePassback(session, gpb, score);
+};
+
+export const activityInitAction = () => async (dispatch) => {
+  dispatch({
+    type: LTI_ACTIVITY_INIT,
+  });
 };

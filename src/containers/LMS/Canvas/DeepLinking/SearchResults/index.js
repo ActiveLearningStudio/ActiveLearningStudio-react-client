@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import {
   backToSearchAction,
   setPreviewActivityAction,
+  closePreviewAction,
   previousPageAction,
   nextPageAction,
   searchAction,
@@ -26,6 +27,7 @@ const SearchResults = (props) => {
     previousPage,
     nextPage,
     setPreviewActivity,
+    closePreview,
     search,
   } = props;
 
@@ -38,7 +40,10 @@ const SearchResults = (props) => {
   const launchPreview = (id) => {
     const activityId = parseInt(id, 10);
     const activity = activities.find((act) => act.id === activityId);
-    if (activity) setPreviewActivity(activity);
+    if (activity) {
+      closePreview();
+      setPreviewActivity(activity);
+    }
   };
 
   const addToLMS = (id) => {
@@ -74,7 +79,7 @@ const SearchResults = (props) => {
           </button>
         </div>
       </div>
-      {activities.length === 0 && (
+      {activities !== null && activities.length === 0 && (
         <div className="row">
           <div className="col">
             <Alert variant="warning">
@@ -83,7 +88,7 @@ const SearchResults = (props) => {
           </div>
         </div>
       )}
-      {activities.length > 0 && activities.map((activity) => (
+      {activities !== null && activities.length > 0 && activities.map((activity) => (
         <div className="row">
           <div className="col">
             <div key={activity.id} className="row result">
@@ -156,6 +161,7 @@ SearchResults.propTypes = {
   previousPage: PropTypes.func.isRequired,
   nextPage: PropTypes.func.isRequired,
   setPreviewActivity: PropTypes.func.isRequired,
+  closePreview: PropTypes.func.isRequired,
   search: PropTypes.func.isRequired,
 };
 
@@ -171,6 +177,7 @@ const mapDispatchToProps = (dispatch) => ({
   previousPage: () => dispatch(previousPageAction()),
   nextPage: () => dispatch(nextPageAction()),
   setPreviewActivity: (activity) => dispatch(setPreviewActivityAction(activity)),
+  closePreview: () => dispatch(closePreviewAction()),
   search: (params) => dispatch(searchAction(params)),
 });
 

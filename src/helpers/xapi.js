@@ -1,8 +1,6 @@
 // list of H5P activities links (react routes) where xAPI dispatch need to initialized
 export function allowedH5PActvityPaths() {
   return [
-    // '/project/:projectId/playlist/:playlistId/activity/:activityId/preview',
-    // '/activity/:activityId/shared',
     '/gclass/launch/:userId/:courseId/:activityId/:classworkId',
     '/lti-tools/activity/:activityId',
   ];
@@ -30,33 +28,58 @@ export function extendStatement(statement, params, skipped = false) {
     submissionId,
     attemptId,
     studentId,
+    courseId, // LMS course id
+    homepage,
+    toolPlatform,
   } = params;
+
   const platform = H5PActvityPathMapToPlatform().find((el) => el[path]);
   if (platform === undefined) return;
 
   const statementExtended = { ...statement };
-  const grouping = [
-    {
-      objectType: 'Activity',
-      id: `${window.location.origin}/activity/${activityId}/submission/${submissionId}`,
-    },
-  ];
   const other = [
     {
       objectType: 'Activity',
       id: `${window.location.origin}/activity/${activityId}/submission/${submissionId}/${attemptId}`,
     },
+    {
+      objectType: 'Activity',
+      id: `${window.location.origin}/activity/${activityId}/submission/${submissionId}`,
+    },
   ];
+
+  if (platform[path] === 'Google Classroom') {
+    other.push({
+      objectType: 'Activity',
+      id: `${window.location.origin}/gclass/${courseId}`,
+    });
+  }
+
+  if (platform[path] === 'LTI client') {
+    other.push({
+      objectType: 'Activity',
+      id: `${window.location.origin}/lti/${courseId}`,
+    });
+  }
+
   const actor = {
     objectType: 'Agent',
     account: {
-      homePage: 'https://classroom.google.com',
+      homePage: homepage || 'https://classroom.google.com',
       name: studentId,
     },
   };
-  statementExtended.context.platform = platform[path];
-  statementExtended.context.contextActivities.grouping = grouping;
-  statementExtended.context.contextActivities.other = other;
+
+  if (statementExtended.context) {
+    if (platform[path] === 'LTI client') {
+      statementExtended.context.platform = toolPlatform;
+    } else {
+      statementExtended.context.platform = platform[path];
+    }
+
+    statementExtended.context.contextActivities.other = other;
+  }
+
   statementExtended.actor = actor;
 
   // If the statement is marked as skipped, we supply the proper verb

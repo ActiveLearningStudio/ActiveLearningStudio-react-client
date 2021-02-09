@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { loadH5pSettingsActivity } from 'store/actions/resource';
+import Swal from 'sweetalert2';
 
 const H5PEditorEdit = (props) => {
   const {
@@ -16,7 +17,6 @@ const H5PEditorEdit = (props) => {
 
   const [submitAction, setSubmitAction] = useState('create');
   // const [h5pFile, setH5pFile] = useState(null);
-
   useEffect(() => {
     loadH5pSettings();
   }, [loadH5pSettings]);
@@ -27,14 +27,23 @@ const H5PEditorEdit = (props) => {
 
   const submitResource = (event) => {
     event.preventDefault();
-
-    handleEditResourceSubmit(
-      match.params.playlistId,
-      resource.editResource.h5pLib,
-      resource.editResource.h5pLibType,
-      match.params.activityId,
-      resource.newResource.metadata,
-    );
+    const parameters = window.h5peditorCopy.getParams();
+    const { metadata } = parameters;
+    if (metadata.title !== undefined) {
+      Swal.fire({
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      handleEditResourceSubmit(
+        match.params.playlistId,
+        resource.editResource.h5pLib,
+        resource.editResource.h5pLibType,
+        match.params.activityId,
+        resource.newResource.metadata,
+      );
+    }
   };
 
   if (h5pParams === '') {
@@ -122,6 +131,7 @@ const H5PEditorEdit = (props) => {
         <div className="form-group">
           <div className="col-md-9 col-md-offset-3">
             <button
+              // ref={submitButtonRef}
               type="submit"
               className="add-resource-submit-btn"
               onClick={submitResource}

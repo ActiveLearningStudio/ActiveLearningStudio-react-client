@@ -105,7 +105,8 @@ $filled: #44ca92;
           cursor: text;
 
           input {
-            max-width: 145px;
+            width: 100%;
+            min-width: 100px;
             padding: 0 10px 0 5px;
             background: #FFFFFF;
             border: solid 1px #FFFFFF;
@@ -149,6 +150,7 @@ $filled: #44ca92;
           .input-container {
             display: flex;
             flex-wrap: nowrap;
+            flex: 1;
 
             .close-circle {
               position: absolute;

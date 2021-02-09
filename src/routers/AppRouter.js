@@ -9,6 +9,8 @@ import {
 import * as History from 'history';
 import loadable from '@loadable/component';
 import ReactGA from 'react-ga';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import Header from 'components/Header';
 import Sidebar from 'components/Sidebar';
@@ -22,6 +24,7 @@ history.listen((location) => {
   ReactGA.pageview(location.pathname);
 });
 const LoginPage = loadable(() => import('../containers/Auth/LoginPage'));
+const SubscribePage = loadable(() => import('../containers/Auth/SubscribePage'));
 const RegisterPage = loadable(() => import('../containers/Auth/RegisterPage'));
 const ForgotPasswordPage = loadable(() => import('../containers/Auth/ForgotPasswordPage'));
 const ResetPasswordPage = loadable(() => import('../containers/Auth/ResetPasswordPage'));
@@ -42,7 +45,7 @@ const PreviewPage = loadable(() => import('../containers/Preview'));
 const LtiPreviewPage = loadable(() => import('../containers/LtiPreviewPage'));
 const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared'));
 const SearchResult = loadable(() => import('../containers/Search'));
-const LtiModel = loadable(() => import('../containers/LtiModel'));
+// const LtiModel = loadable(() => import('../containers/LtiModel'));
 // const TeamsPage = loadable(() => import('../containers/Teams'));
 // const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
 // const AddTeamProjectMemberPage = loadable(() => import('../containers/Teams/AddMembers'));
@@ -50,22 +53,21 @@ const GclassActivityPage = loadable(() => import('../containers/LMS/GoogleClassr
 const ActivityCreate = loadable(() => import('../containers/CreateActivity'));
 const EditActivity = loadable(() => import('../containers/EditActivity'));
 const GclassSummaryPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassSummaryPage'));
-// const SearchPage = loadable(() => import('../containers/LMS/Canvas/DeepLinking/SearchPage'));
+const SearchPage = loadable(() => import('../containers/LMS/Canvas/DeepLinking/SearchPage'));
 const LtiActivity = loadable(() => import('../containers/LMS/LTI/Activity'));
 
-const AppRouter = () => {
+const AppRouter = (props) => {
   useEffect(() => {
     ReactGA.pageview(window.location.pathname);
   });
 
   if (window.location.href.includes('/shared') || window.location.href.includes('/lti')
     || window.location.href.includes('/embed') || window.location.href.includes('/register')
-    || window.location.href.includes('/forgot-password') || window.location.href.includes('/neaf-login')
-    || window.location.href.includes('/neaf-register') || window.location.href.includes('/vivensity-login')
-    || window.location.href.includes('/vivensity-register') || window.location.href.includes('/login')) {
+    || window.location.href.includes('/forgot-password') || window.location.href.includes('gclass/launch')) {
     document.body.classList.add('mobile-responsive');
   }
 
+  const { user } = props;
   return (
     <Router history={history}>
       <Switch>
@@ -94,8 +96,8 @@ const AppRouter = () => {
         <OpenRoute
           exact
           path="/lti/content/:lmsUrl/:ltiClientId/:redirectUrl"
-          component={LtiModel}
-          // component={SearchPage}
+          // component={LtiModel}
+          component={SearchPage}
         />
         <OpenRoute
           exact
@@ -125,11 +127,11 @@ const AppRouter = () => {
           component={PreviewPage}
           previewType="playlist"
         />
-        <PrivateRoute
+
+        <OpenRoute
           exact
-          path="/project/:projectId/playlist/:playlistId/activity/:activityId/preview/shared"
-          component={LtiPreviewPage}
-          previewType="playlistShared"
+          path="/lti-tools/activity/:activityId"
+          component={LtiActivity}
         />
         <PublicRoute exact path="/login" component={LoginPage} />
         <PublicRoute exact path="/register" component={RegisterPage} />
@@ -138,92 +140,103 @@ const AppRouter = () => {
         <PublicRoute exact path="/verify-email" component={ConfirmEmailPage} />
         <PublicRoute exact path="/neaf-register" component={NeafRegister} />
         <PublicRoute exact path="/neaf-login" component={NeafLogin} />
-        <PublicRoute exact path="/vivensity-register" component={VevensityRegister} />
-        <PublicRoute exact path="/vivensity-login" component={VevensityLogin} />
+        <PublicRoute exact path="/nevada-register" component={VevensityRegister} />
+        <PublicRoute exact path="/nevada-login" component={VevensityLogin} />
         <Route>
-          <Header />
-          <div className="main-content-wrapper">
-            <div className="sidebar-wrapper">
-              <Sidebar />
-            </div>
-            <Switch>
-              <PrivateRoute exact path="/" component={ProjectsPage} />
-              <PrivateRoute exact path="/account" component={ProfilePage} />
-              <PrivateRoute exact path="/change-password" component={ChangePasswordPage} />
+          {
+           (user && !user.subscribed)
+             ? <SubscribePage />
+             : (
+               <>
+                 <Header />
+                 <div className="main-content-wrapper">
+                   <div className="sidebar-wrapper">
+                     <Sidebar />
+                   </div>
+                   <Switch>
+                     <PrivateRoute exact path="/" component={ProjectsPage} />
+                     <PrivateRoute exact path="/account" component={ProfilePage} />
+                     <PrivateRoute exact path="/change-password" component={ChangePasswordPage} />
 
-              <PrivateRoute exact path="/dashboard" component={DashboardPage} />
-              <PrivateRoute exact path="/notification" component={NotificationPage} />
+                     <PrivateRoute exact path="/dashboard" component={DashboardPage} />
+                     <PrivateRoute exact path="/notification" component={NotificationPage} />
 
-              {/* <PrivateRoute exact path="/teams" component={TeamsPage} overview />
-              <PrivateRoute exact path="/teams/create-team" component={TeamsPage} creation />
-              <PrivateRoute exact path="/teams/:teamId" component={TeamsPage} teamShow />
-              <PrivateRoute exact path="/teams/:teamId/projects" component={TeamsPage} projectShow />
-              <PrivateRoute exact path="/teams/:teamId/channel" component={TeamsPage} channelShow />
-              <PrivateRoute exact path="/teams/:teamId/add-projects" component={AddTeamProjectsPage} />
-              <PrivateRoute exact path="/teams/:teamId/projects/:projectId/add-member" component={AddTeamProjectMemberPage} /> */}
+                     {/* <PrivateRoute exact path="/teams" component={TeamsPage} overview />
+                     <PrivateRoute exact path="/teams/create-team" component={TeamsPage} creation />
+                     <PrivateRoute exact path="/teams/:teamId" component={TeamsPage} teamShow />
+                     <PrivateRoute exact path="/teams/:teamId/projects" component={TeamsPage} projectShow />
+                     <PrivateRoute exact path="/teams/:teamId/channel" component={TeamsPage} channelShow />
+                     <PrivateRoute exact path="/teams/:teamId/add-projects" component={AddTeamProjectsPage} />
+                     <PrivateRoute exact path="/teams/:teamId/projects/:projectId/add-member" component={AddTeamProjectMemberPage} /> */}
 
-              <PrivateRoute
-                exact
-                path="/project/create"
-                component={ProjectsPage}
-                showCreateProjectPopup
-                editMode={false}
-              />
-              <PrivateRoute
-                exact
-                path="/project/:projectId"
-                component={PlaylistsPage}
-              />
-              <PrivateRoute
-                exact
-                path="/project/:projectId/preview"
-                component={PreviewPage}
-              />
-              <PrivateRoute
-                exact
-                path="/project/:projectId/edit"
-                component={ProjectsPage}
-                showEditProjectPopup
-                editMode
-              />
+                     <PrivateRoute
+                       exact
+                       path="/project/create"
+                       component={ProjectsPage}
+                       showCreateProjectPopup
+                       editMode={false}
+                     />
+                     <PrivateRoute
+                       exact
+                       path="/project/:projectId"
+                       component={PlaylistsPage}
+                     />
+                     <PrivateRoute
+                       exact
+                       path="/project/:projectId/preview"
+                       component={PreviewPage}
+                     />
+                     <PrivateRoute
+                       exact
+                       path="/project/:projectId/edit"
+                       component={ProjectsPage}
+                       showEditProjectPopup
+                       editMode
+                     />
 
-              <PrivateRoute
-                exact
-                path="/project/:projectId/playlist/create"
-                component={PlaylistsPage}
-                openCreatePopup
-              />
-              <PrivateRoute
-                exact
-                path="/project/:projectId/playlist/:playlistId/preview"
-                component={PreviewPage}
-                previewType="playlist"
-              />
-              <PrivateRoute
-                exact
-                path="/project/:projectId/playlist/:playlistId/activity/create"
-                component={ActivityCreate}
-                // openCreateResourcePopup
-              />
-              <PrivateRoute
-                exact
-                path="/project/:projectId/playlist/:playlistId/activity/:activityId/edit"
-                component={EditActivity}
-                openEditResourcePopup
-              />
+                     <PrivateRoute
+                       exact
+                       path="/project/:projectId/playlist/create"
+                       component={PlaylistsPage}
+                       openCreatePopup
+                     />
+                     <PrivateRoute
+                       exact
+                       path="/project/:projectId/playlist/:playlistId/activity/create"
+                       component={ActivityCreate}
+                       // openCreateResourcePopup
+                     />
+                     <PrivateRoute
+                       exact
+                       path="/project/:projectId/playlist/:playlistId/activity/:activityId/edit"
+                       component={EditActivity}
+                       openEditResourcePopup
+                     />
 
-              <PrivateRoute
-                exact
-                path="/search"
-                component={SearchResult}
-              />
-              <Redirect to="/" />
-            </Switch>
-          </div>
+                     <PrivateRoute
+                       exact
+                       path="/search"
+                       component={SearchResult}
+                     />
+                     <Redirect to="/" />
+                   </Switch>
+                 </div>
+               </>
+             )
+           }
         </Route>
       </Switch>
     </Router>
   );
 };
+AppRouter.propTypes = {
+  user: PropTypes.object,
+};
+AppRouter.defaultProps = {
+  user: null,
+};
 
-export default AppRouter;
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+});
+export default connect(mapStateToProps)(AppRouter);

@@ -65,7 +65,7 @@ export default (state = INITIAL_STATE, action) => {
         isInviting: false,
         selectedTeam: {
           ...state.selectedTeam,
-          users: [...(state.selectedTeam.users || []), ...action.payload.users],
+          users: [...action.payload.users],
         },
       };
     case actionTypes.INVITE_MEMBER_CONFIRM_FAIL:

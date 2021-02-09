@@ -4,12 +4,14 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { GoogleLogin } from 'react-google-login';
 import { Alert } from 'react-bootstrap';
+
 import logo from 'assets/images/logo.svg';
 import {
   setStudentAuthAction,
   getStudentCoursesAction,
 } from 'store/actions/gapi';
 import Activity from 'containers/LMS/GoogleClassroom/Activity';
+
 import './styles.scss';
 
 function GclassActivityPage(props) {
@@ -22,7 +24,6 @@ function GclassActivityPage(props) {
   } = props;
   const { activityId, courseId } = match.params;
   const [authorized, setAuthorized] = useState(null);
-
   // Gets student courses
   useEffect(() => {
     if (student === null) return;
@@ -55,7 +56,6 @@ function GclassActivityPage(props) {
             charset="UTF-8"
           />
         </Helmet>
-
         <div className="flex-container previews">
           <div className="activity-bg left-vdo">
             <div className="main-item-wrapper desktop-view">
@@ -89,6 +89,7 @@ function GclassActivityPage(props) {
                           buttonText="Login"
                           onSuccess={handleLogin}
                           onFailure={handleLogin}
+                          isSignedIn
                           scope="
                             https://www.googleapis.com/auth/classroom.courses.readonly
                             https://www.googleapis.com/auth/classroom.courses

@@ -71,9 +71,19 @@ const gapiReducer = (state = defaultAuthState(), action) => {
       };
 
     case GET_OUTCOME_SUMMARY:
+      const totalAnswered = action.outcomeSummary.summary.filter((question) => (question.verb !== 'skipped' && question.verb !== 'attempted')).length;
+      const totalAttempted = action.outcomeSummary.summary.filter((question) => question.verb === 'attempted').length + action.outcomeSummary['non-scoring'].length;
+      const totalSkipped = action.outcomeSummary.summary.filter((question) => question.verb === 'skipped').length;
+
       return {
         ...state,
-        outcomeSummary: action.outcomeSummary,
+        outcomeSummary: {
+          summary: action.outcomeSummary.summary,
+          nonScoring: action.outcomeSummary['non-scoring'],
+          totalAnswered,
+          totalSkipped,
+          totalAttempted,
+        },
       };
 
     default:
