@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { GoogleLogin } from 'react-google-login';
 import { Alert } from 'react-bootstrap';
-
-import logo from 'assets/images/newvivensity.png';
+import logo from 'assets/images/logo_sparked_black.png';
 import {
   setStudentAuthAction,
   getStudentCoursesAction,
@@ -66,7 +65,7 @@ function GclassActivityPage(props) {
                   <div className="container">
                     <div className="row">
                       <div className="col text-center">
-                        <img style={{ width: '100%' }} className="curriki-logo" src={logo} alt="" />
+                        <img style={{ width: '42%' }} className="curriki-logo" src={logo} alt="" />
                       </div>
                     </div>
 
@@ -89,6 +88,7 @@ function GclassActivityPage(props) {
                           buttonText="Login"
                           onSuccess={handleLogin}
                           onFailure={handleLogin}
+                          isSignedIn
                           scope="
                             https://www.googleapis.com/auth/classroom.courses.readonly
                             https://www.googleapis.com/auth/classroom.courses

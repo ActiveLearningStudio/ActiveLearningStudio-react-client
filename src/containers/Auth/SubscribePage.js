@@ -34,7 +34,9 @@ class SubscribePage extends Component {
     const { acceptTerms } = this.props;
 
     if (allTerms) {
+      const { history } = this.props;
       acceptTerms();
+      history.push('/');
     }
   };
 
@@ -118,6 +120,7 @@ class SubscribePage extends Component {
 SubscribePage.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   acceptTerms: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

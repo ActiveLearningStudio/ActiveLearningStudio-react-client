@@ -70,11 +70,18 @@ const Activity = (props) => {
             <div className="col">
               <h2>
                 <FontAwesomeIcon icon="star" />
-                {`${outcome.summary.length} Question(s) Answered`}
+                {`${outcome.totalAnswered} Question(s) Answered`}
               </h2>
-              <p className="ml-4">
-                {`You have answered ${outcome.summary.length} questions.`}
-              </p>
+              {outcome.totalSkipped > 0 && (
+                <p className="ml-4">
+                  {`You skipped ${outcome.totalSkipped} activities.`}
+                </p>
+              )}
+              {outcome.totalAttempted > 0 && (
+                <p className="ml-4">
+                  {`You attempted ${outcome.totalAttempted} activities.`}
+                </p>
+              )}
             </div>
           </div>
           <div className="row">
@@ -127,18 +134,14 @@ const Activity = (props) => {
                         {outcome.nonScoring.map((question) => (
                           <tr>
                             <td>
-                              {question.description}
+                              <p dangerouslySetInnerHTML={{ __html: ` - ${question.description}` }} />
                             </td>
                             <td>
                               {Array.isArray(question.response) && question.response.map((response) => (
-                                <p>
-                                  {response}
-                                </p>
+                                <p dangerouslySetInnerHTML={{ __html: ` - ${response}` }} />
                               ))}
                               {typeof question.response === 'string' && (
-                                <p>
-                                  {question.response}
-                                </p>
+                                <p dangerouslySetInnerHTML={{ __html: ` - ${question.response}` }} />
                               )}
                             </td>
                           </tr>
@@ -163,17 +166,17 @@ const Activity = (props) => {
                           {question.verb === 'skipped' && (
                             <>
                               <Badge className="skipped-badge" variant="warning">Skipped</Badge>
-                              {` - ${question.name}`}
+                              <span dangerouslySetInnerHTML={{ __html: ` - ${question.name}` }} />
                             </>
                           )}
                           {question.verb === 'attempted' && (
                             <>
                               <Badge className="skipped-badge" variant="warning">Attempted</Badge>
-                              {` - ${question.name}`}
+                              <span dangerouslySetInnerHTML={{ __html: ` - ${question.name}` }} />
                             </>
                           )}
                           {question.verb !== 'attempted' && question.verb !== 'skipped' && (
-                            `${question.duration} - ${question.name}`
+                            <span dangerouslySetInnerHTML={{ __html: `${question.duration} - ${question.name}` }} />
                           )}
                         </td>
                         <td>{`${question.score.raw}/${question.score.max}`}</td>

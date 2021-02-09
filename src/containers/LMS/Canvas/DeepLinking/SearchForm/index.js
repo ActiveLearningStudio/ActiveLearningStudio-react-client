@@ -8,7 +8,6 @@ import {
   educationLevels as levels,
   subjects,
 } from 'components/ResourceCard/AddResource/dropdownData';
-import logo from 'assets/images/logo.png';
 import './style.scss';
 
 const SearchForm = (props) => {
@@ -45,14 +44,6 @@ const SearchForm = (props) => {
 
   return (
     <form onSubmit={onSubmit} className="search-form">
-      <div className="row">
-        <div className="col">
-          <h2>Search Resources</h2>
-        </div>
-        <div className="col text-right">
-          <img src={logo} alt="Curriki Studio Logo" />
-        </div>
-      </div>
       <div className="row mt-2">
         <div className="col">
           <div className="form-group">

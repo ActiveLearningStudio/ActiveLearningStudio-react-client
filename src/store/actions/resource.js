@@ -430,7 +430,6 @@ export const editResourceAction = (
       action: 'create',
       data: h5pdata,
     };
-    Swal.showLoading();
     const response = await resourceService.h5pSettingsUpdate(activityId, dataUpload);
     Swal.close();
 
