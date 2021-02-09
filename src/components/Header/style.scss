@@ -1,3 +1,5 @@
+@import 'assets/css/index';
+
 .top-header {
   .dropdown-toggle {
     background: transparent !important;
@@ -26,7 +28,7 @@
     }
 
     .notification-status {
-      font: normal normal 600 14px/20px Open Sans;
+      font: normal normal 600 14px/20px $rubik;
       letter-spacing: 0;
       color: #8F8FA1;
       padding: 15px 0 5px 25px;
@@ -48,14 +50,14 @@
           border-bottom: 1px solid #f2f0f0;
 
           h2 {
-            font: normal normal 600 18px/20px Open Sans;
+            font: normal normal 600 18px/20px $rubik;
             letter-spacing: 0;
             color: #0F0F0F;
             margin-bottom: 0;
           }
 
           h3 {
-            font: normal normal 600 14px/20px Open Sans;
+            font: normal normal 600 14px/20px $rubik;
             letter-spacing: 0;
             color: #5250C1;
             margin-bottom: 0;
@@ -87,13 +89,13 @@
 
         .all-notification {
           text-decoration: underline;
-          font: normal normal 600 14px/20px Open Sans;
+          font: normal normal 600 14px/20px $rubik;
           color: #5250C1;
           width: 100%;
         }
 
         .notification-setting {
-          font: normal normal 600 14px/20px Open Sans;
+          font: normal normal 600 14px/20px $rubik;
           letter-spacing: 0;
           color: #5250C1;
           display: flex;
@@ -190,7 +192,7 @@
       }
 
       .keywords-de {
-        background-color: #0F4392;
+        background-color: $curriki-main-blue;
         color: #fff;
         border-radius: 30px;
         padding: 6px 10px;
@@ -262,7 +264,7 @@
     line-height: 24px;
 
     letter-spacing: 0;
-    color: #0F4392;
+    color: $curriki-main-blue;
     text-transform: capitalize;
     opacity: 1;
     padding-bottom: 20px;
@@ -282,7 +284,7 @@
   button {
     font-size: 15px;
     line-height: 20px;
-    background: #0F4392 0% 0% no-repeat padding-box;
+    background: $curriki-main-blue 0% 0% no-repeat padding-box;
     border-radius: 30px;
     opacity: 1;
     border: none;
@@ -411,7 +413,7 @@
 //      input {
 //        background: #fff;
 //        font-size: 14px;
-//        font-family: 'Open Sans', sans-serif;
+//        font-family: $rubik, sans-serif;
 //        font-weight: 400;
 //        border: 1px solid #b7b7b7;
 //        height: 53px;
@@ -518,14 +520,14 @@
 //
 //            h4 {
 //              font-size: 22px;
-//              font-family: 'Open Sans', sans-serif;
+//              font-family: $rubik, sans-serif;
 //              font-weight: 300;
 //            }
 //
 //            p {
 //              margin-bottom: 0;
 //              font-size: 16px;
-//              font-family: 'Hind Siliguri', sans-serif;
+//              font-family: '$halvetica', sans-serif;
 //              font-weight: 300;
 //              color: #777;
 //            }

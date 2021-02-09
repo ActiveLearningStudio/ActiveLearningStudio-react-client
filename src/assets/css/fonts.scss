@@ -1,0 +1,278 @@
+$rubik: 'rubic';
+$halvetica: 'halvetica';
+
+@font-face {
+    font-family: $rubik;
+    src: url('../fonts/Rubik-Light.eot');
+    src: url('../fonts/Rubik-Light.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Rubik-Light.woff2') format('woff2'),
+        url('../fonts/Rubik-Light.woff') format('woff'),
+        url('../fonts/Rubik-Light.ttf') format('truetype'),
+        url('../fonts/Rubik-Light.svg#Rubik-Light') format('svg');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $rubik;
+    src: url('../fonts/Rubik-LightItalic.eot');
+    src: url('../fonts/Rubik-LightItalic.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Rubik-LightItalic.woff2') format('woff2'),
+        url('../fonts/Rubik-LightItalic.woff') format('woff'),
+        url('../fonts/Rubik-LightItalic.ttf') format('truetype'),
+        url('../fonts/Rubik-LightItalic.svg#Rubik-LightItalic') format('svg');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $rubik;
+    src: url('../fonts/Rubik-Medium.eot');
+    src: url('../fonts/Rubik-Medium.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Rubik-Medium.woff2') format('woff2'),
+        url('../fonts/Rubik-Medium.woff') format('woff'),
+        url('../fonts/Rubik-Medium.ttf') format('truetype'),
+        url('../fonts/Rubik-Medium.svg#Rubik-Medium') format('svg');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $rubik;
+    src: url('../fonts/Rubik-MediumItalic.eot');
+    src: url('../fonts/Rubik-MediumItalic.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Rubik-MediumItalic.woff2') format('woff2'),
+        url('../fonts/Rubik-MediumItalic.woff') format('woff'),
+        url('../fonts/Rubik-MediumItalic.ttf') format('truetype'),
+        url('../fonts/Rubik-MediumItalic.svg#Rubik-MediumItalic') format('svg');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $rubik;
+    src: url('../fonts/Rubik-SemiBold.eot');
+    src: url('../fonts/Rubik-SemiBold.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Rubik-SemiBold.woff2') format('woff2'),
+        url('../fonts/Rubik-SemiBold.woff') format('woff'),
+        url('../fonts/Rubik-SemiBold.ttf') format('truetype'),
+        url('../fonts/Rubik-SemiBold.svg#Rubik-SemiBold') format('svg');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $rubik;
+    src: url('../fonts/Rubik-Regular.eot');
+    src: url('../fonts/Rubik-Regular.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Rubik-Regular.woff2') format('woff2'),
+        url('../fonts/Rubik-Regular.woff') format('woff'),
+        url('../fonts/Rubik-Regular.ttf') format('truetype'),
+        url('../fonts/Rubik-Regular.svg#Rubik-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $rubik;
+    src: url('../fonts/Rubik-Black.eot');
+    src: url('../fonts/Rubik-Black.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Rubik-Black.woff2') format('woff2'),
+        url('../fonts/Rubik-Black.woff') format('woff'),
+        url('../fonts/Rubik-Black.ttf') format('truetype'),
+        url('../fonts/Rubik-Black.svg#Rubik-Black') format('svg');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $rubik;
+    src: url('../fonts/Rubik-SemiBoldItalic.eot');
+    src: url('../fonts/Rubik-SemiBoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Rubik-SemiBoldItalic.woff2') format('woff2'),
+        url('../fonts/Rubik-SemiBoldItalic.woff') format('woff'),
+        url('../fonts/Rubik-SemiBoldItalic.ttf') format('truetype'),
+        url('../fonts/Rubik-SemiBoldItalic.svg#Rubik-SemiBoldItalic') format('svg');
+    font-weight: 600;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $rubik;
+    src: url('../fonts/Rubik-BlackItalic.eot');
+    src: url('../fonts/Rubik-BlackItalic.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Rubik-BlackItalic.woff2') format('woff2'),
+        url('../fonts/Rubik-BlackItalic.woff') format('woff'),
+        url('../fonts/Rubik-BlackItalic.ttf') format('truetype'),
+        url('../fonts/Rubik-BlackItalic.svg#Rubik-BlackItalic') format('svg');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $rubik;
+    src: url('../fonts/Rubik-Bold.eot');
+    src: url('../fonts/Rubik-Bold.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Rubik-Bold.woff2') format('woff2'),
+        url('../fonts/Rubik-Bold.woff') format('woff'),
+        url('../fonts/Rubik-Bold.ttf') format('truetype'),
+        url('../fonts/Rubik-Bold.svg#Rubik-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $rubik;
+    src: url('../fonts/Rubik-BoldItalic.eot');
+    src: url('../fonts/Rubik-BoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Rubik-BoldItalic.woff2') format('woff2'),
+        url('../fonts/Rubik-BoldItalic.woff') format('woff'),
+        url('../fonts/Rubik-BoldItalic.ttf') format('truetype'),
+        url('../fonts/Rubik-BoldItalic.svg#Rubik-BoldItalic') format('svg');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $rubik;
+    src: url('../fonts/Rubik-ExtraBold.eot');
+    src: url('../fonts/Rubik-ExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Rubik-ExtraBold.woff2') format('woff2'),
+        url('../fonts/Rubik-ExtraBold.woff') format('woff'),
+        url('../fonts/Rubik-ExtraBold.ttf') format('truetype'),
+        url('../fonts/Rubik-ExtraBold.svg#Rubik-ExtraBold') format('svg');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $rubik;
+    src: url('../fonts/Rubik-ExtraBoldItalic.eot');
+    src: url('../fonts/Rubik-ExtraBoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Rubik-ExtraBoldItalic.woff2') format('woff2'),
+        url('../fonts/Rubik-ExtraBoldItalic.woff') format('woff'),
+        url('../fonts/Rubik-ExtraBoldItalic.ttf') format('truetype'),
+        url('../fonts/Rubik-ExtraBoldItalic.svg#Rubik-ExtraBoldItalic') format('svg');
+    font-weight: 800;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $rubik;
+    src: url('../fonts/Rubik-Italic.eot');
+    src: url('../fonts/Rubik-Italic.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Rubik-Italic.woff2') format('woff2'),
+        url('../fonts/Rubik-Italic.woff') format('woff'),
+        url('../fonts/Rubik-Italic.ttf') format('truetype'),
+        url('../fonts/Rubik-Italic.svg#Rubik-Italic') format('svg');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+/* halvetica */
+
+@font-face {
+    font-family: $halvetica;
+    src: url('../fonts/HelveticaRounded-Bold.eot');
+    src: url('../fonts/HelveticaRounded-Bold.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/HelveticaRounded-Bold.woff2') format('woff2'),
+        url('../fonts/HelveticaRounded-Bold.woff') format('woff'),
+        url('../fonts/HelveticaRounded-Bold.ttf') format('truetype'),
+        url('../fonts/HelveticaRounded-Bold.svg#HelveticaRounded-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $halvetica;
+    src: url('../fonts/Helvetica-Light.eot');
+    src: url('../fonts/Helvetica-Light.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Helvetica-Light.woff2') format('woff2'),
+        url('../fonts/Helvetica-Light.woff') format('woff'),
+        url('../fonts/Helvetica-Light.ttf') format('truetype'),
+        url('../fonts/Helvetica-Light.svg#Helvetica-Light') format('svg');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $halvetica;
+    src: url('../fonts/Helvetica-Bold.eot');
+    src: url('../fonts/Helvetica-Bold.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Helvetica-Bold.woff2') format('woff2'),
+        url('../fonts/Helvetica-Bold.woff') format('woff'),
+        url('../fonts/Helvetica-Bold.ttf') format('truetype'),
+        url('../fonts/Helvetica-Bold.svg#Helvetica-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $halvetica;
+    src: url('../fonts/Helvetica.eot');
+    src: url('../fonts/Helvetica.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Helvetica.woff2') format('woff2'),
+        url('../fonts/Helvetica.woff') format('woff'),
+        url('../fonts/Helvetica.ttf') format('truetype'),
+        url('../fonts/Helvetica.svg#Helvetica') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $halvetica;
+    src: url('../fonts/Helvetica-Oblique.eot');
+    src: url('../fonts/Helvetica-Oblique.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Helvetica-Oblique.woff2') format('woff2'),
+        url('../fonts/Helvetica-Oblique.woff') format('woff'),
+        url('../fonts/Helvetica-Oblique.ttf') format('truetype'),
+        url('../fonts/Helvetica-Oblique.svg#Helvetica-Oblique') format('svg');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $halvetica;
+    src: url('../fonts/Helvetica-Compressed.eot');
+    src: url('../fonts/Helvetica-Compressed.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Helvetica-Compressed.woff2') format('woff2'),
+        url('../fonts/Helvetica-Compressed.woff') format('woff'),
+        url('../fonts/Helvetica-Compressed.ttf') format('truetype'),
+        url('../fonts/Helvetica-Compressed.svg#Helvetica-Compressed') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $halvetica;
+    src: url('../fonts/Helvetica-BoldOblique.eot');
+    src: url('../fonts/Helvetica-BoldOblique.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Helvetica-BoldOblique.woff2') format('woff2'),
+        url('../fonts/Helvetica-BoldOblique.woff') format('woff'),
+        url('../fonts/Helvetica-BoldOblique.ttf') format('truetype'),
+        url('../fonts/Helvetica-BoldOblique.svg#Helvetica-BoldOblique') format('svg');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+

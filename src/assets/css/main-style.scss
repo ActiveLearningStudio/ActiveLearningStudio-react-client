@@ -1,14 +1,14 @@
-@import url("https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap");
+@import 'index';
 
 @import "~bootstrap/scss/bootstrap";
 
 body {
   margin: 0;
   background-color: #eee;
-  font-family: "Hind Siliguri", sans-serif;
   font-size: 14px;
   color: #777;
+  font-family: $rubik !important;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

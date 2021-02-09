@@ -1,7 +1,9 @@
+@import 'assets/css/index';
+
 .dashboard-page {
   .title {
     color: #607a9b;
-    font-family: 'Open Sans', sans-serif;
+    font-family: $rubik, sans-serif;
     font-weight: 700;
     font-size: 22px;
     padding-top: 10px;

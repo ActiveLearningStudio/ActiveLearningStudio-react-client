@@ -1,3 +1,5 @@
+@import 'assets/css/index';
+
 .create-team-sidebar {
   width: 213px;
   min-width: max-content;
@@ -9,7 +11,7 @@
 
     &.selected {
       .btn-box {
-        font-family: Hind Siliguri, serif;
+        font-family: $halvetica, serif;
 
         .number-box {
           border: 2px solid #084892;
@@ -115,7 +117,7 @@
       padding-top: 7px;
       padding-bottom: 10px;
       display: block;
-      font-family: "Open Sans", sans-serif;
+      font-family: "rubik", sans-serif;
       font-size: 14px;
       font-weight: 400;
       cursor: pointer;
