@@ -168,14 +168,14 @@ function Sidebar(props) {
         </div>
       </Link>
 
-      <Link to="/teams">
+      {/* <Link to="/teams">
         <div className="menu-title">
           <FontAwesomeIcon icon="user-friends" className="mr-2" />
           Teams
         </div>
-      </Link>
+      </Link> */}
 
-      {allState.team.teams.map((team) => (
+      {false && allState.team.teams.map((team) => (
         <div key={team.id} className={`team-item${selectedTeam === team.id ? '' : ' collapsed'}`}>
           <div className="team-label" onClick={() => handleClickTeam(team)}>
             {team.name}
@@ -211,14 +211,14 @@ function Sidebar(props) {
         </div>
       ))}
 
-      <div className="menu-title create-button">
+      {/* <div className="menu-title create-button">
         <Link to="/teams/create-team">
           <div>
             <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
             Create Team
           </div>
         </Link>
-      </div>
+      </div> */}
     </aside>
   );
 }
