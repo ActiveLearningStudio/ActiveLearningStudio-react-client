@@ -19,7 +19,6 @@ const H5PEditor = (props) => {
   } = props;
 
   const uploadFile = useRef();
-  // const submitButtonRef = useRef();
   let defaultState = 'create';
   if (upload) {
     defaultState = 'upload';
@@ -44,11 +43,9 @@ const H5PEditor = (props) => {
     //   submitButtonRef.current.setAttribute('disabled', 'disabled');
     // }
     event.preventDefault();
-
     if (submitAction === 'upload' && h5pFile === null) {
       return true;
     }
-
     if (submitAction === 'upload' && h5pFile !== null) {
       const fileArr = h5pFile.name.split('.');
       const fileExtension = fileArr.length > 0 ? fileArr[fileArr.length - 1] : '';
@@ -61,7 +58,6 @@ const H5PEditor = (props) => {
         submitAction,
         h5pFile,
       };
-
       handleCreateResourceSubmit(
         match.params.playlistId,
         resource.newResource.activity.h5pLib,
@@ -70,22 +66,33 @@ const H5PEditor = (props) => {
         resource.newResource.metadata,
         match.params.projectId,
       );
-    } else if (submitAction === 'create') {
-      const payload = {
-        event,
-        submitAction,
-        h5pFile,
-      };
-
-      handleCreateResourceSubmit(
-        match.params.playlistId,
-        resource.newResource.activity.h5pLib,
-        resource.newResource.activity.type,
-        payload,
-        resource.newResource.metadata,
-        match.params.projectId,
-        props,
-      );
+      return;
+    }
+    const parameters = window.h5peditorCopy.getParams();
+    const { metadata } = parameters;
+    if (metadata.title !== undefined) {
+      Swal.fire({
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      if (submitAction === 'create') {
+        const payload = {
+          event,
+          submitAction,
+          h5pFile,
+        };
+        handleCreateResourceSubmit(
+          match.params.playlistId,
+          resource.newResource.activity.h5pLib,
+          resource.newResource.activity.type,
+          payload,
+          resource.newResource.metadata,
+          match.params.projectId,
+          props,
+        );
+      }
     }
   };
 

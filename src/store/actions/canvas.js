@@ -11,7 +11,16 @@ import {
   SHOW_RESULTS,
   GRADE_PASS_BACK,
   LTI_ACTIVITY_INIT,
+  DO_BROWSE,
 } from '../actionTypes';
+
+export const browseAction = (params) => async (dispatch) => {
+  const results = await canvasService.browse(params);
+  dispatch({
+    type: DO_BROWSE,
+    results,
+  });
+};
 
 export const searchAction = (params) => async (dispatch) => {
   const results = await canvasService.search(params);
