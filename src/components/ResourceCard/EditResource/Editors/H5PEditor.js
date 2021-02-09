@@ -26,9 +26,6 @@ const H5PEditorEdit = (props) => {
   };
 
   const submitResource = (event) => {
-    // if (submitButtonRef.current) {
-    //   submitButtonRef.current.setAttribute('disabled', 'disabled');
-    // }
     event.preventDefault();
     const parameters = window.h5peditorCopy.getParams();
     const { metadata } = parameters;

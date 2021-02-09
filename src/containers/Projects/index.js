@@ -234,7 +234,7 @@ export const ProjectsPage = (props) => {
 
     // scroll to top
     window.scrollTo(0, 0);
-    // document.body.classList.remove('mobile-responsive');
+    document.body.classList.remove('mobile-responsive');
 
     if (!showCreateProjectPopup && !showEditProjectPopup) {
       loadMyProjects();
