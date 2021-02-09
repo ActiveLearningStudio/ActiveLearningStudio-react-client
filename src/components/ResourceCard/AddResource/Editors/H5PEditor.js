@@ -39,9 +39,6 @@ const H5PEditor = (props) => {
   };
 
   const submitResource = (event) => {
-    // if (submitButtonRef.current) {
-    //   submitButtonRef.current.setAttribute('disabled', 'disabled');
-    // }
     event.preventDefault();
     if (submitAction === 'upload' && h5pFile === null) {
       return true;

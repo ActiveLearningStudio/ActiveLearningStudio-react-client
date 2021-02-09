@@ -31,7 +31,7 @@ class LoginPage extends React.Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
-    // document.body.classList.remove('mobile-responsive');
+    document.body.classList.remove('mobile-responsive');
   }
 
   onChangeField = (e) => {

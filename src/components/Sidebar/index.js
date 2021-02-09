@@ -106,6 +106,23 @@ function Sidebar(props) {
         </Link>
       </ul>
 
+      {/* <div
+        className="menu-title"
+        onClick={() => {
+          Swal.fire({
+            title: 'STAY TUNED!',
+            text: 'COMING SOON',
+            imageUrl: logo,
+            imageWidth: 400,
+            imageHeight: 200,
+            imageAlt: 'Custom image',
+          });
+        }}
+      >
+        <FontAwesomeIcon icon="user-friends" className="mr-2" />
+        My Teams
+      </div> */}
+
       {/*
       <div className="menu-title">
         <FontAwesomeIcon icon="tasks" className="mr-2" />
@@ -167,6 +184,7 @@ function Sidebar(props) {
               className="ml-2 mt-1"
             />
           </div>
+
           <div className="team-detail-labels">
             <Link
               to={`/teams/${team.id}`}
