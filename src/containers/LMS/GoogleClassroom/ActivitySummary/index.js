@@ -70,7 +70,7 @@ const Activity = (props) => {
             <div className="col">
               <h2>
                 <FontAwesomeIcon icon="star" />
-                {`${outcome.totalAnswered} Question(s) Answered`}
+                {`${outcome.totalAnswered} Responses`}
               </h2>
               {outcome.totalSkipped > 0 && (
                 <p className="ml-4">
@@ -87,12 +87,12 @@ const Activity = (props) => {
           <div className="row">
             <div className="col">
               {outcome.nonScoring && outcome.nonScoring.length > 0 && (
-                <Tabs defaultActiveKey="summary" id="summary-tabs">
+                <Tabs defaultActiveKey="answers" id="summary-tabs">
                   <Tab eventKey="summary" title="Summary">
                     <table className="table table-dark">
                       <thead>
                         <tr>
-                          <th>Answered Questions</th>
+                          <th>Responses</th>
                           <th>Score</th>
                         </tr>
                       </thead>
@@ -122,12 +122,12 @@ const Activity = (props) => {
                       </tbody>
                     </table>
                   </Tab>
-                  <Tab eventKey="answers" title="Answers">
+                  <Tab eventKey="answers" title="Responses">
                     <table className="table table-dark answers-table">
                       <thead>
                         <tr>
                           <th>Question</th>
-                          <th>Answer</th>
+                          <th>Response</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -155,7 +155,7 @@ const Activity = (props) => {
                 <table className="table table-dark">
                   <thead>
                     <tr>
-                      <th>Answered Questions</th>
+                      <th>Responses</th>
                       <th>Score</th>
                     </tr>
                   </thead>
