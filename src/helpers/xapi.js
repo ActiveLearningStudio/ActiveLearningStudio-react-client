@@ -85,7 +85,7 @@ export function extendStatement(statement, params, skipped = false) {
   // If the statement is marked as skipped, we supply the proper verb
   if (skipped) {
     statementExtended.verb = {
-      id: 'http://id.tincanapi.com/verb/skipped',
+      id: 'http://adlnet.gov/expapi/verbs/skipped',
       display: {
         'en-US': 'skipped',
       },
