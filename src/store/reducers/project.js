@@ -9,7 +9,7 @@ const INITIAL_STATE = {
   projectSelect: {},
   lmsCourse: null,
   clone: [],
-  isSharedProject: false,
+  isSharedProject: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
