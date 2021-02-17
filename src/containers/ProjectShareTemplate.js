@@ -5,7 +5,7 @@ import Slider from "react-slick";
 import { loginAction } from "store/actions/auth";
 import { useDispatch } from "react-redux";
 import shareProjectsService from "services/project.service";
-import VivensityLogo from "assets/images/vivensity.png";
+import VivensityLogo from "assets/images/logo.png";
 
 function ProjectShareTemplate() {
   const sliderSettings = {
