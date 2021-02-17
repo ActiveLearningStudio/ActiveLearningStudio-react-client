@@ -24,6 +24,7 @@ history.listen((location) => {
   ReactGA.pageview(location.pathname);
 });
 const LoginPage = loadable(() => import('../containers/Auth/LoginPage'));
+const ProjectShareTemplate = loadable(() => import('../containers/ProjectShareTemplate'));
 const SubscribePage = loadable(() => import('../containers/Auth/SubscribePage'));
 const RegisterPage = loadable(() => import('../containers/Auth/RegisterPage'));
 const ForgotPasswordPage = loadable(() => import('../containers/Auth/ForgotPasswordPage'));
@@ -44,6 +45,7 @@ const PlaylistsPage = loadable(() => import('../containers/Playlists'));
 const PreviewPage = loadable(() => import('../containers/Preview'));
 const LtiPreviewPage = loadable(() => import('../containers/LtiPreviewPage'));
 const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared'));
+const SecureProjectPreview = loadable(() => import('../containers/SecureProjectPreview'));
 const SearchResult = loadable(() => import('../containers/Search'));
 // const LtiModel = loadable(() => import('../containers/LtiModel'));
 // const TeamsPage = loadable(() => import('../containers/Teams'));
@@ -73,8 +75,18 @@ const AppRouter = (props) => {
       <Switch>
         <OpenRoute
           exact
+          path="/projects/shared"
+          component={ProjectShareTemplate}
+        />
+        <OpenRoute
+          exact
           path="/project/:projectId/shared"
           component={PreviewPageShared}
+        />
+        <OpenRoute
+          exact
+          path="/project/:projectId/secure/shared"
+          component={SecureProjectPreview}
         />
         <OpenRoute
           exact
