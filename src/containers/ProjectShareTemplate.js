@@ -56,7 +56,7 @@ function ProjectShareTemplate() {
         })
       );
     }
-    const shareResult = await shareProjectsService.shareProjects(726);
+    const shareResult = await shareProjectsService.shareProjects(process.env.REACT_APP_SHARED_PROJECT_USERID);
     setAllProject(shareResult.projects);
     if (shareResult.projects.length == 0) {
       setErrorShow(true);
