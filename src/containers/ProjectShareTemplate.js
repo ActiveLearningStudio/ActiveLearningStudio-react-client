@@ -5,9 +5,14 @@ import Slider from "react-slick";
 import { loginAction } from "store/actions/auth";
 import { useDispatch } from "react-redux";
 import shareProjectsService from "services/project.service";
-import VivensityLogo from "assets/images/logo.png";
+import VivensityLogo from "assets/images/vivensity.png";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import validator from 'validator';
+import { connect } from 'react-redux';
+import loader from 'assets/images/loader.svg';
+import Error from "./Auth/Error";
 
-function ProjectShareTemplate() {
+function ProjectShareTemplate(props) {
   const sliderSettings = {
     dots: false,
     arrows: true,
@@ -45,6 +50,25 @@ function ProjectShareTemplate() {
   const dispatch = useDispatch();
   const [allProjects, setAllProject] = useState([]);
   const [errorShow, setErrorShow] = useState(false);
+  const [passwordCheck, setPasswordCheck] = useState(false)
+  const [password, setPassword] = useState('')
+  const [error,setError] = useState(null)
+  const { isLoading } = props;
+  const onChangePasswordField = ({target}) => {
+    setPassword(target.value);
+  };
+  const isDisabled = () => {
+   
+    return validator.isEmpty(password.trim());
+  };
+  const onSubmit =(event)=>{
+    event.preventDefault();
+    if(password===process.env.REACT_APP_SHARED_PROJECT_DEMO_PASS){
+      setPasswordCheck(true);
+    } else {
+      setError('Please enter valid password');
+    }
+  }
   useEffect(async () => {
     if (!localStorage.auth_token) {
       await dispatch(
@@ -62,6 +86,7 @@ function ProjectShareTemplate() {
   }, []);
 
   return (
+    passwordCheck ? 
     <div className="shared-template">
       <Navbar bg="light" expand="lg">
         <img className="bg-img1" src={VivensityLogo} alt="" />
@@ -149,7 +174,52 @@ function ProjectShareTemplate() {
         </div>
       </div>
     </div>
+      : <div style={{ backgroundColor: "white" }}>
+        <div className="auth-page">
+          <div className="auth-container">
+            Enter Password to access this page:
+            <form
+              onSubmit={onSubmit}
+              autoComplete="off"
+              className="auth-form"
+            >
+              <div className="form-group" style={{ margin: "auto" }}>
+                <FontAwesomeIcon icon="lock" />
+                <input
+                  className="password-box"
+                  type="password"
+                  name="password"
+                  placeholder="Password*"
+                  required
+                  value={password}
+                  onChange={onChangePasswordField}
+                />
+                &nbsp;
+              </div> 
+              
+              <Error error={error}/>
+
+              <div className="form-group">
+                &nbsp;
+                <button
+                  type="submit"
+                  className="btn btn-primary submit"
+                  disabled={isLoading || isDisabled()}
+                >
+                  {isLoading ? (
+                    <img src={loader} alt="" />
+                  ) : (
+                      'Submit'
+                    )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
   );
 }
-
-export default ProjectShareTemplate;
+const mapStateToProps = (state) => ({
+  isLoading: state.auth.isLoading,
+});
+export default connect(mapStateToProps,null)(ProjectShareTemplate);
