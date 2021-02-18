@@ -70,6 +70,11 @@ const share = (id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const shareProjects = (id) => httpService
+  .post(`/${apiVersion}/projects/shared`, { user_id: id })
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const removeShared = (id) => httpService
   .post(`/${apiVersion}/projects/${id}/remove-share`)
   .then(({ data }) => data)
@@ -145,4 +150,5 @@ export default {
   getelastic,
   addToFav,
   getAllFav,
+  shareProjects,
 };
