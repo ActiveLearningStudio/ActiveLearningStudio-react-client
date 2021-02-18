@@ -80,7 +80,7 @@ function ProjectShareTemplate(props) {
         })
       );
     }
-    const shareResult = await shareProjectsService.shareProjects(process.env.REACT_APP_SHARED_PROJECT_DEMO_PASS);
+    const shareResult = await shareProjectsService.shareProjects(process.env.REACT_APP_SHARED_PROJECT_USERID);
     setAllProject(shareResult.projects);
     if (shareResult.projects.length == 0) {
       setErrorShow(true);
