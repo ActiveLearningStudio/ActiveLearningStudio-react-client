@@ -9,7 +9,7 @@ import { GoogleLogin } from 'react-google-login';
 
 import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
-import logo from 'assets/images/logo.svg';
+import logo from 'assets/images/vivensity.png';
 import loader from 'assets/images/loader.svg';
 import { loginAction, googleLoginAction } from 'store/actions/auth';
 import { getErrors } from 'utils';
