@@ -22,7 +22,7 @@ const GoogleLoginModal = ({
   projectId,
 }) => {
   const dataRedux = useSelector((state) => state);
-
+  const [tokenTemp, setTokenTemp] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -65,7 +65,10 @@ const GoogleLoginModal = ({
               <div>
                 <GoogleLogin
                   clientId={global.config.gapiClientId}
-                  onSuccess={googleClassRoomLogin}
+                  onSuccess={(data) => {
+                    googleClassRoomLogin(data);
+                    setTokenTemp(JSON.stringify(data.tokenObj));
+                  }}
                   onFailure={googleClassRoomLoginFailure}
                   scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
                   cookiePolicy="single_host_origin"
@@ -93,9 +96,9 @@ const GoogleLoginModal = ({
                   onSubmit={(values) => {
                     onHide();
                     if (values.course === 'Create a new class') {
-                      copyProject(projectId);
+                      copyProject(projectId, null, tokenTemp);
                     } else {
-                      copyProject(projectId, values.course);
+                      copyProject(projectId, values.course, tokenTemp);
                     }
                     setLoading(false);
                   }}

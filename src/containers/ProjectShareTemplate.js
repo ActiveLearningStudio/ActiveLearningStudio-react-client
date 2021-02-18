@@ -15,14 +15,16 @@ function ProjectShareTemplate() {
     speed: 500,
     slidesToShow: 5,
     slidesToScroll: 1,
+    infinite: false,
+    centerMode: false,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
           slidesToShow: 5,
           slidesToScroll: 1,
-          infinite: true,
-          dots: true,
+        
+         
         },
       },
       {
@@ -30,7 +32,7 @@ function ProjectShareTemplate() {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
-          initialSlide: 2,
+        
         },
       },
       {
@@ -54,7 +56,7 @@ function ProjectShareTemplate() {
         })
       );
     }
-    const shareResult = await shareProjectsService.shareProjects(process.env.REACT_APP_SHARED_PROJECT_USERID);
+    const shareResult = await shareProjectsService.shareProjects(726);
     setAllProject(shareResult.projects);
     if (shareResult.projects.length == 0) {
       setErrorShow(true);
@@ -75,10 +77,11 @@ function ProjectShareTemplate() {
         </Navbar.Collapse>
       </Navbar>
       <div className="custom-container responsive">
+     
+        
         <Slider {...sliderSettings}>
           {allProjects.map((index) => {
-            return (
-              <div>
+            return <div>
                 <a
                   target="_blank"
                   rel="noreferrer"
@@ -99,7 +102,7 @@ function ProjectShareTemplate() {
                   </div>
                 </a>
               </div>
-            );
+            
           })}
         </Slider>
         <p className="text-sup">
