@@ -65,7 +65,7 @@ function GclassActivityPage(props) {
                   <div className="container">
                     <div className="row">
                       <div className="col text-center">
-                        <img style={{ width: '50%' }} className="curriki-logo" src={logo} alt="" />
+                        <img style={{ width: '28%' }} className="curriki-logo" src={logo} alt="" />
                       </div>
                     </div>
 
