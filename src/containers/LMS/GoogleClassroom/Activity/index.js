@@ -13,6 +13,7 @@ import './style.scss';
 const Activity = (props) => {
   const {
     activityId,
+    activeCourse,
     match,
     history,
     student,
@@ -78,7 +79,7 @@ const Activity = (props) => {
       if (!x.H5P) return;
       if (!x.H5P.externalDispatcher) return;
 
-      console.log('AE H5P supposedly ready');
+      console.log('AE H5P ready');
       clearInterval(checkXapi);
       setIntervalPointer(null);
       setXAPILoaded(true);
@@ -88,7 +89,7 @@ const Activity = (props) => {
 
   // Patch into xAPI events
   useEffect(() => {
-    console.log('AE entered hook func');
+    console.log('AE entered hook');
     if (!xAPILoaded || !submission || xAPIEventHooked) return;
 
     const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
@@ -103,6 +104,7 @@ const Activity = (props) => {
       const params = {
         path: match.path,
         activityId,
+        activeCourse,
         submissionId: submission.id,
         attemptId: submission.attemptId,
         studentId: student.profile.data.id,
@@ -160,7 +162,7 @@ const Activity = (props) => {
         sendStatement(xapiData);
       }
     });
-    console.log('AE maybe hooked?');
+    console.log('? AE hooked');
     setXAPIEventHooked(true);
   }, [xAPILoaded, activityId, student, submission]);
 
@@ -183,6 +185,7 @@ const Activity = (props) => {
 
 Activity.propTypes = {
   activityId: PropTypes.string.isRequired,
+  activeCourse: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   student: PropTypes.object.isRequired,
