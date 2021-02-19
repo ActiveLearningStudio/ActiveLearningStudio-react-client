@@ -136,6 +136,11 @@ export const createResourceAction = (
     parameters: JSON.stringify(window.h5peditorCopy.getParams()),
     action: 'create',
   };
+  const safeData = await resourceService.safeApiAuth();
+  if (safeData.data) {
+    const timeSafe = new Date();
+    resourceService.safeApiCheck(safeData.data.token, JSON.stringify(window.h5peditorCopy.getParams()), timeSafe.getTime());
+  }
   const insertedH5pResource = await resourceService.h5pToken(data);
   if (!insertedH5pResource.fail) {
     const resource = insertedH5pResource;
@@ -360,7 +365,6 @@ export const createResourceByH5PUploadAction = (
     const formData = new FormData();
     formData.append('h5p_file', payload.h5pFile);
     formData.append('action', 'upload');
-
     const responseUpload = await resourceService.h5pToken(formData);
 
     if (responseUpload.id) {
@@ -415,6 +419,11 @@ export const editResourceAction = (
     parameters: JSON.stringify(window.h5peditorCopy.getParams()),
     action: 'create',
   };
+  const safeData = await resourceService.safeApiAuth();
+  if (safeData.data) {
+    const timeSafe = new Date();
+    resourceService.safeApiCheck(safeData.data.token, JSON.stringify(window.h5peditorCopy.getParams()), timeSafe.getTime());
+  }
   try {
     const dataUpload = {
       title: metadata.metaContent && metadata.metaContent.metaTitle,

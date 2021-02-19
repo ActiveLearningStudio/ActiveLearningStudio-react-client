@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { GoogleLogin } from 'react-google-login';
 import { Alert } from 'react-bootstrap';
-import logo from 'assets/images/logo.svg';
+import logo from 'assets/images/vivensityloader.png';
 import {
   getSummaryAuthAction,
 } from 'store/actions/gapi';
@@ -53,7 +53,7 @@ function GclassSummaryPage(props) {
 
                   <div className="row m-4">
                     <div className="col text-center">
-                      <h2>Please log in to view this summary.</h2>
+                      {/* <h2>Please log in to view this summary.</h2> */}
                       <GoogleLogin
                         clientId={global.config.gapiClientId}
                         buttonText="Login"

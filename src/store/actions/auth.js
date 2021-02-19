@@ -2,7 +2,7 @@ import Swal from 'sweetalert2';
 
 import authService from 'services/auth.service';
 import storageService from 'services/storage.service';
-import { USER_TOKEN_KEY } from 'constants/index';
+import { USER_TOKEN_KEY, USER_ID } from 'constants/index';
 import * as actionTypes from '../actionTypes';
 
 export const getUserAction = () => async (dispatch) => {
@@ -51,6 +51,7 @@ export const loginAction = (data) => async (dispatch) => {
     ]);
 
     storageService.setItem(USER_TOKEN_KEY, response.access_token);
+    storageService.setItem(USER_ID, response.user.id);
 
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
@@ -85,6 +86,7 @@ export const googleLoginAction = (data) => async (dispatch) => {
     ]);
 
     storageService.setItem(USER_TOKEN_KEY, response.access_token);
+    storageService.setItem(USER_ID, response.user.id);
 
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
@@ -192,6 +194,7 @@ export const confirmEmailAction = (data) => async (dispatch) => {
 
 export const logoutAction = () => async () => {
   storageService.removeItem(USER_TOKEN_KEY);
+  storageService.removeItem(USER_ID);
   window.location.href = '/';
 };
 

@@ -1,5 +1,5 @@
 import Swal from 'sweetalert2';
-
+import axios from 'axios';
 import config from 'config';
 import httpService from './http.service';
 
@@ -137,6 +137,34 @@ const loadH5pShared = (activityId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const safeApiAuth = () => axios
+  .post('https://api.v10.learnsafe.com/accounts/AC5771e791affd4176966bf63c846c8701/integrators/auth/token', null, {
+    headers: {
+      Authorization: 'Bearer TO2BF2E47CCCDD4A04944984A4E8275193',
+    },
+  })
+  .then(({ data }) => data)
+  .catch((err) => err.response.data);
+
+const safeApiCheck = (token, content, time) => axios
+  .post('https://api.v10.learnsafe.com/accounts/AC5771e791affd4176966bf63c846c8701/integrators/content/check',
+    {
+      userName: localStorage.getItem('userIdLearnSafe') || 'Vivensity User',
+      workstationName: localStorage.getItem('auth_token'),
+      reportedAt: time,
+      applicationName: 'Vivensity imSparked Platform',
+      ipAddress: '0.0.0.0',
+      unitPath: 'demo',
+      image: null,
+      content,
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+  .then(({ data }) => data)
+  .catch((err) => err.response.data);
+
 export default {
   getAll,
   create,
@@ -159,4 +187,6 @@ export default {
   loadH5pShared,
   removeShareActivity,
   getXapi,
+  safeApiAuth,
+  safeApiCheck,
 };
