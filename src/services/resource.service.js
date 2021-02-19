@@ -138,23 +138,23 @@ const loadH5pShared = (activityId) => httpService
   .catch((err) => Promise.reject(err.response.data));
 
 const safeApiAuth = () => axios
-  .post('https://api.v10.learnsafe.com/accounts/AC5771e791affd4176966bf63c846c8701/integrators/auth/token', null, {
+  .post(process.env.REACT_APP_SAFELEARN_AUTH, null, {
     headers: {
-      Authorization: 'Bearer TO2BF2E47CCCDD4A04944984A4E8275193',
+      Authorization: `Bearer ${process.env.REACT_APP_SAFELEARN_KEY}`,
     },
   })
   .then(({ data }) => data)
   .catch((err) => err.response.data);
 
 const safeApiCheck = (token, content, time) => axios
-  .post('https://api.v10.learnsafe.com/accounts/AC5771e791affd4176966bf63c846c8701/integrators/content/check',
+  .post(process.env.REACT_APP_SAFELEARN_CHECK,
     {
       userName: localStorage.getItem('userIdLearnSafe') || 'Vivensity User',
       workstationName: localStorage.getItem('auth_token'),
       reportedAt: time,
-      applicationName: 'Vivensity imSparked Platform',
+      applicationName: process.env.REACT_APP_SAFELEARN_APPLICATIONNAME,
       ipAddress: '0.0.0.0',
-      unitPath: 'demo',
+      unitPath: process.env.REACT_APP_SAFELEARN_UNITPATH,
       image: null,
       content,
     }, {
