@@ -17,6 +17,18 @@ const getStudentProfile = (token) => axios({
 const getStudentCourses = (token) => axios({
   method: 'get',
   url: `${gapiBaseUrl}/courses`,
+  params: {
+    courseStates: 'ACTIVE',
+  },
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+})
+  .then((response) => response);
+
+const getCourse = (token, courseId) => axios({
+  method: 'get',
+  url: `${gapiBaseUrl}/courses/${courseId}`,
   headers: {
     Authorization: `Bearer ${token}`,
   },
@@ -75,6 +87,7 @@ const h5pResourceSettings = (activityId, studentId = null) => httpService
 export default {
   getStudentProfile,
   getStudentCourses,
+  getCourse,
   h5pResourceSettings,
   getSubmission,
   turnIn,
