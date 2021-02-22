@@ -30,6 +30,7 @@ import GoogleModel from 'components/models/GoogleLoginModal';
 import ProjectCard from './ProjectCard';
 import SampleProjectCard from './SampleProjectCard';
 import NewProjectPage from './NewProjectPage';
+import Headline from './headline';
 
 import './style.scss';
 
@@ -294,6 +295,7 @@ export const ProjectsPage = (props) => {
         ready={!pageLoading}
       >
         <div className={`content-wrapper ${activeFilter}`}>
+          <Headline />
           <div className="content">
             <Tabs
               onSelect={() => {

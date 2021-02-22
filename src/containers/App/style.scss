@@ -546,7 +546,7 @@
 
 .main-content-wrapper {
   width: 100%;
-  padding-top: 65px;
+  padding-top: 80px;
   padding-bottom: 45px;
   // display: flex;
   float: left;
@@ -940,7 +940,7 @@ body {
   // margin-top: 3px;
   text-align: left;
   transition: all 0.4s ease-in-out;
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.23);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
   border-radius: 0 0 10px 10px;
   width: 405px;
   background: #ffffff;
@@ -954,11 +954,11 @@ body {
 .top-header {
   position: fixed;
   width: 100%;
-  height: 65px;
+  height: 80px;
   box-shadow: 0 5px 6px #00000026;
   z-index: 111;
   justify-content: space-between;
-  background: #fafafa;
+  background: #fff;
   align-items: center;
   top: 0;
   padding: 0 30px;
@@ -976,7 +976,7 @@ body {
   padding-left: 25px;
 
   img {
-    width: 50%;
+    width: 142px;
   }
 }
 
