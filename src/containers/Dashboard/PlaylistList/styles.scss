@@ -1,3 +1,5 @@
+@import 'assets/css/index';
+
 .dashboard-project-list {
     .img-col img {
         max-width: 150px;
@@ -5,22 +7,22 @@
     }
 
     .project-row{
-        border-bottom: solid #0f4392 1px;
+        border-bottom: solid $curriki-main-blue 1px;
     }
 
     .project-row a{
-        color:#0f4392;
-        font: normal normal 600 16px/22px Open Sans;
+        color:$curriki-main-blue;
+        font: normal normal 600 16px/22px $rubik;
     }
 
     .project-row p {
         color:#777;
-        font: normal normal 600 16px/22px Open Sans;
+        font: normal normal 600 16px/22px $rubik;
     }
 
     .project-go-icon {
         font-size: xx-large;
-        color: #0f4392;
+        color: $curriki-main-blue;
     }
 
     .search-box {
@@ -28,7 +30,7 @@
     }
 
     .search-box .header {
-        background-color: #0f4392;
+        background-color: $curriki-main-blue;
         font-size: x-large;
         color: white;
     }
@@ -44,13 +46,13 @@
     }
 
     .search-box button {
-        border: solid #0f4392 2px;
+        border: solid $curriki-main-blue 2px;
         display: block;
         width: 100%;
     }
 
     .search-box button:hover {
-        background-color: #0f4392;
+        background-color: $curriki-main-blue;
         color: white;
     }
 
@@ -67,11 +69,11 @@
     }
 
     .playlist {
-        border-bottom: solid #0f4392 1px;
+        border-bottom: solid $curriki-main-blue 1px;
     }
 
     .playlist-title {
-        color: #0f4392;
+        color: $curriki-main-blue;
         font-size: x-large;
     }
 }

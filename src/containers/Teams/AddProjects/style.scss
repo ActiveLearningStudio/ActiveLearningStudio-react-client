@@ -1,3 +1,5 @@
+@import 'assets/css/index';
+
 .assign-projects {
   margin-top: 5em;
   display: flex;
@@ -7,7 +9,7 @@
     margin-bottom: 15px;
     padding-top: 11px;
     padding-bottom: 10px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: $rubik, sans-serif;
     font-weight: 700;
     font-size: 20px;
     color: #084892;
@@ -70,7 +72,7 @@
   border: 0;
   border-radius: 3px;
   box-shadow: none;
-  font-family: "Open Sans", sans-serif;
+  font-family: "rubik", sans-serif;
   font-size: 14px;
   font-weight: 600;
   color: #fff;
@@ -92,7 +94,7 @@
   border: 0;
   border-radius: 3px;
   box-shadow: none;
-  font-family: "Open Sans", sans-serif;
+  font-family: "rubik", sans-serif;
   font-size: 14px;
   font-weight: 600;
   color: #fff;
