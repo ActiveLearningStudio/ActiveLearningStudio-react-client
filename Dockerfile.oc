@@ -1,0 +1,13 @@
+FROM node:10-alpine
+WORKDIR /var/app/current
+RUN ls /var/app/current
+COPY ./package*.json ./
+RUN ls /var/app/current
+COPY ./package.json /var/app/current/
+RUN npm install
+COPY ./ ./
+
+RUN chmod 777 -R /var/app/current
+
+COPY ./openshift/entrypoint.client.sh /var/app/current/
+CMD ["/bin/sh", "/var/app/current/entrypoint.client.sh"]
