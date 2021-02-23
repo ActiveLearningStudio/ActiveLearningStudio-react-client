@@ -1,0 +1,219 @@
+@import 'assets/css/index';
+
+.parent-organization-tag {
+    width: 176px;
+    height: 15.91px;
+    color: #084892;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11.9322px;
+    line-height: 16px;
+}
+.organization-container {
+    display: flex;
+    flex-direction: row;
+    padding: 0px;
+    margin-left: 0%;
+    margin-right: 0%;
+    .child-organization-icon {
+        width: 36px;
+        height: 36px;
+        left: 280px;
+        top: 174px;
+    }
+    .child-organization-name {
+       
+        font-style: normal;
+        font-weight: 500;
+        font-size: 31.25px;
+        line-height: 37px;
+        color: #084892;
+    }
+    .back-button {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 12px;
+        line-height: 37px;
+        text-align: center;
+        color: #084892;
+        margin-left:  auto;
+    }
+}
+.organization-list{
+    height: 225px;
+    left: 278px;
+    top: 233px;
+    background: #FFFFFF;
+    z-index: 0;
+    .child-organization-image {
+        width: 338px;
+        height: 225px;
+        left: 278px;
+        top: 233px;
+        border-radius: 3px;
+    }
+    .description {
+        padding-top: 15px;
+        font-style: normal;
+        font-weight: 300;
+        font-size: 20px;
+        line-height: 24px;
+        color: #084892;
+    }
+    .content-data {
+        padding-top: 10px;
+        width: 323px;
+        height: inherit;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 19px;
+        color: #515151;
+        flex-wrap: wrap;
+    }
+    .role {
+        padding-top: 10px;
+        width: 215px;
+        height: 12px;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 19px;
+        color: #084892;
+    }
+    .sub-organization-button {
+        padding: 10px 20px;
+        background: #084892;
+        border: 1px solid #084892;
+        box-sizing: border-box;
+        border-radius: 50px;
+        margin-top: 30px;
+        .button-text {
+            height: 17px;
+            left: 20px;
+            top: 7.5px;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 17px;
+            text-align: right;
+            color: #FFFFFF;
+            flex: none;
+            order: 0;
+            flex-grow: 0;
+            margin: 0px 10px;
+        }
+    }
+    .invite-button {
+        display: flex;
+        padding: 10px 20px;
+        background: #084892;
+        border: 1px solid #084892;
+        box-sizing: border-box;
+        border-radius: 50px;
+        margin-top: 10px;
+        .invite-button-text {
+            width: 164px;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 17px;
+            text-align: center;
+            color: #FFFFFF;
+            flex-grow: 0;
+        }
+    }
+    .invite-block {
+        z-index: 1;
+        width: 260px;
+        height: 201px;
+        background: #FFFFFF;
+        margin-top: 8px;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        .name {
+            width: 40px;
+            height: 19px;
+            margin-right: 17px;
+            margin-left: 15px;
+            margin-top: 10px;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 19px;
+            color: #515151;
+        }
+        .name-field {
+            width: 227px;
+            height: 26px;
+            margin-left: 16px;
+            border: 1px solid #888888;
+            box-sizing: border-box;
+        }
+        .email {
+            width: 36px;
+            height: 19px;
+            margin-left: 15px;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 19px;
+            color: #515151;
+        }
+        .email-field {
+            width: 227px;
+            height: 26px;
+            margin-left: 16px;
+            border: 1px solid #888888;
+            box-sizing: border-box;
+        }
+        .send-invite-button {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 10px 20px;
+            width: 140px;
+            height: 32px;
+            margin-left: 16px;
+            margin-top: 30px;
+            background: #084892;
+            border: 1px solid #084892;
+            box-sizing: border-box;
+            border-radius: 50px;
+            .send-invite-button-text {
+                line-height: 17px;
+                color: #FFFFFF;
+                flex: none;
+            }
+        }
+        .cancel-button {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 10px 20px;
+            width: 87px;
+            height: 32px;
+            margin-left: 4px;
+            margin-top: 30px;
+            background: #E5E5E5;
+            border: 1px solid #084892;
+            box-sizing: border-box;
+            border-radius: 50px;
+            .cancel-button-text {
+                width: 54px;
+                height: 17px;
+                left: 20px;
+                top: 7.5px;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 14px;
+                line-height: 17px;
+                text-align: right;
+                color: #084892;
+                flex: none;
+                order: 0;
+                flex-grow: 0;
+                margin: 0px 10px;
+            }
+        }
+    }
+}

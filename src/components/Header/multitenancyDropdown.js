@@ -1,5 +1,6 @@
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 export default function MultitenancyDropdown() {
   return (
@@ -9,7 +10,7 @@ export default function MultitenancyDropdown() {
         Lake Valley Island Education District
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1">Manage Organization</Dropdown.Item>
+        <Dropdown.Item as={Link} to="/manage-organizations">Manage Organization</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );
