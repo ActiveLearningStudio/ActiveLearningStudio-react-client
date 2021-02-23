@@ -8,8 +8,10 @@ export default function Headline() {
   return (
     <div className="project-headline">
       <div className="title">
-        <img src={foldericon} alt="" />
-        Projects
+        <div>
+          <img src={foldericon} alt="" />
+          Projects
+        </div>
         <Link to="/project/create">
           <div className="btn-top-page">
             <FontAwesomeIcon icon="plus" className="mr-2" />
@@ -19,13 +21,14 @@ export default function Headline() {
       </div>
       <p>
         In
-        <strong>Projects</strong>
+        <strong> Projects </strong>
         you can manage each course or program you create.
         <strong> Add a playlist </strong>
         to a
         <strong> Project </strong>
         and create interactive
         <strong> Activities. </strong>
+        <br />
         Once you finish a
         <strong> Project, Share </strong>
         it with your audience.

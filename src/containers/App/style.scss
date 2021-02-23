@@ -312,9 +312,9 @@
 
       a {
         font-family: $rubik, sans-serif;
-        font-size: 24px;
+        font-size: 20px;
         font-weight: 300;
-        color: #607a9b;
+        color: $fun-blue-1;
 
         &:hover {
           text-decoration: none;
@@ -344,11 +344,11 @@
 
       p {
         font-weight: 400;
-        font-size: 14px;
-        line-height: 26px;
+        font-size: 12px;
+        line-height: 134%;
+        color: $dove-gray;
         letter-spacing: 0;
         text-align: justify;
-        color: $mine-shaft;
       }
 
       .lessons {
@@ -512,15 +512,16 @@
 
 .main-tabs {
   width: 100%;
-  margin-top: 30px;
+  margin-top: 10px;
+  margin-bottom: 25px !important;
 
   .nav-item {
     position: relative;
-    margin-right: 15px;
+    margin-right: 5px;
     padding: 12px 30px;
     background-color: #fff !important;
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 400;
     color: $curriki-main-blue !important;
   }
 
