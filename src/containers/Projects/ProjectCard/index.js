@@ -40,53 +40,37 @@ const ProjectCard = (props) => {
         <div className="program-content">
           <div className="container">
             <div className="row">
-              <div className="col-md-10">
+              <div className="col-md-12">
                 <h3 className="program-title">
-                  <Link to={`/project/${project.id}/preview`}>{project.name}</Link>
+                  <Link to={`/project/${project.id}/preview`}>
+                    {project.name && project.name.length > 50 ? `${project.name.substring(0, 50)}...` : project.name}
+                  </Link>
                 </h3>
 
-                {(project.shared && activeFilter === 'list-grid') && (
+                {/* {(project.shared && activeFilter === 'list-grid') && (
                   <Badge pill variant="success">
                     Shared
                   </Badge>
-                )}
-              </div>
-
-              <div className="col-md-2">
-                <ProjectCardDropdown
-                  project={project}
-                  showDeletePopup={showDeletePopup}
-                  handleShow={handleShow}
-                  setProjectId={setProjectId}
-                />
+                )} */}
               </div>
             </div>
-
-            {(project.shared && activeFilter !== 'list-grid') && (
-              <div className="row">
-                <div className="col-md-12 text-right">
-                  <Badge pill variant="success">
-                    Shared
-                  </Badge>
-                </div>
-              </div>
-            )}
 
             <div className="lessons-duration">
               <div className="row">
                 <div className="col-md-12">
-                  {activeFilter === 'small-grid' ? (
-                    <p>
-                      {project.description && project.description.length > 80
-                        ? `${project.description.substring(0, 80)} ...`
-                        : project.description}
-                    </p>
-                  ) : (
-                    <p>
-                      {project.description && project.description.length > 130
-                        ? `${project.description.substring(0, 130)} ...`
-                        : project.description}
-                    </p>
+                  <p>
+                    {project.description && project.description.length > 130
+                      ? `${project.description.substring(0, 130)} ...`
+                      : project.description}
+                  </p>
+                  {project.shared && (
+                    <div className="row">
+                      <div className="col-md-12 text-right">
+                        <Badge pill variant="success">
+                          Shared
+                        </Badge>
+                      </div>
+                    </div>
                   )}
                 </div>
               </div>
@@ -95,18 +79,23 @@ const ProjectCard = (props) => {
 
           <div className="button-bottom">
             <Link to={`/project/${project.id}/preview`}>
-              <FontAwesomeIcon icon="eye" className="mr-2" />
-              Preview
+              <FontAwesomeIcon icon="plus" className="mr-2" />
+              Add Playlist
             </Link>
 
             <Link to={`/project/${project.id}`}>
-              <FontAwesomeIcon icon="cubes" className="mr-2" />
-              Build
+              <FontAwesomeIcon icon="share" className="mr-2" />
+              share
             </Link>
 
-            <Link to={`/project/${project.id}/edit`}>
-              <FontAwesomeIcon icon="pen" className="mr-2" />
-              Edit
+            <Link>
+              <ProjectCardDropdown
+                project={project}
+                showDeletePopup={showDeletePopup}
+                handleShow={handleShow}
+                setProjectId={setProjectId}
+                text="More"
+              />
             </Link>
           </div>
         </div>

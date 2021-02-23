@@ -34,7 +34,7 @@
 
   .program-content {
     height: calc(100% - 200px);
-    padding: 10px;
+    padding: 0px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -44,10 +44,16 @@
 
       a {
         font-family: $rubik, sans-serif;
-        font-size: 24px;
+        font-size: 20px;
         font-weight: 300;
         color: #607a9b;
         word-break: break-word;
+        line-height: 120%;
+        display: block;
+
+        @media (max-width:1500px) {
+          font-size: 18px;
+        }
 
         &:hover {
           text-decoration: none;
@@ -76,11 +82,11 @@
       margin-top: 10px;
 
       p {
-        font-size: 14px;
+        font-size: 12px;
+        line-height: 134%;
+        color: $dove-gray;
         font-weight: 400;
-        line-height: 26px;
         letter-spacing: 0;
-        color: $mine-shaft;
         text-align: justify;
         word-break: break-word;
       }
@@ -213,5 +219,45 @@
       box-shadow: none;
       outline: 0;
     }
+  }
+}
+
+.project-headline {
+  padding-top: 20px;
+
+  .title {
+    font-weight: 500;
+    font-size: 31.25px;
+    color: $fun-blue-1;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    align-items: center;
+
+    img {
+      width:35px;
+      margin-right: 5px;
+    }
+  }
+
+  p{
+    font-size: 14px;
+    color: $dove-gray
+  }
+
+  .btn-top-page {
+    font-size: 14px;
+    color: $mercury;
+    font-size: 14px;
+    background: $fun-blue-1;
+    border: 1px solid $fun-blue-1;
+    box-sizing: border-box;
+    border-radius: 50px;
+    align-items: center;
+    width: 160px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
