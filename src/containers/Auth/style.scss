@@ -1,3 +1,5 @@
+@import 'assets/css/index';
+
 .auth-page {
   position: relative;
   height: 100vh;
@@ -62,7 +64,7 @@
       font-size: 18px;
       line-height: 25px;
       letter-spacing: 0;
-      color: #0f4392;
+      color: $curriki-main-blue;
       text-transform: uppercase;
     }
 
@@ -81,7 +83,7 @@
       font-size: 22px;
       line-height: 24px;
       letter-spacing: 0.44px;
-      color: #464646;
+      color: $mine-shaft;
       text-transform: capitalize;
     }
 
@@ -90,7 +92,7 @@
       font-size: 16px;
       line-height: 26px;
       letter-spacing: 0;
-      color: #464646;
+      color: $mine-shaft;
     }
 
     @media (max-width: 767px) {
@@ -137,7 +139,7 @@
       background-color: #fff;
       border: 1px solid #d9dfe8;
       font-size: 14px;
-      color: #464646;
+      color: $mine-shaft;
 
       &:focus {
         outline: none;
@@ -178,9 +180,9 @@
         font-weight: 400;
         font-size: 14px;
         line-height: 26px;
-        font-family: 'Hind Siliguri', sans-serif;
+        font-family: '$halvetica', sans-serif;
         letter-spacing: 0;
-        color: #464646 !important;
+        color: $mine-shaft !important;
         opacity: 0.8;
       }
 
@@ -234,7 +236,7 @@
 
       a {
         color: #9b9b9b;
-        font-family: 'Hind Siliguri', sans-serif;
+        font-family: '$halvetica', sans-serif;
         font-weight: 400;
       }
     }
@@ -265,7 +267,7 @@
       p {
         font-size: 16px;
         color: #000;
-        font-family: 'Hind Siliguri', sans-serif;
+        font-family: '$halvetica', sans-serif;
         font-weight: 400;
 
         a {
@@ -296,9 +298,9 @@
       cursor: pointer;
 
       a {
-        color: #0f4392;
+        color: $curriki-main-blue;
         font-weight: bold;
-        font-family: 'Open Sans', sans-serif;
+        font-family: $rubik, sans-serif;
         text-decoration: underline !important;
         font-size: 13px;
         cursor: pointer;
@@ -312,7 +314,7 @@
       justify-content: space-between;
       cursor: pointer;
       font-size: 11px;
-      color: #464646;
+      color: $mine-shaft;
       font-weight: bold;
 
       i {
@@ -371,7 +373,7 @@
       font-size: 30px;
       font-weight: 600;
       margin: 16px 0;
-      color: #0f4392;
+      color: $curriki-main-blue;
     }
 
     h3 {
@@ -379,7 +381,7 @@
     }
 
     h4 {
-      color: #0f4392;
+      color: $curriki-main-blue;
       font-weight: bold;
       margin: 35px 0 15px;
     }

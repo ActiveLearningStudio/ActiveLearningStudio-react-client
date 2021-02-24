@@ -57,6 +57,7 @@ const EditActivity = loadable(() => import('../containers/EditActivity'));
 const GclassSummaryPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassSummaryPage'));
 const SearchPage = loadable(() => import('../containers/LMS/Canvas/DeepLinking/SearchPage'));
 const LtiActivity = loadable(() => import('../containers/LMS/LTI/Activity'));
+const ManageOrganization = loadable(() => import('../containers/ManageOrganization'));
 
 const AppRouter = (props) => {
   useEffect(() => {
@@ -229,6 +230,12 @@ const AppRouter = (props) => {
                        exact
                        path="/search"
                        component={SearchResult}
+                     />
+
+                     <PrivateRoute
+                       exact
+                       path="/manage-organizations"
+                       component={ManageOrganization}
                      />
                      <Redirect to="/" />
                    </Switch>

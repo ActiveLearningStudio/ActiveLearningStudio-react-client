@@ -72,6 +72,16 @@ const Activity = (props) => {
                 <FontAwesomeIcon icon="star" />
                 {`${outcome.totalAnswered} Responses`}
               </h2>
+              {outcome.totalSkipped > 0 && (
+                <p className="ml-4">
+                  {`You skipped ${outcome.totalSkipped} activities.`}
+                </p>
+              )}
+              {outcome.totalAttempted > 0 && (
+                <p className="ml-4">
+                  {`You attempted ${outcome.totalAttempted} activities.`}
+                </p>
+              )}
             </div>
           </div>
           <div className="row">

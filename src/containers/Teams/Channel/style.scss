@@ -1,5 +1,4 @@
-$selected_color: #084892;
-$filled: #44ca92;
+@import 'assets/css/index';
 
 .channel-manage {
   width: 69%;
@@ -26,7 +25,7 @@ $filled: #44ca92;
           padding: 14px 0 17px;
           margin: 0;
           font-size: 12px;
-          color: #464646
+          color: $mine-shaft
         }
       }
 
@@ -44,7 +43,7 @@ $filled: #44ca92;
       text-align: center;
       align-self: center;
       font-size: 12px;
-      color: #0F4392;
+      color: $curriki-main-blue;
     }
   }
 }
