@@ -49,6 +49,12 @@ function GclassActivityPage(props) {
 
   const handleLogin = (data) => {
     setStudentAuth({ ...data });
+    // Setting up a listener for user changes and renewing the token as necessary
+    data.listen((user) => {
+      user.reloadAuthResponse().then((renewedUser) => {
+        setStudentAuth({ ...renewedUser });
+      });
+    });
   };
 
   return (
