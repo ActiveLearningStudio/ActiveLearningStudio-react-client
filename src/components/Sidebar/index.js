@@ -168,12 +168,18 @@ function Sidebar(props) {
         </div>
       </Link>
 
-      {/* <Link to="/teams">
+      <Link to="/teams">
         <div className="menu-title">
           <FontAwesomeIcon icon="user-friends" className="mr-2" />
           Teams
         </div>
-      </Link> */}
+      </Link>
+      <Link to="/groups">
+        <div className="menu-title">
+          <FontAwesomeIcon icon="users" className="mr-2" />
+          Groups
+        </div>
+      </Link>
 
       {false && allState.team.teams.map((team) => (
         <div key={team.id} className={`team-item${selectedTeam === team.id ? '' : ' collapsed'}`}>
@@ -211,14 +217,22 @@ function Sidebar(props) {
         </div>
       ))}
 
-      {/* <div className="menu-title create-button">
+      <div className="menu-title create-button">
+        <Link to="/groups/create-group">
+          <div>
+            <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
+            Create Group
+          </div>
+        </Link>
+      </div>
+      <div className="menu-title create-button">
         <Link to="/teams/create-team">
           <div>
             <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
             Create Team
           </div>
         </Link>
-      </div> */}
+      </div>
     </aside>
   );
 }
