@@ -973,14 +973,6 @@ body {
   border-right: 1px solid #dbdbdb;
 }
 
-.top_logo {
-  padding-left: 25px;
-
-  img {
-    width: 142px;
-  }
-}
-
 .top-info > li > a,
 .dropbtn {
   display: block;
@@ -992,12 +984,24 @@ body {
 }
 
 .top-info li {
-  padding: 0 15px;
+  padding: 0 5px;
 }
 
 .top-info > li:first-child > a {
-  color: #1a73e8;
-  font-size: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+
+  svg {
+    color: $fun-blue-1;
+    font-size: 28px;
+
+  }
+
+  p{
+    padding-top: 2px;
+  }
 }
 
 .top-header-right {
@@ -1209,6 +1213,7 @@ body.menuopen nav ul li.haschild a:after {
 .flex-div {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 /* HEADER CSS */
@@ -3010,24 +3015,35 @@ a:hover {
   }
 }
 
-.footer-all {
+.footer-img-section{
   position: fixed;
   bottom: 0;
   z-index: 1001;
   width: 100%;
-  height: 25px;
+  height: 65px;
   padding: 10px 30px;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #fff;
   box-shadow: 1px 1px 1px 1px #ddd;
+  flex-direction: column;;
+
+  .footer-all {
+    display: flex;
+  }
 
   a {
     padding-left: 30px;
-    color: #5952c6;
+    color: $fun-blue-1;
     font-size: 13px;
+    font-weight: 600;
     text-decoration: underline;
+  }
+
+  span {
+    font-size: 10px;
+    color: #515151;
   }
 }
 

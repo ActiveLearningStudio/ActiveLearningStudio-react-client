@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import logo from 'assets/images/studio_new_logo.png';
 import add from 'assets/images/add-icon.png';
@@ -19,13 +20,13 @@ import './style.scss';
 
 function Header(props) {
   const { /* user, */ logout } = props;
-
+  const stateHeader = useSelector((state) => state.organization);
   return (
     <header>
       <div className="top-header flex-div align-items-center">
         <div className="tophd_left">
           <Link to="/" className="top_logo">
-            <img src={logo} alt="logo" title="" />
+            {stateHeader?.logo ? <img src={`${global.config.resourceUrl}${stateHeader.logo}`} alt="logo" title="" /> : <img src={logo} alt="logo" title="" />}
           </Link>
         </div>
         <div className="search-div">
@@ -35,7 +36,18 @@ function Header(props) {
         <div className="tophd_right flexdiv search-div  d-flex flex-wrap ">
           <div className="navbar-link">
             <ul className="top-info flex-div">
-              <li className="align-items-center">
+              {(stateHeader.activeOrganization?.organization_role !== 'Course Creator' && stateHeader.activeOrganization?.organization_role !== undefined) && (
+                <li>
+                  <Link to={`/org/${stateHeader.activeOrganization?.domain}/manage`}>
+                    <FontAwesomeIcon icon="briefcase" />
+                    <p className="header-icon-text">
+                      Manage&nbsp;
+                      {stateHeader.activeOrganization?.domain}
+                    </p>
+                  </Link>
+                </li>
+              )}
+              <li className="align-items-center" style={{ paddingTop: '4px' }}>
                 <Dropdown className="create-project">
                   <Dropdown.Toggle className="align-items-center">
                     <img src={add} alt="add" />
@@ -61,9 +73,7 @@ function Header(props) {
                   </Dropdown.Menu>
                 </Dropdown>
               </li>
-
               <HeaderNotification />
-
               <li className="mobile-links">
                 <Link to="#">
                   <img src={searchImg} alt="search" />

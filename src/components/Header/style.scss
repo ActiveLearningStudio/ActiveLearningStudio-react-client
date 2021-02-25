@@ -126,9 +126,9 @@
 .search-block {
   position: relative;
   overflow: hidden;
-  width: 362px;
+  width: 320px;
   height: 36px;
-  margin-right: 30px;
+  margin-right: 0px;
 
   .fa-chevron-down {
     position: absolute;
@@ -308,16 +308,19 @@
 }
 
 .tophd_left {
-  // padding: 15px 0;
+  width: auto;
+  height: 75px;
+  display: flex;
+  align-items: center;
+
   img {
-
-    width: 170px;
-
+    width: auto;
+    height: 75px
   }
 }
 
 .search-term {
-  width: 362px;
+  width: 320px;
   height: 36px;
   background: #ffffff 0 0 no-repeat padding-box;
   border: 1px solid $fun-blue-1;
@@ -362,15 +365,26 @@
 }
 
 .dropdown-multitenancy {
-  width: 362px;
-  height: 36px;
+  width: 320px;
+  height: 39px;
+  border-bottom: 1px solid  $fun-blue-1;
+
+  &:after {
+    content: url('../../assets/images/path.png');
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index:-1
+  }
  
   .dropdown-toggle {
-    color: $fun-blue-1;
+    color: $fun-blue-1 !important;
     font-size: 14px;
     line-height: 19px;
     text-align: left;
-
+    width: 100%;
+    padding-left: 0px;
+  
     p{
       font-size: 9px;
       line-height: 12px;

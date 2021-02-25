@@ -437,7 +437,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 80px 0px;
+  margin: 80px auto;
+  max-width: 1080px;
 
   .circle {
     width: 140px;
@@ -458,5 +459,15 @@
   .value {
     font-size: 14px;
     color: #000000;
+  }
+
+  .more {
+    font-weight: 600;
+    font-size: 12px;
+    text-decoration-line: underline;
+    text-align: center;
+    padding-top: 15px;
+    color: $fun-blue-1;
+    cursor: pointer;
   }
 }
