@@ -6,8 +6,8 @@ import Swal from 'sweetalert2';
 import { inviteMembersAction, removeMemberAction } from 'store/actions/group';
 import { searchUsersAction } from 'store/actions/auth';
 import InviteDialogGroup from 'components/InviteDialogGroup';
+import _ from 'lodash';
 import GroupMember from './GroupMember';
-
 import './style.scss';
 
 function GroupMemberView(props) {
@@ -53,11 +53,13 @@ function GroupMemberView(props) {
       });
   }, [inviteMembers, id]);
 
+  console.log(users._, 'filteredUser');
   const filteredUsers = [
-    ...users.filter((u) => `${u.first_name} ${u.last_name}`.toLowerCase().indexOf(search.toLowerCase()) > -1),
-    ...invitedEmails.filter((u) => u.invited_email.toLowerCase().indexOf(search.toLowerCase()) > -1),
+    ..._.filter(users, (u) => `${u.first_name} ${u.last_name}`.toLowerCase().indexOf(search.toLowerCase()) > -1),
+    // ...users.filter((u) => `${u.first_name} ${u.last_name}`.toLowerCase().indexOf(search.toLowerCase()) > -1),
+    // ...invitedEmails.filter((u) => u.invited_email.toLowerCase().indexOf(search.toLowerCase()) > -1),
+    ..._.filter(invitedEmails, (u) => u.invited_email.toLowerCase().indexOf(search.toLowerCase()) > -1),
   ];
-
   const authUser = users.find((u) => u.id === (user || {}).id);
 
   return (
