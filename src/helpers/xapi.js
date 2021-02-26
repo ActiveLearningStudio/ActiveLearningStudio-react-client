@@ -31,6 +31,7 @@ export function extendStatement(statement, params, skipped = false) {
     courseId, // LMS course id
     homepage,
     toolPlatform,
+    activeCourse,
   } = params;
 
   const platform = H5PActvityPathMapToPlatform().find((el) => el[path]);
@@ -53,6 +54,11 @@ export function extendStatement(statement, params, skipped = false) {
       objectType: 'Activity',
       id: `${window.location.origin}/gclass/${courseId}`,
     });
+
+    if (statementExtended.object && statementExtended.object.definition && statementExtended.object.definition.extensions) {
+      statementExtended.object.definition.extensions['http://currikistudio.org/x-api/gclass-alternate-course-id'] = activeCourse.alternateLink;
+      statementExtended.object.definition.extensions['http://currikistudio.org/x-api/course-name'] = activeCourse.name;
+    }
   }
 
   if (platform[path] === 'LTI client') {
@@ -85,7 +91,7 @@ export function extendStatement(statement, params, skipped = false) {
   // If the statement is marked as skipped, we supply the proper verb
   if (skipped) {
     statementExtended.verb = {
-      id: 'http://id.tincanapi.com/verb/skipped',
+      id: 'http://adlnet.gov/expapi/verbs/skipped',
       display: {
         'en-US': 'skipped',
       },

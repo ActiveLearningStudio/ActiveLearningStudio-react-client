@@ -24,6 +24,7 @@ function GclassActivityPage(props) {
   } = props;
   const { activityId, courseId } = match.params;
   const [authorized, setAuthorized] = useState(null);
+  const [activeCourse, setActiveCourse] = useState(null);
   // Gets student courses
   useEffect(() => {
     if (student === null) return;
@@ -38,7 +39,10 @@ function GclassActivityPage(props) {
     let found = false;
     // eslint-disable-next-line no-restricted-syntax
     for (const i in courses) {
-      if (courses[i].id === courseId) found = true;
+      if (courses[i].id === courseId) {
+        found = true;
+        setActiveCourse(courses[i]);
+      }
     }
     setAuthorized(found);
   }, [courses, courseId]);
@@ -60,7 +64,7 @@ function GclassActivityPage(props) {
           <div className="activity-bg left-vdo">
             <div className="main-item-wrapper desktop-view">
               <div className="item-container">
-                {authorized && <Activity activityId={activityId} />}
+                {authorized && <Activity activityId={activityId} activeCourse={activeCourse} />}
 
                 {!authorized && (
                   <div className="container">
