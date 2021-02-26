@@ -1,40 +1,57 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import logo from 'assets/images/logo.svg';
+import logo from 'assets/images/studio_new_logo.png';
+import add from 'assets/images/add-icon.png';
+import profile from 'assets/images/user-profile.png';
 import searchImg from 'assets/images/search.png';
 import createProjectIcon from 'assets/images/create-project-icon.png';
-import userImg from 'assets/images/user.png';
 import { logoutAction } from 'store/actions/auth';
 import { Event } from 'trackers/ga';
 import SearchForm from './searchForm';
 import HeaderNotification from './notification';
+import MultitenancyDropdown from './multitenancyDropdown';
 
 import './style.scss';
 
 function Header(props) {
   const { /* user, */ logout } = props;
-
+  const stateHeader = useSelector((state) => state.organization);
   return (
     <header>
       <div className="top-header flex-div align-items-center">
         <div className="tophd_left">
           <Link to="/" className="top_logo">
-            <img src={logo} alt="logo" title="" />
+            {stateHeader?.logo ? <img src={`${global.config.resourceUrl}${stateHeader.logo}`} alt="logo" title="" /> : <img src={logo} alt="logo" title="" />}
           </Link>
         </div>
-        <div className="tophd_right flexdiv search-div  d-flex flex-wrap ">
+        <div className="search-div">
           <SearchForm />
+        </div>
+        <MultitenancyDropdown />
+        <div className="tophd_right flexdiv search-div  d-flex flex-wrap ">
           <div className="navbar-link">
             <ul className="top-info flex-div">
-              <li className="d-flex align-items-center">
+              {(stateHeader.activeOrganization?.organization_role !== 'Course Creator' && stateHeader.activeOrganization?.organization_role !== undefined) && (
+                <li>
+                  <Link to={`/org/${stateHeader.activeOrganization?.domain}/manage`}>
+                    <FontAwesomeIcon icon="briefcase" />
+                    <p className="header-icon-text">
+                      Manage&nbsp;
+                      {stateHeader.activeOrganization?.domain}
+                    </p>
+                  </Link>
+                </li>
+              )}
+              <li className="align-items-center" style={{ paddingTop: '4px' }}>
                 <Dropdown className="create-project">
-                  <Dropdown.Toggle className="d-flex align-items-center">
-                    <FontAwesomeIcon icon="plus-circle" />
+                  <Dropdown.Toggle className="align-items-center">
+                    <img src={add} alt="add" />
+                    <p className="header-icon-text">Create</p>
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu className="user-dropdown">
@@ -56,9 +73,7 @@ function Header(props) {
                   </Dropdown.Menu>
                 </Dropdown>
               </li>
-
               <HeaderNotification />
-
               <li className="mobile-links">
                 <Link to="#">
                   <img src={searchImg} alt="search" />
@@ -67,8 +82,9 @@ function Header(props) {
 
               <li className="menu-user-settings d-flex align-items-center">
                 <Dropdown>
-                  <Dropdown.Toggle className="d-flex align-items-center">
-                    <img src={userImg} alt="user" title="" />
+                  <Dropdown.Toggle className="align-items-center">
+                    <img src={profile} alt="user" title="" />
+                    <p className="header-icon-text">Profile</p>
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu className="user-dropdown">

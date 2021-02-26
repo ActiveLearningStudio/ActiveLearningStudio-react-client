@@ -60,6 +60,8 @@ const EditActivity = loadable(() => import('../containers/EditActivity'));
 const GclassSummaryPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassSummaryPage'));
 const SearchPage = loadable(() => import('../containers/LMS/Canvas/DeepLinking/SearchPage'));
 const LtiActivity = loadable(() => import('../containers/LMS/LTI/Activity'));
+const ManageOrganization = loadable(() => import('../containers/ManageOrganization'));
+const SelectedOrganization = 'currikistudio';
 
 const AppRouter = (props) => {
   useEffect(() => {
@@ -149,6 +151,7 @@ const AppRouter = (props) => {
           component={LtiActivity}
         />
         <PublicRoute exact path="/login" component={LoginPage} />
+        <PublicRoute exact path="/login/:organization" component={LoginPage} />
         <PublicRoute exact path="/register" component={RegisterPage} />
         <PublicRoute exact path="/forgot-password" component={ForgotPasswordPage} />
         <PublicRoute exact path="/reset-password" component={ResetPasswordPage} />
@@ -169,7 +172,6 @@ const AppRouter = (props) => {
                      <Sidebar />
                    </div>
                    <Switch>
-                     <PrivateRoute exact path="/" component={ProjectsPage} />
                      <PrivateRoute exact path="/account" component={ProfilePage} />
                      <PrivateRoute exact path="/change-password" component={ChangePasswordPage} />
 
@@ -241,7 +243,14 @@ const AppRouter = (props) => {
                        path="/search"
                        component={SearchResult}
                      />
-                     <Redirect to="/" />
+
+                     <PrivateRoute
+                       exact
+                       path="/org/:organization/manage"
+                       component={ManageOrganization}
+                     />
+                     <PrivateRoute exact path="/org/:organization" component={ProjectsPage} />
+                     <Redirect to={`/org/${SelectedOrganization}`} />
                    </Switch>
                  </div>
                </>

@@ -2,10 +2,12 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
+import QueryString from 'query-string';
 
 import logo from 'assets/images/logo.svg';
 import { getUserAction } from 'store/actions/auth';
 import { cloneDuplicationRequest } from 'store/actions/notification';
+import { getBranding, getOrganization } from 'store/actions/organization';
 import { updatedActivity } from 'store/actions/resource';
 import { updatedProject } from 'store/actions/project';
 import { updatedPlaylist } from 'store/actions/playlist';
@@ -16,7 +18,8 @@ import './style.scss';
 function App(props) {
   const dispatch = useDispatch();
   const { getUser } = props;
-
+  const query = QueryString.parse(window.location);
+  console.log(query);
   useEffect(() => {
     getUser();
   }, [getUser]);
@@ -29,10 +32,23 @@ function App(props) {
       dispatch(updatedProject(userDetails.id));
       dispatch(updatedPlaylist(userDetails.id));
       dispatch(updatedActivity(userDetails.id));
+      const subdomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
+      if (subdomain) {
+        (async () => {
+          const { organization } = await dispatch(getBranding(subdomain));
+          dispatch(getOrganization(organization?.id));
+        })();
+      }
     }
   }, [dispatch, userDetails]);
 
   useEffect(() => {
+    if (window.location.href.includes('/login/') && !userDetails) {
+      const subdomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
+      if (subdomain) {
+        dispatch(getBranding(subdomain));
+      }
+    }
     if (window.HubSpotConversations) {
       // console.log('The api is ready already');
     } else {

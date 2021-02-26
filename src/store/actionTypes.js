@@ -345,3 +345,11 @@ export const NEXT_PAGE = 'NEXT_PAGE';
 export const GRADE_PASS_BACK = 'GRADE_PASS_BACK';
 export const LTI_ACTIVITY_INIT = 'LTI_ACTIVITY_INIT';
 export const DO_BROWSE = 'DO_BROWSE';
+
+/* Organization */
+
+export const CHANGE_ACTIVE_SCREEN = 'CHANGE_ACTIVE_SCREEN';
+export const GET_PREVIOUS_SCREEN = 'GET_PREVIOUS_SCREEN';
+export const ADD_CURRENT_ORG = 'ADD_CURRENT_ORG';
+export const ADD_ALL_ORG = 'ADD_ALL_ORG';
+export const ADD_ACTIVE_ORG = 'ADD_ACTIVE_ORG';

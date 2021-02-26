@@ -13,6 +13,7 @@ import { lmsPlaylist } from 'store/actions/playlist';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 
 import './style.scss';
+import { propTypes } from 'react-bootstrap/esm/Image';
 
 const ProjectCardDropdown = (props) => {
   const {
@@ -21,6 +22,7 @@ const ProjectCardDropdown = (props) => {
     setProjectId,
     showDeletePopup,
     previewMode,
+    text,
   } = props;
 
   const dispatch = useDispatch();
@@ -32,6 +34,7 @@ const ProjectCardDropdown = (props) => {
 
   return (
     <Dropdown className="project-dropdown check d-flex  align-items-center">
+      {text}
       <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
         <FontAwesomeIcon icon="ellipsis-v" />
       </Dropdown.Toggle>
@@ -144,6 +147,11 @@ ProjectCardDropdown.propTypes = {
   handleShow: PropTypes.func.isRequired,
   setProjectId: PropTypes.func.isRequired,
   previewMode: PropTypes.bool.isRequired,
+  text: propTypes.text,
+};
+
+ProjectCardDropdown.defaultProps = {
+  text: propTypes.text,
 };
 
 export default ProjectCardDropdown;

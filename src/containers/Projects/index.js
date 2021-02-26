@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import ReactPlaceholder from 'react-placeholder';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -30,6 +30,7 @@ import GoogleModel from 'components/models/GoogleLoginModal';
 import ProjectCard from './ProjectCard';
 import SampleProjectCard from './SampleProjectCard';
 import NewProjectPage from './NewProjectPage';
+import Headline from './headline';
 
 import './style.scss';
 
@@ -37,11 +38,11 @@ export const ProjectsPage = (props) => {
   const allStateProject = useSelector((state) => state.project);
   const [show, setShow] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(0);
-  const [activeFilter, setActiveFilter] = useState('normal-grid');
+  const [activeFilter, setActiveFilter] = useState('small-grid');
   const [allProjects, setAllProjects] = useState(null);
   const [value, setValue] = useState(0);
   const [projectDivider, setProjectDivider] = useState([]);
-  const [sortNumber, setSortNumber] = useState(4);
+  const [sortNumber, setSortNumber] = useState(5);
   const [sampleProject, setSampleProjects] = useState([]);
   const [favProject, setFavProjects] = useState([]);
   const [activeTab, setActiveTab] = useState('My Projects');
@@ -295,6 +296,7 @@ export const ProjectsPage = (props) => {
       >
         <div className={`content-wrapper ${activeFilter}`}>
           <div className="content">
+            <Headline />
             <Tabs
               onSelect={() => {
                 setShowSampleSort(true);
@@ -306,146 +308,140 @@ export const ProjectsPage = (props) => {
               <Tab eventKey="My Projects" title="My Projects">
                 <div className="row">
                   <div className="col-md-12">
-                    <div className="program-page-title">
-                      <h1>My Projects</h1>
+                    {/* <div className="col-md-12">
+                      <div className="program-page-title">
+                        <h1>My Projects</h1>
 
-                      <div className="project-page-settings">
-                        <div className="sort-project-btns">
-                          <div
-                            className={activeFilter === 'list-grid' ? 'sort-btn active' : 'sort-btn'}
-                            onClick={() => {
-                              // const allchunk = [];
-                              // let counterSimpl = 0;
-                              setActiveFilter('list-grid');
-                              setSortNumber(-1);
-                              divideProjects(allProjects);
-                            }}
-                          >
-                            <FontAwesomeIcon icon="bars" />
-                          </div>
-                          <div
-                            className={activeFilter === 'small-grid' ? 'sort-btn active' : 'sort-btn'}
-                            onClick={() => {
-                              setActiveFilter('small-grid');
-                              setSortNumber(5);
-                              divideProjects(allProjects);
-                            }}
-                          >
-                            <FontAwesomeIcon icon="grip-horizontal" />
-                          </div>
-                          <div
-                            className={activeFilter === 'normal-grid' ? 'sort-btn active' : 'sort-btn'}
-                            onClick={() => {
-                              setActiveFilter('normal-grid');
-                              setSortNumber(4);
-                              divideProjects(allProjects);
-                            }}
-                          >
-                            <FontAwesomeIcon icon="th-large" />
+                        <div className="project-page-settings">
+                          <div className="sort-project-btns">
+                            <div
+                              className={activeFilter === 'list-grid' ? 'sort-btn active' : 'sort-btn'}
+                              onClick={() => {
+                                // const allchunk = [];
+                                // let counterSimpl = 0;
+                                setActiveFilter('list-grid');
+                                setSortNumber(-1);
+                                divideProjects(allProjects);
+                              }}
+                            >
+                              <FontAwesomeIcon icon="bars" />
+                            </div>
+                            <div
+                              className={activeFilter === 'small-grid' ? 'sort-btn active' : 'sort-btn'}
+                              onClick={() => {
+                                setActiveFilter('small-grid');
+                                setSortNumber(5);
+                                divideProjects(allProjects);
+                              }}
+                            >
+                              <FontAwesomeIcon icon="grip-horizontal" />
+                            </div>
+                            <div
+                              className={activeFilter === 'normal-grid' ? 'sort-btn active' : 'sort-btn'}
+                              onClick={() => {
+                                setActiveFilter('normal-grid');
+                                setSortNumber(4);
+                                divideProjects(allProjects);
+                              }}
+                            >
+                              <FontAwesomeIcon icon="th-large" />
+                            </div>
                           </div>
                         </div>
-                        <Link to="/project/create">
-                          <div className="btn-top-page">
-                            <FontAwesomeIcon icon="plus" className="mr-2" />
-                            Add Project
-                          </div>
-                        </Link>
                       </div>
-                    </div>
+                    </div> */}
+                    {
+                    !!projectDivider && projectDivider.length > 0 ? (
+                      <DragDropContext onDragEnd={onDragEnd}>
+                        {projectDivider.map((rowData) => (
+                          <Droppable
+                            key={rowData.id}
+                            droppableId={rowData.id}
+                            // direction="horizontal"
+                            // type="row"
+                            className="drag-class"
+                            direction="horizontal"
+                          >
+                            {(provided) => (
+                              <div
+                                {...provided.droppableProps}
+                                ref={provided.innerRef}
+                              >
+                                <div className="check-home" id={value}>
+                                  {rowData.collection.map((proj, index) => {
+                                    const res = {
+                                      title: proj.name,
+                                      id: proj.id,
+                                      deleteType: 'Project',
+                                    };
+                                    return (
+                                      <Draggable
+                                        key={proj.id}
+                                        draggableId={`${proj.id}`}
+                                        index={index}
+                                      >
+                                        {(provid) => (
+                                          <div
+                                            className="playlist-resource"
+                                            ref={provid.innerRef}
+                                            {...provid.draggableProps}
+                                            {...provid.dragHandleProps}
+                                          >
+                                            <ProjectCard
+                                              key={proj.id}
+                                              project={proj}
+                                              res={res}
+                                              handleDeleteProject={handleDeleteProject}
+                                              handleShareProject={handleShareProject}
+                                              showDeletePopup={showDeletePopup}
+                                              showPreview={showPreview === proj.id}
+                                              handleShow={handleShow}
+                                              handleClose={handleClose}
+                                              setProjectId={setProjectId}
+                                              activeFilter={activeFilter}
+                                            />
+                                          </div>
+                                        )}
+                                      </Draggable>
+                                    );
+                                  })}
+                                </div>
+                                {provided.placeholder}
+                              </div>
+                            )}
+                          </Droppable>
+                        ))}
+                      </DragDropContext>
+                    ) : (
+                      <>
+                        <Alert variant="success">
+                          Start building your first Project by clicking on the
+                          {' '}
+                          <b>Add Project</b>
+                          {' '}
+                          button.
+                          <br />
+                          For more information click here:
+                          <a
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            className="alert-link-ref"
+                            href="https://support.curriki.org/creating-learning-projects"
+                          >
+                            <b>Getting Started.</b>
+                            {' '}
+                          </a>
+                        </Alert>
+
+                        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+                        <video controls className="welcome-video">
+                          <source src={WelcomeVideo} type="video/mp4" />
+                        </video>
+                      </>
+                    )
+                    }
                   </div>
                 </div>
-
-                {
-                //! !projectCards && projectCards.length > 0
-                !!projectDivider && projectDivider.length > 0 ? (
-                  <DragDropContext onDragEnd={onDragEnd}>
-                    {projectDivider.map((rowData) => (
-                      <Droppable
-                        key={rowData.id}
-                        droppableId={rowData.id}
-                        // direction="horizontal"
-                        // type="row"
-                        className="drag-class"
-                        direction="horizontal"
-                      >
-                        {(provided) => (
-                          <div
-                            {...provided.droppableProps}
-                            ref={provided.innerRef}
-                          >
-                            <div className="check-home" id={value}>
-                              {rowData.collection.map((proj, index) => {
-                                const res = {
-                                  title: proj.name,
-                                  id: proj.id,
-                                  deleteType: 'Project',
-                                };
-                                return (
-                                  <Draggable
-                                    key={proj.id}
-                                    draggableId={`${proj.id}`}
-                                    index={index}
-                                  >
-                                    {(provid) => (
-                                      <div
-                                        className="playlist-resource"
-                                        ref={provid.innerRef}
-                                        {...provid.draggableProps}
-                                        {...provid.dragHandleProps}
-                                      >
-                                        <ProjectCard
-                                          key={proj.id}
-                                          project={proj}
-                                          res={res}
-                                          handleDeleteProject={handleDeleteProject}
-                                          handleShareProject={handleShareProject}
-                                          showDeletePopup={showDeletePopup}
-                                          showPreview={showPreview === proj.id}
-                                          handleShow={handleShow}
-                                          handleClose={handleClose}
-                                          setProjectId={setProjectId}
-                                          activeFilter={activeFilter}
-                                        />
-                                      </div>
-                                    )}
-                                  </Draggable>
-                                );
-                              })}
-                            </div>
-                            {provided.placeholder}
-                          </div>
-                        )}
-                      </Droppable>
-                    ))}
-                  </DragDropContext>
-                ) : (
-                  <>
-                    <Alert variant="success">
-                      Start building your first Project by clicking on the
-                      {' '}
-                      <b>Add Project</b>
-                      {' '}
-                      button.
-                      <br />
-                      For more information click here:
-                      <a
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        className="alert-link-ref"
-                        href="https://support.curriki.org/creating-learning-projects"
-                      >
-                        <b>Getting Started.</b>
-                        {' '}
-                      </a>
-                    </Alert>
-
-                    {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                    <video controls className="welcome-video">
-                      <source src={WelcomeVideo} type="video/mp4" />
-                    </video>
-                  </>
-                )
-              }
               </Tab>
               <Tab eventKey="Sample Projects" title="Sample Projects">
                 <div className="row">

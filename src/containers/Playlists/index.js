@@ -352,7 +352,7 @@ function PlaylistsPage(props) {
                     <h1>{selectedProject ? selectedProject.name : ''}</h1>
                     <div className="react-touch">
                       <div className="publish-btn">
-                        <span style={{ color: checked ? '#333' : '#464646' }}>Showcase</span>
+                        <span style={{ color: checked ? '#333' : '$mine-shaft' }}>Showcase</span>
                         <Switch checked={checked} onChange={handleChange} />
                       </div>
                     </div>

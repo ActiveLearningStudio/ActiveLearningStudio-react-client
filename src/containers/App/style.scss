@@ -1,3 +1,5 @@
+@import 'assets/css/index';
+
 .main-page-content {
   padding-top: 85px;
 }
@@ -178,7 +180,7 @@
         font-weight: 600;
         line-height: 16px;
         letter-spacing: 0;
-        color: #464646;
+        color: $mine-shaft;
         opacity: 1;
         text-transform: capitalize;
         word-break: break-word;
@@ -309,10 +311,10 @@
       margin-top: 10px;
 
       a {
-        font-family: 'Open Sans', sans-serif;
-        font-size: 24px;
+        font-family: $rubik, sans-serif;
+        font-size: 20px;
         font-weight: 300;
-        color: #607a9b;
+        color: $fun-blue-1;
 
         &:hover {
           text-decoration: none;
@@ -342,11 +344,11 @@
 
       p {
         font-weight: 400;
-        font-size: 14px;
-        line-height: 26px;
+        font-size: 12px;
+        line-height: 134%;
+        color: $dove-gray;
         letter-spacing: 0;
         text-align: justify;
-        color: #464646;
       }
 
       .lessons {
@@ -447,7 +449,7 @@
     padding-bottom: 10px;
     padding-left: 40px;
     background: url(../../assets/images/my-projects-icon.png) no-repeat 0 9px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: $rubik, sans-serif;
     font-weight: 700;
     font-size: 22px;
     color: #607a9b;
@@ -510,16 +512,17 @@
 
 .main-tabs {
   width: 100%;
-  margin-top: 30px;
+  margin-top: 10px;
+  margin-bottom: 25px !important;
 
   .nav-item {
     position: relative;
-    margin-right: 15px;
+    margin-right: 5px;
     padding: 12px 30px;
     background-color: #fff !important;
-    font-size: 16px;
-    font-weight: 500;
-    color: #0f4392 !important;
+    font-size: 14px;
+    font-weight: 400;
+    color: $curriki-main-blue !important;
   }
 
   .nav-item.active {
@@ -544,7 +547,7 @@
 
 .main-content-wrapper {
   width: 100%;
-  padding-top: 65px;
+  padding-top: 80px;
   padding-bottom: 45px;
   // display: flex;
   float: left;
@@ -878,36 +881,36 @@ ul {
   border-bottom: 1px solid #3a466d;
   font-size: 16px;
   color: #7b7b7b;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
 }
 
 ::-webkit-input-placeholder {
   /* Chrome/Opera/Safari */
   color: #7b7b7b;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
 }
 
 ::-moz-placeholder {
   /* Firefox 19+ */
   color: #7b7b7b;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
 }
 
 :-ms-input-placeholder {
   /* IE 10+ */
   color: #7b7b7b;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
 }
 
 :-moz-placeholder {
   /* Firefox 18- */
   color: #7b7b7b;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
 }
 
 body {
   background: #eeeeee;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
   font-weight: normal;
   font-size: 16px;
   position: relative;
@@ -938,7 +941,7 @@ body {
   // margin-top: 3px;
   text-align: left;
   transition: all 0.4s ease-in-out;
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.23);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
   border-radius: 0 0 10px 10px;
   width: 405px;
   background: #ffffff;
@@ -952,11 +955,11 @@ body {
 .top-header {
   position: fixed;
   width: 100%;
-  height: 65px;
+  height: 80px;
   box-shadow: 0 5px 6px #00000026;
   z-index: 111;
   justify-content: space-between;
-  background: #fafafa;
+  background: #fff;
   align-items: center;
   top: 0;
   padding: 0 30px;
@@ -970,14 +973,6 @@ body {
   border-right: 1px solid #dbdbdb;
 }
 
-.top_logo {
-  padding-left: 25px;
-
-  img {
-    width: 50%;
-  }
-}
-
 .top-info > li > a,
 .dropbtn {
   display: block;
@@ -989,12 +984,24 @@ body {
 }
 
 .top-info li {
-  padding: 0 15px;
+  padding: 0 5px;
 }
 
 .top-info > li:first-child > a {
-  color: #1a73e8;
-  font-size: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+
+  svg {
+    color: $fun-blue-1;
+    font-size: 28px;
+
+  }
+
+  p{
+    padding-top: 2px;
+  }
 }
 
 .top-header-right {
@@ -1022,7 +1029,7 @@ body {
   text-align: center;
   width: 100%;
   border-radius: 0;
-  color: #464646;
+  color: $mine-shaft;
   padding: 15px !important;
 }
 
@@ -1113,7 +1120,7 @@ nav ul li {
 nav ul li a {
   font-size: 16px;
   color: #607a9b;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
   line-height: 100%;
   transition: all 0.5s linear;
 }
@@ -1206,6 +1213,7 @@ body.menuopen nav ul li.haschild a:after {
 .flex-div {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 /* HEADER CSS */
@@ -1235,7 +1243,7 @@ header {
   display: block;
   width: 100%;
   border-radius: 0;
-  color: #464646;
+  color: $mine-shaft;
   text-align: left;
 }
 
@@ -1245,14 +1253,14 @@ header {
 
 .dropdown-menu li {
   padding: 0;
-  color: #464646;
+  color: $mine-shaft;
   text-align: left;
 }
 
 .top-header-right {
   position: relative;
   padding: 0 30px;
-  color: #464646;
+  color: $mine-shaft;
   text-align: left;
 }
 
@@ -1260,7 +1268,7 @@ header {
   width: 60px;
   display: inline-block;
   vertical-align: top;
-  color: #0f4392;
+  color: $curriki-main-blue;
 }
 
 .notify-description {
@@ -1273,7 +1281,7 @@ header {
   font-size: 24px;
   line-height: 33px;
   letter-spacing: 0;
-  color: #0f4392;
+  color: $curriki-main-blue;
   opacity: 1;
 }
 
@@ -1291,7 +1299,7 @@ header {
   font-weight: 400;
   font-size: 14px;
   line-height: 22px;
-  color: #464646;
+  color: $mine-shaft;
   opacity: 0.8;
   white-space: initial;
 }
@@ -1373,7 +1381,7 @@ header.head_mobile {
 .title-md {
   font-size: 22px;
   color: #21448e;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
   font-weight: 600;
   line-height: 100%;
   padding-bottom: 18px;
@@ -1802,7 +1810,7 @@ a:hover {
     line-height: 33px;
     font-weight: 600;
     letter-spacing: 0;
-    color: #0f4392;
+    color: $curriki-main-blue;
     text-align: left;
     opacity: 1;
   }
@@ -1911,7 +1919,7 @@ a:hover {
     font-size: 15px;
     line-height: 20px;
     letter-spacing: 0;
-    color: #464646;
+    color: $mine-shaft;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -2069,7 +2077,7 @@ a:hover {
     font-size: 16px;
     line-height: 22px;
     letter-spacing: 0;
-    color: #464646;
+    color: $mine-shaft;
     opacity: 1;
     border: none;
     text-transform: capitalize;
@@ -2150,7 +2158,7 @@ a:hover {
     line-height: 18px;
     box-shadow: 0 0 0 transparent;
     letter-spacing: 0;
-    color: #464646;
+    color: $mine-shaft;
     opacity: 1;
     border: none;
     text-transform: capitalize;
@@ -2295,7 +2303,7 @@ a:hover {
       font-size: 14px;
       line-height: 19px;
       letter-spacing: 0;
-      color: #464646;
+      color: $mine-shaft;
       padding: 12px 12px;
       border-bottom: 1px solid #eee;
 
@@ -2306,7 +2314,7 @@ a:hover {
       .fa {
         padding-right: 5px;
         font-size: 12px;
-        color: #464646;
+        color: $mine-shaft;
       }
     }
   }
@@ -2350,7 +2358,7 @@ a:hover {
       padding: 8px 15px;
 
       &:hover {
-        border-left: 3px solid #0f4392;
+        border-left: 3px solid $curriki-main-blue;
       }
 
       .bg-thumbnail {
@@ -2587,11 +2595,11 @@ a:hover {
       line-height: 19px;
       padding-bottom: 0;
       letter-spacing: 0;
-      color: #464646;
+      color: $mine-shaft;
       opacity: 1;
       border-bottom: none;
       margin: 0 !important;
-      font-family: 'Open Sans', sans-serif;
+      font-family: $rubik, sans-serif;
     }
 
     .slide-control {
@@ -2606,7 +2614,7 @@ a:hover {
       color: #7B7B7B;
       opacity: 1;
       height: auto;
-      font-family: 'Open Sans', sans-serif;
+      font-family: $rubik, sans-serif;
       padding: 12px 12px;
       text-transform: capitalize;
 
@@ -3007,24 +3015,35 @@ a:hover {
   }
 }
 
-.footer-all {
+.footer-img-section{
   position: fixed;
   bottom: 0;
   z-index: 1001;
   width: 100%;
-  height: 25px;
+  height: 65px;
   padding: 10px 30px;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #fff;
   box-shadow: 1px 1px 1px 1px #ddd;
+  flex-direction: column;;
+
+  .footer-all {
+    display: flex;
+  }
 
   a {
     padding-left: 30px;
-    color: #5952c6;
+    color: $fun-blue-1;
     font-size: 13px;
+    font-weight: 600;
     text-decoration: underline;
+  }
+
+  span {
+    font-size: 10px;
+    color: #515151;
   }
 }
 
@@ -3411,7 +3430,7 @@ a:hover {
       font-size: 18px;
       line-height: 25px;
       letter-spacing: 0;
-      color: #0f4392;
+      color: $curriki-main-blue;
       text-transform: uppercase;
     }
 
@@ -3420,7 +3439,7 @@ a:hover {
       font-size: 16px;
       line-height: 26px;
       letter-spacing: 0;
-      color: #464646;
+      color: $mine-shaft;
     }
 
     .reg-btn {
