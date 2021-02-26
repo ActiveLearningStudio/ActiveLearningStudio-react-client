@@ -48,9 +48,12 @@ const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared
 const SecureProjectPreview = loadable(() => import('../containers/SecureProjectPreview'));
 const SearchResult = loadable(() => import('../containers/Search'));
 // const LtiModel = loadable(() => import('../containers/LtiModel'));
-// const TeamsPage = loadable(() => import('../containers/Teams'));
-// const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
-// const AddTeamProjectMemberPage = loadable(() => import('../containers/Teams/AddMembers'));
+const TeamsPage = loadable(() => import('../containers/Teams'));
+const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
+const AddTeamProjectMemberPage = loadable(() => import('../containers/Teams/AddMembers'));
+const GroupsPage = loadable(() => import('../containers/Groups'));
+const AddGroupProjectsPage = loadable(() => import('../containers/Groups/AddProjects'));
+const AddGroupProjectMemberPage = loadable(() => import('../containers/Groups/AddMembers'));
 const GclassActivityPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassActivityPage'));
 const ActivityCreate = loadable(() => import('../containers/CreateActivity'));
 const EditActivity = loadable(() => import('../containers/EditActivity'));
@@ -175,13 +178,21 @@ const AppRouter = (props) => {
                      <PrivateRoute exact path="/dashboard" component={DashboardPage} />
                      <PrivateRoute exact path="/notification" component={NotificationPage} />
 
-                     {/* <PrivateRoute exact path="/teams" component={TeamsPage} overview />
+                     <PrivateRoute exact path="/teams" component={TeamsPage} overview />
                      <PrivateRoute exact path="/teams/create-team" component={TeamsPage} creation />
                      <PrivateRoute exact path="/teams/:teamId" component={TeamsPage} teamShow />
                      <PrivateRoute exact path="/teams/:teamId/projects" component={TeamsPage} projectShow />
                      <PrivateRoute exact path="/teams/:teamId/channel" component={TeamsPage} channelShow />
                      <PrivateRoute exact path="/teams/:teamId/add-projects" component={AddTeamProjectsPage} />
-                     <PrivateRoute exact path="/teams/:teamId/projects/:projectId/add-member" component={AddTeamProjectMemberPage} /> */}
+                     <PrivateRoute exact path="/teams/:teamId/projects/:projectId/add-member" component={AddTeamProjectMemberPage} />
+
+                     <PrivateRoute exact path="/groups" component={GroupsPage} overview />
+                     <PrivateRoute exact path="/groups/create-group" component={GroupsPage} creation />
+                     <PrivateRoute exact path="/groups/:groupId" component={GroupsPage} groupShow />
+                     <PrivateRoute exact path="/groups/:groupId/projects" component={GroupsPage} projectShow />
+                     <PrivateRoute exact path="/groups/:groupId/channel" component={GroupsPage} channelShow />
+                     <PrivateRoute exact path="/groups/:groupId/add-projects" component={AddGroupProjectsPage} />
+                     <PrivateRoute exact path="/groups/:groupId/projects/:projectId/add-member" component={AddGroupProjectMemberPage} />
 
                      <PrivateRoute
                        exact

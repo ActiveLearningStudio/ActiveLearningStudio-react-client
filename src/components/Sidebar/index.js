@@ -96,8 +96,29 @@ function Sidebar(props) {
           Teams
         </div>
       </Link>
-
-      {allState.team.teams.map((team) => (
+      <div className="menu-title create-button">
+        <Link to="/teams/create-team">
+          <div>
+            <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
+            Create Team
+          </div>
+        </Link>
+      </div>
+      <Link to="/groups">
+        <div className="menu-title">
+          <FontAwesomeIcon icon="users" className="mr-2" />
+          Groups
+        </div>
+      </Link>
+      <div className="menu-title create-button">
+        <Link to="/groups/create-group">
+          <div>
+            <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
+            Create Group
+          </div>
+        </Link>
+      </div>
+      {false && allState.team.teams.map((team) => (
         <div key={team.id} className={`team-item${selectedTeam === team.id ? '' : ' collapsed'}`}>
           <div className="team-label" onClick={() => handleClickTeam(team)}>
             {team.name}
@@ -130,18 +151,9 @@ function Sidebar(props) {
             </Link>
             */}
           </div>
+          <img src={backgroundimg} alt="" />
         </div>
       ))}
-
-      <div className="menu-title create-button">
-        <Link to="/teams/create-team">
-          <div>
-            <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
-            Create Team
-          </div>
-        </Link>
-      </div>
-      <img src={backgroundimg} alt="" />
     </aside>
   );
 }
