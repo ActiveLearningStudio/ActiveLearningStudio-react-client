@@ -1,88 +1,138 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useMemo, memo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Alert } from 'react-bootstrap';
+import Swal from 'sweetalert2';
 
-import { updateOrganizationScreen } from 'store/actions/organization';
-import childOrgImage from 'assets/images/child-organization-image.png';
+import {
+  updateOrganizationScreen,
+  getsubOrgList,
+  updatePreviousScreen,
+  setActiveOrganization,
+  editOrganization,
+  deleteOrganization,
+  updateFeedbackScreen,
+} from 'store/actions/organization';
 
-export default function AllOrganizations() {
+const AllOrganizations = () => {
   const dispatch = useDispatch();
-
+  const allListState = useSelector((state) => state.organization);
+  useMemo(() => {
+    dispatch(updatePreviousScreen('intro'));
+  }, []);
+  useMemo(() => {
+    dispatch(getsubOrgList(allListState.activeOrganization?.id));
+  }, [allListState.activeOrganization]);
+  const { allSuborgList } = allListState;
   return (
-    <div className="all-organizations">
-      <div className="organizations-create">
-        <h3>Organizations</h3>
-        <div className="button-create" onClick={() => dispatch(updateOrganizationScreen('create-org'))}>
-          Create Organization
-        </div>
-      </div>
-      <div className="box-all-organization">
-        <div className="search-all">
-          <div className="input-with-icon">
-            <input className="form-search" type="text" placeholder="Search organization" />
-            <FontAwesomeIcon icon="search" />
-          </div>
-          <div className="filter">
-            Filter1
-          </div>
-          <div className="filter">
-            Filter2
+    allSuborgList ? (
+      <div className="all-organizations">
+        <div className="organizations-create">
+          <h3>Organizations</h3>
+          <div
+            className="button-create"
+            onClick={() => {
+              dispatch(updateOrganizationScreen('create-org'));
+              dispatch(updatePreviousScreen('all-list'));
+            }}
+          >
+            Create Organization
           </div>
         </div>
-        <div className="paginationbox">
-          <div className="count-pages">
-            1-20 of 100
-          </div>
-        </div>
-        <div className="all-list">
-          <div className="org-block">
-            <img src={childOrgImage} alt="" />
-            <div className="meta-info">
-              <div className="info">
-                <div>
-                  <h4>Technical institute</h4>
-                  <h5>Admin: Leo Cuhna</h5>
+        {allSuborgList.length > 0 ? (
+          <div className="box-all-organization">
+            <div className="search-all">
+              <div className="input-with-icon">
+                <input className="form-search" type="text" placeholder="Search organization" />
+                <FontAwesomeIcon icon="search" />
+              </div>
+              <div className="filter">
+                Filter1
+              </div>
+              <div className="filter">
+                Filter2
+              </div>
+            </div>
+            <div className="paginationbox">
+              <div className="count-pages">
+                1-20 of 100
+              </div>
+            </div>
+            <div className="all-list">
+              {allSuborgList.map((org) => (
+                <div className="org-block">
+                  <div
+                    className="sub-org-img"
+                    style={{ backgroundImage: `url(${global.config.resourceUrl}${org.image})` }}
+                  />
+                  <div className="meta-info">
+                    <div className="info">
+                      <div>
+                        <h4>{org.name}</h4>
+                        <h5>Admin: Leo Cuhna</h5>
+                      </div>
+                      <p>{org.description}</p>
+                    </div>
+                    <div className="meta">
+                      <span className="data-values">20 User</span>
+                      <span className="data-values">10 Group</span>
+                      <span className="data-values">3 Teams</span>
+                      <span className="data-values">15 Projects</span>
+                    </div>
+                  </div>
+                  <div className="crud">
+                    <div
+                      className="submit"
+                      onClick={() => {
+                        dispatch(setActiveOrganization(org));
+                        dispatch(updateOrganizationScreen('intro'));
+                      }}
+                    >
+                      Manage
+                    </div>
+                    <div
+                      className="submit"
+                      onClick={() => {
+                        dispatch(editOrganization(org));
+                        dispatch(updateOrganizationScreen('edit-org'));
+                      }}
+                    >
+                      Edit
+                    </div>
+                    <div
+                      className="submit"
+                      onClick={() => {
+                        Swal.fire({
+                          title: 'Are you sure?',
+                          text: "You won't be able to revert this!",
+                          icon: 'warning',
+                          showCancelButton: true,
+                          confirmButtonColor: '#084892',
+                          cancelButtonColor: '#d33',
+                          confirmButtonText: 'Yes, delete it!',
+                        }).then(async (result) => {
+                          if (result.isConfirmed) {
+                            const resultDel = await dispatch(deleteOrganization(org));
+                            if (resultDel) {
+                              dispatch(updateOrganizationScreen('feedback'));
+                              dispatch(updateFeedbackScreen('delete'));
+                            }
+                          }
+                        });
+                      }}
+                    >
+                      Delete
+                    </div>
+                  </div>
                 </div>
-                <p>Ed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium</p>
-              </div>
-              <div className="meta">
-                <span className="data-values">20 User</span>
-                <span className="data-values">10 Group</span>
-                <span className="data-values">3 Teams</span>
-                <span className="data-values">15 Projects</span>
-              </div>
-            </div>
-            <div className="crud">
-              <div className="submit">Manage</div>
-              <div className="submit">Edit</div>
-              <div className="submit">Delete</div>
+              ))}
             </div>
           </div>
-          <div className="org-block">
-            <img src={childOrgImage} alt="" />
-            <div className="meta-info">
-              <div className="info">
-                <div>
-                  <h4>Technical institute</h4>
-                  <h5>Admin: Leo Cuhna</h5>
-                </div>
-                <p>Ed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium</p>
-              </div>
-              <div className="meta">
-                <span className="data-values">20 User</span>
-                <span className="data-values">10 Group</span>
-                <span className="data-values">3 Teams</span>
-                <span className="data-values">15 Projects</span>
-              </div>
-            </div>
-            <div className="crud">
-              <div className="submit">Manage</div>
-              <div className="submit">Edit</div>
-              <div className="submit">Delete</div>
-            </div>
-          </div>
-        </div>
+        ) : <Alert style={{ marginTop: '15px' }} variant="warning">No Organizations Available, kindly create a new one.</Alert>}
       </div>
-    </div>
+    ) : <Alert style={{ marginTop: '15px' }} variant="primary">Loading ...</Alert>
+
   );
-}
+};
+
+export default memo(AllOrganizations);

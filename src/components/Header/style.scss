@@ -396,4 +396,36 @@
       color: $fun-blue-1;
     }
   }
+
+  .dropdown-menu {
+    min-width: 398px;
+    max-height: 359px;
+    background: #FFFFFF;
+    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
+    border: none;
+    padding: 10px 25px;
+    overflow: auto;
+  }
+
+  a {
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 22px;
+    color: $fun-blue-1;
+    padding:0;
+  }
+
+  .all-tg-lister {
+    border-bottom: 1px solid #E5E5E5;
+    padding: 10px 0px;
+  }
+
+  p{
+    font-weight: normal;
+    font-size: 12.8px;
+    line-height: 127.85%;
+    color: #888888;
+    margin-bottom: 0px;
+  }
 }

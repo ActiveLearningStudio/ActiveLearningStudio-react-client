@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import {
   updatePreviousScreen,
   uploadImage,
-  createOrganizationNew,
+  updateOrganization,
   updateOrganizationScreen,
   updateFeedbackScreen,
 } from 'store/actions/organization';
@@ -15,27 +15,28 @@ import imgAvatar from 'assets/images/img-avatar.png';
 
 import AddUser from './addUser';
 
-export default function CreateOrganization() {
+export default function EditOrganization() {
   const dispatch = useDispatch();
   const allListState = useSelector((state) => state.organization);
-  const [imageActive, setImgActive] = useState(null);
+  const { editOrganization } = allListState;
+  const [imageActive, setImgActive] = useState(editOrganization?.image);
   useMemo(() => {
     dispatch(updatePreviousScreen('all-list'));
   }, []);
   const imgUpload = useRef();
   return (
     <div className="create-organizations">
-      <h2>Create Organization</h2>
+      <h2>Edit Organization</h2>
       <Formik
         initialValues={{
-          name: '',
-          description: '',
+          name: editOrganization?.name,
+          description: editOrganization?.description,
           inviteUser: ['qamar'],
-          image: '',
+          image: editOrganization?.image,
           authority: false,
-          domain: allListState.activeOrganization.domain,
+          domain: editOrganization?.domain,
           admin_id: 1,
-          parent_id: allListState.activeOrganization.id,
+          parent_id: editOrganization?.id,
         }}
         validate={(values) => {
           const errors = {};
@@ -60,17 +61,17 @@ export default function CreateOrganization() {
           setSubmitting(false);
           Swal.fire({
             title: 'Please Wait !',
-            html: 'Creating Organization ...',
+            html: 'Updating Organization ...',
             allowOutsideClick: false,
             onBeforeOpen: () => {
               Swal.showLoading();
             },
           });
-          const result = await dispatch(createOrganizationNew(values));
+          const result = await dispatch(updateOrganization(values, editOrganization.id));
           Swal.close();
           if (result) {
             dispatch(updateOrganizationScreen('feedback'));
-            dispatch(updateFeedbackScreen('create'));
+            dispatch(updateFeedbackScreen('update'));
             dispatch(updatePreviousScreen('create-org'));
           }
         }}
@@ -240,7 +241,7 @@ export default function CreateOrganization() {
               </div>
               <div className="btn-group">
                 <button className="submit-create" type="submit" disabled={isSubmitting}>
-                  CREATE ORGANIZATION
+                  UPDATE ORGANIZATION
                 </button>
                 <button className="cancel-create" type="button" disabled={isSubmitting}>
                   CANCEL

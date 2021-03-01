@@ -27,18 +27,41 @@ export const getAllOrganization = () => async (dispatch) => {
 export const getOrganization = (id) => async (dispatch) => {
   const result = await organization.getOrganization(id);
   dispatch({
-    type: actionTypes.ADD_CURRENT_ORG,
-    payload: result.suborganization,
-  });
-  dispatch({
     type: actionTypes.ADD_ACTIVE_ORG,
     payload: result.suborganization,
   });
 };
 
-export const setActiveOrganization = (data) => (dispatch) => {
+export const getOrganizationFirstTime = (id) => async (dispatch) => {
+  const result = await organization.getOrganization(id);
+  console.log(result);
   dispatch({
     type: actionTypes.ADD_ACTIVE_ORG,
+    payload: result.suborganization,
+  });
+  dispatch({
+    type: actionTypes.ADD_CURRENT_ORG,
+    payload: result.suborganization,
+  });
+};
+
+export const setCurrenteOrganization = (org) => (dispatch) => {
+  dispatch({
+    type: actionTypes.ADD_CURRENT_ORG,
+    payload: org,
+  });
+};
+
+export const setActiveOrganization = (org) => (dispatch) => {
+  dispatch({
+    type: actionTypes.ADD_ACTIVE_ORG,
+    payload: org,
+  });
+};
+
+export const setCurrentOrganization = (data) => (dispatch) => {
+  dispatch({
+    type: actionTypes.ADD_CURRENT_ORG,
     payload: data,
   });
 };
@@ -50,4 +73,62 @@ export const getBranding = (data) => async (dispatch) => {
     payload: result.organization,
   });
   return result;
+};
+
+export const getsubOrgList = (id) => async (dispatch) => {
+  const result = await organization.getSubOrganizationList(id);
+  dispatch({
+    type: actionTypes.ADD_SUBORG_LIST,
+    payload: result.suborganization,
+  });
+  return result;
+};
+
+export const clearSuborgList = () => (dispatch) => {
+  dispatch({
+    type: actionTypes.ADD_SUBORG_LIST,
+  });
+};
+
+export const uploadImage = (id, formData) => () => organization.upload(id, formData);
+
+export const deleteOrganization = (data) => async (dispatch) => {
+  const result = await organization.deleteOrganization(data.id);
+  dispatch({
+    type: actionTypes.NEW_SUBORG_ADD,
+    payload: data,
+  });
+  return result;
+};
+
+export const createOrganizationNew = (data) => async (dispatch) => {
+  const result = await organization.createOrganization(data);
+  dispatch({
+    type: actionTypes.NEW_SUBORG_ADD,
+    payload: result.suborganization,
+  });
+  return result;
+};
+
+export const updateOrganization = (data, id) => async (dispatch) => {
+  const result = await organization.updateOrganization(data, id);
+  dispatch({
+    type: actionTypes.NEW_SUBORG_ADD,
+    payload: result.suborganization,
+  });
+  return result;
+};
+
+export const editOrganization = (org) => (dispatch) => {
+  dispatch({
+    type: actionTypes.EDIT_ORGANIZATION,
+    payload: org,
+  });
+};
+
+export const updateFeedbackScreen = (type) => (dispatch) => {
+  dispatch({
+    type: actionTypes.UPDATE_FEEDBACK,
+    payload: type,
+  });
 };
