@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
+import { useSelector } from 'react-redux';
 
 function PreviousLink(props) {
   const {
@@ -15,7 +16,7 @@ function PreviousLink(props) {
     previousResource,
     allPlaylists,
   } = props;
-
+  const organization = useSelector((state) => state.organization);
   const currentPlaylistIndex = allPlaylists.findIndex((p) => (p.id === playlistId));
   const prevPlaylist = currentPlaylistIndex > 0
     ? allPlaylists[currentPlaylistIndex - 1]
@@ -23,15 +24,15 @@ function PreviousLink(props) {
 
   let prevLink = '#';
   if (previousResource) {
-    prevLink = `/playlist/${playlistId}/activity/${previousResource.id}/preview`;
+    prevLink = `/org/${organization.activeOrganization?.domain}/playlist/${playlistId}/activity/${previousResource.id}/preview`;
   } else if (prevPlaylist) {
-    prevLink = `/playlist/${prevPlaylist.id}/preview`;
+    prevLink = `/org/${organization.activeOrganization?.domain}/playlist/${prevPlaylist.id}/preview`;
   }
   if (prevLink !== '#') {
     if (showLti) {
       prevLink += '/lti';
     } else {
-      prevLink = `/project/${projectId}${prevLink}`;
+      prevLink = `/org/${organization.activeOrganization?.domain}/project/${projectId}${prevLink}`;
 
       if (shared) {
         prevLink += '/shared';
@@ -79,7 +80,7 @@ function PreviousLink(props) {
                         if (showLti) {
                           history.push(`/project/${projectId}/shared`);
                         } else {
-                          history.push(`/project/${projectId}/preview`);
+                          history.push(`/org/${organization.activeOrganization?.domain}/project/${projectId}/preview`);
                         }
                       }
                     });

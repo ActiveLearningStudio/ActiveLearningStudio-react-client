@@ -24,7 +24,7 @@ const ProjectCardDropdown = (props) => {
     previewMode,
     text,
   } = props;
-
+  const organization = useSelector((state) => state.organization);
   const dispatch = useDispatch();
   const AllLms = useSelector((state) => state.share);
   const [allLms, setAllLms] = useState([]);
@@ -43,14 +43,14 @@ const ProjectCardDropdown = (props) => {
         {!previewMode && (
           <Dropdown.Item
             as={Link}
-            to={`/project/${project.id}/preview`}
+            to={`/org/${organization.activeOrganization?.domain}/project/${project.id}/preview`}
           >
             <FontAwesomeIcon icon="eye" className="mr-2" />
             Preview
           </Dropdown.Item>
         )}
 
-        <Dropdown.Item as={Link} to={`/project/${project.id}/edit`}>
+        <Dropdown.Item as={Link} to={`/org/${organization.activeOrganization?.domain}/project/${project.id}/edit`}>
           <FontAwesomeIcon icon="pen" className="mr-2" />
           Edit
         </Dropdown.Item>

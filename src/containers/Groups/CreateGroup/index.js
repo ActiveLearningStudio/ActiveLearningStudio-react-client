@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -50,7 +50,7 @@ function CreateGroup(props) {
   } = group;
 
   const [selectedMembers, setSelectedMembers] = useState([]);
-
+  const organization = useSelector((state) => state.organization);
   const [selectedProjects, setSelectedProjects] = useState([]);
   const [searchProject, setSearchProject] = useState('');
 
@@ -97,7 +97,7 @@ function CreateGroup(props) {
           icon: 'success',
           title: 'Successfully created.',
         });
-        history.push('/groups');
+        history.push(`/org/${organization.activeOrganization?.domain}/groups`);
       })
       .catch(() => {
         Swal.fire({

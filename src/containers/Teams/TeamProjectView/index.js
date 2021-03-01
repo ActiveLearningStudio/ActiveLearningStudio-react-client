@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,7 +18,7 @@ function TeamProjectView(props) {
     removeProject,
     removeMember,
   } = props;
-
+  const organization = useSelector((state) => state.organization);
   const authUser = users.find((u) => u.id === (user || {}).id);
   const role = authUser ? authUser.role : '';
 
@@ -47,7 +47,7 @@ function TeamProjectView(props) {
   return (
     <div className="team-information">
       {role === 'owner' && (
-        <Link to={`/teams/${id}/add-projects`}>
+        <Link to={`/org/${organization.activeOrganization?.domain}/teams/${id}/add-projects`}>
           <div className="btn-top-page">
             <FontAwesomeIcon icon="plus" className="mr-2" />
             Add projects
@@ -69,7 +69,7 @@ function TeamProjectView(props) {
               />
 
               <div className="project-title">
-                <Link to={`/project/${project.id}`}>{project.name}</Link>
+                <Link to={`/org/${organization.activeOrganization?.domain}/project/${project.id}`}>{project.name}</Link>
 
                 <Dropdown className="project-dropdown check d-flex justify-content-center align-items-center">
                   <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
@@ -77,24 +77,24 @@ function TeamProjectView(props) {
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                    <Dropdown.Item as={Link} to={`/project/${project.id}/preview`}>
+                    <Dropdown.Item as={Link} to={`/org/${organization.activeOrganization?.domain}/project/${project.id}/preview`}>
                       <FontAwesomeIcon icon="eye" className="mr-2" />
                       Preview
                     </Dropdown.Item>
 
-                    <Dropdown.Item as={Link} to={`/project/${project.id}`}>
+                    <Dropdown.Item as={Link} to={`/org/${organization.activeOrganization?.domain}/project/${project.id}`}>
                       <FontAwesomeIcon icon="globe" className="mr-2" />
                       Build
                     </Dropdown.Item>
 
-                    <Dropdown.Item as={Link} to={`/project/${project.id}/edit`}>
+                    <Dropdown.Item as={Link} to={`/org/${organization.activeOrganization?.domain}/project/${project.id}/edit`}>
                       <FontAwesomeIcon icon="pen" className="mr-2" />
                       Edit
                     </Dropdown.Item>
 
                     {role === 'owner' && (
                       <>
-                        <Dropdown.Item as={Link} to={`/teams/${id}/projects/${project.id}/add-member`}>
+                        <Dropdown.Item as={Link} to={`/org/${organization.activeOrganization?.domain}/teams/${id}/projects/${project.id}/add-member`}>
                           <FontAwesomeIcon icon="crosshairs" className="mr-2" />
                           Add member
                         </Dropdown.Item>

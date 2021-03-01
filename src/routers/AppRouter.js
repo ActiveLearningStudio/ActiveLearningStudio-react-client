@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   // Route,
   BrowserRouter as Router,
@@ -9,11 +9,12 @@ import {
 import * as History from 'history';
 import loadable from '@loadable/component';
 import ReactGA from 'react-ga';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Header from 'components/Header';
 import Sidebar from 'components/Sidebar';
+import { setActiveOrganization } from 'store/actions/organization';
 import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
 import OpenRoute from './OpenRoute';
@@ -61,12 +62,20 @@ const GclassSummaryPage = loadable(() => import('../containers/LMS/GoogleClassro
 const SearchPage = loadable(() => import('../containers/LMS/Canvas/DeepLinking/SearchPage'));
 const LtiActivity = loadable(() => import('../containers/LMS/LTI/Activity'));
 const ManageOrganization = loadable(() => import('../containers/ManageOrganization'));
-const SelectedOrganization = 'currikistudio';
 
 const AppRouter = (props) => {
+  const organization = useSelector((state) => state.organization);
+  const [SelectedOrganization, setSelectedOrganization] = useState(organization.activeOrganization?.domain);
+
   useEffect(() => {
     ReactGA.pageview(window.location.pathname);
-  });
+    if (organization.activeOrganization?.domain) {
+      setSelectedOrganization(organization.activeOrganization?.domain);
+    } else {
+      setSelectedOrganization(organization?.allOrganizations[0]?.domain);
+      setActiveOrganization(organization?.allOrganizations[0]);
+    }
+  }, [SelectedOrganization, organization]);
 
   if (window.location.href.includes('/shared') || window.location.href.includes('/lti')
     || window.location.href.includes('/embed') || window.location.href.includes('/register')
@@ -140,7 +149,7 @@ const AppRouter = (props) => {
         />
         <PrivateRoute
           exact
-          path="/project/:projectId/playlist/:playlistId/activity/:activityId/preview"
+          path={`/org/${SelectedOrganization}/project/:projectId/playlist/:playlistId/activity/:activityId/preview`}
           component={PreviewPage}
           previewType="playlist"
         />
@@ -172,48 +181,48 @@ const AppRouter = (props) => {
                      <Sidebar />
                    </div>
                    <Switch>
-                     <PrivateRoute exact path="/account" component={ProfilePage} />
-                     <PrivateRoute exact path="/change-password" component={ChangePasswordPage} />
+                     <PrivateRoute exact path={`/org/${SelectedOrganization}/account`} component={ProfilePage} />
+                     <PrivateRoute exact path={`/org/${SelectedOrganization}/change-password`} component={ChangePasswordPage} />
 
-                     <PrivateRoute exact path="/dashboard" component={DashboardPage} />
-                     <PrivateRoute exact path="/notification" component={NotificationPage} />
+                     <PrivateRoute exact path={`/org/${SelectedOrganization}/dashboard`} component={DashboardPage} />
+                     <PrivateRoute exact path={`/org/${SelectedOrganization}/notification`} component={NotificationPage} />
 
-                     <PrivateRoute exact path="/teams" component={TeamsPage} overview />
-                     <PrivateRoute exact path="/teams/create-team" component={TeamsPage} creation />
-                     <PrivateRoute exact path="/teams/:teamId" component={TeamsPage} teamShow />
-                     <PrivateRoute exact path="/teams/:teamId/projects" component={TeamsPage} projectShow />
-                     <PrivateRoute exact path="/teams/:teamId/channel" component={TeamsPage} channelShow />
-                     <PrivateRoute exact path="/teams/:teamId/add-projects" component={AddTeamProjectsPage} />
-                     <PrivateRoute exact path="/teams/:teamId/projects/:projectId/add-member" component={AddTeamProjectMemberPage} />
+                     <PrivateRoute exact path={`/org/${SelectedOrganization}/teams`} component={TeamsPage} overview />
+                     <PrivateRoute exact path={`/org/${SelectedOrganization}/teams/create-team`} component={TeamsPage} creation />
+                     <PrivateRoute exact path={`/org/${SelectedOrganization}/teams/:teamId`} component={TeamsPage} teamShow />
+                     <PrivateRoute exact path={`/org/${SelectedOrganization}/teams/:teamId/projects`} component={TeamsPage} projectShow />
+                     <PrivateRoute exact path={`/org/${SelectedOrganization}/teams/:teamId/channel`} component={TeamsPage} channelShow />
+                     <PrivateRoute exact path={`/org/${SelectedOrganization}/teams/:teamId/add-projects`} component={AddTeamProjectsPage} />
+                     <PrivateRoute exact path={`/org/${SelectedOrganization}/teams/:teamId/projects/:projectId/add-member`} component={AddTeamProjectMemberPage} />
 
-                     <PrivateRoute exact path="/groups" component={GroupsPage} overview />
-                     <PrivateRoute exact path="/groups/create-group" component={GroupsPage} creation />
-                     <PrivateRoute exact path="/groups/:groupId" component={GroupsPage} groupShow />
-                     <PrivateRoute exact path="/groups/:groupId/projects" component={GroupsPage} projectShow />
-                     <PrivateRoute exact path="/groups/:groupId/channel" component={GroupsPage} channelShow />
-                     <PrivateRoute exact path="/groups/:groupId/add-projects" component={AddGroupProjectsPage} />
-                     <PrivateRoute exact path="/groups/:groupId/projects/:projectId/add-member" component={AddGroupProjectMemberPage} />
+                     <PrivateRoute exact path={`/org/${SelectedOrganization}/groups`} component={GroupsPage} overview />
+                     <PrivateRoute exact path={`/org/${SelectedOrganization}/groups/create-group`} component={GroupsPage} creation />
+                     <PrivateRoute exact path={`/org/${SelectedOrganization}/groups/:groupId`} component={GroupsPage} groupShow />
+                     <PrivateRoute exact path={`/org/${SelectedOrganization}/groups/:groupId/projects`} component={GroupsPage} projectShow />
+                     <PrivateRoute exact path={`/org/${SelectedOrganization}/groups/:groupId/channel`} component={GroupsPage} channelShow />
+                     <PrivateRoute exact path={`/org/${SelectedOrganization}/groups/:groupId/add-projects`} component={AddGroupProjectsPage} />
+                     <PrivateRoute exact path={`/org/${SelectedOrganization}/groups/:groupId/projects/:projectId/add-member`} component={AddGroupProjectMemberPage} />
 
                      <PrivateRoute
                        exact
-                       path="/project/create"
+                       path={`/org/${SelectedOrganization}/project/create`}
                        component={ProjectsPage}
                        showCreateProjectPopup
                        editMode={false}
                      />
                      <PrivateRoute
                        exact
-                       path="/project/:projectId"
+                       path={`/org/${SelectedOrganization}/project/:projectId`}
                        component={PlaylistsPage}
                      />
                      <PrivateRoute
                        exact
-                       path="/project/:projectId/preview"
+                       path={`/org/${SelectedOrganization}/project/:projectId/preview`}
                        component={PreviewPage}
                      />
                      <PrivateRoute
                        exact
-                       path="/project/:projectId/edit"
+                       path={`/org/${SelectedOrganization}/project/:projectId/edit`}
                        component={ProjectsPage}
                        showEditProjectPopup
                        editMode
@@ -221,26 +230,26 @@ const AppRouter = (props) => {
 
                      <PrivateRoute
                        exact
-                       path="/project/:projectId/playlist/create"
+                       path={`/org/${SelectedOrganization}/project/:projectId/playlist/create`}
                        component={PlaylistsPage}
                        openCreatePopup
                      />
                      <PrivateRoute
                        exact
-                       path="/project/:projectId/playlist/:playlistId/activity/create"
+                       path={`/org/${SelectedOrganization}/project/:projectId/playlist/:playlistId/activity/create`}
                        component={ActivityCreate}
                        // openCreateResourcePopup
                      />
                      <PrivateRoute
                        exact
-                       path="/project/:projectId/playlist/:playlistId/activity/:activityId/edit"
+                       path={`/org/${SelectedOrganization}/project/:projectId/playlist/:playlistId/activity/:activityId/edit`}
                        component={EditActivity}
                        openEditResourcePopup
                      />
 
                      <PrivateRoute
                        exact
-                       path="/search"
+                       path={`/org/${SelectedOrganization}/search`}
                        component={SearchResult}
                      />
 

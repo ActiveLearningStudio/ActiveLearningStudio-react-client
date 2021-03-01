@@ -5,6 +5,7 @@ import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './style.scss';
+import { useSelector } from 'react-redux';
 
 const ActivityPreviewCardDropdown = (props) => {
   const {
@@ -14,7 +15,7 @@ const ActivityPreviewCardDropdown = (props) => {
     projectId,
     playlistId,
   } = props;
-
+  const organization = useSelector((state) => state.organization);
   return (
     <Dropdown.Item
       as={Link}
@@ -24,7 +25,7 @@ const ActivityPreviewCardDropdown = (props) => {
           : (
             showLti
               ? `/playlist/${playlistId}/activity/${activity.id}/preview/lti`
-              : `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
+              : `/org/${organization.activeOrganization?.domain}/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
           )
       }
     >

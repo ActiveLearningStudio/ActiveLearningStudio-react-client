@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert, Card } from 'react-bootstrap';
@@ -11,7 +11,7 @@ import './styles.scss';
 
 function PlaylistList(props) {
   const { shared, playlists, getUserPlaylists } = props;
-
+  const organization = useSelector((state) => state.organization);
   const [query, setQuery] = useState('');
 
   const sliderSettings = {
@@ -77,7 +77,7 @@ function PlaylistList(props) {
                     <h3 className="playlist-title">{playlist.title}</h3>
                   </div>
                   <div className="col-1 text-right">
-                    <a href={`/project/${playlist.project_id}`} target="_blank" rel="noreferrer">
+                    <a href={`/org/${organization.activeOrganization?.domain}/project/${playlist.project_id}`} target="_blank" rel="noreferrer">
                       <FontAwesomeIcon className="project-go-icon" icon="arrow-right" />
                     </a>
                   </div>

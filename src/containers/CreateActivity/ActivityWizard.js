@@ -15,7 +15,7 @@ function ActivityWizard(props) {
 
   const [activeState, setActiveState] = useState(['type']);
   const [activeView, setActiveView] = useState('type');
-
+  const organization = useSelector((state) => state.organization);
   const resource = useSelector((state) => state.resource);
   const dispatch = useDispatch();
 
@@ -50,7 +50,7 @@ function ActivityWizard(props) {
         ));
       }
 
-      history.push(`/project/${match.params.projectId}`);
+      history.push(`/org/${organization.activeOrganization?.domain}/project/${match.params.projectId}`);
     } catch (e) {
       // console.log(e.message);
     }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert } from 'react-bootstrap';
@@ -10,7 +10,7 @@ import './styles.scss';
 
 function ActivityList(props) {
   const { shared, activities, getUserActivities } = props;
-
+  const organization = useSelector((state) => state.organization);
   const [query, setQuery] = useState('');
 
   useEffect(() => {
@@ -71,7 +71,11 @@ function ActivityList(props) {
 
               <div className="col">
                 <h2>
-                  <a href={`/project/${activity.project_id}/playlist/${activity.playlist_id}/activity/${activity.id}`} target="_blank" rel="noreferrer">
+                  <a
+                    href={`/org/${organization.activeOrganization?.domain}/project/${activity.project_id}/playlist/${activity.playlist_id}/activity/${activity.id}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     {activity.h5p_content.title}
                   </a>
                 </h2>
@@ -79,7 +83,7 @@ function ActivityList(props) {
               </div>
 
               <div className="col-2 text-right">
-                <a href={`/project/${activity.project_id}`} target="_blank" rel="noreferrer">
+                <a href={`/org/${organization.activeOrganization?.domain}/project/${activity.project_id}`} target="_blank" rel="noreferrer">
                   <FontAwesomeIcon className="project-go-icon" icon="arrow-right" />
                 </a>
               </div>

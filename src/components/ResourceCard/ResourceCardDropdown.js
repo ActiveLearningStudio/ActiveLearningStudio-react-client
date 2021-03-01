@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { confirmAlert } from 'react-confirm-alert';
@@ -14,11 +14,11 @@ import { cloneActivity } from 'store/actions/search';
 import './style.scss';
 
 const ResourceCardDropdown = (props) => {
+  const organization = useSelector((state) => state.organization);
   const handleDelete = (e) => {
     e.preventDefault();
 
     const { resource, deleteResource } = props;
-
     Swal.fire({
       title: 'Are you sure you want to delete this activity?',
       showDenyButton: true,
@@ -47,7 +47,7 @@ const ResourceCardDropdown = (props) => {
       <Dropdown.Menu>
         <Dropdown.Item
           as={Link}
-          to={`/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview`}
+          to={`/org/${organization.activeOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview`}
         >
           <FontAwesomeIcon icon="eye" className="mr-2" />
           Preview
@@ -55,7 +55,7 @@ const ResourceCardDropdown = (props) => {
 
         <Dropdown.Item
           as={Link}
-          to={`/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
+          to={`/org/${organization.activeOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
         >
           <FontAwesomeIcon icon="pen" className="mr-2" />
           Edit

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert } from 'react-bootstrap';
@@ -11,7 +11,7 @@ import './styles.scss';
 function ProjectList(props) {
   const { shared, projects, getUserProjects } = props;
   const [query, setQuery] = useState('');
-
+  const organization = useSelector((state) => state.organization);
   useEffect(() => {
     getUserProjects(shared, query);
   }, [query]);
@@ -67,7 +67,7 @@ function ProjectList(props) {
 
               <div className="col">
                 <h2>
-                  <a href={`/project/${project.id}`} target="_blank" rel="noreferrer">
+                  <a href={`/org/${organization.activeOrganization?.domain}/project/${project.id}`} target="_blank" rel="noreferrer">
                     {project.name}
                   </a>
                 </h2>
@@ -75,7 +75,7 @@ function ProjectList(props) {
               </div>
 
               <div className="col-2 text-right">
-                <a href={`/project/${project.id}`} target="_blank" rel="noreferrer">
+                <a href={`/org/${organization.activeOrganization?.domain}/project/${project.id}`} target="_blank" rel="noreferrer">
                   <FontAwesomeIcon className="project-go-icon" icon="arrow-right" />
                 </a>
               </div>

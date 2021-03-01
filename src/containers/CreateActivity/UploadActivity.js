@@ -14,7 +14,7 @@ function ActivityWizard(props) {
   const [activeViewUpload, setActiveViewUpload] = useState('describe');
   const resource = useSelector((state) => state.resource);
   const dispatch = useDispatch();
-
+  const organization = useSelector((state) => state.organization);
   const handleCreateResourceSubmit = async (
     currentPlaylistId,
     editor,
@@ -37,7 +37,7 @@ function ActivityWizard(props) {
         ));
       }
 
-      history.push(`/project/${match.params.projectId}`);
+      history.push(`/org/${organization.activeOrganization?.domain}/project/${match.params.projectId}`);
     } catch (e) {
       // console.log(e.message);
     }

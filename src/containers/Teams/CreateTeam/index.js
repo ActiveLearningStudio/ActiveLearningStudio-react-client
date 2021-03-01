@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -53,7 +53,7 @@ function CreateTeam(props) {
 
   const [selectedProjects, setSelectedProjects] = useState([]);
   const [searchProject, setSearchProject] = useState('');
-
+  const organization = useSelector((state) => state.organization);
   useEffect(() => {
     loadProjects();
     resetSelectedTeam();
@@ -96,7 +96,7 @@ function CreateTeam(props) {
           icon: 'success',
           title: 'Successfully created.',
         });
-        history.push('/teams');
+        history.push(`/org/${organization.activeOrganization?.domain}/teams`);
       })
       .catch(() => {
         Swal.fire({

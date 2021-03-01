@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import './style.scss';
+import { useSelector } from 'react-redux';
 
 function GroupCard(props) {
   const {
@@ -17,14 +18,14 @@ function GroupCard(props) {
 
   let memCnt = `00${users.length}`;
   memCnt = memCnt.slice(memCnt.length - 2, memCnt.length);
-
+  const organization = useSelector((state) => state.organization);
   let projCnt = `00${projects.length}`;
   projCnt = projCnt.slice(projCnt.length - 2, projCnt.length);
 
   return (
     <div className="group-card-content">
       <div className="group-title">
-        <Link to={`/groups/${id}`} className="title m-0">{name}</Link>
+        <Link to={`/org/${organization.activeOrganization?.domain}/groups/${id}`} className="title m-0">{name}</Link>
         <h2 className="describe">{description}</h2>
       </div>
 

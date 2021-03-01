@@ -27,6 +27,7 @@ class PlaylistCardDropdown extends React.Component {
     const {
       playlist,
       handleClickPlaylistTitle,
+      organization,
     } = this.props;
 
     return (
@@ -39,7 +40,7 @@ class PlaylistCardDropdown extends React.Component {
           <Dropdown.Item
             as={Link}
             className="hidden"
-            to={`/project/${playlist.project_id}/playlist/${playlist.id}/preview`}
+            to={`/org/${organization.activeOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/preview`}
           >
             <FontAwesomeIcon icon="eye" className="mr-2" />
             Preview
@@ -93,6 +94,7 @@ PlaylistCardDropdown.propTypes = {
   playlist: PropTypes.object.isRequired,
   showDeletePopup: PropTypes.func.isRequired,
   handleClickPlaylistTitle: PropTypes.func.isRequired,
+  organization: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -102,8 +104,9 @@ const mapDispatchToProps = (dispatch) => ({
   changePlaylistTitle: (projectId, id, title) => dispatch(changePlaylistTitleAction(projectId, id, title)),
 });
 
-const mapStateToProps = () => ({
+const mapStateToProps = (state) => ({
   // selectedProject: state.project.selectedProject,
+  organization: state.organization,
 });
 
 export default withRouter(

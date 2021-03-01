@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { Draggable } from 'react-beautiful-dnd';
 import { Badge } from 'react-bootstrap';
@@ -18,7 +18,7 @@ const ResourceCard = (props) => {
     index,
     // wizard,
   } = props;
-
+  const organization = useSelector((state) => state.organization);
   return (
     <Draggable key={resource.id} draggableId={`${resource.id}`} index={index}>
       {(provided) => (
@@ -32,7 +32,7 @@ const ResourceCard = (props) => {
             {!!resource.thumb_url && (
               <div className="activity-thumb-wrapper">
                 <Link
-                  to={`/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
+                  to={`/org/${organization.activeOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
                 >
                   <div
                     className="activity-thumb"
@@ -47,7 +47,7 @@ const ResourceCard = (props) => {
             )}
 
             <div className="title" style={{ flex: 1 }}>
-              <Link to={`/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}>
+              <Link to={`/org/${organization.activeOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}>
                 {resource.metadata && resource.metadata.title !== undefined
                   ? resource.metadata.title
                   : resource.title}

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import ResourceCardDropdown from 'components/ResourceCard/ResourceCardDropdown';
 
 import './style.scss';
+import { useSelector } from 'react-redux';
 
 const ActivityCard = (props) => {
   const {
@@ -17,7 +18,7 @@ const ActivityCard = (props) => {
     setCurrentActivity,
     playlist,
   } = props;
-
+  const organization = useSelector((state) => state.organization);
   return (
     <li>
       {sampleID
@@ -48,7 +49,7 @@ const ActivityCard = (props) => {
               to={
                 lti
                   ? `/playlist/${playlistId}/activity/${activity.id}/preview/lti`
-                  : `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
+                  : `/org/${organization.activeOrganization?.domain}/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
               }
             >
               <div
