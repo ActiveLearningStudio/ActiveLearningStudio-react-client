@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect, useSelector } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { setActiveOrganization } from 'store/actions/organization';
 import logo from 'assets/images/studio_new_logo.png';
 import add from 'assets/images/add-icon.png';
 import profile from 'assets/images/user-profile.png';
@@ -21,6 +22,7 @@ import './style.scss';
 function Header(props) {
   const { /* user, */ logout } = props;
   const stateHeader = useSelector((state) => state.organization);
+  const dispatch = useDispatch(stateHeader.currentOrganization);
   return (
     <header>
       <div className="top-header flex-div align-items-center">
@@ -36,13 +38,16 @@ function Header(props) {
         <div className="tophd_right flexdiv search-div  d-flex flex-wrap ">
           <div className="navbar-link">
             <ul className="top-info flex-div">
-              {(stateHeader.activeOrganization?.organization_role !== 'Course Creator' && stateHeader.activeOrganization?.organization_role !== undefined) && (
+              {(stateHeader.currentOrganization?.organization_role !== 'Course Creator' && stateHeader.currentOrganization?.organization_role !== undefined) && (
                 <li>
-                  <Link to={`/org/${stateHeader.activeOrganization?.domain}/manage`}>
+                  <Link
+                    to={`/org/${stateHeader.currentOrganization?.domain}/manage`}
+                    onClick={() => dispatch(setActiveOrganization(stateHeader.currentOrganization))}
+                  >
                     <FontAwesomeIcon icon="briefcase" />
                     <p className="header-icon-text">
                       Manage&nbsp;
-                      {stateHeader.activeOrganization?.domain}
+                      {stateHeader.currentOrganization?.domain}
                     </p>
                   </Link>
                 </li>

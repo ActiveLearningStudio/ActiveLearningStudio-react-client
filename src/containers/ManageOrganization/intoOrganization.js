@@ -1,21 +1,30 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { Dropdown, Alert } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-import childOrgImage from 'assets/images/child-organization-image.png';
-import { updateOrganizationScreen, updatePreviousScreen } from 'store/actions/organization';
+import { updateOrganizationScreen, updatePreviousScreen, clearSuborgList } from 'store/actions/organization';
 
 import InviteOrganization from './inviteAdmin';
 
 export default function IntroOrganizations(props) {
   const dispatch = useDispatch();
   const { detail } = props;
+  useMemo(() => {
+    dispatch(updatePreviousScreen(''));
+  }, []);
   return (
     detail ? (
       <>
         <div className="organization-container organization-intro">
-          <img className="child-organization-image" src={childOrgImage} alt="org-img" />
+          <div className="img-section">
+            <div
+              className="child-organization-image"
+              style={{
+                backgroundImage: `url(${global.config.resourceUrl}${detail.image})`,
+              }}
+            />
+          </div>
           <div className="description-meta">
             <h2>
               Description
@@ -30,7 +39,14 @@ export default function IntroOrganizations(props) {
           </div>
           <div className="grp-btn">
             <button className="sub-organization-button" type="button">
-              <div className="button-text"> New Sub-organization </div>
+              <div
+                className="button-text"
+                onClick={() => {
+                  dispatch(updateOrganizationScreen('create-org'));
+                }}
+              >
+                New Sub-organization
+              </div>
             </button>
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic">
@@ -52,6 +68,7 @@ export default function IntroOrganizations(props) {
               onClick={() => {
                 dispatch(updateOrganizationScreen('all-list'));
                 dispatch(updatePreviousScreen('intro'));
+                dispatch(clearSuborgList());
               }}
               className="more"
             >

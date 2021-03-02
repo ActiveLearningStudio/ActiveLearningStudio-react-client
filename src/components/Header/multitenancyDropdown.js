@@ -3,7 +3,7 @@ import { Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { getAllOrganization, setActiveOrganization } from 'store/actions/organization';
+import { getAllOrganization, setCurrentOrganization } from 'store/actions/organization';
 
 export default function MultitenancyDropdown() {
   const dispatch = useDispatch();
@@ -11,8 +11,8 @@ export default function MultitenancyDropdown() {
   const stateHeader = useSelector((state) => state.organization);
   const [selectOrg, setSelectOrg] = useState(stateHeader.activeOrganization?.name || 'Select Organization');
   useEffect(() => {
-    setSelectOrg(stateHeader.activeOrganization?.name || 'Select Organization');
-  }, [stateHeader.activeOrganization]);
+    setSelectOrg(stateHeader.currentOrganization?.name || 'Select Organization');
+  }, [stateHeader.currentOrganization]);
   useMemo(() => {
     dispatch(getAllOrganization());
   }, []);
@@ -27,14 +27,21 @@ export default function MultitenancyDropdown() {
       </Dropdown.Toggle>
       <Dropdown.Menu>
         {stateHeader.allOrganizations.length > 0 && stateHeader.allOrganizations.map((org) => (
-          <Dropdown.Item onClick={() => {
-            setSelectOrg(org.name);
-            dispatch(setActiveOrganization(org));
-            history.push(`/org/${org.domain}`);
-          }}
-          >
-            {org.name}
-          </Dropdown.Item>
+          <div className="all-tg-lister">
+            <Dropdown.Item onClick={() => {
+              setSelectOrg(org.name);
+              dispatch(setCurrentOrganization(org));
+              history.push(`/org/${org.domain}`);
+            }}
+            >
+              {org.name}
+            </Dropdown.Item>
+            <p>
+              Parent:
+              &nbsp;
+              {org.parent || 'NA'}
+            </p>
+          </div>
         ))}
       </Dropdown.Menu>
     </Dropdown>

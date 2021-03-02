@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik } from 'formik';
 import { useSelector } from 'react-redux';
+import organization from 'services/organizations.services';
 
 export default function AddUser() {
   const stateOrg = useSelector((state) => state.organization);
+  const [stateOrgUsers, setStateOrgUSers] = useState([]);
   console.log(stateOrg);
   return (
     <div className="add-user-organization">
@@ -45,6 +47,7 @@ export default function AddUser() {
           handleBlur,
           handleSubmit,
           isSubmitting,
+          setFieldValue,
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
@@ -53,13 +56,18 @@ export default function AddUser() {
               <input
                 type="text"
                 name="name"
-                onChange={handleChange}
+                onChange={async (e) => {
+                  setFieldValue(e.target.value);
+                  const result = organization.getAllUsers(stateOrg.activeOrganization?.id, e.target.value);
+                  console.log(result);
+                  setStateOrgUSers();
+                }}
                 onBlur={handleBlur}
                 value={values.name.name}
                 id="allusers"
               />
               <datalist id="allusers">
-                {stateOrg.users.map((user) => (
+                {stateOrgUsers?.map((user) => (
                   <option value={user}>{user.name}</option>
                 ))}
               </datalist>

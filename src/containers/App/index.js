@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import QueryString from 'query-string';
 
 import logo from 'assets/images/logo.svg';
 import { getUserAction } from 'store/actions/auth';
 import { cloneDuplicationRequest } from 'store/actions/notification';
-import { getBranding, getOrganization } from 'store/actions/organization';
+import { getBranding, getOrganizationFirstTime } from 'store/actions/organization';
 import { updatedActivity } from 'store/actions/resource';
 import { updatedProject } from 'store/actions/project';
 import { updatedPlaylist } from 'store/actions/playlist';
@@ -18,25 +17,36 @@ import './style.scss';
 function App(props) {
   const dispatch = useDispatch();
   const { getUser } = props;
-  const query = QueryString.parse(window.location);
-  console.log(query);
   useEffect(() => {
     getUser();
   }, [getUser]);
 
   const userDetails = useSelector((state) => state.auth.user);
-
   useEffect(() => {
     if (userDetails) {
       dispatch(cloneDuplicationRequest(userDetails.id));
       dispatch(updatedProject(userDetails.id));
       dispatch(updatedPlaylist(userDetails.id));
       dispatch(updatedActivity(userDetails.id));
-      const subdomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
-      if (subdomain) {
+      if (window.location.href.includes('/org/')) {
+        if (window.location.pathname.split('/org/')[1].split('/').length === 1) {
+          const subDomain = window.location.pathname.split('/org/')[1]?.replaceAll('/', '');
+          (async () => {
+            const { organization } = await dispatch(getBranding(subDomain));
+            dispatch(getOrganizationFirstTime(organization?.id));
+          })();
+        } else {
+          const subDomain = window.location.pathname.split('/org/')[1].split('/')[0]?.replaceAll('/', '');
+          (async () => {
+            const { organization } = await dispatch(getBranding(subDomain));
+            dispatch(getOrganizationFirstTime(organization?.id));
+          })();
+        }
+      } else if (window.location.pathname.split('/login/')) {
+        const subDomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
         (async () => {
-          const { organization } = await dispatch(getBranding(subdomain));
-          dispatch(getOrganization(organization?.id));
+          const { organization } = await dispatch(getBranding(subDomain));
+          dispatch(getOrganizationFirstTime(organization?.id));
         })();
       }
     }
@@ -44,9 +54,9 @@ function App(props) {
 
   useEffect(() => {
     if (window.location.href.includes('/login/') && !userDetails) {
-      const subdomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
-      if (subdomain) {
-        dispatch(getBranding(subdomain));
+      const subDomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
+      if (subDomain) {
+        dispatch(getBranding(subDomain));
       }
     }
     if (window.HubSpotConversations) {

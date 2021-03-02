@@ -10,7 +10,9 @@ import Footer from 'components/Footer';
 
 import AllPrganizations from "./allOrganization";
 import CreateOrganization from "./createOrganization";
+import EditOrganization from "./editOrganziation";
 import IntroOrganizations from "./intoOrganization";
+import Feedback from "./feedback";
 
 import './style.scss';
 
@@ -20,18 +22,18 @@ export default function ManageOrganizations() {
   useEffect(() => {
     dispatch(getOrganization(state.activeOrganization?.id));
   }, []);
-  const {currentOrganization, backScreen} = state; 
+  const {activeOrganization, backScreen} = state; 
   return (
     <>
       <div className="content-wrapper">
         <div className="content">
-          {currentOrganization && (
+          {activeOrganization && (
             <div className="headings-org">
-              <p>Parent organization: {currentOrganization?.parent?.name}</p>
+              <p>Parent organization: {activeOrganization?.parent?.name}</p>
               <div className="organization-container">
                 <div className="title-main">
                   <img className="child-organization-icon" src={childOrgIcon} alt="child-organization-icon" />
-                  <h1 className="child-organization-name">{currentOrganization?.name}</h1>
+                  <h1 className="child-organization-name">{activeOrganization?.name}</h1>
                 </div>
                 {backScreen ? (
                   <div 
@@ -44,7 +46,7 @@ export default function ManageOrganizations() {
                     Back
                   </div>
                 ) : (
-                  <Link className="back-button" to={`/org/${currentOrganization.domain}`}>
+                  <Link className="back-button" to={`/org/${activeOrganization.domain}`}>
                     <FontAwesomeIcon icon="chevron-left" />
                     Back
                   </Link>
@@ -54,11 +56,13 @@ export default function ManageOrganizations() {
           )}
           {state.activeScreen === 'intro' &&
             <IntroOrganizations
-              detail = {currentOrganization}
+              detail = {activeOrganization}
             />  
           }
           {state.activeScreen === 'all-list' && <AllPrganizations />}
           {state.activeScreen === 'create-org' && <CreateOrganization />}
+          {state.activeScreen === 'feedback' && <Feedback />}
+          {state.activeScreen ===  'edit-org' && <EditOrganization />}
         </div>
       </div>
       <Footer />
