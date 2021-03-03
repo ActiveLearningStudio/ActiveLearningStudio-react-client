@@ -1,12 +1,14 @@
 import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 
 import { inviteMembersAction, removeMemberAction } from 'store/actions/group';
 import { searchUsersAction } from 'store/actions/auth';
 import InviteDialogGroup from 'components/InviteDialogGroup';
 import _ from 'lodash';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import GroupMember from './GroupMember';
 import './style.scss';
 
@@ -24,7 +26,7 @@ function GroupMemberView(props) {
     inviteMembers,
     removeMember,
   } = props;
-
+  const organization = useSelector((state) => state.organization);
   const [search, setSearch] = useState('');
   const handleChangeSearch = useCallback((e) => {
     setSearch(e.target.value);
@@ -53,7 +55,6 @@ function GroupMemberView(props) {
       });
   }, [inviteMembers, id]);
 
-  console.log(users._, 'filteredUser');
   const filteredUsers = [
     ..._.filter(users, (u) => `${u.first_name} ${u.last_name}`.toLowerCase().indexOf(search.toLowerCase()) > -1),
     // ...users.filter((u) => `${u.first_name} ${u.last_name}`.toLowerCase().indexOf(search.toLowerCase()) > -1),
@@ -113,13 +114,21 @@ function GroupMemberView(props) {
         </div>
       </div>
 
-      <div className="group-description">
-        <h2 className="title">
-          {`About the ${name}`}
-        </h2>
-        <h2 className="description">
-          {description}
-        </h2>
+      <div className="col">
+        <div className="group-description">
+          <h2 className="title">
+            {`About the ${name}`}
+          </h2>
+          <h2 className="description">
+            {description}
+          </h2>
+        </div>
+        <Link to={`/org/${organization.currentOrganization?.domain}/groups/${id}/projects`}>
+          <div className="btn-left-page">
+            <FontAwesomeIcon icon="project-diagram" className="mr-2" />
+            Projects
+          </div>
+        </Link>
       </div>
     </div>
   );

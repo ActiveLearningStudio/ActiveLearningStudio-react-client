@@ -14,7 +14,7 @@ export default function Headline() {
           <img src={foldericon} alt="" />
           Projects
         </div>
-        <Link to={`/org/${organization.activeOrganization?.domain}/project/create`}>
+        <Link to={`/org/${organization.currentOrganization?.domain}/project/create`}>
           <div className="btn-top-page">
             <FontAwesomeIcon icon="plus" className="mr-2" />
             Create a Project

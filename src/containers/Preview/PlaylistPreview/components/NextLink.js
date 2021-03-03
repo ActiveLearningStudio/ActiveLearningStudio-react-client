@@ -24,15 +24,15 @@ function NextLink(props) {
   const organization = useSelector((state) => state.organization);
   let nextLink = '#';
   if (nextResource) {
-    nextLink = `/org/${organization.activeOrganization?.domain}/playlist/${playlistId}/activity/${nextResource.id}/preview`;
+    nextLink = `/org/${organization.currentOrganization?.domain}/playlist/${playlistId}/activity/${nextResource.id}/preview`;
   } else if (nextPlaylist) {
-    nextLink = `/org/${organization.activeOrganization?.domain}/playlist/${nextPlaylist.id}/preview`;
+    nextLink = `/org/${organization.currentOrganization?.domain}/playlist/${nextPlaylist.id}/preview`;
   }
   if (nextLink !== '#') {
     if (showLti) {
       nextLink += '/lti';
     } else {
-      nextLink = `/org/${organization.activeOrganization?.domain}/project/${projectId}${nextLink}`;
+      nextLink = `/org/${organization.currentOrganization?.domain}/project/${projectId}${nextLink}`;
 
       if (shared) {
         nextLink += '/shared';
@@ -81,7 +81,7 @@ function NextLink(props) {
                         if (showLti) {
                           history.push(`/project/${projectId}/shared`);
                         } else {
-                          history.push(`/org/${organization.activeOrganization?.domain}/project/${projectId}/preview`);
+                          history.push(`/org/${organization.currentOrganization?.domain}/project/${projectId}/preview`);
                         }
                       }
                     });

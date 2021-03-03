@@ -32,7 +32,7 @@ const ResourceCard = (props) => {
             {!!resource.thumb_url && (
               <div className="activity-thumb-wrapper">
                 <Link
-                  to={`/org/${organization.activeOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
+                  to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
                 >
                   <div
                     className="activity-thumb"
@@ -47,7 +47,7 @@ const ResourceCard = (props) => {
             )}
 
             <div className="title" style={{ flex: 1 }}>
-              <Link to={`/org/${organization.activeOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}>
+              <Link to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}>
                 {resource.metadata && resource.metadata.title !== undefined
                   ? resource.metadata.title
                   : resource.title}

@@ -17,7 +17,7 @@ function ResourcePreview(props) {
   let next = '';
   if (resource.nextResourceId) {
     next = (
-      <Link to={`/org/${organization.activeOrganization?.domain}/activity/${resource.nextResourceId}/preview`} className="next-prev-link">
+      <Link to={`/org/${organization.currentOrganization?.domain}/activity/${resource.nextResourceId}/preview`} className="next-prev-link">
         <FontAwesomeIcon icon="chevron-circle-right" />
       </Link>
     );
@@ -26,7 +26,7 @@ function ResourcePreview(props) {
   let previous = '';
   if (resource.previousResourceId) {
     previous = (
-      <Link to={`/org/${organization.activeOrganization?.domain}/activity/${resource.previousResourceId}/preview`} className="next-prev-link">
+      <Link to={`/org/${organization.currentOrganization?.domain}/activity/${resource.previousResourceId}/preview`} className="next-prev-link">
         <FontAwesomeIcon icon="chevron-circle-left" />
       </Link>
     );

@@ -58,7 +58,7 @@ export default function AddUser() {
                 name="name"
                 onChange={async (e) => {
                   setFieldValue(e.target.value);
-                  const result = organization.getAllUsers(stateOrg.activeOrganization?.id, e.target.value);
+                  const result = organization.getAllUsers(stateOrg.currentOrganization?.id, e.target.value);
                   console.log(result);
                   setStateOrgUSers();
                 }}

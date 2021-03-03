@@ -25,7 +25,7 @@ function GroupCard(props) {
   return (
     <div className="group-card-content">
       <div className="group-title">
-        <Link to={`/org/${organization.activeOrganization?.domain}/groups/${id}`} className="title m-0">{name}</Link>
+        <Link to={`/org/${organization.currentOrganization?.domain}/groups/${id}`} className="title m-0">{name}</Link>
         <h2 className="describe">{description}</h2>
       </div>
 

@@ -47,7 +47,7 @@ const ResourceCardDropdown = (props) => {
       <Dropdown.Menu>
         <Dropdown.Item
           as={Link}
-          to={`/org/${organization.activeOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview`}
+          to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview`}
         >
           <FontAwesomeIcon icon="eye" className="mr-2" />
           Preview
@@ -55,7 +55,7 @@ const ResourceCardDropdown = (props) => {
 
         <Dropdown.Item
           as={Link}
-          to={`/org/${organization.activeOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
+          to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
         >
           <FontAwesomeIcon icon="pen" className="mr-2" />
           Edit

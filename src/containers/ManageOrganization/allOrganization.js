@@ -8,7 +8,7 @@ import {
   updateOrganizationScreen,
   getsubOrgList,
   updatePreviousScreen,
-  setActiveOrganization,
+  setCurrentOrganization,
   editOrganization,
   deleteOrganization,
   updateFeedbackScreen,
@@ -21,8 +21,8 @@ const AllOrganizations = () => {
     dispatch(updatePreviousScreen('intro'));
   }, []);
   useMemo(() => {
-    dispatch(getsubOrgList(allListState.activeOrganization?.id));
-  }, [allListState.activeOrganization]);
+    dispatch(getsubOrgList(allListState.currentOrganization?.id));
+  }, [allListState.currentOrganization]);
   const { allSuborgList } = allListState;
   return (
     allSuborgList ? (
@@ -84,7 +84,7 @@ const AllOrganizations = () => {
                     <div
                       className="submit"
                       onClick={() => {
-                        dispatch(setActiveOrganization(org));
+                        dispatch(setCurrentOrganization(org));
                         dispatch(updateOrganizationScreen('intro'));
                       }}
                     >

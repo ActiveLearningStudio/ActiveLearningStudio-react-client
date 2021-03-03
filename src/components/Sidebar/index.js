@@ -56,7 +56,7 @@ function Sidebar(props) {
   }, [allState.sidebar.isLoaded, dispatch]);
 
   const handleClickTeam = useCallback((team) => {
-    history.push(`/org/${allState.organization.activeOrganization?.domain}/teams/${team.id}`);
+    history.push(`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}`);
   }, [history]);
 
   return (
@@ -71,7 +71,7 @@ function Sidebar(props) {
       <ul className="all-project">
         {allState.sidebar.allProject.slice(0, 5).map((data) => (
           <li key={data.id}>
-            <Link to={`/org/${allState.organization.activeOrganization?.domain}/project/${data.id}`}>
+            <Link to={`/org/${allState.organization.currentOrganization?.domain}/project/${data.id}`}>
               <FontAwesomeIcon icon="angle-right" className="mr-2" />
               {data.name}
             </Link>
@@ -84,35 +84,35 @@ function Sidebar(props) {
         </Link>
       </ul>
 
-      <Link to={`/org/${organization.activeOrganization?.domain}/dashboard`}>
+      <Link to={`/org/${organization.currentOrganization?.domain}/dashboard`}>
         <div className="menu-title">
           <img src={dashboardicon} alt="" />
           Dashboard & Stats
         </div>
       </Link>
 
-      <Link to={`/org/${allState.organization.activeOrganization?.domain}/teams`}>
+      <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
         <div className="menu-title">
           <img src={teamicon} alt="" />
           Teams
         </div>
       </Link>
       <div className="menu-title create-button">
-        <Link to={`/org/${allState.organization.activeOrganization?.domain}/teams/create-team`}>
+        <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams/create-team`}>
           <div>
             <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
             Create Team
           </div>
         </Link>
       </div>
-      <Link to={`/org/${allState.organization.activeOrganization?.domain}/groups`}>
+      <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
         <div className="menu-title">
           <FontAwesomeIcon icon="users" className="mr-2" />
           Groups
         </div>
       </Link>
       <div className="menu-title create-button">
-        <Link to={`/org/${allState.organization.activeOrganization?.domain}/groups/create-group`}>
+        <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups/create-group`}>
           <div>
             <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
             Create Group
@@ -131,14 +131,14 @@ function Sidebar(props) {
 
           <div className="team-detail-labels">
             <Link
-              to={`/org/${allState.organization.activeOrganization?.domain}/teams/${team.id}`}
+              to={`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}`}
               className={selectedCategory === TEAM ? 'active-label' : ''}
             >
               <FontAwesomeIcon icon="user-friends" className="mr-2" />
               Team Members
             </Link>
             <Link
-              to={`/org/${allState.organization.activeOrganization?.domain}/teams/${team.id}/projects`}
+              to={`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}/projects`}
               className={selectedCategory === PROJECTS ? 'active-label' : ''}
             >
               <span className="project-title">Projects</span>

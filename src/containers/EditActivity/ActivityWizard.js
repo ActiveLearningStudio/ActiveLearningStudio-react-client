@@ -31,7 +31,7 @@ function ActivityWizard(props) {
         metadata,
       ));
 
-      history.push(`/org/${organization.activeOrganization?.domain}/project/${match.params.projectId}`);
+      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
     } catch (e) {
       // console.log(e);
     }

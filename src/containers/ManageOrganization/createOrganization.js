@@ -33,9 +33,9 @@ export default function CreateOrganization() {
           inviteUser: ['qamar'],
           image: '',
           authority: false,
-          domain: allListState.activeOrganization.domain,
+          domain: allListState.currentOrganization.domain,
           admin_id: 1,
-          parent_id: allListState.activeOrganization.id,
+          parent_id: allListState.currentOrganization.id,
         }}
         validate={(values) => {
           const errors = {};
@@ -109,7 +109,7 @@ export default function CreateOrganization() {
                     const formData = new FormData();
                     try {
                       formData.append('thumb', e.target.files[0]);
-                      const imgurl = dispatch(uploadImage(allListState.activeOrganization?.id, formData));
+                      const imgurl = dispatch(uploadImage(allListState.currentOrganization?.id, formData));
                       imgurl.then((img) => {
                         setImgActive(img.data?.thumbUrl);
                         setFieldValue('image', img.data?.thumbUrl);

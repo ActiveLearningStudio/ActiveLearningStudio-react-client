@@ -197,14 +197,14 @@ function PlaylistPreview(props) {
       ) : (
         <section className="main-page-content preview iframe-height-resource">
           <div className="container-flex-upper">
-            <Link to={`/org/${organization.activeOrganization?.domain}/project/${selectedPlaylist.project.id}/preview`}>
+            <Link to={`/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/preview`}>
               <div className="project-title">
                 <img src={projectIcon} alt="" />
                 {`Project: ${selectedPlaylist.project.name}`}
               </div>
             </Link>
 
-            <Link to={`/org/${organization.activeOrganization?.domain}/project/${selectedPlaylist.project.id}`}>
+            <Link to={`/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}`}>
               <FontAwesomeIcon icon="times" />
             </Link>
           </div>
@@ -266,7 +266,7 @@ function PlaylistPreview(props) {
                   <div>
                     <Link
                       className="go-back-button-preview"
-                      to={`/org/${organization.activeOrganization?.domain}/project/${selectedPlaylist.project.id}/preview`}
+                      to={`/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/preview`}
                     >
                       <FontAwesomeIcon icon="undo" className="mr-2" />
                       Back to Project

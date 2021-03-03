@@ -49,7 +49,7 @@ const ActivityCard = (props) => {
               to={
                 lti
                   ? `/playlist/${playlistId}/activity/${activity.id}/preview/lti`
-                  : `/org/${organization.activeOrganization?.domain}/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
+                  : `/org/${organization.currentOrganization?.domain}/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
               }
             >
               <div

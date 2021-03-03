@@ -97,7 +97,7 @@ function CreateGroup(props) {
           icon: 'success',
           title: 'Successfully created.',
         });
-        history.push(`/org/${organization.activeOrganization?.domain}/groups`);
+        history.push(`/org/${organization.currentOrganization?.domain}/groups`);
       })
       .catch(() => {
         Swal.fire({

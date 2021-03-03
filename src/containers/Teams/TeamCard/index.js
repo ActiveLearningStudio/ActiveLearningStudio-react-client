@@ -25,7 +25,7 @@ function TeamCard(props) {
   return (
     <div className="team-card-content">
       <div className="team-title">
-        <Link to={`/org/${organization.activeOrganization?.domain}/teams/${id}`} className="title m-0">{name}</Link>
+        <Link to={`/org/${organization.currentOrganization?.domain}/teams/${id}`} className="title m-0">{name}</Link>
         <h2 className="describe">{description}</h2>
       </div>
 

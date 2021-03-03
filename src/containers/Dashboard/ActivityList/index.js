@@ -72,7 +72,7 @@ function ActivityList(props) {
               <div className="col">
                 <h2>
                   <a
-                    href={`/org/${organization.activeOrganization?.domain}/project/${activity.project_id}/playlist/${activity.playlist_id}/activity/${activity.id}`}
+                    href={`/org/${organization.currentOrganization?.domain}/project/${activity.project_id}/playlist/${activity.playlist_id}/activity/${activity.id}`}
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -83,7 +83,7 @@ function ActivityList(props) {
               </div>
 
               <div className="col-2 text-right">
-                <a href={`/org/${organization.activeOrganization?.domain}/project/${activity.project_id}`} target="_blank" rel="noreferrer">
+                <a href={`/org/${organization.currentOrganization?.domain}/project/${activity.project_id}`} target="_blank" rel="noreferrer">
                   <FontAwesomeIcon className="project-go-icon" icon="arrow-right" />
                 </a>
               </div>

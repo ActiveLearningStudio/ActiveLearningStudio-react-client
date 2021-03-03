@@ -144,7 +144,7 @@ function PlaylistsPage(props) {
 
     try {
       await showCreatePlaylistModal();
-      history.push(`/org/${organization.activeOrganization?.domain}/project/${match.params.projectId}/playlist/create`);
+      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/create`);
     } catch (err) {
       // console.log(err.message);
     }
@@ -153,7 +153,7 @@ function PlaylistsPage(props) {
   const handleShowCreateResourceModal = (playlist) => {
     try {
       showCreateResourceModal(playlist.id);
-      history.push(`/org/${organization.activeOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/create`);
+      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/create`);
     } catch (e) {
       // console.log(e.message);
     }
@@ -164,7 +164,7 @@ function PlaylistsPage(props) {
 
     try {
       await hideCreatePlaylistModal();
-      history.push(`/org/${organization.activeOrganization?.domain}/project/${match.params.projectId}`);
+      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
     } catch (err) {
       // console.log(err.message);
     }
@@ -188,13 +188,13 @@ function PlaylistsPage(props) {
         .then(async (resp) => {
           if (resp.isConfirmed) {
             await hideCreateResourceModal();
-            history.push(`/org/${organization.activeOrganization?.domain}/project/${match.params.projectId}`);
+            history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
           }
         });
     } else {
       try {
         await hideCreateResourceModal();
-        history.push(`/org/${organization.activeOrganization?.domain}/project/${match.params.projectId}`);
+        history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
       } catch (err) {
         // console.log(err.message);
       }
@@ -211,7 +211,7 @@ function PlaylistsPage(props) {
     try {
       await createPlaylist(match.params.projectId, title);
 
-      history.push(`/org/${organization.activeOrganization?.domain}/project/${match.params.projectId}`);
+      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
     } catch (err) {
       if (err.errors) {
         if (err.errors.title.length > 0) {
@@ -261,7 +261,7 @@ function PlaylistsPage(props) {
         );
       }
 
-      history.push(`/org/${organization.activeOrganization?.domain}/project/${match.params.projectId}`);
+      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
     } catch (e) {
       // console.log(e.message);
     }
@@ -283,7 +283,7 @@ function PlaylistsPage(props) {
         metadata,
       );
 
-      history.push(`/org/${organization.activeOrganization?.domain}/project/${match.params.projectId}`);
+      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
     } catch (e) {
       // console.log(e);
     }
@@ -370,7 +370,7 @@ function PlaylistsPage(props) {
                   <div className="project-preview">
                     <Link
                       className="dropdown-item"
-                      to={`/org/${organization.activeOrganization?.domain}/project/${match.params.projectId}/preview`}
+                      to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/preview`}
                     >
                       <FontAwesomeIcon icon="eye" className="mr-2" />
                       Project Preview

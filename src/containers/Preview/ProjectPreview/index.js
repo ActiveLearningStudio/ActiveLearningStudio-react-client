@@ -128,7 +128,7 @@ function ProjectPreview(props) {
               className="add-resource-to-playlist-btn"
               onClick={() => {
                 // dispatch(clearSearch());
-                history.push(`/org/${organization.activeOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/create`);
+                history.push(`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/create`);
               }}
             >
               <FontAwesomeIcon icon="plus-circle" className="mr-2" />
@@ -183,7 +183,7 @@ function ProjectPreview(props) {
             <div className="scene flex-wrap">
               <div className="scene-img">
                 <div id="content" />
-                <Link to={`/org/${organization.activeOrganization?.domain}/project/${currentProject.id}`}>
+                <Link to={`/org/${organization.currentOrganization?.domain}/project/${currentProject.id}`}>
                   {!!currentProject.thumb_url && currentProject.thumb_url.includes('pexels.com') ? (
                     <img src={currentProject.thumb_url} alt="thumbnail" />
                   ) : (
@@ -205,7 +205,7 @@ function ProjectPreview(props) {
                           showDeletePopup={showDeletePopup}
                           previewMode
                         />
-                        <Link to={`/org/${organization.activeOrganization?.domain}`} onClick={history.goBack} className="go-back-button-preview">
+                        <Link to={`/org/${organization.currentOrganization?.domain}`} onClick={history.goBack} className="go-back-button-preview">
                           <FontAwesomeIcon icon="undo" className="mr-2" />
                           Exit Preview Mode
                         </Link>

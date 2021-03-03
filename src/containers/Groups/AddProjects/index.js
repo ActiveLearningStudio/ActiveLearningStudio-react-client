@@ -41,7 +41,7 @@ function AddProjectsPage(props) {
       projectIds,
     )
       .then(() => {
-        history.push(`/org/${organization.activeOrganization?.domain}/groups/${groupId}/projects`);
+        history.push(`/org/${organization.currentOrganization?.domain}/groups/${groupId}/projects`);
       })
       .catch(() => {});
   }, [addProjects, groupId, history]);

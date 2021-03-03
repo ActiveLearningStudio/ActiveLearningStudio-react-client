@@ -25,7 +25,7 @@ const ProjectCard = (props) => {
     <div className="col-md-3 check" id={activeFilter}>
       <div className="program-tile">
         <div className="program-thumb">
-          <Link to={`/org/${organization.activeOrganization?.domain}/project/${project.id}/preview`}>
+          <Link to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/preview`}>
             {project.thumb_url && (
               <div
                 className="project-thumb"
@@ -44,7 +44,7 @@ const ProjectCard = (props) => {
             <div className="row">
               <div className="col-md-12">
                 <h3 className="program-title">
-                  <Link to={`/org/${organization.activeOrganization?.domain}/project/${project.id}/preview`}>
+                  <Link to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/preview`}>
                     {project.name && project.name.length > 50 ? `${project.name.substring(0, 50)}...` : project.name}
                   </Link>
                 </h3>
@@ -80,12 +80,12 @@ const ProjectCard = (props) => {
           </div>
 
           <div className="button-bottom">
-            <Link to={`/org/${organization.activeOrganization?.domain}/project/${project.id}/preview`}>
+            <Link to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/preview`}>
               <FontAwesomeIcon icon="plus" className="mr-2" />
               Add Playlist
             </Link>
 
-            <Link to={`/org/${organization.activeOrganization?.domain}/project/${project.id}`}>
+            <Link to={`/org/${organization.currentOrganization?.domain}/project/${project.id}`}>
               <FontAwesomeIcon icon="share" className="mr-2" />
               share
             </Link>
