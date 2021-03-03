@@ -1,5 +1,4 @@
-$selected_color: #084892;
-$filled: #44ca92;
+@import 'assets/css/index';
 
 .member-manage {
   height: 46.5rem;
@@ -77,7 +76,7 @@ $filled: #44ca92;
 
             .member-name {
               font-size: 14px;
-              color: #464646;
+              color: $mine-shaft;
             }
 
             .member-data {
@@ -87,7 +86,7 @@ $filled: #44ca92;
                 font-size: 12px;
 
                 & > span {
-                  color: #464646;
+                  color: $mine-shaft;
 
                   & > span {
                     font-size: 8px;
@@ -212,7 +211,7 @@ $filled: #44ca92;
             margin: 0;
             padding: 16px 0 15px;
             font-size: 14px;
-            color: #464646;
+            color: $mine-shaft;
           }
 
           .border-top {

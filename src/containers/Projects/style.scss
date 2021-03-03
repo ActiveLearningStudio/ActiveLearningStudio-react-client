@@ -1,3 +1,5 @@
+@import 'assets/css/index';
+
 .program-tile {
   height: 100%;
   min-height: 450px;
@@ -41,7 +43,7 @@
       margin-top: 10px;
 
       a {
-        font-family: 'Open Sans', sans-serif;
+        font-family: $rubik, sans-serif;
         font-size: 24px;
         font-weight: 300;
         color: #607a9b;
@@ -78,7 +80,7 @@
         font-weight: 400;
         line-height: 26px;
         letter-spacing: 0;
-        color: #464646;
+        color: $mine-shaft;
         text-align: justify;
         word-break: break-word;
       }
@@ -171,7 +173,7 @@
     padding-left: 40px;
     padding-bottom: 10px;
     background: url(../../assets/images/my-projects-icon.png) no-repeat 0 9px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: $rubik, sans-serif;
     font-weight: 700;
     font-size: 22px;
     color: #607a9b;

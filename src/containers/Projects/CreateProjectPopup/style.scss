@@ -1,7 +1,9 @@
+@import 'assets/css/index';
+
 .resource-modal {
   h1 {
     margin: 0;
-    font-family: 'Open Sans', sans-serif;
+    font-family: $rubik, sans-serif;
     font-size: 2rem;
     font-weight: 300;
     color: #165399;
@@ -40,7 +42,7 @@
 
   h1 {
     margin: 0;
-    font-family: 'Open Sans', sans-serif;
+    font-family: $rubik, sans-serif;
     font-size: 2rem;
     font-weight: 300;
     color: #165399;
@@ -51,7 +53,7 @@
     h2 {
       margin-top: 15px;
       margin-bottom: 15px;
-      font-family: 'Hind Siliguri', sans-serif;
+      font-family: $halvetica, sans-serif;
       font-size: 18px;
       font-weight: 400;
       color: #565656;
@@ -102,7 +104,7 @@
           display: block;
           float: right;
           background: #d9dfe8;
-          font-family: 'Open Sans', sans-serif;
+          font-family: $rubik, sans-serif;
           font-size: 12px;
           font-weight: 600;
           color: #000;
@@ -131,7 +133,7 @@
         background: #2ecf43;
         border: 0;
         border-radius: 5px;
-        font-family: 'Open Sans', sans-serif;
+        font-family: $rubik, sans-serif;
         font-weight: 500;
         color: #fff;
         text-transform: uppercase;
@@ -144,7 +146,7 @@
         background: url(../../../assets/images/project-template-icon.png) #fff no-repeat 8px 10px;
         border: 1px solid #d9dfe8;
         border-radius: 5px;
-        font-family: 'Open Sans', sans-serif;
+        font-family: $rubik, sans-serif;
         font-weight: 500;
         text-transform: uppercase;
         cursor: pointer;

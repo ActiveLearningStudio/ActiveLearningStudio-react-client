@@ -1,5 +1,4 @@
-$selected_color: #084892;
-$filled: #44ca92;
+@import 'assets/css/index';
 
 .member-add {
   height: 46.5rem;
@@ -17,7 +16,7 @@ $filled: #44ca92;
       letter-spacing: -0.6px;
       padding-top: 11px;
       padding-bottom: 10px;
-      font-family: 'Open Sans', sans-serif;
+      font-family: $rubik, sans-serif;
       font-weight: 700;
       font-size: 20px;
       color: #084892;
@@ -109,7 +108,7 @@ $filled: #44ca92;
                 font-size: 15px;
 
                 &:not(:disabled) {
-                  background: #0f4392;
+                  background: $curriki-main-blue;
                   border: none;
                   color: #fff;
                 }
@@ -181,7 +180,7 @@ $filled: #44ca92;
 
             .member-name {
               font-size: 14px;
-              color: #464646;
+              color: $mine-shaft;
             }
 
             .member-data {
@@ -191,7 +190,7 @@ $filled: #44ca92;
                 font-size: 12px;
 
                 & > span {
-                  color: #464646;
+                  color: $mine-shaft;
 
                   & > span {
                     font-size: 8px;
@@ -304,7 +303,7 @@ $filled: #44ca92;
             margin: 0;
             padding: 16px 0 15px;
             font-size: 14px;
-            color: #464646;
+            color: $mine-shaft;
           }
 
           .border-top {
@@ -339,7 +338,7 @@ $filled: #44ca92;
   border: 0;
   border-radius: 3px;
   box-shadow: none;
-  font-family: "Open Sans", sans-serif;
+  font-family: "rubik", sans-serif;
   font-size: 14px;
   font-weight: 600;
   color: #fff;

@@ -1,3 +1,5 @@
+@import 'assets/css/index';
+
 .flex-container {
   -ms-box-orient: horizontal;
   display: flex;
@@ -32,7 +34,7 @@ img {
 
   .link {
     color: #126BDF;
-    font-family: 'Open Sans', sans-serif;
+    font-family: $rubik, sans-serif;
     font-weight: 600;
     font-size: 14px;
 
@@ -64,7 +66,7 @@ img {
 .main-heading {
   font-size: 24px;
   color: #FFFFFF;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
   font-weight: 300;
   line-height: 32px;
   border-bottom: 1px solid #7B7B7B;
@@ -75,7 +77,7 @@ img {
 .sidebar-heading {
   font-size: 26px;
   color: #707070;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
   font-weight: 300;
   line-height: 36px;
   margin-bottom: 30px;
@@ -83,7 +85,7 @@ img {
 
 .sub-heading {
   font-size: 16px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
   font-weight: 300;
   line-height: 22px;
 }
@@ -175,7 +177,7 @@ img {
     color: #090708;
     line-height: 16px;
     margin-bottom: 10px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: $rubik, sans-serif;
     font-weight: 600;
     max-width: 80%;
   }
@@ -196,7 +198,7 @@ img {
   .date {
     color: #B7B7B7;
     font-size: 12px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: $rubik, sans-serif;
     font-weight: 600;
     position: absolute;
     right: 20px;
@@ -289,7 +291,7 @@ img {
   span {
     display: block;
     color: #090708;
-    font-family: 'Open Sans', sans-serif;
+    font-family: $rubik, sans-serif;
     font-weight: 600;
     line-height: 16px;
     font-size: 14px;
@@ -345,7 +347,7 @@ img {
     position: relative;
     display: inline-block;
     font-size: 14px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: $rubik, sans-serif;
     font-weight: 600;
     line-height: 25px;
     padding: 0 45px 5px 0;
