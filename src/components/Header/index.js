@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { setActiveOrganization } from 'store/actions/organization';
+import { setActiveOrganization, updateOrganizationScreen } from 'store/actions/organization';
 import logo from 'assets/images/studio_new_logo.png';
 import add from 'assets/images/add-icon.png';
 import profile from 'assets/images/user-profile.png';
@@ -42,7 +42,10 @@ function Header(props) {
                 <li>
                   <Link
                     to={`/org/${stateHeader.currentOrganization?.domain}/manage`}
-                    onClick={() => dispatch(setActiveOrganization(stateHeader.currentOrganization))}
+                    onClick={() => {
+                      dispatch(setActiveOrganization(stateHeader.currentOrganization));
+                      dispatch(updateOrganizationScreen('intro'));
+                    }}
                   >
                     <FontAwesomeIcon icon="briefcase" />
                     <p className="header-icon-text">

@@ -293,6 +293,11 @@
       font-size: 12px;
     }
 
+    .loader {
+      width: 30px;
+      margin: 5px;
+    }
+
     .playimg {
       background-size: contain;
       width: 100%;
@@ -348,6 +353,37 @@
         color: $fun-blue-1;
         padding-bottom: 10px;
         margin-bottom: 0px;
+      }
+
+      .all-users-list {
+        position: absolute;
+        top: 93px;
+        background: #fff;
+        padding: 10px;
+        width: 90%;
+        max-height: 140px;
+        overflow: auto;
+        border: 1px solid #ccc;
+        z-index:11;
+        
+        li {
+         font-size: 14px;
+         padding: 5px 0px;
+         border-bottom: 1px solid #ccc;
+         color: $fun-blue-1;
+         cursor: pointer;
+
+         &:hover {
+           text-decoration: underline;
+         }
+        }
+
+        p{
+          font-size: 11px;
+          text-decoration: underline;
+          margin-bottom: 0px;
+          color :#ccc;
+        }
       }
 
       input, textarea {
@@ -419,7 +455,8 @@
     }
 
     .btn-group {
-
+      margin-top: 12px;
+      
       button {
         background: $fun-blue-1;
         border: 1px solid $fun-blue-1;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -6,18 +6,20 @@ import PropTypes from 'prop-types';
 import organization from 'services/organizations.services';
 import loader from 'assets/images/dotsloader.gif';
 
-export default function AddUser(props) {
+export default function AddAdmin(props) {
   const { setAllUsersAdded, allUsersAdded } = props;
   const stateOrg = useSelector((state) => state.organization);
   const [stateOrgUsers, setStateOrgUsers] = useState([]);
   const [loaderImgUser, setLoaderImgUser] = useState(false);
   const [roleUser, setRoleUser] = useState();
+  useEffect(() => {
+    setRoleUser(stateOrg.roles?.filter((role) => role.name === 'admin'));
+  }, [stateOrg.roles]);
   return (
     <div className="add-user-organization">
       <Formik
         initialValues={{
           name: '',
-          role: '',
           email: '',
           userInfo: {},
         }}
@@ -32,9 +34,6 @@ export default function AddUser(props) {
             !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
           ) {
             errors.email = 'Invalid email address';
-          }
-          if (!values.role) {
-            errors.role = 'Required';
           }
           return errors;
         }}
@@ -123,7 +122,7 @@ export default function AddUser(props) {
                 {errors.email && touched.email && errors.email}
               </div>
             </div>
-            <div className="form-group-create">
+            {/* <div className="form-group-create">
               <h3>Role</h3>
               <select
                 type="text"
@@ -137,8 +136,9 @@ export default function AddUser(props) {
                 value={values.role.name}
               >
                 {stateOrg.roles.map((role) => (
-                  role.name !== 'admin' && (
+                  role.name === 'admin' && (
                     <option
+                      selected
                       value={JSON.stringify(role)}
                       name={role}
                     >
@@ -150,10 +150,10 @@ export default function AddUser(props) {
               <div className="error">
                 {errors.role && touched.role && errors.role}
               </div>
-            </div>
+            </div> */}
             <div className="btn-group">
               <button className="submit-create" type="submit">
-                Add User
+                Add Admin
               </button>
               <button className="cancel-create" type="button">
                 CANCEL
@@ -166,7 +166,7 @@ export default function AddUser(props) {
   );
 }
 
-AddUser.propTypes = {
+AddAdmin.propTypes = {
   setAllUsersAdded: PropTypes.func.isRequired,
   allUsersAdded: PropTypes.array.isRequired,
 };

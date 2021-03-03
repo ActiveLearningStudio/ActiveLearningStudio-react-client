@@ -10,6 +10,11 @@ const getAll = () => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const getRoles = () => httpService
+  .get(`/${apiVersion}/suborganizations/roles`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const getOrganization = (id) => httpService
   .get(`/${apiVersion}/suborganizations/${id}`)
   .then(({ data }) => data)
@@ -96,4 +101,5 @@ export default {
   createOrganization,
   updateOrganization,
   deleteOrganization,
+  getRoles,
 };

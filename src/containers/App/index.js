@@ -53,9 +53,11 @@ function App(props) {
   }, [dispatch, userDetails]);
 
   useEffect(() => {
-    if (window.location.href.includes('/login/') && !userDetails) {
+    if (window.location.href.includes('/login') && !userDetails) {
       const subDomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
-      if (subDomain) {
+      if (subDomain.includes('login')) {
+        dispatch(getBranding('currikistudio'));
+      } else if (subDomain) {
         dispatch(getBranding(subDomain));
       }
     }
@@ -69,7 +71,7 @@ function App(props) {
         },
       ];
     }
-  }, []);
+  }, [window.location.href]);
 
   useEffect(() => {
     const newScripts = [
