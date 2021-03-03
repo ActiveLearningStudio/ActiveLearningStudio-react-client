@@ -62,7 +62,7 @@ class LoginPage extends React.Component {
       await login({
         email: email.trim(),
         password: password.trim(),
-        domain: domain?.domain || 'currikistudio',
+        domain: domain?.domain,
       });
 
       history.push('/');

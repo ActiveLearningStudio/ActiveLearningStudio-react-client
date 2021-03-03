@@ -4,8 +4,8 @@ const INITIAL_STATE = {
   isLoading: false,
   activeScreen: 'intro',
   backScreen: '',
-  roles: [{ name: 'admin', id: 1 }, { name: 'author', id: 2 }, { name: 'super-admin', id: 3 }],
-  users: [{ name: 'qamar', id: 4 }, { name: 'ali', id: 5 }, { name: 'janah', id: 6 }],
+  roles: [],
+  users: [],
   allOrganizations: [],
   currentOrganization: null,
   activeOrganization: null,
@@ -78,6 +78,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         feedbackType: action.payload,
+      };
+    case actionTypes.ALL_ROLES:
+      return {
+        ...state,
+        roles: action.payload,
       };
     default:
       return state;

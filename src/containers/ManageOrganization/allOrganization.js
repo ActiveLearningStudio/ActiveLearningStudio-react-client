@@ -69,15 +69,45 @@ const AllOrganizations = () => {
                     <div className="info">
                       <div>
                         <h4>{org.name}</h4>
-                        <h5>Admin: Leo Cuhna</h5>
+                        <h5>
+                          Admin:
+                          &nbsp;
+                          {org.admins?.map((adm) => (
+                            <span>
+                              {adm.first_name}
+                              ,&nbsp;
+                            </span>
+                          ))}
+                        </h5>
+                        <h5>
+                          Domain:
+                          &nbsp;
+                          {org.domain}
+                        </h5>
                       </div>
                       <p>{org.description}</p>
                     </div>
                     <div className="meta">
-                      <span className="data-values">20 User</span>
-                      <span className="data-values">10 Group</span>
-                      <span className="data-values">3 Teams</span>
-                      <span className="data-values">15 Projects</span>
+                      <span className="data-values">
+                        {org.users_count || 0}
+                        &nbsp;
+                        Users
+                      </span>
+                      <span className="data-values">
+                        {org.groups_count || 0}
+                        &nbsp;
+                        Groups
+                      </span>
+                      <span className="data-values">
+                        {org.teams_count || 0}
+                        &nbsp;
+                        Teams
+                      </span>
+                      <span className="data-values">
+                        {org.suborganization_count || 0}
+                        &nbsp;
+                        Projects
+                      </span>
                     </div>
                   </div>
                   <div className="crud">

@@ -10,17 +10,25 @@ import {
   createOrganizationNew,
   updateOrganizationScreen,
   updateFeedbackScreen,
+  checkBranding,
+  getRoles,
 } from 'store/actions/organization';
 import imgAvatar from 'assets/images/img-avatar.png';
+import loader from 'assets/images/dotsloader.gif';
 
 import AddUser from './addUser';
+import AddAdmin from './addAdmin';
 
 export default function CreateOrganization() {
   const dispatch = useDispatch();
   const allListState = useSelector((state) => state.organization);
   const [imageActive, setImgActive] = useState(null);
+  const [loaderImg, setLoaderImg] = useState(false);
+  const [allUsersAdded, setAllUsersAdded] = useState([]);
+  const [allAdminAdded, setAllAdminAdded] = useState([]);
   useMemo(() => {
     dispatch(updatePreviousScreen('all-list'));
+    dispatch(getRoles());
   }, []);
   const imgUpload = useRef();
   return (
@@ -30,12 +38,11 @@ export default function CreateOrganization() {
         initialValues={{
           name: '',
           description: '',
-          inviteUser: ['qamar'],
+          inviteUser: allUsersAdded,
           image: '',
-          authority: false,
-          domain: allListState.currentOrganization.domain,
-          admin_id: 1,
-          parent_id: allListState.currentOrganization.id,
+          domain: '',
+          admin_id: allAdminAdded,
+          parent_id: allListState.activeOrganization.id,
         }}
         validate={(values) => {
           const errors = {};
@@ -45,14 +52,21 @@ export default function CreateOrganization() {
           if (!values.description) {
             errors.description = 'Required';
           }
-          if (!values.admin_id) {
-            errors.admin_id = 'Required';
-          }
-          if (values.inviteUser.length === 0) {
-            errors.inviteUser = 'Required';
-          }
+          // if (values.admin_id.length === 0) {
+          //   errors.admin_id = 'Required';
+          // }
+          // if (values.inviteUser.length === 0) {
+          //   errors.inviteUser = 'Required';
+          // }
           if (!values.image) {
             errors.image = 'Required';
+          }
+          if (!values.domain) {
+            errors.domain = 'Required';
+          } else if (values.domain?.length < 2) {
+            errors.domain = 'Character limit should be greater then one';
+          } else if (values.domain === true) {
+            errors.domain = 'Domain already taken, Kindly try again.';
           }
           return errors;
         }}
@@ -66,7 +80,7 @@ export default function CreateOrganization() {
               Swal.showLoading();
             },
           });
-          const result = await dispatch(createOrganizationNew(values));
+          const result = await dispatch(createOrganizationNew(values, allUsersAdded, allAdminAdded));
           Swal.close();
           if (result) {
             dispatch(updateOrganizationScreen('feedback'));
@@ -87,7 +101,7 @@ export default function CreateOrganization() {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit} className="inital-form">
-            <div className="img-upload-form">
+            <div className="img-upload-form" onClick={() => imgUpload.current.click()}>
               <input
                 type="file"
                 name="image"
@@ -141,7 +155,7 @@ export default function CreateOrganization() {
                 </>
               ) : (
                 <>
-                  <img src={imgAvatar} alt="" onClick={() => imgUpload.current.click()} />
+                  <img src={imgAvatar} alt="" />
                   <p>Upload Image</p>
                 </>
               )}
@@ -178,15 +192,60 @@ export default function CreateOrganization() {
               </div>
               <div className="form-group-create">
                 <h3>Assign Admin</h3>
+                <div className="add-user-btn">
+                  <input
+                    type="text"
+                    name="admin_id"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.admin_id}
+                    disabled
+                  />
+                  <Dropdown>
+                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                      Add new Admin
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <AddAdmin
+                        setAllUsersAdded={setAllAdminAdded}
+                        allUsersAdded={allAdminAdded}
+                      />
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+                <div className="error">
+                  {errors.inviteUser && touched.inviteUser && errors.inviteUser}
+                </div>
+              </div>
+              <div className="form-group-create">
+                <h3>Domain</h3>
                 <input
                   type="text"
-                  name="adadmin_idmin"
-                  onChange={handleChange}
+                  name="domain"
+                  onChange={(e) => {
+                    if (e.target.value.length > 1) {
+                      const inputValue = e.target.value;
+                      setLoaderImg(true);
+                      const result = dispatch(checkBranding(e.target.value));
+                      result.then(() => {
+                        setLoaderImg(false);
+                        setFieldValue('domain', true);
+                      }).catch((err) => {
+                        if (err.errors) {
+                          setLoaderImg(false);
+                          setFieldValue('domain', inputValue);
+                        }
+                      });
+                    } else {
+                      setFieldValue('domain', e.target?.value);
+                    }
+                  }}
                   onBlur={handleBlur}
-                  value={values.admin_id}
+                  // value={values.admin}
                 />
+                {loaderImg && <img src={loader} alt="" className="loader" />}
                 <div className="error">
-                  {errors.admin_id && touched.admin_id && errors.admin_id}
+                  {errors.domain && touched.domain && errors.domain}
                 </div>
               </div>
               <div className="form-group-create">
@@ -205,37 +264,15 @@ export default function CreateOrganization() {
                       Add new User
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      <AddUser />
+                      <AddUser
+                        setAllUsersAdded={setAllUsersAdded}
+                        allUsersAdded={allUsersAdded}
+                      />
                     </Dropdown.Menu>
                   </Dropdown>
                 </div>
                 <div className="error">
                   {errors.inviteUser && touched.inviteUser && errors.inviteUser}
-                </div>
-              </div>
-              <div className="form-group-create radio-create">
-                <p>Will you manage and create projects, users, groups and teams in this organization?</p>
-                <div className="form-grp-rad">
-                  <label>
-                    <input
-                      type="radio"
-                      name="authority"
-                      value={values.authority}
-                      checked={values.authority === true}
-                      onChange={() => setFieldValue('authority', true)}
-                    />
-                    Yes, I will
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="authority"
-                      value={values.authority}
-                      checked={values.authority === false}
-                      onChange={() => setFieldValue('authority', false)}
-                    />
-                    No, I’ll assign those capabilities to organization Admin
-                  </label>
                 </div>
               </div>
               <div className="btn-group">
@@ -246,6 +283,56 @@ export default function CreateOrganization() {
                   CANCEL
                 </button>
               </div>
+            </div>
+            <div className="all-users-list">
+              <h2>ALL USERS</h2>
+              {allUsersAdded.map((data) => (
+                <div className="box-adder">
+                  <h5>
+                    <p>Name </p>
+                    {data.value?.userInfo?.first_name}
+                  </h5>
+                  <h5>
+                    <p>Email </p>
+                    {data.value?.userInfo?.email}
+                  </h5>
+                  <h5>
+                    <p>Role </p>
+                    {data.role?.name}
+                  </h5>
+                  <p
+                    onClick={() => {
+                      setAllUsersAdded(allUsersAdded.filter((dataall) => dataall.value?.userInfo?.email !== data.value?.userInfo?.email));
+                    }}
+                  >
+                    remove
+                  </p>
+                </div>
+              ))}
+              <h2>ALL ADMINS</h2>
+              {allAdminAdded.map((data) => (
+                <div className="box-adder">
+                  <h5>
+                    <p>Name </p>
+                    {data.value?.userInfo?.first_name}
+                  </h5>
+                  <h5>
+                    <p>Email </p>
+                    {data.value?.userInfo?.email}
+                  </h5>
+                  <h5>
+                    <p>Role </p>
+                    {data.role?.display_name}
+                  </h5>
+                  <p
+                    onClick={() => {
+                      setAllAdminAdded(allAdminAdded.filter((dataall) => dataall.value?.userInfo?.email !== data.value?.userInfo?.email));
+                    }}
+                  >
+                    remove
+                  </p>
+                </div>
+              ))}
             </div>
           </form>
         )}

@@ -75,6 +75,11 @@ export const getBranding = (data) => async (dispatch) => {
   return result;
 };
 
+export const checkBranding = (data) => async () => {
+  const result = await organization.branding(data);
+  return result;
+};
+
 export const getsubOrgList = (id) => async (dispatch) => {
   const result = await organization.getSubOrganizationList(id);
   dispatch({
@@ -101,7 +106,10 @@ export const deleteOrganization = (data) => async (dispatch) => {
   return result;
 };
 
-export const createOrganizationNew = (data) => async (dispatch) => {
+export const createOrganizationNew = (data, allUsers, alladmins) => async (dispatch) => {
+  console.log(data);
+  console.log(allUsers);
+  console.log(alladmins);
   const result = await organization.createOrganization(data);
   dispatch({
     type: actionTypes.NEW_SUBORG_ADD,
@@ -119,6 +127,11 @@ export const updateOrganization = (data, id) => async (dispatch) => {
   return result;
 };
 
+export const allUsers = (data) => async () => {
+  const result = await organization.getAllUsers(data);
+  return result;
+};
+
 export const editOrganization = (org) => (dispatch) => {
   dispatch({
     type: actionTypes.EDIT_ORGANIZATION,
@@ -130,5 +143,13 @@ export const updateFeedbackScreen = (type) => (dispatch) => {
   dispatch({
     type: actionTypes.UPDATE_FEEDBACK,
     payload: type,
+  });
+};
+
+export const getRoles = () => async (dispatch) => {
+  const result = await organization.getRoles();
+  dispatch({
+    type: actionTypes.ALL_ROLES,
+    payload: result.data,
   });
 };
