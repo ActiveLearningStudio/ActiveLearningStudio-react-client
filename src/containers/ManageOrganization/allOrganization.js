@@ -12,6 +12,7 @@ import {
   editOrganization,
   deleteOrganization,
   updateFeedbackScreen,
+  setActiveOrganization,
 } from 'store/actions/organization';
 
 const AllOrganizations = () => {
