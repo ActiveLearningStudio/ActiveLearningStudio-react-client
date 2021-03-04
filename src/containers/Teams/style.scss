@@ -150,3 +150,28 @@
   list-style: circle;
   text-align: initial;
 }
+.back-button-main-page {
+  width: fit-content;
+  margin: auto;
+  height: 30px;
+  padding: 8px 15px 9px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #084892;
+  border-color: #084892;
+  border-radius: 20px;
+  font-size: 14px;
+  text-align: center;
+  color: #ffffff;
+  cursor: pointer;
+
+  .fa {
+    margin-right: 5px;
+    -webkit-text-stroke: 1px #084892;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}

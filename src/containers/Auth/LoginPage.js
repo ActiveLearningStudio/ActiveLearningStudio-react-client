@@ -227,7 +227,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
-  domain: state.organization.activeOrganization,
+  domain: state.organization.currentOrganization,
 });
 
 export default withRouter(

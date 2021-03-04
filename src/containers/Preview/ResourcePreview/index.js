@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { loadResourceAction } from 'store/actions/resource';
@@ -9,7 +9,7 @@ import H5PPreview from 'containers/H5PPreview';
 
 function ResourcePreview(props) {
   const { resource, activityId, loadResource } = props;
-
+  const organization = useSelector((state) => state.organization);
   useEffect(() => {
     loadResource(activityId);
   }, [loadResource, activityId]);
@@ -17,7 +17,7 @@ function ResourcePreview(props) {
   let next = '';
   if (resource.nextResourceId) {
     next = (
-      <Link to={`/activity/${resource.nextResourceId}/preview`} className="next-prev-link">
+      <Link to={`/org/${organization.currentOrganization?.domain}/activity/${resource.nextResourceId}/preview`} className="next-prev-link">
         <FontAwesomeIcon icon="chevron-circle-right" />
       </Link>
     );
@@ -26,7 +26,7 @@ function ResourcePreview(props) {
   let previous = '';
   if (resource.previousResourceId) {
     previous = (
-      <Link to={`/activity/${resource.previousResourceId}/preview`} className="next-prev-link">
+      <Link to={`/org/${organization.currentOrganization?.domain}/activity/${resource.previousResourceId}/preview`} className="next-prev-link">
         <FontAwesomeIcon icon="chevron-circle-left" />
       </Link>
     );

@@ -7,6 +7,7 @@ import { loadTeamsAction } from 'store/actions/team';
 // import Header from 'components/Header';
 // import Sidebar from 'components/Sidebar';
 import Footer from 'components/Footer';
+import { Link, useHistory } from 'react-router-dom';
 import CreateTeam from './CreateTeam';
 import TeamView from './TeamCard';
 import TeamMemberView from './TeamMemberView';
@@ -36,7 +37,7 @@ function TeamsPage(props) {
   } = props;
 
   const [breadCrumb, setBreadCrumb] = useState([]);
-
+  const history = useHistory();
   useEffect(() => {
     loadTeams();
   }, [loadTeams]);
@@ -93,6 +94,10 @@ function TeamsPage(props) {
               )}
             </div>
           ))}
+          <Link className="back-button-main-page" onClick={() => history.goBack()}>
+            <FontAwesomeIcon icon="chevron-left" />
+            Back
+          </Link>
         </div>
       </div>
       <div className="teams-page">

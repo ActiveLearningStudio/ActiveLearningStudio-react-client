@@ -10,8 +10,8 @@ const getAllFav = () => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const getAll = () => httpService
-  .get(`/${apiVersion}/projects`)
+const getAll = (subOrgId) => httpService
+  .get(`/${apiVersion}/suborganization/${subOrgId}/projects`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -20,13 +20,13 @@ const getClone = () => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const create = (project) => httpService
-  .post(`/${apiVersion}/projects`, project)
+const create = (project, subOrgId) => httpService
+  .post(`/${apiVersion}/suborganization/${subOrgId}/projects`, project)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const get = (id) => httpService
-  .get(`/${apiVersion}/projects/${id}`)
+const get = (id, subOrgId) => httpService
+  .get(`/${apiVersion}/suborganization/${subOrgId}/projects/${id}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -40,13 +40,13 @@ const getelastic = (id) => httpService
   .then(({ data }) => data)
   .catch((err) => err.response.data);
 
-const update = (id, project) => httpService
-  .put(`/${apiVersion}/projects/${id}`, project)
+const update = (id, project, subOrgId) => httpService
+  .put(`/${apiVersion}/suborganization/${subOrgId}/projects/${id}`, project)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const remove = (id) => httpService
-  .remove(`/${apiVersion}/projects/${id}`)
+const remove = (id, subOrgId) => httpService
+  .remove(`/${apiVersion}/suborganization/${subOrgId}/projects/${id}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 

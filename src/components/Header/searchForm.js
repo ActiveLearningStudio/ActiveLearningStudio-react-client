@@ -111,8 +111,12 @@ function SearchForm() {
             }}
             validate={(values) => {
               const errors = {};
+              console.log(values);
               if (!values.phrase) {
                 errors.phrase = 'required';
+              }
+              if (values.fromDate && values.toDate) {
+                if (values.fromDate > values.toDate) errors.dateError = 'Invalid Date Format';
               }
               return errors;
             }}
@@ -352,6 +356,9 @@ function SearchForm() {
                       e.target.type = 'date';
                     }}
                   />
+                  <div className="error">
+                    {errors.dateError}
+                  </div>
                 </div>
                 {/* <div className="form-group">
                   <input

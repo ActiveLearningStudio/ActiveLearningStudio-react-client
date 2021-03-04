@@ -9,7 +9,7 @@ export default function MultitenancyDropdown() {
   const dispatch = useDispatch();
   const history = useHistory();
   const stateHeader = useSelector((state) => state.organization);
-  const [selectOrg, setSelectOrg] = useState(stateHeader.activeOrganization?.name || 'Select Organization');
+  const [selectOrg, setSelectOrg] = useState(stateHeader.currentOrganization?.name || 'Select Organization');
   useEffect(() => {
     setSelectOrg(stateHeader.currentOrganization?.name || 'Select Organization');
   }, [stateHeader.currentOrganization]);

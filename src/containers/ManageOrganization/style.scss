@@ -24,8 +24,8 @@
 
     .back-button {
       font-weight: bold;
+      margin: inherit;
       font-size: 12px;
-      color: $fun-blue-1;
       cursor: pointer;
       svg {
         margin-right: 5px;

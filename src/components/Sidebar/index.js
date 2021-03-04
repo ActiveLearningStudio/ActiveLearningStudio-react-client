@@ -29,6 +29,7 @@ function Sidebar(props) {
 
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const organization = useSelector((state) => state.organization);
 
   useEffect(() => {
     if (location.pathname.includes('teams/')) {
@@ -55,7 +56,7 @@ function Sidebar(props) {
   }, [allState.sidebar.isLoaded, dispatch]);
 
   const handleClickTeam = useCallback((team) => {
-    history.push(`/teams/${team.id}`);
+    history.push(`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}`);
   }, [history]);
 
   return (
@@ -70,7 +71,7 @@ function Sidebar(props) {
       <ul className="all-project">
         {allState.sidebar.allProject.slice(0, 5).map((data) => (
           <li key={data.id}>
-            <Link to={`/project/${data.id}`}>
+            <Link to={`/org/${allState.organization.currentOrganization?.domain}/project/${data.id}`}>
               <FontAwesomeIcon icon="angle-right" className="mr-2" />
               {data.name}
             </Link>
@@ -83,35 +84,35 @@ function Sidebar(props) {
         </Link>
       </ul>
 
-      <Link to="/dashboard">
+      <Link to={`/org/${organization.currentOrganization?.domain}/dashboard`}>
         <div className="menu-title">
           <img src={dashboardicon} alt="" />
           Dashboard & Stats
         </div>
       </Link>
 
-      <Link to="/teams">
+      <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
         <div className="menu-title">
           <img src={teamicon} alt="" />
           Teams
         </div>
       </Link>
       <div className="menu-title create-button">
-        <Link to="/teams/create-team">
+        <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams/create-team`}>
           <div>
             <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
             Create Team
           </div>
         </Link>
       </div>
-      <Link to="/groups">
+      <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
         <div className="menu-title">
           <FontAwesomeIcon icon="users" className="mr-2" />
           Groups
         </div>
       </Link>
       <div className="menu-title create-button">
-        <Link to="/groups/create-group">
+        <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups/create-group`}>
           <div>
             <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
             Create Group
@@ -130,14 +131,14 @@ function Sidebar(props) {
 
           <div className="team-detail-labels">
             <Link
-              to={`/teams/${team.id}`}
+              to={`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}`}
               className={selectedCategory === TEAM ? 'active-label' : ''}
             >
               <FontAwesomeIcon icon="user-friends" className="mr-2" />
               Team Members
             </Link>
             <Link
-              to={`/teams/${team.id}/projects`}
+              to={`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}/projects`}
               className={selectedCategory === PROJECTS ? 'active-label' : ''}
             >
               <span className="project-title">Projects</span>

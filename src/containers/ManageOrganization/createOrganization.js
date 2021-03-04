@@ -123,7 +123,7 @@ export default function CreateOrganization() {
                     const formData = new FormData();
                     try {
                       formData.append('thumb', e.target.files[0]);
-                      const imgurl = dispatch(uploadImage(allListState.activeOrganization?.id, formData));
+                      const imgurl = dispatch(uploadImage(allListState.currentOrganization?.id, formData));
                       imgurl.then((img) => {
                         setImgActive(img.data?.thumbUrl);
                         setFieldValue('image', img.data?.thumbUrl);

@@ -14,7 +14,7 @@ function ActivityWizard(props) {
   const [activeView, setActiveView] = useState('describe');
   const resource = useSelector((state) => state.resource);
   const dispatch = useDispatch();
-
+  const organization = useSelector((state) => state.organization);
   const handleEditResourceSubmit = async (
     currentPlaylistId,
     editor,
@@ -31,7 +31,7 @@ function ActivityWizard(props) {
         metadata,
       ));
 
-      history.push(`/project/${match.params.projectId}`);
+      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
     } catch (e) {
       // console.log(e);
     }

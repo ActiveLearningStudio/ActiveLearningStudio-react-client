@@ -14,7 +14,7 @@ function HeaderNotification() {
   const allNotifications = useSelector((state) => state.notification);
   const [notificationData, setNotificationData] = useState([]);
   const [errorNotification, setErrorNotification] = useState('');
-
+  const organization = useSelector((state) => state.organization);
   useEffect(() => {
     dispatch(getAllNotifications());
   }, [dispatch]);
@@ -86,7 +86,7 @@ function HeaderNotification() {
             {errorNotification && <div className="error-notification">{errorNotification}</div> }
           </div>
           <div className="btn-all-notification">
-            <Dropdown.Item className="all-notification" as={Link} to="/notification">
+            <Dropdown.Item className="all-notification" as={Link} to={`/org/${organization.currentOrganization?.domain}/notification`}>
               see All notification
             </Dropdown.Item>
             {/* <Dropdown.Item className="notification-setting" as={Link} to="/notification">
