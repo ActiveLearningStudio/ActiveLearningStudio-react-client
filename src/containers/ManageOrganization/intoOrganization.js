@@ -52,7 +52,7 @@ export default function IntroOrganizations(props) {
             </button>
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic">
-                Invite Admin
+                Invite Users
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <InviteOrganization />

@@ -17,12 +17,13 @@ import {
 const AllOrganizations = () => {
   const dispatch = useDispatch();
   const allListState = useSelector((state) => state.organization);
+  const { activeOrganization } = allListState;
   useMemo(() => {
     dispatch(updatePreviousScreen('intro'));
   }, []);
   useMemo(() => {
-    dispatch(getsubOrgList(allListState.currentOrganization?.id));
-  }, [allListState.currentOrganization]);
+    dispatch(getsubOrgList(activeOrganization?.id));
+  }, [activeOrganization]);
   const { allSuborgList } = allListState;
   return (
     allSuborgList ? (
@@ -106,7 +107,7 @@ const AllOrganizations = () => {
                       <span className="data-values">
                         {org.suborganization_count || 0}
                         &nbsp;
-                        Projects
+                        Organizations
                       </span>
                     </div>
                   </div>

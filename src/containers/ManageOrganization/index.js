@@ -32,6 +32,7 @@ export default function ManageOrganizations() {
           {activeOrganization && (
             <div className="headings-org">
               <p>Parent organization: {activeOrganization?.parent?.name}</p>
+              <p>Domain: {activeOrganization?.domain}</p>
               <div className="organization-container">
                 <div className="title-main">
                   <img className="child-organization-icon" src={childOrgIcon} alt="child-organization-icon" />
