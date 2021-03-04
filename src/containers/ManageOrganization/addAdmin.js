@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Dropdown } from 'react-bootstrap';
 
 import organization from 'services/organizations.services';
 import loader from 'assets/images/dotsloader.gif';
 
 export default function AddAdmin(props) {
-  const { setAllUsersAdded, allUsersAdded } = props;
+  const { setAllUsersAdded, allUsersAdded, setFieldValueProps } = props;
   const stateOrg = useSelector((state) => state.organization);
   const [stateOrgUsers, setStateOrgUsers] = useState([]);
   const [loaderImgUser, setLoaderImgUser] = useState(false);
@@ -46,6 +47,7 @@ export default function AddAdmin(props) {
           const duplicateTest = allUsersAdded.filter((dataall) => dataall.value?.userInfo?.email === values.email);
           if (duplicateTest.length === 0) {
             setAllUsersAdded([...allUsersAdded, combine]);
+            setFieldValueProps('admin_id', [...allUsersAdded, combine]);
           }
         }}
       >
@@ -61,11 +63,11 @@ export default function AddAdmin(props) {
         }) => (
           <form onSubmit={handleSubmit}>
             <div className="form-group-create">
-              <h3>Name</h3>
+              <h3>Search Admin</h3>
               <input
                 type="text"
                 name="name"
-                autoComplete={false}
+                autoComplete="off"
                 onChange={async (e) => {
                   setFieldValue('name', e.target.value);
                   setFieldValue('email', '');
@@ -155,9 +157,11 @@ export default function AddAdmin(props) {
               <button className="submit-create" type="submit">
                 Add Admin
               </button>
-              <button className="cancel-create" type="button">
-                CANCEL
-              </button>
+              <Dropdown.Item>
+                <button className="cancel-create" type="button">
+                  CANCEL
+                </button>
+              </Dropdown.Item>
             </div>
           </form>
         )}
@@ -169,4 +173,5 @@ export default function AddAdmin(props) {
 AddAdmin.propTypes = {
   setAllUsersAdded: PropTypes.func.isRequired,
   allUsersAdded: PropTypes.array.isRequired,
+  setFieldValueProps: PropTypes.func.isRequired,
 };

@@ -1,8 +1,14 @@
-import React, { useRef, useMemo, useState } from 'react';
+import React, {
+  useRef,
+  useMemo,
+  useState,
+  useEffect,
+} from 'react';
 import { Formik } from 'formik';
 import { Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
   updatePreviousScreen,
@@ -10,33 +16,55 @@ import {
   updateOrganization,
   updateOrganizationScreen,
   updateFeedbackScreen,
+  getRoles,
 } from 'store/actions/organization';
 import imgAvatar from 'assets/images/img-avatar.png';
 
 import AddUser from './addUser';
+import AddAdmin from './addAdmin';
 
 export default function EditOrganization() {
   const dispatch = useDispatch();
   const allListState = useSelector((state) => state.organization);
-  const { editOrganization } = allListState;
-  const [imageActive, setImgActive] = useState(editOrganization?.image);
+  const { editOrganization, activeOrganization } = allListState;
+  const [imageActive, setImgActive] = useState(null);
+  const [allUsersAdded, setAllUsersAdded] = useState([]);
+  const [allAdminAdded, setAllAdminAdded] = useState([]);
   useMemo(() => {
     dispatch(updatePreviousScreen('all-list'));
+    dispatch(getRoles());
   }, []);
+
+  useEffect(() => {
+    if (editOrganization) {
+      const alladminList = [];
+      editOrganization?.admins?.map((adm) => {
+        const result = {
+          value: {
+            userInfo: adm,
+          },
+        };
+        alladminList.push(result);
+        return true;
+      });
+      setAllAdminAdded(alladminList);
+      setImgActive(editOrganization.image);
+    }
+  }, [editOrganization]);
+
   const imgUpload = useRef();
   return (
     <div className="create-organizations">
-      <h2>Edit Organization</h2>
+      <h2>Create Organization</h2>
       <Formik
         initialValues={{
+          inviteUser: allUsersAdded,
+          admin_id: editOrganization?.admins,
           name: editOrganization?.name,
           description: editOrganization?.description,
-          inviteUser: ['qamar'],
           image: editOrganization?.image,
           authority: false,
-          domain: editOrganization?.domain,
-          admin_id: 1,
-          parent_id: editOrganization?.id,
+          parent_id: editOrganization?.parent?.id,
         }}
         validate={(values) => {
           const errors = {};
@@ -46,11 +74,8 @@ export default function EditOrganization() {
           if (!values.description) {
             errors.description = 'Required';
           }
-          if (!values.admin_id) {
+          if (values.admin_id.length === 0) {
             errors.admin_id = 'Required';
-          }
-          if (values.inviteUser.length === 0) {
-            errors.inviteUser = 'Required';
           }
           if (!values.image) {
             errors.image = 'Required';
@@ -67,7 +92,7 @@ export default function EditOrganization() {
               Swal.showLoading();
             },
           });
-          const result = await dispatch(updateOrganization(values, editOrganization.id));
+          const result = await dispatch(updateOrganization(activeOrganization.id, values, allUsersAdded, allAdminAdded));
           Swal.close();
           if (result) {
             dispatch(updateOrganizationScreen('feedback'));
@@ -83,12 +108,11 @@ export default function EditOrganization() {
           handleChange,
           handleBlur,
           handleSubmit,
-          isSubmitting,
           setFieldValue,
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit} className="inital-form">
-            <div className="img-upload-form">
+            <div className="img-upload-form" onClick={() => imgUpload.current.click()}>
               <input
                 type="file"
                 name="image"
@@ -142,7 +166,7 @@ export default function EditOrganization() {
                 </>
               ) : (
                 <>
-                  <img src={imgAvatar} alt="" onClick={() => imgUpload.current.click()} />
+                  <img src={imgAvatar} alt="" />
                   <p>Upload Image</p>
                 </>
               )}
@@ -156,6 +180,7 @@ export default function EditOrganization() {
                 <input
                   type="text"
                   name="name"
+                  autoComplete="off"
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.name}
@@ -172,6 +197,7 @@ export default function EditOrganization() {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.description}
+                  autoComplete="off"
                 />
                 <div className="error">
                   {errors.description && touched.description && errors.description}
@@ -179,13 +205,29 @@ export default function EditOrganization() {
               </div>
               <div className="form-group-create">
                 <h3>Assign Admin</h3>
-                <input
-                  type="text"
-                  name="adadmin_idmin"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.admin_id}
-                />
+                <div className="add-user-btn">
+                  <input
+                    type="text"
+                    name="admin_id"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    // value={values.admin_id}
+                    disabled
+                    autoComplete="off"
+                  />
+                  <Dropdown>
+                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                      Add new Admin
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <AddAdmin
+                        setAllUsersAdded={setAllAdminAdded}
+                        allUsersAdded={allAdminAdded}
+                        setFieldValueProps={setFieldValue}
+                      />
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
                 <div className="error">
                   {errors.admin_id && touched.admin_id && errors.admin_id}
                 </div>
@@ -198,7 +240,8 @@ export default function EditOrganization() {
                     name="inviteUser"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.inviteUser}
+                    autoComplete="off"
+                    // value={values.inviteUser}
                     disabled
                   />
                   <Dropdown>
@@ -206,7 +249,10 @@ export default function EditOrganization() {
                       Add new User
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      <AddUser />
+                      <AddUser
+                        setAllUsersAdded={setAllUsersAdded}
+                        allUsersAdded={allUsersAdded}
+                      />
                     </Dropdown.Menu>
                   </Dropdown>
                 </div>
@@ -214,39 +260,70 @@ export default function EditOrganization() {
                   {errors.inviteUser && touched.inviteUser && errors.inviteUser}
                 </div>
               </div>
-              <div className="form-group-create radio-create">
-                <p>Will you manage and create projects, users, groups and teams in this organization?</p>
-                <div className="form-grp-rad">
-                  <label>
-                    <input
-                      type="radio"
-                      name="authority"
-                      value={values.authority}
-                      checked={values.authority === true}
-                      onChange={() => setFieldValue('authority', true)}
-                    />
-                    Yes, I will
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="authority"
-                      value={values.authority}
-                      checked={values.authority === false}
-                      onChange={() => setFieldValue('authority', false)}
-                    />
-                    No, I’ll assign those capabilities to organization Admin
-                  </label>
-                </div>
-              </div>
               <div className="btn-group">
-                <button className="submit-create" type="submit" disabled={isSubmitting}>
+                <button className="submit-create" type="submit">
                   UPDATE ORGANIZATION
                 </button>
-                <button className="cancel-create" type="button" disabled={isSubmitting}>
+                <button
+                  className="cancel-create"
+                  type="button"
+                  onClick={() => {
+                    dispatch(updateOrganizationScreen('intro'));
+                  }}
+                >
                   CANCEL
                 </button>
               </div>
+            </div>
+            <div className="all-users-list">
+              {allAdminAdded.length > 0 && <h2>ALL ADMINS</h2>}
+              {allAdminAdded.map((data) => (
+                <div className="box-adder">
+                  <h5>
+                    <p>Name </p>
+                    {data.value?.userInfo?.first_name}
+                  </h5>
+                  <h5>
+                    <p>Email </p>
+                    {data.value?.userInfo?.email}
+                  </h5>
+                  <h5>
+                    <p>Role </p>
+                    admin
+                  </h5>
+                  <p
+                    onClick={() => {
+                      setAllAdminAdded(allAdminAdded.filter((dataall) => dataall.value?.userInfo?.email !== data.value?.userInfo?.email));
+                    }}
+                  >
+                    <FontAwesomeIcon icon="trash" />
+                  </p>
+                </div>
+              ))}
+              {allUsersAdded.length > 0 && <h2>ALL USERS</h2>}
+              {allUsersAdded.map((data) => (
+                <div className="box-adder">
+                  <h5>
+                    <p>Name </p>
+                    {data.value?.userInfo?.first_name}
+                  </h5>
+                  <h5>
+                    <p>Email </p>
+                    {data.value?.userInfo?.email}
+                  </h5>
+                  <h5>
+                    <p>Role </p>
+                    {data.role?.name}
+                  </h5>
+                  <p
+                    onClick={() => {
+                      setAllUsersAdded(allUsersAdded.filter((dataall) => dataall.value?.userInfo?.email !== data.value?.userInfo?.email));
+                    }}
+                  >
+                    <FontAwesomeIcon icon="trash" />
+                  </p>
+                </div>
+              ))}
             </div>
           </form>
         )}

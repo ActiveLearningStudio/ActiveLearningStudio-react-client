@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Formik } from 'formik';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Dropdown } from 'react-bootstrap';
 
 import organization from 'services/organizations.services';
 import loader from 'assets/images/dotsloader.gif';
@@ -62,11 +63,11 @@ export default function AddUser(props) {
         }) => (
           <form onSubmit={handleSubmit}>
             <div className="form-group-create">
-              <h3>Name</h3>
+              <h3>Search Users</h3>
               <input
                 type="text"
                 name="name"
-                autoComplete={false}
+                autoComplete="off"
                 onChange={async (e) => {
                   setFieldValue('name', e.target.value);
                   setFieldValue('email', '');
@@ -136,6 +137,7 @@ export default function AddUser(props) {
                 onBlur={handleBlur}
                 value={values.role.name}
               >
+                <option value="">Select Role</option>
                 {stateOrg.roles.map((role) => (
                   role.name !== 'admin' && (
                     <option
@@ -155,9 +157,11 @@ export default function AddUser(props) {
               <button className="submit-create" type="submit">
                 Add User
               </button>
-              <button className="cancel-create" type="button">
-                CANCEL
-              </button>
+              <Dropdown.Item>
+                <button className="cancel-create" type="button">
+                  CANCEL
+                </button>
+              </Dropdown.Item>
             </div>
           </form>
         )}

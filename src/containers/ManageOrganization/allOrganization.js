@@ -123,6 +123,7 @@ const AllOrganizations = () => {
                     <div
                       className="submit"
                       onClick={() => {
+                        dispatch(setActiveOrganization(org));
                         dispatch(editOrganization(org));
                         dispatch(updateOrganizationScreen('edit-org'));
                       }}

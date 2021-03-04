@@ -107,10 +107,23 @@ export const deleteOrganization = (data) => async (dispatch) => {
 };
 
 export const createOrganizationNew = (data, allUsers, alladmins) => async (dispatch) => {
-  console.log(data);
-  console.log(allUsers);
-  console.log(alladmins);
-  const result = await organization.createOrganization(data);
+  const adminUsers = alladmins.map((admin) => admin?.value?.userInfo?.id);
+  const usersList = allUsers.map((user) => (
+    {
+      user_id: user?.value?.userInfo?.id,
+      role_id: user?.role?.id,
+    }
+  ));
+  const details = {
+    name: data.name,
+    description: data.description,
+    image: data.image,
+    parent_id: data.parent_id,
+    admins: adminUsers,
+    users: usersList,
+    domain: data.domain,
+  };
+  const result = await organization.createOrganization(details);
   dispatch({
     type: actionTypes.NEW_SUBORG_ADD,
     payload: result.suborganization,
@@ -118,8 +131,23 @@ export const createOrganizationNew = (data, allUsers, alladmins) => async (dispa
   return result;
 };
 
-export const updateOrganization = (data, id) => async (dispatch) => {
-  const result = await organization.updateOrganization(data, id);
+export const updateOrganization = (id, data, allUsers, alladmins) => async (dispatch) => {
+  const adminUsers = alladmins.map((admin) => admin?.value?.userInfo?.id);
+  const usersList = allUsers.map((user) => (
+    {
+      user_id: user?.value?.userInfo?.id,
+      role_id: user?.role?.id,
+    }
+  ));
+  const details = {
+    name: data.name,
+    description: data.description,
+    image: data.image,
+    parent_id: data.parent_id,
+    admins: adminUsers,
+    users: usersList,
+  };
+  const result = await organization.updateOrganization(details, id);
   dispatch({
     type: actionTypes.NEW_SUBORG_ADD,
     payload: result.suborganization,

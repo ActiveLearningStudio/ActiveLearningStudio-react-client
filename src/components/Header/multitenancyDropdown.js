@@ -39,7 +39,12 @@ export default function MultitenancyDropdown() {
             <p>
               Parent:
               &nbsp;
-              {org.parent || 'NA'}
+              {org?.parent?.name || 'NA'}
+            </p>
+            <p>
+              Domain:
+              &nbsp;
+              {org?.domain || 'NA'}
             </p>
           </div>
         ))}

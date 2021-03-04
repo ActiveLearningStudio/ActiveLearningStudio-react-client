@@ -3,6 +3,7 @@ import { Formik } from 'formik';
 import { Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
   updatePreviousScreen,
@@ -52,9 +53,9 @@ export default function CreateOrganization() {
           if (!values.description) {
             errors.description = 'Required';
           }
-          // if (values.admin_id.length === 0) {
-          //   errors.admin_id = 'Required';
-          // }
+          if (values.admin_id.length === 0) {
+            errors.admin_id = 'Required';
+          }
           // if (values.inviteUser.length === 0) {
           //   errors.inviteUser = 'Required';
           // }
@@ -96,7 +97,6 @@ export default function CreateOrganization() {
           handleChange,
           handleBlur,
           handleSubmit,
-          isSubmitting,
           setFieldValue,
           /* and other goodies */
         }) => (
@@ -169,6 +169,7 @@ export default function CreateOrganization() {
                 <input
                   type="text"
                   name="name"
+                  autoComplete="off"
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.name}
@@ -185,6 +186,7 @@ export default function CreateOrganization() {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.description}
+                  autoComplete="off"
                 />
                 <div className="error">
                   {errors.description && touched.description && errors.description}
@@ -198,8 +200,9 @@ export default function CreateOrganization() {
                     name="admin_id"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.admin_id}
+                    // value={values.admin_id}
                     disabled
+                    autoComplete="off"
                   />
                   <Dropdown>
                     <Dropdown.Toggle variant="success" id="dropdown-basic">
@@ -209,12 +212,13 @@ export default function CreateOrganization() {
                       <AddAdmin
                         setAllUsersAdded={setAllAdminAdded}
                         allUsersAdded={allAdminAdded}
+                        setFieldValueProps={setFieldValue}
                       />
                     </Dropdown.Menu>
                   </Dropdown>
                 </div>
                 <div className="error">
-                  {errors.inviteUser && touched.inviteUser && errors.inviteUser}
+                  {errors.admin_id && touched.admin_id && errors.admin_id}
                 </div>
               </div>
               <div className="form-group-create">
@@ -222,6 +226,7 @@ export default function CreateOrganization() {
                 <input
                   type="text"
                   name="domain"
+                  autoComplete="off"
                   onChange={(e) => {
                     if (e.target.value.length > 1) {
                       const inputValue = e.target.value;
@@ -256,7 +261,8 @@ export default function CreateOrganization() {
                     name="inviteUser"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.inviteUser}
+                    autoComplete="off"
+                    // value={values.inviteUser}
                     disabled
                   />
                   <Dropdown>
@@ -276,16 +282,46 @@ export default function CreateOrganization() {
                 </div>
               </div>
               <div className="btn-group">
-                <button className="submit-create" type="submit" disabled={isSubmitting}>
+                <button className="submit-create" type="submit">
                   CREATE ORGANIZATION
                 </button>
-                <button className="cancel-create" type="button" disabled={isSubmitting}>
+                <button
+                  className="cancel-create"
+                  type="button"
+                  onClick={() => {
+                    dispatch(updateOrganizationScreen('intro'));
+                  }}
+                >
                   CANCEL
                 </button>
               </div>
             </div>
             <div className="all-users-list">
-              <h2>ALL USERS</h2>
+              {allAdminAdded.length > 0 && <h2>ALL ADMINS</h2>}
+              {allAdminAdded.map((data) => (
+                <div className="box-adder">
+                  <h5>
+                    <p>Name </p>
+                    {data.value?.userInfo?.first_name}
+                  </h5>
+                  <h5>
+                    <p>Email </p>
+                    {data.value?.userInfo?.email}
+                  </h5>
+                  <h5>
+                    <p>Role </p>
+                    admin
+                  </h5>
+                  <p
+                    onClick={() => {
+                      setAllAdminAdded(allAdminAdded.filter((dataall) => dataall.value?.userInfo?.email !== data.value?.userInfo?.email));
+                    }}
+                  >
+                    <FontAwesomeIcon icon="trash" />
+                  </p>
+                </div>
+              ))}
+              {allUsersAdded.length > 0 && <h2>ALL USERS</h2>}
               {allUsersAdded.map((data) => (
                 <div className="box-adder">
                   <h5>
@@ -305,31 +341,7 @@ export default function CreateOrganization() {
                       setAllUsersAdded(allUsersAdded.filter((dataall) => dataall.value?.userInfo?.email !== data.value?.userInfo?.email));
                     }}
                   >
-                    remove
-                  </p>
-                </div>
-              ))}
-              <h2>ALL ADMINS</h2>
-              {allAdminAdded.map((data) => (
-                <div className="box-adder">
-                  <h5>
-                    <p>Name </p>
-                    {data.value?.userInfo?.first_name}
-                  </h5>
-                  <h5>
-                    <p>Email </p>
-                    {data.value?.userInfo?.email}
-                  </h5>
-                  <h5>
-                    <p>Role </p>
-                    {data.role?.display_name}
-                  </h5>
-                  <p
-                    onClick={() => {
-                      setAllAdminAdded(allAdminAdded.filter((dataall) => dataall.value?.userInfo?.email !== data.value?.userInfo?.email));
-                    }}
-                  >
-                    remove
+                    <FontAwesomeIcon icon="trash" />
                   </p>
                 </div>
               ))}
