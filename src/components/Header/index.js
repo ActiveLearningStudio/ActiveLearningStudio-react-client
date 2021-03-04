@@ -63,7 +63,7 @@ function Header(props) {
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu className="user-dropdown">
-                    <Dropdown.Item as={Link} to="/project/create" className="menuLinks">
+                    <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/project/create`} className="menuLinks">
                       <div className="notify-box">
                         <div className="notify-icon">
                           <img src={createProjectIcon} alt="create" />
@@ -103,15 +103,15 @@ function Header(props) {
                       </span>
                     </Dropdown.Item> */}
 
-                    <Dropdown.Item as={Link} to="/dashboard">
+                    <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/dashboard`}>
                       Dashboard
                     </Dropdown.Item>
 
-                    <Dropdown.Item as={Link} to="/account">
+                    <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/account`}>
                       My Account
                     </Dropdown.Item>
 
-                    <Dropdown.Item as={Link} to="/change-password">
+                    <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/change-password`}>
                       Change Password
                     </Dropdown.Item>
 

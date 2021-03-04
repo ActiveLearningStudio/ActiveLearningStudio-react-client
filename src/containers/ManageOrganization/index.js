@@ -20,20 +20,20 @@ export default function ManageOrganizations() {
   const dispatch =  useDispatch();
   const state = useSelector((state) => state.organization);
   useEffect(() => {
-    dispatch(getOrganization(state.activeOrganization?.id));
+    dispatch(getOrganization(state.currentOrganization?.id));
   }, []);
-  const {activeOrganization, backScreen} = state; 
+  const {currentOrganization, backScreen} = state; 
   return (
     <>
       <div className="content-wrapper">
         <div className="content">
-          {activeOrganization && (
+          {currentOrganization && (
             <div className="headings-org">
-              <p>Parent organization: {activeOrganization?.parent?.name}</p>
+              <p>Parent organization: {currentOrganization?.parent?.name}</p>
               <div className="organization-container">
                 <div className="title-main">
                   <img className="child-organization-icon" src={childOrgIcon} alt="child-organization-icon" />
-                  <h1 className="child-organization-name">{activeOrganization?.name}</h1>
+                  <h1 className="child-organization-name">{currentOrganization?.name}</h1>
                 </div>
                 {backScreen ? (
                   <div 
@@ -46,7 +46,7 @@ export default function ManageOrganizations() {
                     Back
                   </div>
                 ) : (
-                  <Link className="back-button" to={`/org/${activeOrganization.domain}`}>
+                  <Link className="back-button" to={`/org/${currentOrganization.domain}`}>
                     <FontAwesomeIcon icon="chevron-left" />
                     Back
                   </Link>
@@ -56,7 +56,7 @@ export default function ManageOrganizations() {
           )}
           {state.activeScreen === 'intro' &&
             <IntroOrganizations
-              detail = {activeOrganization}
+              detail = {currentOrganization}
             />  
           }
           {state.activeScreen === 'all-list' && <AllPrganizations />}

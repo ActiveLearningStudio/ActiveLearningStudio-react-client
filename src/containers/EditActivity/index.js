@@ -8,7 +8,7 @@ import {
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Footer from 'components/Footer';
 // import Sidebar from 'components/Sidebar';
@@ -19,6 +19,7 @@ import ActivityWizard from './ActivityWizard';
 import 'containers/CreateActivity/style.scss';
 
 function ActivityCreate(props) {
+  const organization = useSelector((state) => state.organization);
   const { match } = props;
   const dispatch = useDispatch();
   useEffect(() => {
@@ -35,7 +36,7 @@ function ActivityCreate(props) {
                 <h2>Edit Resource</h2>
                 <div className="line" />
               </div>
-              <Link to={`/project/${match.params.projectId}`}>
+              <Link to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`}>
                 <div className="back-playlist">
                   <FontAwesomeIcon icon="arrow-left" />
                   Back to Playlist

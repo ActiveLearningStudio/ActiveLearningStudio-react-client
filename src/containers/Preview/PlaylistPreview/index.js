@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
@@ -34,7 +34,7 @@ function PlaylistPreview(props) {
     collapsed,
     setCollapsed,
   } = props;
-
+  const organization = useSelector((state) => state.organization);
   useEffect(() => {
     window.scrollTo(0, 0);
     loadPlaylist(projectId, playlistId);
@@ -197,14 +197,14 @@ function PlaylistPreview(props) {
       ) : (
         <section className="main-page-content preview iframe-height-resource">
           <div className="container-flex-upper">
-            <Link to={`/project/${selectedPlaylist.project.id}/preview`}>
+            <Link to={`/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/preview`}>
               <div className="project-title">
                 <img src={projectIcon} alt="" />
                 {`Project: ${selectedPlaylist.project.name}`}
               </div>
             </Link>
 
-            <Link to={`/project/${selectedPlaylist.project.id}`}>
+            <Link to={`/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}`}>
               <FontAwesomeIcon icon="times" />
             </Link>
           </div>
@@ -266,7 +266,7 @@ function PlaylistPreview(props) {
                   <div>
                     <Link
                       className="go-back-button-preview"
-                      to={`/project/${selectedPlaylist.project.id}/preview`}
+                      to={`/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/preview`}
                     >
                       <FontAwesomeIcon icon="undo" className="mr-2" />
                       Back to Project

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
-
+import { Spinner } from 'react-bootstrap';
 import logo from 'assets/images/logo.svg';
 import { getUserAction } from 'store/actions/auth';
 import { cloneDuplicationRequest } from 'store/actions/notification';
@@ -14,43 +14,49 @@ import AppRouter from 'routers/AppRouter';
 
 import './style.scss';
 
+let runOnce = true;
 function App(props) {
   const dispatch = useDispatch();
   const { getUser } = props;
   useEffect(() => {
     getUser();
   }, [getUser]);
-
   const userDetails = useSelector((state) => state.auth.user);
+  const { activeOrganization } = useSelector((state) => state.organization);
   useEffect(() => {
     if (userDetails) {
-      dispatch(cloneDuplicationRequest(userDetails.id));
-      dispatch(updatedProject(userDetails.id));
-      dispatch(updatedPlaylist(userDetails.id));
-      dispatch(updatedActivity(userDetails.id));
-      if (window.location.href.includes('/org/')) {
-        if (window.location.pathname.split('/org/')[1].split('/').length === 1) {
-          const subDomain = window.location.pathname.split('/org/')[1]?.replaceAll('/', '');
+      if (activeOrganization) {
+        dispatch(cloneDuplicationRequest(userDetails.id));
+        dispatch(updatedProject(userDetails.id));
+        dispatch(updatedPlaylist(userDetails.id));
+        dispatch(updatedActivity(userDetails.id));
+      }
+      if (runOnce) {
+        runOnce = false;
+        if (window.location.href.includes('/org/')) {
+          if (window.location.pathname.split('/org/')[1].split('/').length === 1) {
+            const subDomain = window.location.pathname.split('/org/')[1]?.replaceAll('/', '');
+            (async () => {
+              const { organization } = await dispatch(getBranding(subDomain));
+              await dispatch(getOrganizationFirstTime(organization?.id));
+            })();
+          } else {
+            const subDomain = window.location.pathname.split('/org/')[1].split('/')[0]?.replaceAll('/', '');
+            (async () => {
+              const { organization } = await dispatch(getBranding(subDomain));
+              await dispatch(getOrganizationFirstTime(organization?.id));
+            })();
+          }
+        } else if (window.location.pathname.split('/login/')) {
+          const subDomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
           (async () => {
             const { organization } = await dispatch(getBranding(subDomain));
-            dispatch(getOrganizationFirstTime(organization?.id));
-          })();
-        } else {
-          const subDomain = window.location.pathname.split('/org/')[1].split('/')[0]?.replaceAll('/', '');
-          (async () => {
-            const { organization } = await dispatch(getBranding(subDomain));
-            dispatch(getOrganizationFirstTime(organization?.id));
+            await dispatch(getOrganizationFirstTime(organization?.id));
           })();
         }
-      } else if (window.location.pathname.split('/login/')) {
-        const subDomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
-        (async () => {
-          const { organization } = await dispatch(getBranding(subDomain));
-          dispatch(getOrganizationFirstTime(organization?.id));
-        })();
       }
     }
-  }, [dispatch, userDetails]);
+  }, [dispatch, userDetails, activeOrganization]);
 
   useEffect(() => {
     if (window.location.href.includes('/login') && !userDetails) {
@@ -168,7 +174,13 @@ function App(props) {
         />
       </Helmet>
 
-      <AppRouter />
+      { activeOrganization
+        ? <AppRouter />
+        : (
+          <div>
+            <Spinner animation="border" variant="primary" />
+          </div>
+        )}
 
       <div className="mobile-app-alert">
         <img src={logo} alt="" />

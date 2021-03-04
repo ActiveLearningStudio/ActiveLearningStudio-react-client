@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
 import { FadeDiv } from 'utils';
 import { loadMyProjectsAction } from 'store/actions/project';
@@ -27,7 +27,7 @@ function AddProjectsPage(props) {
     loadProjects();
     loadGroup(groupId);
   }, [loadProjects, loadGroup, groupId]);
-
+  const organization = useSelector((state) => state.organization);
   const [selectedProjects, setSelectedProjects] = useState([]);
   const [searchProject, setSearchProject] = useState('');
 
@@ -41,7 +41,7 @@ function AddProjectsPage(props) {
       projectIds,
     )
       .then(() => {
-        history.push(`/groups/${groupId}/projects`);
+        history.push(`/org/${organization.currentOrganization?.domain}/groups/${groupId}/projects`);
       })
       .catch(() => {});
   }, [addProjects, groupId, history]);
