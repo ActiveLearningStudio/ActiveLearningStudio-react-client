@@ -46,7 +46,11 @@ const gapiReducer = (state = defaultAuthState(), action) => {
         ...state,
         student: {
           ...state.student,
-          tokenObj: action.newToken,
+          auth: {
+            ...state.student.auth,
+            accessToken: action.newToken.access_token,
+            tokenObj: action.newToken,
+          },
         },
       };
 
