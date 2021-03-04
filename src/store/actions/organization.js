@@ -70,7 +70,11 @@ export const getBranding = (data) => async (dispatch) => {
   const result = await organization.branding(data);
   dispatch({
     type: actionTypes.ADD_ACTIVE_ORG,
-    payload: result.organization,
+    payload: result?.organization,
+  });
+  dispatch({
+    type: actionTypes.ADD_CURRENT_ORG,
+    payload: result?.organization,
   });
   return result;
 };

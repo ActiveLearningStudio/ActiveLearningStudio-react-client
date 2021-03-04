@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { Spinner } from 'react-bootstrap';
 import logo from 'assets/images/logo.svg';
 import { getUserAction } from 'store/actions/auth';
 import { cloneDuplicationRequest } from 'store/actions/notification';
@@ -37,21 +36,27 @@ function App(props) {
           if (window.location.pathname.split('/org/')[1].split('/').length === 1) {
             const subDomain = window.location.pathname.split('/org/')[1]?.replaceAll('/', '');
             (async () => {
-              const { organization } = await dispatch(getBranding(subDomain));
-              await dispatch(getOrganizationFirstTime(organization?.id));
+              const result = dispatch(getBranding(subDomain));
+              result.then((data) => {
+                dispatch(getOrganizationFirstTime(data?.organization?.id));
+              }).catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
           } else {
             const subDomain = window.location.pathname.split('/org/')[1].split('/')[0]?.replaceAll('/', '');
             (async () => {
-              const { organization } = await dispatch(getBranding(subDomain));
-              await dispatch(getOrganizationFirstTime(organization?.id));
+              const result = dispatch(getBranding(subDomain));
+              result.then((data) => {
+                dispatch(getOrganizationFirstTime(data?.organization?.id));
+              }).catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
           }
         } else if (window.location.pathname.split('/login/')) {
           const subDomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
           (async () => {
-            const { organization } = await dispatch(getBranding(subDomain));
-            await dispatch(getOrganizationFirstTime(organization?.id));
+            const result = dispatch(getBranding(subDomain));
+            result.then((data) => {
+              dispatch(getOrganizationFirstTime(data?.organization?.id));
+            }).catch((err) => err && window.location.replace('/org/currikistudio'));
           })();
         }
       }
@@ -64,7 +69,8 @@ function App(props) {
       if (subDomain.includes('login')) {
         dispatch(getBranding('currikistudio'));
       } else if (subDomain) {
-        dispatch(getBranding(subDomain));
+        const result = dispatch(getBranding(subDomain));
+        result.then().catch((err) => err && window.location.replace('/login'));
       }
     }
     if (window.HubSpotConversations) {
@@ -173,15 +179,7 @@ function App(props) {
           src={`//js.hs-scripts.com/${process.env.REACT_APP_HUBSPOT}.js`}
         />
       </Helmet>
-
-      { activeOrganization
-        ? <AppRouter />
-        : (
-          <div>
-            <Spinner animation="border" variant="primary" />
-          </div>
-        )}
-
+      <AppRouter />
       <div className="mobile-app-alert">
         <img src={logo} alt="" />
 

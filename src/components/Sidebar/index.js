@@ -49,11 +49,11 @@ function Sidebar(props) {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (!allState.sidebar.isLoaded) {
+    if (!allState.sidebar.isLoaded && organization.activeOrganization) {
       dispatch(allSidebarProjects());
       dispatch(loadTeamsAction());
     }
-  }, [allState.sidebar.isLoaded, dispatch]);
+  }, [allState.sidebar.isLoaded, organization.activeOrganization]);
 
   const handleClickTeam = useCallback((team) => {
     history.push(`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}`);

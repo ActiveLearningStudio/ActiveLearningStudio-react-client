@@ -5,8 +5,8 @@ import httpService from './http.service';
 
 const { apiVersion } = config;
 
-const getAllFav = () => httpService
-  .get(`/${apiVersion}/projects/favorites`)
+const getAllFav = (subOrgId) => httpService
+  .get(`/${apiVersion}/suborganization/${subOrgId}/projects/favorites`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -118,8 +118,8 @@ const deepLinking = (dataDeep) => httpService
   .post(`/${apiVersion}/go/lms/projects`, dataDeep).then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const getSampleProject = () => httpService
-  .get(`/${apiVersion}/projects/default`)
+const getSampleProject = (subOrgId) => httpService
+  .get(`/${apiVersion}/suborganization/${subOrgId}/projects/default`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 

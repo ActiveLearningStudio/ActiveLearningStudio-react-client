@@ -137,7 +137,6 @@ export const loadMyProjectsAction = () => async (dispatch) => {
     dispatch({
       type: actionTypes.PAGE_LOADING,
     });
-
     const { projects } = await projectService.getAll(activeOrganization.id);
 
     dispatch({
@@ -156,7 +155,9 @@ export const loadMyProjectsAction = () => async (dispatch) => {
 };
 
 export const loadMyFavProjectsAction = () => async (dispatch) => {
-  const { projects } = await projectService.getAllFav();
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const { projects } = await projectService.getAllFav(activeOrganization.id);
   dispatch({
     type: actionTypes.SIDEBAR_UPDATE_PROJECT,
     data: { projects },
@@ -191,7 +192,9 @@ export const loadMyCloneProjectsAction = () => async (dispatch) => {
 };
 
 export const sampleProjects = () => async (dispatch) => {
-  const { projects } = await projectService.getSampleProject();
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const { projects } = await projectService.getSampleProject(activeOrganization.id);
   dispatch({
     type: actionTypes.SIDEBAR_SAMPLE_PROJECT,
     data: { projects },

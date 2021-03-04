@@ -56,6 +56,7 @@ export const loginAction = (data) => async (dispatch) => {
       type: actionTypes.LOGIN_SUCCESS,
       payload: { user: response.user },
     });
+    return response;
   } catch (e) {
     dispatch({
       type: actionTypes.LOGIN_FAIL,

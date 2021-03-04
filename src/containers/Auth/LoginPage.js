@@ -59,13 +59,13 @@ class LoginPage extends React.Component {
         error: null,
       });
 
-      await login({
+      const result = await login({
         email: email.trim(),
         password: password.trim(),
         domain: domain?.domain,
       });
-
-      history.push('/');
+      console.log(result);
+      history.push(`/org/${domain?.domain}`);
     } catch (err) {
       this.setState({
         error: getErrors(err),

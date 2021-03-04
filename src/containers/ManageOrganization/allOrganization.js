@@ -8,7 +8,6 @@ import {
   updateOrganizationScreen,
   getsubOrgList,
   updatePreviousScreen,
-  setCurrentOrganization,
   editOrganization,
   deleteOrganization,
   updateFeedbackScreen,
@@ -115,7 +114,7 @@ const AllOrganizations = () => {
                     <div
                       className="submit"
                       onClick={() => {
-                        dispatch(setCurrentOrganization(org));
+                        dispatch(setActiveOrganization(org));
                         dispatch(updateOrganizationScreen('intro'));
                       }}
                     >

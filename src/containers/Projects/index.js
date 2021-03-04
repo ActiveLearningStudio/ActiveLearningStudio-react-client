@@ -67,7 +67,7 @@ export const ProjectsPage = (props) => {
   } = props;
 
   const allState = useSelector((state) => state);
-
+  const { organization } = allState;
   useEffect(() => {
     const query = QueryString.parse(location.search);
     if (query.active === 'fav') {
@@ -78,16 +78,16 @@ export const ProjectsPage = (props) => {
   }, []);
 
   useEffect(() => {
-    // if (allState.sidebar.sampleProject.length === 0) {
-    sampleProjectsData();
-    // }
-  }, [sampleProjectsData]);
+    if (organization.activeOrganization) {
+      sampleProjectsData();
+    }
+  }, [sampleProjectsData, organization.activeOrganization]);
 
   useEffect(() => {
-    // if (allState.sidebar.updateProject.length === 0) {
-    loadMyFavProjectsActionData();
-    // }
-  }, [loadMyFavProjectsActionData]);
+    if (organization.activeOrganization) {
+      loadMyFavProjectsActionData();
+    }
+  }, [loadMyFavProjectsActionData, organization.activeOrganization]);
 
   useEffect(() => {
     // if (allState.sidebar.updateProject.length > 0) {
@@ -237,7 +237,7 @@ export const ProjectsPage = (props) => {
     window.scrollTo(0, 0);
     document.body.classList.remove('mobile-responsive');
 
-    if (!showCreateProjectPopup && !showEditProjectPopup) {
+    if (!showCreateProjectPopup && !showEditProjectPopup && organization.activeOrganization) {
       loadMyProjects();
     }
 
@@ -246,7 +246,7 @@ export const ProjectsPage = (props) => {
     } else if (showCreateProjectPopup) {
       showCreateProjectModal();
     }
-  }, [match.params.projectId, loadLms, loadMyProjects, loadProject, showCreateProjectPopup, showCreateProjectModal, showEditProjectPopup]);
+  }, [match.params.projectId, loadLms, organization.activeOrganization, loadMyProjects, loadProject, showCreateProjectPopup, showCreateProjectModal, showEditProjectPopup]);
 
   useEffect(() => {
     if (allProjects) {
