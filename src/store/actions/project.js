@@ -10,17 +10,21 @@ import * as actionTypes from '../actionTypes';
 import store from '../index';
 
 export const allSidebarProjects = () => async (dispatch) => {
-  const { projects } = await projectService.getAll();
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const { projects } = await projectService.getAll(activeOrganization.id);
   dispatch({
     type: actionTypes.SIDEBAR_ALL_PROJECT,
     data: { projects },
   });
 };
 export const createProjectAction = (data) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({ type: actionTypes.CREATE_PROJECT_REQUEST });
 
-    const { project } = await projectService.create(data);
+    const { project } = await projectService.create(data, activeOrganization.id);
 
     dispatch({
       type: actionTypes.CREATE_PROJECT_SUCCESS,
@@ -33,12 +37,14 @@ export const createProjectAction = (data) => async (dispatch) => {
 };
 
 export const loadProjectAction = (projectId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({
       type: actionTypes.LOAD_PROJECT_REQUEST,
     });
 
-    const { project } = await projectService.get(projectId);
+    const { project } = await projectService.get(projectId, activeOrganization.id);
     Swal.close();
     dispatch({
       type: actionTypes.LOAD_PROJECT_SUCCESS,
@@ -62,10 +68,12 @@ export const getElastic = (projectId) => async () => {
 };
 
 export const updateProjectAction = (projectId, data) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({ type: actionTypes.UPDATE_PROJECT_REQUEST });
 
-    const { project } = await projectService.update(projectId, data);
+    const { project } = await projectService.update(projectId, data, activeOrganization.id);
 
     dispatch({
       type: actionTypes.UPDATE_PROJECT_SUCCESS,
@@ -78,10 +86,12 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
 };
 
 export const deleteProjectAction = (projectId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({ type: actionTypes.DELETE_PROJECT_REQUEST });
 
-    await projectService.remove(projectId);
+    await projectService.remove(projectId, activeOrganization.id);
 
     dispatch({
       type: actionTypes.DELETE_PROJECT_SUCCESS,
@@ -121,12 +131,14 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
 };
 
 export const loadMyProjectsAction = () => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({
       type: actionTypes.PAGE_LOADING,
     });
 
-    const { projects } = await projectService.getAll();
+    const { projects } = await projectService.getAll(activeOrganization.id);
 
     dispatch({
       type: actionTypes.LOAD_MY_PROJECTS,
@@ -195,12 +207,14 @@ export const sampleProjects = () => async (dispatch) => {
 // };
 
 export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({
       type: actionTypes.PAGE_LOADING,
     });
 
-    const { project } = await projectService.get(projectId);
+    const { project } = await projectService.get(projectId, activeOrganization.id);
 
     dispatch({
       type: actionTypes.LOAD_MY_PROJECTS_SELECTED,

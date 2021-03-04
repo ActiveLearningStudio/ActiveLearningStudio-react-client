@@ -1,5 +1,6 @@
 import groupService from 'services/group.service';
 import * as actionTypes from '../actionTypes';
+import store from '../index';
 
 export const resetSelectedGroupAction = () => async (dispatch) => {
   dispatch({
@@ -33,12 +34,14 @@ export const showAssigningAction = () => async (dispatch) => {
 };
 
 export const loadGroupsAction = () => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({
       type: actionTypes.PAGE_LOADING,
     });
 
-    const { groups } = await groupService.getAll();
+    const { groups } = await groupService.getAll(activeOrganization.id);
 
     dispatch({
       type: actionTypes.LOAD_GROUPS,
@@ -58,10 +61,12 @@ export const loadGroupsAction = () => async (dispatch) => {
 };
 
 export const createGroupAction = (data) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({ type: actionTypes.CREATE_GROUP_REQUEST });
 
-    const { group } = await groupService.create(data);
+    const { group } = await groupService.create(data, activeOrganization.id);
 
     dispatch({
       type: actionTypes.CREATE_GROUP_SUCCESS,
@@ -77,12 +82,14 @@ export const createGroupAction = (data) => async (dispatch) => {
 };
 
 export const loadGroupAction = (groupId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({
       type: actionTypes.LOAD_GROUP_REQUEST,
     });
 
-    const { group } = await groupService.get(groupId);
+    const { group } = await groupService.get(groupId, activeOrganization.id);
 
     dispatch({
       type: actionTypes.LOAD_GROUP_SUCCESS,
@@ -96,10 +103,12 @@ export const loadGroupAction = (groupId) => async (dispatch) => {
 };
 
 export const updateGroupAction = (groupId, data) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({ type: actionTypes.UPDATE_GROUP_REQUEST });
 
-    const { group } = await groupService.update(groupId, data);
+    const { group } = await groupService.update(groupId, data, activeOrganization.id);
 
     dispatch({
       type: actionTypes.UPDATE_GROUP_SUCCESS,
@@ -113,10 +122,12 @@ export const updateGroupAction = (groupId, data) => async (dispatch) => {
 };
 
 export const deleteGroupAction = (groupId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({ type: actionTypes.DELETE_GROUP_REQUEST });
 
-    await groupService.remove(groupId);
+    await groupService.remove(groupId, activeOrganization.id);
 
     dispatch({
       type: actionTypes.DELETE_GROUP_SUCCESS,

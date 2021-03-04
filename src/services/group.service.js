@@ -3,28 +3,28 @@ import httpService from './http.service';
 
 const { apiVersion } = config;
 
-const getAll = () => httpService
-  .get(`/${apiVersion}/groups`)
+const getAll = (subOrgId) => httpService
+  .get(`/${apiVersion}/suborganization/${subOrgId}/groups`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const create = (group) => httpService
-  .post(`/${apiVersion}/groups`, group)
+const create = (group, subOrgId) => httpService
+  .post(`/${apiVersion}/suborganization/${subOrgId}/groups`, group)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const get = (id) => httpService
-  .get(`/${apiVersion}/groups/${id}`)
+const get = (id, subOrgId) => httpService
+  .get(`/${apiVersion}/suborganization/${subOrgId}/groups/${id}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const update = (id, group) => httpService
-  .put(`/${apiVersion}/groups/${id}`, group)
+const update = (id, group, subOrgId) => httpService
+  .put(`/${apiVersion}/suborganization/${subOrgId}/groups/${id}`, group)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const remove = (id) => httpService
-  .remove(`/${apiVersion}/groups/${id}`)
+const remove = (id, subOrgId) => httpService
+  .remove(`/${apiVersion}/suborganization/${subOrgId}/groups/${id}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 

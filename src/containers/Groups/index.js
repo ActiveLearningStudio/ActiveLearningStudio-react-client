@@ -7,6 +7,7 @@ import { loadGroupsAction } from 'store/actions/group';
 // import Header from 'components/Header';
 // import Sidebar from 'components/Sidebar';
 import Footer from 'components/Footer';
+import { Link, useHistory } from 'react-router-dom';
 import CreateGroup from './CreateGroup';
 import GroupView from './GroupCard';
 import GroupMemberView from './GroupMemberView';
@@ -36,7 +37,7 @@ function GroupPage(props) {
   } = props;
 
   const [breadCrumb, setBreadCrumb] = useState([]);
-
+  const history = useHistory();
   useEffect(() => {
     loadGroups();
   }, [loadGroups]);
@@ -93,6 +94,10 @@ function GroupPage(props) {
               )}
             </div>
           ))}
+          <Link className="back-button-main-page" onClick={() => history.goBack()}>
+            <FontAwesomeIcon icon="chevron-left" />
+            Back
+          </Link>
         </div>
       </div>
       <div className="groups-page">
