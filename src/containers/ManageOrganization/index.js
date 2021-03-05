@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
+import { Alert } from 'react-bootstrap';
 
 import childOrgIcon from 'assets/images/child-organization-tag.png';
 import { getOrganization, updateOrganizationScreen  } from 'store/actions/organization';
@@ -29,43 +30,46 @@ export default function ManageOrganizations() {
     <>
       <div className="content-wrapper">
         <div className="content">
-          {activeOrganization && (
-            <div className="headings-org">
-              <p>Parent organization: {activeOrganization?.parent?.name}</p>
-              <p>Domain: {activeOrganization?.domain}</p>
-              <div className="organization-container">
-                <div className="title-main">
-                  <img className="child-organization-icon" src={childOrgIcon} alt="child-organization-icon" />
-                  <h1 className="child-organization-name">{activeOrganization?.name}</h1>
-                </div>
-                {backScreen ? (
-                  <div 
-                    className="back-button"
-                    onClick={() => {
-                      dispatch(updateOrganizationScreen(backScreen));
-                    }}
-                  >
-                    <FontAwesomeIcon icon="chevron-left" />
-                    Back
+          {(!!activeOrganization && (activeOrganization.organization_role !== 'Member' && !!activeOrganization.organization_role)) ? (
+            <div>
+              <div className="headings-org">
+                <p>Parent organization: {activeOrganization?.parent?.name}</p>
+                <p>Domain: {activeOrganization?.domain}</p>
+                <div className="organization-container">
+                  <div className="title-main">
+                    <img className="child-organization-icon" src={childOrgIcon} alt="child-organization-icon" />
+                    <h1 className="child-organization-name">{activeOrganization?.name}</h1>
                   </div>
-                ) : (
-                  <Link className="back-button" to={`/org/${currentOrganization?.domain}`}>
-                    <FontAwesomeIcon icon="chevron-left" />
-                    Back
-                  </Link>
-                )}
+                  {backScreen ? (
+                    <div 
+                      className="back-button"
+                      onClick={() => {
+                        dispatch(updateOrganizationScreen(backScreen));
+                      }}
+                    >
+                      <FontAwesomeIcon icon="chevron-left" />
+                      Back
+                    </div>
+                  ) : (
+                    <Link className="back-button" to={`/org/${currentOrganization?.domain}`}>
+                      <FontAwesomeIcon icon="chevron-left" />
+                      Back
+                    </Link>
+                  )}
+                </div>
               </div>
+              {state.activeScreen === 'intro' &&
+                <IntroOrganizations
+                  detail = {activeOrganization}
+                />  
+              }
+              {state.activeScreen === 'all-list' && <AllPrganizations />}
+              {state.activeScreen === 'create-org' && <CreateOrganization />}
+              {state.activeScreen === 'feedback' && <Feedback />}
+              {state.activeScreen ===  'edit-org' && <EditOrganization />}
             </div>
-          )}
-          {state.activeScreen === 'intro' &&
-            <IntroOrganizations
-              detail = {activeOrganization}
-            />  
-          }
-          {state.activeScreen === 'all-list' && <AllPrganizations />}
-          {state.activeScreen === 'create-org' && <CreateOrganization />}
-          {state.activeScreen === 'feedback' && <Feedback />}
-          {state.activeScreen ===  'edit-org' && <EditOrganization />}
+          ) : <Alert style={{ marginTop: '15px' }} variant="danger"> Not authorized to access this.</Alert> }
+
         </div>
       </div>
       <Footer />

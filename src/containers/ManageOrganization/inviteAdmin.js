@@ -1,28 +1,33 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Formik } from 'formik';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { getRoles } from 'store/actions/organization';
 
 export default function AddUser() {
   const stateOrg = useSelector((state) => state.organization);
+  const dispatch = useDispatch();
+  useMemo(() => {
+    dispatch(getRoles());
+  }, []);
   return (
     <div className="create-organizations">
       <div className="add-user-organization">
         <Formik
           initialValues={{
-            name: {},
             email: '',
+            role: '',
           }}
           validate={(values) => {
             const errors = {};
-            if (!values.name) {
-              errors.name = 'Required';
-            }
             if (!values.email) {
               errors.email = 'Required';
             } else if (
               !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
             ) {
               errors.email = 'Invalid email address';
+            }
+            if (!values.role) {
+              errors.email = 'Required';
             }
             return errors;
           }}
@@ -45,23 +50,6 @@ export default function AddUser() {
           }) => (
             <form onSubmit={handleSubmit}>
               <div className="form-group-create">
-                <h3>Name</h3>
-                <input
-                  type="text"
-                  name="name"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.name.name}
-                  id="allusers"
-                />
-                <datalist id="allusers">
-                  {stateOrg.users.map((user) => (
-                    <option value={user}>{user.name}</option>
-                  ))}
-                </datalist>
-                {errors.name && touched.name && errors.name}
-              </div>
-              <div className="form-group-create">
                 <h3>Email</h3>
                 <input
                   type="email"
@@ -71,7 +59,36 @@ export default function AddUser() {
                   value={values.emial}
                   disabled
                 />
-                {errors.email && touched.email && errors.email}
+                <div className="error">
+                  {errors.email && touched.email && errors.email}
+                </div>
+              </div>
+              <div className="form-group-create">
+                <h3>Role</h3>
+                <select
+                  type="text"
+                  name="role"
+                  onChange={handleBlur}
+                  onBlur={handleBlur}
+                  value={values.role?.name}
+                >
+                  <option value="">Select Role</option>
+                  {stateOrg.roles.map((role) => (
+                    role.name !== 'admin' && (
+                      <option
+                        value={JSON.stringify(role)}
+                        name={role}
+                      >
+                        {role.name}
+                      </option>
+                    )
+                  ))}
+                </select>
+                <div className="error">
+                  <div className="error">
+                    {errors.role && touched.role && errors.role}
+                  </div>
+                </div>
               </div>
               <div className="btn-group">
                 <button className="submit-create" type="submit" disabled={isSubmitting}>

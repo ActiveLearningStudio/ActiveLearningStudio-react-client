@@ -8,7 +8,7 @@ import organization from 'services/organizations.services';
 import loader from 'assets/images/dotsloader.gif';
 
 export default function AddUser(props) {
-  const { setAllUsersAdded, allUsersAdded } = props;
+  const { setAllUsersAdded, allUsersAdded, setFieldValueProps } = props;
   const stateOrg = useSelector((state) => state.organization);
   const [stateOrgUsers, setStateOrgUsers] = useState([]);
   const [loaderImgUser, setLoaderImgUser] = useState(false);
@@ -48,6 +48,7 @@ export default function AddUser(props) {
           const duplicateTest = allUsersAdded.filter((dataall) => dataall.value?.userInfo?.email === values.email);
           if (duplicateTest.length === 0) {
             setAllUsersAdded([...allUsersAdded, combine]);
+            setFieldValueProps('inviteUser', [...allUsersAdded, combine]);
           }
         }}
       >
@@ -74,7 +75,6 @@ export default function AddUser(props) {
                   setLoaderImgUser(true);
                   const result = organization.getAllUsers(stateOrg.activeOrganization?.id, e.target.value);
                   result.then((data) => {
-                    console.log(data);
                     setLoaderImgUser(false);
                     setStateOrgUsers(data['member-options']);
                   });
@@ -173,4 +173,5 @@ export default function AddUser(props) {
 AddUser.propTypes = {
   setAllUsersAdded: PropTypes.func.isRequired,
   allUsersAdded: PropTypes.array.isRequired,
+  setFieldValueProps: PropTypes.func.isRequired,
 };

@@ -38,7 +38,7 @@ function Header(props) {
         <div className="tophd_right flexdiv search-div  d-flex flex-wrap ">
           <div className="navbar-link">
             <ul className="top-info flex-div">
-              {(stateHeader.currentOrganization?.organization_role !== 'Course Creator' && stateHeader.currentOrganization?.organization_role !== undefined) && (
+              {(stateHeader.currentOrganization?.organization_role !== 'Member' && stateHeader.currentOrganization?.organization_role !== undefined) && (
                 <li>
                   <Link
                     to={`/org/${stateHeader.currentOrganization?.domain}/manage`}

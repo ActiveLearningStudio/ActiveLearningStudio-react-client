@@ -56,9 +56,9 @@ export default function CreateOrganization() {
           if (values.admin_id.length === 0) {
             errors.admin_id = 'Required';
           }
-          // if (values.inviteUser.length === 0) {
-          //   errors.inviteUser = 'Required';
-          // }
+          if (values.inviteUser.length === 0) {
+            errors.inviteUser = 'Required';
+          }
           if (!values.image) {
             errors.image = 'Required';
           }
@@ -273,6 +273,7 @@ export default function CreateOrganization() {
                       <AddUser
                         setAllUsersAdded={setAllUsersAdded}
                         allUsersAdded={allUsersAdded}
+                        setFieldValueProps={setFieldValue}
                       />
                     </Dropdown.Menu>
                   </Dropdown>
