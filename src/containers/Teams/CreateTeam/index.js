@@ -87,6 +87,7 @@ function CreateTeam(props) {
     ));
 
     createTeam({
+      organization_id: organization.activeOrganization?.id,
       ...team.selectedTeam,
       users: selectedMembers || [],
       projects: projectIds,

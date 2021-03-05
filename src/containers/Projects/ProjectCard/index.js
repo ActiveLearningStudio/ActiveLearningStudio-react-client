@@ -4,11 +4,14 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Badge } from 'react-bootstrap';
 
-import { useSelector } from 'react-redux';
-import ProjectPreviewModal from '../ProjectPreviewModal';
-import ProjectCardDropdown from './ProjectCardDropdown';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './style.scss';
+import Swal from 'sweetalert2';
+import { toggleProjectShareAction } from 'store/actions/project';
+import SharePreviewPopup from 'components/SharePreviewPopup';
+import ProjectCardDropdown from './ProjectCardDropdown';
+import ProjectPreviewModal from '../ProjectPreviewModal';
 
 const ProjectCard = (props) => {
   const {
@@ -20,6 +23,7 @@ const ProjectCard = (props) => {
     activeFilter,
   } = props;
   const organization = useSelector((state) => state.organization);
+  const dispatch = useDispatch();
 
   return (
     <div className="col-md-3 check" id={activeFilter}>
@@ -80,12 +84,26 @@ const ProjectCard = (props) => {
           </div>
 
           <div className="button-bottom">
-            <Link to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/preview`}>
+            <Link to={`/org/${organization.currentOrganization?.domain}/project/${project.id}`}>
               <FontAwesomeIcon icon="plus" className="mr-2" />
               Add Playlist
             </Link>
 
-            <Link to={`/org/${organization.currentOrganization?.domain}/project/${project.id}`}>
+            <Link
+              to="#"
+              onClick={async () => {
+                const protocol = `${window.location.href.split('/')[0]}//`;
+                const url = `${protocol + window.location.host}/project/${project.id}/shared`;
+                if (!project.shared) {
+                  Swal.showLoading();
+                  await dispatch(toggleProjectShareAction(project.id, project.name));
+                  Swal.close();
+                  SharePreviewPopup(url, project.name);
+                } else {
+                  SharePreviewPopup(url, project.name);
+                }
+              }}
+            >
               <FontAwesomeIcon icon="share" className="mr-2" />
               share
             </Link>

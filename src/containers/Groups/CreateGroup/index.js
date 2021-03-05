@@ -87,7 +87,7 @@ function CreateGroup(props) {
     ));
 
     createGroup({
-      organization_id: 1,
+      organization_id: organization.activeOrganization?.id,
       ...group.selectedGroup,
       users: selectedMembers || [],
       projects: projectIds,

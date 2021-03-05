@@ -9,7 +9,7 @@ import {
 import * as History from 'history';
 import loadable from '@loadable/component';
 import ReactGA from 'react-ga';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Header from 'components/Header';
@@ -61,8 +61,9 @@ const GclassSummaryPage = loadable(() => import('../containers/LMS/GoogleClassro
 const SearchPage = loadable(() => import('../containers/LMS/Canvas/DeepLinking/SearchPage'));
 const LtiActivity = loadable(() => import('../containers/LMS/LTI/Activity'));
 const ManageOrganization = loadable(() => import('../containers/ManageOrganization'));
-const SelectedOrganization = 'currikistudio';
 const AppRouter = (props) => {
+  const organization = useSelector((state) => state.organization);
+  const SelectedOrganization = organization.currentOrganization?.domain;
   useEffect(() => {
     ReactGA.pageview(window.location.pathname);
   });
