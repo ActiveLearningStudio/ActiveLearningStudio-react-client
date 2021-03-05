@@ -154,3 +154,75 @@
     }
   }
 }
+.dropdown-visibilitytypes {
+  width: 320px;
+  height: 39px;
+  border-bottom: 1px solid  $fun-blue-1;
+
+  &:after {
+    content: url('../../../assets/images/path.png');
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index:-1
+  }
+ 
+  .dropdown-toggle {
+    color: $fun-blue-1 !important;
+    font-size: 14px;
+    line-height: 19px;
+    text-align: left;
+    width: 100%;
+    padding-left: 0px;
+  
+    p{
+      font-size: 9px;
+      line-height: 12px;
+      color: $dove-gray;
+      margin-bottom: 0px;
+    }
+
+    &:hover, &:active, &:focus {
+      color: $fun-blue-1;
+    }
+  }
+
+  .dropdown-menu {
+    min-width: 398px;
+    max-height: 359px;
+    background: #FFFFFF;
+    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
+    border: none;
+    padding: 10px 25px;
+    overflow: auto;
+  }
+
+  a {
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 22px;
+    color: $fun-blue-1;
+    padding:0;
+  }
+
+  .all-tg-lister {
+    border-bottom: 1px solid #E5E5E5;
+    padding: 10px 0px;
+  }
+
+  p{
+    font-weight: normal;
+    font-size: 12.8px;
+    line-height: 127.85%;
+    color: #888888;
+    margin-bottom: 0px;
+  }
+}
+#dropdown-basic {
+  background-color: transparent;
+  position: absolute;
+  right: 4px;
+  color: $fun-blue-1;
+  top: 0px;
+}

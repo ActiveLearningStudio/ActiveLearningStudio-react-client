@@ -65,8 +65,8 @@ const upload = (formData, conf) => httpService
     }
   });
 
-const share = (id) => httpService
-  .post(`/${apiVersion}/projects/${id}/share`)
+const share = (id, subOrgId) => httpService
+  .post(`/${apiVersion}/suborganization/${subOrgId}/projects/${id}/share`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -128,6 +128,23 @@ const getUpdatedProjects = () => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const visibilityTypes = () => httpService
+  .get(`/${apiVersion}/suborganizations/visibility-types`)
+  .then((data) => data)
+  .catch((err) => {
+    if (err.response.data?.message) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: err.response.data.message,
+      });
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Something went wrong, kindly try again',
+      });
+    }
+  });
 export default {
   getAll,
   create,
@@ -151,4 +168,5 @@ export default {
   addToFav,
   getAllFav,
   shareProjects,
+  visibilityTypes,
 };

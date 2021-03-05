@@ -9,6 +9,20 @@ import socketConnection from 'services/http.service';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
 
+export const visibilityTypes = () => async (dispatch) => {
+  const result = await projectService.visibilityTypes();
+  dispatch({
+    type: actionTypes.PROJECT_VISIBILITY_TYPES,
+    payload: result,
+  });
+  return result;
+};
+export const setCurrentVisibilityType = (data) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.CURRENT_VISIBILITY_TYPE,
+    payload: data,
+  });
+};
 export const allSidebarProjects = () => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
@@ -237,7 +251,9 @@ export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
 };
 
 export const toggleProjectShareAction = (projectId, ProjectName) => async (dispatch) => {
-  const { project } = await projectService.share(projectId);
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const { project } = await projectService.share(projectId, activeOrganization.id);
 
   dispatch({
     type: actionTypes.SHARE_PROJECT,

@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import Swal from 'sweetalert2';
+import { Dropdown } from 'react-bootstrap';
 
 import computer from 'assets/images/computer.svg';
 import loader from 'assets/images/loader.svg';
@@ -20,6 +21,8 @@ import {
   updateProjectAction,
   uploadProjectThumbnailAction,
   showCreateProjectModalAction,
+  setCurrentVisibilityType,
+  visibilityTypes,
 } from 'store/actions/project';
 import InputField from 'components/InputField';
 import TextareaField from 'components/TextareaField';
@@ -41,6 +44,7 @@ const onSubmit = async (values, dispatch, props) => {
     history,
     project: { thumbUrl },
     editMode,
+    vType,
   } = props;
   const { name, description } = values;
   try {
@@ -56,6 +60,7 @@ const onSubmit = async (values, dispatch, props) => {
           name,
           description,
           thumb_url: thumbUrl,
+          organization_visibility_type_id: vType,
         }),
       );
     } else {
@@ -67,11 +72,13 @@ const onSubmit = async (values, dispatch, props) => {
             description,
             thumb_url: thumbUrl,
             is_public: projectShare,
+            organization_visibility_type_id: vType,
           })
           : createProjectAction({
             name,
             description,
             is_public: projectShare,
+            organization_visibility_type_id: vType,
             // eslint-disable-next-line max-len
             thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
           }),
@@ -127,12 +134,17 @@ let CreateProjectPopup = (props) => {
     handleSubmit,
     handleCloseProjectModal,
     showCreateProjectModal,
+    getProjectVisibilityTypes,
+    currentVisibilityType,
+    vType,
   } = props;
 
   const [modalShow, setModalShow] = useState(false);
   // const [publicProject, setPublicProject] = useState(true);
   const openFile = useRef();
-
+  const [visibilityTypeArray, setVisibilityTypeArray] = useState([]);
+  const [type, setType] = useState(vType);
+  console.log(type, 'la la land');
   // remove popup when escape is pressed
   const escFunction = useCallback(
     (event) => {
@@ -144,7 +156,10 @@ let CreateProjectPopup = (props) => {
   );
 
   useEffect(() => {
-    if (!editMode) showCreateProjectModal();
+    if (!editMode) {
+      showCreateProjectModal();
+      setType(null);
+    }
   }, [editMode, showCreateProjectModal]); // Runs only once
 
   useEffect(() => {
@@ -153,7 +168,12 @@ let CreateProjectPopup = (props) => {
       document.removeEventListener('keydown', escFunction, false);
     };
   }, [escFunction]);
-
+  useEffect(() => {
+    (async () => {
+      const { data } = await getProjectVisibilityTypes();
+      setVisibilityTypeArray(data.data);
+    })();
+  }, [getProjectVisibilityTypes]);
   return (
     <div className="create-program-wrapper">
       <PexelsAPI
@@ -307,7 +327,27 @@ let CreateProjectPopup = (props) => {
             <strong>100MB.</strong>
           </p>
         </div>
-
+        <Dropdown className="dropdown-visibilitytypes">
+          <Dropdown.Toggle id="dropdown-basic">
+            <p>
+              Visibility Type
+            </p>
+            {visibilityTypeArray[Number(vType) - 1]?.name}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            {visibilityTypeArray.map((vT) => (
+              <div className="all-tg-lister">
+                <Dropdown.Item onClick={() => {
+                  setType(vT.name);
+                  currentVisibilityType(vT.id);
+                }}
+                >
+                  {vT.display_name}
+                </Dropdown.Item>
+              </div>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
         <div className="project-description">
           <h2 className="mt-4 mb-0">Project Description</h2>
 
@@ -346,6 +386,9 @@ CreateProjectPopup.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   handleCloseProjectModal: PropTypes.func.isRequired,
   showCreateProjectModal: PropTypes.func.isRequired,
+  getProjectVisibilityTypes: PropTypes.func.isRequired,
+  currentVisibilityType: PropTypes.func.isRequired,
+  vType: PropTypes.string.isRequired,
 };
 
 CreateProjectPopup = reduxForm({
@@ -357,6 +400,8 @@ CreateProjectPopup = reduxForm({
 const mapDispatchToProps = (dispatch) => ({
   uploadProjectThumbnail: (formData) => dispatch(uploadProjectThumbnailAction(formData)),
   showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
+  getProjectVisibilityTypes: () => dispatch(visibilityTypes()),
+  currentVisibilityType: (vType) => dispatch(setCurrentVisibilityType(vType)),
 });
 
 const mapStateToProps = (state) => ({
@@ -368,6 +413,7 @@ const mapStateToProps = (state) => ({
       ? state.project.selectedProject.description
       : null,
   },
+  vType: state.project.currentVisibilityType,
   isLoading: state.project.isLoading,
 });
 
