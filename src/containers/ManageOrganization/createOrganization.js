@@ -13,6 +13,7 @@ import {
   updateFeedbackScreen,
   checkBranding,
   getRoles,
+  setActiveOrganization,
 } from 'store/actions/organization';
 import imgAvatar from 'assets/images/img-avatar.png';
 import loader from 'assets/images/dotsloader.gif';
@@ -27,6 +28,7 @@ export default function CreateOrganization() {
   const [loaderImg, setLoaderImg] = useState(false);
   const [allUsersAdded, setAllUsersAdded] = useState([]);
   const [allAdminAdded, setAllAdminAdded] = useState([]);
+  const { history } = allListState;
   useMemo(() => {
     dispatch(updatePreviousScreen('all-list'));
     dispatch(getRoles());
@@ -213,6 +215,7 @@ export default function CreateOrganization() {
                         setAllUsersAdded={setAllAdminAdded}
                         allUsersAdded={allAdminAdded}
                         setFieldValueProps={setFieldValue}
+                        method="create"
                       />
                     </Dropdown.Menu>
                   </Dropdown>
@@ -274,6 +277,7 @@ export default function CreateOrganization() {
                         setAllUsersAdded={setAllUsersAdded}
                         allUsersAdded={allUsersAdded}
                         setFieldValueProps={setFieldValue}
+                        method="create"
                       />
                     </Dropdown.Menu>
                   </Dropdown>
@@ -290,7 +294,12 @@ export default function CreateOrganization() {
                   className="cancel-create"
                   type="button"
                   onClick={() => {
-                    dispatch(updateOrganizationScreen('intro'));
+                    if (history) {
+                      dispatch(setActiveOrganization(history));
+                      dispatch(updateOrganizationScreen('all-list'));
+                    } else {
+                      dispatch(updateOrganizationScreen('intro'));
+                    }
                   }}
                 >
                   CANCEL
@@ -311,7 +320,7 @@ export default function CreateOrganization() {
                   </h5>
                   <h5>
                     <p>Role </p>
-                    admin
+                    Administrator
                   </h5>
                   <p
                     onClick={() => {

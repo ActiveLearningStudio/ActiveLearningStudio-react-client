@@ -6,7 +6,12 @@ import { Link } from 'react-router-dom';
 import { Alert } from 'react-bootstrap';
 
 import childOrgIcon from 'assets/images/child-organization-tag.png';
-import { getOrganization, updateOrganizationScreen  } from 'store/actions/organization';
+import {
+  getOrganization,
+  updateOrganizationScreen,
+  setActiveOrganization,
+  clearHistory
+} from 'store/actions/organization';
 import Footer from 'components/Footer';
 
 import AllPrganizations from "./allOrganization";
@@ -20,7 +25,12 @@ import './style.scss';
 export default function ManageOrganizations() {
   const dispatch =  useDispatch();
   const state = useSelector((state) => state.organization);
-  const {currentOrganization, activeOrganization, backScreen} = state;
+  const {
+    currentOrganization,
+    activeOrganization,
+    backScreen,
+    history,
+  } = state;
   useEffect(() => {
     if (activeOrganization?.id) {
       dispatch(getOrganization(activeOrganization?.id));
@@ -30,46 +40,70 @@ export default function ManageOrganizations() {
     <>
       <div className="content-wrapper">
         <div className="content">
-          {(!!activeOrganization && (activeOrganization.organization_role !== 'Member' && !!activeOrganization.organization_role)) ? (
+          {!!activeOrganization ? (
             <div>
-              <div className="headings-org">
-                <p>Parent organization: {activeOrganization?.parent?.name}</p>
-                <p>Domain: {activeOrganization?.domain}</p>
-                <div className="organization-container">
-                  <div className="title-main">
-                    <img className="child-organization-icon" src={childOrgIcon} alt="child-organization-icon" />
-                    <h1 className="child-organization-name">{activeOrganization?.name}</h1>
-                  </div>
-                  {backScreen ? (
-                    <div 
-                      className="back-button"
-                      onClick={() => {
-                        dispatch(updateOrganizationScreen(backScreen));
-                      }}
-                    >
-                      <FontAwesomeIcon icon="chevron-left" />
-                      Back
+              <div>
+                <div className="headings-org">
+                  <p>Parent organization:
+                    <span>
+                      &nbsp;
+                      {activeOrganization?.parent?.name || 'NA'}
+                    </span>
+                  </p>
+                  <p>Domain:
+                    <span>
+                    &nbsp;
+                      {activeOrganization?.domain}
+                    </span>
+                  </p>
+                  <p>Role:
+                    <span>
+                    &nbsp;
+                      {activeOrganization?.organization_role}
+                    </span>
+                  </p>
+                  <div className="organization-container">
+                    <div className="title-main">
+                      <img className="child-organization-icon" src={childOrgIcon} alt="child-organization-icon" />
+                      <h1 className="child-organization-name">{activeOrganization?.name}</h1>
                     </div>
-                  ) : (
-                    <Link className="back-button" to={`/org/${currentOrganization?.domain}`}>
-                      <FontAwesomeIcon icon="chevron-left" />
-                      Back
-                    </Link>
-                  )}
-                </div>
-              </div>
-              {state.activeScreen === 'intro' &&
-                <IntroOrganizations
-                  detail = {activeOrganization}
-                />  
-              }
-              {state.activeScreen === 'all-list' && <AllPrganizations />}
-              {state.activeScreen === 'create-org' && <CreateOrganization />}
-              {state.activeScreen === 'feedback' && <Feedback />}
-              {state.activeScreen ===  'edit-org' && <EditOrganization />}
-            </div>
-          ) : <Alert style={{ marginTop: '15px' }} variant="danger"> Not authorized to access this.</Alert> }
+                    {backScreen ? (
+                      <div 
+                        className="back-button"
+                        onClick={() => {
+                          if (history) {
+                            dispatch(setActiveOrganization(history));
+                            dispatch(clearHistory());
+                            dispatch(updateOrganizationScreen(backScreen));
+                          } else {
+                            dispatch(updateOrganizationScreen('intro'));
+                          }
+                        }}
+                      >
+                        <FontAwesomeIcon icon="chevron-left" />
+                        Back
+                      </div>
+                    ) : (
+                      <Link className="back-button" to={`/org/${currentOrganization?.domain}`}>
+                        <FontAwesomeIcon icon="chevron-left" />
+                        View All Projects
+                      </Link>
+                    )}
+                  </div>
+                </div> 
 
+                {state.activeScreen === 'intro' &&
+                  <IntroOrganizations
+                    detail = {activeOrganization}
+                  />  
+                }
+                {state.activeScreen === 'all-list' && <AllPrganizations />}
+                {state.activeScreen === 'create-org' && <CreateOrganization />}
+                {state.activeScreen === 'feedback' && <Feedback />}
+                {state.activeScreen ===  'edit-org' && <EditOrganization />}
+              </div> 
+            </div>
+          ) : <Alert style={{ marginTop: '15px' }} variant="primary"> Loading ...</Alert> }
         </div>
       </div>
       <Footer />

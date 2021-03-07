@@ -14,6 +14,7 @@ const INITIAL_STATE = {
   editOrganization: null,
   logo: '',
   feedbackType: null,
+  history: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -83,6 +84,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         roles: action.payload,
+      };
+    case actionTypes.SAVE_HISTORY:
+      return {
+        ...state,
+        history: action.payload,
+      };
+    case actionTypes.CLEAR_HISTORY:
+      return {
+        ...state,
+        history: null,
       };
     default:
       return state;

@@ -185,3 +185,26 @@ export const getRoles = () => async (dispatch) => {
     payload: result.data,
   });
 };
+
+export const inviteUserOutside = (id, data) => async () => {
+  const result = await organization.inviteUserOutside(id, data);
+  return result;
+};
+
+export const saveHistory = (data) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.SAVE_HISTORY,
+    payload: data,
+  });
+};
+
+export const clearHistory = () => async (dispatch) => {
+  dispatch({
+    type: actionTypes.CLEAR_HISTORY,
+  });
+};
+
+export const getOrgUsers = (id, page) => async () => {
+  const result = await organization.getOrgUsers(id, page);
+  return result;
+};

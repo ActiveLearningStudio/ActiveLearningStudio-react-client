@@ -8,7 +8,12 @@ import organization from 'services/organizations.services';
 import loader from 'assets/images/dotsloader.gif';
 
 export default function AddUser(props) {
-  const { setAllUsersAdded, allUsersAdded, setFieldValueProps } = props;
+  const {
+    setAllUsersAdded,
+    allUsersAdded,
+    setFieldValueProps,
+    method,
+  } = props;
   const stateOrg = useSelector((state) => state.organization);
   const [stateOrgUsers, setStateOrgUsers] = useState([]);
   const [loaderImgUser, setLoaderImgUser] = useState(false);
@@ -73,7 +78,7 @@ export default function AddUser(props) {
                   setFieldValue('name', e.target.value);
                   setFieldValue('email', '');
                   setLoaderImgUser(true);
-                  const result = organization.getAllUsers(stateOrg.activeOrganization?.id, e.target.value);
+                  const result = organization.getAllUsers(stateOrg.activeOrganization?.id, e.target.value, method);
                   result.then((data) => {
                     setLoaderImgUser(false);
                     setStateOrgUsers(data['member-options']);
@@ -174,4 +179,5 @@ AddUser.propTypes = {
   setAllUsersAdded: PropTypes.func.isRequired,
   allUsersAdded: PropTypes.array.isRequired,
   setFieldValueProps: PropTypes.func.isRequired,
+  method: PropTypes.string.isRequired,
 };

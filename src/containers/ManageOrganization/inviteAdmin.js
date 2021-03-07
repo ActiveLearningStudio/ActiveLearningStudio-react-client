@@ -1,16 +1,20 @@
 import React, { useMemo } from 'react';
 import { Formik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
-import { getRoles } from 'store/actions/organization';
+import Swal from 'sweetalert2';
+import { Dropdown } from 'react-bootstrap';
+
+import { getRoles, inviteUserOutside } from 'store/actions/organization';
 
 export default function AddUser() {
   const stateOrg = useSelector((state) => state.organization);
+  const { activeOrganization } = stateOrg;
   const dispatch = useDispatch();
   useMemo(() => {
     dispatch(getRoles());
   }, []);
   return (
-    <div className="create-organizations">
+    <div className="create-organizations invite-admin">
       <div className="add-user-organization">
         <Formik
           initialValues={{
@@ -27,15 +31,49 @@ export default function AddUser() {
               errors.email = 'Invalid email address';
             }
             if (!values.role) {
-              errors.email = 'Required';
+              errors.role = 'Required';
             }
             return errors;
           }}
-          onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              setSubmitting(false);
-            }, 400);
+          onSubmit={async (values) => {
+            Swal.fire({
+              title: 'Please Wait !',
+              html: 'Sending Invite ...',
+              allowOutsideClick: false,
+              onBeforeOpen: () => {
+                Swal.showLoading();
+              },
+            });
+            const { id } = JSON.parse(values.role);
+            const summary = {
+              email: values.email,
+              role_id: id,
+            };
+            const result = dispatch(inviteUserOutside(activeOrganization.id, summary));
+            result.then(() => {
+              Swal.fire({
+                icon: 'success',
+                text: 'Invite Sent',
+              });
+            }).catch((err) => {
+              try {
+                Object.keys(err.errors).map((errors, index) => {
+                  if (index < 1) {
+                    Swal.fire({
+                      icon: 'error',
+                      text: err.errors[errors],
+                    });
+                  }
+                  return true;
+                });
+              } catch {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'Something went wrong!',
+                });
+              }
+            });
           }}
         >
           {({
@@ -53,11 +91,10 @@ export default function AddUser() {
                 <h3>Email</h3>
                 <input
                   type="email"
-                  name="description"
+                  name="email"
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.emial}
-                  disabled
                 />
                 <div className="error">
                   {errors.email && touched.email && errors.email}
@@ -68,7 +105,7 @@ export default function AddUser() {
                 <select
                   type="text"
                   name="role"
-                  onChange={handleBlur}
+                  onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.role?.name}
                 >
@@ -85,18 +122,18 @@ export default function AddUser() {
                   ))}
                 </select>
                 <div className="error">
-                  <div className="error">
-                    {errors.role && touched.role && errors.role}
-                  </div>
+                  {errors.role && touched.role && errors.role}
                 </div>
               </div>
               <div className="btn-group">
                 <button className="submit-create" type="submit" disabled={isSubmitting}>
                   Send Invitation
                 </button>
-                <button className="cancel-create" type="button" disabled={isSubmitting}>
-                  CANCEL
-                </button>
+                <Dropdown.Item>
+                  <button className="cancel-create" type="button">
+                    CANCEL
+                  </button>
+                </Dropdown.Item>
               </div>
             </form>
           )}

@@ -20,6 +20,11 @@ const getOrganization = (id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const inviteUserOutside = (id, info) => httpService
+  .post(`/${apiVersion}/suborganizations/${id}/invite-members`, info)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const branding = (domain) => httpService
   .get(`/${apiVersion}/organization/get-by-domain?domain=${domain.trim()}`)
   .then(({ data }) => data)
@@ -30,8 +35,8 @@ const getSubOrganizationList = (id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const getAllUsers = (id, name) => httpService
-  .get(`/${apiVersion}/suborganizations/${id}/member-options?query=${name}`)
+const getAllUsers = (id, name, method) => httpService
+  .get(`/${apiVersion}/suborganizations/${id}/member-options?query=${name}&page=${method}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -91,6 +96,11 @@ const upload = (id, formData) => httpService
     }
   });
 
+const getOrgUsers = (id, page) => httpService
+  .get(`/${apiVersion}/suborganizations/${id}/users?page=${page}`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   getOrganization,
@@ -102,4 +112,6 @@ export default {
   updateOrganization,
   deleteOrganization,
   getRoles,
+  inviteUserOutside,
+  getOrgUsers,
 };

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateOrganizationScreen } from 'store/actions/organization';
+import { updateOrganizationScreen, clearHistory, setActiveOrganization } from 'store/actions/organization';
 
 const Feedback = () => {
   const dispatch = useDispatch();
   const stateFeedback = useSelector((state) => state.organization);
-  const { newlyCreated, feedbackType } = stateFeedback;
+  const { newlyCreated, feedbackType, history } = stateFeedback;
   return (
     <div className="feedback-org">
       <h4>
@@ -44,6 +44,10 @@ const Feedback = () => {
       <div
         className="back"
         onClick={() => {
+          if (history) {
+            dispatch(setActiveOrganization(history));
+            dispatch(clearHistory());
+          }
           dispatch(updateOrganizationScreen('all-list'));
         }}
       >

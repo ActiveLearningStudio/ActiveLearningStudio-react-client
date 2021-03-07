@@ -12,6 +12,7 @@ import {
   deleteOrganization,
   updateFeedbackScreen,
   setActiveOrganization,
+  saveHistory,
 } from 'store/actions/organization';
 
 const AllOrganizations = () => {
@@ -35,6 +36,7 @@ const AllOrganizations = () => {
             onClick={() => {
               dispatch(updateOrganizationScreen('create-org'));
               dispatch(updatePreviousScreen('all-list'));
+              dispatch(saveHistory(activeOrganization));
             }}
           >
             Create Organization
@@ -127,6 +129,7 @@ const AllOrganizations = () => {
                         dispatch(setActiveOrganization(org));
                         dispatch(editOrganization(org));
                         dispatch(updateOrganizationScreen('edit-org'));
+                        dispatch(saveHistory(activeOrganization));
                       }}
                     >
                       Edit

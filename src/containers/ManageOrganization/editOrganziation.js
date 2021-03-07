@@ -17,6 +17,8 @@ import {
   updateOrganizationScreen,
   updateFeedbackScreen,
   getRoles,
+  getOrgUsers,
+  setActiveOrganization,
 } from 'store/actions/organization';
 import imgAvatar from 'assets/images/img-avatar.png';
 
@@ -26,13 +28,33 @@ import AddAdmin from './addAdmin';
 export default function EditOrganization() {
   const dispatch = useDispatch();
   const allListState = useSelector((state) => state.organization);
-  const { editOrganization, activeOrganization } = allListState;
+  const { editOrganization, activeOrganization, history } = allListState;
   const [imageActive, setImgActive] = useState(null);
   const [allUsersAdded, setAllUsersAdded] = useState([]);
   const [allAdminAdded, setAllAdminAdded] = useState([]);
   useMemo(() => {
     dispatch(updatePreviousScreen('all-list'));
     dispatch(getRoles());
+    const resultUsers = dispatch(getOrgUsers(activeOrganization.id, 1));
+    resultUsers.then((data) => {
+      const allUsers = [];
+      data.data?.map((adm) => {
+        if (adm.organization_role !== 'Administrator') {
+          const result = {
+            value: {
+              userInfo: adm,
+            },
+            role: {
+              name: adm.organization_role,
+              id: 2,
+            },
+          };
+          allUsers.push(result);
+        }
+        return true;
+      });
+      setAllUsersAdded(allUsers);
+    });
   }, []);
 
   useEffect(() => {
@@ -74,8 +96,11 @@ export default function EditOrganization() {
           if (!values.description) {
             errors.description = 'Required';
           }
-          if (values.admin_id.length === 0) {
+          if (allAdminAdded.length === 0) {
             errors.admin_id = 'Required';
+          }
+          if (allUsersAdded.length === 0) {
+            errors.inviteUser = 'Required';
           }
           if (!values.image) {
             errors.image = 'Required';
@@ -224,6 +249,7 @@ export default function EditOrganization() {
                         setAllUsersAdded={setAllAdminAdded}
                         allUsersAdded={allAdminAdded}
                         setFieldValueProps={setFieldValue}
+                        method="update"
                       />
                     </Dropdown.Menu>
                   </Dropdown>
@@ -252,6 +278,7 @@ export default function EditOrganization() {
                       <AddUser
                         setAllUsersAdded={setAllUsersAdded}
                         allUsersAdded={allUsersAdded}
+                        method="update"
                       />
                     </Dropdown.Menu>
                   </Dropdown>
@@ -268,7 +295,10 @@ export default function EditOrganization() {
                   className="cancel-create"
                   type="button"
                   onClick={() => {
-                    dispatch(updateOrganizationScreen('intro'));
+                    if (history) {
+                      dispatch(setActiveOrganization(history));
+                    }
+                    dispatch(updateOrganizationScreen('all-list'));
                   }}
                 >
                   CANCEL
@@ -276,7 +306,14 @@ export default function EditOrganization() {
               </div>
             </div>
             <div className="all-users-list">
-              {allAdminAdded.length > 0 && <h2>ALL ADMINS</h2>}
+              {allAdminAdded.length > 0 && (
+                <h2>
+                  ALL ADMINS
+                  {/* <span>
+                    {allAdminAdded.length}
+                  </span> */}
+                </h2>
+              )}
               {allAdminAdded.map((data) => (
                 <div className="box-adder">
                   <h5>
@@ -289,7 +326,7 @@ export default function EditOrganization() {
                   </h5>
                   <h5>
                     <p>Role </p>
-                    admin
+                    Administrator
                   </h5>
                   <p
                     onClick={() => {
@@ -300,29 +337,38 @@ export default function EditOrganization() {
                   </p>
                 </div>
               ))}
-              {allUsersAdded.length > 0 && <h2>ALL USERS</h2>}
+              {allUsersAdded.length > 0 && (
+                <h2>
+                  ALL USERS
+                  {/* <span>
+                    {allUsersAdded.length - allAdminAdded?.length}
+                  </span> */}
+                </h2>
+              )}
               {allUsersAdded.map((data) => (
-                <div className="box-adder">
-                  <h5>
-                    <p>Name </p>
-                    {data.value?.userInfo?.first_name}
-                  </h5>
-                  <h5>
-                    <p>Email </p>
-                    {data.value?.userInfo?.email}
-                  </h5>
-                  <h5>
-                    <p>Role </p>
-                    {data.role?.name}
-                  </h5>
-                  <p
-                    onClick={() => {
-                      setAllUsersAdded(allUsersAdded.filter((dataall) => dataall.value?.userInfo?.email !== data.value?.userInfo?.email));
-                    }}
-                  >
-                    <FontAwesomeIcon icon="trash" />
-                  </p>
-                </div>
+                data.role?.name !== 'Administrator' && (
+                  <div className="box-adder">
+                    <h5>
+                      <p>Name </p>
+                      {data.value?.userInfo?.first_name}
+                    </h5>
+                    <h5>
+                      <p>Email </p>
+                      {data.value?.userInfo?.email}
+                    </h5>
+                    <h5>
+                      <p>Role </p>
+                      {data.role?.name}
+                    </h5>
+                    <p
+                      onClick={() => {
+                        setAllUsersAdded(allUsersAdded.filter((dataall) => dataall.value?.userInfo?.email !== data.value?.userInfo?.email));
+                      }}
+                    >
+                      <FontAwesomeIcon icon="trash" />
+                    </p>
+                  </div>
+                )
               ))}
             </div>
           </form>
