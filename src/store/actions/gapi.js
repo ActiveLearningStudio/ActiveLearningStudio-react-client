@@ -9,6 +9,7 @@ import {
   ALL_COURSES,
   GET_STUDENT_COURSES,
   SET_STUDENT_AUTH,
+  SET_STUDENT_AUTH_TOKEN,
   GET_H5P_SETTINGS,
   GET_SUBMISSION,
   TURNED_IN_ACTIVITY,
@@ -99,6 +100,13 @@ export const setStudentAuthAction = (data) => async (dispatch) => {
       auth: data,
       profile: studentProfile,
     },
+  });
+};
+
+export const refreshStudentAuthTokenAction = (newToken) => async (dispatch) => {
+  dispatch({
+    type: SET_STUDENT_AUTH_TOKEN,
+    newToken: { ...newToken },
   });
 };
 

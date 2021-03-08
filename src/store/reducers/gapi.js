@@ -2,6 +2,7 @@ import {
   GOOGLE_CLASSROOM_LOGIN,
   GET_STUDENT_COURSES,
   SET_STUDENT_AUTH,
+  SET_STUDENT_AUTH_TOKEN,
   GET_H5P_SETTINGS,
   GET_SUBMISSION,
   TURNED_IN_ACTIVITY,
@@ -38,6 +39,15 @@ const gapiReducer = (state = defaultAuthState(), action) => {
       return {
         ...state,
         student: action.studentData,
+      };
+
+    case SET_STUDENT_AUTH_TOKEN:
+      return {
+        ...state,
+        student: {
+          ...state.student,
+          tokenObj: action.newToken,
+        },
       };
 
     case GET_STUDENT_COURSES:

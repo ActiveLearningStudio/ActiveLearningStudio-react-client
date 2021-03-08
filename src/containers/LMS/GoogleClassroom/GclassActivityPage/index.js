@@ -8,6 +8,7 @@ import { Alert } from 'react-bootstrap';
 import logo from 'assets/images/logo.svg';
 import {
   setStudentAuthAction,
+  refreshStudentAuthTokenAction,
   getStudentCoursesAction,
 } from 'store/actions/gapi';
 import Activity from 'containers/LMS/GoogleClassroom/Activity';
@@ -20,6 +21,7 @@ function GclassActivityPage(props) {
     student,
     courses,
     setStudentAuth,
+    refreshStudentAuthToken,
     getStudentCourses,
   } = props;
   const { activityId, courseId } = match.params;
@@ -48,7 +50,16 @@ function GclassActivityPage(props) {
   }, [courses, courseId]);
 
   const handleLogin = (data) => {
-    setStudentAuth({ ...data });
+    if (!data) return;
+
+    setStudentAuth(data);
+    // Refresh token in less than half an hour
+    setInterval(() => {
+      data.reloadAuthResponse().then((newData) => {
+        refreshStudentAuthToken(newData);
+        console.log(newData);
+      });
+    }, 1000 * 60 * 15);
   };
 
   return (
@@ -123,6 +134,7 @@ GclassActivityPage.propTypes = {
   courses: PropTypes.array.isRequired,
   getStudentCourses: PropTypes.func.isRequired,
   setStudentAuth: PropTypes.func.isRequired,
+  refreshStudentAuthToken: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -132,6 +144,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setStudentAuth: (authData) => dispatch(setStudentAuthAction(authData)),
+  refreshStudentAuthToken: (newData) => dispatch(refreshStudentAuthTokenAction(newData)),
   getStudentCourses: (token) => dispatch(getStudentCoursesAction(token)),
 });
 
