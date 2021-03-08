@@ -67,7 +67,7 @@ export default function ManageOrganizations() {
                       <img className="child-organization-icon" src={childOrgIcon} alt="child-organization-icon" />
                       <h1 className="child-organization-name">{activeOrganization?.name}</h1>
                     </div>
-                    {backScreen ? (
+                    {(history || backScreen) ? (
                       <div 
                         className="back-button"
                         onClick={() => {
@@ -75,6 +75,7 @@ export default function ManageOrganizations() {
                             dispatch(setActiveOrganization(history));
                             dispatch(clearHistory());
                             dispatch(updateOrganizationScreen(backScreen));
+                            
                           } else {
                             dispatch(updateOrganizationScreen('intro'));
                           }
