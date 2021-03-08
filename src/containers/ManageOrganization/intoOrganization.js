@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown, Alert } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
@@ -17,6 +17,7 @@ export default function IntroOrganizations(props) {
   const dispatch = useDispatch();
   const { detail } = props;
   const history = useHistory();
+  const allState = useSelector((state) => state);
   // useMemo(() => {
   //   if() {
   //     dispatch(updatePreviousScreen(''));
@@ -91,10 +92,11 @@ export default function IntroOrganizations(props) {
               <div className="value">Users</div>
             </div>
             <div
-              onClick={() => {
-                dispatch(updateOrganizationScreen('all-list'));
-                dispatch(updatePreviousScreen('projects'));
-              }}
+              onClick="#"
+              //   () => {
+              //   dispatch(updateOrganizationScreen('all-list'));
+              //   dispatch(updatePreviousScreen('projects'));
+              // }
               className="more"
             >
               See More
@@ -107,7 +109,7 @@ export default function IntroOrganizations(props) {
             </div>
             <div
               onClick={() => {
-                history.push('/');
+                history.push(`/org/${allState.organization.currentOrganization?.domain}/groups`);
               }}
               className="more"
             >

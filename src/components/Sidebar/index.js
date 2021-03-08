@@ -13,6 +13,7 @@ import {
   allSidebarProjects,
 } from 'store/actions/project';
 import { loadTeamsAction } from 'store/actions/team';
+import { loadGroupsAction } from 'store/actions/group';
 
 import './style.scss';
 
@@ -52,11 +53,15 @@ function Sidebar(props) {
     if (!allState.sidebar.isLoaded && organization.activeOrganization) {
       dispatch(allSidebarProjects());
       dispatch(loadTeamsAction());
+      dispatch(loadGroupsAction());
     }
   }, [allState.sidebar.isLoaded, organization.activeOrganization]);
 
   const handleClickTeam = useCallback((team) => {
     history.push(`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}`);
+  }, [history]);
+  const handleClickGroup = useCallback((group) => {
+    history.push(`/org/${allState.organization.currentOrganization?.domain}/groups/${group.id}`);
   }, [history]);
 
   return (
@@ -97,29 +102,7 @@ function Sidebar(props) {
           Teams
         </div>
       </Link>
-      <div className="menu-title create-button">
-        <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams/create-team`}>
-          <div>
-            <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
-            Create Team
-          </div>
-        </Link>
-      </div>
-      <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
-        <div className="menu-title">
-          <FontAwesomeIcon icon="users" className="mr-2" />
-          Groups
-        </div>
-      </Link>
-      <div className="menu-title create-button">
-        <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups/create-group`}>
-          <div>
-            <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
-            Create Group
-          </div>
-        </Link>
-      </div>
-      {false && allState.team.teams.map((team) => (
+      {allState.team.teams.map((team) => (
         <div key={team.id} className={`team-item${selectedTeam === team.id ? '' : ' collapsed'}`}>
           <div className="team-label" onClick={() => handleClickTeam(team)}>
             {team.name}
@@ -152,9 +135,66 @@ function Sidebar(props) {
             </Link>
             */}
           </div>
-          <img src={backgroundimg} alt="" />
         </div>
       ))}
+      <div className="menu-title create-button">
+        <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams/create-team`}>
+          <div>
+            <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
+            Create Team
+          </div>
+        </Link>
+      </div>
+      <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
+        <div className="menu-title">
+          <FontAwesomeIcon icon="users" className="mr-2" />
+          Groups
+        </div>
+      </Link>
+      {allState.group.groups.map((group) => (
+        <div key={group.id} className={`team-item${selectedTeam === group.id ? '' : ' collapsed'}`}>
+          <div className="team-label" onClick={() => handleClickGroup(group)}>
+            {group.name}
+            <FontAwesomeIcon
+              icon={selectedTeam === group.id ? 'angle-up' : 'angle-down'}
+              className="ml-2 mt-1"
+            />
+          </div>
+
+          <div className="team-detail-labels">
+            <Link
+              to={`/org/${allState.organization.currentOrganization?.domain}/groups/${group.id}`}
+              className={selectedCategory === TEAM ? 'active-label' : ''}
+            >
+              <FontAwesomeIcon icon="user-friends" className="mr-2" />
+              Group Members
+            </Link>
+            <Link
+              to={`/org/${allState.organization.currentOrganization?.domain}/groups/${group.id}/projects`}
+              className={selectedCategory === PROJECTS ? 'active-label' : ''}
+            >
+              <span className="project-title">Projects</span>
+            </Link>
+            {/*
+            <Link
+              to={`/teams/${team.id}/channel`}
+              className={selectedCategory === CHANNEL ? 'active-label' : ''}
+            >
+              <span className="channel-title">Channels</span>
+            </Link>
+            */}
+          </div>
+        </div>
+      ))}
+      <div className="menu-title create-button">
+        <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups/create-group`}>
+          <div>
+            <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
+            Create Group
+          </div>
+        </Link>
+      </div>
+      <img src={backgroundimg} alt="" />
     </aside>
   );
 }
