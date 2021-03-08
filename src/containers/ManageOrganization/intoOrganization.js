@@ -118,6 +118,20 @@ export default function IntroOrganizations(props) {
           </div>
           <div>
             <div className="circle">
+              <div className="count">{detail.teams_count || 0}</div>
+              <div className="value">Teams</div>
+            </div>
+            <div
+              onClick={() => {
+                history.push(`/org/${allState.organization.currentOrganization?.domain}/teams`);
+              }}
+              className="more"
+            >
+              See More
+            </div>
+          </div>
+          <div>
+            <div className="circle">
               <div className="count">{detail.projects_count || 0}</div>
               <div className="value">Projects</div>
             </div>
