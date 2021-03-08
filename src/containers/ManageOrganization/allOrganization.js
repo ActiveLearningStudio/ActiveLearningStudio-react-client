@@ -119,6 +119,8 @@ const AllOrganizations = () => {
                       onClick={() => {
                         dispatch(setActiveOrganization(org));
                         dispatch(updateOrganizationScreen('intro'));
+                        dispatch(saveHistory(activeOrganization));
+                        dispatch(updatePreviousScreen('all-list'));
                       }}
                     >
                       Manage

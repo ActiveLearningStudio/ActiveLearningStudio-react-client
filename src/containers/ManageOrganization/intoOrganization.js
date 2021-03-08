@@ -1,10 +1,15 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Dropdown, Alert } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 
-import { updateOrganizationScreen, updatePreviousScreen, clearSuborgList } from 'store/actions/organization';
+import {
+  updateOrganizationScreen,
+  updatePreviousScreen,
+  clearSuborgList,
+  saveHistory,
+} from 'store/actions/organization';
 
 import InviteOrganization from './inviteAdmin';
 
@@ -12,9 +17,11 @@ export default function IntroOrganizations(props) {
   const dispatch = useDispatch();
   const { detail } = props;
   const history = useHistory();
-  useMemo(() => {
-    dispatch(updatePreviousScreen(''));
-  }, []);
+  // useMemo(() => {
+  //   if() {
+  //     dispatch(updatePreviousScreen(''));
+  //   }
+  // }, []);
   return (
     detail ? (
       <>
@@ -71,6 +78,7 @@ export default function IntroOrganizations(props) {
                 dispatch(updateOrganizationScreen('all-list'));
                 dispatch(updatePreviousScreen('intro'));
                 dispatch(clearSuborgList());
+                dispatch(saveHistory(detail));
               }}
               className="more"
             >

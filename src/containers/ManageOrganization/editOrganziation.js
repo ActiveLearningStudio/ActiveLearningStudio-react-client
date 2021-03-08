@@ -46,7 +46,7 @@ export default function EditOrganization() {
             },
             role: {
               name: adm.organization_role,
-              id: 2,
+              id: adm.organization_role_id,
             },
           };
           allUsers.push(result);
