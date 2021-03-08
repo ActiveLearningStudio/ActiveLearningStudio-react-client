@@ -1,5 +1,5 @@
 /*eslint-disable */
-import React, { useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
@@ -31,11 +31,11 @@ export default function ManageOrganizations() {
     backScreen,
     history,
   } = state;
-  useEffect(() => {
+  useMemo(() => {
     if (activeOrganization?.id) {
       dispatch(getOrganization(activeOrganization?.id));
     }
-  }, []);
+  }, [activeOrganization?.id]);
   return (
     <>
       <div className="content-wrapper">

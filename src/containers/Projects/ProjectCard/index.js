@@ -71,7 +71,7 @@ const ProjectCard = (props) => {
                   </p>
                   {project.shared && (
                     <div className="row">
-                      <div className="col-md-12 text-right">
+                      <div className="col-md-12">
                         <Badge pill variant="success">
                           Shared
                         </Badge>
@@ -86,7 +86,7 @@ const ProjectCard = (props) => {
           <div className="button-bottom">
             <Link to={`/org/${organization.currentOrganization?.domain}/project/${project.id}`}>
               <FontAwesomeIcon icon="plus" className="mr-2" />
-              Add Playlist
+              Add
             </Link>
 
             <Link

@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 
 export default function Headline() {
   const organization = useSelector((state) => state.organization);
+  const { currentOrganization } = organization;
   return (
     <div className="project-headline">
       <div className="title">
@@ -14,12 +15,14 @@ export default function Headline() {
           <img src={foldericon} alt="" />
           Projects
         </div>
-        <Link to={`/org/${organization.currentOrganization?.domain}/project/create`}>
-          <div className="btn-top-page">
-            <FontAwesomeIcon icon="plus" className="mr-2" />
-            Create a Project
-          </div>
-        </Link>
+        {(currentOrganization?.organization_role === 'Administrator' || currentOrganization?.organization_role === 'Course Creator') && (
+          <Link to={`/org/${organization.currentOrganization?.domain}/project/create`}>
+            <div className="btn-top-page">
+              <FontAwesomeIcon icon="plus" className="mr-2" />
+              Create a Project
+            </div>
+          </Link>
+        )}
       </div>
       <p>
         In

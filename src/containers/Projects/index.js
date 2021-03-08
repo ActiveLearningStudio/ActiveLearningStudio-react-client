@@ -224,11 +224,18 @@ export const ProjectsPage = (props) => {
   };
 
   useEffect(() => {
-    if (allStateProject.projects.length > 0) {
-      setAllProjects(allStateProject.projects);
-      divideProjects(allStateProject.projects);
-    }
+    // if (allStateProject.projects.length > 0) {
+    setAllProjects(allStateProject.projects);
+    divideProjects(allStateProject.projects);
+    // }
   }, [allStateProject]);
+
+  useEffect(() => {
+    const { activeOrganization } = organization;
+    if (activeOrganization) {
+      allSidebarProjectsUpdate();
+    }
+  }, [organization.activeOrganization]);
 
   useEffect(() => {
     loadLms();
@@ -445,7 +452,7 @@ export const ProjectsPage = (props) => {
               </Tab>
               <Tab eventKey="Sample Projects" title="Sample Projects">
                 <div className="row">
-                  <div className="col-md-12">
+                  <div className="col-md-12" style={{ display: 'none' }}>
                     <div className="program-page-title">
                       <h1>Sample Projects</h1>
 
@@ -500,7 +507,7 @@ export const ProjectsPage = (props) => {
 
               <Tab eventKey="Favorite Projects" title="Favorite Projects">
                 <div className="row">
-                  <div className="col-md-12">
+                  <div className="col-md-12" style={{ display: 'none' }}>
                     <div className="program-page-title">
                       <h1>Favorite Projects</h1>
                       {showSampleSort && (

@@ -67,7 +67,7 @@ function Sidebar(props) {
           My Projects
         </div>
       </Link>
-
+      {allState.sidebar.allProject.length > 0 && (
       <ul className="all-project">
         {allState.sidebar.allProject.slice(0, 5).map((data) => (
           <li key={data.id}>
@@ -77,12 +77,12 @@ function Sidebar(props) {
             </Link>
           </li>
         ))}
-
         <Link className="expand" to="/projects">
           Explore All
           <FontAwesomeIcon icon="arrow-right" className="ml-2" />
         </Link>
       </ul>
+      )}
 
       <Link to={`/org/${organization.currentOrganization?.domain}/dashboard`}>
         <div className="menu-title">
