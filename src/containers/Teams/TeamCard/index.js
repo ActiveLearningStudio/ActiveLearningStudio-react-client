@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-
+import Swal from 'sweetalert2';
 import './style.scss';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteTeamAction } from 'store/actions/team';
 
 function TeamCard(props) {
   const {
@@ -15,7 +16,20 @@ function TeamCard(props) {
       projects,
     },
   } = props;
-
+  const dispatch = useDispatch();
+  const deleteTeam = () => {
+    Swal.fire({
+      title: 'Are you sure you want to delete this team?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      denyButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteTeamAction(id));
+      }
+    });
+  };
   let memCnt = `00${users.length}`;
   memCnt = memCnt.slice(memCnt.length - 2, memCnt.length);
   const organization = useSelector((state) => state.organization);
@@ -47,6 +61,11 @@ function TeamCard(props) {
       <div className="sub-title">
         <span>Projects for the Team</span>
         <span>{`(${projCnt})`}</span>
+      </div>
+      <div>
+        <button type="button" onClick={() => deleteTeam()} className="back-button" style={{ textAlign: 'center' }}>
+          Delete Team
+        </button>
       </div>
     </div>
   );
