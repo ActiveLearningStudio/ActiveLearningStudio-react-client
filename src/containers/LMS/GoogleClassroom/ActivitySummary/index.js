@@ -18,6 +18,7 @@ const Activity = (props) => {
     match,
     student,
     outcome,
+    summaryError,
     settings,
     getOutcomeSummary,
     loadH5pSettings,
@@ -53,6 +54,11 @@ const Activity = (props) => {
             <Alert variant="warning">
               Outcome summary not available.
             </Alert>
+            {summaryError && (
+              <Alert variant="danger">
+                {summaryError}
+              </Alert>
+            )}
           </div>
         </div>
       )}
@@ -187,6 +193,7 @@ Activity.propTypes = {
   match: PropTypes.object.isRequired,
   student: PropTypes.object.isRequired,
   outcome: PropTypes.object.isRequired,
+  summaryError: PropTypes.string.isRequired,
   settings: PropTypes.object.isRequired,
   getOutcomeSummary: PropTypes.func.isRequired,
   loadH5pSettings: PropTypes.func.isRequired,
@@ -195,6 +202,7 @@ Activity.propTypes = {
 const mapStateToProps = (state) => ({
   student: state.gapi.summaryAuth.student,
   outcome: state.gapi.outcomeSummary,
+  summaryError: state.gapi.summaryError,
   settings: state.gapi.h5pSettings,
 });
 

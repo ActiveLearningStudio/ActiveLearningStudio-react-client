@@ -22,6 +22,7 @@ const defaultAuthState = () => {
     h5pSettings: null,
     summaryAuth: null,
     outcomeSummary: null,
+    summaryError: null,
   };
 };
 
@@ -85,6 +86,22 @@ const gapiReducer = (state = defaultAuthState(), action) => {
       };
 
     case GET_OUTCOME_SUMMARY:
+      if (!action.outcomeSummary) {
+        return {
+          ...state,
+          outcomeSummary: false,
+          summaryError: null,
+        };
+      }
+
+      if (action.outcomeSummary.errors) {
+        return {
+          ...state,
+          outcomeSummary: false,
+          summaryError: action.outcomeSummary.errors[0],
+        };
+      }
+
       const totalAnswered = action.outcomeSummary.summary.filter((question) => (question.verb !== 'skipped' && question.verb !== 'attempted')).length;
       const totalAttempted = action.outcomeSummary.summary.filter((question) => question.verb === 'attempted').length + action.outcomeSummary['non-scoring'].length;
       const totalSkipped = action.outcomeSummary.summary.filter((question) => question.verb === 'skipped').length;
@@ -98,6 +115,7 @@ const gapiReducer = (state = defaultAuthState(), action) => {
           totalSkipped,
           totalAttempted,
         },
+        summaryError: null,
       };
 
     default:
