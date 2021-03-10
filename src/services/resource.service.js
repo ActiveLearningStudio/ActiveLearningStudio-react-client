@@ -146,17 +146,17 @@ const safeApiAuth = () => axios
   .then(({ data }) => data)
   .catch((err) => err.response.data);
 
-const safeApiCheck = (token, content, time) => axios
+const safeApiCheck = (token, imagData, actualText, time, info) => axios
   .post(process.env.REACT_APP_SAFELEARN_CHECK,
     {
       userName: localStorage.getItem('userIdLearnSafe') || 'Vivensity User',
-      workstationName: localStorage.getItem('auth_token'),
+      workstationName: info,
       reportedAt: time,
       applicationName: process.env.REACT_APP_SAFELEARN_APPLICATIONNAME,
       ipAddress: '0.0.0.0',
       unitPath: process.env.REACT_APP_SAFELEARN_UNITPATH,
-      image: null,
-      content,
+      image: imagData,
+      content: actualText,
     }, {
       headers: {
         Authorization: `Bearer ${token}`,
