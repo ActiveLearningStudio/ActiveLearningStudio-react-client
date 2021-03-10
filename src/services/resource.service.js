@@ -10,8 +10,8 @@ const getAll = () => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const create = (activity) => httpService
-  .post(`/${apiVersion}/activities`, activity)
+const create = (activity, playlistId) => httpService
+  .post(`/${apiVersion}/playlists/${playlistId}/activities`, activity)
   .then(({ data }) => data)
   .catch((err) => {
     if (err.errors) {
@@ -31,8 +31,8 @@ const create = (activity) => httpService
     }
   });
 
-const get = (id) => httpService
-  .get(`/${apiVersion}/activities/${id}`)
+const get = (id, playlistId) => httpService
+  .get(`/${apiVersion}/playlists/${playlistId}/activities/${id}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -46,8 +46,8 @@ const update = (id, activity) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const remove = (id) => httpService
-  .remove(`/${apiVersion}/activities/${id}`)
+const remove = (id, playlistId) => httpService
+  .remove(`/${apiVersion}/playlists/${playlistId}/activities/${id}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 

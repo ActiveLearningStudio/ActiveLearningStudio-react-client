@@ -5,6 +5,8 @@ import Echo from 'laravel-echo';
 import loaderImg from 'assets/images/loader.svg';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import projectService from 'services/project.service';
+import groupService from 'services/group.service';
+import teamService from 'services/team.service';
 import socketConnection from 'services/http.service';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
@@ -27,9 +29,11 @@ export const allSidebarProjects = () => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
   const { projects } = await projectService.getAll(activeOrganization.id);
+  const { teams } = await teamService.getAll(activeOrganization.id);
+  const { groups } = await groupService.getAll(activeOrganization.id);
   dispatch({
     type: actionTypes.SIDEBAR_ALL_PROJECT,
-    data: { projects },
+    data: { projects, teams, groups },
   });
 };
 export const createProjectAction = (data) => async (dispatch) => {

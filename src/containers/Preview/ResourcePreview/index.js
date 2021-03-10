@@ -8,11 +8,13 @@ import { loadResourceAction } from 'store/actions/resource';
 import H5PPreview from 'containers/H5PPreview';
 
 function ResourcePreview(props) {
-  const { resource, activityId, loadResource } = props;
+  const {
+    resource, activityId, playlistId, loadResource,
+  } = props;
   const organization = useSelector((state) => state.organization);
   useEffect(() => {
-    loadResource(activityId);
-  }, [loadResource, activityId]);
+    loadResource(activityId, playlistId);
+  }, [loadResource, activityId, playlistId]);
 
   let next = '';
   if (resource.nextResourceId) {
@@ -53,11 +55,12 @@ function ResourcePreview(props) {
 ResourcePreview.propTypes = {
   resource: PropTypes.object.isRequired,
   activityId: PropTypes.number.isRequired,
+  playlistId: PropTypes.number.isRequired,
   loadResource: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  loadResource: (activityId) => dispatch(loadResourceAction(activityId)),
+  loadResource: (activityId, playlistId) => dispatch(loadResourceAction(activityId, playlistId)),
 });
 
 const mapStateToProps = (state) => ({
