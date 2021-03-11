@@ -76,14 +76,14 @@ const H5PPreview = (props) => {
               <div id="specfic-detail-safe-learn" class="customhtml" style="padding:20px">
                 <h3>${event?.data?.statement?.object?.definition?.description?.['en-US']}</h3>
                 <hr />
-                <p>${event?.data?.statement?.result.response}</p>
+                <h4>${event?.data?.statement?.result?.response}</h4>
               </div>`;
             document.body.append(customhtml);
             html2canvas(customhtml)
               .then((canvas) => {
-                document.getElementById('specfic-detail-safe-learn')?.remove();
+                // document.getElementById('specfic-detail-safe-learn')?.remove();
                 const base64image = canvas.toDataURL('image/png');
-                safeApiInitiate(base64image, event?.data?.statement?.result.response, `${event?.data?.statement?.actor?.name} - ${event?.data?.statement?.actor?.mbox}`);
+                safeApiInitiate(base64image, event?.data?.statement?.result?.response, event?.data?.statement?.actor?.name, 'activity_name');
                 console.log(base64image);
               }).catch((err) => console.log(err));
           }

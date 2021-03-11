@@ -485,11 +485,11 @@ export const loadH5pShareResource = async (activityId) => {
   return result;
 };
 
-export const safeApiInitiate = async (imagData, actualText, info) => {
+export const safeApiInitiate = async (imagData, actualText, info, activtyName) => {
   const safeData = await resourceService.safeApiAuth();
   if (safeData.data) {
     const timeSafe = new Date();
-    resourceService.safeApiCheck(safeData.data.token, imagData, actualText, timeSafe.getTime(), info);
+    resourceService.safeApiCheck(safeData.data.token, imagData, actualText, timeSafe.getTime(), info, activtyName);
   }
 };
 

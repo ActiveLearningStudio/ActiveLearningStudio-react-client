@@ -146,13 +146,13 @@ const safeApiAuth = () => axios
   .then(({ data }) => data)
   .catch((err) => err.response.data);
 
-const safeApiCheck = (token, imagData, actualText, time, info) => axios
+const safeApiCheck = (token, imagData, actualText, time, info, activityName) => axios
   .post(process.env.REACT_APP_SAFELEARN_CHECK,
     {
-      userName: localStorage.getItem('userIdLearnSafe') || 'Vivensity User',
-      workstationName: info,
+      userName: info,
+      workstationName: activityName,
       reportedAt: time,
-      applicationName: process.env.REACT_APP_SAFELEARN_APPLICATIONNAME,
+      applicationName: 'imSparked',
       ipAddress: '0.0.0.0',
       unitPath: process.env.REACT_APP_SAFELEARN_UNITPATH,
       image: imagData,
