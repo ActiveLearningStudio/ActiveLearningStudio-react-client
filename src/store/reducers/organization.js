@@ -15,6 +15,7 @@ const INITIAL_STATE = {
   logo: '',
   feedbackType: null,
   history: null,
+  searchOrg: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -89,6 +90,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         history: action.payload,
+      };
+    case actionTypes.SEARCH_ORG:
+      return {
+        ...state,
+        searchOrg: action.payload,
       };
     case actionTypes.CLEAR_HISTORY:
       return {
