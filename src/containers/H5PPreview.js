@@ -79,9 +79,9 @@ const H5PPreview = (props) => {
                 <h4>${event?.data?.statement?.result?.response}</h4>
               </div>`;
             document.body.append(customhtml);
-            html2canvas(customhtml)
+            html2canvas(customhtml, { scrollY: -window.scrollY })
               .then((canvas) => {
-                // document.getElementById('specfic-detail-safe-learn')?.remove();
+                document.getElementById('specfic-detail-safe-learn')?.remove();
                 const base64image = canvas.toDataURL('image/png');
                 safeApiInitiate(base64image, event?.data?.statement?.result?.response, event?.data?.statement?.actor?.name, 'activity_name');
                 console.log(base64image);
