@@ -70,7 +70,6 @@ const H5PPreview = (props) => {
         stopXapi();
         x.H5P.externalDispatcher.on('xAPI', (event) => {
           if (event?.data?.statement?.result?.response) {
-            console.log(event);
             const customhtml = document.createElement('div');
             customhtml.innerHTML = `
               <div id="specfic-detail-safe-learn" class="customhtml" style="padding:20px">
