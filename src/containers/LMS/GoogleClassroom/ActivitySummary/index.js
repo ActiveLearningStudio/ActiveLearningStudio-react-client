@@ -17,6 +17,7 @@ const Activity = (props) => {
   const {
     match,
     student,
+    teacher,
     outcome,
     summaryError,
     settings,
@@ -52,7 +53,43 @@ const Activity = (props) => {
         <div className="row m-4">
           <div className="col text-center">
             <Alert variant="warning">
-              Outcome summary not available.
+              {teacher && (
+                <>
+                  <h2>
+                    {`Oops! It looks like the submission for ${student.name} is not available at ${window.location.hostname}.`}
+                  </h2>
+                  <p>
+                    {`You can return the assignment without a grade in the google classroom interface, so that ${student.name} can resume the assignment.`}
+                  </p>
+                  <p>
+                    {`Consider sending a message to ${student.name} about resubmitting the assignment.`}
+                  </p>
+                  <p>
+                    For further assistance use our support channels.
+                  </p>
+                </>
+              )}
+              {!teacher && (
+                <>
+                  <h2>
+                    {`Oops! It looks like your submission isn't available at ${window.location.hostname}.`}
+                  </h2>
+                  <p>
+                    To resubmit your assigment follow these steps:
+                    <ul>
+                      <li>Unsubmit the assignment in Google Classroom.</li>
+                      <li>Resume your assignment as usual.</li>
+                      <li>If the problem persists, please contact your teacher or one of our support channels.</li>
+                    </ul>
+                  </p>
+                  <p>
+                    {`Consider sending a message to ${student.name} about resubmitting the assignment.`}
+                  </p>
+                  <p>
+                    For further assistance use our support channels.
+                  </p>
+                </>
+              )}
             </Alert>
             {summaryError && (
               <Alert variant="danger">
@@ -192,6 +229,7 @@ const Activity = (props) => {
 Activity.propTypes = {
   match: PropTypes.object.isRequired,
   student: PropTypes.object.isRequired,
+  teacher: PropTypes.object.isRequired,
   outcome: PropTypes.object.isRequired,
   summaryError: PropTypes.string.isRequired,
   settings: PropTypes.object.isRequired,
@@ -201,6 +239,7 @@ Activity.propTypes = {
 
 const mapStateToProps = (state) => ({
   student: state.gapi.summaryAuth.student,
+  teacher: state.gapi.summaryAuth.teacher,
   outcome: state.gapi.outcomeSummary,
   summaryError: state.gapi.summaryError,
   settings: state.gapi.h5pSettings,

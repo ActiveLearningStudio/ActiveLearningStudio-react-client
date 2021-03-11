@@ -12,12 +12,13 @@ import ActivitySummary from 'containers/LMS/GoogleClassroom/ActivitySummary';
 import './styles.scss';
 
 function GclassSummaryPage(props) {
-  const { match, student, getSummaryAuth } = props;
+  const { match, student, teacher, getSummaryAuth } = props;
 
   const handleLogin = (data) => {
-    getSummaryAuth(data, match.params.courseId, match.params.gClassworkId, match.params.submissionId);
+    getSummaryAuth(data, match.params.userId, match.params.courseId, match.params.gClassworkId, match.params.submissionId);
   };
 
+  console.log({student, teacher});
   return (
     <div className="gclass-activity-container">
       <section className="main-page-content preview iframe-height-resource-shared">
@@ -45,7 +46,7 @@ function GclassSummaryPage(props) {
                     <div className="row m-4">
                       <div className="col text-center">
                         <Alert variant="warning">
-                          The summary page is unavailable or the assignment is not turned in.
+                          The student is not enrolled in this course.
                         </Alert>
                       </div>
                     </div>
@@ -84,11 +85,15 @@ function GclassSummaryPage(props) {
 GclassSummaryPage.propTypes = {
   match: PropTypes.object.isRequired,
   student: PropTypes.object.isRequired,
+  teacher: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired,
   getSummaryAuth: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  student: state.gapi.summaryAuth,
+  student: state.gapi.summaryAuth.student,
+  teacher: state.gapi.summaryAuth.teacher,
+  errors: state.gapi.summaryAuth.teacher,
 });
 
 const mapDispatchToProps = (dispatch) => ({

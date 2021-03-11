@@ -51,10 +51,11 @@ const turnIn = (classworkId, courseId, token) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const getSummaryAuth = (token, courseId, classworkId, submissionId) => httpService
+const getSummaryAuth = (token, studentId, courseId, classworkId, submissionId) => httpService
   .post(
     `/${apiVersion}/google-classroom/validate-summary-access`,
     {
+      student_id: studentId,
       course_id: courseId,
       access_token: token,
       gc_classwork_id: classworkId,
@@ -62,7 +63,7 @@ const getSummaryAuth = (token, courseId, classworkId, submissionId) => httpServi
     },
   )
   .then(({ data }) => data)
-  .catch(() => false);
+  .catch((response) => response);
 
 const getOutcomeSummary = (studentId, activityId) => httpService
   .post(
