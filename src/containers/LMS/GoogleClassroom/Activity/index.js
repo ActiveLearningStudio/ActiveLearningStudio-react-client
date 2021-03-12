@@ -118,9 +118,8 @@ const Activity = (props) => {
       };
 
       // Extending the xAPI statement with our custom values and sending it off to LRS
-      const xapiData = JSON.stringify(
-        xAPIHelper.extendStatement(event.data.statement, params),
-      );
+      const extendedStatementObj = xAPIHelper.extendStatement(event.data.statement, params);
+      const xapiData = JSON.stringify(extendedStatementObj);
 
       if (event.data.statement.verb.display['en-US'] === 'submitted-curriki') {
         // Check if all questions/interactions have been accounted for in LRS
@@ -156,7 +155,7 @@ const Activity = (props) => {
         });
       } else {
         // If safelearn has been configured in this instance, we send the statement there for checking
-        if (config.safeLearnKey) saveResultScreenshot(xapiData, h5pSettings.activity.title);
+        if (config.safeLearnKey) saveResultScreenshot(extendedStatementObj, h5pSettings.activity.title, student.profile.name.fullName);
         sendStatement(xapiData);
       }
     });
