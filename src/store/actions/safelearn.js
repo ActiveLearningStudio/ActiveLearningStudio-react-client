@@ -3,8 +3,12 @@ import html2canvas from 'html2canvas';
 import service from 'services/safelearn.service';
 
 // Generates a screenshot based on the statement data
-export const saveResultScreenshotAction = (statement, title) => async (dispatch) => {
-  if (statement?.result?.response && statement?.context?.contextActivities?.category[0]?.id === 'http://h5p.org/libraries/H5P.OpenEndedQuestion-1.0') {
+export const saveResultScreenshotAction = (statement, title, studentName) => async (dispatch) => {
+  if (
+    statement?.result?.response
+    && statement?.verb?.display['en-US'] === 'interacted'
+    && statement?.context?.contextActivities?.category[0]?.id === 'http://h5p.org/libraries/H5P.OpenEndedQuestion-1.0'
+  ) {
     const safeData = await service.safeApiAuth();
     const customhtml = document.createElement('div');
     customhtml.innerHTML = `
@@ -20,7 +24,7 @@ export const saveResultScreenshotAction = (statement, title) => async (dispatch)
         const base64image = canvas.toDataURL('image/png');
         if (safeData.data) {
           const timeSafe = new Date();
-          service.safeApiCheck(safeData.data.token, base64image, statement?.result?.response, timeSafe.getTime(), statement?.actor?.name, title);
+          service.safeApiCheck(safeData.data.token, base64image, statement?.result?.response, timeSafe.getTime(), studentName, title);
         }
       }).catch((err) => console.log(err));
   }
