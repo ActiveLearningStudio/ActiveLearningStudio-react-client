@@ -4,7 +4,6 @@ import config from 'config';
 const {
   safeLearnAuthUrl,
   safeLearnCheckUrl,
-  safeLearnApplicationName,
   safeLearnUnipath,
   safeLearnKey,
 } = config;
@@ -24,7 +23,7 @@ const safeApiCheck = (token, imagData, actualText, time, info, activityName) => 
       userName: info,
       workstationName: activityName,
       reportedAt: time,
-      applicationName: safeLearnApplicationName,
+      applicationName: 'imSparked',
       ipAddress: '0.0.0.0',
       unitPath: safeLearnUnipath,
       image: imagData,
