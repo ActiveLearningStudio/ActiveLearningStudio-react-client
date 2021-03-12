@@ -206,7 +206,7 @@ const mapDispatchToProps = (dispatch) => ({
   getSubmission: (classworkId, courseId, auth) => dispatch(getSubmissionAction(classworkId, courseId, auth)),
   sendStatement: (statement) => dispatch(loadH5pResourceXapi(statement)),
   turnIn: (classworkId, courseId, auth) => dispatch(turnInAction(classworkId, courseId, auth)),
-  saveResultScreenshot: (statement, title) => dispatch(saveResultScreenshotAction(statement, title)),
+  saveResultScreenshot: (statement, title, studentName) => dispatch(saveResultScreenshotAction(statement, title, studentName)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Activity));
