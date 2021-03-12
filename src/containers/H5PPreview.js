@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import html2canvas from 'html2canvas';
 
 import gifLoader from 'assets/images/276.gif';
 import {
@@ -9,6 +10,7 @@ import {
   loadH5pResourceSettingsOpen,
   loadH5pResourceSettingsShared,
   loadH5pResourceXapi,
+  safeApiInitiate,
 } from 'store/actions/resource';
 import * as xAPIHelper from 'helpers/xapi';
 
@@ -60,6 +62,35 @@ const H5PPreview = (props) => {
 
     setLoading(false);
   };
+  useEffect(() => {
+    const checkXapi = setInterval(() => {
+      const x = document.getElementsByClassName('h5p-iframe')[0]?.contentWindow;
+      if (x?.H5P?.externalDispatcher) {
+        // eslint-disable-next-line no-use-before-define
+        stopXapi();
+        x.H5P.externalDispatcher.on('xAPI', (event) => {
+          if (event?.data?.statement?.result?.response) {
+            const customhtml = document.createElement('div');
+            customhtml.innerHTML = `
+              <div id="specfic-detail-safe-learn" class="customhtml" style="padding:20px">
+                <h3>${event?.data?.statement?.object?.definition?.description?.['en-US']}</h3>
+                <hr />
+                <h4>${event?.data?.statement?.result?.response}</h4>
+              </div>`;
+            document.body.append(customhtml);
+            html2canvas(customhtml, { scrollY: -window.scrollY })
+              .then((canvas) => {
+                document.getElementById('specfic-detail-safe-learn')?.remove();
+                const base64image = canvas.toDataURL('image/png');
+                safeApiInitiate(base64image, event?.data?.statement?.result?.response, event?.data?.statement?.actor?.name, 'activity_name');
+                console.log(base64image);
+              }).catch((err) => console.log(err));
+          }
+        });
+      }
+    });
+    const stopXapi = () => clearInterval(checkXapi);
+  }, []);
 
   useEffect(() => {
     if (resourceId !== activityId) {

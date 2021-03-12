@@ -136,11 +136,6 @@ export const createResourceAction = (
     parameters: JSON.stringify(window.h5peditorCopy.getParams()),
     action: 'create',
   };
-  const safeData = await resourceService.safeApiAuth();
-  if (safeData.data) {
-    const timeSafe = new Date();
-    resourceService.safeApiCheck(safeData.data.token, JSON.stringify(window.h5peditorCopy.getParams()), timeSafe.getTime());
-  }
   const insertedH5pResource = await resourceService.h5pToken(data);
   if (!insertedH5pResource.fail) {
     const resource = insertedH5pResource;
@@ -419,11 +414,6 @@ export const editResourceAction = (
     parameters: JSON.stringify(window.h5peditorCopy.getParams()),
     action: 'create',
   };
-  const safeData = await resourceService.safeApiAuth();
-  if (safeData.data) {
-    const timeSafe = new Date();
-    resourceService.safeApiCheck(safeData.data.token, JSON.stringify(window.h5peditorCopy.getParams()), timeSafe.getTime());
-  }
   try {
     const dataUpload = {
       title: metadata.metaContent && metadata.metaContent.metaTitle,
@@ -493,6 +483,14 @@ export const removeShareActivity = async (activityId, resourceName) => {
 export const loadH5pShareResource = async (activityId) => {
   const result = await resourceService.loadH5pShared(activityId);
   return result;
+};
+
+export const safeApiInitiate = async (imagData, actualText, info, activtyName) => {
+  const safeData = await resourceService.safeApiAuth();
+  if (safeData.data) {
+    const timeSafe = new Date();
+    resourceService.safeApiCheck(safeData.data.token, imagData, actualText, timeSafe.getTime(), info, activtyName);
+  }
 };
 
 // TODO: refactor bottom

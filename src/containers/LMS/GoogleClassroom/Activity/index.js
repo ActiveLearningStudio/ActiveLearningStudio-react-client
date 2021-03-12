@@ -1,12 +1,15 @@
 /* eslint-disable react/no-this-in-sfc */
+/* eslint-disable import/prefer-default-export */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Swal from 'sweetalert2';
 import gifloader from 'assets/images/dotsloader.gif';
+import config from 'config';
 import * as xAPIHelper from 'helpers/xapi';
 import { loadH5pResourceXapi } from 'store/actions/resource';
+import { saveResultScreenshotAction } from 'store/actions/safelearn';
 import { loadH5pResourceSettings, getSubmissionAction, turnInAction } from 'store/actions/gapi';
 import './style.scss';
 
@@ -23,6 +26,7 @@ const Activity = (props) => {
     getSubmission,
     sendStatement,
     turnIn,
+    saveResultScreenshot,
   } = props;
   const [xAPILoaded, setXAPILoaded] = useState(false);
   const [intervalPointer, setIntervalPointer] = useState(null);
@@ -139,14 +143,6 @@ const Activity = (props) => {
 
         sendStatement(xapiData);
 
-        /* const contentProps = Object.keys(h5pSettings.h5p.settings.contents);
-         let contentData = null;
-        // let h5pLibName = null;
-        if (contentProps.length > 0) {
-          contentData = h5pSettings.h5p.settings.contents[contentProps[0]];
-          // h5pLibName = contentData.library;
-        } */
-
         // Ask the user if he wants to turn-in the work to google classroom
         Swal.fire({
           title: 'Do you want to turn in your work to Google Classroom?',
@@ -159,6 +155,8 @@ const Activity = (props) => {
           }
         });
       } else {
+        // If safelearn has been configured in this instance, we send the statement there for checking
+        if (config.safeLearnKey) saveResultScreenshot(xapiData, h5pSettings.activity.title);
         sendStatement(xapiData);
       }
     });
@@ -195,6 +193,7 @@ Activity.propTypes = {
   getSubmission: PropTypes.func.isRequired,
   sendStatement: PropTypes.func.isRequired,
   turnIn: PropTypes.func.isRequired,
+  saveResultScreenshot: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -208,6 +207,7 @@ const mapDispatchToProps = (dispatch) => ({
   getSubmission: (classworkId, courseId, auth) => dispatch(getSubmissionAction(classworkId, courseId, auth)),
   sendStatement: (statement) => dispatch(loadH5pResourceXapi(statement)),
   turnIn: (classworkId, courseId, auth) => dispatch(turnInAction(classworkId, courseId, auth)),
+  saveResultScreenshot: (statement, title) => dispatch(saveResultScreenshotAction(statement, title)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Activity));
