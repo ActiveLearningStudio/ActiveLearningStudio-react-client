@@ -155,7 +155,7 @@ const Activity = (props) => {
         });
       } else {
         // If safelearn has been configured in this instance, we send the statement there for checking
-        if (config.safeLearnKey) saveResultScreenshot(extendedStatementObj, h5pSettings.activity.title, student.profile.name.fullName);
+        if (config.safeLearnKey) saveResultScreenshot(extendedStatementObj, h5pSettings.activity.title, student.profile.data.name.fullName);
         sendStatement(xapiData);
       }
     });
