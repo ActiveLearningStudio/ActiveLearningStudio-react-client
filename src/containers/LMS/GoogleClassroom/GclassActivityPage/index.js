@@ -57,7 +57,6 @@ function GclassActivityPage(props) {
     setInterval(() => {
       data.reloadAuthResponse().then((newData) => {
         refreshStudentAuthToken(newData);
-        console.log(newData);
       });
     }, 1000 * 60 * 15);
   };
