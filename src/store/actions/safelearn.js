@@ -11,8 +11,9 @@ export const saveResultScreenshotAction = (statement, title, studentName) => asy
   ) {
     const safeData = await service.safeApiAuth();
     const customhtml = document.createElement('div');
+    customhtml.setAttribute('id', 'specfic-detail-safe-learn');
     customhtml.innerHTML = `
-      <div id="specfic-detail-safe-learn" class="customhtml" style="padding:20px;margin:0 auto;max-width:1280px;">
+      <div>
         <h3>${statement?.object?.definition?.description?.['en-US']}</h3>
         <hr />
         <h4>${statement?.result?.response}</h4>
