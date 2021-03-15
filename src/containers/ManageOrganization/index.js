@@ -21,6 +21,7 @@ import IntroOrganizations from "./intoOrganization";
 import Feedback from "./feedback";
 
 import './style.scss';
+import Users from './Users';
 
 export default function ManageOrganizations() {
   const dispatch =  useDispatch();
@@ -98,6 +99,7 @@ export default function ManageOrganizations() {
                     detail = {activeOrganization}
                   />  
                 }
+                {state.activeScreen === 'Users' && <Users />}
                 {state.activeScreen === 'all-list' && <AllPrganizations />}
                 {state.activeScreen === 'create-org' && <CreateOrganization />}
                 {state.activeScreen === 'feedback' && <Feedback />}

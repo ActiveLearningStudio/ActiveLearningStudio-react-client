@@ -670,3 +670,99 @@
      color: $fun-blue-1;
    }
 }
+.create-user-row{
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+}
+.users-heading{
+  font-size: 20px;
+  line-height: 24px;
+  color: #084892;
+}
+.user-top-row{
+  display: flex;
+  margin-bottom: 15px;
+  .find-user{
+    left: 21.72%;
+    right: 62.27%;
+    top: 18.83%;
+    bottom: 78.9%;
+    border: 1px solid #515151;
+    box-sizing: border-box;
+    border-radius: 20px;
+  }
+  .filter-sub-organization{
+    font-size: 14px;
+    color: #084892;
+    margin-left: 35px;
+  }
+  .filter-by-role{
+    font-size: 14px;
+    color: #084892;
+    margin-left: 12px;
+  }
+}
+.newuser-button{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 20px;
+  width: 203px;
+  height: 32px;
+  left: 1047px;
+  top: calc(50% - 32px/2 - 504.5px);
+  background: #084892;
+  border: 1px solid #084892;
+  box-sizing: border-box;
+  border-radius: 50px;
+  .button-text{    
+    position: static;
+    width: 108px;
+    height: 17px;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: right;
+    color: #FFFFFF;
+  }
+}
+.user-created-me{
+  font-size: 20px;
+  line-height: 24px;
+  color: #084892;
+}
+.users-in-my-organization{
+  font-size: 20px;
+  line-height: 24px;
+  color: #084892;
+  padding-top: 25px;
+}
+.user-row{
+  display: flex;
+  .main-column{
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    justify-content: space-evenly;
+    width: 20%;
+  }
+  .username{
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 24px;
+    color: #515151;
+  }
+  .others{
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 24px;
+    color: #515151;
+  }
+  .user-role{
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 17px;
+    color: #000000;
+  }
+}
