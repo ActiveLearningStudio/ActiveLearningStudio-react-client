@@ -20,7 +20,10 @@ const defaultAuthState = () => {
     student: null,
     submission: null,
     h5pSettings: null,
-    summaryAuth: null,
+    summaryAuth: {
+      student: null,
+      teacher: null,
+    },
     outcomeSummary: null,
     summaryError: null,
   };

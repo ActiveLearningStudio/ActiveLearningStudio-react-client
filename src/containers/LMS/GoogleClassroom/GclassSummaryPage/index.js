@@ -12,13 +12,20 @@ import ActivitySummary from 'containers/LMS/GoogleClassroom/ActivitySummary';
 import './styles.scss';
 
 function GclassSummaryPage(props) {
-  const { match, student, teacher, getSummaryAuth } = props;
+  const {
+    match,
+    student,
+    teacher,
+    errors,
+    summaryError,
+    getSummaryAuth,
+  } = props;
+  const studentName = (student) ? student.name : 'your student';
 
   const handleLogin = (data) => {
-    getSummaryAuth(data, match.params.userId, match.params.courseId, match.params.gClassworkId, match.params.submissionId);
+    getSummaryAuth(data, match.params.courseId, match.params.gClassworkId, match.params.submissionId);
   };
 
-  console.log({student, teacher});
   return (
     <div className="gclass-activity-container">
       <section className="main-page-content preview iframe-height-resource-shared">
@@ -32,9 +39,9 @@ function GclassSummaryPage(props) {
         <div className="container">
           <div className="row">
             <div className="col">
-              {student && <ActivitySummary /> }
+              {student && !errors && <ActivitySummary /> }
 
-              {!student && (
+              {(!student || errors || summaryError) && (
                 <div className="auth-container">
                   <div className="row">
                     <div className="col text-center">
@@ -42,11 +49,68 @@ function GclassSummaryPage(props) {
                     </div>
                   </div>
 
-                  {student === false && (
+                  {errors && errors[0].code !== 3 && (
                     <div className="row m-4">
                       <div className="col text-center">
                         <Alert variant="warning">
-                          The student is not enrolled in this course.
+                          <p>An error has occurred:</p>
+                          <p>
+                            {errors[0].msg}
+                          </p>
+                        </Alert>
+                      </div>
+                    </div>
+                  )}
+
+                  {summaryError && (
+                    <div className="row m-4">
+                      <div className="col text-center">
+                        <Alert variant="warning">
+                          <p>An error has occurred:</p>
+                          <p>
+                            {summaryError}
+                          </p>
+                        </Alert>
+                      </div>
+                    </div>
+                  )}
+
+                  {errors && errors[0].code === 3 && teacher === false && (
+                    <div className="row m-4">
+                      <div className="col text-center">
+                        <Alert variant="warning">
+                          <h4>
+                            {`Oops! It looks like your submission isn't available at ${window.location.hostname}.`}
+                          </h4>
+                          <p>
+                            To resubmit your assigment follow these steps:
+                            <ul>
+                              <li>Unsubmit the assignment in Google Classroom.</li>
+                              <li>Resume your assignment as usual.</li>
+                              <li>If the problem persists, please contact your teacher or one of our support channels.</li>
+                            </ul>
+                          </p>
+                        </Alert>
+                      </div>
+                    </div>
+                  )}
+
+                  {errors && errors[0].code === 3 && teacher && (
+                    <div className="row m-4">
+                      <div className="col text-center">
+                        <Alert variant="warning">
+                          <h4>
+                            {`Oops! It looks like the submission for ${studentName} is not available at ${window.location.hostname}.`}
+                          </h4>
+                          <p>
+                            {`You can return the assignment without a grade in the google classroom interface, so that ${studentName} can resume the assignment.`}
+                          </p>
+                          <p>
+                            {`Consider sending a message to ${studentName} about resubmitting the assignment.`}
+                          </p>
+                          <p>
+                            For further assistance use our support channels.
+                          </p>
                         </Alert>
                       </div>
                     </div>
@@ -87,13 +151,15 @@ GclassSummaryPage.propTypes = {
   student: PropTypes.object.isRequired,
   teacher: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
+  summaryError: PropTypes.object.isRequired,
   getSummaryAuth: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   student: state.gapi.summaryAuth.student,
   teacher: state.gapi.summaryAuth.teacher,
-  errors: state.gapi.summaryAuth.teacher,
+  errors: state.gapi.summaryAuth.errors,
+  summaryError: state.gapi.summaryError,
 });
 
 const mapDispatchToProps = (dispatch) => ({
