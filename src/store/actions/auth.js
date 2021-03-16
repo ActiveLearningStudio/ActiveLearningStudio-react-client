@@ -4,6 +4,7 @@ import authService from 'services/auth.service';
 import storageService from 'services/storage.service';
 import { USER_TOKEN_KEY } from 'constants/index';
 import * as actionTypes from '../actionTypes';
+import store from '../index';
 
 export const getUserAction = () => async (dispatch) => {
   const token = storageService.getItem(USER_TOKEN_KEY);
@@ -70,7 +71,10 @@ export const googleLoginAction = (data) => async (dispatch) => {
   dispatch({
     type: actionTypes.LOGIN_REQUEST,
   });
-
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  // eslint-disable-next-line no-param-reassign
+  data.domain = activeOrganization.domain;
   try {
     const response = await authService.loginWithGoogle(data);
 

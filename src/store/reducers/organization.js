@@ -95,6 +95,11 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         history: null,
       };
+    case actionTypes.GET_ORGANIZATION_USERS:
+      return {
+        ...state,
+        users: action.payload,
+      };
     default:
       return state;
   }

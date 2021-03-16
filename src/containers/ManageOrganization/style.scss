@@ -704,28 +704,17 @@
   }
 }
 .newuser-button{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 10px 20px;
   width: 203px;
   height: 32px;
-  left: 1047px;
-  top: calc(50% - 32px/2 - 504.5px);
   background: #084892;
   border: 1px solid #084892;
   box-sizing: border-box;
   border-radius: 50px;
-  .button-text{    
-    position: static;
-    width: 108px;
-    height: 17px;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 17px;
-    text-align: right;
-    color: #FFFFFF;
-  }
+}
+.button-text{    
+  line-height: 17px;
+  text-align: center;
+  color: #FFFFFF;
 }
 .user-created-me{
   font-size: 20px;
@@ -745,7 +734,14 @@
     flex-direction: column;
     margin-top: 10px;
     justify-content: space-evenly;
-    width: 20%;
+    width: 30%;
+  }
+  .secondary-column{
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    justify-content: space-evenly;
+    width: 5%;
   }
   .username{
     font-weight: bold;
@@ -755,6 +751,7 @@
   }
   .others{
     font-weight: normal;
+    word-wrap: break-word;
     font-size: 20px;
     line-height: 24px;
     color: #515151;
@@ -765,4 +762,33 @@
     line-height: 17px;
     color: #000000;
   }
+}
+.pagination {
+  margin: 15px auto;
+  display: flex;
+  float: right;
+  list-style: none;
+  outline: none;
+}
+.pagination > .active > a{
+  background-color:$fun-blue-1 ;
+  border-color:$fun-blue-1 ;
+  color: #fff;
+}
+.pagination > li > a{
+  border: 1px solid$fun-blue-1 ;
+  padding: 5px 10px;
+  outline: none;
+  cursor: pointer;
+}
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
+  background-color:$fun-blue-1 ;
+  border-color:$fun-blue-1;
+  outline: none ;
+}
+.pagination > li > a, .pagination > li > span{
+  color:$fun-blue-1
+}
+.pagination > li:first-child > a, .pagination > li:first-child > span, .pagination > li:last-child > a, .pagination > li:last-child > span{
+  border-radius: unset
 }
