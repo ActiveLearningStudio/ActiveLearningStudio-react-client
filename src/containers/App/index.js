@@ -34,7 +34,7 @@ function App(props) {
         runOnce = false;
         if (window.location.href.includes('/org/')) {
           if (window.location.pathname.split('/org/')[1].split('/').length === 1) {
-            const subDomain = window.location.pathname.split('/org/')[1]?.replaceAll('/', '');
+            const subDomain = window.location.pathname.split('/org/')[1]?.replace(/\//g, '');
             (async () => {
               const result = dispatch(getBranding(subDomain));
               result.then((data) => {
@@ -42,7 +42,7 @@ function App(props) {
               }).catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
           } else {
-            const subDomain = window.location.pathname.split('/org/')[1].split('/')[0]?.replaceAll('/', '');
+            const subDomain = window.location.pathname.split('/org/')[1].split('/')[0]?.replace(/\//g, '');
             (async () => {
               const result = dispatch(getBranding(subDomain));
               result.then((data) => {
