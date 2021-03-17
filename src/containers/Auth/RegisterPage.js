@@ -94,7 +94,7 @@ class RegisterPage extends React.Component {
       })
         .then((result) => {
           if (result.isConfirmed) {
-            history.push('/login');
+            history.push(`/login/${domain?.domain}`);
           }
         });
       // history.push('/login');
