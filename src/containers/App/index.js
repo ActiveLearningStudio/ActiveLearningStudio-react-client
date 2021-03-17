@@ -64,7 +64,7 @@ function App(props) {
   }, [dispatch, userDetails, activeOrganization]);
 
   useEffect(() => {
-    if (window.location.href.includes('/login') && !userDetails) {
+    if ((window.location.href.includes('/login') || window.location.pathname.split('/register/')) && !userDetails) {
       const subDomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
       if (subDomain.includes('login')) {
         dispatch(getBranding('currikistudio'));

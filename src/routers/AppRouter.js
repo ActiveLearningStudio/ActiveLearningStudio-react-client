@@ -153,6 +153,7 @@ const AppRouter = (props) => {
         <PublicRoute exact path="/login" component={LoginPage} />
         <PublicRoute exact path="/login/:organization" component={LoginPage} />
         <PublicRoute exact path="/register" component={RegisterPage} />
+        <PublicRoute exact path="/register/:organization" component={RegisterPage} />
         <PublicRoute exact path="/forgot-password" component={ForgotPasswordPage} />
         <PublicRoute exact path="/reset-password" component={ResetPasswordPage} />
         <PublicRoute exact path="/verify-email" component={ConfirmEmailPage} />
