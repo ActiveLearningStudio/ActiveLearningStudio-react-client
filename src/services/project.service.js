@@ -50,8 +50,8 @@ const remove = (id, subOrgId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const upload = (formData, conf) => httpService
-  .post(`/${apiVersion}/projects/upload-thumb`, formData, {
+const upload = (formData, conf, subOrgId) => httpService
+  .post(`/${apiVersion}/suborganization/${subOrgId}/projects/upload-thumb`, formData, {
     'Content-Type': 'multipart/form-data',
   }, conf)
   .then(({ data }) => data)
@@ -80,8 +80,8 @@ const removeShared = (id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const addToFav = (id) => httpService
-  .post(`/${apiVersion}/projects/${id}/favorite`)
+const addToFav = (id, subOrgId) => httpService
+  .post(`/${apiVersion}/suborganization/${subOrgId}/projects/${id}/favorite`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 

@@ -21,6 +21,7 @@ function SearchForm() {
   const [activityTypes, setActivityTypes] = useState([]);
   const [value, setValue] = useState(0);
   const activityTypesState = useSelector((state) => state.resource.types);
+  const { currentOrganization } = useSelector((state) => state.organization);
 
   useEffect(() => {
     if (activityTypesState.length === 0) {
@@ -75,7 +76,7 @@ function SearchForm() {
                 };
                 dispatcher(simpleSearchAction(searchData));
                 localStorage.setItem('loading', 'true');
-                history.push('/search?type=public');
+                history.push(`/org/${currentOrganization?.domain}/search?type=public`);
               }
             }
             return true;
@@ -124,7 +125,8 @@ function SearchForm() {
               Swal.showLoading();
               dispatcher(simpleSearchAction(values));
               closeModel.current.click();
-              history.push(`/search?type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${values.standardArray.name}`);
+              // eslint-disable-next-line max-len
+              history.push(`/org/${currentOrganization?.domain}/search?type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${values.standardArray.name}`);
               resetForm({
                 phrase: '',
                 subjectArray: [],

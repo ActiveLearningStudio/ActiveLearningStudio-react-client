@@ -7,7 +7,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown } from 'react-bootstrap';
 
-import logo from 'assets/images/logo.svg';
+// import logo from 'assets/images/logo.svg';
 import { shareActivity, deleteResourceAction } from 'store/actions/resource';
 import { cloneActivity } from 'store/actions/search';
 
@@ -144,7 +144,7 @@ const ResourceCardDropdown = (props) => {
           Share
         </Dropdown.Item>
 
-        <Dropdown.Item
+        {/* <Dropdown.Item
           href="#"
           onClick={() => {
             Swal.fire({
@@ -159,7 +159,7 @@ const ResourceCardDropdown = (props) => {
         >
           <FontAwesomeIcon icon="times-circle" className="mr-2" />
           Executable
-        </Dropdown.Item>
+        </Dropdown.Item> */}
 
         <Dropdown.Item onClick={handleDelete}>
           <FontAwesomeIcon icon="times-circle" className="mr-2" />

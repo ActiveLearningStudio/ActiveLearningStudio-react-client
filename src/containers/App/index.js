@@ -50,23 +50,24 @@ function App(props) {
               }).catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
           }
-        } else if (window.location.pathname.split('/login/')) {
-          const subDomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
-          (async () => {
-            const result = dispatch(getBranding(subDomain));
-            result.then((data) => {
-              dispatch(getOrganizationFirstTime(data?.organization?.id));
-            }).catch((err) => err && window.location.replace('/org/currikistudio'));
-          })();
         }
+        // else if (window.location.pathname.split('/login/')) {
+        //   const subDomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
+        //   (async () => {
+        //     const result = dispatch(getBranding(subDomain));
+        //     result.then((data) => {
+        //       dispatch(getOrganizationFirstTime(data?.organization?.id));
+        //     }).catch((err) => err && alert('ok'));
+        //   })();
+        // }
       }
     }
   }, [dispatch, userDetails, activeOrganization]);
 
   useEffect(() => {
-    if ((window.location.href.includes('/login') || window.location.pathname.split('/register/')) && !userDetails) {
+    if ((window.location.href.includes('/login') || window.location.pathname.includes('/register'))) {
       const subDomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
-      if (subDomain.includes('login')) {
+      if (subDomain?.includes('login') || subDomain?.includes('register') || subDomain?.includes('forgot-password')) {
         dispatch(getBranding('currikistudio'));
       } else if (subDomain) {
         const result = dispatch(getBranding(subDomain));

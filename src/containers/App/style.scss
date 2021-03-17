@@ -3677,3 +3677,22 @@ a:hover {
     }
   }
 }
+
+.text-added-project-dropdown  {
+  button {
+    width:100%;
+    span {
+      font-size: 12px;
+      line-height: 16px;
+      color: #084892 !important;
+      padding-left: 10px !important;
+      font-weight: bold;
+    }
+
+    &:hover {
+      span {
+        color: #ffffff !important;
+      }
+    }
+  }
+}

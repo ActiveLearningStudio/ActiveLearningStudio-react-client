@@ -344,7 +344,7 @@ function PlaylistsPage(props) {
         <div className="content">
           <div>
             {pageLoading !== false ? (
-              <Alert variant="primary">Loading ...</Alert>
+              <Alert style={{ marginTop: '15px' }} variant="primary">Loading ...</Alert>
             ) : (
               <>
                 <div className="col playlist-page-project-title project-each-view">

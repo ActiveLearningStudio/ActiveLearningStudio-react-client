@@ -155,6 +155,7 @@ const AppRouter = (props) => {
         <PublicRoute exact path="/register" component={RegisterPage} />
         <PublicRoute exact path="/register/:organization" component={RegisterPage} />
         <PublicRoute exact path="/forgot-password" component={ForgotPasswordPage} />
+        <PublicRoute exact path="/forgot-password/:organization" component={ForgotPasswordPage} />
         <PublicRoute exact path="/reset-password" component={ResetPasswordPage} />
         <PublicRoute exact path="/verify-email" component={ConfirmEmailPage} />
         <PublicRoute exact path="/neaf-register" component={NeafRegister} />

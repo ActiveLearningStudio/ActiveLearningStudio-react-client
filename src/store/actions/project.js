@@ -139,8 +139,9 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
       });
     },
   };
-
-  const { thumbUrl } = await projectService.upload(formData, config);
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const { thumbUrl } = await projectService.upload(formData, config, activeOrganization.id);
 
   dispatch({
     type: actionTypes.UPLOAD_PROJECT_THUMBNAIL,
@@ -284,6 +285,8 @@ export const toggleProjectShareRemovedAction = (projectId, projectName) => async
 };
 
 export const deleteFavObj = (projectId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   Swal.fire({
     showCancelButton: true,
     confirmButtonColor: '#5952c6',
@@ -294,7 +297,7 @@ export const deleteFavObj = (projectId) => async (dispatch) => {
     .then(async (result) => {
       if (result.value) {
         Swal.showLoading();
-        await projectService.addToFav(projectId);
+        await projectService.addToFav(projectId, activeOrganization.id);
         Swal.close();
         dispatch(loadMyFavProjectsAction());
       }
@@ -303,7 +306,9 @@ export const deleteFavObj = (projectId) => async (dispatch) => {
 
 export const addProjectFav = (projectId) => async (/* dispatch */) => {
   Swal.showLoading();
-  const project = await projectService.addToFav(projectId);
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const project = await projectService.addToFav(projectId, activeOrganization.id);
 
   if (project.message) {
     Swal.fire({
