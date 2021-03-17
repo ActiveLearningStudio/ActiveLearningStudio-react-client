@@ -2,7 +2,7 @@ import Swal from 'sweetalert2';
 
 import authService from 'services/auth.service';
 import storageService from 'services/storage.service';
-import { USER_TOKEN_KEY } from 'constants/index';
+import { USER_TOKEN_KEY, CURRENT_ORG } from 'constants/index';
 import * as actionTypes from '../actionTypes';
 
 export const getUserAction = () => async (dispatch) => {
@@ -51,6 +51,7 @@ export const loginAction = (data) => async (dispatch) => {
     ]);
 
     storageService.setItem(USER_TOKEN_KEY, response.access_token);
+    storageService.setItem(CURRENT_ORG, response?.user?.default_organization?.domain);
 
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
