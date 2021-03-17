@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-
+import Swal from 'sweetalert2';
 import './style.scss';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteGroupAction } from 'store/actions/group';
 
 function GroupCard(props) {
   const {
@@ -15,13 +16,25 @@ function GroupCard(props) {
       projects,
     },
   } = props;
-
+  const dispatch = useDispatch();
   let memCnt = `00${users.length}`;
   memCnt = memCnt.slice(memCnt.length - 2, memCnt.length);
   const organization = useSelector((state) => state.organization);
   let projCnt = `00${projects.length}`;
   projCnt = projCnt.slice(projCnt.length - 2, projCnt.length);
-
+  const deleteGroup = () => {
+    Swal.fire({
+      title: 'Are you sure you want to delete this group?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      denyButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteGroupAction(id));
+      }
+    });
+  };
   return (
     <div className="group-card-content">
       <div className="group-title">
@@ -47,6 +60,11 @@ function GroupCard(props) {
       <div className="sub-title">
         <span>Projects for the Group</span>
         <span>{`(${projCnt})`}</span>
+      </div>
+      <div>
+        <button type="button" onClick={() => deleteGroup()} className="back-button" style={{ textAlign: 'center' }}>
+          Delete Group
+        </button>
       </div>
     </div>
   );

@@ -155,7 +155,7 @@ export const createResourceAction = (
         metadata.metaContent.metaEducationLevels
         && metadata.metaContent.metaEducationLevels,
     };
-    const insertedResource = await resourceService.create(activity);
+    const insertedResource = await resourceService.create(activity, playlistId);
     Swal.close();
 
     resourceSaved(true);
@@ -215,13 +215,13 @@ export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
   });
 };
 
-export const deleteResourceAction = (activityId) => async (dispatch) => {
+export const deleteResourceAction = (activityId, playlistId) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.DELETE_RESOURCE_REQUEST,
     });
 
-    await resourceService.remove(activityId);
+    await resourceService.remove(activityId, playlistId);
     dispatch({
       type: actionTypes.DELETE_RESOURCE_SUCCESS,
       payload: { activityId },
@@ -379,7 +379,7 @@ export const createResourceByH5PUploadAction = (
           && metadata.metaContent.metaEducationLevels.name,
       };
 
-      const responseActivity = await resourceService.create(createActivityUpload);
+      const responseActivity = await resourceService.create(createActivityUpload, playlistId);
       Swal.close();
       const resource = { ...responseActivity };
       resource.id = responseActivity.activity.id;

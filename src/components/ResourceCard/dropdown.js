@@ -30,7 +30,7 @@ const ResourceCardDropdown = (props) => {
       denyButtonText: 'No',
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteResource(resource.id);
+        deleteResource(resource.id, playlist.id);
       }
     });
   };
@@ -88,7 +88,7 @@ ResourceCardDropdown.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteResource: (activityId) => dispatch(deleteResourceAction(activityId)),
+  deleteResource: (activityId, playlistId) => dispatch(deleteResourceAction(activityId, playlistId)),
 });
 
 export default withRouter(connect(null, mapDispatchToProps)(ResourceCardDropdown));

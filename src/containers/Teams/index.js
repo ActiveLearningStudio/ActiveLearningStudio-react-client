@@ -116,9 +116,9 @@ function TeamsPage(props) {
 
             {overview && (
               <div className="row overview">
-                {teams.map((team) => (
+                {teams.length > 0 ? teams.map((team) => (
                   <TeamView key={team.id} team={team} />
-                ))}
+                )) : <div>No teams available </div> }
               </div>
             )}
 

@@ -116,9 +116,9 @@ function GroupPage(props) {
 
             {overview && (
               <div className="row overview">
-                {groups.map((group) => (
+                {groups.length > 0 ? groups.map((group) => (
                   <GroupView key={group.id} group={group} />
-                ))}
+                )) : <div>No groups available </div>}
               </div>
             )}
 
