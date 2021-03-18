@@ -51,14 +51,14 @@ function Sidebar(props) {
     if (!allState.sidebar.isLoaded && organization.activeOrganization) {
       dispatch(allSidebarProjects());
     }
-  }, [allState.sidebar.isLoaded, organization.activeOrganization]);
+  }, [allState.sidebar.isLoaded, organization.activeOrganization, dispatch]);
 
   const handleClickTeam = useCallback((team) => {
     history.push(`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}`);
-  }, [history]);
+  }, [history, allState.organization.currentOrganization?.domain]);
   const handleClickGroup = useCallback((group) => {
     history.push(`/org/${allState.organization.currentOrganization?.domain}/groups/${group.id}`);
-  }, [history]);
+  }, [history, allState.organization.currentOrganization?.domain]);
 
   return (
     <aside className="sidebar-all">
@@ -68,7 +68,7 @@ function Sidebar(props) {
           My Projects
         </div>
       </Link>
-      {allState.sidebar.allProject.length > 0 ? (
+      {allState.sidebar.allProject.length > 0 && (
         <ul className="all-project">
           {allState.sidebar.allProject.slice(0, 5).map((data) => (
             <li key={data.id}>
@@ -83,7 +83,7 @@ function Sidebar(props) {
             <FontAwesomeIcon icon="arrow-right" className="ml-2" />
           </Link>
         </ul>
-      ) : <div style={{ textAlign: 'center' }}>No Projects</div>}
+      )}
 
       <Link to={`/org/${organization.currentOrganization?.domain}/dashboard`}>
         <div className="menu-title">
@@ -98,7 +98,7 @@ function Sidebar(props) {
           Teams
         </div>
       </Link>
-      {allState.sidebar.teams.length > 0 ? allState.team.teams.map((team) => (
+      {allState.sidebar.teams.length > 0 && allState.team.teams.map((team) => (
         <div key={team.id} className={`team-item${selectedTeam === team.id ? '' : ' collapsed'}`}>
           <div className="team-label" onClick={() => handleClickTeam(team)}>
             {team.name}
@@ -132,7 +132,7 @@ function Sidebar(props) {
             */}
           </div>
         </div>
-      )) : <div style={{ textAlign: 'center' }}>No Teams</div> }
+      ))}
       <div className="menu-title create-button">
         <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams/create-team`}>
           <div>
@@ -147,7 +147,7 @@ function Sidebar(props) {
           Groups
         </div>
       </Link>
-      {allState.sidebar.groups.length > 0 ? allState.group.groups.map((group) => (
+      {allState.sidebar.groups.length > 0 && allState.group.groups.map((group) => (
         <div key={group.id} className={`team-item${selectedTeam === group.id ? '' : ' collapsed'}`}>
           <div className="team-label" onClick={() => handleClickGroup(group)}>
             {group.name}
@@ -181,7 +181,7 @@ function Sidebar(props) {
             */}
           </div>
         </div>
-      )) : <div style={{ textAlign: 'center' }}>No Groups</div>}
+      ))}
       <div className="menu-title create-button">
         <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups/create-group`}>
           <div>

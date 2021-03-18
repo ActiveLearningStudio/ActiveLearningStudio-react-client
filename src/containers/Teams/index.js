@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { loadTeamsAction } from 'store/actions/team';
@@ -8,6 +8,7 @@ import { loadTeamsAction } from 'store/actions/team';
 // import Sidebar from 'components/Sidebar';
 import Footer from 'components/Footer';
 import { Link, useHistory } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import CreateTeam from './CreateTeam';
 import TeamView from './TeamCard';
 import TeamMemberView from './TeamMemberView';
@@ -35,12 +36,20 @@ function TeamsPage(props) {
     channelShow,
     loadTeams,
   } = props;
-
+  const organization = useSelector((state) => state.organization);
+  const { activeOrganization } = organization;
   const [breadCrumb, setBreadCrumb] = useState([]);
   const history = useHistory();
   useEffect(() => {
-    loadTeams();
-  }, [loadTeams]);
+    (async () => {
+      if (activeOrganization) {
+        Swal.showLoading();
+        await loadTeams();
+        Swal.close();
+      }
+    }
+    )();
+  }, [loadTeams, activeOrganization]);
 
   const status = creation
     ? 'creation'
@@ -78,12 +87,8 @@ function TeamsPage(props) {
 
   return (
     <>
-      <div className="side-wrapper">
-        <div className="collapse-button">
-          <FontAwesomeIcon icon="angle-left" />
-        </div>
-
-        <div className="bread-crumb d-flex align-items-center">
+      <div className="side-wrapper-team">
+        <div className="bread-crumb">
           {breadCrumb.map((node, index, these) => (
             <div key={node}>
               <span className={index + 1 < these.length ? 'parent' : 'child'}>

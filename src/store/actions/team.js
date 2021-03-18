@@ -41,7 +41,7 @@ export const loadTeamsAction = () => async (dispatch) => {
       type: actionTypes.PAGE_LOADING,
     });
 
-    const { teams } = await teamService.getAll(activeOrganization.id);
+    const { teams } = await teamService.getAll(activeOrganization?.id);
 
     dispatch({
       type: actionTypes.LOAD_TEAMS,

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { loadGroupsAction } from 'store/actions/group';
@@ -8,6 +8,7 @@ import { loadGroupsAction } from 'store/actions/group';
 // import Sidebar from 'components/Sidebar';
 import Footer from 'components/Footer';
 import { Link, useHistory } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import CreateGroup from './CreateGroup';
 import GroupView from './GroupCard';
 import GroupMemberView from './GroupMemberView';
@@ -35,12 +36,20 @@ function GroupPage(props) {
     channelShow,
     loadGroups,
   } = props;
-
+  const organization = useSelector((state) => state.organization);
+  const { activeOrganization } = organization;
   const [breadCrumb, setBreadCrumb] = useState([]);
   const history = useHistory();
   useEffect(() => {
-    loadGroups();
-  }, [loadGroups]);
+    (async () => {
+      if (activeOrganization) {
+        Swal.showLoading();
+        await loadGroups();
+        Swal.close();
+      }
+    }
+    )();
+  }, [loadGroups, activeOrganization]);
 
   const status = creation
     ? 'creation'
@@ -78,12 +87,8 @@ function GroupPage(props) {
 
   return (
     <>
-      <div className="side-wrapper">
-        <div className="collapse-button">
-          <FontAwesomeIcon icon="angle-left" />
-        </div>
-
-        <div className="bread-crumb d-flex align-items-center">
+      <div className="side-wrapper-group">
+        <div className="bread-crumb">
           {breadCrumb.map((node, index, these) => (
             <div key={node}>
               <span className={index + 1 < these.length ? 'parent' : 'child'}>
