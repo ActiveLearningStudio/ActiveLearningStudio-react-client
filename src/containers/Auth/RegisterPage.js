@@ -71,7 +71,7 @@ class RegisterPage extends React.Component {
       this.setState({
         error: null,
       });
-
+      const { domain } = this.props;
       const data = {
         first_name: firstName.trim(),
         last_name: lastName.trim(),
@@ -80,6 +80,7 @@ class RegisterPage extends React.Component {
         organization_name: organizationName.trim(),
         organization_type: organizationType.trim(),
         job_title: jobTitle.trim(),
+        domain: domain?.domain,
       };
 
       const message = await register(data);
@@ -93,7 +94,7 @@ class RegisterPage extends React.Component {
       })
         .then((result) => {
           if (result.isConfirmed) {
-            history.push('/login');
+            history.push(`/login/${domain?.domain}`);
           }
         });
       // history.push('/login');
@@ -303,6 +304,7 @@ RegisterPage.propTypes = {
   organizationTypes: PropTypes.array.isRequired,
   register: PropTypes.func.isRequired,
   loadOrganizationTypes: PropTypes.func.isRequired,
+  domain: PropTypes.object.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -313,6 +315,7 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
   organizationTypes: state.auth.organizationTypes,
+  domain: state.organization.currentOrganization,
 });
 
 export default withRouter(

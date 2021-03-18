@@ -20,6 +20,11 @@ const getOrganization = (id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const getOrganizationSearch = (id, search) => httpService
+  .get(`/${apiVersion}/suborganizations/${id}/index?query=${search}`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const inviteUserOutside = (id, info) => httpService
   .post(`/${apiVersion}/suborganizations/${id}/invite-members`, info)
   .then(({ data }) => data)
@@ -114,4 +119,5 @@ export default {
   getRoles,
   inviteUserOutside,
   getOrgUsers,
+  getOrganizationSearch,
 };

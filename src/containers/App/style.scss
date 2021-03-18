@@ -1099,7 +1099,7 @@ a.logo img {
 nav {
   width: 290px;
   clear: both;
-  float: left;
+  // float: left;
   margin: 130px 0 0 0;
   padding: 0 25px 0 30px;
 }
@@ -3674,6 +3674,25 @@ a:hover {
     padding: 20px;
     color: #333
     }
+    }
+  }
+}
+
+.text-added-project-dropdown  {
+  button {
+    width:100%;
+    span {
+      font-size: 12px;
+      line-height: 16px;
+      color: #084892 !important;
+      padding-left: 10px !important;
+      font-weight: bold;
+    }
+
+    &:hover {
+      span {
+        color: #ffffff !important;
+      }
     }
   }
 }

@@ -367,3 +367,4 @@ export const ALL_ROLES = 'ALL_ROLES';
 export const SAVE_HISTORY = 'SAVE_HISTORY';
 export const CLEAR_HISTORY = 'CLEAR_HISTORY';
 export const GET_ORGANIZATION_USERS = 'GET_ORGANIZATION_USERS';
+export const SEARCH_ORG = 'SEARCH_ORG';

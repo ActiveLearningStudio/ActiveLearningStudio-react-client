@@ -2,6 +2,7 @@ import Swal from 'sweetalert2';
 
 import searchService from 'services/search.service';
 import { SEARCH_REDUX, CLEAR_SEARCH } from '../actionTypes';
+import store from '../index';
 
 export const searchRedux = (data, searchQuery, meta) => ({
   type: SEARCH_REDUX,
@@ -11,6 +12,8 @@ export const searchRedux = (data, searchQuery, meta) => ({
 });
 
 export const simpleSearchAction = (values) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   const activityType = [];
   if (values.standardArray) {
     values.standardArray.map((data) => {
@@ -33,6 +36,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
       educationLevelIds: values.gradeArray,
       startDate: values.fromDate,
       endDate: values.toDate,
+      organization_id: activeOrganization.id,
     };
   } else {
     sendData = {
@@ -46,6 +50,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
       educationLevelIds: values.gradeArray,
       startDate: values.fromDate,
       endDate: values.toDate,
+      organization_id: activeOrganization.id,
     };
   }
   let response;
@@ -67,7 +72,9 @@ export const simpleSearchAction = (values) => async (dispatch) => {
 };
 
 export const cloneProject = (projectID) => {
-  searchService.cloneProject(projectID);
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  searchService.cloneProject(projectID, activeOrganization.id);
 };
 
 export const clearSearch = () => async (dispatch) => {

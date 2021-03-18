@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { setActiveOrganization, updateOrganizationScreen } from 'store/actions/organization';
+import { setActiveOrganization, updateOrganizationScreen, getOrganizationFirstTime } from 'store/actions/organization';
 import logo from 'assets/images/studio_new_logo.png';
 import add from 'assets/images/add-icon.png';
 import profile from 'assets/images/user-profile.png';
@@ -22,12 +22,15 @@ import './style.scss';
 function Header(props) {
   const { /* user, */ logout } = props;
   const stateHeader = useSelector((state) => state.organization);
-  const dispatch = useDispatch(stateHeader.currentOrganization);
+  const dispatch = useDispatch();
+  useMemo(() => {
+    dispatch(getOrganizationFirstTime(stateHeader?.currentOrganization?.id));
+  }, [stateHeader?.currentOrganization?.id]);
   return (
     <header>
       <div className="top-header flex-div align-items-center">
         <div className="tophd_left">
-          <Link to="/" className="top_logo">
+          <Link to={`/org/${stateHeader?.currentOrganization?.domain}`} className="top_logo">
             {stateHeader?.logo ? <img src={`${global.config.resourceUrl}${stateHeader.logo}`} alt="logo" title="" /> : <img src={logo} alt="logo" title="" />}
           </Link>
         </div>

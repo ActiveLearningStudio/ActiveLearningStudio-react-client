@@ -38,8 +38,8 @@ const advancedSearch = (sendData) => httpService
 //   .then(({ data }) => data)
 //   .catch((err) => err.response.data);
 
-const cloneProject = (projectId) => httpService
-  .post(`/${apiVersion}/projects/${projectId}/clone`)
+const cloneProject = (projectId, subOrgId) => httpService
+  .post(`/${apiVersion}/suborganization/${subOrgId}/projects/${projectId}/clone`)
   .then((res) => Swal.fire(res.data.message))
   .catch((err) => {
     if (err.response.data.errors) {

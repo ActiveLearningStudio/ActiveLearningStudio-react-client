@@ -66,6 +66,7 @@ function SearchInterface(props) {
   const { history } = props;
   const allState = useSelector((state) => state.search);
   const activityTypesState = useSelector((state) => state.resource.types);
+  const { currentOrganization } = useSelector((state) => state.organization);
   const dispatch = useDispatch();
 
   const [activityTypes, setActivityTypes] = useState([]);
@@ -280,7 +281,9 @@ function SearchInterface(props) {
                                     };
                                     const result = await dispatch(simpleSearchAction(dataSend));
                                     setTotalCount(result.meta.total);
-                                    history.push('/search');
+                                    if (false) {
+                                      history.push(`org/${currentOrganization?.domain}/search`);
+                                    }
                                   }
                                   // setModalShow(true);
                                 }}

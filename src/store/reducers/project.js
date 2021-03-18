@@ -11,7 +11,7 @@ const INITIAL_STATE = {
   clone: [],
   isSharedProject: null,
   visibilityTypes: [],
-  currentVisibilityType: null,
+  currentVisibilityType: 1,
 };
 
 export default (state = INITIAL_STATE, action) => {

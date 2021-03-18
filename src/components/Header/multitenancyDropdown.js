@@ -3,6 +3,8 @@ import { Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
+import storageService from 'services/storage.service';
+import { CURRENT_ORG } from 'constants/index';
 import { getAllOrganization, setCurrentOrganization, setActiveOrganization } from 'store/actions/organization';
 
 export default function MultitenancyDropdown() {
@@ -32,6 +34,7 @@ export default function MultitenancyDropdown() {
               setSelectOrg(org.name);
               dispatch(setCurrentOrganization(org));
               dispatch(setActiveOrganization(org));
+              storageService.setItem(CURRENT_ORG, org.domain);
               history.push(`/org/${org.domain}`);
             }}
             >

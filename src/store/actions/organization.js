@@ -24,6 +24,14 @@ export const getAllOrganization = () => async (dispatch) => {
   });
 };
 
+export const getAllOrganizationSearch = (id, search) => async (dispatch) => {
+  const result = await organization.getOrganizationSearch(id, search);
+  dispatch({
+    type: actionTypes.ADD_SUBORG_LIST,
+    payload: result?.suborganization,
+  });
+};
+
 export const getOrganization = (id) => async (dispatch) => {
   const result = await organization.getOrganization(id);
   dispatch({

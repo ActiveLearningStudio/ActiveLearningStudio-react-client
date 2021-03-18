@@ -13,6 +13,7 @@ import {
   updateFeedbackScreen,
   setActiveOrganization,
   saveHistory,
+  getAllOrganizationSearch,
 } from 'store/actions/organization';
 
 const AllOrganizations = () => {
@@ -42,25 +43,38 @@ const AllOrganizations = () => {
             Create Organization
           </div>
         </div>
+        <div className="box-all-organization">
+          <div className="search-all">
+            <div className="input-with-icon">
+              <input
+                className="form-search"
+                type="text"
+                placeholder="Search organization"
+                onChange={(val) => {
+                  if (val.target.value?.trim()) {
+                    dispatch(getAllOrganizationSearch(activeOrganization.id, val.target.value?.trim()));
+                  } else {
+                    dispatch(getsubOrgList(activeOrganization?.id));
+                  }
+                }}
+              />
+              <FontAwesomeIcon icon="search" />
+            </div>
+            {/* <div className="filter">
+              Filter1
+            </div>
+            <div className="filter">
+              Filter2
+            </div> */}
+          </div>
+        </div>
         {allSuborgList.length > 0 ? (
           <div className="box-all-organization">
-            <div className="search-all">
-              <div className="input-with-icon">
-                <input className="form-search" type="text" placeholder="Search organization" />
-                <FontAwesomeIcon icon="search" />
-              </div>
-              <div className="filter">
-                Filter1
-              </div>
-              <div className="filter">
-                Filter2
-              </div>
-            </div>
-            <div className="paginationbox">
+            {/* <div className="paginationbox">
               <div className="count-pages">
                 1-20 of 100
               </div>
-            </div>
+            </div> */}
             <div className="all-list">
               {allSuborgList.map((org) => (
                 <div className="org-block">

@@ -15,14 +15,20 @@ export default function Headline() {
           <img src={foldericon} alt="" />
           Projects
         </div>
-        {(currentOrganization?.organization_role === 'Administrator' || currentOrganization?.organization_role === 'Course Creator') && (
+        {/* {(currentOrganization?.organization_role === 'Administrator' || currentOrganization?.organization_role === 'Course Creator') && (
           <Link to={`/org/${organization.currentOrganization?.domain}/project/create`}>
             <div className="btn-top-page">
               <FontAwesomeIcon icon="plus" className="mr-2" />
               Create a Project
             </div>
           </Link>
-        )}
+        )} */}
+        <Link to={`/org/${currentOrganization?.domain}/project/create`}>
+          <div className="btn-top-page">
+            <FontAwesomeIcon icon="plus" className="mr-2" />
+            Create a Project
+          </div>
+        </Link>
       </div>
       <p>
         In
