@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { GoogleLogin } from 'react-google-login';
+import { GoogleLogin } from 'react-google-login';
 
 import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
@@ -190,7 +190,7 @@ class LoginPage extends React.Component {
               </button>
             </div>
 
-            {/* <div className="form-group text-center mb-0">
+            <div className="form-group text-center mb-0">
               <GoogleLogin
                 clientId={global.config.gapiClientId}
                 theme="dark"
@@ -201,7 +201,7 @@ class LoginPage extends React.Component {
               >
                 <span>Login with Google</span>
               </GoogleLogin>
-            </div> */}
+            </div>
           </form>
         </div>
 
