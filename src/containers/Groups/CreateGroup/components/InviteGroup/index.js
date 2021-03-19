@@ -24,6 +24,7 @@ function InviteGroup(props) {
   // const [selectedMembers, setSelectedMembers] = useState([]);
   // const [filteredMembers, setFilteredMembers] = useState([]);
   const [showInvite, setShowInvite] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
 
   // const onChange = useCallback((e) => {
   //   setSearch(e.target.value);
@@ -50,7 +51,7 @@ function InviteGroup(props) {
           <h2 className="title">Invite Group Members</h2>
           <div className="title-cross" />
         </div>
-
+        Invite atlease 1 or more member to your group
         <div className="invite-member-wrapper">
           <div className="search-box">
             {/*
@@ -99,7 +100,9 @@ function InviteGroup(props) {
               ))}
             </div>
           </div>
-
+          <div style={{ color: 'red' }}>
+            {errorMsg}
+          </div>
           <button
             type="button"
             className="create-group-continue-btn"
@@ -108,7 +111,11 @@ function InviteGroup(props) {
               //   // eslint-disable-next-line no-restricted-globals
               //   ({ id, ...mem }) => ({ id: isNaN(id) ? 0 : id, ...mem }),
               // ));
-              nextStep();
+              if (selectedMembers.length > 0) {
+                nextStep();
+              } else {
+                setErrorMsg('Invite atleast 1 member');
+              }
             }}
           >
             Continue

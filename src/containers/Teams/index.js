@@ -42,14 +42,16 @@ function TeamsPage(props) {
   const history = useHistory();
   useEffect(() => {
     (async () => {
-      if (activeOrganization) {
+      if (activeOrganization && overview && !creation) {
         Swal.showLoading();
         await loadTeams();
         Swal.close();
+      } else {
+        await loadTeams();
       }
     }
     )();
-  }, [loadTeams, activeOrganization]);
+  }, [loadTeams, activeOrganization, overview, creation]);
 
   const status = creation
     ? 'creation'

@@ -42,14 +42,16 @@ function GroupPage(props) {
   const history = useHistory();
   useEffect(() => {
     (async () => {
-      if (activeOrganization) {
+      if (activeOrganization && overview && !creation) {
         Swal.showLoading();
         await loadGroups();
         Swal.close();
+      } else {
+        await loadGroups();
       }
     }
     )();
-  }, [loadGroups, activeOrganization]);
+  }, [loadGroups, activeOrganization, overview, creation]);
 
   const status = creation
     ? 'creation'
