@@ -40,7 +40,7 @@ node('currikistage') {
         echo 'Artifacts copied'
 
         echo 'Copy'
-        sh "yes | sudo cp -R bundle.tar.gz /root/curriki/client && cd /root/curriki/client && sudo tar -xvf bundle.tar.gz"
+        sh "yes | sudo cp -R bundle.tar.gz /root/curriki/client && cd /root/curriki/client && sudo tar -xvf bundle.tar.gz && docker cp build currikiprod-client:/usr/share/nginx"
         echo 'Copy completed'
     }
 }
