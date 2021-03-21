@@ -39,7 +39,7 @@ node('currikidev') {
         echo 'Artifacts copied'
 
         echo 'Copy'
-        sh "yes | sudo cp -R bundle.tar.gz /root/curriki/client && cd /root/curriki/client && sudo tar -xvf bundle.tar.gz"
+        sh "yes | sudo cp -R bundle.tar.gz /root/curriki/client && cd /root/curriki/client && sudo tar -xvf bundle.tar.gz && mv build html && docker cp html currikiprod-client:/usr/share/nginx"
         echo 'Copy completed'
     }
 }
