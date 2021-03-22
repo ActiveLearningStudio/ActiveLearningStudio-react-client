@@ -1,4 +1,5 @@
 import organization from 'services/organizations.services';
+import store from 'store';
 
 import * as actionTypes from '../actionTypes';
 
@@ -216,6 +217,25 @@ export const getOrgUsers = (id, page) => async (dispatch) => {
   const result = await organization.getOrgUsers(id, page);
   dispatch({
     type: actionTypes.GET_ORGANIZATION_USERS,
+    payload: result,
+  });
+  return result;
+};
+
+export const deleteUserFromOrganization = (id) => async (dispatch) => {
+  const { organization: { activeOrganization, users } } = store.getState();
+  await organization.deleteUserFromOrganization(activeOrganization?.id, { user_id: id });
+  users.data = users.data?.filter((user) => user.id !== id);
+  dispatch({
+    type: actionTypes.DELETE_USER_FROM_ORGANIZATION,
+    payload: users,
+  });
+};
+
+export const searchUserInOrganization = (id, query, page) => async (dispatch) => {
+  const result = await organization.searchUserInOrganization(id, query, page);
+  dispatch({
+    type: actionTypes.SEARCH_USER_IN_ORGANIZATION,
     payload: result,
   });
   return result;

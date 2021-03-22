@@ -684,13 +684,15 @@
   display: flex;
   margin-bottom: 15px;
   .find-user{
-    left: 21.72%;
-    right: 62.27%;
-    top: 18.83%;
-    bottom: 78.9%;
     border: 1px solid #515151;
     box-sizing: border-box;
     border-radius: 20px;
+    width: 18%;
+    .input-field{
+      border-radius: inherit;
+      border: 1px solid #515151;
+      padding-left: 8px;
+    }
   }
   .filter-sub-organization{
     font-size: 14px;

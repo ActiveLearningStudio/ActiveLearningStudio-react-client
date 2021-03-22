@@ -1,74 +1,50 @@
 import React, { useState, useMemo } from 'react';
-import PropTypes from 'prop-types';
-import UserCirlce from 'assets/images/UserCircle2.png';
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown, InputGroup, Button } from 'react-bootstrap';
 import {
   getOrgUsers,
   getRoles,
+  searchUserInOrganization,
 } from 'store/actions/organization';
+import SearchButton from 'assets/images/Vector.png';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagination from 'react-js-pagination';
 import Swal from 'sweetalert2';
 import AddUser from './addUser';
+import UserRow from './UserRow';
 
-function UserRow(props) {
-  const { user } = props;
-  return (
-    <>
-      <div className="user-row">
-        <img src={UserCirlce} alt="user_image" />
-        <div className="main-column">
-          <div className="username">
-            {`${user.first_name} ${user.last_name}`}
-          </div>
-          <div className="others">
-            {user.email}
-          </div>
-          <div className="third-row user-role">
-            Role:
-            {user.organization_role}
-          </div>
-        </div>
-        <div className="main-column">
-          <div className="others">
-            Organization: 1
-          </div>
-          <div className="others">
-            Groups:
-            {user.default_organization.groups_count ? user.default_organization.groups_count : 0}
-          </div>
-        </div>
-        <div className="main-column">
-          <div className="others">
-            Teams:
-            {user.default_organization.teams_count ? user.default_organization.teams_count : 0}
-          </div>
-          <div className="others">
-            Projects:
-            {user.projects_count}
-          </div>
-        </div>
-        <div className="secondary-column">
-          <a href="#">Edit</a>
-        </div>
-        <div className="secondary-column">
-          <a href="#">Delete</a>
-        </div>
-      </div>
-      <hr />
-    </>
-  );
-}
-UserRow.propTypes = {
-  user: PropTypes.object.isRequired,
-};
 function Users() {
   const dispatch = useDispatch();
   const [allUsersAdded, setAllUsersAdded] = useState([]);
   const allListState = useSelector((state) => state.organization);
   const [users, setUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [activePage, setActivePage] = useState(1);
   const { activeOrganization } = allListState;
+  const searchUsers = async (query, page) => {
+    Swal.showLoading();
+    const result = await dispatch(searchUserInOrganization(activeOrganization?.id, query, page));
+    Swal.close();
+    if (result.data.length === 0) {
+      Swal.fire({
+        title: 'Error',
+        text: 'User Not Found',
+        icon: 'warning',
+      });
+      setSearchQuery('');
+      setUsers(allListState?.users);
+    } else {
+      setUsers(result);
+    }
+    return result;
+  };
+  const onChangeHandler = async ({ target }) => {
+    if (target.value) {
+      setSearchQuery(target.value);
+    } else {
+      setSearchQuery('');
+      setUsers(allListState?.users);
+    }
+  };
   useMemo(async () => {
     dispatch(getRoles());
     Swal.showLoading();
@@ -119,21 +95,28 @@ function Users() {
         </Dropdown>
       </div>
       <div className="user-top-row">
-        <input placeholder="Find user" className="find-user" />
-        <div className="filter-sub-organization"> Filter Users by Sub-Organization</div>
-        <div className="filter-by-role"> Filter Users by Role</div>
+        <InputGroup className="find-user">
+          <input placeholder="Find User" className="input-field" value={searchQuery} onChange={onChangeHandler} />
+          <InputGroup.Append>
+            <Button variant="outline" onClick={() => searchUsers(searchQuery, activePage)}>
+              <img src={SearchButton} alt="search_button" />
+            </Button>
+          </InputGroup.Append>
+        </InputGroup>
+        {/* <div className="filter-sub-organization"> Filter Users by Sub-Organization</div> */}
+        {/* <div className="filter-by-role"> Filter Users by Role</div> */}
       </div>
       <div className="flex">
         <h5 className="user-created-me">Users Created by Me</h5>
         <hr />
       </div>
-      {users.data?.length > 0 ? users.data.map((user) => (
+      {users?.data?.length > 0 ? users.data.map((user) => (
         <UserRow user={user} />
       )) : null}
       <Pagination
         activePage={activePage}
-        itemsCountPerPage={users.meta?.per_page}
-        totalItemsCount={users.meta?.total}
+        itemsCountPerPage={users?.meta?.per_page}
+        totalItemsCount={users?.meta?.total}
         pageRangeDisplayed={5}
         onChange={(e) => {
           setActivePage(e);
