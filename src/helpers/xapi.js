@@ -119,7 +119,7 @@ export function extendStatement(h5pObj, statement, params, skipped = false) {
   // add the page info to the statement.
   let interactiveBookObject = h5pObj;
 
-  while (interactiveBookObject?.libraryInfo?.machineName !== 'H5P.InteractiveBook') {
+  while (interactiveBookObject && interactiveBookObject?.libraryInfo?.machineName !== 'H5P.InteractiveBook') {
     interactiveBookObject = interactiveBookObject.parent;
   }
 
