@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
-  Alert,
   Badge,
   Tabs,
   Tab,
@@ -42,18 +41,8 @@ const Activity = (props) => {
   return (
     <div className="outcome-summary-container p-4">
       {outcome === null && (
-        <div className="loader_gif">
+        <div className="loader_gif text-center">
           <img style={{ width: '50px' }} src={gifloader} alt="" />
-        </div>
-      )}
-
-      {outcome === false && (
-        <div className="row m-4">
-          <div className="col text-center">
-            <Alert variant="warning">
-              Outcome summary not available.
-            </Alert>
-          </div>
         </div>
       )}
 
