@@ -25,9 +25,7 @@ let Creation = (props) => {
 
         <div className="create-group-wrapper">
           <h2 className="describe">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Praesent vehicula scelerisque lacus quis sagittis.
-            Aenean et nulla ac mauris fringilla placerat ac eu turpis.
+            Start your group by adding a name and description
           </h2>
 
           <div className="creation-panel">
