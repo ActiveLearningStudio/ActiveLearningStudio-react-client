@@ -69,6 +69,7 @@ export default (state = INITIAL_STATE, action) => {
           isLoading: false,
           projects,
           thumbUrl: null,
+          currentVisibilityType: null,
         };
       }
       return {

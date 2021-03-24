@@ -200,11 +200,19 @@
     color: $fun-blue-1;
     padding:0;
   }
-
-  .all-tg-lister {
+  select{
     border-bottom: 1px solid #E5E5E5;
-    padding: 10px 0px;
+    border: none;
+    padding: 22px 195px 17px 0px;
+    option {
+      border-bottom: 1px solid #E5E5E5;
+      padding: 10px 0px;
+    }
   }
+  // .all-tg-lister {
+  //   border-bottom: 1px solid #E5E5E5;
+  //   padding: 10px 0px;
+  // }
 
   p{
     font-weight: normal;
@@ -216,7 +224,6 @@
 }
 #dropdown-basic {
   background-color: transparent;
-  position: absolute;
   right: 0px;
   color: $fun-blue-1;
   top: 1px;

@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import foldericon from 'assets/images/sidebar/folder-icon.png';
 import { useSelector } from 'react-redux';
+import { setCurrentVisibilityType } from 'store/actions/project';
 
 export default function Headline() {
   const organization = useSelector((state) => state.organization);
@@ -23,7 +24,7 @@ export default function Headline() {
             </div>
           </Link>
         )} */}
-        <Link to={`/org/${currentOrganization?.domain}/project/create`}>
+        <Link to={`/org/${currentOrganization?.domain}/project/create`} onClick={() => { setCurrentVisibilityType(null); }}>
           <div className="btn-top-page">
             <FontAwesomeIcon icon="plus" className="mr-2" />
             Create a Project

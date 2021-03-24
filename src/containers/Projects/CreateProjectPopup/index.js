@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import Swal from 'sweetalert2';
-import { Dropdown } from 'react-bootstrap';
 
 import computer from 'assets/images/computer.svg';
 import loader from 'assets/images/loader.svg';
@@ -51,10 +50,18 @@ const onSubmit = async (values, dispatch, props) => {
     //   imageValidation = "* Required";
     //   return false;
     // }
-    console.log(vType, 'Vtype');
+    setCurrentVisibilityType(vType);
     if (editMode) {
       // update
-      await dispatch(
+      Swal.fire({
+        title: 'Please Wait !',
+        html: 'Updating Project Setting ...',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      const result = dispatch(
         updateProjectAction(props.match.params.projectId, {
           name,
           description,
@@ -62,9 +69,23 @@ const onSubmit = async (values, dispatch, props) => {
           organization_visibility_type_id: vType,
         }),
       );
+      result.then(() => {
+        Swal.fire({
+          icon: 'success',
+          text: 'Project Setting Updated!',
+        });
+      });
     } else {
       // create
-      await dispatch(
+      Swal.fire({
+        title: 'Please Wait !',
+        html: 'We are creating a brand new project for you ...',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      const result = dispatch(
         props.project.thumbUrl
           ? createProjectAction({
             name,
@@ -82,6 +103,12 @@ const onSubmit = async (values, dispatch, props) => {
             thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
           }),
       );
+      result.then(() => {
+        Swal.fire({
+          icon: 'success',
+          text: 'Project Created Successfully!',
+        });
+      });
     }
 
     history.push('/projects');
@@ -142,8 +169,6 @@ let CreateProjectPopup = (props) => {
   // const [publicProject, setPublicProject] = useState(true);
   const openFile = useRef();
   const [visibilityTypeArray, setVisibilityTypeArray] = useState([]);
-  const [type, setType] = useState(vType);
-  console.log(type, 'la la land');
   // remove popup when escape is pressed
   const escFunction = useCallback(
     (event) => {
@@ -157,7 +182,9 @@ let CreateProjectPopup = (props) => {
   useEffect(() => {
     if (!editMode) {
       showCreateProjectModal();
-      setType(null);
+      if (vType === null) {
+        currentVisibilityType(1);
+      }
     }
   }, [editMode, showCreateProjectModal]); // Runs only once
 
@@ -173,40 +200,7 @@ let CreateProjectPopup = (props) => {
       setVisibilityTypeArray(data.data);
     })();
   }, [getProjectVisibilityTypes]);
-  function VisibilityTypes({ meta: { error, touched, warning } }) {
-    return (
-      <>
-        <Dropdown className="dropdown-visibilitytypes">
-          <Dropdown.Toggle id="dropdown-basic">
-            <h2 className="mt-4 mb-0" style={{ paddingBottom: '7px' }}>
-              Visibility Type
-            </h2>
-            {visibilityTypeArray[Number(vType) - 1]?.display_name}
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            {visibilityTypeArray.map((vT) => (
-              <div className="all-tg-lister">
-                <Dropdown.Item onClick={() => {
-                  setType(vT.id);
-                  currentVisibilityType(vT.id);
-                }}
-                >
-                  {vT.display_name}
-                </Dropdown.Item>
-              </div>
-            ))}
-          </Dropdown.Menu>
-        </Dropdown>
-        {touched && !vType && (
-          (error && <span className="validation-error">{error}</span>)
-          || (warning && <span>{warning}</span>)
-        )}
-      </>
-    );
-  }
-  VisibilityTypes.propTypes = {
-    meta: PropTypes.object.isRequired,
-  };
+
   return (
     <div className="create-program-wrapper">
       <PexelsAPI
@@ -360,13 +354,22 @@ let CreateProjectPopup = (props) => {
             <strong>100MB.</strong>
           </p>
         </div>
-        <Field
-          name="vType"
-          component={VisibilityTypes}
-          validate={[required, maxLength80]}
-          type="text"
-          autoComplete="new-password"
-        />
+        <div className="dropdown-visibilitytypes">
+          <div id="dropdown-basic">
+            <h2 className="mt-4 mb-0" style={{ paddingBottom: '7px' }}>
+              Visibility Type
+            </h2>
+          </div>
+          <Field
+            name="vType"
+            component="select"
+            // onChange={({ target }) => { currentVisibilityType(target.value); }}
+          >
+            {visibilityTypeArray.map((vT) => (
+              <option className="all-tg-lister" value={vT.id}>{vT.display_name}</option>
+            ))}
+          </Field>
+        </div>
         <div className="project-description">
           <h2 className="mt-4 mb-0">Project Description</h2>
 
@@ -431,8 +434,10 @@ const mapStateToProps = (state) => ({
     description: state.project.selectedProject
       ? state.project.selectedProject.description
       : null,
+    vType: state.project.selectedProject?.organization_visibility_type_id
+      ? state.project.selectedProject?.organization_visibility_type_id
+      : null,
   },
-  vType: state.project.currentVisibilityType,
   isLoading: state.project.isLoading,
 });
 
