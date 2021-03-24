@@ -150,6 +150,7 @@ function LtiPlaylistPreview(props) {
             <a
               onClick={() => setCollapsed()}
               className={`btn-expand-collapse${collapsed ? ' collapsed' : ''}`}
+              style={{ marginRight: '20px' }}
             >
               <FontAwesomeIcon icon="align-right" />
             </a>

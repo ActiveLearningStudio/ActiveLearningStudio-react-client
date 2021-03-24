@@ -609,6 +609,7 @@
 
 .h5p-content-wrap {
   .h5p-iframe-wrapper {
+ 
     & > iframe {
       width: 100%;
       // min-height: 600px !important;
@@ -2418,6 +2419,8 @@ a:hover {
     border-left: 1px solid #989da1;
     position: fixed;
     cursor: pointer;
+    padding-bottom: 100px !important;
+    overflow-y: auto;
 
     .drpdown {
       border-bottom: 1px solid #ddd;
@@ -2527,6 +2530,9 @@ a:hover {
       position: unset;
 
     }
+    a {
+      white-space: pre-wrap;
+    }
 
     li {
 
@@ -2617,13 +2623,14 @@ a:hover {
     justify-content: space-between;
     height: 50px;
     margin: 0;
-    padding: 0 20px;
+    padding: 0 0 0 20px;
     box-shadow: 0 -1px 0 #555 inset;
     align-items: center;
     position: fixed;
     width: 75%;
     top: 40px;
     z-index: 11;
+    background: #fff;
 
     h3 {
       font-size: 16px;
@@ -3720,5 +3727,47 @@ a:hover {
     color: #333
     }
     }
+  }
+}
+
+@media (max-width: 991px) {
+  .main-page-content.preview{
+  .both-p,.act-top-header {
+    display: none !important;
+  }
+  .container-flex-upper,.flex-container-preview {
+    justify-content: flex-end;
+
+    .slider-hover-section {
+      position: relative;
+      padding: 18px 10px;
+    }
+  }
+}
+  .flex-container.previews .activity-bg.left-vdo {
+    .h5p-iframe-wrapper,.flex-container-preview {
+      width:85%
+    }
+    
+  }
+  .iframe-height-resource-shared {
+    .h5p-iframe-wrapper{
+      width:100% !important
+    }
+  }
+  .flex-container.previews .activity-bg.left-vdo.collapsed {
+    .h5p-iframe-wrapper,.flex-container-preview {
+      width:50%
+    }
+  }
+  .flex-container.previews .right-sidegolf-info {
+    width: 15%  !important;
+    right:0;
+    top:40px
+  }
+  .flex-container.previews .right-sidegolf-info.collapsed {
+    width: 50%  !important;
+    right:0;
+    top:40px
   }
 }
