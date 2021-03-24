@@ -21,7 +21,7 @@ export function isxAPINeeded(currentRoute) {
   return allowedH5PActvityPaths().includes(currentRoute);
 }
 
-export function extendStatement(statement, params, skipped = false) {
+export function extendStatement(h5pObj, statement, params, skipped = false) {
   const {
     path,
     activityId,
@@ -111,6 +111,21 @@ export function extendStatement(statement, params, skipped = false) {
   // Some H5Ps provide incompatible interaction types. Mapping those to valid ones here
   if (statementExtended.object && statementExtended.object.definition.interactionType === 'compound') {
     statementExtended.object.definition.interactionType = 'choice';
+  }
+
+  // We need page information for InteractiveBook statements but the children objects are agnostic to where
+  // they're being used.
+  // Here we crawl up through their heritage to see if they belong to an InteractiveBook, if they do, we
+  // add the page info to the statement.
+  let interactiveBookObject = h5pObj;
+
+  while (interactiveBookObject && interactiveBookObject?.libraryInfo?.machineName !== 'H5P.InteractiveBook') {
+    interactiveBookObject = interactiveBookObject.parent;
+  }
+
+  if (interactiveBookObject?.libraryInfo?.machineName === 'H5P.InteractiveBook') {
+    const chapterIndex = interactiveBookObject.getActiveChapter();
+    statementExtended.object.definition.extensions['http://currikistudio.org/x-api/h5p-chapter-name'] = interactiveBookObject.chapters[chapterIndex].title;
   }
 
   return statementExtended;
