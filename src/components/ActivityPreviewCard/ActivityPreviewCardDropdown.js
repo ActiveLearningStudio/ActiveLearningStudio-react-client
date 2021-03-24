@@ -18,6 +18,7 @@ const ActivityPreviewCardDropdown = (props) => {
   return (
     <Dropdown.Item
       as={Link}
+      style={{ borderBottom: '1px solid #eee', padding: '10px' }}
       to={
         shared
           ? `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview/shared`
