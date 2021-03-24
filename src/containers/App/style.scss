@@ -607,6 +607,7 @@
 
 .h5p-content-wrap {
   .h5p-iframe-wrapper {
+ 
     & > iframe {
       width: 100%;
       // min-height: 600px !important;
@@ -2420,6 +2421,8 @@ a:hover {
     background-color: #fff;
     //border-bottom: 1px solid #989da1;
     cursor: pointer;
+    padding-bottom: 100px !important;
+    overflow-y: auto;
 
     .drpdown {
       border-bottom: 1px solid #ddd;
@@ -2499,6 +2502,55 @@ a:hover {
     min-height: 500px;
     padding: 0 !important;
     background-color: #fff !important;
+   
+    .vd-controls {
+      height: 40px;
+      background: #fff;
+    }
+    
+
+  }
+
+  .all-laylist-oracle {
+     padding: 20px 5px;
+    .preview-activity-dropdown
+    {
+      position: unset;
+      align-items: center;
+      padding: 0 15px;
+      border-bottom: 1px solid #ddd;
+    padding: 10px 20px 4px 10px;
+    }
+
+    .resource-dropdown {
+      position: unset;
+
+    }
+    a {
+      white-space: pre-wrap;
+    }
+
+    li {
+
+      list-style-type: none;
+      margin-bottom: 7px;
+      font-size: 14px;
+      font-weight: 400;
+      color: rgb(51,51,51);
+      display: flex;
+      align-items: center;
+
+      &:hover a {
+        text-decoration: none;
+      }
+    }
+    .bg-thumbnail {
+      width: 60px;
+      height: 50px;
+      background-size: cover;
+      margin-right: 10px;
+      background-position: center;
+    }
   }
 
   .right-sidegolf-info {
@@ -2565,10 +2617,26 @@ a:hover {
   .flex-container-preview {
     display: flex;
     justify-content: space-between;
-    background: #FAFAFA;
-    padding: 0 20px;
-    border-radius: 5px 0 0;
+    height: 50px;
+    margin: 0;
+    padding: 0 0 0 20px;
+    box-shadow: 0 -1px 0 #555 inset;
     align-items: center;
+    position: fixed;
+    width: 75%;
+    top: 40px;
+    z-index: 11;
+    background: #fff;
+
+    h3 {
+      font-size: 16px;
+      font-weight: bold;
+      color: #084892;
+      span {
+        font-size: 16px;
+        font-weight: 400;
+      }
+    }
 
     .dropdown-menu {
       top: 8px !important;
@@ -3655,5 +3723,47 @@ a:hover {
     color: #333
     }
     }
+  }
+}
+
+@media (max-width: 991px) {
+  .main-page-content.preview{
+  .both-p,.act-top-header {
+    display: none !important;
+  }
+  .container-flex-upper,.flex-container-preview {
+    justify-content: flex-end;
+
+    .slider-hover-section {
+      position: relative;
+      padding: 18px 10px;
+    }
+  }
+}
+  .flex-container.previews .activity-bg.left-vdo {
+    .h5p-iframe-wrapper,.flex-container-preview {
+      width:85%
+    }
+    
+  }
+  .iframe-height-resource-shared {
+    .h5p-iframe-wrapper{
+      width:100% !important
+    }
+  }
+  .flex-container.previews .activity-bg.left-vdo.collapsed {
+    .h5p-iframe-wrapper,.flex-container-preview {
+      width:50%
+    }
+  }
+  .flex-container.previews .right-sidegolf-info {
+    width: 15%  !important;
+    right:0;
+    top:40px
+  }
+  .flex-container.previews .right-sidegolf-info.collapsed {
+    width: 50%  !important;
+    right:0;
+    top:40px
   }
 }
