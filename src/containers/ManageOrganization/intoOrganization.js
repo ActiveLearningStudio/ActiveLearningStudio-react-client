@@ -96,11 +96,12 @@ export default function IntroOrganizations(props) {
                 <div className="value">Users</div>
               </div>
               <div
-                onClick="#"
-                //   () => {
-                //   dispatch(updateOrganizationScreen('all-list'));
-                //   dispatch(updatePreviousScreen('projects'));
-                // }
+                onClick={() => {
+                  dispatch(updateOrganizationScreen('Users'));
+                  dispatch(updatePreviousScreen('intro'));
+                  dispatch(clearSuborgList());
+                  dispatch(saveHistory(detail));
+                }}
                 className="more"
               >
                 See More
