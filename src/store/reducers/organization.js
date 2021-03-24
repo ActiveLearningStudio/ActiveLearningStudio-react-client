@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   backScreen: '',
   roles: [],
   users: [],
+  searchUsers: [],
   allOrganizations: [],
   currentOrganization: null,
   activeOrganization: null,
@@ -100,6 +101,21 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         history: null,
+      };
+    case actionTypes.GET_ORGANIZATION_USERS:
+      return {
+        ...state,
+        users: action.payload,
+      };
+    case actionTypes.DELETE_USER_FROM_ORGANIZATION:
+      return {
+        ...state,
+        users: action.payload,
+      };
+    case actionTypes.SEARCH_USER_IN_ORGANIZATION:
+      return {
+        ...state,
+        searchUsers: action.payload,
       };
     default:
       return state;

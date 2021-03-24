@@ -41,7 +41,7 @@ export const loadGroupsAction = () => async (dispatch) => {
       type: actionTypes.PAGE_LOADING,
     });
 
-    const { groups } = await groupService.getAll(activeOrganization.id);
+    const { groups } = await groupService.getAll(activeOrganization?.id);
 
     dispatch({
       type: actionTypes.LOAD_GROUPS,

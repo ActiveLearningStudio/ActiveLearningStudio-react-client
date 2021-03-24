@@ -44,15 +44,14 @@ const onSubmit = async (values, dispatch, props) => {
     history,
     project: { thumbUrl },
     editMode,
-    vType,
   } = props;
-  const { name, description } = values;
+  const { name, description, vType } = values;
   try {
     // if (!thumbUrl) {
     //   imageValidation = "* Required";
     //   return false;
     // }
-
+    console.log(vType, 'Vtype');
     if (editMode) {
       // update
       await dispatch(
@@ -174,6 +173,40 @@ let CreateProjectPopup = (props) => {
       setVisibilityTypeArray(data.data);
     })();
   }, [getProjectVisibilityTypes]);
+  function VisibilityTypes({ meta: { error, touched, warning } }) {
+    return (
+      <>
+        <Dropdown className="dropdown-visibilitytypes">
+          <Dropdown.Toggle id="dropdown-basic">
+            <h2 className="mt-4 mb-0" style={{ paddingBottom: '7px' }}>
+              Visibility Type
+            </h2>
+            {visibilityTypeArray[Number(vType) - 1]?.display_name}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            {visibilityTypeArray.map((vT) => (
+              <div className="all-tg-lister">
+                <Dropdown.Item onClick={() => {
+                  setType(vT.id);
+                  currentVisibilityType(vT.id);
+                }}
+                >
+                  {vT.display_name}
+                </Dropdown.Item>
+              </div>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+        {touched && !vType && (
+          (error && <span className="validation-error">{error}</span>)
+          || (warning && <span>{warning}</span>)
+        )}
+      </>
+    );
+  }
+  VisibilityTypes.propTypes = {
+    meta: PropTypes.object.isRequired,
+  };
   return (
     <div className="create-program-wrapper">
       <PexelsAPI
@@ -327,27 +360,13 @@ let CreateProjectPopup = (props) => {
             <strong>100MB.</strong>
           </p>
         </div>
-        <Dropdown className="dropdown-visibilitytypes">
-          <Dropdown.Toggle id="dropdown-basic">
-            <p>
-              Visibility Type
-            </p>
-            {visibilityTypeArray[Number(vType) - 1]?.name}
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            {visibilityTypeArray.map((vT) => (
-              <div className="all-tg-lister">
-                <Dropdown.Item onClick={() => {
-                  setType(vT.name);
-                  currentVisibilityType(vT.id);
-                }}
-                >
-                  {vT.display_name}
-                </Dropdown.Item>
-              </div>
-            ))}
-          </Dropdown.Menu>
-        </Dropdown>
+        <Field
+          name="vType"
+          component={VisibilityTypes}
+          validate={[required, maxLength80]}
+          type="text"
+          autoComplete="new-password"
+        />
         <div className="project-description">
           <h2 className="mt-4 mb-0">Project Description</h2>
 

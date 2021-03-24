@@ -11,7 +11,7 @@ const INITIAL_STATE = {
   clone: [],
   isSharedProject: null,
   visibilityTypes: [],
-  currentVisibilityType: 1,
+  currentVisibilityType: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -47,7 +47,7 @@ export default (state = INITIAL_STATE, action) => {
         isLoading: false,
         selectedProject: action.payload.project,
         thumbUrl: action.payload.project.thumb_url,
-        currentVisibilityType: action.payload.project.organization_id,
+        currentVisibilityType: action.payload.project.organization_visibility_type_id,
       };
     case actionTypes.LOAD_PROJECT_FAIL:
       return {

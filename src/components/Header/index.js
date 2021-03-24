@@ -1,11 +1,18 @@
-import React, { useMemo } from 'react';
+import React
+// ,{ useMemo }
+  from 'react';
 import PropTypes from 'prop-types';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { setActiveOrganization, updateOrganizationScreen, getOrganizationFirstTime } from 'store/actions/organization';
+import
+{
+  setActiveOrganization, updateOrganizationScreen,
+  //  getOrganizationFirstTime
+}
+  from 'store/actions/organization';
 import logo from 'assets/images/studio_new_logo.png';
 import add from 'assets/images/add-icon.png';
 import profile from 'assets/images/user-profile.png';
@@ -23,9 +30,9 @@ function Header(props) {
   const { /* user, */ logout } = props;
   const stateHeader = useSelector((state) => state.organization);
   const dispatch = useDispatch();
-  useMemo(() => {
-    dispatch(getOrganizationFirstTime(stateHeader?.currentOrganization?.id));
-  }, [stateHeader?.currentOrganization?.id]);
+  // useMemo(() => {
+  //   dispatch(getOrganizationFirstTime(stateHeader?.currentOrganization?.id));
+  // }, [stateHeader?.currentOrganization?.id]);
   return (
     <header>
       <div className="top-header flex-div align-items-center">

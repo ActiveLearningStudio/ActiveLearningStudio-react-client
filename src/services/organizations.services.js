@@ -105,7 +105,14 @@ const getOrgUsers = (id, page) => httpService
   .get(`/${apiVersion}/suborganizations/${id}/users?page=${page}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
-
+const deleteUserFromOrganization = (id, body) => httpService
+  .remove(`/${apiVersion}/suborganizations/${id}/delete-user`, body)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+const searchUserInOrganization = (id, query, page) => httpService
+  .get(`/${apiVersion}/suborganizations/${id}/users?query=${query}&page=${page}`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
 export default {
   getAll,
   getOrganization,
@@ -120,4 +127,6 @@ export default {
   inviteUserOutside,
   getOrgUsers,
   getOrganizationSearch,
+  deleteUserFromOrganization,
+  searchUserInOrganization,
 };
