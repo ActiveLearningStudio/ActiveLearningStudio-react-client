@@ -2178,9 +2178,8 @@ a:hover {
 }
 
 .back-header {
-  min-height: 57px;
-  border-bottom: 1px solid #e3e3e3;
-  border-left: 1px solid #e3e3e3;
+  
+  
   padding: 13px 35px;
   display: flex;
   justify-content: space-between;
@@ -2318,11 +2317,7 @@ a:hover {
 }
 
 .main-page-content.preview {
-  background: #1b2e3d;
-  padding: 30px 15px;
-  z-index: 111;
-  position: relative;
-  height: 100vh;
+  padding: 0;
 
   .line::after {
     content: "";
@@ -2419,7 +2414,8 @@ a:hover {
     min-height: 160px;
     padding: 0 !important;
     background-color: #fff;
-    //border-bottom: 1px solid #989da1;
+    border-left: 1px solid #989da1;
+    position: fixed;
     cursor: pointer;
     padding-bottom: 100px !important;
     overflow-y: auto;
@@ -2478,10 +2474,15 @@ a:hover {
   .main-item-wrapper {
     position: relative;
     background: #fff;
-    min-height: 443px;
-    max-height: 593px;
+    min-height: 100%;
+    max-height: 100vh;
     overflow-y: auto;
     z-index: 0;
+    margin-top: 50px;
+
+    .item-container {
+      padding-bottom: 50px;
+    }
   }
 
   .slider-scroll-auto {
@@ -2490,9 +2491,10 @@ a:hover {
   }
 
   .flex-container {
-    max-width: 1280px;
-    margin: 0 auto;
-    border-radius: 5px;
+    width: 100%;
+    margin-top: 40px;
+    z-index: 11;
+    border-radius: 0px;
   }
 
   .activity-bg.left-vdo {
@@ -2526,9 +2528,6 @@ a:hover {
       position: unset;
 
     }
-    a {
-      white-space: pre-wrap;
-    }
 
     li {
 
@@ -2555,8 +2554,8 @@ a:hover {
 
   .right-sidegolf-info {
     width: 40%;
-    max-height: 650px;
-    min-height: 500px;
+    max-height: 100%;
+    min-height: 100%;
     height: 100%;
   }
 
@@ -2574,8 +2573,8 @@ a:hover {
 
     .slider-btn {
       display: flex;
-      width: 80px;
-      justify-content: space-between;
+      width: 100%;
+      justify-content: flex-end;
 
       i {
         border: none;
@@ -2619,14 +2618,13 @@ a:hover {
     justify-content: space-between;
     height: 50px;
     margin: 0;
-    padding: 0 0 0 20px;
+    padding: 0 20px;
     box-shadow: 0 -1px 0 #555 inset;
     align-items: center;
     position: fixed;
     width: 75%;
     top: 40px;
     z-index: 11;
-    background: #fff;
 
     h3 {
       font-size: 16px;
@@ -2655,11 +2653,11 @@ a:hover {
       line-height: 19px;
       padding-bottom: 0;
       letter-spacing: 0;
-      color: #464646;
+      color: #084892;
       opacity: 1;
       border-bottom: none;
       margin: 0 !important;
-      font-family: 'Open Sans', sans-serif;
+     // font-family: $oracle, sans-serif;
     }
 
     .slide-control {
@@ -2674,7 +2672,7 @@ a:hover {
       color: #7B7B7B;
       opacity: 1;
       height: auto;
-      font-family: 'Open Sans', sans-serif;
+      // font-family: $oracle, sans-serif;
       padding: 12px 12px;
       text-transform: capitalize;
 
