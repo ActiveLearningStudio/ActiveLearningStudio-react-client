@@ -134,7 +134,7 @@ const Activity = (props) => {
             if (!xAPIData) return; // Some interactions have no data to report
 
             const iXAPIStatement = JSON.stringify(
-              xAPIHelper.extendStatement(xAPIData.statement, params, true),
+              xAPIHelper.extendStatement(this, xAPIData.statement, params, true),
             );
             sendStatement(iXAPIStatement);
           }, this);
