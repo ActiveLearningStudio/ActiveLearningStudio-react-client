@@ -5,7 +5,6 @@ import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './style.scss';
-import { useSelector } from 'react-redux';
 
 const ActivityPreviewCardDropdown = (props) => {
   const {
@@ -15,23 +14,24 @@ const ActivityPreviewCardDropdown = (props) => {
     projectId,
     playlistId,
   } = props;
-  const organization = useSelector((state) => state.organization);
+
   return (
     <Dropdown.Item
       as={Link}
+      style={{ borderBottom: '1px solid #eee', padding: '10px' }}
       to={
         shared
           ? `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview/shared`
           : (
             showLti
               ? `/playlist/${playlistId}/activity/${activity.id}/preview/lti`
-              : `/org/${organization.currentOrganization?.domain}/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
+              : `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
           )
       }
     >
       <div className="d-flex align-items-center">
         <FontAwesomeIcon icon="play-circle" />
-        <div className="ml-2 title">{activity.title}</div>
+        <div className="ml-2 title" style={{ whiteSpace: 'normal' }}>{activity.title}</div>
       </div>
     </Dropdown.Item>
   );
