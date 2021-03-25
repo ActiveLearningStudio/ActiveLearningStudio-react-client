@@ -176,7 +176,7 @@ function LtiPlaylistPreview(props) {
                 />
               </div>
             </Tab>
-            <Tab eventKey="contact" title="About">
+            {/* <Tab eventKey="contact" title="About">
               <div className="descr-">
                 <div className="tti">
                   description
@@ -185,7 +185,7 @@ function LtiPlaylistPreview(props) {
                   {selectedPlaylist.project.description}
                 </p>
               </div>
-            </Tab>
+            </Tab> */}
           </Tabs>
         </div>
       </div>
