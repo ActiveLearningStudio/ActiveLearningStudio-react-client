@@ -118,7 +118,7 @@ const Activity = (props) => {
       };
 
       // Extending the xAPI statement with our custom values and sending it off to LRS
-      const extendedStatementObj = xAPIHelper.extendStatement(event.data.statement, params);
+      const extendedStatementObj = xAPIHelper.extendStatement(this, event.data.statement, params);
       const xapiData = JSON.stringify(extendedStatementObj);
 
       if (event.data.statement.verb.display['en-US'] === 'submitted-curriki') {
