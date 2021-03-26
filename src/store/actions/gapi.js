@@ -145,6 +145,7 @@ export const turnInAction = (classworkId, courseId, auth) => async (dispatch) =>
 
 export const getSummaryAuthAction = (auth, courseId, classworkId, submissionId) => async (dispatch) => {
   const summaryAuth = await gapiService.getSummaryAuth(JSON.stringify(auth.tokenObj), courseId, classworkId, submissionId);
+
   dispatch({
     type: GET_SUMMARY_AUTH,
     summaryAuth,
