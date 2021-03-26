@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import './style.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteGroupAction } from 'store/actions/group';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function GroupCard(props) {
   const {
@@ -39,6 +40,10 @@ function GroupCard(props) {
     <div className="group-card-content">
       <div className="group-title">
         <Link to={`/org/${organization.currentOrganization?.domain}/groups/${id}`} className="title m-0">{name}</Link>
+        <Link className="edit-button" to={`/org/${organization.currentOrganization?.domain}/groups/${id}/edit`}>
+          <FontAwesomeIcon icon="pen" className="mr-2" />
+          Edit
+        </Link>
         <h2 className="describe">{description}</h2>
       </div>
 

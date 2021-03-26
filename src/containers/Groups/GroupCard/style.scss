@@ -21,7 +21,10 @@ $filled: #44ca92;
   & > .sub-title {
     padding: 15px 0;
   }
-
+  .edit-button {
+    float: right;
+    color: $selected_color;
+  }
   .group-member-content {
     padding: 15px 0;
 

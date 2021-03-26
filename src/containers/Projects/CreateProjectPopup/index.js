@@ -20,7 +20,6 @@ import {
   updateProjectAction,
   uploadProjectThumbnailAction,
   showCreateProjectModalAction,
-  setCurrentVisibilityType,
   visibilityTypes,
 } from 'store/actions/project';
 import InputField from 'components/InputField';
@@ -45,96 +44,84 @@ const onSubmit = async (values, dispatch, props) => {
     editMode,
   } = props;
   const { name, description, vType } = values;
-  try {
-    // if (!thumbUrl) {
-    //   imageValidation = "* Required";
-    //   return false;
+  // if (!thumbUrl) {
+  //   imageValidation = "* Required";
+  //   return false;
+  // }
+  if (editMode) {
+    // UPDATE
+    // Swal.fire({
+    //   title: 'Please Wait !',
+    //   html: 'Updating Project Setting ...',
+    //   allowOutsideClick: false,
+    //   onBeforeOpen: () => {
+    //     Swal.showLoading();
+    //   },
+    // });
+    // const result = await
+    dispatch(
+      updateProjectAction(props.match.params.projectId, {
+        name,
+        description,
+        thumb_url: thumbUrl,
+        organization_visibility_type_id: vType || 1,
+      }),
+    );
+    // if (result?.errors && result?.message) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Oops...',
+    //     text: result?.message ? result?.message : 'Something went wrong!',
+    //   });
+    // } else {
+    //   Swal.fire({
+    //     icon: 'success',
+    //     text: 'Project Settings Updated!',
+    //   });
     // }
-    setCurrentVisibilityType(vType);
-    if (editMode) {
-      // update
-      Swal.fire({
-        title: 'Please Wait !',
-        html: 'Updating Project Setting ...',
-        allowOutsideClick: false,
-        onBeforeOpen: () => {
-          Swal.showLoading();
-        },
-      });
-      const result = dispatch(
-        updateProjectAction(props.match.params.projectId, {
+  } else {
+    // create
+    // Swal.fire({
+    //   title: 'Please Wait !',
+    //   html: 'We are creating a brand new project for you ...',
+    //   allowOutsideClick: false,
+    //   onBeforeOpen: () => {
+    //     Swal.showLoading();
+    //   },
+    // });
+    // const result = await
+    dispatch(
+      props.project.thumbUrl
+        ? createProjectAction({
           name,
           description,
           thumb_url: thumbUrl,
-          organization_visibility_type_id: vType,
+          is_public: projectShare,
+          organization_visibility_type_id: vType || 1,
+        })
+        : createProjectAction({
+          name,
+          description,
+          is_public: projectShare,
+          organization_visibility_type_id: vType || 1,
+          // eslint-disable-next-line max-len
+          thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
         }),
-      );
-      result.then(() => {
-        Swal.fire({
-          icon: 'success',
-          text: 'Project Setting Updated!',
-        });
-      });
-    } else {
-      // create
-      Swal.fire({
-        title: 'Please Wait !',
-        html: 'We are creating a brand new project for you ...',
-        allowOutsideClick: false,
-        onBeforeOpen: () => {
-          Swal.showLoading();
-        },
-      });
-      const result = dispatch(
-        props.project.thumbUrl
-          ? createProjectAction({
-            name,
-            description,
-            thumb_url: thumbUrl,
-            is_public: projectShare,
-            organization_visibility_type_id: vType,
-          })
-          : createProjectAction({
-            name,
-            description,
-            is_public: projectShare,
-            organization_visibility_type_id: vType,
-            // eslint-disable-next-line max-len
-            thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
-          }),
-      );
-      result.then(() => {
-        Swal.fire({
-          icon: 'success',
-          text: 'Project Created Successfully!',
-        });
-      });
-    }
-
-    history.push('/projects');
-  } catch (e) {
-    if (e.errors) {
-      if (e.errors.description) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: e.errors.description[0],
-        });
-      } else if (e.errors.description) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: e.errors.description[0],
-        });
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: e.message,
-        });
-      }
-    }
+    );
+    // if (result?.errors && result?.message) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Oops...',
+    //     text: result?.message ? result?.message : 'Something went wrong!',
+    //   });
+    // } else {
+    //   Swal.fire({
+    //     icon: 'success',
+    //     text: 'Project Created Successfully!',
+    //   });
+    // }
   }
+  history.push('/projects');
 };
 
 export const uploadThumb = async (e, props) => {
@@ -161,7 +148,6 @@ let CreateProjectPopup = (props) => {
     handleCloseProjectModal,
     showCreateProjectModal,
     getProjectVisibilityTypes,
-    currentVisibilityType,
     vType,
   } = props;
 
@@ -182,11 +168,8 @@ let CreateProjectPopup = (props) => {
   useEffect(() => {
     if (!editMode) {
       showCreateProjectModal();
-      if (vType === null) {
-        currentVisibilityType(1);
-      }
     }
-  }, [editMode, showCreateProjectModal]); // Runs only once
+  }, [editMode, showCreateProjectModal, vType]); // Runs only once
 
   useEffect(() => {
     document.addEventListener('keydown', escFunction, false);
@@ -409,7 +392,6 @@ CreateProjectPopup.propTypes = {
   handleCloseProjectModal: PropTypes.func.isRequired,
   showCreateProjectModal: PropTypes.func.isRequired,
   getProjectVisibilityTypes: PropTypes.func.isRequired,
-  currentVisibilityType: PropTypes.func.isRequired,
   vType: PropTypes.string.isRequired,
 };
 
@@ -423,7 +405,6 @@ const mapDispatchToProps = (dispatch) => ({
   uploadProjectThumbnail: (formData) => dispatch(uploadProjectThumbnailAction(formData)),
   showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
   getProjectVisibilityTypes: () => dispatch(visibilityTypes()),
-  currentVisibilityType: (vType) => dispatch(setCurrentVisibilityType(vType)),
 });
 
 const mapStateToProps = (state) => ({

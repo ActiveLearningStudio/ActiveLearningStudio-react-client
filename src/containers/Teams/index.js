@@ -20,6 +20,7 @@ import './style.scss';
 // TODO: need to remove after connect API
 const breadCrumbData = {
   creation: 'teams/create team',
+  editMode: 'edit team',
   projectShow: 'projects',
   channelShow: 'projects',
   teamShow: 'teams',
@@ -32,6 +33,7 @@ function TeamsPage(props) {
     overview,
     creation,
     teamShow,
+    editMode,
     projectShow,
     channelShow,
     loadTeams,
@@ -42,7 +44,7 @@ function TeamsPage(props) {
   const history = useHistory();
   useEffect(() => {
     (async () => {
-      if (activeOrganization && overview && !creation) {
+      if (activeOrganization && overview && !creation && !editMode) {
         Swal.showLoading();
         await loadTeams();
         Swal.close();
@@ -51,24 +53,25 @@ function TeamsPage(props) {
       }
     }
     )();
-  }, [loadTeams, activeOrganization, overview, creation]);
+  }, [loadTeams, activeOrganization, overview, creation, editMode]);
 
   const status = creation
     ? 'creation'
-    : teamShow
-      ? 'teamShow'
-      : projectShow
-        ? 'projectShow'
-        : overview
-          ? 'teamShow'
-          : 'channelShow';
+    : editMode
+      ? 'editMode'
+      : teamShow
+        ? 'teamShow'
+        : projectShow
+          ? 'projectShow'
+          : overview
+            ? 'teamShow'
+            : 'channelShow';
 
   const teamId = parseInt(location.pathname.split('teams/')[1], 10);
   const selectedTeam = teams.find((team) => team.id === teamId);
 
   useEffect(() => {
     let crumb = breadCrumbData[status];
-
     if (teamShow && selectedTeam) {
       crumb += (`/${selectedTeam.name} Members`);
     }
@@ -82,6 +85,7 @@ function TeamsPage(props) {
 
   const title = {
     creation: 'Create Team',
+    editMode: 'Edit Team',
     teamShow: `${selectedTeam ? selectedTeam.name : 'Team'} Members`,
     projectShow: `${selectedTeam ? selectedTeam.name : 'Team'} Projects`,
     channelShow: 'Channels',
@@ -129,8 +133,8 @@ function TeamsPage(props) {
               </div>
             )}
 
-            {creation && (
-              <div className="row sub-content"><CreateTeam /></div>
+            {(creation || editMode) && (
+              <div className="row sub-content"><CreateTeam editMode={editMode} selectedTeam={selectedTeam} /></div>
             )}
 
             {teamShow && selectedTeam && (
@@ -158,6 +162,7 @@ TeamsPage.propTypes = {
   teams: PropTypes.array.isRequired,
   overview: PropTypes.bool,
   creation: PropTypes.bool,
+  editMode: PropTypes.bool,
   teamShow: PropTypes.bool,
   projectShow: PropTypes.bool,
   channelShow: PropTypes.bool,
@@ -167,6 +172,7 @@ TeamsPage.propTypes = {
 TeamsPage.defaultProps = {
   overview: false,
   creation: false,
+  editMode: false,
   teamShow: false,
   projectShow: false,
   channelShow: false,

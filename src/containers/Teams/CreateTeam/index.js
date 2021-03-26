@@ -9,6 +9,7 @@ import { searchUsersAction } from 'store/actions/auth';
 import { loadMyProjectsAction } from 'store/actions/project';
 import {
   createTeamAction,
+  updateTeamAction,
   inviteTeamMemberAction,
   inviteTeamMembersAction,
   resetSelectedTeamAction,
@@ -28,6 +29,8 @@ function CreateTeam(props) {
   const {
     history,
     team,
+    editMode,
+    selectedTeam,
     isSearching,
     searchedUsers,
     projects,
@@ -40,6 +43,7 @@ function CreateTeam(props) {
     inviteUser,
     showAssign,
     createTeam,
+    updateTeam,
     setInvitedMembers,
   } = props;
 
@@ -58,7 +62,12 @@ function CreateTeam(props) {
     loadProjects();
     resetSelectedTeam();
     showCreate();
-  }, [loadProjects, resetSelectedTeam, showCreate]);
+    if (editMode) {
+      updateSelectedTeam(selectedTeam);
+      setSelectedMembers(selectedTeam?.users);
+      setSelectedProjects(selectedTeam?.projects.map((project) => project.id));
+    }
+  }, [loadProjects, resetSelectedTeam, showCreate, editMode, selectedTeam, updateSelectedTeam]);
 
   const submitBack = () => {
     if (showInviting) {
@@ -85,44 +94,66 @@ function CreateTeam(props) {
       // eslint-disable-next-line no-restricted-globals
       ({ id, ...mem }) => ({ id: isNaN(id) ? 0 : id, ...mem }),
     ));
-
-    createTeam({
-      organization_id: organization.activeOrganization?.id,
-      ...team.selectedTeam,
-      users: selectedMembers || [],
-      projects: projectIds,
-    })
-      .then(() => {
+    if (editMode) {
+      updateTeam(selectedTeam?.id, {
+        organization_id: organization.activeOrganization?.id,
+        ...team.selectedTeam,
+        users: selectedMembers || [],
+        projects: projectIds,
+      }).then(() => {
         Swal.fire({
           icon: 'success',
-          title: 'Successfully created.',
+          title: 'Successfully updated.',
         });
         history.push(`/org/${organization.currentOrganization?.domain}/teams`);
       })
-      .catch(() => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Create Team failed, kindly try again.',
+        .catch(() => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Update Team failed, kindly try again.',
+          });
         });
-      });
-  }, [createTeam, team.selectedTeam, history, selectedMembers]);
+    } else {
+      createTeam({
+        organization_id: organization.activeOrganization?.id,
+        ...team.selectedTeam,
+        users: selectedMembers || [],
+        projects: projectIds,
+      })
+        .then(() => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Successfully created.',
+          });
+          history.push(`/org/${organization.currentOrganization?.domain}/teams`);
+        })
+        .catch(() => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Create Team failed, kindly try again.',
+          });
+        });
+    }
+  }, [createTeam, team.selectedTeam, history, selectedMembers, updateTeam]);
 
   return (
     <div className="create-team">
       <div>
         {backButton}
-        <CreateTeamSidebar team={team} />
+        <CreateTeamSidebar team={team} editMode={editMode} />
       </div>
 
       <div className="create-team-content">
         {showCreation && (
-          <Creation updateTeam={updateSelectedTeam} nextStep={showInvite} />
+          <Creation editMode={editMode} selectedTeam={selectedTeam} updateTeam={updateSelectedTeam} nextStep={showInvite} />
         )}
 
         {showInviting && (
           <InviteTeam
             team={team.selectedTeam}
+            editMode={editMode}
             isSearching={isSearching}
             searchedUsers={searchedUsers}
             isInviting={team.isInviting}
@@ -137,6 +168,7 @@ function CreateTeam(props) {
         {showAssigning && (
           <AssignProject
             isSaving={team.isLoading}
+            editMode={editMode}
             projects={projects}
             selectedProjects={selectedProjects}
             handleSubmit={handleSubmit}
@@ -153,6 +185,8 @@ function CreateTeam(props) {
 CreateTeam.propTypes = {
   history: PropTypes.object.isRequired,
   team: PropTypes.object.isRequired,
+  editMode: PropTypes.bool.isRequired,
+  selectedTeam: PropTypes.object.isRequired,
   isSearching: PropTypes.bool.isRequired,
   searchedUsers: PropTypes.array.isRequired,
   projects: PropTypes.array.isRequired,
@@ -165,6 +199,7 @@ CreateTeam.propTypes = {
   inviteUser: PropTypes.func.isRequired,
   showAssign: PropTypes.func.isRequired,
   createTeam: PropTypes.func.isRequired,
+  updateTeam: PropTypes.func.isRequired,
   setInvitedMembers: PropTypes.func.isRequired,
 };
 
@@ -186,6 +221,7 @@ const mapDispatchToProps = (dispatch) => ({
   inviteUser: (user) => dispatch(inviteTeamMemberAction(user)),
   showAssign: () => dispatch(showAssigningAction()),
   createTeam: (data) => dispatch(createTeamAction(data)),
+  updateTeam: (teamId, data) => dispatch(updateTeamAction(teamId, data)),
   setInvitedMembers: (users) => dispatch(inviteTeamMembersAction(users)),
 });
 

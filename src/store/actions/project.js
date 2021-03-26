@@ -41,9 +41,9 @@ export const createProjectAction = (data) => async (dispatch) => {
   const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({ type: actionTypes.CREATE_PROJECT_REQUEST });
-
+    Swal.showLoading();
     const { project } = await projectService.create(data, activeOrganization.id);
-
+    Swal.close();
     dispatch({
       type: actionTypes.CREATE_PROJECT_SUCCESS,
       payload: { project },
@@ -51,6 +51,11 @@ export const createProjectAction = (data) => async (dispatch) => {
     dispatch(allSidebarProjects());
   } catch (e) {
     dispatch({ type: actionTypes.CREATE_PROJECT_FAIL });
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: e.message || 'Something went wrong !',
+    });
   }
 };
 
@@ -90,9 +95,9 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
   const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({ type: actionTypes.UPDATE_PROJECT_REQUEST });
-
+    Swal.showLoading();
     const { project } = await projectService.update(projectId, data, activeOrganization.id);
-
+    Swal.close();
     dispatch({
       type: actionTypes.UPDATE_PROJECT_SUCCESS,
       payload: { project },
@@ -100,6 +105,11 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
     dispatch(allSidebarProjects());
   } catch (e) {
     dispatch({ type: actionTypes.UPDATE_PROJECT_FAIL });
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: e.message || 'Something went wrong !',
+    });
   }
 };
 
