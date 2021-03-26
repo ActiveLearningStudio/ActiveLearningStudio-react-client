@@ -66,7 +66,7 @@ export const createGroupAction = (data) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.CREATE_GROUP_REQUEST });
 
-    const { group } = await groupService.create(data, activeOrganization.id);
+    const { group } = await groupService.create(data, activeOrganization?.id);
 
     dispatch({
       type: actionTypes.CREATE_GROUP_SUCCESS,
@@ -89,7 +89,7 @@ export const loadGroupAction = (groupId) => async (dispatch) => {
       type: actionTypes.LOAD_GROUP_REQUEST,
     });
 
-    const { group } = await groupService.get(groupId, activeOrganization.id);
+    const { group } = await groupService.get(groupId, activeOrganization?.id);
 
     dispatch({
       type: actionTypes.LOAD_GROUP_SUCCESS,
@@ -108,7 +108,7 @@ export const updateGroupAction = (groupId, data) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.UPDATE_GROUP_REQUEST });
 
-    const { group } = await groupService.update(groupId, data, activeOrganization.id);
+    const { group } = await groupService.update(groupId, data, activeOrganization?.id);
 
     dispatch({
       type: actionTypes.UPDATE_GROUP_SUCCESS,
@@ -127,7 +127,7 @@ export const deleteGroupAction = (groupId) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.DELETE_GROUP_REQUEST });
 
-    await groupService.remove(groupId, activeOrganization.id);
+    await groupService.remove(groupId, activeOrganization?.id);
 
     dispatch({
       type: actionTypes.DELETE_GROUP_SUCCESS,

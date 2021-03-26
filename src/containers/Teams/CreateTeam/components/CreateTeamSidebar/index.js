@@ -11,6 +11,7 @@ function CreateTeamSidebar(props) {
       showInviting,
       showAssigning,
     },
+    editMode,
   } = props;
 
   return (
@@ -29,7 +30,10 @@ function CreateTeamSidebar(props) {
           <span className="bottom-vertical-line" />
         </div>
 
-        <span className="name">Create Team</span>
+        <span className="name">
+          {editMode ? 'Edit ' : 'Create '}
+          Team
+        </span>
       </div>
 
       <div
@@ -73,6 +77,7 @@ function CreateTeamSidebar(props) {
 
 CreateTeamSidebar.propTypes = {
   team: PropTypes.object.isRequired,
+  editMode: PropTypes.bool.isRequired,
 };
 
 export default CreateTeamSidebar;

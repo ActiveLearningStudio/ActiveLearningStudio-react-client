@@ -66,7 +66,7 @@ export const createTeamAction = (data) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.CREATE_TEAM_REQUEST });
 
-    const { team } = await teamService.create(data, activeOrganization.id);
+    const { team } = await teamService.create(data, activeOrganization?.id);
 
     dispatch({
       type: actionTypes.CREATE_TEAM_SUCCESS,
@@ -89,7 +89,7 @@ export const loadTeamAction = (teamId) => async (dispatch) => {
       type: actionTypes.LOAD_TEAM_REQUEST,
     });
 
-    const { team } = await teamService.get(teamId, activeOrganization.id);
+    const { team } = await teamService.get(teamId, activeOrganization?.id);
 
     dispatch({
       type: actionTypes.LOAD_TEAM_SUCCESS,
@@ -108,7 +108,7 @@ export const updateTeamAction = (teamId, data) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.UPDATE_TEAM_REQUEST });
 
-    const { team } = await teamService.update(teamId, data, activeOrganization.id);
+    const { team } = await teamService.update(teamId, data, activeOrganization?.id);
 
     dispatch({
       type: actionTypes.UPDATE_TEAM_SUCCESS,
@@ -127,7 +127,7 @@ export const deleteTeamAction = (teamId) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.DELETE_TEAM_REQUEST });
 
-    await teamService.remove(teamId, activeOrganization.id);
+    await teamService.remove(teamId, activeOrganization?.id);
 
     dispatch({
       type: actionTypes.DELETE_TEAM_SUCCESS,

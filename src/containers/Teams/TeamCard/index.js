@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import './style.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteTeamAction } from 'store/actions/team';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function TeamCard(props) {
   const {
@@ -40,6 +41,10 @@ function TeamCard(props) {
     <div className="team-card-content">
       <div className="team-title">
         <Link to={`/org/${organization.currentOrganization?.domain}/teams/${id}`} className="title m-0">{name}</Link>
+        <Link className="edit-button" to={`/org/${organization.currentOrganization?.domain}/teams/${id}/edit`}>
+          <FontAwesomeIcon icon="pen" className="mr-2" />
+          Edit
+        </Link>
         <h2 className="describe">{description}</h2>
       </div>
 

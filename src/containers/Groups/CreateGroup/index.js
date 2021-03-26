@@ -9,6 +9,7 @@ import { searchUsersAction } from 'store/actions/auth';
 import { loadMyProjectsAction } from 'store/actions/project';
 import {
   createGroupAction,
+  updateGroupAction,
   inviteGroupMemberAction,
   inviteGroupMembersAction,
   resetSelectedGroupAction,
@@ -28,6 +29,8 @@ function CreateGroup(props) {
   const {
     history,
     group,
+    editMode,
+    selectedGroup,
     isSearching,
     searchedUsers,
     projects,
@@ -40,6 +43,7 @@ function CreateGroup(props) {
     inviteUser,
     showAssign,
     createGroup,
+    updateGroup,
     setInvitedMembers,
   } = props;
 
@@ -58,7 +62,12 @@ function CreateGroup(props) {
     loadProjects();
     resetSelectedGroup();
     showCreate();
-  }, [loadProjects, resetSelectedGroup, showCreate]);
+    if (editMode) {
+      updateSelectedGroup(selectedGroup);
+      setSelectedMembers(selectedGroup?.users);
+      setSelectedProjects(selectedGroup?.projects.map((project) => project.id));
+    }
+  }, [loadProjects, resetSelectedGroup, showCreate, editMode, selectedGroup, updateSelectedGroup]);
 
   const submitBack = () => {
     if (showInviting) {
@@ -85,44 +94,65 @@ function CreateGroup(props) {
       // eslint-disable-next-line no-restricted-globals
       ({ id, ...mem }) => ({ id: isNaN(id) ? 0 : id, ...mem }),
     ));
-
-    createGroup({
-      organization_id: organization.activeOrganization?.id,
-      ...group.selectedGroup,
-      users: selectedMembers || [],
-      projects: projectIds,
-    })
-      .then(() => {
+    if (editMode) {
+      updateGroup(selectedGroup?.id, {
+        organization_id: organization.activeOrganization?.id,
+        ...group.selectedGroup,
+        users: selectedMembers || [],
+        projects: projectIds,
+      }).then(() => {
         Swal.fire({
           icon: 'success',
-          title: 'Successfully created.',
+          title: 'Successfully updated.',
         });
         history.push(`/org/${organization.currentOrganization?.domain}/groups`);
-      })
-      .catch(() => {
+      }).catch(() => {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'Create Group failed, kindly try again.',
+          text: 'Update Group failed, kindly try again.',
         });
       });
-  }, [createGroup, group.selectedGroup, history, selectedMembers]);
+    } else {
+      createGroup({
+        organization_id: organization.activeOrganization?.id,
+        ...group.selectedGroup,
+        users: selectedMembers || [],
+        projects: projectIds,
+      })
+        .then(() => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Successfully created.',
+          });
+          history.push(`/org/${organization.currentOrganization?.domain}/groups`);
+        })
+        .catch(() => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Create Group failed, kindly try again.',
+          });
+        });
+    }
+  }, [createGroup, group.selectedGroup, history, selectedMembers, updateGroup]);
 
   return (
     <div className="create-group">
       <div>
         {backButton}
-        <CreateGroupSidebar group={group} />
+        <CreateGroupSidebar group={group} editMode={editMode} />
       </div>
 
       <div className="create-group-content">
         {showCreation && (
-          <Creation updateGroup={updateSelectedGroup} nextStep={showInvite} />
+          <Creation editMode={editMode} updateGroup={updateSelectedGroup} nextStep={showInvite} />
         )}
 
         {showInviting && (
           <InviteGroup
             group={group.selectedGroup}
+            editMode={editMode}
             isSearching={isSearching}
             searchedUsers={searchedUsers}
             isInviting={group.isInviting}
@@ -137,6 +167,7 @@ function CreateGroup(props) {
         {showAssigning && (
           <AssignProject
             isSaving={group.isLoading}
+            editMode={editMode}
             projects={projects}
             selectedProjects={selectedProjects}
             handleSubmit={handleSubmit}
@@ -153,6 +184,8 @@ function CreateGroup(props) {
 CreateGroup.propTypes = {
   history: PropTypes.object.isRequired,
   group: PropTypes.object.isRequired,
+  editMode: PropTypes.bool.isRequired,
+  selectedGroup: PropTypes.object.isRequired,
   isSearching: PropTypes.bool.isRequired,
   searchedUsers: PropTypes.array.isRequired,
   projects: PropTypes.array.isRequired,
@@ -165,6 +198,7 @@ CreateGroup.propTypes = {
   inviteUser: PropTypes.func.isRequired,
   showAssign: PropTypes.func.isRequired,
   createGroup: PropTypes.func.isRequired,
+  updateGroup: PropTypes.func.isRequired,
   setInvitedMembers: PropTypes.func.isRequired,
 };
 
@@ -186,6 +220,7 @@ const mapDispatchToProps = (dispatch) => ({
   inviteUser: (user) => dispatch(inviteGroupMemberAction(user)),
   showAssign: () => dispatch(showAssigningAction()),
   createGroup: (data) => dispatch(createGroupAction(data)),
+  updateGroup: (teamId, data) => dispatch(updateGroupAction(teamId, data)),
   setInvitedMembers: (users) => dispatch(inviteGroupMembersAction(users)),
 });
 

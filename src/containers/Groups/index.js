@@ -20,6 +20,7 @@ import './style.scss';
 // TODO: need to remove after connect API
 const breadCrumbData = {
   creation: 'group/create group',
+  editMode: 'edit team',
   projectShow: 'projects',
   channelShow: 'projects',
   groupShow: 'groups',
@@ -32,6 +33,7 @@ function GroupPage(props) {
     overview,
     creation,
     groupShow,
+    editMode,
     projectShow,
     channelShow,
     loadGroups,
@@ -42,7 +44,7 @@ function GroupPage(props) {
   const history = useHistory();
   useEffect(() => {
     (async () => {
-      if (activeOrganization && overview && !creation) {
+      if (activeOrganization && overview && !creation && !editMode) {
         Swal.showLoading();
         await loadGroups();
         Swal.close();
@@ -51,17 +53,19 @@ function GroupPage(props) {
       }
     }
     )();
-  }, [loadGroups, activeOrganization, overview, creation]);
+  }, [loadGroups, activeOrganization, overview, creation, editMode]);
 
   const status = creation
     ? 'creation'
-    : groupShow
-      ? 'groupShow'
-      : projectShow
-        ? 'projectShow'
-        : overview
-          ? 'groupShow'
-          : 'channelShow';
+    : editMode
+      ? 'editMode'
+      : groupShow
+        ? 'groupShow'
+        : projectShow
+          ? 'projectShow'
+          : overview
+            ? 'groupShow'
+            : 'channelShow';
 
   const groupId = parseInt(location.pathname.split('groups/')[1], 10);
   const selectedGroup = groups.find((group) => group.id === groupId);
@@ -82,11 +86,14 @@ function GroupPage(props) {
 
   const title = {
     creation: 'Create Group',
+    editMode: 'Edit Team',
     groupShow: `${selectedGroup ? selectedGroup.name : 'Group'} Members`,
     projectShow: `${selectedGroup ? selectedGroup.name : 'Group'} Projects`,
     channelShow: 'Channels',
   };
-
+  const goBack = () => {
+    history.goBack();
+  };
   return (
     <>
       <div className="side-wrapper-group">
@@ -101,7 +108,7 @@ function GroupPage(props) {
               )}
             </div>
           ))}
-          <Link className="back-button-main-page" onClick={() => history.goBack()}>
+          <Link className="back-button-main-page" onClick={goBack}>
             <FontAwesomeIcon icon="chevron-left" />
             Back
           </Link>
@@ -129,8 +136,8 @@ function GroupPage(props) {
               </div>
             )}
 
-            {creation && (
-              <div className="row sub-content"><CreateGroup /></div>
+            {(creation || editMode) && (
+              <div className="row sub-content"><CreateGroup editMode={editMode} selectedGroup={selectedGroup} /></div>
             )}
 
             {groupShow && selectedGroup && (
@@ -158,6 +165,7 @@ GroupPage.propTypes = {
   groups: PropTypes.array.isRequired,
   overview: PropTypes.bool,
   creation: PropTypes.bool,
+  editMode: PropTypes.bool,
   groupShow: PropTypes.bool,
   projectShow: PropTypes.bool,
   channelShow: PropTypes.bool,
@@ -167,6 +175,7 @@ GroupPage.propTypes = {
 GroupPage.defaultProps = {
   overview: false,
   creation: false,
+  editMode: false,
   groupShow: false,
   projectShow: false,
   channelShow: false,

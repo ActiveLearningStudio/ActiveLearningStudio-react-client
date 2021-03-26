@@ -11,6 +11,7 @@ function CreateGroupSidebar(props) {
       showInviting,
       showAssigning,
     },
+    editMode,
   } = props;
 
   return (
@@ -29,7 +30,10 @@ function CreateGroupSidebar(props) {
           <span className="bottom-vertical-line" />
         </div>
 
-        <span className="name">Create Group</span>
+        <span className="name">
+          {editMode ? 'Edit ' : 'Create '}
+          Group
+        </span>
       </div>
 
       <div
@@ -73,6 +77,7 @@ function CreateGroupSidebar(props) {
 
 CreateGroupSidebar.propTypes = {
   group: PropTypes.object.isRequired,
+  editMode: PropTypes.bool.isRequired,
 };
 
 export default CreateGroupSidebar;
