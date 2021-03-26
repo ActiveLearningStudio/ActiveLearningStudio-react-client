@@ -90,7 +90,9 @@ function TeamsPage(props) {
     projectShow: `${selectedTeam ? selectedTeam.name : 'Team'} Projects`,
     channelShow: 'Channels',
   };
-
+  const goBack = () => {
+    history.goBack();
+  };
   return (
     <>
       <div className="side-wrapper-team">
@@ -105,7 +107,7 @@ function TeamsPage(props) {
               )}
             </div>
           ))}
-          <Link className="back-button-main-page" onClick={() => history.goBack()}>
+          <Link className="back-button-main-page" onClick={goBack}>
             <FontAwesomeIcon icon="chevron-left" />
             Back
           </Link>

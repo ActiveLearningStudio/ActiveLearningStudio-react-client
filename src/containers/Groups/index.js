@@ -91,7 +91,9 @@ function GroupPage(props) {
     projectShow: `${selectedGroup ? selectedGroup.name : 'Group'} Projects`,
     channelShow: 'Channels',
   };
-
+  const goBack = () => {
+    history.goBack();
+  };
   return (
     <>
       <div className="side-wrapper-group">
@@ -106,7 +108,7 @@ function GroupPage(props) {
               )}
             </div>
           ))}
-          <Link className="back-button-main-page" onClick={() => history.goBack()}>
+          <Link className="back-button-main-page" onClick={goBack}>
             <FontAwesomeIcon icon="chevron-left" />
             Back
           </Link>
