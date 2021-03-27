@@ -1,5 +1,5 @@
-node('currikistage') {
 
+node('currikineaf') {
     stage('Cloning Git') {
         checkout scm
     } 
@@ -13,7 +13,7 @@ node('currikistage') {
     }
     stage('Build') {
         nodejs('nodejs') {
-            sh 'cp /root/envs/.env.local.stage .env.local'
+            sh 'cp /root/curriki/client/.env.local .env.local'
             sh 'npm run build'
             echo "Build completed"
         }
@@ -33,7 +33,6 @@ node('currikistage') {
     stage('Stash changes') {
         stash allowEmpty: true, includes: 'bundle.tar.gz', name: 'buildArtifacts'
     }
-    
     stage('Copying Build') {
         echo 'Unstash'
         unstash 'buildArtifacts'
@@ -44,3 +43,4 @@ node('currikistage') {
         echo 'Copy completed'
     }
 }
+
