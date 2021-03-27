@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import { FadeDiv } from 'utils';
 import { loadMyProjectsAction } from 'store/actions/project';
 import { loadTeamAction, addProjectsAction } from 'store/actions/team';
-import Sidebar from 'components/Sidebar';
-import Header from 'components/Header';
+// import Sidebar from 'components/Sidebar';
+// import Header from 'components/Header';
 import AssignProject from '../CreateTeam/components/AssignProject';
 
 import './style.scss';
@@ -28,6 +28,9 @@ function AddProjectsPage(props) {
     loadTeam(teamId);
   }, [loadProjects, loadTeam, teamId]);
 
+  const [selectedProjects, setSelectedProjects] = useState([]);
+  const [searchProject, setSearchProject] = useState('');
+
   const filteredProjects = projects.filter(
     (p) => (team.selectedTeam.projects || []).findIndex((proj) => p.id === proj.id) === -1,
   );
@@ -45,19 +48,17 @@ function AddProjectsPage(props) {
 
   return (
     <>
-      <Header {...props} />
-
-      <div className="teams-page main-content-wrapper">
-        <div className="sidebar-wrapper">
-          <Sidebar />
-        </div>
-
+      <div className="teams-page">
         <FadeDiv className="assign-projects">
           <div className="assign-projects-content">
             <AssignProject
               isSaving={team.isLoading}
               projects={filteredProjects}
               handleSubmit={handleSubmit}
+              selectedProjects={selectedProjects}
+              setSelectedProjects={setSelectedProjects}
+              search={searchProject}
+              setSearch={setSearchProject}
             />
           </div>
         </FadeDiv>

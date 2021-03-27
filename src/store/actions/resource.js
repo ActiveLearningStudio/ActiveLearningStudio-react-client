@@ -1,7 +1,9 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import Echo from 'laravel-echo';
 
 import resourceService from 'services/resource.service';
+import socketConnection from 'services/http.service';
 // import { loadProjectPlaylistsAction } from './playlist';
 import * as actionTypes from '../actionTypes';
 
@@ -134,9 +136,7 @@ export const createResourceAction = (
     parameters: JSON.stringify(window.h5peditorCopy.getParams()),
     action: 'create',
   };
-
   const insertedH5pResource = await resourceService.h5pToken(data);
-
   if (!insertedH5pResource.fail) {
     const resource = insertedH5pResource;
 
@@ -150,12 +150,13 @@ export const createResourceAction = (
       content: 'place_holder',
       subject_id:
         metadata.metaContent.metaSubject
-        && metadata.metaContent.metaSubject.subject,
+        && metadata.metaContent.metaSubject,
       education_level_id:
         metadata.metaContent.metaEducationLevels
-        && metadata.metaContent.metaEducationLevels.name,
+        && metadata.metaContent.metaEducationLevels,
     };
     const insertedResource = await resourceService.create(activity);
+    Swal.close();
 
     resourceSaved(true);
 
@@ -169,9 +170,9 @@ export const createResourceAction = (
       editor,
       editorType,
     });
-    // dispatch(hideCreateResourceModal());
-
-    // window.location.href = `/project/${projectId}`;
+    dispatch({
+      type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
+    });
   } else {
     dispatch({
       type: actionTypes.RESOURCE_VALIDATION_ERRORS,
@@ -323,7 +324,9 @@ export const showDescribeActivity = (activity, metadata = null) => ({
 export const showDescribeActivityAction = (activity, activityId = null) => async (dispatch) => {
   try {
     if (activityId) {
+      Swal.showLoading();
       const response = await resourceService.activityH5p(activityId);
+      Swal.close();
       if (response.activity) {
         const metadata = {
           title: response.activity.title,
@@ -339,6 +342,7 @@ export const showDescribeActivityAction = (activity, activityId = null) => async
     }
   } catch (e) {
     console.log(e);
+    Swal.close();
   }
 };
 
@@ -387,8 +391,9 @@ export const createResourceByH5PUploadAction = (
         editor,
         editorType,
       });
-
-      // window.location.href = `/project/${projectId}`;
+      dispatch({
+        type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
+      });
     } else {
       throw new Error('Error occurred while creating resource');
     }
@@ -409,7 +414,6 @@ export const editResourceAction = (
     parameters: JSON.stringify(window.h5peditorCopy.getParams()),
     action: 'create',
   };
-
   try {
     const dataUpload = {
       title: metadata.metaContent && metadata.metaContent.metaTitle,
@@ -417,16 +421,16 @@ export const editResourceAction = (
       thumb_url: metadata.thumbUrl,
       subject_id:
         metadata.metaContent.metaSubject
-        && metadata.metaContent.metaSubject.subject,
+        && metadata.metaContent.metaSubject,
       education_level_id:
         metadata.metaContent.metaEducationLevels
-        && metadata.metaContent.metaEducationLevels.name,
+        && metadata.metaContent.metaEducationLevels,
       h5p_content_id: h5pid.h5p_content.id,
       action: 'create',
       data: h5pdata,
     };
-
     const response = await resourceService.h5pSettingsUpdate(activityId, dataUpload);
+    Swal.close();
 
     resourceSaved(true);
 
@@ -439,6 +443,10 @@ export const editResourceAction = (
       resource,
       editor,
       editorType,
+    });
+
+    dispatch({
+      type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
     });
   } catch (e) {
     console.log(e);
@@ -511,4 +519,39 @@ export const saveFormDataInCreation = (formData) => async (dispatch) => {
     metaSubject: formData.metaSubject,
     metaEducationLevels: formData.metaEducationLevels,
   });
+};
+
+export const updatedActivity = (userId) => async () => {
+  const echo = new Echo(socketConnection.notificationSocket());
+
+  echo.private('activity-update')
+    .listen('ActivityUpdatedEvent', (msg) => {
+      if (msg.userId !== userId) {
+        const path = window.location.pathname;
+
+        let message = '';
+        if (path.includes(`activity/${msg.activityId}`)) {
+          message = 'This activity has been modified by other team member. Are you ok to refresh page to see what is updated?';
+        } else if (path.includes(`playlist/${msg.playlistId}`)) {
+          message = 'This playlist has been modified by other team member. Are you ok to refresh page to see what is updated?';
+        } else if (path.includes(`project/${msg.projectId}`)) {
+          message = 'This project has been modified by other team member. Are you ok to refresh page to see what is updated?';
+        }
+
+        if (message) {
+          Swal.fire({
+            title: message,
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            denyButtonText: 'No',
+          })
+            .then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+        }
+      }
+    });
 };

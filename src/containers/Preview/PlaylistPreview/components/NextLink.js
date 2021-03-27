@@ -77,7 +77,11 @@ function NextLink(props) {
                   })
                     .then((result) => {
                       if (result.value) {
-                        history.push(`/project/${projectId}/${shared ? 'preview' : 'preview'}`);
+                        if (showLti) {
+                          history.push(`/project/${projectId}/shared`);
+                        } else {
+                          history.push(`/project/${projectId}/preview`);
+                        }
                       }
                     });
                 }

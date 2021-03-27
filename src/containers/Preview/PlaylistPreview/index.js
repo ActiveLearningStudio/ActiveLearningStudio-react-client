@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { Suspense, lazy, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -7,10 +6,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import Switch from 'react-switch';
 import { confirmAlert } from 'react-confirm-alert';
+import { Tab, Tabs } from 'react-bootstrap';
 
 import projectIcon from 'assets/images/project_icon.svg';
 import { loadPlaylistAction, loadProjectPlaylistsAction, LoadHP } from 'store/actions/playlist';
 import { shareActivity, removeShareActivity, loadH5pResourceSettings } from 'store/actions/resource';
+import { collapsedSideBar } from 'store/actions/ui';
 import Unauthorized from 'components/Unauthorized';
 import PreviousLink from './components/PreviousLink';
 import NextLink from './components/NextLink';
@@ -31,6 +32,8 @@ function PlaylistPreview(props) {
     loadHP,
     loadPlaylist,
     loadProjectPlaylists,
+    collapsed,
+    setCollapsed,
   } = props;
 
   useEffect(() => {
@@ -195,44 +198,74 @@ function PlaylistPreview(props) {
       ) : (
         <section className="main-page-content preview iframe-height-resource">
           <div className="container-flex-upper">
-            <Link to={`/project/${selectedPlaylist.project.id}/preview`}>
-              <div className="project-title">
-                <img src={projectIcon} alt="" />
-                {`Project: ${selectedPlaylist.project.name}`}
-              </div>
-            </Link>
-
+            <div className="both-p">
+              <Link to={`/project/${selectedPlaylist.project.id}/preview`}>
+                <div className="project-title">
+                  <img src={projectIcon} alt="" />
+                  {`Project: ${selectedPlaylist.project.name}`}
+                </div>
+              </Link>
+              <Link>
+                <div className="project-title">
+                  <img src={projectIcon} alt="" />
+                  {`Playlist: ${selectedPlaylist.title}`}
+                </div>
+              </Link>
+            </div>
             <Link to={`/project/${selectedPlaylist.project.id}`}>
               <FontAwesomeIcon icon="times" />
             </Link>
           </div>
 
           <div className="flex-container previews">
-            <div className="activity-bg left-vdo">
+            <div className={`activity-bg left-vdo${collapsed ? ' collapsed' : ''}`}>
               <div className="flex-container-preview">
                 <div className="act-top-header">
                   <div className="heading-wrapper">
                     <div className="main-heading">
-                      {currentActivity && currentActivity.title}
+                      {currentActivity && (
+                        <h3>
+                          Activity:
+                          &nbsp;
+                          <span>
+                            {currentActivity.title}
+                          </span>
+                        </h3>
+                      )}
                     </div>
                   </div>
                 </div>
-
-                <div className="right-control vd-controls">
-                  <div className="slider-btn">
-                    <PreviousLink
-                      projectId={projectId}
-                      playlistId={playlistId}
-                      previousResource={previousResource}
-                      allPlaylists={allPlaylists}
-                    />
-                    <NextLink
-                      projectId={projectId}
-                      playlistId={playlistId}
-                      nextResource={nextResource}
-                      allPlaylists={allPlaylists}
-                    />
+                <div className="back-header align-items-center justify-content-between">
+                  <div className="right-control vd-controls">
+                    <div className="slider-btn">
+                      <PreviousLink
+                        projectId={projectId}
+                        playlistId={playlistId}
+                        previousResource={previousResource}
+                        allPlaylists={allPlaylists}
+                      />
+                      <NextLink
+                        projectId={projectId}
+                        playlistId={playlistId}
+                        nextResource={nextResource}
+                        allPlaylists={allPlaylists}
+                      />
+                    </div>
                   </div>
+                  {/* <div>
+                    <Link
+                      className="go-back-"
+                      to={`/project/${selectedPlaylist.project.id}/preview`}
+                    >
+                      <FontAwesomeIcon icon="undo" className="mr-2" />
+                    </Link>
+                  </div> */}
+                  <a
+                    onClick={() => setCollapsed()}
+                    className={`btn-expand-collapse${collapsed ? ' collapsed' : ''}`}
+                  >
+                    <FontAwesomeIcon icon="align-right" />
+                  </a>
                 </div>
               </div>
 
@@ -251,39 +284,30 @@ function PlaylistPreview(props) {
               </div>
             </div>
 
-            <div className="right-sidegolf-info">
-              <div className="abs-div">
-                <div className="back-header align-items-center justify-content-between">
-                  <div>
-                    <Link
-                      className="go-back-button-preview"
-                      to={`/project/${selectedPlaylist.project.id}/preview`}
-                    >
-                      <FontAwesomeIcon icon="undo" className="mr-2" />
-                      Back to Project
-                    </Link>
+            <div className={`right-sidegolf-info${collapsed ? ' collapsed' : ''}`}>
+              <Tabs defaultActiveKey="home" id="uncontrolled-tab-example">
+                <Tab eventKey="home" title="Activities">
+                  <div className="all-laylist-oracle">
+                    <ActivitiesList
+                      projectId={projectId}
+                      playlistId={playlistId}
+                      activities={selectedPlaylist.activities}
+                      playlist={playlist.selectedPlaylist}
+                    />
                   </div>
-
-                  {/* <Dropdown className="ml-auto playlist-dropdown check">
-                    <Dropdown.Toggle className="playlist-dropdown-btn">
-                      <FontAwesomeIcon icon="ellipsis-v" />
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <ActivitiesDropdown
-                        projectId={projectId}
-                        playlistId={playlistId}
-                        activities={selectedPlaylist.activities}
-                      />
-                    </Dropdown.Menu>
-                  </Dropdown> */}
-                </div>
-
-                <div className="scrollDiv long">
+                </Tab>
+                <Tab eventKey="profile" title="Share">
                   <div className="watcher spaner">
+                    {activityShared && (
+                      <div className="shared-link" onClick={viewSharedLink}>
+                        <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
+                        View Shared Link
+                      </div>
+                    )}
                     <div>
                       Share Activity
                       <Switch
-                        onColor="#5952c6"
+                        onColor="#084892"
                         onChange={share}
                         checked={activityShared}
                         className="react-switch"
@@ -293,36 +317,19 @@ function PlaylistPreview(props) {
                         checkedIcon={false}
                       />
                     </div>
-
-                    {activityShared && (
-                    <div
-                      className="shared-link"
-                      onClick={viewSharedLink}
-                    >
-                      <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
-                      View Shared Link
+                  </div>
+                </Tab>
+                <Tab eventKey="contact" title="About">
+                  <div className="descr-">
+                    <div className="tti">
+                      description
                     </div>
-                    )}
+                    <p>
+                      {selectedPlaylist.project.description}
+                    </p>
                   </div>
-
-                  <div className="watcher">
-                    You are watching from
-                    {' '}
-                    <span>
-                      {selectedPlaylist.title}
-                    </span>
-                  </div>
-
-                  <ul className="slider-scroll-auto">
-                    <ActivitiesList
-                      projectId={projectId}
-                      playlistId={playlistId}
-                      activities={selectedPlaylist.activities}
-                      playlist={playlist.selectedPlaylist}
-                    />
-                  </ul>
-                </div>
-              </div>
+                </Tab>
+              </Tabs>
             </div>
           </div>
         </section>
@@ -340,6 +347,8 @@ PlaylistPreview.propTypes = {
   loadPlaylist: PropTypes.func.isRequired,
   loadProjectPlaylists: PropTypes.func.isRequired,
   loadHP: PropTypes.func.isRequired,
+  collapsed: PropTypes.bool.isRequired,
+  setCollapsed: PropTypes.func.isRequired,
 };
 
 PlaylistPreview.defaultProps = {
@@ -351,9 +360,11 @@ const mapDispatchToProps = (dispatch) => ({
   loadPlaylist: (projectId, playlistId) => dispatch(loadPlaylistAction(projectId, playlistId)),
   loadProjectPlaylists: (projectId) => dispatch(loadProjectPlaylistsAction(projectId)),
   loadHP: (show) => dispatch(LoadHP(show)),
+  setCollapsed: () => dispatch(collapsedSideBar()),
 });
 
 const mapStateToProps = (state) => ({
+  collapsed: state.ui.sideBarCollapsed,
   playlist: state.playlist,
   loading: state.playlist.loadingH5P,
 });

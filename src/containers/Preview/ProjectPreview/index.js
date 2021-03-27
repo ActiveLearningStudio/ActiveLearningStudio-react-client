@@ -122,6 +122,19 @@ function ProjectPreview(props) {
 
       return (
         <div className="check-each" key={playlist.id}>
+          <div className="add-btn-activity">
+            <button
+              type="button"
+              className="add-resource-to-playlist-btn"
+              onClick={() => {
+                // dispatch(clearSearch());
+                history.push(`/project/${playlist.project_id}/playlist/${playlist.id}/activity/create`);
+              }}
+            >
+              <FontAwesomeIcon icon="plus-circle" className="mr-2" />
+              Add new activity
+            </button>
+          </div>
           <button
             type="button"
             ref={(el) => {
@@ -190,6 +203,7 @@ function ProjectPreview(props) {
                           handleShow={handleShow}
                           setProjectId={setProjectId}
                           showDeletePopup={showDeletePopup}
+                          previewMode
                         />
                         <Link to="#" onClick={history.goBack} className="go-back-button-preview">
                           <FontAwesomeIcon icon="undo" className="mr-2" />

@@ -19,7 +19,7 @@ function TeamProjectView(props) {
     removeMember,
   } = props;
 
-  const authUser = users.find((u) => u.id === user.id);
+  const authUser = users.find((u) => u.id === (user || {}).id);
   const role = authUser ? authUser.role : '';
 
   const removeProjectSubmit = useCallback((projectId) => {
@@ -59,11 +59,13 @@ function TeamProjectView(props) {
         <div className="project-list">
           {projects.map((project) => (
             <div key={project.id} className="project-content-item">
-              <img
-                src={project.thumb_url.includes('pexels.com')
-                  ? `url(${project.thumb_url})`
-                  : `url(${global.config.resourceUrl}${project.thumb_url})`}
-                alt={project.name}
+              <div
+                className="project-img"
+                style={{
+                  backgroundImage: project.thumb_url.includes('pexels.com')
+                    ? `url(${project.thumb_url})`
+                    : `url(${global.config.resourceUrl}${project.thumb_url})`,
+                }}
               />
 
               <div className="project-title">
@@ -122,7 +124,7 @@ function TeamProjectView(props) {
                         </div>
                       </Dropdown.Toggle>
 
-                      {authUser.id !== u.id && (
+                      {authUser && authUser.id !== u.id && (
                         <Dropdown.Menu>
                           <div className="drop-title">
                             <div className="member-name-mark">

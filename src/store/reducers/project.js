@@ -9,6 +9,7 @@ const INITIAL_STATE = {
   projectSelect: {},
   lmsCourse: null,
   clone: [],
+  isSharedProject: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -112,6 +113,7 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.SHARE_PROJECT:
       return {
         ...state,
+        isSharedProject: true,
         projectSelect: action.payload.project,
       };
 
@@ -135,6 +137,13 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         progress: action.progress,
+      };
+
+    case actionTypes.LOAD_MY_PROJECTS_FAILED:
+      return {
+        ...state,
+        isLoading: false,
+        isSharedProject: false,
       };
 
     case actionTypes.SET_LMS_COURSE:

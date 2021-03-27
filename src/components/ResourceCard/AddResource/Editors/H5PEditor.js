@@ -1,9 +1,10 @@
 /* eslint-disable max-len */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Swal from 'sweetalert2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { loadH5pSettingsActivity } from 'store/actions/resource';
 
@@ -14,9 +15,15 @@ const H5PEditor = (props) => {
     resource,
     loadH5pSettings,
     handleCreateResourceSubmit,
+    upload,
   } = props;
 
-  const [submitAction, setSubmitAction] = useState('create');
+  const uploadFile = useRef();
+  let defaultState = 'create';
+  if (upload) {
+    defaultState = 'upload';
+  }
+  const [submitAction, setSubmitAction] = useState(defaultState);
   const [h5pFile, setH5pFile] = useState(null);
 
   const setH5pFileUpload = (e) => {
@@ -33,11 +40,9 @@ const H5PEditor = (props) => {
 
   const submitResource = (event) => {
     event.preventDefault();
-
     if (submitAction === 'upload' && h5pFile === null) {
       return true;
     }
-
     if (submitAction === 'upload' && h5pFile !== null) {
       const fileArr = h5pFile.name.split('.');
       const fileExtension = fileArr.length > 0 ? fileArr[fileArr.length - 1] : '';
@@ -50,7 +55,6 @@ const H5PEditor = (props) => {
         submitAction,
         h5pFile,
       };
-
       handleCreateResourceSubmit(
         match.params.playlistId,
         resource.newResource.activity.h5pLib,
@@ -59,21 +63,33 @@ const H5PEditor = (props) => {
         resource.newResource.metadata,
         match.params.projectId,
       );
-    } else if (submitAction === 'create') {
-      const payload = {
-        event,
-        submitAction,
-        h5pFile,
-      };
-
-      handleCreateResourceSubmit(
-        match.params.playlistId,
-        resource.newResource.activity.h5pLib,
-        resource.newResource.activity.type,
-        payload,
-        resource.newResource.metadata,
-        match.params.projectId,
-      );
+      return;
+    }
+    const parameters = window.h5peditorCopy.getParams();
+    const { metadata } = parameters;
+    if (metadata.title !== undefined) {
+      Swal.fire({
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      if (submitAction === 'create') {
+        const payload = {
+          event,
+          submitAction,
+          h5pFile,
+        };
+        handleCreateResourceSubmit(
+          match.params.playlistId,
+          resource.newResource.activity.h5pLib,
+          resource.newResource.activity.type,
+          payload,
+          resource.newResource.metadata,
+          match.params.projectId,
+          props,
+        );
+      }
     }
   };
 
@@ -91,13 +107,13 @@ const H5PEditor = (props) => {
       >
         <div className="form-group" style={{ position: 'inherit' }}>
           <div className="col-md-9 col-md-offset-3" style={{ position: 'inherit' }}>
-            <button
+            {/* <button
               type="submit"
               className="add-resource-submit-btn top"
               onClick={submitResource}
             >
               Save & Exit
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -127,33 +143,58 @@ const H5PEditor = (props) => {
               </div>
             </div>
           </div>
-          <div className="form-group laravel-h5p-upload-container">
-            <label htmlFor="inputUpload" className="control-label col-md-3">
-              Upload
-            </label>
-            <div className="col-md-12">
-              <input
-                type="file"
-                name="h5p_file"
-                id="h5p-file"
-                className="laravel-h5p-upload form-control"
-                onChange={setH5pFileUpload}
-              />
-              <small className="h5p-disable-file-check helper-block">
-                <label>
+          {upload
+          && (
+            <div className="form-group laravel-h5p-upload-container">
+              {/* <label htmlFor="inputUpload" className="control-label col-md-3">
+                Upload
+              </label> */}
+              <div className="col-md-12">
+                <div className="drop-area">
                   <input
-                    type="checkbox"
-                    className="mr-2"
-                    name="h5p_disable_file_check"
-                    id="h5p-disable-file-check"
+                    type="file"
+                    name="h5p_file"
+                    id="h5p-file"
+                    className="laravel-h5p-upload form-control"
+                    onChange={setH5pFileUpload}
+                    ref={uploadFile}
+                    // style={{ display: 'none' }}
                   />
-                  Disable file extension check
-                </label>
-              </small>
+                  <div className="upload-holder">
+                    <FontAwesomeIcon icon="file-upload" className="mr-2" />
+                    <p>
+                      Drag & Drop File or
+                      <span
+                        onClick={() => uploadFile.current.click()}
+                      >
+                        &nbsp;Browse to upload
+                      </span>
+                    </p>
+                    {!!h5pFile
+                    && (
+                      <p>
+                        Selected File:&nbsp;
+                        {h5pFile.name}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                {/* <small className="h5p-disable-file-check helper-block">
+                  <label>
+                    <input
+                      type="checkbox"
+                      className="mr-2"
+                      name="h5p_disable_file_check"
+                      id="h5p-disable-file-check"
+                    />
+                    Disable file extension check
+                  </label>
+                </small> */}
+              </div>
             </div>
-          </div>
+          )}
 
-          <div className="form-group methods">
+          <div className="form-group methods option-choose-way">
             <label className="control-label col-md-3">Method</label>
             <div className="col-md-6">
               <label className="radio-inline mr-4">
@@ -185,6 +226,7 @@ const H5PEditor = (props) => {
           <div className="form-group">
             <div className="col-md-9 col-md-offset-3">
               <button
+                // ref={submitButtonRef}
                 type="submit"
                 className="add-resource-submit-btn"
                 onClick={submitResource}
@@ -206,6 +248,7 @@ H5PEditor.propTypes = {
   h5pParams: PropTypes.string,
   handleCreateResourceSubmit: PropTypes.func.isRequired,
   loadH5pSettings: PropTypes.func.isRequired,
+  upload: PropTypes.bool.isRequired,
 };
 
 H5PEditor.defaultProps = {

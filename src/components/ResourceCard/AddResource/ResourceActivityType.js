@@ -11,7 +11,7 @@ import {
   onChangeActivityTypeAction,
 } from 'store/actions/resource';
 import InputField from 'components/InputField';
-import AddResourceSidebar from './AddResourceSidebar';
+// import AddResourceSidebar from './AddResourceSidebar';
 
 import './style.scss';
 
@@ -20,7 +20,13 @@ const ResourceActivityTypeField = (props) => (
 );
 
 let ResourceActivityType = (props) => {
-  const { resource, loadResourceTypes } = props;
+  const {
+    resource,
+    loadResourceTypes,
+    selectType,
+    type,
+    setActiveView,
+  } = props;
   const { types: activityTypes } = resource;
 
   useEffect(() => {
@@ -37,7 +43,11 @@ let ResourceActivityType = (props) => {
           component={ResourceActivityTypeField}
           type="radio"
           value={`${activityType.id}`}
-          onChange={() => onChangeActivityType(activityType.id)}
+          onChange={() => {
+            onChangeActivityType(activityType.id);
+            selectType([...type, 'select']);
+            setActiveView('select');
+          }}
           validate={[required]}
         />
 
@@ -57,11 +67,10 @@ let ResourceActivityType = (props) => {
 
   return (
     <div className="row">
-      <div className="col-md-3">
+      {/* <div className="col-md-3">
         <AddResourceSidebar {...props} />
-      </div>
-
-      <div className="col-md-9">
+      </div> */}
+      <div className="col-md-12">
         <div className="resource-activity">
           <FadeDiv>
             <div className="row">
@@ -96,6 +105,9 @@ ResourceActivityType.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   loadResourceTypes: PropTypes.func.isRequired,
   onChangeActivityType: PropTypes.func.isRequired,
+  selectType: PropTypes.func.isRequired,
+  type: PropTypes.array.isRequired,
+  setActiveView: PropTypes.func.isRequired,
 };
 
 ResourceActivityType = reduxForm({

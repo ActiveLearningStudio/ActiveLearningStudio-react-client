@@ -1,5 +1,6 @@
+/*eslint-disable */
 import Swal from 'sweetalert2';
-// import axios from 'axios';
+import axios from 'axios';
 import config from 'config';
 import httpService from './http.service';
 
@@ -19,6 +20,7 @@ const advancedSearch = (sendData) => httpService
 //   .get(`https://dev.currikistudio.org/api/api/v1/search/advanced`,{
 //     headers:{
 //       Authorization: `Bearer `
+      
 //     },
 //     params:sendData
 //   })
@@ -78,8 +80,8 @@ const cloneActivity = (playlistId, ActivityId) => httpService
     }
   });
 
-const googleClassShare = (projectId, courseId) => httpService
-  .post(`/${apiVersion}/google-classroom/projects/${projectId}/copy`, { course_id: courseId })
+const googleClassShare = (projectId, courseId, token) => httpService
+  .post(`/${apiVersion}/google-classroom/projects/${projectId}/copy`, { course_id: courseId, access_token: token })
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 

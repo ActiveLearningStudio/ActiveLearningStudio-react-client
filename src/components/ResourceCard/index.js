@@ -16,6 +16,7 @@ const ResourceCard = (props) => {
     playlist,
     match,
     index,
+    // wizard,
   } = props;
 
   return (
@@ -31,7 +32,7 @@ const ResourceCard = (props) => {
             {!!resource.thumb_url && (
               <div className="activity-thumb-wrapper">
                 <Link
-                  to={`/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview`}
+                  to={`/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
                 >
                   <div
                     className="activity-thumb"
@@ -46,7 +47,7 @@ const ResourceCard = (props) => {
             )}
 
             <div className="title" style={{ flex: 1 }}>
-              <Link to={`/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview`}>
+              <Link to={`/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}>
                 {resource.metadata && resource.metadata.title !== undefined
                   ? resource.metadata.title
                   : resource.title}
@@ -61,6 +62,7 @@ const ResourceCard = (props) => {
               <ResourceCardDropdown
                 resource={resource}
                 playlist={playlist}
+                // wizard
               />
             </div>
           </div>
@@ -78,6 +80,7 @@ ResourceCard.propTypes = {
   showDeletePopup: PropTypes.func.isRequired,
   hideDeletePopup: PropTypes.func.isRequired,
   deleteResource: PropTypes.func.isRequired,
+  // wizard: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

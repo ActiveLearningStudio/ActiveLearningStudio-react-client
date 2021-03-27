@@ -1,12 +1,21 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import Echo from 'laravel-echo';
 
 import loaderImg from 'assets/images/loader.svg';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import projectService from 'services/project.service';
+import socketConnection from 'services/http.service';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
 
+export const allSidebarProjects = () => async (dispatch) => {
+  const { projects } = await projectService.getAll();
+  dispatch({
+    type: actionTypes.SIDEBAR_ALL_PROJECT,
+    data: { projects },
+  });
+};
 export const createProjectAction = (data) => async (dispatch) => {
   try {
     dispatch({ type: actionTypes.CREATE_PROJECT_REQUEST });
@@ -17,6 +26,7 @@ export const createProjectAction = (data) => async (dispatch) => {
       type: actionTypes.CREATE_PROJECT_SUCCESS,
       payload: { project },
     });
+    dispatch(allSidebarProjects());
   } catch (e) {
     dispatch({ type: actionTypes.CREATE_PROJECT_FAIL });
   }
@@ -61,6 +71,7 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
       type: actionTypes.UPDATE_PROJECT_SUCCESS,
       payload: { project },
     });
+    dispatch(allSidebarProjects());
   } catch (e) {
     dispatch({ type: actionTypes.UPDATE_PROJECT_FAIL });
   }
@@ -76,6 +87,7 @@ export const deleteProjectAction = (projectId) => async (dispatch) => {
       type: actionTypes.DELETE_PROJECT_SUCCESS,
       payload: { projectId },
     });
+    dispatch(allSidebarProjects());
   } catch (e) {
     dispatch({ type: actionTypes.DELETE_PROJECT_FAIL });
   }
@@ -163,14 +175,6 @@ export const loadMyCloneProjectsAction = () => async (dispatch) => {
   dispatch({
     type: actionTypes.LOAD_MY_CLONE_PROJECTS,
     payload: projects,
-  });
-};
-
-export const allSidebarProjects = () => async (dispatch) => {
-  const { projects } = await projectService.getAll();
-  dispatch({
-    type: actionTypes.SIDEBAR_ALL_PROJECT,
-    data: { projects },
   });
 };
 
@@ -299,7 +303,8 @@ export const loadMyProjectsPreviewSharedAction = (projectId) => async (dispatch)
     // });
   } catch (e) {
     dispatch({
-      type: actionTypes.PAGE_LOADING_COMPLETE,
+      type: actionTypes.LOAD_MY_PROJECTS_FAILED,
+      payload: { error: e },
     });
 
     throw e;
@@ -457,8 +462,8 @@ export const getProjectCourseFromLMS = (
           for (let x = 0; x < playlist.length; x += 1) {
             // eslint-disable-next-line no-await-in-loop
             const counter = !!globalStoreCloneUpdated.project.lmsCourse
-                && globalStoreCloneUpdated.project.lmsCourse.playlistsCopyCounter
-                  .length > 0
+            && globalStoreCloneUpdated.project.lmsCourse.playlistsCopyCounter
+              .length > 0
               ? globalStoreCloneUpdated.project.lmsCourse
                 .playlistsCopyCounter[x].counter
               : 0;
@@ -583,4 +588,29 @@ export const loadMyProjectsLtiAction = (lmsUrl, ltiClientId) => async (dispatch)
   } catch (e) {
     console.log(e);
   }
+};
+
+export const updatedProject = (userId) => async () => {
+  const echo = new Echo(socketConnection.notificationSocket());
+
+  echo.private('project-update')
+    .listen('ProjectUpdatedEvent', (msg) => {
+      if (msg.userId !== userId) {
+        const path = window.location.pathname;
+        if (path.includes(`project/${msg.projectId}`)) {
+          Swal.fire({
+            title: 'This project has been modified by other team member. Are you ok to refresh page to see what is updated?',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            denyButtonText: 'No',
+          })
+            .then((result) => {
+              if (result.isConfirmed) {
+                window.location.reload();
+              }
+            });
+        }
+      }
+    });
 };

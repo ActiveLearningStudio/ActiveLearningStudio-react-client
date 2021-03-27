@@ -39,9 +39,7 @@ import {
   getIndexed,
   getElastic,
 } from 'store/actions/project';
-import Header from 'components/Header';
 import Footer from 'components/Footer';
-import Sidebar from 'components/Sidebar';
 import DeletePopup from 'components/DeletePopup';
 import AddResource from 'components/ResourceCard/AddResource';
 import EditResource from 'components/ResourceCard/EditResource';
@@ -342,110 +340,102 @@ function PlaylistsPage(props) {
 
   return (
     <>
-      <Header {...props} />
-
-      <div className="main-content-wrapper">
-        <div className="sidebar-wrapper">
-          <Sidebar />
-        </div>
-
-        <div className="content-wrapper">
-          <div className="content">
-            <div>
-              {pageLoading !== false ? (
-                <Alert variant="primary">Loading ...</Alert>
-              ) : (
-                <>
-                  <div className="col playlist-page-project-title project-each-view">
-                    <div className="flex-se">
-                      <h1>{selectedProject ? selectedProject.name : ''}</h1>
-                      <div className="react-touch">
-                        <div className="publish-btn">
-                          <span>{checked ? 'Showcase' : <span style={{ color: '#464646' }}>Showcase</span>}</span>
-                          <Switch checked={checked} onChange={handleChange} />
-                        </div>
+      <div className="content-wrapper">
+        <div className="content">
+          <div>
+            {pageLoading !== false ? (
+              <Alert variant="primary">Loading ...</Alert>
+            ) : (
+              <>
+                <div className="col playlist-page-project-title project-each-view">
+                  <div className="flex-se">
+                    <h1>{selectedProject ? selectedProject.name : ''}</h1>
+                    <div className="react-touch">
+                      <div className="publish-btn">
+                        <span style={{ color: checked ? '#333' : '#464646' }}>Showcase</span>
+                        <Switch checked={checked} onChange={handleChange} />
                       </div>
-
-                      <button
-                        type="button"
-                        className="create-playlist-btn"
-                        onClick={handleShowCreatePlaylistModal}
-                      >
-                        <FontAwesomeIcon icon="plus" className="mr-2" />
-                        Create new playlist
-                      </button>
                     </div>
 
-                    <span>
-                      <Link
-                        className="dropdown-item"
-                        to={`/project/${match.params.projectId}/preview`}
-                      >
-                        <FontAwesomeIcon icon="eye" className="mr-2" />
-                        Project Preview
-                      </Link>
-                    </span>
+                    <button
+                      type="button"
+                      className="create-playlist-btn"
+                      onClick={handleShowCreatePlaylistModal}
+                    >
+                      <FontAwesomeIcon icon="plus" className="mr-2" />
+                      Create new playlist
+                    </button>
                   </div>
 
-                  <div className="index-text">
-                    {indexStatus === 1 && (
-                      <Alert variant="warning">
-                        Thank you for submitting this project for inclusion in our Showcase!
-                        Your project has been queued up! As soon as our review is completed,
-                        we will notify you right here.
-                      </Alert>
-                    )}
-                    {indexStatus === 2 && (
-                      <Alert variant="danger">
-                        Your project was not selected for inclusion in the Showcase.
-                        You are welcome to contact our support team, and revise
-                        and resubmit your project at any time.
-                      </Alert>
-                    )}
-                    {indexStatus === 3 && (
-                      <Alert variant="success">
-                        This project has been selected for inclusion in the CurrikiStudio Showcase
-                        and is available for other content authors to find, preview, reuse and remix.
-                      </Alert>
-                    )}
+                  <div className="project-preview">
+                    <Link
+                      className="dropdown-item"
+                      to={`/project/${match.params.projectId}/preview`}
+                    >
+                      <FontAwesomeIcon icon="eye" className="mr-2" />
+                      Project Preview
+                    </Link>
                   </div>
+                </div>
 
-                  {!!playlists && playlists.length > 0 ? (
-                    <DragDropContext onDragEnd={onDragEnd}>
-                      <Droppable
-                        droppableId="project-droppable-id"
-                        direction="horizontal"
-                        type="column"
-                      >
-                        {(provided) => (
-                          <div
-                            id="board"
-                            className="board-custom"
-                            {...provided.droppableProps}
-                            ref={provided.innerRef}
-                          >
-                            {playlists.map((playlist, index) => (
-                              <PlaylistCard
-                                key={playlist.id}
-                                index={index}
-                                playlist={playlist}
-                                projectId={parseInt(match.params.projectId, 10)}
-                                handleCreateResource={handleShowCreateResourceModal}
-                              />
-                            ))}
-                            {provided.placeholder}
-                          </div>
-                        )}
-                      </Droppable>
-                    </DragDropContext>
-                  ) : (
-                    <Alert variant="success">
-                      No playlist available, kindly create your playlist.
+                <div className="index-text">
+                  {indexStatus === 1 && (
+                    <Alert variant="warning">
+                      Thank you for submitting this project for inclusion in our Showcase!
+                      Your project has been queued up! As soon as our review is completed,
+                      we will notify you right here.
                     </Alert>
                   )}
-                </>
-              )}
-            </div>
+                  {indexStatus === 2 && (
+                    <Alert variant="danger">
+                      Your project was not selected for inclusion in the Showcase.
+                      You are welcome to contact our support team, and revise
+                      and resubmit your project at any time.
+                    </Alert>
+                  )}
+                  {indexStatus === 3 && (
+                    <Alert variant="success">
+                      This project has been selected for inclusion in the CurrikiStudio Showcase
+                      and is available for other content authors to find, preview, reuse and remix.
+                    </Alert>
+                  )}
+                </div>
+
+                {!!playlists && playlists.length > 0 ? (
+                  <DragDropContext onDragEnd={onDragEnd}>
+                    <Droppable
+                      droppableId="project-droppable-id"
+                      direction="horizontal"
+                      type="column"
+                    >
+                      {(provided) => (
+                        <div
+                          id="board"
+                          className="board-custom"
+                          {...provided.droppableProps}
+                          ref={provided.innerRef}
+                        >
+                          {playlists.map((playlist, index) => (
+                            <PlaylistCard
+                              key={playlist.id}
+                              index={index}
+                              playlist={playlist}
+                              projectId={parseInt(match.params.projectId, 10)}
+                              handleCreateResource={handleShowCreateResourceModal}
+                            />
+                          ))}
+                          {provided.placeholder}
+                        </div>
+                      )}
+                    </Droppable>
+                  </DragDropContext>
+                ) : (
+                  <Alert variant="success">
+                    No playlist available, kindly create your playlist.
+                  </Alert>
+                )}
+              </>
+            )}
           </div>
         </div>
       </div>

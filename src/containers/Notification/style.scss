@@ -3,25 +3,31 @@
     max-width: 593px;
     margin: 30px auto;
     background-color: #fff;
-    box-shadow: 0px 0px 20px #00000005;
+    box-shadow: 0 0 20px #00000005;
     border-radius: 5px;
-    box-shadow: 0px 0px 99px #00000021;
+    box-shadow: 0 0 99px #00000021;
     border-radius: 5px;
 
     .notification-status {
         font: normal normal 600 14px/20px Open Sans;
-        letter-spacing: 0px;
+        letter-spacing: 0;
         color: #8F8FA1;
-        padding: 15px 0px 5px 25px;
+        padding: 15px 0 5px 25px;
     }
+}
+
+.error-notification {
+    font-weight: 500;
+    font-size: 18px;
+    padding: 20px;
 }
 
 .notification-area {
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid #f2f0f0;
-    margin: 0px 20px;
-    padding: 10px 0px;
+    margin: 0 20px;
+    padding: 10px 0;
 
 
     .user-detail {
@@ -42,7 +48,7 @@
             margin-right: 10px;
             background: #CDECF2 0% 0% no-repeat padding-box;
             font: normal normal 600 14px/20px Open Sans;
-            letter-spacing: 0px;
+            letter-spacing: 0;
             color: #6B9CA5;
             display: flex;
             justify-content: center;
@@ -51,7 +57,7 @@
 
         p {
             font: normal normal normal 14px/20px Open Sans;
-            letter-spacing: 0px;
+            letter-spacing: 0;
             color: #504F4F;
             width: 85%;
         }
@@ -59,9 +65,9 @@
 
     .timer {
         font: normal normal normal 12px/20px Open Sans;
-        letter-spacing: 0px;
+        letter-spacing: 0;
         color: #8F8FA1;
-        white-space: nowrap;  
+        white-space: nowrap;
     }
 
     .settings-notification {

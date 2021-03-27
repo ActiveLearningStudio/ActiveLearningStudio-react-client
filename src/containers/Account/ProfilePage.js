@@ -10,9 +10,9 @@ import loader from 'assets/images/loader.svg';
 import { getErrors } from 'utils';
 import { updateProfileAction, loadOrganizationTypesAction } from 'store/actions/auth';
 import { getUserLmsSettingsAction } from 'store/actions/account';
-import Header from 'components/Header';
+// import Header from 'components/Header';
 import Footer from 'components/Footer';
-import Sidebar from 'components/Sidebar';
+// import Sidebar from 'components/Sidebar';
 import Error from '../Auth/Error';
 
 import './style.scss';
@@ -90,6 +90,12 @@ function ProfilePage(props) {
         return;
       }
 
+      if (!validator.isMobilePhone(phoneNumber) || !validator.isNumeric(phoneNumber)) {
+        setError('Please input valid phone number.');
+
+        return;
+      }
+
       setError(null);
 
       const data = {
@@ -123,13 +129,7 @@ function ProfilePage(props) {
 
   return (
     <>
-      <Header {...props} />
-
-      <div className="account-page main-content-wrapper">
-        <div className="sidebar-wrapper">
-          <Sidebar />
-        </div>
-
+      <div className="account-page">
         <div className="content-wrapper">
           <div className="content">
             <div className="row">
@@ -223,43 +223,43 @@ function ProfilePage(props) {
                           </div>
                         </div>
                       </div>
+                      {!(state.organizationName === 'NEAF' || state.organizationName === 'vivensity') && (
+                        <div className="row">
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="organization-name">Organization Name</label>
+                              <FontAwesomeIcon icon="building" />
+                              <input
+                                className="input-box"
+                                id="organization-name"
+                                name="organizationName"
+                                placeholder="Organization Name"
+                                maxLength="250"
+                                value={state.organizationName}
+                                onChange={onChangeField}
+                              />
+                            </div>
+                          </div>
 
-                      <div className="row">
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label htmlFor="organization-name">Organization Name</label>
-                            <FontAwesomeIcon icon="building" />
-                            <input
-                              className="input-box"
-                              id="organization-name"
-                              name="organizationName"
-                              placeholder="Organization Name"
-                              maxLength="250"
-                              value={state.organizationName}
-                              onChange={onChangeField}
-                            />
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="organization-type">Organization Type</label>
+                              <FontAwesomeIcon icon="building" />
+                              <select
+                                className="input-box organization-type"
+                                name="organizationType"
+                                placeholder="Organization Type*"
+                                value={state.organizationType}
+                                onChange={onChangeField}
+                              >
+                                {organizationTypes.map((type) => (
+                                  <option selected={type.label === state.organizationType} value={type.label}>{type.label}</option>
+                                ))}
+                              </select>
+                            </div>
                           </div>
                         </div>
-
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label htmlFor="organization-type">Organization Type</label>
-                            <FontAwesomeIcon icon="building" />
-                            <select
-                              className="input-box organization-type"
-                              name="organizationType"
-                              placeholder="Organization Type*"
-                              value={state.organizationType}
-                              onChange={onChangeField}
-                            >
-                              <option> -- select an option -- </option>
-                              {organizationTypes.map((type) => (
-                                <option selected={type.label === state.organizationType} value={type.label}>{type.label}</option>
-                              ))}
-                            </select>
-                          </div>
-                        </div>
-                      </div>
+                      )}
 
                       <div className="row">
                         <div className="col-md-6">

@@ -1,0 +1,26 @@
+.outcome-summary-container {
+  background: black;
+  color: ghostwhite;
+
+  .fa-star {
+    color: yellow;
+    margin-right: 0.5em;
+  }
+
+  .skipped-badge {
+    margin-left: 2em;
+  }
+
+  .answers-table th {
+    width: 50%;
+    font-weight: bolder;
+  }
+  
+  .answers-table .question-col {
+    font-style: italic;
+  }
+  
+  a {
+    color: gainsboro;
+  }
+}

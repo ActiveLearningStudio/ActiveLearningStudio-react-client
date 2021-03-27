@@ -2,14 +2,15 @@ import React, { Suspense, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Dropdown } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { Tab, Tabs } from 'react-bootstrap';
 
+import { collapsedSideBar } from 'store/actions/ui';
 import projectIcon from 'assets/images/project_icon.svg';
-import { loadLtiPlaylistAction } from 'store/actions/playlist';
+import { loadLtiPlaylistAction, loadProjectPlaylistsAction } from 'store/actions/playlist';
 import PreviousLink from './components/PreviousLink';
 import NextLink from './components/NextLink';
 import ActivitiesDropdown from './components/ActivitiesDropdown';
-import ActivitiesList from './components/ActivitiesList';
 
 import './style.scss';
 
@@ -22,6 +23,9 @@ function LtiPlaylistPreview(props) {
     activityId,
     showLti,
     loadLtiPlaylist,
+    loadProjectPlaylists,
+    setCollapsed,
+    collapsed,
   } = props;
 
   useEffect(() => {
@@ -31,8 +35,25 @@ function LtiPlaylistPreview(props) {
   }, [playlistId, activityId, loadLtiPlaylist]);
 
   let { selectedPlaylist } = playlist;
+  useEffect(() => {
+    if (selectedPlaylist) {
+      loadProjectPlaylists(selectedPlaylist.project_id);
+    }
+  }, [selectedPlaylist]);
   if (selectedPlaylist && selectedPlaylist.id !== playlistId) {
     selectedPlaylist = null;
+  }
+
+  if (playlist.isNonAvailablePlaylist) {
+    return (
+      <div
+        className="alert alert-danger"
+        role="alert"
+        style={{ fontSize: '1.5em' }}
+      >
+        Playlist is not available.
+      </div>
+    );
   }
 
   if (!selectedPlaylist) {
@@ -43,7 +64,7 @@ function LtiPlaylistPreview(props) {
     );
   }
 
-  const allPlaylists = selectedPlaylist.project.playlists;
+  const allPlaylists = playlist.playlists;
 
   let currentActivityId = activityId;
   let currentActivity;
@@ -71,21 +92,39 @@ function LtiPlaylistPreview(props) {
   return (
     <section className="main-page-content preview iframe-height-resource">
       <div className="container-flex-upper">
-        <div className="project-title">
-          <img src={projectIcon} alt="" />
-          {showLti
-            ? `Playlist: ${selectedPlaylist.title}`
-            : `Project: ${selectedPlaylist.project.name}`}
+        <div className="both-p">
+          <Link>
+            <div className="project-title">
+              <img src={projectIcon} alt="" />
+              {`Project: ${selectedPlaylist.project.name}`}
+            </div>
+          </Link>
+          <Link>
+            <div className="project-title">
+              <img src={projectIcon} alt="" />
+              {`Playlist: ${selectedPlaylist.title}`}
+            </div>
+          </Link>
         </div>
+        <Link to={`/project/${selectedPlaylist.project.id}/shared`}>
+          <FontAwesomeIcon icon="times" />
+        </Link>
       </div>
-
       <div className="flex-container previews">
-        <div className="activity-bg left-vdo">
+        <div className={`activity-bg left-vdo${collapsed ? ' collapsed' : ''}`}>
           <div className="flex-container-preview">
             <div className="act-top-header">
               <div className="heading-wrapper">
                 <div className="main-heading">
-                  {currentActivity && currentActivity.title}
+                  {currentActivity && (
+                    <h3>
+                      Activity:
+                      &nbsp;
+                      <span>
+                        {currentActivity.title}
+                      </span>
+                    </h3>
+                  )}
                 </div>
               </div>
             </div>
@@ -93,19 +132,27 @@ function LtiPlaylistPreview(props) {
             <div className="right-control vd-controls">
               <div className="slider-btn">
                 <PreviousLink
-                  showLti
+                  showLti={showLti}
                   playlistId={playlistId}
                   previousResource={previousResource}
                   allPlaylists={allPlaylists}
+                  projectId={selectedPlaylist.project_id}
                 />
                 <NextLink
-                  showLti
+                  showLti={showLti}
                   playlistId={playlistId}
                   nextResource={nextResource}
                   allPlaylists={allPlaylists}
+                  projectId={selectedPlaylist.project_id}
                 />
               </div>
             </div>
+            <a
+              onClick={() => setCollapsed()}
+              className={`btn-expand-collapse${collapsed ? ' collapsed' : ''}`}
+            >
+              <FontAwesomeIcon icon="align-right" />
+            </a>
           </div>
 
           <div className="main-item-wrapper">
@@ -118,42 +165,28 @@ function LtiPlaylistPreview(props) {
             </div>
           </div>
         </div>
-
-        <div className="right-sidegolf-info">
-          <div className="abs-div">
-            <div className="back-header align-items-center justify-content-between">
-              <Dropdown className="ml-auto playlist-dropdown check">
-                <Dropdown.Toggle className="playlist-dropdown-btn">
-                  <FontAwesomeIcon icon="ellipsis-v" />
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <ActivitiesDropdown
-                    showLti
-                    playlistId={playlistId}
-                    activities={selectedPlaylist.activities}
-                  />
-                </Dropdown.Menu>
-              </Dropdown>
-            </div>
-
-            <div className="scrollDiv long">
-              <div className="watcher">
-                You are watching from
-                {' '}
-                <span>
-                  {selectedPlaylist.title}
-                </span>
-              </div>
-
-              <ul className="slider-scroll-auto">
-                <ActivitiesList
+        <div className={`right-sidegolf-info${collapsed ? ' collapsed' : ''}`}>
+          <Tabs defaultActiveKey="home" id="uncontrolled-tab-example">
+            <Tab eventKey="home" title="Activities">
+              <div className="all-laylist-oracle">
+                <ActivitiesDropdown
                   showLti
                   playlistId={playlistId}
                   activities={selectedPlaylist.activities}
                 />
-              </ul>
-            </div>
-          </div>
+              </div>
+            </Tab>
+            {/* <Tab eventKey="contact" title="About">
+              <div className="descr-">
+                <div className="tti">
+                  description
+                </div>
+                <p>
+                  {selectedPlaylist.project.description}
+                </p>
+              </div>
+            </Tab> */}
+          </Tabs>
         </div>
       </div>
     </section>
@@ -166,6 +199,9 @@ LtiPlaylistPreview.propTypes = {
   activityId: PropTypes.number,
   showLti: PropTypes.bool,
   loadLtiPlaylist: PropTypes.func.isRequired,
+  loadProjectPlaylists: PropTypes.func.isRequired,
+  collapsed: PropTypes.bool.isRequired,
+  setCollapsed: PropTypes.func.isRequired,
 };
 
 LtiPlaylistPreview.defaultProps = {
@@ -175,10 +211,13 @@ LtiPlaylistPreview.defaultProps = {
 
 const mapDispatchToProps = (dispatch) => ({
   loadLtiPlaylist: (playlistId) => dispatch(loadLtiPlaylistAction(playlistId)),
+  loadProjectPlaylists: (projectId) => dispatch(loadProjectPlaylistsAction(projectId)),
+  setCollapsed: () => dispatch(collapsedSideBar()),
 });
 
 const mapStateToProps = (state) => ({
   playlist: state.playlist,
+  collapsed: state.ui.sideBarCollapsed,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LtiPlaylistPreview);

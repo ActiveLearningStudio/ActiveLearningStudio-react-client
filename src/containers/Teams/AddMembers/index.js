@@ -13,8 +13,8 @@ import {
   loadTeamAction,
   addMembersToProjectAction,
 } from 'store/actions/team';
-import Header from 'components/Header';
-import Sidebar from 'components/Sidebar';
+// import Header from 'components/Header';
+// import Sidebar from 'components/Sidebar';
 import TeamMember from './TeamMember';
 
 import './style.scss';
@@ -82,7 +82,9 @@ function AddMembersPage(props) {
     (p) => (thisUsers || []).findIndex((u) => p.id === u.id) === -1,
   );
 
-  filteredUsers = filteredUsers ? filteredUsers.filter((u) => `${u.first_name} ${u.last_name}`.indexOf(search) > -1) : [];
+  filteredUsers = filteredUsers
+    ? filteredUsers.filter((u) => `${u.first_name} ${u.last_name}`.toLowerCase().indexOf(search.toLowerCase()) > -1)
+    : [];
 
   const authUser = users ? users.find((u) => u.id === user.id) : [];
 
@@ -103,12 +105,10 @@ function AddMembersPage(props) {
 
   return (
     <>
-      <Header {...props} />
-
-      <div className="teams-page main-content-wrapper">
-        <div className="sidebar-wrapper">
+      <div className="teams-page">
+        {/* <div className="sidebar-wrapper">
           <Sidebar />
-        </div>
+        </div> */}
 
         <div className="content-wrapper">
           <div className="content">

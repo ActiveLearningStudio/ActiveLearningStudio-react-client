@@ -18,9 +18,9 @@ import { simpleSearchAction, cloneProject } from 'store/actions/search';
 import { loadResourceTypesAction } from 'store/actions/resource';
 import { addProjectFav } from 'store/actions/project';
 import { educationLevels, subjects } from 'components/ResourceCard/AddResource/dropdownData';
-import Header from 'components/Header';
+// import Header from 'components/Header';
 import Footer from 'components/Footer';
-import Sidebar from 'components/Sidebar';
+// import Sidebar from 'components/Sidebar';
 import CloneModel from './CloneModel';
 
 import './style.scss';
@@ -112,7 +112,7 @@ function SearchInterface(props) {
         setMeta(allState.searchMeta);
         localStorage.setItem('loading', 'false');
         Swal.close();
-      } else if (allState.searchResult.length === 0) {
+      } else if (allState.searchMeta.total === 0) {
         setSearch([]);
         SetSearchQuery(allState.searchQuery);
         setMeta({});
@@ -178,13 +178,7 @@ function SearchInterface(props) {
 
   return (
     <>
-      <Header />
-
-      <div className="main-content-wrapper">
-        <div className="sidebar-wrapper">
-          <Sidebar />
-        </div>
-
+      <div>
         <div className="content-wrapper">
           <MyVerticallyCenteredModal
             show={modalShow}
@@ -262,11 +256,11 @@ function SearchInterface(props) {
 
                               <div
                                 className="src-btn"
-                                onClick={() => {
+                                onClick={async () => {
                                   if (!searchInput.trim()) {
                                     Swal.fire('Search field is required.');
                                   } else if (searchInput.length > 255) {
-                                    Swal.fire('Character limit should be less then 255.');
+                                    Swal.fire('Character limit should be less than 255.');
                                   } else {
                                     Swal.fire({
                                       html: 'Searching...', // add html attribute if you want or remove
@@ -284,7 +278,8 @@ function SearchInterface(props) {
                                       from: 0,
                                       size: 20,
                                     };
-                                    dispatch(simpleSearchAction(dataSend));
+                                    const result = await dispatch(simpleSearchAction(dataSend));
+                                    setTotalCount(result.meta.total);
                                     history.push('/search');
                                   }
                                   // setModalShow(true);
@@ -434,7 +429,7 @@ function SearchInterface(props) {
                           type: searchType,
                         };
                         const resultModel = await dispatch(simpleSearchAction(searchData));
-                        setTotalCount(resultModel.meta[e]);
+                        setTotalCount(resultModel.meta.total);
                         setActiveModel(e);
                         setActivePage(1);
                       }
@@ -948,7 +943,7 @@ function SearchInterface(props) {
                       itemsCountPerPage={20}
                       totalItemsCount={totalCount}
                       pageRangeDisplayed={8}
-                      onChange={(e) => {
+                      onChange={async (e) => {
                         setActivePage(e);
                         if (activeModel === 'total') {
                           const searchData = {
@@ -957,7 +952,9 @@ function SearchInterface(props) {
                             size: 20,
                             type: searchType,
                           };
-                          dispatch(simpleSearchAction(searchData));
+                          Swal.showLoading();
+                          await dispatch(simpleSearchAction(searchData));
+                          Swal.close();
                         } else {
                           const searchData = {
                             phrase: searchQueries.trim(),
@@ -966,7 +963,9 @@ function SearchInterface(props) {
                             type: searchType,
                             model: activeModel,
                           };
-                          dispatch(simpleSearchAction(searchData));
+                          Swal.showLoading();
+                          await dispatch(simpleSearchAction(searchData));
+                          Swal.close();
                         }
                       }}
                       itemClass="page-item"

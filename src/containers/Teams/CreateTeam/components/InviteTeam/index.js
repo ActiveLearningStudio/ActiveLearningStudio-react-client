@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -11,32 +11,37 @@ import './style.scss';
 
 function InviteTeam(props) {
   const {
-    team,
+    // team,
     isInviting,
     nextStep,
     user: authUser,
-    setInvitedMembers,
+    selectedMembers,
+    setSelectedMembers,
+    // setInvitedMembers,
   } = props;
 
-  const [search, setSearch] = useState('');
-  const [selectedMember, setSelectedMember] = useState([]);
-  const [filteredMember, setFilteredMember] = useState([]);
+  // const [search, setSearch] = useState('');
+  // const [selectedMembers, setSelectedMembers] = useState([]);
+  // const [filteredMembers, setFilteredMembers] = useState([]);
   const [showInvite, setShowInvite] = useState(false);
 
-  const onChange = useCallback((e) => {
-    setSearch(e.target.value);
-  }, []);
+  // const onChange = useCallback((e) => {
+  //   setSearch(e.target.value);
+  // }, []);
 
-  useEffect(() => {
-    setFilteredMember(selectedMember.filter((mem) => mem.name.includes(search) || mem.email.includes(search)));
-  }, [search, selectedMember]);
+  // useEffect(() => {
+  //   setFilteredMembers(selectedMembers.filter((mem) => (
+  //     mem.name.toLowerCase().includes(search.toLowerCase())
+  //     || mem.email.toLowerCase().includes(search.toLowerCase())
+  //   )));
+  // }, [search, selectedMember]);
 
-  const invitedUsers = team.users || [];
+  // const invitedUsers = selectedMembers || [];
 
-  const handleInvite = useCallback((user, note) => {
-    setSelectedMember([...selectedMember, ...user.map((u) => ({ ...u, note }))]);
+  const handleInvite = useCallback((users, note) => {
+    setSelectedMembers([...selectedMembers, ...users.map((u) => ({ ...u, note }))]);
     setShowInvite(false);
-  }, [selectedMember]);
+  }, [selectedMembers]);
 
   return (
     <div className="team-information">
@@ -48,23 +53,26 @@ function InviteTeam(props) {
 
         <div className="invite-member-wrapper">
           <div className="search-box">
+            {/*
             <input
               type="text"
               placeholder="Filter by name"
               value={search}
               onChange={onChange}
             />
+            */}
 
             <InviteDialog
               handleInvite={handleInvite}
               visible={showInvite}
               setShowInvite={setShowInvite}
               authUser={{ ...authUser, role: 'owner' }}
-              users={selectedMember}
+              users={selectedMembers}
             />
           </div>
 
           <div className="member-list">
+            {/*
             <div className="member-list-content">
               {invitedUsers.map((user) => (
                 <MemberItem
@@ -75,16 +83,17 @@ function InviteTeam(props) {
                 />
               ))}
             </div>
+            */}
 
             <div className="member-list-content">
-              {filteredMember.map((user) => (
+              {selectedMembers.map((user) => (
                 <MemberItem
                   key={user.id}
                   invited
                   isInviting={isInviting}
-                  selected={selectedMember === user.id}
+                  selected={false}
                   user={user}
-                  selectMember={setSelectedMember}
+                  selectMember={setSelectedMembers}
                   // inviteUser={handleInvite}
                 />
               ))}
@@ -95,10 +104,10 @@ function InviteTeam(props) {
             type="button"
             className="create-team-continue-btn"
             onClick={() => {
-              setInvitedMembers(selectedMember.map(
-                // eslint-disable-next-line no-restricted-globals
-                ({ id, ...mem }) => ({ id: isNaN(id) ? 0 : id, ...mem }),
-              ));
+              // setInvitedMembers(selectedMembers.map(
+              //   // eslint-disable-next-line no-restricted-globals
+              //   ({ id, ...mem }) => ({ id: isNaN(id) ? 0 : id, ...mem }),
+              // ));
               nextStep();
             }}
           >
@@ -112,10 +121,12 @@ function InviteTeam(props) {
 
 InviteTeam.propTypes = {
   user: PropTypes.object.isRequired,
-  team: PropTypes.object.isRequired,
+  // team: PropTypes.object.isRequired,
   isInviting: PropTypes.bool.isRequired,
   nextStep: PropTypes.func.isRequired,
-  setInvitedMembers: PropTypes.func.isRequired,
+  selectedMembers: PropTypes.func.isRequired,
+  setSelectedMembers: PropTypes.func.isRequired,
+  // setInvitedMembers: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

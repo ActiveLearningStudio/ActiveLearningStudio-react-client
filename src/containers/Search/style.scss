@@ -54,7 +54,7 @@
       .radio-btns{
         display: flex;
         flex-direction: column;
-        
+
         label{
           display: flex;
           cursor: pointer;
@@ -301,12 +301,12 @@
           justify-content: center;
           align-items: center;
           min-width: 130px;
-          box-shadow: 0px 0px 7px 2px #eee;
+          box-shadow: 0 0 7px 2px #eee;
           cursor: pointer;
         }
-        
+
         .btn-fav.true{
-         
+
           svg{
             color:goldenrod
           }
@@ -361,14 +361,14 @@
      display: flex;
      justify-content: flex-end;
      margin:20px;
-     
+
     .button-submit{
       background: #5952C6 0% 0% no-repeat padding-box;
-      border-radius: 30px;  
+      border-radius: 30px;
       width: 98px;
       height: 40px;
       font: normal normal normal 15px/20px Open Sans;
-      letter-spacing: 0px;
+      letter-spacing: 0;
       color: #FFFFFF;
       border:none
     }
@@ -387,7 +387,7 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
-    
+
     p{
       font: normal normal normal 14px/22px Open Sans;
       color: #464646;
@@ -395,22 +395,22 @@
 
     .active-resource{
       background: #FFFFFF 0% 0% no-repeat padding-box;
-      box-shadow: 0px 3px 6px #00000012;
+      box-shadow: 0 3px 6px #00000012;
       border: 1px solid #E1E1E1;
       border-radius: 2px;
       padding: 10px 20px;
-     
+
       h2{
         font: 400 14px/20px Open Sans;
         color: #084892;
-        padding: 10px 0px;
+        padding: 10px 0;
       }
 
       h3{
         font: 400 12px/26px Open Sans;
         color: #464646;
         border-top: 1px solid #E6E6E6;
-        padding: 10px 0px;
+        padding: 10px 0;
 
         span{
           font-weight: 600;

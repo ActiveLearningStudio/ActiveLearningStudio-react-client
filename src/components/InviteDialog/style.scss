@@ -3,6 +3,7 @@ $filled: #44ca92;
 
 .invite-wrapper {
   position: relative;
+  margin-left: auto;
 
   .invite-btn {
     width: 190px;
@@ -56,10 +57,33 @@ $filled: #44ca92;
       font-size: 14px;
     }
 
-    h2.font-weight-bold {
+    .popup-header {
       padding: 15px 24px;
-      border-bottom: solid 1px;
-      border-color: #e2e2e2;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: solid 1px #e2e2e2;
+
+      h2 {
+        margin: 0;
+        padding: 0;
+      }
+
+      .close-circle {
+        margin-left: 7px;
+        cursor: pointer;
+
+        &::after {
+          content: "x";
+          height: 16px;
+          padding: 0 3px;
+          font-size: 16px;
+          line-height: 1;
+        }
+
+        &:hover {
+          color: #252525;
+        }
+      }
     }
 
     & > div {
@@ -81,7 +105,8 @@ $filled: #44ca92;
           cursor: text;
 
           input {
-            max-width: 145px;
+            width: 100%;
+            min-width: 100px;
             padding: 0 10px 0 5px;
             background: #FFFFFF;
             border: solid 1px #FFFFFF;
@@ -125,11 +150,12 @@ $filled: #44ca92;
           .input-container {
             display: flex;
             flex-wrap: nowrap;
+            flex: 1;
 
             .close-circle {
               position: absolute;
               right: 0.1em;
-              top: 0.1em;
+              top: 0.4em;
 
               &::after {
                 padding: 0 7px;

@@ -38,7 +38,7 @@
     position: absolute;
     top: 0;
     right:0;
-    box-shadow: 0px 0px 1px 1px #ddd !important;
+    box-shadow: 0 0 1px 1px #ddd !important;
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -51,7 +51,7 @@
     li{
      min-height: auto;
      border:none;
-     box-shadow: 0px 0px 0px 0px transparent
+     box-shadow: 0 0 0 0 transparent
     }
   }
 }
@@ -93,7 +93,7 @@ img {
     }
 
     .project-dropdown-btn{
-      box-shadow: 0px 0px 1px 1px #ddd !important;
+      box-shadow: 0 0 1px 1px #ddd !important;
       width: 30px;
       height: 30px;
       border-radius: 50%;
@@ -123,6 +123,16 @@ img {
   color: #0F4392;
   opacity: 1;
   text-transform: capitalize;
+
+  .googleSign {
+    background: #fff;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    box-shadow: 0px 0px 6px 1px #ccc;
+    padding: 2px 15px;
+    border-radius: 30px;
+    cursor: pointer;
+  }
 
   &.check {
     display: flex;
@@ -516,5 +526,31 @@ img {
 @media(max-width: 480px) {
   .title_lg {
     font-size: 20px;
+  }
+}
+
+.check-each {
+  // display: flex;
+  .add-btn-activity {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 45px;
+  }
+
+  .add-resource-to-playlist-btn {
+    width: 175px;
+    height: 48px;
+    margin-top: 10px;
+    display: block;
+    background: #ffffff 0 0 no-repeat padding-box;
+    border: 1px dashed #d6d6d6;
+    border-radius: 2px;
+    opacity: 1;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0;
+    color: #607a9b;
+    cursor: pointer;
   }
 }
