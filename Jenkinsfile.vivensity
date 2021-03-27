@@ -13,7 +13,7 @@ node('currikivivensity') {
     }
     stage('Build') {
         nodejs('nodejs') {
-            sh 'cp /root/envs/.env.local.vivensity .env.local'
+            sh 'cp /root/curriki/client/.env.local .env.local'
             sh 'npm run build'
             echo "Build completed"
         }
