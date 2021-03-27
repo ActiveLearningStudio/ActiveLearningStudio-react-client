@@ -1,39 +1,87 @@
-
-node('currikisndt') {
-    stage('Cloning Git') {
+stage('Cloning Git') {
+    node('currikisndt') {
         checkout scm
-    } 
-        
-    stage('Install dependencies') {
+    }
+    node('currikiigniteshift') {
+        checkout scm
+    }
+    
+} 
+
+stage('Install dependencies') {
+    node('currikisndt') {
         nodejs('nodejs') {
             sh 'npm install'
             echo "Modules test installed"
         }
-        
     }
-    stage('Build') {
+    node('currikiigniteshift') {
+        nodejs('nodejs') {
+            sh 'npm install'
+            echo "Modules test installed"
+        }
+    }
+
+}
+stage('Build') {
+    node('currikisndt') {
         nodejs('nodejs') {
             sh 'cp /root/curriki/client/.env.local .env.local'
             sh 'npm run build'
             echo "Build completed"
         }
-        
+    }
+    node('currikiigniteshift') {
+        nodejs('nodejs') {
+            sh 'cp /root/curriki/client/.env.local .env.local'
+            sh 'npm run build'
+            echo "Build completed"
+        }
     }
 
-    stage('Package Build') {
+}
+
+stage('Package Build') {
+    node('currikisndt') {
         sh "tar -zcvf bundle.tar.gz build/"
     }
+    node('currikiigniteshift') {
+        sh "tar -zcvf bundle.tar.gz build/"
+    }
+}
 
-    stage('Artifacts Creation') {
+stage('Artifacts Creation') {
+    node('currikisndt') {
         fingerprint 'bundle.tar.gz'
         archiveArtifacts 'bundle.tar.gz'
         echo "Artifacts created"
     }
+    node('currikiigniteshift') {
+        fingerprint 'bundle.tar.gz'
+        archiveArtifacts 'bundle.tar.gz'
+        echo "Artifacts created"
+    }
+}
 
-    stage('Stash changes') {
+stage('Stash changes') {
+    node('currikisndt') {
         stash allowEmpty: true, includes: 'bundle.tar.gz', name: 'buildArtifacts'
     }
-    stage('Copying Build') {
+    node('currikiigniteshift') {
+        stash allowEmpty: true, includes: 'bundle.tar.gz', name: 'buildArtifacts'
+    }
+}
+stage('Copying Build') {
+    node('currikisndt') {
+        echo 'Unstash'
+        unstash 'buildArtifacts'
+        echo 'Artifacts copied'
+
+        echo 'Copy'
+        sh "yes | sudo cp -R bundle.tar.gz /root/curriki/client && cd /root/curriki/client && sudo tar -xvf bundle.tar.gz && rm -rf html && cp -r build html && docker cp html currikiprod-client:/usr/share/nginx"
+        echo 'Copy completed'
+    }
+    node('currikiigniteshift') {
         echo 'Unstash'
         unstash 'buildArtifacts'
         echo 'Artifacts copied'
@@ -43,53 +91,3 @@ node('currikisndt') {
         echo 'Copy completed'
     }
 }
-
-
-
-
-node('currikiigniteshift') {
-    stage('Cloning Git') {
-        checkout scm
-    } 
-        
-    stage('Install dependencies') {
-        nodejs('nodejs') {
-            sh 'npm install'
-            echo "Modules test installed"
-        }
-        
-    }
-    stage('Build') {
-        nodejs('nodejs') {
-            sh 'cp /root/curriki/client/.env.local .env.local'
-            sh 'npm run build'
-            echo "Build completed"
-        }
-        
-    }
-
-    stage('Package Build') {
-        sh "tar -zcvf bundle.tar.gz build/"
-    }
-
-    stage('Artifacts Creation') {
-        fingerprint 'bundle.tar.gz'
-        archiveArtifacts 'bundle.tar.gz'
-        echo "Artifacts created"
-    }
-
-    stage('Stash changes') {
-        stash allowEmpty: true, includes: 'bundle.tar.gz', name: 'buildArtifacts'
-    }
-    stage('Copying Build') {
-        echo 'Unstash'
-        unstash 'buildArtifacts'
-        echo 'Artifacts copied'
-
-        echo 'Copy'
-        sh "yes | sudo cp -R bundle.tar.gz /root/curriki/client && cd /root/curriki/client && sudo tar -xvf bundle.tar.gz && rm -rf html && cp -r build html && docker cp html currikiprod-client:/usr/share/nginx"
-        echo 'Copy completed'
-    }
-}
-
-
