@@ -1,5 +1,5 @@
 
-node('currikimultitenancy') {
+node('currikinvdoe') {
     stage('Cloning Git') {
         checkout scm
     } 
@@ -43,6 +43,4 @@ node('currikimultitenancy') {
         echo 'Copy completed'
     }
 }
-
-
 
