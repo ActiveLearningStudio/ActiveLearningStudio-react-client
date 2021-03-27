@@ -1,4 +1,4 @@
-stage('Cloning Git 1') {
+stage('Cloning Git') {
     node('currikisndt') {
         checkout scm
     }
