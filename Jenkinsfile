@@ -1,5 +1,5 @@
 
-node('currikimultiprod') {
+node('currikisndt') {
     stage('Cloning Git') {
         checkout scm
     } 
