@@ -296,9 +296,8 @@ export const ProjectsPage = (props) => {
       >
         <div className={`content-wrapper ${activeFilter}`}>
           <div className="content">
-            {/* {allState?.auth?.user?.organization_name ? null
-              : <CompleteProfileAlert />} */}
-            <CompleteProfileAlert />
+            {allState?.auth?.user?.organization_name ? null
+              : <CompleteProfileAlert />}
             <Tabs
               onSelect={() => {
                 setShowSampleSort(true);
