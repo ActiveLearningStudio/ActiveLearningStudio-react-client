@@ -39,9 +39,9 @@ function CompleteProfileAlert() {
     <div>
       <Alert className="alert" variant="warning" style={{ display: display ? 'block' : 'none' }}>
         <FontAwesomeIcon className="close" icon="window-close" onClick={hideAlert} />
-        Your organization name is missing in profile, Kindly Goto My Account to update your profile info.
+        Your organization name is missing in the profile, Kindly go to My Account to update your
           &nbsp;
-        <Link className="goto-button" to="/account">Go to My Account</Link>
+        <Link className="goto-button" to="/account">profile info.</Link>
       </Alert>
     </div>
   );
