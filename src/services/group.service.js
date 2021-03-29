@@ -38,8 +38,8 @@ const inviteMember = (groupId, email) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const inviteMembers = (groupId, users, note) => httpService
-  .post(`/${apiVersion}/groups/${groupId}/invite-members`, note ? { users, note } : { users })
+const inviteMembers = (groupId, users, note, subOrgId) => httpService
+  .post(`/${apiVersion}/suborganization/${subOrgId}/groups/${groupId}/invite-members`, note ? { users, note } : { users })
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
