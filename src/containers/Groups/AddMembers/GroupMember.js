@@ -66,7 +66,7 @@ function GroupMember(props) {
           </div>
         </div>
 
-        {(authUser.role === 'owner' && authUser.id !== id && !hideRemove) && (
+        {(authUser?.role === 'owner' && authUser.id !== id && !hideRemove) && (
           <div className="button-container">
             <button
               type="button"

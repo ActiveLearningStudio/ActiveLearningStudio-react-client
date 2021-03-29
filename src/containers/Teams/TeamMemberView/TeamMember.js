@@ -70,7 +70,7 @@ function TeamMember(props) {
           </div>
         </div>
 
-        {authUser.role === 'owner' && authUser.id !== id && (
+        {authUser?.role === 'owner' && authUser.id !== id && (
           <div className="button-container">
             {iEmail && (
               <button
