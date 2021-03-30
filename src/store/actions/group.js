@@ -189,10 +189,12 @@ export const inviteMemberAction = (groupId, email) => async (dispatch) => {
 };
 
 export const inviteMembersAction = (groupId, users, note) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({ type: actionTypes.INVITE_MEMBERS_REQUEST });
 
-    await groupService.inviteMembers(groupId, users, note);
+    await groupService.inviteMembers(groupId, users, note, activeOrganization?.id);
 
     dispatch({
       type: actionTypes.INVITE_MEMBERS_SUCCESS,

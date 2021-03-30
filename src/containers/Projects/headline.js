@@ -8,7 +8,7 @@ import { setCurrentVisibilityType } from 'store/actions/project';
 
 export default function Headline() {
   const organization = useSelector((state) => state.organization);
-  const { currentOrganization } = organization;
+  const { currentOrganization, permission } = organization;
   return (
     <div className="project-headline">
       <div className="title">
@@ -24,12 +24,14 @@ export default function Headline() {
             </div>
           </Link>
         )} */}
-        <Link to={`/org/${currentOrganization?.domain}/project/create`} onClick={() => { setCurrentVisibilityType(null); }}>
-          <div className="btn-top-page">
-            <FontAwesomeIcon icon="plus" className="mr-2" />
-            Create a Project
-          </div>
-        </Link>
+        {permission?.project?.includes('create') && (
+          <Link to={`/org/${currentOrganization?.domain}/project/create`} onClick={() => { setCurrentVisibilityType(null); }}>
+            <div className="btn-top-page">
+              <FontAwesomeIcon icon="plus" className="mr-2" />
+              Create a Project
+            </div>
+          </Link>
+        )}
       </div>
       <p>
         In

@@ -21,6 +21,7 @@ function SearchForm() {
   const [activityTypes, setActivityTypes] = useState([]);
   const [value, setValue] = useState(0);
   const activityTypesState = useSelector((state) => state.resource.types);
+  const searchState = useSelector((state) => state.search);
   const { currentOrganization } = useSelector((state) => state.organization);
 
   useEffect(() => {
@@ -47,7 +48,10 @@ function SearchForm() {
     const allItems = [];
     activityTypesState.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
     setActivityTypes(allItems.sort(compare));
-  }, [activityTypesState]);
+    if (searchState?.searchQuery !== simpleSearch) {
+      setSimpleSearch('');
+    }
+  }, [activityTypesState, searchState.searchQuery]);
 
   const closeModel = useRef();
   return (

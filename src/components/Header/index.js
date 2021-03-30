@@ -29,6 +29,7 @@ import './style.scss';
 function Header(props) {
   const { /* user, */ logout } = props;
   const stateHeader = useSelector((state) => state.organization);
+  const { permission: { project } } = stateHeader;
   const dispatch = useDispatch();
   // useMemo(() => {
   //   dispatch(getOrganizationFirstTime(stateHeader?.currentOrganization?.id));
@@ -65,32 +66,33 @@ function Header(props) {
                   </Link>
                 </li>
               )}
-              <li className="align-items-center" style={{ paddingTop: '4px' }}>
-                <Dropdown className="create-project">
-                  <Dropdown.Toggle className="align-items-center">
-                    <img src={add} alt="add" />
-                    <p className="header-icon-text">Create</p>
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu className="user-dropdown">
-                    <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/project/create`} className="menuLinks">
-                      <div className="notify-box">
-                        <div className="notify-icon">
-                          <img src={createProjectIcon} alt="create" />
+              {project?.includes('create') && (
+                <li className="align-items-center" style={{ paddingTop: '4px' }}>
+                  <Dropdown className="create-project">
+                    <Dropdown.Toggle className="align-items-center">
+                      <img src={add} alt="add" />
+                      <p className="header-icon-text">Create</p>
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu className="user-dropdown">
+                      <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/project/create`} className="menuLinks">
+                        <div className="notify-box">
+                          <div className="notify-icon">
+                            <img src={createProjectIcon} alt="create" />
+                          </div>
+                          <div className="notify-description">
+                            <div className="nav-title">Create a New Project</div>
+                            <p>
+                              A project gives you a place to build and organize the
+                              amazing learning experiences available in the Active
+                              Learning Studio.
+                            </p>
+                          </div>
                         </div>
-                        <div className="notify-description">
-                          <div className="nav-title">Create a New Project</div>
-                          <p>
-                            A project gives you a place to build and organize the
-                            amazing learning experiences available in the Active
-                            Learning Studio.
-                          </p>
-                        </div>
-                      </div>
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </li>
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </li>
+              )}
               <HeaderNotification />
               <li className="mobile-links">
                 <Link to="#">

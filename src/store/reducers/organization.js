@@ -17,6 +17,18 @@ const INITIAL_STATE = {
   feedbackType: null,
   history: null,
   searchOrg: [],
+  permission: {
+    activeRole: 'member',
+    roleId: 3,
+    project: ['create', 'update', 'delete', 'view', 'publish', 'share'],
+    playlist: ['create', 'update', 'delete', 'view', 'publish', 'share'],
+    ativities: ['create', 'update', 'delete', 'view', 'publish', 'share'],
+    account: ['update', 'view'],
+    search: ['view'],
+    dashboard: ['view'],
+    teams: ['create', 'edit', 'update', 'delete', 'view'],
+    groups: ['create', 'edit', 'update', 'delete', 'view'],
+  },
 };
 
 export default (state = INITIAL_STATE, action) => {

@@ -83,7 +83,6 @@ function SearchInterface(props) {
   const [activeSubject, setActiveSubject] = useState([]);
   const [activeEducation, setActiveEducation] = useState([]);
   const [searchType, setSearchType] = useState('public');
-
   useEffect(() => {
     // eslint-disable-next-line no-restricted-globals
     const query = QueryString.parse(location.search);
@@ -110,12 +109,14 @@ function SearchInterface(props) {
       if (allState.searchResult.length > 0) {
         setSearch(allState.searchResult);
         SetSearchQuery(allState.searchQuery);
+        setSearchInput(allState.searchQuery);
         setMeta(allState.searchMeta);
         localStorage.setItem('loading', 'false');
         Swal.close();
       } else if (allState.searchMeta.total === 0) {
         setSearch([]);
         SetSearchQuery(allState.searchQuery);
+        setSearchInput(allState.searchQuery);
         setMeta({});
         localStorage.setItem('loading', 'false');
         Swal.close();
@@ -222,7 +223,37 @@ function SearchInterface(props) {
                                 onChange={(e) => {
                                   setSearchInput(e.target.value);
                                 }}
-                                type="text"
+                                onKeyPress={async (e) => {
+                                  if (e.key === 'Enter') {
+                                    if (!searchInput.trim()) {
+                                      Swal.fire('Search field is required.');
+                                    } else if (searchInput.length > 255) {
+                                      Swal.fire('Character limit should be less than 255.');
+                                    } else if (searchInput !== searchQueries) {
+                                      Swal.fire({
+                                        title: 'Searching...', // add html attribute if you want or remove
+                                        html: 'We are fetching results for you!',
+                                        allowOutsideClick: false,
+                                        onBeforeOpen: () => {
+                                          Swal.showLoading();
+                                        },
+                                      });
+                                      const dataSend = {
+                                        phrase: searchInput.trim(),
+                                        subjectArray: activeSubject,
+                                        gradeArray: activeEducation,
+                                        standardArray: activeType,
+                                        type: searchType,
+                                        from: 0,
+                                        size: 20,
+                                      };
+                                      const result = await dispatch(simpleSearchAction(dataSend));
+                                      setTotalCount(result.meta?.total);
+                                      history.push(`/org/${currentOrganization?.domain}/search`);
+                                    }
+                                  }
+                                }}
+                                type="search"
                                 placeholder="Search"
                               />
 
@@ -262,9 +293,10 @@ function SearchInterface(props) {
                                     Swal.fire('Search field is required.');
                                   } else if (searchInput.length > 255) {
                                     Swal.fire('Character limit should be less than 255.');
-                                  } else {
+                                  } else if (searchInput !== searchQueries) {
                                     Swal.fire({
-                                      html: 'Searching...', // add html attribute if you want or remove
+                                      title: 'Searching...', // add html attribute if you want or remove
+                                      html: 'We are fetching results for you!',
                                       allowOutsideClick: false,
                                       onBeforeOpen: () => {
                                         Swal.showLoading();
@@ -280,10 +312,8 @@ function SearchInterface(props) {
                                       size: 20,
                                     };
                                     const result = await dispatch(simpleSearchAction(dataSend));
-                                    setTotalCount(result.meta.total);
-                                    if (false) {
-                                      history.push(`org/${currentOrganization?.domain}/search`);
-                                    }
+                                    setTotalCount(result.meta?.total);
+                                    history.push(`/org/${currentOrganization?.domain}/search`);
                                   }
                                   // setModalShow(true);
                                 }}
@@ -412,30 +442,8 @@ function SearchInterface(props) {
                     defaultActiveKey="total"
                     id="uncontrolled-tab-example"
                     onSelect={async (e) => {
-                      if (e === 'total') {
-                        const searchData = {
-                          phrase: searchQueries.trim(),
-                          from: 0,
-                          size: 20,
-                          type: searchType,
-                        };
-                        const resultModel = await dispatch(simpleSearchAction(searchData));
-                        setTotalCount(resultModel.meta[e]);
-                        setActiveModel(e);
-                        setActivePage(1);
-                      } else {
-                        const searchData = {
-                          phrase: searchQueries.trim(),
-                          from: 0,
-                          size: 20,
-                          model: e,
-                          type: searchType,
-                        };
-                        const resultModel = await dispatch(simpleSearchAction(searchData));
-                        setTotalCount(resultModel.meta.total);
-                        setActiveModel(e);
-                        setActivePage(1);
-                      }
+                      setActiveModel(e);
+                      setActivePage(1);
                     }}
                   >
                     <Tab
@@ -511,8 +519,9 @@ function SearchInterface(props) {
                                   <div
                                     className={`btn-fav ${res.favored}`}
                                     onClick={((e) => {
-                                      if (e.target.classList.contains(' true')) {
+                                      if (e.target.classList.contains('true')) {
                                         e.target.classList.remove('true');
+                                        e.target.classList.add('false');
                                       } else {
                                         e.target.classList.add('true');
                                       }
@@ -522,6 +531,7 @@ function SearchInterface(props) {
                                     <FontAwesomeIcon
                                       className="mr-2"
                                       icon="star"
+                                      style={{ pointerEvents: 'none' }}
                                     />
                                     {' '}
                                     Favorite
@@ -955,7 +965,13 @@ function SearchInterface(props) {
                             size: 20,
                             type: searchType,
                           };
-                          Swal.showLoading();
+                          Swal.fire({
+                            title: 'Loading...',
+                            allowOutsideClick: false,
+                            onBeforeOpen: () => {
+                              Swal.showLoading();
+                            },
+                          });
                           await dispatch(simpleSearchAction(searchData));
                           Swal.close();
                         } else {
@@ -966,7 +982,13 @@ function SearchInterface(props) {
                             type: searchType,
                             model: activeModel,
                           };
-                          Swal.showLoading();
+                          Swal.fire({
+                            title: 'Loading...',
+                            allowOutsideClick: false,
+                            onBeforeOpen: () => {
+                              Swal.showLoading();
+                            },
+                          });
                           await dispatch(simpleSearchAction(searchData));
                           Swal.close();
                         }
