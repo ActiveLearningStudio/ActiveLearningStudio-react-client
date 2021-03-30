@@ -419,6 +419,7 @@ export const editResourceAction = (
       title: metadata.metaContent && metadata.metaContent.metaTitle,
       content: 'create',
       thumb_url: metadata.thumbUrl,
+      type: 'h5p',
       subject_id:
         metadata.metaContent.metaSubject
         && metadata.metaContent.metaSubject,
@@ -429,7 +430,7 @@ export const editResourceAction = (
       action: 'create',
       data: h5pdata,
     };
-    const response = await resourceService.h5pSettingsUpdate(activityId, dataUpload);
+    const response = await resourceService.h5pSettingsUpdate(activityId, dataUpload, playlistId);
     Swal.close();
 
     resourceSaved(true);

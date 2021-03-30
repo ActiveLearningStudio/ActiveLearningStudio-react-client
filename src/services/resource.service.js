@@ -91,8 +91,8 @@ const h5pResource = (activityId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const h5pSettingsUpdate = (activityId, dataUpload) => httpService
-  .put(`/${apiVersion}/activities/${activityId}`, dataUpload)
+const h5pSettingsUpdate = (activityId, dataUpload, playlistId) => httpService
+  .put(`/${apiVersion}/playlists/${playlistId}/activities/${activityId}`, dataUpload)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
