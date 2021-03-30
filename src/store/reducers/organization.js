@@ -20,9 +20,10 @@ const INITIAL_STATE = {
   permission: {
     activeRole: 'member',
     roleId: 3,
-    project: ['create', 'update', 'delete', 'view', 'publish', 'share'],
-    playlist: ['create', 'update', 'delete', 'view', 'publish', 'share'],
-    ativities: ['create', 'update', 'delete', 'view', 'publish', 'share'],
+    projects: ['create', 'update', 'delete', 'view', 'publish', 'share', 'clone', 'showcase'],
+    playlists: ['create', 'update', 'delete', 'view', 'publish', 'share', 'clone'],
+    activities: ['create', 'upload', 'update', 'delete', 'view', 'publish', 'share', 'clone'],
+    organization: ['create', 'edit', 'delete', 'view', 'add-user', 'invite-member', 'update-user', 'view-user'],
     account: ['update', 'view'],
     search: ['view'],
     dashboard: ['view'],

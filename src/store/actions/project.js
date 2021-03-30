@@ -246,7 +246,7 @@ export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
       type: actionTypes.PAGE_LOADING,
     });
 
-    const { project } = await projectService.get(projectId, activeOrganization.id);
+    const { project } = await projectService.get(projectId, activeOrganization?.id);
 
     dispatch({
       type: actionTypes.LOAD_MY_PROJECTS_SELECTED,

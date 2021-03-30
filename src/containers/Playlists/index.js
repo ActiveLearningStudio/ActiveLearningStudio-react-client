@@ -54,6 +54,7 @@ function PlaylistsPage(props) {
   const [title, setTitle] = useState(false);
   const [indexStatus, setIndexStatus] = useState(null);
   const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
   const state = useSelector((s) => s.project.selectedProject);
 
   useEffect(() => {
@@ -350,21 +351,24 @@ function PlaylistsPage(props) {
                 <div className="col playlist-page-project-title project-each-view">
                   <div className="flex-se">
                     <h1>{selectedProject ? selectedProject.name : ''}</h1>
-                    <div className="react-touch">
-                      <div className="publish-btn">
-                        <span style={{ color: checked ? '#333' : '$mine-shaft' }}>Showcase</span>
-                        <Switch checked={checked} onChange={handleChange} />
+                    {permission?.projects?.includes('showcase') && (
+                      <div className="react-touch">
+                        <div className="publish-btn">
+                          <span style={{ color: checked ? '#333' : '$mine-shaft' }}>Showcase</span>
+                          <Switch checked={checked} onChange={handleChange} />
+                        </div>
                       </div>
-                    </div>
-
-                    <button
-                      type="button"
-                      className="create-playlist-btn"
-                      onClick={handleShowCreatePlaylistModal}
-                    >
-                      <FontAwesomeIcon icon="plus" className="mr-2" />
-                      Create new playlist
-                    </button>
+                    )}
+                    {permission?.playlists?.includes('create') && (
+                      <button
+                        type="button"
+                        className="create-playlist-btn"
+                        onClick={handleShowCreatePlaylistModal}
+                      >
+                        <FontAwesomeIcon icon="plus" className="mr-2" />
+                        Create new playlist
+                      </button>
+                    )}
                   </div>
 
                   <div className="project-preview">

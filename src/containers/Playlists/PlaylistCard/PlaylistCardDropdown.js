@@ -29,7 +29,7 @@ class PlaylistCardDropdown extends React.Component {
       handleClickPlaylistTitle,
       organization,
     } = this.props;
-
+    const { permission } = organization;
     return (
       <Dropdown className="pull-right playlist-dropdown check">
         <Dropdown.Toggle className="playlist-dropdown-btn">
@@ -45,45 +45,51 @@ class PlaylistCardDropdown extends React.Component {
             <FontAwesomeIcon icon="eye" className="mr-2" />
             Preview
           </Dropdown.Item>
-          <Dropdown.Item onClick={handleClickPlaylistTitle}>
-            <FontAwesomeIcon icon="edit" className="mr-2" />
-            Edit
-          </Dropdown.Item>
-
-          <Dropdown.Item
-            to="#"
-            onClick={() => {
-              Swal.showLoading();
-              clonePlaylist(playlist.project_id, playlist.id);
-            }}
-          >
-            <FontAwesomeIcon icon="clone" className="mr-2" />
-            Duplicate
-          </Dropdown.Item>
-
-          {playlist.activities.length > 0
-            ? <ResourceCardDropdownShare resource={playlist.activities[0]} />
-            : (
-              <Dropdown.Item
-                to="#"
-                onClick={() => {
-                  Swal.fire('Kindly add Activity First.');
-                }}
-              >
-                <FontAwesomeIcon icon="share" className="mr-2" />
-                Share
-              </Dropdown.Item>
-            )}
-
-          <ShareLink
-            playlistId={playlist.id}
-            projectId={playlist.project_id}
-          />
-
-          <Dropdown.Item onClick={this.handleDelete}>
-            <FontAwesomeIcon icon="times-circle" className="mr-2" />
-            Delete
-          </Dropdown.Item>
+          {permission?.playlists?.includes('update') && (
+            <Dropdown.Item onClick={handleClickPlaylistTitle}>
+              <FontAwesomeIcon icon="edit" className="mr-2" />
+              Edit
+            </Dropdown.Item>
+          )}
+          {permission?.playlists?.includes('clone') && (
+            <Dropdown.Item
+              to="#"
+              onClick={() => {
+                Swal.showLoading();
+                clonePlaylist(playlist.project_id, playlist.id);
+              }}
+            >
+              <FontAwesomeIcon icon="clone" className="mr-2" />
+              Duplicate
+            </Dropdown.Item>
+          )}
+          {permission?.playlists?.includes('share') && (
+            playlist.activities.length > 0
+              ? <ResourceCardDropdownShare resource={playlist.activities[0]} />
+              : (
+                <Dropdown.Item
+                  to="#"
+                  onClick={() => {
+                    Swal.fire('Kindly add Activity First.');
+                  }}
+                >
+                  <FontAwesomeIcon icon="share" className="mr-2" />
+                  Share
+                </Dropdown.Item>
+              )
+          )}
+          {permission?.playlists?.includes('publish') && (
+            <ShareLink
+              playlistId={playlist.id}
+              projectId={playlist.project_id}
+            />
+          )}
+          {permission?.playlists?.includes('delete') && (
+            <Dropdown.Item onClick={this.handleDelete}>
+              <FontAwesomeIcon icon="times-circle" className="mr-2" />
+              Delete
+            </Dropdown.Item>
+          )}
         </Dropdown.Menu>
       </Dropdown>
     );

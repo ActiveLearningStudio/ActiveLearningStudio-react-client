@@ -29,7 +29,7 @@ import './style.scss';
 function Header(props) {
   const { /* user, */ logout } = props;
   const stateHeader = useSelector((state) => state.organization);
-  const { permission: { project } } = stateHeader;
+  const { permission: { projects } } = stateHeader;
   const dispatch = useDispatch();
   // useMemo(() => {
   //   dispatch(getOrganizationFirstTime(stateHeader?.currentOrganization?.id));
@@ -66,7 +66,7 @@ function Header(props) {
                   </Link>
                 </li>
               )}
-              {project?.includes('create') && (
+              {projects?.includes('create') && (
                 <li className="align-items-center" style={{ paddingTop: '4px' }}>
                   <Dropdown className="create-project">
                     <Dropdown.Toggle className="align-items-center">
