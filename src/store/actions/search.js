@@ -25,33 +25,64 @@ export const simpleSearchAction = (values) => async (dispatch) => {
   }
   let sendData;
   if (activityType.length > 0) {
-    sendData = {
-      query: values.phrase,
-      h5pLibraries: activityType,
-      from: values.from,
-      size: values.size,
-      model: values.model || undefined,
-      negativeQuery: values.no_words,
-      subjectIds: values.subjectArray,
-      educationLevelIds: values.gradeArray,
-      startDate: values.fromDate,
-      endDate: values.toDate,
-      organization_id: activeOrganization.id,
-    };
+    if (values.type === 'orgSearch') {
+      sendData = {
+        h5pLibraries: activityType,
+        from: values.from,
+        size: values.size,
+        model: values.model || undefined,
+        negativeQuery: values.no_words,
+        subjectIds: values.subjectArray,
+        educationLevelIds: values.gradeArray,
+        startDate: values.fromDate,
+        endDate: values.toDate,
+        organization_id: activeOrganization.id,
+      };
+    } else {
+      sendData = {
+        query: values.phrase,
+        h5pLibraries: activityType,
+        from: values.from,
+        size: values.size,
+        model: values.model || undefined,
+        negativeQuery: values.no_words,
+        subjectIds: values.subjectArray,
+        educationLevelIds: values.gradeArray,
+        startDate: values.fromDate,
+        endDate: values.toDate,
+        organization_id: activeOrganization.id,
+      };
+    }
   } else {
-    sendData = {
-      query: values.phrase,
-      h5pLibraries: values.standardArray,
-      from: values.from,
-      size: values.size,
-      model: values.model || undefined,
-      negativeQuery: values.no_words,
-      subjectIds: values.subjectArray,
-      educationLevelIds: values.gradeArray,
-      startDate: values.fromDate,
-      endDate: values.toDate,
-      organization_id: activeOrganization.id,
-    };
+    // eslint-disable-next-line no-lonely-if
+    if (values.type === 'orgSearch') {
+      sendData = {
+        h5pLibraries: activityType,
+        from: values.from,
+        size: values.size,
+        model: values.model || undefined,
+        negativeQuery: values.no_words,
+        subjectIds: values.subjectArray,
+        educationLevelIds: values.gradeArray,
+        startDate: values.fromDate,
+        endDate: values.toDate,
+        organization_id: activeOrganization.id,
+      };
+    } else {
+      sendData = {
+        query: values.phrase,
+        h5pLibraries: values.standardArray,
+        from: values.from,
+        size: values.size,
+        model: values.model || undefined,
+        negativeQuery: values.no_words,
+        subjectIds: values.subjectArray,
+        educationLevelIds: values.gradeArray,
+        startDate: values.fromDate,
+        endDate: values.toDate,
+        organization_id: activeOrganization.id,
+      };
+    }
   }
   let response;
   if (values.type === 'public') {
@@ -65,7 +96,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
       Swal.fire(response.errors.query[0]);
     }
   } else {
-    dispatch(searchRedux(response.data, values.phrase, response.meta));
+    dispatch(searchRedux(response.data, values.type === 'orgSearch' ? '' : values.phrase, response.meta));
   }
 
   return response;

@@ -116,8 +116,7 @@ function SearchForm() {
             }}
             validate={(values) => {
               const errors = {};
-              console.log(values);
-              if (!values.phrase) {
+              if (!values.phrase && values.type !== 'orgSearch') {
                 errors.phrase = 'required';
               }
               if (values.fromDate && values.toDate) {
@@ -129,8 +128,10 @@ function SearchForm() {
               Swal.showLoading();
               dispatcher(simpleSearchAction(values));
               closeModel.current.click();
+              const h5pNameArray = [];
+              values.standardArray.filter((h5p) => h5pNameArray.push(h5p.name));
               // eslint-disable-next-line max-len
-              history.push(`/org/${currentOrganization?.domain}/search?type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${values.standardArray.name}`);
+              history.push(`/org/${currentOrganization?.domain}/search?type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${h5pNameArray}`);
               resetForm({
                 phrase: '',
                 subjectArray: [],
@@ -184,10 +185,21 @@ function SearchForm() {
                       />
                       <span>Search Project Showcase</span>
                     </label>
+                    <label>
+                      <input
+                        name="type"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value="orgSearch"
+                        checked={values.type === 'orgSearch'}
+                        type="radio"
+                      />
+                      <span>Search All Projects in Organization</span>
+                    </label>
                   </div>
                 </div>
 
-                <div className="form-group">
+                <div className="form-group" style={{ display: values.type === 'orgSearch' ? 'none' : 'block' }}>
                   <input
                     name="phrase"
                     placeholder="Enter search phrase"
