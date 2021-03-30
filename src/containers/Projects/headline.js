@@ -24,7 +24,7 @@ export default function Headline() {
             </div>
           </Link>
         )} */}
-        {permission?.project?.includes('create') && (
+        {permission?.projects?.includes('create') && (
           <Link to={`/org/${currentOrganization?.domain}/project/create`} onClick={() => { setCurrentVisibilityType(null); }}>
             <div className="btn-top-page">
               <FontAwesomeIcon icon="plus" className="mr-2" />

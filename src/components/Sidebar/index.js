@@ -29,6 +29,7 @@ function Sidebar(props) {
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
 
   useEffect(() => {
     if (location.pathname.includes('teams/')) {
@@ -84,14 +85,14 @@ function Sidebar(props) {
           </Link>
         </ul>
       )}
-
-      <Link to={`/org/${organization.currentOrganization?.domain}/dashboard`}>
-        <div className="menu-title">
-          <img src={dashboardicon} alt="" />
-          Dashboard & Stats
-        </div>
-      </Link>
-
+      {permission.dashboard?.includes('view') && (
+        <Link to={`/org/${organization.currentOrganization?.domain}/dashboard`}>
+          <div className="menu-title">
+            <img src={dashboardicon} alt="" />
+            Dashboard & Stats
+          </div>
+        </Link>
+      )}
       <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
         <div className="menu-title">
           <img src={teamicon} alt="" />
