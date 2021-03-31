@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -86,6 +87,7 @@ function SearchInterface(props) {
   useEffect(() => {
     // eslint-disable-next-line no-restricted-globals
     const query = QueryString.parse(location.search);
+    console.log(query, 'query');
     if (query.type) {
       if (query.type === 'private') {
         setSearchType('private');
@@ -99,9 +101,15 @@ function SearchInterface(props) {
       setActiveType(query.h5p.split(','));
     }
     if (query.grade) {
+      if (query.grade.includes('and')) {
+        query.grade = query.grade.replace('and', '&');
+      }
       setActiveSubject(query.grade.split(','));
     }
     if (query.education) {
+      if (query.education.includes('and')) {
+        query.education = query.education.replace('and', '&');
+      }
       setActiveEducation(query.education.split(','));
     }
   }, [allState]);

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -125,13 +126,24 @@ function SearchForm() {
               return errors;
             }}
             onSubmit={(values, { resetForm }) => {
-              Swal.showLoading();
-              dispatcher(simpleSearchAction(values));
               closeModel.current.click();
               const h5pNameArray = [];
-              values.standardArray.filter((h5p) => h5pNameArray.push(h5p.name));
+              values.standardArray.filter((h5p) => h5pNameArray.push(h5p.value));
               // eslint-disable-next-line max-len
               history.push(`/org/${currentOrganization?.domain}/search?type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${h5pNameArray}`);
+              values.subjectArray = values.subjectArray.forEach((subject) => {
+                if (subject.includes('and')) {
+                  subject = subject.replace('and', '&');
+                }
+              });
+              values.gradeArray = values.gradeArray.forEach((grade) => {
+                if (grade.includes('and')) {
+                  // eslint-disable-next-line no-param-reassign
+                  grade = grade.replace('and', '&');
+                }
+              });
+              Swal.showLoading();
+              dispatcher(simpleSearchAction(values));
               resetForm({
                 phrase: '',
                 subjectArray: [],
@@ -219,7 +231,13 @@ function SearchForm() {
                     onChange={(e) => {
                       handleChange(e);
                       if (!values.subjectArray.includes(e.target.value)) {
-                        values.subjectArray.push(e.target.value);
+                        let updatedValue = e.target.value;
+                        if (updatedValue.includes('&')) {
+                          updatedValue = e.target.value.replace('&', 'and');
+                          values.subjectArray.push(updatedValue);
+                        } else {
+                          values.subjectArray.push(e.target.value);
+                        }
                       }
                     }}
                     onBlur={handleBlur}
@@ -264,7 +282,13 @@ function SearchForm() {
                     onChange={(e) => {
                       handleChange(e);
                       if (!values.gradeArray.includes(e.target.value)) {
-                        values.gradeArray.push(e.target.value);
+                        let updatedValue = e.target.value;
+                        if (updatedValue.includes('&')) {
+                          updatedValue = e.target.value.replace('&', 'and');
+                          values.gradeArray.push(updatedValue);
+                        } else {
+                          values.gradeArray.push(e.target.value);
+                        }
                       }
                     }}
                     value={values.grade}
