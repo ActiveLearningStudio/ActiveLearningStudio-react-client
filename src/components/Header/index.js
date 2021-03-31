@@ -67,7 +67,7 @@ function Header(props) {
                   </Link>
                 </li>
               )}
-              {projects?.includes('create') && (
+              {project?.includes('create') && (
                 <li className="align-items-center" style={{ paddingTop: '4px' }}>
                   <Dropdown className="create-project">
                     <Dropdown.Toggle className="align-items-center">
