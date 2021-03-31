@@ -18,7 +18,7 @@ export default function IntroOrganizations(props) {
   const { detail } = props;
   const history = useHistory();
   const allState = useSelector((state) => state.organization);
-  const { currentOrganization } = allState;
+  const { currentOrganization, permission } = allState;
   // useMemo(() => {
   //   if() {
   //     dispatch(updatePreviousScreen(''));
@@ -48,30 +48,34 @@ export default function IntroOrganizations(props) {
               {detail.organization_role}
             </div>
           </div>
-          {currentOrganization?.organization_role_id === 1 && (
+          {permission?.organization?.includes('organization:view') && (
             <div className="grp-btn">
-              <button className="sub-organization-button" type="button">
-                <div
-                  className="button-text"
-                  onClick={() => {
-                    dispatch(updateOrganizationScreen('create-org'));
-                  }}
-                >
-                  New Sub-organization
-                </div>
-              </button>
-              <Dropdown>
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                  Invite Users
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <InviteOrganization />
-                </Dropdown.Menu>
-              </Dropdown>
+              {permission?.organization?.includes('organization:create') && (
+                <button className="sub-organization-button" type="button">
+                  <div
+                    className="button-text"
+                    onClick={() => {
+                      dispatch(updateOrganizationScreen('create-org'));
+                    }}
+                  >
+                    New Sub-organization
+                  </div>
+                </button>
+              )}
+              {permission?.organization?.includes('organization:invite-members') && (
+                <Dropdown>
+                  <Dropdown.Toggle variant="success" id="dropdown-basic">
+                    Invite Users
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <InviteOrganization />
+                  </Dropdown.Menu>
+                </Dropdown>
+              )}
             </div>
           )}
         </div>
-        {currentOrganization?.organization_role_id === 1 && (
+        {permission?.organization?.includes('organization:view') && (
           <div className="user-state-org">
             <div>
               <div className="circle">

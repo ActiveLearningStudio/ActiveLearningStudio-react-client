@@ -29,7 +29,8 @@ import './style.scss';
 function Header(props) {
   const { /* user, */ logout } = props;
   const stateHeader = useSelector((state) => state.organization);
-  const { permission: { projects } } = stateHeader;
+  const { permission: { project } } = stateHeader;
+  const { permission } = stateHeader;
   const dispatch = useDispatch();
   // useMemo(() => {
   //   dispatch(getOrganizationFirstTime(stateHeader?.currentOrganization?.id));
@@ -49,7 +50,7 @@ function Header(props) {
         <div className="tophd_right flexdiv search-div  d-flex flex-wrap ">
           <div className="navbar-link">
             <ul className="top-info flex-div">
-              {stateHeader.currentOrganization?.organization_role === 'Administrator' && (
+              {permission?.organization?.includes('organization:view') && (
                 <li>
                   <Link
                     to={`/org/${stateHeader.currentOrganization?.domain}/manage`}

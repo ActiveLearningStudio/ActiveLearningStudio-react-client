@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import logo from 'assets/images/logo.svg';
 import { getUserAction } from 'store/actions/auth';
 import { cloneDuplicationRequest } from 'store/actions/notification';
-import { getBranding, getOrganizationFirstTime } from 'store/actions/organization';
+import { getBranding, getOrganizationFirstTime, getAllPermission } from 'store/actions/organization';
 import { updatedActivity } from 'store/actions/resource';
 import { updatedProject } from 'store/actions/project';
 import { updatedPlaylist } from 'store/actions/playlist';
@@ -39,6 +39,7 @@ function App(props) {
               const result = dispatch(getBranding(subDomain));
               result.then((data) => {
                 dispatch(getOrganizationFirstTime(data?.organization?.id));
+                dispatch(getAllPermission(data?.organization?.id));
               }).catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
           } else {

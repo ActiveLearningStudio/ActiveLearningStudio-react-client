@@ -4,9 +4,11 @@ import PropTypes from 'prop-types';
 import { deleteUserFromOrganization } from 'store/actions/organization';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function UserRow(props) {
+  const allListState = useSelector((state) => state.organization);
+  const { permission } = allListState;
   const dispatch = useDispatch();
   const { user } = props;
   const handleDelete = (userId) => {
@@ -75,12 +77,16 @@ export default function UserRow(props) {
             {user.projects_count}
           </div>
         </div>
-        <div className="secondary-column">
-          <Link href="#">Edit</Link>
-        </div>
-        <div className="secondary-column">
-          <Link onClick={() => handleDelete(user?.id)}>Delete</Link>
-        </div>
+        {permission?.user?.includes('user:edit') && (
+          <div className="secondary-column">
+            {/* <Link href="#">Edit</Link> */}
+          </div>
+        )}
+        {permission?.user?.includes('user:delete') && (
+          <div className="secondary-column">
+            <Link onClick={() => handleDelete(user?.id)}>Delete</Link>
+          </div>
+        )}
       </div>
       <hr />
     </>

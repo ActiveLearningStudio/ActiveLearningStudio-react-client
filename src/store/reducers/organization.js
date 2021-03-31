@@ -17,18 +17,46 @@ const INITIAL_STATE = {
   feedbackType: null,
   history: null,
   searchOrg: [],
+  // permission: {},
   permission: {
     activeRole: 'member',
     roleId: 3,
-    projects: ['create', 'update', 'delete', 'view', 'publish', 'share', 'clone', 'showcase'],
-    playlists: ['create', 'update', 'delete', 'view', 'publish', 'share', 'clone'],
-    activities: ['create', 'upload', 'update', 'delete', 'view', 'publish', 'share', 'clone'],
-    organization: ['create', 'edit', 'delete', 'view', 'add-user', 'invite-member', 'update-user', 'view-user'],
+    organization: ['organization:edit', 'organization:view', 'organization:invite-members', 'organization:add-user', 'organization:add-admin'],
+    project: ['create', 'update', 'delete', 'view', 'publish', 'share'],
+    playlist: ['create', 'update', 'delete', 'view', 'publish', 'share'],
+    ativities: ['create', 'update', 'delete', 'view', 'publish', 'share'],
     account: ['update', 'view'],
     search: ['view'],
-    dashboard: ['view'],
-    teams: ['create', 'edit', 'update', 'delete', 'view'],
-    groups: ['create', 'edit', 'update', 'delete', 'view'],
+    dashboard: ['dashboard:view'],
+    team: [
+      'team:edit',
+      'team:delete',
+      'team:view',
+      'team:create',
+      'team:add-projects',
+      'team:remove-projects',
+      'team:add-project-user',
+      'team:remove-project-user',
+      'team:add-user',
+      'team:remove-user',
+      'team:invite-member',
+      'team:request-indexing',
+    ],
+    group: [
+      'group:edit',
+      'group:delete',
+      'group:view',
+      'group:create',
+      'group:add-projects',
+      'group:remove-projects',
+      'group:add-project-user',
+      'group:remove-project-user',
+      'group:add-user',
+      'group:remove-user',
+      'group:invite-member',
+      'group:request-indexing',
+    ],
+    user: ['user:view', 'user:edit', 'user:delete', 'delete-admin'],
   },
 };
 
@@ -129,6 +157,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         searchUsers: action.payload,
+      };
+    case actionTypes.SET_ALL_PERSMISSION:
+      return {
+        ...state,
+        // permission: action.payload,
       };
     default:
       return state;

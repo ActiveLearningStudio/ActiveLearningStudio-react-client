@@ -19,7 +19,7 @@ import {
 const AllOrganizations = () => {
   const dispatch = useDispatch();
   const allListState = useSelector((state) => state.organization);
-  const { activeOrganization, currentOrganization } = allListState;
+  const { activeOrganization, currentOrganization, permission } = allListState;
   useMemo(() => {
     dispatch(updatePreviousScreen('intro'));
   }, []);
@@ -138,41 +138,45 @@ const AllOrganizations = () => {
                       >
                         Manage
                       </div>
-                      <div
-                        className="submit"
-                        onClick={() => {
-                          dispatch(setActiveOrganization(org));
-                          dispatch(editOrganization(org));
-                          dispatch(updateOrganizationScreen('edit-org'));
-                          dispatch(saveHistory(activeOrganization));
-                        }}
-                      >
-                        Edit
-                      </div>
-                      <div
-                        className="submit"
-                        onClick={() => {
-                          Swal.fire({
-                            title: 'Are you sure?',
-                            text: "You won't be able to revert this!",
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#084892',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Yes, delete it!',
-                          }).then(async (result) => {
-                            if (result.isConfirmed) {
-                              const resultDel = await dispatch(deleteOrganization(org));
-                              if (resultDel) {
-                                dispatch(updateOrganizationScreen('feedback'));
-                                dispatch(updateFeedbackScreen('delete'));
+                      {permission?.organization?.includes('organization:edit') && (
+                        <div
+                          className="submit"
+                          onClick={() => {
+                            dispatch(setActiveOrganization(org));
+                            dispatch(editOrganization(org));
+                            dispatch(updateOrganizationScreen('edit-org'));
+                            dispatch(saveHistory(activeOrganization));
+                          }}
+                        >
+                          Edit
+                        </div>
+                      )}
+                      {permission?.organization?.includes('organization:delete') && (
+                        <div
+                          className="submit"
+                          onClick={() => {
+                            Swal.fire({
+                              title: 'Are you sure?',
+                              text: "You won't be able to revert this!",
+                              icon: 'warning',
+                              showCancelButton: true,
+                              confirmButtonColor: '#084892',
+                              cancelButtonColor: '#d33',
+                              confirmButtonText: 'Yes, delete it!',
+                            }).then(async (result) => {
+                              if (result.isConfirmed) {
+                                const resultDel = await dispatch(deleteOrganization(org));
+                                if (resultDel) {
+                                  dispatch(updateOrganizationScreen('feedback'));
+                                  dispatch(updateFeedbackScreen('delete'));
+                                }
                               }
-                            }
-                          });
-                        }}
-                      >
-                        Delete
-                      </div>
+                            });
+                          }}
+                        >
+                          Delete
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}

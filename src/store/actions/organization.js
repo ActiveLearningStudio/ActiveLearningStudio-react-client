@@ -240,3 +240,12 @@ export const searchUserInOrganization = (id, query, page) => async (dispatch) =>
   });
   return result;
 };
+
+export const getAllPermission = (id) => async (dispatch) => {
+  const result = await organization.allPermission(id);
+  dispatch({
+    type: actionTypes.SET_ALL_PERSMISSION,
+    payload: result.permissions,
+  });
+  return result;
+};

@@ -85,7 +85,7 @@ function Sidebar(props) {
           </Link>
         </ul>
       )}
-      {permission.dashboard?.includes('view') && (
+      {permission?.dashboard?.includes('dashboard:view') && (
         <Link to={`/org/${organization.currentOrganization?.domain}/dashboard`}>
           <div className="menu-title">
             <img src={dashboardicon} alt="" />
@@ -93,118 +93,130 @@ function Sidebar(props) {
           </div>
         </Link>
       )}
-      <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
-        <div className="menu-title">
-          <img src={teamicon} alt="" />
-          Teams
-        </div>
-      </Link>
-      {allState.sidebar.teams.length > 0 && allState.sidebar.teams.slice(0, 3).map((team) => (
-        <div key={team.id} className={`team-item${selectedTeam === team.id ? '' : ' collapsed'}`}>
-          <div className="team-label" onClick={() => handleClickTeam(team)}>
-            {team.name}
-            <FontAwesomeIcon
-              icon={selectedTeam === team.id ? 'angle-up' : 'angle-down'}
-              className="ml-2 mt-1"
-            />
-          </div>
+      {permission?.team?.includes('team:view') && (
+        <>
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
+            <div className="menu-title">
+              <img src={teamicon} alt="" />
+              Teams
+            </div>
+          </Link>
+          {allState.sidebar.teams.length > 0 && allState.sidebar.teams.slice(0, 3).map((team) => (
+            <div key={team.id} className={`team-item${selectedTeam === team.id ? '' : ' collapsed'}`}>
+              <div className="team-label" onClick={() => handleClickTeam(team)}>
+                {team.name}
+                <FontAwesomeIcon
+                  icon={selectedTeam === team.id ? 'angle-up' : 'angle-down'}
+                  className="ml-2 mt-1"
+                />
+              </div>
 
-          <div className="team-detail-labels">
-            <Link
-              to={`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}`}
-              className={selectedCategory === TEAM ? 'active-label' : ''}
-            >
-              <FontAwesomeIcon icon="user-friends" className="mr-2" />
-              Team Members
+              <div className="team-detail-labels">
+                <Link
+                  to={`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}`}
+                  className={selectedCategory === TEAM ? 'active-label' : ''}
+                >
+                  <FontAwesomeIcon icon="user-friends" className="mr-2" />
+                  Team Members
+                </Link>
+                <Link
+                  to={`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}/projects`}
+                  className={selectedCategory === PROJECTS ? 'active-label' : ''}
+                >
+                  <span className="project-title">Projects</span>
+                </Link>
+                {/*
+                <Link
+                  to={`/teams/${team.id}/channel`}
+                  className={selectedCategory === CHANNEL ? 'active-label' : ''}
+                >
+                  <span className="channel-title">Channels</span>
+                </Link>
+                */}
+              </div>
+            </div>
+          ))}
+          {allState.sidebar.teams.length > 0
+            && (
+            <Link className="expand" style={{ paddingLeft: '20px', borderTop: 'none' }} to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
+              Explore All Teams
+              <FontAwesomeIcon icon="arrow-right" className="ml-2" />
             </Link>
-            <Link
-              to={`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}/projects`}
-              className={selectedCategory === PROJECTS ? 'active-label' : ''}
-            >
-              <span className="project-title">Projects</span>
-            </Link>
-            {/*
-            <Link
-              to={`/teams/${team.id}/channel`}
-              className={selectedCategory === CHANNEL ? 'active-label' : ''}
-            >
-              <span className="channel-title">Channels</span>
-            </Link>
-            */}
-          </div>
-        </div>
-      ))}
-      {allState.sidebar.teams.length > 0
-        && (
-        <Link className="expand" style={{ paddingLeft: '20px', borderTop: 'none' }} to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
-          Explore All Teams
-          <FontAwesomeIcon icon="arrow-right" className="ml-2" />
-        </Link>
-        )}
-      <div className="menu-title create-button">
-        <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams/create-team`}>
-          <div>
-            <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
-            Create Team
-          </div>
-        </Link>
-      </div>
-      <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
-        <div className="menu-title">
-          <FontAwesomeIcon icon="users" className="mr-2" />
-          Groups
-        </div>
-      </Link>
-      {allState.sidebar.groups.length > 0 && allState.sidebar.groups.slice(0, 3).map((group) => (
-        <div key={group.id} className={`team-item${selectedTeam === group.id ? '' : ' collapsed'}`}>
-          <div className="team-label" onClick={() => handleClickGroup(group)}>
-            {group.name}
-            <FontAwesomeIcon
-              icon={selectedTeam === group.id ? 'angle-up' : 'angle-down'}
-              className="ml-2 mt-1"
-            />
-          </div>
+            )}
+          {permission?.team?.includes('team:create') && (
+            <div className="menu-title create-button">
+              <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams/create-team`}>
+                <div>
+                  <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
+                  Create Team
+                </div>
+              </Link>
+            </div>
+          )}
+        </>
+      )}
+      {permission?.group?.includes('group:view') && (
+        <>
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
+            <div className="menu-title">
+              <FontAwesomeIcon icon="users" className="mr-2" />
+              Groups
+            </div>
+          </Link>
+          {allState.sidebar.groups.length > 0 && allState.sidebar.groups.slice(0, 3).map((group) => (
+            <div key={group.id} className={`team-item${selectedTeam === group.id ? '' : ' collapsed'}`}>
+              <div className="team-label" onClick={() => handleClickGroup(group)}>
+                {group.name}
+                <FontAwesomeIcon
+                  icon={selectedTeam === group.id ? 'angle-up' : 'angle-down'}
+                  className="ml-2 mt-1"
+                />
+              </div>
 
-          <div className="team-detail-labels">
-            <Link
-              to={`/org/${allState.organization.currentOrganization?.domain}/groups/${group.id}`}
-              className={selectedCategory === TEAM ? 'active-label' : ''}
-            >
-              <FontAwesomeIcon icon="user-friends" className="mr-2" />
-              Group Members
+              <div className="team-detail-labels">
+                <Link
+                  to={`/org/${allState.organization.currentOrganization?.domain}/groups/${group.id}`}
+                  className={selectedCategory === TEAM ? 'active-label' : ''}
+                >
+                  <FontAwesomeIcon icon="user-friends" className="mr-2" />
+                  Group Members
+                </Link>
+                <Link
+                  to={`/org/${allState.organization.currentOrganization?.domain}/groups/${group.id}/projects`}
+                  className={selectedCategory === PROJECTS ? 'active-label' : ''}
+                >
+                  <span className="project-title">Projects</span>
+                </Link>
+                {/*
+                <Link
+                  to={`/teams/${team.id}/channel`}
+                  className={selectedCategory === CHANNEL ? 'active-label' : ''}
+                >
+                  <span className="channel-title">Channels</span>
+                </Link>
+                */}
+              </div>
+            </div>
+          ))}
+          {allState.sidebar.groups.length > 0
+            && (
+            <Link className="expand" style={{ paddingLeft: '20px', borderTop: 'none' }} to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
+              Explore All Groups
+              <FontAwesomeIcon icon="arrow-right" className="ml-2" />
             </Link>
-            <Link
-              to={`/org/${allState.organization.currentOrganization?.domain}/groups/${group.id}/projects`}
-              className={selectedCategory === PROJECTS ? 'active-label' : ''}
-            >
-              <span className="project-title">Projects</span>
-            </Link>
-            {/*
-            <Link
-              to={`/teams/${team.id}/channel`}
-              className={selectedCategory === CHANNEL ? 'active-label' : ''}
-            >
-              <span className="channel-title">Channels</span>
-            </Link>
-            */}
-          </div>
-        </div>
-      ))}
-      {allState.sidebar.groups.length > 0
-        && (
-        <Link className="expand" style={{ paddingLeft: '20px', borderTop: 'none' }} to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
-          Explore All Groups
-          <FontAwesomeIcon icon="arrow-right" className="ml-2" />
-        </Link>
-        )}
-      <div className="menu-title create-button">
-        <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups/create-group`}>
-          <div>
-            <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
-            Create Group
-          </div>
-        </Link>
-      </div>
+            )}
+          {permission?.group?.includes('group:create') && (
+            <div className="menu-title create-button">
+              <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups/create-group`}>
+                <div>
+                  <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
+                  Create Group
+                </div>
+              </Link>
+            </div>
+          )}
+        </>
+      )}
       <img src={backgroundimg} alt="" />
     </aside>
   );
