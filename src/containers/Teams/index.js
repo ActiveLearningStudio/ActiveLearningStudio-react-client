@@ -125,29 +125,30 @@ function TeamsPage(props) {
                 <></>
               )}
             </div>
-            {permission?.Team?.includes('team:view') ? (
-              <>
-                {overview && (
-                  <div className="row overview">
+            <>
+              {permission?.Team?.includes('team:view') ? (
+                overview && (
+                <div className="row overview">
                     {teams.length > 0 ? teams.map((team) => (
                       <TeamView key={team.id} team={team} />
                     )) : <div>No teams available </div> }
-                  </div>
-                )}
-                {(creation || editMode) && (
-                  <div className="row sub-content"><CreateTeam editMode={editMode} selectedTeam={selectedTeam} /></div>
-                )}
-                {teamShow && selectedTeam && (
-                  <TeamMemberView team={selectedTeam} />
-                )}
-                {projectShow && selectedTeam && (
-                  <TeamProjectView team={selectedTeam} />
-                )}
-                {channelShow && selectedTeam && (
-                  <ChannelPanel />
-                )}
-              </>
-            ) : <Alert variant="danger">You are not authorized to view teams.</Alert>}
+                </div>
+                )
+              ) : <Alert variant="danger">You are not authorized to view teams.</Alert>}
+
+              {(creation || editMode) && (
+                <div className="row sub-content"><CreateTeam editMode={editMode} selectedTeam={selectedTeam} /></div>
+              )}
+              {teamShow && selectedTeam && (
+                <TeamMemberView team={selectedTeam} />
+              )}
+              {projectShow && selectedTeam && (
+                <TeamProjectView team={selectedTeam} />
+              )}
+              {channelShow && selectedTeam && (
+                <ChannelPanel />
+              )}
+            </>
           </div>
         </div>
       </div>

@@ -21,8 +21,8 @@ function TeamMember(props) {
     selectMe,
     deselectMe,
     removeMember,
+    permission,
   } = props;
-
   const handleRemove = useCallback(() => {
     removeMember(teamId, id)
       .then(() => {
@@ -82,20 +82,22 @@ function TeamMember(props) {
                 <span>Invited</span>
               </button>
             )}
+            {permission?.Team?.includes('team:remove-user') && (
+              <button
+                type="button"
+                className="eliminate-btn"
+                disabled={removingUserId}
+                onClick={handleRemove}
+              >
+                <FontAwesomeIcon icon="plus" className="mr-2" />
+                <span>{authUser.id === id ? 'Leave' : 'Remove'}</span>
 
-            <button
-              type="button"
-              className="eliminate-btn"
-              disabled={removingUserId}
-              onClick={handleRemove}
-            >
-              <FontAwesomeIcon icon="plus" className="mr-2" />
-              <span>{authUser.id === id ? 'Leave' : 'Remove'}</span>
+                {removingUserId === id && (
+                  <FontAwesomeIcon icon="spinner" className="spinner" />
+                )}
+              </button>
+            )}
 
-              {removingUserId === id && (
-                <FontAwesomeIcon icon="spinner" className="spinner" />
-              )}
-            </button>
           </div>
         )}
       </div>
@@ -123,6 +125,7 @@ TeamMember.propTypes = {
   removingUserId: PropTypes.number,
   selected: PropTypes.bool,
   user: PropTypes.object.isRequired,
+  permission: PropTypes.object.isRequired,
   selectMe: PropTypes.func.isRequired,
   deselectMe: PropTypes.func.isRequired,
   removeMember: PropTypes.func.isRequired,

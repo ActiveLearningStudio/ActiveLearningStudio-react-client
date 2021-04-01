@@ -19,8 +19,8 @@ function TeamProjectView(props) {
     removeMember,
   } = props;
   const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
   const authUser = users.find((u) => u.id === (user || {}).id);
-  const role = authUser ? authUser.role : '';
 
   const removeProjectSubmit = useCallback((projectId) => {
     removeProject(id, projectId)
@@ -46,7 +46,7 @@ function TeamProjectView(props) {
 
   return (
     <div className="team-information">
-      {role === 'owner' && (
+      {permission?.Team?.includes('team:add-projects') && (
         <Link to={`/org/${organization.currentOrganization?.domain}/teams/${id}/add-projects`}>
           <div className="btn-top-page">
             <FontAwesomeIcon icon="plus" className="mr-2" />
@@ -91,20 +91,20 @@ function TeamProjectView(props) {
                       <FontAwesomeIcon icon="pen" className="mr-2" />
                       Edit
                     </Dropdown.Item>
-
-                    {role === 'owner' && (
-                      <>
-                        <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/teams/${id}/projects/${project.id}/add-member`}>
-                          <FontAwesomeIcon icon="crosshairs" className="mr-2" />
-                          Add member
-                        </Dropdown.Item>
-
+                    {permission?.Team?.includes('team:add-project-user')
+                     && (
+                     <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/teams/${id}/projects/${project.id}/add-member`}>
+                       <FontAwesomeIcon icon="crosshairs" className="mr-2" />
+                       Add member
+                     </Dropdown.Item>
+                     )}
+                    {permission?.Team?.includes('team:remove-projects')
+                      && (
                         <Dropdown.Item onClick={() => removeProjectSubmit(project.id)}>
                           <FontAwesomeIcon icon="times-circle" className="mr-2" />
                           Remove project
                         </Dropdown.Item>
-                      </>
-                    )}
+                      )}
                   </Dropdown.Menu>
                 </Dropdown>
               </div>
@@ -137,11 +137,14 @@ function TeamProjectView(props) {
                           </div>
 
                           <div className="dropdown-divider" />
-
+                          {permission?.Team?.includes('team:remove-project-user')
+                          && (
                           <Dropdown.Item onClick={() => removeMemberSubmit(project.id, u.id)}>
                             <FontAwesomeIcon icon="times" className="mr-2" />
                             Remove from project
                           </Dropdown.Item>
+                          )}
+
                         </Dropdown.Menu>
                       )}
                     </Dropdown>
