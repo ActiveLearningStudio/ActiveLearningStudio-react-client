@@ -48,7 +48,7 @@ export default function IntroOrganizations(props) {
               {detail.organization_role}
             </div>
           </div>
-          {permission?.Organization?.includes('organization:view') && (
+          {permission?.Organization?.includes('organization:create') && (
             <div className="grp-btn">
               {permission?.Organization?.includes('organization:create') && (
                 <button className="sub-organization-button" type="button">

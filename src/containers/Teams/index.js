@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Alert } from 'react-bootstrap';
 
 import { loadTeamsAction } from 'store/actions/team';
 // import Header from 'components/Header';
@@ -39,7 +40,7 @@ function TeamsPage(props) {
     loadTeams,
   } = props;
   const organization = useSelector((state) => state.organization);
-  const { activeOrganization } = organization;
+  const { activeOrganization, permission } = organization;
   const [breadCrumb, setBreadCrumb] = useState([]);
   const history = useHistory();
   useEffect(() => {
@@ -114,46 +115,42 @@ function TeamsPage(props) {
         </div>
       </div>
       <div className="teams-page">
-
         <div className="content-wrapper">
           <div className="content">
             <div className="row">
               <h1 className={`title${projectShow ? ' project-title' : ''}${channelShow ? ' channel-title' : ''}`}>
                 {overview ? 'Teams' : (title[status] || 'Teams')}
               </h1>
-
               {projectShow && (
                 <></>
               )}
             </div>
-
-            {overview && (
-              <div className="row overview">
-                {teams.length > 0 ? teams.map((team) => (
-                  <TeamView key={team.id} team={team} />
-                )) : <div>No teams available </div> }
-              </div>
-            )}
-
-            {(creation || editMode) && (
-              <div className="row sub-content"><CreateTeam editMode={editMode} selectedTeam={selectedTeam} /></div>
-            )}
-
-            {teamShow && selectedTeam && (
-              <TeamMemberView team={selectedTeam} />
-            )}
-
-            {projectShow && selectedTeam && (
-              <TeamProjectView team={selectedTeam} />
-            )}
-
-            {channelShow && selectedTeam && (
-              <ChannelPanel />
-            )}
+            {permission.Team.includes('team:view') ? (
+              <>
+                {overview && (
+                  <div className="row overview">
+                    {teams.length > 0 ? teams.map((team) => (
+                      <TeamView key={team.id} team={team} />
+                    )) : <div>No teams available </div> }
+                  </div>
+                )}
+                {(creation || editMode) && (
+                  <div className="row sub-content"><CreateTeam editMode={editMode} selectedTeam={selectedTeam} /></div>
+                )}
+                {teamShow && selectedTeam && (
+                  <TeamMemberView team={selectedTeam} />
+                )}
+                {projectShow && selectedTeam && (
+                  <TeamProjectView team={selectedTeam} />
+                )}
+                {channelShow && selectedTeam && (
+                  <ChannelPanel />
+                )}
+              </>
+            ) : <Alert variant="danger">You are not authorized to view teams.</Alert>}
           </div>
         </div>
       </div>
-
       <Footer />
     </>
   );

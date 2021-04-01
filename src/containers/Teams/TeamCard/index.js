@@ -34,6 +34,7 @@ function TeamCard(props) {
   let memCnt = `00${users.length}`;
   memCnt = memCnt.slice(memCnt.length - 2, memCnt.length);
   const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
   let projCnt = `00${projects.length}`;
   projCnt = projCnt.slice(projCnt.length - 2, projCnt.length);
 
@@ -41,10 +42,12 @@ function TeamCard(props) {
     <div className="team-card-content">
       <div className="team-title">
         <Link to={`/org/${organization.currentOrganization?.domain}/teams/${id}`} className="title m-0">{name}</Link>
-        <Link className="edit-button" to={`/org/${organization.currentOrganization?.domain}/teams/${id}/edit`}>
-          <FontAwesomeIcon icon="pen" className="mr-2" />
-          Edit
-        </Link>
+        {permission?.Team?.includes('team:edit') && (
+          <Link className="edit-button" to={`/org/${organization.currentOrganization?.domain}/teams/${id}/edit`}>
+            <FontAwesomeIcon icon="pen" className="mr-2" />
+            Edit
+          </Link>
+        )}
         <h2 className="describe">{description}</h2>
       </div>
 
@@ -67,11 +70,13 @@ function TeamCard(props) {
         <span>Projects for the Team</span>
         <span>{`(${projCnt})`}</span>
       </div>
-      <div>
-        <button type="button" onClick={() => deleteTeam()} className="back-button" style={{ textAlign: 'center' }}>
-          Delete Team
-        </button>
-      </div>
+      {permission?.Team?.includes('team:delete') && (
+        <div>
+          <button type="button" onClick={() => deleteTeam()} className="back-button" style={{ textAlign: 'center' }}>
+            Delete Team
+          </button>
+        </div>
+      )}
     </div>
   );
 }

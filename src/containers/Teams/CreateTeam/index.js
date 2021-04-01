@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Alert } from 'react-bootstrap';
 
 import { searchUsersAction } from 'store/actions/auth';
 import { loadMyProjectsAction } from 'store/actions/project';
@@ -58,6 +59,7 @@ function CreateTeam(props) {
   const [selectedProjects, setSelectedProjects] = useState([]);
   const [searchProject, setSearchProject] = useState('');
   const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
   useEffect(() => {
     loadProjects();
     resetSelectedTeam();
@@ -140,44 +142,49 @@ function CreateTeam(props) {
 
   return (
     <div className="create-team">
-      <div>
-        {backButton}
-        <CreateTeamSidebar team={team} editMode={editMode} />
-      </div>
+      {permission?.Team?.includes('team:create') ? (
+        <>
+          <div>
+            {backButton}
+            <CreateTeamSidebar team={team} editMode={editMode} />
+          </div>
+          <div className="create-team-content">
+            {showCreation && (
+              <Creation editMode={editMode} selectedTeam={selectedTeam} updateTeam={updateSelectedTeam} nextStep={showInvite} />
+            )}
 
-      <div className="create-team-content">
-        {showCreation && (
-          <Creation editMode={editMode} selectedTeam={selectedTeam} updateTeam={updateSelectedTeam} nextStep={showInvite} />
-        )}
+            {permission?.Team?.includes('team:invite-member') && (
+              showInviting && (
+                <InviteTeam
+                  team={team.selectedTeam}
+                  editMode={editMode}
+                  isSearching={isSearching}
+                  searchedUsers={searchedUsers}
+                  isInviting={team.isInviting}
+                  searchUsers={searchUsers}
+                  inviteUser={inviteUser}
+                  selectedMembers={selectedMembers}
+                  setSelectedMembers={setSelectedMembers}
+                  nextStep={showAssign}
+                />
+              )
+            )}
 
-        {showInviting && (
-          <InviteTeam
-            team={team.selectedTeam}
-            editMode={editMode}
-            isSearching={isSearching}
-            searchedUsers={searchedUsers}
-            isInviting={team.isInviting}
-            searchUsers={searchUsers}
-            inviteUser={inviteUser}
-            selectedMembers={selectedMembers}
-            setSelectedMembers={setSelectedMembers}
-            nextStep={showAssign}
-          />
-        )}
-
-        {showAssigning && (
-          <AssignProject
-            isSaving={team.isLoading}
-            editMode={editMode}
-            projects={projects}
-            selectedProjects={selectedProjects}
-            handleSubmit={handleSubmit}
-            search={searchProject}
-            setSearch={setSearchProject}
-            setSelectedProjects={setSelectedProjects}
-          />
-        )}
-      </div>
+            {showAssigning && (
+              <AssignProject
+                isSaving={team.isLoading}
+                editMode={editMode}
+                projects={projects}
+                selectedProjects={selectedProjects}
+                handleSubmit={handleSubmit}
+                search={searchProject}
+                setSearch={setSearchProject}
+                setSelectedProjects={setSelectedProjects}
+              />
+            )}
+          </div>
+        </>
+      ) : <Alert variant="danger">You are not authorized to create teams.</Alert>}
     </div>
   );
 }

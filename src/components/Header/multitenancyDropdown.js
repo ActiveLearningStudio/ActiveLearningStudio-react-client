@@ -5,7 +5,12 @@ import { useHistory } from 'react-router-dom';
 
 import storageService from 'services/storage.service';
 import { CURRENT_ORG } from 'constants/index';
-import { getAllOrganization, setCurrentOrganization, setActiveOrganization } from 'store/actions/organization';
+import {
+  getAllOrganization,
+  setCurrentOrganization,
+  setActiveOrganization,
+  getAllPermission,
+} from 'store/actions/organization';
 
 export default function MultitenancyDropdown() {
   const dispatch = useDispatch();
@@ -34,6 +39,7 @@ export default function MultitenancyDropdown() {
               setSelectOrg(org.name);
               dispatch(setCurrentOrganization(org));
               dispatch(setActiveOrganization(org));
+              dispatch(getAllPermission(org.id));
               storageService.setItem(CURRENT_ORG, org.domain);
               history.push(`/org/${org.domain}`);
             }}
