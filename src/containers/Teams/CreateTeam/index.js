@@ -142,7 +142,7 @@ function CreateTeam(props) {
 
   return (
     <div className="create-team">
-      {permission?.Team?.includes('team:create') ? (
+      {(permission?.Team?.includes('team:create') && !editMode) || (permission?.Team?.includes('team:edit') && editMode) ? (
         <>
           <div>
             {backButton}
@@ -184,7 +184,14 @@ function CreateTeam(props) {
             )}
           </div>
         </>
-      ) : <Alert variant="danger">You are not authorized to create teams.</Alert>}
+      ) : (
+        <Alert variant="danger">
+          {' '}
+          You are not authorized to
+          {`${editMode ? ' Edit ' : ' Create '} `}
+          teams.
+        </Alert>
+      )}
     </div>
   );
 }
