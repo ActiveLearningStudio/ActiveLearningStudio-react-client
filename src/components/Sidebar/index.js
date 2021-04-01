@@ -100,10 +100,12 @@ function Sidebar(props) {
           </li>
         ))}
 
-        <Link className="expand" to="/projects">
-          Explore All
-          <FontAwesomeIcon icon="arrow-right" className="ml-2" />
-        </Link>
+        <li>
+          <Link className="expand" to="/projects">
+            Explore All
+            <FontAwesomeIcon icon="arrow-right" className="ml-2" />
+          </Link>
+        </li>
       </ul>
 
       {/* <div
