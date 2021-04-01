@@ -1,7 +1,9 @@
 import React from 'react';
 import UserCirlce from 'assets/images/UserCircle2.png';
 import PropTypes from 'prop-types';
-import { deleteUserFromOrganization } from 'store/actions/organization';
+import {
+  deleteUserFromOrganization, updateFeedbackScreen, updateOrganizationScreen, updatePreviousScreen,
+} from 'store/actions/organization';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,15 +24,11 @@ export default function UserRow(props) {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.showLoading();
         const response = dispatch(deleteUserFromOrganization(userId));
-        Swal.close();
         response.then(() => {
-          Swal.fire({
-            title: 'Success',
-            text: 'User Deleted Successfully',
-            icon: 'success',
-          });
+          dispatch(updateFeedbackScreen({ action: 'user:delete', name: `${user?.first_name} ${user?.last_name}` }));
+          dispatch(updateOrganizationScreen('feedback'));
+          dispatch(updatePreviousScreen('Users'));
         }).catch((e) => {
           console.log(e);
           Swal.fire({

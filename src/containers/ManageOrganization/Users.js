@@ -13,7 +13,6 @@ import {
 import SearchButton from 'assets/images/Vector.png';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagination from 'react-js-pagination';
-import Swal from 'sweetalert2';
 import AddUser from './addUser';
 import UserRow from './UserRow';
 
@@ -23,58 +22,53 @@ function Users() {
   const allListState = useSelector((state) => state.organization);
   const [users, setUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchAlertToggler, setSearchAlertToggler] = useState(1);
   const [activePage, setActivePage] = useState(1);
   const { activeOrganization, permission } = allListState;
   const searchUsers = async (query, page) => {
-    Swal.showLoading();
     const result = await dispatch(searchUserInOrganization(activeOrganization?.id, query, page));
-    Swal.close();
-    if (result.data.length === 0) {
-      Swal.fire({
-        title: 'Error',
-        text: 'User Not Found',
-        icon: 'warning',
-      });
-      setSearchQuery('');
-      setUsers(allListState?.users);
-    } else {
+    if (result.data.length > 0) {
       setUsers(result);
+      setSearchAlertToggler(1);
+    } else {
+      setSearchAlertToggler(0);
     }
-    return result;
   };
   const onChangeHandler = async ({ target }) => {
     if (target.value) {
       setSearchQuery(target.value);
+      searchUsers(target.value, activePage);
+      setUsers([]);
     } else {
       setSearchQuery('');
       setUsers(allListState?.users);
     }
   };
   useMemo(async () => {
-    dispatch(getRoles());
-    Swal.showLoading();
-    const resultUsers = await dispatch(getOrgUsers(activeOrganization.id, activePage));
-    Swal.close();
-    setUsers(resultUsers);
-    resultUsers.data.forEach((data) => {
-      const allUsers = [];
-      data.data?.map((adm) => {
-        if (adm.organization_role !== 'Administrator') {
-          const result = {
-            value: {
-              userInfo: adm,
-            },
-            role: {
-              name: adm.organization_role,
-              id: adm.organization_role_id,
-            },
-          };
-          allUsers.push(result);
-        }
-        return true;
+    if (permission?.user?.includes('user:view')) {
+      dispatch(getRoles());
+      const resultUsers = await dispatch(getOrgUsers(activeOrganization.id, activePage));
+      setUsers(resultUsers);
+      resultUsers.data.forEach((data) => {
+        const allUsers = [];
+        data.data?.map((adm) => {
+          if (adm.organization_role !== 'Administrator') {
+            const result = {
+              value: {
+                userInfo: adm,
+              },
+              role: {
+                name: adm.organization_role,
+                id: adm.organization_role_id,
+              },
+            };
+            allUsers.push(result);
+          }
+          return true;
+        });
+        setAllUsersAdded(allUsers);
       });
-      setAllUsersAdded(allUsers);
-    });
+    }
   }, [activeOrganization.id, dispatch, activePage]);
   return (
     <div>
@@ -115,22 +109,26 @@ function Users() {
             {/* <div className="filter-sub-organization"> Filter Users by Sub-Organization</div> */}
             {/* <div className="filter-by-role"> Filter Users by Role</div> */}
           </div>
-          <div className="flex">
+          {/* <div className="flex">
             <h5 className="user-created-me">Users Created by Me</h5>
             <hr />
-          </div>
+          </div> */}
           {users?.data?.length > 0 ? users.data.map((user) => (
             <UserRow user={user} />
-          )) : null}
-          <Pagination
-            activePage={activePage}
-            itemsCountPerPage={users?.meta?.per_page}
-            totalItemsCount={users?.meta?.total}
-            pageRangeDisplayed={5}
-            onChange={(e) => {
-              setActivePage(e);
-            }}
-          />
+          )) : searchAlertToggler === 0 ? <Alert variant="warning">No User Found</Alert> : <Alert variant="primary">Loading...</Alert>}
+          {users?.data?.length > 0
+            ? (
+              <Pagination
+                activePage={activePage}
+                itemsCountPerPage={users?.meta?.per_page}
+                totalItemsCount={users?.meta?.total}
+                pageRangeDisplayed={5}
+                onChange={(e) => {
+                  setActivePage(e);
+                }}
+              />
+            )
+            : null}
         </>
       ) : <Alert variant="danger">You are not authorized to view all users.</Alert>}
     </div>
