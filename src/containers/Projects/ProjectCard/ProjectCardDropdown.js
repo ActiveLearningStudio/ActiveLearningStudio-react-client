@@ -32,7 +32,7 @@ const ProjectCardDropdown = (props) => {
 
   return (
     <Dropdown className="project-dropdown check d-flex  align-items-center">
-      <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
+      <Dropdown.Toggle title="Project Options" className="project-dropdown-btn project d-flex justify-content-center align-items-center">
         <FontAwesomeIcon icon="ellipsis-v" />
       </Dropdown.Toggle>
 

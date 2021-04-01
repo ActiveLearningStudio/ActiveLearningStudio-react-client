@@ -82,7 +82,7 @@ function SearchForm() {
           }}
         />
 
-        <Dropdown.Toggle variant="" id="dropdown-basic">
+        <Dropdown.Toggle title="Advanced Search" variant="" id="dropdown-basic">
           <FontAwesomeIcon icon="chevron-down" />
         </Dropdown.Toggle>
       </div>

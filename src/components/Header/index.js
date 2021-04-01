@@ -33,7 +33,7 @@ function Header(props) {
             <ul className="top-info flex-div">
               <li className="d-flex align-items-center">
                 <Dropdown className="create-project">
-                  <Dropdown.Toggle className="d-flex align-items-center">
+                  <Dropdown.Toggle title="Create a New Project" className="d-flex align-items-center">
                     <FontAwesomeIcon icon="plus-circle" />
                   </Dropdown.Toggle>
 
@@ -67,7 +67,7 @@ function Header(props) {
 
               <li className="menu-user-settings d-flex align-items-center">
                 <Dropdown>
-                  <Dropdown.Toggle className="d-flex align-items-center">
+                  <Dropdown.Toggle title="User Management" className="d-flex align-items-center">
                     <img src={userImg} alt="user" title="" />
                   </Dropdown.Toggle>
 
