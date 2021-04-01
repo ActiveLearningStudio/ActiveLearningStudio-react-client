@@ -2,7 +2,7 @@
   .dropdown-toggle {
     background: transparent !important;
     border: none !important;
-    outline: none !important;
+    outline: 2px green solid;
     box-shadow: none !important;
 
     &:after {
