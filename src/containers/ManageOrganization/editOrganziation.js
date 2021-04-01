@@ -338,7 +338,7 @@ export default function EditOrganization() {
                       <p>Role </p>
                       Administrator
                     </h5>
-                    {permission?.user?.includes('user:delete-admin') && (
+                    {permission?.Organization?.includes('organization:delete-admin') && (
                       <p
                         onClick={() => {
                           setAllAdminAdded(allAdminAdded.filter((dataall) => dataall.value?.userInfo?.email !== data.value?.userInfo?.email));
@@ -372,7 +372,7 @@ export default function EditOrganization() {
                         <p>Role </p>
                         {data.role?.name}
                       </h5>
-                      {permission?.user?.includes('user:delete') && (
+                      {permission?.Organization?.includes('organization:delete-user') && (
                         <p
                           onClick={() => {
                             setAllUsersAdded(allUsersAdded.filter((dataall) => dataall.value?.userInfo?.email !== data.value?.userInfo?.email));

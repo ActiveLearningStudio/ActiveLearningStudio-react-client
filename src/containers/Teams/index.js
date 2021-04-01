@@ -125,7 +125,7 @@ function TeamsPage(props) {
                 <></>
               )}
             </div>
-            {permission.Team.includes('team:view') ? (
+            {permission?.Team?.includes('team:view') ? (
               <>
                 {overview && (
                   <div className="row overview">

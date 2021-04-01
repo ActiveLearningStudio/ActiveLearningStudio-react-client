@@ -78,7 +78,7 @@ function Users() {
   }, [activeOrganization.id, dispatch, activePage]);
   return (
     <div>
-      {permission?.user?.includes('user:view') ? (
+      {permission?.Organization?.includes('organization:view-user') ? (
         <>
           <div className="create-user-row">
             <h5 className="users-heading">

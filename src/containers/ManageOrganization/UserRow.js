@@ -77,12 +77,12 @@ export default function UserRow(props) {
             {user.projects_count}
           </div>
         </div>
-        {permission?.user?.includes('user:edit') && (
+        {permission?.Organization?.includes('organization:update-user') && (
           <div className="secondary-column">
             {/* <Link href="#">Edit</Link> */}
           </div>
         )}
-        {permission?.user?.includes('user:delete') && (
+        {permission?.Organization?.includes('organization:delete-user') && (
           <div className="secondary-column">
             <Link onClick={() => handleDelete(user?.id)}>Delete</Link>
           </div>

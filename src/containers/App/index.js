@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import logo from 'assets/images/logo.svg';
+import logo from 'assets/images/studio_new_logo.png';
+import loader from 'assets/images/dotsloader.gif';
 import { getUserAction } from 'store/actions/auth';
 import { cloneDuplicationRequest } from 'store/actions/notification';
 import { getBranding, getOrganizationFirstTime, getAllPermission } from 'store/actions/organization';
@@ -21,7 +22,7 @@ function App(props) {
     getUser();
   }, [getUser]);
   const userDetails = useSelector((state) => state.auth.user);
-  const { activeOrganization } = useSelector((state) => state.organization);
+  const { activeOrganization, permission } = useSelector((state) => state.organization);
   useEffect(() => {
     if (userDetails) {
       if (activeOrganization) {
@@ -48,6 +49,7 @@ function App(props) {
               const result = dispatch(getBranding(subDomain));
               result.then((data) => {
                 dispatch(getOrganizationFirstTime(data?.organization?.id));
+                dispatch(getAllPermission(data?.organization?.id));
               }).catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
           }
@@ -64,6 +66,15 @@ function App(props) {
       }
     }
   }, [dispatch, userDetails, activeOrganization]);
+
+  useEffect(() => {
+    if (!localStorage.getItem('auth_token')) {
+      dispatch({
+        type: 'SET_ALL_PERSMISSION',
+        payload: { loading: false },
+      });
+    }
+  }, []);
 
   useEffect(() => {
     if ((window.location.href.includes('/login') || window.location.pathname.includes('/register'))) {
@@ -182,6 +193,12 @@ function App(props) {
         />
       </Helmet>
       <AppRouter />
+      {Object.keys(permission)?.length === 0 && (
+        <div className="loader-main-curriki-permission">
+          <img src={logo} className="logo" alt="" />
+          <img src={loader} className="loader" alt="" />
+        </div>
+      )}
       <div className="mobile-app-alert">
         <img src={logo} alt="" />
 

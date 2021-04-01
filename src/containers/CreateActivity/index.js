@@ -50,7 +50,7 @@ function ActivityCreate(props) {
             {!organization?.Activity?.includes('activity:create') && !organization?.Activity?.includes('activity:upload') && (
               <Alert variant="danger" alt="">You are not authorized to create or upload an activity.</Alert>
             )}
-            <Tab.Container id="left-tabs-example" defaultActiveKey={organization?.Activity.includes('create') ? 'create' : 'upload'}>
+            <Tab.Container id="left-tabs-example" defaultActiveKey={organization?.Activity?.includes('create') ? 'create' : 'upload'}>
               <Row>
                 <Col sm={3}>
                   <Nav variant="pills" className="flex-column">
@@ -68,7 +68,7 @@ function ActivityCreate(props) {
                         </Nav.Link>
                       </Nav.Item>
                     )}
-                    {organization?.Activity.includes('activity:upload') && (
+                    {organization?.Activity?.includes('activity:upload') && (
                       <Nav.Item>
                         <Nav.Link eventKey="upload">
                           <FontAwesomeIcon icon="upload" />
