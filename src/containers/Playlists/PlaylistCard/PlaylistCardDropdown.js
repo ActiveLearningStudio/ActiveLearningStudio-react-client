@@ -45,13 +45,13 @@ class PlaylistCardDropdown extends React.Component {
             <FontAwesomeIcon icon="eye" className="mr-2" />
             Preview
           </Dropdown.Item>
-          {permission?.playlists?.includes('update') && (
+          {permission?.Playlist?.includes('playlist:edit') && (
             <Dropdown.Item onClick={handleClickPlaylistTitle}>
               <FontAwesomeIcon icon="edit" className="mr-2" />
               Edit
             </Dropdown.Item>
           )}
-          {permission?.playlists?.includes('clone') && (
+          {permission?.Playlist?.includes('playlist:clone') && (
             <Dropdown.Item
               to="#"
               onClick={() => {
@@ -63,7 +63,7 @@ class PlaylistCardDropdown extends React.Component {
               Duplicate
             </Dropdown.Item>
           )}
-          {permission?.playlists?.includes('share') && (
+          {permission?.Playlist?.includes('playlist:share') && (
             playlist.activities.length > 0
               ? <ResourceCardDropdownShare resource={playlist.activities[0]} />
               : (
@@ -78,13 +78,13 @@ class PlaylistCardDropdown extends React.Component {
                 </Dropdown.Item>
               )
           )}
-          {permission?.playlists?.includes('publish') && (
+          {permission?.Playlist?.includes('playlist:publish') && (
             <ShareLink
               playlistId={playlist.id}
               projectId={playlist.project_id}
             />
           )}
-          {permission?.playlists?.includes('delete') && (
+          {permission?.Playlist?.includes('playlist:delete') && (
             <Dropdown.Item onClick={this.handleDelete}>
               <FontAwesomeIcon icon="times-circle" className="mr-2" />
               Delete

@@ -83,7 +83,7 @@ export default function EditOrganization() {
   return (
     <div className="create-organizations">
       <h2>Edit Organization</h2>
-      {permission?.organization?.includes('organization:edit') ? (
+      {permission?.Organization?.includes('organization:edit') ? (
         <Formik
           initialValues={{
             inviteUser: allUsersAdded,
@@ -246,7 +246,7 @@ export default function EditOrganization() {
                       disabled
                       autoComplete="off"
                     />
-                    {permission?.organization?.includes('organization:add-admin') && (
+                    {permission?.Organization?.includes('organization:add-admin') && (
                       <Dropdown>
                         <Dropdown.Toggle variant="success" id="dropdown-basic">
                           Add new Admin
@@ -278,7 +278,7 @@ export default function EditOrganization() {
                       // value={values.inviteUser}
                       disabled
                     />
-                    {permission?.organization?.includes('organization:add-user') && (
+                    {permission?.Organization?.includes('organization:add-user') && (
                       <Dropdown>
                         <Dropdown.Toggle variant="success" id="dropdown-basic">
                           Add new User

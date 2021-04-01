@@ -85,7 +85,7 @@ function Sidebar(props) {
           </Link>
         </ul>
       )}
-      {permission?.dashboard?.includes('dashboard:view') && (
+      {permission?.Dashboard?.includes('dashboard:view') && (
         <Link to={`/org/${organization.currentOrganization?.domain}/dashboard`}>
           <div className="menu-title">
             <img src={dashboardicon} alt="" />
@@ -93,7 +93,7 @@ function Sidebar(props) {
           </div>
         </Link>
       )}
-      {permission?.team?.includes('team:view') && (
+      {permission?.Team?.includes('team:view') && (
         <>
           <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
             <div className="menu-title">
@@ -143,7 +143,7 @@ function Sidebar(props) {
               <FontAwesomeIcon icon="arrow-right" className="ml-2" />
             </Link>
             )}
-          {permission?.team?.includes('team:create') && (
+          {permission?.Team?.includes('team:create') && (
             <div className="menu-title create-button">
               <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams/create-team`}>
                 <div>
@@ -155,7 +155,7 @@ function Sidebar(props) {
           )}
         </>
       )}
-      {permission?.group?.includes('group:view') && (
+      {permission?.Group?.includes('group:view') && (
         <>
           <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
             <div className="menu-title">
@@ -205,7 +205,7 @@ function Sidebar(props) {
               <FontAwesomeIcon icon="arrow-right" className="ml-2" />
             </Link>
             )}
-          {permission?.group?.includes('group:create') && (
+          {permission?.Group?.includes('group:create') && (
             <div className="menu-title create-button">
               <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups/create-group`}>
                 <div>

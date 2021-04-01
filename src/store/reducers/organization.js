@@ -21,14 +21,25 @@ const INITIAL_STATE = {
   permission: {
     activeRole: 'member',
     roleId: 3,
-    organization: ['organization:edit', 'organization:view', 'organization:invite-members', 'organization:add-user', 'organization:add-admin'],
-    project: ['create', 'update', 'delete', 'view', 'publish', 'share'],
-    playlist: ['create', 'update', 'delete', 'view', 'publish', 'share'],
-    ativities: ['create', 'update', 'delete', 'view', 'publish', 'share'],
-    account: ['update', 'view'],
-    search: ['view'],
-    dashboard: ['dashboard:view'],
-    team: [
+    Organization: [
+      'organization:edit',
+      'organization:view',
+      'organization:invite-members',
+      'organization:add-user',
+      'organization:add-admin',
+      'organization:delete',
+      'organization::update-user',
+      'organization:delete-user',
+      'organization:view-user',
+      'organization:create',
+    ],
+    Project: ['project:edit', 'project:delete', 'project:view', 'project:create', 'project:share', 'project:clone', 'project:request-indexing', 'project:publish'],
+    Playlist: ['playlist:edit', 'playlist:delete', 'playlist:view', 'playlist:create', 'playlist:clone', 'playlist:publish', 'playlist:share'],
+    Activity: ['activity:edit', 'activity:view', 'activity:delete', 'activity:create', 'activity:share', 'activity:clone'],
+    Account: ['update', 'view'],
+    Search: ['view'],
+    Dashboard: ['dashboard:view'],
+    Team: [
       'team:edit',
       'team:delete',
       'team:view',
@@ -42,7 +53,7 @@ const INITIAL_STATE = {
       'team:invite-member',
       'team:request-indexing',
     ],
-    group: [
+    Group: [
       'group:edit',
       'group:delete',
       'group:view',
@@ -56,7 +67,7 @@ const INITIAL_STATE = {
       'group:invite-member',
       'group:request-indexing',
     ],
-    user: ['user:view', 'user:edit', 'user:delete', 'delete-admin'],
+    User: ['user:view', 'user:edit', 'user:delete', 'delete-admin'],
   },
 };
 

@@ -84,7 +84,7 @@ function Users() {
             <h5 className="users-heading">
               Users
             </h5>
-            {permission?.organization?.includes('organization:add-user') && (
+            {permission?.Organization?.includes('organization:add-user') && (
               <Dropdown className="create-organizations">
                 <Dropdown.Toggle id="dropdown-basic" className="newuser-button button-text">
                   New User

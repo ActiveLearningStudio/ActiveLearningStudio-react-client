@@ -351,7 +351,7 @@ function PlaylistsPage(props) {
                 <div className="col playlist-page-project-title project-each-view">
                   <div className="flex-se">
                     <h1>{selectedProject ? selectedProject.name : ''}</h1>
-                    {permission?.projects?.includes('showcase') && (
+                    {permission?.Project?.includes('project:request-indexing') && (
                       <div className="react-touch">
                         <div className="publish-btn">
                           <span style={{ color: checked ? '#333' : '$mine-shaft' }}>Showcase</span>
@@ -359,7 +359,7 @@ function PlaylistsPage(props) {
                         </div>
                       </div>
                     )}
-                    {permission?.playlists?.includes('create') && (
+                    {permission?.Playlist?.includes('playlist:create') && (
                       <button
                         type="button"
                         className="create-playlist-btn"

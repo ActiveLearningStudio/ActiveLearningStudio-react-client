@@ -48,9 +48,9 @@ export default function IntroOrganizations(props) {
               {detail.organization_role}
             </div>
           </div>
-          {permission?.organization?.includes('organization:view') && (
+          {permission?.Organization?.includes('organization:view') && (
             <div className="grp-btn">
-              {permission?.organization?.includes('organization:create') && (
+              {permission?.Organization?.includes('organization:create') && (
                 <button className="sub-organization-button" type="button">
                   <div
                     className="button-text"
@@ -62,7 +62,7 @@ export default function IntroOrganizations(props) {
                   </div>
                 </button>
               )}
-              {permission?.organization?.includes('organization:invite-members') && (
+              {permission?.Organization?.includes('organization:invite-members') && (
                 <Dropdown>
                   <Dropdown.Toggle variant="success" id="dropdown-basic">
                     Invite Users
@@ -75,7 +75,7 @@ export default function IntroOrganizations(props) {
             </div>
           )}
         </div>
-        {permission?.organization?.includes('organization:view') && (
+        {permission?.Organization?.includes('organization:view') && (
           <div className="user-state-org">
             <div>
               <div className="circle">

@@ -127,7 +127,7 @@ function DashboardPage(props) {
     <>
       <div className="dashboard-page">
         <div className="content-wrapper">
-          {permission.dashboard?.includes('view') ? (
+          {permission?.Dashboard?.includes('dashboard:view') ? (
             <div className="content">
               <div className="row">
                 <div className="col-md-12">

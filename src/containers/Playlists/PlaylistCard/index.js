@@ -176,7 +176,7 @@ class PlaylistCard extends React.Component {
                   </div>
                 )}
               </Droppable>
-              {(permission?.activities?.includes('create') || permission?.activities?.includes('upload')) && (
+              {(permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload')) && (
                 <div className="playlist-add-res-button">
                   <button
                     type="button"

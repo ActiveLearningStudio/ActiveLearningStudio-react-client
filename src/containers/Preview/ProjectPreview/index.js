@@ -122,7 +122,7 @@ function ProjectPreview(props) {
 
       return (
         <div className="check-each" key={playlist.id}>
-          {(permission?.activities?.includes('create') || permission?.activities?.includes('upload')) && (
+          {(permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload')) && (
             <div className="add-btn-activity">
               <button
                 type="button"

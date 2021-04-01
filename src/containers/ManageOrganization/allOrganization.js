@@ -138,7 +138,7 @@ const AllOrganizations = () => {
                       >
                         Manage
                       </div>
-                      {permission?.organization?.includes('organization:edit') && (
+                      {permission?.Organization?.includes('organization:edit') && (
                         <div
                           className="submit"
                           onClick={() => {
@@ -151,7 +151,7 @@ const AllOrganizations = () => {
                           Edit
                         </div>
                       )}
-                      {permission?.organization?.includes('organization:delete') && (
+                      {permission?.Organization?.includes('organization:delete') && (
                         <div
                           className="submit"
                           onClick={() => {

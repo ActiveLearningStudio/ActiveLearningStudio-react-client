@@ -188,7 +188,7 @@ let CreateProjectPopup = (props) => {
 
   return (
 
-    (editMode && permission?.projects?.includes('update')) || (!editMode && permission?.projects?.includes('create')) ? (
+    (editMode && permission?.Project?.includes('project:edit')) || (!editMode && permission?.Project?.includes('project:create')) ? (
       <div className="create-program-wrapper">
         <PexelsAPI
           show={modalShow}

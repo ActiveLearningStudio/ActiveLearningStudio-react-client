@@ -46,7 +46,7 @@ function ActivityCreate(props) {
               </Link>
             </div>
             {/* Tabs */}
-            {permission.activities.includes('update') ? (
+            {permission?.Activity?.includes('activity:edit') ? (
               <Tab.Container id="left-tabs-example" defaultActiveKey="edit">
                 <Row>
                   <Col sm={3}>

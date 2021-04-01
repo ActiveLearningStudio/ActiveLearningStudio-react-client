@@ -53,7 +53,7 @@ const ResourceCardDropdown = (props) => {
           <FontAwesomeIcon icon="eye" className="mr-2" />
           Preview
         </Dropdown.Item>
-        {permission?.activities?.includes('update') && (
+        {permission?.Activity?.includes('activity:edit') && (
           <Dropdown.Item
             as={Link}
             to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
@@ -62,7 +62,7 @@ const ResourceCardDropdown = (props) => {
             Edit
           </Dropdown.Item>
         )}
-        {permission?.activities?.includes('clone') && (
+        {permission?.Activity?.includes('activity:clone') && (
           <Dropdown.Item
             to="#"
             onClick={() => {
@@ -74,7 +74,7 @@ const ResourceCardDropdown = (props) => {
             Duplicate
           </Dropdown.Item>
         )}
-        {permission?.activities?.includes('share') && (
+        {permission?.Activity?.includes('activity:share') && (
           <Dropdown.Item
             onClick={() => {
               shareActivity(resource.id);
@@ -164,7 +164,7 @@ const ResourceCardDropdown = (props) => {
           <FontAwesomeIcon icon="times-circle" className="mr-2" />
           Executable
         </Dropdown.Item> */}
-        {permission?.activities?.includes('delete') && (
+        {permission?.Activity?.includes('activity:delete') && (
           <Dropdown.Item onClick={handleDelete}>
             <FontAwesomeIcon icon="times-circle" className="mr-2" />
             Delete

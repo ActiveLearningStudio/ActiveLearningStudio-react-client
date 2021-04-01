@@ -29,7 +29,7 @@ import './style.scss';
 function Header(props) {
   const { /* user, */ logout } = props;
   const stateHeader = useSelector((state) => state.organization);
-  const { permission: { project } } = stateHeader;
+  const { permission: { Project } } = stateHeader;
   const { permission } = stateHeader;
   const dispatch = useDispatch();
   // useMemo(() => {
@@ -50,7 +50,7 @@ function Header(props) {
         <div className="tophd_right flexdiv search-div  d-flex flex-wrap ">
           <div className="navbar-link">
             <ul className="top-info flex-div">
-              {permission?.organization?.includes('organization:view') && (
+              {permission?.Organization?.includes('organization:view') && (
                 <li>
                   <Link
                     to={`/org/${stateHeader.currentOrganization?.domain}/manage`}
@@ -67,7 +67,7 @@ function Header(props) {
                   </Link>
                 </li>
               )}
-              {project?.includes('create') && (
+              {Project?.includes('project:create') && (
                 <li className="align-items-center" style={{ paddingTop: '4px' }}>
                   <Dropdown className="create-project">
                     <Dropdown.Toggle className="align-items-center">

@@ -52,14 +52,14 @@ const ProjectCardDropdown = (props) => {
             Preview
           </Dropdown.Item>
         )}
-        {permission.projects?.includes('update') && (
+        {permission.Project?.includes('project:edit') && (
           <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/edit`}>
             <FontAwesomeIcon icon="pen" className="mr-2" />
             Edit
           </Dropdown.Item>
         )}
 
-        {permission.projects?.includes('share') && (
+        {permission.Project?.includes('project:clone') && (
           !previewMode && (
             <Dropdown.Item
               to="#"
@@ -73,7 +73,7 @@ const ProjectCardDropdown = (props) => {
             </Dropdown.Item>
           )
         )}
-        {permission.projects?.includes('share') && (
+        {permission.Project?.includes('project:share') && (
           <Dropdown.Item
             to="#"
             onClick={async () => {
@@ -93,7 +93,7 @@ const ProjectCardDropdown = (props) => {
             Share
           </Dropdown.Item>
         )}
-        {permission.projects?.includes('publish') && (
+        {permission.Project?.includes('project:publish') && (
           <li className="dropdown-submenu send">
             <a tabIndex="-1">
               <FontAwesomeIcon icon="newspaper" className="mr-2" />
@@ -136,7 +136,7 @@ const ProjectCardDropdown = (props) => {
             </ul>
           </li>
         )}
-        {permission.projects?.includes('delete') && (
+        {permission.Project?.includes('project:delete') && (
           <Dropdown.Item
             to="#"
             onClick={() => showDeletePopup(project.id, project.name, 'Project')}
