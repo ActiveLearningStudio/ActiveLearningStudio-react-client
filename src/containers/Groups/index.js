@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Alert } from 'react-bootstrap';
 
 import { loadGroupsAction } from 'store/actions/group';
 // import Header from 'components/Header';
@@ -39,12 +40,12 @@ function GroupPage(props) {
     loadGroups,
   } = props;
   const organization = useSelector((state) => state.organization);
-  const { activeOrganization } = organization;
+  const { activeOrganization, permission } = organization;
   const [breadCrumb, setBreadCrumb] = useState([]);
   const history = useHistory();
   useEffect(() => {
     (async () => {
-      if (activeOrganization && overview && !creation && !editMode) {
+      if (activeOrganization && overview && !creation && !editMode && permission?.Group?.includes('group:view')) {
         Swal.showLoading();
         await loadGroups();
         Swal.close();
@@ -127,12 +128,15 @@ function GroupPage(props) {
                 <></>
               )}
             </div>
-
             {overview && (
               <div className="row overview">
-                {groups.length > 0 ? groups.map((group) => (
-                  <GroupView key={group.id} group={group} />
-                )) : <div>No groups available </div>}
+                {permission?.Group?.includes('group:view') ? (
+                  <>
+                    {groups.length > 0 ? groups.map((group) => (
+                      <GroupView key={group.id} group={group} />
+                    )) : <div>No groups available </div>}
+                  </>
+                ) : <Alert variant="danger">You are not authorized to view groups.</Alert> }
               </div>
             )}
 

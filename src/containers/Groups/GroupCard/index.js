@@ -21,6 +21,7 @@ function GroupCard(props) {
   let memCnt = `00${users.length}`;
   memCnt = memCnt.slice(memCnt.length - 2, memCnt.length);
   const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
   let projCnt = `00${projects.length}`;
   projCnt = projCnt.slice(projCnt.length - 2, projCnt.length);
   const deleteGroup = () => {
@@ -40,10 +41,12 @@ function GroupCard(props) {
     <div className="group-card-content">
       <div className="group-title">
         <Link to={`/org/${organization.currentOrganization?.domain}/groups/${id}`} className="title m-0">{name}</Link>
-        <Link className="edit-button" to={`/org/${organization.currentOrganization?.domain}/groups/${id}/edit`}>
-          <FontAwesomeIcon icon="pen" className="mr-2" />
-          Edit
-        </Link>
+        {permission?.Group?.includes('group:edit') && (
+          <Link className="edit-button" to={`/org/${organization.currentOrganization?.domain}/groups/${id}/edit`}>
+            <FontAwesomeIcon icon="pen" className="mr-2" />
+            Edit
+          </Link>
+        )}
         <h2 className="describe">{description}</h2>
       </div>
 
@@ -66,11 +69,13 @@ function GroupCard(props) {
         <span>Projects for the Group</span>
         <span>{`(${projCnt})`}</span>
       </div>
-      <div>
-        <button type="button" onClick={() => deleteGroup()} className="back-button" style={{ textAlign: 'center' }}>
-          Delete Group
-        </button>
-      </div>
+      {permission?.Group?.includes('group:delete') && (
+        <div>
+          <button type="button" onClick={() => deleteGroup()} className="back-button" style={{ textAlign: 'center' }}>
+            Delete Group
+          </button>
+        </div>
+      )}
     </div>
   );
 }

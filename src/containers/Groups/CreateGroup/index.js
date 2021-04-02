@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Alert } from 'react-bootstrap';
 
 import { searchUsersAction } from 'store/actions/auth';
 import { loadMyProjectsAction } from 'store/actions/project';
@@ -55,6 +56,7 @@ function CreateGroup(props) {
 
   const [selectedMembers, setSelectedMembers] = useState([]);
   const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
   const [selectedProjects, setSelectedProjects] = useState([]);
   const [searchProject, setSearchProject] = useState('');
 
@@ -139,44 +141,55 @@ function CreateGroup(props) {
 
   return (
     <div className="create-group">
-      <div>
-        {backButton}
-        <CreateGroupSidebar group={group} editMode={editMode} />
-      </div>
+      {(permission?.Group?.includes('group:create') && !editMode) || (permission?.Group?.includes('group:edit') && editMode) ? (
+        <>
+          <div>
+            {backButton}
+            <CreateGroupSidebar group={group} editMode={editMode} />
+          </div>
 
-      <div className="create-group-content">
-        {showCreation && (
-          <Creation editMode={editMode} updateGroup={updateSelectedGroup} nextStep={showInvite} />
-        )}
+          <div className="create-group-content">
+            {showCreation && (
+              <Creation editMode={editMode} updateGroup={updateSelectedGroup} nextStep={showInvite} />
+            )}
 
-        {showInviting && (
-          <InviteGroup
-            group={group.selectedGroup}
-            editMode={editMode}
-            isSearching={isSearching}
-            searchedUsers={searchedUsers}
-            isInviting={group.isInviting}
-            searchUsers={searchUsers}
-            inviteUser={inviteUser}
-            selectedMembers={selectedMembers}
-            setSelectedMembers={setSelectedMembers}
-            nextStep={showAssign}
-          />
-        )}
+            {showInviting && (
+              <InviteGroup
+                group={group.selectedGroup}
+                editMode={editMode}
+                isSearching={isSearching}
+                searchedUsers={searchedUsers}
+                isInviting={group.isInviting}
+                searchUsers={searchUsers}
+                inviteUser={inviteUser}
+                selectedMembers={selectedMembers}
+                setSelectedMembers={setSelectedMembers}
+                nextStep={showAssign}
+              />
+            )}
 
-        {showAssigning && (
-          <AssignProject
-            isSaving={group.isLoading}
-            editMode={editMode}
-            projects={projects}
-            selectedProjects={selectedProjects}
-            handleSubmit={handleSubmit}
-            search={searchProject}
-            setSearch={setSearchProject}
-            setSelectedProjects={setSelectedProjects}
-          />
-        )}
-      </div>
+            {showAssigning && (
+              <AssignProject
+                isSaving={group.isLoading}
+                editMode={editMode}
+                projects={projects}
+                selectedProjects={selectedProjects}
+                handleSubmit={handleSubmit}
+                search={searchProject}
+                setSearch={setSearchProject}
+                setSelectedProjects={setSelectedProjects}
+              />
+            )}
+          </div>
+        </>
+      ) : (
+        <Alert variant="danger">
+          {' '}
+          You are not authorized to
+          {`${editMode ? ' Edit ' : ' Create '} `}
+          groups.
+        </Alert>
+      )}
     </div>
   );
 }
