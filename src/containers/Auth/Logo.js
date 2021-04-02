@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import logo from 'assets/images/sndt.png';
 
 export default function Logo() {
   const logoState = useSelector((state) => state.organization.currentOrganization);
-  return (
-    logoState?.id === 1 ? (
-      <img src={logo} className="auth-header-logo" alt="" />
-    ) : <img src={global.config.resourceUrl + logoState?.image} className="auth-header-logo" alt="" />
-  );
+  const [image, setImage] = useState(null);
+  useEffect(() => {
+    if (logoState?.id === 1) {
+      setImage(null);
+    } else {
+      setImage(logoState?.image);
+    }
+  }, [logoState]);
+  return image ? (
+    <img className="auth-header-logo" src={global.config.resourceUrl + image} alt="logo" title="" />
+  ) : <img className="auth-header-logo" src={logo} alt="logo" title="" />;
 }

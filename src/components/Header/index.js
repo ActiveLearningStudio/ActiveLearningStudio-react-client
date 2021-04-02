@@ -1,4 +1,4 @@
-import React
+import React, { useEffect, useState }
 // ,{ useMemo }
   from 'react';
 import PropTypes from 'prop-types';
@@ -30,7 +30,16 @@ function Header(props) {
   const { /* user, */ logout } = props;
   const stateHeader = useSelector((state) => state.organization);
   const { permission: { project } } = stateHeader;
+  const { currentOrganization } = stateHeader;
   const dispatch = useDispatch();
+  const [image, setImage] = useState(null);
+  useEffect(() => {
+    if (currentOrganization?.id === 1) {
+      setImage(null);
+    } else {
+      setImage(currentOrganization?.image);
+    }
+  }, [currentOrganization]);
   // useMemo(() => {
   //   dispatch(getOrganizationFirstTime(stateHeader?.currentOrganization?.id));
   // }, [stateHeader?.currentOrganization?.id]);
@@ -39,9 +48,7 @@ function Header(props) {
       <div className="top-header flex-div align-items-center">
         <div className="tophd_left">
           <Link to={`/org/${stateHeader?.currentOrganization?.domain}`} className="top_logo">
-            {stateHeader?.currentOrganization?.id === 1 ? (
-              <img src={logo} alt="logo" title="" />
-            ) : <img src={`${global.config.resourceUrl}${stateHeader?.logo}`} alt="logo" title="" /> }
+            {image ? <img src={global.config.resourceUrl + image} alt="logo" title="" /> : <img src={logo} alt="logo" title="" />}
           </Link>
         </div>
         <div className="search-div">
