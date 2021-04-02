@@ -27,6 +27,7 @@ import Footer from 'components/Footer';
 import DeletePopup from 'components/DeletePopup';
 import ProjectsLoading from 'components/Loading/ProjectsLoading';
 import GoogleModel from 'components/models/GoogleLoginModal';
+import CompleteProfileAlert from 'components/CompleteProfileAlert';
 import ProjectCard from './ProjectCard';
 import SampleProjectCard from './SampleProjectCard';
 import NewProjectPage from './NewProjectPage';
@@ -295,6 +296,8 @@ export const ProjectsPage = (props) => {
       >
         <div className={`content-wrapper ${activeFilter}`}>
           <div className="content">
+            {allState?.auth?.user?.organization_name ? null
+              : <CompleteProfileAlert />}
             <Tabs
               onSelect={() => {
                 setShowSampleSort(true);
