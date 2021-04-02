@@ -153,7 +153,7 @@ function CreateTeam(props) {
               <Creation editMode={editMode} selectedTeam={selectedTeam} updateTeam={updateSelectedTeam} nextStep={showInvite} />
             )}
 
-            {permission?.Team?.includes('team:invite-member') && (
+            {
               showInviting && (
                 <InviteTeam
                   team={team.selectedTeam}
@@ -168,7 +168,7 @@ function CreateTeam(props) {
                   nextStep={showAssign}
                 />
               )
-            )}
+            }
 
             {showAssigning && (
               <AssignProject
