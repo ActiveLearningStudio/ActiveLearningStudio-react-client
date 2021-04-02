@@ -45,7 +45,7 @@ function Users() {
     }
   };
   useMemo(async () => {
-    if (permission?.user?.includes('organization:view-user')) {
+    if (permission?.Organization?.includes('organization:view-user')) {
       dispatch(getRoles());
       const resultUsers = await dispatch(getOrgUsers(activeOrganization.id, activePage));
       setUsers(resultUsers);
