@@ -48,7 +48,7 @@ function Header(props) {
       <div className="top-header flex-div align-items-center">
         <div className="tophd_left">
           <Link to={`/org/${stateHeader?.currentOrganization?.domain}`} className="top_logo">
-            {image ? <img src={global.config.resourceUrl + image} alt="logo" title="" /> : <img src={logo} style={{ height: '50px' }} alt="logo" title="" />}
+            {image ? <img src={global.config.resourceUrl + image} alt="logo" title="" /> : <img src={logo} style={{ height: '45px' }} alt="logo" title="" />}
           </Link>
         </div>
         <div className="search-div">
