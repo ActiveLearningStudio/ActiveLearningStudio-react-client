@@ -45,7 +45,7 @@ function TeamsPage(props) {
   const history = useHistory();
   useEffect(() => {
     (async () => {
-      if (activeOrganization && overview && !creation && !editMode) {
+      if (activeOrganization && overview && !creation && !editMode && permission?.Team?.includes('team:view')) {
         Swal.showLoading();
         await loadTeams();
         Swal.close();
@@ -126,15 +126,17 @@ function TeamsPage(props) {
               )}
             </div>
             <>
-              {permission?.Team?.includes('team:view') ? (
-                overview && (
+              {overview && (
                 <div className="row overview">
-                    {teams.length > 0 ? teams.map((team) => (
-                      <TeamView key={team.id} team={team} />
-                    )) : <div>No teams available </div> }
+                  {permission?.Team?.includes('team:view') ? (
+                    <>
+                      {teams.length > 0 ? teams.map((team) => (
+                        <TeamView key={team.id} team={team} />
+                      )) : <div>No teams available </div> }
+                    </>
+                  ) : <Alert variant="danger">You are not authorized to view teams.</Alert> }
                 </div>
-                )
-              ) : <Alert variant="danger">You are not authorized to view teams.</Alert>}
+              )}
 
               {(creation || editMode) && (
                 <div className="row sub-content"><CreateTeam editMode={editMode} selectedTeam={selectedTeam} /></div>

@@ -85,7 +85,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
     }
   }
   let response;
-  if (values.type === 'public') {
+  if (values.type === 'public' || values.type === 'orgSearch') {
     response = await searchService.searchResult(sendData);
   } else {
     response = await searchService.advancedSearch(sendData);

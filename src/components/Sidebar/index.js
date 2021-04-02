@@ -143,17 +143,17 @@ function Sidebar(props) {
               <FontAwesomeIcon icon="arrow-right" className="ml-2" />
             </Link>
             )}
-          {permission?.Team?.includes('team:create') && (
-            <div className="menu-title create-button">
-              <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams/create-team`}>
-                <div>
-                  <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
-                  Create Team
-                </div>
-              </Link>
-            </div>
-          )}
         </>
+      )}
+      {permission?.Team?.includes('team:create') && (
+        <div className="menu-title create-button">
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams/create-team`}>
+            <div>
+              <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
+              Create Team
+            </div>
+          </Link>
+        </div>
       )}
       {permission?.Group?.includes('group:view') && (
         <>
@@ -205,17 +205,17 @@ function Sidebar(props) {
               <FontAwesomeIcon icon="arrow-right" className="ml-2" />
             </Link>
             )}
-          {permission?.Group?.includes('group:create') && (
-            <div className="menu-title create-button">
-              <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups/create-group`}>
-                <div>
-                  <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
-                  Create Group
-                </div>
-              </Link>
-            </div>
-          )}
         </>
+      )}
+      {permission?.Group?.includes('group:create') && (
+        <div className="menu-title create-button">
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups/create-group`}>
+            <div>
+              <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
+              Create Group
+            </div>
+          </Link>
+        </div>
       )}
       <img src={backgroundimg} alt="" />
     </aside>
