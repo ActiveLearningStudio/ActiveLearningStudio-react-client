@@ -1,5 +1,5 @@
 
-node('currikidev') {
+node('currikishepherds') {
     stage('Cloning Git') {
         checkout scm
     } 
@@ -13,7 +13,7 @@ node('currikidev') {
     }
     stage('Build') {
         nodejs('nodejs') {
-            sh 'cp /root/envs/.env.local.dev .env.local'
+            sh 'cp /root/curriki/client/.env.local .env.local'
             sh 'npm run build'
             echo "Build completed"
         }
@@ -43,7 +43,4 @@ node('currikidev') {
         echo 'Copy completed'
     }
 }
-
-
-
 

@@ -62,7 +62,7 @@ const getSummaryAuth = (token, courseId, classworkId, submissionId) => httpServi
     },
   )
   .then(({ data }) => data)
-  .catch(() => false);
+  .catch((response) => response.response.data);
 
 const getOutcomeSummary = (studentId, activityId) => httpService
   .post(
@@ -73,7 +73,15 @@ const getOutcomeSummary = (studentId, activityId) => httpService
     },
   )
   .then(({ data }) => data)
-  .catch(() => false);
+  .catch((error) => {
+    if (error && error.response && error.response.data && error.response.data.errors) {
+      return error.response.data;
+    }
+
+    console.log('Unexpected error in summary endpoint:');
+    console.log(error);
+    return null;
+  });
 
 const h5pResourceSettings = (activityId, studentId = null) => httpService
   .get(
