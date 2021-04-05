@@ -9,7 +9,7 @@ import { loadTeamsAction } from 'store/actions/team';
 // import Sidebar from 'components/Sidebar';
 import Footer from 'components/Footer';
 import { Link, useHistory } from 'react-router-dom';
-import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
 import CreateTeam from './CreateTeam';
 import TeamView from './TeamCard';
 import TeamMemberView from './TeamMemberView';
@@ -45,16 +45,19 @@ function TeamsPage(props) {
   const history = useHistory();
   useEffect(() => {
     (async () => {
-      if (activeOrganization && overview && !creation && !editMode && permission?.Team?.includes('team:view')) {
-        Swal.showLoading();
-        await loadTeams();
-        Swal.close();
-      } else {
+      // if (activeOrganization && overview && !creation && !editMode && permission?.Team?.includes('team:view')) {
+      //   // Swal.showLoading();
+      //   await loadTeams();
+      //   // Swal.close();
+      // } else if (!permission?.Team?.includes('team:view')) {
+      //   await loadTeams();
+      // }
+      if (activeOrganization && permission?.Team) {
         await loadTeams();
       }
     }
     )();
-  }, [loadTeams, activeOrganization, overview, creation, editMode]);
+  }, [loadTeams, activeOrganization, permission?.Team]);
 
   const status = creation
     ? 'creation'
@@ -126,30 +129,38 @@ function TeamsPage(props) {
               )}
             </div>
             <>
-              {overview && (
-                <div className="row overview">
-                  {permission?.Team?.includes('team:view') ? (
+              {
+                teams.length === 0
+                  ? <Alert variant="primary">Loading...</Alert>
+                  : (
                     <>
-                      {teams.length > 0 ? teams.map((team) => (
-                        <TeamView key={team.id} team={team} />
-                      )) : <div>No teams available </div> }
+                      {overview && (
+                      <div className="row overview">
+                        {permission?.Team?.includes('team:view') ? (
+                          <>
+                            {teams.length > 0 ? teams.map((team) => (
+                              <TeamView key={team.id} team={team} />
+                            )) : <Alert variant="warning">No teams available </Alert> }
+                          </>
+                        ) : <Alert variant="danger">You are not authorized to view teams.</Alert> }
+                      </div>
+                      )}
+                      {(creation || editMode) && (
+                        <div className="row sub-content"><CreateTeam editMode={editMode} selectedTeam={selectedTeam} /></div>
+                      )}
+                      {teamShow && selectedTeam && (
+                        <TeamMemberView team={selectedTeam} />
+                      )}
+                      {projectShow && selectedTeam && (
+                        <TeamProjectView team={selectedTeam} />
+                      )}
+                      {channelShow && selectedTeam && (
+                        <ChannelPanel />
+                      )}
                     </>
-                  ) : <Alert variant="danger">You are not authorized to view teams.</Alert> }
-                </div>
-              )}
+                  )
+              }
 
-              {(creation || editMode) && (
-                <div className="row sub-content"><CreateTeam editMode={editMode} selectedTeam={selectedTeam} /></div>
-              )}
-              {teamShow && selectedTeam && (
-                <TeamMemberView team={selectedTeam} />
-              )}
-              {projectShow && selectedTeam && (
-                <TeamProjectView team={selectedTeam} />
-              )}
-              {channelShow && selectedTeam && (
-                <ChannelPanel />
-              )}
             </>
           </div>
         </div>

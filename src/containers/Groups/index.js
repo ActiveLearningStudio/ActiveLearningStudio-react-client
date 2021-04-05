@@ -9,7 +9,7 @@ import { loadGroupsAction } from 'store/actions/group';
 // import Sidebar from 'components/Sidebar';
 import Footer from 'components/Footer';
 import { Link, useHistory } from 'react-router-dom';
-import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
 import CreateGroup from './CreateGroup';
 import GroupView from './GroupCard';
 import GroupMemberView from './GroupMemberView';
@@ -45,16 +45,19 @@ function GroupPage(props) {
   const history = useHistory();
   useEffect(() => {
     (async () => {
-      if (activeOrganization && overview && !creation && !editMode && permission?.Group?.includes('group:view')) {
-        Swal.showLoading();
-        await loadGroups();
-        Swal.close();
-      } else {
+      // if (activeOrganization && overview && !creation && !editMode && permission?.Group?.includes('group:view')) {
+      //   Swal.showLoading();
+      //   await loadGroups();
+      //   Swal.close();
+      // } else {
+      //   await loadGroups();
+      // }
+      if (activeOrganization && permission?.Group) {
         await loadGroups();
       }
     }
     )();
-  }, [loadGroups, activeOrganization, overview, creation, editMode]);
+  }, [loadGroups, activeOrganization, permission?.Group]);
 
   const status = creation
     ? 'creation'
@@ -128,33 +131,41 @@ function GroupPage(props) {
                 <></>
               )}
             </div>
-            {overview && (
-              <div className="row overview">
-                {permission?.Group?.includes('group:view') ? (
+            {
+              groups.length === 0
+                ? <Alert variant="primary">Loading...</Alert>
+                : (
                   <>
-                    {groups.length > 0 ? groups.map((group) => (
-                      <GroupView key={group.id} group={group} />
-                    )) : <div>No groups available </div>}
+                    {overview && (
+                      <div className="row overview">
+                        {permission?.Group?.includes('group:view') ? (
+                          <>
+                            {groups.length > 0 ? groups.map((group) => (
+                              <GroupView key={group.id} group={group} />
+                            )) : <Alert variant="warning">No groups available </Alert>}
+                          </>
+                        ) : <Alert variant="danger">You are not authorized to view groups.</Alert> }
+                      </div>
+                    )}
+
+                    {(creation || editMode) && (
+                      <div className="row sub-content"><CreateGroup editMode={editMode} selectedGroup={selectedGroup} /></div>
+                    )}
+
+                    {groupShow && selectedGroup && (
+                      <GroupMemberView group={selectedGroup} />
+                    )}
+
+                    {projectShow && selectedGroup && (
+                      <GroupProjectView group={selectedGroup} />
+                    )}
+
+                    {channelShow && selectedGroup && (
+                      <ChannelPanel />
+                    )}
                   </>
-                ) : <Alert variant="danger">You are not authorized to view groups.</Alert> }
-              </div>
-            )}
-
-            {(creation || editMode) && (
-              <div className="row sub-content"><CreateGroup editMode={editMode} selectedGroup={selectedGroup} /></div>
-            )}
-
-            {groupShow && selectedGroup && (
-              <GroupMemberView group={selectedGroup} />
-            )}
-
-            {projectShow && selectedGroup && (
-              <GroupProjectView group={selectedGroup} />
-            )}
-
-            {channelShow && selectedGroup && (
-              <ChannelPanel />
-            )}
+                )
+            }
           </div>
         </div>
       </div>
