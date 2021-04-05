@@ -449,8 +449,15 @@ export const editResourceAction = (
     dispatch({
       type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
     });
+    return response;
   } catch (e) {
     console.log(e);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: 'Error editing activity',
+    });
+    throw e;
   }
 };
 
