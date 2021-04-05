@@ -142,7 +142,7 @@ function GroupPage(props) {
                           <>
                             {groups.length > 0 ? groups.map((group) => (
                               <GroupView key={group.id} group={group} />
-                            )) : <div>No groups available </div>}
+                            )) : <Alert variant="warning">No groups available </Alert>}
                           </>
                         ) : <Alert variant="danger">You are not authorized to view groups.</Alert> }
                       </div>

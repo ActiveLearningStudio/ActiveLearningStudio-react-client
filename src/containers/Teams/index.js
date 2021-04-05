@@ -140,7 +140,7 @@ function TeamsPage(props) {
                           <>
                             {teams.length > 0 ? teams.map((team) => (
                               <TeamView key={team.id} team={team} />
-                            )) : <div>No teams available </div> }
+                            )) : <Alert variant="warning">No teams available </Alert> }
                           </>
                         ) : <Alert variant="danger">You are not authorized to view teams.</Alert> }
                       </div>
