@@ -230,14 +230,14 @@ function SearchForm() {
                     placeholder="Subject + Subject Area"
                     onChange={(e) => {
                       handleChange(e);
-                      if (!values.subjectArray.includes(e.target.value)) {
-                        let updatedValue = e.target.value;
-                        if (updatedValue.includes('&')) {
-                          updatedValue = e.target.value.replace('&', 'and');
+                      let updatedValue = e.target.value;
+                      if (updatedValue.includes('&')) {
+                        updatedValue = e.target.value.replace('&', 'and');
+                        if (!values.subjectArray.includes(updatedValue)) {
                           values.subjectArray.push(updatedValue);
-                        } else {
-                          values.subjectArray.push(e.target.value);
                         }
+                      } else if (!values.subjectArray.includes(e.target.value)) {
+                        values.subjectArray.push(e.target.value);
                       }
                     }}
                     onBlur={handleBlur}
@@ -281,14 +281,14 @@ function SearchForm() {
                     placeholder="Grade Level"
                     onChange={(e) => {
                       handleChange(e);
-                      if (!values.gradeArray.includes(e.target.value)) {
-                        let updatedValue = e.target.value;
-                        if (updatedValue.includes('&')) {
-                          updatedValue = e.target.value.replace('&', 'and');
+                      let updatedValue = e.target.value;
+                      if (updatedValue.includes('&')) {
+                        updatedValue = e.target.value.replace('&', 'and');
+                        if (!values.gradeArray.includes(updatedValue)) {
                           values.gradeArray.push(updatedValue);
-                        } else {
-                          values.gradeArray.push(e.target.value);
                         }
+                      } else if (!values.gradeArray.includes(e.target.value)) {
+                        values.gradeArray.push(e.target.value);
                       }
                     }}
                     value={values.grade}
