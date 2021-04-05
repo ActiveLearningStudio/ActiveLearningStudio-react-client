@@ -3,6 +3,7 @@ export function allowedH5PActvityPaths() {
   return [
     '/gclass/launch/:userId/:courseId/:activityId/:classworkId',
     '/lti-tools/activity/:activityId',
+    '/activity/:activityId/shared',
   ];
 }
 
@@ -127,6 +128,23 @@ export function extendStatement(h5pObj, statement, params, skipped = false) {
     const chapterIndex = interactiveBookObject.getActiveChapter();
     statementExtended.object.definition.extensions['http://currikistudio.org/x-api/h5p-chapter-name'] = interactiveBookObject.chapters[chapterIndex].title;
   }
+
+  return statementExtended;
+}
+
+// Extends the xAPI statements for activities being directly shared through studio
+// instead of published to an LMS
+export function extendSharedActivityStatement(h5pObj, statement, params) {
+  const {
+    path,
+  } = params;
+  const statementExtended = { ...statement };
+
+  const platform = H5PActvityPathMapToPlatform().find((el) => el[path]);
+  if (platform === undefined) return;
+
+  statementExtended.context.platform = platform[path];
+  statementExtended.object.definition.extensions['http://id.tincanapi.com/extension/referrer'] = document.referrer ? document.referrer : window.location.origin;
 
   return statementExtended;
 }
