@@ -59,12 +59,12 @@
     text-align: center;
     color: #ffffff;
     cursor: pointer;
-  
+
     .fa {
       margin-right: 5px;
       -webkit-text-stroke: 1px #084892;
     }
-  
+
     &:disabled {
       opacity: 0.6;
     }
@@ -172,4 +172,7 @@
   font-weight: normal;
   list-style: circle;
   text-align: initial;
+}
+.alert-space {
+  width: 100%;
 }

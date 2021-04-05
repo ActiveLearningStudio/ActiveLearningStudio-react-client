@@ -41,6 +41,7 @@ function TeamsPage(props) {
   } = props;
   const organization = useSelector((state) => state.organization);
   const { activeOrganization, permission } = organization;
+  const [alertCheck, setAlertCheck] = useState(false);
   const [breadCrumb, setBreadCrumb] = useState([]);
   const history = useHistory();
   useEffect(() => {
@@ -54,10 +55,11 @@ function TeamsPage(props) {
       // }
       if (activeOrganization && permission?.Team) {
         await loadTeams();
+        setAlertCheck(true);
       }
     }
     )();
-  }, [loadTeams, activeOrganization, permission?.Team]);
+  }, [loadTeams, activeOrganization, permission?.Team, setAlertCheck]);
 
   const status = creation
     ? 'creation'
@@ -129,38 +131,31 @@ function TeamsPage(props) {
               )}
             </div>
             <>
-              {
-                teams.length === 0
-                  ? <Alert variant="primary">Loading...</Alert>
-                  : (
-                    <>
-                      {overview && (
-                      <div className="row overview">
-                        {permission?.Team?.includes('team:view') ? (
-                          <>
-                            {teams.length > 0 ? teams.map((team) => (
-                              <TeamView key={team.id} team={team} />
-                            )) : <Alert variant="warning">No teams available </Alert> }
-                          </>
-                        ) : <Alert variant="danger">You are not authorized to view teams.</Alert> }
-                      </div>
-                      )}
-                      {(creation || editMode) && (
-                        <div className="row sub-content"><CreateTeam editMode={editMode} selectedTeam={selectedTeam} /></div>
-                      )}
-                      {teamShow && selectedTeam && (
-                        <TeamMemberView team={selectedTeam} />
-                      )}
-                      {projectShow && selectedTeam && (
-                        <TeamProjectView team={selectedTeam} />
-                      )}
-                      {channelShow && selectedTeam && (
-                        <ChannelPanel />
-                      )}
-                    </>
-                  )
-              }
-
+              {overview && (
+              <div className="row overview">
+                {permission?.Team?.includes('team:view') ? (
+                  <>
+                    {teams.length > 0 ? teams.map((team) => (
+                      <TeamView key={team.id} team={team} />
+                    )) : !alertCheck
+                      ? <Alert className="alert-space" variant="primary">Loading...</Alert>
+                      : <Alert className="alert-space" variant="warning">No teams available </Alert> }
+                  </>
+                ) : <Alert className="alert-space" variant="danger">You are not authorized to view teams.</Alert> }
+              </div>
+              )}
+              {(creation || editMode) && (
+                <div className="row sub-content"><CreateTeam editMode={editMode} selectedTeam={selectedTeam} /></div>
+              )}
+              {teamShow && selectedTeam && (
+                <TeamMemberView team={selectedTeam} />
+              )}
+              {projectShow && selectedTeam && (
+                <TeamProjectView team={selectedTeam} />
+              )}
+              {channelShow && selectedTeam && (
+                <ChannelPanel />
+              )}
             </>
           </div>
         </div>

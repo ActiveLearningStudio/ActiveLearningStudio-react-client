@@ -41,6 +41,7 @@ function GroupPage(props) {
   } = props;
   const organization = useSelector((state) => state.organization);
   const { activeOrganization, permission } = organization;
+  const [alertCheck, setAlertCheck] = useState(false);
   const [breadCrumb, setBreadCrumb] = useState([]);
   const history = useHistory();
   useEffect(() => {
@@ -54,6 +55,7 @@ function GroupPage(props) {
       // }
       if (activeOrganization && permission?.Group) {
         await loadGroups();
+        setAlertCheck(true);
       }
     }
     )();
@@ -131,41 +133,35 @@ function GroupPage(props) {
                 <></>
               )}
             </div>
-            {
-              groups.length === 0
-                ? <Alert variant="primary">Loading...</Alert>
-                : (
+            {overview && (
+              <div className="row overview">
+                {permission?.Group?.includes('group:view') ? (
                   <>
-                    {overview && (
-                      <div className="row overview">
-                        {permission?.Group?.includes('group:view') ? (
-                          <>
-                            {groups.length > 0 ? groups.map((group) => (
-                              <GroupView key={group.id} group={group} />
-                            )) : <Alert variant="warning">No groups available </Alert>}
-                          </>
-                        ) : <Alert variant="danger">You are not authorized to view groups.</Alert> }
-                      </div>
-                    )}
-
-                    {(creation || editMode) && (
-                      <div className="row sub-content"><CreateGroup editMode={editMode} selectedGroup={selectedGroup} /></div>
-                    )}
-
-                    {groupShow && selectedGroup && (
-                      <GroupMemberView group={selectedGroup} />
-                    )}
-
-                    {projectShow && selectedGroup && (
-                      <GroupProjectView group={selectedGroup} />
-                    )}
-
-                    {channelShow && selectedGroup && (
-                      <ChannelPanel />
-                    )}
+                    {groups.length > 0 ? groups.map((group) => (
+                      <GroupView key={group.id} group={group} />
+                    )) : !alertCheck
+                      ? <Alert className="alert-space" variant="primary">Loading...</Alert>
+                      : <Alert className="alert-space" variant="warning">No groups available </Alert>}
                   </>
-                )
-            }
+                ) : <Alert className="alert-space" variant="danger">You are not authorized to view groups.</Alert> }
+              </div>
+            )}
+
+            {(creation || editMode) && (
+              <div className="row sub-content"><CreateGroup editMode={editMode} selectedGroup={selectedGroup} /></div>
+            )}
+
+            {groupShow && selectedGroup && (
+              <GroupMemberView group={selectedGroup} />
+            )}
+
+            {projectShow && selectedGroup && (
+              <GroupProjectView group={selectedGroup} />
+            )}
+
+            {channelShow && selectedGroup && (
+              <ChannelPanel />
+            )}
           </div>
         </div>
       </div>
