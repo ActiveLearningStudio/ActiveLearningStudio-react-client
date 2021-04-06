@@ -71,6 +71,11 @@ export const loadResourceAction = (activityId) => async (dispatch) => {
       },
     });
   } catch (e) {
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: e.message || 'Something went wrong! We are unable to load activity.',
+    });
     dispatch({
       type: actionTypes.LOAD_RESOURCE_FAIL,
     });
