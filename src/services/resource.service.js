@@ -99,7 +99,14 @@ const h5pSettingsUpdate = (activityId, dataUpload, playlistId) => httpService
 const h5pResourceSettings = (activityId) => httpService
   .get(`/${apiVersion}/activities/${activityId}/h5p-resource-settings`)
   .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
+  .catch((err) => {
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: err.message || 'Something went wrong! We are unable to load activity.',
+    });
+    Promise.reject(err.response.data);
+  });
 
 const h5pResourceSettingsOpen = (activityId) => httpService
   // .get(`/${apiVersion}/activities/${activityId}/h5p-resource-settings-open`)
@@ -110,12 +117,26 @@ const h5pResourceSettingsOpen = (activityId) => httpService
 const h5pResourceSettingsShared = (activityId) => httpService
   .get(`/${apiVersion}/activities/${activityId}/h5p-resource-settings-shared`)
   .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
+  .catch((err) => {
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: err.message || 'Something went wrong! We are unable to load activity.',
+    });
+    Promise.reject(err.response.data);
+  });
 
 const h5pResourceSettingsEmbed = (activityId) => httpService
   .get(`/${apiVersion}/h5p/embed/${activityId}`)
   .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
+  .catch((err) => {
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: err.message || 'Something went wrong! We are unable to load activity.',
+    });
+    Promise.reject(err.response.data);
+  });
 
 const activityH5p = (activityId) => httpService
   .get(`/${apiVersion}/activities/${activityId}/detail`)
