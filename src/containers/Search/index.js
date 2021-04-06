@@ -495,6 +495,9 @@ function SearchInterface(props) {
                           from: 0,
                           size: 20,
                           type: searchType,
+                          subjectArray: activeSubject,
+                          gradeArray: activeEducation,
+                          standardArray: activeType,
                         };
                         Swal.fire({
                           title: 'Loading...', // add html attribute if you want or remove
@@ -515,6 +518,9 @@ function SearchInterface(props) {
                           size: 20,
                           model: e,
                           type: searchType,
+                          subjectArray: activeSubject,
+                          gradeArray: activeEducation,
+                          standardArray: activeType,
                         };
                         Swal.fire({
                           title: 'Loading...', // add html attribute if you want or remove

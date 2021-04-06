@@ -14,56 +14,50 @@ export const searchRedux = (data, searchQuery, meta) => ({
 export const simpleSearchAction = (values) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
-  const activityType = [];
-  if (values.standardArray) {
-    values.standardArray.map((data) => {
-      if (typeof (data) === 'object') {
-        activityType.push(data.value);
+  // const activityType = [];
+  // if (values.standardArray) {
+  //   values.standardArray.map((data) => {
+  //     if (typeof (data) === 'object') {
+  //       activityType.push(data.value);
+  //     }
+  //     return true;
+  //   });
+  // }
+  const activeGrades = [];
+  if (values.gradeArray) {
+    values.gradeArray.forEach((grade) => {
+      let temp;
+      if (grade.includes('and')) {
+        temp = grade.replace('and', '&');
+        activeGrades.push(temp);
+      } else {
+        activeGrades.push(grade);
       }
-      return true;
+    });
+  }
+  const activeSubjects = [];
+  if (values.subjectArray) {
+    values.subjectArray.forEach((subject) => {
+      let temp;
+      if (subject.includes('and')) {
+        temp = subject.replace('and', '&');
+        activeSubjects.push(temp);
+      } else {
+        activeSubjects.push(subject);
+      }
     });
   }
   let sendData;
-  if (activityType.length > 0) {
+  if (values.standardArray.length > 0) {
     if (values.type === 'orgSearch') {
       sendData = {
-        h5pLibraries: activityType,
+        h5pLibraries: values.standardArray,
         from: values.from,
         size: values.size,
         model: values.model || undefined,
         negativeQuery: values.no_words,
-        subjectIds: values.subjectArray,
-        educationLevelIds: values.gradeArray,
-        startDate: values.fromDate,
-        endDate: values.toDate,
-        organization_id: activeOrganization.id,
-      };
-    } else {
-      sendData = {
-        query: values.phrase,
-        h5pLibraries: activityType,
-        from: values.from,
-        size: values.size,
-        model: values.model || undefined,
-        negativeQuery: values.no_words,
-        subjectIds: values.subjectArray,
-        educationLevelIds: values.gradeArray,
-        startDate: values.fromDate,
-        endDate: values.toDate,
-        organization_id: activeOrganization.id,
-      };
-    }
-  } else {
-    // eslint-disable-next-line no-lonely-if
-    if (values.type === 'orgSearch') {
-      sendData = {
-        h5pLibraries: activityType,
-        from: values.from,
-        size: values.size,
-        model: values.model || undefined,
-        negativeQuery: values.no_words,
-        subjectIds: values.subjectArray,
-        educationLevelIds: values.gradeArray,
+        subjectIds: activeSubjects,
+        educationLevelIds: activeGrades,
         startDate: values.fromDate,
         endDate: values.toDate,
         organization_id: activeOrganization.id,
@@ -76,8 +70,38 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         size: values.size,
         model: values.model || undefined,
         negativeQuery: values.no_words,
-        subjectIds: values.subjectArray,
-        educationLevelIds: values.gradeArray,
+        subjectIds: activeSubjects,
+        educationLevelIds: activeGrades,
+        startDate: values.fromDate,
+        endDate: values.toDate,
+        organization_id: activeOrganization.id,
+      };
+    }
+  } else {
+    // eslint-disable-next-line no-lonely-if
+    if (values.type === 'orgSearch') {
+      sendData = {
+        h5pLibraries: values.standardArray,
+        from: values.from,
+        size: values.size,
+        model: values.model || undefined,
+        negativeQuery: values.no_words,
+        subjectIds: activeSubjects,
+        educationLevelIds: activeGrades,
+        startDate: values.fromDate,
+        endDate: values.toDate,
+        organization_id: activeOrganization.id,
+      };
+    } else {
+      sendData = {
+        query: values.phrase,
+        h5pLibraries: values.standardArray,
+        from: values.from,
+        size: values.size,
+        model: values.model || undefined,
+        negativeQuery: values.no_words,
+        subjectIds: activeSubjects,
+        educationLevelIds: activeGrades,
         startDate: values.fromDate,
         endDate: values.toDate,
         organization_id: activeOrganization.id,

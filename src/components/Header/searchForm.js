@@ -129,19 +129,22 @@ function SearchForm() {
               closeModel.current.click();
               const h5pNameArray = [];
               values.standardArray.filter((h5p) => h5pNameArray.push(h5p.value));
+              values.standardArray = h5pNameArray;
               // eslint-disable-next-line max-len
               history.push(`/org/${currentOrganization?.domain}/search?type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${h5pNameArray}`);
-              values.subjectArray = values.subjectArray.forEach((subject) => {
-                if (subject.includes('and')) {
-                  subject = subject.replace('and', '&');
-                }
-              });
-              values.gradeArray = values.gradeArray.forEach((grade) => {
-                if (grade.includes('and')) {
-                  // eslint-disable-next-line no-param-reassign
-                  grade = grade.replace('and', '&');
-                }
-              });
+              // const allSubjects = values.subjectArray;
+              // values.subjectArray = allSubjects.forEach((subject) => {
+              //   if (subject.includes('and')) {
+              //     subject = subject.replace('and', '&');
+              //   }
+              // });
+              // const allGrades = values.gradeArray;
+              // values.gradeArray = allGrades.forEach((grade) => {
+              //   if (grade.includes('and')) {
+              //     grade = grade.replace('and', '&');
+              //   }
+              // });
+              console.log(values.gradeArray, values.subjectArray);
               Swal.showLoading();
               dispatcher(simpleSearchAction(values));
               resetForm({
