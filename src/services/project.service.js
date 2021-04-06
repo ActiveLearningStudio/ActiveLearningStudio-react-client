@@ -15,8 +15,8 @@ const getAll = (subOrgId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const getClone = () => httpService
-  .get(`/${apiVersion}/projects/detail`)
+const getClone = (subOrgId) => httpService
+  .get(`/${apiVersion}/suborganization/${subOrgId}/projects/detail`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
