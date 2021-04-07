@@ -48,7 +48,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
     });
   }
   let sendData;
-  if (values.standardArray.length > 0) {
+  if (values.standardArray && values.standardArray.length > 0) {
     if (values.type === 'orgSearch') {
       sendData = {
         h5pLibraries: values.standardArray,

@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown, Alert } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
+import { simpleSearchAction } from 'store/actions/search';
+import Swal from 'sweetalert2';
 
 import {
   updateOrganizationScreen,
@@ -147,8 +149,21 @@ export default function IntroOrganizations(props) {
                 <div className="value">Projects</div>
               </div>
               <div
-                onClick={() => {
-                  history.push('/');
+                onClick={async () => {
+                  Swal.fire({
+                    html: 'Searching...', // add html attribute if you want or remove
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                      Swal.showLoading();
+                    },
+                  });
+                  await dispatch(simpleSearchAction({
+                    from: 0,
+                    size: 20,
+                    type: 'orgSearch',
+                  }));
+                  Swal.close();
+                  history.push(`/org/${currentOrganization?.domain}/search?type=orgSearch`);
                 }}
                 className="more"
               >
