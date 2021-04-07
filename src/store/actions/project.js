@@ -213,7 +213,9 @@ export const loadMyReorderProjectsAction = (projectDivider) => async () => {
 /* eslint-enable */
 
 export const loadMyCloneProjectsAction = () => async (dispatch) => {
-  const projects = await projectService.getClone();
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const projects = await projectService.getClone(activeOrganization?.id);
   dispatch({
     type: actionTypes.LOAD_MY_CLONE_PROJECTS,
     payload: projects,

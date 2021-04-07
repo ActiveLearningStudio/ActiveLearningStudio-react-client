@@ -11,6 +11,7 @@ function CreatePlaylistPopup(props) {
     handleCreatePlaylistSubmit,
     handleHideCreatePlaylistModal,
     onPlaylistTitleChange,
+    error,
   } = props;
 
   // remove popup when escape is pressed
@@ -43,8 +44,10 @@ function CreatePlaylistPopup(props) {
                   placeholder="Enter playlist title..."
                   onChange={onPlaylistTitleChange}
                 />
+                <div style={{ color: 'red' }}>
+                  {error}
+                </div>
               </div>
-
               <div className="modal-footer">
                 <button type="submit" className="btn btn-primary add-playlist-btn">Add</button>
                 <button
@@ -68,6 +71,7 @@ CreatePlaylistPopup.propTypes = {
   handleCreatePlaylistSubmit: PropTypes.func.isRequired,
   handleHideCreatePlaylistModal: PropTypes.func.isRequired,
   onPlaylistTitleChange: PropTypes.func.isRequired,
+  error: PropTypes.bool.isRequired,
 };
 
 export default CreatePlaylistPopup;

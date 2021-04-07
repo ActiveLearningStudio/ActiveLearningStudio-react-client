@@ -52,6 +52,7 @@ import './style.scss';
 function PlaylistsPage(props) {
   const [checked, setChecked] = useState(false);
   const [title, setTitle] = useState(false);
+  const [error, setError] = useState(null);
   const [indexStatus, setIndexStatus] = useState(null);
   const organization = useSelector((state) => state.organization);
   const { permission } = organization;
@@ -204,31 +205,34 @@ function PlaylistsPage(props) {
 
   const onPlaylistTitleChange = (e) => {
     setTitle(e.target.value);
+    if (e.target.value) setError(null);
   };
 
   const handleCreatePlaylistSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      await createPlaylist(match.params.projectId, title);
-
-      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
-    } catch (err) {
-      if (err.errors) {
-        if (err.errors.title.length > 0) {
+    if (!/^ *$/.test(title) && title) {
+      try {
+        await createPlaylist(match.params.projectId, title);
+        history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
+      } catch (err) {
+        if (err.errors) {
+          if (err.errors.title.length > 0) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: err.errors.title[0],
+            });
+          }
+        } else {
           Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: err.errors.title[0],
+            text: err.message,
           });
         }
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: err.message,
-        });
       }
+    } else {
+      setError('* Required');
     }
   };
 
@@ -449,6 +453,7 @@ function PlaylistsPage(props) {
           handleHideCreatePlaylistModal={handleHideCreatePlaylistModal}
           handleCreatePlaylistSubmit={handleCreatePlaylistSubmit}
           onPlaylistTitleChange={onPlaylistTitleChange}
+          error={error}
         />
       )}
 
