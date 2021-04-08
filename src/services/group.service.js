@@ -43,8 +43,8 @@ const inviteMembers = (groupId, users, note, subOrgId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const removeMember = (groupId, id) => httpService
-  .post(`/${apiVersion}/groups/${groupId}/remove`, { id })
+const removeMember = (groupId, id, email) => httpService
+  .post(`/${apiVersion}/groups/${groupId}/remove`, { id, email })
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
