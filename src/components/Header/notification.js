@@ -87,7 +87,7 @@ function HeaderNotification() {
           </div>
           <div className="btn-all-notification">
             <Dropdown.Item className="all-notification" as={Link} to={`/org/${organization.currentOrganization?.domain}/notification`}>
-              see All notification
+              See all notifications
             </Dropdown.Item>
             {/* <Dropdown.Item className="notification-setting" as={Link} to="/notification">
               <FontAwesomeIcon icon="cog" className="mr-2" />
