@@ -156,7 +156,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   searchUsers: (search) => dispatch(searchUsersAction(search)),
   inviteMembers: (teamId, selectedUsers, emailNote) => dispatch(inviteMembersAction(teamId, selectedUsers, emailNote)),
-  removeMember: (teamId, userId) => dispatch(removeMemberAction(teamId, userId)),
+  removeMember: (teamId, userId, email) => dispatch(removeMemberAction(teamId, userId, email)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamMemberView);

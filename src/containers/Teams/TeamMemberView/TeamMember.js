@@ -24,7 +24,7 @@ function TeamMember(props) {
     permission,
   } = props;
   const handleRemove = useCallback(() => {
-    removeMember(teamId, id)
+    removeMember(teamId, id, iEmail)
       .then(() => {
       })
       .catch(() => {
@@ -34,7 +34,7 @@ function TeamMember(props) {
           text: 'Failed to remove user.',
         });
       });
-  }, [teamId, id, removeMember]);
+  }, [removeMember, teamId, id, iEmail]);
 
   return (
     <>
