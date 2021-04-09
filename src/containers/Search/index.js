@@ -87,7 +87,6 @@ function SearchInterface(props) {
   useEffect(() => {
     // eslint-disable-next-line no-restricted-globals
     const query = QueryString.parse(location.search);
-    console.log(query, 'query');
     if (query.type) {
       if (query.type === 'private') {
         setSearchType('private');
@@ -141,7 +140,7 @@ function SearchInterface(props) {
         setTotalCount(allState.searchMeta.total);
       }
     }
-  }, [allState.searchMeta]);
+  }, [allState.searchMeta, allState.searchResult, totalCount]);
 
   useEffect(() => {
     if (localStorage.getItem('loading') === 'true') {
@@ -202,6 +201,17 @@ function SearchInterface(props) {
           <div className="content">
             <div className="search-result-main">
               <div className="total-count">
+                {totalCount > 10000
+                  ? (
+                    <div>
+                      Your search returned more than
+                      {' '}
+                      <span>10,000</span>
+                      {' '}
+                      results. Please refine your search criteria.
+                    </div>
+                  )
+                  : null}
                 {!!searchQueries && (
                   <div>
                     Showing
@@ -628,39 +638,39 @@ function SearchInterface(props) {
                                     Favorite
                                   </div>
                                 )}
-                                <Dropdown>
-                                  <Dropdown.Toggle>
-                                    <FontAwesomeIcon icon="ellipsis-v" />
-                                  </Dropdown.Toggle>
-
-                                  <Dropdown.Menu>
-                                    <div
-                                      onClick={() => {
-                                        if (res.model === 'Project') {
-                                          Swal.fire({
-                                            html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
-                                            showCancelButton: true,
-                                            confirmButtonColor: '#3085d6',
-                                            cancelButtonColor: '#d33',
-                                            confirmButtonText: 'Ok',
-                                          })
-                                            .then((result) => {
-                                              if (result.value) {
-                                                cloneProject(res.id);
-                                              }
-                                            });
-                                        } else {
-                                          setModalShow(true);
-                                          setClone(res);
-                                        }
-                                      }}
-                                    >
-                                      <FontAwesomeIcon className="mr-2" icon="clone" />
-                                      Duplicate
-                                    </div>
-                                  </Dropdown.Menu>
-                                </Dropdown>
                               </div>
+                              <Dropdown>
+                                <Dropdown.Toggle>
+                                  <FontAwesomeIcon icon="ellipsis-v" />
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                  <div
+                                    onClick={() => {
+                                      if (res.model === 'Project') {
+                                        Swal.fire({
+                                          html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
+                                          showCancelButton: true,
+                                          confirmButtonColor: '#3085d6',
+                                          cancelButtonColor: '#d33',
+                                          confirmButtonText: 'Ok',
+                                        })
+                                          .then((result) => {
+                                            if (result.value) {
+                                              cloneProject(res.id);
+                                            }
+                                          });
+                                      } else {
+                                        setModalShow(true);
+                                        setClone(res);
+                                      }
+                                    }}
+                                  >
+                                    <FontAwesomeIcon className="mr-2" icon="clone" />
+                                    Duplicate
+                                  </div>
+                                </Dropdown.Menu>
+                              </Dropdown>
                             </div>
                           ))
                         ) : (
@@ -757,39 +767,39 @@ function SearchInterface(props) {
                                       />
                                       Favorite
                                     </div>
-                                    <Dropdown>
-                                      <Dropdown.Toggle>
-                                        <FontAwesomeIcon icon="ellipsis-v" />
-                                      </Dropdown.Toggle>
-
-                                      <Dropdown.Menu>
-                                        <div
-                                          onClick={() => {
-                                            if (res.model === 'Project') {
-                                              Swal.fire({
-                                                html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
-                                                showCancelButton: true,
-                                                confirmButtonColor: '#3085d6',
-                                                cancelButtonColor: '#d33',
-                                                confirmButtonText: 'Ok',
-                                              })
-                                                .then((result) => {
-                                                  if (result.value) {
-                                                    cloneProject(res.id);
-                                                  }
-                                                });
-                                            } else {
-                                              setModalShow(true);
-                                              setClone(res);
-                                            }
-                                          }}
-                                        >
-                                          <FontAwesomeIcon className="mr-2" icon="clone" />
-                                          Clone
-                                        </div>
-                                      </Dropdown.Menu>
-                                    </Dropdown>
                                   </div>
+                                  <Dropdown>
+                                    <Dropdown.Toggle>
+                                      <FontAwesomeIcon icon="ellipsis-v" />
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                      <div
+                                        onClick={() => {
+                                          if (res.model === 'Project') {
+                                            Swal.fire({
+                                              html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
+                                              showCancelButton: true,
+                                              confirmButtonColor: '#3085d6',
+                                              cancelButtonColor: '#d33',
+                                              confirmButtonText: 'Ok',
+                                            })
+                                              .then((result) => {
+                                                if (result.value) {
+                                                  cloneProject(res.id);
+                                                }
+                                              });
+                                          } else {
+                                            setModalShow(true);
+                                            setClone(res);
+                                          }
+                                        }}
+                                      >
+                                        <FontAwesomeIcon className="mr-2" icon="clone" />
+                                        Clone
+                                      </div>
+                                    </Dropdown.Menu>
+                                  </Dropdown>
                                 </div>
                               )}
                             </>
@@ -1037,7 +1047,7 @@ function SearchInterface(props) {
                     <Pagination
                       activePage={activePage}
                       itemsCountPerPage={20}
-                      totalItemsCount={totalCount}
+                      totalItemsCount={totalCount > 10000 ? 10000 : totalCount}
                       pageRangeDisplayed={8}
                       onChange={async (e) => {
                         setActivePage(e);
