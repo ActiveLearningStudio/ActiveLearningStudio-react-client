@@ -139,7 +139,7 @@ function TeamsPage(props) {
                       <TeamView key={team.id} team={team} />
                     )) : !alertCheck
                       ? <Alert className="alert-space" variant="primary">Loading...</Alert>
-                      : <Alert className="alert-space" variant="warning">No teams available </Alert> }
+                      : <Alert className="alert-space" variant="warning">No team available. </Alert> }
                   </>
                 ) : <Alert className="alert-space" variant="danger">You are not authorized to view teams.</Alert> }
               </div>

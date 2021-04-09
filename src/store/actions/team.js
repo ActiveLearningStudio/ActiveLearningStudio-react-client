@@ -208,14 +208,14 @@ export const inviteMembersAction = (teamId, users, note) => async (dispatch) => 
   }
 };
 
-export const removeMemberAction = (teamId, userId) => async (dispatch) => {
+export const removeMemberAction = (teamId, userId, email) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.REMOVE_MEMBER_REQUEST,
       payload: { userId },
     });
 
-    await teamService.removeMember(teamId, userId);
+    await teamService.removeMember(teamId, userId, email);
 
     dispatch({
       type: actionTypes.REMOVE_MEMBER_SUCCESS,

@@ -43,8 +43,8 @@ const inviteMembers = (teamId, users, note, subOrgId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const removeMember = (teamId, id) => httpService
-  .post(`/${apiVersion}/teams/${teamId}/remove`, { id })
+const removeMember = (teamId, id, email) => httpService
+  .post(`/${apiVersion}/teams/${teamId}/remove`, { id, email })
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 

@@ -25,7 +25,7 @@ function GroupMember(props) {
   } = props;
 
   const handleRemove = useCallback(() => {
-    removeMember(groupId, id)
+    removeMember(groupId, id, iEmail)
       .then(() => {
       })
       .catch(() => {
@@ -35,7 +35,7 @@ function GroupMember(props) {
           text: 'Failed to remove user.',
         });
       });
-  }, [groupId, id, removeMember]);
+  }, [groupId, iEmail, id, removeMember]);
 
   return (
     <>
