@@ -141,7 +141,7 @@ function GroupPage(props) {
                       <GroupView key={group.id} group={group} />
                     )) : !alertCheck
                       ? <Alert className="alert-space" variant="primary">Loading...</Alert>
-                      : <Alert className="alert-space" variant="warning">No groups available </Alert>}
+                      : <Alert className="alert-space" variant="warning">No group available. </Alert>}
                   </>
                 ) : <Alert className="alert-space" variant="danger">You are not authorized to view groups.</Alert> }
               </div>

@@ -101,7 +101,7 @@ function AssignProject(props) {
                   {project.name}
                 </div>
               </div>
-            )) : <div> No Projects Found </div> }
+            )) : <div> No Project Found. </div> }
           </div>
 
           {finishButton}
