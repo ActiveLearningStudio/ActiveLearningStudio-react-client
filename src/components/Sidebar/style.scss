@@ -100,10 +100,68 @@ aside {
       margin-left: 10px;
     }
   }
-
-  .menu-title {
+  .row-org {
+    display: flex;
     padding: 12px 20px;
     border-top: 1px solid #e8e8e8;
+    .org-icon {
+      width: 20px;
+      height: 20px;
+    }
+    .org-heading {
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 24px;
+      letter-spacing: 0.01em;
+      text-transform: capitalize;
+      color: $curriki-main-blue;
+      padding-left: 12px;
+    }
+
+  }
+  .goto-dashboard{
+    display:flex;
+    padding: 15px 52px 39px;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 19px;
+    color: $curriki-main-blue;
+  }
+  .dashboard-chevron {
+    padding-left: 11px;
+    height: 14.88px;
+  }
+  .org-name {
+    padding: 11px 52px;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 130.9%;
+    color: #515151;
+  }
+  .row-sidebar {
+    display: flex;
+    padding: 12px 52px;
+    padding-top: 19px;
+    padding-bottom: 17px;
+    justify-content:flex-end;
+    border-top: 1px solid #e8e8e8;
+
+  }
+  .sidebar-headings {
+    padding-left: 13px;
+    display: flex;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    margin-right: auto;
+    letter-spacing: 0.01em;
+    color: $curriki-main-blue;
+  }
+  .headings-angle-right {
+    color: $curriki-main-blue;
+  }
+  .menu-title {
+    padding: 12px 20px;
     font: normal normal bold 16px/25px $rubik;
     font-weight: 600;
     letter-spacing: 0;
