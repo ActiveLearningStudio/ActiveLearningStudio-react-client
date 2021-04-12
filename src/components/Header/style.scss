@@ -12,6 +12,11 @@
     }
   }
 
+  .group-search-logo {
+    display: flex;
+    align-items: center;
+  }
+
   .notification-bar {
     .notification-alert {
       position: relative;
@@ -104,10 +109,26 @@
         }
       }
     }
+
+    h2.title {
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 24px;
+
+      color: #515151;
+    }
   }
 
   .navbar-link li .dropdown-menu {
     width: 200px;
+    padding: 20px;
+    h2.title {
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 24px;
+
+      color: #515151;
+    }
   }
 
   .active {
@@ -142,13 +163,15 @@
 
 .search-div {
   align-items: center;
+  margin-left: 200px;
 
   #dropdown-basic {
     background-color: transparent;
-    position: absolute;
+    position: initial;
     right: 4px;
     color: $fun-blue-1;
     top: 0px;
+    padding: 0;
   }
 
   .dropdown-menu {
@@ -365,25 +388,35 @@
 }
 
 .dropdown-multitenancy {
-  width: 320px;
-  height: 39px;
-  border-bottom: 1px solid  $fun-blue-1;
+  width: 80px;
+  height: 35px;
+  display: flex;
+  flex-direction: column;
 
   &:after {
     content: url('../../assets/images/path.png');
     position: absolute;
     right: 10px;
-    top: 10px;
+    top: 0px;
     z-index:-1
   }
  
   .dropdown-toggle {
     color: $fun-blue-1 !important;
-    font-size: 14px;
+    font-size: 9.42px;
     line-height: 19px;
     text-align: left;
     width: 100%;
     padding-left: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+
+    img {
+      margin-bottom: 3px;
+    }
   
     p{
       font-size: 9px;

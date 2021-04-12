@@ -11,6 +11,7 @@ import {
   setActiveOrganization,
   getAllPermission,
 } from 'store/actions/organization';
+import menu from 'assets/images/menu_square.png';
 
 export default function MultitenancyDropdown() {
   const dispatch = useDispatch();
@@ -27,12 +28,11 @@ export default function MultitenancyDropdown() {
   return (
     <Dropdown className="dropdown-multitenancy">
       <Dropdown.Toggle id="dropdown-basic">
-        <p>
-          Organization
-        </p>
+        <img src={menu} alt="organizations" />
         {selectOrg}
       </Dropdown.Toggle>
       <Dropdown.Menu>
+        <h2 className="title">Organizations</h2>
         {stateHeader.allOrganizations.length > 0 && stateHeader.allOrganizations.map((org) => (
           <div className="all-tg-lister">
             <Dropdown.Item onClick={() => {
