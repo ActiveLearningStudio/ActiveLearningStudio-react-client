@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import
 {
@@ -18,7 +18,7 @@ import add from 'assets/images/add-icon.png';
 import profile from 'assets/images/user-profile.png';
 import searchImg from 'assets/images/search.png';
 import createProjectIcon from 'assets/images/create-project-icon.png';
-import help from 'assets/images/help.png';
+// import help from 'assets/images/help.png';
 import { logoutAction } from 'store/actions/auth';
 import { Event } from 'trackers/ga';
 
@@ -53,7 +53,7 @@ function Header(props) {
         <div className="tophd_right flexdiv search-div  d-flex flex-wrap ">
           <div className="navbar-link">
             <ul className="top-info flex-div">
-              {false && permission?.Organization?.includes('organization:view') && (
+              {permission?.Organization?.includes('organization:view') && (
                 <li>
                   <Link
                     to={`/org/${stateHeader.currentOrganization?.domain}/manage`}
@@ -62,7 +62,7 @@ function Header(props) {
                       dispatch(updateOrganizationScreen('intro'));
                     }}
                   >
-                    <img src={help} alt="help" />
+                    <FontAwesomeIcon icon="briefcase" />
                     <p className="header-icon-text">
                       Manage&nbsp;
                       {stateHeader.currentOrganization?.domain}
@@ -73,15 +73,15 @@ function Header(props) {
               <li>
                 <MultitenancyDropdown />
               </li>
-              <li>
+              {/* <li>
                 <Link to="">
                   <img src={help} alt="help" />
                   <p className="header-icon-text">
                     Help
                   </p>
                 </Link>
-              </li>
-              {false && Project?.includes('project:create') && (
+              </li> */}
+              {Project?.includes('project:create') && (
                 <li className="align-items-center" style={{ paddingTop: '4px' }}>
                   <Dropdown className="create-project">
                     <Dropdown.Toggle className="align-items-center">
