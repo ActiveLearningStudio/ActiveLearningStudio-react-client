@@ -1,11 +1,32 @@
 @import 'assets/css/index';
 
 aside {
+  // Toggle CSS styles
+  div.toggleSidebar {
+    padding: 20px;
+    border-top: 1px solid #e8e8e8;
+    position: relative;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    & > a > img {
+      padding:12px;
+      margin:auto;
+      width: 52px;
+      height: 52px;
+      border-bottom: 1px solid #e8e8e8;
+    }
+  }
   min-height: 900px;
   padding-top: 30px;
   padding-right: 0;
   background: #fff;
-
+  .toggleButton {
+    position: absolute;
+    top: 35px;
+    right: -13px;
+    transition: transform 1s;
+  }
   & > ul {
     padding: 0 30px;
     list-style: none;

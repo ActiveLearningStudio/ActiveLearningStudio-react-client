@@ -561,6 +561,7 @@
     float: left;
     background: #fff;
     border-right: 1px solid #dcdcdc;
+    transition: width 1s;
 
     //.collapse-button {
     //  position: absolute;
@@ -605,6 +606,7 @@
   .content-wrapper {
     margin-left: 300px !important;
     margin-bottom: 65px;
+    transition: margin-left 1s;
   }
 }
 
@@ -3812,5 +3814,32 @@ a:hover {
 
   .loader {
     width: 45px;
+  }
+}
+body.collapsed {
+  .main-content-wrapper {
+    .side-wrapper-team {
+      left:110px;
+      .bread-crumb {
+        position: initial;
+      }
+    }
+    .side-wrapper-group {
+      left:110px;
+      .bread-crumb {
+        position: initial;
+      }
+    }
+  }
+  .sidebar-wrapper {
+    width: 93px;
+    aside {
+      .toggleButton {
+        transform:rotate(180deg);
+      }
+    }
+  }
+  .content-wrapper {
+    margin-left: 110px !important;
   }
 }
