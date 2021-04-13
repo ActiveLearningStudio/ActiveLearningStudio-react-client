@@ -55,7 +55,7 @@ const SampleProjectCard = (props) => {
                   )}
                 </div>
 
-                <div className="program-content">
+                <div className="program-content" style={{ padding: '10px 15px' }}>
                   <div>
                     <div className="row">
                       <div className="col-md-10">

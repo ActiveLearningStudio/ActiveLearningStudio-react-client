@@ -9,11 +9,11 @@ import { GoogleLogin } from 'react-google-login';
 
 import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
-import logo from 'assets/images/logo.svg';
 import loader from 'assets/images/loader.svg';
 import { loginAction, googleLoginAction } from 'store/actions/auth';
 import { getErrors } from 'utils';
 import Error from './Error';
+import Logo from './Logo';
 
 import './style.scss';
 
@@ -45,7 +45,7 @@ class LoginPage extends React.Component {
 
     try {
       const { email, password } = this.state;
-      const { history, login } = this.props;
+      const { history, login, domain } = this.props;
 
       if (!validator.isEmail(email.trim())) {
         this.setState({
@@ -59,12 +59,13 @@ class LoginPage extends React.Component {
         error: null,
       });
 
-      await login({
+      const result = await login({
         email: email.trim(),
         password: password.trim(),
+        domain: domain?.domain,
       });
-
-      history.push('/');
+      console.log(result);
+      history.push(`/org/${domain?.domain}`);
     } catch (err) {
       this.setState({
         error: getErrors(err),
@@ -102,7 +103,7 @@ class LoginPage extends React.Component {
 
     return (
       <div className="auth-page">
-        <img className="auth-header-logo" src={logo} alt="" />
+        <Logo />
 
         <div className="auth-container">
           <div className="d-flex align-items-center justify-content-between">
@@ -216,6 +217,7 @@ LoginPage.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   login: PropTypes.func.isRequired,
   googleLogin: PropTypes.func.isRequired,
+  domain: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -225,6 +227,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
+  domain: state.organization.currentOrganization,
 });
 
 export default withRouter(

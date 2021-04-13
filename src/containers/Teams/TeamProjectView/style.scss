@@ -1,5 +1,4 @@
-$selected_color: #084892;
-$filled: #44ca92;
+@import 'assets/css/index';
 
 .team-information {
   .projects-wrapper {
@@ -41,7 +40,7 @@ $filled: #44ca92;
             min-height: 48px;
             letter-spacing: 0.3px;
             font-size: 15px;
-            color: #0F4392;
+            color: $curriki-main-blue;
           }
 
           .project-dropdown.check {
@@ -167,3 +166,4 @@ $filled: #44ca92;
     }
   }
 }
+

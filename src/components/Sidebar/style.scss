@@ -1,3 +1,5 @@
+@import 'assets/css/index';
+
 aside {
   min-height: 900px;
   padding-top: 30px;
@@ -87,9 +89,9 @@ aside {
     width: 100%;
     display: block;
     border-top: 1px solid #e8e8e8;
-    font: normal normal normal 13px/22px Open Sans;
+    font: normal normal normal 13px/22px $rubik;
     letter-spacing: 0;
-    color: #0f4392;
+    color: $curriki-main-blue;
     text-align: left;
     text-decoration: underline;
     opacity: 1;
@@ -102,10 +104,10 @@ aside {
   .menu-title {
     padding: 12px 20px;
     border-top: 1px solid #e8e8e8;
-    font: normal normal bold 16px/25px Open Sans;
+    font: normal normal bold 16px/25px $rubik;
     font-weight: 600;
     letter-spacing: 0;
-    color: #0f4392;
+    color: $curriki-main-blue;
     text-align: left;
     text-transform: uppercase;
     opacity: 1;
@@ -158,7 +160,7 @@ aside {
         }
 
         &.active-label {
-          color: #0F4392;
+          color: $curriki-main-blue;
         }
 
         svg {
@@ -189,7 +191,7 @@ aside {
       text-align: center;
       font-size: 14px;
       line-height: 25px;
-      color: #0f4392;
+      color: $curriki-main-blue;
       //font-style: normal;
       //font-variant-ligatures: normal;
       //font-variant-caps: normal;
@@ -201,10 +203,10 @@ aside {
 
   a {
     padding: 10px 0;
-    font: normal normal 400 14px/25px Open Sans;
+    font: normal normal 400 14px/25px $rubik;
     font-weight: 400;
     letter-spacing: 0;
-    color: #464646;
+    color: $mine-shaft;
     text-align: left;
     opacity: 1;
   }

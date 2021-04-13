@@ -7,7 +7,6 @@ import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import QueryString from 'query-string';
 
-import logo from 'assets/images/logo.svg';
 import loader from 'assets/images/loader.svg';
 import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
@@ -15,6 +14,7 @@ import { resetPasswordAction } from 'store/actions/auth';
 import storageService from 'services/storage.service';
 import { getErrors } from 'utils';
 import Error from './Error';
+import Logo from './Logo';
 
 import './style.scss';
 
@@ -91,7 +91,7 @@ function ResetPasswordPage(props) {
 
   return (
     <div className="auth-page">
-      <img className="auth-header-logo" src={logo} alt="" />
+      <Logo />
 
       <div className="auth-container">
         <h1 className="auth-title">Reset Password</h1>

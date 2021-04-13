@@ -32,7 +32,7 @@ function NewProjectPage(props) {
             <div className="modal-title">
               <div className="row">
                 <div className="col-md-12">
-                  <h1>
+                  <h1 className="mt-4 mb-0">
                     {`${editMode ? 'Update' : 'Create New'} Project`}
 
                     <button

@@ -4,13 +4,14 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import logo from 'assets/images/logo.png';
 import loader from 'assets/images/loader.svg';
 import terms from 'assets/images/terms.png';
 import pdf from 'assets/pdf/Curriki_Subscription_Agreement.pdf';
 import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
 import { acceptTermsAction } from 'store/actions/auth';
+
+import Logo from './Logo';
 
 import './style.scss';
 
@@ -46,7 +47,7 @@ class SubscribePage extends Component {
 
     return (
       <div className="auth-page">
-        <img className="auth-header-logo" src={logo} alt="" />
+        <Logo />
 
         <div className="auth-container terms-section">
           <div className="flex-terms">

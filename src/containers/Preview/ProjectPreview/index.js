@@ -28,12 +28,12 @@ function ProjectPreview(props) {
   const { match, history } = props;
 
   const dispatch = useDispatch();
-
+  const organization = useSelector((state) => state.organization);
   const projectState = useSelector((state) => state.project);
   const playlistState = useSelector((state) => state.playlist);
   const ui = useSelector((state) => state.ui);
-
   const accordion = useRef([]);
+  const { permission } = organization;
 
   const { showDeletePlaylistPopup } = ui;
   const [currentProject, setCurrentProject] = useState(null);
@@ -122,19 +122,21 @@ function ProjectPreview(props) {
 
       return (
         <div className="check-each" key={playlist.id}>
-          <div className="add-btn-activity">
-            <button
-              type="button"
-              className="add-resource-to-playlist-btn"
-              onClick={() => {
-                // dispatch(clearSearch());
-                history.push(`/project/${playlist.project_id}/playlist/${playlist.id}/activity/create`);
-              }}
-            >
-              <FontAwesomeIcon icon="plus-circle" className="mr-2" />
-              Add new activity
-            </button>
-          </div>
+          {(permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload')) && (
+            <div className="add-btn-activity">
+              <button
+                type="button"
+                className="add-resource-to-playlist-btn"
+                onClick={() => {
+                  // dispatch(clearSearch());
+                  history.push(`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/create`);
+                }}
+              >
+                <FontAwesomeIcon icon="plus-circle" className="mr-2" />
+                Add new activity
+              </button>
+            </div>
+          )}
           <button
             type="button"
             ref={(el) => {
@@ -183,7 +185,7 @@ function ProjectPreview(props) {
             <div className="scene flex-wrap">
               <div className="scene-img">
                 <div id="content" />
-                <Link to={`/project/${currentProject.id}`}>
+                <Link to={`/org/${organization.currentOrganization?.domain}/project/${currentProject.id}`}>
                   {!!currentProject.thumb_url && currentProject.thumb_url.includes('pexels.com') ? (
                     <img src={currentProject.thumb_url} alt="thumbnail" />
                   ) : (
@@ -205,7 +207,7 @@ function ProjectPreview(props) {
                           showDeletePopup={showDeletePopup}
                           previewMode
                         />
-                        <Link to="#" onClick={history.goBack} className="go-back-button-preview">
+                        <Link to={`/org/${organization.currentOrganization?.domain}`} onClick={history.goBack} className="go-back-button-preview">
                           <FontAwesomeIcon icon="undo" className="mr-2" />
                           Exit Preview Mode
                         </Link>

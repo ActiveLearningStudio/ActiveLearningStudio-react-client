@@ -1,3 +1,4 @@
+/*eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -24,7 +25,6 @@ class PlaylistCard extends React.Component {
       editMode: false,
     };
   }
-
   handleDelete = (e) => {
     e.preventDefault();
 
@@ -114,8 +114,9 @@ class PlaylistCard extends React.Component {
     const {
       index,
       playlist,
+      organization,
     } = this.props;
-
+    const { permission } = organization;
     return (
       <Draggable
         key={playlist.id}
@@ -175,21 +176,23 @@ class PlaylistCard extends React.Component {
                   </div>
                 )}
               </Droppable>
+              {(permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload')) && (
+                <div className="playlist-add-res-button">
+                  <button
+                    type="button"
+                    className="add-resource-to-playlist-btn"
+                    onClick={() => {
+                      const { clearSearchform } = this.props;
+                      this.handleAddNewResourceClick();
+                      clearSearchform();
+                    }}
+                  >
+                    <FontAwesomeIcon icon="plus-circle" className="mr-2" />
+                    Add new activity
+                  </button>
+                </div>
+              )}
 
-              <div className="playlist-add-res-button">
-                <button
-                  type="button"
-                  className="add-resource-to-playlist-btn"
-                  onClick={() => {
-                    const { clearSearchform } = this.props;
-                    this.handleAddNewResourceClick();
-                    clearSearchform();
-                  }}
-                >
-                  <FontAwesomeIcon icon="plus-circle" className="mr-2" />
-                  Add new activity
-                </button>
-              </div>
             </div>
           </div>
         )}
@@ -209,6 +212,7 @@ PlaylistCard.propTypes = {
   handleCreateResource: PropTypes.func,
   clearForm: PropTypes.func.isRequired,
   clearSearchform: PropTypes.func.isRequired,
+  organization: PropTypes.object.isRequired,
 };
 
 PlaylistCard.defaultProps = {
@@ -225,6 +229,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   selectedProject: state.project.selectedProject,
+  organization: state.organization,
 });
 
 export default withRouter(

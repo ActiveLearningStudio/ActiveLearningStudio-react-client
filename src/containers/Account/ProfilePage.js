@@ -333,11 +333,11 @@ function ProfilePage(props) {
                 </div>
                 <div className="row mt-2 mb-2">
                   <div className="col">
-                    {userLmsSettings.length === 0 && (
+                    {userLmsSettings?.length === 0 && (
                       <Alert variant="info">No LMS publishing options have been configured for your account.</Alert>
                     )}
 
-                    {userLmsSettings.length > 0 && (
+                    {userLmsSettings?.length > 0 && (
                       <>
                         <Alert variant="info">LMS publishing options available to your account.</Alert>
                         <Table striped bordered hover>

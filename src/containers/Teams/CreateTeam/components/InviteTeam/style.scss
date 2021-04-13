@@ -1,4 +1,4 @@
-$selected_color: #084892;
+@import 'assets/css/index';
 
 @keyframes spin {
   100% {
@@ -83,7 +83,7 @@ $selected_color: #084892;
           display: flex;
           flex-direction: column;
           justify-content: center;
-          color: #464646;
+          color: $mine-shaft;
 
           .member-name {
             margin: 3px 0 8px 0;
@@ -175,7 +175,7 @@ $selected_color: #084892;
                 font-size: 15px;
 
                 &:not(:disabled) {
-                  background: #0f4392;
+                  background: $curriki-main-blue;
                   border: none;
                   color: #fff;
                 }
