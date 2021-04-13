@@ -1,3 +1,5 @@
+@import 'assets/css/index';
+
 .actions .dropdown-toggle:after {
   content: none;
 }
@@ -13,7 +15,7 @@
 }
 
 .results h3 {
-  color: #0f4392;
+  color: $curriki-main-blue;
   font-size: 1.15rem;
 }
 
@@ -42,11 +44,11 @@
 }
 
 .back-action {
-  color: #0f4392;
+  color: $curriki-main-blue;
 }
 
 .pagination-buttons {
   border-radius: 1.5rem;
-  background-color: #0f4392;
+  background-color: $curriki-main-blue;
   color: white;
 }

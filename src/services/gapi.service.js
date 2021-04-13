@@ -1,5 +1,6 @@
 import axios from 'axios';
 import config from 'config';
+import Swal from 'sweetalert2';
 import httpService from './http.service';
 
 const { apiVersion } = config;
@@ -90,7 +91,14 @@ const h5pResourceSettings = (activityId, studentId = null) => httpService
     { gcuid: studentId },
   )
   .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: err.message || 'Something went wrong! We are unable to load activity.',
+    });
+  });
 
 export default {
   getStudentProfile,

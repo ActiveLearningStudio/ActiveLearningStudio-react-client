@@ -1,3 +1,5 @@
+@import 'assets/css/index';
+
 /* CSS FOR PRoduct TOP */
 .inner_body .container {
   max-width: 1521px;
@@ -25,8 +27,8 @@
     font-size: 16px;
     line-height: 22px;
     letter-spacing: 0;
-    font-family: 'Hind Siliguri', sans-serif;
-    color: #464646;
+    font-family: '$halvetica', sans-serif;
+    color: $mine-shaft;
     padding-top: 10px;
   }
 }
@@ -116,11 +118,11 @@ img {
 .title_lg {
   display: flex;
   font-size: 24px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
   font-weight: 600;
   line-height: 100%;
   letter-spacing: 0;
-  color: #0F4392;
+  color: $curriki-main-blue;
   opacity: 1;
   text-transform: capitalize;
 
@@ -178,7 +180,7 @@ img {
 
 .progress_bar {
   width: 35%;
-  font-family: 'SegoeUI-Bold', sans-serif;
+
   font-size: 12px;
   color: #fff;
   line-height: 100%;
@@ -238,7 +240,7 @@ img {
   height: 28px;
   font-size: 12px;
   color: #343434;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
   font-weight: 600;
 
   img {
@@ -269,10 +271,10 @@ img {
 }
 
 .plhead {
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
   font-weight: 600;
   font-size: 16px;
-  color: #464646;
+  color: $mine-shaft;
   line-height: 100%;
   text-transform: inherit;
   padding-left: 30px;
@@ -325,7 +327,7 @@ img {
 .head_md {
   font-size: 14px;
   color: #607A9B;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
   font-weight: 600;
   line-height: 18px;
 }
@@ -337,7 +339,7 @@ img {
 .alltxt {
   font-size: 14px;
   color: #959595;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
   font-weight: 600;
 
   img {
@@ -369,7 +371,7 @@ img {
   top: 0;
   font-size: 14px;
   color: #959595;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
   font-weight: 600;
   text-decoration: underline;
 
@@ -389,7 +391,7 @@ img {
 .title_lg {
   color: #4472C4;
   font-size: 24px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
   font-weight: 600;
   line-height: 100%;
 }

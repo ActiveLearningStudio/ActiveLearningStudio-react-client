@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import ResourceDescribe from 'components/ResourceCard/EditResource/ResourceDescribeActivity';
 import ResourceBuild from 'components/ResourceCard/EditResource/ResourceActivityBuild';
 import { editResourceAction, showDescribeActivityAction } from 'store/actions/resource';
+import Swal from 'sweetalert2';
 import ActivityMeter from './ActivityMeter';
 
 function ActivityWizard(props) {
@@ -14,7 +15,7 @@ function ActivityWizard(props) {
   const [activeView, setActiveView] = useState('describe');
   const resource = useSelector((state) => state.resource);
   const dispatch = useDispatch();
-
+  const organization = useSelector((state) => state.organization);
   const handleEditResourceSubmit = async (
     currentPlaylistId,
     editor,
@@ -23,6 +24,14 @@ function ActivityWizard(props) {
     metadata,
   ) => {
     try {
+      Swal.fire({
+        title: 'Editing Activity',
+        html: 'Please wait! While we update your activity.',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+          Swal.showLoading();
+        },
+      });
       await dispatch(editResourceAction(
         currentPlaylistId,
         editor,
@@ -31,7 +40,7 @@ function ActivityWizard(props) {
         metadata,
       ));
 
-      history.push(`/project/${match.params.projectId}`);
+      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
     } catch (e) {
       // console.log(e);
     }

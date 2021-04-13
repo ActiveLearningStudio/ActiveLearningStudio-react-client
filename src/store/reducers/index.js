@@ -16,6 +16,8 @@ import account from './account';
 import dashboard from './dashboard';
 import notification from './notification';
 import canvas from './canvas';
+import group from './group';
+import organization from './organization';
 
 export default combineReducers({
   auth,
@@ -34,4 +36,6 @@ export default combineReducers({
   dashboard,
   notification,
   canvas,
+  group,
+  organization,
 });

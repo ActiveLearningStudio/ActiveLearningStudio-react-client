@@ -1,4 +1,4 @@
-$curriki-main-blue: #1d59b4;
+@import 'assets/css/index';
 
 
 .flex-container {
@@ -76,7 +76,7 @@ img {
   }
 
   .link {
-    // font-family: $oracle, sans-serif;
+    font-family: $rubik, sans-serif;
     font-weight: 600;
     font-size: 14px;
     color: #126BDF;
@@ -110,7 +110,7 @@ img {
   margin-bottom: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid #7B7B7B;
-  // font-family: $oracle, sans-serif;
+  font-family: $rubik, sans-serif;
   font-weight: 300;
   font-size: 24px;
   line-height: 32px;
@@ -119,7 +119,7 @@ img {
 
 .sidebar-heading {
   margin-bottom: 30px;
-  // font-family: $oracle, sans-serif;
+  font-family: $rubik, sans-serif;
   font-weight: 300;
   font-size: 26px;
   line-height: 36px;
@@ -127,7 +127,7 @@ img {
 }
 
 .sub-heading {
-  // font-family: $oracle, sans-serif;
+  font-family: $rubik, sans-serif;
   font-weight: 300;
   font-size: 16px;
   line-height: 22px;
@@ -220,7 +220,7 @@ img {
   .panel-heading {
     max-width: 80%;
     margin-bottom: 10px;
-    // font-family: $oracle, sans-serif;
+    font-family: $rubik, sans-serif;
     font-weight: 600;
     font-size: 14px;
     line-height: 16px;
@@ -244,7 +244,7 @@ img {
     position: absolute;
     right: 20px;
     bottom: 15px;
-    // font-family: $oracle, sans-serif;
+    font-family: $rubik, sans-serif;
     font-weight: 600;
     font-size: 12px;
     line-height: 100%;
@@ -336,7 +336,7 @@ img {
   span {
     display: block;
     color: #090708;
-    // font-family: $oracle, sans-serif;
+    font-family: $rubik, sans-serif;
     font-weight: 600;
     line-height: 16px;
     font-size: 14px;
@@ -391,7 +391,7 @@ img {
     position: relative;
     padding: 0 45px 5px 0;
     display: inline-block;
-    // font-family: $oracle, sans-serif;
+    font-family: $rubik, sans-serif;
     font-weight: 600;
     font-size: 14px;
     line-height: 25px;

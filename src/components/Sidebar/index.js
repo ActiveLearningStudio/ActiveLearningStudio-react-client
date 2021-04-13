@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import Swal from 'sweetalert2';
 
-// import logo from 'assets/images/logo.svg';
+import foldericon from 'assets/images/sidebar/folder-icon.png';
+import teamicon from 'assets/images/sidebar/team-icon.png';
+import dashboardicon from 'assets/images/sidebar/dashboard-icon.png';
+import backgroundimg from 'assets/images/sidebar/background.png';
+
 import {
   allSidebarProjects,
-  // allUpdateProject,
-  // sampleProjects,
 } from 'store/actions/project';
-import { loadTeamsAction } from 'store/actions/team';
 
 import './style.scss';
 
@@ -26,12 +26,10 @@ function Sidebar(props) {
 
   const allState = useSelector((state) => state);
 
-  // const [myProjects, setMyProjects] = useState([]);
-  // const [sampleProject, setSampleProjects] = useState([]);
-  // const [updateProject, setUpdateProject] = useState([]);
-
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
 
   useEffect(() => {
     if (location.pathname.includes('teams/')) {
@@ -51,174 +49,175 @@ function Sidebar(props) {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (!allState.sidebar.isLoaded) {
+    if (!allState.sidebar.isLoaded && organization.activeOrganization) {
       dispatch(allSidebarProjects());
-      // dispatch(sampleProjects());
-      // dispatch(allUpdateProject());
-      dispatch(loadTeamsAction());
     }
-  }, [allState.sidebar.isLoaded, dispatch]);
-
-  // useEffect(() => {
-  //   if (allState.sidebar.allProject.length > 0) {
-  //     setMyProjects(allState.sidebar.allProject);
-  //   }
-  // }, [allState.sidebar.allProject]);
-
-  // useEffect(() => {
-  //   if (allState.sidebar.sampleProject.length > 0) {
-  //     setSampleProjects(allState.sidebar.sampleProject);
-  //   }
-  // }, [allState.sidebar.sampleProject]);
-
-  // useEffect(() => {
-  //   if (allState.sidebar.updateProject.length > 0) {
-  //     setUpdateProject(allState.sidebar.updateProject);
-  //   }
-  // }, [allState.sidebar.updateProject]);
+  }, [allState.sidebar.isLoaded, organization.activeOrganization, dispatch]);
 
   const handleClickTeam = useCallback((team) => {
-    history.push(`/teams/${team.id}`);
-  }, [history]);
+    history.push(`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}`);
+  }, [history, allState.organization.currentOrganization?.domain]);
+  const handleClickGroup = useCallback((group) => {
+    history.push(`/org/${allState.organization.currentOrganization?.domain}/groups/${group.id}`);
+  }, [history, allState.organization.currentOrganization?.domain]);
 
   return (
     <aside className="sidebar-all">
       <Link to="/">
         <div className="menu-title">
-          <FontAwesomeIcon icon="tasks" className="mr-2" />
+          <img src={foldericon} alt="" />
           My Projects
         </div>
       </Link>
-
-      <ul className="all-project">
-        {allState.sidebar.allProject.slice(0, 5).map((data) => (
-          <li key={data.id}>
-            <Link to={`/project/${data.id}`}>
-              <FontAwesomeIcon icon="angle-right" className="mr-2" />
-              {data.name}
-            </Link>
-          </li>
-        ))}
-
-        <Link className="expand" to="/projects">
-          Explore All
-          <FontAwesomeIcon icon="arrow-right" className="ml-2" />
-        </Link>
-      </ul>
-
-      {/* <div
-        className="menu-title"
-        onClick={() => {
-          Swal.fire({
-            title: 'STAY TUNED!',
-            text: 'COMING SOON',
-            imageUrl: logo,
-            imageWidth: 400,
-            imageHeight: 200,
-            imageAlt: 'Custom image',
-          });
-        }}
-      >
-        <FontAwesomeIcon icon="user-friends" className="mr-2" />
-        My Teams
-      </div> */}
-
-      {/*
-      <div className="menu-title">
-        <FontAwesomeIcon icon="tasks" className="mr-2" />
-        Sample Projects
-      </div>
-      <ul className="all-project">
-        {allState.sidebar.sampleProject.slice(0, 5).map((data) => (
-          <li key={data.id}>
-            <a target="_blank" rel="noreferrer" href={`/project/${data.id}/shared`}>
-              <FontAwesomeIcon icon="angle-right" className="mr-2" />
-              {data.name}
-            </a>
-          </li>
-        ))}
-      </ul>
-      */}
-
-      {/*
-      {!!updateProject && (
-        <>
+      {allState.sidebar.allProject.length > 0 && (
+        <ul className="all-project">
+          {allState.sidebar.allProject.slice(0, 5).map((data) => (
+            <li key={data.id}>
+              <Link to={`/org/${allState.organization.currentOrganization?.domain}/project/${data.id}`}>
+                <FontAwesomeIcon icon="angle-right" className="mr-2" />
+                {data.name}
+              </Link>
+            </li>
+          ))}
+          <Link className="expand" to={`/org/${organization.currentOrganization?.domain}`}>
+            Explore All
+            <FontAwesomeIcon icon="arrow-right" className="ml-2" />
+          </Link>
+        </ul>
+      )}
+      {permission?.Dashboard?.includes('dashboard:view') && (
+        <Link to={`/org/${organization.currentOrganization?.domain}/dashboard`}>
           <div className="menu-title">
-            <FontAwesomeIcon icon="tasks" className="mr-2" />
-            What&apos;s New
+            <img src={dashboardicon} alt="" />
+            Dashboard & Stats
           </div>
-          <ul className="all-project">
-            {updateProject.slice(0, 5).map((data, counter) => (
-              <li key={data.id}>
-                <a target="_blank" rel="noreferrer" href={`/project/${data.id}/shared`}>
-                  <FontAwesomeIcon icon="angle-right" className="mr-2" />
-                  {data.name}
-                </a>
-              </li>
-            ))}
-          </ul>
+        </Link>
+      )}
+      {permission?.Team?.includes('team:view') && (
+        <>
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
+            <div className="menu-title">
+              <img src={teamicon} alt="" />
+              Teams
+            </div>
+          </Link>
+          {allState.sidebar.teams.length > 0 && allState.sidebar.teams.slice(0, 3).map((team) => (
+            <div key={team.id} className={`team-item${selectedTeam === team.id ? '' : ' collapsed'}`}>
+              <div className="team-label" onClick={() => handleClickTeam(team)}>
+                {team.name}
+                <FontAwesomeIcon
+                  icon={selectedTeam === team.id ? 'angle-up' : 'angle-down'}
+                  className="ml-2 mt-1"
+                />
+              </div>
+
+              <div className="team-detail-labels">
+                <Link
+                  to={`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}`}
+                  className={selectedCategory === TEAM ? 'active-label' : ''}
+                >
+                  <FontAwesomeIcon icon="user-friends" className="mr-2" />
+                  Team Members
+                </Link>
+                <Link
+                  to={`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}/projects`}
+                  className={selectedCategory === PROJECTS ? 'active-label' : ''}
+                >
+                  <span className="project-title">Projects</span>
+                </Link>
+                {/*
+                <Link
+                  to={`/teams/${team.id}/channel`}
+                  className={selectedCategory === CHANNEL ? 'active-label' : ''}
+                >
+                  <span className="channel-title">Channels</span>
+                </Link>
+                */}
+              </div>
+            </div>
+          ))}
+          {allState.sidebar.teams.length > 0
+            && (
+            <Link className="expand" style={{ paddingLeft: '20px', borderTop: 'none' }} to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
+              Explore All Teams
+              <FontAwesomeIcon icon="arrow-right" className="ml-2" />
+            </Link>
+            )}
         </>
       )}
-      */}
-
-      <Link to="/dashboard">
-        <div className="menu-title">
-          <FontAwesomeIcon icon="tachometer-alt" className="mr-2" />
-          Utilization Dashboard
+      {permission?.Team?.includes('team:create') && (
+        <div className="menu-title create-button">
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams/create-team`}>
+            <div>
+              <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
+              Create Team
+            </div>
+          </Link>
         </div>
-      </Link>
+      )}
+      {permission?.Group?.includes('group:view') && (
+        <>
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
+            <div className="menu-title">
+              <FontAwesomeIcon icon="users" className="mr-2" />
+              Groups
+            </div>
+          </Link>
+          {allState.sidebar.groups.length > 0 && allState.sidebar.groups.slice(0, 3).map((group) => (
+            <div key={group.id} className={`team-item${selectedTeam === group.id ? '' : ' collapsed'}`}>
+              <div className="team-label" onClick={() => handleClickGroup(group)}>
+                {group.name}
+                <FontAwesomeIcon
+                  icon={selectedTeam === group.id ? 'angle-up' : 'angle-down'}
+                  className="ml-2 mt-1"
+                />
+              </div>
 
-      {/* <Link to="/teams">
-        <div className="menu-title">
-          <FontAwesomeIcon icon="user-friends" className="mr-2" />
-          Teams
+              <div className="team-detail-labels">
+                <Link
+                  to={`/org/${allState.organization.currentOrganization?.domain}/groups/${group.id}`}
+                  className={selectedCategory === TEAM ? 'active-label' : ''}
+                >
+                  <FontAwesomeIcon icon="user-friends" className="mr-2" />
+                  Group Members
+                </Link>
+                <Link
+                  to={`/org/${allState.organization.currentOrganization?.domain}/groups/${group.id}/projects`}
+                  className={selectedCategory === PROJECTS ? 'active-label' : ''}
+                >
+                  <span className="project-title">Projects</span>
+                </Link>
+                {/*
+                <Link
+                  to={`/teams/${team.id}/channel`}
+                  className={selectedCategory === CHANNEL ? 'active-label' : ''}
+                >
+                  <span className="channel-title">Channels</span>
+                </Link>
+                */}
+              </div>
+            </div>
+          ))}
+          {allState.sidebar.groups.length > 0
+            && (
+            <Link className="expand" style={{ paddingLeft: '20px', borderTop: 'none' }} to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
+              Explore All Groups
+              <FontAwesomeIcon icon="arrow-right" className="ml-2" />
+            </Link>
+            )}
+        </>
+      )}
+      {permission?.Group?.includes('group:create') && (
+        <div className="menu-title create-button">
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups/create-group`}>
+            <div>
+              <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
+              Create Group
+            </div>
+          </Link>
         </div>
-      </Link> */}
-
-      {false && allState.team.teams.map((team) => (
-        <div key={team.id} className={`team-item${selectedTeam === team.id ? '' : ' collapsed'}`}>
-          <div className="team-label" onClick={() => handleClickTeam(team)}>
-            {team.name}
-            <FontAwesomeIcon
-              icon={selectedTeam === team.id ? 'angle-up' : 'angle-down'}
-              className="ml-2 mt-1"
-            />
-          </div>
-
-          <div className="team-detail-labels">
-            <Link
-              to={`/teams/${team.id}`}
-              className={selectedCategory === TEAM ? 'active-label' : ''}
-            >
-              <FontAwesomeIcon icon="user-friends" className="mr-2" />
-              Team Members
-            </Link>
-            <Link
-              to={`/teams/${team.id}/projects`}
-              className={selectedCategory === PROJECTS ? 'active-label' : ''}
-            >
-              <span className="project-title">Projects</span>
-            </Link>
-            {/*
-            <Link
-              to={`/teams/${team.id}/channel`}
-              className={selectedCategory === CHANNEL ? 'active-label' : ''}
-            >
-              <span className="channel-title">Channels</span>
-            </Link>
-            */}
-          </div>
-        </div>
-      ))}
-
-      {/* <div className="menu-title create-button">
-        <Link to="/teams/create-team">
-          <div>
-            <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
-            Create Team
-          </div>
-        </Link>
-      </div> */}
+      )}
+      <img src={backgroundimg} alt="" />
     </aside>
   );
 }

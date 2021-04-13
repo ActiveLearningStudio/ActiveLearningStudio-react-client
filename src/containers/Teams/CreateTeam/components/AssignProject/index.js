@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -20,7 +20,7 @@ function AssignProject(props) {
   const onChange = useCallback((e) => {
     setSearch(e.target.value);
   }, [setSearch]);
-
+  const [filteredProjects, setFilteredProjects] = useState([]);
   const selectProject = useCallback((projectId) => {
     const newProjects = [...selectedProjects];
     const projectIndex = newProjects.indexOf(projectId);
@@ -35,8 +35,11 @@ function AssignProject(props) {
   const onFinish = useCallback(() => {
     handleSubmit(selectedProjects);
   }, [selectedProjects, handleSubmit]);
-
-  const filteredProjects = projects.filter((project) => project.name.toLowerCase().includes(search.toLowerCase()));
+  useEffect(() => {
+    if (projects) {
+      setFilteredProjects(projects.filter((project) => project.name.toLowerCase().includes(search.toLowerCase())));
+    }
+  }, [projects, search]);
 
   const finishButton = (
     <button
@@ -73,7 +76,7 @@ function AssignProject(props) {
           </div>
 
           <div className="assign-projects">
-            {filteredProjects.map((project) => (
+            {filteredProjects.length > 0 ? filteredProjects.map((project) => (
               <div
                 key={project.id}
                 className="assign-project-item"
@@ -98,7 +101,7 @@ function AssignProject(props) {
                   {project.name}
                 </div>
               </div>
-            ))}
+            )) : <div> No Project Found. </div>}
           </div>
 
           {finishButton}

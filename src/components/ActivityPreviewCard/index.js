@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import DropdownActivity from 'components/ResourceCard/dropdown';
 
 import './style.scss';
+import { useSelector } from 'react-redux';
 
 const ActivityPreviewCard = (props) => {
   const {
@@ -14,7 +15,7 @@ const ActivityPreviewCard = (props) => {
     playlistId,
     playlist,
   } = props;
-
+  const organization = useSelector((state) => state.organization);
   return (
     <div className="preview-activity-dropdown">
       <Link
@@ -24,7 +25,7 @@ const ActivityPreviewCard = (props) => {
             : (
               showLti
                 ? `/playlist/${playlistId}/activity/${activity.id}/preview/lti`
-                : `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
+                : `/org/${organization.currentOrganization?.domain}/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
             )
         }
       >

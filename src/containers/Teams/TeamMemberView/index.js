@@ -1,11 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 
 import { inviteMembersAction, removeMemberAction } from 'store/actions/team';
 import { searchUsersAction } from 'store/actions/auth';
 import InviteDialog from 'components/InviteDialog';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
 import TeamMember from './TeamMember';
 
 import './style.scss';
@@ -24,7 +26,8 @@ function TeamMemberView(props) {
     inviteMembers,
     removeMember,
   } = props;
-
+  const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
   const [search, setSearch] = useState('');
   const handleChangeSearch = useCallback((e) => {
     setSearch(e.target.value);
@@ -73,7 +76,7 @@ function TeamMemberView(props) {
                   value={search}
                   onChange={handleChangeSearch}
                 />
-                {user && (
+                {permission?.Team?.includes('team:invite-member') && user && (
                   <InviteDialog
                     users={users}
                     visible={showInvite}
@@ -93,6 +96,7 @@ function TeamMemberView(props) {
                   filteredUsers.map((u) => (
                     <div key={u.id}>
                       <TeamMember
+                        permission={permission}
                         teamId={id}
                         authUser={authUser}
                         removingUserId={removingUserId}
@@ -110,14 +114,21 @@ function TeamMemberView(props) {
           </div>
         </div>
       </div>
-
-      <div className="team-description">
-        <h2 className="title">
-          {`About the ${name}`}
-        </h2>
-        <h2 className="description">
-          {description}
-        </h2>
+      <div className="col">
+        <div className="team-description">
+          <h2 className="title">
+            {`About the ${name}`}
+          </h2>
+          <h2 className="description">
+            {description}
+          </h2>
+        </div>
+        <Link to={`/org/${organization.currentOrganization?.domain}/teams/${id}/projects`}>
+          <div className="btn-left-page">
+            <FontAwesomeIcon icon="project-diagram" className="mr-2" />
+            Projects
+          </div>
+        </Link>
       </div>
     </div>
   );
@@ -145,7 +156,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   searchUsers: (search) => dispatch(searchUsersAction(search)),
   inviteMembers: (teamId, selectedUsers, emailNote) => dispatch(inviteMembersAction(teamId, selectedUsers, emailNote)),
-  removeMember: (teamId, userId) => dispatch(removeMemberAction(teamId, userId)),
+  removeMember: (teamId, userId, email) => dispatch(removeMemberAction(teamId, userId, email)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamMemberView);
