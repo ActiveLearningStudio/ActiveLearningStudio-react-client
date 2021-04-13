@@ -46,33 +46,35 @@ function Header(props) {
               {stateHeader?.logo ? <img src={`${global.config.resourceUrl}${stateHeader.logo}`} alt="logo" title="" /> : <img src={logo} alt="logo" title="" />}
             </Link>
           </div>
+        </div>
+        <div className="tophd_right flexdiv search-div  d-flex flex-wrap ">
           <div className="search-div">
             <SearchForm />
           </div>
-        </div>
-        <div className="tophd_right flexdiv search-div  d-flex flex-wrap ">
           <div className="navbar-link">
             <ul className="top-info flex-div">
               {permission?.Organization?.includes('organization:view') && (
-                <li>
-                  <Link
-                    to={`/org/${stateHeader.currentOrganization?.domain}/manage`}
-                    onClick={() => {
-                      dispatch(setActiveOrganization(stateHeader.currentOrganization));
-                      dispatch(updateOrganizationScreen('intro'));
-                    }}
-                  >
-                    <FontAwesomeIcon icon="briefcase" />
-                    <p className="header-icon-text">
-                      Manage&nbsp;
-                      {stateHeader.currentOrganization?.domain}
-                    </p>
-                  </Link>
-                </li>
+                <>
+                  <li>
+                    <Link
+                      to={`/org/${stateHeader.currentOrganization?.domain}/manage`}
+                      onClick={() => {
+                        dispatch(setActiveOrganization(stateHeader.currentOrganization));
+                        dispatch(updateOrganizationScreen('intro'));
+                      }}
+                    >
+                      <FontAwesomeIcon icon="briefcase" />
+                      <p className="header-icon-text">
+                        Manage&nbsp;
+                        {stateHeader.currentOrganization?.domain}
+                      </p>
+                    </Link>
+                  </li>
+                  <li>
+                    <MultitenancyDropdown />
+                  </li>
+                </>
               )}
-              <li>
-                <MultitenancyDropdown />
-              </li>
               {/* <li>
                 <Link to="">
                   <img src={help} alt="help" />
