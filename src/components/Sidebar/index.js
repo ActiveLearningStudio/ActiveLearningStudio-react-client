@@ -110,7 +110,7 @@ function Sidebar(props) {
                 <div className="org-name">
                   {allState.organization.currentOrganization?.name}
                 </div>
-                <Link to={`/org/${allState.organization.currentOrganization?.domain}/manage`}>
+                <Link to={`/org/${allState.organization.currentOrganization?.domain}/org-dashboard`}>
                   <div className="goto-dashboard">
                     Go to Dashboard
                     <img src={dashboardChevron} alt="" className="dashboard-chevron" />

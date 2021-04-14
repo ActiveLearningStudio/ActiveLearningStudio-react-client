@@ -44,8 +44,8 @@ export default function ManageOrganizations() {
           {!!activeOrganization ? (
             <div>
               <div>
-                <div className="headings-org">
-                  <p>Parent organization:
+                {/* <div className="headings-org"> */}
+                  {/* <p>Parent organization:
                     <span>
                       &nbsp;
                       {activeOrganization?.parent?.name || 'NA'}
@@ -62,21 +62,21 @@ export default function ManageOrganizations() {
                     &nbsp;
                       {activeOrganization?.organization_role}
                     </span>
-                  </p>
-                  <div className="organization-container">
+                  </p> */}
+                  {/* <div className="organization-container">
                     <div className="title-main">
                       <img className="child-organization-icon" src={childOrgIcon} alt="child-organization-icon" />
                       <h1 className="child-organization-name">{activeOrganization?.name}</h1>
                     </div>
                     {(history || backScreen) ? (
-                      <div 
+                      <div
                         className="back-button"
                         onClick={() => {
                           if (history) {
                             dispatch(setActiveOrganization(history));
                             dispatch(clearHistory());
                             dispatch(updateOrganizationScreen(backScreen));
-                            
+
                           } else {
                             dispatch(updateOrganizationScreen('intro'));
                           }
@@ -91,20 +91,20 @@ export default function ManageOrganizations() {
                         View All Projects
                       </Link>
                     )}
-                  </div>
-                </div> 
+                  </div> */}
+                {/* </div>  */}
 
                 {state.activeScreen === 'intro' &&
                   <IntroOrganizations
                     detail = {activeOrganization}
-                  />  
+                  />
                 }
                 {state.activeScreen === 'Users' && <Users />}
                 {state.activeScreen === 'all-list' && <AllPrganizations />}
                 {state.activeScreen === 'create-org' && <CreateOrganization />}
                 {state.activeScreen === 'feedback' && <Feedback />}
                 {state.activeScreen ===  'edit-org' && <EditOrganization />}
-              </div> 
+              </div>
             </div>
           ) : <Alert style={{ marginTop: '15px' }} variant="primary"> Loading ...</Alert> }
         </div>
