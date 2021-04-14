@@ -163,7 +163,7 @@
 
 .search-div {
   align-items: center;
-  margin-left: 200px;
+  margin-right: 50px;
 
   #dropdown-basic {
     background-color: transparent;
@@ -188,6 +188,7 @@
     border-radius: 5px;
     overflow-y: auto;
     max-height: 615px;
+    top:20px !important
   }
 
   .overlay-search-form {
