@@ -75,8 +75,8 @@ const shareProjects = (id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const removeShared = (id) => httpService
-  .post(`/${apiVersion}/projects/${id}/remove-share`)
+const removeShared = (subOrgId, id) => httpService
+  .post(`/${apiVersion}/suborganization/${subOrgId}/projects/${id}/remove-share`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
