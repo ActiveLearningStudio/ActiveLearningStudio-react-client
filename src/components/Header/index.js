@@ -70,11 +70,11 @@ function Header(props) {
                       </p>
                     </Link>
                   </li>
-                  <li>
-                    <MultitenancyDropdown />
-                  </li>
                 </>
               )}
+              <li>
+                <MultitenancyDropdown />
+              </li>
               {/* <li>
                 <Link to="">
                   <img src={help} alt="help" />
