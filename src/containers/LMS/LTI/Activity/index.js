@@ -122,7 +122,7 @@ const Activity = (props) => {
       };
 
       // Extending the xAPI statement with our custom values and sending it off to LRS
-      const xapiData = xAPIHelper.extendStatement(event.data.statement, params);
+      const xapiData = xAPIHelper.extendStatement(this, event.data.statement, params);
 
       if (event.data.statement.verb.display['en-US'] === 'submitted-curriki') {
         // Check if all questions/interactions have been accounted for in LRS
@@ -137,7 +137,7 @@ const Activity = (props) => {
             if (!xAPIData) return; // Some interactions have no data to report
 
             const iXAPIStatement = JSON.stringify(
-              xAPIHelper.extendStatement(xAPIData.statement, params, true),
+              xAPIHelper.extendStatement(this, xAPIData.statement, params, true),
             );
             sendStatement(iXAPIStatement);
           }, this);
