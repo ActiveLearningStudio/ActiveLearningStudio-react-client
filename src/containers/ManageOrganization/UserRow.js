@@ -59,7 +59,7 @@ export default function UserRow(props) {
         <div className="detail-column">
           <div className="others">
             Projects:
-            {user?.projects_count}
+            {user?.projects_count ? user?.projects_count : 0}
           </div>
           <div className="others">
             Teams:
