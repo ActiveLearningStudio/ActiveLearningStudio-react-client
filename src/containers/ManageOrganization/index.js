@@ -14,10 +14,10 @@ import {
 } from 'store/actions/organization';
 import Footer from 'components/Footer';
 
-import AllPrganizations from "./allOrganization";
+import AllOrganizations from "./allOrganization";
 import CreateOrganization from "./createOrganization";
 import EditOrganization from "./editOrganziation";
-import IntroOrganizations from "./intoOrganization";
+import IntroOrganizations from "./introOrganization";
 import Feedback from "./feedback";
 
 import './style.scss';
@@ -69,14 +69,13 @@ export default function ManageOrganizations() {
                       <h1 className="child-organization-name">{activeOrganization?.name}</h1>
                     </div>
                     {(history || backScreen) ? (
-                      <div 
+                      <div
                         className="back-button"
                         onClick={() => {
                           if (history) {
                             dispatch(setActiveOrganization(history));
                             dispatch(clearHistory());
                             dispatch(updateOrganizationScreen(backScreen));
-                            
                           } else {
                             dispatch(updateOrganizationScreen('intro'));
                           }
@@ -92,19 +91,19 @@ export default function ManageOrganizations() {
                       </Link>
                     )}
                   </div>
-                </div> 
+                </div>
 
                 {state.activeScreen === 'intro' &&
                   <IntroOrganizations
                     detail = {activeOrganization}
-                  />  
+                  />
                 }
                 {state.activeScreen === 'Users' && <Users />}
-                {state.activeScreen === 'all-list' && <AllPrganizations />}
+                {state.activeScreen === 'all-list' && <AllOrganizations />}
                 {state.activeScreen === 'create-org' && <CreateOrganization />}
                 {state.activeScreen === 'feedback' && <Feedback />}
                 {state.activeScreen ===  'edit-org' && <EditOrganization />}
-              </div> 
+              </div>
             </div>
           ) : <Alert style={{ marginTop: '15px' }} variant="primary"> Loading ...</Alert> }
         </div>
