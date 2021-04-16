@@ -61,6 +61,9 @@ const GclassSummaryPage = loadable(() => import('../containers/LMS/GoogleClassro
 const SearchPage = loadable(() => import('../containers/LMS/Canvas/DeepLinking/SearchPage'));
 const LtiActivity = loadable(() => import('../containers/LMS/LTI/Activity'));
 const ManageOrganization = loadable(() => import('../containers/ManageOrganization'));
+
+const AdminPanel = loadable(() => import('../containers/Admin'));
+
 const AppRouter = (props) => {
   const SelectedOrganization = localStorage.getItem('current_org');
   useEffect(() => {
@@ -196,7 +199,7 @@ const AppRouter = (props) => {
                      <PrivateRoute exact path="/org/:organization/groups/:groupId/channel" component={GroupsPage} channelShow />
                      <PrivateRoute exact path="/org/:organization/groups/:groupId/add-projects" component={AddGroupProjectsPage} />
                      <PrivateRoute exact path="/org/:organization/groups/:groupId/projects/:projectId/add-member" component={AddGroupProjectMemberPage} />
-
+                     <PrivateRoute exact path="/org/:organization/admin" component={AdminPanel} />
                      <PrivateRoute
                        exact
                        path="/org/:organization/project/create"

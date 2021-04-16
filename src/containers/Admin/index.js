@@ -1,0 +1,98 @@
+/* eslint-disable */
+import React from 'react';
+import { Tabs, Tab } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { removeActiveAdminForm } from 'store/actions/admin'
+
+import CreateActivity from "./formik/createActivity"
+import Pills from './pills';
+import './style.scss';
+
+function AdminPanel() {
+  const dispatch = useDispatch();
+  const adminState = useSelector((state) => state.admin);
+  const { activeForm } = adminState;
+  return (
+    <div className="admin-panel">
+      <div className="content-wrapper">
+        <div className="inner-content">
+          <Tabs defaultActiveKey="Stats" id="uncontrolled-tab-example">
+            <Tab eventKey="Stats" title="Stats">
+              <div className="module-content">
+                <h2>Stats</h2>
+                <Pills
+                  modules={['Report', 'Queues:Jobs', 'Queues:Logs']}
+                  type="Stats"
+                  subType="Report"
+                />
+              </div>
+            </Tab>
+            <Tab eventKey="Project" title="Project">
+              <div className="module-content">
+                <h2>Project</h2>
+                <Pills
+                  modules={['Report', 'Queues:Jobs', 'Queues:Logs']}
+                  type="Project"
+                />
+              </div>
+            </Tab>
+            <Tab eventKey="Activities" title="Activities">
+              <div className="module-content">
+                <h2>Activities</h2>
+                <Pills
+                  modules={['Request Index', 'User Projects', 'All Projects']}
+                  type="Activities"
+                />
+              </div>
+            </Tab>
+            <Tab eventKey="Users" title="Users">
+              <div className="module-content">
+                <h2>Users</h2>
+                <Pills
+                  modules={['Activity Types', 'Activity Items']}
+                  type="Users"
+                />
+              </div>
+            </Tab>
+            <Tab eventKey="LMS" title="LMS">
+              <div className="module-content">
+                <h2>LMS</h2>
+                <Pills
+                  modules={['All settings']}
+                  type="LMS"
+                />
+              </div>
+            </Tab>
+            <Tab eventKey="Settings" title="Settings">
+              <div className="module-content">
+                <h2>Settings</h2>
+                <Pills
+                  modules={['All settings']}
+                  type="Settings"
+                />
+              </div>
+            </Tab>
+          </Tabs> 
+        </div> 
+      </div>
+      {activeForm === 'add_activity_type' && (
+        <div className="form-new-popup-admin">
+          <FontAwesomeIcon
+            icon="times"
+            className="cross-all-pop"
+            onClick={() => {
+              dispatch(removeActiveAdminForm());
+            }}
+          />
+          <div className="inner-form-content">
+            <CreateActivity />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default AdminPanel;

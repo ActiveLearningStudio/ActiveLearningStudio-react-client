@@ -1,0 +1,332 @@
+@import 'assets/css/index';
+
+.admin-panel { 
+
+
+  button.dropdown-toggle {
+        
+  }
+
+  .inner-content {
+    background: $white;
+    padding:30px;
+    margin: 20px 15px 20px 5px;
+  }
+  nav{
+    margin:0;
+    width:100%;
+    margin-top: 25px;
+    border-bottom: 1px solid $fun-blue-1 ;
+
+
+    .nav-link {
+      border-radius: 3px 3px 0px 0px;
+      font-size: 16px;
+      line-height: 22px;
+      text-align: center;
+      color:$white;
+      background: $fun-blue-1;
+      font-weight: 400;
+      padding: 5px 30px;
+      margin-right: 10px;
+      
+      color: #fff;
+      border-color:$fun-blue-1  !important;
+    }
+
+    .nav-link.active {
+      background: $white;
+      color: $fun-blue-1;
+    }
+  }
+
+  .tab-content {
+    nav {
+      margin:0;
+      width:100%;
+      margin-top: 25px;
+      border-bottom: none !important ;
+    }
+    h2 {
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 24px;
+      color:#515151;
+      margin-top: 30px;
+      margin-bottom:0px;
+
+    }
+    .nav-link {
+      border-radius: 3px 3px 0px 0px;
+      font-size: 16px;
+      line-height: 22px;
+      text-align: center;
+      color:$white;
+      background: transparent;
+      font-weight: 400;
+      padding: 5px 30px;
+      margin-right: 10px;
+      padding-left: 0;;
+      color: $fun-blue-1;
+      border:none !important;
+    }
+
+    .nav-link.active {
+      background: transparent;
+      color: $fun-blue-1;
+      font-weight: bold;
+      border-bottom: 3px solid$fun-blue-1 !important;
+    }
+
+
+  }
+
+  .controller {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 10px;
+    border: 1px solid #ccc;
+
+    .drop-counter {
+      display: flex;
+      align-items: center;
+
+      button {
+        background: transparent;
+        color: #515151;
+        padding: 0 5px;
+        box-shadow: 0px 0px 0px transparent !important;
+        border-bottom: 1px solid #515151;
+        border-radius: 0;
+      }
+    }
+
+    .radio-filter {
+      padding: 10px;
+      .group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 0px;
+        border-bottom: 1px solid #515151;
+      }
+      label {
+        margin:0;
+        color:#515151;
+        font-size: 12px;
+      }
+    }
+
+    .search-bar {
+      position: relative;
+      input {
+        border:none;
+        border-bottom: 1px solid #515151;
+        font-weight: 400;
+        font-size: 14px;
+        padding-right: 20px;
+      }
+
+      img {
+        position: absolute;
+        right: 0;
+      }
+      
+    }
+
+    .import-user {
+      display: flex;
+      align-items: start;
+      font-size: 12px;
+      text-decoration: underline;
+      color:$fun-blue-1;
+
+      img {
+        margin-right: 5px;
+        width: 13px;
+        margin-bottom: 1px;
+
+      }
+    }
+
+    .print-info{
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      text-decoration: underline;
+     
+      img {
+        margin-left:10px;
+      }
+    }
+
+    .btn-text button {
+      background: $fun-blue-1;
+      border: 1px solid $fun-blue-1;
+      box-sizing: border-box;
+      border-radius: 50px;
+      color:$white;
+      padding: 5px 20px;
+
+      svg {
+        color:#F8AF2C;
+        margin-right: 7px;
+      }
+
+    }
+  }
+
+  .table-data {
+
+    table {
+      width:100%;
+
+      td,th {
+        border: 1px solid #C4C4C4;
+        padding:16px;
+      }
+
+      th{
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 19px;
+        color: #515151;
+      }
+
+      tr{
+        &:nth-of-type(odd){
+          background: #F0F1F3;
+        }
+      }
+    }
+
+  }
+
+  .pagination {
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 19px;
+    color: #515151;
+    padding: 20px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #C4C4C4;
+    border-radius: 0;
+  }
+  .form-new-popup-admin {
+    position: fixed;
+    background: #0848928f;
+    top: 0;
+    width: 100%;
+    z-index: 1111;
+    height: 100%;
+    overflow-y: auto;
+    padding-left: 285px;
+    
+    .cross-all-pop {
+      position: absolute;
+      top:50px;
+      right:50px;
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    .inner-form-content {
+      background: #fff;
+      opacity: 1;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+     
+
+      .create-form {
+        width: 475px;
+
+        h2 {
+          font-weight: 500;
+          font-size: 31.25px;
+          line-height: 37px;
+          border-bottom:4px solid #F8AF2C;
+          color:$fun-blue-1;
+          padding-bottom: 5px;
+          width: fit-content;
+          margin-bottom: 30px;
+        }
+
+        .form-group-create {
+            margin-bottom: 25px;
+           input {
+             width: 100%;
+             height:45px;
+             border: 1px solid #888888;
+             box-sizing: border-box;
+             border-radius: 3px;
+           }
+
+           h3 {
+            font-size: 16px;
+            line-height: 127.85%;
+            margin: 0;
+            font-weight: 400;
+           
+           }
+        }
+
+        .imgupload {
+          position: relative;
+
+          button {
+            position: absolute;
+            top:0;
+            right:0;
+            height:45px;
+            background:#C4C4C4;
+            width:100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border:none
+          }
+
+        }
+
+        .error {
+          color:red;
+          font-size: 12px;
+        }
+
+        .button-group {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 40px;
+
+          button {
+            background:$fun-blue-1;
+            border-radius: 50px;
+            padding: 7px 20px;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 17px;
+            text-align: center;
+            color: #FFFFFF;
+            border:none;
+            padding: 10px 40px;
+            border:1px solid$fun-blue-1 ;
+          }
+          button.cancel{
+            color:$fun-blue-1;
+            background: #fff;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
