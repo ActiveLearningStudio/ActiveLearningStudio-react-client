@@ -315,7 +315,7 @@ export const ProjectsPage = (props) => {
               <Tab eventKey="My Projects" title="My Projects">
                 <div className="row">
                   <div className="col-md-12">
-                    {/* <div className="col-md-12">
+                    <div className="col-md-12">
                       <div className="program-page-title">
                         <h1>My Projects</h1>
 
@@ -356,7 +356,7 @@ export const ProjectsPage = (props) => {
                           </div>
                         </div>
                       </div>
-                    </div> */}
+                    </div>
                     {
                     !!projectDivider && projectDivider.length > 0 ? (
                       <DragDropContext onDragEnd={onDragEnd}>
@@ -568,7 +568,7 @@ export const ProjectsPage = (props) => {
                       {favProject.length > 0 ? (
                         <SampleProjectCard projects={favProject} type="fav" setShowSampleSort={setShowSampleSort} />
                       ) : (
-                        <Alert variant="warning">No Favorite Projects Found.</Alert>
+                        <Alert variant="warning">No Favorite Project Found.</Alert>
                       )}
                     </div>
                   </div>
