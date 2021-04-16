@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -83,8 +83,8 @@ function SearchInterface(props) {
   const [activeType, setActiveType] = useState([]);
   const [activeSubject, setActiveSubject] = useState([]);
   const [activeEducation, setActiveEducation] = useState([]);
-  const [searchType, setSearchType] = useState('public');
-  useEffect(() => {
+  const [searchType, setSearchType] = useState(null);
+  useMemo(() => {
     // eslint-disable-next-line no-restricted-globals
     const query = QueryString.parse(location.search);
     if (query.type) {
@@ -111,7 +111,7 @@ function SearchInterface(props) {
       }
       setActiveEducation(query.education.split(','));
     }
-  }, [allState]);
+  }, []);
 
   useEffect(() => {
     if (allState.searchResult) {
@@ -282,7 +282,8 @@ function SearchInterface(props) {
                                       }
                                       const result = await dispatch(simpleSearchAction(dataSend));
                                       setTotalCount(result.meta?.total);
-                                      history.push(`/org/${currentOrganization?.domain}/search`);
+                                      // eslint-disable-next-line max-len
+                                      history.push(`/org/${currentOrganization?.domain}/search?type=${searchType}&grade=${activeSubject}&education=${activeEducation}&h5p=${activeType}`);
                                     }
                                   }
                                 }}
@@ -372,7 +373,8 @@ function SearchInterface(props) {
                                     }
                                     const result = await dispatch(simpleSearchAction(dataSend));
                                     setTotalCount(result.meta?.total);
-                                    history.push(`/org/${currentOrganization?.domain}/search`);
+                                    // eslint-disable-next-line max-len
+                                    history.push(`/org/${currentOrganization?.domain}/search?type=${searchType}&grade=${activeSubject}&education=${activeEducation}&h5p=${activeType}`);
                                   }
                                   // setModalShow(true);
                                 }}
