@@ -44,40 +44,35 @@ export default function UserRow(props) {
     <>
       <div className="user-row">
         <img src={UserCirlce} alt="user_image" />
-        <div className="main-column">
+        <div className="first-column">
           <div className="username">
-            {`${user.first_name} ${user.last_name}`}
+            {`${user?.first_name} ${user?.last_name}`}
           </div>
           <div className="others">
-            {user.email}
+            {user?.email}
           </div>
           <div className="third-row user-role">
             Role:
-            {user.organization_role}
+            {user?.organization_role}
           </div>
         </div>
-        <div className="main-column">
+        <div className="detail-column">
           <div className="others">
-            Organization: 1
+            Projects:
+            {user?.projects_count}
+          </div>
+          <div className="others">
+            Teams:
+            {user?.teams_count ? user?.teams_count : 0}
           </div>
           <div className="others">
             Groups:
-            {user.default_organization.groups_count ? user.default_organization.groups_count : 0}
-          </div>
-        </div>
-        <div className="main-column">
-          <div className="others">
-            Teams:
-            {user.default_organization.teams_count ? user.default_organization.teams_count : 0}
-          </div>
-          <div className="others">
-            Projects:
-            {user.projects_count}
+            {user?.groups_count ? user?.groups_count : 0}
           </div>
         </div>
         {permission?.Organization?.includes('organization:update-user') && (
           <div className="secondary-column">
-            {/* <Link href="#">Edit</Link> */}
+            <Link href="#">Edit</Link>
           </div>
         )}
         {permission?.Organization?.includes('organization:delete-user') && (

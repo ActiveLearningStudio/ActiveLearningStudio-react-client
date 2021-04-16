@@ -66,7 +66,7 @@ export default function IntroOrganizations(props) {
               )}
               {permission?.Organization?.includes('organization:invite-members') && (
                 <Dropdown>
-                  <Dropdown.Toggle variant="success" id="dropdown-basic">
+                  <Dropdown.Toggle variant="success" id="dropdown-basic-org">
                     <span>
                       Invite Users
                     </span>
