@@ -29,7 +29,9 @@ export default function MultitenancyDropdown() {
     <Dropdown className="dropdown-multitenancy">
       <Dropdown.Toggle id="dropdown-basic">
         <img src={menu} alt="organizations" />
-        {selectOrg}
+        <div className="text" title={selectOrg}>
+          {selectOrg}
+        </div>
       </Dropdown.Toggle>
       <Dropdown.Menu>
         <h2 className="title">Organizations</h2>

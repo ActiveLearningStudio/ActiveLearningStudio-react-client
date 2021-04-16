@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Dropdown,
   InputGroup,
@@ -44,9 +44,11 @@ function Users() {
       setUsers(allListState?.users);
     }
   };
+  useEffect(() => {
+    if (permission?.Organization?.includes('organization:view-user')) dispatch(getRoles());
+  }, [dispatch]);
   useMemo(async () => {
     if (permission?.Organization?.includes('organization:view-user')) {
-      dispatch(getRoles());
       const resultUsers = await dispatch(getOrgUsers(activeOrganization.id, activePage));
       setUsers(resultUsers);
       resultUsers.data.forEach((data) => {
@@ -80,7 +82,7 @@ function Users() {
             </h5>
             {permission?.Organization?.includes('organization:add-user') && (
               <Dropdown className="create-organizations">
-                <Dropdown.Toggle id="dropdown-basic" className="newuser-button button-text">
+                <Dropdown.Toggle id="dropdown-basic-org" className="newuser-button button-text">
                   New User
                 </Dropdown.Toggle>
                 <Dropdown.Menu>

@@ -9,8 +9,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import
 {
-  setActiveOrganization, updateOrganizationScreen,
-  //  getOrganizationFirstTime
+// setActiveOrganization,
+  updateOrganizationScreen,
+//  getOrganizationFirstTime
 }
   from 'store/actions/organization';
 import logo from 'assets/images/studio_new_logo.png';
@@ -59,14 +60,16 @@ function Header(props) {
                     <Link
                       to={`/org/${stateHeader.currentOrganization?.domain}/manage`}
                       onClick={() => {
-                        dispatch(setActiveOrganization(stateHeader.currentOrganization));
-                        dispatch(updateOrganizationScreen('intro'));
+                        if (stateHeader.currentOrganization) {
+                          // dispatch(setActiveOrganization(stateHeader.currentOrganization));
+                          dispatch(updateOrganizationScreen('intro'));
+                        }
                       }}
                     >
                       <FontAwesomeIcon icon="briefcase" />
                       <p className="header-icon-text">
-                        Manage&nbsp;
-                        {stateHeader.currentOrganization?.domain}
+                        Manage Organization
+                        {/* {stateHeader.currentOrganization?.domain} */}
                       </p>
                     </Link>
                   </li>

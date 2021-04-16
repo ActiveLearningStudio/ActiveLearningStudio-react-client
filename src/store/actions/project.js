@@ -321,7 +321,7 @@ export const deleteFavObj = (projectId) => async (dispatch) => {
 export const addProjectFav = (projectId) => async (/* dispatch */) => {
   Swal.showLoading();
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const { organization: { activeOrganization, currentOrganization } } = centralizedState;
   const project = await projectService.addToFav(projectId, activeOrganization.id);
 
   if (project.message) {
@@ -335,7 +335,7 @@ export const addProjectFav = (projectId) => async (/* dispatch */) => {
     })
       .then((result) => {
         if (result.value) {
-          window.location.href = '/?active=fav';
+          window.location.href = `/org/${currentOrganization?.domain}/?active=fav`;
         }
       });
   }
