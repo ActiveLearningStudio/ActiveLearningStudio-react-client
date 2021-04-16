@@ -9,12 +9,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import
 {
-  // setActiveOrganization,
+// setActiveOrganization,
   updateOrganizationScreen,
-  //  getOrganizationFirstTime
+//  getOrganizationFirstTime
 }
   from 'store/actions/organization';
-import logo from 'assets/images/sndt.png';
+import logo from 'assets/images//sndt.png';
 import add from 'assets/images/add-icon.png';
 import profile from 'assets/images/user-profile.png';
 import searchImg from 'assets/images/search.png';
@@ -32,8 +32,9 @@ import './style.scss';
 function Header(props) {
   const { /* user, */ logout } = props;
   const stateHeader = useSelector((state) => state.organization);
-  const { permission: { project } } = stateHeader;
+  const { permission: { Project } } = stateHeader;
   const { currentOrganization } = stateHeader;
+  const { permission } = stateHeader;
   const dispatch = useDispatch();
   const [image, setImage] = useState(null);
   useEffect(() => {
@@ -49,36 +50,52 @@ function Header(props) {
   return (
     <header>
       <div className="top-header flex-div align-items-center">
-        <div className="tophd_left">
-          <Link to={`/org/${stateHeader?.currentOrganization?.domain}`} className="top_logo">
-            {image ? <img src={global.config.resourceUrl + image} alt="logo" title="" /> : <img src={logo} alt="logo" title="" />}
-          </Link>
+        <div className="group-search-logo">
+          <div className="tophd_left">
+            <Link to={`/org/${stateHeader?.currentOrganization?.domain}`} className="top_logo">
+              {image ? <img src={global.config.resourceUrl + image} alt="logo" title="" /> : <img src={logo} alt="logo" title="" />}
+            </Link>
+          </div>
         </div>
-        <div className="search-div">
-          <SearchForm />
-        </div>
-        <MultitenancyDropdown />
         <div className="tophd_right flexdiv search-div  d-flex flex-wrap ">
+          <div className="search-div">
+            <SearchForm />
+          </div>
           <div className="navbar-link">
             <ul className="top-info flex-div">
-              {stateHeader.currentOrganization?.organization_role === 'Administrator' && (
-                <li>
-                  <Link
-                    to={`/org/${stateHeader.currentOrganization?.domain}/manage`}
-                    onClick={() => {
-                      // dispatch(setActiveOrganization(stateHeader.currentOrganization));
-                      dispatch(updateOrganizationScreen('intro'));
-                    }}
-                  >
-                    <FontAwesomeIcon icon="briefcase" />
-                    <p className="header-icon-text">
-                      Manage Organization
-                      {/* {stateHeader.currentOrganization?.domain} */}
-                    </p>
-                  </Link>
-                </li>
+              {permission?.Organization?.includes('organization:view') && (
+                <>
+                  <li>
+                    <Link
+                      to={`/org/${stateHeader.currentOrganization?.domain}/manage`}
+                      onClick={() => {
+                        if (stateHeader.currentOrganization) {
+                          // dispatch(setActiveOrganization(stateHeader.currentOrganization));
+                          dispatch(updateOrganizationScreen('intro'));
+                        }
+                      }}
+                    >
+                      <FontAwesomeIcon icon="briefcase" />
+                      <p className="header-icon-text">
+                        Manage Organization
+                        {/* {stateHeader.currentOrganization?.domain} */}
+                      </p>
+                    </Link>
+                  </li>
+                </>
               )}
-              {project?.includes('create') && (
+              <li>
+                <MultitenancyDropdown />
+              </li>
+              {/* <li>
+                <Link to="">
+                  <img src={help} alt="help" />
+                  <p className="header-icon-text">
+                    Help
+                  </p>
+                </Link>
+              </li> */}
+              {Project?.includes('project:create') && (
                 <li className="align-items-center" style={{ paddingTop: '4px' }}>
                   <Dropdown className="create-project">
                     <Dropdown.Toggle className="align-items-center">

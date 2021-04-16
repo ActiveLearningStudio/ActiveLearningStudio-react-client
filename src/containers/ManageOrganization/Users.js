@@ -80,7 +80,7 @@ function Users() {
             <h5 className="users-heading">
               Users
             </h5>
-            {permission?.Organization?.includes('organization:add-user') && (
+            {false && permission?.Organization?.includes('organization:add-user') && (
               <Dropdown className="create-organizations">
                 <Dropdown.Toggle id="dropdown-basic-org" className="newuser-button button-text">
                   New User
@@ -92,6 +92,7 @@ function Users() {
                         setAllUsersAdded={setAllUsersAdded}
                         allUsersAdded={allUsersAdded}
                         method="update"
+                        fromUsers
                       />
                     </div>
                   </div>
