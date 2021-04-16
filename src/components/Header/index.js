@@ -65,8 +65,8 @@ function Header(props) {
                     >
                       <FontAwesomeIcon icon="briefcase" />
                       <p className="header-icon-text">
-                        Manage&nbsp;
-                        {stateHeader.currentOrganization?.domain}
+                        Manage Organization
+                        {/* {stateHeader.currentOrganization?.domain} */}
                       </p>
                     </Link>
                   </li>
