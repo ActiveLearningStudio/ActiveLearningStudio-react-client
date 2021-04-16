@@ -2,15 +2,15 @@ import React
 // ,{ useMemo }
   from 'react';
 import PropTypes from 'prop-types';
-import { connect, useSelector, useDispatch } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import
 {
-  setActiveOrganization, updateOrganizationScreen,
-  //  getOrganizationFirstTime
+// setActiveOrganization, updateOrganizationScreen,
+//  getOrganizationFirstTime
 }
   from 'store/actions/organization';
 import logo from 'assets/images/studio_new_logo.png';
@@ -33,7 +33,7 @@ function Header(props) {
   const stateHeader = useSelector((state) => state.organization);
   const { permission: { Project } } = stateHeader;
   const { permission } = stateHeader;
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // useMemo(() => {
   //   dispatch(getOrganizationFirstTime(stateHeader?.currentOrganization?.id));
   // }, [stateHeader?.currentOrganization?.id]);
@@ -58,10 +58,12 @@ function Header(props) {
                   <li>
                     <Link
                       to={`/org/${stateHeader.currentOrganization?.domain}/manage`}
-                      onClick={() => {
-                        dispatch(setActiveOrganization(stateHeader.currentOrganization));
-                        dispatch(updateOrganizationScreen('intro'));
-                      }}
+                      // onClick={() => {
+                      //   if (stateHeader.currentOrganization) {
+                      //     dispatch(setActiveOrganization(stateHeader.currentOrganization));
+                      //     dispatch(updateOrganizationScreen('intro'));
+                      //   }
+                      // }}
                     >
                       <FontAwesomeIcon icon="briefcase" />
                       <p className="header-icon-text">
