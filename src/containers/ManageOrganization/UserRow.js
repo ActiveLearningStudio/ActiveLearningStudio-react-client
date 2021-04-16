@@ -72,7 +72,7 @@ export default function UserRow(props) {
         </div>
         {permission?.Organization?.includes('organization:update-user') && (
           <div className="secondary-column">
-            <Link href="#">Edit</Link>
+            {/* <Link href="#">Edit</Link> */}
           </div>
         )}
         {permission?.Organization?.includes('organization:delete-user') && (
