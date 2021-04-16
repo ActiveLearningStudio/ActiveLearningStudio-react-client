@@ -47,7 +47,7 @@ const Feedback = () => {
           </p>
           <div className="all-btn">
             <Link className="btn-curriki-primary">
-              Add aProject
+              Add a Project
             </Link>
             <Link className="btn-curriki-primary">
               Create a Group
