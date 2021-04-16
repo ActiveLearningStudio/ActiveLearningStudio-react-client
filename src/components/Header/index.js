@@ -9,8 +9,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import
 {
-  setActiveOrganization, updateOrganizationScreen,
-  //  getOrganizationFirstTime
+// setActiveOrganization,
+  updateOrganizationScreen,
+//  getOrganizationFirstTime
 }
   from 'store/actions/organization';
 import logo from 'assets/images/studio_new_logo.png';
@@ -21,8 +22,8 @@ import createProjectIcon from 'assets/images/create-project-icon.png';
 // import help from 'assets/images/help.png';
 import { logoutAction } from 'store/actions/auth';
 import { Event } from 'trackers/ga';
-
 import MultitenancyDropdown from './multitenancyDropdown';
+
 import SearchForm from './searchForm';
 import HeaderNotification from './notification';
 
@@ -59,22 +60,24 @@ function Header(props) {
                     <Link
                       to={`/org/${stateHeader.currentOrganization?.domain}/manage`}
                       onClick={() => {
-                        dispatch(setActiveOrganization(stateHeader.currentOrganization));
-                        dispatch(updateOrganizationScreen('intro'));
+                        if (stateHeader.currentOrganization) {
+                          // dispatch(setActiveOrganization(stateHeader.currentOrganization));
+                          dispatch(updateOrganizationScreen('intro'));
+                        }
                       }}
                     >
                       <FontAwesomeIcon icon="briefcase" />
                       <p className="header-icon-text">
-                        Manage&nbsp;
-                        {stateHeader.currentOrganization?.domain}
+                        Manage Organization
+                        {/* {stateHeader.currentOrganization?.domain} */}
                       </p>
                     </Link>
                   </li>
-                  <li>
-                    <MultitenancyDropdown />
-                  </li>
                 </>
               )}
+              <li>
+                <MultitenancyDropdown />
+              </li>
               {/* <li>
                 <Link to="">
                   <img src={help} alt="help" />

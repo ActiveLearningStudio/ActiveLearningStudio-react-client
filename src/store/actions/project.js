@@ -67,7 +67,7 @@ export const loadProjectAction = (projectId) => async (dispatch) => {
       type: actionTypes.LOAD_PROJECT_REQUEST,
     });
 
-    const { project } = await projectService.get(projectId, activeOrganization.id);
+    const { project } = await projectService.get(projectId, activeOrganization?.id);
     Swal.close();
     dispatch({
       type: actionTypes.LOAD_PROJECT_SUCCESS,
@@ -270,7 +270,7 @@ export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
 export const toggleProjectShareAction = (projectId, ProjectName) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
-  const { project } = await projectService.share(projectId, activeOrganization.id);
+  const { project } = await projectService.share(projectId, activeOrganization?.id);
 
   dispatch({
     type: actionTypes.SHARE_PROJECT,
@@ -283,7 +283,9 @@ export const toggleProjectShareAction = (projectId, ProjectName) => async (dispa
 };
 
 export const toggleProjectShareRemovedAction = (projectId, projectName) => async (dispatch) => {
-  const { project } = await projectService.removeShared(projectId);
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const { project } = await projectService.removeShared(activeOrganization?.id, projectId);
 
   dispatch({
     type: actionTypes.SHARE_PROJECT,
@@ -319,7 +321,7 @@ export const deleteFavObj = (projectId) => async (dispatch) => {
 export const addProjectFav = (projectId) => async (/* dispatch */) => {
   Swal.showLoading();
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const { organization: { activeOrganization, currentOrganization } } = centralizedState;
   const project = await projectService.addToFav(projectId, activeOrganization.id);
 
   if (project.message) {
@@ -333,7 +335,7 @@ export const addProjectFav = (projectId) => async (/* dispatch */) => {
     })
       .then((result) => {
         if (result.value) {
-          window.location.href = '/?active=fav';
+          window.location.href = `/org/${currentOrganization?.domain}/?active=fav`;
         }
       });
   }

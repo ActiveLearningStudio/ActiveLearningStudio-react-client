@@ -35,7 +35,6 @@
         margin-right: 5px;
       }
     }
-    
     h1{
       font-weight: 500;
       font-size: 31.25px;
@@ -48,7 +47,6 @@
 .organization-intro {
   display: flex;
   background: $white;
-  
   .img-section {
    width: 200px;
    height: 200px;
@@ -108,14 +106,14 @@
       margin-bottom: 10px;
     }
 
-    #dropdown-basic {
+    #dropdown-basic-org {
+      background: $fun-blue-1;
       position: unset;
     }
   }
 }
 
 .all-organizations {
-  
   .organizations-create {
     display: flex;
     justify-content: space-between;
@@ -142,7 +140,6 @@
       cursor: pointer;
     }
   }
-  
   .box-all-organization {
     background: #eaeaea;
     padding: 25px;
@@ -197,7 +194,6 @@
        display: flex;
        align-items: center;
        border-bottom: 1px solid #D9D9D9;
-      
       .count-pages {
         font-weight: bold;
         font-size: 14px;
@@ -225,13 +221,11 @@
 
     .meta-info {
       width: 75%;
-      
       .meta {
         padding: 10px 20px;
         display: flex;
         justify-content: space-between;
       }
-      
       .data-values {
         font-weight: normal;
         font-size: 12px;
@@ -268,7 +262,6 @@
         padding: 0px 40px;
       }
     }
-    
     .crud {
       display: flex;
       align-items: center;
@@ -373,7 +366,6 @@
         overflow: auto;
         border: 1px solid #ccc;
         z-index:11;
-        
         li {
          font-size: 14px;
          padding: 5px 0px;
@@ -420,7 +412,7 @@
       }
 
       .add-user-btn {
-        position: relative; 
+        position: relative;
         max-width: 450px;
 
         .dropdown {
@@ -455,7 +447,7 @@
         font-weight: normal;
         font-size: 11px;
         color: #000000;
-        margin-right: 30px;    
+        margin-right: 30px;
       }
 
       input {
@@ -471,7 +463,6 @@
     .btn-group {
       margin-top: 12px;
       width: 100%;
-      
       button {
         background: $fun-blue-1;
         border: 1px solid $fun-blue-1;
@@ -482,7 +473,7 @@
         color: $white;
         margin-right: 20px;
         width: 33%;
-        min-height: 32px; 
+        min-height: 32px;
       }
 
       .cancel-create {
@@ -495,23 +486,22 @@
   .add-user-organization {
     padding: 15px;
     width: 300px;
-  
+
     .form-group-create {
       padding-bottom: 15px;
     }
-  
+
     h3 {
       font-weight: normal;
       font-size: 14px !important;
       color: #515151 !important;
-      padding-bottom: 5px im !important; 
+      padding-bottom: 5px im !important;
     }
-  
+
     input, select {
       width: 100% !important;
       height: 27px !important;
     }
-  
     .btn-group {
       button {
         width: auto;
@@ -606,7 +596,6 @@
 }
 
 .feedback-org {
-  
   max-width: 800px;
   margin: 50px auto;
   padding: 20px;
@@ -628,7 +617,6 @@
     padding-top: 25px;
     margin-bottom: 0px;
   }
-  
   .all-btn {
     display: flex;
     justify-content: space-evenly;
@@ -713,7 +701,7 @@
   box-sizing: border-box;
   border-radius: 50px;
 }
-.button-text{    
+.button-text{
   line-height: 17px;
   text-align: center;
   color: #FFFFFF;
@@ -731,17 +719,25 @@
 }
 .user-row{
   display: flex;
-  .main-column{
+  .first-column{
     display: flex;
     flex-direction: column;
     margin-top: 10px;
     justify-content: space-evenly;
     width: 30%;
   }
+  .detail-column{
+    display: flex;
+    flex-direction: row;
+    margin-top: 40px;
+    justify-content: space-evenly;
+    width: 60%;
+  }
   .secondary-column{
     display: flex;
     flex-direction: column;
     margin-top: 10px;
+    align-items: baseline;
     justify-content: space-evenly;
     width: 5%;
   }

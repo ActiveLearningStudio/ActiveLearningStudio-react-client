@@ -92,8 +92,8 @@ function ProjectPreview(props) {
   };
 
   useEffect(() => {
-    dispatch(loadMyProjectsActionPreview(match.params.projectId));
-  }, [dispatch, match.params.projectId]);
+    if (organization?.currentOrganization?.id) dispatch(loadMyProjectsActionPreview(match.params.projectId));
+  }, [dispatch, match.params.projectId, organization?.currentOrganization?.id]);
 
   let playlists;
 
@@ -239,7 +239,7 @@ function ProjectPreview(props) {
                                   }
                                 });
                               } else {
-                                dispatch(toggleProjectShareAction(currentProject.id, currentProject.name));
+                                dispatch(toggleProjectShareAction(currentProject?.id, currentProject.name));
                               }
                             }}
                             checked={activeShared || false}
