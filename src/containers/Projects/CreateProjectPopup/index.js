@@ -188,7 +188,7 @@ let CreateProjectPopup = (props) => {
 
   return (
 
-    (editMode && permission?.project?.includes('update')) || (!editMode && permission?.project?.includes('create')) ? (
+    (editMode && permission?.Project?.includes('project:edit')) || (!editMode && permission?.Project?.includes('project:create')) ? (
       <div className="create-program-wrapper">
         <PexelsAPI
           show={modalShow}
@@ -385,7 +385,7 @@ let CreateProjectPopup = (props) => {
           </div>
         </form>
       </div>
-    ) : <Alert variant="danger">You are not authorized to access this.</Alert>
+    ) : <Alert style={{ marginTop: '25px' }} variant="danger">You are not authorized to access this.</Alert>
   );
 };
 

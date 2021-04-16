@@ -8,6 +8,7 @@ import { loadMyProjectsAction } from 'store/actions/project';
 import { loadTeamAction, addProjectsAction } from 'store/actions/team';
 // import Sidebar from 'components/Sidebar';
 // import Header from 'components/Header';
+import { Alert } from 'react-bootstrap';
 import AssignProject from '../CreateTeam/components/AssignProject';
 
 import './style.scss';
@@ -28,6 +29,7 @@ function AddProjectsPage(props) {
     loadTeam(teamId);
   }, [loadProjects, loadTeam, teamId]);
   const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
   const [selectedProjects, setSelectedProjects] = useState([]);
   const [searchProject, setSearchProject] = useState('');
 
@@ -51,15 +53,20 @@ function AddProjectsPage(props) {
       <div className="teams-page">
         <FadeDiv className="assign-projects">
           <div className="assign-projects-content">
-            <AssignProject
-              isSaving={team.isLoading}
-              projects={filteredProjects}
-              handleSubmit={handleSubmit}
-              selectedProjects={selectedProjects}
-              setSelectedProjects={setSelectedProjects}
-              search={searchProject}
-              setSearch={setSearchProject}
-            />
+            {permission?.Team?.includes('team:add-projects')
+              ? (
+                <AssignProject
+                  isSaving={team.isLoading}
+                  projects={filteredProjects}
+                  handleSubmit={handleSubmit}
+                  selectedProjects={selectedProjects}
+                  setSelectedProjects={setSelectedProjects}
+                  search={searchProject}
+                  setSearch={setSearchProject}
+                />
+              )
+              : <Alert variant="danger"> You are not authorized to add projects.</Alert>}
+
           </div>
         </FadeDiv>
       </div>

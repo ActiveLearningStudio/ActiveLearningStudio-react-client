@@ -9,7 +9,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import
 {
-  setActiveOrganization, updateOrganizationScreen,
+  // setActiveOrganization,
+  updateOrganizationScreen,
   //  getOrganizationFirstTime
 }
   from 'store/actions/organization';
@@ -18,11 +19,13 @@ import add from 'assets/images/add-icon.png';
 import profile from 'assets/images/user-profile.png';
 import searchImg from 'assets/images/search.png';
 import createProjectIcon from 'assets/images/create-project-icon.png';
+// import help from 'assets/images/help.png';
 import { logoutAction } from 'store/actions/auth';
 import { Event } from 'trackers/ga';
+import MultitenancyDropdown from './multitenancyDropdown';
+
 import SearchForm from './searchForm';
 import HeaderNotification from './notification';
-import MultitenancyDropdown from './multitenancyDropdown';
 
 import './style.scss';
 
@@ -63,14 +66,14 @@ function Header(props) {
                   <Link
                     to={`/org/${stateHeader.currentOrganization?.domain}/manage`}
                     onClick={() => {
-                      dispatch(setActiveOrganization(stateHeader.currentOrganization));
+                      // dispatch(setActiveOrganization(stateHeader.currentOrganization));
                       dispatch(updateOrganizationScreen('intro'));
                     }}
                   >
                     <FontAwesomeIcon icon="briefcase" />
                     <p className="header-icon-text">
-                      Manage&nbsp;
-                      {stateHeader.currentOrganization?.domain}
+                      Manage Organization
+                      {/* {stateHeader.currentOrganization?.domain} */}
                     </p>
                   </Link>
                 </li>
@@ -108,7 +111,6 @@ function Header(props) {
                   <img src={searchImg} alt="search" />
                 </Link>
               </li>
-
               <li className="menu-user-settings d-flex align-items-center">
                 <Dropdown>
                   <Dropdown.Toggle className="align-items-center">

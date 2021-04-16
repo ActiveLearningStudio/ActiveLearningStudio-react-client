@@ -1,12 +1,16 @@
 import React from 'react';
 import UserCirlce from 'assets/images/UserCircle2.png';
 import PropTypes from 'prop-types';
-import { deleteUserFromOrganization } from 'store/actions/organization';
+import {
+  deleteUserFromOrganization, updateFeedbackScreen, updateOrganizationScreen, updatePreviousScreen,
+} from 'store/actions/organization';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function UserRow(props) {
+  const allListState = useSelector((state) => state.organization);
+  const { permission } = allListState;
   const dispatch = useDispatch();
   const { user } = props;
   const handleDelete = (userId) => {
@@ -20,15 +24,11 @@ export default function UserRow(props) {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.showLoading();
         const response = dispatch(deleteUserFromOrganization(userId));
-        Swal.close();
         response.then(() => {
-          Swal.fire({
-            title: 'Success',
-            text: 'User Deleted Successfully',
-            icon: 'success',
-          });
+          dispatch(updateFeedbackScreen({ action: 'user:delete', name: `${user?.first_name} ${user?.last_name}` }));
+          dispatch(updateOrganizationScreen('feedback'));
+          dispatch(updatePreviousScreen('Users'));
         }).catch((e) => {
           console.log(e);
           Swal.fire({
@@ -44,43 +44,42 @@ export default function UserRow(props) {
     <>
       <div className="user-row">
         <img src={UserCirlce} alt="user_image" />
-        <div className="main-column">
+        <div className="first-column">
           <div className="username">
-            {`${user.first_name} ${user.last_name}`}
+            {`${user?.first_name} ${user?.last_name}`}
           </div>
           <div className="others">
-            {user.email}
+            {user?.email}
           </div>
           <div className="third-row user-role">
             Role:
-            {user.organization_role}
+            {user?.organization_role}
           </div>
         </div>
-        <div className="main-column">
+        <div className="detail-column">
           <div className="others">
-            Organization: 1
+            Projects:
+            {user?.projects_count ? user?.projects_count : 0}
+          </div>
+          <div className="others">
+            Teams:
+            {user?.teams_count ? user?.teams_count : 0}
           </div>
           <div className="others">
             Groups:
-            {user.default_organization.groups_count ? user.default_organization.groups_count : 0}
+            {user?.groups_count ? user?.groups_count : 0}
           </div>
         </div>
-        <div className="main-column">
-          <div className="others">
-            Teams:
-            {user.default_organization.teams_count ? user.default_organization.teams_count : 0}
+        {permission?.Organization?.includes('organization:update-user') && (
+          <div className="secondary-column">
+            {/* <Link href="#">Edit</Link> */}
           </div>
-          <div className="others">
-            Projects:
-            {user.projects_count}
+        )}
+        {permission?.Organization?.includes('organization:delete-user') && (
+          <div className="secondary-column">
+            <Link onClick={() => handleDelete(user?.id)}>Delete</Link>
           </div>
-        </div>
-        <div className="secondary-column">
-          <Link href="#">Edit</Link>
-        </div>
-        <div className="secondary-column">
-          <Link onClick={() => handleDelete(user?.id)}>Delete</Link>
-        </div>
+        )}
       </div>
       <hr />
     </>

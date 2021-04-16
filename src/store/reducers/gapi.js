@@ -2,6 +2,7 @@ import {
   GOOGLE_CLASSROOM_LOGIN,
   GET_STUDENT_COURSES,
   SET_STUDENT_AUTH,
+  SET_STUDENT_AUTH_TOKEN,
   GET_H5P_SETTINGS,
   GET_SUBMISSION,
   TURNED_IN_ACTIVITY,
@@ -19,8 +20,12 @@ const defaultAuthState = () => {
     student: null,
     submission: null,
     h5pSettings: null,
-    summaryAuth: null,
+    summaryAuth: {
+      student: null,
+      teacher: null,
+    },
     outcomeSummary: null,
+    summaryError: null,
   };
 };
 
@@ -38,6 +43,19 @@ const gapiReducer = (state = defaultAuthState(), action) => {
       return {
         ...state,
         student: action.studentData,
+      };
+
+    case SET_STUDENT_AUTH_TOKEN:
+      return {
+        ...state,
+        student: {
+          ...state.student,
+          auth: {
+            ...state.student.auth,
+            accessToken: action.newToken.access_token,
+            tokenObj: action.newToken,
+          },
+        },
       };
 
     case GET_STUDENT_COURSES:
@@ -71,6 +89,22 @@ const gapiReducer = (state = defaultAuthState(), action) => {
       };
 
     case GET_OUTCOME_SUMMARY:
+      if (!action.outcomeSummary) {
+        return {
+          ...state,
+          outcomeSummary: false,
+          summaryError: null,
+        };
+      }
+
+      if (action.outcomeSummary.errors) {
+        return {
+          ...state,
+          outcomeSummary: false,
+          summaryError: action.outcomeSummary.errors[0],
+        };
+      }
+
       const totalAnswered = action.outcomeSummary.summary.filter((question) => (question.verb !== 'skipped' && question.verb !== 'attempted')).length;
       const totalAttempted = action.outcomeSummary.summary.filter((question) => question.verb === 'attempted').length + action.outcomeSummary['non-scoring'].length;
       const totalSkipped = action.outcomeSummary.summary.filter((question) => question.verb === 'skipped').length;
@@ -84,6 +118,7 @@ const gapiReducer = (state = defaultAuthState(), action) => {
           totalSkipped,
           totalAttempted,
         },
+        summaryError: null,
       };
 
     default:

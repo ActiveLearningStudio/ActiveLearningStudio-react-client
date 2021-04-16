@@ -45,6 +45,11 @@ export const loadPlaylistAction = (projectId, id) => async (dispatch) => {
       payload: { playlist },
     });
   } catch (e) {
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: e.message || 'Something went wrong! We are unable to load activity.',
+    });
     dispatch({
       type: actionTypes.LOAD_PLAYLIST_FAIL,
     });
@@ -87,6 +92,11 @@ export const loadProjectPlaylistsAction = (projectId) => async (dispatch) => {
       type: actionTypes.PAGE_LOADING_COMPLETE,
     });
   } catch (e) {
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: e.message || 'Something went wrong! We are unable to load activity.',
+    });
     dispatch({
       type: actionTypes.PAGE_LOADING_COMPLETE,
     });
@@ -176,6 +186,11 @@ export const loadSharedPlaylistAction = (projectId, playlistId) => async (dispat
       payload: { playlist },
     });
   } catch (e) {
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: e.message || 'Something went wrong! We are unable to load activity.',
+    });
     dispatch({
       type: actionTypes.LOAD_PLAYLIST_FAIL,
     });
@@ -209,6 +224,11 @@ export const loadLtiPlaylistAction = (playlistId) => async (dispatch) => {
       payload: { playlist },
     });
   } catch (e) {
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: e.message || 'Something went wrong! We are unable to load activity.',
+    });
     dispatch({
       type: actionTypes.LOAD_PLAYLIST_FAIL,
     });

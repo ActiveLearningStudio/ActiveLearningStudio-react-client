@@ -8,6 +8,7 @@ import ResourceActivityType from 'components/ResourceCard/AddResource/ResourceAc
 import ResourceSelectActivity from 'components/ResourceCard/AddResource/ResourceSelectActivity';
 import ResourceDescribe from 'components/ResourceCard/AddResource/ResourceDescribeActivity';
 import ResourceBuild from 'components/ResourceCard/AddResource/ResourceActivityBuild';
+import Swal from 'sweetalert2';
 import ActivityMeter from './ActivityMeter';
 
 function ActivityWizard(props) {
@@ -41,6 +42,14 @@ function ActivityWizard(props) {
   ) => {
     try {
       if (payload.submitAction === 'create') {
+        Swal.fire({
+          title: 'Creating New Activity',
+          html: 'Please wait! While we create a brand new activity for you.',
+          allowOutsideClick: false,
+          onBeforeOpen: () => {
+            Swal.showLoading();
+          },
+        });
         await dispatch(createResourceAction(
           currentPlaylistId,
           editor,
@@ -52,7 +61,11 @@ function ActivityWizard(props) {
 
       history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
     } catch (e) {
-      // console.log(e.message);
+      Swal.fire({
+        title: 'Error',
+        icon: 'error',
+        html: 'Error creating new activity',
+      });
     }
   };
 

@@ -27,6 +27,7 @@ function TeamMemberView(props) {
     removeMember,
   } = props;
   const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
   const [search, setSearch] = useState('');
   const handleChangeSearch = useCallback((e) => {
     setSearch(e.target.value);
@@ -75,7 +76,7 @@ function TeamMemberView(props) {
                   value={search}
                   onChange={handleChangeSearch}
                 />
-                {user && (
+                {permission?.Team?.includes('team:invite-member') && user && (
                   <InviteDialog
                     users={users}
                     visible={showInvite}
@@ -95,6 +96,7 @@ function TeamMemberView(props) {
                   filteredUsers.map((u) => (
                     <div key={u.id}>
                       <TeamMember
+                        permission={permission}
                         teamId={id}
                         authUser={authUser}
                         removingUserId={removingUserId}
@@ -154,7 +156,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   searchUsers: (search) => dispatch(searchUsersAction(search)),
   inviteMembers: (teamId, selectedUsers, emailNote) => dispatch(inviteMembersAction(teamId, selectedUsers, emailNote)),
-  removeMember: (teamId, userId) => dispatch(removeMemberAction(teamId, userId)),
+  removeMember: (teamId, userId, email) => dispatch(removeMemberAction(teamId, userId, email)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamMemberView);

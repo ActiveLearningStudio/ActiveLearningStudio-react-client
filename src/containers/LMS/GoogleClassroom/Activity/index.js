@@ -115,7 +115,7 @@ const Activity = (props) => {
 
       // Extending the xAPI statement with our custom values and sending it off to LRS
       const xapiData = JSON.stringify(
-        xAPIHelper.extendStatement(event.data.statement, params),
+        xAPIHelper.extendStatement(this, event.data.statement, params),
       );
 
       if (event.data.statement.verb.display['en-US'] === 'submitted-curriki') {
@@ -131,21 +131,13 @@ const Activity = (props) => {
             if (!xAPIData) return; // Some interactions have no data to report
 
             const iXAPIStatement = JSON.stringify(
-              xAPIHelper.extendStatement(xAPIData.statement, params, true),
+              xAPIHelper.extendStatement(this, xAPIData.statement, params, true),
             );
             sendStatement(iXAPIStatement);
           }, this);
         }
 
         sendStatement(xapiData);
-
-        /* const contentProps = Object.keys(h5pSettings.h5p.settings.contents);
-         let contentData = null;
-        // let h5pLibName = null;
-        if (contentProps.length > 0) {
-          contentData = h5pSettings.h5p.settings.contents[contentProps[0]];
-          // h5pLibName = contentData.library;
-        } */
 
         // Ask the user if he wants to turn-in the work to google classroom
         Swal.fire({

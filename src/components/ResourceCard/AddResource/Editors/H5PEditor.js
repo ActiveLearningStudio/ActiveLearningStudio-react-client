@@ -68,12 +68,14 @@ const H5PEditor = (props) => {
     const parameters = window.h5peditorCopy.getParams();
     const { metadata } = parameters;
     if (metadata.title !== undefined) {
-      Swal.fire({
-        allowOutsideClick: false,
-        onBeforeOpen: () => {
-          Swal.showLoading();
-        },
-      });
+      // Swal.fire({
+      //   title: 'New Activity',
+      //   html: 'Please wait! While we create a brand new activity for you.',
+      //   allowOutsideClick: false,
+      //   onBeforeOpen: () => {
+      //     Swal.showLoading();
+      //   },
+      // });
       if (submitAction === 'create') {
         const payload = {
           event,

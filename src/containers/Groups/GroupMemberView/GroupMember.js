@@ -21,10 +21,11 @@ function GroupMember(props) {
     selectMe,
     deselectMe,
     removeMember,
+    permission,
   } = props;
 
   const handleRemove = useCallback(() => {
-    removeMember(groupId, id)
+    removeMember(groupId, id, iEmail)
       .then(() => {
       })
       .catch(() => {
@@ -34,7 +35,7 @@ function GroupMember(props) {
           text: 'Failed to remove user.',
         });
       });
-  }, [groupId, id, removeMember]);
+  }, [groupId, iEmail, id, removeMember]);
 
   return (
     <>
@@ -82,20 +83,21 @@ function GroupMember(props) {
                 <span>Invited</span>
               </button>
             )}
+            {permission?.Group?.includes('group:remove-user') && (
+              <button
+                type="button"
+                className="eliminate-btn"
+                disabled={removingUserId}
+                onClick={handleRemove}
+              >
+                <FontAwesomeIcon icon="plus" className="mr-2" />
+                <span>{authUser.id === id ? 'Leave' : 'Remove'}</span>
 
-            <button
-              type="button"
-              className="eliminate-btn"
-              disabled={removingUserId}
-              onClick={handleRemove}
-            >
-              <FontAwesomeIcon icon="plus" className="mr-2" />
-              <span>{authUser.id === id ? 'Leave' : 'Remove'}</span>
-
-              {removingUserId === id && (
-                <FontAwesomeIcon icon="spinner" className="spinner" />
-              )}
-            </button>
+                {removingUserId === id && (
+                  <FontAwesomeIcon icon="spinner" className="spinner" />
+                )}
+              </button>
+            )}
           </div>
         )}
       </div>
@@ -123,6 +125,7 @@ GroupMember.propTypes = {
   removingUserId: PropTypes.number,
   selected: PropTypes.bool,
   user: PropTypes.object.isRequired,
+  permission: PropTypes.object.isRequired,
   selectMe: PropTypes.func.isRequired,
   deselectMe: PropTypes.func.isRequired,
   removeMember: PropTypes.func.isRequired,

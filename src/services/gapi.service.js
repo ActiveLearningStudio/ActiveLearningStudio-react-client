@@ -1,5 +1,6 @@
 import axios from 'axios';
 import config from 'config';
+import Swal from 'sweetalert2';
 import httpService from './http.service';
 
 const { apiVersion } = config;
@@ -62,7 +63,7 @@ const getSummaryAuth = (token, courseId, classworkId, submissionId) => httpServi
     },
   )
   .then(({ data }) => data)
-  .catch(() => false);
+  .catch((response) => response.response.data);
 
 const getOutcomeSummary = (studentId, activityId) => httpService
   .post(
@@ -73,7 +74,15 @@ const getOutcomeSummary = (studentId, activityId) => httpService
     },
   )
   .then(({ data }) => data)
-  .catch(() => false);
+  .catch((error) => {
+    if (error && error.response && error.response.data && error.response.data.errors) {
+      return error.response.data;
+    }
+
+    console.log('Unexpected error in summary endpoint:');
+    console.log(error);
+    return null;
+  });
 
 const h5pResourceSettings = (activityId, studentId = null) => httpService
   .get(
@@ -82,7 +91,14 @@ const h5pResourceSettings = (activityId, studentId = null) => httpService
     { gcuid: studentId },
   )
   .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: err.message || 'Something went wrong! We are unable to load activity.',
+    });
+  });
 
 export default {
   getStudentProfile,

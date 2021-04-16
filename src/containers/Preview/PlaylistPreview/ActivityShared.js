@@ -83,7 +83,12 @@ const ActivityShared = (props) => {
 
               x.H5P.externalDispatcher.on('xAPI', (event) => {
                 if (counter > 0) {
-                  dispatch(loadH5pResourceXapi(JSON.stringify(xAPIHelper.extendStatement(event.data.statement, { ...props }))));
+                  const extendedStatement = xAPIHelper.extendSharedActivityStatement(
+                    this,
+                    event.data.statement,
+                    { path: match.path },
+                  );
+                  dispatch(loadH5pResourceXapi(JSON.stringify(extendedStatement)));
                 }
                 counter += 1;
               });

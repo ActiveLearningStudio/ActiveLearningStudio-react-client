@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Alert } from 'react-bootstrap';
 
 import { loadTeamsAction } from 'store/actions/team';
 // import Header from 'components/Header';
 // import Sidebar from 'components/Sidebar';
 import Footer from 'components/Footer';
 import { Link, useHistory } from 'react-router-dom';
-import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
 import CreateTeam from './CreateTeam';
 import TeamView from './TeamCard';
 import TeamMemberView from './TeamMemberView';
@@ -39,21 +40,26 @@ function TeamsPage(props) {
     loadTeams,
   } = props;
   const organization = useSelector((state) => state.organization);
-  const { activeOrganization } = organization;
+  const { activeOrganization, permission } = organization;
+  const [alertCheck, setAlertCheck] = useState(false);
   const [breadCrumb, setBreadCrumb] = useState([]);
   const history = useHistory();
   useEffect(() => {
     (async () => {
-      if (activeOrganization && overview && !creation && !editMode) {
-        Swal.showLoading();
+      // if (activeOrganization && overview && !creation && !editMode && permission?.Team?.includes('team:view')) {
+      //   // Swal.showLoading();
+      //   await loadTeams();
+      //   // Swal.close();
+      // } else if (!permission?.Team?.includes('team:view')) {
+      //   await loadTeams();
+      // }
+      if (activeOrganization && permission?.Team) {
         await loadTeams();
-        Swal.close();
-      } else {
-        await loadTeams();
+        setAlertCheck(true);
       }
     }
     )();
-  }, [loadTeams, activeOrganization, overview, creation, editMode]);
+  }, [loadTeams, activeOrganization, permission?.Team, setAlertCheck]);
 
   const status = creation
     ? 'creation'
@@ -114,46 +120,46 @@ function TeamsPage(props) {
         </div>
       </div>
       <div className="teams-page">
-
         <div className="content-wrapper">
           <div className="content">
             <div className="row">
               <h1 className={`title${projectShow ? ' project-title' : ''}${channelShow ? ' channel-title' : ''}`}>
                 {overview ? 'Teams' : (title[status] || 'Teams')}
               </h1>
-
               {projectShow && (
                 <></>
               )}
             </div>
-
-            {overview && (
+            <>
+              {overview && (
               <div className="row overview">
-                {teams.length > 0 ? teams.map((team) => (
-                  <TeamView key={team.id} team={team} />
-                )) : <div>No teams available </div> }
+                {permission?.Team?.includes('team:view') ? (
+                  <>
+                    {teams.length > 0 ? teams.map((team) => (
+                      <TeamView key={team.id} team={team} />
+                    )) : !alertCheck
+                      ? <Alert className="alert-space" variant="primary">Loading...</Alert>
+                      : <Alert className="alert-space" variant="warning">No team available. </Alert> }
+                  </>
+                ) : <Alert className="alert-space" variant="danger">You are not authorized to view teams.</Alert> }
               </div>
-            )}
-
-            {(creation || editMode) && (
-              <div className="row sub-content"><CreateTeam editMode={editMode} selectedTeam={selectedTeam} /></div>
-            )}
-
-            {teamShow && selectedTeam && (
-              <TeamMemberView team={selectedTeam} />
-            )}
-
-            {projectShow && selectedTeam && (
-              <TeamProjectView team={selectedTeam} />
-            )}
-
-            {channelShow && selectedTeam && (
-              <ChannelPanel />
-            )}
+              )}
+              {(creation || editMode) && (
+                <div className="row sub-content"><CreateTeam editMode={editMode} selectedTeam={selectedTeam} /></div>
+              )}
+              {teamShow && selectedTeam && (
+                <TeamMemberView team={selectedTeam} />
+              )}
+              {projectShow && selectedTeam && (
+                <TeamProjectView team={selectedTeam} />
+              )}
+              {channelShow && selectedTeam && (
+                <ChannelPanel />
+              )}
+            </>
           </div>
         </div>
       </div>
-
       <Footer />
     </>
   );

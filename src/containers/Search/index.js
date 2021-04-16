@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable no-param-reassign */
+import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -82,27 +83,35 @@ function SearchInterface(props) {
   const [activeType, setActiveType] = useState([]);
   const [activeSubject, setActiveSubject] = useState([]);
   const [activeEducation, setActiveEducation] = useState([]);
-  const [searchType, setSearchType] = useState('public');
-  useEffect(() => {
+  const [searchType, setSearchType] = useState(null);
+  useMemo(() => {
     // eslint-disable-next-line no-restricted-globals
     const query = QueryString.parse(location.search);
     if (query.type) {
       if (query.type === 'private') {
         setSearchType('private');
-      } else {
+      } else if (query.type === 'public') {
         setSearchType('public');
+      } else {
+        setSearchType('orgSearch');
       }
     }
     if (query.h5p) {
       setActiveType(query.h5p.split(','));
     }
     if (query.grade) {
+      if (query.grade.includes('and')) {
+        query.grade = query.grade.replace('and', '&');
+      }
       setActiveSubject(query.grade.split(','));
     }
     if (query.education) {
+      if (query.education.includes('and')) {
+        query.education = query.education.replace('and', '&');
+      }
       setActiveEducation(query.education.split(','));
     }
-  }, [allState]);
+  }, []);
 
   useEffect(() => {
     if (allState.searchResult) {
@@ -131,7 +140,7 @@ function SearchInterface(props) {
         setTotalCount(allState.searchMeta.total);
       }
     }
-  }, [allState.searchMeta]);
+  }, [allState.searchMeta, allState.searchResult, totalCount]);
 
   useEffect(() => {
     if (localStorage.getItem('loading') === 'true') {
@@ -146,10 +155,10 @@ function SearchInterface(props) {
   });
 
   useEffect(() => {
-    setTimeout(() => {
-      Swal.close();
-      localStorage.setItem('loading', 'false');
-    }, 5000);
+    // setTimeout(() => {
+    //   Swal.close();
+    //   localStorage.setItem('loading', 'false');
+    // }, 5000);
   });
 
   useEffect(() => {
@@ -192,6 +201,17 @@ function SearchInterface(props) {
           <div className="content">
             <div className="search-result-main">
               <div className="total-count">
+                {totalCount > 10000
+                  ? (
+                    <div>
+                      Your search returned more than
+                      {' '}
+                      <span>10,000</span>
+                      {' '}
+                      results. Please refine your search criteria.
+                    </div>
+                  )
+                  : null}
                 {!!searchQueries && (
                   <div>
                     Showing
@@ -219,17 +239,18 @@ function SearchInterface(props) {
                           <Card.Body>
                             <div className="body-search">
                               <input
+                                style={{ display: searchType === 'orgSearch' ? 'none' : 'block' }}
                                 value={searchInput}
                                 onChange={(e) => {
                                   setSearchInput(e.target.value);
                                 }}
                                 onKeyPress={async (e) => {
                                   if (e.key === 'Enter') {
-                                    if (!searchInput.trim()) {
+                                    if (!searchInput.trim() && searchType !== 'orgSearch') {
                                       Swal.fire('Search field is required.');
                                     } else if (searchInput.length > 255) {
                                       Swal.fire('Character limit should be less than 255.');
-                                    } else if (searchInput !== searchQueries) {
+                                    } else {
                                       Swal.fire({
                                         title: 'Searching...', // add html attribute if you want or remove
                                         html: 'We are fetching results for you!',
@@ -238,18 +259,31 @@ function SearchInterface(props) {
                                           Swal.showLoading();
                                         },
                                       });
-                                      const dataSend = {
-                                        phrase: searchInput.trim(),
-                                        subjectArray: activeSubject,
-                                        gradeArray: activeEducation,
-                                        standardArray: activeType,
-                                        type: searchType,
-                                        from: 0,
-                                        size: 20,
-                                      };
+                                      let dataSend;
+                                      if (searchType === 'orgSearch') {
+                                        dataSend = {
+                                          subjectArray: activeSubject,
+                                          gradeArray: activeEducation,
+                                          standardArray: activeType,
+                                          type: searchType,
+                                          from: 0,
+                                          size: 20,
+                                        };
+                                      } else {
+                                        dataSend = {
+                                          phrase: searchInput.trim(),
+                                          subjectArray: activeSubject,
+                                          gradeArray: activeEducation,
+                                          standardArray: activeType,
+                                          type: searchType,
+                                          from: 0,
+                                          size: 20,
+                                        };
+                                      }
                                       const result = await dispatch(simpleSearchAction(dataSend));
                                       setTotalCount(result.meta?.total);
-                                      history.push(`/org/${currentOrganization?.domain}/search`);
+                                      // eslint-disable-next-line max-len
+                                      history.push(`/org/${currentOrganization?.domain}/search?type=${searchType}&grade=${activeSubject}&education=${activeEducation}&h5p=${activeType}`);
                                     }
                                   }
                                 }}
@@ -283,13 +317,25 @@ function SearchInterface(props) {
                                     />
                                     <span>Search Projects Showcase</span>
                                   </label>
+                                  <label>
+                                    <input
+                                      name="type"
+                                      onChange={(e) => {
+                                        setSearchType(e.target.value);
+                                      }}
+                                      value="orgSearch"
+                                      checked={searchType === 'orgSearch'}
+                                      type="radio"
+                                    />
+                                    <span>Search All Projects in Organization</span>
+                                  </label>
                                 </div>
                               </div>
 
                               <div
                                 className="src-btn"
                                 onClick={async () => {
-                                  if (!searchInput.trim()) {
+                                  if (!searchInput.trim() && searchType !== 'orgSearch') {
                                     Swal.fire('Search field is required.');
                                   } else if (searchInput.length > 255) {
                                     Swal.fire('Character limit should be less than 255.');
@@ -302,18 +348,33 @@ function SearchInterface(props) {
                                         Swal.showLoading();
                                       },
                                     });
-                                    const dataSend = {
-                                      phrase: searchInput.trim(),
-                                      subjectArray: activeSubject,
-                                      gradeArray: activeEducation,
-                                      standardArray: activeType,
-                                      type: searchType,
-                                      from: 0,
-                                      size: 20,
-                                    };
+                                    let dataSend;
+                                    if (searchType === 'orgSearch') {
+                                      dataSend = {
+                                        subjectArray: activeSubject,
+                                        gradeArray: activeEducation,
+                                        model: activeModel,
+                                        standardArray: activeType,
+                                        type: searchType,
+                                        from: 0,
+                                        size: 20,
+                                      };
+                                    } else {
+                                      dataSend = {
+                                        phrase: searchInput.trim(),
+                                        subjectArray: activeSubject,
+                                        gradeArray: activeEducation,
+                                        model: activeModel,
+                                        standardArray: activeType,
+                                        type: searchType,
+                                        from: 0,
+                                        size: 20,
+                                      };
+                                    }
                                     const result = await dispatch(simpleSearchAction(dataSend));
                                     setTotalCount(result.meta?.total);
-                                    history.push(`/org/${currentOrganization?.domain}/search`);
+                                    // eslint-disable-next-line max-len
+                                    history.push(`/org/${currentOrganization?.domain}/search?type=${searchType}&grade=${activeSubject}&education=${activeEducation}&h5p=${activeType}`);
                                   }
                                   // setModalShow(true);
                                 }}
@@ -442,8 +503,52 @@ function SearchInterface(props) {
                     defaultActiveKey="total"
                     id="uncontrolled-tab-example"
                     onSelect={async (e) => {
-                      setActiveModel(e);
-                      setActivePage(1);
+                      if (e === 'total') {
+                        const searchData = {
+                          phrase: searchQueries.trim(),
+                          from: 0,
+                          size: 20,
+                          type: searchType,
+                          subjectArray: activeSubject,
+                          gradeArray: activeEducation,
+                          standardArray: activeType,
+                        };
+                        Swal.fire({
+                          title: 'Loading...', // add html attribute if you want or remove
+                          allowOutsideClick: false,
+                          onBeforeOpen: () => {
+                            Swal.showLoading();
+                          },
+                        });
+                        const resultModel = await dispatch(simpleSearchAction(searchData));
+                        Swal.close();
+                        setTotalCount(resultModel.meta[e]);
+                        setActiveModel(e);
+                        setActivePage(1);
+                      } else {
+                        const searchData = {
+                          phrase: searchQueries.trim(),
+                          from: 0,
+                          size: 20,
+                          model: e,
+                          type: searchType,
+                          subjectArray: activeSubject,
+                          gradeArray: activeEducation,
+                          standardArray: activeType,
+                        };
+                        Swal.fire({
+                          title: 'Loading...', // add html attribute if you want or remove
+                          allowOutsideClick: false,
+                          onBeforeOpen: () => {
+                            Swal.showLoading();
+                          },
+                        });
+                        const resultModel = await dispatch(simpleSearchAction(searchData));
+                        Swal.close();
+                        setTotalCount(resultModel.meta[e]);
+                        setActiveModel(e);
+                        setActivePage(1);
+                      }
                     }}
                   >
                     <Tab
@@ -515,7 +620,7 @@ function SearchInterface(props) {
                                   </ul>
                                   <p>{res.description}</p>
                                 </div>
-                                {res.model === 'Project' ? (
+                                {res.model === 'Project' && (
                                   <div
                                     className={`btn-fav ${res.favored}`}
                                     onClick={((e) => {
@@ -536,41 +641,40 @@ function SearchInterface(props) {
                                     {' '}
                                     Favorite
                                   </div>
-                                ) : (
-                                  <Dropdown>
-                                    <Dropdown.Toggle>
-                                      <FontAwesomeIcon icon="ellipsis-v" />
-                                    </Dropdown.Toggle>
-
-                                    <Dropdown.Menu>
-                                      <div
-                                        onClick={() => {
-                                          if (res.model === 'Project') {
-                                            Swal.fire({
-                                              html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
-                                              showCancelButton: true,
-                                              confirmButtonColor: '#3085d6',
-                                              cancelButtonColor: '#d33',
-                                              confirmButtonText: 'Ok',
-                                            })
-                                              .then((result) => {
-                                                if (result.value) {
-                                                  cloneProject(res.id);
-                                                }
-                                              });
-                                          } else {
-                                            setModalShow(true);
-                                            setClone(res);
-                                          }
-                                        }}
-                                      >
-                                        <FontAwesomeIcon className="mr-2" icon="clone" />
-                                        Duplicate
-                                      </div>
-                                    </Dropdown.Menu>
-                                  </Dropdown>
                                 )}
                               </div>
+                              <Dropdown>
+                                <Dropdown.Toggle>
+                                  <FontAwesomeIcon icon="ellipsis-v" />
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                  <div
+                                    onClick={() => {
+                                      if (res.model === 'Project') {
+                                        Swal.fire({
+                                          html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
+                                          showCancelButton: true,
+                                          confirmButtonColor: '#3085d6',
+                                          cancelButtonColor: '#d33',
+                                          confirmButtonText: 'Ok',
+                                        })
+                                          .then((result) => {
+                                            if (result.value) {
+                                              cloneProject(res.id);
+                                            }
+                                          });
+                                      } else {
+                                        setModalShow(true);
+                                        setClone(res);
+                                      }
+                                    }}
+                                  >
+                                    <FontAwesomeIcon className="mr-2" icon="clone" />
+                                    Duplicate
+                                  </div>
+                                </Dropdown.Menu>
+                              </Dropdown>
                             </div>
                           ))
                         ) : (
@@ -667,39 +771,39 @@ function SearchInterface(props) {
                                       />
                                       Favorite
                                     </div>
-                                    {/* <Dropdown>
-                                      <Dropdown.Toggle>
-                                        <FontAwesomeIcon icon="ellipsis-v" />
-                                      </Dropdown.Toggle>
-
-                                      <Dropdown.Menu>
-                                        <div
-                                          onClick={() => {
-                                            if (res.model === 'Project') {
-                                              Swal.fire({
-                                                html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
-                                                showCancelButton: true,
-                                                confirmButtonColor: '#3085d6',
-                                                cancelButtonColor: '#d33',
-                                                confirmButtonText: 'Ok',
-                                              })
-                                                .then((result) => {
-                                                  if (result.value) {
-                                                    cloneProject(res.id);
-                                                  }
-                                                });
-                                            } else {
-                                              setModalShow(true);
-                                              setClone(res);
-                                            }
-                                          }}
-                                        >
-                                          <FontAwesomeIcon className="mr-2" icon="clone" />
-                                          Clone
-                                        </div>
-                                      </Dropdown.Menu>
-                                    </Dropdown> */}
                                   </div>
+                                  <Dropdown>
+                                    <Dropdown.Toggle>
+                                      <FontAwesomeIcon icon="ellipsis-v" />
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                      <div
+                                        onClick={() => {
+                                          if (res.model === 'Project') {
+                                            Swal.fire({
+                                              html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
+                                              showCancelButton: true,
+                                              confirmButtonColor: '#3085d6',
+                                              cancelButtonColor: '#d33',
+                                              confirmButtonText: 'Ok',
+                                            })
+                                              .then((result) => {
+                                                if (result.value) {
+                                                  cloneProject(res.id);
+                                                }
+                                              });
+                                          } else {
+                                            setModalShow(true);
+                                            setClone(res);
+                                          }
+                                        }}
+                                      >
+                                        <FontAwesomeIcon className="mr-2" icon="clone" />
+                                        Clone
+                                      </div>
+                                    </Dropdown.Menu>
+                                  </Dropdown>
                                 </div>
                               )}
                             </>
@@ -943,18 +1047,11 @@ function SearchInterface(props) {
                       </div>
                     </Tab>
                   </Tabs>
-
-                  {/*
-                  <div ref={more} className="">
-                    Loading More
-                  </div>
-                  */}
-
                   {totalCount > 20 && (
                     <Pagination
                       activePage={activePage}
                       itemsCountPerPage={20}
-                      totalItemsCount={totalCount}
+                      totalItemsCount={totalCount > 10000 ? 10000 : totalCount}
                       pageRangeDisplayed={8}
                       onChange={async (e) => {
                         setActivePage(e);

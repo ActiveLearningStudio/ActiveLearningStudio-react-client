@@ -27,6 +27,7 @@ function GroupMemberView(props) {
     removeMember,
   } = props;
   const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
   const [search, setSearch] = useState('');
   const handleChangeSearch = useCallback((e) => {
     setSearch(e.target.value);
@@ -76,7 +77,7 @@ function GroupMemberView(props) {
                   value={search}
                   onChange={handleChangeSearch}
                 />
-                {user && (
+                {permission?.Group?.includes('group:invite-member') && user && (
                   <InviteDialogGroup
                     users={users}
                     visible={showInvite}
@@ -96,6 +97,7 @@ function GroupMemberView(props) {
                   filteredUsers.map((u) => (
                     <div key={u.id}>
                       <GroupMember
+                        permission={permission}
                         groupId={id}
                         authUser={authUser}
                         removingUserId={removingUserId}
@@ -156,7 +158,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   searchUsers: (search) => dispatch(searchUsersAction(search)),
   inviteMembers: (groupId, selectedUsers, emailNote) => dispatch(inviteMembersAction(groupId, selectedUsers, emailNote)),
-  removeMember: (groupId, userId) => dispatch(removeMemberAction(groupId, userId)),
+  removeMember: (groupId, userId, email) => dispatch(removeMemberAction(groupId, userId, email)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupMemberView);

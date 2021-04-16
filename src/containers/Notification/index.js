@@ -19,7 +19,7 @@ const Notification = () => {
   useEffect(() => {
     if (notificationData.yesterday) {
       if (notificationData.today.length === 0 && notificationData.yesterday.length === 0 && notificationData.older.length === 0) {
-        setErrorNotification('Currently no Notifications are available.');
+        setErrorNotification('Currently no notifications are available.');
       }
     }
   }, [notificationData]);

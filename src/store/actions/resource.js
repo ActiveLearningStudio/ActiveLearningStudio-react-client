@@ -71,6 +71,11 @@ export const loadResourceAction = (activityId) => async (dispatch) => {
       },
     });
   } catch (e) {
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: e.message || 'Something went wrong! We are unable to load activity.',
+    });
     dispatch({
       type: actionTypes.LOAD_RESOURCE_FAIL,
     });
@@ -449,8 +454,15 @@ export const editResourceAction = (
     dispatch({
       type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
     });
+    return response;
   } catch (e) {
     console.log(e);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: 'Error editing activity',
+    });
+    throw e;
   }
 };
 

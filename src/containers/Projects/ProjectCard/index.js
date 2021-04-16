@@ -105,7 +105,7 @@ const ProjectCard = (props) => {
               }}
             >
               <FontAwesomeIcon icon="share" className="mr-2" />
-              share
+              Share
             </Link>
 
             <Link>

@@ -101,6 +101,11 @@ const upload = (id, formData) => httpService
     }
   });
 
+const allPermission = (id) => httpService
+  .get(`/${apiVersion}/suborganizations/${id}/permissions`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const getOrgUsers = (id, page) => httpService
   .get(`/${apiVersion}/suborganizations/${id}/users?page=${page}`)
   .then(({ data }) => data)
@@ -129,4 +134,5 @@ export default {
   getOrganizationSearch,
   deleteUserFromOrganization,
   searchUserInOrganization,
+  allPermission,
 };

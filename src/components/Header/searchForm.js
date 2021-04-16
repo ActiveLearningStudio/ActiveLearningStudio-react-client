@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -116,8 +117,7 @@ function SearchForm() {
             }}
             validate={(values) => {
               const errors = {};
-              console.log(values);
-              if (!values.phrase) {
+              if (!values.phrase && values.type !== 'orgSearch') {
                 errors.phrase = 'required';
               }
               if (values.fromDate && values.toDate) {
@@ -126,11 +126,27 @@ function SearchForm() {
               return errors;
             }}
             onSubmit={(values, { resetForm }) => {
+              closeModel.current.click();
+              const h5pNameArray = [];
+              values.standardArray.filter((h5p) => h5pNameArray.push(h5p.value));
+              values.standardArray = h5pNameArray;
+              // eslint-disable-next-line max-len
+              history.push(`/org/${currentOrganization?.domain}/search?type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${h5pNameArray}`);
+              // const allSubjects = values.subjectArray;
+              // values.subjectArray = allSubjects.forEach((subject) => {
+              //   if (subject.includes('and')) {
+              //     subject = subject.replace('and', '&');
+              //   }
+              // });
+              // const allGrades = values.gradeArray;
+              // values.gradeArray = allGrades.forEach((grade) => {
+              //   if (grade.includes('and')) {
+              //     grade = grade.replace('and', '&');
+              //   }
+              // });
+              console.log(values.gradeArray, values.subjectArray);
               Swal.showLoading();
               dispatcher(simpleSearchAction(values));
-              closeModel.current.click();
-              // eslint-disable-next-line max-len
-              history.push(`/org/${currentOrganization?.domain}/search?type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${values.standardArray.name}`);
               resetForm({
                 phrase: '',
                 subjectArray: [],
@@ -184,10 +200,21 @@ function SearchForm() {
                       />
                       <span>Search Project Showcase</span>
                     </label>
+                    <label>
+                      <input
+                        name="type"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value="orgSearch"
+                        checked={values.type === 'orgSearch'}
+                        type="radio"
+                      />
+                      <span>Search All Projects in Organization</span>
+                    </label>
                   </div>
                 </div>
 
-                <div className="form-group">
+                <div className="form-group" style={{ display: values.type === 'orgSearch' ? 'none' : 'block' }}>
                   <input
                     name="phrase"
                     placeholder="Enter search phrase"
@@ -206,7 +233,13 @@ function SearchForm() {
                     placeholder="Subject + Subject Area"
                     onChange={(e) => {
                       handleChange(e);
-                      if (!values.subjectArray.includes(e.target.value)) {
+                      let updatedValue = e.target.value;
+                      if (updatedValue.includes('&')) {
+                        updatedValue = e.target.value.replace('&', 'and');
+                        if (!values.subjectArray.includes(updatedValue)) {
+                          values.subjectArray.push(updatedValue);
+                        }
+                      } else if (!values.subjectArray.includes(e.target.value)) {
                         values.subjectArray.push(e.target.value);
                       }
                     }}
@@ -251,7 +284,13 @@ function SearchForm() {
                     placeholder="Grade Level"
                     onChange={(e) => {
                       handleChange(e);
-                      if (!values.gradeArray.includes(e.target.value)) {
+                      let updatedValue = e.target.value;
+                      if (updatedValue.includes('&')) {
+                        updatedValue = e.target.value.replace('&', 'and');
+                        if (!values.gradeArray.includes(updatedValue)) {
+                          values.gradeArray.push(updatedValue);
+                        }
+                      } else if (!values.gradeArray.includes(e.target.value)) {
                         values.gradeArray.push(e.target.value);
                       }
                     }}

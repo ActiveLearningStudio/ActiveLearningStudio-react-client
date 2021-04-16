@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Alert } from 'react-bootstrap';
 
 import { loadGroupsAction } from 'store/actions/group';
 // import Header from 'components/Header';
 // import Sidebar from 'components/Sidebar';
 import Footer from 'components/Footer';
 import { Link, useHistory } from 'react-router-dom';
-import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
 import CreateGroup from './CreateGroup';
 import GroupView from './GroupCard';
 import GroupMemberView from './GroupMemberView';
@@ -39,21 +40,26 @@ function GroupPage(props) {
     loadGroups,
   } = props;
   const organization = useSelector((state) => state.organization);
-  const { activeOrganization } = organization;
+  const { activeOrganization, permission } = organization;
+  const [alertCheck, setAlertCheck] = useState(false);
   const [breadCrumb, setBreadCrumb] = useState([]);
   const history = useHistory();
   useEffect(() => {
     (async () => {
-      if (activeOrganization && overview && !creation && !editMode) {
-        Swal.showLoading();
+      // if (activeOrganization && overview && !creation && !editMode && permission?.Group?.includes('group:view')) {
+      //   Swal.showLoading();
+      //   await loadGroups();
+      //   Swal.close();
+      // } else {
+      //   await loadGroups();
+      // }
+      if (activeOrganization && permission?.Group) {
         await loadGroups();
-        Swal.close();
-      } else {
-        await loadGroups();
+        setAlertCheck(true);
       }
     }
     )();
-  }, [loadGroups, activeOrganization, overview, creation, editMode]);
+  }, [loadGroups, activeOrganization, permission?.Group]);
 
   const status = creation
     ? 'creation'
@@ -127,12 +133,17 @@ function GroupPage(props) {
                 <></>
               )}
             </div>
-
             {overview && (
               <div className="row overview">
-                {groups.length > 0 ? groups.map((group) => (
-                  <GroupView key={group.id} group={group} />
-                )) : <div>No groups available </div>}
+                {permission?.Group?.includes('group:view') ? (
+                  <>
+                    {groups.length > 0 ? groups.map((group) => (
+                      <GroupView key={group.id} group={group} />
+                    )) : !alertCheck
+                      ? <Alert className="alert-space" variant="primary">Loading...</Alert>
+                      : <Alert className="alert-space" variant="warning">No group available. </Alert>}
+                  </>
+                ) : <Alert className="alert-space" variant="danger">You are not authorized to view groups.</Alert> }
               </div>
             )}
 

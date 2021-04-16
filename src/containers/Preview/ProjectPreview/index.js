@@ -32,8 +32,8 @@ function ProjectPreview(props) {
   const projectState = useSelector((state) => state.project);
   const playlistState = useSelector((state) => state.playlist);
   const ui = useSelector((state) => state.ui);
-
   const accordion = useRef([]);
+  const { permission } = organization;
 
   const { showDeletePlaylistPopup } = ui;
   const [currentProject, setCurrentProject] = useState(null);
@@ -92,8 +92,8 @@ function ProjectPreview(props) {
   };
 
   useEffect(() => {
-    dispatch(loadMyProjectsActionPreview(match.params.projectId));
-  }, [dispatch, match.params.projectId]);
+    if (organization?.currentOrganization?.id) dispatch(loadMyProjectsActionPreview(match.params.projectId));
+  }, [dispatch, match.params.projectId, organization?.currentOrganization?.id]);
 
   let playlists;
 
@@ -122,19 +122,21 @@ function ProjectPreview(props) {
 
       return (
         <div className="check-each" key={playlist.id}>
-          <div className="add-btn-activity">
-            <button
-              type="button"
-              className="add-resource-to-playlist-btn"
-              onClick={() => {
-                // dispatch(clearSearch());
-                history.push(`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/create`);
-              }}
-            >
-              <FontAwesomeIcon icon="plus-circle" className="mr-2" />
-              Add new activity
-            </button>
-          </div>
+          {(permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload')) && (
+            <div className="add-btn-activity">
+              <button
+                type="button"
+                className="add-resource-to-playlist-btn"
+                onClick={() => {
+                  // dispatch(clearSearch());
+                  history.push(`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/create`);
+                }}
+              >
+                <FontAwesomeIcon icon="plus-circle" className="mr-2" />
+                Add new activity
+              </button>
+            </div>
+          )}
           <button
             type="button"
             ref={(el) => {
@@ -237,7 +239,7 @@ function ProjectPreview(props) {
                                   }
                                 });
                               } else {
-                                dispatch(toggleProjectShareAction(currentProject.id, currentProject.name));
+                                dispatch(toggleProjectShareAction(currentProject?.id, currentProject.name));
                               }
                             }}
                             checked={activeShared || false}

@@ -46,7 +46,7 @@ export default function IntroOrganizations(props) {
               {detail.description}
             </p>
             <div className="role">
-              My Role:
+              My Role:&nbsp;
               {detail.organization_role}
             </div>
           </div>
@@ -66,8 +66,8 @@ export default function IntroOrganizations(props) {
               )}
               {permission?.Organization?.includes('organization:invite-members') && (
                 <Dropdown>
-                  <Dropdown.Toggle variant="success" id="dropdown-basic">
-                    <span style={{ color: '#222' }}>
+                  <Dropdown.Toggle variant="success" id="dropdown-basic-org">
+                    <span>
                       Invite Users
                     </span>
                   </Dropdown.Toggle>
@@ -84,7 +84,7 @@ export default function IntroOrganizations(props) {
             <div>
               <div className="circle">
                 <div className="count">{detail.suborganization_count || 0}</div>
-                <div className="value">Organization</div>
+                <div className="value">Organizations</div>
               </div>
               <div
                 onClick={() => {

@@ -34,9 +34,12 @@ const Browse = (props) => {
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
+    const url = new URL(window.location.href);
+    const email = url.searchParams.get('user_email');
     browse({
       lms_url: match.params.lmsUrl,
       lti_client_id: match.params.ltiClientId,
+      user_email: email,
     });
   }, [match]);
 
