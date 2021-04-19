@@ -17,15 +17,46 @@ aside {
       border-bottom: 1px solid #e8e8e8;
     }
   }
+  .collapsedown{
+    a {
+      position: relative;
+    }
+
+    .tagline {
+      
+    position: absolute;
+    white-space: nowrap;
+    border: none;
+    background: #F8AF2C;
+  
+    padding: 2px 15px;
+    -webkit-clip-path: polygon(10% 0%, 100% 0%, 100% 100%, 10% 100%, 0% 50%);
+    clip-path: polygon(10% 0%, 100% 0%, 100% 100%, 10% 100%, 0% 50%);
+    display: none;
+    top: 20px;
+    left: 50px;
+    font-weight: 600;
+
+    }
+    a {
+    &:hover 
+      .tagline {
+        display: block;
+      }
+    }
+    
+  }
   min-height: 900px;
   padding-top: 30px;
   padding-right: 0;
   background: #fff;
   .toggleButton {
     position: absolute;
-    top: 35px;
+    top: 10px;
     right: -13px;
     transition: transform 1s;
+    cursor: pointer;
+    z-index: 111
   }
   & > ul {
     padding: 0 30px;

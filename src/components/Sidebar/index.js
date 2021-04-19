@@ -98,24 +98,28 @@ function Sidebar(props) {
       {toggleSidebar
         ? (
           <>
-            {permission?.activeRole === 'admin'
-            && (
-              <>
-                <div className="row-org">
-                  <img src={menu} alt="menu_square" className="org-icon" />
-                  <div className="org-heading">
-                    Organization
-                  </div>
+            <>
+              <div className="row-org">
+                <img src={menu} alt="menu_square" className="org-icon" />
+                <div className="org-heading">
+                  Organization
                 </div>
-                <div className="org-name">
-                  {allState.organization.currentOrganization?.name}
-                </div>
+              </div>
+              <div className="org-name">
+                {allState.organization.currentOrganization?.name}
+              </div>
+              {permission?.activeRole === 'admin' && (
                 <Link to={`/org/${allState.organization.currentOrganization?.domain}/org-dashboard`}>
                   <div className="goto-dashboard">
                     Go to Dashboard
                     <img src={dashboardChevron} alt="" className="dashboard-chevron" />
                   </div>
                 </Link>
+              )}
+            </>
+            {permission?.activeRole === 'admin'
+            && (
+              <>
                 <Link to={`/org/${allState.organization.currentOrganization?.domain}/manage`}>
                   <div className="row-sidebar">
                     <img src={childOrganizationIcon} alt="" />
@@ -337,36 +341,54 @@ function Sidebar(props) {
           </>
         ) : (
           <>
-            <div className="toggleSidebar">
+            <div className="toggleSidebar collapsedown">
               <Link to={`/org/${allState.organization.currentOrganization.domain}/manage`}>
                 {permission?.activeRole === 'admin' && (
                   <img src={organizationLargeIcon} alt="" />
                 )}
+                <div className="tagline">
+                  Manage Organization
+                </div>
               </Link>
               <Link to={`/org/${allState.organization.currentOrganization.domain}/manage`}>
                 {permission?.activeRole === 'admin' && (
                   <img src={childOrgLargeIcon} alt="" />
                 )}
+                <div className="tagline">
+                  Manage Child Org
+                </div>
               </Link>
               <Link to={`/org/${allState.organization.currentOrganization?.domain}`}>
                 {permission?.Project && (
                   <img src={projectLargeIcon} alt="" />
                 )}
+                <div className="tagline">
+                  Manage Projects
+                </div>
               </Link>
               <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
                 {permission?.Team && (
                   <img src={teamLargeIcon} alt="" />
                 )}
+                <div className="tagline">
+                  Manage Teams
+                </div>
               </Link>
               <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
                 {permission?.Group && (
                   <img src={groupLargeIcon} alt="" />
                 )}
+                <div className="tagline">
+                  Manage Groups
+                </div>
               </Link>
               <Link to={`/org/${allState.organization.currentOrganization?.domain}/manage`}>
                 {permission?.activeRole === 'admin' && (
                   <img src={userLargeIcon} alt="" />
                 )}
+                <div className="tagline">
+                  Manage Users
+                </div>
               </Link>
             </div>
           </>
