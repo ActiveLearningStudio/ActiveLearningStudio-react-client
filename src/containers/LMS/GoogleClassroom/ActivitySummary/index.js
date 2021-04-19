@@ -2,13 +2,8 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import {
-  Badge,
-  Tabs,
-  Tab,
-} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getOutcomeSummaryAction, loadH5pResourceSettings } from 'store/actions/gapi';
+import SummaryOutcome from 'containers/LMS/GoogleClassroom/ActivitySummary/SummaryOutcome';
 import gifloader from 'assets/images/dotsloader.gif';
 import './style.scss';
 
@@ -39,9 +34,9 @@ const Activity = (props) => {
   }, [activityId, submissionId, studentId]);
 
   return (
-    <div className="outcome-summary-container p-4">
+    <div className="outcome-summary-container">
       {outcome === null && (
-        <div className="loader_gif text-center">
+        <div className="loader_gif text-center m-5">
           <img style={{ width: '50px' }} src={gifloader} alt="" />
         </div>
       )}
@@ -51,119 +46,23 @@ const Activity = (props) => {
           <div className="row">
             <div className="col">
               {settings && (
-                <h2>{settings.activity.title}</h2>
+                <div className="title-container">
+                  <div className="title-label">
+                    ACTIVITY SUMMARY
+                  </div>
+                  <div className="title-spacer">
+                    <div />
+                  </div>
+                  <div className="title-content">
+                    {settings.activity.title}
+                  </div>
+                </div>
               )}
             </div>
           </div>
-          <div className="row mt-4">
+          <div className="row m-4">
             <div className="col">
-              <h2>
-                <FontAwesomeIcon icon="star" />
-                {`${outcome.totalAnswered} Responses`}
-              </h2>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              {outcome.nonScoring && outcome.nonScoring.length > 0 && (
-                <Tabs defaultActiveKey="answers" id="summary-tabs">
-                  <Tab eventKey="summary" title="Summary">
-                    <table className="table table-dark">
-                      <thead>
-                        <tr>
-                          <th>Responses</th>
-                          <th>Score</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {outcome.summary.map((question) => (
-                          <tr>
-                            <td>
-                              {question.verb === 'skipped' && (
-                                <>
-                                  <Badge className="skipped-badge" variant="warning">Skipped</Badge>
-                                  {` - ${question.name}`}
-                                </>
-                              )}
-                              {question.verb === 'attempted' && (
-                                <>
-                                  <Badge className="skipped-badge" variant="warning">Attempted</Badge>
-                                  {` - ${question.name}`}
-                                </>
-                              )}
-                              {question.verb !== 'attempted' && question.verb !== 'skipped' && (
-                                `${question.duration} - ${question.name}`
-                              )}
-                            </td>
-                            <td>{`${question.score.raw}/${question.score.max}`}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </Tab>
-                  <Tab eventKey="answers" title="Responses">
-                    <table className="table table-dark answers-table">
-                      <thead>
-                        <tr>
-                          <th>Question</th>
-                          <th>Response</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {outcome.nonScoring.map((question) => (
-                          <tr>
-                            <td>
-                              <p dangerouslySetInnerHTML={{ __html: ` - ${question.description}` }} />
-                            </td>
-                            <td>
-                              {Array.isArray(question.response) && question.response.map((response) => (
-                                <p dangerouslySetInnerHTML={{ __html: ` - ${response}` }} />
-                              ))}
-                              {typeof question.response === 'string' && (
-                                <p dangerouslySetInnerHTML={{ __html: ` - ${question.response}` }} />
-                              )}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </Tab>
-                </Tabs>
-              )}
-              {(outcome.nonScoring === undefined || outcome.nonScoring.length === 0) && (
-                <table className="table table-dark">
-                  <thead>
-                    <tr>
-                      <th>Responses</th>
-                      <th>Score</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {outcome.summary.map((question) => (
-                      <tr>
-                        <td>
-                          {question.verb === 'skipped' && (
-                            <>
-                              <Badge className="skipped-badge" variant="warning">Skipped</Badge>
-                              <span dangerouslySetInnerHTML={{ __html: ` - ${question.name}` }} />
-                            </>
-                          )}
-                          {question.verb === 'attempted' && (
-                            <>
-                              <Badge className="skipped-badge" variant="warning">Attempted</Badge>
-                              <span dangerouslySetInnerHTML={{ __html: ` - ${question.name}` }} />
-                            </>
-                          )}
-                          {question.verb !== 'attempted' && question.verb !== 'skipped' && (
-                            <span dangerouslySetInnerHTML={{ __html: `${question.duration} - ${question.name}` }} />
-                          )}
-                        </td>
-                        <td>{`${question.score.raw}/${question.score.max}`}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
+              <SummaryOutcome outcome={outcome.grouped} />
             </div>
           </div>
         </div>
