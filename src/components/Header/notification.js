@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import bell from 'assets/images/bell.png';
 
 import { getAllNotifications, clearAllNotification } from 'store/actions/notification';
 import NotificationArea from 'containers/Notification/NotificationArea';
-import notificationImg from 'assets/images/notification.png';
 
 import './style.scss';
 
@@ -15,7 +14,7 @@ function HeaderNotification() {
   const allNotifications = useSelector((state) => state.notification);
   const [notificationData, setNotificationData] = useState([]);
   const [errorNotification, setErrorNotification] = useState('');
-
+  const organization = useSelector((state) => state.organization);
   useEffect(() => {
     dispatch(getAllNotifications());
   }, [dispatch]);
@@ -37,7 +36,8 @@ function HeaderNotification() {
       <Dropdown>
         <Dropdown.Toggle className="d-flex align-items-center">
           <div className="notification-alert" onClick={() => dispatch(clearAllNotification())}>
-            <img src={notificationImg} alt="notification" />
+            <img src={bell} alt="notification" />
+            <p className="header-icon-text">Notifications</p>
             {allNotifications.notificationAlert > 0 && <div className="alert-added" />}
           </div>
         </Dropdown.Toggle>
@@ -86,8 +86,8 @@ function HeaderNotification() {
             {errorNotification && <div className="error-notification">{errorNotification}</div> }
           </div>
           <div className="btn-all-notification">
-            <Dropdown.Item className="all-notification" as={Link} to="/notification">
-              see All notification
+            <Dropdown.Item className="all-notification" as={Link} to={`/org/${organization.currentOrganization?.domain}/notification`}>
+              See all notifications
             </Dropdown.Item>
             {/* <Dropdown.Item className="notification-setting" as={Link} to="/notification">
               <FontAwesomeIcon icon="cog" className="mr-2" />

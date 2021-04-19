@@ -13,21 +13,22 @@ const maxName = maxLength(80);
 const maxDescription = maxLength(1000);
 
 let Creation = (props) => {
-  const { handleSubmit } = props;
+  const { handleSubmit, editMode } = props;
 
   return (
     <div className="team-information">
       <FadeDiv>
         <div className="title-box">
-          <h2 className="title">Create Team</h2>
+          <h2 className="title">
+            {editMode ? 'Edit ' : 'Create '}
+            Team
+          </h2>
           <div className="title-cross" />
         </div>
 
         <div className="create-team-wrapper">
           <h2 className="describe">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Praesent vehicula scelerisque lacus quis sagittis.
-            Aenean et nulla ac mauris fringilla placerat ac eu turpis.
+            {editMode ? ' Editing your team information ' : ' Start your team by adding a name and description '}
           </h2>
 
           <div className="creation-panel">
@@ -68,6 +69,7 @@ Creation.propTypes = {
   // updateTeam: PropTypes.func.isRequired,
   // nextStep: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  editMode: PropTypes.bool.isRequired,
 };
 
 Creation = reduxForm({

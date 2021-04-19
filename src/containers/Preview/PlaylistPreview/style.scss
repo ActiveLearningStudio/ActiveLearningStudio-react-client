@@ -1,9 +1,9 @@
-$curriki-main-blue: #1d59b4;
+@import 'assets/css/index';
 
 
 .flex-container {
   display: flex;
-  
+
   -ms-box-orient: horizontal;
 }
 
@@ -27,7 +27,7 @@ img {
 }
 
 .btn-expand-collapse {
-  
+
 
   svg {
     font-size: 25px;
@@ -63,20 +63,20 @@ img {
         font-weight: 600;
         text-align: center;
         border: none;
-      
+
       }
       a.nav-item.active{
         width:33.3%;
         color: #1b1b1b;
         font-weight: 600;
         border-bottom: 5px solid #084892!important;
-        
+
       }
-    
+
   }
 
   .link {
-    // font-family: $oracle, sans-serif;
+    font-family: $rubik, sans-serif;
     font-weight: 600;
     font-size: 14px;
     color: #126BDF;
@@ -110,7 +110,7 @@ img {
   margin-bottom: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid #7B7B7B;
-  // font-family: $oracle, sans-serif;
+  font-family: $rubik, sans-serif;
   font-weight: 300;
   font-size: 24px;
   line-height: 32px;
@@ -119,7 +119,7 @@ img {
 
 .sidebar-heading {
   margin-bottom: 30px;
-  // font-family: $oracle, sans-serif;
+  font-family: $rubik, sans-serif;
   font-weight: 300;
   font-size: 26px;
   line-height: 36px;
@@ -127,7 +127,7 @@ img {
 }
 
 .sub-heading {
-  // font-family: $oracle, sans-serif;
+  font-family: $rubik, sans-serif;
   font-weight: 300;
   font-size: 16px;
   line-height: 22px;
@@ -220,7 +220,7 @@ img {
   .panel-heading {
     max-width: 80%;
     margin-bottom: 10px;
-    // font-family: $oracle, sans-serif;
+    font-family: $rubik, sans-serif;
     font-weight: 600;
     font-size: 14px;
     line-height: 16px;
@@ -244,7 +244,7 @@ img {
     position: absolute;
     right: 20px;
     bottom: 15px;
-    // font-family: $oracle, sans-serif;
+    font-family: $rubik, sans-serif;
     font-weight: 600;
     font-size: 12px;
     line-height: 100%;
@@ -336,7 +336,7 @@ img {
   span {
     display: block;
     color: #090708;
-    // font-family: $oracle, sans-serif;
+    font-family: $rubik, sans-serif;
     font-weight: 600;
     line-height: 16px;
     font-size: 14px;
@@ -391,7 +391,7 @@ img {
     position: relative;
     padding: 0 45px 5px 0;
     display: inline-block;
-    // font-family: $oracle, sans-serif;
+    font-family: $rubik, sans-serif;
     font-weight: 600;
     font-size: 14px;
     line-height: 25px;
@@ -623,7 +623,7 @@ img {
 
 .back-header {
   .preview-dropdown {
-  
+
   }
 
   .dropdown-menu {
@@ -750,7 +750,7 @@ img {
     }
 
     .flex-container.previews {
-    
+
     }
 
     .main-item-wrapper {
@@ -766,7 +766,7 @@ img {
       transition-duration: 0.5s;
 
       .abs-div {
-       
+
         background-color: #fff;
       }
 
@@ -809,7 +809,7 @@ img {
     padding: 5px 0 5px 0;
     border-bottom: solid 1px #e3e3e3;
     color:#1b1b1b;
-    
+
   }
 
   p{
@@ -821,10 +821,10 @@ img {
 
 .main-item-wrapper {
   .h5p-iframe-wrapper {
-   // position: fixed;
+   position: fixed;
    padding-bottom: 50px;
    height: 90%;
-   width: 100%;
+   width: 75%;
    overflow-y: auto;
    background: #fff;
   }
@@ -833,7 +833,7 @@ img {
   .main-item-wrapper {
     .h5p-iframe-wrapper {
      width: 100%;
-     
+
     }
   }
 }
@@ -849,7 +849,7 @@ img {
   .main-item-wrapper {
     .h5p-iframe-wrapper {
      width: 100%;
-     
+
     }
   }
 }

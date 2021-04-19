@@ -1,6 +1,25 @@
-$selected_color: #084892;
-$filled: #44ca92;
+@import 'assets/css/index';
+.btn-left-page {
+  top: 1em;
+  right: 0;
+  width: -moz-fit-content;
+  height: 35px;
+  margin-bottom: 10px;
+  padding: 3px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #5952c6;
+  border-radius: 20px;
+  font-size: 14px;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
 
+  .fa {
+    padding-right: 5px;
+  }
+}
 .member-manage {
   height: 46.5rem;
   margin-top: 2px;
@@ -77,7 +96,7 @@ $filled: #44ca92;
 
             .member-name {
               font-size: 14px;
-              color: #464646;
+              color: $mine-shaft;
             }
 
             .member-data {
@@ -87,7 +106,7 @@ $filled: #44ca92;
                 font-size: 12px;
 
                 & > span {
-                  color: #464646;
+                  color: $mine-shaft;
 
                   & > span {
                     font-size: 8px;
@@ -212,7 +231,7 @@ $filled: #44ca92;
             margin: 0;
             padding: 16px 0 15px;
             font-size: 14px;
-            color: #464646;
+            color: $mine-shaft;
           }
 
           .border-top {

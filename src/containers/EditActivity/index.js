@@ -5,10 +5,11 @@ import {
   Row,
   Col,
   Nav,
+  Alert,
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Footer from 'components/Footer';
 // import Sidebar from 'components/Sidebar';
@@ -19,6 +20,8 @@ import ActivityWizard from './ActivityWizard';
 import 'containers/CreateActivity/style.scss';
 
 function ActivityCreate(props) {
+  const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
   const { match } = props;
   const dispatch = useDispatch();
   useEffect(() => {
@@ -35,7 +38,7 @@ function ActivityCreate(props) {
                 <h2>Edit Resource</h2>
                 <div className="line" />
               </div>
-              <Link to={`/project/${match.params.projectId}`}>
+              <Link to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`}>
                 <div className="back-playlist">
                   <FontAwesomeIcon icon="arrow-left" />
                   Back to Playlist
@@ -43,27 +46,29 @@ function ActivityCreate(props) {
               </Link>
             </div>
             {/* Tabs */}
-            <Tab.Container id="left-tabs-example" defaultActiveKey="edit">
-              <Row>
-                <Col sm={3}>
-                  <Nav variant="pills" className="flex-column">
-                    <Nav.Item>
-                      <Nav.Link eventKey="edit">
-                        <FontAwesomeIcon icon="edit" />
-                        Edit Activity
-                      </Nav.Link>
-                    </Nav.Item>
-                  </Nav>
-                </Col>
-                <Col sm={9}>
-                  <Tab.Content>
-                    <Tab.Pane eventKey="edit">
-                      <ActivityWizard />
-                    </Tab.Pane>
-                  </Tab.Content>
-                </Col>
-              </Row>
-            </Tab.Container>
+            {permission?.Activity?.includes('activity:edit') ? (
+              <Tab.Container id="left-tabs-example" defaultActiveKey="edit">
+                <Row>
+                  <Col sm={3}>
+                    <Nav variant="pills" className="flex-column">
+                      <Nav.Item>
+                        <Nav.Link eventKey="edit">
+                          <FontAwesomeIcon icon="edit" />
+                          Edit Activity
+                        </Nav.Link>
+                      </Nav.Item>
+                    </Nav>
+                  </Col>
+                  <Col sm={9}>
+                    <Tab.Content>
+                      <Tab.Pane eventKey="edit">
+                        <ActivityWizard />
+                      </Tab.Pane>
+                    </Tab.Content>
+                  </Col>
+                </Row>
+              </Tab.Container>
+            ) : <Alert variant="danger" alt="">You are not authorized to edit this activity.</Alert>}
           </div>
         </div>
       </div>

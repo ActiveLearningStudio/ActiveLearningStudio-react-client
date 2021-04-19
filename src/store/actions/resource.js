@@ -71,6 +71,11 @@ export const loadResourceAction = (activityId) => async (dispatch) => {
       },
     });
   } catch (e) {
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: e.message || 'Something went wrong! We are unable to load activity.',
+    });
     dispatch({
       type: actionTypes.LOAD_RESOURCE_FAIL,
     });
@@ -155,7 +160,7 @@ export const createResourceAction = (
         metadata.metaContent.metaEducationLevels
         && metadata.metaContent.metaEducationLevels,
     };
-    const insertedResource = await resourceService.create(activity);
+    const insertedResource = await resourceService.create(activity, playlistId);
     Swal.close();
 
     resourceSaved(true);
@@ -215,13 +220,13 @@ export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
   });
 };
 
-export const deleteResourceAction = (activityId) => async (dispatch) => {
+export const deleteResourceAction = (activityId, playlistId) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.DELETE_RESOURCE_REQUEST,
     });
 
-    await resourceService.remove(activityId);
+    await resourceService.remove(activityId, playlistId);
     dispatch({
       type: actionTypes.DELETE_RESOURCE_SUCCESS,
       payload: { activityId },
@@ -379,7 +384,7 @@ export const createResourceByH5PUploadAction = (
           && metadata.metaContent.metaEducationLevels.name,
       };
 
-      const responseActivity = await resourceService.create(createActivityUpload);
+      const responseActivity = await resourceService.create(createActivityUpload, playlistId);
       Swal.close();
       const resource = { ...responseActivity };
       resource.id = responseActivity.activity.id;
@@ -419,6 +424,7 @@ export const editResourceAction = (
       title: metadata.metaContent && metadata.metaContent.metaTitle,
       content: 'create',
       thumb_url: metadata.thumbUrl,
+      type: 'h5p',
       subject_id:
         metadata.metaContent.metaSubject
         && metadata.metaContent.metaSubject,
@@ -429,7 +435,7 @@ export const editResourceAction = (
       action: 'create',
       data: h5pdata,
     };
-    const response = await resourceService.h5pSettingsUpdate(activityId, dataUpload);
+    const response = await resourceService.h5pSettingsUpdate(activityId, dataUpload, playlistId);
     Swal.close();
 
     resourceSaved(true);
@@ -448,8 +454,15 @@ export const editResourceAction = (
     dispatch({
       type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
     });
+    return response;
   } catch (e) {
     console.log(e);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: 'Error editing activity',
+    });
+    throw e;
   }
 };
 

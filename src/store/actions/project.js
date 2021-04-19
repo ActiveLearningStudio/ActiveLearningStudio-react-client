@@ -5,23 +5,45 @@ import Echo from 'laravel-echo';
 import loaderImg from 'assets/images/loader.svg';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import projectService from 'services/project.service';
+import groupService from 'services/group.service';
+import teamService from 'services/team.service';
 import socketConnection from 'services/http.service';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
 
+export const visibilityTypes = () => async (dispatch) => {
+  const result = await projectService.visibilityTypes();
+  dispatch({
+    type: actionTypes.PROJECT_VISIBILITY_TYPES,
+    payload: result,
+  });
+  return result;
+};
+export const setCurrentVisibilityType = (data) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.CURRENT_VISIBILITY_TYPE,
+    payload: data,
+  });
+};
 export const allSidebarProjects = () => async (dispatch) => {
-  const { projects } = await projectService.getAll();
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const { projects } = await projectService.getAll(activeOrganization.id);
+  const { teams } = await teamService.getAll(activeOrganization.id);
+  const { groups } = await groupService.getAll(activeOrganization.id);
   dispatch({
     type: actionTypes.SIDEBAR_ALL_PROJECT,
-    data: { projects },
+    data: { projects, teams, groups },
   });
 };
 export const createProjectAction = (data) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({ type: actionTypes.CREATE_PROJECT_REQUEST });
-
-    const { project } = await projectService.create(data);
-
+    Swal.showLoading();
+    const { project } = await projectService.create(data, activeOrganization.id);
+    Swal.close();
     dispatch({
       type: actionTypes.CREATE_PROJECT_SUCCESS,
       payload: { project },
@@ -29,16 +51,23 @@ export const createProjectAction = (data) => async (dispatch) => {
     dispatch(allSidebarProjects());
   } catch (e) {
     dispatch({ type: actionTypes.CREATE_PROJECT_FAIL });
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: e.message || 'Something went wrong !',
+    });
   }
 };
 
 export const loadProjectAction = (projectId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({
       type: actionTypes.LOAD_PROJECT_REQUEST,
     });
 
-    const { project } = await projectService.get(projectId);
+    const { project } = await projectService.get(projectId, activeOrganization?.id);
     Swal.close();
     dispatch({
       type: actionTypes.LOAD_PROJECT_SUCCESS,
@@ -62,11 +91,13 @@ export const getElastic = (projectId) => async () => {
 };
 
 export const updateProjectAction = (projectId, data) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({ type: actionTypes.UPDATE_PROJECT_REQUEST });
-
-    const { project } = await projectService.update(projectId, data);
-
+    Swal.showLoading();
+    const { project } = await projectService.update(projectId, data, activeOrganization.id);
+    Swal.close();
     dispatch({
       type: actionTypes.UPDATE_PROJECT_SUCCESS,
       payload: { project },
@@ -74,14 +105,21 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
     dispatch(allSidebarProjects());
   } catch (e) {
     dispatch({ type: actionTypes.UPDATE_PROJECT_FAIL });
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: e.message || 'Something went wrong !',
+    });
   }
 };
 
 export const deleteProjectAction = (projectId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({ type: actionTypes.DELETE_PROJECT_REQUEST });
 
-    await projectService.remove(projectId);
+    await projectService.remove(projectId, activeOrganization.id);
 
     dispatch({
       type: actionTypes.DELETE_PROJECT_SUCCESS,
@@ -111,8 +149,9 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
       });
     },
   };
-
-  const { thumbUrl } = await projectService.upload(formData, config);
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const { thumbUrl } = await projectService.upload(formData, config, activeOrganization.id);
 
   dispatch({
     type: actionTypes.UPLOAD_PROJECT_THUMBNAIL,
@@ -121,12 +160,13 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
 };
 
 export const loadMyProjectsAction = () => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({
       type: actionTypes.PAGE_LOADING,
     });
-
-    const { projects } = await projectService.getAll();
+    const { projects } = await projectService.getAll(activeOrganization.id);
 
     dispatch({
       type: actionTypes.LOAD_MY_PROJECTS,
@@ -144,7 +184,9 @@ export const loadMyProjectsAction = () => async (dispatch) => {
 };
 
 export const loadMyFavProjectsAction = () => async (dispatch) => {
-  const { projects } = await projectService.getAllFav();
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const { projects } = await projectService.getAllFav(activeOrganization.id);
   dispatch({
     type: actionTypes.SIDEBAR_UPDATE_PROJECT,
     data: { projects },
@@ -171,7 +213,9 @@ export const loadMyReorderProjectsAction = (projectDivider) => async () => {
 /* eslint-enable */
 
 export const loadMyCloneProjectsAction = () => async (dispatch) => {
-  const projects = await projectService.getClone();
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const projects = await projectService.getClone(activeOrganization?.id);
   dispatch({
     type: actionTypes.LOAD_MY_CLONE_PROJECTS,
     payload: projects,
@@ -179,7 +223,9 @@ export const loadMyCloneProjectsAction = () => async (dispatch) => {
 };
 
 export const sampleProjects = () => async (dispatch) => {
-  const { projects } = await projectService.getSampleProject();
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const { projects } = await projectService.getSampleProject(activeOrganization.id);
   dispatch({
     type: actionTypes.SIDEBAR_SAMPLE_PROJECT,
     data: { projects },
@@ -195,12 +241,14 @@ export const sampleProjects = () => async (dispatch) => {
 // };
 
 export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({
       type: actionTypes.PAGE_LOADING,
     });
 
-    const { project } = await projectService.get(projectId);
+    const { project } = await projectService.get(projectId, activeOrganization?.id);
 
     dispatch({
       type: actionTypes.LOAD_MY_PROJECTS_SELECTED,
@@ -220,7 +268,9 @@ export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
 };
 
 export const toggleProjectShareAction = (projectId, ProjectName) => async (dispatch) => {
-  const { project } = await projectService.share(projectId);
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const { project } = await projectService.share(projectId, activeOrganization?.id);
 
   dispatch({
     type: actionTypes.SHARE_PROJECT,
@@ -233,7 +283,9 @@ export const toggleProjectShareAction = (projectId, ProjectName) => async (dispa
 };
 
 export const toggleProjectShareRemovedAction = (projectId, projectName) => async (dispatch) => {
-  const { project } = await projectService.removeShared(projectId);
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const { project } = await projectService.removeShared(activeOrganization?.id, projectId);
 
   dispatch({
     type: actionTypes.SHARE_PROJECT,
@@ -247,6 +299,8 @@ export const toggleProjectShareRemovedAction = (projectId, projectName) => async
 };
 
 export const deleteFavObj = (projectId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   Swal.fire({
     showCancelButton: true,
     confirmButtonColor: '#5952c6',
@@ -257,7 +311,7 @@ export const deleteFavObj = (projectId) => async (dispatch) => {
     .then(async (result) => {
       if (result.value) {
         Swal.showLoading();
-        await projectService.addToFav(projectId);
+        await projectService.addToFav(projectId, activeOrganization.id);
         Swal.close();
         dispatch(loadMyFavProjectsAction());
       }
@@ -266,7 +320,9 @@ export const deleteFavObj = (projectId) => async (dispatch) => {
 
 export const addProjectFav = (projectId) => async (/* dispatch */) => {
   Swal.showLoading();
-  const project = await projectService.addToFav(projectId);
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization, currentOrganization } } = centralizedState;
+  const project = await projectService.addToFav(projectId, activeOrganization.id);
 
   if (project.message) {
     Swal.fire({
@@ -279,7 +335,7 @@ export const addProjectFav = (projectId) => async (/* dispatch */) => {
     })
       .then((result) => {
         if (result.value) {
-          window.location.href = '/?active=fav';
+          window.location.href = `/org/${currentOrganization?.domain}/?active=fav`;
         }
       });
   }

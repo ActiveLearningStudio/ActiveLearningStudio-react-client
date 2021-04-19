@@ -1,9 +1,11 @@
 import Swal from 'sweetalert2';
 
 import authService from 'services/auth.service';
+import { getAllPermission } from 'store/actions/organization';
 import storageService from 'services/storage.service';
-import { USER_TOKEN_KEY } from 'constants/index';
+import { USER_TOKEN_KEY, CURRENT_ORG } from 'constants/index';
 import * as actionTypes from '../actionTypes';
+import store from '../index';
 
 export const getUserAction = () => async (dispatch) => {
   const token = storageService.getItem(USER_TOKEN_KEY);
@@ -38,7 +40,7 @@ export const loginAction = (data) => async (dispatch) => {
 
   try {
     const response = await authService.login(data);
-
+    console.log(response);
     // hubspot email tacking
     // eslint-disable-next-line no-multi-assign
     const _hsq = (window._hsq = window._hsq || []);
@@ -49,13 +51,14 @@ export const loginAction = (data) => async (dispatch) => {
         user_name: `${response.user.first_name} ${response.user.last_name}`,
       },
     ]);
-
     storageService.setItem(USER_TOKEN_KEY, response.access_token);
-
+    storageService.setItem(CURRENT_ORG, response?.user?.default_organization?.domain);
+    await dispatch(getAllPermission(response?.user?.default_organization?.id));
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
       payload: { user: response.user },
     });
+    return response;
   } catch (e) {
     dispatch({
       type: actionTypes.LOGIN_FAIL,
@@ -69,7 +72,10 @@ export const googleLoginAction = (data) => async (dispatch) => {
   dispatch({
     type: actionTypes.LOGIN_REQUEST,
   });
-
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  // eslint-disable-next-line no-param-reassign
+  data.domain = activeOrganization.domain;
   try {
     const response = await authService.loginWithGoogle(data);
 
