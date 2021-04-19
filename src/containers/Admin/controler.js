@@ -20,7 +20,8 @@ function Controller(props) {
     btnAction,
     importUser,
     filter,
-    tableHead
+    tableHead,
+    roles
   } = props;
   const [counter, setCounter] = useState(25);
   const dispatch = useDispatch();
@@ -95,6 +96,29 @@ function Controller(props) {
           </span>
         </div> 
       )}
+      {roles?.length && (
+        <div className="filter-dropdown drop-counter ">
+          Select role:
+          <span>
+          <Dropdown>
+            <Dropdown.Toggle  id="dropdown-basic">
+              Super Admin
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <form className="radio-filter">
+                {roles?.map((head) => (
+                  <div className="group">
+                    <label>{head}</label>
+                    <input type="checkbox" name="filter-table" />
+                  </div>
+                ))}
+              </form>
+            </Dropdown.Menu>
+          </Dropdown>
+          </span>
+        </div> 
+      )}
       {!!search && (
         <div className="search-bar">
           <input className="" type="text" placeholder="Search" />
@@ -127,6 +151,10 @@ function Controller(props) {
           <button onClick={() => {
             if (btnAction === 'add_activity_type') {
               dispatch(setActiveAdminForm('add_activity_type'))
+            } else if (btnAction === 'add_role') {
+              dispatch(setActiveAdminForm('add_role'))
+            } else if (btnAction === 'create_user') {
+              dispatch(setActiveAdminForm('create_user'))
             }
           }}>
             <FontAwesomeIcon icon="plus" />

@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeActiveAdminForm } from 'store/actions/admin'
 
 import CreateActivity from "./formik/createActivity"
+import AddRole from './formik/addRole';
+import CreateUser from './formik/createuser'
 import Pills from './pills';
 import './style.scss';
 
@@ -42,7 +44,7 @@ function AdminPanel() {
               <div className="module-content">
                 <h2>Activities</h2>
                 <Pills
-                  modules={['Request Index', 'User Projects', 'All Projects']}
+                  modules={['Activity Types', 'Activity Items']}
                   type="Activities"
                 />
               </div>
@@ -51,8 +53,9 @@ function AdminPanel() {
               <div className="module-content">
                 <h2>Users</h2>
                 <Pills
-                  modules={['Activity Types', 'Activity Items']}
+                  modules={['All users', 'Manage Roles']}
                   type="Users"
+                  subType="All users"
                 />
               </div>
             </Tab>
@@ -88,6 +91,34 @@ function AdminPanel() {
           />
           <div className="inner-form-content">
             <CreateActivity />
+          </div>
+        </div>
+      )}
+      {activeForm === 'add_role' && (
+        <div className="form-new-popup-admin">
+          <FontAwesomeIcon
+            icon="times"
+            className="cross-all-pop"
+            onClick={() => {
+              dispatch(removeActiveAdminForm());
+            }}
+          />
+          <div className="inner-form-content">
+            <AddRole />
+          </div>
+        </div>
+      )}
+      {activeForm === 'create_user' && (
+        <div className="form-new-popup-admin">
+          <FontAwesomeIcon
+            icon="times"
+            className="cross-all-pop"
+            onClick={() => {
+              dispatch(removeActiveAdminForm());
+            }}
+          />
+          <div className="inner-form-content">
+            <CreateUser />
           </div>
         </div>
       )}

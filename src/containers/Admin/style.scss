@@ -276,6 +276,30 @@
            }
         }
 
+        .permissions{
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
+
+          .form-grouper {
+            align-items: center;
+            display: flex;
+            flex-basis: 33%;
+            padding-top: 10px;
+
+            input {
+              width:14px;
+              height: 10px;
+              margin-right:5px
+            }
+
+            label {
+              margin:0;
+            font-size: 14px;
+            }
+          }
+        }
+
         .imgupload {
           position: relative;
 
@@ -323,6 +347,116 @@
             background: #fff;
           }
         }
+      }
+    }
+  }
+
+  .user-roles{
+    border: 1px solid #ccc;
+    padding: 0px 20px;
+
+    h2 {
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 22px;
+      color: #515151;
+    }
+    .box-group{
+      display:flex;
+      justify-content: space-between;
+      margin-top: 35px;
+
+      .top-cat{
+        width:15%;
+        h3 {
+          font-weight: bold;
+          font-size: 14px;
+          line-height: 19px;
+          text-decoration-line: underline;
+
+          color: #084892;
+        }
+        ul {
+          list-style-type: disc;
+          margin: 13px;
+          margin-left: 25px;
+          li {
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 19px;
+            text-decoration-line: underline;
+            color: #084892;
+            padding-bottom:10px;
+            cursor: pointer;
+          }
+        }
+      }
+
+      .child-cat {
+        width: 74%;
+        border-left:1px solid #ccc;
+        border-right:1px solid #ccc;
+
+        .all-cat {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          padding: 10px 20px;
+
+          .form-grouper {
+            flex-basis: 33%;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+    
+            label {
+              font-weight: normal;
+              font-size: 14px;
+              line-height: 19px;
+              padding-left: 10px;
+              color: #515151;
+              margin:0;
+            }
+
+            input {
+              width: 14px;
+              height: 11px;
+            }
+          }
+        }
+      }
+
+      .config {
+        width:13%;
+        .btn-config {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding-top: 10px;
+
+        .btn-update {
+          background: none;
+          border-radius: 30px;
+          border: 1px solid $fun-blue-1;
+          padding: 14px 18px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          line-height: 0;
+          color: $fun-blue-1;
+          margin-bottom: 15px;
+          font-size: 16px;
+        }
+
+        .btn-del {
+          border: none;
+          background: transparent;
+          font-size: 14px;
+          color: #084892;
+          text-decoration: underline;
+        }
+      }
       }
     }
   }

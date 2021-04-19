@@ -54,7 +54,6 @@ function Pills(props) {
                 importUser={false}
                 filter={true}
                 tableHead={columnData.statereport}
-                type="Stats"
                 type={type}
               />
             )}
@@ -84,6 +83,35 @@ function Pills(props) {
                 tableHead={columnData.statelogs}
                 data={dummy}
                 type={type}
+              />
+            )}
+            {(type === 'Users' && subTypeState === 'All users') && (
+              <Starter
+                paginationCounter={true}
+                search={true}
+                print={false}
+                btnText="Add User"
+                btnAction="create_user"
+                importUser={true}
+                filter={false}
+                tableHead={columnData.userall}
+                data={dummy}
+                type={type}
+              />
+            )}
+            {(type === 'Users' && subTypeState === 'Manage Roles') && (
+              <Starter
+                paginationCounter={false}
+                search={false}
+                print={false}
+                btnText="Add Role"
+                btnAction="add_role"
+                importUser={false}
+                filter={false}
+                tableHead={[]}
+                data={[]}
+                type={type}
+                roles={[1]}
               />
             )}
           </div>
