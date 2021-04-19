@@ -1,57 +1,121 @@
 @import 'assets/css/index';
 
 
-.headings-org {
-  margin-bottom: 20px;
-  margin-top: 25px;
+// .headings-org {
+//   margin-bottom: 20px;
+//   margin-top: 25px;
 
-  p {
+//   p {
+//     font-weight: normal;
+//     font-size: 11.9322px;
+//     color: $fun-blue-1;
+//     margin-bottom: 2px;
+
+//     span {
+//       text-decoration: underline;
+//     }
+//   }
+
+//   .title-main {
+//     display: flex;
+//     align-items: center;
+//   }
+
+//   .organization-container {
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+
+//     .back-button {
+//       font-weight: bold;
+//       margin: inherit;
+//       font-size: 12px;
+//       cursor: pointer;
+//       svg {
+//         margin-right: 5px;
+//       }
+//     }
+
+//     h1{
+//       font-weight: 500;
+//       font-size: 31.25px;
+//       color: $fun-blue-1;
+//       margin-bottom: 0px;
+//     }
+//   }
+// }
+.intro-container {
+  background: $white;
+  margin-top:13px;
+  padding-top: 29px;
+  padding-left:35px;
+  padding-right: 25px;
+  .breadcrumb-intro{
+    display: flex;
+    font-style: normal;
     font-weight: normal;
-    font-size: 11.9322px;
-    color: $fun-blue-1;
-    margin-bottom: 2px;
-
-    span {
-      text-decoration: underline;
+    font-size: 12px;
+    line-height: 16px;
+    color: #888888;
+    img{
+      margin-top: -1px;
+      width:16px;
+      height:16px;
+      margin-right: 5px;
+    }
+    svg {
+      margin-top: 3px;
+      margin-right: 5px;
+      margin-left: 5px;
     }
   }
-
-  .title-main {
-    display: flex;
-    align-items: center;
+  div.orgs {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 19px;
+    padding-top:21px;
+    padding-bottom:10px;
+    color: $curriki-main-blue;
   }
-
-  .organization-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .back-button {
-      font-weight: bold;
-      margin: inherit;
-      font-size: 12px;
-      cursor: pointer;
-      svg {
-        margin-right: 5px;
-      }
-    }
-
-    h1{
+  img {
+    width:26px;
+    height: 26px;
+  }
+  .organization{
+    display:flex;
+    .organization-name{
+      padding-left: 6px;
+      font-style: normal;
       font-weight: 500;
       font-size: 31.25px;
-      color: $fun-blue-1;
-      margin-bottom: 0px;
+      line-height: 30px;
+      color: $curriki-main-blue;
+    }
+    button {
+      margin-left: auto;
+      width: 115px;
+      height: 32px;
+      background: $fun-blue-1;
+      border: 1px solid$fun-blue-1;
+      box-sizing: border-box;
+      border-radius: 50px;
+      font-size: 14px;
+      color: $white;
+      margin-bottom: 10px;
     }
   }
 }
-
 .organization-intro {
   display: flex;
-  background: $white;
-
+  margin-top: 30px;
+  color: #515151;
   .img-section {
-   width: 200px;
-   height: 200px;
+    border: 2px solid #EAECEE;
+    margin-left: auto;
+    width: 338px;
+    height: 225px;
+    border-radius: 3px;
   }
 
   .child-organization-image {
@@ -62,31 +126,66 @@
   }
 
   .description-meta {
-    padding: 15px 25px;
-    display: flex;
-    flex-direction: column;
     width: 70%;
+    word-wrap: break-word;
+    color: #515151;
   }
 
   h2 {
-    font-weight: 300;
+    font-style: normal;
+    font-weight: normal;
     font-size: 20px;
     line-height: 24px;
-    color: $fun-blue-1;
+    padding-bottom: 22px ;
   }
 
   p {
+    font-style: normal;
     font-weight: normal;
     font-size: 14px;
-    color: #515151;
     line-height: 19px;
   }
-
-  .role {
-
-    font-weight: normal;
-    font-size: 14px;
-    color: #084892;
+  .details{
+    display: flex;
+    width:70%;
+    justify-content:space-between;
+    .heading{
+      font-style: normal;
+      font-weight: bold;
+      font-size: 12px;
+      line-height: 16px;
+    }
+    .content-data{
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 130.9%;
+    }
+  }
+  .buttons {
+    display: flex;
+    width:70%;
+    justify-content:space-between;
+    button {
+      margin-top: 35px;
+      width: 190px;
+      height: 32px;
+      background: $fun-blue-1;
+      border: 1px solid$fun-blue-1;
+      box-sizing: border-box;
+      border-radius: 50px;
+      font-size: 14px;
+      color: $white;
+      margin-bottom: 10px;
+    }
+    .edit-button {
+      margin-top: 42px;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 16px;
+      color: #084892;
+    }
   }
 
   .grp-btn {
@@ -95,16 +194,15 @@
     align-items: center;
     flex-direction: column;
     padding: 0 25px;
-
     button {
       width: 203px;
       height: 32px;
-      background: $fun-blue-1;
-      border: 1px solid$fun-blue-1;
+      background: #FFFFFF;
+      border: 1px solid #084892;
       box-sizing: border-box;
       border-radius: 50px;
       font-size: 14px;
-      color: $white;
+      color: #084892;
       margin-bottom: 10px;
     }
 
@@ -566,33 +664,71 @@
   }
 
 }
-
+.divider {
+  margin-top: 40px;
+  margin-bottom: 25px;
+  width: 100%;
+  height: 0px;
+  border: 1px solid #EAECEE;
+}
+.stats {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 24px;
+  color: $curriki-main-blue;
+}
 .user-state-org {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 80px auto;
+  margin: 40px auto;
   max-width: 1080px;
 
   .circle {
-    width: 140px;
-    height: 140px;
+    width: 150px;
+    height: 150px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: #C4C4C4;
+    background: #FFFFFF;
     border-radius: 50%;
+    box-shadow: 0px 0px 50px 5px rgba(8, 72, 146, 0.05);
   }
 
   .count {
-    font-size: 45.7333px;
-    color: #000000;
+    font-size: 39px;
+    color: #084892;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 46px;
+    padding-bottom: 6px;
   }
-
+  .icon {
+    display: flex;
+    padding-top: 11px;
+    img {
+      width: 21px;
+      height:21px;
+    }
+  }
+  .split {
+    width: 125px;
+    height: 0px;
+    left: 593px;
+    top: 672px;
+    border: 3px solid #F8AF2C;
+    border-bottom: #F8AF2C;
+  }
   .value {
-    font-size: 14px;
-    color: #000000;
+    font-size: 18px;
+    padding-left: 4px;
+    color: #084892;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 21px;
+    letter-spacing: 0.01em;
   }
 
   .more {
@@ -603,6 +739,7 @@
     padding-top: 15px;
     color: $fun-blue-1;
     cursor: pointer;
+    margin-bottom: 50px;
   }
 }
 
