@@ -1,6 +1,7 @@
 .outcome-summary-container {
   background: black;
   color: ghostwhite;
+  padding-bottom: 4em;
 
   .fa-star {
     color: yellow;
@@ -22,5 +23,35 @@
   
   a {
     color: gainsboro;
+  }
+
+  .title-container {
+    display:flex;
+    margin-bottom: 1em;
+  }
+
+  .title-label {
+      width:30%;
+      background-color: steelblue;
+      padding: 1em;
+      font-weight: bolder;
+  }
+
+  .title-spacer {
+      background-color: #454d55;
+  }
+
+  .title-spacer div {
+      width: 0; 
+      height: 0; 
+      border-top: 25px solid #454d55;
+      border-bottom: 25px solid #454d55;
+      border-left: 25px solid steelblue;
+  }
+
+  .title-content {
+      background-color: #454d55;
+      width:70%;
+      padding: 1em;
   }
 }
