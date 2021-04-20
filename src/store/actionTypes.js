@@ -375,3 +375,4 @@ export const SET_ALL_PERSMISSION = 'SET_ALL_PERSMISSION';
 /* Admin */
 export const SET_ACTIVE_FORM = 'SET_ACTIVE_FORM';
 export const CLEAR_ACTIVE_FORM = 'CLEAR_ACTIVE_FORM';
+export const SET_ACTIVE_TAB = 'SET_ACTIVE_TAB';
