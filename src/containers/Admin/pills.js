@@ -1,13 +1,47 @@
 /* eslint-disable */
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Tabs, Tab, Table } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Starter from './starter';
 import { columnData } from './column';
+import { getOrgUsers } from 'store/actions/organization';
 function Pills(props) {
   const {modules, type, subType} = props;
   const [subTypeState, setSubTypeState] = useState(subType)
+  // All User Business Logic Start
+  const dispatch = useDispatch();
+  const organization = useSelector((state) => state.organization);
+  const [ activePage, setActivePage ] = useState(1);
+  const [ meta, setMeta ] = useState(null);
+  const { activeOrganization } = organization;
+  const [user, setUsers] = useState([]);
+  useMemo(() => {
+    if (activeOrganization && type === 'Users' && subTypeState === 'All users') {
+      const result = dispatch(getOrgUsers(activeOrganization?.id, activePage));
+      result.then((data)=> {
+        const allUsers = [];
+        data.data?.map((user) => {
+          if (user.organization_role !== 'Administrator') {
+            const result = {
+              firstName: user.first_name,
+              lastName: user.last_name,
+              email: user.email,
+              organization: activeOrganization?.name,
+              organization_role: user.organization_role,
+              organization_type: user.organization_type,
+            };
+            allUsers.push(result);
+          }
+          return true;
+        });
+        setMeta(data.meta);
+        setUsers(allUsers);
+      });
+    }
+  }, [activeOrganization, activePage, type,subTypeState])
+  // All Users Business Logic End
   const dummy =  [
     {
       name:'qamar',
@@ -34,9 +68,9 @@ function Pills(props) {
       flow:'67',
     },
   ]
-  console.log(columnData)
+  // console.log(columnData)
   return (
-    <Tabs 
+    <Tabs
       defaultActiveKey={modules && modules[0]}
       id="uncontrolled-tab-example"
       onSelect={(key) => setSubTypeState(key)}
@@ -95,7 +129,10 @@ function Pills(props) {
                 importUser={true}
                 filter={false}
                 tableHead={columnData.userall}
-                data={dummy}
+                data={user}
+                activePage={activePage}
+                setActivePage={setActivePage}
+                meta={meta}
                 type={type}
               />
             )}

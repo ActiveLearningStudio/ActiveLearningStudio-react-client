@@ -8,7 +8,7 @@ import TableData from './table';
 import Userroles from './userroles';
 
 function Starter(props) {
-  const { 
+  const {
     paginationCounter,
     search,
     print,
@@ -20,6 +20,9 @@ function Starter(props) {
     type,
     data,
     roles,
+    activePage,
+    setActivePage,
+    meta,
   } = props;
   return (
     <>
@@ -39,12 +42,15 @@ function Starter(props) {
       ):(
       <TableData
         tableHead={tableHead}
+        activePage={activePage}
+        setActivePage={setActivePage}
         type={type}
         data={data}
+        meta={meta}
       />
       )}
     </>
-          
+
   );
 }
 

@@ -1,10 +1,10 @@
 @import 'assets/css/index';
 
-.admin-panel { 
+.admin-panel {
 
 
   button.dropdown-toggle {
-        
+
   }
 
   .inner-content {
@@ -29,7 +29,7 @@
       font-weight: 400;
       padding: 5px 30px;
       margin-right: 10px;
-      
+
       color: #fff;
       border-color:$fun-blue-1  !important;
     }
@@ -132,7 +132,7 @@
         position: absolute;
         right: 0;
       }
-      
+
     }
 
     .import-user {
@@ -155,7 +155,7 @@
       align-items: center;
       font-size: 14px;
       text-decoration: underline;
-     
+
       img {
         margin-left:10px;
       }
@@ -203,7 +203,7 @@
 
   }
 
-  .pagination {
+  .pagination-top {
     font-weight: bold;
     font-size: 14px;
     line-height: 19px;
@@ -215,6 +215,35 @@
     border: 1px solid #C4C4C4;
     border-radius: 0;
   }
+  .pagination {
+    margin: 15px auto;
+    display: flex;
+    float: right;
+    list-style: none;
+    outline: none;
+  }
+  .pagination > .active > a{
+    background-color:$fun-blue-1 ;
+    border-color:$fun-blue-1 ;
+    color: #fff;
+  }
+  .pagination > li > a{
+    border: 1px solid$fun-blue-1 ;
+    padding: 5px 10px;
+    outline: none;
+    cursor: pointer;
+  }
+  .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
+    background-color:$fun-blue-1 ;
+    border-color:$fun-blue-1;
+    outline: none ;
+  }
+  .pagination > li > a, .pagination > li > span{
+    color:$fun-blue-1
+  }
+  .pagination > li:first-child > a, .pagination > li:first-child > span, .pagination > li:last-child > a, .pagination > li:last-child > span{
+    border-radius: unset
+  }
   .form-new-popup-admin {
     position: fixed;
     background: #0848928f;
@@ -224,7 +253,7 @@
     height: 100%;
     overflow-y: auto;
     padding-left: 285px;
-    
+
     .cross-all-pop {
       position: absolute;
       top:50px;
@@ -241,7 +270,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-     
+
 
       .create-form {
         width: 475px;
@@ -272,7 +301,7 @@
             line-height: 127.85%;
             margin: 0;
             font-weight: 400;
-           
+
            }
         }
 
@@ -408,7 +437,7 @@
             display: flex;
             align-items: center;
             margin-bottom: 10px;
-    
+
             label {
               font-weight: normal;
               font-size: 14px;
