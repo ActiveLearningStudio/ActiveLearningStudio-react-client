@@ -27,6 +27,8 @@ import childOrganizationIcon from 'assets/images/child-organization-icon.png';
 import {
   allSidebarProjects,
 } from 'store/actions/project';
+import { setActiveTab } from 'store/actions/admin';
+import { updateOrganizationScreen } from 'store/actions/organization';
 
 import './style.scss';
 
@@ -108,8 +110,11 @@ function Sidebar(props) {
               <div className="org-name">
                 {allState.organization.currentOrganization?.name}
               </div>
-              {permission?.activeRole === 'admin' && (
-                <Link to={`/org/${allState.organization.currentOrganization?.domain}/org-dashboard`}>
+              {permission?.Organization?.includes('organization:view') && (
+                <Link
+                  to={`/org/${allState.organization.currentOrganization?.domain}/manage`}
+                  onClick={() => dispatch(updateOrganizationScreen('intro'))}
+                >
                   <div className="goto-dashboard">
                     Go to Dashboard
                     <img src={dashboardChevron} alt="" className="dashboard-chevron" />
@@ -117,10 +122,13 @@ function Sidebar(props) {
                 </Link>
               )}
             </>
-            {permission?.activeRole === 'admin'
+            {permission?.Organization?.includes('organization:view')
             && (
               <>
-                <Link to={`/org/${allState.organization.currentOrganization?.domain}/manage`}>
+                <Link
+                  to={`/org/${allState.organization.currentOrganization?.domain}/manage`}
+                  onClick={() => dispatch(updateOrganizationScreen('all-list'))}
+                >
                   <div className="row-sidebar">
                     <img src={childOrganizationIcon} alt="" />
                     <div className="sidebar-headings">
@@ -131,7 +139,7 @@ function Sidebar(props) {
                 </Link>
               </>
             )}
-            {permission?.Project
+            {permission?.Project?.includes('project:view')
             && (
               <>
                 <Link to={`/org/${allState.organization.currentOrganization?.domain}`}>
@@ -145,7 +153,7 @@ function Sidebar(props) {
                 </Link>
               </>
             )}
-            {permission?.Team
+            {permission?.Team?.includes('team:view')
             && (
               <>
                 <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
@@ -159,7 +167,7 @@ function Sidebar(props) {
                 </Link>
               </>
             )}
-            {permission?.Group
+            {permission?.Group?.includes('group:view')
             && (
               <>
                 <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
@@ -173,10 +181,15 @@ function Sidebar(props) {
                 </Link>
               </>
             )}
-            {permission?.activeRole === 'admin'
+            {permission?.Organization?.includes('organization:view-user')
             && (
               <>
-                <Link to={`/org/${allState.organization.currentOrganization?.domain}/manage`}>
+                <Link
+                  to={`/org/${allState.organization.currentOrganization?.domain}/admin`}
+                  onClick={() => {
+                    dispatch(setActiveTab('Users'));
+                  }}
+                >
                   <div className="row-sidebar">
                     <img src={usersidebaricon} alt="" />
                     <div className="sidebar-headings">
@@ -187,209 +200,70 @@ function Sidebar(props) {
                 </Link>
               </>
             )}
-            {/* <Link to="/">
-              <div className="menu-title">
-                <img src={foldericon} alt="" />
-                My Projects
-              </div>
-            </Link>
-            {allState.sidebar.allProject.length > 0 && (
-              <ul className="all-project">
-                {allState.sidebar.allProject.slice(0, 5).map((data) => (
-                  <li key={data.id}>
-                    <Link to={`/org/${allState.organization.currentOrganization?.domain}/project/${data.id}`}>
-                      <FontAwesomeIcon icon="angle-right" className="mr-2" />
-                      {data.name}
-                    </Link>
-                  </li>
-                ))}
-                <Link className="expand" to={`/org/${organization.currentOrganization?.domain}`}>
-                  Explore All
-                  <FontAwesomeIcon icon="arrow-right" className="ml-2" />
-                </Link>
-              </ul>
-            )}
-            {permission?.Dashboard?.includes('dashboard:view') && (
-              <Link to={`/org/${organization.currentOrganization?.domain}/dashboard`}>
-                <div className="menu-title">
-                  <img src={dashboardicon} alt="" />
-                  Dashboard & Stats
-                </div>
-              </Link>
-            )} */}
-            {/* {permission?.Team?.includes('team:view') && (
-              <>
-                <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
-                  <div className="menu-title">
-                    <img src={teamicon} alt="" />
-                    Teams
-                  </div>
-                </Link>
-                {allState.sidebar.teams.length > 0 && allState.sidebar.teams.slice(0, 3).map((team) => (
-                  <div key={team.id} className={`team-item${selectedTeam === team.id ? '' : ' collapsed'}`}>
-                    <div className="team-label" onClick={() => handleClickTeam(team)}>
-                      {team.name}
-                      <FontAwesomeIcon
-                        icon={selectedTeam === team.id ? 'angle-up' : 'angle-down'}
-                        className="ml-2 mt-1"
-                      />
-                    </div>
-
-                    <div className="team-detail-labels">
-                      <Link
-                        to={`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}`}
-                        className={selectedCategory === TEAM ? 'active-label' : ''}
-                      >
-                        <FontAwesomeIcon icon="user-friends" className="mr-2" />
-                        Team Members
-                      </Link>
-                      <Link
-                        to={`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}/projects`}
-                        className={selectedCategory === PROJECTS ? 'active-label' : ''}
-                      >
-                        <span className="project-title">Projects</span>
-                      </Link>
-                      <Link
-                        to={`/teams/${team.id}/channel`}
-                        className={selectedCategory === CHANNEL ? 'active-label' : ''}
-                      >
-                        <span className="channel-title">Channels</span>
-                      </Link>
-                    </div>
-                  </div>
-                ))}
-                {allState.sidebar.teams.length > 0
-                  && (
-                  <Link className="expand" style={{ paddingLeft: '20px', borderTop: 'none' }} to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
-                    Explore All Teams
-                    <FontAwesomeIcon icon="arrow-right" className="ml-2" />
-                  </Link>
-                  )}
-              </>
-            )} */}
-            {/* {permission?.Team?.includes('team:create') && (
-              <div className="menu-title create-button">
-                <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams/create-team`}>
-                  <div>
-                    <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
-                    Create Team
-                  </div>
-                </Link>
-              </div>
-            )} */}
-            {/* {permission?.Group?.includes('group:view') && (
-              <>
-                <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
-                  <div className="menu-title">
-                    <FontAwesomeIcon icon="users" className="mr-2" />
-                    Groups
-                  </div>
-                </Link>
-                {allState.sidebar.groups.length > 0 && allState.sidebar.groups.slice(0, 3).map((group) => (
-                  <div key={group.id} className={`team-item${selectedTeam === group.id ? '' : ' collapsed'}`}>
-                    <div className="team-label" onClick={() => handleClickGroup(group)}>
-                      {group.name}
-                      <FontAwesomeIcon
-                        icon={selectedTeam === group.id ? 'angle-up' : 'angle-down'}
-                        className="ml-2 mt-1"
-                      />
-                    </div>
-
-                    <div className="team-detail-labels">
-                      <Link
-                        to={`/org/${allState.organization.currentOrganization?.domain}/groups/${group.id}`}
-                        className={selectedCategory === TEAM ? 'active-label' : ''}
-                      >
-                        <FontAwesomeIcon icon="user-friends" className="mr-2" />
-                        Group Members
-                      </Link>
-                      <Link
-                        to={`/org/${allState.organization.currentOrganization?.domain}/groups/${group.id}/projects`}
-                        className={selectedCategory === PROJECTS ? 'active-label' : ''}
-                      >
-                        <span className="project-title">Projects</span>
-                      </Link>
-                      <Link
-                        to={`/teams/${team.id}/channel`}
-                        className={selectedCategory === CHANNEL ? 'active-label' : ''}
-                      >
-                        <span className="channel-title">Channels</span>
-                      </Link>
-                    </div>
-                  </div>
-                ))}
-                {allState.sidebar.groups.length > 0
-                  && (
-                  <Link className="expand" style={{ paddingLeft: '20px', borderTop: 'none' }} to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
-                    Explore All Groups
-                    <FontAwesomeIcon icon="arrow-right" className="ml-2" />
-                  </Link>
-                  )}
-              </>
-            )} */}
-            {/* {permission?.Group?.includes('group:create') && (
-              <div className="menu-title create-button">
-                <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups/create-group`}>
-                  <div>
-                    <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
-                    Create Group
-                  </div>
-                </Link>
-              </div>
-            )} */}
             <img src={backgroundimg} alt="" />
           </>
         ) : (
           <>
             <div className="toggleSidebar collapsedown">
-              <Link to={`/org/${allState.organization.currentOrganization.domain}/manage`}>
-                {permission?.activeRole === 'admin' && (
+              {permission?.Organization?.includes('organization:view') && (
+                <Link
+                  to={`/org/${allState.organization.currentOrganization.domain}/manage`}
+                  onClick={() => dispatch(updateOrganizationScreen('intro'))}
+                >
                   <img src={organizationLargeIcon} alt="" />
-                )}
-                <div className="tagline">
-                  Manage Organization
-                </div>
-              </Link>
-              <Link to={`/org/${allState.organization.currentOrganization.domain}/manage`}>
-                {permission?.activeRole === 'admin' && (
+                  <div className="tagline">
+                    Manage Organization
+                  </div>
+                </Link>
+              )}
+              {permission?.Organization?.includes('organization:view') && (
+                <Link
+                  to={`/org/${allState.organization.currentOrganization.domain}/manage`}
+                  onClick={() => dispatch(updateOrganizationScreen('all-list'))}
+                >
                   <img src={childOrgLargeIcon} alt="" />
-                )}
-                <div className="tagline">
-                  Manage Child Org
-                </div>
-              </Link>
-              <Link to={`/org/${allState.organization.currentOrganization?.domain}`}>
-                {permission?.Project && (
+                  <div className="tagline">
+                    Manage Child Org
+                  </div>
+                </Link>
+              )}
+              {permission?.Project?.includes('project:view') && (
+                <Link to={`/org/${allState.organization.currentOrganization?.domain}`}>
                   <img src={projectLargeIcon} alt="" />
-                )}
-                <div className="tagline">
-                  Manage Projects
-                </div>
-              </Link>
-              <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
-                {permission?.Team && (
+                  <div className="tagline">
+                    Manage Projects
+                  </div>
+                </Link>
+              )}
+              {permission?.Team?.includes('team:view') && (
+                <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
                   <img src={teamLargeIcon} alt="" />
-                )}
-                <div className="tagline">
-                  Manage Teams
-                </div>
-              </Link>
-              <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
-                {permission?.Group && (
+                  <div className="tagline">
+                    Manage Teams
+                  </div>
+                </Link>
+              )}
+              {permission?.Group?.includes('group:view') && (
+                <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
                   <img src={groupLargeIcon} alt="" />
-                )}
-                <div className="tagline">
-                  Manage Groups
-                </div>
-              </Link>
-              <Link to={`/org/${allState.organization.currentOrganization?.domain}/manage`}>
-                {permission?.activeRole === 'admin' && (
+                  <div className="tagline">
+                    Manage Groups
+                  </div>
+                </Link>
+              )}
+              {permission?.Organization?.includes('organization:view-user') && (
+                <Link
+                  to={`/org/${allState.organization.currentOrganization?.domain}/admin`}
+                  onClick={() => {
+                    dispatch(setActiveTab('Users'));
+                  }}
+                >
                   <img src={userLargeIcon} alt="" />
-                )}
-                <div className="tagline">
-                  Manage Users
-                </div>
-              </Link>
+                  <div className="tagline">
+                    Manage Users
+                  </div>
+                </Link>
+              )}
             </div>
           </>
         )}

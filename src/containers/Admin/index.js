@@ -15,12 +15,12 @@ import './style.scss';
 function AdminPanel() {
   const dispatch = useDispatch();
   const adminState = useSelector((state) => state.admin);
-  const { activeForm } = adminState;
+  const { activeForm, activeTab } = adminState;
   return (
     <div className="admin-panel">
       <div className="content-wrapper">
         <div className="inner-content">
-          <Tabs defaultActiveKey="Stats" id="uncontrolled-tab-example">
+          <Tabs defaultActiveKey={activeTab} id="uncontrolled-tab-example">
             <Tab eventKey="Stats" title="Stats">
               <div className="module-content">
                 <h2>Stats</h2>

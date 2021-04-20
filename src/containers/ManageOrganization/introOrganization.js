@@ -85,7 +85,7 @@ export default function IntroOrganizations(props) {
                 <button
                   type="button"
                   onClick={() => {
-                    history.push(`/org/${currentOrganization?.domain}/manage`);
+                    history.push(`/org/${currentOrganization?.domain}/admin`);
                   }}
                 >
                   Manage Organization
