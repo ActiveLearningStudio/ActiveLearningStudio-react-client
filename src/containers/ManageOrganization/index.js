@@ -44,8 +44,8 @@ export default function ManageOrganizations() {
           {!!activeOrganization ? (
             <div>
               <div>
-                {/* <div className="headings-org"> */}
-                  {/* <p>Parent organization:
+                <div className="headings-org">
+                  <p>Parent organization:
                     <span>
                       &nbsp;
                       {activeOrganization?.parent?.name || 'NA'}
@@ -62,12 +62,12 @@ export default function ManageOrganizations() {
                     &nbsp;
                       {activeOrganization?.organization_role}
                     </span>
-                  </p> */}
-                  {/* <div className="organization-container">
-                    <div className="title-main">
+                  </p>
+                  <div className="organization-container">
+                    {/* <div className="title-main">
                       <img className="child-organization-icon" src={childOrgIcon} alt="child-organization-icon" />
                       <h1 className="child-organization-name">{activeOrganization?.name}</h1>
-                    </div>
+                    </div> */}
                     {(history || backScreen) ? (
                       <div
                         className="back-button"
@@ -91,8 +91,8 @@ export default function ManageOrganizations() {
                         View All Projects
                       </Link>
                     )}
-                  </div> */}
-                {/* </div>  */}
+                  </div>
+                </div>
 
                 {state.activeScreen === 'intro' &&
                   <IntroOrganizations

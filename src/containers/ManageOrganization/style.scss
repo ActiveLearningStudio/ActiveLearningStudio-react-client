@@ -1,49 +1,51 @@
 @import 'assets/css/index';
 
 
-// .headings-org {
-//   margin-bottom: 20px;
-//   margin-top: 25px;
+.headings-org {
+  margin-bottom: 20px;
+  margin-top: 25px;
 
-//   p {
-//     font-weight: normal;
-//     font-size: 11.9322px;
-//     color: $fun-blue-1;
-//     margin-bottom: 2px;
+  p {
+    font-weight: normal;
+    font-size: 11.9322px;
+    color: $fun-blue-1;
+    margin-bottom: 2px;
 
-//     span {
-//       text-decoration: underline;
-//     }
-//   }
+    span {
+      text-decoration: underline;
+    }
+  }
 
-//   .title-main {
-//     display: flex;
-//     align-items: center;
-//   }
+  .title-main {
+    display: flex;
+    align-items: center;
+  }
 
-//   .organization-container {
-//     display: flex;
-//     justify-content: space-between;
-//     align-items: center;
+  .organization-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-//     .back-button {
-//       font-weight: bold;
-//       margin: inherit;
-//       font-size: 12px;
-//       cursor: pointer;
-//       svg {
-//         margin-right: 5px;
-//       }
-//     }
+    .back-button {
+      font-weight: bold;
+      margin: inherit;
+      font-size: 12px;
+      cursor: pointer;
+      margin-left: auto;
+      color: $fun-blue-1;
+      svg {
+        margin-right: 5px;
+      }
+    }
 
-//     h1{
-//       font-weight: 500;
-//       font-size: 31.25px;
-//       color: $fun-blue-1;
-//       margin-bottom: 0px;
-//     }
-//   }
-// }
+    h1{
+      font-weight: 500;
+      font-size: 31.25px;
+      color: $fun-blue-1;
+      margin-bottom: 0px;
+    }
+  }
+}
 .intro-container {
   background: $white;
   margin-top:13px;

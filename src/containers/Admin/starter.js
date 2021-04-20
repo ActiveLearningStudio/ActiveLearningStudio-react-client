@@ -21,8 +21,12 @@ function Starter(props) {
     data,
     roles,
     activePage,
+    size,
+    setSize,
+    searchQuery,
+    searchQueryChangeHandler,
+    searchAlertToggler,
     setActivePage,
-    meta,
   } = props;
   return (
     <>
@@ -31,7 +35,12 @@ function Starter(props) {
         search={search}
         print={print}
         btnText={btnText}
+        type={type}
+        size={size}
+        setSize={setSize}
         btnAction={btnAction}
+        searchQuery={searchQuery}
+        searchQueryChangeHandler={searchQueryChangeHandler}
         importUser={importUser}
         filter={filter}
         tableHead={tableHead}
@@ -44,9 +53,9 @@ function Starter(props) {
         tableHead={tableHead}
         activePage={activePage}
         setActivePage={setActivePage}
+        searchAlertToggler={searchAlertToggler}
         type={type}
         data={data}
-        meta={meta}
       />
       )}
     </>

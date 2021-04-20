@@ -6,10 +6,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setActiveAdminForm } from 'store/actions/admin';
-import searchimg from 'assets/images/search-icon.png'; 
-import csv from 'assets/images/csv.png'; 
+import searchimg from 'assets/images/search-icon.png';
+import csv from 'assets/images/csv.png';
 import pdf from 'assets/images/pdf.png';
-import bulk from 'assets/images/bulk.png'; 
+import bulk from 'assets/images/bulk.png';
 
 function Controller(props) {
   const {
@@ -20,10 +20,14 @@ function Controller(props) {
     btnAction,
     importUser,
     filter,
+    type,
+    searchQuery,
+    searchQueryChangeHandler,
+    size,
+    setSize,
     tableHead,
     roles
   } = props;
-  const [counter, setCounter] = useState(25);
   const dispatch = useDispatch();
   const adminState = useSelector((state) => state.admin);
   const { activeForm } = adminState;
@@ -35,34 +39,34 @@ function Controller(props) {
           <span>
           <Dropdown>
             <Dropdown.Toggle  id="dropdown-basic">
-              {counter}
+              {size}
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
               <Dropdown.Item
                 onClick={() => {
-                  setCounter(10)
+                  setSize(10)
                 }}
               >
                 10
               </Dropdown.Item>
               <Dropdown.Item
                 onClick={() => {
-                  setCounter(25)
+                  setSize(25)
                 }}
               >
                 25
               </Dropdown.Item>
               <Dropdown.Item
                 onClick={() => {
-                  setCounter(50)
+                  setSize(50)
                 }}
               >
                 50
               </Dropdown.Item>
               <Dropdown.Item
                 onClick={() => {
-                  setCounter(100)
+                  setSize(100)
                 }}
               >
                 100
@@ -71,7 +75,7 @@ function Controller(props) {
           </Dropdown>
           </span>
           entries
-        </div> 
+        </div>
       )}
       {!!filter && (
         <div className="filter-dropdown drop-counter ">
@@ -94,7 +98,7 @@ function Controller(props) {
             </Dropdown.Menu>
           </Dropdown>
           </span>
-        </div> 
+        </div>
       )}
       {roles?.length && (
         <div className="filter-dropdown drop-counter ">
@@ -117,13 +121,19 @@ function Controller(props) {
             </Dropdown.Menu>
           </Dropdown>
           </span>
-        </div> 
+        </div>
       )}
-      {!!search && (
+      {!!search && type === 'Users' && (
+        <div className="search-bar">
+          <input className="" type="text" placeholder="Search" value={searchQuery} onChange={searchQueryChangeHandler}/>
+          <img src={searchimg} alt="search" />
+        </div>
+      )}
+      {!!search && type === 'Stats' && (
         <div className="search-bar">
           <input className="" type="text" placeholder="Search" />
           <img src={searchimg} alt="search" />
-        </div> 
+        </div>
       )}
       {!!importUser && (
         <div className="import-user">
@@ -133,7 +143,7 @@ function Controller(props) {
           <div>
             Import Users
           </div>
-        </div> 
+        </div>
       )}
       {!!print && (
         <div className="print-info">
@@ -144,7 +154,7 @@ function Controller(props) {
             <img src={csv} alt="csv" />
             <img src={pdf} alt="pdf" />
           </div>
-        </div> 
+        </div>
       )}
       {!!btnText && (
         <div className="btn-text">
@@ -160,7 +170,7 @@ function Controller(props) {
             <FontAwesomeIcon icon="plus" />
             {btnText}
           </button>
-        </div> 
+        </div>
       )}
     </div>
   );

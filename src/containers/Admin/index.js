@@ -4,7 +4,7 @@ import { Tabs, Tab } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { removeActiveAdminForm } from 'store/actions/admin'
+import { removeActiveAdminForm, setActiveTab } from 'store/actions/admin'
 
 import CreateActivity from "./formik/createActivity"
 import AddRole from './formik/addRole';
@@ -20,7 +20,7 @@ function AdminPanel() {
     <div className="admin-panel">
       <div className="content-wrapper">
         <div className="inner-content">
-          <Tabs defaultActiveKey={activeTab} id="uncontrolled-tab-example">
+          <Tabs defaultActiveKey={activeTab} id="uncontrolled-tab-example" onSelect={(key)=> dispatch(setActiveTab(key))}>
             <Tab eventKey="Stats" title="Stats">
               <div className="module-content">
                 <h2>Stats</h2>
@@ -77,8 +77,8 @@ function AdminPanel() {
                 />
               </div>
             </Tab>
-          </Tabs> 
-        </div> 
+          </Tabs>
+        </div>
       </div>
       {activeForm === 'add_activity_type' && (
         <div className="form-new-popup-admin">

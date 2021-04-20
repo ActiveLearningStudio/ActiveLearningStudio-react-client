@@ -3,6 +3,8 @@ import * as actionTypes from '../actionTypes';
 const INITIAL_STATE = {
   isLoading: false,
   activeScreen: 'intro',
+  activePage: 1,
+  size: 25,
   backScreen: '',
   roles: [],
   users: [],
@@ -157,7 +159,9 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.GET_ORGANIZATION_USERS:
       return {
         ...state,
-        users: action.payload,
+        users: action.payload.result,
+        activePage: action.payload.page,
+        size: action.payload.size,
       };
     case actionTypes.DELETE_USER_FROM_ORGANIZATION:
       return {

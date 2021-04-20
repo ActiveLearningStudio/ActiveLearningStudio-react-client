@@ -6,41 +6,51 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Starter from './starter';
 import { columnData } from './column';
-import { getOrgUsers } from 'store/actions/organization';
+import { getOrgUsers, searchUserInOrganization } from 'store/actions/organization';
 function Pills(props) {
   const {modules, type, subType} = props;
   const [subTypeState, setSubTypeState] = useState(subType)
   // All User Business Logic Start
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
+  const admin = useSelector((state) => state.admin);
+  const { activeTab } = admin
   const [ activePage, setActivePage ] = useState(1);
-  const [ meta, setMeta ] = useState(null);
+  const [ size, setSize ] = useState(25);
   const { activeOrganization } = organization;
-  const [user, setUsers] = useState([]);
-  useMemo(() => {
-    if (activeOrganization && type === 'Users' && subTypeState === 'All users') {
-      const result = dispatch(getOrgUsers(activeOrganization?.id, activePage));
-      result.then((data)=> {
-        const allUsers = [];
-        data.data?.map((user) => {
-          if (user.organization_role !== 'Administrator') {
-            const result = {
-              firstName: user.first_name,
-              lastName: user.last_name,
-              email: user.email,
-              organization: activeOrganization?.name,
-              organization_role: user.organization_role,
-              organization_type: user.organization_type,
-            };
-            allUsers.push(result);
-          }
-          return true;
-        });
-        setMeta(data.meta);
-        setUsers(allUsers);
-      });
+  const [users, setUsers] = useState(null);
+  const [searchAlertToggler, setSearchAlertToggler] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchUsers = async (query, page) => {
+    const result = await dispatch(searchUserInOrganization(activeOrganization?.id, query, page));
+    if (result.data.length > 0) {
+      setUsers(result);
+      setSearchAlertToggler(1);
+    } else {
+      setSearchAlertToggler(0);
     }
-  }, [activeOrganization, activePage, type,subTypeState])
+  };
+  const searchQueryChangeHandler = async ({ target }) => {
+    if (target.value) {
+      setSearchQuery(target.value);
+      searchUsers(target.value, activePage);
+      setUsers(null);
+    } else {
+      setSearchQuery('');
+      const result = await dispatch(getOrgUsers(activeOrganization?.id, activePage, size));
+      setUsers(result);
+    }
+  };
+  useMemo(async () => {
+    if (activeOrganization && type === 'Users' && subTypeState === 'All users' && activeTab === 'Users') {
+      if (organization?.users?.data?.length > 0 && activePage === organization?.activePage && size === organization?.size) {
+        setUsers(organization?.users);
+      } else {
+        const result = await dispatch(getOrgUsers(activeOrganization?.id, activePage, size));
+        setUsers(result);
+      }
+    }
+  }, [activeOrganization, activePage, type, subTypeState , activeTab, size])
   // All Users Business Logic End
   const dummy =  [
     {
@@ -129,10 +139,14 @@ function Pills(props) {
                 importUser={true}
                 filter={false}
                 tableHead={columnData.userall}
-                data={user}
+                data={users}
                 activePage={activePage}
+                size={size}
+                setSize={setSize}
+                searchQuery={searchQuery}
+                searchQueryChangeHandler={searchQueryChangeHandler}
+                searchAlertToggler={searchAlertToggler}
                 setActivePage={setActivePage}
-                meta={meta}
                 type={type}
               />
             )}
