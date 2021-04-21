@@ -54,4 +54,14 @@
       width:70%;
       padding: 1em;
   }
+
+  .loading {
+    display: flex;
+  }
+
+  .loading-message {
+    display: flex;
+    align-items: center;
+    font-size: xx-large;
+  }
 }

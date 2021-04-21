@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { getOutcomeSummaryAction, loadH5pResourceSettings } from 'store/actions/gapi';
 import SummaryOutcome from 'containers/LMS/GoogleClassroom/ActivitySummary/SummaryOutcome';
-import gifloader from 'assets/images/dotsloader.gif';
+import star from 'assets/images/vivensity_star.png';
 import './style.scss';
 
 const Activity = (props) => {
@@ -36,8 +36,11 @@ const Activity = (props) => {
   return (
     <div className="outcome-summary-container">
       {outcome === null && (
-        <div className="loader_gif text-center m-5">
-          <img style={{ width: '50px' }} src={gifloader} alt="" />
+        <div className="loading">
+          <div className="loading_image">
+            <img src={star} alt="Star in a starry background" />
+          </div>
+          <div className="loading-message">Please wait for the little elves to find your data ...</div>
         </div>
       )}
 
