@@ -84,6 +84,7 @@ export default function IntroOrganizations(props) {
               <div className="buttons">
                 <button
                   type="button"
+                  className="manage-button"
                   onClick={() => {
                     history.push(`/org/${currentOrganization?.domain}/admin`);
                   }}
@@ -94,7 +95,7 @@ export default function IntroOrganizations(props) {
                   <div className="grp-btn">
                     {permission?.Organization?.includes('organization:invite-members') && (
                       <Dropdown>
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
+                        <Dropdown.Toggle variant="success" id="dropdown-basic-org">
                           Invite Admin
                         </Dropdown.Toggle>
                         <Dropdown.Menu>

@@ -168,17 +168,19 @@
     display: flex;
     width:70%;
     justify-content:space-between;
-    button {
-      margin-top: 35px;
+    .manage-button {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 10px 20px;
+      margin-top: 42px;
       width: 190px;
-      height: 32px;
-      background: $fun-blue-1;
-      border: 1px solid$fun-blue-1;
+      height: 35px;
+      background: #084892;
+      color: #fff;
+      border: 1px solid #084892;
       box-sizing: border-box;
       border-radius: 50px;
-      font-size: 14px;
-      color: $white;
-      margin-bottom: 10px;
     }
     .edit-button {
       margin-top: 42px;
@@ -204,12 +206,14 @@
       box-sizing: border-box;
       border-radius: 50px;
       font-size: 14px;
+      margin-top: 42px;
       color: #084892;
       margin-bottom: 10px;
     }
 
     #dropdown-basic-org {
-      background: $fun-blue-1;
+      color: $fun-blue-1;
+      background:white;
       position: unset;
     }
   }
