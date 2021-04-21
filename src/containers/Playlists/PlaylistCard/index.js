@@ -47,7 +47,7 @@ class PlaylistCard extends React.Component {
 
     if (!playlist.activities || playlist.activities.length === 0) {
       return (
-        <div className="alert alert-info m-3">No resources yet.</div>
+        <div className="alert alert-info m-3">No resource yet.</div>
       );
     }
 
