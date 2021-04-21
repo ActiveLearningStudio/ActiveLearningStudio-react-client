@@ -24,9 +24,9 @@ function NextLink(props) {
   const organization = useSelector((state) => state.organization);
   let nextLink = '#';
   if (nextResource) {
-    nextLink = `/org/${organization.currentOrganization?.domain}/playlist/${playlistId}/activity/${nextResource.id}/preview`;
+    nextLink = `/playlist/${playlistId}/activity/${nextResource.id}/preview`;
   } else if (nextPlaylist) {
-    nextLink = `/org/${organization.currentOrganization?.domain}/playlist/${nextPlaylist.id}/preview`;
+    nextLink = `/playlist/${nextPlaylist.id}/preview`;
   }
   if (nextLink !== '#') {
     if (showLti) {
