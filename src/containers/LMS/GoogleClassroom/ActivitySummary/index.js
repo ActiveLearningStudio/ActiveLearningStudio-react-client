@@ -62,7 +62,7 @@ const Activity = (props) => {
           </div>
           <div className="row m-4">
             <div className="col">
-              <SummaryOutcome outcome={outcome.grouped} />
+              <SummaryOutcome outcome={outcome} />
             </div>
           </div>
         </div>

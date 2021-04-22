@@ -72,3 +72,35 @@
 .summary-outcome-answer-count {
     font-size: x-large;
 }
+
+.answer-container {
+    display: flex;
+}
+
+.response-container {
+    flex-grow: 1;
+}
+
+.score-container {
+    flex-grow: 1;
+    text-align: right;
+}
+
+.score-badge {
+    border: solid lightgray;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.score-badge-header {
+    background-color: lightgray;
+    color: black;
+    font-weight: bold;
+    padding: 0.25em;
+    text-align: center;
+}
+
+.score-badge-score {
+    padding: 0.25em;
+    text-align: center;
+}
