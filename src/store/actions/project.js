@@ -329,7 +329,7 @@ export const addProjectFav = (projectId) => async (/* dispatch */) => {
       showCancelButton: true,
       confirmButtonColor: '#5952c6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'My Favorites Projects',
+      confirmButtonText: 'My Favorite Projects',
       icon: 'success',
       title: project.message,
     })
