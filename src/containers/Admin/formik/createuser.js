@@ -5,22 +5,24 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { removeActiveAdminForm } from 'store/actions/admin';
 
-export default function CreateUser() {
+export default function CreateUser(prop) {
+  const { editMode } = prop;
   const [activityImage, setActivityImage] =  useState('')
   const imgref  = useRef();
   const dispatch = useDispatch();
   const adminState = useSelector((state) => state.admin);
-  const { activeForm } = adminState;
+  const { activeForm, currentUser } = adminState;
   return (
     <div className="create-form">
       <Formik
         initialValues={{
-          firstName: '',
-          lastName: '',
-          organizationType: '',
-          organizationName: '',
-          jobTitle:"",
-          email:'',
+          firstName: editMode ? currentUser?.first_name : '',
+          lastName: editMode ? currentUser?.last_name : '',
+          organizationType:editMode ? currentUser?.organization_type : '',
+          organizationName:editMode ? currentUser?.organization_name :'',
+          jobTitle:editMode ? currentUser?.job_title :"",
+          role:editMode ? currentUser?.organization_role :"",
+          email:editMode ? currentUser?.email :'',
           password:'',
         }}
         validate={(values) => {
@@ -31,13 +33,28 @@ export default function CreateUser() {
           if (!values.lastName) {
             errors.lastName = 'Required';
           }
+          if (!values.email) {
+            errors.email = 'Required';
+          }
+          if (!values.password) {
+            errors.password = 'Required';
+          }
+          if (!values.role) {
+            errors.role = 'Required';
+          }
           if (!values.organizationType) {
             errors.organizationType = 'Required';
+          }
+          if (!values.organizationName) {
+            errors.organizationName = 'Required';
+          }
+          if (!values.jobTitle) {
+            errors.jobTitle = 'Required';
           }
           return errors;
         }}
         onSubmit={(values) => {
-         
+
         }}
       >
         {({
@@ -51,7 +68,7 @@ export default function CreateUser() {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <h2>Add User</h2>
+            <h2>{editMode ? 'Edit ' : 'Add '} User</h2>
             <div className="form-group-create">
               <h3>First Name</h3>
               <input
@@ -79,29 +96,45 @@ export default function CreateUser() {
               </div>
             </div>
             <div className="form-group-create">
-              <h3>First Name</h3>
+              <h3>Email</h3>
               <input
-                type="text"
-                name="firstName"
+                type="email"
+                name="email"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.firstName}
+                value={values.email}
               />
               <div className="error">
-                {errors.firstName && touched.firstName && errors.firstName}
+                {errors.email && touched.email && errors.email}
               </div>
             </div>
+            {!editMode ?
             <div className="form-group-create">
-              <h3>First Name</h3>
+              <h3>Password</h3>
               <input
-                type="text"
-                name="firstName"
+                type="password"
+                name="password"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.firstName}
+                value={values.password}
+                />
+              <div className="error">
+                {errors.password && touched.password && errors.password}
+              </div>
+              </div>
+              : null
+            }
+            <div className="form-group-create">
+              <h3>Role</h3>
+              <input
+                type="text"
+                name="role"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.role}
               />
               <div className="error">
-                {errors.firstName && touched.firstName && errors.firstName}
+                {errors.role && touched.role && errors.role}
               </div>
             </div>
             <div className="form-group-create">
@@ -143,35 +176,9 @@ export default function CreateUser() {
                 {errors.jobTitle && touched.jobTitle && errors.jobTitle}
               </div>
             </div>
-            <div className="form-group-create">
-              <h3>Email</h3>
-              <input
-                type="email"
-                name="email"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.email}
-              />
-              <div className="error">
-                {errors.email && touched.email && errors.email}
-              </div>
-            </div>
-            <div className="form-group-create">
-              <h3>Password</h3>
-              <input
-                type="password"
-                name="password"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.password}
-              />
-              <div className="error">
-                {errors.password && touched.password && errors.password}
-              </div>
-            </div>
             <div className="button-group">
               <button type="submit">
-                Add User
+                {editMode ? 'Edit ' : 'Add '} User
               </button>
               <button
                 type="button"

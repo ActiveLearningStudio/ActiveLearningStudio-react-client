@@ -108,7 +108,7 @@ function AdminPanel() {
           </div>
         </div>
       )}
-      {activeForm === 'create_user' && (
+      {(activeForm === 'create_user' || activeForm === 'edit_user') && (
         <div className="form-new-popup-admin">
           <FontAwesomeIcon
             icon="times"
@@ -118,7 +118,7 @@ function AdminPanel() {
             }}
           />
           <div className="inner-form-content">
-            <CreateUser />
+            {activeForm === 'create_user' ? <CreateUser /> : <CreateUser editMode/> }
           </div>
         </div>
       )}

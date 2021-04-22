@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 import { Alert } from 'react-bootstrap';
+import { setActiveAdminForm, setCurrentUser } from 'store/actions/admin';
 
 function Table(props) {
   const {tableHead, data, type, activePage, setActivePage, searchAlertToggler } = props;
@@ -69,7 +70,12 @@ function Table(props) {
               <td>{user.organization_type ? user.organization_type : 'NA'}</td>
               <td>{user.organization_role ? user.organization_role : 'NA'}</td>
               <td>
-                <Link style={{ float: 'left' }}> Edit </Link>
+                <Link style={{ float: 'left' }} onClick={() =>{
+                  dispatch(setCurrentUser(user));
+                  dispatch(setActiveAdminForm('edit_user'));
+                }}>
+                  Edit
+                </Link>
                 <Link style={{ float: 'right' }} onClick={() => handleDeleteUser(user)}>Delete</Link>
               </td>
             </tr>

@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   activeForm: null,
   loading: true,
   activeTab: 'Stats',
+  currentUser: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -22,6 +23,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         activeTab: action.payload,
+      };
+    case actionTypes.CURRENT_USER:
+      return {
+        ...state,
+        currentUser: action.payload,
       };
     default:
       return state;

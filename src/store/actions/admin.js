@@ -19,3 +19,10 @@ export const removeActiveAdminForm = () => async (dispatch) => {
     type: actionTypes.CLEAR_ACTIVE_FORM,
   });
 };
+
+export const setCurrentUser = (user) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.CURRENT_USER,
+    payload: user,
+  });
+};

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {Dropdown} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,6 +10,8 @@ import searchimg from 'assets/images/search-icon.png';
 import csv from 'assets/images/csv.png';
 import pdf from 'assets/images/pdf.png';
 import bulk from 'assets/images/bulk.png';
+import AddUser from 'containers/ManageOrganization/addUser';
+import { getRoles } from 'store/actions/organization';
 
 function Controller(props) {
   const {
@@ -29,8 +31,14 @@ function Controller(props) {
     roles
   } = props;
   const dispatch = useDispatch();
+  const [allUsersAdded, setAllUsersAdded] = useState([]);
   const adminState = useSelector((state) => state.admin);
+  const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
   const { activeForm } = adminState;
+  useMemo(() => {
+    dispatch(getRoles());
+  },[])
   return (
     <div className="controller">
       {paginationCounter && (
@@ -156,7 +164,7 @@ function Controller(props) {
           </div>
         </div>
       )}
-      {!!btnText && (
+      {!!btnText && organization?.activeRole !== 'superadmin' && (
         <div className="btn-text">
           <button onClick={() => {
             if (btnAction === 'add_activity_type') {
@@ -166,12 +174,31 @@ function Controller(props) {
             } else if (btnAction === 'create_user') {
               dispatch(setActiveAdminForm('create_user'))
             }
-          }}>
+          }}
+          >
             <FontAwesomeIcon icon="plus" />
             {btnText}
           </button>
         </div>
       )}
+      {(permission?.activeRole === 'admin' || permission?.activeRole === 'superadmin') &&
+        <div className="btn-text">
+          <div className="add-user-btn">
+            <Dropdown>
+              <Dropdown.Toggle variant="success" id="dropdown-basic">
+                Invite User
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <AddUser
+                  setAllUsersAdded={setAllUsersAdded}
+                  allUsersAdded={allUsersAdded}
+                  method="create"
+                  />
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+        </div>
+      }
     </div>
   );
 }
