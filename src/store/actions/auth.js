@@ -85,7 +85,8 @@ export const SSOLoginAction = (data) => async (dispatch) => {
     ]);
 
     storageService.setItem(USER_TOKEN_KEY, response.access_token);
-
+    storageService.setItem(CURRENT_ORG, 'currikistudio');
+    await dispatch(getAllPermission(1));
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
       payload: { user: response.user },
