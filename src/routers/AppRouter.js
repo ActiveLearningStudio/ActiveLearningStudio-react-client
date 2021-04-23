@@ -93,7 +93,7 @@ const AppRouter = (props) => {
           path="/project/:projectId/secure/shared"
           component={SecureProjectPreview}
         />
-        <OpenRoute
+        <PublicRoute
           exact
           path="/lti-sso"
           component={LtiLogin}

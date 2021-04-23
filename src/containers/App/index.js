@@ -53,16 +53,13 @@ function App(props) {
               }).catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
           }
+        } else if (Object.keys(permission)?.length === 0) {
+          const result = dispatch(getBranding(localStorage.getItem('current_org')));
+          result.then((data) => {
+            dispatch(getOrganizationFirstTime(data?.organization?.id));
+            dispatch(getAllPermission(data?.organization?.id));
+          }).catch((err) => err && console.log('error'));
         }
-        // else if (window.location.pathname.split('/login/')) {
-        //   const subDomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
-        //   (async () => {
-        //     const result = dispatch(getBranding(subDomain));
-        //     result.then((data) => {
-        //       dispatch(getOrganizationFirstTime(data?.organization?.id));
-        //     }).catch((err) => err && alert('ok'));
-        //   })();
-        // }
       }
     }
   }, [dispatch, userDetails, activeOrganization]);
