@@ -13,10 +13,12 @@ function LtiSSO(props) {
   const dispatch = useDispatch();
   useEffect(() => {
     (async () => {
-      const query = QueryString.parse(window.location.search);
-      const result = await dispatch(SSOLoginAction({ sso_info: query.sso_info }));
-      console.log(result);
-      history.push('/org/currikistudio');
+      if (!localStorage.getItem('auth_token')) {
+        const query = QueryString.parse(window.location.search);
+        const result = await dispatch(SSOLoginAction({ sso_info: query.sso_info }));
+        console.log(result);
+        history.push('/org/currikistudio');
+      }
     })();
   }, []);
   return (

@@ -65,7 +65,7 @@ function App(props) {
   }, [dispatch, userDetails, activeOrganization]);
 
   useEffect(() => {
-    if (!localStorage.getItem('auth_token')) {
+    if (!localStorage.getItem('auth_token') || 1) {
       dispatch({
         type: 'SET_ALL_PERSMISSION',
         payload: { loading: false },
