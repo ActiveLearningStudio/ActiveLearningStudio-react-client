@@ -61,6 +61,7 @@ const GclassSummaryPage = loadable(() => import('../containers/LMS/GoogleClassro
 const SearchPage = loadable(() => import('../containers/LMS/Canvas/DeepLinking/SearchPage'));
 const LtiActivity = loadable(() => import('../containers/LMS/LTI/Activity'));
 const ManageOrganization = loadable(() => import('../containers/ManageOrganization'));
+const LtiLogin = loadable(() => import('../containers/Auth/LtiLogin'));
 const AppRouter = (props) => {
   const SelectedOrganization = localStorage.getItem('current_org');
   useEffect(() => {
@@ -91,6 +92,11 @@ const AppRouter = (props) => {
           exact
           path="/project/:projectId/secure/shared"
           component={SecureProjectPreview}
+        />
+        <OpenRoute
+          exact
+          path="/lti-sso"
+          component={LtiLogin}
         />
         <OpenRoute
           exact
