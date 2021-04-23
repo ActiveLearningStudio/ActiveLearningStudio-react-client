@@ -54,7 +54,7 @@ function App(props) {
             })();
           }
         } else if (Object.keys(permission)?.length === 0) {
-          const result = dispatch(getBranding(localStorage.getItem('current_org')));
+          const result = dispatch(getBranding(localStorage.getItem('current_org') || 1));
           result.then((data) => {
             dispatch(getOrganizationFirstTime(data?.organization?.id));
             dispatch(getAllPermission(data?.organization?.id));
@@ -65,7 +65,7 @@ function App(props) {
   }, [dispatch, userDetails, activeOrganization]);
 
   useEffect(() => {
-    if (!localStorage.getItem('auth_token') || 1) {
+    if (!localStorage.getItem('auth_token')) {
       dispatch({
         type: 'SET_ALL_PERSMISSION',
         payload: { loading: false },
