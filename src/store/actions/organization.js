@@ -24,6 +24,17 @@ export const getAllOrganization = () => async (dispatch) => {
     payload: result.data,
   });
 };
+export const getAllOrganizationforSSO = () => async (dispatch) => {
+  const result = await organization.getAll();
+  dispatch({
+    type: actionTypes.ADD_ACTIVE_ORG,
+    payload: result?.data[0],
+  });
+  dispatch({
+    type: actionTypes.ADD_CURRENT_ORG,
+    payload: result?.data[0],
+  });
+};
 
 export const getAllOrganizationSearch = (id, search) => async (dispatch) => {
   const result = await organization.getOrganizationSearch(id, search);
