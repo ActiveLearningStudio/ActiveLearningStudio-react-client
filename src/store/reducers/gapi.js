@@ -107,9 +107,7 @@ const gapiReducer = (state = defaultAuthState(), action) => {
 
       return {
         ...state,
-        outcomeSummary: {
-          grouped: action.outcomeSummary.summary,
-        },
+        outcomeSummary: action.outcomeSummary.summary,
         summaryError: null,
       };
 
