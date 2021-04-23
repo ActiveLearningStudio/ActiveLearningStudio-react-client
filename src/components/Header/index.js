@@ -12,7 +12,7 @@ import
 //  getOrganizationFirstTime
 }
   from 'store/actions/organization';
-import logo from 'assets/images/safari.png';
+import logo from 'assets/images/bu.png';
 import add from 'assets/images/add-icon.png';
 import profile from 'assets/images/user-profile.png';
 import searchImg from 'assets/images/search.png';
