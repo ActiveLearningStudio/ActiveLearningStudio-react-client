@@ -14,7 +14,7 @@ node('currikionelxp') {
        stage('Push image') {	
              docker.withRegistry('https://quay.io', 'docker-private-credentials') {            
                    app.push("${env.BUILD_NUMBER}")            
-                   app.push("latest")        
+                   app.push("develop")        
               }    
            }
 }
