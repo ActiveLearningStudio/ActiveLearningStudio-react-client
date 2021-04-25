@@ -22,5 +22,6 @@ node('currikionelxp') {
         echo 'Copy'
         sh "yes | docker stack deploy --compose-file ~/curriki/docker-compose.yml currikistack" 
         echo 'Copy completed'
-    }
+    } 
 }
+
