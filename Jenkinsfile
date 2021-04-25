@@ -20,7 +20,7 @@ node('currikionelxp') {
       stage('Deploying Image') {
 
         echo 'Copy'
-        sh "yes | cd /root/curriki && docker stack deploy --compose-file docker-compose.yml currikistack"
+        sh "yes | docker stack deploy --compose-file ~/curriki/docker-compose.yml currikistack"
         echo 'Copy completed'
     }
 }
