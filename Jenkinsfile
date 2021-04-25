@@ -12,9 +12,15 @@ node('currikionelxp') {
             }    
         }     
        stage('Push image') {	
-             docker.withRegistry('https://quay.io', 'docker-private-credentials') {            
-                   app.push("${env.BUILD_NUMBER}")            
-                   app.push("develop")        
-              }    
-           }
+            docker.withRegistry('https://quay.io', 'docker-private-credentials') {            
+                  app.push("${env.BUILD_NUMBER}")            
+                  app.push("develop")        
+            }    
+      }
+      stage('Deploying Image') {
+
+        echo 'Copy'
+        sh "yes | cd /root/curriki && docker stack deploy --compose-file docker-compose.yml currikistack"
+        echo 'Copy completed'
+    }
 }
