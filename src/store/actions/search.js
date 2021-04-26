@@ -60,7 +60,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         educationLevelIds: activeGrades,
         startDate: values.fromDate,
         endDate: values.toDate,
-        organization_id: activeOrganization.id,
+        organization_id: activeOrganization?.id,
       };
     } else {
       sendData = {
@@ -74,7 +74,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         educationLevelIds: activeGrades,
         startDate: values.fromDate,
         endDate: values.toDate,
-        organization_id: activeOrganization.id,
+        organization_id: activeOrganization?.id,
       };
     }
   } else {
@@ -90,7 +90,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         educationLevelIds: activeGrades,
         startDate: values.fromDate,
         endDate: values.toDate,
-        organization_id: activeOrganization.id,
+        organization_id: activeOrganization?.id,
       };
     } else {
       sendData = {
@@ -104,7 +104,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         educationLevelIds: activeGrades,
         startDate: values.fromDate,
         endDate: values.toDate,
-        organization_id: activeOrganization.id,
+        organization_id: activeOrganization?.id,
       };
     }
   }
