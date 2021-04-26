@@ -377,3 +377,5 @@ export const SET_ACTIVE_FORM = 'SET_ACTIVE_FORM';
 export const CLEAR_ACTIVE_FORM = 'CLEAR_ACTIVE_FORM';
 export const SET_ACTIVE_TAB = 'SET_ACTIVE_TAB';
 export const CURRENT_USER = 'CURRENT_USER';
+export const SHOW_HELP = 'SHOW_HELP';
+export const HIDE_HELP = 'HIDE_HELP';

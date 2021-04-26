@@ -12,6 +12,7 @@ import { updatedProject } from 'store/actions/project';
 import { updatedPlaylist } from 'store/actions/playlist';
 import AppRouter from 'routers/AppRouter';
 
+import Help from './help';
 import './style.scss';
 
 let runOnce = true;
@@ -23,6 +24,7 @@ function App(props) {
   }, [getUser]);
   const userDetails = useSelector((state) => state.auth.user);
   const { activeOrganization, permission } = useSelector((state) => state.organization);
+  const { help } = useSelector((state) => state.ui);
   useEffect(() => {
     if (userDetails) {
       if (activeOrganization) {
@@ -223,6 +225,7 @@ function App(props) {
           </p>
         </div>
       </div>
+      {help && <Help />}
     </div>
   );
 }

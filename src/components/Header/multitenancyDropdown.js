@@ -30,11 +30,11 @@ export default function MultitenancyDropdown() {
       <Dropdown.Toggle id="dropdown-basic">
         <img src={menu} alt="organizations" />
         <div className="text" title={selectOrg}>
-          {selectOrg}
+          My Subscriptions
         </div>
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        <h2 className="title">Organizations</h2>
+        <h2 className="title">My subscriptions</h2>
         {stateHeader.allOrganizations.length > 0 && stateHeader.allOrganizations.map((org) => (
           <div className="all-tg-lister">
             <Dropdown.Item onClick={() => {

@@ -401,12 +401,12 @@
     top: 0px;
     z-index:-1
   }
-  div.text{
-    text-overflow: ellipsis;
-    overflow: hidden;
-    text-align: center;
-    width: 60px;
-  }
+  // div.text{
+  //   text-overflow: ellipsis;
+  //   overflow: hidden;
+  //   text-align: center;
+  //   width: 60px;
+  // }
   .dropdown-toggle {
     color: $fun-blue-1 !important;
     font-size: 9.42px;
@@ -467,4 +467,17 @@
     color: #888888;
     margin-bottom: 0px;
   }
+}
+
+.profile-avatar {
+  width: 32px;
+  height: 32px;
+  background: #084892;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* margin-top: -8px; */
+  font-size: 20px;
+  font-weight: bold;
 }

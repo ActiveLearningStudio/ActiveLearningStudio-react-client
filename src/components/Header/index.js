@@ -15,11 +15,12 @@ import
 }
   from 'store/actions/organization';
 import logo from 'assets/images/studio_new_logo.png';
+import { SHOW_HELP } from 'store/actionTypes';
 import add from 'assets/images/add-icon.png';
-import profile from 'assets/images/user-profile.png';
+// import profile from 'assets/images/user-profile.png';
 import searchImg from 'assets/images/search.png';
 import createProjectIcon from 'assets/images/create-project-icon.png';
-// import help from 'assets/images/help.png';
+import help from 'assets/images/help.png';
 import { logoutAction } from 'store/actions/auth';
 import { Event } from 'trackers/ga';
 
@@ -32,6 +33,7 @@ import './style.scss';
 function Header(props) {
   const { /* user, */ logout } = props;
   const stateHeader = useSelector((state) => state.organization);
+  const { user } = useSelector((state) => state.auth);
   const { permission: { Project } } = stateHeader;
   const { permission } = stateHeader;
   const dispatch = useDispatch();
@@ -54,7 +56,7 @@ function Header(props) {
           </div>
           <div className="navbar-link">
             <ul className="top-info flex-div">
-              {permission?.Organization?.includes('organization:view') && (
+              {false && permission?.Organization?.includes('organization:view') && (
                 <>
                   <li>
                     <Link
@@ -78,15 +80,23 @@ function Header(props) {
               <li>
                 <MultitenancyDropdown />
               </li>
-              {/* <li>
-                <Link to="">
+              <li>
+                <div
+                  style={{ padding: '0.375rem 0.75rem', cursor: 'pointer' }}
+                  onClick={() => {
+                    dispatch({
+                      type: SHOW_HELP,
+                      payload: true,
+                    });
+                  }}
+                >
                   <img src={help} alt="help" />
                   <p className="header-icon-text">
                     Help
                   </p>
-                </Link>
-              </li> */}
-              {Project?.includes('project:create') && (
+                </div>
+              </li>
+              {false && Project?.includes('project:create') && (
                 <li className="align-items-center" style={{ paddingTop: '4px' }}>
                   <Dropdown className="create-project">
                     <Dropdown.Toggle className="align-items-center">
@@ -122,7 +132,9 @@ function Header(props) {
               <li className="menu-user-settings d-flex align-items-center">
                 <Dropdown>
                   <Dropdown.Toggle className="align-items-center">
-                    <img src={profile} alt="user" title="" />
+                    <div className="profile-avatar">
+                      {user?.first_name[0]}
+                    </div>
                     <p className="header-icon-text">Profile</p>
                   </Dropdown.Toggle>
 
