@@ -116,6 +116,12 @@ const SummaryOutcome = (props) => {
                           <div className="score-badge-score">
                             {`${answer.score.raw} / ${answer.score.max}`}
                           </div>
+                          <div className="score-badge-header">
+                            <FontAwesomeIcon icon="clock" />
+                          </div>
+                          <div className="score-badge-score">
+                            {answer.duration}
+                          </div>
                         </div>
                       )}
                     </div>
