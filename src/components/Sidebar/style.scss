@@ -23,12 +23,12 @@ aside {
     }
 
     .tagline {
-      
+
     position: absolute;
     white-space: nowrap;
     border: none;
     background: #F8AF2C;
-  
+
     padding: 2px 15px;
     -webkit-clip-path: polygon(10% 0%, 100% 0%, 100% 100%, 10% 100%, 0% 50%);
     clip-path: polygon(10% 0%, 100% 0%, 100% 100%, 10% 100%, 0% 50%);
@@ -39,12 +39,12 @@ aside {
 
     }
     a {
-    &:hover 
+    &:hover
       .tagline {
         display: block;
       }
     }
-    
+
   }
   min-height: 900px;
   padding-top: 30px;
@@ -152,24 +152,52 @@ aside {
       margin-left: 10px;
     }
   }
-  .row-org {
-    display: flex;
-    padding: 12px 20px;
-    border-top: 1px solid #e8e8e8;
-    .org-icon {
-      width: 20px;
-      height: 20px;
+  .accordion{
+    display:flex;
+    .row-administrate {
+      padding: 12px 52px;
+      padding-top: 19px;
+      padding-bottom: 17px;
+      border-top: 1px solid #e8e8e8;
+      button{
+        display:flex;
+        padding: 0px !important;
+        box-shadow:none;
+        text-decoration: none;
+      }
+      .heading-administrate {
+        padding-left: 13px;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 19px;
+        margin-right: auto;
+        letter-spacing: 0.01em;
+        color: $curriki-main-blue;
+        svg {
+          margin-left: 42px;
+        }
+      }
+      a{
+        display: flex;
+        font-style: normal;
+        font-weight: 500;
+        margin-left: 35px;
+        padding: 10px;
+        border-left: 1px solid #084892;
+        border-bottom: 1px solid #084892;
+        font-size: 14px;
+        line-height: 17px;
+        letter-spacing: 0.01em;
+        color:$curriki-main-blue;
+      }
+      .active {
+        background: #EAECEE;
+      }
+      .org-icon {
+        width: 21px;
+        height: 21px;
+      }
     }
-    .org-heading {
-      font-weight: 500;
-      font-size: 20px;
-      line-height: 24px;
-      letter-spacing: 0.01em;
-      text-transform: capitalize;
-      color: $curriki-main-blue;
-      padding-left: 12px;
-    }
-
   }
   .goto-dashboard{
     display:flex;
@@ -184,11 +212,13 @@ aside {
     height: 14.88px;
   }
   .org-name {
-    padding: 11px 52px;
+    padding: 28px 20px 18px 27px;
+    font-style: normal;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 130.9%;
     color: #515151;
+    border-top: 1px solid #e8e8e8;
   }
   .row-sidebar {
     display: flex;
@@ -197,11 +227,9 @@ aside {
     padding-bottom: 17px;
     justify-content:flex-end;
     border-top: 1px solid #e8e8e8;
-
   }
   .sidebar-headings {
     padding-left: 13px;
-    display: flex;
     font-weight: normal;
     font-size: 16px;
     line-height: 19px;
