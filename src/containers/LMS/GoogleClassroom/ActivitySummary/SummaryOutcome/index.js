@@ -57,6 +57,10 @@ const SummaryOutcome = (props) => {
   const renderNode = (data) => {
     const opened = toggles.includes(data.sub_content_id) ? '' : 'section-container-closed';
 
+    if (Array.isArray(data)) {
+      return data.map((node) => renderNode(node));
+    }
+
     if (data.type === 'section') {
       return (
         <div className="section-container">
