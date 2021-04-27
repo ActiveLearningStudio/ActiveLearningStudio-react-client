@@ -8,6 +8,7 @@ const SummaryOutcome = (props) => {
   const { outcome } = props;
   const [toggles, setToggles] = useState([]);
   const [answerCount, setAnswerCount] = useState(0);
+  const [showExpandButtons, setShowExpandButtons] = useState(false);
 
   // Init
   useEffect(() => {
@@ -62,6 +63,9 @@ const SummaryOutcome = (props) => {
     }
 
     if (data.type === 'section') {
+      // Show expand buttons only when we have nesting
+      if (showExpandButtons === false) setShowExpandButtons(true);
+
       return (
         <div className="section-container">
           <div className="section-title" onClick={() => toggleNode(data.sub_content_id)}>
@@ -145,10 +149,12 @@ const SummaryOutcome = (props) => {
             <FontAwesomeIcon icon="star" />
             {`${answerCount} Responses`}
           </div>
-          <div className="summary-outcome-controls-btns">
-            <button type="button" className="btn btn-primary" onClick={() => toggleAllNodes('expand')}>Expand All</button>
-            <button type="button" className="btn btn-primary" onClick={() => toggleAllNodes('collapse')}>Collapse All</button>
-          </div>
+          {showExpandButtons && (
+            <div className="summary-outcome-controls-btns">
+              <button type="button" className="btn btn-primary" onClick={() => toggleAllNodes('expand')}>Expand All</button>
+              <button type="button" className="btn btn-primary" onClick={() => toggleAllNodes('collapse')}>Collapse All</button>
+            </div>
+          )}
         </div>
       )}
 
