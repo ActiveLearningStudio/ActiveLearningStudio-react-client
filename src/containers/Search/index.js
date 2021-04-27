@@ -111,8 +111,45 @@ function SearchInterface(props) {
       }
       setActiveEducation(query.education.split(','));
     }
+    if (query?.q) {
+      setSearchInput(query?.q);
+    }
   }, []);
-
+  window.onbeforeunload = () => {
+    localStorage.setItem('refreshPage', 'true');
+  };
+  useEffect(() => {
+    if (localStorage.getItem('refreshPage') === 'true' && currentOrganization && searchType) {
+      let dataSend;
+      if (searchType === 'orgSearch') {
+        dataSend = {
+          subjectArray: activeSubject,
+          gradeArray: activeEducation,
+          standardArray: activeType,
+          type: searchType,
+          from: 0,
+          size: 20,
+        };
+      } else {
+        dataSend = {
+          phrase: searchInput.trim(),
+          subjectArray: activeSubject,
+          gradeArray: activeEducation,
+          standardArray: activeType,
+          type: searchType,
+          from: 0,
+          size: 20,
+        };
+      }
+      let result;
+      (async () => {
+        result = await dispatch(simpleSearchAction(dataSend));
+      })();
+      setTotalCount(result?.meta?.total);
+      // eslint-disable-next-line max-len
+      history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${activeSubject}&education=${activeEducation}&h5p=${activeType}`);
+    }
+  }, [currentOrganization]);
   useEffect(() => {
     if (allState.searchResult) {
       if (allState.searchResult.length > 0) {
@@ -283,7 +320,7 @@ function SearchInterface(props) {
                                       const result = await dispatch(simpleSearchAction(dataSend));
                                       setTotalCount(result.meta?.total);
                                       // eslint-disable-next-line max-len
-                                      history.push(`/org/${currentOrganization?.domain}/search?type=${searchType}&grade=${activeSubject}&education=${activeEducation}&h5p=${activeType}`);
+                                      history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput}&type=${searchType}&grade=${activeSubject}&education=${activeEducation}&h5p=${activeType}`);
                                     }
                                   }
                                 }}
@@ -374,7 +411,7 @@ function SearchInterface(props) {
                                     const result = await dispatch(simpleSearchAction(dataSend));
                                     setTotalCount(result.meta?.total);
                                     // eslint-disable-next-line max-len
-                                    history.push(`/org/${currentOrganization?.domain}/search?type=${searchType}&grade=${activeSubject}&education=${activeEducation}&h5p=${activeType}`);
+                                    history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${activeSubject}&education=${activeEducation}&h5p=${activeType}`);
                                   }
                                   // setModalShow(true);
                                 }}
