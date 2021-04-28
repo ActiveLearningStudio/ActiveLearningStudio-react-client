@@ -138,7 +138,7 @@ function Sidebar(props) {
                           }}
                           className={activeLink === 'organization' ? 'active' : 'none'}
                         >
-                          Organization
+                          Organizations
                         </Link>
                         <Link
                           to={`/org/${allState.organization.currentOrganization?.domain}/admin`}
@@ -148,7 +148,7 @@ function Sidebar(props) {
                           }}
                           className={activeLink === 'user' ? 'active' : 'none'}
                         >
-                          User
+                          Users
                         </Link>
                       </>
                     </Accordion.Collapse>
@@ -192,7 +192,7 @@ function Sidebar(props) {
                   <div className="row-sidebar">
                     <img src={foldericon} alt="" />
                     <div className="sidebar-headings">
-                      Projects
+                      My Projects
                     </div>
                     <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
                   </div>
