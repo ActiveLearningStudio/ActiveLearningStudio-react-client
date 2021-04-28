@@ -37,6 +37,7 @@ export default function ManageOrganizations() {
       dispatch(getOrganization(activeOrganization?.id));
     }
   }, [activeOrganization?.id]);
+  console.log(history);
   return (
     <>
       <div className="content-wrapper">
@@ -78,6 +79,7 @@ export default function ManageOrganizations() {
                             dispatch(updateOrganizationScreen(backScreen));
                           } else {
                             dispatch(updateOrganizationScreen('intro'));
+                            window.history.back();
                           }
                         }}
                       >
