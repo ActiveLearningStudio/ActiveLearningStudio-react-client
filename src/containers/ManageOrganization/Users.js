@@ -13,12 +13,12 @@ import {
 import SearchButton from 'assets/images/Vector.png';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagination from 'react-js-pagination';
-import AddUser from './addUser';
+import InviteUser from './inviteAdmin';
 import UserRow from './UserRow';
 
 function Users() {
   const dispatch = useDispatch();
-  const [allUsersAdded, setAllUsersAdded] = useState([]);
+  // const [allUsersAdded, setAllUsersAdded] = useState([]);
   const allListState = useSelector((state) => state.organization);
   const [users, setUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -51,25 +51,25 @@ function Users() {
     if (permission?.Organization?.includes('organization:view-user')) {
       const resultUsers = await dispatch(getOrgUsers(activeOrganization.id, activePage));
       setUsers(resultUsers);
-      resultUsers.data.forEach((data) => {
-        const allUsers = [];
-        data.data?.map((adm) => {
-          if (adm.organization_role !== 'Administrator') {
-            const result = {
-              value: {
-                userInfo: adm,
-              },
-              role: {
-                name: adm.organization_role,
-                id: adm.organization_role_id,
-              },
-            };
-            allUsers.push(result);
-          }
-          return true;
-        });
-        setAllUsersAdded(allUsers);
-      });
+      // resultUsers.data.forEach((data) => {
+      //   const allUsers = [];
+      //   data.data?.map((adm) => {
+      //     if (adm.organization_role !== 'Administrator') {
+      //       const result = {
+      //         value: {
+      //           userInfo: adm,
+      //         },
+      //         role: {
+      //           name: adm.organization_role,
+      //           id: adm.organization_role_id,
+      //         },
+      //       };
+      //       allUsers.push(result);
+      //     }
+      //     return true;
+      //   });
+      //   setAllUsersAdded(allUsers);
+      // });
     }
   }, [activeOrganization.id, dispatch, activePage]);
   return (
@@ -88,11 +88,7 @@ function Users() {
                 <Dropdown.Menu>
                   <div className="data-input">
                     <div className="form-group-create">
-                      <AddUser
-                        setAllUsersAdded={setAllUsersAdded}
-                        allUsersAdded={allUsersAdded}
-                        method="update"
-                      />
+                      <InviteUser />
                     </div>
                   </div>
                 </Dropdown.Menu>
