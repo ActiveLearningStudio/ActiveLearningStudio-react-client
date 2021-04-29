@@ -182,7 +182,7 @@ const AllOrganizations = () => {
                 ))}
               </div>
             </div>
-          ) : <Alert style={{ marginTop: '15px' }} variant="warning">No Organizations Available, kindly create a new one.</Alert>}
+          ) : <Alert style={{ marginTop: '15px' }} variant="warning">No Organization available, kindly create a new one.</Alert>}
         </div>
       ) : <Alert style={{ marginTop: '15px' }} variant="primary">Loading ...</Alert>
     ) : <Alert style={{ marginTop: '15px' }} variant="danger">You are not Authorized.</Alert>
