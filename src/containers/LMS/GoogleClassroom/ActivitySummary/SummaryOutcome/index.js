@@ -43,7 +43,14 @@ const SummaryOutcome = (props) => {
     if (action === 'expand') {
       const newToggles = [];
       const getId = (data) => {
-        newToggles.push(data.sub_content_id);
+        if (Array.isArray(data)) {
+          data.forEach((deeperData) => getId(deeperData));
+        }
+
+        if (data.sub_content_id) {
+          newToggles.push(data.sub_content_id);
+        }
+
         if (data.type === 'section') {
           data.children.forEach((deeperData) => getId(deeperData));
         }
