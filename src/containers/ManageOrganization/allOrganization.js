@@ -93,7 +93,7 @@ const AllOrganizations = () => {
                             {org.admins?.map((adm) => (
                               <span>
                                 {adm.first_name}
-                                ,&nbsp;
+                                &nbsp;
                               </span>
                             ))}
                           </h5>
