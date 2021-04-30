@@ -40,7 +40,7 @@ const Activity = (props) => {
           <div className="loading_image">
             <img src={logo} alt="Curriki Studio logo" />
           </div>
-          <div className="loading-message">Please wait while we retrieve your data ...</div>
+          <div className="loading-message">Please wait while retrieving your data ...</div>
         </div>
       )}
 
