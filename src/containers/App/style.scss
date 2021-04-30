@@ -607,7 +607,7 @@
 
 .h5p-content-wrap {
   .h5p-iframe-wrapper {
- 
+
     & > iframe {
       width: 100%;
       // min-height: 600px !important;
@@ -974,9 +974,9 @@ body {
 .top_logo {
   padding-left: 25px;
 
-  img {
-    width: 50%;
-  }
+  // img {
+  //   width: 50%;
+  // }
 }
 
 .top-info > li > a,
@@ -2178,8 +2178,8 @@ a:hover {
 }
 
 .back-header {
-  
-  
+
+
   padding: 13px 35px;
   display: flex;
   justify-content: space-between;
@@ -2504,12 +2504,12 @@ a:hover {
     min-height: 500px;
     padding: 0 !important;
     background-color: #fff !important;
-   
+
     .vd-controls {
       height: 40px;
       background: #fff;
     }
-    
+
 
   }
 
@@ -3538,7 +3538,7 @@ a:hover {
   .navbar-nav {
     justify-content: flex-end;
     width: 100%;
-  } 
+  }
 
   .custom-container {
     max-width: 1200px;
@@ -3637,7 +3637,7 @@ a:hover {
 
   .dropdown-menu {
       padding: 10px;
-      width:280px 
+      width:280px
   }
 
   .dropdown-menu a{
@@ -3695,7 +3695,7 @@ a:hover {
     .bax {
       background-color: #fff;
       min-height: 450px;
-      
+
       h1 {
         color: #4472c4;
         font-size: 22px;
@@ -3704,7 +3704,7 @@ a:hover {
         padding: 10px 15px;
         margin-bottom: 0px;
     }
-  
+
     h2 {
         color: #333;
         font-size: 14px;
@@ -3742,7 +3742,7 @@ a:hover {
     .h5p-iframe-wrapper,.flex-container-preview {
       width:85%
     }
-    
+
   }
   .iframe-height-resource-shared {
     .h5p-iframe-wrapper{
