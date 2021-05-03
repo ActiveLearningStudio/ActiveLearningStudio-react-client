@@ -37,7 +37,7 @@ const VevensityLogin = loadable(() => import('../containers/Auth/VevinsityLogin'
 
 const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
 const ChangePasswordPage = loadable(() => import('../containers/Account/ChangePasswordPage'));
-const DashboardPage = loadable(() => import('../containers/Dashboard'));
+// const DashboardPage = loadable(() => import('../containers/Dashboard'));
 const NotificationPage = loadable(() => import('../containers/Notification'));
 
 const ProjectsPage = loadable(() => import('../containers/Projects'));
@@ -176,7 +176,7 @@ const AppRouter = (props) => {
                      <PrivateRoute exact path="/org/:organization/account" component={ProfilePage} />
                      <PrivateRoute exact path="/org/:organization/change-password" component={ChangePasswordPage} />
 
-                     <PrivateRoute exact path="/org/:organization/dashboard" component={DashboardPage} />
+                     {/* <PrivateRoute exact path="/org/:organization/dashboard" component={DashboardPage} /> */}
                      <PrivateRoute exact path="/org/:organization/notification" component={NotificationPage} />
 
                      <PrivateRoute exact path="/org/:organization/teams" component={TeamsPage} overview />
