@@ -11,6 +11,7 @@ export default function AddUser(props) {
   const {
     setAllUsersAdded,
     allUsersAdded,
+    setToggleUserDropdown,
     setFieldValueProps,
     method,
   } = props;
@@ -159,11 +160,11 @@ export default function AddUser(props) {
               </div>
             </div>
             <div className="btn-group">
-              <button className="submit-create" type="submit">
+              <button className="submit-create" type="submit" onClick={() => setToggleUserDropdown(false)}>
                 Add User
               </button>
               <Dropdown.Item>
-                <button className="cancel-create" type="button">
+                <button className="cancel-create" type="button" onClick={() => setToggleUserDropdown(false)}>
                   CANCEL
                 </button>
               </Dropdown.Item>
@@ -180,4 +181,5 @@ AddUser.propTypes = {
   allUsersAdded: PropTypes.array.isRequired,
   setFieldValueProps: PropTypes.func.isRequired,
   method: PropTypes.string.isRequired,
+  setToggleUserDropdown: PropTypes.func.isRequired,
 };

@@ -12,6 +12,7 @@ export default function AddAdmin(props) {
     setAllUsersAdded,
     allUsersAdded,
     setFieldValueProps,
+    setToggleAdminDropdown,
     method,
   } = props;
   const stateOrg = useSelector((state) => state.organization);
@@ -159,11 +160,11 @@ export default function AddAdmin(props) {
               </div>
             </div> */}
             <div className="btn-group">
-              <button className="submit-create" type="submit">
+              <button className="submit-create" type="submit" onClick={() => setToggleAdminDropdown(false)}>
                 Add Admin
               </button>
               <Dropdown.Item>
-                <button className="cancel-create" type="button">
+                <button className="cancel-create" type="button" onClick={() => setToggleAdminDropdown(false)}>
                   CANCEL
                 </button>
               </Dropdown.Item>
@@ -180,4 +181,5 @@ AddAdmin.propTypes = {
   allUsersAdded: PropTypes.array.isRequired,
   setFieldValueProps: PropTypes.func.isRequired,
   method: PropTypes.string.isRequired,
+  setToggleAdminDropdown: PropTypes.func.isRequired,
 };
