@@ -91,10 +91,19 @@ const AllOrganizations = () => {
                             Admin:
                             &nbsp;
                             {org.admins?.map((adm) => (
-                              <span>
-                                {adm.first_name}
-                                &nbsp;
-                              </span>
+                              <>
+                                {org?.admins?.length === 1 ? (
+                                  <span>
+                                    {adm.first_name}
+                                    &nbsp;
+                                  </span>
+                                ) : (
+                                  <span>
+                                    {adm.first_name}
+                                    ,&nbsp;
+                                  </span>
+                                )}
+                              </>
                             ))}
                           </h5>
                           <h5>
