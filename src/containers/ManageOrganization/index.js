@@ -31,17 +31,20 @@ export default function ManageOrganizations() {
     activeOrganization,
     backScreen,
     history,
+    permission,
   } = state;
   useMemo(() => {
-    if (activeOrganization?.id) {
+    if (activeOrganization?.id && permission?.activeRole === 'admin') {
       dispatch(getOrganization(activeOrganization?.id));
     }
-  }, [activeOrganization?.id]);
+  }, [activeOrganization?.id, permission?.activeRole]);
   console.log(history);
   return (
     <>
       <div className="content-wrapper">
         <div className="content">
+          {permission?.activeRole === 'admin' ?(
+            <>
           {!!activeOrganization ? (
             <div>
               <div>
@@ -108,6 +111,8 @@ export default function ManageOrganizations() {
               </div>
             </div>
           ) : <Alert style={{ marginTop: '15px' }} variant="primary"> Loading ...</Alert> }
+          </>
+          ) : <Alert style={{ marginTop: '15px' }} variant="danger">You are not authorized to view this page</Alert>}
         </div>
       </div>
       <Footer />
