@@ -2510,8 +2510,9 @@ a:hover {
   .activity-bg.left-vdo {
     position: relative;
     width: 100%;
-    max-height: 650px;
-    min-height: 500px;
+    //max-height: 650px;
+    //min-height: 500px;
+    height: 100vh;
     padding: 0 !important;
     background-color: #fff !important;
 
