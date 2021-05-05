@@ -391,7 +391,6 @@ function SearchInterface(props) {
                                       dataSend = {
                                         subjectArray: activeSubject,
                                         gradeArray: activeEducation,
-                                        model: activeModel,
                                         standardArray: activeType,
                                         type: searchType,
                                         from: 0,
