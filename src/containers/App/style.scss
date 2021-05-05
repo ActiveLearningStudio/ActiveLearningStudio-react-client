@@ -554,7 +554,7 @@
 
   .sidebar-wrapper {
     position: fixed;
-    z-index: 1050;
+    z-index: 1040;
     width: 292px;
     height: 100%;
     padding-bottom: 100px;
@@ -3272,7 +3272,7 @@ a:hover {
   margin-bottom: 20px;
   display: flex;
   justify-content: space-between !important;
-
+  padding-top: 20px; 
   .content {
     cursor: pointer;
   }
@@ -3751,7 +3751,7 @@ a:hover {
   }
 }
 
-@media (max-width: 991px) {
+@media (max-width: 767px) {
   .main-page-content.preview{
   .both-p,.act-top-header {
     display: none !important;

@@ -11,7 +11,7 @@ function Footer() {
         <a target="_blank" href="https://www.curriki.org/privacy-policy/" rel="noopener noreferrer">
           Privacy Policy
         </a>
-        <a target="_blank" href="https://www.curriki.org/privacy-policy/" rel="noopener noreferrer">
+        <a target="_blank" href="https://support.curriki.org/" rel="noopener noreferrer">
           Help & Support
         </a>
       </footer>
