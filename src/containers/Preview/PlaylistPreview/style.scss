@@ -642,7 +642,7 @@ img {
   }
 }
 
-@media(max-width: 991px) {
+@media(max-width: 767px) {
   .flex-container.previews {
     flex-wrap: wrap;
 
@@ -651,7 +651,7 @@ img {
     }
 
     .right-sidegolf-info {
-      width: 100%;
+      //width: 100%;
     }
 
     .flex-container-preview {
@@ -704,7 +704,7 @@ img {
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 767px) {
   .iframe-height-resource-shared {
     padding: 50px 15px 20px;
     background-image: linear-gradient(#1b2e3d, #eee) !important;

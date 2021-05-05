@@ -152,7 +152,7 @@ const H5PEditor = (props) => {
                 Upload
               </label> */}
               <div className="col-md-12">
-                <div className="drop-area">
+                <div className="drop-area" style={{ cursor: 'pointer' }} onClick={() => uploadFile.current.click()}>
                   <input
                     type="file"
                     name="h5p_file"
@@ -166,9 +166,7 @@ const H5PEditor = (props) => {
                     <FontAwesomeIcon icon="file-upload" className="mr-2" />
                     <p>
                       Drag & Drop File or
-                      <span
-                        onClick={() => uploadFile.current.click()}
-                      >
+                      <span>
                         &nbsp;Browse to upload
                       </span>
                     </p>
