@@ -155,7 +155,7 @@
       background-color: #fff;
 
       &:hover {
-        background: $fun-blue-1;
+        background-color: $fun-blue-1 !important;
         color: #fff !important;
         text-decoration: none;
       }

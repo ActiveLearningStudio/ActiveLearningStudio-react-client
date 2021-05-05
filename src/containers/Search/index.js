@@ -114,7 +114,8 @@ function SearchInterface(props) {
     if (query?.q) {
       setSearchInput(query?.q);
     }
-  }, []);
+  // eslint-disable-next-line no-restricted-globals
+  }, [location.search]);
   window.onbeforeunload = () => {
     localStorage.setItem('refreshPage', 'true');
   };
