@@ -90,9 +90,9 @@ const AllOrganizations = () => {
                           <h5>
                             Admin:
                             &nbsp;
-                            {org.admins?.map((adm) => (
+                            {org.admins?.map((adm, index) => (
                               <>
-                                {org?.admins?.length === 1 ? (
+                                {(org?.admins?.length === 1 || org?.admins?.length === (index + 1)) ? (
                                   <span>
                                     {adm.first_name}
                                     &nbsp;
