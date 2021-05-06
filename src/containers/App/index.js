@@ -152,7 +152,7 @@ function App(props) {
 
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.Collage-0.3/collage.js?ver=0.3.14`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.Collage-0.3/template.js?ver=0.3.14`,
-
+      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.Collage-0.3/clip.js?ver=0.3.14`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.MemoryGame-1.3/card.js?ver=1.3.5`,
 
       'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML',
