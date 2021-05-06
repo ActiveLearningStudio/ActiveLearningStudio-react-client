@@ -85,6 +85,9 @@ function SearchInterface(props) {
   const [activeEducation, setActiveEducation] = useState([]);
   const [searchType, setSearchType] = useState(null);
   useMemo(() => {
+    setActiveEducation([]);
+    setActiveSubject([]);
+    setActiveType([]);
     // eslint-disable-next-line no-restricted-globals
     const query = QueryString.parse(location.search);
     if (query.type) {
