@@ -134,9 +134,9 @@ function Header(props) {
                       </span>
                     </Dropdown.Item> */}
 
-                    <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/dashboard`}>
+                    {/* <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/dashboard`}>
                       Dashboard
-                    </Dropdown.Item>
+                    </Dropdown.Item> */}
 
                     <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/account`}>
                       My Account

@@ -469,9 +469,9 @@
         box-sizing: border-box;
         border-radius: 50px;
         font-weight: normal;
+        margin-right: 9px;
         font-size: 14px;
         color: $white;
-        margin-right: 20px;
         width: 33%;
         min-height: 32px;
       }
@@ -641,6 +641,7 @@
     font-weight: 600;
     font-size: 19.125px;
     text-decoration-line: underline;
+    padding-top:25px;
     color: $fun-blue-1;
     cursor: pointer;
   }

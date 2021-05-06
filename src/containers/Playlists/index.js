@@ -55,18 +55,8 @@ function PlaylistsPage(props) {
   const [error, setError] = useState(null);
   const [indexStatus, setIndexStatus] = useState(null);
   const organization = useSelector((state) => state.organization);
-  const { permission } = organization;
+  const { permission, activeOrganization } = organization;
   const state = useSelector((s) => s.project.selectedProject);
-
-  useEffect(() => {
-    if (state.status === 2) {
-      setChecked(true);
-    } else {
-      setChecked(false);
-    }
-
-    setIndexStatus(state.indexing);
-  }, [state]);
 
   const {
     match,
@@ -102,11 +92,21 @@ function PlaylistsPage(props) {
       !openCreatePopup
       && !openCreateResourcePopup
       && !openEditResourcePopup
+      && activeOrganization
     ) {
       loadProject(match.params.projectId);
       loadProjectPlaylists(match.params.projectId);
     }
-  }, [loadLms, loadProject, loadProjectPlaylists, match.params.projectId, openCreatePopup, openCreateResourcePopup, openEditResourcePopup]);
+  }, [loadLms, loadProject, loadProjectPlaylists, match.params.projectId, openCreatePopup, openCreateResourcePopup, openEditResourcePopup, activeOrganization]);
+  useEffect(() => {
+    if (state.status === 2) {
+      setChecked(true);
+    } else {
+      setChecked(false);
+    }
+
+    setIndexStatus(state.indexing);
+  }, [state]);
 
   const handleChange = async (chked) => {
     if (chked) {

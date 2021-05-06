@@ -128,7 +128,9 @@ export const loadH5pResourceSettings = (activityId, studentId = null) => async (
 };
 
 export const getSubmissionAction = (classworkId, courseId, auth) => async (dispatch) => {
-  const submission = await gapiService.getSubmission(classworkId, courseId, JSON.stringify(auth.tokenObj));
+  const submission = await gapiService.getSubmission(classworkId, courseId, JSON.stringify(auth.tokenObj))
+    .catch((err) => err);
+
   dispatch({
     type: GET_SUBMISSION,
     submission,

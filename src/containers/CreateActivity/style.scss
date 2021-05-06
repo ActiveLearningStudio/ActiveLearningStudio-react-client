@@ -88,7 +88,7 @@
 
     .laravel-h5p-upload {
         height: 240px;
-        background: #EEEEEE 0% 0% no-repeat padding-box;
+        background: transparent;
         border: 3px dashed #ddd;
         border-radius: 10px;
     }
@@ -200,6 +200,7 @@
            font: normal normal normal 16px/22px $rubik;
            letter-spacing: 0px;
            color: #5A5A5A;
+           z-index:-1;
 
            svg {
             color:#084892;

@@ -85,6 +85,9 @@ function SearchInterface(props) {
   const [activeEducation, setActiveEducation] = useState([]);
   const [searchType, setSearchType] = useState(null);
   useMemo(() => {
+    setActiveEducation([]);
+    setActiveSubject([]);
+    setActiveType([]);
     // eslint-disable-next-line no-restricted-globals
     const query = QueryString.parse(location.search);
     if (query.type) {
@@ -114,7 +117,8 @@ function SearchInterface(props) {
     if (query?.q) {
       setSearchInput(query?.q);
     }
-  }, []);
+  // eslint-disable-next-line no-restricted-globals
+  }, [location.search]);
   window.onbeforeunload = () => {
     localStorage.setItem('refreshPage', 'true');
   };
@@ -390,7 +394,6 @@ function SearchInterface(props) {
                                       dataSend = {
                                         subjectArray: activeSubject,
                                         gradeArray: activeEducation,
-                                        model: activeModel,
                                         standardArray: activeType,
                                         type: searchType,
                                         from: 0,
