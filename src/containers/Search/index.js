@@ -90,7 +90,7 @@ function SearchInterface(props) {
     setActiveType([]);
     // eslint-disable-next-line no-restricted-globals
     const query = QueryString.parse(location.search);
-    // console.log(query);
+    console.log(query);
     if (query.type) {
       if (query.type === 'private') {
         setSearchType('private');
@@ -104,16 +104,16 @@ function SearchInterface(props) {
       setActiveType(query.h5p.split(','));
     }
     if (query.grade) {
-      if (query.grade.includes('and')) {
-        query.grade = query.grade.replace('and', '&');
-      }
-      setActiveSubject(query.grade.split(','));
+      // if (query.grade.includes('and')) {
+      //   query.grade = query.grade.replace('and', '&');
+      // }
+      setActiveSubject(query?.grade?.replace('and', '&')?.split(','));
     }
     if (query.education) {
-      if (query.education.includes('and')) {
-        query.education = query.education.replace('and', '&');
-      }
-      setActiveEducation(query.education.split(','));
+      // if (query.education.includes('and')) {
+      //   query.education = query.education.replace('and', '&');
+      // }
+      setActiveEducation(query?.education?.replace('and', '&')?.split(','));
     }
     if (query?.q) {
       setSearchInput(query?.q);
