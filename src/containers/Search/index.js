@@ -151,32 +151,32 @@ function SearchInterface(props) {
         result = await dispatch(simpleSearchAction(dataSend));
       })();
       setTotalCount(result?.meta?.total);
-      // const tempEducation = [];
-      // const tempSubject = [];
-      // if (activeEducation) {
-      //   activeEducation.forEach((edu) => {
-      //     if (edu.includes('&')) {
-      //       edu.replace('&', 'and');
-      //       tempEducation.push(edu);
-      //     } else {
-      //       tempEducation.push(edu);
-      //     }
-      //   });
-      //   setActiveEducation(tempEducation);
-      // }
-      // if (activeSubject) {
-      //   activeSubject.forEach((sub) => {
-      //     if (sub.includes('&')) {
-      //       sub.replace('&', 'and');
-      //       tempSubject.push(sub);
-      //     } else {
-      //       tempSubject.push(sub);
-      //     }
-      //   });
-      //   setActiveSubject(tempSubject);
-      // }
+      const tempEducation = [];
+      const tempSubject = [];
+      if (activeEducation) {
+        activeEducation.forEach((edu) => {
+          if (String(edu).includes('&')) {
+            const temp = String(edu).replace('&', 'and');
+            tempEducation.push(temp);
+          } else {
+            tempEducation.push(edu);
+          }
+        });
+        setActiveEducation(tempEducation);
+      }
+      if (activeSubject) {
+        activeSubject.forEach((sub) => {
+          if (String(sub).includes('&')) {
+            const temp = String(sub).replace('&', 'and');
+            tempSubject.push(temp);
+          } else {
+            tempSubject.push(sub);
+          }
+        });
+        setActiveSubject(tempSubject);
+      }
       // eslint-disable-next-line max-len
-      history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${activeSubject}&education=${activeEducation}&h5p=${activeType}`);
+      history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}`);
     }
   }, [currentOrganization]);
   useEffect(() => {
@@ -348,32 +348,32 @@ function SearchInterface(props) {
                                       }
                                       const result = await dispatch(simpleSearchAction(dataSend));
                                       setTotalCount(result.meta?.total);
-                                      // const tempEducation = [];
-                                      // const tempSubject = [];
-                                      // if (activeEducation) {
-                                      //   activeEducation.forEach((edu) => {
-                                      //     if (edu.includes('&')) {
-                                      //       edu.replace('&', 'and');
-                                      //       tempEducation.push(edu);
-                                      //     } else {
-                                      //       tempEducation.push(edu);
-                                      //     }
-                                      //   });
-                                      //   setActiveEducation(tempEducation);
-                                      // }
-                                      // if (activeSubject) {
-                                      //   activeSubject.forEach((sub) => {
-                                      //     if (sub.includes('&')) {
-                                      //       sub.replace('&', 'and');
-                                      //       tempSubject.push(sub);
-                                      //     } else {
-                                      //       tempSubject.push(sub);
-                                      //     }
-                                      //   });
-                                      //   setActiveSubject(tempSubject);
-                                      // }
+                                      const tempEducation = [];
+                                      const tempSubject = [];
+                                      if (activeEducation) {
+                                        activeEducation.forEach((edu) => {
+                                          if (String(edu).includes('&')) {
+                                            const temp = String(edu).replace('&', 'and');
+                                            tempEducation.push(temp);
+                                          } else {
+                                            tempEducation.push(edu);
+                                          }
+                                        });
+                                        setActiveEducation(tempEducation);
+                                      }
+                                      if (activeSubject) {
+                                        activeSubject.forEach((sub) => {
+                                          if (String(sub).includes('&')) {
+                                            const temp = String(sub).replace('&', 'and');
+                                            tempSubject.push(temp);
+                                          } else {
+                                            tempSubject.push(sub);
+                                          }
+                                        });
+                                        setActiveSubject(tempSubject);
+                                      }
                                       // eslint-disable-next-line max-len
-                                      history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput}&type=${searchType}&grade=${activeSubject}&education=${activeEducation}&h5p=${activeType}`);
+                                      history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}`);
                                     }
                                   }
                                 }}
@@ -486,9 +486,8 @@ function SearchInterface(props) {
                                       });
                                       setActiveSubject(tempSubject);
                                     }
-                                    console.log(tempEducation, tempSubject);
                                     // eslint-disable-next-line max-len
-                                    history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${activeEducation}&h5p=${activeType}`);
+                                    history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}`);
                                   }
                                   // setModalShow(true);
                                 }}
