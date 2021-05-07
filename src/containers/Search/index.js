@@ -67,7 +67,7 @@ function SearchInterface(props) {
   const { history } = props;
   const allState = useSelector((state) => state.search);
   const activityTypesState = useSelector((state) => state.resource.types);
-  const { currentOrganization } = useSelector((state) => state.organization);
+  const { currentOrganization, permission } = useSelector((state) => state.organization);
   const dispatch = useDispatch();
 
   const [activityTypes, setActivityTypes] = useState([]);
@@ -90,6 +90,7 @@ function SearchInterface(props) {
     setActiveType([]);
     // eslint-disable-next-line no-restricted-globals
     const query = QueryString.parse(location.search);
+    // console.log(query);
     if (query.type) {
       if (query.type === 'private') {
         setSearchType('private');
@@ -150,6 +151,30 @@ function SearchInterface(props) {
         result = await dispatch(simpleSearchAction(dataSend));
       })();
       setTotalCount(result?.meta?.total);
+      // const tempEducation = [];
+      // const tempSubject = [];
+      // if (activeEducation) {
+      //   activeEducation.forEach((edu) => {
+      //     if (edu.includes('&')) {
+      //       edu.replace('&', 'and');
+      //       tempEducation.push(edu);
+      //     } else {
+      //       tempEducation.push(edu);
+      //     }
+      //   });
+      //   setActiveEducation(tempEducation);
+      // }
+      // if (activeSubject) {
+      //   activeSubject.forEach((sub) => {
+      //     if (sub.includes('&')) {
+      //       sub.replace('&', 'and');
+      //       tempSubject.push(sub);
+      //     } else {
+      //       tempSubject.push(sub);
+      //     }
+      //   });
+      //   setActiveSubject(tempSubject);
+      // }
       // eslint-disable-next-line max-len
       history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${activeSubject}&education=${activeEducation}&h5p=${activeType}`);
     }
@@ -227,7 +252,7 @@ function SearchInterface(props) {
     activityTypesState.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
     setActivityTypes(allItems.sort(compare));
   }, [activityTypesState]);
-
+  // console.log(activeSubject, activeEducation);
   return (
     <>
       <div>
@@ -323,6 +348,30 @@ function SearchInterface(props) {
                                       }
                                       const result = await dispatch(simpleSearchAction(dataSend));
                                       setTotalCount(result.meta?.total);
+                                      // const tempEducation = [];
+                                      // const tempSubject = [];
+                                      // if (activeEducation) {
+                                      //   activeEducation.forEach((edu) => {
+                                      //     if (edu.includes('&')) {
+                                      //       edu.replace('&', 'and');
+                                      //       tempEducation.push(edu);
+                                      //     } else {
+                                      //       tempEducation.push(edu);
+                                      //     }
+                                      //   });
+                                      //   setActiveEducation(tempEducation);
+                                      // }
+                                      // if (activeSubject) {
+                                      //   activeSubject.forEach((sub) => {
+                                      //     if (sub.includes('&')) {
+                                      //       sub.replace('&', 'and');
+                                      //       tempSubject.push(sub);
+                                      //     } else {
+                                      //       tempSubject.push(sub);
+                                      //     }
+                                      //   });
+                                      //   setActiveSubject(tempSubject);
+                                      // }
                                       // eslint-disable-next-line max-len
                                       history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput}&type=${searchType}&grade=${activeSubject}&education=${activeEducation}&h5p=${activeType}`);
                                     }
@@ -413,8 +462,33 @@ function SearchInterface(props) {
                                     }
                                     const result = await dispatch(simpleSearchAction(dataSend));
                                     setTotalCount(result.meta?.total);
+                                    const tempEducation = [];
+                                    const tempSubject = [];
+                                    if (activeEducation) {
+                                      activeEducation.forEach((edu) => {
+                                        if (String(edu).includes('&')) {
+                                          const temp = String(edu).replace('&', 'and');
+                                          tempEducation.push(temp);
+                                        } else {
+                                          tempEducation.push(edu);
+                                        }
+                                      });
+                                      setActiveEducation(tempEducation);
+                                    }
+                                    if (activeSubject) {
+                                      activeSubject.forEach((sub) => {
+                                        if (String(sub).includes('&')) {
+                                          const temp = String(sub).replace('&', 'and');
+                                          tempSubject.push(temp);
+                                        } else {
+                                          tempSubject.push(sub);
+                                        }
+                                      });
+                                      setActiveSubject(tempSubject);
+                                    }
+                                    console.log(tempEducation, tempSubject);
                                     // eslint-disable-next-line max-len
-                                    history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${activeSubject}&education=${activeEducation}&h5p=${activeType}`);
+                                    history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${activeEducation}&h5p=${activeType}`);
                                   }
                                   // setModalShow(true);
                                 }}
@@ -628,7 +702,8 @@ function SearchInterface(props) {
                                   <a
                                     href={
                                       res.model === 'Activity'
-                                        ? `/activity/${res.id}/shared`
+                                        // eslint-disable-next-line max-len
+                                        ? (permission?.activeRole === 'admin' && searchType !== 'public') || (searchType === 'private') ? `/activity/${res.id}/preview` : `/activity/${res.id}/shared`
                                         : res.model === 'Playlist'
                                           ? `/playlist/${res.id}/preview/lti`
                                           : `/project/${res.id}/shared`
@@ -894,7 +969,8 @@ function SearchInterface(props) {
                                       <a
                                         href={
                                           res.model === 'Activity'
-                                            ? `/activity/${res.id}/shared`
+                                            // eslint-disable-next-line max-len
+                                            ? (permission?.activeRole === 'admin' && searchType !== 'public') || (searchType === 'private') ? `/activity/${res.id}/preview` : `/activity/${res.id}/shared`
                                             : res.model === 'Playlist'
                                               ? `/playlist/${res.id}/preview/lti`
                                               : `/project/${res.id}/shared`
