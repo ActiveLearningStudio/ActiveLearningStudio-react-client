@@ -28,7 +28,7 @@ const AllOrganizations = () => {
   }, [activeOrganization]);
   const { allSuborgList } = allListState;
   return (
-    currentOrganization.organization_role === 'Administrator' ? (
+    currentOrganization?.organization_role === 'Administrator' ? (
       allSuborgList ? (
         <div className="all-organizations">
           <div className="organizations-create">

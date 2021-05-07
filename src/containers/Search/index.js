@@ -118,6 +118,7 @@ function SearchInterface(props) {
     if (query?.q) {
       setSearchInput(query?.q);
     }
+    console.log(activeSubject, activeEducation);
   // eslint-disable-next-line no-restricted-globals
   }, [location.search]);
   window.onbeforeunload = () => {
@@ -162,7 +163,6 @@ function SearchInterface(props) {
             tempEducation.push(edu);
           }
         });
-        setActiveEducation(tempEducation);
       }
       if (activeSubject) {
         activeSubject.forEach((sub) => {
@@ -173,12 +173,11 @@ function SearchInterface(props) {
             tempSubject.push(sub);
           }
         });
-        setActiveSubject(tempSubject);
       }
       // eslint-disable-next-line max-len
-      history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}`);
+      history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${activeSubject}&education=${activeEducation}&h5p=${activeType}`);
     }
-  }, [currentOrganization]);
+  }, [activeEducation, activeSubject, activeType, currentOrganization, dispatch, history, searchInput, searchType]);
   useEffect(() => {
     if (allState.searchResult) {
       if (allState.searchResult.length > 0) {
@@ -359,7 +358,6 @@ function SearchInterface(props) {
                                             tempEducation.push(edu);
                                           }
                                         });
-                                        setActiveEducation(tempEducation);
                                       }
                                       if (activeSubject) {
                                         activeSubject.forEach((sub) => {
@@ -370,7 +368,6 @@ function SearchInterface(props) {
                                             tempSubject.push(sub);
                                           }
                                         });
-                                        setActiveSubject(tempSubject);
                                       }
                                       // eslint-disable-next-line max-len
                                       history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}`);
@@ -473,7 +470,6 @@ function SearchInterface(props) {
                                           tempEducation.push(edu);
                                         }
                                       });
-                                      setActiveEducation(tempEducation);
                                     }
                                     if (activeSubject) {
                                       activeSubject.forEach((sub) => {
@@ -484,7 +480,6 @@ function SearchInterface(props) {
                                           tempSubject.push(sub);
                                         }
                                       });
-                                      setActiveSubject(tempSubject);
                                     }
                                     // eslint-disable-next-line max-len
                                     history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}`);
@@ -702,7 +697,7 @@ function SearchInterface(props) {
                                     href={
                                       res.model === 'Activity'
                                         // eslint-disable-next-line max-len
-                                        ? (permission?.activeRole === 'admin' && searchType !== 'public') || (searchType === 'private') ? `/activity/${res.id}/preview` : `/activity/${res.id}/shared`
+                                        ? (permission?.activeRole === 'admin' && searchType !== 'public') || (searchType === 'private') ? `/org/${currentOrganization?.domain}/project/${res.project_id}/playlist/${res.playlist_id}/activity/${res.id}/preview` : `/activity/${res.id}/shared`
                                         : res.model === 'Playlist'
                                           ? `/playlist/${res.id}/preview/lti`
                                           : `/project/${res.id}/shared`
@@ -969,7 +964,7 @@ function SearchInterface(props) {
                                         href={
                                           res.model === 'Activity'
                                             // eslint-disable-next-line max-len
-                                            ? (permission?.activeRole === 'admin' && searchType !== 'public') || (searchType === 'private') ? `/activity/${res.id}/preview` : `/activity/${res.id}/shared`
+                                            ? (permission?.activeRole === 'admin' && searchType !== 'public') || (searchType === 'private') ? `/org/${currentOrganization?.domain}/project/${res.project_id}/playlist/${res.playlist_id}/activity/${res.id}/preview` : `/activity/${res.id}/shared`
                                             : res.model === 'Playlist'
                                               ? `/playlist/${res.id}/preview/lti`
                                               : `/project/${res.id}/shared`
