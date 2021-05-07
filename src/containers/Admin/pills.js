@@ -17,13 +17,13 @@ function Pills(props) {
   const { activeTab } = admin
   const [ activePage, setActivePage ] = useState(1);
   const [ size, setSize ] = useState(25);
-  const { activeOrganization } = organization;
+  const { activeOrganization, roles } = organization;
   const [users, setUsers] = useState(null);
   const [searchAlertToggler, setSearchAlertToggler] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const searchUsers = async (query, page) => {
     const result = await dispatch(searchUserInOrganization(activeOrganization?.id, query, page));
-    if (result.data.length > 0) {
+    if (result.data.length > 0) { 
       setUsers(result);
       setSearchAlertToggler(1);
     } else {
@@ -148,6 +148,7 @@ function Pills(props) {
                 searchAlertToggler={searchAlertToggler}
                 setActivePage={setActivePage}
                 type={type}
+                inviteUser={true}
               />
             )}
             {(type === 'Users' && subTypeState === 'Manage Roles') && (
@@ -162,7 +163,21 @@ function Pills(props) {
                 tableHead={[]}
                 data={[]}
                 type={type}
-                roles={[1]}
+                roles={roles}
+              />
+            )}
+            {(type === 'Organization') && (
+              <Starter
+                paginationCounter={true}
+                search={true}
+                print={false}
+                btnText="Add Organization"
+                btnAction="add_org"
+                importUser={false}
+                filter={false}
+                tableHead={columnData.organization}
+                data={activeOrganization}
+                type={type}
               />
             )}
           </div>

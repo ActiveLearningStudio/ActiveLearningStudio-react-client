@@ -121,6 +121,21 @@ const searchUserInOrganization = (id, query, page) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const getAllPermissions = (id) => httpService
+  .get(`/${apiVersion}/suborganizations/${id}/permissions`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const getAllRoles = (id) => httpService
+  .get(`/${apiVersion}/suborganizations/${id}/roles`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const addRole = (id) => httpService
+  .post(`/${apiVersion}/suborganizations/${id}/add-role  `)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   getOrganization,
@@ -138,4 +153,7 @@ export default {
   deleteUserFromOrganization,
   searchUserInOrganization,
   allPermission,
+  getAllPermissions,
+  getAllRoles,
+  addRole,
 };

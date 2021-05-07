@@ -35,6 +35,15 @@ function AdminPanel() {
                     />
                   </div>
                 </Tab>
+                <Tab eventKey="Organization" title="Organization">
+                  <div className="module-content">
+                    <h2>Organizations</h2>
+                    <Pills
+                      modules={['All Orgnizations']}
+                      type="Organization"
+                    />
+                  </div>
+                </Tab>
                 <Tab eventKey="Project" title="Project">
                   <div className="module-content">
                     <h2>Project</h2>

@@ -87,4 +87,15 @@ export const columnData = {
     'User',
     'Action',
   ],
+
+  organization: [
+    'Image',
+    'Name',
+    'Admin',
+    'Users',
+    'Groups',
+    'Teams',
+    'Projects',
+    'Action',
+  ],
 };

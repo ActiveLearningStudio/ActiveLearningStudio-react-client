@@ -1,11 +1,20 @@
 /* eslint-disable */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tabs, Tab, Table } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+//import { getAllRoles } from 'store/actions/organization'
 
 function UserRoles() {
   const [parentCat, setParentCat] =  useState(['organizations', 'Projects', 'Playlists', 'Acivities', 'Team']);
   const [childCat, setChildCat] =  useState(['view', 'update', 'upload', 'create', 'edit','publish']);
+  const dispatch =  useDispatch();
+  
+  
+  useEffect(() => {
+    //dispatch(getAllRoles());
+  }, []);
+
   return (
     <div className="user-roles">
       <h2>Permissions</h2>

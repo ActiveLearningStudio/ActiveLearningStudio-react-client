@@ -13,6 +13,7 @@ import { setActiveAdminForm, setCurrentUser } from 'store/actions/admin';
 
 function Table(props) {
   const {tableHead, data, type, activePage, setActivePage, searchAlertToggler } = props;
+  console.log(data)
   const organization = useSelector((state) => state.organization);
   const { activeOrganization } = organization;
   const dispatch = useDispatch();
@@ -93,6 +94,16 @@ function Table(props) {
                </td>
              </tr>)
           )}
+          {type === 'Organization' && data?.map((row) => (
+            <tr>
+              <td>{row.name}</td>
+              <td>{row.email}</td>
+              <td>{row.age}</td>
+              <td>{row.project}</td>
+              <td>{row.counter}</td>
+              <td>{row.flow}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
       <div className="pagination-top">

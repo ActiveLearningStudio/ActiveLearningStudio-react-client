@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {Dropdown} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -28,17 +28,23 @@ function Controller(props) {
     size,
     setSize,
     tableHead,
-    roles
+    roles,
+    inviteUser, 
   } = props;
   const dispatch = useDispatch();
   const [allUsersAdded, setAllUsersAdded] = useState([]);
   const adminState = useSelector((state) => state.admin);
+  const [activeRole, setActiveRole] =  useState('');
   const organization = useSelector((state) => state.organization);
   const { permission } = organization;
   const { activeForm } = adminState;
   useMemo(() => {
     dispatch(getRoles());
   },[])
+
+  useEffect(() => {
+    roles?.length > 0 && setActiveRole(roles[0]?.name)
+  }, [roles]);
   return (
     <div className="controller">
       {paginationCounter && (
@@ -114,18 +120,21 @@ function Controller(props) {
           <span>
           <Dropdown>
             <Dropdown.Toggle  id="dropdown-basic">
-              Super Admin
+              {activeRole}
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <form className="radio-filter">
+              
                 {roles?.map((head) => (
                   <div className="group">
-                    <label>{head}</label>
-                    <input type="checkbox" name="filter-table" />
+                    <Dropdown.Item 
+                      onClick={() => setActiveRole(head.name)}
+                    >
+                      {head.name}
+                    </Dropdown.Item>
                   </div>
                 ))}
-              </form>
+              
             </Dropdown.Menu>
           </Dropdown>
           </span>
@@ -181,7 +190,7 @@ function Controller(props) {
           </button>
         </div>
       )}
-      {(permission?.activeRole === 'admin' || permission?.activeRole === 'superadmin') &&
+      {!!inviteUser && (permission?.activeRole === 'admin' || permission?.activeRole === 'superadmin') &&
         <div className="btn-text">
           <div className="add-user-btn">
             <Dropdown>
