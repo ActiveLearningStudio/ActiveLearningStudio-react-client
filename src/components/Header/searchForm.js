@@ -146,7 +146,7 @@ function SearchForm() {
               //     grade = grade.replace('and', '&');
               //   }
               // });
-              console.log(values.gradeArray, values.subjectArray);
+              console.log(values.gradeArray, values.subjectArray, values);
               Swal.showLoading();
               dispatcher(simpleSearchAction(values));
               resetForm({

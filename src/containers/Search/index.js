@@ -1,4 +1,4 @@
-/* eslint-disable no-param-reassign */
+/* eslint-disable */
 import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -67,7 +67,7 @@ function SearchInterface(props) {
   const { history } = props;
   const allState = useSelector((state) => state.search);
   const activityTypesState = useSelector((state) => state.resource.types);
-  const { currentOrganization } = useSelector((state) => state.organization);
+  const { currentOrganization, permission } = useSelector((state) => state.organization);
   const dispatch = useDispatch();
 
   const [activityTypes, setActivityTypes] = useState([]);
@@ -84,12 +84,18 @@ function SearchInterface(props) {
   const [activeSubject, setActiveSubject] = useState([]);
   const [activeEducation, setActiveEducation] = useState([]);
   const [searchType, setSearchType] = useState(null);
+  var activeSubject1;
+//   useMemo(() => {
+
+// activeSubject1 = activeSubject.map((data1) => data1.replace('and', '&'))
+//   },[activeSubject])
   useMemo(() => {
     setActiveEducation([]);
     setActiveSubject([]);
     setActiveType([]);
     // eslint-disable-next-line no-restricted-globals
     const query = QueryString.parse(location.search);
+    console.log(query);
     if (query.type) {
       if (query.type === 'private') {
         setSearchType('private');
@@ -103,16 +109,16 @@ function SearchInterface(props) {
       setActiveType(query.h5p.split(','));
     }
     if (query.grade) {
-      if (query.grade.includes('and')) {
-        query.grade = query.grade.replace('and', '&');
-      }
-      setActiveSubject(query.grade.split(','));
+      // if (query.grade.includes('and')) {
+      //   query.grade = query.grade.replace('and', '&');
+      // }
+      setActiveSubject(query?.grade?.replace('and', '&')?.split(','));
     }
     if (query.education) {
-      if (query.education.includes('and')) {
-        query.education = query.education.replace('and', '&');
-      }
-      setActiveEducation(query.education.split(','));
+      // if (query.education.includes('and')) {
+      //   query.education = query.education.replace('and', '&');
+      // }
+      setActiveEducation(query?.education?.replace('and', '&')?.split(','));
     }
     if (query?.q) {
       setSearchInput(query?.q);
@@ -150,8 +156,32 @@ function SearchInterface(props) {
         result = await dispatch(simpleSearchAction(dataSend));
       })();
       setTotalCount(result?.meta?.total);
+      const tempEducation = [];
+      const tempSubject = [];
+      if (activeEducation) {
+        activeEducation.forEach((edu) => {
+          if (String(edu).includes('&')) {
+            const temp = String(edu).replace('&', 'and');
+            tempEducation.push(temp);
+          } else {
+            tempEducation.push(edu);
+          }
+        });
+        setActiveEducation(tempEducation);
+      }
+      if (activeSubject) {
+        activeSubject.forEach((sub) => {
+          if (String(sub).includes('&')) {
+            const temp = String(sub).replace('&', 'and');
+            tempSubject.push(temp);
+          } else {
+            tempSubject.push(sub);
+          }
+        });
+        setActiveSubject(tempSubject);
+      }
       // eslint-disable-next-line max-len
-      history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${activeSubject}&education=${activeEducation}&h5p=${activeType}`);
+      history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}`);
     }
   }, [currentOrganization]);
   useEffect(() => {
@@ -227,7 +257,7 @@ function SearchInterface(props) {
     activityTypesState.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
     setActivityTypes(allItems.sort(compare));
   }, [activityTypesState]);
-
+  // console.log(activeSubject, activeEducation);
   return (
     <>
       <div>
@@ -323,8 +353,32 @@ function SearchInterface(props) {
                                       }
                                       const result = await dispatch(simpleSearchAction(dataSend));
                                       setTotalCount(result.meta?.total);
+                                      const tempEducation = [];
+                                      const tempSubject = [];
+                                      if (activeEducation) {
+                                        activeEducation.forEach((edu) => {
+                                          if (String(edu).includes('&')) {
+                                            const temp = String(edu).replace('&', 'and');
+                                            tempEducation.push(temp);
+                                          } else {
+                                            tempEducation.push(edu);
+                                          }
+                                        });
+                                        setActiveEducation(tempEducation);
+                                      }
+                                      if (activeSubject) {
+                                        activeSubject.forEach((sub) => {
+                                          if (String(sub).includes('&')) {
+                                            const temp = String(sub).replace('&', 'and');
+                                            tempSubject.push(temp);
+                                          } else {
+                                            tempSubject.push(sub);
+                                          }
+                                        });
+                                        setActiveSubject(tempSubject);
+                                      }
                                       // eslint-disable-next-line max-len
-                                      history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput}&type=${searchType}&grade=${activeSubject}&education=${activeEducation}&h5p=${activeType}`);
+                                      history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}`);
                                     }
                                   }
                                 }}
@@ -404,7 +458,6 @@ function SearchInterface(props) {
                                         phrase: searchInput.trim(),
                                         subjectArray: activeSubject,
                                         gradeArray: activeEducation,
-                                        model: activeModel,
                                         standardArray: activeType,
                                         type: searchType,
                                         from: 0,
@@ -413,8 +466,32 @@ function SearchInterface(props) {
                                     }
                                     const result = await dispatch(simpleSearchAction(dataSend));
                                     setTotalCount(result.meta?.total);
+                                    const tempEducation = [];
+                                    const tempSubject = [];
+                                    if (activeEducation) {
+                                      activeEducation.forEach((edu) => {
+                                        if (String(edu).includes('&')) {
+                                          const temp = String(edu).replace('&', 'and');
+                                          tempEducation.push(temp);
+                                        } else {
+                                          tempEducation.push(edu);
+                                        }
+                                      });
+                                      setActiveEducation(tempEducation);
+                                    }
+                                    if (activeSubject) {
+                                      activeSubject.forEach((sub) => {
+                                        if (String(sub).includes('&')) {
+                                          const temp = String(sub).replace('&', 'and');
+                                          tempSubject.push(temp);
+                                        } else {
+                                          tempSubject.push(sub);
+                                        }
+                                      });
+                                      setActiveSubject(tempSubject);
+                                    }
                                     // eslint-disable-next-line max-len
-                                    history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${activeSubject}&education=${activeEducation}&h5p=${activeType}`);
+                                    history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}`);
                                   }
                                   // setModalShow(true);
                                 }}
@@ -446,13 +523,31 @@ function SearchInterface(props) {
                                 value={data.subject}
                                 onClick={() => {
                                   if (activeSubject.includes(data.subject)) {
-                                    setActiveSubject(activeSubject.filter((index) => index !== data.subject));
+
+                                    if(data.subject==='Career & Technical Education') {
+
+                                      setActiveSubject(activeSubject.filter((index) => {
+                                        if(index == 'Career & Technical Education' || index == 'Career and Technical Education'){
+                                          return false
+                                         }else {
+                                          return true
+                                         }
+                                      }));
+
+                                    } else {
+                                      setActiveSubject(activeSubject.filter((index) => index !== data.subject));
+                                    }
                                   } else {
                                     setActiveSubject([...activeSubject, data.subject]);
                                   }
                                 }}
                               >
-                                {activeSubject.includes(data.subject) ? (
+                                {data.subject==='Career & Technical Education'
+                                  ? (activeSubject.includes('Career & Technical Education') || activeSubject.includes('Career and Technical Education'))?
+                                <FontAwesomeIcon icon="check-square" />:<FontAwesomeIcon icon="square" />
+
+                                :
+                                 activeSubject.includes(data.subject) ? (
                                   <FontAwesomeIcon icon="check-square" />
                                 ) : (
                                   <FontAwesomeIcon icon="square" />
@@ -479,17 +574,36 @@ function SearchInterface(props) {
                                 value={data.name}
                                 onClick={() => {
                                   if (activeEducation.includes(data.name)) {
-                                    setActiveEducation(activeEducation.filter((index) => index !== data.name));
+                                    if(data.name==='College & Beyond') {
+
+                                      setActiveSubject(activeEducation.filter((index) => {
+                                        if(index == 'College & Beyondn' || index == 'College and Beyond'){
+                                          return false
+                                         }else {
+                                          return true
+                                         }
+                                      }));
+
+                                    } else {
+                                      setActiveEducation(activeEducation.filter((index) => index !== data.name));
+                                    }
+
                                   } else {
                                     setActiveEducation([...activeEducation, data.name]);
                                   }
                                 }}
                               >
-                                {activeEducation.includes(data.name) ? (
+                                {data.name==='College & Beyond'
+                                  ? (activeEducation.includes('College & Beyond') || activeEducation.includes('College and Beyond'))?
+                                <FontAwesomeIcon icon="check-square" />:<FontAwesomeIcon icon="square" />
+
+                                :
+                                activeEducation.includes(data.name) ? (
                                   <FontAwesomeIcon icon="check-square" />
                                 ) : (
                                   <FontAwesomeIcon icon="square" />
                                 )}
+
                                 <span>{data.name}</span>
                               </div>
                             ))}
@@ -544,15 +658,27 @@ function SearchInterface(props) {
                     id="uncontrolled-tab-example"
                     onSelect={async (e) => {
                       if (e === 'total') {
-                        const searchData = {
-                          phrase: searchQueries.trim(),
-                          from: 0,
-                          size: 20,
-                          type: searchType,
-                          subjectArray: activeSubject,
-                          gradeArray: activeEducation,
-                          standardArray: activeType,
-                        };
+                        let searchData;
+                        if(searchType === 'orgSearch') {
+                          searchData = {
+                           from: 0,
+                           size: 20,
+                           type: searchType,
+                           subjectArray: activeSubject,
+                           gradeArray: activeEducation,
+                           standardArray: activeType,
+                         };
+                        } else {
+                          searchData = {
+                            phrase: searchQueries.trim(),
+                            from: 0,
+                            size: 20,
+                            type: searchType,
+                            subjectArray: activeSubject,
+                            gradeArray: activeEducation,
+                            standardArray: activeType,
+                          };
+                        }
                         Swal.fire({
                           title: 'Loading...', // add html attribute if you want or remove
                           allowOutsideClick: false,
@@ -566,16 +692,29 @@ function SearchInterface(props) {
                         setActiveModel(e);
                         setActivePage(1);
                       } else {
-                        const searchData = {
-                          phrase: searchQueries.trim(),
-                          from: 0,
-                          size: 20,
-                          model: e,
-                          type: searchType,
-                          subjectArray: activeSubject,
-                          gradeArray: activeEducation,
-                          standardArray: activeType,
-                        };
+                        let searchData;
+                        if (searchType === 'orgSearch') {
+                          searchData = {
+                           from: 0,
+                           size: 20,
+                           model: e,
+                           type: searchType,
+                           subjectArray: activeSubject,
+                           gradeArray: activeEducation,
+                           standardArray: activeType,
+                         };
+                        } else {
+                          searchData = {
+                            phrase: searchQueries.trim(),
+                            from: 0,
+                            size: 20,
+                            model: e,
+                            type: searchType,
+                            subjectArray: activeSubject,
+                            gradeArray: activeEducation,
+                            standardArray: activeType,
+                          };
+                        }
                         Swal.fire({
                           title: 'Loading...', // add html attribute if you want or remove
                           allowOutsideClick: false,
@@ -628,7 +767,8 @@ function SearchInterface(props) {
                                   <a
                                     href={
                                       res.model === 'Activity'
-                                        ? `/activity/${res.id}/shared`
+                                        // eslint-disable-next-line max-len
+                                        ? (permission?.activeRole === 'admin' && searchType !== 'public') || (searchType === 'private') ? `/org/${currentOrganization?.domain}/project/${res.project_id}/playlist/${res.playlist_id}/activity/${res.id}/preview` : `/activity/${res.id}/shared`
                                         : res.model === 'Playlist'
                                           ? `/playlist/${res.id}/preview/lti`
                                           : `/project/${res.id}/shared`
@@ -894,7 +1034,8 @@ function SearchInterface(props) {
                                       <a
                                         href={
                                           res.model === 'Activity'
-                                            ? `/activity/${res.id}/shared`
+                                            // eslint-disable-next-line max-len
+                                            ? (permission?.activeRole === 'admin' && searchType !== 'public') || (searchType === 'private') ? `/org/${currentOrganization?.domain}/project/${res.project_id}/playlist/${res.playlist_id}/activity/${res.id}/preview` : `/activity/${res.id}/shared`
                                             : res.model === 'Playlist'
                                               ? `/playlist/${res.id}/preview/lti`
                                               : `/project/${res.id}/shared`
