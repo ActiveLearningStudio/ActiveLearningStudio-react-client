@@ -1,4 +1,4 @@
-/* eslint-disable no-param-reassign */
+/* eslint-disable */
 import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -69,7 +69,7 @@ function SearchInterface(props) {
   const activityTypesState = useSelector((state) => state.resource.types);
   const { currentOrganization, permission } = useSelector((state) => state.organization);
   const dispatch = useDispatch();
-
+  
   const [activityTypes, setActivityTypes] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const [search, setSearch] = useState([]);
@@ -84,6 +84,11 @@ function SearchInterface(props) {
   const [activeSubject, setActiveSubject] = useState([]);
   const [activeEducation, setActiveEducation] = useState([]);
   const [searchType, setSearchType] = useState(null);
+  var activeSubject1;
+//   useMemo(() => {
+    
+// activeSubject1 = activeSubject.map((data1) => data1.replace('and', '&'))
+//   },[activeSubject]) 
   useMemo(() => {
     setActiveEducation([]);
     setActiveSubject([]);
@@ -519,13 +524,31 @@ function SearchInterface(props) {
                                 value={data.subject}
                                 onClick={() => {
                                   if (activeSubject.includes(data.subject)) {
-                                    setActiveSubject(activeSubject.filter((index) => index !== data.subject));
+                                    
+                                    if(data.subject==='Career & Technical Education') {
+                                     
+                                      setActiveSubject(activeSubject.filter((index) => {
+                                        if(index == 'Career & Technical Education' || index == 'Career and Technical Education'){
+                                          return false
+                                         }else {
+                                          return true
+                                         }
+                                      }));
+                                     
+                                    } else {
+                                      setActiveSubject(activeSubject.filter((index) => index !== data.subject));
+                                    }
                                   } else {
                                     setActiveSubject([...activeSubject, data.subject]);
                                   }
                                 }}
                               >
-                                {activeSubject.includes(data.subject) ? (
+                                {data.subject==='Career & Technical Education'
+                                  ? (activeSubject.includes('Career & Technical Education') || activeSubject.includes('Career and Technical Education'))? 
+                                <FontAwesomeIcon icon="check-square" />:<FontAwesomeIcon icon="square" />
+                                
+                                :
+                                 activeSubject.includes(data.subject) ? (
                                   <FontAwesomeIcon icon="check-square" />
                                 ) : (
                                   <FontAwesomeIcon icon="square" />
@@ -552,17 +575,36 @@ function SearchInterface(props) {
                                 value={data.name}
                                 onClick={() => {
                                   if (activeEducation.includes(data.name)) {
-                                    setActiveEducation(activeEducation.filter((index) => index !== data.name));
+                                    if(data.name==='College & Beyond') {
+                                     
+                                      setActiveSubject(activeEducation.filter((index) => {
+                                        if(index == 'College & Beyondn' || index == 'College and Beyond'){
+                                          return false
+                                         }else {
+                                          return true
+                                         }
+                                      }));
+                                     
+                                    } else {
+                                      setActiveEducation(activeEducation.filter((index) => index !== data.name));
+                                    }
+                                 
                                   } else {
                                     setActiveEducation([...activeEducation, data.name]);
                                   }
                                 }}
                               >
-                                {activeEducation.includes(data.name) ? (
+                                {data.name==='College & Beyond'
+                                  ? (activeEducation.includes('College & Beyond') || activeEducation.includes('College and Beyond'))? 
+                                <FontAwesomeIcon icon="check-square" />:<FontAwesomeIcon icon="square" />
+                                
+                                :
+                                activeEducation.includes(data.name) ? (
                                   <FontAwesomeIcon icon="check-square" />
                                 ) : (
                                   <FontAwesomeIcon icon="square" />
                                 )}
+                               
                                 <span>{data.name}</span>
                               </div>
                             ))}
