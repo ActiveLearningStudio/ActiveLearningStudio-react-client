@@ -14,7 +14,7 @@ import { Alert } from 'react-bootstrap';
 import { setActiveAdminForm, setCurrentUser } from 'store/actions/admin';
 
 function Table(props) {
-  const history = useHistory();
+  
   const {tableHead, data, type, activePage, setActivePage, searchAlertToggler } = props;
   console.log(data)
   const organization = useSelector((state) => state.organization);
@@ -47,6 +47,7 @@ function Table(props) {
       }
     });
   };
+  const history = useHistory();
   return (
     <div className="table-data">
       <table>
