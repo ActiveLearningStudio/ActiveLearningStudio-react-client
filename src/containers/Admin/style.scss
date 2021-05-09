@@ -309,6 +309,26 @@
           background: #F0F1F3;
         }
       }
+
+      .org-rows {
+        img {
+          width:75px
+        }
+
+        .view-all {
+          background: #F8AF2C;
+          color: $fun-blue-1;
+          display: flex;
+          justify-content: center;
+          padding: 2px;
+          width: 60px;
+          margin-top: 5px;
+          border-radius: 7px;
+          cursor: pointer;
+              
+
+        }
+      }
     }
 
   }

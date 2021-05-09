@@ -91,11 +91,13 @@ export const columnData = {
   organization: [
     'Image',
     'Name',
-    'Admin',
+    'Domain',
+    'Admins ',
+    'Projects ',
+    'Sub Org.',
     'Users',
-    'Groups',
-    'Teams',
-    'Projects',
+    'Groups ',
+    'Teams ',
     'Action',
   ],
 };

@@ -2,20 +2,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Pagination from 'react-js-pagination';
+import { useHistory } from 'react-router-dom';
 import {
   deleteUserFromOrganization, updateFeedbackScreen, updateOrganizationScreen, updatePreviousScreen,
 } from 'store/actions/organization';
 import { Link } from 'react-router-dom';
+import { simpleSearchAction } from 'store/actions/search';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 import { Alert } from 'react-bootstrap';
 import { setActiveAdminForm, setCurrentUser } from 'store/actions/admin';
 
 function Table(props) {
+  const history = useHistory();
   const {tableHead, data, type, activePage, setActivePage, searchAlertToggler } = props;
   console.log(data)
   const organization = useSelector((state) => state.organization);
-  const { activeOrganization } = organization;
+  const { activeOrganization, allSuborgList } = organization;
   const dispatch = useDispatch();
   const handleDeleteUser = (user) => {
     Swal.fire({
@@ -71,7 +74,7 @@ function Table(props) {
               <td>{user.organization_type ? user.organization_type : 'NA'}</td>
               <td>{user.organization_role ? user.organization_role : 'NA'}</td>
               <td>
-                <Link style={{ float: 'left' }} onClick={() =>{
+              <Link style={{ float: 'left' }} onClick={() =>{
                   dispatch(setCurrentUser(user));
                   dispatch(setActiveAdminForm('edit_user'));
                 }}>
@@ -94,14 +97,46 @@ function Table(props) {
                </td>
              </tr>)
           )}
-          {type === 'Organization' && data?.map((row) => (
-            <tr>
+          {type === 'Organization' && allSuborgList?.map((row) => (
+            <tr className="org-rows">
+              <td><img src={global.config.resourceUrl+row.image} alt="" /></td>
               <td>{row.name}</td>
-              <td>{row.email}</td>
-              <td>{row.age}</td>
-              <td>{row.project}</td>
-              <td>{row.counter}</td>
-              <td>{row.flow}</td>
+              <td>{row.domain}</td>
+              <td>{row.admins.length}<div className="view-all">view all</div></td>
+              <td>{row.projects_count}
+                <div
+                  className="view-all"
+                  onClick={async () => {
+                    Swal.fire({
+                      html: 'Searching...', 
+                      allowOutsideClick: false,
+                      onBeforeOpen: () => {
+                        Swal.showLoading();
+                      },
+                    });
+                    await dispatch(simpleSearchAction({
+                      from: 0,
+                      size: 20,
+                      type: 'orgSearch',
+                    }));
+                    Swal.close();
+                    history.push(`/org/${row?.domain}/search?type=orgSearch`);
+                  }}
+                >
+                  view all
+                </div>
+              </td>
+              <td>{row.suborganization_count}<div className="view-all">view all</div></td>
+              <td>{row.users_count}<div className="view-all">view all</div></td>
+              <td>{row.groups_count}<div className="view-all">view all</div></td>
+              <td>{row.teams_count}<div className="view-all">view all</div></td>
+              <td>
+              <Link style={{ float: 'left' }}>
+                  Edit
+                </Link>
+                <Link style={{ float: 'right' }}>Delete</Link>
+              </td>
+
             </tr>
           ))}
         </tbody>

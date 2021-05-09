@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Starter from './starter';
 import { columnData } from './column';
-import { getOrgUsers, searchUserInOrganization } from 'store/actions/organization';
+import { getOrgUsers, searchUserInOrganization, getsubOrgList } from 'store/actions/organization';
 function Pills(props) {
   const {modules, type, subType} = props;
   const [subTypeState, setSubTypeState] = useState(subType)
@@ -50,6 +50,7 @@ function Pills(props) {
         setUsers(result);
       }
     }
+    dispatch(getsubOrgList(activeOrganization?.id));
   }, [activeOrganization, activePage, type, subTypeState , activeTab, size])
   // All Users Business Logic End
   const dummy =  [
@@ -171,12 +172,12 @@ function Pills(props) {
                 paginationCounter={true}
                 search={true}
                 print={false}
-                btnText="Add Organization"
+                btnText="create Organization"
                 btnAction="add_org"
                 importUser={false}
                 filter={false}
                 tableHead={columnData.organization}
-                data={activeOrganization}
+                data={[]}
                 type={type}
               />
             )}
