@@ -182,7 +182,10 @@ function Controller(props) {
               dispatch(setActiveAdminForm('add_role'))
             } else if (btnAction === 'create_user') {
               dispatch(setActiveAdminForm('create_user'))
+            } else if (btnAction === 'add_org') {
+              dispatch(setActiveAdminForm('add_org'))
             }
+            
           }}
           >
             <FontAwesomeIcon icon="plus" />

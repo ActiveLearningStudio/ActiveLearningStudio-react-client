@@ -2,11 +2,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Pagination from 'react-js-pagination';
-import { useHistory } from 'react-router-dom';
+//import { useHistory } from 'react-router-dom';
 import {
   deleteUserFromOrganization, updateFeedbackScreen, updateOrganizationScreen, updatePreviousScreen,
+
+
+ 
+ 
+  deleteOrganization,
+  
+ 
 } from 'store/actions/organization';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { simpleSearchAction } from 'store/actions/search';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,7 +22,7 @@ import { setActiveAdminForm, setCurrentUser } from 'store/actions/admin';
 
 function Table(props) {
   
-  const {tableHead, data, type, activePage, setActivePage, searchAlertToggler } = props;
+  const {tableHead,history, data, type, activePage, setActivePage, searchAlertToggler } = props;
   console.log(data)
   const organization = useSelector((state) => state.organization);
   const { activeOrganization, allSuborgList } = organization;
@@ -47,7 +54,7 @@ function Table(props) {
       }
     });
   };
-  const history = useHistory();
+  //const history = useHistory();
   return (
     <div className="table-data">
       <table>
@@ -121,7 +128,7 @@ function Table(props) {
                       type: 'orgSearch',
                     }));
                     Swal.close();
-                    history.push(`/org/${row?.domain}/search?type=orgSearch`);
+                    //history.push(`/org/${row?.domain}/search?type=orgSearch`);
                   }}
                 >
                   view all
@@ -135,7 +142,39 @@ function Table(props) {
               <Link style={{ float: 'left' }}>
                   Edit
                 </Link>
-                <Link style={{ float: 'right' }}>Delete</Link>
+                <Link
+                  style={{ float: 'right' }}
+                  onClick={() => {
+                    Swal.fire({
+                      title: 'Are you sure?',
+                      text: "You won't be able to revert this!",
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#084892',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Yes, delete it!',
+                    }).then(async (result) => {
+                      
+                      if (result.isConfirmed) {
+                        Swal.showLoading()
+                        const resultDel = await dispatch(deleteOrganization(row));
+                        if (resultDel) {
+                          Swal.fire({
+                          
+                            text: "You have successfully deleted the organization",
+                            icon: 'success',
+                            showCancelButton: false,
+                            confirmButtonColor: '#084892',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'OK',
+                          })
+                          
+
+                        }
+                      }
+                    });
+                  }}
+                >Delete</Link>
               </td>
 
             </tr>
@@ -170,4 +209,4 @@ Table.propTypes = {
   data:PropTypes.object.isRequired,
 };
 
-export default Table;
+export default withRouter(Table);

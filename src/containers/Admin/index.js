@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeActiveAdminForm, setActiveTab } from 'store/actions/admin'
 
 import CreateActivity from "./formik/createActivity"
+import CreateOrg from "containers/ManageOrganization/createOrganization"
 import AddRole from './formik/addRole';
 import CreateUser from './formik/createuser'
 import Pills from './pills';
@@ -104,6 +105,20 @@ function AdminPanel() {
               />
               <div className="inner-form-content">
                 <CreateActivity />
+              </div>
+            </div>
+          )}
+          {activeForm === 'add_org' && (
+            <div className="form-new-popup-admin">
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">
+                <CreateOrg />
               </div>
             </div>
           )}
