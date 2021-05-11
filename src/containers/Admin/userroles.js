@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Formik, Field } from 'formik';
 import { updateRole, getAllPermissionId, roleDetail } from 'store/actions/organization'
+import Swal from 'sweetalert2';
 
 function UserRoles() {
  
@@ -37,8 +38,7 @@ function UserRoles() {
         enableReinitialize
         
         onSubmit={async(values) => {
-          dispatch(updateRole(activeOrganization.id,values))
-       
+         dispatch(updateRole(activeOrganization.id,values))
         }}
       >
         {({
@@ -55,7 +55,12 @@ function UserRoles() {
            
              
             <div className="form-group-create dynamic-roles ">
-            
+            <div className="button-group" style={{display: 'flex', justifyContent: 'flex-end'}}>
+              <button type="submit">
+                update Role
+              </button>
+             
+            </div>
               
               <Accordion defaultActiveKey="0">
                 {!!permissionsId && Object.keys(permissionsId)?.map((data,counter) => {
@@ -92,12 +97,7 @@ function UserRoles() {
                 {errors.title && touched.title && errors.title}
               </div>
             </div>
-            <div className="button-group">
-              <button type="submit">
-                update Role
-              </button>
-             
-            </div>
+           
           </form>
         )}
       </Formik>

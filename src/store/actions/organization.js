@@ -272,20 +272,48 @@ export const roleDetail = (id, roleId) => async (dispatch) => {
 };
 
 export const updateRole = (id, roleId) => async () => {
-  const result = await organization.updateRole(id, roleId);
-  return result;
+  Swal.fire({
+    title: 'Please Wait !',
+    html: 'Updating Role ...',
+    allowOutsideClick: false,
+    onBeforeOpen: () => {
+      Swal.showLoading();
+    },
+  });
+  const result = organization.updateRole(id, roleId);
+  result.then((data) => {
+    Swal.fire({
+      icon: 'success',
+      title: data?.message,
+    });
+  }).catch((err) => {
+    Swal.fire({
+      icon: 'error',
+      title: err?.message,
+    });
+  });
 };
 
 export const addRole = (id, data) => async () => {
-  Swal.showLoading();
+  Swal.fire({
+    title: 'Please Wait !',
+    html: 'Updating Role ...',
+    allowOutsideClick: false,
+    onBeforeOpen: () => {
+      Swal.showLoading();
+    },
+  });
   const result = organization.addRole(id, data);
   console.log(result);
   result.then((data_) => {
-    console.log(data_);
+    Swal.fire({
+      icon: 'success',
+      title: data_?.message,
+    });
   }).catch((err) => {
     Swal.fire({
+      icon: 'error',
       title: err?.message,
-      icor: 'error',
     });
   });
   // dispatch({

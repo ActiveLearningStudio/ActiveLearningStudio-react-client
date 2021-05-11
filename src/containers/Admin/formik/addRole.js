@@ -10,7 +10,7 @@ export default function AddRole(props) {
 
   const dispatch = useDispatch();
   const { permissionsId, activeOrganization, permission } = useSelector((state) => state.organization);
-  const [childCat, setChildCat] =  useState(['view', 'update', 'upload', 'create', 'edit','publish']);
+
   useEffect(() => {
     dispatch(getAllPermissionId(activeOrganization?.id));
   }, []);
@@ -26,6 +26,9 @@ export default function AddRole(props) {
           const errors = {};
           if (!values.display_name) {
             errors.display_name = 'Required';
+          }
+          if (values.permissions.length  < 1) {
+            errors.permissions = 'please select atleast one permission';
           }
          
       
@@ -55,7 +58,7 @@ export default function AddRole(props) {
                 name="display_name"
                 onChange={(e)=>{
                   setFieldValue('display_name', e.target.value);
-                  setFieldValue('name', e.target.value?.replace(' ',''));
+                  setFieldValue('name', e.target.value?.split(' ').join('_'));
                 }}
                 onBlur={handleBlur}
                 value={values.display_name}
@@ -99,7 +102,7 @@ export default function AddRole(props) {
                 
               </Accordion>
               <div className="error">
-                {errors.title && touched.title && errors.title}
+                {errors.permissions && touched.permissions && errors.permissions}
               </div>
             </div>
             <div className="button-group">
