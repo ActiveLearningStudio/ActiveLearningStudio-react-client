@@ -11,7 +11,7 @@ import csv from 'assets/images/csv.png';
 import pdf from 'assets/images/pdf.png';
 import bulk from 'assets/images/bulk.png';
 import AddUser from 'containers/ManageOrganization/addUser';
-import { getRoles } from 'store/actions/organization';
+import { getRoles, roleDetail } from 'store/actions/organization';
 
 function Controller(props) {
   const {
@@ -36,7 +36,7 @@ function Controller(props) {
   const adminState = useSelector((state) => state.admin);
   const [activeRole, setActiveRole] =  useState('');
   const organization = useSelector((state) => state.organization);
-  const { permission } = organization;
+  const { permission, activeOrganization } = organization;
   const { activeForm } = adminState;
   useMemo(() => {
     dispatch(getRoles());
@@ -128,7 +128,10 @@ function Controller(props) {
                 {roles?.map((head) => (
                   <div className="group">
                     <Dropdown.Item 
-                      onClick={() => setActiveRole(head.name)}
+                      onClick={() => {
+                        setActiveRole(head.name)
+                        dispatch(roleDetail(activeOrganization.id, head.id));
+                      }}
                     >
                       {head.name}
                     </Dropdown.Item>

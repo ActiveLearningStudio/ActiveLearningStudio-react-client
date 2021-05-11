@@ -1,50 +1,106 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react';
-import { Tabs, Tab, Table } from 'react-bootstrap';
+import { Tabs, Tab, Table, Accordion, Card } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-//import { getAllRoles } from 'store/actions/organization'
+import { Formik, Field } from 'formik';
+import { updateRole, getAllPermissionId, roleDetail } from 'store/actions/organization'
 
 function UserRoles() {
-  const [parentCat, setParentCat] =  useState(['organizations', 'Projects', 'Playlists', 'Acivities', 'Team']);
-  const [childCat, setChildCat] =  useState(['view', 'update', 'upload', 'create', 'edit','publish']);
+ 
   const dispatch =  useDispatch();
-  
-  
+  const { permission, activeOrganization, activePermission, permissionsId } = useSelector((state) => state.organization);
+  const [checkRoles, setCheckRoles] = useState('');
   useEffect(() => {
-    //dispatch(getAllRoles());
+    const extractPermission = [];
+    if (activePermission) {
+       activePermission?.[0]?.permissions?.map((data) => extractPermission.push(String(data.id)));
+    }
+    console.log(extractPermission)
+    setCheckRoles(extractPermission)
+  }, [activePermission]);
+
+  useEffect(() => {
+    dispatch(getAllPermissionId(activeOrganization?.id));
+    dispatch(roleDetail(activeOrganization.id, 1));
   }, []);
 
   return (
     <div className="user-roles">
       <h2>Permissions</h2>
       <div className="box-group">
-        <div className="top-cat">
-          <h3>All Permissions</h3>
-          <ul>
-            {parentCat.map((data) => <li>{data}</li>)}
-          </ul>
-        </div>
-        <div className="child-cat">
-          <div className="all-cat">
-            {childCat.map((data) => (
-              <div className="form-grouper">
-                <input type="checkbox" name="" />
-                <label>{data}</label>
+      <Formik
+        initialValues={{
+          role_id: activePermission?.[0]?.id,
+          permissions: checkRoles,
+        }}
+        enableReinitialize
+        
+        onSubmit={async(values) => {
+          dispatch(updateRole(activeOrganization.id,values))
+       
+        }}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          setFieldValue,
+          /* and other goodies */
+        }) => (
+          <form onSubmit={handleSubmit}>
+           
+             
+            <div className="form-group-create dynamic-roles ">
+            
+              
+              <Accordion defaultActiveKey="0">
+                {!!permissionsId && Object.keys(permissionsId)?.map((data,counter) => {
+                  
+                  if(typeof(permissionsId[data])==='object') {
+                 return   <Card>
+                    <Accordion.Toggle as={Card.Header} eventKey={String(counter)}>
+                      {data}
+                    </Accordion.Toggle>
+                    <Accordion.Collapse eventKey={String(counter)}>
+                      <Card.Body>
+
+                        {permissionsId[data]?.map((val) => (
+                    
+                    <div  className="form-grouper" role="group" aria-labelledby="checkbox-group">
+                    <label>
+                      <Field type="checkbox" name="permissions" value={String(val.id)} />&nbsp;&nbsp;
+                      {val.name}
+                    </label>  
+       
+                      
+                    </div>
+                  ))}
+                      </Card.Body>
+                    </Accordion.Collapse>
+                  </Card>
+                  }
+                 
+                })}
+                 
+                
+              </Accordion>
+              <div className="error">
+                {errors.title && touched.title && errors.title}
               </div>
-            ))}
-          </div>
-        </div>
-        <div className="config">
-          <div className="btn-config">
-            <button className="btn-update">
-              Update Role
-            </button>
-            <button className="btn-del">
-              Delete Role
-            </button>
-          </div>
-        </div>
+            </div>
+            <div className="button-group">
+              <button type="submit">
+                update Role
+              </button>
+             
+            </div>
+          </form>
+        )}
+      </Formik>
       </div>
     </div>
   );

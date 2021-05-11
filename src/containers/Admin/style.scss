@@ -382,7 +382,7 @@
     background: #0848928f;
     top: 0;
     width: 100%;
-    z-index: 1111;
+    z-index: 1060daikhte hai ;
     height: 100%;
     overflow-y: auto;
     padding-left: 285px;
@@ -567,7 +567,7 @@
           padding: 10px 20px;
 
           .form-grouper {
-            flex-basis: 33%;
+            flex-basis: 25%;
             display: flex;
             align-items: center;
             margin-bottom: 10px;
@@ -582,8 +582,8 @@
             }
 
             input {
-              width: 14px;
-              height: 11px;
+              width: 14px !important;
+              height: 11px !important;
             }
           }
         }
@@ -626,4 +626,35 @@
 }
 
 
+.dynamic-roles {
 
+  .card-body {
+    display: flex;
+    flex-wrap: wrap;
+    
+    padding: 10px 20px;
+
+    .form-grouper {
+      flex-basis: 33%;
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+
+      label {
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 19px;
+        padding-left: 10px;
+        color: #515151;
+        margin:0;
+      }
+
+      input {
+    
+              height: 11px !important;
+              width: 11px !important;
+      }
+    }
+  
+}
+}

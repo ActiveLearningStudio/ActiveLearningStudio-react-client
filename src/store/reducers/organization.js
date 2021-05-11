@@ -20,6 +20,8 @@ const INITIAL_STATE = {
   history: null,
   searchOrg: [],
   permission: {},
+  activePermission: null,
+  permissionsId: null,
   // permission: {
   //   activeRole: 'member',
   //   roleId: 3,
@@ -177,6 +179,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         permission: action.payload,
+      };
+    case actionTypes.SET_ACTIVE_PERMISSION:
+      return {
+        ...state,
+        activePermission: action.payload,
+      };
+    case actionTypes.SET_ALL_PERSMISSION_ID:
+      return {
+        ...state,
+        permissionsId: action.payload,
       };
     default:
       return state;

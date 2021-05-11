@@ -1,5 +1,6 @@
 import organization from 'services/organizations.services';
 import store from 'store';
+import Swal from 'sweetalert2';
 
 import * as actionTypes from '../actionTypes';
 
@@ -251,5 +252,45 @@ export const getAllPermission = (id) => async (dispatch) => {
     type: actionTypes.SET_ALL_PERSMISSION,
     payload: result.permissions,
   });
+  return result;
+};
+
+export const getAllPermissionId = (id) => async (dispatch) => {
+  const result = await organization.permissionId(id);
+  dispatch({
+    type: actionTypes.SET_ALL_PERSMISSION_ID,
+    payload: result.permissions,
+  });
+};
+
+export const roleDetail = (id, roleId) => async (dispatch) => {
+  const result = await organization.roleDetail(id, roleId);
+  dispatch({
+    type: actionTypes.SET_ACTIVE_PERMISSION,
+    payload: result.data,
+  });
+};
+
+export const updateRole = (id, roleId) => async () => {
+  const result = await organization.updateRole(id, roleId);
+  return result;
+};
+
+export const addRole = (id, data) => async () => {
+  Swal.showLoading();
+  const result = organization.addRole(id, data);
+  console.log(result);
+  result.then((data_) => {
+    console.log(data_);
+  }).catch((err) => {
+    Swal.fire({
+      title: err?.message,
+      icor: 'error',
+    });
+  });
+  // dispatch({
+  //   type: actionTypes.SET_ALL_PERSMISSION,
+  //   payload: result.permissions,
+  // });
   return result;
 };

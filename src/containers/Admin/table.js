@@ -23,7 +23,6 @@ import { setActiveAdminForm, setCurrentUser } from 'store/actions/admin';
 function Table(props) {
   
   const {tableHead,history, data, type, activePage, setActivePage, searchAlertToggler } = props;
-  console.log(data)
   const organization = useSelector((state) => state.organization);
   const { activeOrganization, allSuborgList } = organization;
   const dispatch = useDispatch();
