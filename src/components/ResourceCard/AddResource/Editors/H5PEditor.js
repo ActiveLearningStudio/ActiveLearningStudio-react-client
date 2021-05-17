@@ -152,7 +152,7 @@ const H5PEditor = (props) => {
                 Upload
               </label> */}
               <div className="col-md-12">
-                <div className="drop-area" style={{ cursor: 'pointer' }} onClick={() => uploadFile.current.click()}>
+                <div className="drop-area">
                   <input
                     type="file"
                     name="h5p_file"
@@ -160,6 +160,7 @@ const H5PEditor = (props) => {
                     className="laravel-h5p-upload form-control"
                     onChange={setH5pFileUpload}
                     ref={uploadFile}
+                    style={{ cursor: 'pointer' }}
                     // style={{ display: 'none' }}
                   />
                   <div className="upload-holder">
