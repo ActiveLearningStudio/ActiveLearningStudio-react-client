@@ -195,6 +195,8 @@ export const loadMyFavProjectsAction = () => async (dispatch) => {
 
 /* eslint-disable */
 export const loadMyReorderProjectsAction = (projectDivider) => async () => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   const reorderProject = [];
   let reorderIndex = 0;
   projectDivider.map((data) => {
@@ -208,7 +210,7 @@ export const loadMyReorderProjectsAction = (projectDivider) => async () => {
     });
   });
 
-  return await projectService.getReorderAll(reorderProject);
+  return await projectService.getReorderAll(reorderProject, activeOrganization?.id);
 };
 /* eslint-enable */
 

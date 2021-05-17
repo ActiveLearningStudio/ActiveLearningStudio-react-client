@@ -101,8 +101,8 @@ const fetchLmsDetails = (lms, projectId, settingId) => httpService
   }).then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const getReorderAll = (projectData) => httpService
-  .post(`/${apiVersion}/projects/reorder`, {
+const getReorderAll = (projectData, subOrgId) => httpService
+  .post(`/${apiVersion}/suborganization/${subOrgId}/projects/reorder`, {
     projects: projectData,
   }).then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
