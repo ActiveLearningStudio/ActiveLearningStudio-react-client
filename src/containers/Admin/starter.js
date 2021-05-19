@@ -23,7 +23,10 @@ function Starter(props) {
     activePage,
     size,
     setSize,
+    activeRole,
+    setActiveRole,
     searchQuery,
+    subTypeState,
     searchQueryChangeHandler,
     searchAlertToggler,
     setActivePage,
@@ -37,7 +40,10 @@ function Starter(props) {
         btnText={btnText}
         type={type}
         size={size}
+        activeRole={activeRole}
+        setActiveRole={setActiveRole}
         setSize={setSize}
+        subTypeState={subTypeState}
         btnAction={btnAction}
         searchQuery={searchQuery}
         searchQueryChangeHandler={searchQueryChangeHandler}
@@ -46,7 +52,7 @@ function Starter(props) {
         tableHead={tableHead}
         roles={roles}
       />
-      {roles?.length ? (
+      {roles?.length && subTypeState === 'Manage Roles' ? (
        <Userroles />
       ):(
       <TableData

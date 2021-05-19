@@ -21,7 +21,10 @@ function Controller(props) {
     btnText,
     btnAction,
     importUser,
+    subTypeState,
     filter,
+    activeRole,
+    setActiveRole,
     type,
     searchQuery,
     searchQueryChangeHandler,
@@ -29,12 +32,12 @@ function Controller(props) {
     setSize,
     tableHead,
     roles,
-    inviteUser, 
+    inviteUser,
   } = props;
   const dispatch = useDispatch();
   const [allUsersAdded, setAllUsersAdded] = useState([]);
   const adminState = useSelector((state) => state.admin);
-  const [activeRole, setActiveRole] =  useState('');
+  const [activeRoleInComponent, setActiveRoleInComponent] =  useState('');
   const organization = useSelector((state) => state.organization);
   const { permission, activeOrganization } = organization;
   const { activeForm } = adminState;
@@ -43,7 +46,12 @@ function Controller(props) {
   },[])
 
   useEffect(() => {
-    roles?.length > 0 && setActiveRole(roles[0]?.name)
+    if(roles?.length > 0 && subTypeState !== 'Manage Roles'){
+      setActiveRoleInComponent(roles[2]?.display_name)
+      setActiveRole(roles[2]?.id);
+    } else if(roles?.length > 0) {
+      setActiveRoleInComponent(roles[0]?.display_name)
+    }
   }, [roles]);
   return (
     <div className="controller">
@@ -114,30 +122,33 @@ function Controller(props) {
           </span>
         </div>
       )}
-      {roles?.length && (
+      {(roles?.length && type === 'Users') && (
         <div className="filter-dropdown drop-counter ">
-          Select role:
+          {subTypeState ? 'Select role:' : 'Filter by role:'}
           <span>
           <Dropdown>
             <Dropdown.Toggle  id="dropdown-basic">
-              {activeRole}
+              {activeRoleInComponent}
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              
+
                 {roles?.map((head) => (
                   <div className="group">
-                    <Dropdown.Item 
+                    <Dropdown.Item
                       onClick={() => {
-                        setActiveRole(head.name)
-                        dispatch(roleDetail(activeOrganization.id, head.id));
+                        setActiveRoleInComponent(head.display_name);
+                        if(subTypeState) dispatch(roleDetail(activeOrganization.id, head.id));
+                        if(!subTypeState) {
+                          setActiveRole(head.id);
+                        }
                       }}
                     >
-                      {head.name}
+                      {head.display_name}
                     </Dropdown.Item>
                   </div>
                 ))}
-              
+
             </Dropdown.Menu>
           </Dropdown>
           </span>
@@ -188,7 +199,7 @@ function Controller(props) {
             } else if (btnAction === 'add_org') {
               dispatch(setActiveAdminForm('add_org'))
             }
-            
+
           }}
           >
             <FontAwesomeIcon icon="plus" />

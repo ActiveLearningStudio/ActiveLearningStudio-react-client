@@ -5,6 +5,8 @@ const INITIAL_STATE = {
   loading: true,
   activeTab: 'Stats',
   currentUser: null,
+  newUser: null,
+  editUser: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -28,6 +30,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currentUser: action.payload,
+      };
+    case actionTypes.ADD_NEW_USER:
+      return {
+        ...state,
+        newUser: action.payload,
+      };
+    case actionTypes.EDIT_NEW_USER:
+      return {
+        ...state,
+        editUser: action.payload,
       };
     default:
       return state;
