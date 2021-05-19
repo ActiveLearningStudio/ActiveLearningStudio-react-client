@@ -113,7 +113,7 @@ function ProjectPreviewShared(props) {
         activities = (
           <div className="col-md-12">
             <div className="alert alert-info" role="alert">
-              No activities defined for this playlist.
+              No activity defined for this playlist.
             </div>
           </div>
         );
