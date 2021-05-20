@@ -76,6 +76,8 @@ function CreateTeam(props) {
       showCreate();
     } else if (showAssigning) {
       showInvite();
+    } else {
+      history.goBack();
     }
   };
 
