@@ -81,10 +81,9 @@ $filled: #44ca92;
           }
 
           .member-mark-container {
-            height: 30px;
             margin-top: 15px;
             display: flex;
-
+            flex-wrap: wrap;
             .member-dropdown {
               .member-dropdown-btn {
                 margin-left: -4px;
