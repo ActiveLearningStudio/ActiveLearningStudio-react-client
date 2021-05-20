@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import UserCirlce from 'assets/images/UserCircle2.png';
 import PropTypes from 'prop-types';
 import {
@@ -10,9 +10,18 @@ import { useDispatch, useSelector } from 'react-redux';
 
 export default function UserRow(props) {
   const allListState = useSelector((state) => state.organization);
+  const auth = useSelector((state) => state.auth);
+  const { user } = props;
+  const [deleteButtonDisplay, setDeleteButtonDisplay] = useState(false);
+  useEffect(() => {
+    if (user && auth) {
+      if (user?.organization_role === 'Administrator' && user.email === auth?.user?.email) {
+        setDeleteButtonDisplay(true);
+      }
+    }
+  }, [auth, user]);
   const { permission } = allListState;
   const dispatch = useDispatch();
-  const { user } = props;
   const handleDelete = (userId) => {
     Swal.fire({
       title: 'Are you sure you want to delete this User?',
@@ -75,7 +84,7 @@ export default function UserRow(props) {
             {/* <Link href="#">Edit</Link> */}
           </div>
         )}
-        {permission?.Organization?.includes('organization:delete-user') && (
+        {(permission?.Organization?.includes('organization:delete-user') && deleteButtonDisplay === false) && (
           <div className="secondary-column">
             <Link onClick={() => handleDelete(user?.id)}>Delete</Link>
           </div>
