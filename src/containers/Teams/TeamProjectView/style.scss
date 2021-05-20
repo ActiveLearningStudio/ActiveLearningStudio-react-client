@@ -80,8 +80,8 @@
           }
 
           .member-mark-container {
-            height: 30px;
             margin-top: 15px;
+            flex-wrap: wrap;
             display: flex;
 
             .member-dropdown {
@@ -132,7 +132,7 @@
                 padding-right: 1em;
                 padding-left: 1em;
                 font-size: 12px;
-
+                z-index: 1050;
                 .dropdown-divider {
                   width: calc(100% + 2em);
                   margin-left: -1em;

@@ -76,6 +76,8 @@ function CreateGroup(props) {
       showCreate();
     } else if (showAssigning) {
       showInvite();
+    } else {
+      history.goBack();
     }
   };
 
