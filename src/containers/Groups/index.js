@@ -104,16 +104,18 @@ function GroupPage(props) {
     <>
       <div className="side-wrapper-group">
         <div className="bread-crumb">
-          {breadCrumb.map((node, index, these) => (
-            <div key={node}>
-              <span className={index + 1 < these.length ? 'parent' : 'child'}>
-                {node}
-              </span>
-              {index + 1 < these.length && (
-                <FontAwesomeIcon icon="angle-right" />
-              )}
-            </div>
-          ))}
+          <div className="main-flex-top">
+            {breadCrumb.map((node, index, these) => (
+              <div key={node}>
+                <span className={index + 1 < these.length ? 'parent' : 'child'}>
+                  {node}
+                </span>
+                {index + 1 < these.length && (
+                  <FontAwesomeIcon icon="angle-right" />
+                )}
+              </div>
+            ))}
+          </div>
           <Link className="back-button-main-page" onClick={goBack}>
             <FontAwesomeIcon icon="chevron-left" />
             Back
