@@ -18,12 +18,12 @@ function GroupCard(props) {
     },
   } = props;
   const dispatch = useDispatch();
-  let memCnt = `00${users.length}`;
-  memCnt = memCnt.slice(memCnt.length - 2, memCnt.length);
+  // let memCnt = `00${users.length}`;
+  // memCnt = memCnt.slice(memCnt.length - 2, memCnt.length);
   const organization = useSelector((state) => state.organization);
   const { permission } = organization;
-  let projCnt = `00${projects.length}`;
-  projCnt = projCnt.slice(projCnt.length - 2, projCnt.length);
+  // let projCnt = `00${projects.length}`;
+  // projCnt = projCnt.slice(projCnt.length - 2, projCnt.length);
   const deleteGroup = () => {
     Swal.fire({
       title: 'Are you sure you want to delete this group?',
@@ -53,7 +53,7 @@ function GroupCard(props) {
       <div className="group-member-content mid-border">
         <div className="sub-title">
           <span>Group Members</span>
-          <span>{`(${memCnt})`}</span>
+          <span>{`(${users?.length})`}</span>
         </div>
 
         <div className="member-mark-container">
@@ -67,7 +67,7 @@ function GroupCard(props) {
 
       <div className="sub-title">
         <span>Projects for the Group</span>
-        <span>{`(${projCnt})`}</span>
+        <span>{`(${projects?.length})`}</span>
       </div>
       {permission?.Group?.includes('group:delete') && (
         <div>
