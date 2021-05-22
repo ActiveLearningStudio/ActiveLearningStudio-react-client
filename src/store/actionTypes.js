@@ -382,3 +382,5 @@ export const SET_ACTIVE_TAB = 'SET_ACTIVE_TAB';
 export const CURRENT_USER = 'CURRENT_USER';
 export const SHOW_HELP = 'SHOW_HELP';
 export const HIDE_HELP = 'HIDE_HELP';
+export const ADD_NEW_USER = 'ADD_NEW_USER';
+export const EDIT_NEW_USER = 'EDIT_NEW_USER';

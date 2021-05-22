@@ -1,4 +1,6 @@
+import adminService from 'services/admin.service';
 import * as actionTypes from '../actionTypes';
+import store from '../index';
 
 export const setActiveAdminForm = (type) => async (dispatch) => {
   dispatch({
@@ -25,4 +27,26 @@ export const setCurrentUser = (user) => async (dispatch) => {
     type: actionTypes.CURRENT_USER,
     payload: user,
   });
+};
+
+export const addUserInOrganization = (user) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const result = await adminService.addUserInOrganization(user, activeOrganization?.id);
+  dispatch({
+    type: actionTypes.ADD_NEW_USER,
+    payload: result,
+  });
+  return result;
+};
+
+export const editUserInOrganization = (user) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const result = await adminService.editUserInOrganization(user, activeOrganization?.id);
+  dispatch({
+    type: actionTypes.EDIT_NEW_USER,
+    payload: result,
+  });
+  return result;
 };

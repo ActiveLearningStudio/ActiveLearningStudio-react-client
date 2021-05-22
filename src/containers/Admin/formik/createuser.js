@@ -3,58 +3,92 @@ import React, { useState, useRef } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { removeActiveAdminForm } from 'store/actions/admin';
+import { addUserInOrganization,editUserInOrganization, removeActiveAdminForm } from 'store/actions/admin';
+import Swal from 'sweetalert2';
 
 export default function CreateUser(prop) {
   const { editMode } = prop;
   const [activityImage, setActivityImage] =  useState('')
   const imgref  = useRef();
   const dispatch = useDispatch();
+  const organization = useSelector((state) => state.organization);
+  const { roles } = organization;
   const adminState = useSelector((state) => state.admin);
   const { activeForm, currentUser } = adminState;
   return (
     <div className="create-form">
       <Formik
         initialValues={{
-          firstName: editMode ? currentUser?.first_name : '',
-          lastName: editMode ? currentUser?.last_name : '',
-          organizationType:editMode ? currentUser?.organization_type : '',
-          organizationName:editMode ? currentUser?.organization_name :'',
-          jobTitle:editMode ? currentUser?.job_title :"",
-          role:editMode ? currentUser?.organization_role :"",
+          first_name: editMode ? currentUser?.first_name : '',
+          last_name: editMode ? currentUser?.last_name : '',
+          organization_type:editMode ? currentUser?.organization_type : '',
+          organization_name:editMode ? currentUser?.organization_name :'',
+          job_title:editMode ? currentUser?.job_title :"",
+          role_id:editMode ? currentUser?.organization_role_id : '',
           email:editMode ? currentUser?.email :'',
           password:'',
         }}
         validate={(values) => {
           const errors = {};
-          if (!values.firstName) {
-            errors.firstName = 'Required';
+          if (!values.first_name) {
+            errors.first_name = 'Required';
           }
-          if (!values.lastName) {
-            errors.lastName = 'Required';
+          if (!values.last_name) {
+            errors.last_name = 'Required';
           }
           if (!values.email) {
             errors.email = 'Required';
           }
-          if (!values.password) {
+          if (!values.password && !editMode) {
             errors.password = 'Required';
           }
-          if (!values.role) {
-            errors.role = 'Required';
+          if (!values.role_id) {
+            errors.role_id = 'Required';
           }
-          if (!values.organizationType) {
-            errors.organizationType = 'Required';
+          if (!values.organization_type) {
+            errors.organization_type = 'Required';
           }
-          if (!values.organizationName) {
-            errors.organizationName = 'Required';
+          if (!values.organization_name) {
+            errors.organization_name = 'Required';
           }
-          if (!values.jobTitle) {
-            errors.jobTitle = 'Required';
+          if (!values.job_title) {
+            errors.job_title = 'Required';
           }
           return errors;
         }}
-        onSubmit={(values) => {
+        onSubmit={async (values) => {
+          if (editMode) {
+            Swal.fire({
+              title: 'Users',
+              icon: 'info',
+              text: 'Updating User...',
+              allowOutsideClick: false,
+              onBeforeOpen: () => {
+                Swal.showLoading();
+              },
+              button: false,
+            });
+            await dispatch(editUserInOrganization(values));
+            Swal.close();
+            dispatch(removeActiveAdminForm());
 
+          } else {
+            Swal.fire({
+              title: 'Users',
+              icon: 'info',
+              text: 'Creating new user...',
+
+              allowOutsideClick: false,
+              onBeforeOpen: () => {
+                Swal.showLoading();
+              },
+              button: false,
+            });
+            await dispatch(addUserInOrganization(values));
+            Swal.close();
+            dispatch(removeActiveAdminForm());
+
+          }
         }}
       >
         {({
@@ -73,26 +107,26 @@ export default function CreateUser(prop) {
               <h3>First Name</h3>
               <input
                 type="text"
-                name="firstName"
+                name="first_name"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.firstName}
+                value={values.first_name}
               />
               <div className="error">
-                {errors.firstName && touched.firstName && errors.firstName}
+                {errors.first_name && touched.first_name && errors.first_name}
               </div>
             </div>
             <div className="form-group-create">
               <h3>Last Name</h3>
               <input
                 type="text"
-                name="lastName"
+                name="last_name"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.lastName}
+                value={values.last_name}
               />
               <div className="error">
-                {errors.lastName && touched.lastName && errors.lastName}
+                {errors.last_name && touched.last_name && errors.last_name}
               </div>
             </div>
             <div className="form-group-create">
@@ -126,54 +160,60 @@ export default function CreateUser(prop) {
             }
             <div className="form-group-create">
               <h3>Role</h3>
-              <input
+              {/* <input
                 type="text"
                 name="role"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.role}
-              />
+              /> */}
+              <select name="role_id" onChange={handleChange} onBlur={handleBlur} value={values.role}>
+                <option value="">{''}</option>
+                {roles?.length > 0 && roles?.map((role)=>(
+                  <option value={role?.id} key={role?.id}>{role?.display_name}</option>
+                ))}
+              </select>
               <div className="error">
-                {errors.role && touched.role && errors.role}
+                {errors.role_id && touched.role_id && errors.role_id}
               </div>
             </div>
             <div className="form-group-create">
               <h3>Organization Type</h3>
               <input
                 type="text"
-                name="organizationType"
+                name="organization_type"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.organizationType}
+                value={values.organization_type}
               />
               <div className="error">
-                {errors.organizationType && touched.organizationType && errors.organizationType}
+                {errors.organization_type && touched.organization_type && errors.organization_type}
               </div>
             </div>
             <div className="form-group-create">
               <h3>Organization Name</h3>
               <input
                 type="text"
-                name="organizationName"
+                name="organization_name"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.organizationName}
+                value={values.organization_name}
               />
               <div className="error">
-                {errors.organizationName && touched.organizationName && errors.organizationName}
+                {errors.organization_name && touched.organization_name && errors.organization_name}
               </div>
             </div>
             <div className="form-group-create">
               <h3>Job Title</h3>
               <input
                 type="text"
-                name="jobTitle"
+                name="job_title"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.jobTitle}
+                value={values.job_title}
               />
               <div className="error">
-                {errors.jobTitle && touched.jobTitle && errors.jobTitle}
+                {errors.job_title && touched.job_title && errors.job_title}
               </div>
             </div>
             <div className="button-group">

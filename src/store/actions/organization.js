@@ -214,14 +214,15 @@ export const clearHistory = () => async (dispatch) => {
   });
 };
 
-export const getOrgUsers = (id, page, size) => async (dispatch) => {
-  const result = await organization.getOrgUsers(id, page, size);
+export const getOrgUsers = (id, page, size, activeRole) => async (dispatch) => {
+  const result = await organization.getOrgUsers(id, page, size, activeRole);
   dispatch({
     type: actionTypes.GET_ORGANIZATION_USERS,
     payload: {
       result,
       page,
       size,
+      activeRole,
     },
   });
   return result;

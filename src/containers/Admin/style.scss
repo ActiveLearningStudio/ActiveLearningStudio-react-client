@@ -325,7 +325,7 @@
           margin-top: 5px;
           border-radius: 7px;
           cursor: pointer;
-              
+
 
         }
       }
@@ -434,6 +434,13 @@
              height:100px
            }
 
+           select {
+            width: 100%;
+            height:38px;
+            border: 1px solid #888888;
+            box-sizing: border-box;
+            border-radius: 3px;
+           }
            h3 {
             font-size: 16px;
             line-height: 127.85%;
@@ -687,7 +694,7 @@
   .card-body {
     display: flex;
     flex-wrap: wrap;
-    
+
     padding: 10px 20px;
 
     .form-grouper {
@@ -706,11 +713,11 @@
       }
 
       input {
-    
+
               height: 11px !important;
               width: 11px !important;
       }
     }
-  
+
 }
 }

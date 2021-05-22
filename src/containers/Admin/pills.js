@@ -17,13 +17,14 @@ function Pills(props) {
   const { activeTab } = admin
   const [ activePage, setActivePage ] = useState(1);
   const [ size, setSize ] = useState(25);
+  const [ activeRole,setActiveRole ] = useState('');
   const { activeOrganization, roles } = organization;
   const [users, setUsers] = useState(null);
   const [searchAlertToggler, setSearchAlertToggler] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const searchUsers = async (query, page) => {
     const result = await dispatch(searchUserInOrganization(activeOrganization?.id, query, page));
-    if (result.data.length > 0) { 
+    if (result.data.length > 0) {
       setUsers(result);
       setSearchAlertToggler(1);
     } else {
@@ -46,12 +47,12 @@ function Pills(props) {
       if (organization?.users?.data?.length > 0 && activePage === organization?.activePage && size === organization?.size) {
         setUsers(organization?.users);
       } else {
-        const result = await dispatch(getOrgUsers(activeOrganization?.id, activePage, size));
+        const result = await dispatch(getOrgUsers(activeOrganization?.id, activePage, size, activeRole));
         setUsers(result);
       }
     }
     dispatch(getsubOrgList(activeOrganization?.id));
-  }, [activeOrganization, activePage, type, subTypeState , activeTab, size])
+  }, [activeOrganization, activePage, type, subTypeState , activeTab, size, activeRole])
   // All Users Business Logic End
   const dummy =  [
     {
@@ -144,11 +145,14 @@ function Pills(props) {
                 activePage={activePage}
                 size={size}
                 setSize={setSize}
+                activeRole={activeRole}
+                setActiveRole={setActiveRole}
                 searchQuery={searchQuery}
                 searchQueryChangeHandler={searchQueryChangeHandler}
                 searchAlertToggler={searchAlertToggler}
                 setActivePage={setActivePage}
                 type={type}
+                roles={roles}
                 inviteUser={true}
               />
             )}
@@ -161,8 +165,11 @@ function Pills(props) {
                 btnAction="add_role"
                 importUser={false}
                 filter={false}
+                subTypeState={subTypeState}
                 tableHead={[]}
                 data={[]}
+                activeRole={activeRole}
+                setActiveRole={setActiveRole}
                 type={type}
                 roles={roles}
               />
