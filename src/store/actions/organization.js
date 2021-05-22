@@ -120,21 +120,21 @@ export const deleteOrganization = (data) => async (dispatch) => {
   return result;
 };
 
-export const createOrganizationNew = (data, allUsers, alladmins) => async (dispatch) => {
-  const adminUsers = alladmins.map((admin) => admin?.value?.userInfo?.id);
-  const usersList = allUsers.map((user) => (
-    {
-      user_id: user?.value?.userInfo?.id,
-      role_id: user?.role?.id,
-    }
-  ));
+export const createOrganizationNew = (data) => async (dispatch) => {
+  // const adminUsers = alladmins.map((admin) => admin?.value?.userInfo?.id);
+  // const usersList = allUsers.map((user) => (
+  //   {
+  //     user_id: user?.value?.userInfo?.id,
+  //     role_id: user?.role?.id,
+  //   }
+  // ));
   const details = {
     name: data.name,
     description: data.description,
     image: data.image,
     parent_id: data.parent_id,
-    admins: adminUsers,
-    users: usersList,
+    // admins: adminUsers,
+    // users: usersList,
     domain: data.domain,
   };
   const result = await organization.createOrganization(details);

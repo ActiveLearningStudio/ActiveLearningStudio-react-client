@@ -138,7 +138,11 @@ function Table(props) {
               <td>{row.groups_count}<div className="view-all">view all</div></td>
               <td>{row.teams_count}<div className="view-all">view all</div></td>
               <td>
-              <Link style={{ float: 'left' }}>
+              <Link 
+                onClick={() => {
+                  dispatch(setActiveAdminForm("edit_org"));
+                }}
+              style={{ float: 'left' }}>
                   Edit
                 </Link>
                 <Link

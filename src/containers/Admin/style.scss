@@ -422,12 +422,16 @@
 
         .form-group-create {
             margin-bottom: 10px;
-           input {
+           input,textarea {
              width: 100%;
              height:38px;
              border: 1px solid #888888;
              box-sizing: border-box;
              border-radius: 3px;
+           }
+
+           textarea {
+             height:100px
            }
 
            h3 {
@@ -624,6 +628,44 @@
     }
   }
 }
+
+.img-upload-form {
+
+  .playimg {
+    background-size: contain;
+    width: 100%;
+    height: 100%;
+    background-position: 50%;
+    background-repeat: no-repeat;
+  }
+
+  width: 220px;
+  height: 220px;
+  background: #E5E5E5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+  position: relative;
+
+  .update-img {
+    background: #005affd1;
+    width: 100%;
+    color: white;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    padding: 5px 0px;
+  }
+
+  p {
+    font-weight: normal;
+    font-size: 14px;
+    color: #515151;
+    padding-top: 10px;
+  }
+ }
 
 
 .dynamic-roles {

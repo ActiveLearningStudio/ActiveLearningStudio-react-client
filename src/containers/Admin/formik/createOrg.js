@@ -1,39 +1,65 @@
 /* eslint-disable */
-import React, { useState, useRef } from 'react';
-import { Formik } from 'formik';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useRef } from "react";
+import { Formik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { uploadImage, createOrganizationNew, checkBranding  } from "store/actions/organization";
+import { removeActiveAdminForm } from "store/actions/admin";
+import imgAvatar from "assets/images/img-avatar.png";
+import Swal from "sweetalert2";
+import loader from 'assets/images/dotsloader.gif';
 
-import { removeActiveAdminForm } from 'store/actions/admin';
-
-export default function CreateOrg() {
-  const [activityImage, setActivityImage] =  useState('')
-  const imgref  = useRef();
+export default function CreateOrg(prop) {
+  const { editMode } = prop;
+  const [imageActive, setImgActive] = useState(null);
+  const [activityImage, setActivityImage] = useState("");
+  const imgUpload = useRef();
+  const allListState = useSelector((state) => state.organization);
   const dispatch = useDispatch();
+  const [loaderImg, setLoaderImg] = useState(false);
   const adminState = useSelector((state) => state.admin);
-  const { activeForm } = adminState;
+  const { activeForm, currentUser } = adminState;
   return (
     <div className="create-form">
       <Formik
         initialValues={{
-          title: '',
-          image: '',
-          order: '',
+          image: editMode ? "" : "",
+          name: editMode ? currentUser?.first_name : "",
+          description: editMode ? currentUser?.last_name : "",
+          domain: editMode ? currentUser?.organization_name : "",
         }}
         validate={(values) => {
           const errors = {};
-          if (!values.title) {
-            errors.title = 'Required';
+          if (!values.name) {
+            errors.name = "Required";
+          }
+          if (!values.description) {
+            errors.description = "Required";
+          }
+          if (!values.domain) {
+            errors.domain = "Required";
+          } else if (values.domain?.length < 2) {
+            errors.domain = 'Character limit should be greater then one';
+          } else if (values.domain === true) {
+            errors.domain = 'Domain already taken, Kindly try again.';
           }
           if (!values.image) {
-            errors.image = 'Required';
+            errors.image = "Required";
           }
-          if (!values.order) {
-            errors.order = 'Required';
-          }
+
           return errors;
         }}
-        onSubmit={(values) => {
-         
+        onSubmit={async (values) => {
+          
+          Swal.fire({
+            title: "Please Wait !",
+            html: "Creating Organization ...",
+            allowOutsideClick: false,
+            onBeforeOpen: () => {
+              Swal.showLoading();
+            },
+          });
+          const result = await dispatch(createOrganizationNew(values));
+          console.log(result);
         }}
       >
         {({
@@ -47,63 +73,155 @@ export default function CreateOrg() {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <h2>Create Organization</h2>
+            <h2>{editMode ? "Edit " : "Create "} Organization</h2>
             <div className="form-group-create">
-              <h3>Title</h3>
+              <h3>Organization Name</h3>
               <input
                 type="text"
-                name="title"
+                name="name"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.title}
+                value={values.name}
               />
               <div className="error">
-                {errors.title && touched.title && errors.title}
+                {errors.name && touched.name && errors.name}
               </div>
             </div>
             <div className="form-group-create">
-              <h3>Image</h3>
-              <div className="imgupload">
-              <input
+              <h3>Organization Image</h3>
+              <div
+                className="img-upload-form"
+                onClick={() => imgUpload.current.click()}
+              >
+                <input
+                  type="file"
+                  name="image"
+                  onChange={(e) => {
+                    if (
+                      !(
+                        e.target.files[0].type.includes("png") ||
+                        e.target.files[0].type.includes("jpg") ||
+                        e.target.files[0].type.includes("gif") ||
+                        e.target.files[0].type.includes("jpeg")
+                      )
+                    ) {
+                      Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "Invalid file selected.",
+                      });
+                    } else if (e.target.files[0].size > 100000000) {
+                      Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "Selected file size should be less then 100MB.",
+                      });
+                    } else {
+                      const formData = new FormData();
+                      try {
+                        formData.append("thumb", e.target.files[0]);
+                        const imgurl = dispatch(
+                          uploadImage(
+                            allListState.currentOrganization?.id,
+                            formData
+                          )
+                        );
+                        imgurl.then((img) => {
+                          setImgActive(img.data?.thumbUrl);
+                          setFieldValue("image", img.data?.thumbUrl);
+                        });
+                      } catch (err) {
+                        Swal.fire({
+                          icon: "error",
+                          title: "Error",
+                          text: "Image upload failed, kindly try again.",
+                        });
+                      }
+                    }
+                  }}
+                  onBlur={handleBlur}
+                  ref={imgUpload}
+                  style={{ display: "none" }}
+                />
+                {imageActive ? (
+                  <>
+                    <div
+                      className="playimg"
+                      style={{
+                        backgroundImage: `url(${global.config.resourceUrl}${imageActive})`,
+                      }}
+                    />
+                    <div
+                      className="update-img"
+                      onClick={() => imgUpload.current.click()}
+                    >
+                      Update Image
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <img src={imgAvatar} alt="" />
+                    <p>Upload Image</p>
+                  </>
+                )}
+                <div className="error">
+                  {errors.image && touched.image && errors.image}
+                </div>
+              </div>
+            </div>
+            <div className="form-group-create">
+              <h3>Description</h3>
+              <textarea
                 type="text"
-                name="image"
+                name="description"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                disabled
+                value={values.description}
               />
-              <button onClick={() => imgref.current.click()}>
-                Browse
-              </button>
-              <input 
-                style={{ display: 'none'}}
-                type="file"
-                ref={imgref}
+              <div className="error">
+                {errors.description &&
+                  touched.description &&
+                  errors.description}
+              </div>
+            </div>
+            <div className="form-group-create">
+              <h3>Domain</h3>
+              <input
+                type="text"
+                name="domain"
+                autoComplete="off"
                 onChange={(e) => {
-                  console.log(e.target.file);
+                  if (e.target.value.length > 1) {
+                    const inputValue = e.target.value;
+                    setLoaderImg(true);
+                    const result = dispatch(checkBranding(e.target.value));
+                    result
+                      .then(() => {
+                        setLoaderImg(false);
+                        setFieldValue("domain", true);
+                      })
+                      .catch((err) => {
+                        if (err.errors) {
+                          setLoaderImg(false);
+                          setFieldValue("domain", inputValue);
+                        }
+                      });
+                  } else {
+                    setFieldValue("domain", e.target?.value);
+                  }
                 }}
-              />
-              </div>
-              <div className="error">
-                {errors.title && touched.title && errors.title}
-              </div>
-            </div>
-            {activityImage && <img className="selected-img" src={activityImage} alt="" />}
-            <div className="form-group-create">
-              <h3>Order</h3>
-              <input
-                type="number"
-                name="order"
-                onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.order}
+                // value={values.admin}
               />
+              {loaderImg && <img src={loader} style={{ width:'25px'}} alt="" className="loader" />}
               <div className="error">
-                {errors.order && touched.order && errors.order}
+                {errors.domain && touched.domain && errors.domain}
               </div>
             </div>
+
             <div className="button-group">
               <button type="submit">
-                Add Activity Type
+                {editMode ? "Edit " : "Create "} Organization
               </button>
               <button
                 type="button"
@@ -122,6 +240,4 @@ export default function CreateOrg() {
   );
 }
 
-CreateOrg.propTypes = {
-
-};
+CreateOrg.propTypes = {};
