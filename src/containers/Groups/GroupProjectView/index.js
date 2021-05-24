@@ -6,7 +6,7 @@ import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 
-import { zeroFill } from 'utils';
+// import { zeroFill } from 'utils';
 import { removeMemberFromProjectAction, removeProjectAction } from 'store/actions/group';
 
 import './style.scss';
@@ -113,7 +113,7 @@ function GroupProjectView(props) {
               <div className="group-member-content mid-border">
                 <div className="sub-title">
                   <span>Group Members</span>
-                  <span>{`(${zeroFill(project.users.length)})`}</span>
+                  <span>{`(${project.users.length})`}</span>
                 </div>
 
                 <div className="member-mark-container">

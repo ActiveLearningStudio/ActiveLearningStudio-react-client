@@ -31,12 +31,12 @@ function TeamCard(props) {
       }
     });
   };
-  let memCnt = `00${users.length}`;
-  memCnt = memCnt.slice(memCnt.length - 2, memCnt.length);
+  // let memCnt = `00${users.length}`;
+  // memCnt = memCnt.slice(memCnt.length - 2, memCnt.length);
   const organization = useSelector((state) => state.organization);
   const { permission } = organization;
-  let projCnt = `00${projects.length}`;
-  projCnt = projCnt.slice(projCnt.length - 2, projCnt.length);
+  // let projCnt = `00${projects.length}`;
+  // projCnt = projCnt.slice(projCnt.length - 2, projCnt.length);
 
   return (
     <div className="team-card-content">
@@ -54,7 +54,7 @@ function TeamCard(props) {
       <div className="team-member-content mid-border">
         <div className="sub-title">
           <span>Team Members</span>
-          <span>{`(${memCnt})`}</span>
+          <span>{`(${users?.length})`}</span>
         </div>
 
         <div className="member-mark-container">
@@ -68,7 +68,7 @@ function TeamCard(props) {
 
       <div className="sub-title">
         <span>Projects for the Team</span>
-        <span>{`(${projCnt})`}</span>
+        <span>{`(${projects?.length})`}</span>
       </div>
       {permission?.Team?.includes('team:delete') && (
         <div>
