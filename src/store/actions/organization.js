@@ -114,13 +114,13 @@ export const uploadImage = (id, formData) => () => organization.upload(id, formD
 export const deleteOrganization = (data) => async (dispatch) => {
   const result = await organization.deleteOrganization(data.id);
   dispatch({
-    type: actionTypes.NEW_SUBORG_ADD,
+    type: actionTypes.REMOVE_SUBORG_DEL,
     payload: data,
   });
   return result;
 };
 
-export const createOrganizationNew = (data) => async (dispatch) => {
+export const createOrganizationNew = (id, data) => async (dispatch) => {
   // const adminUsers = alladmins.map((admin) => admin?.value?.userInfo?.id);
   // const usersList = allUsers.map((user) => (
   //   {
@@ -132,41 +132,93 @@ export const createOrganizationNew = (data) => async (dispatch) => {
     name: data.name,
     description: data.description,
     image: data.image,
-    parent_id: data.parent_id,
+    parent_id: id,
     // admins: adminUsers,
     // users: usersList,
     domain: data.domain,
   };
-  const result = await organization.createOrganization(details);
-  dispatch({
-    type: actionTypes.NEW_SUBORG_ADD,
-    payload: result.suborganization,
+  const result = organization.createOrganization(details);
+  result.then((newOrg) => {
+    dispatch({
+      type: actionTypes.NEW_SUBORG_ADD,
+      payload: newOrg.suborganization,
+    });
+    dispatch({
+      type: 'CLEAR_ACTIVE_FORM',
+    });
+    Swal.fire({
+      icon: 'success',
+      text: 'Created',
+    });
+  }).catch((err) => {
+    try {
+      Object.keys(err.errors).map((errors, index) => {
+        if (index < 1) {
+          Swal.fire({
+            icon: 'error',
+            text: err.errors[errors],
+          });
+        }
+        return true;
+      });
+    } catch {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!',
+      });
+    }
   });
-  return result;
 };
 
-export const updateOrganization = (id, data, allUsers, alladmins) => async (dispatch) => {
-  const adminUsers = alladmins.map((admin) => admin?.value?.userInfo?.id);
-  const usersList = allUsers.map((user) => (
-    {
-      user_id: user?.value?.userInfo?.id,
-      role_id: user?.role?.id,
-    }
-  ));
+export const updateOrganization = (id, data, parent) => async (dispatch) => {
+  // const adminUsers = alladmins.map((admin) => admin?.value?.userInfo?.id);
+  // const usersList = allUsers.map((user) => (
+  //   {
+  //     user_id: user?.value?.userInfo?.id,
+  //     role_id: user?.role?.id,
+  //   }
+  // ));
   const details = {
     name: data.name,
     description: data.description,
     image: data.image,
-    parent_id: data.parent_id,
-    admins: adminUsers,
-    users: usersList,
+    parent_id: parent,
+    // admins: adminUsers,
+    // users: usersList,
   };
-  const result = await organization.updateOrganization(details, id);
-  dispatch({
-    type: actionTypes.NEW_SUBORG_ADD,
-    payload: result.suborganization,
+  const result = organization.updateOrganization(details, id);
+  result.then((newOrg) => {
+    dispatch({
+      type: actionTypes.ADD_SUBORG_EDIT,
+      payload: newOrg.suborganization,
+    });
+    dispatch({
+      type: 'CLEAR_ACTIVE_FORM',
+    });
+    Swal.fire({
+      icon: 'success',
+      text: 'updated',
+    });
+  }).catch((err) => {
+    try {
+      Object.keys(err.errors).map((errors, index) => {
+        if (index < 1) {
+          Swal.fire({
+            icon: 'error',
+            text: err.errors[errors]?.[0],
+          });
+        }
+        return true;
+      });
+    } catch {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!',
+      });
+    }
   });
-  return result;
 };
 
 export const allUsers = (data) => async () => {

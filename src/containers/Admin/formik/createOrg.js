@@ -1,12 +1,18 @@
 /* eslint-disable */
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { uploadImage, createOrganizationNew, checkBranding  } from "store/actions/organization";
+import {
+  uploadImage,
+  createOrganizationNew,
+  checkBranding,
+  updateOrganization,
+} from "store/actions/organization";
 import { removeActiveAdminForm } from "store/actions/admin";
 import imgAvatar from "assets/images/img-avatar.png";
 import Swal from "sweetalert2";
-import loader from 'assets/images/dotsloader.gif';
+import loader from "assets/images/dotsloader.gif";
+import EditActivity from "containers/EditActivity";
 
 export default function CreateOrg(prop) {
   const { editMode } = prop;
@@ -18,14 +24,23 @@ export default function CreateOrg(prop) {
   const [loaderImg, setLoaderImg] = useState(false);
   const adminState = useSelector((state) => state.admin);
   const { activeForm, currentUser } = adminState;
+  const { activeEdit, activeOrganization } = allListState;
+
+  useEffect(() => {
+    if (editMode) {
+      setImgActive(activeEdit?.image);
+    } else {
+      setImgActive(null);
+    }
+  }, [editMode]);
   return (
     <div className="create-form">
       <Formik
         initialValues={{
-          image: editMode ? "" : "",
-          name: editMode ? currentUser?.first_name : "",
-          description: editMode ? currentUser?.last_name : "",
-          domain: editMode ? currentUser?.organization_name : "",
+          image: editMode ? activeEdit.image : "",
+          name: editMode ? activeEdit?.name : "",
+          description: editMode ? activeEdit?.description : "",
+          domain: editMode ? activeEdit?.domain : "",
         }}
         validate={(values) => {
           const errors = {};
@@ -38,9 +53,9 @@ export default function CreateOrg(prop) {
           if (!values.domain) {
             errors.domain = "Required";
           } else if (values.domain?.length < 2) {
-            errors.domain = 'Character limit should be greater then one';
+            errors.domain = "Character limit should be greater then one";
           } else if (values.domain === true) {
-            errors.domain = 'Domain already taken, Kindly try again.';
+            errors.domain = "Domain already taken, Kindly try again.";
           }
           if (!values.image) {
             errors.image = "Required";
@@ -49,17 +64,25 @@ export default function CreateOrg(prop) {
           return errors;
         }}
         onSubmit={async (values) => {
-          
           Swal.fire({
             title: "Please Wait !",
-            html: "Creating Organization ...",
+            html: editMode
+              ? "Updating Organization ... "
+              : "Creating Organization ... ",
             allowOutsideClick: false,
             onBeforeOpen: () => {
               Swal.showLoading();
             },
           });
-          const result = await dispatch(createOrganizationNew(values));
-          console.log(result);
+          if (editMode) {
+            const result = await dispatch(
+              updateOrganization(activeOrganization.id, values, activeEdit.parent.id)
+            );
+          } else {
+            const result = await dispatch(
+              createOrganizationNew(activeOrganization.id, values)
+            );
+          }
         }}
       >
         {({
@@ -184,12 +207,14 @@ export default function CreateOrg(prop) {
                   errors.description}
               </div>
             </div>
+            {!editMode &&
             <div className="form-group-create">
               <h3>Domain</h3>
               <input
                 type="text"
                 name="domain"
                 autoComplete="off"
+                value={values.domain}
                 onChange={(e) => {
                   if (e.target.value.length > 1) {
                     const inputValue = e.target.value;
@@ -213,12 +238,19 @@ export default function CreateOrg(prop) {
                 onBlur={handleBlur}
                 // value={values.admin}
               />
-              {loaderImg && <img src={loader} style={{ width:'25px'}} alt="" className="loader" />}
+              {loaderImg && (
+                <img
+                  src={loader}
+                  style={{ width: "25px" }}
+                  alt=""
+                  className="loader"
+                />
+              )}
               <div className="error">
                 {errors.domain && touched.domain && errors.domain}
               </div>
             </div>
-
+            }
             <div className="button-group">
               <button type="submit">
                 {editMode ? "Edit " : "Create "} Organization

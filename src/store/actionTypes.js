@@ -384,3 +384,6 @@ export const SHOW_HELP = 'SHOW_HELP';
 export const HIDE_HELP = 'HIDE_HELP';
 export const ADD_NEW_USER = 'ADD_NEW_USER';
 export const EDIT_NEW_USER = 'EDIT_NEW_USER';
+export const SET_ACTIVE_EDIT = 'SET_ACTIVE_EDIT';
+export const REMOVE_SUBORG_DEL = 'REMOVE_SUBORG_DEL';
+export const ADD_SUBORG_EDIT = 'ADD_SUBORG_EDIT';

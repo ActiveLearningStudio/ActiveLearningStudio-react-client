@@ -176,7 +176,7 @@ function Pills(props) {
             )}
             {(type === 'Organization') && (
               <Starter
-                paginationCounter={true}
+                paginationCounter={false}
                 search={true}
                 print={false}
                 btnText="create Organization"

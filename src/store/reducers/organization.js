@@ -22,6 +22,7 @@ const INITIAL_STATE = {
   permission: {},
   activePermission: null,
   permissionsId: null,
+  activeEdit: null,
   // permission: {
   //   activeRole: 'member',
   //   roleId: 3,
@@ -117,11 +118,27 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         newlyCreated: action.payload,
+        allSuborgList: [action.payload, ...state.allSuborgList],
       };
     case actionTypes.REMOVE_SUBORG_ADD:
       return {
         ...state,
         newlyCreated: null,
+      };
+    case actionTypes.REMOVE_SUBORG_DEL:
+      return {
+        ...state,
+        allSuborgList: state.allSuborgList.filter((remove) => remove.id !== action.payload.id),
+      };
+    case actionTypes.ADD_SUBORG_EDIT:
+      return {
+        ...state,
+        allSuborgList: state.allSuborgList.map((edit) => {
+          if (edit.id === action.payload.id) {
+            return action.payload;
+          }
+          return edit;
+        }),
       };
     case actionTypes.EDIT_ORGANIZATION:
       return {
@@ -189,6 +206,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         permissionsId: action.payload,
+      };
+    case actionTypes.SET_ACTIVE_EDIT:
+      return {
+        ...state,
+        activeEdit: action.payload,
       };
     default:
       return state;

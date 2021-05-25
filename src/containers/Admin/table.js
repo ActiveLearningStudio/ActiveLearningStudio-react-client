@@ -147,7 +147,7 @@ function Table(props) {
                 <td>{row.name}</td>
                 <td>{row.domain}</td>
                 <td>
-                  {row.admins.length}
+                  {row?.admins?.length || 0}
                   <div className="view-all">view all</div>
                 </td>
                 <td>
@@ -196,6 +196,10 @@ function Table(props) {
                   <Link
                     onClick={() => {
                       dispatch(setActiveAdminForm("edit_org"));
+                      dispatch({
+                        type: 'SET_ACTIVE_EDIT',
+                        payload: row,
+                      });
                     }}
                     style={{ float: "left" }}
                   >
