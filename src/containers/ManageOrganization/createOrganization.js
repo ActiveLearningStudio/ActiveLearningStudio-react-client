@@ -279,6 +279,7 @@ export default function CreateOrganization() {
                       <AddUser
                         setAllUsersAdded={setAllUsersAdded}
                         allUsersAdded={allUsersAdded}
+                        allAdminAdded={allAdminAdded}
                         setToggleUserDropdown={setToggleUserDropdown}
                         setFieldValueProps={setFieldValue}
                         method="create"
