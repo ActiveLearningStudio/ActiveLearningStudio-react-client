@@ -11,6 +11,7 @@ export default function AddUser(props) {
   const {
     setAllUsersAdded,
     allUsersAdded,
+    allAdminAdded,
     setToggleUserDropdown,
     setFieldValueProps,
     method,
@@ -92,22 +93,26 @@ export default function AddUser(props) {
               {stateOrgUsers?.length > 0 && (
                 <ul className="all-users-list">
                   {stateOrgUsers?.map((user) => (
-                    <li
-                      value={user}
-                      onClick={() => {
-                        setFieldValue('name', user.first_name);
-                        setFieldValue('email', user.email);
-                        setFieldValue('userInfo', user);
-                        setStateOrgUsers([]);
-                      }}
-                    >
-                      {user.first_name}
-                      <p>
-                        Email:
-                        &nbsp;
-                        {user.email}
-                      </p>
-                    </li>
+                    allAdminAdded.map((admin) => (
+                      admin.value.email !== user.email ? (
+                        <li
+                          value={user}
+                          onClick={() => {
+                            setFieldValue('name', user.first_name);
+                            setFieldValue('email', user.email);
+                            setFieldValue('userInfo', user);
+                            setStateOrgUsers([]);
+                          }}
+                        >
+                          {user.first_name}
+                          <p>
+                            Email:
+                            &nbsp;
+                            {user.email}
+                          </p>
+                        </li>
+                      ) : null
+                    ))
                   ))}
                 </ul>
               )}
@@ -179,6 +184,7 @@ export default function AddUser(props) {
 AddUser.propTypes = {
   setAllUsersAdded: PropTypes.func.isRequired,
   allUsersAdded: PropTypes.array.isRequired,
+  allAdminAdded: PropTypes.array.isRequired,
   setFieldValueProps: PropTypes.func.isRequired,
   method: PropTypes.string.isRequired,
   setToggleUserDropdown: PropTypes.func.isRequired,
