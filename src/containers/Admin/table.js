@@ -15,7 +15,7 @@ import { simpleSearchAction } from "store/actions/search";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert } from "react-bootstrap";
-import { setActiveAdminForm, setCurrentUser } from "store/actions/admin";
+import { setActiveAdminForm, setActiveTab, setCurrentUser } from "store/actions/admin";
 
 function Table(props) {
   const {
@@ -29,6 +29,7 @@ function Table(props) {
   } = props;
   const organization = useSelector((state) => state.organization);
   const { activeOrganization, allSuborgList } = organization;
+  const allState = useSelector((state) => state);
   const dispatch = useDispatch();
   const handleDeleteUser = (user) => {
     Swal.fire({
@@ -182,15 +183,19 @@ function Table(props) {
                 </td>
                 <td>
                   {row.users_count}
-                  <div className="view-all">view all</div>
+                  <Link className="view-all" onClick={() => {
+                    dispatch(setActiveTab('Users'));
+                  }}>
+                  view all
+                  </Link>
                 </td>
                 <td>
                   {row.groups_count}
-                  <div className="view-all">view all</div>
+                  <Link to={`/org/${allState?.organization?.currentOrganization?.domain}/groups`} className="view-all">view all</Link>
                 </td>
                 <td>
                   {row.teams_count}
-                  <div className="view-all">view all</div>
+                  <Link to={`/org/${allState?.organization?.currentOrganization?.domain}/teams`} className="view-all">view all</Link>
                 </td>
                 <td>
                   <Link

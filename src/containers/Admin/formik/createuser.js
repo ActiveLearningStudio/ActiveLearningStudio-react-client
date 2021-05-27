@@ -21,6 +21,7 @@ export default function CreateUser(prop) {
         initialValues={{
           first_name: editMode ? currentUser?.first_name : '',
           last_name: editMode ? currentUser?.last_name : '',
+          user_id: editMode ? currentUser?.id : '',
           organization_type:editMode ? currentUser?.organization_type : '',
           organization_name:editMode ? currentUser?.organization_name :'',
           job_title:editMode ? currentUser?.job_title :"",
@@ -167,7 +168,7 @@ export default function CreateUser(prop) {
                 onBlur={handleBlur}
                 value={values.role}
               /> */}
-              <select name="role_id" onChange={handleChange} onBlur={handleBlur} value={values.role}>
+              <select name="role_id" onChange={handleChange} onBlur={handleBlur} value={values.role_id}>
                 <option value="">{''}</option>
                 {roles?.length > 0 && roles?.map((role)=>(
                   <option value={role?.id} key={role?.id}>{role?.display_name}</option>

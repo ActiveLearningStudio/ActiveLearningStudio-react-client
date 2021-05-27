@@ -44,7 +44,7 @@ function Pills(props) {
   };
   useMemo(async () => {
     if (activeOrganization && type === 'Users' && subTypeState === 'All users' && activeTab === 'Users') {
-      if (organization?.users?.data?.length > 0 && activePage === organization?.activePage && size === organization?.size) {
+      if (organization?.users?.data?.length > 0 && activePage === organization?.activePage && size === organization?.size && !activeRole) {
         setUsers(organization?.users);
       } else {
         const result = await dispatch(getOrgUsers(activeOrganization?.id, activePage, size, activeRole));
