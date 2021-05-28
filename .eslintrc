@@ -19,6 +19,7 @@
     }
   },
   "rules": {
+
     "consistent-return": 0,
     "jsx-a11y/anchor-is-valid": 0,
     "jsx-a11y/click-events-have-key-events": 0,
@@ -34,6 +35,8 @@
     "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
     "react/jsx-props-no-spreading": 0,
     "react/no-array-index-key": 1,
-    "linebreak-style": 0
+    "linebreak-style": 0,
+    "template-curly-spacing" : "off",
+    "indent": "off"
   }
 }
