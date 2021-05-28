@@ -1,6 +1,12 @@
 {
   "extends": ["react-app", "airbnb"],
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "requireConfigFile": false,
+    "babelOptions": {
+      "presets": ["@babel/preset-react"]
+     }
+  },
   "env": {
     "browser": true,
     "jasmine": true
