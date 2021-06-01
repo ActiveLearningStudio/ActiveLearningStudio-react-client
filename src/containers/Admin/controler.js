@@ -11,7 +11,7 @@ import csv from 'assets/images/csv.png';
 import pdf from 'assets/images/pdf.png';
 import bulk from 'assets/images/bulk.png';
 import AddUser from 'containers/ManageOrganization/addUser';
-import { getRoles, roleDetail } from 'store/actions/organization';
+import { getOrganization, getRoles, roleDetail } from 'store/actions/organization';
 
 function Controller(props) {
   const {
@@ -39,7 +39,7 @@ function Controller(props) {
   const adminState = useSelector((state) => state.admin);
   const [activeRoleInComponent, setActiveRoleInComponent] =  useState('');
   const organization = useSelector((state) => state.organization);
-  const { permission, activeOrganization } = organization;
+  const { permission, activeOrganization, currentOrganization } = organization;
   const { activeForm } = adminState;
   useMemo(() => {
     dispatch(getRoles());
@@ -97,6 +97,15 @@ function Controller(props) {
           </Dropdown>
           </span>
           entries
+        </div>
+      )}
+      {currentOrganization?.id !== activeOrganization?.id && (
+        <div className="btn-text">
+          <button onClick={()=> {
+            dispatch(getOrganization(currentOrganization?.id));
+          }}>
+            Go to root organization
+          </button>
         </div>
       )}
       {!!filter && (
@@ -166,7 +175,7 @@ function Controller(props) {
           <img src={searchimg} alt="search" />
         </div>
       )}
-      {!!importUser && (
+      {/* {!!importUser && (
         <div className="import-user">
           <div className="img-section">
             <img src={bulk} alt="upload" />
@@ -186,7 +195,7 @@ function Controller(props) {
             <img src={pdf} alt="pdf" />
           </div>
         </div>
-      )}
+      )} */}
       {!!btnText && organization?.activeRole !== 'superadmin' && (
         <div className="btn-text">
           <button onClick={() => {

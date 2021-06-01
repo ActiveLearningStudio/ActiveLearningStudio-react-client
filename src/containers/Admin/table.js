@@ -9,6 +9,9 @@ import {
   updateOrganizationScreen,
   updatePreviousScreen,
   deleteOrganization,
+  getOrganization,
+  clearUsersinOrganization,
+  getOrgUsers,
 } from "store/actions/organization";
 import { Link, withRouter } from "react-router-dom";
 import { simpleSearchAction } from "store/actions/search";
@@ -149,13 +152,21 @@ function Table(props) {
                 <td>{row.domain}</td>
                 <td>
                   {row?.admins?.length || 0}
-                  <div className="view-all">view all</div>
+                  <Link
+                    onClick={() => {
+                      dispatch(setActiveTab('Users'));
+                      dispatch(getOrgUsers(row.id, 1, 25, 1));
+                    }}
+                    className="view-all"
+                  >
+                    view all</Link>
                 </td>
                 <td>
                   {row.projects_count}
                   <div
                     className="view-all"
                     onClick={async () => {
+                      await dispatch(getOrganization(row.id));
                       Swal.fire({
                         html: "Searching...",
                         allowOutsideClick: false,
@@ -171,19 +182,45 @@ function Table(props) {
                         })
                       );
                       Swal.close();
-                      //history.push(`/org/${row?.domain}/search?type=orgSearch`);
+                      history.push(`/org/${row?.domain}/search?type=orgSearch`);
                     }}
                   >
                     view all
                   </div>
                 </td>
                 <td>
-                  {row.suborganization_count}
-                  <div className="view-all">view all</div>
+                  {row.suborganization_count || 0}
+                  {row.suborganization_count > 0 && (
+                    <Link
+                      className="view-all"
+                      onClick={() => {
+                        if(row.suborganization_count > 0) {
+                          Swal.fire({
+                            title: 'Organization',
+                            icon: 'warning',
+                            html: 'You are about to change the content of admin panel, Are you sure?',
+                            showCancelButton: true,
+                            confirmButtonColor: "#084892",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Yes",
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              dispatch(getOrganization(row.id));
+                              dispatch(clearUsersinOrganization());
+                            }
+                          });
+                        }
+                      }}
+                    >
+                      view all
+                    </Link>
+                  )}
                 </td>
                 <td>
                   {row.users_count}
-                  <Link className="view-all" onClick={() => {
+                  <Link
+                    className="view-all"
+                    onClick={() => {
                     dispatch(setActiveTab('Users'));
                   }}>
                   view all
