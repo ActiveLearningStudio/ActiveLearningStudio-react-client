@@ -1,9 +1,9 @@
 /* eslint-disable */
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from "react";
 import { Tabs, Tab, Table } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-
+import adminService from "services/admin.service";
 import Starter from './starter';
 import { columnData } from './column';
 import { getOrgUsers, searchUserInOrganization, getsubOrgList } from 'store/actions/organization';
@@ -15,6 +15,7 @@ function Pills(props) {
   const organization = useSelector((state) => state.organization);
   const admin = useSelector((state) => state.admin);
   const { activeTab } = admin
+  const [currentTab, setCurrentTab] =  useState("all");
   const [ activePage, setActivePage ] = useState(1);
   const [ size, setSize ] = useState(25);
   const [ activeRole,setActiveRole ] = useState('');
@@ -22,6 +23,10 @@ function Pills(props) {
   const [users, setUsers] = useState(null);
   const [searchAlertToggler, setSearchAlertToggler] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
+  const [allProjectTab, setAllProjectTab] = useState(null);
+  const [allProjectUserTab, setAllProjectUserTab] = useState(null);
+  const [allProjectIndexTab, setAllProjectIndexTab] =  useState(null);
+  const [changeIndexValue, setChangeIndexValue] =  useState('1');
   const searchUsers = async (query, page) => {
     const result = await dispatch(searchUserInOrganization(activeOrganization?.id, query, page));
     if (result.data.length > 0) {
@@ -54,6 +59,25 @@ function Pills(props) {
     dispatch(getsubOrgList(activeOrganization?.id));
   }, [activeOrganization, activePage, type, subTypeState , activeTab, size, activeRole])
   // All Users Business Logic End
+  
+  useMemo(async () => {
+	setAllProjectTab(null);
+	setAllProjectUserTab(null);
+	setAllProjectIndexTab(null);
+    if (activeOrganization && type === "Project" && currentTab == "all") {
+      const result = await adminService.getAllProject(activeOrganization?.id,(activePage || 1));
+      setAllProjectTab(result);
+    }
+	else if (activeOrganization && type === "Project" && currentTab === "user") {
+		const result = await adminService.getUserProject(activeOrganization?.id,(activePage || 1));
+		setAllProjectUserTab(result);
+	}
+	else if (activeOrganization && type === "Project" && currentTab === "index") {
+		const result = await adminService.getAllProjectIndex(activeOrganization?.id,(activePage || 1),changeIndexValue);
+		setAllProjectIndexTab(result);
+	}
+	
+  }, [type, activePage, changeIndexValue, currentTab]); 
   const dummy =  [
     {
       name:'qamar',
@@ -85,12 +109,24 @@ function Pills(props) {
     <Tabs
       defaultActiveKey={modules && modules[0]}
       id="uncontrolled-tab-example"
-      onSelect={(key) => setSubTypeState(key)}
+      onSelect={(key) => {
+		 
+		  setSubTypeState(key)
+		  if(key === 'All Projects') {
+			setCurrentTab('all')
+		  } else if(key === 'User Projects') {
+			setCurrentTab('user')
+		  }
+		  else if(key === 'Indexing Queue') {
+			setCurrentTab('index')
+		  }
+		}
+	  }
     >
       {modules?.map((asset) => (
         <Tab eventKey={asset} title={asset}>
           <div className="module-content-inner">
-            {(type === 'Stats' && subTypeState === 'Report') && (
+            {type === "Stats" && subTypeState === "Report" && (
               <Starter
                 paginationCounter={true}
                 search={true}
@@ -103,7 +139,7 @@ function Pills(props) {
                 type={type}
               />
             )}
-            {(type === 'Stats' && subTypeState === 'Queues:Jobs') && (
+            {type === "Stats" && subTypeState === "Queues:Jobs" && (
               <Starter
                 paginationCounter={true}
                 search={true}
@@ -117,7 +153,7 @@ function Pills(props) {
                 type={type}
               />
             )}
-             {(type === 'Stats' && subTypeState === 'Queues:Logs') && (
+            {type === "Stats" && subTypeState === "Queues:Logs" && (
               <Starter
                 paginationCounter={true}
                 search={true}
@@ -131,7 +167,7 @@ function Pills(props) {
                 type={type}
               />
             )}
-            {(type === 'Users' && subTypeState === 'All users') && (
+            {type === "Users" && subTypeState === "All users" && (
               <Starter
                 paginationCounter={true}
                 search={true}
@@ -156,7 +192,7 @@ function Pills(props) {
                 inviteUser={true}
               />
             )}
-            {(type === 'Users' && subTypeState === 'Manage Roles') && (
+            {type === "Users" && subTypeState === "Manage Roles" && (
               <Starter
                 paginationCounter={false}
                 search={false}
@@ -174,7 +210,7 @@ function Pills(props) {
                 roles={roles}
               />
             )}
-            {(type === 'Organization') && (
+            {type === "Organization" && (
               <Starter
                 paginationCounter={false}
                 search={true}
@@ -186,6 +222,47 @@ function Pills(props) {
                 tableHead={columnData.organization}
                 data={[]}
                 type={type}
+              />
+            )}
+            {type === "Project" && subTypeState === "All Projects" && (
+              <Starter
+                paginationCounter={false}
+                search={true}
+                tableHead={columnData.projectAll}
+                data={allProjectTab}
+                type={type}
+				setActivePage={setActivePage}
+				activePage={activePage}
+				subType="all"
+				setCurrentTab={setCurrentTab}
+              />
+            )}
+			{type === "Project" && subTypeState === "User Projects" && (
+              <Starter
+                paginationCounter={false}
+                search={true}
+                tableHead={columnData.projectAll}
+                data={allProjectUserTab}
+                type={type}
+				setActivePage={setActivePage}
+				activePage={activePage}
+				subType="user"
+				setCurrentTab={setCurrentTab}
+              />
+            )}
+			{type === "Project" && subTypeState === "Indexing Queue" && (
+              <Starter
+                paginationCounter={false}
+                search={true}
+                tableHead={columnData.projectIndex}
+                data={allProjectIndexTab}
+                type={type}
+				setActivePage={setActivePage}
+				activePage={activePage}
+				subType="index"
+				setCurrentTab={setCurrentTab}
+				filter={true}
+				setChangeIndexValue={setChangeIndexValue}
               />
             )}
           </div>

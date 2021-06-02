@@ -28,7 +28,60 @@ const editUserInOrganization = (user, subOrgId) => httpService
     });
   });
 
+// project
+const getAllProject = (subOrgId, page) => httpService
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      text: err || err.message || 'Error loading projects.',
+    });
+  });
+
+const getUserProject = (subOrgId, page) => httpService
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/user-projects?exclude_starter=true&page=${page}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      text: err || err.message || 'Error loading projects.',
+    });
+  });
+
+const getAllProjectIndex = (subOrgId, page, index) => httpService
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&indexing=${index}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      text: err || err.message || 'Error loading projects.',
+    });
+  });
+
+const updateIndex = (subOrgId, projectId, index) => httpService
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects/${projectId}/indexe/${index}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      text: err || err.message || 'Error loading projects.',
+    });
+  });
+
 export default {
   addUserInOrganization,
   editUserInOrganization,
+  getAllProject,
+  getUserProject,
+  getAllProjectIndex,
+  updateIndex,
 };

@@ -2,6 +2,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Pagination from "react-js-pagination";
+import adminService from "services/admin.service";
 //import { useHistory } from 'react-router-dom';
 import {
   deleteUserFromOrganization,
@@ -15,7 +16,11 @@ import { simpleSearchAction } from "store/actions/search";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert } from "react-bootstrap";
-import { setActiveAdminForm, setActiveTab, setCurrentUser } from "store/actions/admin";
+import {
+  setActiveAdminForm,
+  setActiveTab,
+  setCurrentUser,
+} from "store/actions/admin";
 
 function Table(props) {
   const {
@@ -26,6 +31,8 @@ function Table(props) {
     activePage,
     setActivePage,
     searchAlertToggler,
+    subType,
+    setCurrentTab,
   } = props;
   const organization = useSelector((state) => state.organization);
   const { activeOrganization, allSuborgList } = organization;
@@ -183,26 +190,39 @@ function Table(props) {
                 </td>
                 <td>
                   {row.users_count}
-                  <Link className="view-all" onClick={() => {
-                    dispatch(setActiveTab('Users'));
-                  }}>
-                  view all
+                  <Link
+                    className="view-all"
+                    onClick={() => {
+                      dispatch(setActiveTab("Users"));
+                    }}
+                  >
+                    view all
                   </Link>
                 </td>
                 <td>
                   {row.groups_count}
-                  <Link to={`/org/${allState?.organization?.currentOrganization?.domain}/groups`} className="view-all">view all</Link>
+                  <Link
+                    to={`/org/${allState?.organization?.currentOrganization?.domain}/groups`}
+                    className="view-all"
+                  >
+                    view all
+                  </Link>
                 </td>
                 <td>
                   {row.teams_count}
-                  <Link to={`/org/${allState?.organization?.currentOrganization?.domain}/teams`} className="view-all">view all</Link>
+                  <Link
+                    to={`/org/${allState?.organization?.currentOrganization?.domain}/teams`}
+                    className="view-all"
+                  >
+                    view all
+                  </Link>
                 </td>
                 <td>
                   <Link
                     onClick={() => {
                       dispatch(setActiveAdminForm("edit_org"));
                       dispatch({
-                        type: 'SET_ACTIVE_EDIT',
+                        type: "SET_ACTIVE_EDIT",
                         payload: row,
                       });
                     }}
@@ -246,6 +266,136 @@ function Table(props) {
                 </td>
               </tr>
             ))}
+
+          {type === "Project" &&
+            subType === "all" &&
+            (data ? (
+              data?.data?.map((row) => {
+                const createNew = new Date(row.created_at);
+                const updateNew = new Date(row.updated_at);
+                return (
+                  <tr className="org-rows">
+                    <td>
+                      <img
+                        src={global.config.resourceUrl + row.thumb_url}
+                        alt=""
+                      />
+                    </td>
+                    <td>{row.name}</td>
+                    <td>{createNew.toDateString()}</td>
+
+                    {/* <td>{row.description}</td> */}
+
+                    <td>{row.id}</td>
+                    <td>{row.indexing_text}</td>
+
+                    <td>{row.organization_id}</td>
+
+                    <td>{String(row.shared)}</td>
+                    <td>{String(row.starter_project)}</td>
+
+                    <td>{row.status_text}</td>
+                    <td>{updateNew.toDateString()}</td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td colspan="8">
+                  <Alert variant="primary">Loaidng data ...</Alert>
+                </td>
+              </tr>
+            ))}
+
+          {type === "Project" &&
+            subType === "user" &&
+            (data ? (
+              data?.data?.map((row) => {
+                const createNew = new Date(row.created_at);
+                const updateNew = new Date(row.updated_at);
+                return (
+                  <tr className="org-rows">
+                    <td>
+                      <img
+                        src={global.config.resourceUrl + row.thumb_url}
+                        alt=""
+                      />
+                    </td>
+                    <td>{row.name}</td>
+                    <td>{createNew.toDateString()}</td>
+
+                    {/* <td>{row.description}</td> */}
+
+                    <td>{row.id}</td>
+                    <td>{row.indexing_text}</td>
+
+                    <td>{row.organization_id}</td>
+
+                    <td>{String(row.shared)}</td>
+                    <td>{String(row.starter_project)}</td>
+
+                    <td>{row.status_text}</td>
+                    <td>{updateNew.toDateString()}</td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td colspan="8">
+                  <Alert variant="primary">Loaidng data ...</Alert>
+                </td>
+              </tr>
+            ))}
+
+          {type === "Project" &&
+            subType === "index" &&
+            (data ? (
+              data?.data?.map((row) => {
+                const createNew = new Date(row.created_at);
+                const updateNew = new Date(row.updated_at);
+                return (
+                  <tr className="org-rows">
+                    <td>
+                      <img
+                        src={global.config.resourceUrl + row.thumb_url}
+                        alt=""
+                      />
+                    </td>
+                    <td>{row.name}</td>
+                    <td>{createNew.toDateString()}</td>
+
+                    {/* <td>{row.description}</td> */}
+
+                    <td>{row.id}</td>
+                    <td>{row.indexing_text}</td>
+
+                    <td>{row.organization_id}</td>
+
+                    <td>{String(row.shared)}</td>
+                    <td>{String(row.starter_project)}</td>
+
+                    <td>{row.status_text}</td>
+                    <td>{updateNew.toDateString()}</td>
+                    <td>
+                      <Link style={{ float: "left" }} onClick={() => {
+						  adminService.updateIndex(row.id,3)
+					  }}>
+                        Approve
+                      </Link>
+                      <Link style={{ float: "right" }} onClick={() => {}}>
+                        Reject
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td colspan="8">
+                  <Alert variant="primary">Loaidng data ...</Alert>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
       <div className="pagination-top">
@@ -254,17 +404,62 @@ function Table(props) {
           results
         </div>
         <div class="main-pagination">
-          {type === "Users" && (
-            <Pagination
-              activePage={activePage}
-              pageRangeDisplayed={5}
-              itemsCountPerPage={data?.meta?.per_page}
-              totalItemsCount={data?.meta?.total}
-              onChange={(e) => {
-                setActivePage(e);
-              }}
-            />
-          )}
+          {
+            type === "Users" && (
+              <Pagination
+                activePage={activePage}
+                pageRangeDisplayed={5}
+                itemsCountPerPage={data?.meta?.per_page}
+                totalItemsCount={data?.meta?.total}
+                onChange={(e) => {
+                  setCurrentTab("all");
+                  setActivePage(e);
+                }}
+              />
+            )
+          }
+          {
+            type === "Project" && subType === "all" && (
+              <Pagination
+                activePage={activePage}
+                pageRangeDisplayed={5}
+                itemsCountPerPage={data?.meta?.per_page}
+                totalItemsCount={data?.meta?.total}
+                onChange={(e) => {
+                  setCurrentTab("all");
+                  setActivePage(e);
+                }}
+              />
+            )
+          }
+          {
+            type === "Project" && subType === "user" && (
+              <Pagination
+                activePage={activePage}
+                pageRangeDisplayed={5}
+                itemsCountPerPage={data?.meta?.per_page}
+                totalItemsCount={data?.meta?.total}
+                onChange={(e) => {
+                  setCurrentTab("user");
+                  setActivePage(e);
+                }}
+              />
+            )
+          }
+          {
+            type === "Project" && subType === "index" && (
+              <Pagination
+                activePage={activePage}
+                pageRangeDisplayed={5}
+                itemsCountPerPage={data?.meta?.per_page}
+                totalItemsCount={data?.meta?.total}
+                onChange={(e) => {
+                  setCurrentTab("index");
+                  setActivePage(e);
+                }}
+              />
+            )
+          }
         </div>
       </div>
     </div>

@@ -30,6 +30,9 @@ function Starter(props) {
     searchQueryChangeHandler,
     searchAlertToggler,
     setActivePage,
+    subType,
+	setCurrentTab,
+	setChangeIndexValue,
   } = props;
   return (
     <>
@@ -51,21 +54,24 @@ function Starter(props) {
         filter={filter}
         tableHead={tableHead}
         roles={roles}
+		subType={subType}
+		setChangeIndexValue={setChangeIndexValue}
       />
-      {roles?.length && subTypeState === 'Manage Roles' ? (
-       <Userroles />
-      ):(
-      <TableData
-        tableHead={tableHead}
-        activePage={activePage}
-        setActivePage={setActivePage}
-        searchAlertToggler={searchAlertToggler}
-        type={type}
-        data={data}
-      />
+      {roles?.length && subTypeState === "Manage Roles" ? (
+        <Userroles />
+      ) : (
+        <TableData
+          tableHead={tableHead}
+          activePage={activePage}
+          setActivePage={setActivePage}
+          searchAlertToggler={searchAlertToggler}
+          type={type}
+          data={data}
+          subType={subType}
+		  setCurrentTab={setCurrentTab}
+        />
       )}
     </>
-
   );
 }
 
