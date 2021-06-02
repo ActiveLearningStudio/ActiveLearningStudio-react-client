@@ -24,6 +24,7 @@ history.listen((location) => {
   ReactGA.pageview(location.pathname);
 });
 const LoginPage = loadable(() => import('../containers/Auth/LoginPage'));
+const LoginPageOne = loadable(() => import('../containers/Auth/LoginPageOne'));
 const ProjectShareTemplate = loadable(() => import('../containers/ProjectShareTemplate'));
 const SubscribePage = loadable(() => import('../containers/Auth/SubscribePage'));
 const RegisterPage = loadable(() => import('../containers/Auth/RegisterPage'));
@@ -153,6 +154,7 @@ const AppRouter = (props) => {
           component={LtiActivity}
         />
         <PublicRoute exact path="/login" component={LoginPage} />
+        <PublicRoute exact path="/loginpageone" component={LoginPageOne} />
         <PublicRoute exact path="/login/:organization" component={LoginPage} />
         <PublicRoute exact path="/register" component={RegisterPage} />
         <PublicRoute exact path="/register/:organization" component={RegisterPage} />
