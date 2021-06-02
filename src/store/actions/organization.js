@@ -55,6 +55,12 @@ export const getOrganizationFirstTime = (id) => async (dispatch) => {
   });
 };
 
+export const clearUsersinOrganization = () => (dispatch) => {
+  dispatch({
+    type: actionTypes.CLEAR_USER_IN_ORGANIZATION,
+  });
+};
+
 export const setCurrenteOrganization = (org) => (dispatch) => {
   dispatch({
     type: actionTypes.ADD_CURRENT_ORG,

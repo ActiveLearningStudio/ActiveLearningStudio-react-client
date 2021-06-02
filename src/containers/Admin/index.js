@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React from 'react';
+import React, { useEffect }  from 'react';
 import { Tabs, Tab, Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,6 +19,8 @@ function AdminPanel() {
   const organization = useSelector((state) => state.organization);
   const { permission } = organization;
   const { activeForm, activeTab } = adminState;
+  useEffect(() => {
+  }, [activeTab])
   return (
     <div className="admin-panel">
       {permission?.activeRole?.includes("admin") ? (
