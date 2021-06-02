@@ -846,7 +846,7 @@ function SearchInterface(props) {
                                       <li>
                                         by
                                         {' '}
-                                        <span className="author">
+                                        <span>
                                           {res.user.first_name}
                                         </span>
                                       </li>
@@ -980,7 +980,7 @@ function SearchInterface(props) {
                                           <li>
                                             by
                                             {' '}
-                                            <span className="author">
+                                            <span>
                                               {res.user.first_name}
                                             </span>
                                           </li>
@@ -1113,7 +1113,7 @@ function SearchInterface(props) {
                                           <li>
                                             by
                                             {' '}
-                                            <span className="author">
+                                            <span>
                                               {res.user.first_name}
                                             </span>
                                           </li>
@@ -1230,7 +1230,7 @@ function SearchInterface(props) {
                                             <li>
                                               by
                                               {' '}
-                                              <span className="author">
+                                              <span>
                                                 {res.user.first_name}
                                               </span>
                                             </li>
