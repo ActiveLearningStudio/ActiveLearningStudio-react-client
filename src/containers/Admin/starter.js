@@ -54,8 +54,8 @@ function Starter(props) {
         filter={filter}
         tableHead={tableHead}
         roles={roles}
-		subType={subType}
-		setChangeIndexValue={setChangeIndexValue}
+        subType={subType}
+        setChangeIndexValue={setChangeIndexValue}
       />
       {roles?.length && subTypeState === "Manage Roles" ? (
         <Userroles />
@@ -68,7 +68,7 @@ function Starter(props) {
           type={type}
           data={data}
           subType={subType}
-		  setCurrentTab={setCurrentTab}
+		      setCurrentTab={setCurrentTab}
         />
       )}
     </>

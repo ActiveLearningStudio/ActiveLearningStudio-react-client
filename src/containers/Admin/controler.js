@@ -204,6 +204,18 @@ function Controller(props) {
           <img src={searchimg} alt="search" />
         </div>
       )}
+      {!!search && type === 'Activities' && subTypeState === 'Activity Types' && (
+        <div className="search-bar">
+          <input type="text" placeholder="Search" />
+          <img src={searchimg} alt="search" />
+        </div>
+      )}
+      {!!search && type === 'Activities' && subTypeState === 'Activity Items' && (
+        <div className="search-bar">
+          <input type="text" placeholder="Search" />
+          <img src={searchimg} alt="search" />
+        </div>
+      )}
       {/* {!!importUser && (
         <div className="import-user">
           <div className="img-section">
@@ -221,12 +233,14 @@ function Controller(props) {
           </div>
         </div>
       )} */}
-      {!!btnText && organization?.activeRole !== 'superadmin' && (
+      {!!btnText && (
         <div className="btn-text">
           <button
             onClick={() => {
               if (btnAction === "add_activity_type") {
                 dispatch(setActiveAdminForm("add_activity_type"));
+              } else if (btnAction === "add_activity_item") {
+                dispatch(setActiveAdminForm("add_activity_item"))
               } else if (btnAction === "add_role") {
                 dispatch(setActiveAdminForm("add_role"));
               } else if (btnAction === "create_user") {

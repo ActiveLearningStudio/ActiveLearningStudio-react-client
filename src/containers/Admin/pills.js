@@ -7,6 +7,7 @@ import adminService from "services/admin.service";
 import Starter from './starter';
 import { columnData } from './column';
 import { getOrgUsers, searchUserInOrganization, getsubOrgList } from 'store/actions/organization';
+import { getActivityTypes } from "store/actions/admin";
 function Pills(props) {
   const {modules, type, subType} = props;
   const [subTypeState, setSubTypeState] = useState(subType)
@@ -14,7 +15,7 @@ function Pills(props) {
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const admin = useSelector((state) => state.admin);
-  const { activeTab } = admin
+  const { activeTab, activityType } = admin
   const [currentTab, setCurrentTab] =  useState("all");
   const [ activePage, setActivePage ] = useState(1);
   const [ size, setSize ] = useState(25);
@@ -59,7 +60,7 @@ function Pills(props) {
     dispatch(getsubOrgList(activeOrganization?.id));
   }, [activeOrganization, activePage, type, subTypeState , activeTab, size, activeRole])
   // All Users Business Logic End
-  
+
   useMemo(async () => {
 	setAllProjectTab(null);
 	setAllProjectUserTab(null);
@@ -76,8 +77,15 @@ function Pills(props) {
 		const result = await adminService.getAllProjectIndex(activeOrganization?.id,(activePage || 1),changeIndexValue);
 		setAllProjectIndexTab(result);
 	}
-	
-  }, [type, activePage, changeIndexValue, currentTab]); 
+
+  }, [type, activePage, changeIndexValue, currentTab]);
+  //Activities Business Logic Start
+  useMemo(() => {
+    if (type === 'Activities' && subTypeState === 'Activity Types') {
+      dispatch(getActivityTypes());
+    }
+  }, [])
+  //Activities Business Logic End
   const dummy =  [
     {
       name:'qamar',
@@ -110,7 +118,7 @@ function Pills(props) {
       defaultActiveKey={modules && modules[0]}
       id="uncontrolled-tab-example"
       onSelect={(key) => {
-		 
+
 		  setSubTypeState(key)
 		  if(key === 'All Projects') {
 			setCurrentTab('all')
@@ -231,38 +239,66 @@ function Pills(props) {
                 tableHead={columnData.projectAll}
                 data={allProjectTab}
                 type={type}
-				setActivePage={setActivePage}
-				activePage={activePage}
-				subType="all"
-				setCurrentTab={setCurrentTab}
+                setActivePage={setActivePage}
+                activePage={activePage}
+                subType="all"
+                setCurrentTab={setCurrentTab}
               />
             )}
-			{type === "Project" && subTypeState === "User Projects" && (
+			      {type === "Project" && subTypeState === "User Projects" && (
               <Starter
                 paginationCounter={false}
                 search={true}
                 tableHead={columnData.projectAll}
                 data={allProjectUserTab}
                 type={type}
-				setActivePage={setActivePage}
-				activePage={activePage}
-				subType="user"
-				setCurrentTab={setCurrentTab}
+                setActivePage={setActivePage}
+                activePage={activePage}
+                subType="user"
+                setCurrentTab={setCurrentTab}
               />
             )}
-			{type === "Project" && subTypeState === "Indexing Queue" && (
+			      {type === "Project" && subTypeState === "Indexing Queue" && (
               <Starter
                 paginationCounter={false}
                 search={true}
                 tableHead={columnData.projectIndex}
                 data={allProjectIndexTab}
                 type={type}
-				setActivePage={setActivePage}
-				activePage={activePage}
-				subType="index"
-				setCurrentTab={setCurrentTab}
-				filter={true}
-				setChangeIndexValue={setChangeIndexValue}
+                setActivePage={setActivePage}
+                activePage={activePage}
+                subType="index"
+                setCurrentTab={setCurrentTab}
+                filter={true}
+                setChangeIndexValue={setChangeIndexValue}
+              />
+            )}
+            {type === 'Activities' && subTypeState === 'Activity Types' && (
+              <Starter
+                paginationCounter={true}
+                search={true}
+                tableHead={columnData.ActivityTypes}
+                subTypeState={subTypeState}
+                btnText="Add Activity Type"
+                btnAction="add_activity_type"
+                data={activityType || []}
+                type={type}
+                setActivePage={setActivePage}
+                activePage={activePage}
+              />
+            )}
+            {type === 'Activities' && subTypeState === 'Activity Items' && (
+              <Starter
+                paginationCounter={true}
+                search={true}
+                tableHead={columnData.ActivityItems}
+                subTypeState={subTypeState}
+                btnText="Add Activity Item"
+                btnAction="add_activity_item"
+                // data={}
+                type={type}
+                setActivePage={setActivePage}
+                activePage={activePage}
               />
             )}
           </div>
