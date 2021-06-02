@@ -143,7 +143,10 @@ export function extendSharedActivityStatement(h5pObj, statement, params) {
   const platform = H5PActvityPathMapToPlatform().find((el) => el[path]);
   if (platform === undefined) return;
 
-  statementExtended.context.platform = platform[path];
+  if (statementExtended.context) {
+    statementExtended.context.platform = platform[path];
+  }
+  
   statementExtended.object.definition.extensions['http://id.tincanapi.com/extension/referrer'] = document.referrer ? document.referrer : window.location.origin;
 
   return statementExtended;
