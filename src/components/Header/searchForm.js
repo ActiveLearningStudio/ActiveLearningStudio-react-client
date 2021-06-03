@@ -47,7 +47,7 @@ function SearchForm() {
 
   useEffect(() => {
     const allItems = [];
-    activityTypesState?.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
+    activityTypesState?.map((data) => data?.activityItems?.map((itm) => allItems.push(itm)));
     setActivityTypes(allItems.sort(compare));
     if (searchState?.searchQuery !== simpleSearch) {
       setSimpleSearch('');

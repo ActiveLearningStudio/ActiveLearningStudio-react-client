@@ -476,6 +476,16 @@ function Table(props) {
                 </td>
               </tr>
             ))}
+            {(type === 'Activities' && subType === 'Activity Types') && (
+              <div>
+                TADA
+              </div>
+            )}
+            {(type === 'Activities' && subType === 'Activity Items') && (
+              <div>
+                TADA
+              </div>
+            )}
         </tbody>
       </table>
       <div className="pagination-top">

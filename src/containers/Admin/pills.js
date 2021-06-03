@@ -6,11 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import adminService from "services/admin.service";
 import Starter from "./starter";
 import { columnData } from "./column";
-import {
-  getOrgUsers,
-  searchUserInOrganization,
-  getsubOrgList,
-} from "store/actions/organization";
+
+
+import { getOrgUsers, searchUserInOrganization, getsubOrgList } from 'store/actions/organization';
+import { getActivityTypes } from "store/actions/admin";
 function Pills(props) {
   const { modules, type, subType } = props;
   const [subTypeState, setSubTypeState] = useState(subType);
@@ -18,11 +17,11 @@ function Pills(props) {
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const admin = useSelector((state) => state.admin);
-  const { activeTab } = admin;
+  const { activeTab, activityType } = admin
   const [currentTab, setCurrentTab] = useState("all");
   const [activePage, setActivePage] = useState(1);
   const [size, setSize] = useState(25);
-  const [activeRole, setActiveRole] = useState("");
+  const [activeRole, setActiveRole] = useState('');
   const { activeOrganization, roles } = organization;
   const [users, setUsers] = useState(null);
   const [searchAlertToggler, setSearchAlertToggler] = useState(1);
@@ -180,6 +179,13 @@ function Pills(props) {
 
 
 
+  //Activities Business Logic Start
+  useMemo(() => {
+    if (type === 'Activities' && subTypeState === 'Activity Types') {
+      dispatch(getActivityTypes());
+    }
+  }, [])
+  //Activities Business Logic End
   const dummy = [
     {
       name: "qamar",

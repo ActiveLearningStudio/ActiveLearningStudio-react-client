@@ -4,6 +4,8 @@ const INITIAL_STATE = {
   activeForm: null,
   loading: true,
   activeTab: 'Stats',
+  activityTypes: [],
+  activityItems: [],
   currentUser: null,
   newUser: null,
   editUser: null,
@@ -40,6 +42,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         editUser: action.payload,
+      };
+    case actionTypes.GET_ACTIVITY_TYPES:
+      return {
+        ...state,
+        activityTypes: action.payload,
+      };
+    case actionTypes.GET_ACTIVITY_ITEMS:
+      return {
+        ...state,
+        activityItems: action.payload,
       };
     default:
       return state;
