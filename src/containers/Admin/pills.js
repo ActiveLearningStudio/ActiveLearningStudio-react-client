@@ -1,36 +1,40 @@
 /* eslint-disable */
 import React, { useState, useMemo, useEffect } from "react";
-import { Tabs, Tab, Table } from 'react-bootstrap';
-import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { Tabs, Tab, Table } from "react-bootstrap";
+import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 import adminService from "services/admin.service";
-import Starter from './starter';
-import { columnData } from './column';
+import Starter from "./starter";
+import { columnData } from "./column";
+
+
 import { getOrgUsers, searchUserInOrganization, getsubOrgList } from 'store/actions/organization';
 import { loadResourceTypesAction } from "store/actions/resource";
-function Pills(props) {
-  const {modules, type, subType} = props;
-  const [subTypeState, setSubTypeState] = useState(subType)
+export default function Pills(props) {
+  const { modules, type, subType } = props;
+  const [subTypeState, setSubTypeState] = useState(subType);
   // All User Business Logic Start
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const { types } = useSelector ((state) => state.resource)
   const admin = useSelector((state) => state.admin);
-  const { activeTab } = admin
-  const [currentTab, setCurrentTab] =  useState("all");
   const [ activePage, setActivePage ] = useState(1);
   const [ size, setSize ] = useState(25);
   const [ activeRole,setActiveRole ] = useState('');
+  const { activeTab, activityType } = admin
+  const [currentTab, setCurrentTab] = useState("all");
   const { activeOrganization, roles } = organization;
   const [users, setUsers] = useState(null);
   const [searchAlertToggler, setSearchAlertToggler] = useState(1);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [allProjectTab, setAllProjectTab] = useState(null);
   const [allProjectUserTab, setAllProjectUserTab] = useState(null);
-  const [allProjectIndexTab, setAllProjectIndexTab] =  useState(null);
-  const [changeIndexValue, setChangeIndexValue] =  useState('1');
+  const [allProjectIndexTab, setAllProjectIndexTab] = useState(null);
+  const [changeIndexValue, setChangeIndexValue] = useState("1");
   const searchUsers = async (query, page) => {
-    const result = await dispatch(searchUserInOrganization(activeOrganization?.id, query, page));
+    const result = await dispatch(
+      searchUserInOrganization(activeOrganization?.id, query, page)
+    );
     if (result.data.length > 0) {
       setUsers(result);
       setSearchAlertToggler(1);
@@ -44,86 +48,176 @@ function Pills(props) {
       searchUsers(target.value, activePage);
       setUsers(null);
     } else {
-      setSearchQuery('');
-      const result = await dispatch(getOrgUsers(activeOrganization?.id, activePage, size));
+      setSearchQuery("");
+      const result = await dispatch(
+        getOrgUsers(activeOrganization?.id, activePage, size)
+      );
       setUsers(result);
     }
   };
+
+  const searchProjectQueryChangeHandler = async ({ target }, index, subType) => {
+    console.log(target.value, subType)
+
+    if (subType === 'index') {
+      if (!!target.value) {
+        setAllProjectIndexTab(null);
+        const searchapi = adminService.userSerchIndexs(activeOrganization?.id, 1, index, target.value)
+        searchapi.then((data) => {
+          // console.log(data)
+          setAllProjectIndexTab(data)
+
+        })
+      } else {
+        const searchapi = adminService.getAllProjectIndex(activeOrganization?.id, 1, index)
+        searchapi.then((data) => {
+          // console.log(data)
+          setAllProjectIndexTab(data)
+
+        })
+      }
+    } else if (subType === 'all') {
+      if (!!target.value) {
+        setAllProjectTab(null);
+        const allproject = adminService.getAllProjectSearch(activeOrganization?.id, 1, target.value)
+        // console.log(allproject)
+        allproject.then((data) => {
+          console.log(data)
+          setAllProjectTab(data)
+        })
+      } else {
+        const allproject = adminService.getAllProject(activeOrganization?.id, 1)
+        allproject.then((data) => {
+          // console.log(data)
+          setAllProjectTab(data)
+        })
+      }
+    } else if (subType === 'user') {
+      if (!!target.value) {
+        setAllProjectUserTab(null);
+        const userproject = adminService.getUserProjectSearch(activeOrganization?.id, 1, target.value)
+        userproject.then((data) => {
+          setAllProjectUserTab(data)
+        })
+      } else {
+        const userproject = adminService.getUserProject(activeOrganization?.id, 1)
+        userproject.then((data) => {
+          // console.log(data)
+          setAllProjectUserTab(data)
+        })
+      }
+    }
+  };
+
+
+
   useMemo(async () => {
-    if (activeOrganization && type === 'Users' && subTypeState === 'All users' && activeTab === 'Users') {
-      if (organization?.users?.data?.length > 0 && activePage === organization?.activePage && size === organization?.size && !activeRole) {
+    if (
+      activeOrganization &&
+      type === "Users" &&
+      subTypeState === "All users" &&
+      activeTab === "Users"
+    ) {
+      if (
+        organization?.users?.data?.length > 0 &&
+        activePage === organization?.activePage &&
+        size === organization?.size &&
+        !activeRole
+      ) {
         setUsers(organization?.users);
       } else {
-        const result = await dispatch(getOrgUsers(activeOrganization?.id, activePage, size, activeRole));
+        const result = await dispatch(
+          getOrgUsers(activeOrganization?.id, activePage, size, activeRole)
+        );
         setUsers(result);
       }
     }
     dispatch(getsubOrgList(activeOrganization?.id));
-  }, [activeOrganization, activePage, type, subTypeState , activeTab, size, activeRole])
+  }, [
+    activeOrganization,
+    activePage,
+    type,
+    subTypeState,
+    activeTab,
+    size,
+    activeRole,
+  ]);
   // All Users Business Logic End
 
   useMemo(async () => {
-	setAllProjectTab(null);
-	setAllProjectUserTab(null);
-	setAllProjectIndexTab(null);
+    setAllProjectTab(null);
+    setAllProjectUserTab(null);
+    setAllProjectIndexTab(null);
     if (activeOrganization && type === "Project" && currentTab == "all") {
-      const result = await adminService.getAllProject(activeOrganization?.id,(activePage || 1));
+      const result = await adminService.getAllProject(
+        activeOrganization?.id,
+        activePage || 1
+      );
       setAllProjectTab(result);
+    } else if (
+      activeOrganization &&
+      type === "Project" &&
+      currentTab === "user"
+    ) {
+      const result = await adminService.getUserProject(
+        activeOrganization?.id,
+        activePage || 1
+      );
+      setAllProjectUserTab(result);
+    } else if (
+      activeOrganization &&
+      type === "Project" &&
+      currentTab === "index"
+    ) {
+      const result = await adminService.getAllProjectIndex(
+        activeOrganization?.id,
+        activePage || 1,
+        changeIndexValue
+      );
+      setAllProjectIndexTab(result);
     }
-	else if (activeOrganization && type === "Project" && currentTab === "user") {
-		const result = await adminService.getUserProject(activeOrganization?.id,(activePage || 1));
-		setAllProjectUserTab(result);
-	}
-	else if (activeOrganization && type === "Project" && currentTab === "index") {
-		const result = await adminService.getAllProjectIndex(activeOrganization?.id,(activePage || 1),changeIndexValue);
-		setAllProjectIndexTab(result);
-	}
-
   }, [type, activePage, changeIndexValue, currentTab]);
   const dummy =  [
     {
-      name:'qamar',
-      email:'qamar111@gmail.com',
-      age:'23',
-      project:'34',
-      counter:'56',
-      flow:'67',
+      name: "qamar",
+      email: "qamar111@gmail.com",
+      age: "23",
+      project: "34",
+      counter: "56",
+      flow: "67",
     },
     {
-      name:'qamar',
-      email:'qamar111@gmail.com',
-      age:'23',
-      project:'34',
-      counter:'56',
-      flow:'67',
+      name: "qamar",
+      email: "qamar111@gmail.com",
+      age: "23",
+      project: "34",
+      counter: "56",
+      flow: "67",
     },
     {
-      name:'qamar',
-      email:'qamar111@gmail.com',
-      age:'23',
-      project:'34',
-      counter:'56',
-      flow:'67',
+      name: "qamar",
+      email: "qamar111@gmail.com",
+      age: "23",
+      project: "34",
+      counter: "56",
+      flow: "67",
     },
-  ]
+  ];
   // console.log(columnData)
   return (
     <Tabs
       defaultActiveKey={modules && modules[0]}
       id="uncontrolled-tab-example"
       onSelect={(key) => {
-
-		  setSubTypeState(key)
-		  if(key === 'All Projects') {
-			setCurrentTab('all')
-		  } else if(key === 'User Projects') {
-			setCurrentTab('user')
-		  }
-		  else if(key === 'Indexing Queue') {
-			setCurrentTab('index')
-		  }
-		}
-	  }
+        setSubTypeState(key);
+        if (key === "All Projects") {
+          setCurrentTab("all");
+        } else if (key === "User Projects") {
+          setCurrentTab("user");
+        } else if (key === "Indexing Queue") {
+          setCurrentTab("index");
+        }
+      }}
     >
       {modules?.map((asset) => (
         <Tab eventKey={asset} title={asset}>
@@ -232,14 +326,18 @@ function Pills(props) {
                 search={true}
                 tableHead={columnData.projectAll}
                 data={allProjectTab}
+                searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
                 type={type}
+                // searchQuery={searchQuery}
+                // searchProjectQueryChangeHandler={searchProjectQueryChangeHandle}
+                // searchAlertToggler={searchAlertToggler}
                 setActivePage={setActivePage}
                 activePage={activePage}
                 subType="all"
                 setCurrentTab={setCurrentTab}
               />
             )}
-			      {type === "Project" && subTypeState === "User Projects" && (
+            {type === "Project" && subTypeState === "User Projects" && (
               <Starter
                 paginationCounter={false}
                 search={true}
@@ -250,15 +348,19 @@ function Pills(props) {
                 activePage={activePage}
                 subType="user"
                 setCurrentTab={setCurrentTab}
+                searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
               />
             )}
-			      {type === "Project" && subTypeState === "Indexing Queue" && (
+            {type === "Project" && subTypeState === "Indexing Queue" && (
               <Starter
                 paginationCounter={false}
                 search={true}
                 tableHead={columnData.projectIndex}
                 data={allProjectIndexTab}
                 type={type}
+                searchQuery={searchQuery}
+                searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
+                searchAlertToggler={searchAlertToggler}
                 setActivePage={setActivePage}
                 activePage={activePage}
                 subType="index"
@@ -302,7 +404,5 @@ function Pills(props) {
 
 Pills.propTypes = {
   manage: PropTypes.object.isRequired,
-  type:PropTypes.string.isRequired,
-};
-
-export default Pills;
+  type: PropTypes.string.isRequired,
+}

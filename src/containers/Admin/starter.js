@@ -28,11 +28,12 @@ function Starter(props) {
     searchQuery,
     subTypeState,
     searchQueryChangeHandler,
+    searchProjectQueryChangeHandler,
     searchAlertToggler,
     setActivePage,
     subType,
-	setCurrentTab,
-	setChangeIndexValue,
+    setCurrentTab,
+    setChangeIndexValue,
   } = props;
   return (
     <>
@@ -49,6 +50,7 @@ function Starter(props) {
         subTypeState={subTypeState}
         btnAction={btnAction}
         searchQuery={searchQuery}
+        searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
         searchQueryChangeHandler={searchQueryChangeHandler}
         importUser={importUser}
         filter={filter}
@@ -68,7 +70,7 @@ function Starter(props) {
           type={type}
           data={data}
           subType={subType}
-		      setCurrentTab={setCurrentTab}
+          setCurrentTab={setCurrentTab}
         />
       )}
     </>
@@ -77,7 +79,7 @@ function Starter(props) {
 
 Starter.propTypes = {
   manage: PropTypes.object.isRequired,
-  type:PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default Starter;

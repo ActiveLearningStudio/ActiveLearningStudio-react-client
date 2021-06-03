@@ -1,17 +1,21 @@
 /* eslint-disable */
-import React, { useState, useMemo, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import {Dropdown} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useMemo, useEffect } from "react";
+import PropTypes from "prop-types";
+import { Dropdown } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useDispatch, useSelector } from "react-redux";
 
-import { setActiveAdminForm } from 'store/actions/admin';
-import searchimg from 'assets/images/search-icon.png';
-import csv from 'assets/images/csv.png';
-import pdf from 'assets/images/pdf.png';
-import bulk from 'assets/images/bulk.png';
-import AddUser from 'containers/ManageOrganization/addUser';
-import { getOrganization, getRoles, roleDetail } from 'store/actions/organization';
+import { setActiveAdminForm } from "store/actions/admin";
+import searchimg from "assets/images/search-icon.png";
+import csv from "assets/images/csv.png";
+import pdf from "assets/images/pdf.png";
+import bulk from "assets/images/bulk.png";
+import AddUser from "containers/ManageOrganization/addUser";
+import {
+  getOrganization,
+  getRoles,
+  roleDetail,
+} from "store/actions/organization";
 
 function Controller(props) {
   const {
@@ -28,39 +32,46 @@ function Controller(props) {
     type,
     searchQuery,
     searchQueryChangeHandler,
+    searchProjectQueryChangeHandler,
     size,
     setSize,
     tableHead,
     roles,
     inviteUser,
     subType,
-	setChangeIndexValue
+    setChangeIndexValue,
   } = props;
   const dispatch = useDispatch();
   const [allUsersAdded, setAllUsersAdded] = useState([]);
   const adminState = useSelector((state) => state.admin);
-  const [activeRoleInComponent, setActiveRoleInComponent] =  useState('');
+  const [activeRoleInComponent, setActiveRoleInComponent] = useState("");
   const organization = useSelector((state) => state.organization);
   const { permission, activeOrganization, currentOrganization } = organization;
   const { activeForm } = adminState;
-  const [ selectedIndexValue, setSelectedIndexValue ] = useState("REQUESTED")
+  const [selectedIndexValue, setSelectedIndexValue] = useState("REQUESTED");
+  const [selectedIndexValueid, setSelectedIndexValueid] = useState(1);
   useMemo(() => {
     dispatch(getRoles());
-  },[])
+  }, []);
 
   useEffect(() => {
-    if(roles?.length > 0 && subTypeState !== 'Manage Roles'){
-      setActiveRoleInComponent(roles[2]?.display_name)
+    if (roles?.length > 0 && subTypeState !== "Manage Roles") {
+      setActiveRoleInComponent(roles[2]?.display_name);
       setActiveRole(roles[2]?.id);
-    } else if(roles?.length > 0) {
-      setActiveRoleInComponent(roles[0]?.display_name)
+    } else if (roles?.length > 0) {
+      setActiveRoleInComponent(roles[0]?.display_name);
     }
   }, [roles]);
+  // sabtype
+  // const sab = subType;
+  // console.log(subTypeState);
+  console.log(subType);
 
-  const updateIndexAction = (value,id) => {
-	setSelectedIndexValue(value)
-	setChangeIndexValue(id)
-  }
+  const updateIndexAction = (value, id) => {
+    setSelectedIndexValue(value);
+    setChangeIndexValue(id);
+    setSelectedIndexValueid(id)
+  };
   return (
     <div className="controller">
       {paginationCounter && (
@@ -107,9 +118,11 @@ function Controller(props) {
       )}
       {currentOrganization?.id !== activeOrganization?.id && (
         <div className="btn-text">
-          <button onClick={()=> {
-            dispatch(getOrganization(currentOrganization?.id));
-          }}>
+          <button
+            onClick={() => {
+              dispatch(getOrganization(currentOrganization?.id));
+            }}
+          >
             Go to root organization
           </button>
         </div>
@@ -137,19 +150,37 @@ function Controller(props) {
           </span>
         </div>
       )}
-	  {!!filter && subType === "index" && (
+      {!!filter && subType === "index" && (
         <div className="filter-dropdown drop-counter ">
           Index Value:
           <span>
             <Dropdown>
               <Dropdown.Toggle id="dropdown-basic">
-                 {selectedIndexValue}
+                {selectedIndexValue}
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-			  	<Dropdown.Item onClick={()=>{updateIndexAction('REQUESTED',1)}}>REQUESTED</Dropdown.Item>
-				<Dropdown.Item onClick={()=>{updateIndexAction('REJECTED',2)}}>REJECTED</Dropdown.Item>
-				<Dropdown.Item onClick={()=>{updateIndexAction('APPROVED',3)}}>APPROVED</Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => {
+                    updateIndexAction("REQUESTED", 1);
+                  }}
+                >
+                  REQUESTED
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => {
+                    updateIndexAction("REJECTED", 2);
+                  }}
+                >
+                  REJECTED
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => {
+                    updateIndexAction("APPROVED", 3);
+                  }}
+                >
+                  APPROVED
+                </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </span>
@@ -202,6 +233,18 @@ function Controller(props) {
         <div className="search-bar">
           <input className="" type="text" placeholder="Search" />
           <img src={searchimg} alt="search" />
+        </div>
+      )}
+
+      {!!search && type === "Project" && (
+        <div className="search-bar">
+          <input
+            className=""
+            type="text"
+            placeholder="Search"
+
+            onChange={(e) => searchProjectQueryChangeHandler(e, selectedIndexValueid, subType)}
+          />
         </div>
       )}
       {!!search && type === 'Activities' && subType === 'Activity Types' && (

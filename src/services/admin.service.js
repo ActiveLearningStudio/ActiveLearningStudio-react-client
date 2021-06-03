@@ -41,8 +41,32 @@ const getAllProject = (subOrgId, page) => httpService
     });
   });
 
+const getAllProjectSearch = (subOrgId, page, search) => httpService
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&query=${search || ''}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      text: err || err.message || 'Error loading projects.',
+    });
+  });
+
 const getUserProject = (subOrgId, page) => httpService
-  .get(`/${apiVersion}/suborganizations/${subOrgId}/user-projects?exclude_starter=true&page=${page}`)
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?exclude_starter=true&page=${page}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      text: err || err.message || 'Error loading projects.',
+    });
+  });
+
+const getUserProjectSearch = (subOrgId, page, search) => httpService
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?exclude_starter=true&page=${page}&query=${search}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
@@ -65,8 +89,20 @@ const getAllProjectIndex = (subOrgId, page, index) => httpService
     });
   });
 
-const updateIndex = (subOrgId, projectId, index) => httpService
-  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects/${projectId}/indexe/${index}`)
+const userSerchIndexs = (subOrgId, page, index, search) => httpService
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&indexing=${index}&query=${search || ''}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      text: err || err.message || 'Error loading projects.',
+    });
+  });
+
+const updateIndex = (projectId, index) => httpService
+  .get(`/${apiVersion}/projects/${projectId}/indexes/${index}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
@@ -84,4 +120,7 @@ export default {
   getUserProject,
   getAllProjectIndex,
   updateIndex,
+  userSerchIndexs,
+  getAllProjectSearch,
+  getUserProjectSearch,
 };

@@ -202,7 +202,7 @@ function Table(props) {
                     <Link
                       className="view-all"
                       onClick={() => {
-                        if(row.suborganization_count > 0) {
+                        if (row.suborganization_count > 0) {
                           Swal.fire({
                             title: 'Organization',
                             icon: 'warning',
@@ -229,9 +229,9 @@ function Table(props) {
                   <Link
                     className="view-all"
                     onClick={() => {
-                    dispatch(setActiveTab('Users'));
-                  }}>
-                  view all
+                      dispatch(setActiveTab('Users'));
+                    }}>
+                    view all
                   </Link>
                 </td>
                 <td>
@@ -336,7 +336,7 @@ function Table(props) {
               })
             ) : (
               <tr>
-                <td colspan="8">
+                <td colspan="11">
                   <Alert variant="primary">Loaidng data ...</Alert>
                 </td>
               </tr>
@@ -376,7 +376,7 @@ function Table(props) {
               })
             ) : (
               <tr>
-                <td colspan="8">
+                <td colspan="11">
                   <Alert variant="primary">Loaidng data ...</Alert>
                 </td>
               </tr>
@@ -412,22 +412,67 @@ function Table(props) {
                     <td>{row.status_text}</td>
                     <td>{updateNew.toDateString()}</td>
                     <td>
-                      <Link style={{ float: "left" }} onClick={() => {
-                        adminService.updateIndex(row.id,3)
-                      }}
-                      >
-                        Approve
-                      </Link>
-                      <Link style={{ float: "right" }} onClick={() => {}}>
-                        Reject
-                      </Link>
+                      {(row.indexing === 1 || row.indexing === 2) && (
+                        <Link style={{ float: "left" }} onClick={() => {
+                          Swal.fire({
+                            title: 'Please Wait !',
+                            html: 'Approving Project ...',
+                            allowOutsideClick: false,
+                            onBeforeOpen: () => {
+                              Swal.showLoading();
+                            },
+                          });
+                          const result = adminService.updateIndex(row.id, 3)
+                          result.then((data) => {
+                            // console.log(data)
+                            Swal.fire({
+                              icon: 'success',
+                              text: data.message,
+                            });
+                          }).catch((err) => {
+                            Swal.fire({
+                              icon: 'error',
+                              text: 'Error',
+                            });
+                          })
+                        }}>
+                          Approve
+                        </Link>
+                      )}
+                      {(row.indexing === 1 || row.indexing === 3) && (
+                        <Link style={{ float: "right" }} onClick={() => {
+                          Swal.fire({
+                            title: 'Please Wait !',
+                            html: 'Reject Project ...',
+                            allowOutsideClick: false,
+                            onBeforeOpen: () => {
+                              Swal.showLoading();
+                            },
+                          });
+                          const result = adminService.updateIndex(row.id, 2)
+                          result.then((data) => {
+                            // console.log(data)
+                            Swal.fire({
+                              icon: 'success',
+                              text: data.message,
+                            })
+                          }).catch((err) => {
+                            Swal.fire({
+                              icon: 'error',
+                              text: 'Error',
+                            });
+                          })
+                        }}>
+                          Reject
+                        </Link>
+                      )}
                     </td>
                   </tr>
                 );
               })
             ) : (
               <tr>
-                <td colspan="8">
+                <td colspan="11">
                   <Alert variant="primary">Loaidng data ...</Alert>
                 </td>
               </tr>

@@ -11,6 +11,8 @@ import CreateOrg from "./formik/createOrg"
 import AddRole from './formik/addRole';
 import CreateUser from './formik/createuser'
 import Pills from './pills';
+import Heading from './heading';
+import Bradecrumd from './bradecrumd';
 import './style.scss';
 
 function AdminPanel() {
@@ -27,6 +29,8 @@ function AdminPanel() {
         <>
           <div className="content-wrapper">
             <div className="inner-content">
+              <Bradecrumd />
+              <Heading />
               <Tabs
                 defaultActiveKey={activeTab}
                 id="uncontrolled-tab-example"
