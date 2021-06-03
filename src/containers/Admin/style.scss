@@ -295,6 +295,9 @@
       td,th {
         border: 1px solid #C4C4C4;
         padding:16px;
+        span {
+          display: flex;
+        }
       }
 
       th{

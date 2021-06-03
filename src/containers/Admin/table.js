@@ -24,6 +24,7 @@ import {
   setActiveTab,
   setCurrentUser,
 } from "store/actions/admin";
+import { selectActivityType } from "store/actions/resource";
 
 function Table(props) {
   const {
@@ -412,8 +413,9 @@ function Table(props) {
                     <td>{updateNew.toDateString()}</td>
                     <td>
                       <Link style={{ float: "left" }} onClick={() => {
-						  adminService.updateIndex(row.id,3)
-					  }}>
+                        adminService.updateIndex(row.id,3)
+                      }}
+                      >
                         Approve
                       </Link>
                       <Link style={{ float: "right" }} onClick={() => {}}>
@@ -431,14 +433,73 @@ function Table(props) {
               </tr>
             ))}
             {(type === 'Activities' && subType === 'Activity Types') && (
-              <div>
-                TADA
-              </div>
+              data ? data.map((type) => (
+                <tr className="org-rows">
+                  <td>{type.title}</td>
+                  <td><img src={global.config.resourceUrl + type.image} alt="activity-type-image"/></td>
+                  <td>{type.order}</td>
+                  <td>
+                    {type.activityItems.map((item)=> (
+                      <div>
+                        {item.title}
+                      </div>
+                    ))}
+                  </td>
+                  <td>
+                  <Link
+                      style={{ float: "left" }}
+                      onClick={() => {
+                        dispatch(selectActivityType(type));
+                        dispatch(setActiveAdminForm("edit_activity_type"));
+                      }}
+                    >
+                      Edit
+                    </Link>
+                    <Link
+                      style={{ float: "right" }}
+                    >
+                      Delete
+                    </Link>
+                  </td>
+                </tr>
+              )) : null
             )}
             {(type === 'Activities' && subType === 'Activity Items') && (
-              <div>
-                TADA
-              </div>
+              data ? data.map((type) => (
+                type.activityItems.map((item) => (
+                  <tr>
+                    <td>{item.title}</td>
+                    <td><img src={global.config.resourceUrl + item.image} alt="activity-item-image"/></td>
+                    <td>{item.order}</td>
+                    <td>
+                      <b>Activity Type:</b>
+                      <span>
+                        {type.title}
+                      </span>
+                      <b>Item Type:</b>
+                        <span>
+                          {item.type}
+                        </span>
+                      <b>Activity Item Value:</b>
+                      <span>
+                        {item.h5pLib}
+                      </span>
+                    </td>
+                    <td>
+                    <Link
+                      style={{ float: "left" }}
+                    >
+                      Edit
+                    </Link>
+                    <Link
+                      style={{ float: "right" }}
+                    >
+                      Delete
+                    </Link>
+                    </td>
+                  </tr>
+                ))
+              )) : null
             )}
         </tbody>
       </table>

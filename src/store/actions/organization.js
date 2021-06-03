@@ -247,7 +247,9 @@ export const updateFeedbackScreen = (type) => (dispatch) => {
 };
 
 export const getRoles = () => async (dispatch) => {
-  const result = await organization.getRoles();
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const result = await organization.getRoles(activeOrganization?.id);
   dispatch({
     type: actionTypes.ALL_ROLES,
     payload: result.data,

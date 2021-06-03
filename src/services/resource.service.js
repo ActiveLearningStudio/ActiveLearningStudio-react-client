@@ -66,11 +66,33 @@ const upload = (formData, conf) => httpService
     }
   });
 
-const getTypes = () => httpService
-  .get(`/${apiVersion}/activity-types`)
+const getTypes = (query) => httpService
+  .get(`/${apiVersion}/activity-types${query ? `?query=${query}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const createActivityType = (body) => httpService
+  .post(`/${apiVersion}/activity-types`, body)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: err || err.message || 'Error creating activity type.',
+    });
+  });
+const editActivityType = (body, typeId) => httpService
+  .put(`/${apiVersion}/activity-types/${typeId}`, body)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: err || err.message || 'Error editing activity type.',
+    });
+  });
 const getItems = (activityTypeId) => httpService
   .get(`/${apiVersion}/activity-types/${activityTypeId}/items`)
   .then(({ data }) => data)
@@ -166,6 +188,8 @@ export default {
   remove,
   upload,
   getTypes,
+  createActivityType,
+  editActivityType,
   getItems,
   h5pToken,
   h5pSettings,

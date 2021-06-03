@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { removeActiveAdminForm, setActiveTab } from 'store/actions/admin'
 
-import CreateActivity from "./formik/createActivity"
+import CreateActivityType from "./formik/createActivity"
 import CreateOrg from "./formik/createOrg"
 import AddRole from './formik/addRole';
 import CreateUser from './formik/createuser'
@@ -95,7 +95,7 @@ function AdminPanel() {
               </Tabs>
             </div>
           </div>
-          {activeForm === "add_activity_type" && (
+          {(activeForm === "add_activity_type" || activeForm === "edit_activity_type") && (
             <div className="form-new-popup-admin">
               <FontAwesomeIcon
                 icon="times"
@@ -105,7 +105,12 @@ function AdminPanel() {
                 }}
               />
               <div className="inner-form-content">
-                <CreateActivity />
+                {activeForm === "add_activity_type" ? (
+                    <CreateActivityType />
+                )
+                : (
+                  <CreateActivityType editMode/>
+                )}
               </div>
             </div>
           )}

@@ -10,8 +10,8 @@ const getAll = () => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const getRoles = () => httpService
-  .get(`/${apiVersion}/suborganizations/roles`)
+const getRoles = (subOrgId) => httpService
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/roles`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 

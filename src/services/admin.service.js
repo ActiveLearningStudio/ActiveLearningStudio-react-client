@@ -77,18 +77,6 @@ const updateIndex = (subOrgId, projectId, index) => httpService
     });
   });
 
-const getActivityTypes = (query) => httpService
-  .get(`/${apiVersion}/activity-types?query=${query}`)
-  .then(({ data }) => data)
-  .catch((err) => {
-    Promise.reject(err.response.data);
-    Swal.fire({
-      title: 'Error',
-      icon: 'error',
-      text: err || err.message || 'Error loading activity types.',
-    });
-  });
-
 export default {
   addUserInOrganization,
   editUserInOrganization,
@@ -96,5 +84,4 @@ export default {
   getUserProject,
   getAllProjectIndex,
   updateIndex,
-  getActivityTypes,
 };

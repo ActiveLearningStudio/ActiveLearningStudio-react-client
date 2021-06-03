@@ -7,15 +7,16 @@ import adminService from "services/admin.service";
 import Starter from './starter';
 import { columnData } from './column';
 import { getOrgUsers, searchUserInOrganization, getsubOrgList } from 'store/actions/organization';
-import { getActivityTypes } from "store/actions/admin";
+import { loadResourceTypesAction } from "store/actions/resource";
 function Pills(props) {
   const {modules, type, subType} = props;
   const [subTypeState, setSubTypeState] = useState(subType)
   // All User Business Logic Start
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
+  const { types } = useSelector ((state) => state.resource)
   const admin = useSelector((state) => state.admin);
-  const { activeTab, activityType } = admin
+  const { activeTab } = admin
   const [currentTab, setCurrentTab] =  useState("all");
   const [ activePage, setActivePage ] = useState(1);
   const [ size, setSize ] = useState(25);
@@ -79,13 +80,6 @@ function Pills(props) {
 	}
 
   }, [type, activePage, changeIndexValue, currentTab]);
-  //Activities Business Logic Start
-  useMemo(() => {
-    if (type === 'Activities' && subTypeState === 'Activity Types') {
-      dispatch(getActivityTypes());
-    }
-  }, [])
-  //Activities Business Logic End
   const dummy =  [
     {
       name:'qamar',
@@ -275,13 +269,12 @@ function Pills(props) {
             )}
             {type === 'Activities' && subTypeState === 'Activity Types' && (
               <Starter
-                paginationCounter={true}
                 search={true}
                 tableHead={columnData.ActivityTypes}
-                subTypeState={subTypeState}
+                subType={'Activity Types'}
                 btnText="Add Activity Type"
                 btnAction="add_activity_type"
-                data={activityType || []}
+                data={types}
                 type={type}
                 setActivePage={setActivePage}
                 activePage={activePage}
@@ -289,13 +282,12 @@ function Pills(props) {
             )}
             {type === 'Activities' && subTypeState === 'Activity Items' && (
               <Starter
-                paginationCounter={true}
                 search={true}
                 tableHead={columnData.ActivityItems}
-                subTypeState={subTypeState}
+                subType={'Activity Items'}
                 btnText="Add Activity Item"
                 btnAction="add_activity_item"
-                // data={}
+                data={types}
                 type={type}
                 setActivePage={setActivePage}
                 activePage={activePage}
