@@ -28,8 +28,12 @@ function Starter(props) {
     searchQuery,
     subTypeState,
     searchQueryChangeHandler,
+    searchProjectQueryChangeHandler,
     searchAlertToggler,
     setActivePage,
+    subType,
+    setCurrentTab,
+    setChangeIndexValue,
   } = props;
   return (
     <>
@@ -46,32 +50,36 @@ function Starter(props) {
         subTypeState={subTypeState}
         btnAction={btnAction}
         searchQuery={searchQuery}
+        searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
         searchQueryChangeHandler={searchQueryChangeHandler}
         importUser={importUser}
         filter={filter}
         tableHead={tableHead}
         roles={roles}
+        subType={subType}
+        setChangeIndexValue={setChangeIndexValue}
       />
-      {roles?.length && subTypeState === 'Manage Roles' ? (
-       <Userroles />
-      ):(
-      <TableData
-        tableHead={tableHead}
-        activePage={activePage}
-        setActivePage={setActivePage}
-        searchAlertToggler={searchAlertToggler}
-        type={type}
-        data={data}
-      />
+      {roles?.length && subTypeState === "Manage Roles" ? (
+        <Userroles />
+      ) : (
+        <TableData
+          tableHead={tableHead}
+          activePage={activePage}
+          setActivePage={setActivePage}
+          searchAlertToggler={searchAlertToggler}
+          type={type}
+          data={data}
+          subType={subType}
+          setCurrentTab={setCurrentTab}
+        />
       )}
     </>
-
   );
 }
 
 Starter.propTypes = {
   manage: PropTypes.object.isRequired,
-  type:PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default Starter;

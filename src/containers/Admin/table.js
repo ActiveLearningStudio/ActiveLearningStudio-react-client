@@ -2,6 +2,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Pagination from "react-js-pagination";
+import adminService from "services/admin.service";
 //import { useHistory } from 'react-router-dom';
 import {
   deleteUserFromOrganization,
@@ -9,13 +10,20 @@ import {
   updateOrganizationScreen,
   updatePreviousScreen,
   deleteOrganization,
+  getOrganization,
+  clearUsersinOrganization,
+  getOrgUsers,
 } from "store/actions/organization";
 import { Link, withRouter } from "react-router-dom";
 import { simpleSearchAction } from "store/actions/search";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert } from "react-bootstrap";
-import { setActiveAdminForm, setActiveTab, setCurrentUser } from "store/actions/admin";
+import {
+  setActiveAdminForm,
+  setActiveTab,
+  setCurrentUser,
+} from "store/actions/admin";
 
 function Table(props) {
   const {
@@ -26,6 +34,8 @@ function Table(props) {
     activePage,
     setActivePage,
     searchAlertToggler,
+    subType,
+    setCurrentTab,
   } = props;
   const organization = useSelector((state) => state.organization);
   const { activeOrganization, allSuborgList } = organization;
@@ -149,13 +159,21 @@ function Table(props) {
                 <td>{row.domain}</td>
                 <td>
                   {row?.admins?.length || 0}
-                  <div className="view-all">view all</div>
+                  <Link
+                    onClick={() => {
+                      dispatch(setActiveTab('Users'));
+                      dispatch(getOrgUsers(row.id, 1, 25, 1));
+                    }}
+                    className="view-all"
+                  >
+                    view all</Link>
                 </td>
                 <td>
                   {row.projects_count}
                   <div
                     className="view-all"
                     onClick={async () => {
+                      await dispatch(getOrganization(row.id));
                       Swal.fire({
                         html: "Searching...",
                         allowOutsideClick: false,
@@ -171,38 +189,74 @@ function Table(props) {
                         })
                       );
                       Swal.close();
-                      //history.push(`/org/${row?.domain}/search?type=orgSearch`);
+                      history.push(`/org/${row?.domain}/search?type=orgSearch`);
                     }}
                   >
                     view all
                   </div>
                 </td>
                 <td>
-                  {row.suborganization_count}
-                  <div className="view-all">view all</div>
+                  {row.suborganization_count || 0}
+                  {row.suborganization_count > 0 && (
+                    <Link
+                      className="view-all"
+                      onClick={() => {
+                        if (row.suborganization_count > 0) {
+                          Swal.fire({
+                            title: 'Organization',
+                            icon: 'warning',
+                            html: 'You are about to change the content of admin panel, Are you sure?',
+                            showCancelButton: true,
+                            confirmButtonColor: "#084892",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Yes",
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              dispatch(getOrganization(row.id));
+                              dispatch(clearUsersinOrganization());
+                            }
+                          });
+                        }
+                      }}
+                    >
+                      view all
+                    </Link>
+                  )}
                 </td>
                 <td>
                   {row.users_count}
-                  <Link className="view-all" onClick={() => {
-                    dispatch(setActiveTab('Users'));
-                  }}>
-                  view all
+                  <Link
+                    className="view-all"
+                    onClick={() => {
+                      dispatch(setActiveTab('Users'));
+                    }}>
+                    view all
                   </Link>
                 </td>
                 <td>
                   {row.groups_count}
-                  <Link to={`/org/${allState?.organization?.currentOrganization?.domain}/groups`} className="view-all">view all</Link>
+                  <Link
+                    to={`/org/${allState?.organization?.currentOrganization?.domain}/groups`}
+                    className="view-all"
+                  >
+                    view all
+                  </Link>
                 </td>
                 <td>
                   {row.teams_count}
-                  <Link to={`/org/${allState?.organization?.currentOrganization?.domain}/teams`} className="view-all">view all</Link>
+                  <Link
+                    to={`/org/${allState?.organization?.currentOrganization?.domain}/teams`}
+                    className="view-all"
+                  >
+                    view all
+                  </Link>
                 </td>
                 <td>
                   <Link
                     onClick={() => {
                       dispatch(setActiveAdminForm("edit_org"));
                       dispatch({
-                        type: 'SET_ACTIVE_EDIT',
+                        type: "SET_ACTIVE_EDIT",
                         payload: row,
                       });
                     }}
@@ -246,6 +300,182 @@ function Table(props) {
                 </td>
               </tr>
             ))}
+
+          {type === "Project" &&
+            subType === "all" &&
+            (data ? (
+              data?.data?.map((row) => {
+                const createNew = new Date(row.created_at);
+                const updateNew = new Date(row.updated_at);
+                return (
+                  <tr className="org-rows">
+                    <td>
+                      <img
+                        src={global.config.resourceUrl + row.thumb_url}
+                        alt=""
+                      />
+                    </td>
+                    <td>{row.name}</td>
+                    <td>{createNew.toDateString()}</td>
+
+                    {/* <td>{row.description}</td> */}
+
+                    <td>{row.id}</td>
+                    <td>{row.indexing_text}</td>
+
+                    <td>{row.organization_id}</td>
+
+                    <td>{String(row.shared)}</td>
+                    <td>{String(row.starter_project)}</td>
+
+                    <td>{row.status_text}</td>
+                    <td>{updateNew.toDateString()}</td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td colspan="11">
+                  <Alert variant="primary">Loaidng data ...</Alert>
+                </td>
+              </tr>
+            ))}
+
+          {type === "Project" &&
+            subType === "user" &&
+            (data ? (
+              data?.data?.map((row) => {
+                const createNew = new Date(row.created_at);
+                const updateNew = new Date(row.updated_at);
+                return (
+                  <tr className="org-rows">
+                    <td>
+                      <img
+                        src={global.config.resourceUrl + row.thumb_url}
+                        alt=""
+                      />
+                    </td>
+                    <td>{row.name}</td>
+                    <td>{createNew.toDateString()}</td>
+
+                    {/* <td>{row.description}</td> */}
+
+                    <td>{row.id}</td>
+                    <td>{row.indexing_text}</td>
+
+                    <td>{row.organization_id}</td>
+
+                    <td>{String(row.shared)}</td>
+                    <td>{String(row.starter_project)}</td>
+
+                    <td>{row.status_text}</td>
+                    <td>{updateNew.toDateString()}</td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td colspan="11">
+                  <Alert variant="primary">Loaidng data ...</Alert>
+                </td>
+              </tr>
+            ))}
+
+          {type === "Project" &&
+            subType === "index" &&
+            (data ? (
+              data?.data?.map((row) => {
+                const createNew = new Date(row.created_at);
+                const updateNew = new Date(row.updated_at);
+                return (
+                  <tr className="org-rows">
+                    <td>
+                      <img
+                        src={global.config.resourceUrl + row.thumb_url}
+                        alt=""
+                      />
+                    </td>
+                    <td>{row.name}</td>
+                    <td>{createNew.toDateString()}</td>
+
+                    {/* <td>{row.description}</td> */}
+
+                    <td>{row.id}</td>
+                    <td>{row.indexing_text}</td>
+
+                    <td>{row.organization_id}</td>
+
+                    <td>{String(row.shared)}</td>
+                    <td>{String(row.starter_project)}</td>
+
+                    <td>{row.status_text}</td>
+                    <td>{updateNew.toDateString()}</td>
+                    <td>
+                      {(row.indexing === 1 || row.indexing === 2) && (
+                        <Link style={{ float: "left" }} onClick={() => {
+                          Swal.fire({
+                            title: 'Please Wait !',
+                            html: 'Approving Project ...',
+                            allowOutsideClick: false,
+                            onBeforeOpen: () => {
+                              Swal.showLoading();
+                            },
+                          });
+                          const result = adminService.updateIndex(row.id, 3)
+                          result.then((data) => {
+                            // console.log(data)
+                            Swal.fire({
+                              icon: 'success',
+                              text: data.message,
+                            });
+                          }).catch((err) => {
+                            Swal.fire({
+                              icon: 'error',
+                              text: 'Error',
+                            });
+                          })
+                        }}>
+                          Approve
+                        </Link>
+                      )}
+                      {(row.indexing === 1 || row.indexing === 3) && (
+                        <Link style={{ float: "right" }} onClick={() => {
+                          Swal.fire({
+                            title: 'Please Wait !',
+                            html: 'Reject Project ...',
+                            allowOutsideClick: false,
+                            onBeforeOpen: () => {
+                              Swal.showLoading();
+                            },
+                          });
+                          const result = adminService.updateIndex(row.id, 2)
+                          result.then((data) => {
+                            // console.log(data)
+                            Swal.fire({
+                              icon: 'success',
+                              text: data.message,
+                            })
+                          }).catch((err) => {
+                            Swal.fire({
+                              icon: 'error',
+                              text: 'Error',
+                            });
+                          })
+                        }}>
+                          Reject
+                        </Link>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td colspan="11">
+                  <Alert variant="primary">Loaidng data ...</Alert>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
       <div className="pagination-top">
@@ -254,17 +484,62 @@ function Table(props) {
           results
         </div>
         <div class="main-pagination">
-          {type === "Users" && (
-            <Pagination
-              activePage={activePage}
-              pageRangeDisplayed={5}
-              itemsCountPerPage={data?.meta?.per_page}
-              totalItemsCount={data?.meta?.total}
-              onChange={(e) => {
-                setActivePage(e);
-              }}
-            />
-          )}
+          {
+            type === "Users" && (
+              <Pagination
+                activePage={activePage}
+                pageRangeDisplayed={5}
+                itemsCountPerPage={data?.meta?.per_page}
+                totalItemsCount={data?.meta?.total}
+                onChange={(e) => {
+                  setCurrentTab("all");
+                  setActivePage(e);
+                }}
+              />
+            )
+          }
+          {
+            type === "Project" && subType === "all" && (
+              <Pagination
+                activePage={activePage}
+                pageRangeDisplayed={5}
+                itemsCountPerPage={data?.meta?.per_page}
+                totalItemsCount={data?.meta?.total}
+                onChange={(e) => {
+                  setCurrentTab("all");
+                  setActivePage(e);
+                }}
+              />
+            )
+          }
+          {
+            type === "Project" && subType === "user" && (
+              <Pagination
+                activePage={activePage}
+                pageRangeDisplayed={5}
+                itemsCountPerPage={data?.meta?.per_page}
+                totalItemsCount={data?.meta?.total}
+                onChange={(e) => {
+                  setCurrentTab("user");
+                  setActivePage(e);
+                }}
+              />
+            )
+          }
+          {
+            type === "Project" && subType === "index" && (
+              <Pagination
+                activePage={activePage}
+                pageRangeDisplayed={5}
+                itemsCountPerPage={data?.meta?.per_page}
+                totalItemsCount={data?.meta?.total}
+                onChange={(e) => {
+                  setCurrentTab("index");
+                  setActivePage(e);
+                }}
+              />
+            )
+          }
         </div>
       </div>
     </div>
