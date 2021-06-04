@@ -85,7 +85,7 @@ function Sidebar(props) {
           </Link>
         </ul>
       )}
-      {permission?.Dashboard?.includes('dashboard:view') && (
+      {true && (
         <Link to={`/org/${organization.currentOrganization?.domain}/dashboard`}>
           <div className="menu-title">
             <img src={dashboardicon} alt="" />

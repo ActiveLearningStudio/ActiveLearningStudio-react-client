@@ -47,7 +47,7 @@ function SearchForm() {
 
   useEffect(() => {
     const allItems = [];
-    activityTypesState.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
+    activityTypesState?.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
     setActivityTypes(allItems.sort(compare));
     if (searchState?.searchQuery !== simpleSearch) {
       setSimpleSearch('');
@@ -81,7 +81,8 @@ function SearchForm() {
                 };
                 dispatcher(simpleSearchAction(searchData));
                 localStorage.setItem('loading', 'true');
-                history.push(`/org/${currentOrganization?.domain}/search?type=public`);
+                history.push(`/org/${currentOrganization?.domain}/search?q=${simpleSearch.trim()}&type=public`);
+                localStorage.setItem('refreshPage', false);
               }
             }
             return true;
@@ -131,7 +132,8 @@ function SearchForm() {
               values.standardArray.filter((h5p) => h5pNameArray.push(h5p.value));
               values.standardArray = h5pNameArray;
               // eslint-disable-next-line max-len
-              history.push(`/org/${currentOrganization?.domain}/search?type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${h5pNameArray}`);
+              history.push(`/org/${currentOrganization?.domain}/search?q=${values.phrase}&type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${h5pNameArray}`);
+              localStorage.setItem('refreshPage', false);
               // const allSubjects = values.subjectArray;
               // values.subjectArray = allSubjects.forEach((subject) => {
               //   if (subject.includes('and')) {
@@ -144,7 +146,7 @@ function SearchForm() {
               //     grade = grade.replace('and', '&');
               //   }
               // });
-              console.log(values.gradeArray, values.subjectArray);
+              console.log(values.gradeArray, values.subjectArray, values);
               Swal.showLoading();
               dispatcher(simpleSearchAction(values));
               resetForm({

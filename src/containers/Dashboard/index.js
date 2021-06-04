@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import Swal from 'sweetalert2';
 import {
   PieChart,
@@ -27,8 +27,8 @@ function DashboardPage(props) {
     getUserMetrics,
     getUserMembership,
   } = props;
-  const organization = useSelector((state) => state.organization);
-  const { permission } = organization;
+  // const organization = useSelector((state) => state.organization);
+  // const { permission } = organization;
   const [showModal, setShowModal] = useState(false);
   const [modalSection, setModalSection] = useState(null);
 
@@ -127,7 +127,7 @@ function DashboardPage(props) {
     <>
       <div className="dashboard-page">
         <div className="content-wrapper">
-          {permission?.Dashboard?.includes('dashboard:view') ? (
+          {true ? (
             <div className="content">
               <div className="row">
                 <div className="col-md-12">
