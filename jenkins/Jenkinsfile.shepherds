@@ -1,4 +1,4 @@
-node {
+node("currikishepherds") {
     def app
     
     stage('Clone repository') {               
@@ -21,7 +21,6 @@ node {
         }    
          
     }
-    
     
     parallel(
             "StageA": {
