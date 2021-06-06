@@ -28,7 +28,7 @@ node("currikidev") {
                     node('currikishepherds') {
                         stage ('currikishepherds') {
                                 echo 'Copy'
-                                sh "yes | docker stack deploy --compose-file ~/curriki/docker-compose-shepherds.yml currikistack" 
+                                sh "yes | docker stack deploy --compose-file /curriki/docker-compose-shepherds.yml currikistack" 
                                 echo 'Copy completed'
                         }
                     }
