@@ -3,7 +3,8 @@
 .side-wrapper-team {
   position: fixed;
   left: 292px;
-  padding-bottom: 100px;
+  width: 100%;
+  // padding-bottom: 100px;
   border-right: 1px solid #dcdcdc;
   z-index: 1000;
   .collapse-button {
@@ -21,11 +22,16 @@
   }
 
   .bread-crumb {
-    position: absolute;
+    .main-flex-top {
+      display: flex;
+    }
     top: 0;
     left: 100%;
     display: flex;
-    width: calc(140vw);
+    align-items: center;
+    justify-content: space-between;
+    // width: calc(140vw);
+    width: 100%;
     padding: 17px 0 8px 55px;
     background-color: #eee;
     border-bottom: solid 1px #CBCBCB;
@@ -48,7 +54,7 @@
   }
   .back-button-main-page {
     width: fit-content;
-    margin: auto;
+    margin-right: 24%;
     height: 30px;
     padding: 8px 15px 9px 0px;
     display: flex;

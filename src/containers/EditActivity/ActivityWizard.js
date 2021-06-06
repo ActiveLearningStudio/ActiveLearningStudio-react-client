@@ -26,7 +26,7 @@ function ActivityWizard(props) {
     try {
       Swal.fire({
         title: 'Editing Activity',
-        html: 'Please wait! While we update your activity.',
+        html: 'Please wait! Updating activity...',
         allowOutsideClick: false,
         onBeforeOpen: () => {
           Swal.showLoading();

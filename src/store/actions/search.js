@@ -54,13 +54,14 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         h5pLibraries: values.standardArray,
         from: values.from,
         size: values.size,
+        userIds: values.authors,
         model: values.model || undefined,
         negativeQuery: values.no_words,
         subjectIds: activeSubjects,
         educationLevelIds: activeGrades,
         startDate: values.fromDate,
         endDate: values.toDate,
-        organization_id: activeOrganization.id,
+        organization_id: activeOrganization?.id,
       };
     } else {
       sendData = {
@@ -71,10 +72,11 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         model: values.model || undefined,
         negativeQuery: values.no_words,
         subjectIds: activeSubjects,
+        userIds: values.authors,
         educationLevelIds: activeGrades,
         startDate: values.fromDate,
         endDate: values.toDate,
-        organization_id: activeOrganization.id,
+        organization_id: activeOrganization?.id,
       };
     }
   } else {
@@ -84,13 +86,14 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         h5pLibraries: values.standardArray,
         from: values.from,
         size: values.size,
+        userIds: values.authors,
         model: values.model || undefined,
         negativeQuery: values.no_words,
         subjectIds: activeSubjects,
         educationLevelIds: activeGrades,
         startDate: values.fromDate,
         endDate: values.toDate,
-        organization_id: activeOrganization.id,
+        organization_id: activeOrganization?.id,
       };
     } else {
       sendData = {
@@ -98,13 +101,14 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         h5pLibraries: values.standardArray,
         from: values.from,
         size: values.size,
+        userIds: values.authors,
         model: values.model || undefined,
         negativeQuery: values.no_words,
         subjectIds: activeSubjects,
         educationLevelIds: activeGrades,
         startDate: values.fromDate,
         endDate: values.toDate,
-        organization_id: activeOrganization.id,
+        organization_id: activeOrganization?.id,
       };
     }
   }

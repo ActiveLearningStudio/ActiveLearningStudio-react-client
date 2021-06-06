@@ -28,7 +28,7 @@ const AllOrganizations = () => {
   }, [activeOrganization]);
   const { allSuborgList } = allListState;
   return (
-    currentOrganization.organization_role === 'Administrator' ? (
+    currentOrganization?.organization_role === 'Administrator' ? (
       allSuborgList ? (
         <div className="all-organizations">
           <div className="organizations-create">
@@ -90,11 +90,20 @@ const AllOrganizations = () => {
                           <h5>
                             Admin:
                             &nbsp;
-                            {org.admins?.map((adm) => (
-                              <span>
-                                {adm.first_name}
-                                ,&nbsp;
-                              </span>
+                            {org.admins?.map((adm, index) => (
+                              <>
+                                {(org?.admins?.length === 1 || org?.admins?.length === (index + 1)) ? (
+                                  <span>
+                                    {adm.first_name}
+                                    &nbsp;
+                                  </span>
+                                ) : (
+                                  <span>
+                                    {adm.first_name}
+                                    ,&nbsp;
+                                  </span>
+                                )}
+                              </>
                             ))}
                           </h5>
                           <h5>
@@ -182,7 +191,7 @@ const AllOrganizations = () => {
                 ))}
               </div>
             </div>
-          ) : <Alert style={{ marginTop: '15px' }} variant="warning">No Organizations Available, kindly create a new one.</Alert>}
+          ) : <Alert style={{ marginTop: '15px' }} variant="warning">No Organization available, kindly create a new one.</Alert>}
         </div>
       ) : <Alert style={{ marginTop: '15px' }} variant="primary">Loading ...</Alert>
     ) : <Alert style={{ marginTop: '15px' }} variant="danger">You are not Authorized.</Alert>

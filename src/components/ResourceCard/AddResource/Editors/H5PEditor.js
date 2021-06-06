@@ -160,15 +160,14 @@ const H5PEditor = (props) => {
                     className="laravel-h5p-upload form-control"
                     onChange={setH5pFileUpload}
                     ref={uploadFile}
+                    style={{ cursor: 'pointer' }}
                     // style={{ display: 'none' }}
                   />
                   <div className="upload-holder">
                     <FontAwesomeIcon icon="file-upload" className="mr-2" />
                     <p>
                       Drag & Drop File or
-                      <span
-                        onClick={() => uploadFile.current.click()}
-                      >
+                      <span>
                         &nbsp;Browse to upload
                       </span>
                     </p>

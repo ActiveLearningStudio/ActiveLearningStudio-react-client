@@ -77,10 +77,17 @@ function App(props) {
     if ((window.location.href.includes('/login') || window.location.pathname.includes('/register'))) {
       const subDomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
       if (subDomain?.includes('login') || subDomain?.includes('register') || subDomain?.includes('forgot-password')) {
-        dispatch(getBranding('currikistudio'));
+        const result = dispatch(getBranding(localStorage.getItem('current_org') || 'currikistudio'));
+        result.then((data) => {
+          dispatch(getOrganizationFirstTime(data?.organization?.id));
+          dispatch(getAllPermission(data?.organization?.id));
+        }).catch((err) => err && console.log('error'));
       } else if (subDomain) {
         const result = dispatch(getBranding(subDomain));
-        result.then().catch((err) => err && window.location.replace('/login'));
+        result.then((data) => {
+          dispatch(getOrganizationFirstTime(data?.organization?.id));
+          dispatch(getAllPermission(data?.organization?.id));
+        }).catch((err) => err && window.location.replace('/login'));
       }
     }
     if (window.HubSpotConversations) {
@@ -148,6 +155,12 @@ function App(props) {
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.GeoGebraIM68Math-1.0/scripts/geogebra.js?ver=1.0.2`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.DocumentsUpload-1.0/scripts/DocumentsUpload.js`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.MemoryGame-1.3/memory-game.js?ver=1.3.5`,
+
+      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.Collage-0.3/collage.js?ver=0.3.14`,
+      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.Collage-0.3/template.js?ver=0.3.14`,
+      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.Collage-0.3/clip.js?ver=0.3.14`,
+      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.MemoryGame-1.3/card.js?ver=1.3.5`,
+
       'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML',
     ];
 

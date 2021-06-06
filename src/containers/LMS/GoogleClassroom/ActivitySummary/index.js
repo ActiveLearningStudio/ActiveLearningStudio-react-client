@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { getOutcomeSummaryAction, loadH5pResourceSettings } from 'store/actions/gapi';
 import SummaryOutcome from 'containers/LMS/GoogleClassroom/ActivitySummary/SummaryOutcome';
-import gifloader from 'assets/images/dotsloader.gif';
+import logo from 'assets/images/studio_new_logo_small.png';
 import './style.scss';
 
 const Activity = (props) => {
@@ -36,8 +36,11 @@ const Activity = (props) => {
   return (
     <div className="outcome-summary-container">
       {outcome === null && (
-        <div className="loader_gif text-center m-5">
-          <img style={{ width: '50px' }} src={gifloader} alt="" />
+        <div className="loading">
+          <div className="loading_image">
+            <img src={logo} alt="Curriki Studio logo" />
+          </div>
+          <div className="loading-message">Please wait while retrieving your data ...</div>
         </div>
       )}
 
@@ -62,7 +65,7 @@ const Activity = (props) => {
           </div>
           <div className="row m-4">
             <div className="col">
-              <SummaryOutcome outcome={outcome.grouped} />
+              <SummaryOutcome outcome={outcome} />
             </div>
           </div>
         </div>

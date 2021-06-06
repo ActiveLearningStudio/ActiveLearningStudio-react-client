@@ -61,7 +61,9 @@
     "websocket": "^1.0.32"
   },
   "devDependencies": {
-    "babel-eslint": "^10.1.0",
+    "@babel/core": "^7.14.3",
+    "@babel/eslint-parser": "^7.14.4",
+    "@babel/preset-react": "^7.13.13",
     "eslint": "^7.12.1",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-react-app": "^6.0.0",

@@ -24,6 +24,8 @@ import AddAdmin from './addAdmin';
 export default function CreateOrganization() {
   const dispatch = useDispatch();
   const allListState = useSelector((state) => state.organization);
+  const [toggleAdminDropdown, setToggleAdminDropdown] = useState(false);
+  const [toggleUserDropdown, setToggleUserDropdown] = useState(false);
   const [imageActive, setImgActive] = useState(null);
   const [loaderImg, setLoaderImg] = useState(false);
   const [allUsersAdded, setAllUsersAdded] = useState([]);
@@ -206,14 +208,15 @@ export default function CreateOrganization() {
                     disabled
                     autoComplete="off"
                   />
-                  <Dropdown>
-                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                  <Dropdown show={toggleAdminDropdown}>
+                    <Dropdown.Toggle variant="success" id="dropdown-basic" onClick={() => setToggleAdminDropdown(!toggleAdminDropdown)}>
                       Add new Admin
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                       <AddAdmin
                         setAllUsersAdded={setAllAdminAdded}
                         allUsersAdded={allAdminAdded}
+                        setToggleAdminDropdown={setToggleAdminDropdown}
                         setFieldValueProps={setFieldValue}
                         method="create"
                       />
@@ -268,14 +271,16 @@ export default function CreateOrganization() {
                     // value={values.inviteUser}
                     disabled
                   />
-                  <Dropdown>
-                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                  <Dropdown show={toggleUserDropdown}>
+                    <Dropdown.Toggle variant="success" id="dropdown-basic" onClick={() => setToggleUserDropdown(!toggleUserDropdown)}>
                       Add new User
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                       <AddUser
                         setAllUsersAdded={setAllUsersAdded}
                         allUsersAdded={allUsersAdded}
+                        allAdminAdded={allAdminAdded}
+                        setToggleUserDropdown={setToggleUserDropdown}
                         setFieldValueProps={setFieldValue}
                         method="create"
                       />

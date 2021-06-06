@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   updateOrganizationScreen, clearHistory, setActiveOrganization, updatePreviousScreen,
@@ -42,20 +42,20 @@ const Feedback = () => {
           <p className="email">
             We’ve sent  an email to your users, now they can login in your organization.
           </p>
-          <p className="info">
+          {/* <p className="info">
             Now you can star adding projects, creating groups or teams to your organization.
-          </p>
-          <div className="all-btn">
-            <Link className="btn-curriki-primary">
+          </p> */}
+          {/* <div className="all-btn">
+            <Link to={`/org/${stateFeedback?.currentOrganization?.domain}/project/create`} className="btn-curriki-primary">
               Add a Project
             </Link>
-            <Link className="btn-curriki-primary">
+            <Link to={`/org/${stateFeedback?.currentOrganization?.domain}/groups/create-group`} className="btn-curriki-primary">
               Create a Group
             </Link>
-            <Link className="btn-curriki-primary">
+            <Link to={`/org/${stateFeedback?.currentOrganization?.domain}/teams/create-team`} className="btn-curriki-primary">
               Add a Team
             </Link>
-          </div>
+          </div> */}
         </div>
       )}
       {feedbackType?.action !== 'user:delete' ? (

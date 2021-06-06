@@ -37,7 +37,7 @@ const VevensityLogin = loadable(() => import('../containers/Auth/VevinsityLogin'
 
 const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
 const ChangePasswordPage = loadable(() => import('../containers/Account/ChangePasswordPage'));
-const DashboardPage = loadable(() => import('../containers/Dashboard'));
+// const DashboardPage = loadable(() => import('../containers/Dashboard'));
 const NotificationPage = loadable(() => import('../containers/Notification'));
 
 const ProjectsPage = loadable(() => import('../containers/Projects'));
@@ -55,6 +55,7 @@ const GroupsPage = loadable(() => import('../containers/Groups'));
 const AddGroupProjectsPage = loadable(() => import('../containers/Groups/AddProjects'));
 const AddGroupProjectMemberPage = loadable(() => import('../containers/Groups/AddMembers'));
 const GclassActivityPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassActivityPage'));
+const GenericLMSActivityPage = loadable(() => import('../containers/LMS/Generic/GenericLMSActivityPage'));
 const ActivityCreate = loadable(() => import('../containers/CreateActivity'));
 const EditActivity = loadable(() => import('../containers/EditActivity'));
 const GclassSummaryPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassSummaryPage'));
@@ -132,6 +133,11 @@ const AppRouter = (props) => {
           component={GclassSummaryPage}
         />
         <OpenRoute
+          exact
+          path="/genericlms/:lmsName/lmsurl/:lmsUrl/client/:lmsClientId/lmscourse/:lmsCourseId/activity/:activityId/"
+          component={GenericLMSActivityPage}
+        />
+        <OpenRoute
           path="/playlist/:playlistId/activity/:activityId/preview/lti"
           exact
           component={LtiPreviewPage}
@@ -182,7 +188,7 @@ const AppRouter = (props) => {
                      <PrivateRoute exact path="/org/:organization/account" component={ProfilePage} />
                      <PrivateRoute exact path="/org/:organization/change-password" component={ChangePasswordPage} />
 
-                     <PrivateRoute exact path="/org/:organization/dashboard" component={DashboardPage} />
+                     {/* <PrivateRoute exact path="/org/:organization/dashboard" component={DashboardPage} /> */}
                      <PrivateRoute exact path="/org/:organization/notification" component={NotificationPage} />
 
                      <PrivateRoute exact path="/org/:organization/teams" component={TeamsPage} overview />

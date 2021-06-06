@@ -18,6 +18,7 @@ import './style.scss';
 const PROJECTS = 'projects';
 const CHANNEL = 'channel';
 const TEAM = 'team';
+const GROUP = 'group';
 
 function Sidebar(props) {
   const { history, location } = props;
@@ -25,8 +26,8 @@ function Sidebar(props) {
   const dispatch = useDispatch();
 
   const allState = useSelector((state) => state);
-
   const [selectedTeam, setSelectedTeam] = useState(null);
+  const [selectedGroup, setSelectedGroup] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const organization = useSelector((state) => state.organization);
   const { permission } = organization;
@@ -43,6 +44,20 @@ function Sidebar(props) {
           setSelectedCategory(CHANNEL);
         } else {
           setSelectedCategory(TEAM);
+        }
+      }
+    }
+    if (location.pathname.includes('groups/')) {
+      const groupId = parseInt(location.pathname.split('groups/')[1], 10);
+      if (groupId) {
+        setSelectedGroup(groupId);
+
+        if (location.pathname.includes(PROJECTS)) {
+          setSelectedCategory(PROJECTS);
+        } else if (location.pathname.includes(CHANNEL)) {
+          setSelectedCategory(CHANNEL);
+        } else {
+          setSelectedCategory(GROUP);
         }
       }
     }
@@ -103,11 +118,18 @@ function Sidebar(props) {
           </Link>
           {allState.sidebar.teams.length > 0 && allState.sidebar.teams.slice(0, 3).map((team) => (
             <div key={team.id} className={`team-item${selectedTeam === team.id ? '' : ' collapsed'}`}>
-              <div className="team-label" onClick={() => handleClickTeam(team)}>
+              <div className="team-label" onClick={() => { handleClickTeam(team); }}>
                 {team.name}
                 <FontAwesomeIcon
                   icon={selectedTeam === team.id ? 'angle-up' : 'angle-down'}
                   className="ml-2 mt-1"
+                  onClick={() => {
+                    if (selectedTeam === team.id) {
+                      setSelectedTeam(0);
+                    } else {
+                      setSelectedTeam(team.id);
+                    }
+                  }}
                 />
               </div>
 
@@ -164,12 +186,19 @@ function Sidebar(props) {
             </div>
           </Link>
           {allState.sidebar.groups.length > 0 && allState.sidebar.groups.slice(0, 3).map((group) => (
-            <div key={group.id} className={`team-item${selectedTeam === group.id ? '' : ' collapsed'}`}>
+            <div key={group.id} className={`team-item${selectedGroup === group.id ? '' : ' collapsed'}`}>
               <div className="team-label" onClick={() => handleClickGroup(group)}>
                 {group.name}
                 <FontAwesomeIcon
-                  icon={selectedTeam === group.id ? 'angle-up' : 'angle-down'}
+                  icon={selectedGroup === group.id ? 'angle-up' : 'angle-down'}
                   className="ml-2 mt-1"
+                  onClick={() => {
+                    if (selectedGroup === group.id) {
+                      setSelectedGroup(0);
+                    } else {
+                      setSelectedGroup(group.id);
+                    }
+                  }}
                 />
               </div>
 

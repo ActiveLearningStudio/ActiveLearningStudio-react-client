@@ -8,6 +8,7 @@ const SummaryOutcome = (props) => {
   const { outcome } = props;
   const [toggles, setToggles] = useState([]);
   const [answerCount, setAnswerCount] = useState(0);
+  const [showExpandButtons, setShowExpandButtons] = useState(false);
 
   // Init
   useEffect(() => {
@@ -15,8 +16,8 @@ const SummaryOutcome = (props) => {
 
     let count = 0;
     const countAnswers = (data) => {
-      if (Array.isArray(data.content)) {
-        data.content.forEach((deeperData) => countAnswers(deeperData));
+      if (data.type === 'section') {
+        data.children.forEach((deeperData) => countAnswers(deeperData));
       } else {
         count += 1;
       }
@@ -42,9 +43,16 @@ const SummaryOutcome = (props) => {
     if (action === 'expand') {
       const newToggles = [];
       const getId = (data) => {
-        newToggles.push(data['sub-content-id']);
-        if (Array.isArray(data.content)) {
-          data.content.forEach((deeperData) => getId(deeperData));
+        if (Array.isArray(data)) {
+          data.forEach((deeperData) => getId(deeperData));
+        }
+
+        if (data.sub_content_id) {
+          newToggles.push(data.sub_content_id);
+        }
+
+        if (data.type === 'section') {
+          data.children.forEach((deeperData) => getId(deeperData));
         }
       };
       outcome.forEach((data) => getId(data));
@@ -55,39 +63,79 @@ const SummaryOutcome = (props) => {
   };
 
   const renderNode = (data) => {
-    const opened = toggles.includes(data['sub-content-id']) ? '' : 'section-container-closed';
+    const opened = toggles.includes(data.sub_content_id) ? '' : 'section-container-closed';
 
-    if (data.title && data.content && Array.isArray(data.content)) {
+    if (Array.isArray(data)) {
+      return data.map((node) => renderNode(node));
+    }
+
+    if (data.type === 'section') {
+      // Show expand buttons only when we have nesting
+      if (showExpandButtons === false) setShowExpandButtons(true);
+
       return (
         <div className="section-container">
-          <div className="section-title" onClick={() => toggleNode(data['sub-content-id'])}>
+          <div className="section-title" onClick={() => toggleNode(data.sub_content_id)}>
             {data.title}
             <span>{opened === '' ? '▼' : '◀'}</span>
           </div>
           <div className={`section-content ${opened} p-2`}>
-            {(data.content && Array.isArray(data.content) && data.content.map((node) => renderNode(node)))}
+            {data.children.map((node) => renderNode(node))}
           </div>
         </div>
       );
     }
 
-    if (data.content.questions) {
+    if (data.type === 'question') {
       return (
         <div className="question-container">
           <div className="question-question">
-            {data.content.questions}
+            {data.title}
           </div>
           <div className="question-spacer">
             <div />
           </div>
           <div className="question-answers">
-            {data.answer && Array.isArray(data.answer) && data.answer.map((answer) => (
-              <li>
-                {answer.score?.raw && answer.score?.max && (
-                  <span>{`${answer.score.raw} / ${answer.score.max}`}</span>
-                )}
-              </li>
-            ))}
+            <ul>
+              {data.answers.map((answer) => (
+                <li>
+                  <div className="answer-container">
+                    <div className="response-container">
+                      {answer.response?.length === 1 && (
+                        <span>
+                          {answer.response[0]}
+                        </span>
+                      )}
+                      {answer.response?.length > 1 && (
+                        <ul>
+                          {answer.response.map((response) => (
+                            <li>
+                              {response}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                    <div className="score-container">
+                      {answer.score?.max !== 0 && (
+                        <div className="score-badge">
+                          <div className="score-badge-header">SCORE</div>
+                          <div className="score-badge-score">
+                            {`${answer.score.raw} / ${answer.score.max}`}
+                          </div>
+                          <div className="score-badge-header">
+                            <FontAwesomeIcon icon="clock" />
+                          </div>
+                          <div className="score-badge-score">
+                            {answer.duration}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       );
@@ -114,10 +162,12 @@ const SummaryOutcome = (props) => {
             <FontAwesomeIcon icon="star" />
             {`${answerCount} Responses`}
           </div>
-          <div className="summary-outcome-controls-btns">
-            <button type="button" className="btn btn-primary" onClick={() => toggleAllNodes('expand')}>Expand All</button>
-            <button type="button" className="btn btn-primary" onClick={() => toggleAllNodes('collapse')}>Collapse All</button>
-          </div>
+          {showExpandButtons && (
+            <div className="summary-outcome-controls-btns">
+              <button type="button" className="btn btn-primary" onClick={() => toggleAllNodes('expand')}>Expand All</button>
+              <button type="button" className="btn btn-primary" onClick={() => toggleAllNodes('collapse')}>Collapse All</button>
+            </div>
+          )}
         </div>
       )}
 

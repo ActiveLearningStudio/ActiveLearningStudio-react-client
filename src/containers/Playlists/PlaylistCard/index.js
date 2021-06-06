@@ -47,7 +47,7 @@ class PlaylistCard extends React.Component {
 
     if (!playlist.activities || playlist.activities.length === 0) {
       return (
-        <div className="alert alert-info m-3">No resources yet.</div>
+        <div className="alert alert-info m-3">No resource yet.</div>
       );
     }
 
@@ -102,11 +102,13 @@ class PlaylistCard extends React.Component {
   };
 
   handleClickPlaylistTitle = async () => {
-    this.setState({
-      editMode: true,
-    }, () => {
-      this.titleInput.focus();
-    });
+    if (this.props.organization?.permission?.Playlist?.includes('playlist:edit')) {
+      this.setState({
+        editMode: true,
+      }, () => {
+        this.titleInput.focus();
+      });
+    }
   };
 
   render() {
@@ -137,7 +139,7 @@ class PlaylistCard extends React.Component {
                     onClick={this.handleClickPlaylistTitle}
                   >
                     <span>{playlist.title}</span>
-                    <FontAwesomeIcon icon="pencil-alt" className="ml-2 edit-icon" />
+                    {permission?.Playlist.includes('playlist:edit') && <FontAwesomeIcon icon="pencil-alt" className="ml-2 edit-icon" />}
                   </div>
 
                   <textarea

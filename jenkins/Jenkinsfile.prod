@@ -1,46 +1,37 @@
-
-node('currikiprod') {
-    stage('Cloning Git') {
-        checkout scm
+node {
+    def app
+    
+    stage('Clone repository') {               
+        checkout scm    
+    }  
+    
+    stage('Build image') {         
+        app = docker.build("quay.io/curriki/client")    
+        
     } 
-        
-    stage('Install dependencies') {
-        nodejs('nodejs') {
-            sh 'npm install'
-            echo "Modules test installed"
+    stage('Test image') {           
+        app.inside { 
+                sh 'echo "Api Tests passed"'        
+        }    
+    } 
+    stage('Push image') {	
+        docker.withRegistry('https://quay.io', 'docker-private-credentials') {            
+            app.push("${env.BUILD_NUMBER}")            
+            app.push("latest")        
+        }    
+         
+    }
+    def labels = ['currikiprod']
+
+    for (label in labels) {
+        node(label) {
+            stage('Deploying Image ' + label){
+                echo 'Copy'
+            sh "yes | docker stack deploy --compose-file ~/curriki/docker-compose.yml currikistack" 
+            echo 'Copy completed'
+            }
         }
-        
     }
-    stage('Build') {
-        nodejs('nodejs') {
-            sh 'cp /root/curriki/client/.env.local .env.local'
-            sh 'npm run build'
-            echo "Build completed"
-        }
-        
-    }
-
-    stage('Package Build') {
-        sh "tar -zcvf bundle.tar.gz build/"
-    }
-
-    stage('Artifacts Creation') {
-        fingerprint 'bundle.tar.gz'
-        archiveArtifacts 'bundle.tar.gz'
-        echo "Artifacts created"
-    }
-
-    stage('Stash changes') {
-        stash allowEmpty: true, includes: 'bundle.tar.gz', name: 'buildArtifacts'
-    }
-    stage('Copying Build') {
-        echo 'Unstash'
-        unstash 'buildArtifacts'
-        echo 'Artifacts copied'
-
-        echo 'Copy'
-        sh "yes | sudo cp -R bundle.tar.gz /root/curriki/client && cd /root/curriki/client && sudo tar -xvf bundle.tar.gz && rm -rf html && cp -r build html && docker cp html currikiprod-client:/usr/share/nginx"
-        echo 'Copy completed'
-    }
+    
 }
 

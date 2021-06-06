@@ -37,6 +37,7 @@ $filled: #44ca92;
     .member-mark-container {
       display: flex;
       margin-top: 14px;
+      flex-wrap: wrap;
 
       .member-name-mark {
         position: relative;

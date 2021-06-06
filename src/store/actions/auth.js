@@ -25,6 +25,10 @@ export const getUserAction = () => async (dispatch) => {
       dispatch({
         type: actionTypes.GET_USER_FAIL,
       });
+      dispatch({
+        type: 'SET_ALL_PERSMISSION',
+        payload: { loading: false },
+      });
     }
   } else {
     dispatch({

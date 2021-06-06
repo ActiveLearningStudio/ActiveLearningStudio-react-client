@@ -19,6 +19,7 @@ const defaultAuthState = () => {
     courses: null,
     student: null,
     submission: null,
+    submissionError: null,
     h5pSettings: null,
     summaryAuth: {
       student: null,
@@ -65,6 +66,14 @@ const gapiReducer = (state = defaultAuthState(), action) => {
       };
 
     case GET_SUBMISSION:
+      if (action.submission.errors) {
+        return {
+          ...state,
+          submission: null,
+          submissionError: action.submission.errors[0],
+        };
+      }
+
       return {
         ...state,
         submission: {
@@ -107,9 +116,7 @@ const gapiReducer = (state = defaultAuthState(), action) => {
 
       return {
         ...state,
-        outcomeSummary: {
-          grouped: action.outcomeSummary.summary,
-        },
+        outcomeSummary: action.outcomeSummary.summary,
         summaryError: null,
       };
 

@@ -360,7 +360,14 @@ export const createResourceByH5PUploadAction = (
   // projectId,
 ) => async (dispatch) => {
   try {
-    Swal.showLoading();
+    Swal.fire({
+      title: 'Please Wait !',
+      html: 'Uploading Activity ...',
+      allowOutsideClick: false,
+      onBeforeOpen: () => {
+        Swal.showLoading();
+      },
+    });
     const formData = new FormData();
     formData.append('h5p_file', payload.h5pFile);
     formData.append('action', 'upload');

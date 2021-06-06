@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
-
+import QueryString from 'query-string';
 import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
 import loader from 'assets/images/loader.svg';
@@ -15,6 +15,8 @@ import Error from './Error';
 import Logo from './Logo';
 
 import './style.scss';
+// eslint-disable-next-line no-restricted-globals
+const query = QueryString.parse(location.search);
 
 class RegisterPage extends React.Component {
   constructor(props) {
@@ -37,6 +39,10 @@ class RegisterPage extends React.Component {
 
     const { loadOrganizationTypes } = this.props;
     loadOrganizationTypes();
+    if (query?.email) {
+      // eslint-disable-next-line no-unused-expressions
+      validator.isEmail(query.email) && this.setState({ email: query?.email });
+    }
   }
 
   onChangeField = (e) => {
@@ -211,6 +217,7 @@ class RegisterPage extends React.Component {
                 placeholder="Email*"
                 required
                 maxLength="250"
+                disabled={query?.email && true}
                 value={email}
                 onChange={this.onChangeField}
               />

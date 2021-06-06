@@ -11,6 +11,8 @@ export default function AddUser(props) {
   const {
     setAllUsersAdded,
     allUsersAdded,
+    allAdminAdded,
+    setToggleUserDropdown,
     setFieldValueProps,
     method,
   } = props;
@@ -91,22 +93,26 @@ export default function AddUser(props) {
               {stateOrgUsers?.length > 0 && (
                 <ul className="all-users-list">
                   {stateOrgUsers?.map((user) => (
-                    <li
-                      value={user}
-                      onClick={() => {
-                        setFieldValue('name', user.first_name);
-                        setFieldValue('email', user.email);
-                        setFieldValue('userInfo', user);
-                        setStateOrgUsers([]);
-                      }}
-                    >
-                      {user.first_name}
-                      <p>
-                        Email:
-                        &nbsp;
-                        {user.email}
-                      </p>
-                    </li>
+                    allAdminAdded.map((admin) => (
+                      admin.value.email !== user.email ? (
+                        <li
+                          value={user}
+                          onClick={() => {
+                            setFieldValue('name', user.first_name);
+                            setFieldValue('email', user.email);
+                            setFieldValue('userInfo', user);
+                            setStateOrgUsers([]);
+                          }}
+                        >
+                          {user.first_name}
+                          <p>
+                            Email:
+                            &nbsp;
+                            {user.email}
+                          </p>
+                        </li>
+                      ) : null
+                    ))
                   ))}
                 </ul>
               )}
@@ -159,11 +165,11 @@ export default function AddUser(props) {
               </div>
             </div>
             <div className="btn-group">
-              <button className="submit-create" type="submit">
+              <button className="submit-create" type="submit" onClick={() => setToggleUserDropdown(false)}>
                 Add User
               </button>
               <Dropdown.Item>
-                <button className="cancel-create" type="button">
+                <button className="cancel-create" type="button" onClick={() => setToggleUserDropdown(false)}>
                   CANCEL
                 </button>
               </Dropdown.Item>
@@ -178,6 +184,8 @@ export default function AddUser(props) {
 AddUser.propTypes = {
   setAllUsersAdded: PropTypes.func.isRequired,
   allUsersAdded: PropTypes.array.isRequired,
+  allAdminAdded: PropTypes.array.isRequired,
   setFieldValueProps: PropTypes.func.isRequired,
   method: PropTypes.string.isRequired,
+  setToggleUserDropdown: PropTypes.func.isRequired,
 };

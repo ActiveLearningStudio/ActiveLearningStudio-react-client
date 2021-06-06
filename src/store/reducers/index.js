@@ -18,6 +18,7 @@ import notification from './notification';
 import canvas from './canvas';
 import group from './group';
 import organization from './organization';
+import genericLMS from './LMS/genericLMS';
 
 export default combineReducers({
   auth,
@@ -38,4 +39,5 @@ export default combineReducers({
   canvas,
   group,
   organization,
+  genericLMS,
 });
