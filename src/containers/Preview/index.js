@@ -33,6 +33,7 @@ class PreviewPage extends React.Component {
       content = (
         <ResourcePreview
           activityId={parseInt(activityId, 10)}
+          playlistId={playlistId}
         />
       );
     } else if (previewType === 'playlist') {

@@ -1,3 +1,5 @@
+@import 'assets/css/index';
+
 .search-result-main {
   padding: 0 20px;
 
@@ -6,7 +8,7 @@
     font-weight: 600;
     font-size: 18px;
     line-height: 24px;
-    font-family: "Open Sans", sans-serif;
+    font-family: "rubik", sans-serif;
     letter-spacing: 0;
     text-transform: capitalize;
     opacity: 1;
@@ -14,7 +16,7 @@
 
     span {
       letter-spacing: 0;
-      color: #0f4392;
+      color: $curriki-main-blue;
       text-transform: capitalize;
     }
   }
@@ -36,9 +38,9 @@
     .card-header {
       background-color: #fff;
       text-align: left;
-      font: normal normal 600 16px/20px Open Sans;
+      font: normal normal 600 16px/20px $rubik;
       letter-spacing: 0;
-      color: #0f4392;
+      color: $curriki-main-blue;
       opacity: 1;
       border: none;
       cursor: pointer;
@@ -64,7 +66,7 @@
 
         input{
           width:13px;
-          background-color: #464646;
+          background-color: $mine-shaft;
           margin-right: 10px;
           margin-bottom: 0;
         }
@@ -79,17 +81,17 @@
         padding: 10px;
         height: 36px;
         text-align: left;
-        font: normal normal normal 14px/26px Open Sans;
+        font: normal normal normal 14px/26px $rubik;
         letter-spacing: 0;
-        color: #464646;
+        color: $mine-shaft;
         margin-bottom: 10px;
       }
 
       .check-box-search {
         text-align: left;
-        font: normal normal normal 14px/26px Open Sans;
+        font: normal normal normal 14px/26px $rubik;
         letter-spacing: 0;
-        color: #464646;
+        color: $mine-shaft;
         opacity: 1;
         margin-top: 5px;
 
@@ -103,7 +105,7 @@
         border: 2px solid #5952c6;
         border-radius: 2px;
         text-align: center;
-        font: normal normal 600 16px/20px Open Sans;
+        font: normal normal 600 16px/20px $rubik;
         letter-spacing: 0;
         color: #5952c6;
         opacity: 1;
@@ -127,11 +129,11 @@
 
     .headline {
       text-align: left;
-      font: normal normal bold 16px/20px Open Sans;
+      font: normal normal bold 16px/20px $rubik;
       letter-spacing: 0;
       color: #ffffff;
       opacity: 1;
-      background: #0f4392 0% 0% no-repeat padding-box;
+      background: $curriki-main-blue 0% 0% no-repeat padding-box;
       box-shadow: 0 0 2px #0000000d;
       height: 40px;
       display: flex;
@@ -147,7 +149,7 @@
         background: #ffffff 0% 0% no-repeat padding-box;
         box-shadow: 0 0 2px #0000000d;
         opacity: 1;
-        font: normal normal 600 14px/20px Open Sans;
+        font: normal normal 600 14px/20px $rubik;
         letter-spacing: 0;
         cursor: pointer;
       }
@@ -157,7 +159,7 @@
         border:1px solid #333;
       }
       svg.fa-check-square{
-        color:#0f4392;
+        color:$curriki-main-blue;
       }
     }
 
@@ -167,9 +169,9 @@
       box-shadow: 0 0 2px #0000000d;
       opacity: 1;
       text-align: left;
-      font: normal normal 600 16px/20px Open Sans;
+      font: normal normal 600 16px/20px $rubik;
       letter-spacing: 0;
-      color: #0f4392;
+      color: $curriki-main-blue;
       border: none;
       cursor: pointer;
       display: flex;
@@ -190,27 +192,27 @@
       padding: 25px;
 
       a.active {
-        background: #0f4392 0% 0% no-repeat padding-box;
+        background: $curriki-main-blue 0% 0% no-repeat padding-box;
         opacity: 1;
         color: #fff;
-        border: 1px solid #0f4392;
+        border: 1px solid $curriki-main-blue;
         border-radius: 0;
       }
 
       a {
         text-align: left;
-        font: normal normal normal 14px/26px Open Sans;
+        font: normal normal normal 14px/26px $rubik;
         letter-spacing: 0;
-        color: #464646;
+        color: $mine-shaft;
         opacity: 1;
         margin-top: 5px;
         text-transform: capitalize;
-        border: 1px solid #464646;
+        border: 1px solid $mine-shaft;
         border-right: none;
         border-radius: 0;
 
         &:last-child {
-          border-right: 1px solid #464646;
+          border-right: 1px solid $mine-shaft;
         }
       }
     }
@@ -228,9 +230,9 @@
 
         h2 {
           text-align: left;
-          font: normal normal 600 16px/22px Open Sans;
+          font: normal normal 600 16px/22px $rubik;
           letter-spacing: 0;
-          color: #0f4392;
+          color: $curriki-main-blue;
           text-transform: capitalize;
           opacity: 1;
         }
@@ -242,25 +244,50 @@
           li {
             margin-right: 30px;
             text-align: left;
-            font: normal normal normal 14px/26px Open Sans;
+            font: normal normal normal 14px/26px $rubik;
             letter-spacing: 0;
             opacity: 1;
             list-style-type: disc;
 
             span {
               text-align: left;
-              font: normal normal normal 14px/26px Open Sans;
+              font: normal normal normal 14px/26px $rubik;
               letter-spacing: 0;
-              color: #0f4392;
+              color: $curriki-main-blue;
             }
           }
         }
 
         p {
           text-align: left;
-          font: normal normal normal 14px/22px Open Sans;
+          font: normal normal normal 14px/22px $rubik;
           letter-spacing: 0;
           opacity: 1;
+        }
+        .dropdown {
+          margin-top: auto;
+        }
+        .dropdown-menu {
+          padding-left: 10px;
+          cursor: pointer;
+        }
+
+        button {
+          background-color: #fff;
+          box-shadow: 0 0 3px 1px #d3cfcf;
+          border-radius: 50%;
+          width: 35px;
+          height: 35px;
+          align-items: center;
+          display: flex;
+          justify-content: center;
+          margin-top: 10px;
+          text-align: center;
+          padding-left: 25px;
+
+          svg {
+            color: #333;
+          }
         }
       }
 
@@ -304,33 +331,10 @@
           box-shadow: 0 0 7px 2px #eee;
           cursor: pointer;
         }
-
         .btn-fav.true{
 
           svg{
             color:goldenrod
-          }
-        }
-        .dropdown-menu {
-          padding-left: 10px;
-          cursor: pointer;
-        }
-
-        button {
-          background-color: #fff;
-          box-shadow: 0 0 3px 1px #d3cfcf;
-          border-radius: 50%;
-          width: 35px;
-          height: 35px;
-          align-items: center;
-          display: flex;
-          justify-content: center;
-          margin-top: 10px;
-          text-align: center;
-          padding-left: 25px;
-
-          svg {
-            color: #333;
           }
         }
       }
@@ -341,7 +345,7 @@
 .clone-lti {
   .modal-title {
     text-align: left;
-    font: normal normal 400 18px/24px Open Sans;
+    font: normal normal 400 18px/24px $rubik;
     color: #084892;
   }
 
@@ -367,7 +371,7 @@
       border-radius: 30px;
       width: 98px;
       height: 40px;
-      font: normal normal normal 15px/20px Open Sans;
+      font: normal normal normal 15px/20px $rubik;
       letter-spacing: 0;
       color: #FFFFFF;
       border:none
@@ -389,8 +393,8 @@
     flex-direction: column;
 
     p{
-      font: normal normal normal 14px/22px Open Sans;
-      color: #464646;
+      font: normal normal normal 14px/22px $rubik;
+      color: $mine-shaft;
     }
 
     .active-resource{
@@ -401,14 +405,14 @@
       padding: 10px 20px;
 
       h2{
-        font: 400 14px/20px Open Sans;
+        font: 400 14px/20px $rubik;
         color: #084892;
         padding: 10px 0;
       }
 
       h3{
-        font: 400 12px/26px Open Sans;
-        color: #464646;
+        font: 400 12px/26px $rubik;
+        color: $mine-shaft;
         border-top: 1px solid #E6E6E6;
         padding: 10px 0;
 
@@ -500,8 +504,109 @@ ul.pagination {
 
   .page-item.active {
     .page-link {
-      background-color: #0f4392;
-      border-color: #0f4392;
+      background-color: $curriki-main-blue;
+      border-color: $curriki-main-blue;
+    }
+  }
+}
+.author{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  position: inherit;
+  overflow-y: scroll;
+}
+.form-group.wrap-keyword {
+  display: flex;
+  justify-content: initial;
+  flex-wrap: wrap;
+  .keywords-de {
+    background-color: $curriki-main-blue;
+    color: #fff;
+    border-radius: 30px;
+    padding: 6px 10px;
+    font-size: 12px;
+    position: relative;
+    margin: 5px 5px 0 0;
+
+    .iocns {
+      color: #fff;
+      background-color: #ff0000d1;
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      left: 0;
+      top: 0;
+      border-radius: 30px;
+      stroke-width: 1px;
+      cursor: pointer;
+      display: none;
+
+      svg {
+        margin: 10px auto;
+        display: flex;
+      }
+    }
+
+    &:hover .iocns {
+      display: block;
+    }
+  }
+}
+.author-main-box {
+  height: 50px;
+  margin-top: -16px;
+  position: inherit;
+  overflow-y: scroll;
+  .author-box{
+    overflow-y: scroll;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    &:hover {
+      cursor: pointer;
+      background: $curriki-main-blue;
+      * {
+        color: #fff !important;
+      }
+    }
+    .invite-member-name-mark {
+      position: relative;
+      width: 30px;
+      height: 30px;
+      border: solid 1px #e2e2e2;
+      border-radius: 50%;
+      font-weight: bold;
+      text-align: center;
+      text-transform: uppercase;
+      color: #a5a5a5;
+
+      span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: 0;
+        transform: translate(-50%, -50%);
+        font-size: 13px;
+      }
+    }
+    .invite-member-info {
+      margin: 0 0 0 13px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-self: center;
+      color: #636363;
+
+      .invite-member-name {
+        margin: 0;
+        font-size: 14px;
+        color: $mine-shaft;
+      }
+    }
+    div {
+      margin: 0;
+      padding: 7px 1em;
+      display: flex;
     }
   }
 }

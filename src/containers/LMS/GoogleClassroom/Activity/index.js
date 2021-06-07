@@ -37,11 +37,11 @@ const Activity = (props) => {
     window.scrollTo(0, 0);
     loadH5pSettings(activityId, student.auth.googleId);
     getSubmission(match.params.classworkId, match.params.courseId, student.auth);
-  }, [activityId]);
+  }, [activityId, student.auth]);
 
   // Load H5P
   useEffect(() => {
-    if (h5pSettings === null) return;
+    if (h5pSettings === null || submission === null) return;
 
     window.H5PIntegration = h5pSettings.h5p.settings;
     const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
@@ -89,7 +89,7 @@ const Activity = (props) => {
       setXAPILoaded(true);
     });
     setIntervalPointer(checkXapi);
-  }, [h5pSettings]);
+  }, [h5pSettings, submission]);
 
   // Patch into xAPI events
   useEffect(() => {

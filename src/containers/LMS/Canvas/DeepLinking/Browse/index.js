@@ -171,7 +171,7 @@ const Browse = (props) => {
                         <div className="col">
                           {selectedPlaylist.activities.length === 0 && (
                             <Alert variant="warning">
-                              No activities in this playlist
+                              No activity in this playlist
                             </Alert>
                           )}
                           {selectedPlaylist.activities.length > 0 && selectedPlaylist.activities.map((activity) => (

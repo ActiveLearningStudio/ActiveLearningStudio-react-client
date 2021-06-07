@@ -9,18 +9,32 @@ const { apiVersion } = config;
 const searchResult = (sendData) => httpService
   .get(`/${apiVersion}/search/advanced`, '', sendData)
   .then(({ data }) => data)
-  .catch((err) => err.response.data);
+  .catch((err) => {
+    console.log(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      text: err || err.message || 'Server Error'
+    })
+  });
 
 const advancedSearch = (sendData) => httpService
   .get(`/${apiVersion}/search/dashboard`, '', sendData)
   .then(({ data }) => data)
-  .catch((err) => err.response.data);
+  .catch((err) => {
+    console.log(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      text: err || err.message || 'Server Error'
+    })
+  });
 
 // const searchResult = (sendData) => axios
 //   .get(`https://dev.currikistudio.org/api/api/v1/search/advanced`,{
 //     headers:{
 //       Authorization: `Bearer `
-      
+
 //     },
 //     params:sendData
 //   })
@@ -38,8 +52,8 @@ const advancedSearch = (sendData) => httpService
 //   .then(({ data }) => data)
 //   .catch((err) => err.response.data);
 
-const cloneProject = (projectId) => httpService
-  .post(`/${apiVersion}/projects/${projectId}/clone`)
+const cloneProject = (projectId, subOrgId) => httpService
+  .post(`/${apiVersion}/suborganization/${subOrgId}/projects/${projectId}/clone`)
   .then((res) => Swal.fire(res.data.message))
   .catch((err) => {
     if (err.response.data.errors) {

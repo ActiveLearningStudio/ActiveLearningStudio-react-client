@@ -5,7 +5,7 @@ const cluster = require('cluster');
 const path = require('path');
 const logger = require('morgan');
 
-const port = 8080;
+const port = 3000;
 // const root = path.dirname( __dirname );
 const cCPUs = require('os').cpus().length;
 
@@ -25,10 +25,11 @@ if (cluster.isMaster) {
   const app = express();
   app.use(logger('combined'));
   app.use(compression());
-  app.use(express.static(path.join(__dirname, 'build')));
+  app.use(express.static(path.join(__dirname, 'html')));
   app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'html', 'index.html'));
   });
 
   app.use(bodyParser).listen(port);
 }
+

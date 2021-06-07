@@ -1,3 +1,4 @@
+/*eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -24,7 +25,6 @@ class PlaylistCard extends React.Component {
       editMode: false,
     };
   }
-
   handleDelete = (e) => {
     e.preventDefault();
 
@@ -47,7 +47,7 @@ class PlaylistCard extends React.Component {
 
     if (!playlist.activities || playlist.activities.length === 0) {
       return (
-        <div className="alert alert-info m-3">No resources yet.</div>
+        <div className="alert alert-info m-3">No resource yet.</div>
       );
     }
 
@@ -102,11 +102,13 @@ class PlaylistCard extends React.Component {
   };
 
   handleClickPlaylistTitle = async () => {
-    this.setState({
-      editMode: true,
-    }, () => {
-      this.titleInput.focus();
-    });
+    if (this.props.organization?.permission?.Playlist?.includes('playlist:edit')) {
+      this.setState({
+        editMode: true,
+      }, () => {
+        this.titleInput.focus();
+      });
+    }
   };
 
   render() {
@@ -114,8 +116,9 @@ class PlaylistCard extends React.Component {
     const {
       index,
       playlist,
+      organization,
     } = this.props;
-
+    const { permission } = organization;
     return (
       <Draggable
         key={playlist.id}
@@ -136,7 +139,7 @@ class PlaylistCard extends React.Component {
                     onClick={this.handleClickPlaylistTitle}
                   >
                     <span>{playlist.title}</span>
-                    <FontAwesomeIcon icon="pencil-alt" className="ml-2 edit-icon" />
+                    {permission?.Playlist.includes('playlist:edit') && <FontAwesomeIcon icon="pencil-alt" className="ml-2 edit-icon" />}
                   </div>
 
                   <textarea
@@ -175,21 +178,23 @@ class PlaylistCard extends React.Component {
                   </div>
                 )}
               </Droppable>
+              {(permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload')) && (
+                <div className="playlist-add-res-button">
+                  <button
+                    type="button"
+                    className="add-resource-to-playlist-btn"
+                    onClick={() => {
+                      const { clearSearchform } = this.props;
+                      this.handleAddNewResourceClick();
+                      clearSearchform();
+                    }}
+                  >
+                    <FontAwesomeIcon icon="plus-circle" className="mr-2" />
+                    Add new activity
+                  </button>
+                </div>
+              )}
 
-              <div className="playlist-add-res-button">
-                <button
-                  type="button"
-                  className="add-resource-to-playlist-btn"
-                  onClick={() => {
-                    const { clearSearchform } = this.props;
-                    this.handleAddNewResourceClick();
-                    clearSearchform();
-                  }}
-                >
-                  <FontAwesomeIcon icon="plus-circle" className="mr-2" />
-                  Add new activity
-                </button>
-              </div>
             </div>
           </div>
         )}
@@ -209,6 +214,7 @@ PlaylistCard.propTypes = {
   handleCreateResource: PropTypes.func,
   clearForm: PropTypes.func.isRequired,
   clearSearchform: PropTypes.func.isRequired,
+  organization: PropTypes.object.isRequired,
 };
 
 PlaylistCard.defaultProps = {
@@ -225,6 +231,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   selectedProject: state.project.selectedProject,
+  organization: state.organization,
 });
 
 export default withRouter(

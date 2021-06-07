@@ -1,0 +1,82 @@
+$selected_color: #084892;
+$filled: #44ca92;
+
+.group-card-content {
+  width: 250px;
+  margin: 0 18px 18px 0;
+  padding: 5px 24px;
+  background: #fff;
+  border: solid 1px #e2e2e2;
+
+  .group-title {
+    padding: 15px 0;
+  }
+
+  .sub-title {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+  }
+
+  & > .sub-title {
+    padding: 15px 0;
+  }
+  .edit-button {
+    float: right;
+    color: $selected_color;
+  }
+  .group-member-content {
+    padding: 15px 0;
+
+    &.mid-border {
+      border-width: 1px 0;
+      border-style: solid;
+      border-color: #e2e2e2;
+    }
+
+    .member-mark-container {
+      display: flex;
+      margin-top: 14px;
+      flex-wrap: wrap;
+
+      .member-name-mark {
+        position: relative;
+        width: 30px;
+        height: 30px;
+        background: #fff;
+        border: solid 1px #e2e2e2;
+        border-radius: 50%;
+        font-weight: bold;
+        text-align: center;
+        text-transform: uppercase;
+        color: #a5a5a5;
+
+        &.over {
+          margin-left: -4px;
+        }
+
+        span {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          margin: 0;
+          transform: translate(-50%, -50%);
+          font-size: 10px;
+        }
+      }
+    }
+  }
+
+  .title {
+    margin: 0 0 10px 0 !important;
+    padding: 0 !important;
+    font-size: 18px;
+  }
+
+  .describe {
+    max-height: 36px;
+    margin-bottom: 0;
+    font-size: 12px;
+    line-height: 18px;
+  }
+}

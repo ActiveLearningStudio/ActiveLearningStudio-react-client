@@ -1,5 +1,4 @@
-$selected_color: #084892;
-$filled: #44ca92;
+@import 'assets/css/index';
 
 .team-information {
   .projects-wrapper {
@@ -41,7 +40,7 @@ $filled: #44ca92;
             min-height: 48px;
             letter-spacing: 0.3px;
             font-size: 15px;
-            color: #0F4392;
+            color: $curriki-main-blue;
           }
 
           .project-dropdown.check {
@@ -81,8 +80,8 @@ $filled: #44ca92;
           }
 
           .member-mark-container {
-            height: 30px;
             margin-top: 15px;
+            flex-wrap: wrap;
             display: flex;
 
             .member-dropdown {
@@ -133,7 +132,7 @@ $filled: #44ca92;
                 padding-right: 1em;
                 padding-left: 1em;
                 font-size: 12px;
-
+                z-index: 1050;
                 .dropdown-divider {
                   width: calc(100% + 2em);
                   margin-left: -1em;
@@ -167,3 +166,4 @@ $filled: #44ca92;
     }
   }
 }
+

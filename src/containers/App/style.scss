@@ -1,3 +1,5 @@
+@import 'assets/css/index';
+
 .main-page-content {
   padding-top: 85px;
 }
@@ -178,7 +180,7 @@
         font-weight: 600;
         line-height: 16px;
         letter-spacing: 0;
-        color: #464646;
+        color: $mine-shaft;
         opacity: 1;
         text-transform: capitalize;
         word-break: break-word;
@@ -309,10 +311,10 @@
       margin-top: 10px;
 
       a {
-        font-family: 'Open Sans', sans-serif;
-        font-size: 24px;
+        font-family: $rubik, sans-serif;
+        font-size: 20px;
         font-weight: 300;
-        color: #607a9b;
+        color: $fun-blue-1;
 
         &:hover {
           text-decoration: none;
@@ -342,11 +344,11 @@
 
       p {
         font-weight: 400;
-        font-size: 14px;
-        line-height: 26px;
+        font-size: 12px;
+        line-height: 134%;
+        color: $dove-gray;
         letter-spacing: 0;
         text-align: justify;
-        color: #464646;
       }
 
       .lessons {
@@ -447,7 +449,7 @@
     padding-bottom: 10px;
     padding-left: 40px;
     background: url(../../assets/images/my-projects-icon.png) no-repeat 0 9px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: $rubik, sans-serif;
     font-weight: 700;
     font-size: 22px;
     color: #607a9b;
@@ -510,16 +512,17 @@
 
 .main-tabs {
   width: 100%;
-  margin-top: 30px;
+  margin-top: 10px;
+  margin-bottom: 25px !important;
 
   .nav-item {
     position: relative;
-    margin-right: 15px;
+    margin-right: 5px;
     padding: 12px 30px;
     background-color: #fff !important;
-    font-size: 16px;
-    font-weight: 500;
-    color: #0f4392 !important;
+    font-size: 14px;
+    font-weight: 400;
+    color: $curriki-main-blue !important;
   }
 
   .nav-item.active {
@@ -544,14 +547,14 @@
 
 .main-content-wrapper {
   width: 100%;
-  padding-top: 65px;
+  padding-top: 80px;
   padding-bottom: 45px;
   // display: flex;
   float: left;
 
   .sidebar-wrapper {
     position: fixed;
-    z-index: 1050;
+    z-index: 1040;
     width: 292px;
     height: 100%;
     padding-bottom: 100px;
@@ -602,11 +605,13 @@
 
   .content-wrapper {
     margin-left: 300px !important;
+    margin-bottom: 65px;
   }
 }
 
 .h5p-content-wrap {
   .h5p-iframe-wrapper {
+
     & > iframe {
       width: 100%;
       // min-height: 600px !important;
@@ -878,36 +883,36 @@ ul {
   border-bottom: 1px solid #3a466d;
   font-size: 16px;
   color: #7b7b7b;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
 }
 
 ::-webkit-input-placeholder {
   /* Chrome/Opera/Safari */
   color: #7b7b7b;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
 }
 
 ::-moz-placeholder {
   /* Firefox 19+ */
   color: #7b7b7b;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
 }
 
 :-ms-input-placeholder {
   /* IE 10+ */
   color: #7b7b7b;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
 }
 
 :-moz-placeholder {
   /* Firefox 18- */
   color: #7b7b7b;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
 }
 
 body {
   background: #eeeeee;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
   font-weight: normal;
   font-size: 16px;
   position: relative;
@@ -938,7 +943,7 @@ body {
   // margin-top: 3px;
   text-align: left;
   transition: all 0.4s ease-in-out;
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.23);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
   border-radius: 0 0 10px 10px;
   width: 405px;
   background: #ffffff;
@@ -952,11 +957,11 @@ body {
 .top-header {
   position: fixed;
   width: 100%;
-  height: 65px;
+  height: 80px;
   box-shadow: 0 5px 6px #00000026;
   z-index: 111;
   justify-content: space-between;
-  background: #fafafa;
+  background: #fff;
   align-items: center;
   top: 0;
   padding: 0 30px;
@@ -970,14 +975,6 @@ body {
   border-right: 1px solid #dbdbdb;
 }
 
-.top_logo {
-  padding-left: 25px;
-
-  img {
-    width: 50%;
-  }
-}
-
 .top-info > li > a,
 .dropbtn {
   display: block;
@@ -989,12 +986,24 @@ body {
 }
 
 .top-info li {
-  padding: 0 15px;
+  padding: 0 5px;
 }
 
 .top-info > li:first-child > a {
-  color: #1a73e8;
-  font-size: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+
+  svg {
+    color: $fun-blue-1;
+    font-size: 28px;
+
+  }
+
+  p{
+    padding-top: 2px;
+  }
 }
 
 .top-header-right {
@@ -1022,7 +1031,7 @@ body {
   text-align: center;
   width: 100%;
   border-radius: 0;
-  color: #464646;
+  color: $mine-shaft;
   padding: 15px !important;
 }
 
@@ -1091,7 +1100,7 @@ a.logo img {
 nav {
   width: 290px;
   clear: both;
-  float: left;
+  // float: left;
   margin: 130px 0 0 0;
   padding: 0 25px 0 30px;
 }
@@ -1113,7 +1122,7 @@ nav ul li {
 nav ul li a {
   font-size: 16px;
   color: #607a9b;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
   line-height: 100%;
   transition: all 0.5s linear;
 }
@@ -1206,6 +1215,7 @@ body.menuopen nav ul li.haschild a:after {
 .flex-div {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 /* HEADER CSS */
@@ -1235,7 +1245,7 @@ header {
   display: block;
   width: 100%;
   border-radius: 0;
-  color: #464646;
+  color: $mine-shaft;
   text-align: left;
 }
 
@@ -1245,14 +1255,14 @@ header {
 
 .dropdown-menu li {
   padding: 0;
-  color: #464646;
+  color: $mine-shaft;
   text-align: left;
 }
 
 .top-header-right {
   position: relative;
   padding: 0 30px;
-  color: #464646;
+  color: $mine-shaft;
   text-align: left;
 }
 
@@ -1260,7 +1270,7 @@ header {
   width: 60px;
   display: inline-block;
   vertical-align: top;
-  color: #0f4392;
+  color: $curriki-main-blue;
 }
 
 .notify-description {
@@ -1273,7 +1283,7 @@ header {
   font-size: 24px;
   line-height: 33px;
   letter-spacing: 0;
-  color: #0f4392;
+  color: $curriki-main-blue;
   opacity: 1;
 }
 
@@ -1291,7 +1301,7 @@ header {
   font-weight: 400;
   font-size: 14px;
   line-height: 22px;
-  color: #464646;
+  color: $mine-shaft;
   opacity: 0.8;
   white-space: initial;
 }
@@ -1373,7 +1383,7 @@ header.head_mobile {
 .title-md {
   font-size: 22px;
   color: #21448e;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $rubik, sans-serif;
   font-weight: 600;
   line-height: 100%;
   padding-bottom: 18px;
@@ -1802,7 +1812,7 @@ a:hover {
     line-height: 33px;
     font-weight: 600;
     letter-spacing: 0;
-    color: #0f4392;
+    color: $curriki-main-blue;
     text-align: left;
     opacity: 1;
   }
@@ -1911,7 +1921,7 @@ a:hover {
     font-size: 15px;
     line-height: 20px;
     letter-spacing: 0;
-    color: #464646;
+    color: $mine-shaft;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -2069,7 +2079,7 @@ a:hover {
     font-size: 16px;
     line-height: 22px;
     letter-spacing: 0;
-    color: #464646;
+    color: $mine-shaft;
     opacity: 1;
     border: none;
     text-transform: capitalize;
@@ -2150,7 +2160,7 @@ a:hover {
     line-height: 18px;
     box-shadow: 0 0 0 transparent;
     letter-spacing: 0;
-    color: #464646;
+    color: $mine-shaft;
     opacity: 1;
     border: none;
     text-transform: capitalize;
@@ -2177,9 +2187,7 @@ a:hover {
 }
 
 .back-header {
-  min-height: 57px;
-  border-bottom: 1px solid #e3e3e3;
-  border-left: 1px solid #e3e3e3;
+
   padding: 13px 35px;
   display: flex;
   justify-content: space-between;
@@ -2295,7 +2303,7 @@ a:hover {
       font-size: 14px;
       line-height: 19px;
       letter-spacing: 0;
-      color: #464646;
+      color: $mine-shaft;
       padding: 12px 12px;
       border-bottom: 1px solid #eee;
 
@@ -2306,7 +2314,7 @@ a:hover {
       .fa {
         padding-right: 5px;
         font-size: 12px;
-        color: #464646;
+        color: $mine-shaft;
       }
     }
   }
@@ -2317,11 +2325,9 @@ a:hover {
 }
 
 .main-page-content.preview {
-  background: #1b2e3d;
-  padding: 30px 15px;
-  z-index: 111;
-  position: relative;
-  height: 100vh;
+
+  padding: 0px;
+
 
   .line::after {
     content: "";
@@ -2350,7 +2356,7 @@ a:hover {
       padding: 8px 15px;
 
       &:hover {
-        border-left: 3px solid #0f4392;
+        border-left: 3px solid $curriki-main-blue;
       }
 
       .bg-thumbnail {
@@ -2418,8 +2424,14 @@ a:hover {
     min-height: 160px;
     padding: 0 !important;
     background-color: #fff;
-    //border-bottom: 1px solid #989da1;
+    border-left: 1px solid #989da1;
+    position: fixed;
     cursor: pointer;
+    padding-bottom: 100px !important;
+    overflow-y: auto;
+    cursor: pointer;
+    padding-bottom: 100px !important;
+    overflow-y: auto;
 
     .drpdown {
       border-bottom: 1px solid #ddd;
@@ -2472,39 +2484,83 @@ a:hover {
     }
   }
 
+
   .main-item-wrapper {
     position: relative;
     background: #fff;
-    min-height: 443px;
-    max-height: 593px;
+    min-height: 100%;
+    max-height: 100vh;
     overflow-y: auto;
     z-index: 0;
+    margin-top: 50px;
+    .item-container {
+      padding-bottom: 50px;
+    }
   }
-
   .slider-scroll-auto {
     min-height: 450px;
     overflow-y: auto;
   }
-
   .flex-container {
-    max-width: 1280px;
-    margin: 0 auto;
-    border-radius: 5px;
+    width: 100%;
+    margin-top: 40px;
+    z-index: 11;
+    border-radius: 0px;
   }
-
   .activity-bg.left-vdo {
     position: relative;
     width: 100%;
-    max-height: 650px;
-    min-height: 500px;
+    //max-height: 650px;
+    //min-height: 500px;
+    height: 100vh;
     padding: 0 !important;
     background-color: #fff !important;
+
+    .vd-controls {
+      height: 40px;
+      background: #fff;
+    }
+
+  }
+  .all-laylist-oracle {
+     padding: 20px 5px;
+    .preview-activity-dropdown
+    {
+      position: unset;
+      align-items: center;
+      padding: 0 15px;
+      border-bottom: 1px solid #ddd;
+    padding: 10px 20px 4px 10px;
+    }
+    .resource-dropdown {
+      position: unset;
+    }
+    li {
+      list-style-type: none;
+      margin-bottom: 7px;
+      font-size: 14px;
+      font-weight: 400;
+      color: rgb(51,51,51);
+      display: flex;
+      align-items: center;
+      &:hover a {
+        text-decoration: none;
+      }
+    }
+    .bg-thumbnail {
+      width: 60px;
+      height: 50px;
+      background-size: cover;
+      margin-right: 10px;
+      background-position: center;
+    }
   }
 
   .right-sidegolf-info {
     width: 40%;
-    max-height: 650px;
-    min-height: 500px;
+    max-height: 100%;
+    min-height: 100%;
+
     height: 100%;
   }
 
@@ -2522,8 +2578,8 @@ a:hover {
 
     .slider-btn {
       display: flex;
-      width: 80px;
-      justify-content: space-between;
+      width: 100%;
+      justify-content: flex-end;
 
       i {
         border: none;
@@ -2565,21 +2621,33 @@ a:hover {
   .flex-container-preview {
     display: flex;
     justify-content: space-between;
-    background: #FAFAFA;
+    height: 50px;
+    margin: 0;
     padding: 0 20px;
-    border-radius: 5px 0 0;
+    box-shadow: 0 -1px 0 #555 inset;
     align-items: center;
-
+    position: fixed;
+    width: 75%;
+    top: 40px;
+    z-index: 11;
+  background-color: #fff;
+    h3 {
+      font-size: 16px;
+      font-weight: bold;
+      color: #084892;
+      span {
+        font-size: 16px;
+        font-weight: 400;
+      }
+    }
     .dropdown-menu {
       top: 8px !important;
       left: -135px !important;
       min-width: 190px;
     }
-
     .heading-wrapper {
       width: 100%;
     }
-
     .main-heading {
       text-align: left;
       font-weight: 600;
@@ -2587,13 +2655,12 @@ a:hover {
       line-height: 19px;
       padding-bottom: 0;
       letter-spacing: 0;
-      color: #464646;
+      color: #084892;
       opacity: 1;
       border-bottom: none;
       margin: 0 !important;
-      font-family: 'Open Sans', sans-serif;
+     // font-family: $oracle, sans-serif;
     }
-
     .slide-control {
       background: transparent;
       display: block;
@@ -2606,20 +2673,17 @@ a:hover {
       color: #7B7B7B;
       opacity: 1;
       height: auto;
-      font-family: 'Open Sans', sans-serif;
+      // font-family: $oracle, sans-serif;
       padding: 12px 12px;
       text-transform: capitalize;
-
       .fa {
         padding-right: 10px;
         -webkit-text-stroke: 1px #fff;
         color: #7b7b7b;
       }
-
       &:hover {
         background-color: #0063D5;
         color: #fff;
-
         .fa {
           color: #fff;
           -webkit-text-stroke: unset;
@@ -3007,24 +3071,35 @@ a:hover {
   }
 }
 
-.footer-all {
+.footer-img-section{
   position: fixed;
   bottom: 0;
   z-index: 1001;
   width: 100%;
-  height: 25px;
+  height: 65px;
   padding: 10px 30px;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #fff;
   box-shadow: 1px 1px 1px 1px #ddd;
+  flex-direction: column;;
+
+  .footer-all {
+    display: flex;
+  }
 
   a {
     padding-left: 30px;
-    color: #5952c6;
+    color: $fun-blue-1;
     font-size: 13px;
+    font-weight: 600;
     text-decoration: underline;
+  }
+
+  span {
+    font-size: 10px;
+    color: #515151;
   }
 }
 
@@ -3198,7 +3273,7 @@ a:hover {
   margin-bottom: 20px;
   display: flex;
   justify-content: space-between !important;
-
+  padding-top: 20px; 
   .content {
     cursor: pointer;
   }
@@ -3411,7 +3486,7 @@ a:hover {
       font-size: 18px;
       line-height: 25px;
       letter-spacing: 0;
-      color: #0f4392;
+      color: $curriki-main-blue;
       text-transform: uppercase;
     }
 
@@ -3420,7 +3495,7 @@ a:hover {
       font-size: 16px;
       line-height: 26px;
       letter-spacing: 0;
-      color: #464646;
+      color: $mine-shaft;
     }
 
     .reg-btn {
@@ -3472,7 +3547,7 @@ a:hover {
   .navbar-nav {
     justify-content: flex-end;
     width: 100%;
-  } 
+  }
 
   .custom-container {
     max-width: 1200px;
@@ -3571,7 +3646,7 @@ a:hover {
 
   .dropdown-menu {
       padding: 10px;
-      width:280px 
+      width:280px
   }
 
   .dropdown-menu a{
@@ -3629,7 +3704,7 @@ a:hover {
     .bax {
       background-color: #fff;
       min-height: 450px;
-      
+
       h1 {
         color: #4472c4;
         font-size: 22px;
@@ -3638,7 +3713,7 @@ a:hover {
         padding: 10px 15px;
         margin-bottom: 0px;
     }
-  
+
     h2 {
         color: #333;
         font-size: 14px;
@@ -3655,5 +3730,93 @@ a:hover {
     color: #333
     }
     }
+  }
+}
+
+.text-added-project-dropdown  {
+  button {
+    width:100%;
+    span {
+      font-size: 12px;
+      line-height: 16px;
+      color: #084892 !important;
+      padding-left: 10px !important;
+      font-weight: bold;
+    }
+
+    &:hover {
+      span {
+        color: #ffffff !important;
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .main-page-content.preview{
+  .both-p,.act-top-header {
+    display: none !important;
+  }
+  .container-flex-upper,.flex-container-preview {
+    justify-content: flex-end;
+
+    .slider-hover-section {
+      position: relative;
+      padding: 18px 10px;
+    }
+  }
+}
+  .flex-container.previews .activity-bg.left-vdo {
+    .h5p-iframe-wrapper,.flex-container-preview {
+      width:85%
+    }
+
+  }
+  .iframe-height-resource-shared {
+    .h5p-iframe-wrapper{
+      width:100% !important
+    }
+  }
+  .flex-container.previews .activity-bg.left-vdo.collapsed {
+    .h5p-iframe-wrapper,.flex-container-preview {
+      width:50%
+    }
+  }
+  .flex-container.previews .right-sidegolf-info {
+    width: 15%  !important;
+    right:0;
+    top:40px
+  }
+  .flex-container.previews .right-sidegolf-info.collapsed {
+    width: 50%  !important;
+    right:0;
+    top:40px
+  }
+}
+
+.loader-main-curriki-permission {
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  z-index: 1111111;
+  color: #222;
+  top: 0;
+  left: 0;
+  flex-direction: column;
+
+  img {
+    display:block
+  }
+
+  .logo {
+    width: 200px;
+  }
+
+  .loader {
+    width: 45px;
   }
 }

@@ -19,6 +19,7 @@ const defaultAuthState = () => {
     courses: null,
     student: null,
     submission: null,
+    submissionError: null,
     h5pSettings: null,
     summaryAuth: {
       student: null,
@@ -65,6 +66,14 @@ const gapiReducer = (state = defaultAuthState(), action) => {
       };
 
     case GET_SUBMISSION:
+      if (action.submission.errors) {
+        return {
+          ...state,
+          submission: null,
+          submissionError: action.submission.errors[0],
+        };
+      }
+
       return {
         ...state,
         submission: {
@@ -105,19 +114,9 @@ const gapiReducer = (state = defaultAuthState(), action) => {
         };
       }
 
-      const totalAnswered = action.outcomeSummary.summary.filter((question) => (question.verb !== 'skipped' && question.verb !== 'attempted')).length;
-      const totalAttempted = action.outcomeSummary.summary.filter((question) => question.verb === 'attempted').length + action.outcomeSummary['non-scoring'].length;
-      const totalSkipped = action.outcomeSummary.summary.filter((question) => question.verb === 'skipped').length;
-
       return {
         ...state,
-        outcomeSummary: {
-          summary: action.outcomeSummary.summary,
-          nonScoring: action.outcomeSummary['non-scoring'],
-          totalAnswered,
-          totalSkipped,
-          totalAttempted,
-        },
+        outcomeSummary: action.outcomeSummary.summary,
         summaryError: null,
       };
 

@@ -10,6 +10,8 @@ const INITIAL_STATE = {
   lmsCourse: null,
   clone: [],
   isSharedProject: null,
+  visibilityTypes: [],
+  currentVisibilityType: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -45,6 +47,7 @@ export default (state = INITIAL_STATE, action) => {
         isLoading: false,
         selectedProject: action.payload.project,
         thumbUrl: action.payload.project.thumb_url,
+        currentVisibilityType: action.payload.project.organization_visibility_type_id,
       };
     case actionTypes.LOAD_PROJECT_FAIL:
       return {
@@ -66,6 +69,7 @@ export default (state = INITIAL_STATE, action) => {
           isLoading: false,
           projects,
           thumbUrl: null,
+          currentVisibilityType: null,
         };
       }
       return {
@@ -152,7 +156,16 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         lmsCourse: prepareLmsCourse(action, state),
       };
-
+    case actionTypes.PROJECT_VISIBILITY_TYPES:
+      return {
+        ...state,
+        visibilityTypes: action.payload.data,
+      };
+    case actionTypes.CURRENT_VISIBILITY_TYPE:
+      return {
+        ...state,
+        currentVisibilityType: action.payload,
+      };
     default:
       return state;
   }

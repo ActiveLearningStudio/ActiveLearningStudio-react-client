@@ -7,6 +7,8 @@ import {
 const INITIAL_STATE = {
   isLoaded: false,
   allProject: [],
+  teams: [],
+  groups: [],
   sampleProject: [],
   updateProject: [],
 };
@@ -17,6 +19,8 @@ const Sidebar = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         allProject: action.data.projects ? action.data.projects : [],
+        teams: action.data.teams ? action.data.teams : [],
+        groups: action.data.groups ? action.data.groups : [],
         isLoaded: true,
       };
 

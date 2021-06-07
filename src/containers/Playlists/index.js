@@ -52,19 +52,11 @@ import './style.scss';
 function PlaylistsPage(props) {
   const [checked, setChecked] = useState(false);
   const [title, setTitle] = useState(false);
+  const [error, setError] = useState(null);
   const [indexStatus, setIndexStatus] = useState(null);
-
+  const organization = useSelector((state) => state.organization);
+  const { permission, activeOrganization } = organization;
   const state = useSelector((s) => s.project.selectedProject);
-
-  useEffect(() => {
-    if (state.status === 2) {
-      setChecked(true);
-    } else {
-      setChecked(false);
-    }
-
-    setIndexStatus(state.indexing);
-  }, [state]);
 
   const {
     match,
@@ -100,11 +92,21 @@ function PlaylistsPage(props) {
       !openCreatePopup
       && !openCreateResourcePopup
       && !openEditResourcePopup
+      && activeOrganization
     ) {
       loadProject(match.params.projectId);
       loadProjectPlaylists(match.params.projectId);
     }
-  }, [loadLms, loadProject, loadProjectPlaylists, match.params.projectId, openCreatePopup, openCreateResourcePopup, openEditResourcePopup]);
+  }, [loadLms, loadProject, loadProjectPlaylists, match.params.projectId, openCreatePopup, openCreateResourcePopup, openEditResourcePopup, activeOrganization]);
+  useEffect(() => {
+    if (state.status === 2) {
+      setChecked(true);
+    } else {
+      setChecked(false);
+    }
+
+    setIndexStatus(state.indexing);
+  }, [state]);
 
   const handleChange = async (chked) => {
     if (chked) {
@@ -144,7 +146,7 @@ function PlaylistsPage(props) {
 
     try {
       await showCreatePlaylistModal();
-      history.push(`/project/${match.params.projectId}/playlist/create`);
+      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/create`);
     } catch (err) {
       // console.log(err.message);
     }
@@ -153,7 +155,7 @@ function PlaylistsPage(props) {
   const handleShowCreateResourceModal = (playlist) => {
     try {
       showCreateResourceModal(playlist.id);
-      history.push(`/project/${match.params.projectId}/playlist/${playlist.id}/activity/create`);
+      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/create`);
     } catch (e) {
       // console.log(e.message);
     }
@@ -164,7 +166,7 @@ function PlaylistsPage(props) {
 
     try {
       await hideCreatePlaylistModal();
-      history.push(`/project/${match.params.projectId}`);
+      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
     } catch (err) {
       // console.log(err.message);
     }
@@ -188,13 +190,13 @@ function PlaylistsPage(props) {
         .then(async (resp) => {
           if (resp.isConfirmed) {
             await hideCreateResourceModal();
-            history.push(`/project/${match.params.projectId}`);
+            history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
           }
         });
     } else {
       try {
         await hideCreateResourceModal();
-        history.push(`/project/${match.params.projectId}`);
+        history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
       } catch (err) {
         // console.log(err.message);
       }
@@ -203,31 +205,34 @@ function PlaylistsPage(props) {
 
   const onPlaylistTitleChange = (e) => {
     setTitle(e.target.value);
+    if (e.target.value) setError(null);
   };
 
   const handleCreatePlaylistSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      await createPlaylist(match.params.projectId, title);
-
-      history.push(`/project/${match.params.projectId}`);
-    } catch (err) {
-      if (err.errors) {
-        if (err.errors.title.length > 0) {
+    if (!/^ *$/.test(title) && title) {
+      try {
+        await createPlaylist(match.params.projectId, title);
+        history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
+      } catch (err) {
+        if (err.errors) {
+          if (err.errors.title.length > 0) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: err.errors.title[0],
+            });
+          }
+        } else {
           Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: err.errors.title[0],
+            text: err.message,
           });
         }
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: err.message,
-        });
       }
+    } else {
+      setError('* Required');
     }
   };
 
@@ -261,7 +266,7 @@ function PlaylistsPage(props) {
         );
       }
 
-      history.push(`/project/${match.params.projectId}`);
+      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
     } catch (e) {
       // console.log(e.message);
     }
@@ -283,7 +288,7 @@ function PlaylistsPage(props) {
         metadata,
       );
 
-      history.push(`/project/${match.params.projectId}`);
+      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
     } catch (e) {
       // console.log(e);
     }
@@ -344,33 +349,36 @@ function PlaylistsPage(props) {
         <div className="content">
           <div>
             {pageLoading !== false ? (
-              <Alert variant="primary">Loading ...</Alert>
+              <Alert style={{ marginTop: '15px' }} variant="primary">Loading ...</Alert>
             ) : (
               <>
                 <div className="col playlist-page-project-title project-each-view">
                   <div className="flex-se">
                     <h1>{selectedProject ? selectedProject.name : ''}</h1>
-                    <div className="react-touch">
-                      <div className="publish-btn">
-                        <span style={{ color: checked ? '#333' : '#464646' }}>Showcase</span>
-                        <Switch checked={checked} onChange={handleChange} />
+                    {permission?.Project?.includes('project:request-indexing') && (
+                      <div className="react-touch">
+                        <div className="publish-btn">
+                          <span style={{ color: checked ? '#333' : '$mine-shaft' }}>Showcase</span>
+                          <Switch checked={checked} onChange={handleChange} />
+                        </div>
                       </div>
-                    </div>
-
-                    <button
-                      type="button"
-                      className="create-playlist-btn"
-                      onClick={handleShowCreatePlaylistModal}
-                    >
-                      <FontAwesomeIcon icon="plus" className="mr-2" />
-                      Create new playlist
-                    </button>
+                    )}
+                    {permission?.Playlist?.includes('playlist:create') && (
+                      <button
+                        type="button"
+                        className="create-playlist-btn"
+                        onClick={handleShowCreatePlaylistModal}
+                      >
+                        <FontAwesomeIcon icon="plus" className="mr-2" />
+                        Create new playlist
+                      </button>
+                    )}
                   </div>
 
                   <div className="project-preview">
                     <Link
                       className="dropdown-item"
-                      to={`/project/${match.params.projectId}/preview`}
+                      to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/preview`}
                     >
                       <FontAwesomeIcon icon="eye" className="mr-2" />
                       Project Preview
@@ -445,6 +453,7 @@ function PlaylistsPage(props) {
           handleHideCreatePlaylistModal={handleHideCreatePlaylistModal}
           handleCreatePlaylistSubmit={handleCreatePlaylistSubmit}
           onPlaylistTitleChange={onPlaylistTitleChange}
+          error={error}
         />
       )}
 

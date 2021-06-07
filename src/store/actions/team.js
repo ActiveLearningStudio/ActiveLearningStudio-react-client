@@ -1,5 +1,6 @@
 import teamService from 'services/team.service';
 import * as actionTypes from '../actionTypes';
+import store from '../index';
 
 export const resetSelectedTeamAction = () => async (dispatch) => {
   dispatch({
@@ -33,12 +34,14 @@ export const showAssigningAction = () => async (dispatch) => {
 };
 
 export const loadTeamsAction = () => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({
       type: actionTypes.PAGE_LOADING,
     });
 
-    const { teams } = await teamService.getAll();
+    const { teams } = await teamService.getAll(activeOrganization?.id);
 
     dispatch({
       type: actionTypes.LOAD_TEAMS,
@@ -58,10 +61,12 @@ export const loadTeamsAction = () => async (dispatch) => {
 };
 
 export const createTeamAction = (data) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({ type: actionTypes.CREATE_TEAM_REQUEST });
 
-    const { team } = await teamService.create(data);
+    const { team } = await teamService.create(data, activeOrganization?.id);
 
     dispatch({
       type: actionTypes.CREATE_TEAM_SUCCESS,
@@ -77,12 +82,14 @@ export const createTeamAction = (data) => async (dispatch) => {
 };
 
 export const loadTeamAction = (teamId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({
       type: actionTypes.LOAD_TEAM_REQUEST,
     });
 
-    const { team } = await teamService.get(teamId);
+    const { team } = await teamService.get(teamId, activeOrganization?.id);
 
     dispatch({
       type: actionTypes.LOAD_TEAM_SUCCESS,
@@ -96,10 +103,12 @@ export const loadTeamAction = (teamId) => async (dispatch) => {
 };
 
 export const updateTeamAction = (teamId, data) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({ type: actionTypes.UPDATE_TEAM_REQUEST });
 
-    const { team } = await teamService.update(teamId, data);
+    const { team } = await teamService.update(teamId, data, activeOrganization?.id);
 
     dispatch({
       type: actionTypes.UPDATE_TEAM_SUCCESS,
@@ -113,10 +122,12 @@ export const updateTeamAction = (teamId, data) => async (dispatch) => {
 };
 
 export const deleteTeamAction = (teamId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({ type: actionTypes.DELETE_TEAM_REQUEST });
 
-    await teamService.remove(teamId);
+    await teamService.remove(teamId, activeOrganization?.id);
 
     dispatch({
       type: actionTypes.DELETE_TEAM_SUCCESS,
@@ -178,10 +189,12 @@ export const inviteMemberAction = (teamId, email) => async (dispatch) => {
 };
 
 export const inviteMembersAction = (teamId, users, note) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({ type: actionTypes.INVITE_MEMBERS_REQUEST });
 
-    await teamService.inviteMembers(teamId, users, note);
+    await teamService.inviteMembers(teamId, users, note, activeOrganization?.id);
 
     dispatch({
       type: actionTypes.INVITE_MEMBERS_SUCCESS,
@@ -195,14 +208,14 @@ export const inviteMembersAction = (teamId, users, note) => async (dispatch) => 
   }
 };
 
-export const removeMemberAction = (teamId, userId) => async (dispatch) => {
+export const removeMemberAction = (teamId, userId, email) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.REMOVE_MEMBER_REQUEST,
       payload: { userId },
     });
 
-    await teamService.removeMember(teamId, userId);
+    await teamService.removeMember(teamId, userId, email);
 
     dispatch({
       type: actionTypes.REMOVE_MEMBER_SUCCESS,

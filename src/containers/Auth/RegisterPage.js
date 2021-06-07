@@ -5,16 +5,19 @@ import { withRouter } from 'react-router-dom';
 import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
-
+import QueryString from 'query-string';
 import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
-import logo from 'assets/images/vivensity.png';
+// import logo from 'assets/images/vivensity.png';
 import loader from 'assets/images/loader.svg';
 import { registerAction, loadOrganizationTypesAction } from 'store/actions/auth';
 import { getErrors } from 'utils';
 import Error from './Error';
+import Logo from './Logo';
 
 import './style.scss';
+// eslint-disable-next-line no-restricted-globals
+const query = QueryString.parse(location.search);
 
 class RegisterPage extends React.Component {
   constructor(props) {
@@ -37,6 +40,10 @@ class RegisterPage extends React.Component {
 
     const { loadOrganizationTypes } = this.props;
     loadOrganizationTypes();
+    if (query?.email) {
+      // eslint-disable-next-line no-unused-expressions
+      validator.isEmail(query.email) && this.setState({ email: query?.email });
+    }
   }
 
   onChangeField = (e) => {
@@ -71,7 +78,7 @@ class RegisterPage extends React.Component {
       this.setState({
         error: null,
       });
-
+      const { domain } = this.props;
       const data = {
         first_name: firstName.trim(),
         last_name: lastName.trim(),
@@ -80,6 +87,7 @@ class RegisterPage extends React.Component {
         organization_name: organizationName.trim(),
         organization_type: organizationType.trim(),
         job_title: jobTitle.trim(),
+        domain: domain?.domain,
       };
 
       const message = await register(data);
@@ -93,7 +101,7 @@ class RegisterPage extends React.Component {
       })
         .then((result) => {
           if (result.isConfirmed) {
-            history.push('/login');
+            history.push(`/login/${domain?.domain}`);
           }
         });
       // history.push('/login');
@@ -144,7 +152,7 @@ class RegisterPage extends React.Component {
 
     return (
       <div className="auth-page">
-        <img className="auth-header-logo" src={logo} alt="" />
+        <Logo />
 
         <div className="auth-container">
           <div className="d-flex align-items-center justify-content-between">
@@ -210,6 +218,7 @@ class RegisterPage extends React.Component {
                 placeholder="Email*"
                 required
                 maxLength="250"
+                disabled={query?.email && true}
                 value={email}
                 onChange={this.onChangeField}
               />
@@ -303,6 +312,7 @@ RegisterPage.propTypes = {
   organizationTypes: PropTypes.array.isRequired,
   register: PropTypes.func.isRequired,
   loadOrganizationTypes: PropTypes.func.isRequired,
+  domain: PropTypes.object.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -313,6 +323,7 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
   organizationTypes: state.auth.organizationTypes,
+  domain: state.organization.currentOrganization,
 });
 
 export default withRouter(

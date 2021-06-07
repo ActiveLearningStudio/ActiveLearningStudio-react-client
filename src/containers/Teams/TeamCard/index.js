@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-
+import Swal from 'sweetalert2';
 import './style.scss';
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteTeamAction } from 'store/actions/team';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function TeamCard(props) {
   const {
@@ -14,24 +17,44 @@ function TeamCard(props) {
       projects,
     },
   } = props;
-
-  let memCnt = `00${users.length}`;
-  memCnt = memCnt.slice(memCnt.length - 2, memCnt.length);
-
-  let projCnt = `00${projects.length}`;
-  projCnt = projCnt.slice(projCnt.length - 2, projCnt.length);
+  const dispatch = useDispatch();
+  const deleteTeam = () => {
+    Swal.fire({
+      title: 'Are you sure you want to delete this team?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      denyButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteTeamAction(id));
+      }
+    });
+  };
+  // let memCnt = `00${users.length}`;
+  // memCnt = memCnt.slice(memCnt.length - 2, memCnt.length);
+  const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
+  // let projCnt = `00${projects.length}`;
+  // projCnt = projCnt.slice(projCnt.length - 2, projCnt.length);
 
   return (
     <div className="team-card-content">
       <div className="team-title">
-        <Link to={`/teams/${id}`} className="title m-0">{name}</Link>
+        <Link to={`/org/${organization.currentOrganization?.domain}/teams/${id}`} className="title m-0">{name}</Link>
+        {permission?.Team?.includes('team:edit') && (
+          <Link className="edit-button" to={`/org/${organization.currentOrganization?.domain}/teams/${id}/edit`}>
+            <FontAwesomeIcon icon="pen" className="mr-2" />
+            Edit
+          </Link>
+        )}
         <h2 className="describe">{description}</h2>
       </div>
 
       <div className="team-member-content mid-border">
         <div className="sub-title">
           <span>Team Members</span>
-          <span>{`(${memCnt})`}</span>
+          <span>{`(${users?.length})`}</span>
         </div>
 
         <div className="member-mark-container">
@@ -45,8 +68,15 @@ function TeamCard(props) {
 
       <div className="sub-title">
         <span>Projects for the Team</span>
-        <span>{`(${projCnt})`}</span>
+        <span>{`(${projects?.length})`}</span>
       </div>
+      {permission?.Team?.includes('team:delete') && (
+        <div>
+          <button type="button" onClick={() => deleteTeam()} className="back-button" style={{ textAlign: 'center' }}>
+            Delete Team
+          </button>
+        </div>
+      )}
     </div>
   );
 }

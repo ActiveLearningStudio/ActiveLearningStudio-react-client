@@ -16,7 +16,7 @@ import App from './containers/App';
 import store from './store';
 import * as serviceWorker from './serviceWorker';
 import './config';
-import './style.scss';
+import 'assets/css/main-style.scss';
 
 library.add(fas);
 library.add(far);

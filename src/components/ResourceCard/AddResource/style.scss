@@ -1,3 +1,5 @@
+@import 'assets/css/index';
+
 .resource-activity {
   // padding-left: 25px;
 
@@ -51,7 +53,7 @@
     font-size: 24px;
     line-height: 33px;
     letter-spacing: 0;
-    color: #0f4392;
+    color: $curriki-main-blue;
     padding-bottom: 25px;
     opacity: 1;
   }
@@ -62,7 +64,7 @@
       font-size: 14px;
       line-height: 26px;
       letter-spacing: 0;
-      color: #464646;
+      color: $mine-shaft;
       opacity: 1;
       padding-bottom: 30px;
     }
@@ -123,8 +125,8 @@
 
    h2 {
     margin-bottom: 0 !important;
-    font: normal normal 600 18px/29px Hind Siliguri !important;
-    color: #464646 !important;
+    font: normal normal 600 18px/29px $halvetica !important;
+    color: $mine-shaft !important;
   }
 
   .pexel, .gallery {
@@ -191,7 +193,7 @@
       svg {
         position: absolute;
         right: 14px;
-        color: #0f4392;
+        color: $curriki-main-blue;
         top: 13px;
       }
     }
@@ -408,7 +410,7 @@ $filled: #44ca92;
       margin-left: 50px;
       font-size: 16px;
       cursor: pointer;
-      font-family: "Open Sans", sans-serif;
+      font-family: "rubik", sans-serif;
       font-weight: 400;
       padding-top: 7px;
       padding-bottom: 10px;
@@ -612,7 +614,7 @@ $filled: #44ca92;
   //    margin-left: 50px;
   //    font-size: 16px;
   //    cursor: pointer;
-  //    font-family: 'Open Sans', sans-serif;
+  //    font-family: $rubik, sans-serif;
   //    font-weight: 400;
   //    padding-top: 7px;
   //    padding-bottom: 10px;
@@ -673,7 +675,7 @@ input[type="radio"]:checked + .activity-item {
   height: 56px;
   background: #2ecf43;
   font-size: 14px;
-  font-family: "Open Sans", sans-serif;
+  font-family: "rubik", sans-serif;
   font-weight: 600;
 
   &.top {
@@ -700,7 +702,7 @@ input[type="radio"]:checked + .activity-item {
   text-align: left;
   padding-left: 20px;
   font-size: 14px;
-  font-family: "Open Sans", sans-serif;
+  font-family: "rubik", sans-serif;
   font-weight: 600;
 }
 
@@ -712,7 +714,7 @@ input[type="radio"]:checked + .activity-item {
     line-height: 33px;
     border-bottom: 1px solid #eaeaea;
     letter-spacing: 0;
-    color: #0f4392;
+    color: $curriki-main-blue;
     opacity: 1;
     padding-bottom: 20px;
     margin-bottom: 15px;
@@ -753,7 +755,7 @@ input[type="radio"]:checked + .activity-item {
     text-transform: capitalize;
     margin: 0;
     font-size: 2rem;
-    font-family: "Open Sans", sans-serif;
+    font-family: "rubik", sans-serif;
     font-weight: 300;
   }
 
@@ -761,7 +763,7 @@ input[type="radio"]:checked + .activity-item {
     h2 {
       color: #565656;
       font-size: 18px;
-      font-family: "Hind Siliguri", sans-serif;
+      font-family: "$halvetica", sans-serif;
       font-weight: 400;
       margin-top: 15px;
       margin-bottom: 15px;
@@ -804,7 +806,7 @@ input[type="radio"]:checked + .activity-item {
           text-transform: uppercase;
           text-align: center;
           font-size: 12px;
-          font-family: "Open Sans", sans-serif;
+          font-family: "rubik", sans-serif;
           font-weight: 600;
         }
       }

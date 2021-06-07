@@ -22,9 +22,11 @@ function GclassActivityPage(props) {
     setStudentAuth,
     refreshStudentAuthToken,
     getStudentCourses,
+    submissionError,
   } = props;
   const { activityId, courseId } = match.params;
   const [authorized, setAuthorized] = useState(null);
+  const [isTeacher, setIsTeacher] = useState(null);
   const [activeCourse, setActiveCourse] = useState(null);
   // Gets student courses
   useEffect(() => {
@@ -38,15 +40,21 @@ function GclassActivityPage(props) {
     if (courses === null) return;
 
     let found = false;
+    let teacher = false;
     // eslint-disable-next-line no-restricted-syntax
     for (const i in courses) {
       if (courses[i].id === courseId) {
         found = true;
         setActiveCourse(courses[i]);
+
+        if (courses[i].ownerId === student.auth.googleId) {
+          teacher = true;
+        }
       }
     }
-    setAuthorized(found);
-  }, [courses, courseId]);
+    setAuthorized((found && !teacher && !submissionError));
+    setIsTeacher(teacher);
+  }, [courses, courseId, submissionError]);
 
   const handleLogin = (data) => {
     if (!data) return;
@@ -94,6 +102,26 @@ function GclassActivityPage(props) {
                       </div>
                     )}
 
+                    {isTeacher === true && (
+                      <div className="row m-4">
+                        <div className="col text-center">
+                          <Alert variant="warning">
+                            You are the teacher for this activity. Please login as a student to take the activity.
+                          </Alert>
+                        </div>
+                      </div>
+                    )}
+
+                    {submissionError && (
+                      <div className="row m-4">
+                        <div className="col text-center">
+                          <Alert variant="warning">
+                            {submissionError}
+                          </Alert>
+                        </div>
+                      </div>
+                    )}
+
                     <div className="row m-4">
                       <div className="col text-center">
                         {/* <h2>Please log in to take this activity.</h2> */}
@@ -133,11 +161,13 @@ GclassActivityPage.propTypes = {
   getStudentCourses: PropTypes.func.isRequired,
   setStudentAuth: PropTypes.func.isRequired,
   refreshStudentAuthToken: PropTypes.func.isRequired,
+  submissionError: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   courses: state.gapi.courses,
   student: state.gapi.student,
+  submissionError: state.gapi.submissionError,
 });
 
 const mapDispatchToProps = (dispatch) => ({

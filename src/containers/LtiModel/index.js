@@ -176,7 +176,7 @@ const LTIProjectShared = (props) => {
                               </ul>
                             ) : (
                               <span className="error">
-                                No activities found
+                                No activity found
                               </span>
                             )}
                           </Card.Body>

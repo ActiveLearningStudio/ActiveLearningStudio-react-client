@@ -71,12 +71,14 @@ const H5PEditor = (props) => {
     const parameters = window.h5peditorCopy.getParams();
     const { metadata } = parameters;
     if (metadata.title !== undefined) {
-      Swal.fire({
-        allowOutsideClick: false,
-        onBeforeOpen: () => {
-          Swal.showLoading();
-        },
-      });
+      // Swal.fire({
+      //   title: 'New Activity',
+      //   html: 'Please wait! While we create a brand new activity for you.',
+      //   allowOutsideClick: false,
+      //   onBeforeOpen: () => {
+      //     Swal.showLoading();
+      //   },
+      // });
       if (submitAction === 'create') {
         const payload = {
           event,
@@ -161,15 +163,14 @@ const H5PEditor = (props) => {
                     className="laravel-h5p-upload form-control"
                     onChange={setH5pFileUpload}
                     ref={uploadFile}
+                    style={{ cursor: 'pointer' }}
                     // style={{ display: 'none' }}
                   />
                   <div className="upload-holder">
                     <FontAwesomeIcon icon="file-upload" className="mr-2" />
                     <p>
                       Drag & Drop File or
-                      <span
-                        onClick={() => uploadFile.current.click()}
-                      >
+                      <span>
                         &nbsp;Browse to upload
                       </span>
                     </p>

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +13,7 @@ import {
   educationLevels,
   subjects,
 } from 'components/ResourceCard/AddResource/dropdownData';
+import { searchUserInOrganization } from 'store/actions/organization';
 
 function SearchForm() {
   const history = useHistory();
@@ -21,6 +23,13 @@ function SearchForm() {
   const [activityTypes, setActivityTypes] = useState([]);
   const [value, setValue] = useState(0);
   const activityTypesState = useSelector((state) => state.resource.types);
+  const searchState = useSelector((state) => state.search);
+  const {
+    currentOrganization,
+    searchUsers,
+    permission,
+    activeOrganization,
+  } = useSelector((state) => state.organization);
 
   useEffect(() => {
     if (activityTypesState.length === 0) {
@@ -44,9 +53,12 @@ function SearchForm() {
 
   useEffect(() => {
     const allItems = [];
-    activityTypesState.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
+    activityTypesState?.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
     setActivityTypes(allItems.sort(compare));
-  }, [activityTypesState]);
+    if (searchState?.searchQuery !== simpleSearch) {
+      setSimpleSearch('');
+    }
+  }, [activityTypesState, searchState.searchQuery]);
 
   const closeModel = useRef();
   return (
@@ -75,7 +87,8 @@ function SearchForm() {
                 };
                 dispatcher(simpleSearchAction(searchData));
                 localStorage.setItem('loading', 'true');
-                history.push('/search?type=public');
+                history.push(`/org/${currentOrganization?.domain}/search?q=${simpleSearch.trim()}&type=public`);
+                localStorage.setItem('refreshPage', false);
               }
             }
             return true;
@@ -95,6 +108,9 @@ function SearchForm() {
               phrase: '',
               subjectArray: [],
               subject: '',
+              author: '',
+              selectedAuthor: [],
+              authors: [],
               grade: '',
               gradeArray: [],
               standard: '',
@@ -111,34 +127,55 @@ function SearchForm() {
             }}
             validate={(values) => {
               const errors = {};
-              if (!values.phrase) {
+              if (!values.phrase && values.type !== 'orgSearch') {
                 errors.phrase = 'required';
+              }
+              if (values.fromDate && values.toDate) {
+                if (values.fromDate > values.toDate) errors.dateError = 'Invalid Date Format';
               }
               return errors;
             }}
-            onSubmit={(values, { resetForm }) => {
+            onSubmit={(values) => {
+              closeModel.current.click();
+              const h5pNameArray = [];
+              values.standardArray.filter((h5p) => h5pNameArray.push(h5p.value));
+              values.standardArray = h5pNameArray;
+              // eslint-disable-next-line max-len
+              history.push(`/org/${currentOrganization?.domain}/search?q=${values.phrase}&type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${h5pNameArray}`);
+              localStorage.setItem('refreshPage', false);
+              // const allSubjects = values.subjectArray;
+              // values.subjectArray = allSubjects.forEach((subject) => {
+              //   if (subject.includes('and')) {
+              //     subject = subject.replace('and', '&');
+              //   }
+              // });
+              // const allGrades = values.gradeArray;
+              // values.gradeArray = allGrades.forEach((grade) => {
+              //   if (grade.includes('and')) {
+              //     grade = grade.replace('and', '&');
+              //   }
+              // });
+              console.log(values.gradeArray, values.subjectArray, values);
               Swal.showLoading();
               dispatcher(simpleSearchAction(values));
-              closeModel.current.click();
-              history.push(`/search?type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${values.standardArray.name}`);
-              resetForm({
-                phrase: '',
-                subjectArray: [],
-                subject: '',
-                grade: '',
-                gradeArray: [],
-                standard: '',
-                standardArray: [],
-                email: '',
-                words: '',
-                no_words: undefined,
-                type: 'public',
-                toDate: undefined,
-                fromDate: undefined,
-                from: 0,
-                size: 20,
-                model: undefined,
-              });
+              // resetForm({
+              //   phrase: values.phrase,
+              //   subjectArray: values.subjectArray,
+              //   subject: values.subject,
+              //   grade: values.grade,
+              //   gradeArray: values.gradeArray,
+              //   standard: values.standard,
+              //   standardArray: values.standardArray,
+              //   email: values.email,
+              //   words: values.words,
+              //   no_words: values.no_words,
+              //   type: values.type,
+              //   toDate: values.toDate,
+              //   fromDate: values.fromDate,
+              //   from: values.from,
+              //   size: values.size,
+              //   model: values.model,
+              // });
             }}
           >
             {({
@@ -148,6 +185,7 @@ function SearchForm() {
               handleChange,
               handleBlur,
               handleSubmit,
+              setFieldValue,
             }) => (
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
@@ -174,10 +212,21 @@ function SearchForm() {
                       />
                       <span>Search Project Showcase</span>
                     </label>
+                    <label>
+                      <input
+                        name="type"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value="orgSearch"
+                        checked={values.type === 'orgSearch'}
+                        type="radio"
+                      />
+                      <span>Search All Projects in Organization</span>
+                    </label>
                   </div>
                 </div>
 
-                <div className="form-group">
+                <div className="form-group" style={{ display: values.type === 'orgSearch' ? 'none' : 'block' }}>
                   <input
                     name="phrase"
                     placeholder="Enter search phrase"
@@ -189,14 +238,75 @@ function SearchForm() {
                     {errors.phrase && touched.phrase && errors.phrase}
                   </div>
                 </div>
+                <div className="form-group" style={{ display: permission?.Organization?.includes('organization:view-user') && values.type !== 'private' ? 'block' : 'none' }}>
+                  <input
+                    value={values.author}
+                    placeholder="Enter Author name"
+                    onChange={({ target }) => {
+                      setFieldValue('author', target.value);
+                      dispatcher(searchUserInOrganization(activeOrganization?.id, target.value));
+                    }}
+                    className="author"
+                    onBlur={handleBlur}
+                    name="author"
+                  />
+                </div>
+                {values.author !== '' && (
+                  <div className="author-main-box">
+                    {searchUsers?.data?.length > 0 && searchUsers?.data.map((u) => (
+                      <div className="author-box" data-list="true" key={u.id}>
+                        <div
+                          onClick={() => {
+                            setFieldValue('author', '');
+                            values.selectedAuthor.push(u);
+                            values.authors.push(u.id);
+                          }}
+                        >
+                          <div className="invite-member-name-mark">
+                            <span>{`${u.first_name[0] || ''}${u.last_name[0] || ''}` }</span>
+                          </div>
 
+                          <div className="invite-member-info">
+                            <h2 className="invite-member-name">{`${`${u.first_name } ${u.last_name}`} (${u.email})`}</h2>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {values.selectedAuthor.length > 0 && (
+                  <div className="form-group wrap-keyword" data-name={value}>
+                    {values.selectedAuthor.map((data) => (
+                      <div className="keywords-de" key={data.id}>
+                        {data?.first_name}
+                        <div
+                          className="iocns"
+                          onClick={() => {
+                            // eslint-disable-next-line no-param-reassign
+                            values.selectedAuthor = values.selectedAuthor.filter((index) => index !== data);
+                            values.authors = values.authors.filter((index) => index !== data.id);
+                            setValue(value + 1);
+                          }}
+                        >
+                          <FontAwesomeIcon icon="times" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
                 <div className="form-group">
                   <select
                     name="subject"
                     placeholder="Subject + Subject Area"
                     onChange={(e) => {
                       handleChange(e);
-                      if (!values.subjectArray.includes(e.target.value)) {
+                      let updatedValue = e.target.value;
+                      if (updatedValue.includes('&')) {
+                        updatedValue = e.target.value.replace('&', 'and');
+                        if (!values.subjectArray.includes(updatedValue)) {
+                          values.subjectArray.push(updatedValue);
+                        }
+                      } else if (!values.subjectArray.includes(e.target.value)) {
                         values.subjectArray.push(e.target.value);
                       }
                     }}
@@ -241,7 +351,13 @@ function SearchForm() {
                     placeholder="Grade Level"
                     onChange={(e) => {
                       handleChange(e);
-                      if (!values.gradeArray.includes(e.target.value)) {
+                      let updatedValue = e.target.value;
+                      if (updatedValue.includes('&')) {
+                        updatedValue = e.target.value.replace('&', 'and');
+                        if (!values.gradeArray.includes(updatedValue)) {
+                          values.gradeArray.push(updatedValue);
+                        }
+                      } else if (!values.gradeArray.includes(e.target.value)) {
                         values.gradeArray.push(e.target.value);
                       }
                     }}
@@ -352,6 +468,9 @@ function SearchForm() {
                       e.target.type = 'date';
                     }}
                   />
+                  <div className="error">
+                    {errors.dateError}
+                  </div>
                 </div>
                 {/* <div className="form-group">
                   <input

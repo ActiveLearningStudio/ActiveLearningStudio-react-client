@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import {
   PieChart,
@@ -8,6 +8,7 @@ import {
   Cell,
   Label,
 } from 'recharts';
+import { Alert } from 'react-bootstrap';
 
 import metricsService from 'services/metrics.service';
 import { getUserMetricsAction, getUserMembershipAction } from 'store/actions/metrics';
@@ -26,7 +27,8 @@ function DashboardPage(props) {
     getUserMetrics,
     getUserMembership,
   } = props;
-
+  const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
   const [showModal, setShowModal] = useState(false);
   const [modalSection, setModalSection] = useState(null);
 
@@ -125,186 +127,189 @@ function DashboardPage(props) {
     <>
       <div className="dashboard-page">
         <div className="content-wrapper">
-          <div className="content">
-            <div className="row">
-              <div className="col-md-12">
-                <h1 className="title">
-                  {(metrics.membership_type) ? `${metrics.membership_type} Account - ` : ''}
-                  Dashboard
-                </h1>
-              </div>
-            </div>
-            <div className="row">
-              <div className={(metrics.membership_type_name === 'demo') ? 'col-8 dashboard-panel m-3' : 'col dashboard-panel m-3'}>
-                <div className="row dashboard-panel-header-row">
-                  <div className="col">
-                    <h1 className="title">
-                      {`Hello, ${firstName}`}
-                    </h1>
-                  </div>
-                </div>
-                <div className="row m-3">
-                  <div className="col">
-                    Welcome to the CurrikiStudio Dashboard. Here you will find metrics and general information about your account.
-                  </div>
-                </div>
-                <div className="row m-3">
-                  <div className="col">
-                    <div className="row">
-                      <div className="col">
-                        <PieChart width={200} height={200}>
-                          <Pie data={storageData} innerRadius={50} outerRadius={75}>
-                            {storageData.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={entry.color} />
-                            ))}
-                            <Label value={usedStoragePercentage} position="center" />
-                          </Pie>
-                        </PieChart>
-                      </div>
-                      <div className="col">
-                        <h1 className="title">Storage</h1>
-                        <p>
-                          <label>Total Available:</label>
-                          {humanFileSize(metrics.total_storage)}
-                          <br />
-                          <label>Total Used:</label>
-                          {humanFileSize(metrics.used_storage)}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col">
-                    <div className="row">
-                      <div className="col">
-                        <PieChart width={200} height={200}>
-                          <Pie data={bandwidthData} innerRadius={50} outerRadius={75}>
-                            {bandwidthData.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={entry.color} />
-                            ))}
-                            <Label value={usedBandwidthPercentage} position="center" />
-                          </Pie>
-                        </PieChart>
-                      </div>
-                      <div className="col">
-                        <h1 className="title">Bandwidth</h1>
-                        <p>
-                          <label>Total Available:</label>
-                          {humanFileSize(metrics.total_bandwidth)}
-                          <br />
-                          <label>Total Used:</label>
-                          {humanFileSize(metrics.used_bandwidth)}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row mb-3">
-                  <div className="col">
-                    <label>Current Plan:</label>
-                    {metrics.membership_type}
-                  </div>
-                  <div className="col text-right">
-                    {metrics.membership_type_name === 'demo' && (
-                      <a className="btn btn-primary submit mr-5" onClick={handleUpgradeClick}>Upgrade Now</a>
-                    )}
-                  </div>
+          {permission?.Dashboard?.includes('dashboard:view') ? (
+            <div className="content">
+              <div className="row">
+                <div className="col-md-12">
+                  <h1 className="title">
+                    {(metrics.membership_type) ? `${metrics.membership_type} Account - ` : ''}
+                    Dashboard
+                  </h1>
                 </div>
               </div>
-              {metrics.membership_type_name === 'demo' && (
-                <div className="col">
-                  <div className="row">
-                    <div className="col dashboard-panel m-3 text-center offer-panel">
+              <div className="row">
+                <div className={(metrics.membership_type_name === 'demo') ? 'col-8 dashboard-panel m-3' : 'col dashboard-panel m-3'}>
+                  <div className="row dashboard-panel-header-row">
+                    <div className="col">
+                      <h1 className="title">
+                        {`Hello, ${firstName}`}
+                      </h1>
+                    </div>
+                  </div>
+                  <div className="row m-3">
+                    <div className="col">
+                      Welcome to the CurrikiStudio Dashboard. Here you will find metrics and general information about your account.
+                    </div>
+                  </div>
+                  <div className="row m-3">
+                    <div className="col">
                       <div className="row">
                         <div className="col">
-                          <h1 className="title">Need more storage, views or publishing options?</h1>
+                          <PieChart width={200} height={200}>
+                            <Pie data={storageData} innerRadius={50} outerRadius={75}>
+                              {storageData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={entry.color} />
+                              ))}
+                              <Label value={usedStoragePercentage} position="center" />
+                            </Pie>
+                          </PieChart>
+                        </div>
+                        <div className="col">
+                          <h1 className="title">Storage</h1>
+                          <p>
+                            <label>Total Available:</label>
+                            {humanFileSize(metrics.total_storage)}
+                            <br />
+                            <label>Total Used:</label>
+                            {humanFileSize(metrics.used_storage)}
+                          </p>
                         </div>
                       </div>
+                    </div>
+                    <div className="col">
                       <div className="row">
                         <div className="col">
-                          We offer you unlimited storage space for all your needs. You can always upgrade to get more space.
+                          <PieChart width={200} height={200}>
+                            <Pie data={bandwidthData} innerRadius={50} outerRadius={75}>
+                              {bandwidthData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={entry.color} />
+                              ))}
+                              <Label value={usedBandwidthPercentage} position="center" />
+                            </Pie>
+                          </PieChart>
                         </div>
-                      </div>
-                      <div className="row mt-3">
                         <div className="col">
-                          <a className="btn btn-primary submit" onClick={handleUpgradeClick}>Upgrade to Basic Account</a>
-                        </div>
-                      </div>
-                      <div className="row mt-1 mb-3">
-                        <div className="col">
-                          It&apos;s FREE. Courtesy of Linode.com
+                          <h1 className="title">Bandwidth</h1>
+                          <p>
+                            <label>Total Available:</label>
+                            {humanFileSize(metrics.total_bandwidth)}
+                            <br />
+                            <label>Total Used:</label>
+                            {humanFileSize(metrics.used_bandwidth)}
+                          </p>
                         </div>
                       </div>
                     </div>
                   </div>
+                  <div className="row mb-3">
+                    <div className="col">
+                      <label>Current Plan:</label>
+                      {metrics.membership_type}
+                    </div>
+                    <div className="col text-right">
+                      {metrics.membership_type_name === 'demo' && (
+                        <a className="btn btn-primary submit mr-5" onClick={handleUpgradeClick}>Upgrade Now</a>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              )}
+                {metrics.membership_type_name === 'demo' && (
+                  <div className="col">
+                    <div className="row">
+                      <div className="col dashboard-panel m-3 text-center offer-panel">
+                        <div className="row">
+                          <div className="col">
+                            <h1 className="title">Need more storage, views or publishing options?</h1>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col">
+                            We offer you unlimited storage space for all your needs. You can always upgrade to get more space.
+                          </div>
+                        </div>
+                        <div className="row mt-3">
+                          <div className="col">
+                            <a className="btn btn-primary submit" onClick={handleUpgradeClick}>Upgrade to Basic Account</a>
+                          </div>
+                        </div>
+                        <div className="row mt-1 mb-3">
+                          <div className="col">
+                            It&apos;s FREE. Courtesy of Linode.com
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className="row metrics-counters">
+                <div className="col dashboard-panel m-3">
+                  <div className="row dashboard-panel-header-row">
+                    <div className="col">
+                      <h1 className="title">Projects</h1>
+                    </div>
+                  </div>
+                  <div className="row text-center">
+                    <div className="col">
+                      <span className="count" onClick={() => handleCounterClick('project-count')}>{metrics.project_count}</span>
+                      <label>COUNT</label>
+                    </div>
+                    <div className="col">
+                      <span>{metrics.project_views}</span>
+                      <label>VIEWS</label>
+                    </div>
+                    <div className="col">
+                      <span className="count" onClick={() => handleCounterClick('project-shared-count')}>{metrics.project_shares}</span>
+                      <label>SHARED</label>
+                    </div>
+                  </div>
+                </div>
+                <div className="col dashboard-panel m-3">
+                  <div className="row dashboard-panel-header-row">
+                    <div className="col">
+                      <h1 className="title">Playlists</h1>
+                    </div>
+                  </div>
+                  <div className="row text-center">
+                    <div className="col">
+                      <span className="count" onClick={() => handleCounterClick('playlist-count')}>{metrics.playlist_count}</span>
+                      <label>COUNT</label>
+                    </div>
+                    <div className="col">
+                      <span>{metrics.playlist_views}</span>
+                      <label>VIEWS</label>
+                    </div>
+                    <div className="col">
+                      <span>{metrics.playlist_shares}</span>
+                      <label>SHARED</label>
+                    </div>
+                  </div>
+                </div>
+                <div className="col dashboard-panel m-3">
+                  <div className="row dashboard-panel-header-row">
+                    <div className="col">
+                      <h1 className="title">Activities</h1>
+                    </div>
+                  </div>
+                  <div className="row text-center">
+                    <div className="col">
+                      <span className="count" onClick={() => handleCounterClick('activity-count')}>{metrics.activity_count}</span>
+                      <label>COUNT</label>
+                    </div>
+                    <div className="col">
+                      <span>{metrics.activity_views}</span>
+                      <label>VIEWS</label>
+                    </div>
+                    <div className="col" onClick={() => handleCounterClick('activity-shared-count')}>
+                      <span className="count">{metrics.activity_shares}</span>
+                      <label>SHARED</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="row metrics-counters">
-              <div className="col dashboard-panel m-3">
-                <div className="row dashboard-panel-header-row">
-                  <div className="col">
-                    <h1 className="title">Projects</h1>
-                  </div>
-                </div>
-                <div className="row text-center">
-                  <div className="col">
-                    <span className="count" onClick={() => handleCounterClick('project-count')}>{metrics.project_count}</span>
-                    <label>COUNT</label>
-                  </div>
-                  <div className="col">
-                    <span>{metrics.project_views}</span>
-                    <label>VIEWS</label>
-                  </div>
-                  <div className="col">
-                    <span className="count" onClick={() => handleCounterClick('project-shared-count')}>{metrics.project_shares}</span>
-                    <label>SHARED</label>
-                  </div>
-                </div>
-              </div>
-              <div className="col dashboard-panel m-3">
-                <div className="row dashboard-panel-header-row">
-                  <div className="col">
-                    <h1 className="title">Playlists</h1>
-                  </div>
-                </div>
-                <div className="row text-center">
-                  <div className="col">
-                    <span className="count" onClick={() => handleCounterClick('playlist-count')}>{metrics.playlist_count}</span>
-                    <label>COUNT</label>
-                  </div>
-                  <div className="col">
-                    <span>{metrics.playlist_views}</span>
-                    <label>VIEWS</label>
-                  </div>
-                  <div className="col">
-                    <span>{metrics.playlist_shares}</span>
-                    <label>SHARED</label>
-                  </div>
-                </div>
-              </div>
-              <div className="col dashboard-panel m-3">
-                <div className="row dashboard-panel-header-row">
-                  <div className="col">
-                    <h1 className="title">Activities</h1>
-                  </div>
-                </div>
-                <div className="row text-center">
-                  <div className="col">
-                    <span className="count" onClick={() => handleCounterClick('activity-count')}>{metrics.activity_count}</span>
-                    <label>COUNT</label>
-                  </div>
-                  <div className="col">
-                    <span>{metrics.activity_views}</span>
-                    <label>VIEWS</label>
-                  </div>
-                  <div className="col" onClick={() => handleCounterClick('activity-shared-count')}>
-                    <span className="count">{metrics.activity_shares}</span>
-                    <label>SHARED</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          ) : <Alert variant="danger">You are not authorized to access Dashboard.</Alert>}
+
         </div>
       </div>
 

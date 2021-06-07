@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
-
+import _ from 'lodash';
 import {
   removeMemberAction,
   loadTeamAction,
@@ -78,9 +78,8 @@ function AddMembersPage(props) {
 
   // TODO need to be clean up
   const thisUsers = projects.find((project) => project.id === parseInt(projectId, 10)).users;
-  let filteredUsers = users.filter(
-    (p) => (thisUsers || []).findIndex((u) => p.id === u.id) === -1,
-  );
+  let filteredUsers = _.filter(users,
+    (p) => (thisUsers || []).findIndex((u) => p.id === u.id) === -1);
 
   filteredUsers = filteredUsers
     ? filteredUsers.filter((u) => `${u.first_name} ${u.last_name}`.toLowerCase().indexOf(search.toLowerCase()) > -1)

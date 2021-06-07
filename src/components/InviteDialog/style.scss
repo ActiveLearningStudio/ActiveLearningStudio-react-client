@@ -1,3 +1,5 @@
+@import 'assets/css/index';
+
 $selected_color: #084892;
 $filled: #44ca92;
 
@@ -210,13 +212,13 @@ $filled: #44ca92;
               .invite-member-name {
                 margin: 0;
                 font-size: 14px;
-                color: #464646;
+                color: $mine-shaft;
               }
             }
 
             &:hover {
               cursor: pointer;
-              background: #0F4392;
+              background: $curriki-main-blue;
               * {
                 color: #fff !important;
               }
@@ -237,7 +239,7 @@ $filled: #44ca92;
         font-size: 15px;
 
         &:not(:disabled) {
-          background: #0f4392;
+          background: $curriki-main-blue;
           border: none;
           color: #fff;
         }

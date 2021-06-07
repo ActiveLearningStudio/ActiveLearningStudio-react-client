@@ -1,0 +1,194 @@
+$selected_color: #084892;
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.invite-member-wrapper {
+  margin-right: 25.9em;
+
+  @media(max-width: 1540px) {
+    margin-right: 6em;
+  }
+
+  .search-box {
+    margin: 25px 0 25px 0;
+    display: flex;
+    justify-content: space-between;
+
+    input {
+      min-width: 17rem;
+      padding: 9px 40px 9px 14px;
+      background: #F3F3F3;
+      border: solid 1px #c4c4c4;
+
+      &::placeholder {
+        font-size: 12px;
+      }
+    }
+
+    svg {
+      margin: 0 -17.5px -1px 0;
+      animation: spin 1s linear infinite;
+    }
+  }
+
+  .member-list {
+    max-height: 490px;
+    margin-top: 8px;
+    margin-bottom: 40px;
+    //padding-right: 40px;
+    overflow-y: auto;
+    border-color: #e2e2e2;
+
+    .member-list-content {
+      border-top: solid 1px #cbcbcB;
+
+      .member-item {
+        padding: 15px 2px 13px 2px;
+        display: flex;
+        border-width: 1px 0 0 0;
+        border-style: solid;
+        border-color: #e2e2e2;
+
+        h2 {
+          margin: 0;
+        }
+
+        .member-name-mark {
+          position: relative;
+          width: 50px;
+          height: 50px;
+          border: solid 2px #e2e2e2;
+          border-radius: 50%;
+          font-weight: bold;
+          text-align: center;
+          text-transform: uppercase;
+          color: #a5a5a5;
+
+          span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: 0;
+            transform: translate(-50%, -50%);
+            font-size: 16px;
+          }
+        }
+
+        .member-info {
+          margin-left: 11px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          color: #464646;
+
+          .member-name {
+            margin: 3px 0 8px 0;
+            font-size: 14px;
+          }
+
+          .member-data {
+            display: flex;
+
+            h2 {
+              font-size: 12px;
+
+              span {
+                margin: 0 6px;
+                vertical-align: text-bottom;
+                font-size: 10px;
+                color: #a5a5a5;
+              }
+            }
+          }
+        }
+
+        .button-container {
+          position: relative;
+          padding: 11px 0 8px 0;
+          flex: 1;
+          text-align: end;
+
+          .invite-btn {
+            height: 100%;
+            background: none;
+            font-size: 13px;
+
+            &:not(.checked) {
+              padding: 0 14px;
+              border: solid 1px #44ca92;
+              color: #44ca92;
+
+              &:hover {
+                background: #44ca92;
+                color: #ffffff;
+              }
+            }
+
+            &.checked {
+              padding: 0 8px;
+              border: solid 1px #e2e2e2;
+            }
+
+            svg {
+              margin: 0 5px 0 0;
+            }
+          }
+
+          .invite-dialog {
+            position: absolute;
+            right: 0;
+            background: white;
+            border: solid 1px #e2e2e2;
+            text-align: left;
+            z-index: 1;
+
+            h2 {
+              font-size: 14px;
+            }
+
+            h2.font-weight-bold {
+              padding: 15px 24px;
+              border-bottom: solid 1px;
+              border-color: #e2e2e2;
+            }
+
+            & > div {
+              padding: 35px 23px 53px;
+              letter-spacing: -0.5px;
+
+              .email-input {
+                margin: 10px 0;
+
+                input {
+                  min-width: 263px;
+                  padding: 8px 11px;
+                }
+              }
+
+              button {
+                padding: 7px 17px;
+                border-radius: 2px;
+                font-size: 15px;
+
+                &:not(:disabled) {
+                  background: #0f4392;
+                  border: none;
+                  color: #fff;
+                }
+
+                svg {
+                  margin-left: 8px;
+                  animation: spin 1s linear infinite;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
 import { FadeDiv } from 'utils';
 import { loadMyProjectsAction } from 'store/actions/project';
 import { loadTeamAction, addProjectsAction } from 'store/actions/team';
 // import Sidebar from 'components/Sidebar';
 // import Header from 'components/Header';
+import { Alert } from 'react-bootstrap';
 import AssignProject from '../CreateTeam/components/AssignProject';
 
 import './style.scss';
@@ -27,7 +28,8 @@ function AddProjectsPage(props) {
     loadProjects();
     loadTeam(teamId);
   }, [loadProjects, loadTeam, teamId]);
-
+  const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
   const [selectedProjects, setSelectedProjects] = useState([]);
   const [searchProject, setSearchProject] = useState('');
 
@@ -41,7 +43,7 @@ function AddProjectsPage(props) {
       projectIds,
     )
       .then(() => {
-        history.push(`/teams/${teamId}/projects`);
+        history.push(`/org/${organization.currentOrganization?.domain}/teams/${teamId}/projects`);
       })
       .catch(() => {});
   }, [addProjects, teamId, history]);
@@ -51,15 +53,20 @@ function AddProjectsPage(props) {
       <div className="teams-page">
         <FadeDiv className="assign-projects">
           <div className="assign-projects-content">
-            <AssignProject
-              isSaving={team.isLoading}
-              projects={filteredProjects}
-              handleSubmit={handleSubmit}
-              selectedProjects={selectedProjects}
-              setSelectedProjects={setSelectedProjects}
-              search={searchProject}
-              setSearch={setSearchProject}
-            />
+            {permission?.Team?.includes('team:add-projects')
+              ? (
+                <AssignProject
+                  isSaving={team.isLoading}
+                  projects={filteredProjects}
+                  handleSubmit={handleSubmit}
+                  selectedProjects={selectedProjects}
+                  setSelectedProjects={setSelectedProjects}
+                  search={searchProject}
+                  setSearch={setSearchProject}
+                />
+              )
+              : <Alert variant="danger"> You are not authorized to add projects.</Alert>}
+
           </div>
         </FadeDiv>
       </div>
