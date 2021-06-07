@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { removeActiveAdminForm, setActiveTab } from 'store/actions/admin'
-
+import CreateActivityItem from './formik/createActivityItem';
 import CreateActivityType from "./formik/createActivity"
 import CreateOrg from "./formik/createOrg"
 import AddRole from './formik/addRole';
@@ -114,6 +114,25 @@ function AdminPanel() {
                 )
                 : (
                   <CreateActivityType editMode/>
+                )}
+              </div>
+            </div>
+          )}
+          {(activeForm === "add_activity_item" || activeForm === "edit_activity_item") && (
+            <div className="form-new-popup-admin">
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">
+                {activeForm === "add_activity_item" ? (
+                    <CreateActivityItem />
+                )
+                : (
+                  <CreateActivityItem editMode/>
                 )}
               </div>
             </div>

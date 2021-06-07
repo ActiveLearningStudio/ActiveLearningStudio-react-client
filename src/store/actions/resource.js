@@ -10,16 +10,22 @@ import * as actionTypes from '../actionTypes';
 // global variable for h5p object
 let h5pid;
 
-export const loadResourceTypesAction = (query) => async (dispatch) => {
+export const loadResourceTypesAction = (query, page) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPES_REQUEST,
     });
-    const { data } = await resourceService.getTypes(query);
+    const result = await resourceService.getTypes(query, page);
+    const { data } = result;
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPES_SUCCESS,
       payload: { data },
     });
+    dispatch({
+      type: actionTypes.GET_ACTIVITY_TYPES,
+      payload: result,
+    });
+    return result;
   } catch (e) {
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPES_FAIL,
@@ -43,6 +49,7 @@ export const createActivityType = (data) => async (dispatch) => {
     payload: result,
   });
 };
+
 export const editActivityType = (data, typeId) => async (dispatch) => {
   const result = await resourceService.editActivityType(data, typeId);
   dispatch({
@@ -50,6 +57,15 @@ export const editActivityType = (data, typeId) => async (dispatch) => {
     payload: result,
   });
 };
+
+export const deleteActivityType = (typeId) => async (dispatch) => {
+  const result = resourceService.deleteActivityType(typeId);
+  dispatch({
+    type: actionTypes.DELETE_ACTIVITY_TYPE,
+  });
+  return result;
+};
+
 export const loadResourceItemsAction = (activityTypeId) => async (dispatch) => {
   try {
     dispatch({
@@ -71,6 +87,51 @@ export const loadResourceItemsAction = (activityTypeId) => async (dispatch) => {
 
     throw e;
   }
+};
+
+export const getActivityItems = (query, page) => async (dispatch) => {
+  const allActivityItems = await resourceService.getActivityItems(query, page);
+  const { data } = allActivityItems;
+  dispatch({
+    type: actionTypes.GET_ACTIVITY_ITEMS,
+    payload: data.data,
+  });
+  dispatch({
+    type: actionTypes.GET_ACTIVITY_ITEMS_ADMIN,
+    payload: data,
+  });
+  return allActivityItems;
+};
+
+export const selectActivityItem = (type) => (dispatch) => {
+  dispatch({
+    type: actionTypes.SELECTED_ACTIVITY_ITEM,
+    payload: type,
+  });
+};
+
+export const createActivityItem = (data) => async (dispatch) => {
+  const result = await resourceService.createActivityItem(data);
+  dispatch({
+    type: actionTypes.ADD_ACTIVITY_ITEM,
+    payload: result,
+  });
+};
+
+export const editActivityItem = (data, itemId) => async (dispatch) => {
+  const result = await resourceService.editActivityItem(data, itemId);
+  dispatch({
+    type: actionTypes.EDIT_ACTIVITY_ITEM,
+    payload: result,
+  });
+};
+
+export const deleteActivityItem = (itemId) => async (dispatch) => {
+  const result = resourceService.deleteActivityItem(itemId);
+  dispatch({
+    type: actionTypes.DELETE_ACTIVITY_ITEM,
+  });
+  return result;
 };
 
 export const loadResourceAction = (activityId) => async (dispatch) => {

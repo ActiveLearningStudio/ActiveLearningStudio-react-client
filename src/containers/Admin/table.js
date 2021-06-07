@@ -24,7 +24,7 @@ import {
   setActiveTab,
   setCurrentUser,
 } from "store/actions/admin";
-import { selectActivityType } from "store/actions/resource";
+import { deleteActivityItem, deleteActivityType, selectActivityItem, selectActivityType } from "store/actions/resource";
 
 function Table(props) {
   const {
@@ -478,7 +478,7 @@ function Table(props) {
               </tr>
             ))}
             {(type === 'Activities' && subType === 'Activity Types') && (
-              data ? data.map((type) => (
+              data ? data?.data.map((type) => (
                 <tr className="org-rows">
                   <td>{type.title}</td>
                   <td><img src={global.config.resourceUrl + type.image} alt="activity-type-image"/></td>
@@ -491,7 +491,7 @@ function Table(props) {
                     ))}
                   </td>
                   <td>
-                  <Link
+                   <Link
                       style={{ float: "left" }}
                       onClick={() => {
                         dispatch(selectActivityType(type));
@@ -502,6 +502,34 @@ function Table(props) {
                     </Link>
                     <Link
                       style={{ float: "right" }}
+                      onClick={
+                        () => {
+                          Swal.fire({
+                            title: "Are you sure?",
+                            text: "You won't be able to revert this!",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#084892",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Yes, delete it!",
+                          }).then(async (result) => {
+                            if (result.isConfirmed) {
+                              Swal.showLoading();
+                              const resultDel = await dispatch(deleteActivityType(type.id));
+                              if (resultDel) {
+                                Swal.fire({
+                                  text: "You have successfully deleted the activity type",
+                                  icon: "success",
+                                  showCancelButton: false,
+                                  confirmButtonColor: "#084892",
+                                  cancelButtonColor: "#d33",
+                                  confirmButtonText: "OK",
+                                });
+                              }
+                            }
+                          });
+                        }
+                      }
                     >
                       Delete
                     </Link>
@@ -510,8 +538,7 @@ function Table(props) {
               )) : null
             )}
             {(type === 'Activities' && subType === 'Activity Items') && (
-              data ? data.map((type) => (
-                type.activityItems.map((item) => (
+              data?.data ? data?.data.map((item) => (
                   <tr>
                     <td>{item.title}</td>
                     <td><img src={global.config.resourceUrl + item.image} alt="activity-item-image"/></td>
@@ -519,7 +546,7 @@ function Table(props) {
                     <td>
                       <b>Activity Type:</b>
                       <span>
-                        {type.title}
+                        {item.activityType.title}
                       </span>
                       <b>Item Type:</b>
                         <span>
@@ -533,17 +560,48 @@ function Table(props) {
                     <td>
                     <Link
                       style={{ float: "left" }}
+                      onClick={() => {
+                        dispatch(selectActivityItem(item));
+                        dispatch(setActiveAdminForm("edit_activity_item"));
+                      }}
                     >
                       Edit
                     </Link>
                     <Link
                       style={{ float: "right" }}
+                      onClick={
+                        () => {
+                          Swal.fire({
+                            title: "Are you sure?",
+                            text: "You won't be able to revert this!",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#084892",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Yes, delete it!",
+                          }).then(async (result) => {
+                            if (result.isConfirmed) {
+                              Swal.showLoading();
+                              const resultDel = await dispatch(deleteActivityItem(item.id));
+                              if (resultDel) {
+                                Swal.fire({
+                                  text: "You have successfully deleted the activity item",
+                                  icon: "success",
+                                  showCancelButton: false,
+                                  confirmButtonColor: "#084892",
+                                  cancelButtonColor: "#d33",
+                                  confirmButtonText: "OK",
+                                });
+                              }
+                            }
+                          });
+                        }
+                      }
                     >
                       Delete
                     </Link>
                     </td>
                   </tr>
-                ))
               )) : null
             )}
         </tbody>
@@ -610,6 +668,30 @@ function Table(props) {
               />
             )
           }
+          {type === 'Activities' && subType === 'Activity Types' && (
+              <Pagination
+                activePage={activePage}
+                pageRangeDisplayed={5}
+                itemsCountPerPage={data?.meta?.per_page}
+                totalItemsCount={data?.meta?.total}
+                onChange={(e) => {
+                  // setCurrentTab("index");
+                  setActivePage(e);
+                }}
+              />
+          )}
+          {type === 'Activities' && subType === 'Activity Items' && (
+              <Pagination
+                activePage={activePage}
+                pageRangeDisplayed={5}
+                itemsCountPerPage={data?.meta?.per_page}
+                totalItemsCount={data?.meta?.total}
+                onChange={(e) => {
+                  // setCurrentTab("index");
+                  setActivePage(e);
+                }}
+              />
+          )}
         </div>
       </div>
     </div>

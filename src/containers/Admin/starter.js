@@ -29,6 +29,7 @@ function Starter(props) {
     subTypeState,
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
+    searchActivitiesQueryHandler,
     searchAlertToggler,
     setActivePage,
     subType,
@@ -51,6 +52,7 @@ function Starter(props) {
         btnAction={btnAction}
         searchQuery={searchQuery}
         searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
+        searchActivitiesQueryHandler={searchActivitiesQueryHandler}
         searchQueryChangeHandler={searchQueryChangeHandler}
         importUser={importUser}
         filter={filter}

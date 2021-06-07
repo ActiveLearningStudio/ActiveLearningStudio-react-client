@@ -9,14 +9,14 @@ import { columnData } from "./column";
 
 
 import { getOrgUsers, searchUserInOrganization, getsubOrgList } from 'store/actions/organization';
-import { loadResourceTypesAction } from "store/actions/resource";
+import { getActivityItems, loadResourceTypesAction } from "store/actions/resource";
 export default function Pills(props) {
   const { modules, type, subType } = props;
   const [subTypeState, setSubTypeState] = useState(subType);
   // All User Business Logic Start
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const { types } = useSelector ((state) => state.resource)
+  const { activityTypes, activityItems } = useSelector ((state) => state.admin)
   const admin = useSelector((state) => state.admin);
   const [ activePage, setActivePage ] = useState(1);
   const [ size, setSize ] = useState(25);
@@ -177,6 +177,40 @@ export default function Pills(props) {
       setAllProjectIndexTab(result);
     }
   }, [type, activePage, changeIndexValue, currentTab]);
+  // Activity Tab Business Logic
+  useEffect(() => {
+    if (type=== 'Activities' && subTypeState === 'Activity Items') {
+      //pagination
+      dispatch(getActivityItems('', activePage));
+    } else if (type=== 'Activities' && subTypeState === 'Activity Items' && activePage === 1) {
+      //on page 1
+      dispatch (getActivityItems());
+    }
+  }, [type, subTypeState, activePage])
+  useEffect(() => {
+    if (type=== 'Activities' && subTypeState === 'Activity Types' && activePage !== organization?.activePage) {
+      //pagination
+      dispatch(loadResourceTypesAction('', activePage));
+    } else if (type=== 'Activities' && subTypeState === 'Activity Types' && activePage === 1) {
+      //on page 1
+      dispatch (loadResourceTypesAction());
+    }
+  },[activePage, subTypeState, type])
+  const searchActivitiesQueryHandler = async ({target}, subTypeRecieved) => {
+    if (subTypeRecieved === 'Activity Types') {
+      if (target.value) {
+        await dispatch(loadResourceTypesAction(target.value, ''));
+      } else {
+        await dispatch(loadResourceTypesAction());
+      }
+    } else if (subTypeRecieved === 'Activity Items') {
+      if (target.value) {
+        await dispatch(getActivityItems(target.value, ''));
+      } else {
+        await dispatch(getActivityItems());
+      }
+    }
+  }
   const dummy =  [
     {
       name: "qamar",
@@ -374,22 +408,24 @@ export default function Pills(props) {
                 search={true}
                 tableHead={columnData.ActivityTypes}
                 subType={'Activity Types'}
+                searchActivitiesQueryHandler={searchActivitiesQueryHandler}
                 btnText="Add Activity Type"
                 btnAction="add_activity_type"
-                data={types}
+                data={activityTypes}
                 type={type}
                 setActivePage={setActivePage}
                 activePage={activePage}
               />
             )}
-            {type === 'Activities' && subTypeState === 'Activity Items' && (
+            {(type === 'Activities' && subTypeState === 'Activity Items') && (
               <Starter
                 search={true}
                 tableHead={columnData.ActivityItems}
                 subType={'Activity Items'}
+                searchActivitiesQueryHandler={searchActivitiesQueryHandler}
                 btnText="Add Activity Item"
                 btnAction="add_activity_item"
-                data={types}
+                data={activityItems}
                 type={type}
                 setActivePage={setActivePage}
                 activePage={activePage}

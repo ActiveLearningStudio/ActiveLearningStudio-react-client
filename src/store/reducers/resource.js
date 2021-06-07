@@ -4,7 +4,10 @@ const INITIAL_STATE = {
   isLoading: false,
   types: [],
   selectedType: null,
+  selectedItem: null,
+  items: [],
   newActivityType: null,
+  newActivityItem: null,
   resources: [],
   showCreateResourcePopup: false,
   newResource: {
@@ -361,6 +364,36 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         selectedType: action.payload,
+      };
+    case actionTypes.DELETE_ACTIVITY_TYPE:
+      return {
+        ...state,
+        selectedType: null,
+      };
+    case actionTypes.GET_ACTIVITY_ITEMS:
+      return {
+        ...state,
+        items: action.payload,
+      };
+    case actionTypes.SELECTED_ACTIVITY_ITEM:
+      return {
+        ...state,
+        selectedItem: action.payload,
+      };
+    case actionTypes.ADD_ACTIVITY_ITEM:
+      return {
+        ...state,
+        newActivityItem: action.payload,
+      };
+    case actionTypes.EDIT_ACTIVITY_ITEM:
+      return {
+        ...state,
+        selectedItem: action.payload,
+      };
+    case actionTypes.DELETE_ACTIVITY_ITEM:
+      return {
+        ...state,
+        selectedItem: null,
       };
     default:
       return state;

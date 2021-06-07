@@ -48,7 +48,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         activityTypes: action.payload,
       };
-    case actionTypes.GET_ACTIVITY_ITEMS:
+    case actionTypes.GET_ACTIVITY_ITEMS_ADMIN:
       return {
         ...state,
         activityItems: action.payload,

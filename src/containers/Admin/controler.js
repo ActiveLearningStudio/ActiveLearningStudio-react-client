@@ -33,6 +33,7 @@ function Controller(props) {
     searchQuery,
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
+    searchActivitiesQueryHandler,
     size,
     setSize,
     tableHead,
@@ -65,7 +66,6 @@ function Controller(props) {
   // sabtype
   // const sab = subType;
   // console.log(subTypeState);
-  console.log(subType);
 
   const updateIndexAction = (value, id) => {
     setSelectedIndexValue(value);
@@ -249,13 +249,13 @@ function Controller(props) {
       )}
       {!!search && type === 'Activities' && subType === 'Activity Types' && (
         <div className="search-bar">
-          <input type="text" placeholder="Search" />
+          <input type="text" placeholder="Search" onChange={(e) => searchActivitiesQueryHandler(e, subType)}/>
           <img src={searchimg} alt="search" />
         </div>
       )}
       {!!search && type === 'Activities' && subType === 'Activity Items' && (
         <div className="search-bar">
-          <input type="text" placeholder="Search" />
+          <input type="text" placeholder="Search" onChange={(e) => searchActivitiesQueryHandler(e, subType)}/>
           <img src={searchimg} alt="search" />
         </div>
       )}

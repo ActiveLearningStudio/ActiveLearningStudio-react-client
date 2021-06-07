@@ -1,4 +1,3 @@
-// /* eslint-disable */
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
@@ -7,34 +6,59 @@ import imgAvatar from 'assets/images/img-avatar.png';
 import { uploadImage } from 'store/actions/organization';
 import { removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
-import { createActivityType, editActivityType } from 'store/actions/resource';
+import { createActivityItem, editActivityItem } from 'store/actions/resource';
 
-export default function CreateActivity(props) {
+export default function CreateActivityItem(props) {
   const { editMode } = props;
   const [imageActive, setImgActive] = useState(null);
   const imgUpload = useRef();
   const dispatch = useDispatch();
   const allListState = useSelector((state) => state.organization);
-  const selectedType = useSelector((state) => state.resource.selectedType);
+  const activityTypes = useSelector((state) => state.admin.activityTypes);
+  const selectedItem = useSelector((state) => state.resource.selectedItem);
   useEffect(() => {
     if (editMode) {
-      setImgActive(selectedType?.image);
+      setImgActive(selectedItem?.image);
     } else {
       setImgActive(null);
     }
-  }, [editMode]);
+  }, [editMode, selectedItem]);
   return (
     <div className="create-form">
       <Formik
         initialValues={{
-          title: editMode ? selectedType.title : '',
-          image: editMode ? selectedType.image : '',
-          order: editMode ? selectedType.order : '',
+          title: editMode ? selectedItem.title : '',
+          description: editMode ? selectedItem.description : '',
+          activityType: editMode ? selectedItem.activityType.id : '',
+          type: editMode ? selectedItem.type : '',
+          h5pLib: editMode ? selectedItem.h5pLib : '',
+          demo_activity_id: editMode ? selectedItem.demo_activity_id : '',
+          demo_video_id: editMode ? selectedItem.demo_video_id : '',
+          image: editMode ? selectedItem.image : '',
+          order: editMode ? selectedItem.order : '',
         }}
         validate={(values) => {
           const errors = {};
           if (!values.title) {
             errors.title = 'Required';
+          }
+          if (!values.description) {
+            errors.description = 'Required';
+          }
+          if (!values.activityType) {
+            errors.activityType = 'Required';
+          }
+          if (!values.type) {
+            errors.type = 'Required';
+          }
+          if (!values.h5pLib) {
+            errors.h5pLib = 'The h5pLib field is required when type is h5p.';
+          }
+          if (!values.demo_activity_id) {
+            errors.demo_activity_id = 'Required';
+          }
+          if (!values.demo_video_id) {
+            errors.demo_video_id = 'Required';
           }
           if (!values.image) {
             errors.image = 'Required';
@@ -45,32 +69,33 @@ export default function CreateActivity(props) {
           return errors;
         }}
         onSubmit={async (values) => {
+          console.log(values);
           if (editMode) {
             Swal.fire({
               title: 'Activity',
               icon: 'info',
-              text: 'Updating activity type...',
+              text: 'Updating activity item...',
               allowOutsideClick: false,
               onBeforeOpen: () => {
                 Swal.showLoading();
               },
               button: false,
             });
-            await dispatch(editActivityType(values, selectedType.id));
+            await dispatch(editActivityItem(values, selectedItem.id));
             Swal.close();
             dispatch(removeActiveAdminForm());
           } else {
             Swal.fire({
               title: 'Activity',
               icon: 'info',
-              text: 'Creating new activity type...',
+              text: 'Creating new activity item...',
               allowOutsideClick: false,
               onBeforeOpen: () => {
                 Swal.showLoading();
               },
               button: false,
             });
-            await dispatch(createActivityType(values));
+            await dispatch(createActivityItem(values));
             Swal.close();
             dispatch(removeActiveAdminForm());
           }
@@ -90,7 +115,7 @@ export default function CreateActivity(props) {
             <h2>
               {editMode ? 'Edit' : 'Add'}
               {' '}
-              Activity Type
+              Activity Item
             </h2>
             <div className="form-group-create">
               <h3>Title</h3>
@@ -103,6 +128,19 @@ export default function CreateActivity(props) {
               />
               <div className="error">
                 {errors.title && touched.title && errors.title}
+              </div>
+            </div>
+            <div className="form-group-create">
+              <h3>Description</h3>
+              <input
+                type="text"
+                name="description"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.description}
+              />
+              <div className="error">
+                {errors.description && touched.description && errors.description}
               </div>
             </div>
             <div className="form-group-create">
@@ -195,11 +233,76 @@ export default function CreateActivity(props) {
                 {errors.order && touched.order && errors.order}
               </div>
             </div>
+            <div className="form-group-create">
+              <h3>Activity Type</h3>
+              <select name="activityType" onChange={handleChange} onBlur={handleBlur} value={values.activityType}>
+                <option value="">{' '}</option>
+                {activityTypes?.data?.length > 0 && activityTypes?.data?.map((type) => (
+                  <option value={type?.id} key={type?.id}>{type?.title}</option>
+                ))}
+              </select>
+              <div className="error">
+                {errors.activityType && touched.activityType && errors.activityType}
+              </div>
+            </div>
+            <div className="form-group-create">
+              <h3>Category</h3>
+              <input
+                type="text"
+                name="type"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.type}
+              />
+              <div className="error">
+                {errors.type && touched.type && errors.type}
+              </div>
+            </div>
+            <div className="form-group-create">
+              <h3>H5P Lib</h3>
+              <input
+                type="text"
+                name="h5pLib"
+                placeholder="H5P.InteractiveVideo 1.21"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.h5pLib}
+              />
+              <div className="error">
+                {errors.h5pLib && touched.h5pLib && errors.h5pLib}
+              </div>
+            </div>
+            <div className="form-group-create">
+              <h3>Demo Video ID</h3>
+              <input
+                type="text"
+                name="demo_video_id"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.demo_video_id}
+              />
+              <div className="error">
+                {errors.demo_video_id && touched.demo_video_id && errors.demo_video_id}
+              </div>
+            </div>
+            <div className="form-group-create">
+              <h3>Demo Activity ID</h3>
+              <input
+                type="text"
+                name="demo_activity_id"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.demo_activity_id}
+              />
+              <div className="error">
+                {errors.demo_activity_id && touched.demo_activity_id && errors.demo_activity_id}
+              </div>
+            </div>
             <div className="button-group">
               <button type="submit">
                 {editMode ? 'Edit' : 'Create'}
                 {' '}
-                Activity Type
+                Activity Item
               </button>
               <button
                 type="button"
@@ -218,9 +321,9 @@ export default function CreateActivity(props) {
   );
 }
 
-CreateActivity.propTypes = {
+CreateActivityItem.propTypes = {
   editMode: PropTypes.bool,
 };
-CreateActivity.defaultProps = {
+CreateActivityItem.defaultProps = {
   editMode: false,
 };

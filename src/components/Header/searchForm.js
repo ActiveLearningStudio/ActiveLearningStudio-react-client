@@ -8,7 +8,7 @@ import { Formik } from 'formik';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { simpleSearchAction } from 'store/actions/search';
-import { loadResourceTypesAction } from 'store/actions/resource';
+import { getActivityItems, loadResourceTypesAction } from 'store/actions/resource';
 import {
   educationLevels,
   subjects,
@@ -28,6 +28,7 @@ function SearchForm() {
   useEffect(() => {
     if (activityTypesState.length === 0) {
       dispatcher(loadResourceTypesAction());
+      dispatcher(getActivityItems());
     }
   }, []);
 
