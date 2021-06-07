@@ -33,6 +33,7 @@ function Starter(props) {
     searchAlertToggler,
     setActivePage,
     subType,
+    inviteUser,
     setCurrentTab,
     setChangeIndexValue,
   } = props;
@@ -57,6 +58,7 @@ function Starter(props) {
         importUser={importUser}
         filter={filter}
         tableHead={tableHead}
+        inviteUser={inviteUser}
         roles={roles}
         subType={subType}
         setChangeIndexValue={setChangeIndexValue}

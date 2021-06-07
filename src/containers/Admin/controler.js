@@ -10,7 +10,7 @@ import searchimg from "assets/images/search-icon.png";
 import csv from "assets/images/csv.png";
 import pdf from "assets/images/pdf.png";
 import bulk from "assets/images/bulk.png";
-import AddUser from "containers/ManageOrganization/addUser";
+import InviteUser from "containers/ManageOrganization/inviteAdmin";
 import {
   getOrganization,
   getRoles,
@@ -298,9 +298,7 @@ function Controller(props) {
           </button>
         </div>
       )}
-      {!!inviteUser &&
-        (permission?.activeRole === "admin" ||
-          permission?.activeRole === "superadmin") && (
+      {inviteUser && permission?.Organization?.includes('organization:invite-members') && (
           <div className="btn-text">
             <div className="add-user-btn">
               <Dropdown>
@@ -308,11 +306,7 @@ function Controller(props) {
                   Invite User
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <AddUser
-                    setAllUsersAdded={setAllUsersAdded}
-                    allUsersAdded={allUsersAdded}
-                    method="create"
-                  />
+                  <InviteUser />
                 </Dropdown.Menu>
               </Dropdown>
             </div>
