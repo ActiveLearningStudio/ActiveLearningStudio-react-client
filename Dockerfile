@@ -1,5 +1,4 @@
 FROM node:10 as build
-RUN apk add g++ make python
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY ./package*.json ./
