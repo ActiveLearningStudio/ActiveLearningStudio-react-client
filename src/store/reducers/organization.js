@@ -187,6 +187,11 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         users: action.payload,
       };
+    case actionTypes.REMOVE_USER_FROM_ORGANIZATION:
+      return {
+        ...state,
+        users: action.payload,
+      };
     case actionTypes.SEARCH_USER_IN_ORGANIZATION:
       return {
         ...state,

@@ -339,6 +339,10 @@
         span {
           display: flex;
         }
+        .links {
+          display: flex;
+          justify-content: space-between;
+        }
       }
 
       th {

@@ -116,6 +116,11 @@ const deleteUserFromOrganization = (id, body) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const removeUserFromOrganization = (subOrgId, body) => httpService
+  .remove(`/${apiVersion}/suborganizations/${subOrgId}/remove-user`, body)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const searchUserInOrganization = (id, query, page) => httpService
   .get(`/${apiVersion}/suborganizations/${id}/users?query=${query}&page=${page}`)
   .then(({ data }) => data)
@@ -165,6 +170,7 @@ export default {
   getOrgUsers,
   getOrganizationSearch,
   deleteUserFromOrganization,
+  removeUserFromOrganization,
   searchUserInOrganization,
   allPermission,
   getAllPermissions,

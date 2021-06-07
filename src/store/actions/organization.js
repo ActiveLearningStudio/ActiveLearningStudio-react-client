@@ -292,12 +292,22 @@ export const getOrgUsers = (id, page, size, activeRole) => async (dispatch) => {
   return result;
 };
 
-export const deleteUserFromOrganization = (id) => async (dispatch) => {
+export const deleteUserFromOrganization = (id, preserveData) => async (dispatch) => {
   const { organization: { activeOrganization, users } } = store.getState();
-  await organization.deleteUserFromOrganization(activeOrganization?.id, { user_id: id });
+  await organization.deleteUserFromOrganization(activeOrganization?.id, { user_id: id, preserve_data: preserveData });
   users.data = users.data?.filter((user) => user.id !== id);
   dispatch({
     type: actionTypes.DELETE_USER_FROM_ORGANIZATION,
+    payload: users,
+  });
+};
+
+export const removeUserFromOrganization = (id, preserveData) => async (dispatch) => {
+  const { organization: { activeOrganization, users } } = store.getState();
+  await organization.removeUserFromOrganization(activeOrganization?.id, { user_id: id, preserve_data: preserveData });
+  users.data = users.data?.filter((user) => user.id !== id);
+  dispatch({
+    type: actionTypes.REMOVE_USER_FROM_ORGANIZATION,
     payload: users,
   });
 };
