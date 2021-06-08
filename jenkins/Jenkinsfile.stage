@@ -58,7 +58,7 @@ node {
                 }
                 
             },
-            "StageB": {
+            "StageC": {
                 if(Jenkins.instance.getNode('currikimopse').toComputer().isOnline()){
                     node('currikimopse') {
                         stage ('currikimopse') {
