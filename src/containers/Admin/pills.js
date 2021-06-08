@@ -29,6 +29,7 @@ function Pills(props) {
   const [allProjectTab, setAllProjectTab] = useState(null);
   const [allProjectUserTab, setAllProjectUserTab] = useState(null);
   const [allProjectIndexTab, setAllProjectIndexTab] = useState(null);
+  const [lmsProject, setLmsProject] = useState(null);
   const [changeIndexValue, setChangeIndexValue] = useState("1");
   const searchUsers = async (query, page) => {
     const result = await dispatch(
@@ -212,6 +213,17 @@ function Pills(props) {
       flow: "67",
     },
   ];
+
+  //LMS project ***************************************
+
+  useMemo(async () => {
+    setLmsProject(null);
+    const result = await adminService.getLmsProject();
+    setLmsProject(result);
+    console.log(result);
+  }, []);
+
+
   // console.log(columnData)
   return (
     <Tabs
@@ -329,6 +341,22 @@ function Pills(props) {
                 type={type}
               />
             )}
+
+            {type === "LMS" && (
+              <Starter
+                paginationCounter={false}
+                search={true}
+                print={false}
+                btnText="create New LMS"
+                btnAction="add_lms"
+                importUser={false}
+                filter={false}
+                tableHead={columnData.lmssettings}
+                data={lmsProject}
+                type={type}
+              />
+            )}
+
             {type === "Project" && subTypeState === "All Projects" && (
               <Starter
                 paginationCounter={false}

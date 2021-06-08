@@ -65,7 +65,7 @@ function Controller(props) {
   // sabtype
   // const sab = subType;
   // console.log(subTypeState);
-  console.log(subType);
+  // console.log(subType);
 
   const updateIndexAction = (value, id) => {
     setSelectedIndexValue(value);
@@ -245,6 +245,7 @@ function Controller(props) {
 
             onChange={(e) => searchProjectQueryChangeHandler(e, selectedIndexValueid, subType)}
           />
+          <img src={searchimg} alt="search" />
         </div>
       )}
       {!!search && type === 'Activities' && subTypeState === 'Activity Types' && (
@@ -290,6 +291,9 @@ function Controller(props) {
                 dispatch(setActiveAdminForm("create_user"));
               } else if (btnAction === "add_org") {
                 dispatch(setActiveAdminForm("add_org"));
+              }
+              else if (btnAction === "add_lms") {
+                dispatch(setActiveAdminForm("add_lms"));
               }
             }}
           >

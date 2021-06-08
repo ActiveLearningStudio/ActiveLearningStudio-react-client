@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect }  from 'react';
+import React, { useEffect } from 'react';
 import { Tabs, Tab, Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,6 +13,7 @@ import CreateUser from './formik/createuser'
 import Pills from './pills';
 import Heading from './heading';
 import Bradecrumd from './bradecrumd';
+import CreateLms from './formik/createLms'
 import './style.scss';
 
 function AdminPanel() {
@@ -145,6 +146,24 @@ function AdminPanel() {
               </div>
             </div>
           )}
+          {activeForm === "add_lms" && (
+            <div className="form-new-popup-admin">
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">
+                <CreateLms method="create" />
+              </div>
+            </div>
+          )}
+
+
+
+
           {(activeForm === "create_user" || activeForm === "edit_user") && (
             <div className="form-new-popup-admin">
               <FontAwesomeIcon

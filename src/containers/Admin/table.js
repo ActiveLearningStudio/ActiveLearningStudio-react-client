@@ -318,7 +318,7 @@ function Table(props) {
                     <td>{row.name}</td>
                     <td>{createNew.toDateString()}</td>
 
-                    {/* <td>{row.description}</td> */}
+                    <td>{row.description}</td>
 
                     <td>{row.id}</td>
                     <td>{row.indexing_text}</td>
@@ -380,7 +380,38 @@ function Table(props) {
                 </td>
               </tr>
             ))}
+          {/* LMS TABLE DATA************************** */}
+          {type === "lma" &&
+            (data ? (
+              data?.data?.map((row) => {
+                const createNew = new Date(row.created_at);
+                const updateNew = new Date(row.updated_at);
+                return (
+                  <tr className="org-rows">
+                    <td>{row.url}</td>
+                    <td>{row.type}</td>
+                    {/* <td>{createNew.toDateString()}</td> */}
 
+                    {/* <td>{row.description}</td> */}
+
+                    <td>{row.user}</td>
+                    {/* <td>{row.indexing_text}</td>
+
+                    <td>{row.organization_id}</td>
+
+                    <td>{row.status_text}</td> */}
+                    {/* <td>{updateNew.toDateString()}</td> */}
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td colspan="11">
+                  <Alert variant="primary">Loaidng data ...</Alert>
+                </td>
+              </tr>
+            ))}
+          {/* ************************************************* */}
           {type === "Project" &&
             subType === "index" &&
             (data ? (
@@ -423,7 +454,7 @@ function Table(props) {
                           });
                           const result = adminService.updateIndex(row.id, 3)
                           result.then((data) => {
-                            // console.log(data)
+                            console.log(data)
                             Swal.fire({
                               icon: 'success',
                               text: data.message,
@@ -476,16 +507,16 @@ function Table(props) {
                 </td>
               </tr>
             ))}
-            {(type === 'Activities' && subType === 'Activity Types') && (
-              <div>
-                TADA
-              </div>
-            )}
-            {(type === 'Activities' && subType === 'Activity Items') && (
-              <div>
-                TADA
-              </div>
-            )}
+          {(type === 'Activities' && subType === 'Activity Types') && (
+            <div>
+              TADA
+            </div>
+          )}
+          {(type === 'Activities' && subType === 'Activity Items') && (
+            <div>
+              TADA
+            </div>
+          )}
         </tbody>
       </table>
       <div className="pagination-top">
@@ -526,7 +557,7 @@ function Table(props) {
             type === "Project" && subType === "user" && (
               <Pagination
                 activePage={activePage}
-                pageRangeDisplayed={5}
+                pageRangeDisplayed={3}
                 itemsCountPerPage={data?.meta?.per_page}
                 totalItemsCount={data?.meta?.total}
                 onChange={(e) => {
