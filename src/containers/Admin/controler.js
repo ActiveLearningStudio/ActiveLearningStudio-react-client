@@ -10,7 +10,7 @@ import searchimg from "assets/images/search-icon.png";
 import csv from "assets/images/csv.png";
 import pdf from "assets/images/pdf.png";
 import bulk from "assets/images/bulk.png";
-import AddUser from "containers/ManageOrganization/addUser";
+import InviteUser from "containers/ManageOrganization/inviteAdmin";
 import {
   getOrganization,
   getRoles,
@@ -33,6 +33,7 @@ function Controller(props) {
     searchQuery,
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
+    searchActivitiesQueryHandler,
     size,
     setSize,
     tableHead,
@@ -248,15 +249,15 @@ function Controller(props) {
           <img src={searchimg} alt="search" />
         </div>
       )}
-      {!!search && type === 'Activities' && subTypeState === 'Activity Types' && (
+      {!!search && type === 'Activities' && subType === 'Activity Types' && (
         <div className="search-bar">
-          <input type="text" placeholder="Search" />
+          <input type="text" placeholder="Search" onChange={(e) => searchActivitiesQueryHandler(e, subType)} />
           <img src={searchimg} alt="search" />
         </div>
       )}
-      {!!search && type === 'Activities' && subTypeState === 'Activity Items' && (
+      {!!search && type === 'Activities' && subType === 'Activity Items' && (
         <div className="search-bar">
-          <input type="text" placeholder="Search" />
+          <input type="text" placeholder="Search" onChange={(e) => searchActivitiesQueryHandler(e, subType)} />
           <img src={searchimg} alt="search" />
         </div>
       )}
@@ -302,26 +303,20 @@ function Controller(props) {
           </button>
         </div>
       )}
-      {!!inviteUser &&
-        (permission?.activeRole === "admin" ||
-          permission?.activeRole === "superadmin") && (
-          <div className="btn-text">
-            <div className="add-user-btn">
-              <Dropdown>
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                  Invite User
+      {inviteUser && permission?.Organization?.includes('organization:invite-members') && (
+        <div className="btn-text">
+          <div className="add-user-btn">
+            <Dropdown>
+              <Dropdown.Toggle variant="success" id="dropdown-basic">
+                Invite User
                 </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <AddUser
-                    setAllUsersAdded={setAllUsersAdded}
-                    allUsersAdded={allUsersAdded}
-                    method="create"
-                  />
-                </Dropdown.Menu>
-              </Dropdown>
-            </div>
+              <Dropdown.Menu>
+                <InviteUser />
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
-        )}
+        </div>
+      )}
     </div>
   );
 }

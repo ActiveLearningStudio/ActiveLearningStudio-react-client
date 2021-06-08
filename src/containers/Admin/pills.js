@@ -9,19 +9,20 @@ import { columnData } from "./column";
 
 
 import { getOrgUsers, searchUserInOrganization, getsubOrgList } from 'store/actions/organization';
-import { getActivityTypes } from "store/actions/admin";
-function Pills(props) {
+import { getActivityItems, loadResourceTypesAction } from "store/actions/resource";
+export default function Pills(props) {
   const { modules, type, subType } = props;
   const [subTypeState, setSubTypeState] = useState(subType);
   // All User Business Logic Start
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
+  const { activityTypes, activityItems } = useSelector ((state) => state.admin)
   const admin = useSelector((state) => state.admin);
+  const [ activePage, setActivePage ] = useState(1);
+  const [ size, setSize ] = useState(25);
+  const [ activeRole,setActiveRole ] = useState('');
   const { activeTab, activityType } = admin
   const [currentTab, setCurrentTab] = useState("all");
-  const [activePage, setActivePage] = useState(1);
-  const [size, setSize] = useState(25);
-  const [activeRole, setActiveRole] = useState('');
   const { activeOrganization, roles } = organization;
   const [users, setUsers] = useState(null);
   const [searchAlertToggler, setSearchAlertToggler] = useState(1);
@@ -177,17 +178,41 @@ function Pills(props) {
       setAllProjectIndexTab(result);
     }
   }, [type, activePage, changeIndexValue, currentTab]);
-
-
-
-  //Activities Business Logic Start
-  useMemo(() => {
-    if (type === 'Activities' && subTypeState === 'Activity Types') {
-      dispatch(getActivityTypes());
+  // Activity Tab Business Logic
+  useEffect(() => {
+    if (type=== 'Activities' && subTypeState === 'Activity Items') {
+      //pagination
+      dispatch(getActivityItems('', activePage));
+    } else if (type=== 'Activities' && subTypeState === 'Activity Items' && activePage === 1) {
+      //on page 1
+      dispatch (getActivityItems());
     }
-  }, [])
-  //Activities Business Logic End
-  const dummy = [
+  }, [type, subTypeState, activePage])
+  useEffect(() => {
+    if (type=== 'Activities' && subTypeState === 'Activity Types' && activePage !== organization?.activePage) {
+      //pagination
+      dispatch(loadResourceTypesAction('', activePage));
+    } else if (type=== 'Activities' && subTypeState === 'Activity Types' && activePage === 1) {
+      //on page 1
+      dispatch (loadResourceTypesAction());
+    }
+  },[activePage, subTypeState, type])
+  const searchActivitiesQueryHandler = async ({target}, subTypeRecieved) => {
+    if (subTypeRecieved === 'Activity Types') {
+      if (target.value) {
+        await dispatch(loadResourceTypesAction(target.value, ''));
+      } else {
+        await dispatch(loadResourceTypesAction());
+      }
+    } else if (subTypeRecieved === 'Activity Items') {
+      if (target.value) {
+        await dispatch(getActivityItems(target.value, ''));
+      } else {
+        await dispatch(getActivityItems());
+      }
+    }
+  }
+  const dummy =  [
     {
       name: "qamar",
       email: "qamar111@gmail.com",
@@ -406,6 +431,34 @@ function Pills(props) {
                 setChangeIndexValue={setChangeIndexValue}
               />
             )}
+            {type === 'Activities' && subTypeState === 'Activity Types' && (
+              <Starter
+                search={true}
+                tableHead={columnData.ActivityTypes}
+                subType={'Activity Types'}
+                searchActivitiesQueryHandler={searchActivitiesQueryHandler}
+                btnText="Add Activity Type"
+                btnAction="add_activity_type"
+                data={activityTypes}
+                type={type}
+                setActivePage={setActivePage}
+                activePage={activePage}
+              />
+            )}
+            {(type === 'Activities' && subTypeState === 'Activity Items') && (
+              <Starter
+                search={true}
+                tableHead={columnData.ActivityItems}
+                subType={'Activity Items'}
+                searchActivitiesQueryHandler={searchActivitiesQueryHandler}
+                btnText="Add Activity Item"
+                btnAction="add_activity_item"
+                data={activityItems}
+                type={type}
+                setActivePage={setActivePage}
+                activePage={activePage}
+              />
+            )}
           </div>
         </Tab>
       ))}
@@ -416,6 +469,4 @@ function Pills(props) {
 Pills.propTypes = {
   manage: PropTypes.object.isRequired,
   type: PropTypes.string.isRequired,
-};
-
-export default Pills;
+}

@@ -66,15 +66,96 @@ const upload = (formData, conf) => httpService
     }
   });
 
-const getTypes = () => httpService
-  .get(`/${apiVersion}/activity-types`)
+const getTypes = (query, page) => httpService
+  .get(`/${apiVersion}/activity-types${query ? `?query=${query}` : ''}${page ? `?page=${page}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
+
+const createActivityType = (body) => httpService
+  .post(`/${apiVersion}/activity-types`, body)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: err || err.message || 'Error creating activity type.',
+    });
+  });
+const editActivityType = (body, typeId) => httpService
+  .put(`/${apiVersion}/activity-types/${typeId}`, body)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: err || err.message || 'Error editing activity type.',
+    });
+  });
+
+const deleteActivityType = (typeId) => httpService
+  .delete(`/${apiVersion}/activity-types/${typeId}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: err || err.message || 'Error deleting activity type.',
+    });
+  });
 
 const getItems = (activityTypeId) => httpService
   .get(`/${apiVersion}/activity-types/${activityTypeId}/items`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
+
+const getActivityItems = (query, page) => httpService
+  .get(`${apiVersion}/activity-items${query ? `?query=${query}` : ''}${page ? `?page=${page}` : ''}`)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: err || err.message || 'Error getting activity items.',
+    });
+  });
+
+const createActivityItem = (body) => httpService
+  .post(`/${apiVersion}/activity-items`, body)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: err || err.message || 'Error creating activity item.',
+    });
+  });
+const editActivityItem = (body, itemId) => httpService
+  .put(`/${apiVersion}/activity-items/${itemId}`, body)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: err || err.message || 'Error editing activity item.',
+    });
+  });
+
+const deleteActivityItem = (itemId) => httpService
+  .delete(`/${apiVersion}/activity-items/${itemId}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: err || err.message || 'Error deleting activity item.',
+    });
+  });
 
 const h5pToken = (dataH5p) => httpService
   .post(`/${apiVersion}/h5p`, dataH5p)
@@ -166,7 +247,14 @@ export default {
   remove,
   upload,
   getTypes,
+  createActivityType,
+  editActivityType,
+  deleteActivityType,
   getItems,
+  getActivityItems,
+  createActivityItem,
+  editActivityItem,
+  deleteActivityItem,
   h5pToken,
   h5pSettings,
   h5pResource,

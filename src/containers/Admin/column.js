@@ -64,16 +64,16 @@ export const columnData = {
 
   ActivityTypes: [
     'Title',
-    'Order',
     'Image',
-    'Meta',
+    'Order',
+    'Items',
     'Action',
   ],
 
   ActivityItems: [
     'Title',
-    'Order',
     'Image',
+    'Order',
     'Meta',
     'Action',
   ],

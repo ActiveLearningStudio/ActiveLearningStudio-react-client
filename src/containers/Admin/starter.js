@@ -29,9 +29,11 @@ function Starter(props) {
     subTypeState,
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
+    searchActivitiesQueryHandler,
     searchAlertToggler,
     setActivePage,
     subType,
+    inviteUser,
     setCurrentTab,
     setChangeIndexValue,
   } = props;
@@ -51,10 +53,12 @@ function Starter(props) {
         btnAction={btnAction}
         searchQuery={searchQuery}
         searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
+        searchActivitiesQueryHandler={searchActivitiesQueryHandler}
         searchQueryChangeHandler={searchQueryChangeHandler}
         importUser={importUser}
         filter={filter}
         tableHead={tableHead}
+        inviteUser={inviteUser}
         roles={roles}
         subType={subType}
         setChangeIndexValue={setChangeIndexValue}

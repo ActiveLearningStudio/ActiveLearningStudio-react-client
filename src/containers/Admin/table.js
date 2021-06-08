@@ -13,6 +13,7 @@ import {
   getOrganization,
   clearUsersinOrganization,
   getOrgUsers,
+  removeUserFromOrganization,
 } from "store/actions/organization";
 import { Link, withRouter } from "react-router-dom";
 import { simpleSearchAction } from "store/actions/search";
@@ -24,6 +25,7 @@ import {
   setActiveTab,
   setCurrentUser,
 } from "store/actions/admin";
+import { deleteActivityItem, deleteActivityType, selectActivityItem, selectActivityType } from "store/actions/resource";
 
 function Table(props) {
   const {
@@ -38,7 +40,7 @@ function Table(props) {
     setCurrentTab,
   } = props;
   const organization = useSelector((state) => state.organization);
-  const { activeOrganization, allSuborgList } = organization;
+  const { activeOrganization, allSuborgList, permission } = organization;
   const allState = useSelector((state) => state);
   const dispatch = useDispatch();
   const handleDeleteUser = (user) => {
@@ -52,26 +54,76 @@ function Table(props) {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        const response = dispatch(deleteUserFromOrganization(user?.id));
-        response
-          .then(() => {
-            dispatch(
-              updateFeedbackScreen({
-                action: "user:delete",
-                name: `${user?.first_name} ${user?.last_name}`,
-              })
-            );
-            dispatch(updateOrganizationScreen("feedback"));
-            dispatch(updatePreviousScreen("Users"));
-          })
-          .catch((e) => {
-            console.log(e);
-            Swal.fire({
-              icon: "error",
-              title: "Error",
-              text: "User Deletion failed, kindly try again.",
+        Swal.fire({
+          title: 'Do you want to preserve user data?',
+          showCancelButton: true,
+          confirmButtonColor: "#084892",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes",
+        }).then((result) => {
+          const response = dispatch(deleteUserFromOrganization(user?.id, result.isConfirmed ? true : false));
+          response
+            .then(() => {
+              dispatch(
+                updateFeedbackScreen({
+                  action: "user:delete",
+                  name: `${user?.first_name} ${user?.last_name}`,
+                })
+              );
+              dispatch(updateOrganizationScreen("feedback"));
+              dispatch(updatePreviousScreen("Users"));
+            })
+            .catch((e) => {
+              console.log(e);
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "User Deletion failed, kindly try again.",
+              });
             });
-          });
+        })
+      }
+    });
+  };
+  const handleRemoveUser = (user) => {
+    Swal.fire({
+      title: "Are you sure you want to remove this User?",
+      text: "This action is Irreversible",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#084892",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Remove it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Do you want to preserve user data?',
+          showCancelButton: true,
+          confirmButtonColor: "#084892",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes",
+        }).then((result) => {
+          const response = dispatch(removeUserFromOrganization(user?.id, result.isConfirmed ? true : false));
+          response
+            .then(() => {
+              dispatch(
+                updateFeedbackScreen({
+                  action: "user:remove",
+                  name: `${user?.first_name} ${user?.last_name}`,
+                })
+              );
+              dispatch(updateOrganizationScreen("feedback"));
+              dispatch(updatePreviousScreen("Users"));
+            })
+            .catch((e) => {
+              console.log(e);
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "User Remove failed, kindly try again.",
+              });
+            });
+        })
       }
     });
   };
@@ -118,21 +170,32 @@ function Table(props) {
                     {user.organization_role ? user.organization_role : "NA"}
                   </td>
                   <td>
-                    <Link
-                      style={{ float: "left" }}
-                      onClick={() => {
-                        dispatch(setCurrentUser(user));
-                        dispatch(setActiveAdminForm("edit_user"));
-                      }}
-                    >
-                      Edit
-                    </Link>
-                    <Link
-                      style={{ float: "right" }}
-                      onClick={() => handleDeleteUser(user)}
-                    >
-                      Delete
-                    </Link>
+                    <div className="links">
+                      {permission?.Organization.includes('organization:update-user') && (
+                        <Link
+                          onClick={() => {
+                            dispatch(setCurrentUser(user));
+                            dispatch(setActiveAdminForm("edit_user"));
+                          }}
+                        >
+                          Edit
+                        </Link>
+                      )}
+                      {permission?.Organization.includes('organization:remove-user') && (
+                        <Link
+                          onClick={() => handleRemoveUser(user)}
+                        >
+                          Remove
+                        </Link>
+                      )}
+                      {permission?.Organization.includes('organization:delete-user') && (
+                        <Link
+                          onClick={() => handleDeleteUser(user)}
+                        >
+                          Delete
+                        </Link>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))
@@ -252,51 +315,51 @@ function Table(props) {
                   </Link>
                 </td>
                 <td>
-                  <Link
-                    onClick={() => {
-                      dispatch(setActiveAdminForm("edit_org"));
-                      dispatch({
-                        type: "SET_ACTIVE_EDIT",
-                        payload: row,
-                      });
-                    }}
-                    style={{ float: "left" }}
-                  >
-                    Edit
-                  </Link>
-                  <Link
-                    style={{ float: "right" }}
-                    onClick={() => {
-                      Swal.fire({
-                        title: "Are you sure?",
-                        text: "You won't be able to revert this!",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#084892",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes, delete it!",
-                      }).then(async (result) => {
-                        if (result.isConfirmed) {
-                          Swal.showLoading();
-                          const resultDel = await dispatch(
-                            deleteOrganization(row)
-                          );
-                          if (resultDel) {
-                            Swal.fire({
-                              text: "You have successfully deleted the organization",
-                              icon: "success",
-                              showCancelButton: false,
-                              confirmButtonColor: "#084892",
-                              cancelButtonColor: "#d33",
-                              confirmButtonText: "OK",
-                            });
+                  <div className="links">
+                    <Link
+                      onClick={() => {
+                        dispatch(setActiveAdminForm("edit_org"));
+                        dispatch({
+                          type: "SET_ACTIVE_EDIT",
+                          payload: row,
+                        });
+                      }}
+                    >
+                      Edit
+                    </Link>
+                    <Link
+                      onClick={() => {
+                        Swal.fire({
+                          title: "Are you sure?",
+                          text: "You won't be able to revert this!",
+                          icon: "warning",
+                          showCancelButton: true,
+                          confirmButtonColor: "#084892",
+                          cancelButtonColor: "#d33",
+                          confirmButtonText: "Yes, delete it!",
+                        }).then(async (result) => {
+                          if (result.isConfirmed) {
+                            Swal.showLoading();
+                            const resultDel = await dispatch(
+                              deleteOrganization(row)
+                            );
+                            if (resultDel) {
+                              Swal.fire({
+                                text: "You have successfully deleted the organization",
+                                icon: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#084892",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "OK",
+                              });
+                            }
                           }
-                        }
-                      });
-                    }}
-                  >
-                    Delete
-                  </Link>
+                        });
+                      }}
+                    >
+                      Delete
+                    </Link>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -442,60 +505,62 @@ function Table(props) {
                     <td>{row.status_text}</td>
                     <td>{updateNew.toDateString()}</td>
                     <td>
-                      {(row.indexing === 1 || row.indexing === 2) && (
-                        <Link style={{ float: "left" }} onClick={() => {
-                          Swal.fire({
-                            title: 'Please Wait !',
-                            html: 'Approving Project ...',
-                            allowOutsideClick: false,
-                            onBeforeOpen: () => {
-                              Swal.showLoading();
-                            },
-                          });
-                          const result = adminService.updateIndex(row.id, 3)
-                          result.then((data) => {
-                            console.log(data)
+                      <div className="links">
+                        {(row.indexing === 1 || row.indexing === 2) && (
+                          <Link onClick={() => {
                             Swal.fire({
-                              icon: 'success',
-                              text: data.message,
+                              title: 'Please Wait !',
+                              html: 'Approving Project ...',
+                              allowOutsideClick: false,
+                              onBeforeOpen: () => {
+                                Swal.showLoading();
+                              },
                             });
-                          }).catch((err) => {
-                            Swal.fire({
-                              icon: 'error',
-                              text: 'Error',
-                            });
-                          })
-                        }}>
-                          Approve
-                        </Link>
-                      )}
-                      {(row.indexing === 1 || row.indexing === 3) && (
-                        <Link style={{ float: "right" }} onClick={() => {
-                          Swal.fire({
-                            title: 'Please Wait !',
-                            html: 'Reject Project ...',
-                            allowOutsideClick: false,
-                            onBeforeOpen: () => {
-                              Swal.showLoading();
-                            },
-                          });
-                          const result = adminService.updateIndex(row.id, 2)
-                          result.then((data) => {
-                            // console.log(data)
-                            Swal.fire({
-                              icon: 'success',
-                              text: data.message,
+                            const result = adminService.updateIndex(row.id, 3)
+                            result.then((data) => {
+                              // console.log(data)
+                              Swal.fire({
+                                icon: 'success',
+                                text: data.message,
+                              });
+                            }).catch((err) => {
+                              Swal.fire({
+                                icon: 'error',
+                                text: 'Error',
+                              });
                             })
-                          }).catch((err) => {
+                          }}>
+                            Approve
+                          </Link>
+                        )}
+                        {(row.indexing === 1 || row.indexing === 3) && (
+                          <Link onClick={() => {
                             Swal.fire({
-                              icon: 'error',
-                              text: 'Error',
+                              title: 'Please Wait !',
+                              html: 'Reject Project ...',
+                              allowOutsideClick: false,
+                              onBeforeOpen: () => {
+                                Swal.showLoading();
+                              },
                             });
-                          })
-                        }}>
-                          Reject
-                        </Link>
-                      )}
+                            const result = adminService.updateIndex(row.id, 2)
+                            result.then((data) => {
+                              // console.log(data)
+                              Swal.fire({
+                                icon: 'success',
+                                text: data.message,
+                              })
+                            }).catch((err) => {
+                              Swal.fire({
+                                icon: 'error',
+                                text: 'Error',
+                              });
+                            })
+                          }}>
+                            Reject
+                          </Link>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 );
@@ -508,14 +573,131 @@ function Table(props) {
               </tr>
             ))}
           {(type === 'Activities' && subType === 'Activity Types') && (
-            <div>
-              TADA
-            </div>
+            data ? data?.data.map((type) => (
+              <tr className="org-rows">
+                <td>{type.title}</td>
+                <td><img src={global.config.resourceUrl + type.image} alt="activity-type-image" /></td>
+                <td>{type.order}</td>
+                <td>
+                  {type.activityItems.map((item) => (
+                    <div>
+                      {item.title}
+                    </div>
+                  ))}
+                </td>
+                <td>
+                  <div className="links">
+                    <Link
+                      onClick={() => {
+                        dispatch(selectActivityType(type));
+                        dispatch(setActiveAdminForm("edit_activity_type"));
+                      }}
+                    >
+                      Edit
+                      </Link>
+                    <Link
+                      onClick={
+                        () => {
+                          Swal.fire({
+                            title: "Are you sure?",
+                            text: "You won't be able to revert this!",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#084892",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Yes, delete it!",
+                          }).then(async (result) => {
+                            if (result.isConfirmed) {
+                              Swal.showLoading();
+                              const resultDel = await dispatch(deleteActivityType(type.id));
+                              if (resultDel) {
+                                Swal.fire({
+                                  text: "You have successfully deleted the activity type",
+                                  icon: "success",
+                                  showCancelButton: false,
+                                  confirmButtonColor: "#084892",
+                                  cancelButtonColor: "#d33",
+                                  confirmButtonText: "OK",
+                                });
+                              }
+                            }
+                          });
+                        }
+                      }
+                    >
+                      Delete
+                      </Link>
+                  </div>
+                </td>
+              </tr>
+            )) : null
           )}
           {(type === 'Activities' && subType === 'Activity Items') && (
-            <div>
-              TADA
-            </div>
+            data?.data ? data?.data.map((item) => (
+              <tr>
+                <td>{item.title}</td>
+                <td><img src={global.config.resourceUrl + item.image} alt="activity-item-image" /></td>
+                <td>{item.order}</td>
+                <td>
+                  <b>Activity Type:</b>
+                  <span>
+                    {item.activityType.title}
+                  </span>
+                  <b>Item Type:</b>
+                  <span>
+                    {item.type}
+                  </span>
+                  <b>Activity Item Value:</b>
+                  <span>
+                    {item.h5pLib}
+                  </span>
+                </td>
+                <td>
+                  <div className="links">
+                    <Link
+                      onClick={() => {
+                        dispatch(selectActivityItem(item));
+                        dispatch(setActiveAdminForm("edit_activity_item"));
+                      }}
+                    >
+                      Edit
+                        </Link>
+                    <Link
+                      onClick={
+                        () => {
+                          Swal.fire({
+                            title: "Are you sure?",
+                            text: "You won't be able to revert this!",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#084892",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Yes, delete it!",
+                          }).then(async (result) => {
+                            if (result.isConfirmed) {
+                              Swal.showLoading();
+                              const resultDel = await dispatch(deleteActivityItem(item.id));
+                              if (resultDel) {
+                                Swal.fire({
+                                  text: "You have successfully deleted the activity item",
+                                  icon: "success",
+                                  showCancelButton: false,
+                                  confirmButtonColor: "#084892",
+                                  cancelButtonColor: "#d33",
+                                  confirmButtonText: "OK",
+                                });
+                              }
+                            }
+                          });
+                        }
+                      }
+                    >
+                      Delete
+                        </Link>
+                  </div>
+                </td>
+              </tr>
+            )) : null
           )}
         </tbody>
       </table>
@@ -581,6 +763,30 @@ function Table(props) {
               />
             )
           }
+          {type === 'Activities' && subType === 'Activity Types' && (
+            <Pagination
+              activePage={activePage}
+              pageRangeDisplayed={5}
+              itemsCountPerPage={data?.meta?.per_page}
+              totalItemsCount={data?.meta?.total}
+              onChange={(e) => {
+                // setCurrentTab("index");
+                setActivePage(e);
+              }}
+            />
+          )}
+          {type === 'Activities' && subType === 'Activity Items' && (
+            <Pagination
+              activePage={activePage}
+              pageRangeDisplayed={5}
+              itemsCountPerPage={data?.meta?.per_page}
+              totalItemsCount={data?.meta?.total}
+              onChange={(e) => {
+                // setCurrentTab("index");
+                setActivePage(e);
+              }}
+            />
+          )}
         </div>
       </div>
     </div>
