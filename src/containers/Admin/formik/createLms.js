@@ -9,69 +9,66 @@ import organizationapi from '../../../services/organizations.services';
 import loader from 'assets/images/dotsloader.gif';
 
 export default function CreateUser(prop) {
-  const { editMode, method } = prop;
-  const [activityImage, setActivityImage] = useState('')
-  const [statelmsUsers, setStatelmsUsers] = useState([]);
-  const [loaderlmsImgUser, setLoaderlmsImgUser] = useState(false);
-  const imgref = useRef();
+  const { editMode, method, clone } = prop;
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const { roles } = organization;
-  const adminState = useSelector((state) => state.admin);
-  const { activeForm, currentUser } = adminState;
-
+  const {activeEdit} = organization
+  const [loaderlmsImgUser, setLoaderlmsImgUser] = useState(false)
+ 
   return (
     <div className="create-form">
       <Formik
         initialValues={{
-          lms_url: editMode ? currentUser?.lms_url : '',
-          lms_access_token: editMode ? currentUser?.lms_access_token : '',
-          site_name: editMode ? currentUser?.site_name : '',
-          lti_client_idd: editMode ? currentUser?.lti_client_id : '',
-          // moodle: editMode ? currentUser?.moodle : '',
-          // canvas: editMode ? currentUser?.canvas : '',
-          access_key: editMode ? currentUser?.access_key : '',
-          secret_key: editMode ? currentUser?.secret_key : '',
-          description: editMode ? currentUser?.description : "",
-          name: editMode ? currentUser?.name : '',
-          lms_login_id: editMode ? currentUser?.lms_login_id : "",
+          lms_url: editMode ? activeEdit?.lms_url : '',
+          lms_access_token: editMode ? activeEdit?.lms_access_token : '',
+          site_name: editMode ? activeEdit?.site_name : '',
+          lti_client_id: editMode ? activeEdit?.lti_client_id : '',
+          // moodle: editMode ? activeEdit?.moodle : '',
+          // canvas: editMode ? activeEdit?.canvas : '',
+          lms_name: editMode ? activeEdit?.lms_name: '',
+          access_key: editMode ? activeEdit?.access_key : '',
+          secret_key: editMode ? activeEdit?.secret_key : '',
+          description: editMode ? activeEdit?.description : "",
+          name: editMode ? clone ? '':activeEdit?.user?.name : '',
+          lms_login_id: editMode ? activeEdit?.lms_login_id : "",
 
 
         }}
         validate={(values) => {
           const errors = {};
           if (!values.lms_url) {
-            errors.lms_url = 'The lms url field is required.';
+            errors.lms_url = 'required';
           }
           if (!values.lms_access_token) {
-            errors.lms_access_token = 'The ims access token field is required.';
+            errors.lms_access_token = 'required';
           }
           if (!values.site_name) {
-            errors.site_name = 'The site name field is required.';
+            errors.site_name = 'required';
           }
           if (!values.lti_client_id) {
-            errors.lti_client_id = ' ';
+            errors.lti_client_id = 'required';
           }
           // if (!values.moodle) {
-          //   errors.moodle = '';
+          //   errors.moodle = 'required';
           // }
+         
           // if (!values.canvas) {
-          //   errors.canvas = '';
+          //   errors.canvas = 'required';
           // }
-          if (!values.access_key) {
-            errors.access_key = '';
-          }
-          if (!values.secret_key) {
-            errors.secret_key = '';
-          }
-          if (!values.description) {
-            errors.description = '';
-          }
+          // if (!values.access_key) {
+          //   errors.access_key = 'required';
+          // }
+          // if (!values.secret_key) {
+          //   errors.secret_key = 'required';
+          // }
+          // if (!values.description) {
+          //   errors.description = 'required';
+          // }
           if (!values.name) {
             errors.name = 'Required';
           }
           if (!values.lms_login_id) {
-            errors.lms_login_id = '';
+            errors.lms_login_id = 'required';
           }
           return errors;
         }}
@@ -80,16 +77,16 @@ export default function CreateUser(prop) {
             Swal.fire({
               title: 'Users',
               icon: 'info',
-              text: 'Updating User...',
+              text: 'Updating User LMS Settings...',
               allowOutsideClick: false,
               onBeforeOpen: () => {
                 Swal.showLoading();
               },
               button: false,
             });
-            await dispatch(editUserInOrganization(values));
-            Swal.close();
-            dispatch(removeActiveAdminForm());
+            console.log(values)
+            updateLmsProject(row.id, values);
+            
 
           } else {
             Swal.fire({
@@ -121,7 +118,7 @@ export default function CreateUser(prop) {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <h2>{editMode ? 'Edit ' : 'Create '}LMS Setting</h2>
+            <h2>{editMode ? clone ? 'Create ' : 'Edit' : 'Create'}LMS Setting</h2>
             <div className="form-group-create">
               <h3>LMS URL</h3>
               <input
@@ -158,7 +155,7 @@ export default function CreateUser(prop) {
                 value={values.site_name}
               />
               <div className="error">
-                {errors.site_name && touched.site_name && errors.site_name}
+                {errors.site_naactiveEditme && touched.site_name && errors.site_name}
               </div>
             </div>
             {!editMode ?
@@ -186,15 +183,13 @@ export default function CreateUser(prop) {
                 onBlur={handleBlur}
                 value={values.role}
               /> */}
-              <select name="role_id" onChange={handleChange} onBlur={handleBlur} value={values.role_id}>
-                <option value="">Moodle</option>
-                <option value="">Canvas</option>
-                {roles?.length > 0 && roles?.map((role) => (
-                  <option value={role?.id} key={role?.id}>{role?.display_name}</option>
-                ))}
+              <select name="lms_name" onChange={handleChange} onBlur={handleBlur} value={values.lms_name}>
+                <option value="moodle">Moodle</option>
+                <option value="canvas">Canvas</option>
+               
               </select>
               <div className="error">
-                {errors.role_id && touched.role_id && errors.role_id}
+                {errors.lms_name && touched.lms_name && errors.lms_name}
               </div>
             </div>
             <div className="form-group-create">
@@ -244,18 +239,18 @@ export default function CreateUser(prop) {
                 autoComplete="off"
                 onChange={async (e) => {
                   setFieldValue('name', e.target.value);
-                  setFieldValue('email', '');
+                  
                   setLoaderlmsImgUser(true);
                   const lmsApi = organizationapi.getAllUsers(organization.activeOrganization?.id, e.target.value, method);
                   lmsApi.then((data) => {
                     setLoaderlmsImgUser(false);
-                    setStatelmsUsers(data['member-options']);
+                   
                   })
                 }}
                 onBlur={handleBlur}
                 value={values.name}
               />
-              {/* {loaderlmsImgUser && <img src={loader} alt="" className="loader" />} */}
+              {loaderlmsImgUser && <img src={loader} alt="" className="loader" />}
             </div>
             <div className="form-group-create">
               <h3>LMS Login ID</h3>

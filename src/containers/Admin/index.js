@@ -184,7 +184,34 @@ function AdminPanel() {
               </div>
             </div>
           )}
-
+          {activeForm === "edit_lms" && (
+            <div className="form-new-popup-admin">
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">
+                <CreateLms editMode />
+              </div>
+            </div>
+          )}
+          {activeForm === "clone_lms" && (
+            <div className="form-new-popup-admin">
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">
+                <CreateLms editMode clone />
+              </div>
+            </div>
+          )}
 
 
 

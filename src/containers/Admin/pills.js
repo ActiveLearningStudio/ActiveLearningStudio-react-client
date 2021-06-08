@@ -242,11 +242,24 @@ export default function Pills(props) {
   //LMS project ***************************************
 
   useMemo(async () => {
+    if(type==="LMS") {
     setLmsProject(null);
-    const result = await adminService.getLmsProject();
-    setLmsProject(result);
-    console.log(result);
-  }, []);
+    const result =  adminService.getLmsProject(activePage|| 1);
+    result.then((data) => {
+      setLmsProject(data)
+    })
+  
+
+    }
+  }, [type, activePage]);
+
+  const searchQueryChangeHandlerLMS = (search) => {
+    setLmsProject(null);
+    const result =  adminService.getLmsProjectSearch(search.target.value,(activePage|| 1));
+    result.then((data) => {
+      setLmsProject(data)
+    })
+  }
 
 
   // console.log(columnData)
@@ -379,6 +392,9 @@ export default function Pills(props) {
                 tableHead={columnData.lmssettings}
                 data={lmsProject}
                 type={type}
+                setActivePage={setActivePage}
+                activePage={activePage}
+                searchQueryChangeHandler={searchQueryChangeHandlerLMS}
               />
             )}
 

@@ -148,6 +148,91 @@ function Table(props) {
                 <td>{row.flow}</td>
               </tr>
             ))}
+           {type === "LMS" &&
+           data ?
+            data?.data?.map((row) => (
+              <tr>
+                <td>{row.lms_url}</td>
+                <td>{row.lms_name}</td>
+                <td>{row.user?.name}</td>
+                <td>
+                <div className="links">
+                      {true && (
+                        <Link
+                        onClick={() => {
+                          dispatch({
+                            type: "SET_ACTIVE_EDIT",
+                            payload: row,
+                          });
+                          dispatch(setActiveAdminForm("clone_lms"));
+                        }}
+                        >
+                          clone
+                        </Link>
+                      )}
+                      {true && (
+                        <Link
+                          onClick={() =>{
+                            Swal.fire({
+                              title: "Are you sure you want to delete this User LMS settings?",
+                              text: "This action is Irreversible",
+                              icon: "warning",
+                              showCancelButton: true,
+                              confirmButtonColor: "#084892",
+                              cancelButtonColor: "#d33",
+                              confirmButtonText: "Yes, delete it!",
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                Swal.showLoading();
+                                  const response = adminService.deleteLmsProject(row?.id);
+                                  response
+                                    .then((res) => {
+                                     console.log(res)
+                                     Swal.fire({
+                                      icon: "success",
+                                      text: res.message,
+                                 
+                                    });
+                                    })
+                                    .catch((err) => {
+                                     console.log(err)
+                                      Swal.fire({
+                                        icon: "error",
+                                        title: "Error",
+                                        text: "User Deletion failed, kindly try again.",
+                                      });
+                                    });
+                                
+                              }
+                            });
+                          }}
+                        >
+                          delete
+                        </Link>
+                      )}
+                      {true && (
+                        <Link
+                        onClick={() => {
+                          dispatch({
+                            type: "SET_ACTIVE_EDIT",
+                            payload: row,
+                          });
+                          dispatch(setActiveAdminForm("edit_lms"));
+                        }}
+                        >
+                          edit
+                        </Link>
+                      )}
+                    </div>
+                </td>
+              </tr>
+            )): (
+              <tr>
+                <td colspan="11">
+                  <Alert variant="primary">Loaidng data ...</Alert>
+                </td>
+              </tr>
+            )}
           {type === "Users" &&
             (data?.data?.length > 0 ? (
               data?.data.map((user) => (
@@ -443,38 +528,7 @@ function Table(props) {
                 </td>
               </tr>
             ))}
-          {/* LMS TABLE DATA************************** */}
-          {type === "lma" &&
-            (data ? (
-              data?.data?.map((row) => {
-                const createNew = new Date(row.created_at);
-                const updateNew = new Date(row.updated_at);
-                return (
-                  <tr className="org-rows">
-                    <td>{row.url}</td>
-                    <td>{row.type}</td>
-                    {/* <td>{createNew.toDateString()}</td> */}
-
-                    {/* <td>{row.description}</td> */}
-
-                    <td>{row.user}</td>
-                    {/* <td>{row.indexing_text}</td>
-
-                    <td>{row.organization_id}</td>
-
-                    <td>{row.status_text}</td> */}
-                    {/* <td>{updateNew.toDateString()}</td> */}
-                  </tr>
-                );
-              })
-            ) : (
-              <tr>
-                <td colspan="11">
-                  <Alert variant="primary">Loaidng data ...</Alert>
-                </td>
-              </tr>
-            ))}
-          {/* ************************************************* */}
+  
           {type === "Project" &&
             subType === "index" &&
             (data ? (
@@ -776,6 +830,18 @@ function Table(props) {
             />
           )}
           {type === 'Activities' && subType === 'Activity Items' && (
+            <Pagination
+              activePage={activePage}
+              pageRangeDisplayed={5}
+              itemsCountPerPage={data?.meta?.per_page}
+              totalItemsCount={data?.meta?.total}
+              onChange={(e) => {
+                // setCurrentTab("index");
+                setActivePage(e);
+              }}
+            />
+          )}
+          {type === 'LMS' &&  (
             <Pagination
               activePage={activePage}
               pageRangeDisplayed={5}

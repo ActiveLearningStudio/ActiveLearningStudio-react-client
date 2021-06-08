@@ -230,6 +230,18 @@ function Controller(props) {
           <img src={searchimg} alt="search" />
         </div>
       )}
+      {!!search && type === "LMS" && (
+        <div className="search-bar">
+          <input
+            className=""
+            type="text"
+            placeholder="Search"
+            value={searchQuery}
+            onChange={searchQueryChangeHandler}
+          />
+          <img src={searchimg} alt="search" />
+        </div>
+      )}
       {!!search && type === "Stats" && (
         <div className="search-bar">
           <input className="" type="text" placeholder="Search" />

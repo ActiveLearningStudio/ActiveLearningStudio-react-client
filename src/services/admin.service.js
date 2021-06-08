@@ -113,16 +113,32 @@ const updateIndex = (projectId, index) => httpService
     });
   });
 
-const getLmsProject = () => httpService
-  .get(`${apiVersion}/lms-settings`)
+const getLmsProject = (page) => httpService
+  .get(`${apiVersion}/lms-settings?page=${page}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
-    Swal.fire({
-      title: 'Error',
-      icon: 'error',
-      text: err || err.message || 'Error loading activity types.',
-    });
+  });
+
+const deleteLmsProject = (id) => httpService
+  .remove(`${apiVersion}/lms-settings/${id}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+  });
+
+const updateLmsProject = (id, values) => httpService
+  .put(`${apiVersion}/lms-settings/${id}`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+  });
+
+const getLmsProjectSearch = (search, page) => httpService
+  .get(`${apiVersion}/lms-settings?page=${page}&query=${search}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
   });
 
 const getActivityTypes = (query) => httpService
@@ -149,4 +165,7 @@ export default {
   getUserProjectSearch,
   getActivityTypes,
   getLmsProject,
+  getLmsProjectSearch,
+  deleteLmsProject,
+  updateLmsProject,
 };
