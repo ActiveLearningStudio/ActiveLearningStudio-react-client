@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import Controler from './controler';
 import TableData from './table';
 import Userroles from './userroles';
-
+import Settings from './settings';
 function Starter(props) {
   const {
     paginationCounter,
@@ -63,6 +63,7 @@ function Starter(props) {
         subType={subType}
         setChangeIndexValue={setChangeIndexValue}
       />
+      {subTypeState === 'All settings' && <Settings /> }
       {roles?.length && subTypeState === "Manage Roles" ? (
         <Userroles />
       ) : (

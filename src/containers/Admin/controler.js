@@ -11,6 +11,7 @@ import csv from "assets/images/csv.png";
 import pdf from "assets/images/pdf.png";
 import bulk from "assets/images/bulk.png";
 import InviteUser from "containers/ManageOrganization/inviteAdmin";
+import AddUser from "containers/ManageOrganization/addUser";
 import {
   getOrganization,
   getRoles,
@@ -324,6 +325,24 @@ function Controller(props) {
                 </Dropdown.Toggle>
               <Dropdown.Menu>
                 <InviteUser />
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+        </div>
+      )}
+      {permission?.Organization?.includes('organization:view-user') && (
+        <div className="btn-text">
+          <div className="add-user-btn">
+            <Dropdown>
+              <Dropdown.Toggle variant="success" id="dropdown-basic">
+                Invite User
+                </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <AddUser
+                  setAllUsersAdded={setAllUsersAdded}
+                  allUsersAdded={allUsersAdded}
+                  method="create"
+                />
               </Dropdown.Menu>
             </Dropdown>
           </div>

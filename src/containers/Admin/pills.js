@@ -248,7 +248,7 @@ export default function Pills(props) {
     result.then((data) => {
       setLmsProject(data)
     })
-  
+
 
     }
   }, [type, activePage]);
@@ -327,7 +327,7 @@ export default function Pills(props) {
                 paginationCounter={true}
                 search={true}
                 print={false}
-                btnText="Add User"
+                btnText="Create new user"
                 btnAction="create_user"
                 importUser={true}
                 filter={false}
@@ -473,6 +473,13 @@ export default function Pills(props) {
                 type={type}
                 setActivePage={setActivePage}
                 activePage={activePage}
+              />
+            )}
+            {(type === 'Settings' && subTypeState === 'All settings') && (
+              <Starter
+                type={type}
+                subType={'All settings'}
+                subTypeState={subTypeState}
               />
             )}
           </div>

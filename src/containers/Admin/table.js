@@ -191,7 +191,7 @@ function Table(props) {
                                      Swal.fire({
                                       icon: "success",
                                       text: res.message,
-                                 
+
                                     });
                                     })
                                     .catch((err) => {
@@ -202,7 +202,7 @@ function Table(props) {
                                         text: "User Deletion failed, kindly try again.",
                                       });
                                     });
-                                
+
                               }
                             });
                           }}
@@ -229,7 +229,7 @@ function Table(props) {
             )): (
               <tr>
                 <td colspan="11">
-                  <Alert variant="primary">Loaidng data ...</Alert>
+                  <Alert variant="primary">Loading data...</Alert>
                 </td>
               </tr>
             )}
@@ -484,7 +484,7 @@ function Table(props) {
             ) : (
               <tr>
                 <td colspan="11">
-                  <Alert variant="primary">Loaidng data ...</Alert>
+                  <Alert variant="primary">Loading data...</Alert>
                 </td>
               </tr>
             ))}
@@ -524,11 +524,11 @@ function Table(props) {
             ) : (
               <tr>
                 <td colspan="11">
-                  <Alert variant="primary">Loaidng data ...</Alert>
+                  <Alert variant="primary">Loading data...</Alert>
                 </td>
               </tr>
             ))}
-  
+
           {type === "Project" &&
             subType === "index" &&
             (data ? (
@@ -622,7 +622,7 @@ function Table(props) {
             ) : (
               <tr>
                 <td colspan="11">
-                  <Alert variant="primary">Loaidng data ...</Alert>
+                  <Alert variant="primary">Loading data...</Alert>
                 </td>
               </tr>
             ))}
