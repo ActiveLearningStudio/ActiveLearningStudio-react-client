@@ -57,6 +57,23 @@ node {
                     }
                 }
                 
+            },
+            "StageB": {
+                if(Jenkins.instance.getNode('currikimopse').toComputer().isOnline()){
+                    node('currikimopse') {
+                        stage ('currikimopse') {
+                                echo 'Copy'
+                                sh "yes | sudo docker stack deploy --compose-file /curriki/docker-compose-connectedls.yml currikistack" 
+                                echo 'Copy completed'
+                        }
+                    }
+                } else {
+                    stage ('currikimopse') {
+                        echo "currikistage is offline"
+                        exit 1
+                    }
+                }
+                
             }
     )
     
