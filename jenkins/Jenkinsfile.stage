@@ -69,7 +69,7 @@ node {
                     }
                 } else {
                     stage ('currikimopse') {
-                        echo "currikistage is offline"
+                        echo "currikimopse is offline"
                         exit 1
                     }
                 }
