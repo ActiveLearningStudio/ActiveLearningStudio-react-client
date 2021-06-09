@@ -321,7 +321,7 @@ function Controller(props) {
           <div className="add-user-btn">
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic">
-                Invite User
+                Invite outside user
                 </Dropdown.Toggle>
               <Dropdown.Menu>
                 <InviteUser />
@@ -330,12 +330,12 @@ function Controller(props) {
           </div>
         </div>
       )}
-      {permission?.Organization?.includes('organization:view-user') && (
+      {permission?.Organization?.includes('organization:view-user') && type === "Users" && subTypeState === 'All users' && (
         <div className="btn-text">
           <div className="add-user-btn">
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic">
-                Invite User
+                Add User
                 </Dropdown.Toggle>
               <Dropdown.Menu>
                 <AddUser

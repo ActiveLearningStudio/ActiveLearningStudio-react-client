@@ -10,13 +10,14 @@ import { columnData } from "./column";
 
 import { getOrgUsers, searchUserInOrganization, getsubOrgList } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from "store/actions/resource";
+import { getUserReport } from "store/actions/admin";
 export default function Pills(props) {
   const { modules, type, subType } = props;
   const [subTypeState, setSubTypeState] = useState(subType);
   // All User Business Logic Start
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const { activityTypes, activityItems } = useSelector ((state) => state.admin)
+  const { activityTypes, activityItems, usersReport } = useSelector ((state) => state.admin)
   const admin = useSelector((state) => state.admin);
   const [ activePage, setActivePage ] = useState(1);
   const [ size, setSize ] = useState(25);
@@ -212,6 +213,12 @@ export default function Pills(props) {
       }
     }
   }
+  // Stats User Report
+  useEffect(async () => {
+    if (type === 'Stats' && subTypeState === 'Report') {
+      await dispatch(getUserReport('all'));
+    }
+  }, [])
   const dummy =  [
     {
       name: "qamar",
@@ -286,6 +293,7 @@ export default function Pills(props) {
                 paginationCounter={true}
                 search={true}
                 print={true}
+                data={usersReport}
                 btnText=""
                 btnAction=""
                 importUser={false}
@@ -338,6 +346,7 @@ export default function Pills(props) {
                 setSize={setSize}
                 activeRole={activeRole}
                 setActiveRole={setActiveRole}
+                subTypeState={'All users'}
                 searchQuery={searchQuery}
                 searchQueryChangeHandler={searchQueryChangeHandler}
                 searchAlertToggler={searchAlertToggler}

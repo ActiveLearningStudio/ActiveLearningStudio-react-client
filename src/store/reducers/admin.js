@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   activeTab: 'Stats',
   activityTypes: [],
   activityItems: [],
+  usersReport: [],
   currentUser: null,
   newUser: null,
   editUser: null,
@@ -52,6 +53,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         activityItems: action.payload,
+      };
+    case actionTypes.GET_USERS_REPORT:
+      return {
+        ...state,
+        usersReport: action.payload,
       };
     default:
       return state;

@@ -153,6 +153,17 @@ const getActivityTypes = (query) => httpService
     });
   });
 
+const getUserReport = (mode, size, query) => httpService
+  .get(`/${apiVersion}/users/report/basic${mode ? `?mode=${mode}` : ''}${size ? `?size=${size}` : ''}${query ? `?query=${query}` : ''}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      text: err || err.message || 'Error loading user reports.',
+    });
+  });
 export default {
   addUserInOrganization,
   editUserInOrganization,
@@ -168,4 +179,5 @@ export default {
   getLmsProjectSearch,
   deleteLmsProject,
   updateLmsProject,
+  getUserReport,
 };

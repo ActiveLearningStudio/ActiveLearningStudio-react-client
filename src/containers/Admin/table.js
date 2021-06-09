@@ -148,7 +148,7 @@ function Table(props) {
                 <td>{row.flow}</td>
               </tr>
             ))}
-           {type === "LMS" &&
+           {type === "LMS" && (
            data ?
             data?.data?.map((row) => (
               <tr>
@@ -229,10 +229,10 @@ function Table(props) {
             )): (
               <tr>
                 <td colspan="11">
-                  <Alert variant="primary">Loading data...</Alert>
+                  <Alert variant="primary">Loading data1...</Alert>
                 </td>
               </tr>
-            )}
+            ))}
           {type === "Users" &&
             (data?.data?.length > 0 ? (
               data?.data.map((user) => (
