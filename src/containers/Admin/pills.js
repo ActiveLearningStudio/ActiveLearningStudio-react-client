@@ -214,11 +214,15 @@ export default function Pills(props) {
     }
   }
   // Stats User Report
-  useEffect(async () => {
-    if (type === 'Stats' && subTypeState === 'Report') {
-      await dispatch(getUserReport('all'));
+  useEffect(() => {
+    if (type=== 'Stats' && subTypeState === 'Report' && (activePage !== organization?.activePage || size !== organization?.size)) {
+      //pagination
+      dispatch(getUserReport('all',size,activePage,''));
+    } else if (type=== 'Stats' && subTypeState === 'Report' && (activePage === 1 || size === 25)) {
+      //on page 1
+      dispatch (getUserReport('all'));
     }
-  }, [])
+  },[activePage, subTypeState, type, size])
   const dummy =  [
     {
       name: "qamar",
@@ -296,8 +300,12 @@ export default function Pills(props) {
                 data={usersReport}
                 btnText=""
                 btnAction=""
+                subTypeState={subTypeState}
                 importUser={false}
                 filter={true}
+                size={size}
+                setSize={setSize}
+                setActivePage={setActivePage}
                 tableHead={columnData.statereport}
                 type={type}
               />

@@ -59,8 +59,8 @@ export const getActivityTypes = (query) => async (dispatch) => {
   });
 };
 
-export const getUserReport = (mode, size, query) => async (dispatch) => {
-  const result = await adminService.getUserReport(mode, size, query);
+export const getUserReport = (mode, size, page, query) => async (dispatch) => {
+  const result = await adminService.getUserReport(mode, size, page, query);
   dispatch({
     type: actionTypes.GET_USERS_REPORT,
     payload: result,

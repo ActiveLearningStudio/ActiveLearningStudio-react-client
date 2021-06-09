@@ -75,6 +75,7 @@ function Starter(props) {
           type={type}
           data={data}
           subType={subType}
+          subTypeState={subTypeState}
           setCurrentTab={setCurrentTab}
         />
       )}

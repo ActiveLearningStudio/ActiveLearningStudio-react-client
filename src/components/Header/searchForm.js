@@ -13,6 +13,7 @@ import {
   educationLevels,
   subjects,
 } from 'components/ResourceCard/AddResource/dropdownData';
+import { getUserReport } from 'store/actions/admin';
 
 function SearchForm() {
   const history = useHistory();
@@ -29,6 +30,7 @@ function SearchForm() {
     if (activityTypesState.length === 0) {
       dispatcher(loadResourceTypesAction());
       dispatcher(getActivityItems());
+      dispatcher(getUserReport('all'));
     }
   }, []);
 

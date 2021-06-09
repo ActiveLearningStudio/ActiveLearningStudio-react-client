@@ -153,8 +153,8 @@ const getActivityTypes = (query) => httpService
     });
   });
 
-const getUserReport = (mode, size, query) => httpService
-  .get(`/${apiVersion}/users/report/basic${mode ? `?mode=${mode}` : ''}${size ? `?size=${size}` : ''}${query ? `?query=${query}` : ''}`)
+const getUserReport = (mode, size, page, query) => httpService
+  .get(`/${apiVersion}/users/report/basic${mode ? `?mode=${mode}` : ''}${size ? `&size=${size}` : ''}${page ? `&page=${page}` : ''}${query ? `&query=${query}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);

@@ -33,6 +33,7 @@ function Table(props) {
     history,
     data,
     type,
+    subTypeState,
     activePage,
     setActivePage,
     searchAlertToggler,
@@ -137,17 +138,18 @@ function Table(props) {
           ))}
         </thead>
         <tbody>
-          {type === "Stats" &&
-            data?.map((row) => (
+          {type === "Stats" && subTypeState === 'Report' &&
+            data ? data?.data.map((row) => (
               <tr>
-                <td>{row.name}</td>
+                <td>{row.first_name}</td>
+                <td>{row.last_name}</td>
                 <td>{row.email}</td>
-                <td>{row.age}</td>
-                <td>{row.project}</td>
-                <td>{row.counter}</td>
-                <td>{row.flow}</td>
+                <td>{row.projects_count}</td>
+                <td>{row.playlists_count}</td>
+                <td>{row.activities_count}</td>
               </tr>
-            ))}
+            )) :
+            null }
            {type === "LMS" && (
            data ?
             data?.data?.map((row) => (
@@ -229,7 +231,7 @@ function Table(props) {
             )): (
               <tr>
                 <td colspan="11">
-                  <Alert variant="primary">Loading data1...</Alert>
+                  <Alert variant="primary">Loading data...</Alert>
                 </td>
               </tr>
             ))}
@@ -761,6 +763,18 @@ function Table(props) {
           results
         </div>
         <div class="main-pagination">
+          {type === 'Stats' && subTypeState === 'Report' && (
+            <Pagination
+              activePage={activePage}
+              pageRangeDisplayed={5}
+              itemsCountPerPage={data?.meta?.per_page}
+              totalItemsCount={data?.meta?.total}
+              onChange={(e) => {
+                // setCurrentTab("index");
+                setActivePage(e);
+              }}
+            />
+          )}
           {
             type === "Users" && (
               <Pagination
