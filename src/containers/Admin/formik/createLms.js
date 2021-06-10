@@ -3,9 +3,10 @@ import React, { useState, useRef } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { addUserInOrganization, editUserInOrganization, removeActiveAdminForm } from 'store/actions/admin';
+import { createLmsProject, editUserInOrganization, removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
 import organizationapi from '../../../services/organizations.services';
+import adminapi from '../../../services/admin.service';
 import loader from 'assets/images/dotsloader.gif';
 
 export default function CreateUser(prop) {
@@ -14,7 +15,7 @@ export default function CreateUser(prop) {
   const organization = useSelector((state) => state.organization);
   const {activeEdit} = organization
   const [loaderlmsImgUser, setLoaderlmsImgUser] = useState(false)
- 
+  const [stateOrgUsers, setStateOrgUsers] = useState([]);
   return (
     <div className="create-form">
       <Formik
@@ -22,6 +23,7 @@ export default function CreateUser(prop) {
           lms_url: editMode ? activeEdit?.lms_url : '',
           lms_access_token: editMode ? activeEdit?.lms_access_token : '',
           site_name: editMode ? activeEdit?.site_name : '',
+          user_id : editMode ? clone ? '':activeEdit?.user?.name : '',
           lti_client_id: editMode ? activeEdit?.lti_client_id : '',
           // moodle: editMode ? activeEdit?.moodle : '',
           // canvas: editMode ? activeEdit?.canvas : '',
@@ -64,8 +66,8 @@ export default function CreateUser(prop) {
           // if (!values.description) {
           //   errors.description = 'required';
           // }
-          if (!values.name) {
-            errors.name = 'Required';
+          if (!values.user_id) {
+            errors.user_id = 'Required';
           }
           if (!values.lms_login_id) {
             errors.lms_login_id = 'required';
@@ -73,7 +75,7 @@ export default function CreateUser(prop) {
           return errors;
         }}
         onSubmit={async (values) => {
-          if (editMode) {
+          if (editMode && !clone) {
             Swal.fire({
               title: 'Users',
               icon: 'info',
@@ -84,7 +86,7 @@ export default function CreateUser(prop) {
               },
               button: false,
             });
-            console.log(values)
+           
             updateLmsProject(row.id, values);
             
 
@@ -100,9 +102,34 @@ export default function CreateUser(prop) {
               },
               button: false,
             });
-            await dispatch(addUserInOrganization(values));
-            Swal.close();
-            dispatch(removeActiveAdminForm());
+            const result =  adminapi.createLmsProject(values);
+            result.then(res => {
+              Swal.fire({
+                icon:'success',
+                text:res.message
+              })
+              dispatch(removeActiveAdminForm());
+            }).catch((err) =>{
+              try {
+              Object.keys(err.errors).map((errors, index) => {
+                if (index < 1) {
+                  Swal.fire({
+                    icon: 'error',
+                    text: err.errors[errors][0],
+                  });
+                }
+                return true;
+              });
+            } catch {
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+              });
+            }
+            })
+          
+            
 
           }
         }}
@@ -155,7 +182,7 @@ export default function CreateUser(prop) {
                 value={values.site_name}
               />
               <div className="error">
-                {errors.site_naactiveEditme && touched.site_name && errors.site_name}
+                {errors.site_name && touched.site_name && errors.site_name}
               </div>
             </div>
             {!editMode ?
@@ -241,16 +268,41 @@ export default function CreateUser(prop) {
                   setFieldValue('name', e.target.value);
                   
                   setLoaderlmsImgUser(true);
-                  const lmsApi = organizationapi.getAllUsers(organization.activeOrganization?.id, e.target.value, method);
+                  const lmsApi = organizationapi.getAllUsers(organization.activeOrganization?.id, e.target.value, 'create');
                   lmsApi.then((data) => {
                     setLoaderlmsImgUser(false);
-                   
+                    setStateOrgUsers(data['member-options']);
+                    
                   })
                 }}
                 onBlur={handleBlur}
                 value={values.name}
               />
               {loaderlmsImgUser && <img src={loader} alt="" className="loader" />}
+              {stateOrgUsers?.length > 0 && (
+                <ul className="all-users-list">
+                  {stateOrgUsers?.map((user) => (
+                    <li
+                      value={user}
+                      onClick={() => {
+                        setFieldValue('user_id', user.id);
+                        setFieldValue('name', user.first_name);
+                        setStateOrgUsers([]);
+                      }}
+                    >
+                      {user.first_name}
+                      <p>
+                        Email:
+                        &nbsp;
+                        {user.email}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <div className="error">
+                {errors.user_id && touched.user_id && errors.user_id}
+              </div>
             </div>
             <div className="form-group-create">
               <h3>LMS Login ID</h3>

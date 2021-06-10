@@ -134,6 +134,14 @@ const updateLmsProject = (id, values) => httpService
     Promise.reject(err.response.data);
   });
 
+const createLmsProject = (values) => httpService
+  .post(`${apiVersion}/lms-settings`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    console.log(err);
+    return Promise.reject(err.response.data);
+  });
+
 const getLmsProjectSearch = (search, page) => httpService
   .get(`${apiVersion}/lms-settings?page=${page}&query=${search}`)
   .then(({ data }) => data)
@@ -180,4 +188,5 @@ export default {
   deleteLmsProject,
   updateLmsProject,
   getUserReport,
+  createLmsProject,
 };
