@@ -1,4 +1,4 @@
-$selected_color: #084892;
+$selected_color: #3A3632;
 $filled: #44ca92;
 
 .member-add {
@@ -20,7 +20,7 @@ $filled: #44ca92;
       font-family: 'Open Sans', sans-serif;
       font-weight: 700;
       font-size: 20px;
-      color: #084892;
+      color: #3A3632;
     }
 
     .title-cross {
@@ -154,11 +154,11 @@ $filled: #44ca92;
             cursor: pointer;
 
             &.active {
-              background-color: #5952c6;
+              background-color: #3A3632;
             }
 
             &:hover {
-              background-color: #5952c6;
+              background-color: #3A3632;
               color: #ffffff;
             }
 

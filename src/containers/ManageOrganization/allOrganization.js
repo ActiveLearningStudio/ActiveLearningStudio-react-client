@@ -169,7 +169,7 @@ const AllOrganizations = () => {
                               text: "You won't be able to revert this!",
                               icon: 'warning',
                               showCancelButton: true,
-                              confirmButtonColor: '#084892',
+                              confirmButtonColor: '#3A3632',
                               cancelButtonColor: '#d33',
                               confirmButtonText: 'Yes, delete it!',
                             }).then(async (result) => {

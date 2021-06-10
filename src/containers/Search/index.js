@@ -398,6 +398,7 @@ function SearchInterface(props) {
                                       name="type"
                                       onChange={(e) => {
                                         setSearchType(e.target.value);
+                                        setSelectedAuthor([]);
                                       }}
                                       value="private"
                                       checked={searchType === 'private'}

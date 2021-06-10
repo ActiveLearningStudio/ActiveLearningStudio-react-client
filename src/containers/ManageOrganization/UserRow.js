@@ -28,7 +28,7 @@ export default function UserRow(props) {
       text: 'This action is Irreversible',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#084892',
+      confirmButtonColor: '#3A3632',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {

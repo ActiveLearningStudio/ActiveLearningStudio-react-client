@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import foldericon from 'assets/images/sidebar/folder-icon.png';
 import { useSelector } from 'react-redux';
 import { setCurrentVisibilityType } from 'store/actions/project';
 
@@ -13,7 +12,6 @@ export default function Headline() {
     <div className="project-headline">
       <div className="title">
         <div>
-          <img src={foldericon} alt="" />
           Projects
         </div>
         {/* {(currentOrganization?.organization_role === 'Administrator' || currentOrganization?.organization_role === 'Course Creator') && (

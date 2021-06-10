@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useSelector, useDispatch } from 'react-redux';
@@ -12,9 +13,8 @@ import
 //  getOrganizationFirstTime
 }
   from 'store/actions/organization';
-import logo from 'assets/images/safari.png';
-import add from 'assets/images/add-icon.png';
-import profile from 'assets/images/user-profile.png';
+import logo from 'assets/images/oracle.svg';
+import profile from 'assets/images/Users4.png';
 import searchImg from 'assets/images/search.png';
 import createProjectIcon from 'assets/images/create-project-icon.png';
 // import help from 'assets/images/help.png';
@@ -51,7 +51,7 @@ function Header(props) {
         <div className="group-search-logo">
           <div className="tophd_left">
             <Link to={`/org/${stateHeader?.currentOrganization?.domain}`} className="top_logo">
-              {image ? <img src={global.config.resourceUrl + image} alt="logo" title="" /> : <img src={logo} style={{ height: '30px' }} alt="logo" title="" />}
+              {image ? <img src={global.config.resourceUrl + image} alt="logo" title="" /> : <><img src={logo} style={{ height: '30px' }} alt="logo" title="" /> <span className="logo-text-special">University</span></>}
             </Link>
           </div>
         </div>
@@ -97,7 +97,7 @@ function Header(props) {
                 <li className="align-items-center" style={{ paddingTop: '4px' }}>
                   <Dropdown className="create-project">
                     <Dropdown.Toggle className="align-items-center">
-                      <img src={add} alt="add" />
+                    <FontAwesomeIcon icon="plus" />
                       <p className="header-icon-text">Create</p>
                     </Dropdown.Toggle>
                     <Dropdown.Menu className="user-dropdown">

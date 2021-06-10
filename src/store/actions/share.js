@@ -15,13 +15,13 @@ export const copyProject = async (projectId, courseId, token) => {
     Swal.fire({
       icon: 'success',
       title: 'Shared!',
-      confirmButtonColor: '#5952c6',
+      confirmButtonColor: '#3A3632',
       html: 'Your project has been shared to Google Classroom',
       // text: `Your playlist has been submitted to ${lmsUrl}`,
     });
   } else {
     Swal.fire({
-      confirmButtonColor: '#5952c6',
+      confirmButtonColor: '#3A3632',
       icon: 'error',
       text: 'Something went wrong, Kindly try again.',
     });

@@ -114,7 +114,7 @@
     margin: 15px;
     padding: 15px;
     background: #ffffff 0 0 no-repeat padding-box;
-    border-left: 2px solid #084892;
+    border-left: 2px solid #3A3632;
     border-radius: 2px;
     box-shadow: 1px 1px 2px #7e7e7e1a;
     opacity: 1;
@@ -262,12 +262,12 @@
       font-size: 14px;
       font-weight: 400;
       text-align: center;
-      color: #5952c6;
+      color: #3A3632;
       letter-spacing: 0;
       opacity: 1;
 
       &:hover {
-        background-color: #5952c6;
+        background-color: #3A3632;
         color: #fff;
         text-decoration: none;
       }
@@ -464,7 +464,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #5952c6;
+    background-color: #3A3632;
     border-radius: 20px;
     font-size: 14px;
     color: #fff;
@@ -492,7 +492,7 @@
     justify-content: center;
     align-items: center;
     float: right;
-    background-color: #5952c6;
+    background-color: #3A3632;
     border-radius: 20px;
     font-size: 14px;
     text-align: center;
@@ -526,7 +526,7 @@
   }
 
   .nav-item.active {
-    background-color: #6e6d6d !important;
+    background-color: #eea357  !important;
     color: #fff !important;
 
     &:after {
@@ -538,8 +538,8 @@
       height: 0;
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
-      border-top: 10px solid #6e6d6d;
-      border-bottom-color: #6e6d6d;
+      border-top: 10px solid #eea357 ;
+      border-bottom-color: #eea357 ;
       transform: translate(-50%);
     }
   }
@@ -591,7 +591,7 @@
     //    text-transform: capitalize;
     //
     //    &.parent {
-    //      color: #5250C1;
+    //      color: #3A3632;
     //      text-decoration: underline;
     //    }
     //  }
@@ -770,6 +770,7 @@ body {
 
 aside.sidebar-all {
   min-height: 100%;
+  background-color: #264759;
 }
 
 table {
@@ -1886,7 +1887,7 @@ a:hover {
   }
 
   button {
-    background: #5952c6 0 0 no-repeat padding-box;
+    background: #3A3632 0 0 no-repeat padding-box;
     border-radius: 30px;
     width: 201px;
     height: 40px;
@@ -1906,7 +1907,7 @@ a:hover {
     }
 
     &:hover {
-      background: #5952c6 0 0 no-repeat padding-box;
+      background: #3A3632 0 0 no-repeat padding-box;
     }
   }
 
@@ -2052,7 +2053,7 @@ a:hover {
 }
 
 .user-name-login {
-  color: #5952c6;
+  color: #3A3632;
   font-weight: bold;
 }
 
@@ -2115,7 +2116,7 @@ a:hover {
     font-size: 14px;
     line-height: 19px;
     letter-spacing: 0;
-    color: #5952c6;
+    color: #3A3632;
     opacity: 1;
 
     i {
@@ -2170,7 +2171,7 @@ a:hover {
 
 .back-header .go-back-button-preview,
 .sce_cont .go-back-button-preview {
-  background-color: #5952c6;
+  background-color: #3A3632;
   display: block;
   color: #fff;
   width: fit-content;
@@ -2634,7 +2635,7 @@ a:hover {
     h3 {
       font-size: 16px;
       font-weight: bold;
-      color: #084892;
+      color: #3A3632;
       span {
         font-size: 16px;
         font-weight: 400;
@@ -2655,7 +2656,7 @@ a:hover {
       line-height: 19px;
       padding-bottom: 0;
       letter-spacing: 0;
-      color: #084892;
+      color: #3A3632;
       opacity: 1;
       border-bottom: none;
       margin: 0 !important;
@@ -2857,7 +2858,7 @@ a:hover {
   }
 
   .react-switch-handle {
-    border: 1px solid #5952c6 !important;
+    border: 1px solid #3A3632 !important;
   }
 }
 
@@ -3055,7 +3056,7 @@ a:hover {
     }
 
     button {
-      background-color: #5952c6;
+      background-color: #3A3632;
       color: #fff;
       width: 150px;
       border-radius: 5px;
@@ -3108,7 +3109,7 @@ a:hover {
   display: flex;
   justify-content: space-around;
   border: 1px solid #ccc;
-  color: #5952c6;
+  color: #3A3632;
 
   div {
     width: 50%;
@@ -3126,7 +3127,7 @@ a:hover {
 
     &:hover {
       color: #fff;
-      background: #5952c6;
+      background: #3A3632;
     }
   }
 }
@@ -3290,11 +3291,11 @@ a:hover {
     .option_type {
       width: 50%;
       padding: 5px;
-      color: #084892;
+      color: #3A3632;
       text-transform: capitalize;
 
       &:hover {
-        background-color: #084892;
+        background-color: #3A3632;
         color: #fff;
       }
 
@@ -3399,7 +3400,7 @@ a:hover {
       p {
         font-weight: 300;
         font-size: 14px;
-        color: #084892;
+        color: #3A3632;
       }
     }
   }
@@ -3425,7 +3426,7 @@ a:hover {
 
 .create-project .fa-plus-circle {
   font-size: 30px;
-  color: #084892;
+  color: #3A3632;
 }
 
 .top-header.flex-div .dropdown-toggle {
@@ -3570,7 +3571,7 @@ a:hover {
   }
 
   .box h1 {
-      color: #4472c4;
+      color: #3A3632;
       font-size: 22px;
       font-weight: 600;
       line-height: 100%;
@@ -3604,7 +3605,7 @@ a:hover {
   }
 
   .box p span {
-      color: #4472c4;
+      color: #3A3632;
       text-decoration: underline;
   }
 
@@ -3706,7 +3707,7 @@ a:hover {
       min-height: 450px;
 
       h1 {
-        color: #4472c4;
+        color: #3A3632;
         font-size: 22px;
         font-weight: 600;
         line-height: 100%;
@@ -3739,7 +3740,7 @@ a:hover {
     span {
       font-size: 12px;
       line-height: 16px;
-      color: #084892 !important;
+      color: #3A3632 !important;
       padding-left: 10px !important;
       font-weight: bold;
     }

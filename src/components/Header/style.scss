@@ -1,11 +1,18 @@
 @import 'assets/css/index';
 
 .top-header {
+
+  .top-info svg {
+    color:#fff !important;
+    font-size: 28px;
+  }
+  background-color: #3A3632 !important;
   .dropdown-toggle {
     background: transparent !important;
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
+    
 
     &:after {
       border-top-color: gray;
@@ -64,7 +71,7 @@
           h3 {
             font: normal normal 600 14px/20px $rubik;
             letter-spacing: 0;
-            color: #5250C1;
+            color: #3A3632;
             margin-bottom: 0;
           }
         }
@@ -95,14 +102,14 @@
         .all-notification {
           text-decoration: underline;
           font: normal normal 600 14px/20px $rubik;
-          color: #5250C1;
+          color: #3A3632;
           width: 100%;
         }
 
         .notification-setting {
           font: normal normal 600 14px/20px $rubik;
           letter-spacing: 0;
-          color: #5250C1;
+          color: #3A3632;
           display: flex;
           justify-content: flex-end;
           align-items: center;
@@ -169,7 +176,7 @@
     background-color: transparent;
     position: initial;
     right: 4px;
-    color: $fun-blue-1;
+    color: #fff;
     top: 0px;
     padding: 0;
   }
@@ -370,7 +377,7 @@
 .header-icon-text{
   font-size: 9.42439px;
   text-align: center;
-  color: $fun-blue-1;
+  color: #fff;
   margin-bottom: 0px;
   display: block;
 }
@@ -397,7 +404,7 @@
   flex-direction: column;
 
   &:after {
-    content: url('../../assets/images/path.png');
+  
     position: absolute;
     right: 10px;
     top: 0px;
@@ -410,7 +417,7 @@
     width: 60px;
   }
   .dropdown-toggle {
-    color: $fun-blue-1 !important;
+    color: #fff !important;
     font-size: 9.42px;
     line-height: 19px;
     text-align: left;
@@ -531,4 +538,14 @@
       display: flex;
     }
   }
+}
+
+.logo-text-special {
+  border-left: #ccc 2px solid;
+  padding-left: 10px;
+  color: rgb(255, 255, 255);
+  line-height: 22.4px;
+  font-size: 16px;
+  font-weight: 400;
+  margin-left: 6px;
 }

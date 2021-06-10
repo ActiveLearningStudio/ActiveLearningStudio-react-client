@@ -22,7 +22,7 @@
     color: #ffffff;
     /* -webkit-text-stroke: 1px white; */
     cursor: pointer;
-    background: #084892;
+    background: #3A3632;
     border-radius: 20px;
     font-size: 14px;
     width: -moz-fit-content;
@@ -37,7 +37,7 @@
 
     .fa {
       margin-right: 5px;
-      -webkit-text-stroke: 1px #084892;
+      -webkit-text-stroke: 1px #3A3632;
     }
   }
 
@@ -203,7 +203,7 @@
     color: #ffffff;
     /* -webkit-text-stroke: 1px white; */
     cursor: pointer;
-    background: #084892;
+    background: #3A3632;
     border-radius: 20px;
     font-size: 14px;
     width: -moz-fit-content;
@@ -218,7 +218,7 @@
 
     .fa {
       margin-right: 5px;
-      -webkit-text-stroke: 1px #084892;
+      -webkit-text-stroke: 1px #3A3632;
     }
   }
 
@@ -243,7 +243,7 @@
         line-height: 24px;
         padding-top: 0;
         letter-spacing: 0.34px;
-        color: #084892;
+        color: #3A3632;
         opacity: 1;
       }
     }
@@ -301,7 +301,7 @@
   }
 }
 
-$selected_color: #084892;
+$selected_color: #3A3632;
 $filled: #44ca92;
 
 .create-resource-sidebar {
@@ -334,7 +334,7 @@ $filled: #44ca92;
 
       span.name {
         color: $selected_color;
-        border-right: 3px solid #084892;
+        border-right: 3px solid #3A3632;
       }
     }
 
@@ -526,7 +526,7 @@ $filled: #44ca92;
   //    font-size: 16px;
   //    cursor: pointer;
   //    display: block;
-  //    border-right: 3px solid #084892;
+  //    border-right: 3px solid #3A3632;
   //    padding-top: 10px;
   //    padding-bottom: 10px;
   //  }
@@ -625,7 +625,7 @@ $filled: #44ca92;
 
 input[type="radio"]:checked + .activity-item {
   box-shadow: 0 3px 6px #00000029;
-  border: 2px solid #084892;
+  border: 2px solid #3A3632;
   border-radius: 4px;
   background: url(../../../assets/images/resource-tickmark.png) no-repeat right 15px top 13px;
 
@@ -751,7 +751,7 @@ input[type="radio"]:checked + .activity-item {
 
 .describe-activity-wrapper {
   h1 {
-    color: #165399;
+    color: #3A3632;
     text-transform: capitalize;
     margin: 0;
     font-size: 2rem;

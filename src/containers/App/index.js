@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import logo from 'assets/images/studio_new_logo.png';
+import logo from 'assets/images/oracle.svg';
 import loader from 'assets/images/dotsloader.gif';
 import { getUserAction } from 'store/actions/auth';
 import { cloneDuplicationRequest } from 'store/actions/notification';
@@ -160,6 +160,7 @@ function App(props) {
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.Collage-0.3/template.js?ver=0.3.14`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.Collage-0.3/clip.js?ver=0.3.14`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.MemoryGame-1.3/card.js?ver=1.3.5`,
+      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.PhetInteractiveSimulation-1.0/phet-simulation.js`,
 
       'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML',
     ];

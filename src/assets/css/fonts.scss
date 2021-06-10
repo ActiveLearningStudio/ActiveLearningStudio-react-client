@@ -1,5 +1,20 @@
 $rubik: 'rubic';
 $halvetica: 'halvetica';
+$oracle: 'OracleSansRegular';
+
+@font-face {
+    font-family: $oracle;
+    src: url('../fonts/3535323aad9721a2b296d4e095912faa.eot');
+    src: url('../fonts/3535323aad9721a2b296d4e095912faa.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/3535323aad9721a2b296d4e095912faa.woff2') format('woff2'),
+        url('../fonts/3535323aad9721a2b296d4e095912faa.woff') format('woff'),
+        url('../fonts/3535323aad9721a2b296d4e095912faa.ttf') format('truetype'),
+        url('../fonts/3535323aad9721a2b296d4e095912faa.svg#.') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 
 @font-face {
     font-family: $rubik;
@@ -275,4 +290,3 @@ $halvetica: 'halvetica';
     font-style: italic;
     font-display: swap;
 }
-

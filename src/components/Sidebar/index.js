@@ -4,9 +4,9 @@ import { Link, withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import foldericon from 'assets/images/sidebar/folder-icon.png';
-import teamicon from 'assets/images/sidebar/team-icon.png';
-import dashboardicon from 'assets/images/sidebar/dashboard-icon.png';
+import foldericon from 'assets/images/Page1.png';
+import teamicon from 'assets/images/People.png';
+import dashboardicon from 'assets/images/settings_menu3.png';
 import backgroundimg from 'assets/images/sidebar/background.png';
 
 import {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import logo from 'assets/images/safari.png';
+import logo from 'assets/images/oracle.svg';
 
 export default function Logo() {
   const logoState = useSelector((state) => state.organization.currentOrganization);

@@ -32,7 +32,7 @@ function SearchForm() {
   } = useSelector((state) => state.organization);
 
   useEffect(() => {
-    if (activityTypesState.length === 0) {
+    if (activityTypesState?.length === 0) {
       dispatcher(loadResourceTypesAction());
     }
   }, []);

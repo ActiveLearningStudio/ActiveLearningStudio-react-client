@@ -102,12 +102,12 @@
 
       .src-btn {
         background: #ffffff 0% 0% no-repeat padding-box;
-        border: 2px solid #5952c6;
+        border: 2px solid #3A3632;
         border-radius: 2px;
         text-align: center;
         font: normal normal 600 16px/20px $rubik;
         letter-spacing: 0;
-        color: #5952c6;
+        color: #3A3632;
         opacity: 1;
         height: 34px;
         display: flex;
@@ -117,7 +117,7 @@
         cursor: pointer;
 
         &:hover {
-          background-color: #5952c6;
+          background-color: #3A3632;
           color: #fff;
         }
       }
@@ -346,7 +346,7 @@
   .modal-title {
     text-align: left;
     font: normal normal 400 18px/24px $rubik;
-    color: #084892;
+    color: #3A3632;
   }
 
   .modal-body {
@@ -367,7 +367,7 @@
      margin:20px;
 
     .button-submit{
-      background: #5952C6 0% 0% no-repeat padding-box;
+      background: #3A3632 0% 0% no-repeat padding-box;
       border-radius: 30px;
       width: 98px;
       height: 40px;
@@ -406,7 +406,7 @@
 
       h2{
         font: 400 14px/20px $rubik;
-        color: #084892;
+        color: #3A3632;
         padding: 10px 0;
       }
 
@@ -441,7 +441,7 @@
   }
 
   .top-card.card-header {
-    background-color: #084892;
+    background-color: #3A3632;
 
     span {
       color: #fff;
@@ -467,7 +467,7 @@
 
       svg {
         margin-right: 10px;
-        color: #084892;
+        color: #3A3632;
       }
     }
 
@@ -492,7 +492,7 @@
     background-color: #fff;
 
     &:hover {
-      color: #084892;
+      color: #3A3632;
     }
   }
 }

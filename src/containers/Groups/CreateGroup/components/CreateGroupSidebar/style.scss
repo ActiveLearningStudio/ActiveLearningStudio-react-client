@@ -12,26 +12,26 @@
         font-family: Hind Siliguri, serif;
 
         .number-box {
-          border: 2px solid #084892;
+          border: 2px solid #3A3632;
 
           span.number {
-            background: #084892;
+            background: #3A3632;
             color: #fff;
           }
         }
 
         span.bottom-vertical-line {
-          background: #084892;
+          background: #3A3632;
         }
 
         span.top-vertical-line {
-          background: #084892;
+          background: #3A3632;
         }
       }
 
       span.name {
         padding: 13px 0 7px 0;
-        color: #084892;
+        color: #3A3632;
       }
     }
 
@@ -63,7 +63,7 @@
 
     &.filled.selected {
       span.name {
-        border-right: 3px solid #084892;
+        border-right: 3px solid #3A3632;
       }
     }
 

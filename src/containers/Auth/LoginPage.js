@@ -7,8 +7,8 @@ import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GoogleLogin } from 'react-google-login';
 
-import bg from 'assets/images/loginbg.png';
-import bg1 from 'assets/images/loginbg2.png';
+// import bg from 'assets/images/loginbg.png';
+// import bg1 from 'assets/images/loginbg2.png';
 import loader from 'assets/images/loader.svg';
 import { loginAction, googleLoginAction } from 'store/actions/auth';
 import { getErrors } from 'utils';
@@ -205,8 +205,8 @@ class LoginPage extends React.Component {
           </form>
         </div>
 
-        <img src={bg} className="bg1" alt="" />
-        <img src={bg1} className="bg2" alt="" />
+        {/* <img src={bg} className="bg1" alt="" />
+        <img src={bg1} className="bg2" alt="" /> */}
       </div>
     );
   }
