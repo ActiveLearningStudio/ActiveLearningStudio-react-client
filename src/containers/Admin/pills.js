@@ -8,7 +8,7 @@ import Starter from "./starter";
 import { columnData } from "./column";
 
 
-import { getOrgUsers, searchUserInOrganization, getsubOrgList } from 'store/actions/organization';
+import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from "store/actions/resource";
 import { getUserReport } from "store/actions/admin";
 export default function Pills(props) {
@@ -21,10 +21,10 @@ export default function Pills(props) {
   const admin = useSelector((state) => state.admin);
   const [ activePage, setActivePage ] = useState(1);
   const [ size, setSize ] = useState(25);
-  const [ activeRole,setActiveRole ] = useState('');
+  const { activeOrganization, roles } = organization;
+  const [ activeRole,setActiveRole ] = useState(roles? roles[2]?.id : '');
   const { activeTab, activityType } = admin
   const [currentTab, setCurrentTab] = useState("all");
-  const { activeOrganization, roles } = organization;
   const [users, setUsers] = useState(null);
   const [searchAlertToggler, setSearchAlertToggler] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
@@ -132,6 +132,7 @@ export default function Pills(props) {
           getOrgUsers(activeOrganization?.id, activePage, size, activeRole)
         );
         setUsers(result);
+        setActiveRole(null);
       }
     }
     dispatch(getsubOrgList(activeOrganization?.id));
@@ -223,6 +224,15 @@ export default function Pills(props) {
       dispatch (getUserReport('all'));
     }
   },[activePage, subTypeState, type, size])
+  const searchUserReportQueryHandler = async ({target}, subTypeRecieved) => {
+    if (subTypeRecieved === 'Report') {
+      if (target.value) {
+        await dispatch(getUserReport('all', size, activePage, target.value));
+      } else {
+        await dispatch(getUserReport('all'));
+      }
+    }
+  }
   const dummy =  [
     {
       name: "qamar",
@@ -298,6 +308,7 @@ export default function Pills(props) {
                 search={true}
                 print={true}
                 data={usersReport}
+                searchUserReportQueryHandler={searchUserReportQueryHandler}
                 btnText=""
                 btnAction=""
                 subTypeState={subTypeState}

@@ -15,13 +15,19 @@ import Heading from './heading';
 import Bradecrumd from './bradecrumd';
 import CreateLms from './formik/createLms'
 import './style.scss';
+import { getRoles } from 'store/actions/organization';
 
 function AdminPanel() {
   const dispatch = useDispatch();
   const adminState = useSelector((state) => state.admin);
   const organization = useSelector((state) => state.organization);
-  const { permission } = organization;
+  const { permission, roles, currentOrganization, activeOrganization } = organization;
   const { activeForm, activeTab } = adminState;
+  useEffect(() => {
+    if (roles.length === 0 || (activeOrganization?.id !== currentOrganization?.id)) {
+      dispatch(getRoles())
+    }
+  }, [activeOrganization])
   useEffect(() => {
   }, [activeTab])
   return (

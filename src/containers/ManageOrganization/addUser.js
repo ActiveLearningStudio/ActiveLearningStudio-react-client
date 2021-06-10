@@ -1,29 +1,33 @@
 import React, { useState } from 'react';
 import { Formik } from 'formik';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'react-bootstrap';
 
 import organization from 'services/organizations.services';
 import loader from 'assets/images/dotsloader.gif';
+import Swal from 'sweetalert2';
+import { inviteUserOutside } from 'store/actions/organization';
 
 export default function AddUser(props) {
   const {
-    setAllUsersAdded,
-    allUsersAdded,
-    setFieldValueProps,
+    // setAllUsersAdded,
+    // allUsersAdded,
+    // setFieldValueProps,
     method,
   } = props;
   const stateOrg = useSelector((state) => state.organization);
+  const { activeOrganization } = stateOrg;
+  const dispatch = useDispatch();
   const [stateOrgUsers, setStateOrgUsers] = useState([]);
   const [loaderImgUser, setLoaderImgUser] = useState(false);
-  const [roleUser, setRoleUser] = useState();
+  // const [roleUser, setRoleUser] = useState();
   return (
     <div className="add-user-organization">
       <Formik
         initialValues={{
           name: '',
-          role: '',
+          role_id: '',
           email: '',
           userInfo: {},
         }}
@@ -39,22 +43,50 @@ export default function AddUser(props) {
           ) {
             errors.email = 'Invalid email address';
           }
-          if (!values.role) {
-            errors.role = 'Required';
+          if (!values.role_id) {
+            errors.role_id = 'Required';
           }
           return errors;
         }}
         onSubmit={(values) => {
-          const combine = {
-            value: values,
-            role: roleUser,
+          Swal.fire({
+            title: 'Please Wait !',
+            html: 'Sending Invite ...',
+            allowOutsideClick: false,
+            onBeforeOpen: () => {
+              Swal.showLoading();
+            },
+          });
+          const { id } = JSON.parse(values.role_id);
+          const summary = {
+            email: values.email,
+            role_id: id,
           };
-          console.log(allUsersAdded);
-          const duplicateTest = allUsersAdded.filter((dataall) => dataall.value?.userInfo?.email === values.email);
-          if (duplicateTest.length === 0) {
-            setAllUsersAdded([...allUsersAdded, combine]);
-            setFieldValueProps('inviteUser', [...allUsersAdded, combine]);
-          }
+          const result = dispatch(inviteUserOutside(activeOrganization.id, summary));
+            result.then(() => {
+              Swal.fire({
+                icon: 'success',
+                text: 'Invite Sent',
+              });
+            }).catch((err) => {
+              try {
+                Object.keys(err.errors).map((errors, index) => {
+                  if (index < 1) {
+                    Swal.fire({
+                      icon: 'error',
+                      text: err,
+                    });
+                  }
+                  return true;
+                });
+              } catch {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'Something went wrong!',
+                });
+              }
+            });
         }}
       >
         {({
@@ -133,14 +165,14 @@ export default function AddUser(props) {
               <h3>Role</h3>
               <select
                 type="text"
-                name="role"
+                name="role_id"
                 onChange={(e) => {
                   console.log(e.target.value);
-                  setFieldValue('role', e.target.value);
-                  setRoleUser(JSON.parse(e.target.value));
+                  setFieldValue('role_id', e.target.value);
+                  // setRoleUser(JSON.parse(e.target.value));
                 }}
                 onBlur={handleBlur}
-                value={values.role.name}
+                value={values.role_id.name}
               >
                 <option value="">Select Role</option>
                 {stateOrg.roles.map((role) => (
@@ -155,7 +187,7 @@ export default function AddUser(props) {
                 ))}
               </select>
               <div className="error">
-                {errors.role && touched.role && errors.role}
+                {errors.role_id && touched.role_id && errors.role_id}
               </div>
             </div>
             <div className="btn-group">
@@ -176,8 +208,8 @@ export default function AddUser(props) {
 }
 
 AddUser.propTypes = {
-  setAllUsersAdded: PropTypes.func.isRequired,
-  allUsersAdded: PropTypes.array.isRequired,
-  setFieldValueProps: PropTypes.func.isRequired,
+  // setAllUsersAdded: PropTypes.func.isRequired,
+  // allUsersAdded: PropTypes.array.isRequired,
+  // setFieldValueProps: PropTypes.func.isRequired,
   method: PropTypes.string.isRequired,
 };

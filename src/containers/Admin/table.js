@@ -11,7 +11,7 @@ import {
   updatePreviousScreen,
   deleteOrganization,
   getOrganization,
-  clearUsersinOrganization,
+  clearOrganizationState,
   getOrgUsers,
   removeUserFromOrganization,
 } from "store/actions/organization";
@@ -363,7 +363,7 @@ function Table(props) {
                           }).then((result) => {
                             if (result.isConfirmed) {
                               dispatch(getOrganization(row.id));
-                              dispatch(clearUsersinOrganization());
+                              dispatch(clearOrganizationState());
                             }
                           });
                         }

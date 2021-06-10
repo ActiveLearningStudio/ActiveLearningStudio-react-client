@@ -217,10 +217,13 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         activeEdit: action.payload,
       };
-    case actionTypes.CLEAR_USER_IN_ORGANIZATION:
+    case actionTypes.CLEAR_STATES_IN_ORGANIZATION:
       return {
         ...state,
         users: [],
+        roles: [],
+        searchUsers: [],
+        searchOrg: [],
       };
     default:
       return state;

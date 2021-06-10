@@ -55,9 +55,9 @@ export const getOrganizationFirstTime = (id) => async (dispatch) => {
   });
 };
 
-export const clearUsersinOrganization = () => (dispatch) => {
+export const clearOrganizationState = () => (dispatch) => {
   dispatch({
-    type: actionTypes.CLEAR_USER_IN_ORGANIZATION,
+    type: actionTypes.CLEAR_STATES_IN_ORGANIZATION,
   });
 };
 
@@ -276,8 +276,10 @@ export const clearHistory = () => async (dispatch) => {
 
 export const getOrgUsers = (id, page, size, activeRole) => async (dispatch) => {
   let result = '';
-  if (!activeRole) {
-    result = await organization.getOrgUsers(id, page, size, 3);
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization, currentOrganization } } = centralizedState;
+  if (activeOrganization?.id !== currentOrganization?.id) {
+    result = await organization.getOrgUsers(id, page, size);
   }
   result = await organization.getOrgUsers(id, page, size, activeRole);
   dispatch({
@@ -286,7 +288,6 @@ export const getOrgUsers = (id, page, size, activeRole) => async (dispatch) => {
       result,
       page,
       size,
-      activeRole,
     },
   });
   return result;

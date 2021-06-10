@@ -13,6 +13,7 @@ import bulk from "assets/images/bulk.png";
 import InviteUser from "containers/ManageOrganization/inviteAdmin";
 import AddUser from "containers/ManageOrganization/addUser";
 import {
+  clearOrganizationState,
   getOrganization,
   getRoles,
   roleDetail,
@@ -35,6 +36,7 @@ function Controller(props) {
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
     searchActivitiesQueryHandler,
+    searchUserReportQueryHandler,
     size,
     setSize,
     tableHead,
@@ -123,6 +125,7 @@ function Controller(props) {
           <button
             onClick={() => {
               dispatch(getOrganization(currentOrganization?.id));
+              dispatch(clearOrganizationState());
             }}
           >
             Go to root organization
@@ -188,9 +191,9 @@ function Controller(props) {
           </span>
         </div>
       )}
-      {roles?.length && type === "Users" && (
+      {(roles?.length > 0 && type === "Users") ? (
         <div className="filter-dropdown drop-counter ">
-          {subTypeState ? "Select role:" : "Filter by role:"}
+          {subTypeState=== 'Manage Roles' ? "Select role:" : "Filter by role:"}
           <span>
             <Dropdown>
               <Dropdown.Toggle id="dropdown-basic">
@@ -203,9 +206,9 @@ function Controller(props) {
                     <Dropdown.Item
                       onClick={() => {
                         setActiveRoleInComponent(head.display_name);
-                        if (subTypeState)
+                        if (subTypeState === 'Manage Roles')
                           dispatch(roleDetail(activeOrganization.id, head.id));
-                        if (!subTypeState) {
+                        if (subTypeState === 'All users') {
                           setActiveRole(head.id);
                         }
                       }}
@@ -218,7 +221,7 @@ function Controller(props) {
             </Dropdown>
           </span>
         </div>
-      )}
+      ): null}
       {!!search && type === "Users" && (
         <div className="search-bar">
           <input
@@ -243,9 +246,14 @@ function Controller(props) {
           <img src={searchimg} alt="search" />
         </div>
       )}
-      {!!search && type === "Stats" && (
+      {!!search && type === "Stats" && subTypeState === 'Report' && (
         <div className="search-bar">
-          <input className="" type="text" placeholder="Search" />
+          <input
+            className=""
+            type="text"
+            placeholder="Search"
+            onChange={(e) => searchUserReportQueryHandler(e,subTypeState)}
+          />
           <img src={searchimg} alt="search" />
         </div>
       )}
