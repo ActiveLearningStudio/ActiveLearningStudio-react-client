@@ -22,13 +22,13 @@ import groupicon from 'assets/images/sidebar/group-icon.png';
 // import dashboardicon from 'assets/images/sidebar/dashboard-icon.png';
 import backgroundimg from 'assets/images/sidebar/background.png';
 import administrate from 'assets/images/sidebar/administrate.png';
-import { Accordion, Button } from 'react-bootstrap';
+// import { Accordion, Button } from 'react-bootstrap';
 // import dashboardChevron from 'assets/images/dashboard-chevron.png';
 // import childOrganizationIcon from 'assets/images/child-organization-icon.png';
 import {
   allSidebarProjects,
 } from 'store/actions/project';
-import { setActiveTab } from 'store/actions/admin';
+// import { setActiveTab } from 'store/actions/admin';
 import { updateOrganizationScreen } from 'store/actions/organization';
 
 import './style.scss';
@@ -46,13 +46,16 @@ function Sidebar(props) {
   const dispatch = useDispatch();
 
   const allState = useSelector((state) => state);
-  const [toggleSidebar, setToggleSidebar] = useState(true);
-  const [activeLink, setActiveLink] = useState('');
-  const [toggleAccordtion, setToggleAccordion] = useState(false);
+  useEffect(() => {
+    document.body.classList.add('collapsed');
+  }, []);
+  const [toggleSidebar, setToggleSidebar] = useState(false);
+  // const [activeLink, setActiveLink] = useState('');
+  // const [toggleAccordtion, setToggleAccordion] = useState(false);
   const handleToggle = () => {
     if (toggleSidebar === true) {
       document.body.classList.add('collapsed');
-      setToggleAccordion(false);
+      // setToggleAccordion(false);
     } else {
       document.body.classList.remove('collapsed');
     }
@@ -108,7 +111,7 @@ function Sidebar(props) {
               <div className="org-name">
                 {allState.organization.currentOrganization?.name}
               </div>
-              {permission?.activeRole?.includes('admin')
+              {/* {permission?.activeRole?.includes('admin')
                 && (
                 <Accordion>
                   <div className="row-administrate">
@@ -154,8 +157,22 @@ function Sidebar(props) {
                     </Accordion.Collapse>
                   </div>
                 </Accordion>
-                )}
+                )} */}
+              {permission?.Organization?.includes('organization:view')
+              && (
+                <>
+                  <Link to={`/org/${allState.organization.currentOrganization?.domain}/admin`}>
+                    <div className="row-sidebar">
+                      <img src={administrate} alt="" />
+                      <div className="sidebar-headings">
+                        Administrate
+                      </div>
+                      <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
+                    </div>
 
+                  </Link>
+                </>
+              )}
               {/* {permission?.Organization?.includes('organization:view') && (
                 <Link
                   to={`/org/${allState.organization.currentOrganization?.domain}/manage`}
@@ -253,7 +270,7 @@ function Sidebar(props) {
             <div className="toggleSidebar collapsedown">
               {permission?.activeRole?.includes('admin') && (
                 <Link
-                  to={`/org/${allState.organization.currentOrganization.domain}/manage`}
+                  to={`/org/${allState.organization.currentOrganization.domain}/admin`}
                   onClick={() => dispatch(updateOrganizationScreen('intro'))}
                 >
                   <img src={administrateLargeIcom} alt="" />
