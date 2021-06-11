@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Pagination from "react-js-pagination";
 import adminService from "services/admin.service";
@@ -44,6 +44,12 @@ function Table(props) {
   const { activeOrganization, allSuborgList, permission } = organization;
   const allState = useSelector((state) => state);
   const dispatch = useDispatch();
+  const [localStateData, setLocalStateData] =  useState([]);
+  useEffect(() => {
+    if(type === "LMS") {
+      setLocalStateData(data?.data)
+    }
+  }, [data]);
   const handleDeleteUser = (user) => {
     Swal.fire({
       title: "Are you sure you want to delete this User?",
@@ -151,8 +157,8 @@ function Table(props) {
             )) :
             null }
            {type === "LMS" && (
-           data ?
-            data?.data?.map((row) => (
+           localStateData ?
+           localStateData?.map((row) => (
               <tr>
                 <td>{row.lms_url}</td>
                 <td>{row.lms_name}</td>
@@ -185,26 +191,31 @@ function Table(props) {
                               confirmButtonText: "Yes, delete it!",
                             }).then((result) => {
                               if (result.isConfirmed) {
-                                Swal.showLoading();
+                                Swal.fire({
+                                  title: 'LMS Srttings',
+                                  icon: 'info',
+                                  text: 'Deleting User LMS Settings...',
+                                  allowOutsideClick: false,
+                                  onBeforeOpen: () => {
+                                    Swal.showLoading();
+                                  },
+                                  button: false,
+                                });
                                   const response = adminService.deleteLmsProject(row?.id);
                                   response
                                     .then((res) => {
-                                     console.log(res)
+                                  
+                                     
                                      Swal.fire({
                                       icon: "success",
                                       text: res.message,
 
                                     });
-                                    })
-                                    .catch((err) => {
-                                     console.log(err)
-                                      Swal.fire({
-                                        icon: "error",
-                                        title: "Error",
-                                        text: "User Deletion failed, kindly try again.",
-                                      });
-                                    });
-
+                                    const filterLMS = localStateData.filter(each => each.id != row.id);
+                                    console.log(filterLMS)
+                                    setLocalStateData(filterLMS)
+                                    
+                                    }).catch(err => console.log(err))
                               }
                             });
                           }}

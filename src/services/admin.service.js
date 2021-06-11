@@ -1,6 +1,7 @@
 import config from 'config';
 import Swal from 'sweetalert2';
 import httpService from './http.service';
+import { errorCatcher } from './errors';
 
 const { apiVersion } = config;
 
@@ -124,22 +125,24 @@ const deleteLmsProject = (id) => httpService
   .remove(`${apiVersion}/lms-settings/${id}`)
   .then(({ data }) => data)
   .catch((err) => {
-    Promise.reject(err.response.data);
+    errorCatcher(err.response.data);
+    return Promise.reject();
   });
 
 const updateLmsProject = (id, values) => httpService
   .put(`${apiVersion}/lms-settings/${id}`, values)
   .then(({ data }) => data)
   .catch((err) => {
-    Promise.reject(err.response.data);
+    errorCatcher(err.response.data);
+    return Promise.reject();
   });
 
 const createLmsProject = (values) => httpService
   .post(`${apiVersion}/lms-settings`, values)
   .then(({ data }) => data)
   .catch((err) => {
-    console.log(err);
-    return Promise.reject(err.response.data);
+    errorCatcher(err.response.data);
+    return Promise.reject();
   });
 
 const getLmsProjectSearch = (search, page) => httpService

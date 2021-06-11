@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { createLmsProject, editUserInOrganization, removeActiveAdminForm } from 'store/actions/admin';
+import { removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
 import organizationapi from '../../../services/organizations.services';
 import adminapi from '../../../services/admin.service';
@@ -23,7 +23,7 @@ export default function CreateUser(prop) {
           lms_url: editMode ? activeEdit?.lms_url : '',
           lms_access_token: editMode ? activeEdit?.lms_access_token : '',
           site_name: editMode ? activeEdit?.site_name : '',
-          user_id : editMode ? clone ? '':activeEdit?.user?.name : '',
+          user_id : editMode ? clone ? '':activeEdit?.user?.id : '',
           lti_client_id: editMode ? activeEdit?.lti_client_id : '',
           // moodle: editMode ? activeEdit?.moodle : '',
           // canvas: editMode ? activeEdit?.canvas : '',
@@ -87,8 +87,15 @@ export default function CreateUser(prop) {
               button: false,
             });
            
-            updateLmsProject(row.id, values);
             
+            const result =  adminapi.updateLmsProject(activeEdit?.id, values);
+            result.then(res => {
+              Swal.fire({
+                icon:'success',
+                text:res?.message
+              })
+              dispatch(removeActiveAdminForm());
+            })
 
           } else {
             Swal.fire({
@@ -106,27 +113,9 @@ export default function CreateUser(prop) {
             result.then(res => {
               Swal.fire({
                 icon:'success',
-                text:res.message
+                text:res?.message
               })
               dispatch(removeActiveAdminForm());
-            }).catch((err) =>{
-              try {
-              Object.keys(err.errors).map((errors, index) => {
-                if (index < 1) {
-                  Swal.fire({
-                    icon: 'error',
-                    text: err.errors[errors][0],
-                  });
-                }
-                return true;
-              });
-            } catch {
-              Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Something went wrong!',
-              });
-            }
             })
           
             
@@ -259,6 +248,19 @@ export default function CreateUser(prop) {
               </div>
             </div>
             <div className="form-group-create">
+              <h3>LMS Login ID</h3>
+              <input
+                type="text"
+                name="lms_login_id"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.lms_login_id}
+              />
+              <div className="error">
+                {errors.lms_login_id && touched.lms_login_id && errors.lms_login_id}
+              </div>
+            </div>
+            <div className="form-group-create" style={{ position: 'relative' }}>
               <h3>User</h3>
               <input
                 type="text"
@@ -278,7 +280,7 @@ export default function CreateUser(prop) {
                 onBlur={handleBlur}
                 value={values.name}
               />
-              {loaderlmsImgUser && <img src={loader} alt="" className="loader" />}
+              {loaderlmsImgUser && <img src={loader} alt="" style={{ width: '25px' }} className="loader" />}
               {stateOrgUsers?.length > 0 && (
                 <ul className="all-users-list">
                   {stateOrgUsers?.map((user) => (
@@ -304,22 +306,10 @@ export default function CreateUser(prop) {
                 {errors.user_id && touched.user_id && errors.user_id}
               </div>
             </div>
-            <div className="form-group-create">
-              <h3>LMS Login ID</h3>
-              <input
-                type="text"
-                name="lms_login_id"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.lms_login_id}
-              />
-              <div className="error">
-                {errors.lms_login_id && touched.lms_login_id && errors.lms_login_id}
-              </div>
-            </div>
+          
             <div className="button-group">
               <button type="submit">
-                {editMode ? 'Edit ' : 'Create'} LMS Setting
+              {editMode ? clone ? 'Create ' : 'Edit' : 'Create'}LMS Setting
               </button>
               <button
                 type="button"

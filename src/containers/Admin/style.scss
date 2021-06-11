@@ -462,6 +462,37 @@
       .create-form {
         width: 100%;
         height: 80%;
+       
+      .all-users-list {
+        position: absolute;
+        top: 70px;
+        background: #fff;
+        padding: 10px;
+        width: 90%;
+        max-height: 140px;
+        overflow: auto;
+        border: 1px solid #ccc;
+        z-index:11;
+
+        li {
+         font-size: 14px;
+         padding: 5px 0px;
+         border-bottom: 1px solid #ccc;
+         color: $fun-blue-1;
+         cursor: pointer;
+
+         &:hover {
+           text-decoration: underline;
+         }
+        }
+
+        p{
+          font-size: 11px;
+          text-decoration: underline;
+          margin-bottom: 0px;
+          color :#ccc;
+        }
+      }
         h2 {
           font-weight: 500;
           font-size: 31.25px;
