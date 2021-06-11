@@ -22,7 +22,7 @@ export default function Pills(props) {
   const [ activePage, setActivePage ] = useState(1);
   const [ size, setSize ] = useState(25);
   const { activeOrganization, roles } = organization;
-  const [ activeRole,setActiveRole ] = useState(roles? roles[2]?.id : '');
+  const [ activeRole,setActiveRole ] = useState('');
   const { activeTab, activityType } = admin
   const [currentTab, setCurrentTab] = useState("all");
   const [users, setUsers] = useState(null);
