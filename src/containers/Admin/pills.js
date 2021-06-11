@@ -398,7 +398,7 @@ export default function Pills(props) {
                 paginationCounter={false}
                 search={true}
                 print={false}
-                btnText="create Organization"
+                btnText="Create Organization"
                 btnAction="add_org"
                 importUser={false}
                 filter={false}
