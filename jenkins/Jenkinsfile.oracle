@@ -29,7 +29,7 @@ node("currikidev") {
                     node('currikioracle') {
                         stage ('currikioracle') {
                                 echo 'Copy'
-                                sh "yes | docker stack deploy --compose-file /curriki/docker-compose-oracle.yml currikistack" 
+                                sh "yes | sudo docker stack deploy --compose-file /curriki/docker-compose-oracle.yml currikistack" 
                                 echo 'Copy completed'
                         }
                     }
