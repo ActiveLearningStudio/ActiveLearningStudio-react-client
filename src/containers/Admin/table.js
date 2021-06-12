@@ -137,6 +137,7 @@ function Table(props) {
   //const history = useHistory();
   return (
     <div className="table-data">
+      <div className="responsive-table">
       <table>
         <thead>
           {tableHead?.map((head) => (
@@ -283,7 +284,7 @@ function Table(props) {
                         <Link
                           onClick={() => handleRemoveUser(user)}
                         >
-                          Remove
+                          &nbsp;&nbsp;Remove&nbsp;&nbsp;
                         </Link>
                       )}
                       {permission?.Organization.includes('organization:delete-user') && (
@@ -768,6 +769,8 @@ function Table(props) {
           )}
         </tbody>
       </table>
+      </div>
+      {data?.meta &&
       <div className="pagination-top">
         <div className="pagination_state">
           Showing {data?.meta?.from} to {data?.meta?.to} of {data?.meta?.total}{" "}
@@ -880,6 +883,7 @@ function Table(props) {
           )}
         </div>
       </div>
+}
     </div>
   );
 }

@@ -7,10 +7,13 @@ const Heading = () => {
   const { name } = useSelector((state) => state.organization.activeOrganization);
   return (
     <div className="main-heading">
-      <p>{name}</p>
       <div className="secand-heading">
         <img src={img} alt="logo" />
-        <h2>Manage Organization</h2>
+        <h2>
+          Manage&nbsp;
+          {name}
+          &nbsp;Organization
+        </h2>
       </div>
     </div>
     );
