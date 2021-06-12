@@ -135,7 +135,9 @@ export default function Pills(props) {
         setActiveRole(null);
       }
     }
-    dispatch(getsubOrgList(activeOrganization?.id));
+    if (type === 'Organization' ) {
+       dispatch(getsubOrgList(activeOrganization?.id));
+    }
   }, [
     activeOrganization,
     activePage,
@@ -282,7 +284,16 @@ export default function Pills(props) {
     })
   }
 
-
+  useEffect(() => {
+    if (activeTab === 'Project') {
+      setSubTypeState('Indexing Queue')
+      setCurrentTab('index')
+    } else if (activeTab === 'Activities') {
+      setSubTypeState('Activity Types')
+    } else if (activeTab === 'Users') {
+      setSubTypeState('All users')
+    } 
+  },[activeTab]);
   // console.log(columnData)
   return (
     <Tabs
@@ -447,7 +458,7 @@ export default function Pills(props) {
               <Starter
                 paginationCounter={false}
                 search={true}
-                tableHead={columnData.projectAll}
+                tableHead={columnData.projectUser}
                 data={allProjectUserTab}
                 type={type}
                 setActivePage={setActivePage}

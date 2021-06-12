@@ -4,7 +4,7 @@
   .main-heading {
     p {
       color: #084892;
-      font-size: 14px;
+      font-size: 22px;
       margin: 0;
     }
     .secand-heading {
@@ -612,6 +612,11 @@
     border: 1px solid #ccc;
     padding: 0px 20px;
 
+    form {
+      width:100%;
+      margin-bottom: 20px;
+    }
+
     h2 {
       font-weight: bold;
       font-size: 16px;
@@ -621,7 +626,7 @@
     .box-group {
       display: flex;
       justify-content: space-between;
-      margin-top: 35px;
+     
 
       .top-cat {
         width: 15%;

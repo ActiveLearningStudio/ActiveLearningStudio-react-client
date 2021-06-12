@@ -55,7 +55,9 @@ function Controller(props) {
   const [selectedIndexValue, setSelectedIndexValue] = useState("REQUESTED");
   const [selectedIndexValueid, setSelectedIndexValueid] = useState(1);
   useMemo(() => {
+    if (type === "Users") {
     dispatch(getRoles());
+    }
   }, []);
 
   useEffect(() => {
@@ -132,7 +134,7 @@ function Controller(props) {
           </button>
         </div>
       )}
-      {!!filter && (
+      {/* {!!filter && (
         <div className="filter-dropdown drop-counter ">
           Fillter by:
           <span>
@@ -154,7 +156,7 @@ function Controller(props) {
             </Dropdown>
           </span>
         </div>
-      )}
+      )} */}
       {!!filter && subType === "index" && (
         <div className="filter-dropdown drop-counter ">
           Index Value:

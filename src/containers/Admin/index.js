@@ -36,7 +36,7 @@ function AdminPanel() {
         <>
           <div className="content-wrapper">
             <div className="inner-content">
-              <Bradecrumd />
+             
               <Heading />
               <Tabs
                 defaultActiveKey={activeTab}
@@ -97,12 +97,12 @@ function AdminPanel() {
                     <Pills modules={["All settings"]} type="LMS" />
                   </div>
                 </Tab>
-                <Tab eventKey="Settings" title="Settings">
+                {/* <Tab eventKey="Settings" title="Settings">
                   <div className="module-content">
                     <h2>Settings</h2>
                     <Pills modules={["All settings"]} type="Settings" />
                   </div>
-                </Tab>
+                </Tab> */}
               </Tabs>
             </div>
           </div>

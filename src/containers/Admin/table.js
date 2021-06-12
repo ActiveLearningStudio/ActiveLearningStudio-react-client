@@ -208,7 +208,7 @@ function Table(props) {
                                      
                                      Swal.fire({
                                       icon: "success",
-                                      text: res.message,
+                                      text: res?.message,
 
                                     });
                                     const filterLMS = localStateData.filter(each => each.id != row.id);
@@ -597,7 +597,7 @@ function Table(props) {
                               });
                             })
                           }}>
-                            Approve
+                            Approve&nbsp;&nbsp;
                           </Link>
                         )}
                         {(row.indexing === 1 || row.indexing === 3) && (

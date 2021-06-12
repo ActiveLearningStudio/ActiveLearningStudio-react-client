@@ -1,6 +1,6 @@
 import config from 'config';
 import Swal from 'sweetalert2';
-
+import { errorCatcher } from './errors';
 import httpService from './http.service';
 
 const { apiVersion } = config;
@@ -139,12 +139,18 @@ const getAllRoles = (id) => httpService
 const addRole = (id, rolesData) => httpService
   .post(`/${apiVersion}/suborganizations/${id}/add-role`, rolesData)
   .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject(err.response.data);
+  });
 
 const updateRole = (id, rolesData) => httpService
   .put(`/${apiVersion}/suborganizations/${id}/update-role`, rolesData)
   .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject(err.response.data);
+  });
 
 const permissionId = (id) => httpService
   .get(`/${apiVersion}/suborganizations/${id}/default-permissions`)
