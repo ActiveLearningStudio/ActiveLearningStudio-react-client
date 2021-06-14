@@ -164,7 +164,7 @@ const addRole = (id, rolesData) => httpService
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
+    return Promise.reject(err.response.data);
   });
 
 const updateRole = (id, rolesData) => httpService
@@ -172,7 +172,7 @@ const updateRole = (id, rolesData) => httpService
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
+    return Promise.reject(err.response.data);
   });
 
 const permissionId = (id) => httpService

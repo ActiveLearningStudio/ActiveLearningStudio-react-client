@@ -261,7 +261,7 @@ export default function CreateUser(prop) {
               </div>
             </div>
             <div className="form-group-create" style={{ position: 'relative' }}>
-              <h3>User</h3>
+              <h3>User &nbsp; (search users from dropdown list only)</h3>
               <input
                 type="text"
                 name="name"

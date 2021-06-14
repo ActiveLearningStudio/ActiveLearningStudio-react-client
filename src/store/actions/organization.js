@@ -357,15 +357,10 @@ export const updateRole = (id, roleId) => async () => {
     },
   });
   const result = organization.updateRole(id, roleId);
-  result.then((data) => {
+  result.then((res) => {
     Swal.fire({
       icon: 'success',
-      title: data?.message,
-    });
-  }).catch((err) => {
-    Swal.fire({
-      icon: 'error',
-      title: err?.message,
+      title: res?.message,
     });
   });
 };
@@ -380,21 +375,11 @@ export const addRole = (id, data) => async () => {
     },
   });
   const result = organization.addRole(id, data);
-  console.log(result);
-  result.then((data_) => {
+  result.then((res) => {
     Swal.fire({
       icon: 'success',
-      title: data_?.message,
-    });
-  }).catch((err) => {
-    Swal.fire({
-      icon: 'error',
-      title: err?.message,
+      title: res?.message,
     });
   });
-  // dispatch({
-  //   type: actionTypes.SET_ALL_PERSMISSION,
-  //   payload: result.permissions,
-  // });
   return result;
 };

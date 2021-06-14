@@ -265,3 +265,29 @@ code {
   padding: 25px;
   border-radius: 5px;
 }
+
+// branding
+
+
+.curriki-blue-button {
+  background: $fun-blue-1;
+  border: 1px solid  $fun-blue-1;
+  box-sizing: border-box;
+  border-radius: 50px;
+  color: #fff;
+  padding: 5px 20px;
+}
+
+.curriki-white-button {
+  background: $white;
+  border: 1px solid  $fun-blue-1;
+  box-sizing: border-box;
+  border-radius: 50px;
+  color: $fun-blue-1;
+  padding: 5px 20px;
+
+  &:hover {
+    background: $fun-blue-1;
+    color: $white;
+  }
+}

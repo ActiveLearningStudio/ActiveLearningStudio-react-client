@@ -4,7 +4,7 @@
   .main-heading {
     p {
       color: #084892;
-      font-size: 14px;
+      font-size: 22px;
       margin: 0;
     }
     .secand-heading {
@@ -131,6 +131,7 @@
     align-items: center;
     padding: 20px 10px;
     border: 1px solid #ccc;
+    flex-wrap: wrap;
 
     .drop-counter {
       display: flex;
@@ -330,6 +331,10 @@
   }
 
   .table-data {
+    border:1px solid #e5e5e5;
+    .responsive-table {
+      overflow-x: auto;
+    }
     table {
       width: 100%;
 
@@ -383,7 +388,7 @@
     font-size: 14px;
     line-height: 19px;
     color: #515151;
-    padding: 20px 14px;
+    padding: 0px 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -612,6 +617,11 @@
     border: 1px solid #ccc;
     padding: 0px 20px;
 
+    form {
+      width:100%;
+      margin-bottom: 20px;
+    }
+
     h2 {
       font-weight: bold;
       font-size: 16px;
@@ -621,7 +631,7 @@
     .box-group {
       display: flex;
       justify-content: space-between;
-      margin-top: 35px;
+     
 
       .top-cat {
         width: 15%;

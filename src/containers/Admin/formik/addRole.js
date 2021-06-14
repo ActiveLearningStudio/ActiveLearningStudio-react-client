@@ -35,8 +35,10 @@ export default function AddRole(props) {
           return errors;
         }}
         onSubmit={async(values) => {
-         console.log(values)
-         dispatch(addRole(activeOrganization.id, values));
+         const result =  dispatch(addRole(activeOrganization.id, values));
+         result.then(res => {
+          dispatch(removeActiveAdminForm());
+         })
         }}
       >
         {({
