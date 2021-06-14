@@ -348,6 +348,8 @@ export const NEXT_PAGE = 'NEXT_PAGE';
 export const GRADE_PASS_BACK = 'GRADE_PASS_BACK';
 export const LTI_ACTIVITY_INIT = 'LTI_ACTIVITY_INIT';
 export const DO_BROWSE = 'DO_BROWSE';
+export const GET_LTI_SUMMARY = 'GET_LTI_SUMMARY';
+export const GET_LTI_SUMMARY_ACTIVITY_INFO = 'GET_LTI_SUMMARY_ACTIVITY_INFO';
 
 /* Organization */
 

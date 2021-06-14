@@ -59,6 +59,7 @@ const GenericLMSActivityPage = loadable(() => import('../containers/LMS/Generic/
 const ActivityCreate = loadable(() => import('../containers/CreateActivity'));
 const EditActivity = loadable(() => import('../containers/EditActivity'));
 const GclassSummaryPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassSummaryPage'));
+const CanvasSummaryPage = loadable(() => import('../containers/LMS/Canvas/CanvasSummaryPage'));
 const SearchPage = loadable(() => import('../containers/LMS/Canvas/DeepLinking/SearchPage'));
 const LtiActivity = loadable(() => import('../containers/LMS/LTI/Activity'));
 const ManageOrganization = loadable(() => import('../containers/ManageOrganization'));
@@ -130,6 +131,11 @@ const AppRouter = (props) => {
           exact
           path="/genericlms/:lmsName/lmsurl/:lmsUrl/client/:lmsClientId/lmscourse/:lmsCourseId/activity/:activityId/"
           component={GenericLMSActivityPage}
+        />
+        <OpenRoute
+          exact
+          path="/lti/summary"
+          component={CanvasSummaryPage}
         />
         <OpenRoute
           path="/playlist/:playlistId/activity/:activityId/preview/lti"
