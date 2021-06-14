@@ -458,6 +458,12 @@ function Table(props) {
                   <Link
                     to={`/org/${allState?.organization?.currentOrganization?.domain}/groups`}
                     className="view-all"
+                    onClick={
+                      () => {
+                        dispatch(getOrganization(row.id));
+                        dispatch(clearOrganizationState());
+                      }
+                    }
                   >
                     {row.groups_count}
                   </Link>
@@ -466,6 +472,12 @@ function Table(props) {
                   <Link
                     to={`/org/${allState?.organization?.currentOrganization?.domain}/teams`}
                     className="view-all"
+                    onClick={
+                      () => {
+                        dispatch(getOrganization(row.id));
+                        dispatch(clearOrganizationState());
+                      }
+                    }
                   >
                     {row.teams_count}
                   </Link>
