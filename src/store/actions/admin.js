@@ -66,3 +66,57 @@ export const getUserReport = (mode, size, page, query) => async (dispatch) => {
     payload: result,
   });
 };
+
+export const getJobListing = (filter, size, page, query) => async (dispatch) => {
+  const result = await adminService.getJobListing(filter, size, page, query);
+  dispatch({
+    type: actionTypes.GET_JOBS_LISTING,
+    payload: result,
+  });
+  return result;
+};
+
+export const retryAllFailedJobs = () => async (dispatch) => {
+  const result = await adminService.retryAllFailedJobs();
+  dispatch({
+    type: actionTypes.RETRY_ALL_FAILED_JOBS,
+    payload: result,
+  });
+  return result;
+};
+
+export const retrySpecificFailedJob = (job) => async (dispatch) => {
+  const result = adminService.retrySpecificFailedJob(job);
+  dispatch({
+    type: actionTypes.RETRY_FAILED_JOB,
+    payload: result,
+  });
+  return result;
+};
+
+export const forgetAllFailedJobs = () => async (dispatch) => {
+  const result = await adminService.forgetAllFailedJobs();
+  dispatch({
+    type: actionTypes.FORGET_ALL_FAILED_JOBS,
+    payload: result,
+  });
+  return result;
+};
+
+export const forgetSpecificFailedJob = (job) => async (dispatch) => {
+  const result = adminService.forgetSpecificFailedJob(job);
+  dispatch({
+    type: actionTypes.FORGET_FAILED_JOB,
+    payload: result,
+  });
+  return result;
+};
+
+export const getLogsListing = (filter, size, page, query) => async (dispatch) => {
+  const result = await adminService.getLogsListing(filter, size, page, query);
+  dispatch({
+    type: actionTypes.GET_LOGS_LISTING,
+    payload: result,
+  });
+  return result;
+};

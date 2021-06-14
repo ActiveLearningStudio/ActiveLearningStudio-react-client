@@ -132,7 +132,7 @@ function Controller(props) {
           </button>
         </div>
       )}
-      {!!filter && (
+      {!!filter && subTypeState === 'Report' &&(
         <div className="filter-dropdown drop-counter ">
           Fillter by:
           <span>
@@ -246,7 +246,7 @@ function Controller(props) {
           <img src={searchimg} alt="search" />
         </div>
       )}
-      {!!search && type === "Stats" && subTypeState === 'Report' && (
+      {!!search && type === "Stats" && (
         <div className="search-bar">
           <input
             className=""
@@ -329,7 +329,7 @@ function Controller(props) {
           <div className="add-user-btn">
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic">
-                Invite outside user
+                Invite external user
                 </Dropdown.Toggle>
               <Dropdown.Menu>
                 <InviteUser />
@@ -343,7 +343,7 @@ function Controller(props) {
           <div className="add-user-btn">
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic">
-                Add User
+                Add internal user
                 </Dropdown.Toggle>
               <Dropdown.Menu>
                 <AddUser

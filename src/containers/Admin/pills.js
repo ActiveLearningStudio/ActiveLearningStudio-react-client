@@ -10,7 +10,7 @@ import { columnData } from "./column";
 
 import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from "store/actions/resource";
-import { getUserReport } from "store/actions/admin";
+import { getJobListing, getLogsListing, getUserReport } from "store/actions/admin";
 export default function Pills(props) {
   const { modules, type, subType } = props;
   const [subTypeState, setSubTypeState] = useState(subType);
@@ -32,6 +32,8 @@ export default function Pills(props) {
   const [allProjectUserTab, setAllProjectUserTab] = useState(null);
   const [allProjectIndexTab, setAllProjectIndexTab] = useState(null);
   const [lmsProject, setLmsProject] = useState(null);
+  const [jobs, setJobs ] = useState(null);
+  const [logs, setLogs ] = useState(null);
   const [changeIndexValue, setChangeIndexValue] = useState("1");
   const searchUsers = async (query, page) => {
     const result = await dispatch(
@@ -223,6 +225,32 @@ export default function Pills(props) {
       //on page 1
       dispatch (getUserReport('all'));
     }
+    if (type === 'Stats' && subTypeState === 'Queues:Jobs' && (activePage !== organization?.activePage || size !== organization?.size)) {
+      const result = dispatch(getJobListing('1', size, activePage))
+      console.log(result);
+      result.then((data) => {
+        setJobs(data.data);
+      });
+    } else if (type === 'Stats' && subTypeState === 'Queues:Jobs' && (activePage === 1 || size === 25)) {
+      const result = dispatch(getJobListing('1'))
+      console.log(result);
+      result.then((data) => {
+        setJobs(data.data);
+      });
+    }
+    if (type === 'Stats' && subTypeState === 'Queues:Logs' && (activePage !== organization?.activePage || size !== organization?.size)) {
+      const result = dispatch(getLogsListing('all', size, activePage))
+      console.log(result);
+      result.then((data) => {
+        setLogs(data.data);
+      });
+    } else if (type === 'Stats' && subTypeState === 'Queues:Logs' && (activePage === 1 || size === 25)) {
+      const result = dispatch(getLogsListing('all'))
+      console.log(result);
+      result.then((data) => {
+        setLogs(data.data);
+      });
+    }
   },[activePage, subTypeState, type, size])
   const searchUserReportQueryHandler = async ({target}, subTypeRecieved) => {
     if (subTypeRecieved === 'Report') {
@@ -232,36 +260,26 @@ export default function Pills(props) {
         await dispatch(getUserReport('all'));
       }
     }
+    if (subTypeRecieved === 'Queues:Jobs') {
+      if (target.value) {
+        let result = dispatch(getJobListing('1', size, activePage ,target.value));
+        result.then((data) => setJobs(data.data));
+      } else {
+        let result = dispatch(getJobListing('1'));
+        result.then((data) => setJobs(data.data));
+      }
+    }
+    if (subTypeRecieved === 'Queues:Logs') {
+      if (target.value) {
+        let result = dispatch(getLogsListing('all', size, activePage , target.value));
+        result.then((data) => setLogs(data.data));
+      } else {
+        let result = dispatch(getLogsListing('all'));
+        result.then((data) => setLogs(data.data));
+      }
+    }
   }
-  const dummy =  [
-    {
-      name: "qamar",
-      email: "qamar111@gmail.com",
-      age: "23",
-      project: "34",
-      counter: "56",
-      flow: "67",
-    },
-    {
-      name: "qamar",
-      email: "qamar111@gmail.com",
-      age: "23",
-      project: "34",
-      counter: "56",
-      flow: "67",
-    },
-    {
-      name: "qamar",
-      email: "qamar111@gmail.com",
-      age: "23",
-      project: "34",
-      counter: "56",
-      flow: "67",
-    },
-  ];
-
   //LMS project ***************************************
-
   useMemo(async () => {
     if(type==="LMS") {
     setLmsProject(null);
@@ -269,8 +287,6 @@ export default function Pills(props) {
     result.then((data) => {
       setLmsProject(data)
     })
-
-
     }
   }, [type, activePage]);
 
@@ -316,6 +332,7 @@ export default function Pills(props) {
                 filter={true}
                 size={size}
                 setSize={setSize}
+                activePage={activePage}
                 setActivePage={setActivePage}
                 tableHead={columnData.statereport}
                 type={type}
@@ -326,12 +343,18 @@ export default function Pills(props) {
                 paginationCounter={true}
                 search={true}
                 print={false}
+                data={jobs}
                 btnText=""
+                subTypeState={subTypeState}
+                searchUserReportQueryHandler={searchUserReportQueryHandler}
+                size={size}
+                setSize={setSize}
+                activePage={activePage}
                 btnAction=""
                 importUser={false}
                 filter={true}
+                setActivePage={setActivePage}
                 tableHead={columnData.statejobs}
-                data={dummy}
                 type={type}
               />
             )}
@@ -340,12 +363,18 @@ export default function Pills(props) {
                 paginationCounter={true}
                 search={true}
                 print={false}
+                data={logs}
                 btnText=""
+                subTypeState={subTypeState}
+                searchUserReportQueryHandler={searchUserReportQueryHandler}
+                size={size}
+                setSize={setSize}
                 btnAction=""
                 importUser={false}
                 filter={true}
+                activePage={activePage}
+                setActivePage={setActivePage}
                 tableHead={columnData.statelogs}
-                data={dummy}
                 type={type}
               />
             )}

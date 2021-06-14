@@ -7,6 +7,10 @@ const INITIAL_STATE = {
   activityTypes: [],
   activityItems: [],
   usersReport: [],
+  jobs: [],
+  specificJob: null,
+  allJobs: null,
+  logs: [],
   currentUser: null,
   newUser: null,
   editUser: null,
@@ -58,6 +62,36 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         usersReport: action.payload,
+      };
+    case actionTypes.GET_JOBS_LISTING:
+      return {
+        ...state,
+        jobs: action.payload,
+      };
+    case actionTypes.GET_LOGS_LISTING:
+      return {
+        ...state,
+        logs: action.payload,
+      };
+    case actionTypes.RETRY_ALL_FAILED_JOBS:
+      return {
+        ...state,
+        allJobs: action.payload,
+      };
+    case actionTypes.FORGET_ALL_FAILED_JOBS:
+      return {
+        ...state,
+        allJobs: action.payload,
+      };
+    case actionTypes.FORGET_FAILED_JOB:
+      return {
+        ...state,
+        specificJob: action.payload,
+      };
+    case actionTypes.RETRY_FAILED_JOB:
+      return {
+        ...state,
+        specificJob: action.payload,
       };
     default:
       return state;

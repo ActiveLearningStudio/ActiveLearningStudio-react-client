@@ -156,6 +156,35 @@ function Table(props) {
               </tr>
             )) :
             null }
+            {type === 'Stats' && subTypeState === 'Queues:Jobs' && (
+
+              data ? data?.data.map((job) => {
+
+              })
+              : (
+                <tr colSpan="6">
+                  No data available in table
+                </tr>
+              )
+            )}
+            {type === 'Stats' && subTypeState === 'Queues:Logs' && (
+
+              data ? data?.data.map((job) => (
+                <tr>
+                  <td>{job.name}</td>
+                  <td>
+                    <Alert variant={job.failed ? 'danger' : 'success'}> {job.failed ? 'Failed' : 'Success'}</Alert>
+                  </td>
+                  <td>{job.started_at}</td>
+                  <td>Queue: {job.queue} Attempt: {job.attempt}</td>
+                  <td>{job.time_elapsed}</td>
+                  <td>{job.exception_message}</td>
+                </tr>
+              ))
+              :
+              null
+              )
+            }
            {type === "LMS" && (
            localStateData ?
            localStateData?.map((row) => (
@@ -204,8 +233,8 @@ function Table(props) {
                                   const response = adminService.deleteLmsProject(row?.id);
                                   response
                                     .then((res) => {
-                                  
-                                     
+
+
                                      Swal.fire({
                                       icon: "success",
                                       text: res.message,
@@ -214,7 +243,7 @@ function Table(props) {
                                     const filterLMS = localStateData.filter(each => each.id != row.id);
                                     console.log(filterLMS)
                                     setLocalStateData(filterLMS)
-                                    
+
                                     }).catch(err => console.log(err))
                               }
                             });
@@ -319,18 +348,34 @@ function Table(props) {
                 <td>{row.name}</td>
                 <td>{row.domain}</td>
                 <td>
-                  {row?.admins?.length || 0}
+
                   <Link
                     onClick={() => {
-                      dispatch(setActiveTab('Users'));
-                      dispatch(getOrgUsers(row.id, 1, 25, 1));
+
+                      if (row.suborganization_count > 0) {
+                        Swal.fire({
+                          title: 'Organization',
+                          icon: 'warning',
+                          html: 'You are about to change the content of admin panel, Are you sure?',
+                          showCancelButton: true,
+                          confirmButtonColor: "#084892",
+                          cancelButtonColor: "#d33",
+                          confirmButtonText: "Yes",
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            dispatch(getOrganization(row.id));
+                            dispatch(clearOrganizationState());
+                            dispatch(setActiveTab('Users'));
+                            dispatch(getOrgUsers(row.id, 1, 25, 1));
+                          }
+                        });
+                      }
                     }}
                     className="view-all"
                   >
-                    view all</Link>
+                    {row?.admins?.length || 0}</Link>
                 </td>
                 <td>
-                  {row.projects_count}
                   <div
                     className="view-all"
                     onClick={async () => {
@@ -353,11 +398,10 @@ function Table(props) {
                       history.push(`/org/${row?.domain}/search?type=orgSearch`);
                     }}
                   >
-                    view all
+                    {row.projects_count}
                   </div>
                 </td>
                 <td>
-                  {row.suborganization_count || 0}
                   {row.suborganization_count > 0 && (
                     <Link
                       className="view-all"
@@ -380,36 +424,49 @@ function Table(props) {
                         }
                       }}
                     >
-                      view all
+                      {row.suborganization_count || 0}
                     </Link>
                   )}
                 </td>
                 <td>
-                  {row.users_count}
                   <Link
                     className="view-all"
                     onClick={() => {
-                      dispatch(setActiveTab('Users'));
+                      if (row.suborganization_count > 0) {
+                        Swal.fire({
+                          title: 'Organization',
+                          icon: 'warning',
+                          html: 'You are about to change the content of admin panel, Are you sure?',
+                          showCancelButton: true,
+                          confirmButtonColor: "#084892",
+                          cancelButtonColor: "#d33",
+                          confirmButtonText: "Yes",
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            dispatch(getOrganization(row.id));
+                            dispatch(clearOrganizationState());
+                            dispatch(setActiveTab('Users'));
+                          }
+                        });
+                      }
                     }}>
-                    view all
+                    {row.users_count}
                   </Link>
                 </td>
                 <td>
-                  {row.groups_count}
                   <Link
                     to={`/org/${allState?.organization?.currentOrganization?.domain}/groups`}
                     className="view-all"
                   >
-                    view all
+                    {row.groups_count}
                   </Link>
                 </td>
                 <td>
-                  {row.teams_count}
                   <Link
                     to={`/org/${allState?.organization?.currentOrganization?.domain}/teams`}
                     className="view-all"
                   >
-                    view all
+                    {row.teams_count}
                   </Link>
                 </td>
                 <td>
@@ -786,6 +843,30 @@ function Table(props) {
               }}
             />
           )}
+          {type === 'Stats' && subTypeState === 'Queues:Logs' && (
+            <Pagination
+              activePage={activePage}
+              pageRangeDisplayed={5}
+              itemsCountPerPage={data?.meta?.per_page}
+              totalItemsCount={data?.meta?.total}
+              onChange={(e) => {
+                // setCurrentTab("index");
+                setActivePage(e);
+              }}
+            />
+          )}
+          {type === 'Stats' && subTypeState === 'Queues:Jobs' && (
+            <Pagination
+              activePage={activePage}
+              pageRangeDisplayed={5}
+              itemsCountPerPage={data?.meta?.per_page}
+              totalItemsCount={data?.meta?.total}
+              onChange={(e) => {
+                // setCurrentTab("index");
+                setActivePage(e);
+              }}
+            />
+          )}
           {
             type === "Users" && (
               <Pagination
@@ -794,7 +875,7 @@ function Table(props) {
                 itemsCountPerPage={data?.meta?.per_page}
                 totalItemsCount={data?.meta?.total}
                 onChange={(e) => {
-                  setCurrentTab("all");
+                  // setCurrentTab("all");
                   setActivePage(e);
                 }}
               />
