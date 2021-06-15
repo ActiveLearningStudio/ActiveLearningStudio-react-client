@@ -21,6 +21,10 @@ function Starter(props) {
     data,
     roles,
     activePage,
+    jobType,
+    SetJobType,
+    logType,
+    SetLogType,
     size,
     setSize,
     activeRole,
@@ -52,6 +56,10 @@ function Starter(props) {
         setSize={setSize}
         subTypeState={subTypeState}
         btnAction={btnAction}
+        jobType={jobType}
+        SetJobType={SetJobType}
+        logType={logType}
+        SetLogType={SetLogType}
         searchQuery={searchQuery}
         searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
         searchActivitiesQueryHandler={searchActivitiesQueryHandler}
@@ -75,6 +83,7 @@ function Starter(props) {
           setActivePage={setActivePage}
           searchAlertToggler={searchAlertToggler}
           type={type}
+          jobType={jobType}
           data={data}
           subType={subType}
           subTypeState={subTypeState}
