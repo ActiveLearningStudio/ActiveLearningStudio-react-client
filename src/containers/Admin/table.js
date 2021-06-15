@@ -21,6 +21,8 @@ import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert } from "react-bootstrap";
 import {
+  forgetSpecificFailedJob,
+  retrySpecificFailedJob,
   setActiveAdminForm,
   setActiveTab,
   setCurrentUser,
@@ -33,6 +35,7 @@ function Table(props) {
     history,
     data,
     type,
+    jobType,
     subTypeState,
     activePage,
     setActivePage,
@@ -158,10 +161,38 @@ function Table(props) {
             )) :
             null }
             {type === 'Stats' && subTypeState === 'Queues:Jobs' && (
-
-              data ? data?.data.map((job) => {
-
-              })
+              data ? ( data?.data.map((job) => (
+                <tr>
+                  <td>{job.id}</td>
+                  <td>{job.queue}</td>
+                  <td>{job.payload}</td>
+                  <td>{job.exception}</td>
+                  <td>{job.time}</td>
+                  {jobType.value === 2 ? (
+                    <td>
+                      <div className="links">
+                        <Link onClick={() => {
+                          dispatch(retrySpecificFailedJob(job.id));
+                        }}
+                        >
+                          Retry
+                        </Link>
+                        <Link
+                          onClick={() => {
+                            dispatch(forgetSpecificFailedJob(job.id))
+                          }}
+                        >
+                          Forget
+                        </Link>
+                      </div>
+                    </td>
+                  ) : (
+                    <td>
+                      {job.action ? job.action : 'N/A'}
+                    </td>
+                  )}
+                </tr>
+              )))
               : (
                 <tr colSpan="6">
                   No data available in table

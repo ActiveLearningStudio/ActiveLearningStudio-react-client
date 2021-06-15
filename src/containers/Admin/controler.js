@@ -5,7 +5,7 @@ import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setActiveAdminForm } from "store/actions/admin";
+import { forgetAllFailedJobs, retryAllFailedJobs, setActiveAdminForm } from "store/actions/admin";
 import searchimg from "assets/images/search-icon.png";
 import csv from "assets/images/csv.png";
 import pdf from "assets/images/pdf.png";
@@ -27,6 +27,10 @@ function Controller(props) {
     btnText,
     btnAction,
     importUser,
+    jobType,
+    SetJobType,
+    logType,
+    SetLogType,
     subTypeState,
     filter,
     activeRole,
@@ -224,6 +228,51 @@ function Controller(props) {
           </span>
         </div>
       ): null}
+      {type === 'Stats' && subTypeState === 'Queues:Jobs' &&
+        <Dropdown name="jobType" id="jobType">
+          <Dropdown.Toggle id="dropdown-basic">
+                {jobType.display_name}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item value='1' name='Pending' onClick={() => SetJobType({value: 1, display_name: 'Pending'})}>Pending</Dropdown.Item>
+            <Dropdown.Item value='2' name='Failed' onClick={() => SetJobType({value: 2, display_name:'Failed'})}>Failed</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      }
+      {type === 'Stats' && subTypeState === 'Queues:Logs' &&
+        <Dropdown name="logType" id="logType">
+          <Dropdown.Toggle id="dropdown-basic">
+                {logType.display_name}
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item value='all' name='All' onClick={() => SetLogType({value: 'all', display_name: 'All'})}>All</Dropdown.Item>
+            <Dropdown.Item value='1' name='Running' onClick={() => SetLogType({value: 1, display_name: 'Running'})}>Running</Dropdown.Item>
+            <Dropdown.Item value='2' name='Failed' onClick={() => SetLogType({value: 2, display_name: 'Failed'})}>Failed</Dropdown.Item>
+            <Dropdown.Item value='3' name='Completed' onClick={() => SetLogType({value: 3, display_name: 'Completed'})}>Completed</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      }
+      {type === 'Stats' && subTypeState === 'Queues:Jobs' && jobType.value === 2 && (
+        <div className="retryandforget">
+          <button
+            className="retry"
+            onClick={() => {
+              dispatch(retryAllFailedJobs());
+            }}
+          >
+            Retry All
+          </button>
+          <button
+            className="forget"
+
+            onClick={() => {
+              dispatch(forgetAllFailedJobs());
+            }}
+          >
+            Forget All
+          </button>
+        </div>
+      )}
       {!!search && type === "Users" && (
         <div className="search-bar">
           <input
