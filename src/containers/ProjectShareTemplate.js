@@ -85,6 +85,7 @@ function ProjectShareTemplate(props) {
     ;
     setAllProject(shareResult.projects);
     if (shareResult.projects.length == 0) {
+      setErrorShow(true);
     }
   }, []);
 
