@@ -380,11 +380,9 @@ function Table(props) {
                 <td>{row.name}</td>
                 <td>{row.domain}</td>
                 <td>
-
-                  <Link
-                    onClick={() => {
-
-                      if (row.suborganization_count > 0) {
+                  {row?.admin?.length > 0 && (
+                    <Link
+                      onClick={() => {
                         Swal.fire({
                           title: 'Organization',
                           icon: 'warning',
@@ -401,37 +399,40 @@ function Table(props) {
                             dispatch(getOrgUsers(row.id, 1, 25, 1));
                           }
                         });
-                      }
-                    }}
-                    className="view-all"
-                  >
-                    {row?.admins?.length || 0}</Link>
+                      }}
+                      className="view-all"
+                    >
+                      {row?.admins?.length || 0}
+                    </Link>
+                  )}
                 </td>
                 <td>
-                  <div
-                    className="view-all"
-                    onClick={async () => {
-                      await dispatch(getOrganization(row.id));
-                      Swal.fire({
-                        html: "Searching...",
-                        allowOutsideClick: false,
-                        onBeforeOpen: () => {
-                          Swal.showLoading();
-                        },
-                      });
-                      await dispatch(
-                        simpleSearchAction({
-                          from: 0,
-                          size: 20,
-                          type: "orgSearch",
-                        })
-                      );
-                      Swal.close();
-                      history.push(`/org/${row?.domain}/search?type=orgSearch`);
-                    }}
-                  >
-                    {row.projects_count}
-                  </div>
+                  {row.projects_count > 0 && (
+                    <div
+                      className="view-all"
+                      onClick={async () => {
+                        await dispatch(getOrganization(row.id));
+                        Swal.fire({
+                          html: "Searching...",
+                          allowOutsideClick: false,
+                          onBeforeOpen: () => {
+                            Swal.showLoading();
+                          },
+                        });
+                        await dispatch(
+                          simpleSearchAction({
+                            from: 0,
+                            size: 20,
+                            type: "orgSearch",
+                          })
+                        );
+                        Swal.close();
+                        history.push(`/org/${row?.domain}/search?type=orgSearch`);
+                      }}
+                    >
+                      {row.projects_count}
+                    </div>
+                  )}
                 </td>
                 <td>
                   {row.suborganization_count > 0 && (
@@ -461,57 +462,63 @@ function Table(props) {
                   )}
                 </td>
                 <td>
-                  <Link
-                    className="view-all"
-                    onClick={() => {
-                      if (row.suborganization_count > 0) {
-                        Swal.fire({
-                          title: 'Organization',
-                          icon: 'warning',
-                          html: 'You are about to change the content of admin panel, Are you sure?',
-                          showCancelButton: true,
-                          confirmButtonColor: "#084892",
-                          cancelButtonColor: "#d33",
-                          confirmButtonText: "Yes",
-                        }).then((result) => {
-                          if (result.isConfirmed) {
-                            dispatch(getOrganization(row.id));
-                            dispatch(clearOrganizationState());
-                            dispatch(setActiveTab('Users'));
-                          }
-                        });
-                      }
-                    }}>
-                    {row.users_count}
-                  </Link>
+                  {row.users_count > 0 && (
+                    <Link
+                      className="view-all"
+                      onClick={() => {
+                        if (row.users_count > 0) {
+                          Swal.fire({
+                            title: 'Organization',
+                            icon: 'warning',
+                            html: 'You are about to change the content of admin panel, Are you sure?',
+                            showCancelButton: true,
+                            confirmButtonColor: "#084892",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Yes",
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              dispatch(getOrganization(row.id));
+                              dispatch(clearOrganizationState());
+                              dispatch(setActiveTab('Users'));
+                            }
+                          });
+                        }
+                      }}>
+                      {row.users_count}
+                    </Link>
+                  )}
                 </td>
                 <td>
-                  <Link
-                    to={`/org/${allState?.organization?.currentOrganization?.domain}/groups`}
-                    className="view-all"
-                    onClick={
-                      () => {
-                        dispatch(getOrganization(row.id));
-                        dispatch(clearOrganizationState());
+                  {row.groups_count > 0 && (
+                    <Link
+                      to={`/org/${allState?.organization?.currentOrganization?.domain}/groups`}
+                      className="view-all"
+                      onClick={
+                        () => {
+                          dispatch(getOrganization(row.id));
+                          dispatch(clearOrganizationState());
+                        }
                       }
-                    }
-                  >
-                    {row.groups_count}
-                  </Link>
+                    >
+                      {row.groups_count}
+                    </Link>
+                  )}
                 </td>
                 <td>
-                  <Link
-                    to={`/org/${allState?.organization?.currentOrganization?.domain}/teams`}
-                    className="view-all"
-                    onClick={
-                      () => {
-                        dispatch(getOrganization(row.id));
-                        dispatch(clearOrganizationState());
+                  {row.teams_count > 0 && (
+                    <Link
+                      to={`/org/${allState?.organization?.currentOrganization?.domain}/teams`}
+                      className="view-all"
+                      onClick={
+                        () => {
+                          dispatch(getOrganization(row.id));
+                          dispatch(clearOrganizationState());
+                        }
                       }
-                    }
-                  >
-                    {row.teams_count}
-                  </Link>
+                    >
+                      {row.teams_count}
+                    </Link>
+                  )}
                 </td>
                 <td>
                   <div className="links">
