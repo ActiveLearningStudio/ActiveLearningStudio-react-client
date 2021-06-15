@@ -21,6 +21,10 @@ import add from 'assets/images/add-icon.png';
 import searchImg from 'assets/images/search.png';
 import createProjectIcon from 'assets/images/create-project-icon.png';
 import help from 'assets/images/help.png';
+import edit from 'assets/images/edit1.png';
+import changePassword from 'assets/images/changepassword.png';
+import logoutIcon from 'assets/images/logout.png';
+// import dashboard from 'assets/images/dashboard.png';
 import { logoutAction } from 'store/actions/auth';
 import { Event } from 'trackers/ga';
 
@@ -135,7 +139,7 @@ function Header(props) {
                     <div className="profile-avatar">
                       {user?.first_name[0]}
                     </div>
-                    <p className="header-icon-text">Profile</p>
+                    <p className="header-icon-text">My Profile</p>
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu className="user-dropdown">
@@ -145,19 +149,46 @@ function Header(props) {
                         {user && user.displayName}
                       </span>
                     </Dropdown.Item> */}
-
-                    <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/dashboard`}>
-                      Dashboard
-                    </Dropdown.Item>
+                    {/* <Dropdown.Item className="align-items-center"> */}
+                    <div className="user-dropdown-item-name">
+                      <div className="profile-avatar">
+                        {user?.first_name[0]}
+                      </div>
+                      <div className="basic-info">
+                        <b>
+                          <p className="name">
+                            {user?.first_name}
+                            &nbsp;
+                            {user?.last_name}
+                          </p>
+                        </b>
+                        <p className="email">{user?.email}</p>
+                      </div>
+                    </div>
+                    <hr />
+                    {/* </Dropdown.Item> */}
+                    {/* <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/dashboard`}>
+                      <div className="user-dropdown-item">
+                        <img className="img-dhashboard" src={dashboard} alt="dashboard" />
+                        Dashboard
+                      </div>
+                      <hr />
+                    </Dropdown.Item> */}
 
                     <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/account`}>
-                      My Account
+                      <div className="user-dropdown-item">
+                        <img src={edit} alt="edit" />
+                        My Account
+                      </div>
                     </Dropdown.Item>
-
+                    <hr />
                     <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/change-password`}>
-                      Change Password
+                      <div className="user-dropdown-item">
+                        <img className="img-change-password" src={changePassword} alt="changePassword" />
+                        Change Password
+                      </div>
                     </Dropdown.Item>
-
+                    <hr />
                     <Dropdown.Item
                       href="#"
                       onClick={() => {
@@ -165,7 +196,10 @@ function Header(props) {
                         logout();
                       }}
                     >
-                      Logout
+                      <div className="user-dropdown-item">
+                        <img src={logoutIcon} alt="logoutIcon" />
+                        Logout
+                      </div>
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
