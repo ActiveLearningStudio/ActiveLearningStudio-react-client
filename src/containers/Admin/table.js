@@ -149,7 +149,7 @@ function Table(props) {
         </thead>
         <tbody>
           {type === "Stats" && subTypeState === 'Report' &&
-            data ? data?.data.map((row) => (
+            data ? data?.data?.map((row) => (
               <tr>
                 <td>{row.first_name}</td>
                 <td>{row.last_name}</td>
