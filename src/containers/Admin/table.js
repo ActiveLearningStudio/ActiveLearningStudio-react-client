@@ -371,41 +371,14 @@ function Table(props) {
                 </td>
               </tr>
             ))}
-          {type === "Organization" &&
-            allSuborgList?.map((row) => (
+          {type === "Organization" && (
+            allSuborgList.length > 0 ? allSuborgList?.map((row) => (
               <tr className="org-rows">
                 <td>
                   <img src={global.config.resourceUrl + row.image} alt="" />
                 </td>
                 <td>{row.name}</td>
                 <td>{row.domain}</td>
-                <td>
-                  {row?.admin?.length > 0 ? (
-                    <Link
-                      onClick={() => {
-                        Swal.fire({
-                          title: 'Organization',
-                          icon: 'warning',
-                          html: 'You are about to change the content of admin panel, Are you sure?',
-                          showCancelButton: true,
-                          confirmButtonColor: "#084892",
-                          cancelButtonColor: "#d33",
-                          confirmButtonText: "Yes",
-                        }).then((result) => {
-                          if (result.isConfirmed) {
-                            dispatch(getOrganization(row.id));
-                            dispatch(clearOrganizationState());
-                            dispatch(setActiveTab('Users'));
-                            dispatch(getOrgUsers(row.id, 1, 25, 1));
-                          }
-                        });
-                      }}
-                      className="view-all"
-                    >
-                      {row?.admins?.length || 0}
-                    </Link>
-                  ) : 'N/A'}
-                </td>
                 <td>
                   {row.projects_count > 0 ? (
                     <div
@@ -448,9 +421,9 @@ function Table(props) {
                             confirmButtonColor: "#084892",
                             cancelButtonColor: "#d33",
                             confirmButtonText: "Yes",
-                          }).then((result) => {
+                          }).then(async (result) => {
                             if (result.isConfirmed) {
-                              dispatch(getOrganization(row.id));
+                              await dispatch(getOrganization(row.id));
                               dispatch(clearOrganizationState());
                             }
                           });
@@ -475,9 +448,9 @@ function Table(props) {
                             confirmButtonColor: "#084892",
                             cancelButtonColor: "#d33",
                             confirmButtonText: "Yes",
-                          }).then((result) => {
+                          }).then(async (result) => {
                             if (result.isConfirmed) {
-                              dispatch(getOrganization(row.id));
+                              await dispatch(getOrganization(row.id));
                               dispatch(clearOrganizationState());
                               dispatch(setActiveTab('Users'));
                             }
@@ -568,8 +541,13 @@ function Table(props) {
                   </div>
                 </td>
               </tr>
-            ))}
-
+            )) :
+              <tr>
+                <td colSpan="9" style={{ textAlign: 'center' }}>
+                  No sub-organization available
+                </td>
+              </tr>
+          )}
           {type === "Project" &&
             subType === "all" &&
             (data ? (

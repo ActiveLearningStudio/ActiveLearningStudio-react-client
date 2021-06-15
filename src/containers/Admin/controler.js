@@ -129,8 +129,8 @@ function Controller(props) {
       {currentOrganization?.id !== activeOrganization?.id && (
         <div className="btn-text">
           <button
-            onClick={() => {
-              dispatch(getOrganization(currentOrganization?.id));
+            onClick={async () => {
+              await dispatch(getOrganization(currentOrganization?.id));
               dispatch(clearOrganizationState());
             }}
           >

@@ -103,7 +103,6 @@ export const columnData = {
     'Image',
     'Name',
     'Domain',
-    'Admins ',
     'Projects ',
     'Sub Org.',
     'Users',

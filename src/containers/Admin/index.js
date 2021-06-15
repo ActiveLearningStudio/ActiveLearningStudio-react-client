@@ -36,7 +36,7 @@ function AdminPanel() {
         <>
           <div className="content-wrapper">
             <div className="inner-content">
-             
+
               <Heading />
               <Tabs
                 defaultActiveKey={activeTab}
@@ -57,7 +57,7 @@ function AdminPanel() {
                 <Tab eventKey="Organization" title="Organization">
                   <div className="module-content">
                     <h2>Organizations</h2>
-                    <Pills modules={["All Orgnizations"]} type="Organization" />
+                    <Pills modules={["All Organizations"]} type="Organization" />
                   </div>
                 </Tab>
                 <Tab eventKey="Project" title="Project">
