@@ -14,6 +14,7 @@ import {
   clearOrganizationState,
   getOrgUsers,
   removeUserFromOrganization,
+  getRoles,
 } from "store/actions/organization";
 import { Link, withRouter } from "react-router-dom";
 import { simpleSearchAction } from "store/actions/search";
@@ -425,6 +426,7 @@ function Table(props) {
                             if (result.isConfirmed) {
                               await dispatch(getOrganization(row.id));
                               dispatch(clearOrganizationState());
+                              dispatch(getRoles());
                             }
                           });
                         }
@@ -452,6 +454,7 @@ function Table(props) {
                             if (result.isConfirmed) {
                               await dispatch(getOrganization(row.id));
                               dispatch(clearOrganizationState());
+                              dispatch(getRoles());
                               dispatch(setActiveTab('Users'));
                             }
                           });
@@ -470,6 +473,7 @@ function Table(props) {
                         () => {
                           dispatch(getOrganization(row.id));
                           dispatch(clearOrganizationState());
+                          dispatch(getRoles());
                         }
                       }
                     >
@@ -486,6 +490,7 @@ function Table(props) {
                         () => {
                           dispatch(getOrganization(row.id));
                           dispatch(clearOrganizationState());
+                          dispatch(getRoles());
                         }
                       }
                     >
