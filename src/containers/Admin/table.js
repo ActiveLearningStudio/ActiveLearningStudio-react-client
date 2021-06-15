@@ -380,7 +380,7 @@ function Table(props) {
                 <td>{row.name}</td>
                 <td>{row.domain}</td>
                 <td>
-                  {row?.admin?.length > 0 && (
+                  {row?.admin?.length > 0 ? (
                     <Link
                       onClick={() => {
                         Swal.fire({
@@ -404,10 +404,10 @@ function Table(props) {
                     >
                       {row?.admins?.length || 0}
                     </Link>
-                  )}
+                  ) : 'N/A'}
                 </td>
                 <td>
-                  {row.projects_count > 0 && (
+                  {row.projects_count > 0 ? (
                     <div
                       className="view-all"
                       onClick={async () => {
@@ -432,10 +432,10 @@ function Table(props) {
                     >
                       {row.projects_count}
                     </div>
-                  )}
+                  ) : 'N/A' }
                 </td>
                 <td>
-                  {row.suborganization_count > 0 && (
+                  {row.suborganization_count > 0 ? (
                     <Link
                       className="view-all"
                       onClick={() => {
@@ -459,10 +459,10 @@ function Table(props) {
                     >
                       {row.suborganization_count || 0}
                     </Link>
-                  )}
+                  ) : 'N/A' }
                 </td>
                 <td>
-                  {row.users_count > 0 && (
+                  {row.users_count > 0 ? (
                     <Link
                       className="view-all"
                       onClick={() => {
@@ -486,10 +486,10 @@ function Table(props) {
                       }}>
                       {row.users_count}
                     </Link>
-                  )}
+                  ) : 'N/A' }
                 </td>
                 <td>
-                  {row.groups_count > 0 && (
+                  {row.groups_count > 0 ? (
                     <Link
                       to={`/org/${allState?.organization?.currentOrganization?.domain}/groups`}
                       className="view-all"
@@ -502,10 +502,10 @@ function Table(props) {
                     >
                       {row.groups_count}
                     </Link>
-                  )}
+                  ) : 'N/A'}
                 </td>
                 <td>
-                  {row.teams_count > 0 && (
+                  {row.teams_count > 0 ? (
                     <Link
                       to={`/org/${allState?.organization?.currentOrganization?.domain}/teams`}
                       className="view-all"
@@ -518,7 +518,7 @@ function Table(props) {
                     >
                       {row.teams_count}
                     </Link>
-                  )}
+                  ) : 'N/A' }
                 </td>
                 <td>
                   <div className="links">
