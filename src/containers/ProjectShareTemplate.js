@@ -77,6 +77,7 @@ function ProjectShareTemplate(props) {
         loginAction({
           email: process.env.REACT_APP_SHARED_PROJECT_DEMO_USER,
           password: process.env.REACT_APP_SHARED_PROJECT_DEMO_PASS,
+          domain: 'currikistudio'
         })
       );
     }
@@ -84,7 +85,6 @@ function ProjectShareTemplate(props) {
     ;
     setAllProject(shareResult.projects);
     if (shareResult.projects.length == 0) {
-      setErrorShow(true);
     }
   }, []);
 
