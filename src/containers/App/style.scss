@@ -561,7 +561,6 @@
     float: left;
     background: #fff;
     border-right: 1px solid #dcdcdc;
-    overflow-y: auto;
 
     //.collapse-button {
     //  position: absolute;
@@ -3273,7 +3272,7 @@ a:hover {
   margin-bottom: 20px;
   display: flex;
   justify-content: space-between !important;
-  padding-top: 20px; 
+  padding-top: 20px;
   .content {
     cursor: pointer;
   }
@@ -3859,7 +3858,7 @@ body.collapsed {
   justify-content: flex-end;
   z-index: 1111;
   background: #084892ad;
-  
+
   .content {
     width:430px;
     background: #fff;
@@ -3867,7 +3866,7 @@ body.collapsed {
     overflow-y: auto;
     margin:0
   }
-  
+
   .heading-info {
     display: flex;
     justify-content: space-between;
@@ -3908,11 +3907,11 @@ body.collapsed {
       height: 69px;
       margin-right: 22px;
     }
-    
+
     h3 {
       font-weight: 600;
       font-size: 16px;
-      
+
     }
 
     p {
