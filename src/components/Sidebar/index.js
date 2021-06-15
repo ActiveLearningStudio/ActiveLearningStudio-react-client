@@ -1,34 +1,68 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  // useCallback,
+  useEffect,
+  useState,
+} from 'react';
+// import userLargeIcon from 'assets/images/sidebar/user80.png';
+// import organizationLargeIcon from 'assets/images/sidebar/organization80.png';
+import groupLargeIcon from 'assets/images/sidebar/group80.png';
+import teamLargeIcon from 'assets/images/sidebar/team80.png';
+import projectLargeIcon from 'assets/images/sidebar/project80.png';
+import administrateLargeIcom from 'assets/images/sidebar/administrate80.png'; //
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+// import { Accordion } from 'react-bootstrap';
 import foldericon from 'assets/images/sidebar/folder-icon.png';
 import teamicon from 'assets/images/sidebar/team-icon.png';
-import dashboardicon from 'assets/images/sidebar/dashboard-icon.png';
+import toggleButton from 'assets/images/sidebar/toggle-button.png';
+import groupicon from 'assets/images/sidebar/group-icon.png';
+// import usersidebaricon from 'assets/images/sidebar/user-sidebar-icon.png';
+// import dashboardicon from 'assets/images/sidebar/dashboard-icon.png';
 import backgroundimg from 'assets/images/sidebar/background.png';
-
+import administrate from 'assets/images/sidebar/administrate.png';
+// import { Accordion, Button } from 'react-bootstrap';
+// import dashboardChevron from 'assets/images/dashboard-chevron.png';
+// import childOrganizationIcon from 'assets/images/child-organization-icon.png';
 import {
   allSidebarProjects,
 } from 'store/actions/project';
+// import { setActiveTab } from 'store/actions/admin';
+import { updateOrganizationScreen } from 'store/actions/organization';
 
 import './style.scss';
 
 const PROJECTS = 'projects';
 const CHANNEL = 'channel';
-const TEAM = 'team';
-const GROUP = 'group';
+// const TEAM = 'team';
 
 function Sidebar(props) {
-  const { history, location } = props;
+  const {
+    // history,
+    location,
+  } = props;
 
   const dispatch = useDispatch();
 
   const allState = useSelector((state) => state);
-  const [selectedTeam, setSelectedTeam] = useState(null);
-  const [selectedGroup, setSelectedGroup] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  useEffect(() => {
+    document.body.classList.add('collapsed');
+  }, []);
+  const [toggleSidebar, setToggleSidebar] = useState(false);
+  // const [activeLink, setActiveLink] = useState('');
+  // const [toggleAccordtion, setToggleAccordion] = useState(false);
+  const handleToggle = () => {
+    if (toggleSidebar === true) {
+      document.body.classList.add('collapsed');
+      // setToggleAccordion(false);
+    } else {
+      document.body.classList.remove('collapsed');
+    }
+    setToggleSidebar(!toggleSidebar);
+  };
+  // const [selectedTeam, setSelectedTeam] = useState(null);
+  // const [selectedCategory, setSelectedCategory] = useState(null);
   const organization = useSelector((state) => state.organization);
   const { permission } = organization;
 
@@ -36,28 +70,14 @@ function Sidebar(props) {
     if (location.pathname.includes('teams/')) {
       const teamId = parseInt(location.pathname.split('teams/')[1], 10);
       if (teamId) {
-        setSelectedTeam(teamId);
+        // setSelectedTeam(teamId);
 
         if (location.pathname.includes(PROJECTS)) {
-          setSelectedCategory(PROJECTS);
+          // setSelectedCategory(PROJECTS);
         } else if (location.pathname.includes(CHANNEL)) {
-          setSelectedCategory(CHANNEL);
+          // setSelectedCategory(CHANNEL);
         } else {
-          setSelectedCategory(TEAM);
-        }
-      }
-    }
-    if (location.pathname.includes('groups/')) {
-      const groupId = parseInt(location.pathname.split('groups/')[1], 10);
-      if (groupId) {
-        setSelectedGroup(groupId);
-
-        if (location.pathname.includes(PROJECTS)) {
-          setSelectedCategory(PROJECTS);
-        } else if (location.pathname.includes(CHANNEL)) {
-          setSelectedCategory(CHANNEL);
-        } else {
-          setSelectedCategory(GROUP);
+          // setSelectedCategory(TEAM);
         }
       }
     }
@@ -69,190 +89,253 @@ function Sidebar(props) {
     }
   }, [allState.sidebar.isLoaded, organization.activeOrganization, dispatch]);
 
-  const handleClickTeam = useCallback((team) => {
-    history.push(`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}`);
-  }, [history, allState.organization.currentOrganization?.domain]);
-  const handleClickGroup = useCallback((group) => {
-    history.push(`/org/${allState.organization.currentOrganization?.domain}/groups/${group.id}`);
-  }, [history, allState.organization.currentOrganization?.domain]);
+  // const handleClickTeam = useCallback((team) => {
+  //   history.push(`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}`);
+  // }, [history, allState.organization.currentOrganization?.domain]);
+  // const handleClickGroup = useCallback((group) => {
+  //   history.push(`/org/${allState.organization.currentOrganization?.domain}/groups/${group.id}`);
+  // }, [history, allState.organization.currentOrganization?.domain]);
 
   return (
     <aside className="sidebar-all">
-      <Link to="/">
-        <div className="menu-title">
-          <img src={foldericon} alt="" />
-          My Projects
-        </div>
-      </Link>
-      {allState.sidebar.allProject.length > 0 && (
-        <ul className="all-project">
-          {allState.sidebar.allProject.slice(0, 5).map((data) => (
-            <li key={data.id}>
-              <Link to={`/org/${allState.organization.currentOrganization?.domain}/project/${data.id}`}>
-                <FontAwesomeIcon icon="angle-right" className="mr-2" />
-                {data.name}
-              </Link>
-            </li>
-          ))}
-          <Link className="expand" to={`/org/${organization.currentOrganization?.domain}`}>
-            Explore All
-            <FontAwesomeIcon icon="arrow-right" className="ml-2" />
-          </Link>
-        </ul>
-      )}
-      {permission?.Dashboard?.includes('dashboard:view') && (
-        <Link to={`/org/${organization.currentOrganization?.domain}/dashboard`}>
-          <div className="menu-title">
-            <img src={dashboardicon} alt="" />
-            Dashboard & Stats
-          </div>
-        </Link>
-      )}
-      {permission?.Team?.includes('team:view') && (
-        <>
-          <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
-            <div className="menu-title">
-              <img src={teamicon} alt="" />
-              Teams
-            </div>
-          </Link>
-          {allState.sidebar.teams.length > 0 && allState.sidebar.teams.slice(0, 3).map((team) => (
-            <div key={team.id} className={`team-item${selectedTeam === team.id ? '' : ' collapsed'}`}>
-              <div className="team-label" onClick={() => { handleClickTeam(team); }}>
-                {team.name}
-                <FontAwesomeIcon
-                  icon={selectedTeam === team.id ? 'angle-up' : 'angle-down'}
-                  className="ml-2 mt-1"
-                  onClick={() => {
-                    if (selectedTeam === team.id) {
-                      setSelectedTeam(0);
-                    } else {
-                      setSelectedTeam(team.id);
-                    }
-                  }}
-                />
+      <img
+        src={toggleButton}
+        alt=""
+        className="toggleButton"
+        onClick={handleToggle}
+      />
+      {toggleSidebar
+        ? (
+          <>
+            <>
+              <div className="org-name">
+                {allState.organization.currentOrganization?.name}
               </div>
+              {/* {permission?.activeRole?.includes('admin')
+                && (
+                <Accordion>
+                  <div className="row-administrate">
+                    <Accordion.Toggle as={Button} variant="link" eventKey="0" onClick={() => { setToggleAccordion(!toggleAccordtion); }}>
+                      <img src={administrate} alt="menu_square" className="org-icon" />
+                      <div className="heading-administrate">
+                        Administrate
+                        <FontAwesomeIcon icon={toggleAccordtion ? 'angle-up' : 'angle-down'} className="headings-angle-right" />
+                      </div>
+                    </Accordion.Toggle>
+                    <Accordion.Collapse eventKey="0">
+                      <>
+                        <Link
+                          to={`/org/${allState.organization.currentOrganization?.domain}/admin`}
+                          onClick={() => {
+                            dispatch(updateOrganizationScreen('intro'));
+                            setActiveLink('dashboard');
+                          }}
+                          className={activeLink === 'dashboard' ? 'active' : 'none'}
+                        >
+                          Dashboard
+                        </Link>
+                        <Link
+                          to={`/org/${allState.organization.currentOrganization?.domain}/manage`}
+                          onClick={() => {
+                            setActiveLink('organization');
+                          }}
+                          className={activeLink === 'organization' ? 'active' : 'none'}
+                        >
+                          Organizations
+                        </Link>
+                        <Link
+                          to={`/org/${allState.organization.currentOrganization?.domain}/admin`}
+                          onClick={() => {
+                            dispatch(setActiveTab('Users'));
+                            setActiveLink('user');
+                          }}
+                          className={activeLink === 'user' ? 'active' : 'none'}
+                        >
+                          Users
+                        </Link>
+                      </>
+                    </Accordion.Collapse>
+                  </div>
+                </Accordion>
+                )} */}
+              {permission?.Organization?.includes('organization:view')
+              && (
+                <>
+                  <Link to={`/org/${allState.organization.currentOrganization?.domain}/admin`}>
+                    <div className="row-sidebar">
+                      <img src={administrate} alt="" />
+                      <div className="sidebar-headings">
+                        Administrate
+                      </div>
+                      <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
+                    </div>
 
-              <div className="team-detail-labels">
+                  </Link>
+                </>
+              )}
+              {/* {permission?.Organization?.includes('organization:view') && (
                 <Link
-                  to={`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}`}
-                  className={selectedCategory === TEAM ? 'active-label' : ''}
+                  to={`/org/${allState.organization.currentOrganization?.domain}/manage`}
+                  onClick={() => dispatch(updateOrganizationScreen('intro'))}
                 >
-                  <FontAwesomeIcon icon="user-friends" className="mr-2" />
-                  Team Members
+                  <div className="goto-dashboard">
+                    Go to Dashboard
+                    <img src={dashboardChevron} alt="" className="dashboard-chevron" />
+                  </div>
                 </Link>
-                <Link
-                  to={`/org/${allState.organization.currentOrganization?.domain}/teams/${team.id}/projects`}
-                  className={selectedCategory === PROJECTS ? 'active-label' : ''}
-                >
-                  <span className="project-title">Projects</span>
-                </Link>
-                {/*
-                <Link
-                  to={`/teams/${team.id}/channel`}
-                  className={selectedCategory === CHANNEL ? 'active-label' : ''}
-                >
-                  <span className="channel-title">Channels</span>
-                </Link>
-                */}
-              </div>
-            </div>
-          ))}
-          {allState.sidebar.teams.length > 0
+              )} */}
+            </>
+            {/* {permission?.Organization?.includes('organization:view')
             && (
-            <Link className="expand" style={{ paddingLeft: '20px', borderTop: 'none' }} to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
-              Explore All Teams
-              <FontAwesomeIcon icon="arrow-right" className="ml-2" />
-            </Link>
+              <>
+                <Link
+                  to={`/org/${allState.organization.currentOrganization?.domain}/manage`}
+                  onClick={() => dispatch(updateOrganizationScreen('all-list'))}
+                >
+                  <div className="row-sidebar">
+                    <img src={childOrganizationIcon} alt="" />
+                    <div className="sidebar-headings">
+                      Child Orgs
+                    </div>
+                    <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
+                  </div>
+                </Link>
+              </>
+            )} */}
+            {permission?.Project?.includes('project:view')
+            && (
+              <>
+                <Link to={`/org/${allState.organization.currentOrganization?.domain}`}>
+                  <div className="row-sidebar">
+                    <img src={foldericon} alt="" />
+                    <div className="sidebar-headings">
+                      My Projects
+                    </div>
+                    <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
+                  </div>
+                </Link>
+              </>
             )}
-        </>
-      )}
-      {permission?.Team?.includes('team:create') && (
-        <div className="menu-title create-button">
-          <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams/create-team`}>
-            <div>
-              <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
-              Create Team
-            </div>
-          </Link>
-        </div>
-      )}
-      {permission?.Group?.includes('group:view') && (
-        <>
-          <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
-            <div className="menu-title">
-              <FontAwesomeIcon icon="users" className="mr-2" />
-              Groups
-            </div>
-          </Link>
-          {allState.sidebar.groups.length > 0 && allState.sidebar.groups.slice(0, 3).map((group) => (
-            <div key={group.id} className={`team-item${selectedGroup === group.id ? '' : ' collapsed'}`}>
-              <div className="team-label" onClick={() => handleClickGroup(group)}>
-                {group.name}
-                <FontAwesomeIcon
-                  icon={selectedGroup === group.id ? 'angle-up' : 'angle-down'}
-                  className="ml-2 mt-1"
+            {permission?.Team?.includes('team:view')
+            && (
+              <>
+                <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
+                  <div className="row-sidebar">
+                    <img src={teamicon} alt="" />
+                    <div className="sidebar-headings">
+                      Teams
+                    </div>
+                    <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
+                  </div>
+                </Link>
+              </>
+            )}
+            {permission?.Group?.includes('group:view')
+            && (
+              <>
+                <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
+                  <div className="row-sidebar">
+                    <img src={groupicon} alt="" />
+                    <div className="sidebar-headings">
+                      Groups
+                    </div>
+                    <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
+                  </div>
+                </Link>
+              </>
+            )}
+            {/* {permission?.Organization?.includes('organization:view-user')
+            && (
+              <>
+                <Link
+                  to={`/org/${allState.organization.currentOrganization?.domain}/admin`}
                   onClick={() => {
-                    if (selectedGroup === group.id) {
-                      setSelectedGroup(0);
-                    } else {
-                      setSelectedGroup(group.id);
-                    }
+                    dispatch(setActiveTab('Users'));
                   }}
-                />
-              </div>
-
-              <div className="team-detail-labels">
-                <Link
-                  to={`/org/${allState.organization.currentOrganization?.domain}/groups/${group.id}`}
-                  className={selectedCategory === TEAM ? 'active-label' : ''}
                 >
-                  <FontAwesomeIcon icon="user-friends" className="mr-2" />
-                  Group Members
+                  <div className="row-sidebar">
+                    <img src={usersidebaricon} alt="" />
+                    <div className="sidebar-headings">
+                      Users
+                    </div>
+                    <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
+                  </div>
                 </Link>
+              </>
+            )} */}
+            <img src={backgroundimg} alt="" />
+          </>
+        ) : (
+          <>
+            <div className="toggleSidebar collapsedown">
+              {permission?.activeRole?.includes('admin') && (
                 <Link
-                  to={`/org/${allState.organization.currentOrganization?.domain}/groups/${group.id}/projects`}
-                  className={selectedCategory === PROJECTS ? 'active-label' : ''}
+                  to={`/org/${allState.organization.currentOrganization.domain}/admin`}
+                  onClick={() => dispatch(updateOrganizationScreen('intro'))}
                 >
-                  <span className="project-title">Projects</span>
+                  <img src={administrateLargeIcom} alt="" />
+                  <div className="tagline">
+                    Administrate
+                  </div>
                 </Link>
-                {/*
+              )}
+              {/* {permission?.Organization?.includes('organization:view') && (
                 <Link
-                  to={`/teams/${team.id}/channel`}
-                  className={selectedCategory === CHANNEL ? 'active-label' : ''}
+                  to={`/org/${allState.organization.currentOrganization.domain}/manage`}
+                  onClick={() => dispatch(updateOrganizationScreen('all-list'))}
                 >
-                  <span className="channel-title">Channels</span>
+                  <img src={childOrgLargeIcon} alt="" />
+                  <div className="tagline">
+                    Manage Child Org
+                  </div>
                 </Link>
-                */}
-              </div>
+              )} */}
+              {permission?.Project?.includes('project:view') && (
+                <Link to={`/org/${allState.organization.currentOrganization?.domain}`}>
+                  <img src={projectLargeIcon} alt="" />
+                  <div className="tagline">
+                    Manage Projects
+                  </div>
+                </Link>
+              )}
+              {permission?.Team?.includes('team:view') && (
+                <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
+                  <img src={teamLargeIcon} alt="" />
+                  <div className="tagline">
+                    Manage Teams
+                  </div>
+                </Link>
+              )}
+              {permission?.Group?.includes('group:view') && (
+                <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
+                  <img src={groupLargeIcon} alt="" />
+                  <div className="tagline">
+                    Manage Groups
+                  </div>
+                </Link>
+              )}
+              {/* {permission?.Organization?.includes('organization:view-user') && (
+                <Link
+                  to={`/org/${allState.organization.currentOrganization?.domain}/admin`}
+                  onClick={() => {
+                    dispatch(setActiveTab('Users'));
+                  }}
+                >
+                  <img src={userLargeIcon} alt="" />
+                  <div className="tagline">
+                    Manage Users
+                  </div>
+                </Link>
+              )} */}
             </div>
-          ))}
-          {allState.sidebar.groups.length > 0
-            && (
-            <Link className="expand" style={{ paddingLeft: '20px', borderTop: 'none' }} to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
-              Explore All Groups
-              <FontAwesomeIcon icon="arrow-right" className="ml-2" />
-            </Link>
-            )}
-        </>
-      )}
-      {permission?.Group?.includes('group:create') && (
-        <div className="menu-title create-button">
-          <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups/create-group`}>
-            <div>
-              <FontAwesomeIcon width="7px" icon="plus" className="mr-2" />
-              Create Group
-            </div>
-          </Link>
-        </div>
-      )}
-      <img src={backgroundimg} alt="" />
+          </>
+        )}
     </aside>
   );
 }
 
 Sidebar.propTypes = {
-  history: PropTypes.object.isRequired,
+  // history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
 };
 
