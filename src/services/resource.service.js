@@ -2,6 +2,7 @@ import Swal from 'sweetalert2';
 
 import config from 'config';
 import httpService from './http.service';
+import { errorCatcher } from './errors';
 
 const { apiVersion } = config;
 
@@ -14,21 +15,8 @@ const create = (activity, playlistId) => httpService
   .post(`/${apiVersion}/playlists/${playlistId}/activities`, activity)
   .then(({ data }) => data)
   .catch((err) => {
-    if (err.errors) {
-      if (err.errors.title.length > 0) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: err.errors.title[0],
-        });
-      }
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: err.message,
-      });
-    }
+    errorCatcher(err.response.data);
+    Promise.reject(err.response.data);
   });
 
 const get = (id, playlistId) => httpService
@@ -57,24 +45,72 @@ const upload = (formData, conf) => httpService
   }, conf)
   .then(({ data }) => data)
   .catch((err) => {
-    if (err.response.data.errors) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: err.response.data.errors[0],
-      });
-    }
+    errorCatcher(err.response.data);
+    Promise.reject(err.response.data);
   });
 
-const getTypes = () => httpService
-  .get(`/${apiVersion}/activity-types`)
+const getTypes = (query, page) => httpService
+  .get(`/${apiVersion}/activity-types${query ? `?query=${query}` : ''}${page ? `?page=${page}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
+
+const createActivityType = (body) => httpService
+  .post(`/${apiVersion}/activity-types`, body)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    Promise.reject(err.response.data);
+  });
+const editActivityType = (body, typeId) => httpService
+  .put(`/${apiVersion}/activity-types/${typeId}`, body)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    Promise.reject(err.response.data);
+  });
+
+const deleteActivityType = (typeId) => httpService
+  .delete(`/${apiVersion}/activity-types/${typeId}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    Promise.reject(err.response.data);
+  });
 
 const getItems = (activityTypeId) => httpService
   .get(`/${apiVersion}/activity-types/${activityTypeId}/items`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
+
+const getActivityItems = (query, page) => httpService
+  .get(`${apiVersion}/activity-items${query ? `?query=${query}` : ''}${page ? `?page=${page}` : ''}`)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    Promise.reject(err.response.data);
+  });
+
+const createActivityItem = (body) => httpService
+  .post(`/${apiVersion}/activity-items`, body)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    Promise.reject(err.response.data);
+  });
+const editActivityItem = (body, itemId) => httpService
+  .put(`/${apiVersion}/activity-items/${itemId}`, body)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    Promise.reject(err.response.data);
+  });
+
+const deleteActivityItem = (itemId) => httpService
+  .delete(`/${apiVersion}/activity-items/${itemId}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    Promise.reject(err.response.data);
+  });
 
 const h5pToken = (dataH5p) => httpService
   .post(`/${apiVersion}/h5p`, dataH5p)
@@ -166,7 +202,14 @@ export default {
   remove,
   upload,
   getTypes,
+  createActivityType,
+  editActivityType,
+  deleteActivityType,
   getItems,
+  getActivityItems,
+  createActivityItem,
+  editActivityItem,
+  deleteActivityItem,
   h5pToken,
   h5pSettings,
   h5pResource,

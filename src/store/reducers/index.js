@@ -19,6 +19,7 @@ import canvas from './canvas';
 import group from './group';
 import organization from './organization';
 import genericLMS from './LMS/genericLMS';
+import admin from './admin';
 
 export default combineReducers({
   auth,
@@ -40,4 +41,5 @@ export default combineReducers({
   group,
   organization,
   genericLMS,
+  admin,
 });

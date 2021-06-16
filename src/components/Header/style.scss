@@ -1,3 +1,4 @@
+
 @import 'assets/css/index';
 
 .top-header {
@@ -40,9 +41,18 @@
     }
 
     .user-dropdown {
-      width: 480px !important;
-      box-shadow: 0 0 99px #00000021;
-      border-radius: 5px;
+      // width: 480px !important;
+      // box-shadow: 0 0 99px #00000021;
+      // border-radius: 3px;
+
+      width: 281px !important;
+      height: 290px;
+      left: calc(50% - 281px/2 + 2.5px);
+      top: calc(50% - 290px/2 - 4px);
+
+      background: #FFFFFF;
+      box-shadow: 1px 20px 50px 1px rgba(0, 0, 0, 0.15);
+      border-radius: 3px;
 
       .scroll-notification {
         max-height: 480px;
@@ -122,6 +132,7 @@
   .navbar-link li .dropdown-menu {
     width: 200px;
     padding: 20px;
+    margin-top: -5.5px !important;
     h2.title {
       font-weight: 500;
       font-size: 20px;
@@ -208,7 +219,6 @@
         color: #636363;
         opacity: 1;
         padding-bottom: 5px;
-        background-color: #fff;
       }
 
       .error {
@@ -319,7 +329,6 @@
     height: auto;
     text-align: center;
     cursor: pointer;
-    padding: 8px;
   }
 
   .dual_activity {
@@ -403,12 +412,12 @@
     top: 0px;
     z-index:-1
   }
-  div.text{
-    text-overflow: ellipsis;
-    text-align: center;
-    overflow: hidden;
-    width: 60px;
-  }
+  // div.text{
+  //   text-overflow: ellipsis;
+  //   overflow: hidden;
+  //   text-align: center;
+  //   width: 60px;
+  // }
   .dropdown-toggle {
     color: $fun-blue-1 !important;
     font-size: 9.42px;
@@ -421,9 +430,11 @@
     justify-content: center;
     align-items: center;
 
+
     img {
       margin-bottom: 3px;
     }
+
     p{
       font-size: 9px;
       line-height: 12px;
@@ -468,67 +479,71 @@
     margin-bottom: 0px;
   }
 }
-.author{
+
+.profile-avatar {
+  width: 32px;
+  height: 32px;
+  background: #084892;
+  color: white;
+  border-radius: 50%;
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  position: inherit;
-  overflow-y: scroll;
+  justify-content: center;
+  align-items: center;
+  /* margin-top: -8px; */
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
 }
-.author-main-box {
-  height: 50px;
-  margin-top: -40px;
-  position: inherit;
-  overflow-y: scroll;
-  .author-box{
-    overflow-y: scroll;
-    background: #fff;
-    border: 1px solid #e5e5e5;
-    &:hover {
-      cursor: pointer;
-      background: $curriki-main-blue;
-      * {
-        color: #fff !important;
-      }
-    }
-    .invite-member-name-mark {
-      position: relative;
-      width: 30px;
-      height: 30px;
-      border: solid 1px #e2e2e2;
-      border-radius: 50%;
-      font-weight: bold;
-      text-align: center;
-      text-transform: uppercase;
-      color: #a5a5a5;
+.user-dropdown-item{
+  display: block;
+  width: 100%;
+  clear: both;
+  font-weight: 400;
+  color: $fun-blue-1;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
 
-      span {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin: 0;
-        transform: translate(-50%, -50%);
-        font-size: 13px;
-      }
-    }
-    .invite-member-info {
-      margin: 0 0 0 13px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-self: center;
-      color: #636363;
+  img {
+    width: 20px;
+    height: 20px;
+    margin: 0 10px 0 -15px;
+    // border: 5px solid black;
+  }
+  &:active {
+    color: white;
+  }
+}
 
-      .invite-member-name {
-        margin: 0;
-        font-size: 14px;
-        color: $mine-shaft;
-      }
-    }
-    div {
-      margin: 0;
-      padding: 7px 1em;
-      display: flex;
-    }
+hr{
+  width: 218.5px;
+  height: 5px;
+  left: calc(50% - 218.5px/2 - 3.75px);
+  top: calc(50% - 0px/2 + 12px);
+  border: 1px solid #E5E5E5;
+}
+
+.user-dropdown-item-name{
+  display: flex;
+  flex-direction: row;
+
+  .basic-info{
+    margin-left: 10px;
+  }
+  .name{
+    // height: 10px;
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+    // border: 1px solid black;
+  }
+  .email{
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+    color: #084892;
+    // border: 1px solid black;
   }
 }
