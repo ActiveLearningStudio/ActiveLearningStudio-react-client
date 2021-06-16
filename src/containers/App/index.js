@@ -73,17 +73,10 @@ function App(props) {
     if ((window.location.href.includes('/login') || window.location.pathname.includes('/register'))) {
       const subDomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
       if (subDomain?.includes('login') || subDomain?.includes('register') || subDomain?.includes('forgot-password')) {
-        const result = dispatch(getBranding(localStorage.getItem('current_org') || 'currikistudio'));
-        result.then((data) => {
-          dispatch(getOrganizationFirstTime(data?.organization?.id));
-          dispatch(getAllPermission(data?.organization?.id));
-        }).catch((err) => err && console.log('error'));
+        dispatch(getBranding('currikistudio'));
       } else if (subDomain) {
         const result = dispatch(getBranding(subDomain));
-        result.then((data) => {
-          dispatch(getOrganizationFirstTime(data?.organization?.id));
-          dispatch(getAllPermission(data?.organization?.id));
-        }).catch((err) => err && window.location.replace('/login'));
+        result.then().catch((err) => err && window.location.replace('/login'));
       }
     }
     if (window.HubSpotConversations) {
