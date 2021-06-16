@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import foldericon from 'assets/images/sidebar/folder-icon.png';
 import teamicon from 'assets/images/sidebar/team-icon.png';
-import dashboardicon from 'assets/images/sidebar/dashboard-icon.png';
+// import dashboardicon from 'assets/images/sidebar/dashboard-icon.png';
 import backgroundimg from 'assets/images/sidebar/background.png';
 
 import {
@@ -100,14 +100,14 @@ function Sidebar(props) {
           </Link>
         </ul>
       )}
-      {true && (
+      {/* {true && (
         <Link to={`/org/${organization.currentOrganization?.domain}/dashboard`}>
           <div className="menu-title">
             <img src={dashboardicon} alt="" />
             Dashboard & Stats
           </div>
         </Link>
-      )}
+      )} */}
       {permission?.Team?.includes('team:view') && (
         <>
           <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
