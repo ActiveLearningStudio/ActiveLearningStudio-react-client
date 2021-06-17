@@ -2,6 +2,7 @@ import * as actionTypes from '../actionTypes';
 
 const INITIAL_STATE = {
   userLmsSettings: [],
+  userLmsSettingsLoaded: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -10,6 +11,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         userLmsSettings: action.lmsSettings.data,
+        userLmsSettingsLoaded: true,
       };
 
     default:
