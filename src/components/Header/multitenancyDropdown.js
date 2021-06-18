@@ -17,12 +17,15 @@ export default function MultitenancyDropdown() {
   const dispatch = useDispatch();
   const history = useHistory();
   const stateHeader = useSelector((state) => state.organization);
+  const auth = useSelector((state) => state.auth);
   const [selectOrg, setSelectOrg] = useState(stateHeader.currentOrganization?.name || 'Select Organization');
   useEffect(() => {
     setSelectOrg(stateHeader.currentOrganization?.name || 'Select Organization');
   }, [stateHeader.currentOrganization]);
   useMemo(() => {
-    dispatch(getAllOrganization());
+    if (auth?.user) {
+      dispatch(getAllOrganization());
+    }
   }, []);
 
   return (

@@ -23,6 +23,7 @@ function SearchForm() {
   const [activityTypes, setActivityTypes] = useState([]);
   const [value, setValue] = useState(0);
   const activityTypesState = useSelector((state) => state.resource.types);
+  const auth = useSelector((state) => state.auth);
   const searchState = useSelector((state) => state.search);
   const {
     currentOrganization,
@@ -32,7 +33,7 @@ function SearchForm() {
   } = useSelector((state) => state.organization);
 
   useEffect(() => {
-    if (activityTypesState?.length === 0) {
+    if (activityTypesState?.length === 0 && auth?.user) {
       dispatcher(loadResourceTypesAction());
     }
   }, []);
