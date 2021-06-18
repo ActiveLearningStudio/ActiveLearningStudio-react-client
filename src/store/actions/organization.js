@@ -227,8 +227,8 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
   });
 };
 
-export const allUsers = (data) => async () => {
-  const result = await organization.getAllUsers(data);
+export const allUsers = (id, name, method) => async () => {
+  const result = await organization.getAllUsers(id, name, method);
   return result;
 };
 
@@ -313,8 +313,8 @@ export const removeUserFromOrganization = (id, preserveData) => async (dispatch)
   });
 };
 
-export const searchUserInOrganization = (id, query, page) => async (dispatch) => {
-  const result = await organization.searchUserInOrganization(id, query, page);
+export const searchUserInOrganization = (id, query, page, role) => async (dispatch) => {
+  const result = await organization.searchUserInOrganization(id, query, page, role);
   dispatch({
     type: actionTypes.SEARCH_USER_IN_ORGANIZATION,
     payload: result,

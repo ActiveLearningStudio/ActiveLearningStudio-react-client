@@ -66,8 +66,8 @@ function Controller(props) {
 
   useEffect(() => {
     if (roles?.length > 0 && subTypeState !== "Manage Roles") {
-      setActiveRoleInComponent(roles[2]?.display_name);
-      // setActiveRole(roles[2]?.id);
+      setActiveRoleInComponent(roles[0]?.display_name);
+      setActiveRole(roles[0]?.id)
     } else if (roles?.length > 0) {
       setActiveRoleInComponent(roles[0]?.display_name);
     }
