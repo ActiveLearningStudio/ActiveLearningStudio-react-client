@@ -39,7 +39,7 @@ export default function Pills(props) {
   const [changeIndexValue, setChangeIndexValue] = useState("1");
   const searchUsers = async (query, page) => {
     const result = await dispatch(
-      searchUserInOrganization(activeOrganization?.id, query, page)
+      searchUserInOrganization(activeOrganization?.id, query, page, activeRole)
     );
     if (result.data.length > 0) {
       setUsers(result);
@@ -56,7 +56,7 @@ export default function Pills(props) {
     } else {
       setSearchQuery("");
       const result = await dispatch(
-        getOrgUsers(activeOrganization?.id, activePage, size)
+        getOrgUsers(activeOrganization?.id, activePage, size, activeRole)
       );
       setUsers(result);
     }
@@ -136,7 +136,6 @@ export default function Pills(props) {
           getOrgUsers(activeOrganization?.id, activePage, size, activeRole)
         );
         setUsers(result);
-        setActiveRole(null);
       }
     }
     if (type === 'Organization' ) {
