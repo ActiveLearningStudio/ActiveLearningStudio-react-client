@@ -227,8 +227,8 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
   });
 };
 
-export const allUsers = (data) => async () => {
-  const result = await organization.getAllUsers(data);
+export const allUsers = (id, name, method) => async () => {
+  const result = await organization.getAllUsers(id, name, method);
   return result;
 };
 
