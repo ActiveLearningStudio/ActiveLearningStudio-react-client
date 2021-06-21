@@ -56,6 +56,7 @@
     "socket.io-client": "^2.3.1",
     "styled-components": "^5.1.0",
     "sweetalert2": "^9.17.1",
+    "tincanjs": "^0.50.0",
     "typescript": "^4.0.2",
     "validator": "^12.2.0",
     "websocket": "^1.0.32"
