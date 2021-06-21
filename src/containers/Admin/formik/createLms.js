@@ -202,6 +202,7 @@ export default function CreateUser(prop) {
               <select name="lms_name" onChange={handleChange} onBlur={handleBlur} value={values.lms_name}>
                 <option value="moodle">Moodle</option>
                 <option value="canvas">Canvas</option>
+                <option value="safarimontage">Safari Montage</option>
                
               </select>
               <div className="error">
