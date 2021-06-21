@@ -49,8 +49,8 @@ const upload = (formData, conf) => httpService
     Promise.reject(err.response.data);
   });
 
-const getTypes = (query, page) => httpService
-  .get(`/${apiVersion}/activity-types${query ? `?query=${query}` : ''}${page ? `?page=${page}` : ''}`)
+const getTypes = () => httpService
+  .get(`/${apiVersion}/activity-types`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -70,7 +70,7 @@ const editActivityType = (body, typeId) => httpService
   });
 
 const deleteActivityType = (typeId) => httpService
-  .delete(`/${apiVersion}/activity-types/${typeId}`)
+  .remove(`/${apiVersion}/activity-types/${typeId}`)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
@@ -83,7 +83,7 @@ const getItems = (activityTypeId) => httpService
   .catch((err) => Promise.reject(err.response.data));
 
 const getActivityItems = (query, page) => httpService
-  .get(`${apiVersion}/activity-items${query ? `?query=${query}` : ''}${page ? `?page=${page}` : ''}`)
+  .get(`${apiVersion}/get-activity-items${query ? `?query=${query}` : ''}${page ? `?page=${page}` : ''}`)
   .catch((err) => {
     errorCatcher(err.response.data);
     Promise.reject(err.response.data);
@@ -105,7 +105,7 @@ const editActivityItem = (body, itemId) => httpService
   });
 
 const deleteActivityItem = (itemId) => httpService
-  .delete(`/${apiVersion}/activity-items/${itemId}`)
+  .remove(`/${apiVersion}/activity-items/${itemId}`)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);

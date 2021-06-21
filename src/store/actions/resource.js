@@ -10,22 +10,21 @@ import * as actionTypes from '../actionTypes';
 // global variable for h5p object
 let h5pid;
 
-export const loadResourceTypesAction = (query, page) => async (dispatch) => {
+export const loadResourceTypesAction = () => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPES_REQUEST,
     });
-    const result = await resourceService.getTypes(query, page);
-    const { data } = result;
+    const { activityTypes } = await resourceService.getTypes();
+
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPES_SUCCESS,
-      payload: { data },
+      payload: { activityTypes },
     });
     dispatch({
       type: actionTypes.GET_ACTIVITY_TYPES,
-      payload: result,
+      payload: { activityTypes },
     });
-    return result;
   } catch (e) {
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPES_FAIL,
@@ -91,14 +90,9 @@ export const loadResourceItemsAction = (activityTypeId) => async (dispatch) => {
 
 export const getActivityItems = (query, page) => async (dispatch) => {
   const allActivityItems = await resourceService.getActivityItems(query, page);
-  const { data } = allActivityItems;
-  dispatch({
-    type: actionTypes.GET_ACTIVITY_ITEMS,
-    payload: data.data,
-  });
   dispatch({
     type: actionTypes.GET_ACTIVITY_ITEMS_ADMIN,
-    payload: data,
+    payload: allActivityItems.data,
   });
   return allActivityItems;
 };

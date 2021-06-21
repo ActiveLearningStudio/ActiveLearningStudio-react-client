@@ -320,12 +320,12 @@ function Controller(props) {
           <img src={searchimg} alt="search" />
         </div>
       )}
-      {!!search && type === 'Activities' && subType === 'Activity Types' && (
+      {/* {!!search && type === 'Activities' && subType === 'Activity Types' && (
         <div className="search-bar">
           <input type="text" placeholder="Search" onChange={(e) => searchActivitiesQueryHandler(e, subType)} />
           <img src={searchimg} alt="search" />
         </div>
-      )}
+      )} */}
       {!!search && type === 'Activities' && subType === 'Activity Items' && (
         <div className="search-bar">
           <input type="text" placeholder="Search" onChange={(e) => searchActivitiesQueryHandler(e, subType)} />

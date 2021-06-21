@@ -731,10 +731,10 @@ function Table(props) {
               </tr>
             ))}
           {(type === 'Activities' && subType === 'Activity Types') && (
-            data ? data?.data.map((type) => (
+            data ? data?.map((type) => (
               <tr className="org-rows">
                 <td>{type.title}</td>
-                <td><img src={global.config.resourceUrl + type.image} alt="activity-type-image" /></td>
+                <td><img className="image-size" src={global.config.resourceUrl + type.image} alt="activity-type-image" /></td>
                 <td>{type.order}</td>
                 <td>
                   {type.activityItems.map((item) => (
@@ -794,12 +794,12 @@ function Table(props) {
             data?.data ? data?.data.map((item) => (
               <tr>
                 <td>{item.title}</td>
-                <td><img src={global.config.resourceUrl + item.image} alt="activity-item-image" /></td>
+                <td><img className="image-size" src={global.config.resourceUrl + item.image} alt="activity-item-image" /></td>
                 <td>{item.order}</td>
                 <td>
                   <b>Activity Type:</b>
                   <span>
-                    {item.activityType.title}
+                    {item?.activityType?.title}
                   </span>
                   <b>Item Type:</b>
                   <span>

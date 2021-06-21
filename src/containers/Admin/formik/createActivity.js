@@ -56,9 +56,16 @@ export default function CreateActivity(props) {
               },
               button: false,
             });
-            await dispatch(editActivityType(values, selectedType.id));
-            Swal.close();
-            dispatch(removeActiveAdminForm());
+            const result = await dispatch(editActivityType(values, selectedType.id));
+            if (result) {
+              Swal.fire({
+                text: 'You have successfully updated the activity type',
+                icon: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#084892',
+                confirmButtonText: 'OK',
+              });
+            }
           } else {
             Swal.fire({
               title: 'Activity',
@@ -70,9 +77,16 @@ export default function CreateActivity(props) {
               },
               button: false,
             });
-            await dispatch(createActivityType(values));
-            Swal.close();
-            dispatch(removeActiveAdminForm());
+            const result = await dispatch(createActivityType(values));
+            if (result) {
+              Swal.fire({
+                text: 'You have successfully created the activity type',
+                icon: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#084892',
+                confirmButtonText: 'OK',
+              });
+            }
           }
         }}
       >
