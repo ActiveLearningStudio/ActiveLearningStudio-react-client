@@ -48,10 +48,7 @@ const inviteUserOutside = (id, info) => httpService
 const branding = (domain) => httpService
   .get(`/${apiVersion}/organization/get-by-domain?domain=${domain.trim()}`)
   .then(({ data }) => data)
-  .catch((err) => {
-    errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
-  });
+  .catch((err) => Promise.reject(err.response.data));
 
 const getSubOrganizationList = (id) => httpService
   .get(`/${apiVersion}/suborganizations/${id}/index`)
@@ -82,7 +79,7 @@ const createOrganization = (organizationData) => httpService
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
+    return Promise.reject(err.response.data);
   });
 
 const updateOrganization = (organizationData, id) => httpService
@@ -90,7 +87,7 @@ const updateOrganization = (organizationData, id) => httpService
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
+    return Promise.reject(err.response.data);
   });
 
 const upload = (id, formData) => httpService

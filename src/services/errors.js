@@ -22,7 +22,7 @@ export const errorCatcher = (err) => {
 		Swal.fire({
 			icon: 'error',
 			title: 'Oops...',
-			text: 'Something went wrong!',
+			text: 'Something went wronge!',
 		});
 	}
 }
