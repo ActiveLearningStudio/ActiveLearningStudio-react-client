@@ -98,7 +98,6 @@ const ActivityShared = (props) => {
               stopXapi();
 
               x.H5P.externalDispatcher.on('xAPI', (event) => {
-                console.log('here we are');
                 if (counter > 0) {
                   const extendedStatement = xAPIHelper.extendSharedActivityStatement(
                     this,
@@ -107,36 +106,40 @@ const ActivityShared = (props) => {
                   );
                   dispatch(loadH5pResourceXapi(JSON.stringify(extendedStatement)));
 
-                  // If we're in docebo, send tincanjs statement
-                  const doceboStatement = new TinCan.Statement({
-                        actor: {
-                          ...extendedStatement.actor,
-                          mbox: 'mailto:info@currikistudio.org',
+                  if (lrs) {
+                  // If an lrs has been defined, send tincanjs statement
+                    const doceboStatement = new TinCan.Statement({
+                          actor: {
+                            ...extendedStatement.actor,
+                            mbox: 'mailto:info@currikistudio.org',
+                          },
+                          verb: extendedStatement.verb,
+                          context: extendedStatement.context,
+                          object: extendedStatement.object,
+                    });
+
+                    lrs.saveStatement(
+                      doceboStatement,
+                      {
+                        callback: (err, xhr) => {
+                            if (err !== null) {
+                                if (xhr !== null) {
+                                    console.log(`Failed to save statement: ${xhr.responseText} (${xhr.status})`);
+                                    // TODO: do something with error, didn't save statement
+                                    return;
+                                }
+
+                                console.log(`Failed to save statement: ${err}`);
+                                // TODO: do something with error, didn't save statement
+                                return;
+                            }
+
+                            console.log('Statement saved');
+                            // TOOO: do something with success (possibly ignore)
                         },
-                        verb: extendedStatement.verb,
-                  });
-
-                  lrs.saveStatement(
-                    doceboStatement,
-                    {
-                      callback: (err, xhr) => {
-                          if (err !== null) {
-                              if (xhr !== null) {
-                                  console.log(`Failed to save statement: ${xhr.responseText} (${xhr.status})`);
-                                  // TODO: do something with error, didn't save statement
-                                  return;
-                              }
-
-                              console.log(`Failed to save statement: ${err}`);
-                              // TODO: do something with error, didn't save statement
-                              return;
-                          }
-
-                          console.log('Statement saved');
-                          // TOOO: do something with success (possibly ignore)
                       },
-                    },
-                  );
+                    );
+                  }
                 }
                 counter += 1;
               });
