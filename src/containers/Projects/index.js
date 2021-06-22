@@ -271,7 +271,9 @@ export const ProjectsPage = (props) => {
   };
 
   const handleClose = () => {
-    setShow(false);
+    setTimeout(() => {
+      setShow(false);
+    }, 1000);
   };
 
   const handleCloseProjectModal = (e) => {
