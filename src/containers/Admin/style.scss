@@ -133,6 +133,14 @@
     padding: 20px 10px;
     border: 1px solid #ccc;
     flex-wrap: wrap;
+
+    div {
+      margin-right: 8px;
+      margin-top: 3px;
+      margin-bottom: 3px;
+     
+    }
+
     .retryandforget {
       .retry {
         color: #fff;
