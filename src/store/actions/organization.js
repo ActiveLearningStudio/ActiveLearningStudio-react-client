@@ -156,24 +156,6 @@ export const createOrganizationNew = (id, data) => async (dispatch) => {
       icon: 'success',
       text: 'Created',
     });
-  }).catch((err) => {
-    try {
-      Object.keys(err.errors).map((errors, index) => {
-        if (index < 1) {
-          Swal.fire({
-            icon: 'error',
-            text: err.errors[errors],
-          });
-        }
-        return true;
-      });
-    } catch {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Something went wrong!',
-      });
-    }
   });
 };
 
@@ -206,24 +188,6 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
       icon: 'success',
       text: 'updated',
     });
-  }).catch((err) => {
-    try {
-      Object.keys(err.errors).map((errors, index) => {
-        if (index < 1) {
-          Swal.fire({
-            icon: 'error',
-            text: err.errors[errors]?.[0],
-          });
-        }
-        return true;
-      });
-    } catch {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Something went wrong!',
-      });
-    }
   });
 };
 

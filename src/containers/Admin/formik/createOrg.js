@@ -54,9 +54,7 @@ export default function CreateOrg(prop) {
             errors.domain = "Required";
           } else if (values.domain?.length < 2) {
             errors.domain = "Character limit should be greater then one";
-          } else if (values.domain === true) {
-            errors.domain = "Domain already taken, Kindly try again.";
-          }
+          } 
           if (!values.image) {
             errors.image = "Required";
           }
@@ -76,7 +74,7 @@ export default function CreateOrg(prop) {
           });
           if (editMode) {
             const result = await dispatch(
-              updateOrganization(activeOrganization.id, values, activeEdit.parent.id)
+              updateOrganization(activeEdit.id, values, activeEdit.parent.id)
             );
           } else {
             const result = await dispatch(
@@ -93,6 +91,7 @@ export default function CreateOrg(prop) {
           handleBlur,
           handleSubmit,
           setFieldValue,
+          setErrors,
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
@@ -216,23 +215,23 @@ export default function CreateOrg(prop) {
                 autoComplete="off"
                 value={values.domain}
                 onChange={(e) => {
+                  setFieldValue("domain", e.target?.value);
                   if (e.target.value.length > 1) {
-                    const inputValue = e.target.value;
+                   
                     setLoaderImg(true);
                     const result = dispatch(checkBranding(e.target.value));
                     result
                       .then(() => {
                         setLoaderImg(false);
-                        setFieldValue("domain", true);
+                        // setFieldValue("domain", true);
+                        setErrors({ domain: 'domian already used' });
                       })
                       .catch((err) => {
                         if (err.errors) {
                           setLoaderImg(false);
-                          setFieldValue("domain", inputValue);
+                          
                         }
                       });
-                  } else {
-                    setFieldValue("domain", e.target?.value);
                   }
                 }}
                 onBlur={handleBlur}
