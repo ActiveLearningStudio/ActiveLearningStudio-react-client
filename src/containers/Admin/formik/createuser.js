@@ -69,10 +69,20 @@ export default function CreateUser(prop) {
               },
               button: false,
             });
-            await dispatch(editUserInOrganization(values));
-            Swal.close();
-            dispatch(removeActiveAdminForm());
-
+            const response = await dispatch(editUserInOrganization(values));
+            if (response) {
+              Swal.fire({
+                text: 'You have successfully updated the user!',
+                icon: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#084892',
+                confirmButtonText: 'OK',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  dispatch(removeActiveAdminForm());
+                }
+              });
+            }
           } else {
             Swal.fire({
               title: 'Users',
@@ -85,11 +95,22 @@ export default function CreateUser(prop) {
               },
               button: false,
             });
-            await dispatch(addUserInOrganization(values));
-            Swal.close();
-            dispatch(removeActiveAdminForm());
-
+            const response = await dispatch(addUserInOrganization(values));
+            if (response) {
+              Swal.fire({
+                text: 'You have successfully created the user!',
+                icon: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#084892',
+                confirmButtonText: 'OK',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  dispatch(removeActiveAdminForm());
+                }
+              });
+            }
           }
+
         }}
       >
         {({

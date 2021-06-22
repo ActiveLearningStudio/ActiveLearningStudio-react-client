@@ -24,10 +24,11 @@ function SearchForm() {
   const [value, setValue] = useState(0);
   const activityTypesState = useSelector((state) => state.resource.types);
   const searchState = useSelector((state) => state.search);
+  const auth = useSelector((state) => state.auth);
   const { currentOrganization } = useSelector((state) => state.organization);
 
   useEffect(() => {
-    if (activityTypesState.length === 0) {
+    if (activityTypesState.length === 0 && auth?.user) {
       dispatcher(loadResourceTypesAction());
       dispatcher(getActivityItems());
       dispatcher(getUserReport('all'));

@@ -26,7 +26,7 @@ export default function MultitenancyDropdown() {
     if (auth?.user) {
       dispatch(getAllOrganization());
     }
-  }, []);
+  }, [auth?.user]);
 
   return (
     <Dropdown className="dropdown-multitenancy">

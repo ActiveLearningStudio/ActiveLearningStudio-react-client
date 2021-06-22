@@ -124,7 +124,10 @@ export default function Pills(props) {
       subTypeState === "All users" &&
       activeTab === "Users"
     ) {
-      if (
+      if (searchQuery) {
+        searchUserInOrganization(activeOrganization?.id, searchQuery, activePage, activeRole)
+      }
+      else if (
         organization?.users?.data?.length > 0 &&
         activePage === organization?.activePage &&
         size === organization?.size &&
