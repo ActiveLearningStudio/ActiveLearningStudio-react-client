@@ -482,6 +482,7 @@ export default function Pills(props) {
                 data={allProjectTab}
                 searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
                 type={type}
+                importUser={true}
                 // searchQuery={searchQuery}
                 // searchProjectQueryChangeHandler={searchProjectQueryChangeHandle}
                 // searchAlertToggler={searchAlertToggler}

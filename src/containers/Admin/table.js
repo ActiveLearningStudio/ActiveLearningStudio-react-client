@@ -584,6 +584,31 @@ function Table(props) {
 
                     <td>{row.status_text}</td>
                     <td>{updateNew.toDateString()}</td>
+                    <td>
+                
+                    <Link
+                      onClick={()=>{
+                        Swal.fire({
+                          title: 'Please Wait !',
+                          html: 'Exporting  Project ...',
+                          allowOutsideClick: false,
+                          onBeforeOpen: () => {
+                            Swal.showLoading();
+                          },
+                        });
+                        const result = adminService.exportProject(activeOrganization.id, row.id)
+                        result.then((data) => {
+                          // console.log(data)
+                          Swal.fire({
+                            icon: 'success',
+                            text: data?.message,
+                          });
+                        })
+                      }}
+                    >
+                      Export
+                      </Link>
+                    </td>
                   </tr>
                 );
               })

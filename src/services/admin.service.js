@@ -29,6 +29,22 @@ const getAllProject = (subOrgId, page) => httpService
     Promise.reject(err.response.data);
   });
 
+const exportProject = (subOrgId, projectId) => httpService
+  .post(`/${apiVersion}/suborganization/${subOrgId}/projects/${projectId}/export`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject(err.response.data);
+  });
+
+const importProject = (subOrgId, projectData) => httpService
+  .post(`/${apiVersion}/suborganization/${subOrgId}/projects/import`, projectData)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject(err.response.data);
+  });
+
 const getAllProjectSearch = (subOrgId, page, search) => httpService
   .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&query=${search || ''}`)
   .then(({ data }) => data)
@@ -187,6 +203,7 @@ export default {
   updateIndex,
   userSerchIndexs,
   getAllProjectSearch,
+  exportProject,
   getUserProjectSearch,
   getActivityTypes,
   getLmsProject,
@@ -201,4 +218,5 @@ export default {
   forgetAllFailedJobs,
   forgetSpecificFailedJob,
   getLogsListing,
+  importProject,
 };
