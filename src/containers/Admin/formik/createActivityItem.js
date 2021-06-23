@@ -27,7 +27,7 @@ export default function CreateActivityItem(props) {
         initialValues={{
           title: editMode ? selectedItem.title : '',
           description: editMode ? selectedItem.description : '',
-          activityType: editMode ? selectedItem.activityType.id : '',
+          activity_type_id: editMode ? selectedItem.activityType.id : '',
           type: editMode ? selectedItem.type : '',
           h5pLib: editMode ? selectedItem.h5pLib : '',
           demo_activity_id: editMode ? selectedItem.demo_activity_id : '',
@@ -43,8 +43,8 @@ export default function CreateActivityItem(props) {
           if (!values.description) {
             errors.description = 'Required';
           }
-          if (!values.activityType) {
-            errors.activityType = 'Required';
+          if (!values.activity_type_id) {
+            errors.activity_type_id = 'Required';
           }
           if (!values.type) {
             errors.type = 'Required';
@@ -255,14 +255,14 @@ export default function CreateActivityItem(props) {
             </div>
             <div className="form-group-create">
               <h3>Activity Type</h3>
-              <select name="activityType" onChange={handleChange} onBlur={handleBlur} value={values.activityType}>
+              <select name="activity_type_id" onChange={handleChange} onBlur={handleBlur} value={values.activity_type_id}>
                 <option value="">{' '}</option>
                 {activityTypes?.length > 0 && activityTypes?.map((type) => (
                   <option value={type?.id} key={type?.id}>{type?.title}</option>
                 ))}
               </select>
               <div className="error">
-                {errors.activityType && touched.activityType && errors.activityType}
+                {errors.activity_type_id && touched.activity_type_id && errors.activity_type_id}
               </div>
             </div>
             <div className="form-group-create">
