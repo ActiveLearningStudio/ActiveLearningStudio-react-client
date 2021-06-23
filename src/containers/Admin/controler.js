@@ -64,10 +64,15 @@ function Controller(props) {
     }
   }, []);
 
-  useEffect(() => {
+  useMemo(() => {
     if (roles?.length > 0 && subTypeState !== "Manage Roles") {
-      setActiveRoleInComponent(roles[0]?.display_name);
-      setActiveRole(roles[0]?.id)
+      // if(!activeRoleInComponent) setActiveRoleInComponent(roles[0]?.display_name);
+      if (!activeRole) {
+        setActiveRole(roles[0]?.id) ;
+      }
+      else if (activeRole) {
+        setActiveRoleInComponent(roles.filter(role => role.id === activeRole)[0].display_name);
+      };
     } else if (roles?.length > 0) {
       setActiveRoleInComponent(roles[0]?.display_name);
     }
