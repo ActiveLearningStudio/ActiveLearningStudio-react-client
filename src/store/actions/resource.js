@@ -47,6 +47,7 @@ export const createActivityType = (data) => async (dispatch) => {
     type: actionTypes.ADD_ACTIVITY_TYPE,
     payload: result,
   });
+  return result;
 };
 
 export const editActivityType = (data, typeId) => async (dispatch) => {
@@ -55,6 +56,7 @@ export const editActivityType = (data, typeId) => async (dispatch) => {
     type: actionTypes.EDIT_ACTIVITY_TYPE,
     payload: result,
   });
+  return result;
 };
 
 export const deleteActivityType = (typeId) => async (dispatch) => {
@@ -110,6 +112,7 @@ export const createActivityItem = (data) => async (dispatch) => {
     type: actionTypes.ADD_ACTIVITY_ITEM,
     payload: result,
   });
+  return result;
 };
 
 export const editActivityItem = (data, itemId) => async (dispatch) => {
@@ -118,6 +121,7 @@ export const editActivityItem = (data, itemId) => async (dispatch) => {
     type: actionTypes.EDIT_ACTIVITY_ITEM,
     payload: result,
   });
+  return result;
 };
 
 export const deleteActivityItem = (itemId) => async (dispatch) => {
@@ -292,6 +296,24 @@ export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
     type: actionTypes.UPLOAD_RESOURCE_THUMBNAIL,
     payload: { thumbUrl },
   });
+};
+
+export const uploadActivityTypeThumbAction = (formData) => async (dispatch) => {
+  const { image } = await resourceService.uploadActivityTypeThumb(formData);
+  dispatch({
+    type: actionTypes.UPLOAD_ACTIVITY_TYPE_THUMBNAIL,
+    payload: { image },
+  });
+  return image;
+};
+
+export const uploadActivityItemThumbAction = (formData) => async (dispatch) => {
+  const { image } = await resourceService.uploadActivityItemThumb(formData);
+  dispatch({
+    type: actionTypes.UPLOAD_ACTIVITY_ITEM_THUMBNAIL,
+    payload: { image },
+  });
+  return image;
 };
 
 export const deleteResourceAction = (activityId, playlistId) => async (dispatch) => {

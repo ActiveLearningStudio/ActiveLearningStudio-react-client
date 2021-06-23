@@ -7,7 +7,9 @@ const INITIAL_STATE = {
   selectedItem: null,
   items: [],
   newActivityType: null,
+  activityTypeThumbUrl: null,
   newActivityItem: null,
+  activityItemThumbUrl: null,
   resources: [],
   showCreateResourcePopup: false,
   newResource: {
@@ -96,7 +98,16 @@ export default (state = INITIAL_STATE, action) => {
         },
         progress: null,
       };
-
+    case actionTypes.UPLOAD_ACTIVITY_TYPE_THUMBNAIL:
+      return {
+        ...state,
+        activityTypeThumbUrl: action.payload.image,
+      };
+    case actionTypes.UPLOAD_ACTIVITY_ITEM_THUMBNAIL:
+      return {
+        ...state,
+        activityItemThumbUrl: action.payload.image,
+      };
     // TODO: refactor bottom
     case actionTypes.SHOW_CREATE_RESOURCE_MODAL:
       return {

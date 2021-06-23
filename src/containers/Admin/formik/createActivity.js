@@ -4,17 +4,15 @@ import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import imgAvatar from 'assets/images/img-avatar.png';
-import { uploadImage } from 'store/actions/organization';
 import { removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
-import { createActivityType, editActivityType } from 'store/actions/resource';
+import { createActivityType, editActivityType, uploadActivityTypeThumbAction } from 'store/actions/resource';
 
 export default function CreateActivity(props) {
   const { editMode } = props;
   const [imageActive, setImgActive] = useState(null);
   const imgUpload = useRef();
   const dispatch = useDispatch();
-  const allListState = useSelector((state) => state.organization);
   const selectedType = useSelector((state) => state.resource.selectedType);
   useEffect(() => {
     if (editMode) {
@@ -56,14 +54,18 @@ export default function CreateActivity(props) {
               },
               button: false,
             });
-            const result = await dispatch(editActivityType(values, selectedType.id));
-            if (result) {
+            const response = await dispatch(editActivityType(values, selectedType.id));
+            if (response) {
               Swal.fire({
                 text: 'You have successfully updated the activity type',
                 icon: 'success',
                 showCancelButton: false,
                 confirmButtonColor: '#084892',
                 confirmButtonText: 'OK',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  dispatch(removeActiveAdminForm());
+                }
               });
             }
           } else {
@@ -77,14 +79,18 @@ export default function CreateActivity(props) {
               },
               button: false,
             });
-            const result = await dispatch(createActivityType(values));
-            if (result) {
+            const response = await dispatch(createActivityType(values));
+            if (response) {
               Swal.fire({
                 text: 'You have successfully created the activity type',
                 icon: 'success',
                 showCancelButton: false,
                 confirmButtonColor: '#084892',
                 confirmButtonText: 'OK',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  dispatch(removeActiveAdminForm());
+                }
               });
             }
           }
@@ -151,11 +157,11 @@ export default function CreateActivity(props) {
                     } else {
                       const formData = new FormData();
                       try {
-                        formData.append('thumb', e.target.files[0]);
-                        const imgurl = dispatch(uploadImage(allListState.currentOrganization?.id, formData));
+                        formData.append('image', e.target.files[0]);
+                        const imgurl = dispatch(uploadActivityTypeThumbAction(formData));
                         imgurl.then((img) => {
-                          setImgActive(img.data?.thumbUrl);
-                          setFieldValue('image', img.data?.thumbUrl);
+                          setImgActive(img);
+                          setFieldValue('image', img);
                         });
                       } catch (err) {
                         Swal.fire({
