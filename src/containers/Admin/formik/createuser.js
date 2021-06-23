@@ -31,11 +31,11 @@ export default function CreateUser(prop) {
         }}
         validate={(values) => {
           const errors = {};
-          if (!values.first_name) {
-            errors.first_name = 'Required';
+          if (!values.first_name || values.first_name.length > 255) {
+            errors.first_name = values.first_name.length > 255 ? 'Length must be 255 characters or less ' : 'Required';
           }
-          if (!values.last_name) {
-            errors.last_name = 'Required';
+          if (!values.last_name || values.last_name.length > 255) {
+            errors.last_name = values.last_name.length > 255 ? 'Length must be 255 characters or less ' : 'Required';
           }
           if (!values.email) {
             errors.email = 'Required';
@@ -52,8 +52,8 @@ export default function CreateUser(prop) {
           if (!values.organization_name) {
             errors.organization_name = 'Required';
           }
-          if (!values.job_title) {
-            errors.job_title = 'Required';
+          if (!values.job_title || values.job_title.length > 255) {
+            errors.job_title = values.job_title.length > 255 ? 'Length must be 255 characters or less ' : 'Required';
           }
           return errors;
         }}
