@@ -35,6 +35,7 @@ function Controller(props) {
     filter,
     activeRole,
     setActiveRole,
+    setActivePage,
     type,
     searchQuery,
     searchQueryChangeHandler,
@@ -64,10 +65,15 @@ function Controller(props) {
     }
   }, []);
 
-  useEffect(() => {
+  useMemo(() => {
     if (roles?.length > 0 && subTypeState !== "Manage Roles") {
-      setActiveRoleInComponent(roles[0]?.display_name);
-      setActiveRole(roles[0]?.id)
+      // if(!activeRoleInComponent) setActiveRoleInComponent(roles[0]?.display_name);
+      if (!activeRole) {
+        setActiveRole(roles[0]?.id) ;
+      }
+      else if (activeRole) {
+        setActiveRoleInComponent(roles.filter(role => role.id === activeRole)[0].display_name);
+      };
     } else if (roles?.length > 0) {
       setActiveRoleInComponent(roles[0]?.display_name);
     }
@@ -215,6 +221,7 @@ function Controller(props) {
                           dispatch(roleDetail(activeOrganization.id, head.id));
                         if (subTypeState === 'All users') {
                           setActiveRole(head.id);
+                          setActivePage(1);
                         }
                       }}
                     >

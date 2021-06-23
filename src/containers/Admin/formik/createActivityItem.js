@@ -3,17 +3,15 @@ import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import imgAvatar from 'assets/images/img-avatar.png';
-import { uploadImage } from 'store/actions/organization';
 import { removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
-import { createActivityItem, editActivityItem } from 'store/actions/resource';
+import { createActivityItem, editActivityItem, uploadActivityItemThumbAction } from 'store/actions/resource';
 
 export default function CreateActivityItem(props) {
   const { editMode } = props;
   const [imageActive, setImgActive] = useState(null);
   const imgUpload = useRef();
   const dispatch = useDispatch();
-  const allListState = useSelector((state) => state.organization);
   const activityTypes = useSelector((state) => state.admin.activityTypes);
   const selectedItem = useSelector((state) => state.resource.selectedItem);
   useEffect(() => {
@@ -29,7 +27,7 @@ export default function CreateActivityItem(props) {
         initialValues={{
           title: editMode ? selectedItem.title : '',
           description: editMode ? selectedItem.description : '',
-          activityType: editMode ? selectedItem.activityType.id : '',
+          activity_type_id: editMode ? selectedItem.activityType.id : '',
           type: editMode ? selectedItem.type : '',
           h5pLib: editMode ? selectedItem.h5pLib : '',
           demo_activity_id: editMode ? selectedItem.demo_activity_id : '',
@@ -45,8 +43,8 @@ export default function CreateActivityItem(props) {
           if (!values.description) {
             errors.description = 'Required';
           }
-          if (!values.activityType) {
-            errors.activityType = 'Required';
+          if (!values.activity_type_id) {
+            errors.activity_type_id = 'Required';
           }
           if (!values.type) {
             errors.type = 'Required';
@@ -81,14 +79,18 @@ export default function CreateActivityItem(props) {
               },
               button: false,
             });
-            const result = await dispatch(editActivityItem(values, selectedItem.id));
-            if (result) {
+            const response = await dispatch(editActivityItem(values, selectedItem.id));
+            if (response) {
               Swal.fire({
                 text: 'You have successfully updated the activity item',
                 icon: 'success',
                 showCancelButton: false,
                 confirmButtonColor: '#084892',
                 confirmButtonText: 'OK',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  dispatch(removeActiveAdminForm());
+                }
               });
             }
           } else {
@@ -102,14 +104,18 @@ export default function CreateActivityItem(props) {
               },
               button: false,
             });
-            const result = await dispatch(createActivityItem(values));
-            if (result) {
+            const response = await dispatch(createActivityItem(values));
+            if (response) {
               Swal.fire({
                 text: 'You have successfully created the activity item',
                 icon: 'success',
                 showCancelButton: false,
                 confirmButtonColor: '#084892',
                 confirmButtonText: 'OK',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  dispatch(removeActiveAdminForm());
+                }
               });
             }
           }
@@ -189,11 +195,11 @@ export default function CreateActivityItem(props) {
                     } else {
                       const formData = new FormData();
                       try {
-                        formData.append('thumb', e.target.files[0]);
-                        const imgurl = dispatch(uploadImage(allListState.currentOrganization?.id, formData));
+                        formData.append('image', e.target.files[0]);
+                        const imgurl = dispatch(uploadActivityItemThumbAction(formData));
                         imgurl.then((img) => {
-                          setImgActive(img.data?.thumbUrl);
-                          setFieldValue('image', img.data?.thumbUrl);
+                          setImgActive(img);
+                          setFieldValue('image', img);
                         });
                       } catch (err) {
                         Swal.fire({
@@ -249,14 +255,14 @@ export default function CreateActivityItem(props) {
             </div>
             <div className="form-group-create">
               <h3>Activity Type</h3>
-              <select name="activityType" onChange={handleChange} onBlur={handleBlur} value={values.activityType}>
+              <select name="activity_type_id" onChange={handleChange} onBlur={handleBlur} value={values.activity_type_id}>
                 <option value="">{' '}</option>
                 {activityTypes?.length > 0 && activityTypes?.map((type) => (
                   <option value={type?.id} key={type?.id}>{type?.title}</option>
                 ))}
               </select>
               <div className="error">
-                {errors.activityType && touched.activityType && errors.activityType}
+                {errors.activity_type_id && touched.activity_type_id && errors.activity_type_id}
               </div>
             </div>
             <div className="form-group-create">

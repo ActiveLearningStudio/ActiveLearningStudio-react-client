@@ -23,7 +23,7 @@ const register = (body) => httpService
   .post('/register', body)
   .then(({ data }) => data)
   .catch((err) => {
-    errorCatcher(err);
+    errorCatcher(err.response.data);
     Promise.reject(err.response.data);
   });
 

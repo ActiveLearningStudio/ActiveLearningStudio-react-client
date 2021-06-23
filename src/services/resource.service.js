@@ -49,6 +49,26 @@ const upload = (formData, conf) => httpService
     Promise.reject(err.response.data);
   });
 
+const uploadActivityTypeThumb = (formData) => httpService
+  .post(`/${apiVersion}/activity-types/upload-thumb`, formData, {
+    'Content-Type': 'multipart/form-data',
+  })
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    Promise.reject(err.response.data);
+  });
+
+const uploadActivityItemThumb = (formData) => httpService
+  .post(`/${apiVersion}/activity-items/upload-thumb`, formData, {
+    'Content-Type': 'multipart/form-data',
+  })
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    Promise.reject(err.response.data);
+  });
+
 const getTypes = () => httpService
   .get(`/${apiVersion}/activity-types`)
   .then(({ data }) => data)
@@ -210,6 +230,8 @@ export default {
   createActivityItem,
   editActivityItem,
   deleteActivityItem,
+  uploadActivityTypeThumb,
+  uploadActivityItemThumb,
   h5pToken,
   h5pSettings,
   h5pResource,
