@@ -1,17 +1,18 @@
 /* eslint-disable */
-import React, { useState, useMemo, useEffect } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useMemo, useEffect, useRef } from "react";
+// import PropTypes from "prop-types";
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch, useSelector } from "react-redux";
-
+import Swal from "sweetalert2";
 import { forgetAllFailedJobs, retryAllFailedJobs, setActiveAdminForm } from "store/actions/admin";
 import searchimg from "assets/images/search-icon.png";
-import csv from "assets/images/csv.png";
-import pdf from "assets/images/pdf.png";
+// import csv from "assets/images/csv.png";
+// import pdf from "assets/images/pdf.png";
 import bulk from "assets/images/bulk.png";
 import InviteUser from "containers/ManageOrganization/inviteAdmin";
 import AddUser from "containers/ManageOrganization/addUser";
+import adminService from "services/admin.service";
 import {
   clearOrganizationState,
   getOrganization,
@@ -49,6 +50,7 @@ function Controller(props) {
     subType,
     setChangeIndexValue,
   } = props;
+  const importProject = useRef();
   const dispatch = useDispatch();
   const [allUsersAdded, setAllUsersAdded] = useState([]);
   const adminState = useSelector((state) => state.admin);
@@ -60,7 +62,7 @@ function Controller(props) {
   const [selectedIndexValueid, setSelectedIndexValueid] = useState(1);
   useMemo(() => {
     if (type === "Users") {
-    dispatch(getRoles());
+      dispatch(getRoles());
     }
   }, []);
 
@@ -198,7 +200,7 @@ function Controller(props) {
       )}
       {(roles?.length > 0 && type === "Users") ? (
         <div className="filter-dropdown drop-counter ">
-          {subTypeState=== 'Manage Roles' ? "Select role:" : "Filter by role:"}
+          {subTypeState === 'Manage Roles' ? "Select role:" : "Filter by role:"}
           <span>
             <Dropdown>
               <Dropdown.Toggle id="dropdown-basic">
@@ -226,28 +228,28 @@ function Controller(props) {
             </Dropdown>
           </span>
         </div>
-      ): null}
+      ) : null}
       {type === 'Stats' && subTypeState === 'Queues:Jobs' &&
         <Dropdown name="jobType" id="jobType">
           <Dropdown.Toggle id="dropdown-basic">
-                {jobType.display_name}
+            {jobType.display_name}
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <Dropdown.Item value='1' name='Pending' onClick={() => SetJobType({value: 1, display_name: 'Pending'})}>Pending</Dropdown.Item>
-            <Dropdown.Item value='2' name='Failed' onClick={() => SetJobType({value: 2, display_name:'Failed'})}>Failed</Dropdown.Item>
+            <Dropdown.Item value='1' name='Pending' onClick={() => SetJobType({ value: 1, display_name: 'Pending' })}>Pending</Dropdown.Item>
+            <Dropdown.Item value='2' name='Failed' onClick={() => SetJobType({ value: 2, display_name: 'Failed' })}>Failed</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       }
       {type === 'Stats' && subTypeState === 'Queues:Logs' &&
         <Dropdown name="logType" id="logType">
           <Dropdown.Toggle id="dropdown-basic">
-                {logType.display_name}
+            {logType.display_name}
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <Dropdown.Item value='all' name='All' onClick={() => SetLogType({value: 'all', display_name: 'All'})}>All</Dropdown.Item>
-            <Dropdown.Item value='1' name='Running' onClick={() => SetLogType({value: 1, display_name: 'Running'})}>Running</Dropdown.Item>
-            <Dropdown.Item value='2' name='Failed' onClick={() => SetLogType({value: 2, display_name: 'Failed'})}>Failed</Dropdown.Item>
-            <Dropdown.Item value='3' name='Completed' onClick={() => SetLogType({value: 3, display_name: 'Completed'})}>Completed</Dropdown.Item>
+            <Dropdown.Item value='all' name='All' onClick={() => SetLogType({ value: 'all', display_name: 'All' })}>All</Dropdown.Item>
+            <Dropdown.Item value='1' name='Running' onClick={() => SetLogType({ value: 1, display_name: 'Running' })}>Running</Dropdown.Item>
+            <Dropdown.Item value='2' name='Failed' onClick={() => SetLogType({ value: 2, display_name: 'Failed' })}>Failed</Dropdown.Item>
+            <Dropdown.Item value='3' name='Completed' onClick={() => SetLogType({ value: 3, display_name: 'Completed' })}>Completed</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       }
@@ -302,7 +304,7 @@ function Controller(props) {
             className=""
             type="text"
             placeholder="Search"
-            onChange={(e) => searchUserReportQueryHandler(e,subTypeState)}
+            onChange={(e) => searchUserReportQueryHandler(e, subTypeState)}
           />
           <img src={searchimg} alt="search" />
         </div>
@@ -332,15 +334,62 @@ function Controller(props) {
           <img src={searchimg} alt="search" />
         </div>
       )}
-      {/* {!!importUser && (
-        <div className="import-user">
+      {!!importUser && type === 'Project' && subType === 'all' && (
+        <div className="import-user"
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            importProject.current.click();
+          }}
+        >
           <div className="img-section">
             <img src={bulk} alt="upload" />
           </div>
-          <div>Import Users</div>
+          <div>Import Project</div>
+          <input
+            type="file"
+            ref={importProject}
+            type="file"
+            style={{ display: 'none' }}
+            onChange={(e) => {
+              if (e.target.files.length === 0) {
+                return true;
+              }
+              if (!(e.target.files[0].type.includes('zip'))) {
+                Swal.fire({
+                  title: 'Invalid File',
+                  icon: 'error',
+                  text: 'please select zip file',
+                  
+                });
+              } else {
+                Swal.fire({
+                  title: 'Importing Project',
+                  icon: 'info',
+                  text: 'please wait...',
+                  allowOutsideClick: false,
+                  onBeforeOpen: () => {
+                    Swal.showLoading();
+                  },
+                  button: false,
+                });
+                let formData = new FormData();
+                formData.append("project", e.target.files[0]);
+                const response = adminService.importProject(activeOrganization.id, formData);
+                response.then((res) => {
+
+                  Swal.fire({
+                    icon: "success",
+                    text: res?.message,
+
+                  });
+                });
+
+              }
+            }}
+          />
         </div>
       )}
-      {!!print && (
+      {/* {!!print && (
         <div className="print-info">
           <div>print</div>
           <div className="img-section">
@@ -380,7 +429,7 @@ function Controller(props) {
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic">
                 Invite external user
-                </Dropdown.Toggle>
+              </Dropdown.Toggle>
               <Dropdown.Menu>
                 <InviteUser />
               </Dropdown.Menu>
@@ -394,7 +443,7 @@ function Controller(props) {
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic">
                 Add internal user
-                </Dropdown.Toggle>
+              </Dropdown.Toggle>
               <Dropdown.Menu>
                 <AddUser
                   setAllUsersAdded={setAllUsersAdded}

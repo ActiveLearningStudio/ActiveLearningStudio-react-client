@@ -57,12 +57,13 @@ export const columnData = {
     'Created',
     'Description',
     'Id',
-	'Indexing',
+	  'Indexing',
     'Org Id',
     'Shared',
     'Starter Project',
 	'Status',
 	'Updated',
+  'Action',
   ],
 
   ActivityTypes: [
