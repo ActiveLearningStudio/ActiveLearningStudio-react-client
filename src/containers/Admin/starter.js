@@ -61,6 +61,7 @@ function Starter(props) {
         logType={logType}
         SetLogType={SetLogType}
         searchQuery={searchQuery}
+        setActivePage={setActivePage}
         searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
         searchActivitiesQueryHandler={searchActivitiesQueryHandler}
         searchUserReportQueryHandler={searchUserReportQueryHandler}

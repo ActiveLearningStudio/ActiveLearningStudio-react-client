@@ -35,6 +35,7 @@ function Controller(props) {
     filter,
     activeRole,
     setActiveRole,
+    setActivePage,
     type,
     searchQuery,
     searchQueryChangeHandler,
@@ -220,6 +221,7 @@ function Controller(props) {
                           dispatch(roleDetail(activeOrganization.id, head.id));
                         if (subTypeState === 'All users') {
                           setActiveRole(head.id);
+                          setActivePage(1);
                         }
                       }}
                     >
