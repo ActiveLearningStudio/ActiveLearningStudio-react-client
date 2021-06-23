@@ -27,7 +27,7 @@ export default function CreateUser(prop) {
           job_title:editMode ? currentUser?.job_title :"",
           role_id:editMode ? currentUser?.organization_role_id : '',
           email:editMode ? currentUser?.email :'',
-          password:'',
+          password:editMode ? undefined : '',
         }}
         validate={(values) => {
           const errors = {};

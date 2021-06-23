@@ -386,6 +386,8 @@ function Table(props) {
                       className="view-all"
                       onClick={async () => {
                         await dispatch(getOrganization(row.id));
+                        dispatch(clearOrganizationState());
+                        dispatch(getRoles());
                         Swal.fire({
                           html: "Searching...",
                           allowOutsideClick: false,
