@@ -32,7 +32,7 @@ export default function CreateActivityItem(props) {
         initialValues={{
           title: editMode ? selectedItem.title : '',
           description: editMode ? selectedItem.description : '',
-          activity_type_id: editMode ? selectedItem.activityType.id : '',
+          activity_type_id: editMode ? selectedItem.activityType?.id : '',
           type: editMode ? selectedItem.type : '',
           h5pLib: editMode ? selectedItem.h5pLib : '',
           demo_activity_id: editMode ? selectedItem.demo_activity_id : '',
