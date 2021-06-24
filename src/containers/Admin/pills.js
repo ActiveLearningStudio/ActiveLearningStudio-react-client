@@ -260,26 +260,26 @@ export default function Pills(props) {
   const searchUserReportQueryHandler = async ({target}, subTypeRecieved) => {
     if (subTypeRecieved === 'Report') {
       if (target.value) {
-        await dispatch(getUserReport('all', size, activePage, target.value));
+        await dispatch(getUserReport('all', size, undefined, target.value));
       } else {
-        await dispatch(getUserReport('all'));
+        await dispatch(getUserReport('all', size, activePage));
       }
     }
     if (subTypeRecieved === 'Queues:Jobs') {
       if (target.value) {
-        let result = dispatch(getJobListing(jobType.value, size, activePage ,target.value));
+        let result = dispatch(getJobListing(jobType.value, size, undefined ,target.value));
         result.then((data) => setJobs(data.data));
       } else {
-        let result = dispatch(getJobListing(jobType.value));
+        let result = dispatch(getJobListing(jobType.value, size, activePage));
         result.then((data) => setJobs(data.data));
       }
     }
     if (subTypeRecieved === 'Queues:Logs') {
       if (target.value) {
-        let result = dispatch(getLogsListing(logType.value, size, activePage , target.value));
+        let result = dispatch(getLogsListing(logType.value, size, undefined , target.value));
         result.then((data) => setLogs(data.data));
       } else {
-        let result = dispatch(getLogsListing(logType.value));
+        let result = dispatch(getLogsListing(logType.value, size, activePage));
         result.then((data) => setLogs(data.data));
       }
     }
@@ -305,12 +305,14 @@ export default function Pills(props) {
 
   useEffect(() => {
     if (activeTab === 'Project') {
-      setSubTypeState('Indexing Queue')
-      setCurrentTab('index')
+      setSubTypeState('Indexing Queue');
+      setCurrentTab('index');
     } else if (activeTab === 'Activities') {
-      setSubTypeState('Activity Types')
+      setSubTypeState('Activity Types');
     } else if (activeTab === 'Users') {
-      setSubTypeState('All users')
+      setSubTypeState('All users');
+    } else if (activeTab === 'Stats') {
+      setSubTypeState('Report');
     }
   },[activeTab]);
   // console.log(columnData)
