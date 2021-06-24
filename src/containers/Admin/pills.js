@@ -115,7 +115,9 @@ export default function Pills(props) {
     }
   };
 
-
+  useMemo(() => {
+    if (activeTab !== 'Users') setActiveRole(null);
+  }, [activeTab])
 
   useMemo(async () => {
     if (
@@ -134,7 +136,7 @@ export default function Pills(props) {
         !activeRole
       ) {
         setUsers(organization?.users);
-      } else {
+      } else if (activeRole) {
         const result = await dispatch(
           getOrgUsers(activeOrganization?.id, activePage, size, activeRole)
         );
@@ -233,13 +235,11 @@ export default function Pills(props) {
     }
     if (type === 'Stats' && subTypeState === 'Queues:Jobs' && (activePage !== organization?.activePage || size !== organization?.size) && jobType) {
       const result = dispatch(getJobListing(jobType.value, size, activePage))
-      console.log(result);
       result.then((data) => {
         setJobs(data.data);
       });
     } else if (type === 'Stats' && subTypeState === 'Queues:Jobs' && (activePage === 1 || size === 25)) {
       const result = dispatch(getJobListing(jobType.value))
-      console.log(result);
       result.then((data) => {
         setJobs(data.data);
       });
@@ -252,7 +252,6 @@ export default function Pills(props) {
       });
     } else if (type === 'Stats' && subTypeState === 'Queues:Logs' && (activePage === 1 || size === 25)) {
       const result = dispatch(getLogsListing(logType.value))
-      console.log(result);
       result.then((data) => {
         setLogs(data.data);
       });

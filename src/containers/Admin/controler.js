@@ -67,19 +67,20 @@ function Controller(props) {
     }
   }, []);
 
-  useMemo(() => {
-    if (roles?.length > 0 && subTypeState !== "Manage Roles") {
+  useEffect(() => {
+    if (roles?.length > 0 && subTypeState !== "Manage Roles" && adminState?.activeTab === 'Users') {
       // if(!activeRoleInComponent) setActiveRoleInComponent(roles[0]?.display_name);
       if (!activeRole) {
         setActiveRole(roles[0]?.id) ;
+        setActiveRoleInComponent(roles[0]?.display_name);
       }
       else if (activeRole) {
         setActiveRoleInComponent(roles.filter(role => role.id === activeRole)[0].display_name);
       };
-    } else if (roles?.length > 0) {
+    } else if (roles?.length > 0 && subTypeState === "Manage Roles") {
       setActiveRoleInComponent(roles[0]?.display_name);
     }
-  }, [roles]);
+  }, [roles, adminState?.activeTab]);
   // sabtype
   // const sab = subType;
   // console.log(subTypeState);
@@ -140,6 +141,7 @@ function Controller(props) {
             onClick={async () => {
               await dispatch(getOrganization(currentOrganization?.id));
               dispatch(clearOrganizationState());
+              dispatch(getRoles());
             }}
           >
             Go to root organization
@@ -366,7 +368,7 @@ function Controller(props) {
                   title: 'Invalid File',
                   icon: 'error',
                   text: 'please select zip file',
-                  
+
                 });
               } else {
                 Swal.fire({

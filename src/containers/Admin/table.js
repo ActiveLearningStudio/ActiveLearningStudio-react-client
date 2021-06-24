@@ -359,7 +359,7 @@ function Table(props) {
                   </td>
                 </tr>
               ))
-            ) : searchAlertToggler === 0 ? (
+            ) : (searchAlertToggler === 0 || data?.data?.length === 0) ? (
               <tr>
                 <td colspan="8">
                   <Alert variant="warning">No User Found</Alert>
@@ -472,8 +472,8 @@ function Table(props) {
                       to={`/org/${allState?.organization?.currentOrganization?.domain}/groups`}
                       className="view-all"
                       onClick={
-                        () => {
-                          dispatch(getOrganization(row.id));
+                       async () => {
+                          await dispatch(getOrganization(row.id));
                           dispatch(clearOrganizationState());
                           dispatch(getRoles());
                         }
@@ -489,8 +489,8 @@ function Table(props) {
                       to={`/org/${allState?.organization?.currentOrganization?.domain}/teams`}
                       className="view-all"
                       onClick={
-                        () => {
-                          dispatch(getOrganization(row.id));
+                       async () => {
+                          await dispatch(getOrganization(row.id));
                           dispatch(clearOrganizationState());
                           dispatch(getRoles());
                         }
@@ -585,7 +585,7 @@ function Table(props) {
                     <td>{row.status_text}</td>
                     <td>{updateNew.toDateString()}</td>
                     <td>
-                
+
                     <Link
                       onClick={()=>{
                         Swal.fire({
