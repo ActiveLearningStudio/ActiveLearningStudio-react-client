@@ -1,10 +1,11 @@
 /* eslint-disable */
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { addUserInOrganization,editUserInOrganization, removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
+import { loadOrganizationTypesAction } from 'store/actions/auth';
 
 export default function CreateUser(prop) {
   const { editMode } = prop;
@@ -12,9 +13,13 @@ export default function CreateUser(prop) {
   const imgref  = useRef();
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
+  const organizationTypes = useSelector((state) => state.auth.organizationTypes);
   const { roles } = organization;
   const adminState = useSelector((state) => state.admin);
   const { activeForm, currentUser } = adminState;
+  useEffect(() => {
+    dispatch(loadOrganizationTypesAction());
+  }, [])
   return (
     <div className="create-form">
       <Formik
@@ -49,8 +54,8 @@ export default function CreateUser(prop) {
           if (!values.organization_type) {
             errors.organization_type = 'Required';
           }
-          if (!values.organization_name) {
-            errors.organization_name = 'Required';
+          if (!values.organization_name || values.organization_name.length > 255) {
+            errors.organization_name = values.organization_name.length > 255 ? 'Length must be 255 characters or less ' : 'Required';;
           }
           if (!values.job_title || values.job_title.length > 255) {
             errors.job_title = values.job_title.length > 255 ? 'Length must be 255 characters or less ' : 'Required';
@@ -201,13 +206,12 @@ export default function CreateUser(prop) {
             </div>
             <div className="form-group-create">
               <h3>Organization Type</h3>
-              <input
-                type="text"
-                name="organization_type"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.organization_type}
-              />
+              <select name="organization_type" onChange={handleChange} onBlur={handleBlur} value={values.organization_type}>
+                <option value="">{' '}</option>
+                {organizationTypes?.length > 0 && organizationTypes?.map((type) => (
+                  <option value={type?.label} key={type?.label}>{type?.label}</option>
+                ))}
+              </select>
               <div className="error">
                 {errors.organization_type && touched.organization_type && errors.organization_type}
               </div>
