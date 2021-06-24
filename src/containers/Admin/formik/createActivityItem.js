@@ -5,7 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import imgAvatar from 'assets/images/img-avatar.png';
 import { removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
-import { createActivityItem, editActivityItem, uploadActivityItemThumbAction } from 'store/actions/resource';
+import {
+  createActivityItem,
+  editActivityItem,
+  getActivityItems,
+  uploadActivityItemThumbAction,
+} from 'store/actions/resource';
 
 export default function CreateActivityItem(props) {
   const { editMode } = props;
@@ -90,6 +95,7 @@ export default function CreateActivityItem(props) {
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
+                  dispatch(getActivityItems('', 1));
                 }
               });
             }
@@ -115,6 +121,7 @@ export default function CreateActivityItem(props) {
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
+                  dispatch(getActivityItems('', 1));
                 }
               });
             }
