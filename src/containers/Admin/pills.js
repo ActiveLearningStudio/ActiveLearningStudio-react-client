@@ -260,14 +260,14 @@ export default function Pills(props) {
   const searchUserReportQueryHandler = async ({target}, subTypeRecieved) => {
     if (subTypeRecieved === 'Report') {
       if (target.value) {
-        await dispatch(getUserReport('all', size, activePage, target.value));
+        await dispatch(getUserReport('all', size, undefined, target.value));
       } else {
         await dispatch(getUserReport('all'));
       }
     }
     if (subTypeRecieved === 'Queues:Jobs') {
       if (target.value) {
-        let result = dispatch(getJobListing(jobType.value, size, activePage ,target.value));
+        let result = dispatch(getJobListing(jobType.value, size, undefined ,target.value));
         result.then((data) => setJobs(data.data));
       } else {
         let result = dispatch(getJobListing(jobType.value));
@@ -276,7 +276,7 @@ export default function Pills(props) {
     }
     if (subTypeRecieved === 'Queues:Logs') {
       if (target.value) {
-        let result = dispatch(getLogsListing(logType.value, size, activePage , target.value));
+        let result = dispatch(getLogsListing(logType.value, size, undefined , target.value));
         result.then((data) => setLogs(data.data));
       } else {
         let result = dispatch(getLogsListing(logType.value));

@@ -206,7 +206,15 @@ function Table(props) {
                 <tr>
                   <td>{job.name}</td>
                   <td>
-                    <Alert variant={job.failed ? 'danger' : 'success'}> {job.failed ? 'Failed' : 'Success'}</Alert>
+                    {(job.is_finished && job.failed) && (
+                      <Alert variant="danger">Failed</Alert>
+                    )}
+                    {(!job.is_finished && !job.failed) && (
+                      <Alert variant="primary">Running</Alert>
+                    )}
+                    {(job.is_finished && !job.failed) && (
+                      <Alert variant="success">Success</Alert>
+                    )}
                   </td>
                   <td>{job.started_at}</td>
                   <td>Queue: {job.queue} Attempt: {job.attempt}</td>
