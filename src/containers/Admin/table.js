@@ -359,7 +359,7 @@ function Table(props) {
                   </td>
                 </tr>
               ))
-            ) : searchAlertToggler === 0 ? (
+            ) : (searchAlertToggler === 0 || data?.data?.length === 0) ? (
               <tr>
                 <td colspan="8">
                   <Alert variant="warning">No User Found</Alert>
