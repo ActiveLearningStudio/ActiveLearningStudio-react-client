@@ -305,12 +305,14 @@ export default function Pills(props) {
 
   useEffect(() => {
     if (activeTab === 'Project') {
-      setSubTypeState('Indexing Queue')
-      setCurrentTab('index')
+      setSubTypeState('Indexing Queue');
+      setCurrentTab('index');
     } else if (activeTab === 'Activities') {
-      setSubTypeState('Activity Types')
+      setSubTypeState('Activity Types');
     } else if (activeTab === 'Users') {
-      setSubTypeState('All users')
+      setSubTypeState('All users');
+    } else if (activeTab === 'Stats') {
+      setSubTypeState('Report');
     }
   },[activeTab]);
   // console.log(columnData)
