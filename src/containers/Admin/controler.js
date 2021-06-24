@@ -288,7 +288,7 @@ function Controller(props) {
           <input
             className=""
             type="text"
-            placeholder="Search"
+            placeholder="Search by email"
             value={searchQuery}
             onChange={searchQueryChangeHandler}
           />
