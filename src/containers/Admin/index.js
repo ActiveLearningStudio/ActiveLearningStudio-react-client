@@ -32,7 +32,7 @@ function AdminPanel() {
   }, [activeTab])
   return (
     <div className="admin-panel">
-      {permission?.activeRole?.includes("admin") ? (
+      {permission?.Organization?.includes('organization:view') ? (
         <>
           <div className="content-wrapper">
             <div className="inner-content">
