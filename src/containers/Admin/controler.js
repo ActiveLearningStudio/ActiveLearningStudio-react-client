@@ -139,7 +139,9 @@ function Controller(props) {
         <div className="btn-text">
           <button
             onClick={async () => {
-              await dispatch(getOrganization(currentOrganization?.id));
+              if(permission?.Organization?.includes('organization:view')) {
+                await dispatch(getOrganization(currentOrganization?.id));
+              }
               dispatch(clearOrganizationState());
               dispatch(getRoles());
             }}

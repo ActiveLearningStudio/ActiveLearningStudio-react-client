@@ -10,6 +10,7 @@ import {
   setCurrentOrganization,
   setActiveOrganization,
   getAllPermission,
+  getRoles,
 } from 'store/actions/organization';
 import menu from 'assets/images/menu_square.png';
 
@@ -40,11 +41,12 @@ export default function MultitenancyDropdown() {
         <h2 className="title">Organizations</h2>
         {stateHeader.allOrganizations.length > 0 && stateHeader.allOrganizations.map((org) => (
           <div className="all-tg-lister">
-            <Dropdown.Item onClick={() => {
+            <Dropdown.Item onClick={async () => {
               setSelectOrg(org.name);
-              dispatch(setCurrentOrganization(org));
-              dispatch(setActiveOrganization(org));
-              dispatch(getAllPermission(org.id));
+              await dispatch(setCurrentOrganization(org));
+              await dispatch(setActiveOrganization(org));
+              await dispatch(getAllPermission(org.id));
+              await dispatch(getRoles());
               storageService.setItem(CURRENT_ORG, org.domain);
               history.push(`/org/${org.domain}`);
             }}

@@ -41,7 +41,7 @@ function App(props) {
             (async () => {
               const result = dispatch(getBranding(subDomain));
               result.then((data) => {
-                dispatch(getOrganizationFirstTime(data?.organization?.id));
+                if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
                 dispatch(getAllPermission(data?.organization?.id));
               }).catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
@@ -50,7 +50,7 @@ function App(props) {
             (async () => {
               const result = dispatch(getBranding(subDomain));
               result.then((data) => {
-                dispatch(getOrganizationFirstTime(data?.organization?.id));
+                if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
                 dispatch(getAllPermission(data?.organization?.id));
               }).catch((err) => err && window.location.replace('/org/currikistudio'));
             })();

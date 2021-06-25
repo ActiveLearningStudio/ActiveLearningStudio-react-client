@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   isLoading: false,
   activeScreen: 'intro',
   activePage: 1,
+  activeRole: '',
   size: 25,
   backScreen: '',
   roles: [],
@@ -181,6 +182,7 @@ export default (state = INITIAL_STATE, action) => {
         users: action.payload.result,
         activePage: action.payload.page,
         size: action.payload.size,
+        activeRole: action.payload.activeRole,
       };
     case actionTypes.DELETE_USER_FROM_ORGANIZATION:
       return {

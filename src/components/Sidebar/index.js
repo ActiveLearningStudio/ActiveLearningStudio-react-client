@@ -334,7 +334,7 @@ function Sidebar(props) {
         ) : (
           <>
             <div className="toggleSidebar collapsedown">
-              {permission?.activeRole?.includes('admin') && (
+              {permission?.Organization?.includes('organization:view') && (
                 <Link
                   to={`/org/${allState.organization.currentOrganization.domain}/admin`}
                   onClick={() => dispatch(updateOrganizationScreen('intro'))}

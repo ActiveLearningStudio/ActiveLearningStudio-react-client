@@ -235,11 +235,11 @@ export const clearHistory = () => async (dispatch) => {
 
 export const getOrgUsers = (id, page, size, activeRole) => async (dispatch) => {
   let result = '';
-  const centralizedState = store.getState();
-  const { organization: { activeOrganization, currentOrganization } } = centralizedState;
-  if (activeOrganization?.id !== currentOrganization?.id) {
-    result = await organization.getOrgUsers(id, page, size);
-  }
+  // const centralizedState = store.getState();
+  // const { organization: { activeOrganization, currentOrganization } } = centralizedState;
+  // if (activeOrganization?.id !== currentOrganization?.id) {
+  //   result = await organization.getOrgUsers(id, page, size);
+  // }
   result = await organization.getOrgUsers(id, page, size, activeRole);
   dispatch({
     type: actionTypes.GET_ORGANIZATION_USERS,
@@ -247,6 +247,7 @@ export const getOrgUsers = (id, page, size, activeRole) => async (dispatch) => {
       result,
       page,
       size,
+      activeRole,
     },
   });
   return result;
