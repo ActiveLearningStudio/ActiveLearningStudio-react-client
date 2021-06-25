@@ -152,11 +152,8 @@ export const createOrganizationNew = (id, data) => async (dispatch) => {
     dispatch({
       type: 'CLEAR_ACTIVE_FORM',
     });
-    Swal.fire({
-      icon: 'success',
-      text: 'Created',
-    });
   });
+  return result;
 };
 
 export const updateOrganization = (id, data, parent) => async (dispatch) => {
@@ -172,6 +169,7 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
     description: data.description,
     image: data.image,
     parent_id: parent,
+    domain: data.domain,
     // admins: adminUsers,
     // users: usersList,
   };
@@ -184,11 +182,8 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
     dispatch({
       type: 'CLEAR_ACTIVE_FORM',
     });
-    Swal.fire({
-      icon: 'success',
-      text: 'updated',
-    });
   });
+  return result;
 };
 
 export const allUsers = (id, name, method) => async () => {

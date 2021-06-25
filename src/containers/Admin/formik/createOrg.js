@@ -7,6 +7,7 @@ import {
   createOrganizationNew,
   checkBranding,
   updateOrganization,
+  getsubOrgList,
 } from "store/actions/organization";
 import { removeActiveAdminForm } from "store/actions/admin";
 import imgAvatar from "assets/images/img-avatar.png";
@@ -54,7 +55,7 @@ export default function CreateOrg(prop) {
             errors.domain = "Required";
           } else if (values.domain?.length < 2) {
             errors.domain = "Character limit should be greater then one";
-          } 
+          }
           if (!values.image) {
             errors.image = "Required";
           }
@@ -73,13 +74,51 @@ export default function CreateOrg(prop) {
             },
           });
           if (editMode) {
-            const result = await dispatch(
+            const response = await dispatch(
               updateOrganization(activeEdit.id, values, activeEdit.parent.id)
             );
+            if (response) {
+              Swal.fire({
+                text: 'You have successfully updated the organization',
+                icon: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#084892',
+                confirmButtonText: 'OK',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  dispatch(removeActiveAdminForm());
+                  dispatch(getsubOrgList(activeOrganization?.id));
+                }
+              });
+            }
           } else {
-            const result = await dispatch(
+            Swal.fire({
+              title: 'Activity',
+              icon: 'info',
+              text: 'Creating new organization...',
+              allowOutsideClick: false,
+              onBeforeOpen: () => {
+                Swal.showLoading();
+              },
+              button: false,
+            });
+            const response = await dispatch(
               createOrganizationNew(activeOrganization.id, values)
             );
+            if (response) {
+              Swal.fire({
+                text: 'You have successfully created the organization',
+                icon: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#084892',
+                confirmButtonText: 'OK',
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  dispatch(removeActiveAdminForm());
+                  dispatch(getsubOrgList(activeOrganization?.id));
+                }
+              });
+            }
           }
         }}
       >
@@ -206,18 +245,18 @@ export default function CreateOrg(prop) {
                   errors.description}
               </div>
             </div>
-            {!editMode &&
             <div className="form-group-create">
               <h3>Domain</h3>
               <input
                 type="text"
                 name="domain"
                 autoComplete="off"
+                disabled={editMode ? true : false}
                 value={values.domain}
                 onChange={(e) => {
                   setFieldValue("domain", e.target?.value);
                   if (e.target.value.length > 1) {
-                   
+
                     setLoaderImg(true);
                     const result = dispatch(checkBranding(e.target.value));
                     result
@@ -229,7 +268,7 @@ export default function CreateOrg(prop) {
                       .catch((err) => {
                         if (err.errors) {
                           setLoaderImg(false);
-                          
+
                         }
                       });
                   }
@@ -249,7 +288,6 @@ export default function CreateOrg(prop) {
                 {errors.domain && touched.domain && errors.domain}
               </div>
             </div>
-            }
             <div className="button-group">
               <button type="submit">
                 {editMode ? "Edit " : "Create "} Organization
