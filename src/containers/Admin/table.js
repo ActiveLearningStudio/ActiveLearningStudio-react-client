@@ -28,7 +28,7 @@ import {
   setActiveTab,
   setCurrentUser,
 } from "store/actions/admin";
-import { deleteActivityItem, deleteActivityType, selectActivityItem, selectActivityType } from "store/actions/resource";
+import { deleteActivityItem, deleteActivityType, getActivityItems, loadResourceTypesAction, selectActivityItem, selectActivityType } from "store/actions/resource";
 
 function Table(props) {
   const {
@@ -83,6 +83,7 @@ function Table(props) {
               );
               dispatch(updateOrganizationScreen("feedback"));
               dispatch(updatePreviousScreen("Users"));
+              dispatch(getOrgUsers(organization?.activeOrganization?.id, organization?.activePage, organization?.size, organization?.activeRole));
             })
             .catch((e) => {
               console.log(e);
@@ -125,6 +126,7 @@ function Table(props) {
               );
               dispatch(updateOrganizationScreen("feedback"));
               dispatch(updatePreviousScreen("Users"));
+              dispatch(getOrgUsers(organization?.activeOrganization?.id, organization?.activePage, organization?.size, organization?.activeRole));
             })
             .catch((e) => {
               console.log(e);
@@ -811,6 +813,10 @@ function Table(props) {
                                   confirmButtonColor: "#084892",
                                   cancelButtonColor: "#d33",
                                   confirmButtonText: "OK",
+                                }).then((result) => {
+                                  if(result.isConfirmed) {
+                                    dispatch(loadResourceTypesAction('', 1));
+                                  }
                                 });
                               }
                             }
@@ -878,6 +884,10 @@ function Table(props) {
                                   confirmButtonColor: "#084892",
                                   cancelButtonColor: "#d33",
                                   confirmButtonText: "OK",
+                                }).then((result) => {
+                                  if(result.isConfirmed) {
+                                    dispatch(getActivityItems('', 1));
+                                  }
                                 });
                               }
                             }
