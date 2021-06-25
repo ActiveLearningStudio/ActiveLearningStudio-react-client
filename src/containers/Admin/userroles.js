@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 function UserRoles() {
 
   const dispatch = useDispatch();
-  const { permission, activeOrganization, activePermission, permissionsId } = useSelector((state) => state.organization);
+  const { permission, activeOrganization, activePermission, permissionsId, roles } = useSelector((state) => state.organization);
   const [checkRoles, setCheckRoles] = useState('');
   useEffect(() => {
     const extractPermission = [];
@@ -23,7 +23,7 @@ function UserRoles() {
 
   useEffect(() => {
     dispatch(getAllPermissionId(activeOrganization?.id));
-    dispatch(roleDetail(activeOrganization.id, 1));
+    if (roles.length !== 0) dispatch(roleDetail(activeOrganization.id, roles[0]?.id));
   }, []);
 
   return (
