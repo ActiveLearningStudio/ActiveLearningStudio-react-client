@@ -393,7 +393,7 @@ function Table(props) {
                     <div
                       className="view-all"
                       onClick={async () => {
-                        await dispatch(getOrganization(row.id));
+                        if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                         dispatch(clearOrganizationState());
                         dispatch(getRoles());
                         Swal.fire({
@@ -434,7 +434,7 @@ function Table(props) {
                             confirmButtonText: "Yes",
                           }).then(async (result) => {
                             if (result.isConfirmed) {
-                              await dispatch(getOrganization(row.id));
+                              if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                               dispatch(clearOrganizationState());
                               dispatch(getRoles());
                             }
@@ -462,7 +462,7 @@ function Table(props) {
                             confirmButtonText: "Yes",
                           }).then(async (result) => {
                             if (result.isConfirmed) {
-                              await dispatch(getOrganization(row.id));
+                              if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                               dispatch(clearOrganizationState());
                               dispatch(getRoles());
                               dispatch(setActiveTab('Users'));
@@ -481,7 +481,7 @@ function Table(props) {
                       className="view-all"
                       onClick={
                        async () => {
-                          await dispatch(getOrganization(row.id));
+                        if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                           dispatch(clearOrganizationState());
                           dispatch(getRoles());
                         }
@@ -498,7 +498,7 @@ function Table(props) {
                       className="view-all"
                       onClick={
                        async () => {
-                          await dispatch(getOrganization(row.id));
+                        if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                           dispatch(clearOrganizationState());
                           dispatch(getRoles());
                         }
