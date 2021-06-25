@@ -68,14 +68,14 @@ export default function Pills(props) {
     if (subType === 'index') {
       if (!!target.value) {
         setAllProjectIndexTab(null);
-        const searchapi = adminService.userSerchIndexs(activeOrganization?.id, 1, index, target.value)
+        const searchapi = adminService.userSerchIndexs(activeOrganization?.id, undefined, index, target.value)
         searchapi.then((data) => {
           // console.log(data)
           setAllProjectIndexTab(data)
 
         })
       } else {
-        const searchapi = adminService.getAllProjectIndex(activeOrganization?.id, 1, index)
+        const searchapi = adminService.getAllProjectIndex(activeOrganization?.id, activePage, index)
         searchapi.then((data) => {
           // console.log(data)
           setAllProjectIndexTab(data)
@@ -85,14 +85,14 @@ export default function Pills(props) {
     } else if (subType === 'all') {
       if (!!target.value) {
         setAllProjectTab(null);
-        const allproject = adminService.getAllProjectSearch(activeOrganization?.id, 1, target.value)
+        const allproject = adminService.getAllProjectSearch(activeOrganization?.id, undefined, target.value)
         // console.log(allproject)
         allproject.then((data) => {
           console.log(data)
           setAllProjectTab(data)
         })
       } else {
-        const allproject = adminService.getAllProject(activeOrganization?.id, 1)
+        const allproject = adminService.getAllProject(activeOrganization?.id, activePage)
         allproject.then((data) => {
           // console.log(data)
           setAllProjectTab(data)
@@ -101,12 +101,12 @@ export default function Pills(props) {
     } else if (subType === 'user') {
       if (!!target.value) {
         setAllProjectUserTab(null);
-        const userproject = adminService.getUserProjectSearch(activeOrganization?.id, 1, target.value)
+        const userproject = adminService.getUserProjectSearch(activeOrganization?.id, undefined, target.value)
         userproject.then((data) => {
           setAllProjectUserTab(data)
         })
       } else {
-        const userproject = adminService.getUserProject(activeOrganization?.id, 1)
+        const userproject = adminService.getUserProject(activeOrganization?.id, activePage)
         userproject.then((data) => {
           // console.log(data)
           setAllProjectUserTab(data)
