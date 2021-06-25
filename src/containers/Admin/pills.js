@@ -287,7 +287,7 @@ export default function Pills(props) {
   //LMS project ***************************************
   useMemo(async () => {
     if(type==="LMS") {
-    setLmsProject(null);
+    // setLmsProject(null);
     const result =  adminService.getLmsProject(activePage|| 1);
     result.then((data) => {
       setLmsProject(data)
@@ -296,7 +296,7 @@ export default function Pills(props) {
   }, [type, activePage]);
 
   const searchQueryChangeHandlerLMS = (search) => {
-    setLmsProject(null);
+    // setLmsProject(null);
     const result =  adminService.getLmsProjectSearch(search.target.value,(activePage|| 1));
     result.then((data) => {
       setLmsProject(data)
