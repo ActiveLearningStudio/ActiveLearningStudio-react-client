@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addUserInOrganization,editUserInOrganization, removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
 import { loadOrganizationTypesAction } from 'store/actions/auth';
+import { getOrgUsers } from 'store/actions/organization';
 
 export default function CreateUser(prop) {
   const { editMode } = prop;
@@ -84,6 +85,7 @@ export default function CreateUser(prop) {
                 confirmButtonText: 'OK',
               }).then((result) => {
                 if (result.isConfirmed) {
+                  dispatch(getOrgUsers(organization?.activeOrganization?.id, organization?.activePage, organization?.size, organization?.activeRole));
                   dispatch(removeActiveAdminForm());
                 }
               });
@@ -110,6 +112,7 @@ export default function CreateUser(prop) {
                 confirmButtonText: 'OK',
               }).then((result) => {
                 if (result.isConfirmed) {
+                  dispatch(getOrgUsers(organization?.activeOrganization?.id, organization?.activePage, organization?.size, organization?.activeRole));
                   dispatch(removeActiveAdminForm());
                 }
               });

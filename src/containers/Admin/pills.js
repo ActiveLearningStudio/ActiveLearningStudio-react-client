@@ -154,6 +154,7 @@ export default function Pills(props) {
     activeTab,
     size,
     activeRole,
+    organization?.users
   ]);
   // All Users Business Logic End
 
