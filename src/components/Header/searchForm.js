@@ -8,11 +8,12 @@ import { Formik } from 'formik';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { simpleSearchAction } from 'store/actions/search';
-import { loadResourceTypesAction } from 'store/actions/resource';
+import { getActivityItems, loadResourceTypesAction } from 'store/actions/resource';
 import {
   educationLevels,
   subjects,
 } from 'components/ResourceCard/AddResource/dropdownData';
+import { getUserReport } from 'store/actions/admin';
 
 function SearchForm() {
   const history = useHistory();
@@ -23,11 +24,14 @@ function SearchForm() {
   const [value, setValue] = useState(0);
   const activityTypesState = useSelector((state) => state.resource.types);
   const searchState = useSelector((state) => state.search);
+  const auth = useSelector((state) => state.auth);
   const { currentOrganization } = useSelector((state) => state.organization);
 
   useEffect(() => {
-    if (activityTypesState.length === 0) {
+    if (activityTypesState.length === 0 && auth?.user) {
       dispatcher(loadResourceTypesAction());
+      dispatcher(getActivityItems());
+      dispatcher(getUserReport('all'));
     }
   }, []);
 
@@ -47,7 +51,7 @@ function SearchForm() {
 
   useEffect(() => {
     const allItems = [];
-    activityTypesState.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
+    activityTypesState?.map((data) => data?.activityItems?.map((itm) => allItems.push(itm)));
     setActivityTypes(allItems.sort(compare));
     if (searchState?.searchQuery !== simpleSearch) {
       setSimpleSearch('');
@@ -146,7 +150,6 @@ function SearchForm() {
               //     grade = grade.replace('and', '&');
               //   }
               // });
-              console.log(values.gradeArray, values.subjectArray, values);
               Swal.showLoading();
               dispatcher(simpleSearchAction(values));
               resetForm({

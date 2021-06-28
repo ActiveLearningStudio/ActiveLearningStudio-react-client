@@ -509,3 +509,104 @@ ul.pagination {
     }
   }
 }
+.author{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  position: inherit;
+  overflow-y: scroll;
+}
+.form-group.wrap-keyword {
+  display: flex;
+  justify-content: initial;
+  flex-wrap: wrap;
+  .keywords-de {
+    background-color: $curriki-main-blue;
+    color: #fff;
+    border-radius: 30px;
+    padding: 6px 10px;
+    font-size: 12px;
+    position: relative;
+    margin: 5px 5px 0 0;
+
+    .iocns {
+      color: #fff;
+      background-color: #ff0000d1;
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      left: 0;
+      top: 0;
+      border-radius: 30px;
+      stroke-width: 1px;
+      cursor: pointer;
+      display: none;
+
+      svg {
+        margin: 10px auto;
+        display: flex;
+      }
+    }
+
+    &:hover .iocns {
+      display: block;
+    }
+  }
+}
+.author-main-box {
+  height: 50px;
+  margin-top: -16px;
+  position: inherit;
+  overflow-y: scroll;
+  .author-box{
+    overflow-y: scroll;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    &:hover {
+      cursor: pointer;
+      background: $curriki-main-blue;
+      * {
+        color: #fff !important;
+      }
+    }
+    .invite-member-name-mark {
+      position: relative;
+      width: 30px;
+      height: 30px;
+      border: solid 1px #e2e2e2;
+      border-radius: 50%;
+      font-weight: bold;
+      text-align: center;
+      text-transform: uppercase;
+      color: #a5a5a5;
+
+      span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: 0;
+        transform: translate(-50%, -50%);
+        font-size: 13px;
+      }
+    }
+    .invite-member-info {
+      margin: 0 0 0 13px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-self: center;
+      color: #636363;
+
+      .invite-member-name {
+        margin: 0;
+        font-size: 14px;
+        color: $mine-shaft;
+      }
+    }
+    div {
+      margin: 0;
+      padding: 7px 1em;
+      display: flex;
+    }
+  }
+}

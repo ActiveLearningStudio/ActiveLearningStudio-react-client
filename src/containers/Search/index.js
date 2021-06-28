@@ -14,7 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import Pagination from 'react-js-pagination';
 import QueryString from 'query-string';
-
+import { searchUserInOrganization } from 'store/actions/organization';
 import { simpleSearchAction, cloneProject } from 'store/actions/search';
 import { loadResourceTypesAction } from 'store/actions/resource';
 import { addProjectFav } from 'store/actions/project';
@@ -67,7 +67,7 @@ function SearchInterface(props) {
   const { history } = props;
   const allState = useSelector((state) => state.search);
   const activityTypesState = useSelector((state) => state.resource.types);
-  const { currentOrganization, permission } = useSelector((state) => state.organization);
+  const { currentOrganization, permission, activeOrganization, searchUsers } = useSelector((state) => state.organization);
   const dispatch = useDispatch();
 
   const [activityTypes, setActivityTypes] = useState([]);
@@ -84,6 +84,9 @@ function SearchInterface(props) {
   const [activeSubject, setActiveSubject] = useState([]);
   const [activeEducation, setActiveEducation] = useState([]);
   const [searchType, setSearchType] = useState(null);
+  const [author,SetAuthor] = useState('');
+  const [selectedAuthor, setSelectedAuthor] = useState([]);
+  const [authors, setAuthors] = useState([]);
   var activeSubject1;
 //   useMemo(() => {
 
@@ -335,6 +338,7 @@ function SearchInterface(props) {
                                         dataSend = {
                                           subjectArray: activeSubject,
                                           gradeArray: activeEducation,
+                                          authors: authors,
                                           standardArray: activeType,
                                           type: searchType,
                                           from: 0,
@@ -345,6 +349,7 @@ function SearchInterface(props) {
                                           phrase: searchInput.trim(),
                                           subjectArray: activeSubject,
                                           gradeArray: activeEducation,
+                                          authors: authors,
                                           standardArray: activeType,
                                           type: searchType,
                                           from: 0,
@@ -393,6 +398,7 @@ function SearchInterface(props) {
                                       name="type"
                                       onChange={(e) => {
                                         setSearchType(e.target.value);
+                                        setSelectedAuthor([]);
                                       }}
                                       value="private"
                                       checked={searchType === 'private'}
@@ -426,7 +432,59 @@ function SearchInterface(props) {
                                   </label>
                                 </div>
                               </div>
+                              <div className="form-group" style={{ display: permission?.Organization?.includes('organization:view-user') && searchType !== 'private' ? 'block' : 'none'}}>
+                                <input
+                                  placeholder="Enter author name"
+                                  className="author"
+                                  value={author}
+                                  onChange={({ target }) => {
+                                    SetAuthor(target.value);
+                                    dispatch(searchUserInOrganization(activeOrganization?.id, target.value));
+                                  }}
+                                />
+                              </div>
+                              {author !== '' && (
+                                <div className="author-main-box">
+                                  {searchUsers?.data?.length > 0 && searchUsers?.data.map((u) => (
+                                    <div className="author-box" data-list="true" key={u.id}>
+                                      <div
+                                        onClick={() => {
+                                          setSelectedAuthor([ ...selectedAuthor, u ]);
+                                          setAuthors([...authors, u.id]);
+                                          SetAuthor('');
+                                        }}
+                                      >
+                                        <div className="invite-member-name-mark">
+                                          <span>{`${u.first_name[0] || ''}${u.last_name[0] || ''}` }</span>
+                                        </div>
 
+                                        <div className="invite-member-info">
+                                          <h2 className="invite-member-name">{`${`${u.first_name } ${u.last_name}`} (${u.email})`}</h2>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                              {selectedAuthor.length > 0 && (
+                                <div className="form-group wrap-keyword">
+                                  {selectedAuthor.map((data) => (
+                                    <div className="keywords-de" key={data.id}>
+                                      {data?.first_name}
+                                      <div
+                                        className="iocns"
+                                        onClick={() => {
+                                          // eslint-disable-next-line no-param-reassign
+                                          setSelectedAuthor(selectedAuthor.filter((index) => index !== data));
+                                          setAuthors(authors.filter((index) => index !== data.id));
+                                        }}
+                                      >
+                                        <FontAwesomeIcon icon="times" />
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
                               <div
                                 className="src-btn"
                                 onClick={async () => {
@@ -449,6 +507,7 @@ function SearchInterface(props) {
                                         subjectArray: activeSubject,
                                         gradeArray: activeEducation,
                                         standardArray: activeType,
+                                        authors: authors,
                                         type: searchType,
                                         from: 0,
                                         size: 20,
@@ -457,6 +516,7 @@ function SearchInterface(props) {
                                       dataSend = {
                                         phrase: searchInput.trim(),
                                         subjectArray: activeSubject,
+                                        authors: authors,
                                         gradeArray: activeEducation,
                                         standardArray: activeType,
                                         type: searchType,
@@ -664,6 +724,7 @@ function SearchInterface(props) {
                            from: 0,
                            size: 20,
                            type: searchType,
+                           authors: authors,
                            subjectArray: activeSubject,
                            gradeArray: activeEducation,
                            standardArray: activeType,
@@ -673,6 +734,7 @@ function SearchInterface(props) {
                             phrase: searchQueries.trim(),
                             from: 0,
                             size: 20,
+                            authors:authors,
                             type: searchType,
                             subjectArray: activeSubject,
                             gradeArray: activeEducation,
@@ -697,6 +759,7 @@ function SearchInterface(props) {
                           searchData = {
                            from: 0,
                            size: 20,
+                           authors: authors,
                            model: e,
                            type: searchType,
                            subjectArray: activeSubject,
@@ -709,6 +772,7 @@ function SearchInterface(props) {
                             from: 0,
                             size: 20,
                             model: e,
+                            authors:authors,
                             type: searchType,
                             subjectArray: activeSubject,
                             gradeArray: activeEducation,
@@ -783,7 +847,7 @@ function SearchInterface(props) {
                                       <li>
                                         by
                                         {' '}
-                                        <span className="author">
+                                        <span>
                                           {res.user.first_name}
                                         </span>
                                       </li>
@@ -917,7 +981,7 @@ function SearchInterface(props) {
                                           <li>
                                             by
                                             {' '}
-                                            <span className="author">
+                                            <span>
                                               {res.user.first_name}
                                             </span>
                                           </li>
@@ -1050,7 +1114,7 @@ function SearchInterface(props) {
                                           <li>
                                             by
                                             {' '}
-                                            <span className="author">
+                                            <span>
                                               {res.user.first_name}
                                             </span>
                                           </li>
@@ -1167,7 +1231,7 @@ function SearchInterface(props) {
                                             <li>
                                               by
                                               {' '}
-                                              <span className="author">
+                                              <span>
                                                 {res.user.first_name}
                                               </span>
                                             </li>

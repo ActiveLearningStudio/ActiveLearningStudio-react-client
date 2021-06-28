@@ -3,6 +3,13 @@ import * as actionTypes from '../actionTypes';
 const INITIAL_STATE = {
   isLoading: false,
   types: [],
+  selectedType: null,
+  selectedItem: null,
+  items: [],
+  newActivityType: null,
+  activityTypeThumbUrl: null,
+  newActivityItem: null,
+  activityItemThumbUrl: null,
   resources: [],
   showCreateResourcePopup: false,
   newResource: {
@@ -91,7 +98,16 @@ export default (state = INITIAL_STATE, action) => {
         },
         progress: null,
       };
-
+    case actionTypes.UPLOAD_ACTIVITY_TYPE_THUMBNAIL:
+      return {
+        ...state,
+        activityTypeThumbUrl: action.payload.image,
+      };
+    case actionTypes.UPLOAD_ACTIVITY_ITEM_THUMBNAIL:
+      return {
+        ...state,
+        activityItemThumbUrl: action.payload.image,
+      };
     // TODO: refactor bottom
     case actionTypes.SHOW_CREATE_RESOURCE_MODAL:
       return {
@@ -345,7 +361,51 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         saved: true,
       };
-
+    case actionTypes.SELECTED_ACTIVITY_TYPE:
+      return {
+        ...state,
+        selectedType: action.payload,
+      };
+    case actionTypes.ADD_ACTIVITY_TYPE:
+      return {
+        ...state,
+        newActivityType: action.payload,
+      };
+    case actionTypes.EDIT_ACTIVITY_TYPE:
+      return {
+        ...state,
+        selectedType: action.payload,
+      };
+    case actionTypes.DELETE_ACTIVITY_TYPE:
+      return {
+        ...state,
+        selectedType: null,
+      };
+    case actionTypes.GET_ACTIVITY_ITEMS:
+      return {
+        ...state,
+        items: action.payload,
+      };
+    case actionTypes.SELECTED_ACTIVITY_ITEM:
+      return {
+        ...state,
+        selectedItem: action.payload,
+      };
+    case actionTypes.ADD_ACTIVITY_ITEM:
+      return {
+        ...state,
+        newActivityItem: action.payload,
+      };
+    case actionTypes.EDIT_ACTIVITY_ITEM:
+      return {
+        ...state,
+        selectedItem: action.payload,
+      };
+    case actionTypes.DELETE_ACTIVITY_ITEM:
+      return {
+        ...state,
+        selectedItem: null,
+      };
     default:
       return state;
   }

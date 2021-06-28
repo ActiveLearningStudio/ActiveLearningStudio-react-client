@@ -1,30 +1,34 @@
 import React, { useState } from 'react';
 import { Formik } from 'formik';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'react-bootstrap';
 
 import organization from 'services/organizations.services';
 import loader from 'assets/images/dotsloader.gif';
+import Swal from 'sweetalert2';
+import { inviteUserOutside } from 'store/actions/organization';
+import { errorCatcher } from 'services/errors';
 
 export default function AddUser(props) {
   const {
-    setAllUsersAdded,
-    allUsersAdded,
-    setToggleUserDropdown,
-    setFieldValueProps,
+    // setAllUsersAdded,
+    // allUsersAdded,
+    // setFieldValueProps,
     method,
   } = props;
   const stateOrg = useSelector((state) => state.organization);
+  const { activeOrganization } = stateOrg;
+  const dispatch = useDispatch();
   const [stateOrgUsers, setStateOrgUsers] = useState([]);
   const [loaderImgUser, setLoaderImgUser] = useState(false);
-  const [roleUser, setRoleUser] = useState();
+  // const [roleUser, setRoleUser] = useState();
   return (
     <div className="add-user-organization">
       <Formik
         initialValues={{
           name: '',
-          role: '',
+          role_id: '',
           email: '',
           userInfo: {},
         }}
@@ -40,22 +44,36 @@ export default function AddUser(props) {
           ) {
             errors.email = 'Invalid email address';
           }
-          if (!values.role) {
-            errors.role = 'Required';
+          if (!values.role_id) {
+            errors.role_id = 'Required';
           }
           return errors;
         }}
         onSubmit={(values) => {
-          const combine = {
-            value: values,
-            role: roleUser,
+          Swal.fire({
+            title: 'Please Wait !',
+            html: 'Sending Invite ...',
+            allowOutsideClick: false,
+            onBeforeOpen: () => {
+              Swal.showLoading();
+            },
+          });
+          const { id } = JSON.parse(values.role_id);
+          const summary = {
+            email: values.email,
+            role_id: id,
           };
-          console.log(allUsersAdded);
-          const duplicateTest = allUsersAdded.filter((dataall) => dataall.value?.userInfo?.email === values.email);
-          if (duplicateTest.length === 0) {
-            setAllUsersAdded([...allUsersAdded, combine]);
-            setFieldValueProps('inviteUser', [...allUsersAdded, combine]);
-          }
+          const result = dispatch(inviteUserOutside(activeOrganization.id, summary));
+            result.then((res) => {
+              if (res) {
+                Swal.fire({
+                  icon: 'success',
+                  text: 'Invite Sent',
+                });
+              }
+            }).catch((err) => {
+              errorCatcher(err);
+            });
         }}
       >
         {({
@@ -79,11 +97,16 @@ export default function AddUser(props) {
                   setFieldValue('name', e.target.value);
                   setFieldValue('email', '');
                   setLoaderImgUser(true);
-                  const result = organization.getAllUsers(stateOrg.activeOrganization?.id, e.target.value, method);
-                  result.then((data) => {
+                  if (e.target.value) {
+                    const result = organization.getAllUsers(stateOrg.activeOrganization?.id, e.target.value, method);
+                    result.then((data) => {
+                      setLoaderImgUser(false);
+                      setStateOrgUsers(data['member-options']);
+                    });
+                  } else if (e.target.value === '') {
                     setLoaderImgUser(false);
-                    setStateOrgUsers(data['member-options']);
-                  });
+                    setStateOrgUsers([]);
+                  }
                 }}
                 onBlur={handleBlur}
                 value={values.name}
@@ -94,6 +117,7 @@ export default function AddUser(props) {
                   {stateOrgUsers?.map((user) => (
                     <li
                       value={user}
+                      key={user.email}
                       onClick={() => {
                         setFieldValue('name', user.first_name);
                         setFieldValue('email', user.email);
@@ -134,14 +158,13 @@ export default function AddUser(props) {
               <h3>Role</h3>
               <select
                 type="text"
-                name="role"
+                name="role_id"
                 onChange={(e) => {
-                  console.log(e.target.value);
-                  setFieldValue('role', e.target.value);
-                  setRoleUser(JSON.parse(e.target.value));
+                  setFieldValue('role_id', e.target.value);
+                  // setRoleUser(JSON.parse(e.target.value));
                 }}
                 onBlur={handleBlur}
-                value={values.role.name}
+                value={values.role_id.name}
               >
                 <option value="">Select Role</option>
                 {stateOrg.roles.map((role) => (
@@ -156,15 +179,15 @@ export default function AddUser(props) {
                 ))}
               </select>
               <div className="error">
-                {errors.role && touched.role && errors.role}
+                {errors.role_id && touched.role_id && errors.role_id}
               </div>
             </div>
             <div className="btn-group">
-              <button className="submit-create" type="submit" onClick={() => setToggleUserDropdown(false)}>
+              <button className="submit-create" type="submit">
                 Add User
               </button>
               <Dropdown.Item>
-                <button className="cancel-create" type="button" onClick={() => setToggleUserDropdown(false)}>
+                <button className="cancel-create" type="button">
                   CANCEL
                 </button>
               </Dropdown.Item>
@@ -177,9 +200,8 @@ export default function AddUser(props) {
 }
 
 AddUser.propTypes = {
-  setAllUsersAdded: PropTypes.func.isRequired,
-  allUsersAdded: PropTypes.array.isRequired,
-  setFieldValueProps: PropTypes.func.isRequired,
+  // setAllUsersAdded: PropTypes.func.isRequired,
+  // allUsersAdded: PropTypes.array.isRequired,
+  // setFieldValueProps: PropTypes.func.isRequired,
   method: PropTypes.string.isRequired,
-  setToggleUserDropdown: PropTypes.func.isRequired,
 };
