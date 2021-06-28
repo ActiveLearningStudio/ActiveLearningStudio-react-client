@@ -103,7 +103,7 @@ function Header(props) {
                     });
                   }}
                 >
-                  <img src={help} alt="help" />
+                  <FontAwesomeIcon icon="question" />
                   <p className="header-icon-text">
                     Help
                   </p>
