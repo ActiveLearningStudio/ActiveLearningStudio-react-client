@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import organizationapi from '../../../services/organizations.services';
 import adminapi from '../../../services/admin.service';
 import loader from 'assets/images/dotsloader.gif';
+import Switch from 'react-switch';
 
 export default function CreateUser(prop) {
   const { editMode, method, clone } = prop;
@@ -16,6 +17,12 @@ export default function CreateUser(prop) {
   const {activeEdit} = organization
   const [loaderlmsImgUser, setLoaderlmsImgUser] = useState(false)
   const [stateOrgUsers, setStateOrgUsers] = useState([]);
+  const [checked, setChecked] = useState(false);
+  useEffect(()=>{
+    if(editMode && !clone) {
+      setChecked(activeEdit?.published)
+    }
+  },[activeEdit, editMode])
   return (
     <div className="create-form">
       <Formik
@@ -28,11 +35,13 @@ export default function CreateUser(prop) {
           // moodle: editMode ? activeEdit?.moodle : '',
           // canvas: editMode ? activeEdit?.canvas : '',
           lms_name: editMode ? activeEdit?.lms_name: '',
-          access_key: editMode ? activeEdit?.access_key : '',
-          secret_key: editMode ? activeEdit?.secret_key : '',
+          lms_access_key: editMode ? activeEdit?.lms_access_key : '',
+          lms_access_secret: editMode ? activeEdit?.lms_access_secret : '',
           description: editMode ? activeEdit?.description : "",
           name: editMode ? clone ? '':activeEdit?.user?.name : '',
           lms_login_id: editMode ? activeEdit?.lms_login_id : "",
+          lti_client_id: editMode ? activeEdit?.lti_client_id : "",
+          published:editMode ? clone ? false:activeEdit?.published: false,
 
 
         }}
@@ -174,7 +183,7 @@ export default function CreateUser(prop) {
                 {errors.site_name && touched.site_name && errors.site_name}
               </div>
             </div>
-            {!editMode ?
+            {/* {!editMode ? */}
               <div className="form-group-create">
                 <h3>LTI Client ID</h3>
                 <input
@@ -188,8 +197,8 @@ export default function CreateUser(prop) {
                   {errors.lti_client_id && touched.lti_client_id && errors.lti_client_id}
                 </div>
               </div>
-              : null
-            }
+            {/* //   : null
+            // } */}
             <div className="form-group-create">
               <h3>LMS Name</h3>
               {/* <input
@@ -213,26 +222,26 @@ export default function CreateUser(prop) {
               <h3>Access Key</h3>
               <input
                 type="text"
-                name="access_key"
+                name="lms_access_key"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.access_key}
+                value={values.lms_access_key}
               />
               <div className="error">
-                {errors.access_key && touched.access_key && errors.access_key}
+                {errors.lms_access_key && touched.lms_access_key && errors.lms_access_key}
               </div>
             </div>
             <div className="form-group-create">
               <h3>Secret Key</h3>
               <input
                 type="text"
-                name="secret_key"
+                name="lms_access_secret"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.secret_key}
+                value={values.lms_access_secret}
               />
               <div className="error">
-                {errors.secret_key && touched.secret_key && errors.secret_key}
+                {errors.lms_access_secret && touched.lms_access_secret && errors.lms_access_secret}
               </div>
             </div>
             <div className="form-group-create">
@@ -260,6 +269,13 @@ export default function CreateUser(prop) {
               <div className="error">
                 {errors.lms_login_id && touched.lms_login_id && errors.lms_login_id}
               </div>
+            </div>
+            <div className="form-group-create">
+              <h3>Published</h3>
+                <Switch checked={checked} onChange={()=>{
+                setChecked(!checked)
+                setFieldValue('published', !checked)
+              }} />
             </div>
             <div className="form-group-create" style={{ position: 'relative' }}>
               <h3>User &nbsp; (search users from dropdown list only)</h3>
