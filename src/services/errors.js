@@ -1,6 +1,7 @@
 /* eslint-disable */
 import Swal from 'sweetalert2';
 export const errorCatcher = (err) => {
+	if(err.errors) {
 	try {
 		Object.keys(err.errors).map((errors, index) => {
 			if (index < 1) {
@@ -21,7 +22,20 @@ export const errorCatcher = (err) => {
 	} catch {
 		Swal.fire({
 			icon: 'error',
-			title: 'Oops...',
+			title: '',
+			text: 'Something went wrong!',
+		});
+	}}
+	else if (err.message){
+		Swal.fire({
+			icon: 'error',
+			
+			text: err.message,
+		});
+	} else{
+		Swal.fire({
+			icon: 'error',
+			title: '',
 			text: 'Something went wrong!',
 		});
 	}
