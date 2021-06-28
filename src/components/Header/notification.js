@@ -12,11 +12,15 @@ import './style.scss';
 function HeaderNotification() {
   const dispatch = useDispatch();
   const allNotifications = useSelector((state) => state.notification);
+  const auth = useSelector((state) => state.auth);
+
   const [notificationData, setNotificationData] = useState([]);
   const [errorNotification, setErrorNotification] = useState('');
   const organization = useSelector((state) => state.organization);
   useEffect(() => {
-    dispatch(getAllNotifications());
+    if (auth?.user) {
+      dispatch(getAllNotifications());
+    }
   }, [dispatch]);
 
   useEffect(() => {

@@ -12,6 +12,7 @@ import { updatedProject } from 'store/actions/project';
 import { updatedPlaylist } from 'store/actions/playlist';
 import AppRouter from 'routers/AppRouter';
 
+import Help from './help';
 import './style.scss';
 
 let runOnce = true;
@@ -23,6 +24,7 @@ function App(props) {
   }, [getUser]);
   const userDetails = useSelector((state) => state.auth.user);
   const { activeOrganization, permission } = useSelector((state) => state.organization);
+  const { help } = useSelector((state) => state.ui);
   useEffect(() => {
     if (userDetails) {
       if (activeOrganization) {
@@ -39,7 +41,7 @@ function App(props) {
             (async () => {
               const result = dispatch(getBranding(subDomain));
               result.then((data) => {
-                dispatch(getOrganizationFirstTime(data?.organization?.id));
+                if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
                 dispatch(getAllPermission(data?.organization?.id));
               }).catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
@@ -48,7 +50,7 @@ function App(props) {
             (async () => {
               const result = dispatch(getBranding(subDomain));
               result.then((data) => {
-                dispatch(getOrganizationFirstTime(data?.organization?.id));
+                if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
                 dispatch(getAllPermission(data?.organization?.id));
               }).catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
@@ -77,17 +79,10 @@ function App(props) {
     if ((window.location.href.includes('/login') || window.location.pathname.includes('/register'))) {
       const subDomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
       if (subDomain?.includes('login') || subDomain?.includes('register') || subDomain?.includes('forgot-password')) {
-        const result = dispatch(getBranding(localStorage.getItem('current_org') || 'currikistudio'));
-        result.then((data) => {
-          dispatch(getOrganizationFirstTime(data?.organization?.id));
-          dispatch(getAllPermission(data?.organization?.id));
-        }).catch((err) => err && console.log('error'));
+        dispatch(getBranding('currikistudio'));
       } else if (subDomain) {
         const result = dispatch(getBranding(subDomain));
-        result.then((data) => {
-          dispatch(getOrganizationFirstTime(data?.organization?.id));
-          dispatch(getAllPermission(data?.organization?.id));
-        }).catch((err) => err && window.location.replace('/login'));
+        result.then().catch((err) => err && window.location.replace('/login'));
       }
     }
     if (window.HubSpotConversations) {
@@ -234,6 +229,7 @@ function App(props) {
           </p>
         </div>
       </div>
+      {help && <Help />}
     </div>
   );
 }

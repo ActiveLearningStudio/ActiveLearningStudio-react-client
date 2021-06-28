@@ -7,6 +7,8 @@ const INITIAL_STATE = {
   activityId: null,
   lmsCourseId: null,
   h5pSettings: null,
+  safariMontagePublishTool: null,
+  safariMontageErrors: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -38,6 +40,27 @@ export default (state = INITIAL_STATE, action) => {
         showLogin: true,
         showActivity: false,
         errors: action.results.errors,
+      };
+
+    case actionTypes.SAFARI_MONTAGE_LOAD_PUBLISH_TOOL:
+      return {
+        ...state,
+        safariMontagePublishTool: action.results.launch,
+        safariMontageErrors: [],
+      };
+
+    case actionTypes.SAFARI_MONTAGE_LOAD_PUBLISH_TOOL_ERROR:
+      return {
+        ...state,
+        safariMontagePublishTool: null,
+        safariMontageErrors: action.results,
+      };
+
+    case actionTypes.CLOSE_SAFARI_MONTAGE_TOOL:
+      return {
+        ...state,
+        safariMontagePublishTool: null,
+        safariMontageErrors: [],
       };
 
     default:

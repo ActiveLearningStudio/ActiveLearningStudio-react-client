@@ -561,7 +561,6 @@
     float: left;
     background: #fff;
     border-right: 1px solid #dcdcdc;
-    overflow-y: auto;
 
     //.collapse-button {
     //  position: absolute;
@@ -770,7 +769,7 @@ body {
 
 aside.sidebar-all {
   min-height: 100%;
-  background-color: #264759;
+  // background-color: #264759;
 }
 
 table {
@@ -3274,7 +3273,7 @@ a:hover {
   margin-bottom: 20px;
   display: flex;
   justify-content: space-between !important;
-  padding-top: 20px; 
+  padding-top: 20px;
   .content {
     cursor: pointer;
   }
@@ -3819,5 +3818,111 @@ a:hover {
 
   .loader {
     width: 45px;
+  }
+}
+
+body.collapsed {
+  .main-content-wrapper {
+    .side-wrapper-team {
+      left:110px;
+      .bread-crumb {
+        position: initial;
+      }
+    }
+    .side-wrapper-group {
+      left:110px;
+      .bread-crumb {
+        position: initial;
+      }
+    }
+  }
+  .sidebar-wrapper {
+    width: 93px;
+    aside {
+      .toggleButton {
+        transform:rotate(180deg);
+      }
+    }
+  }
+  .content-wrapper {
+    margin-left: 110px !important;
+  }
+}
+
+
+.helpcenter{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: flex-end;
+  z-index: 1111;
+  background: #084892ad;
+
+  .content {
+    width:430px;
+    background: #fff;
+    height: 100%;
+    overflow-y: auto;
+    margin:0
+  }
+
+  .heading-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px;
+    border-bottom: 1px solid #ccc;
+
+    h2 {
+      font-weight: 500;
+      font-size: 20px;
+      padding: 0;
+      margin: 0;
+    }
+
+    img {
+       width:20px;
+       height: 20px;
+       cursor: pointer;
+    }
+  }
+
+  .all-help {
+    .box {
+      display: flex;
+      align-items: center;
+      padding: 30px;
+      border-bottom: 1px solid #ccc;
+      cursor: pointer;
+
+      &:hover {
+        background: #E5EEFF;
+      }
+
+    }
+
+    img {
+      width: 69px;
+      height: 69px;
+      margin-right: 22px;
+    }
+
+    h3 {
+      font-weight: 600;
+      font-size: 16px;
+
+    }
+
+    p {
+      font-size: 12px;
+    line-height: 16px;
+    margin:0
+    }
+
+    .detail {
+
+    }
   }
 }

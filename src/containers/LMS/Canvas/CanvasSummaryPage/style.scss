@@ -1,0 +1,67 @@
+.outcome-summary-container {
+    background: black;
+    color: ghostwhite;
+    padding-bottom: 4em;
+  
+    .fa-star {
+      color: yellow;
+      margin-right: 0.5em;
+    }
+  
+    .skipped-badge {
+      margin-left: 2em;
+    }
+  
+    .answers-table th {
+      width: 50%;
+      font-weight: bolder;
+    }
+    
+    .answers-table .question-col {
+      font-style: italic;
+    }
+    
+    a {
+      color: gainsboro;
+    }
+  
+    .title-container {
+      display:flex;
+      margin-bottom: 1em;
+    }
+  
+    .title-label {
+        width:30%;
+        background-color: steelblue;
+        padding: 1em;
+        font-weight: bolder;
+    }
+  
+    .title-spacer {
+        background-color: #454d55;
+    }
+  
+    .title-spacer div {
+        width: 0; 
+        height: 0; 
+        border-top: 25px solid #454d55;
+        border-bottom: 25px solid #454d55;
+        border-left: 25px solid steelblue;
+    }
+  
+    .title-content {
+        background-color: #454d55;
+        width:70%;
+        padding: 1em;
+    }
+  
+    .loading {
+      display: flex;
+    }
+  
+    .loading-message {
+      display: flex;
+      align-items: center;
+      font-size: xx-large;
+    }
+  }

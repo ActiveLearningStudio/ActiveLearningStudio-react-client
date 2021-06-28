@@ -1,11 +1,63 @@
 @import 'assets/css/index';
 
 aside {
+  // Toggle CSS styles
+  div.toggleSidebar {
+    padding: 20px;
+    border-top: 1px solid #e8e8e8;
+    position: relative;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    & > a > img {
+      padding:12px;
+      margin:auto;
+      width: 52px;
+      height: 52px;
+      border-bottom: 1px solid #e8e8e8;
+    }
+  }
+  .collapsedown{
+    a {
+      position: relative;
+    }
+
+    .tagline {
+
+    position: absolute;
+    white-space: nowrap;
+    border: none;
+    background: #F8AF2C;
+
+    padding: 2px 15px;
+    -webkit-clip-path: polygon(10% 0%, 100% 0%, 100% 100%, 10% 100%, 0% 50%);
+    clip-path: polygon(10% 0%, 100% 0%, 100% 100%, 10% 100%, 0% 50%);
+    display: none;
+    top: 20px;
+    left: 50px;
+    font-weight: 600;
+
+    }
+    a {
+    &:hover
+      .tagline {
+        display: block;
+      }
+    }
+
+  }
   min-height: 900px;
   padding-top: 30px;
   padding-right: 0;
-  // background: #fff;
-
+  background: #fff;
+  .toggleButton {
+    position: absolute;
+    top: 10px;
+    right: -13px;
+    transition: transform 1s;
+    cursor: pointer;
+    z-index: 111
+  }
   & > ul {
     padding: 0 30px;
     list-style: none;
@@ -103,10 +155,106 @@ aside {
       color: #eea357
     }
   }
-
+  .accordion{
+    display:flex;
+    .row-administrate {
+      padding: 12px 52px;
+      padding-top: 19px;
+      padding-bottom: 17px;
+      border-top: 1px solid #e8e8e8;
+      button{
+        display:flex;
+        padding: 0px !important;
+        box-shadow:none;
+        text-decoration: none;
+      }
+      .heading-administrate {
+        padding-left: 13px;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 19px;
+        margin-right: auto;
+        letter-spacing: 0.01em;
+        color: $curriki-main-blue;
+        svg {
+          margin-left: 42px;
+        }
+      }
+      .collapse{
+        border-left: 2px solid #084892;
+        margin-left: 35px;
+      }
+      a{
+        display: flex;
+        font-style: normal;
+        font-weight: 500;
+        margin-left: 35px;
+        text-decoration: none;
+        margin:0px;
+        font-size: 14px;
+        line-height: 17px;
+        letter-spacing: 0.01em;
+        color:$curriki-main-blue;
+      }
+      a::before {
+        content: "-";
+        color: #084892;
+        padding-right: 5px;
+        margin:0px;
+        padding-left: 0px;
+    }
+      .active {
+        background: #EAECEE;
+      }
+      .org-icon {
+        width: 21px;
+        height: 21px;
+      }
+    }
+  }
+  .goto-dashboard{
+    display:flex;
+    padding: 15px 52px 39px;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 19px;
+    color: $curriki-main-blue;
+  }
+  .dashboard-chevron {
+    padding-left: 11px;
+    height: 14.88px;
+  }
+  .org-name {
+    padding: 28px 20px 18px 27px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 130.9%;
+    color: #515151;
+    border-top: 1px solid #e8e8e8;
+  }
+  .row-sidebar {
+    display: flex;
+    padding: 12px 52px;
+    padding-top: 19px;
+    padding-bottom: 17px;
+    justify-content:flex-end;
+    border-top: 1px solid #e8e8e8;
+  }
+  .sidebar-headings {
+    padding-left: 13px;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    margin-right: auto;
+    letter-spacing: 0.01em;
+    color: $curriki-main-blue;
+  }
+  .headings-angle-right {
+    color: $curriki-main-blue;
+  }
   .menu-title {
     padding: 12px 20px;
-    border-top: 1px solid #e8e8e8;
     font: normal normal bold 16px/25px $oracle;
     font-weight: 600;
     letter-spacing: 0;
@@ -226,9 +374,5 @@ aside {
     color: #fff;
     text-align: left;
     opacity: 1;
-
-    svg {
-      color: #eea357;
-    }
   }
 }
