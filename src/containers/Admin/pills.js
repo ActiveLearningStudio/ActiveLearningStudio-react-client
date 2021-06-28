@@ -13,6 +13,8 @@ import { getActivityItems, loadResourceTypesAction } from "store/actions/resourc
 import { getJobListing, getLogsListing, getUserReport } from "store/actions/admin";
 export default function Pills(props) {
   const { modules, type, subType } = props;
+ 
+ 
   const [subTypeState, setSubTypeState] = useState(subType);
   // All User Business Logic Start
   const dispatch = useDispatch();
@@ -21,7 +23,7 @@ export default function Pills(props) {
   const admin = useSelector((state) => state.admin);
   const [ activePage, setActivePage ] = useState(1);
   const [ size, setSize ] = useState(25);
-  const { activeOrganization, roles } = organization;
+  const { activeOrganization, roles, permission } = organization;
   const [ activeRole,setActiveRole ] = useState('');
   const { activeTab, activityType } = admin
   const [currentTab, setCurrentTab] = useState("all");
@@ -442,6 +444,7 @@ export default function Pills(props) {
                 setActiveRole={setActiveRole}
                 type={type}
                 roles={roles}
+                permissionRender={permission?.Organization?.includes('organization:view-role')}
               />
             )}
             {type === "Organization" && (

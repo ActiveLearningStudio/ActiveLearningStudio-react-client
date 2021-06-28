@@ -1,13 +1,13 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react';
-import { Accordion, Card } from 'react-bootstrap';
+import { Accordion, Card, Alert } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Formik, Field } from 'formik';
 import { updateRole, getAllPermissionId, roleDetail } from 'store/actions/organization'
 import Swal from 'sweetalert2';
 
-function UserRoles() {
+function UserRoles({permissionRender}) {
 
   const dispatch = useDispatch();
   const { permission, activeOrganization, activePermission, permissionsId, roles } = useSelector((state) => state.organization);
@@ -29,6 +29,7 @@ function UserRoles() {
   return (
     <div className="user-roles">
       <h2>Roles Permissions</h2>
+      {permissionRender ?
       <div className="box-group">
         <Formik
           initialValues={{
@@ -55,12 +56,15 @@ function UserRoles() {
 
 
               <div className="form-group-create dynamic-roles ">
+              {permission?.Organization?.includes('organization:edit-role') && (
+              
                 <div className="button-group" style={{ display: 'flex', justifyContent: 'flex-end' }}>
                   <button type="submit" className="curriki-white-button">
                     update Role
                   </button>
 
                 </div>
+              )}
 
                 <Accordion defaultActiveKey="0">
                   {!!permissionsId && Object.keys(permissionsId)?.map((data, counter) => {
@@ -101,7 +105,7 @@ function UserRoles() {
             </form>
           )}
         </Formik>
-      </div>
+      </div> : <><br /><Alert variant="danger">Not authorized to access this.</Alert></>}
     </div>
   );
 }

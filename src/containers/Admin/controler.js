@@ -39,7 +39,6 @@ function Controller(props) {
     setActivePage,
     type,
     searchQuery,
-    setSearchQuery,
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
     searchActivitiesQueryHandler,
@@ -140,9 +139,7 @@ function Controller(props) {
         <div className="btn-text">
           <button
             onClick={async () => {
-              if(permission?.Organization?.includes('organization:view')) {
-                await dispatch(getOrganization(currentOrganization?.id));
-              }
+              await dispatch(getOrganization(currentOrganization?.id));
               dispatch(clearOrganizationState());
               dispatch(getRoles());
             }}
@@ -227,7 +224,6 @@ function Controller(props) {
                         if (subTypeState === 'Manage Roles')
                           dispatch(roleDetail(activeOrganization.id, head.id));
                         if (subTypeState === 'All users') {
-                          setSearchQuery('');
                           setActiveRole(head.id);
                           setActivePage(1);
                         }
@@ -248,8 +244,8 @@ function Controller(props) {
             {jobType.display_name}
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <Dropdown.Item value='1' name='Pending' onClick={() => { SetJobType({ value: 1, display_name: 'Pending' });  setActivePage(1); }}>Pending</Dropdown.Item>
-            <Dropdown.Item value='2' name='Failed' onClick={() => { SetJobType({ value: 2, display_name: 'Failed' }); setActivePage(1);} }>Failed</Dropdown.Item>
+            <Dropdown.Item value='1' name='Pending' onClick={() => SetJobType({ value: 1, display_name: 'Pending' })}>Pending</Dropdown.Item>
+            <Dropdown.Item value='2' name='Failed' onClick={() => SetJobType({ value: 2, display_name: 'Failed' })}>Failed</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       }
@@ -259,10 +255,10 @@ function Controller(props) {
             {logType.display_name}
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <Dropdown.Item value='all' name='All' onClick={() => { SetLogType({ value: 'all', display_name: 'All' }); setActivePage(1); } }>All</Dropdown.Item>
-            <Dropdown.Item value='1' name='Running' onClick={() => { SetLogType({ value: 1, display_name: 'Running' });  setActivePage(1); } }>Running</Dropdown.Item>
-            <Dropdown.Item value='2' name='Failed' onClick={() => {SetLogType({ value: 2, display_name: 'Failed' });  setActivePage(1);} }>Failed</Dropdown.Item>
-            <Dropdown.Item value='3' name='Completed' onClick={() => {SetLogType({ value: 3, display_name: 'Completed' });  setActivePage(1);} }>Completed</Dropdown.Item>
+            <Dropdown.Item value='all' name='All' onClick={() => SetLogType({ value: 'all', display_name: 'All' })}>All</Dropdown.Item>
+            <Dropdown.Item value='1' name='Running' onClick={() => SetLogType({ value: 1, display_name: 'Running' })}>Running</Dropdown.Item>
+            <Dropdown.Item value='2' name='Failed' onClick={() => SetLogType({ value: 2, display_name: 'Failed' })}>Failed</Dropdown.Item>
+            <Dropdown.Item value='3' name='Completed' onClick={() => SetLogType({ value: 3, display_name: 'Completed' })}>Completed</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       }
@@ -292,7 +288,7 @@ function Controller(props) {
           <input
             className=""
             type="text"
-            placeholder="Search by email"
+            placeholder="Search"
             value={searchQuery}
             onChange={searchQueryChangeHandler}
           />
