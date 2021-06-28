@@ -145,7 +145,7 @@ class LoginPage extends React.Component {
                   theme="dark"
                   render={(renderProps) => (
                     <button type="button" className="google-button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                      <img src={googleIcon} alt="googleIcon" style={{ float: 'left', paddingLeft: '26.23px' }} />
+                      <img src={googleIcon} alt="googleIcon" style={{ float: 'left', paddingRight: '19.23px' }} />
                       Continue with Google
                     </button>
                   )}
@@ -164,7 +164,7 @@ class LoginPage extends React.Component {
                     clicked: true,
                   })}
                 >
-                  <img src={emailIcon} alt="googleIcon" style={{ float: 'left', paddingLeft: '26.23px' }} />
+                  <img src={emailIcon} alt="googleIcon" style={{ float: 'left', paddingRight: '19.23px' }} />
                   <span>Continue with Email</span>
                 </button>
               </div>
