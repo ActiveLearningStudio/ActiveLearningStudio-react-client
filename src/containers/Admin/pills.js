@@ -154,7 +154,7 @@ export default function Pills(props) {
     activeTab,
     size,
     activeRole,
-    organization?.users
+    organization?.users?.length
   ]);
   // All Users Business Logic End
 
@@ -417,6 +417,7 @@ export default function Pills(props) {
                 setActiveRole={setActiveRole}
                 subTypeState={'All users'}
                 searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
                 searchQueryChangeHandler={searchQueryChangeHandler}
                 searchAlertToggler={searchAlertToggler}
                 setActivePage={setActivePage}

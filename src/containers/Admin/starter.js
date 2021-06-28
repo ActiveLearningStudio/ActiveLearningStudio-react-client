@@ -30,6 +30,7 @@ function Starter(props) {
     activeRole,
     setActiveRole,
     searchQuery,
+    setSearchQuery,
     subTypeState,
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
@@ -61,6 +62,7 @@ function Starter(props) {
         logType={logType}
         SetLogType={SetLogType}
         searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
         setActivePage={setActivePage}
         searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
         searchActivitiesQueryHandler={searchActivitiesQueryHandler}

@@ -227,6 +227,11 @@ export default (state = INITIAL_STATE, action) => {
         searchUsers: [],
         searchOrg: [],
       };
+    case actionTypes.CLEAR_USERS_STATE:
+      return {
+        ...state,
+        users: [],
+      };
     default:
       return state;
   }

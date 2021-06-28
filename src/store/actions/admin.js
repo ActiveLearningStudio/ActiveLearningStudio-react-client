@@ -45,6 +45,9 @@ export const editUserInOrganization = (user) => async (dispatch) => {
   const { organization: { activeOrganization } } = centralizedState;
   const result = await adminService.editUserInOrganization(user, activeOrganization?.id);
   dispatch({
+    type: actionTypes.CLEAR_USERS_STATE,
+  });
+  dispatch({
     type: actionTypes.EDIT_NEW_USER,
     payload: result,
   });
