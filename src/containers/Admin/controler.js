@@ -411,22 +411,81 @@ function Controller(props) {
           </div>
         </div>
       )} */}
-      {!!btnText && (
+      {!!btnText && subType === 'Activity Types' && (
         <div className="btn-text">
           <button
             onClick={() => {
               if (btnAction === "add_activity_type") {
                 dispatch(setActiveAdminForm("add_activity_type"));
-              } else if (btnAction === "add_activity_item") {
+              }
+            }}
+          >
+            <FontAwesomeIcon icon="plus" />
+            {btnText}
+          </button>
+        </div>
+      )}
+      {!!btnText && subType === 'Activity Items' && (
+        <div className="btn-text">
+          <button
+            onClick={() => {
+              if (btnAction === "add_activity_item") {
                 dispatch(setActiveAdminForm("add_activity_item"))
-              } else if (btnAction === "add_role") {
+              }
+            }}
+          >
+            <FontAwesomeIcon icon="plus" />
+            {btnText}
+          </button>
+        </div>
+      )}
+      {!!btnText && subTypeState === 'Manage Roles' && (
+        <div className="btn-text">
+          <button
+            onClick={() => {
+              if (btnAction === "add_role") {
                 dispatch(setActiveAdminForm("add_role"));
-              } else if (btnAction === "create_user") {
+              }
+            }}
+          >
+            <FontAwesomeIcon icon="plus" />
+            {btnText}
+          </button>
+        </div>
+      )}
+      {!!btnText && subTypeState === 'All users' && permission?.Organization.includes('organization:add-user')  && (
+        <div className="btn-text">
+          <button
+            onClick={() => {
+              if (btnAction === "create_user") {
                 dispatch(setActiveAdminForm("create_user"));
-              } else if (btnAction === "add_org") {
+              }
+            }}
+          >
+            <FontAwesomeIcon icon="plus" />
+            {btnText}
+          </button>
+        </div>
+      )}
+      {!!btnText && type === 'Organization' && permission?.Organization.includes('organization:create') && (
+        <div className="btn-text">
+          <button
+            onClick={() => {
+              if (btnAction === "add_org") {
                 dispatch(setActiveAdminForm("add_org"));
               }
-              else if (btnAction === "add_lms") {
+            }}
+          >
+            <FontAwesomeIcon icon="plus" />
+            {btnText}
+          </button>
+        </div>
+      )}
+      {!!btnText && type === 'LMS' && (
+        <div className="btn-text">
+          <button
+            onClick={() => {
+             if (btnAction === "add_lms") {
                 dispatch(setActiveAdminForm("add_lms"));
               }
             }}
