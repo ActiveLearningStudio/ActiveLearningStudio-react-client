@@ -39,6 +39,7 @@ function Controller(props) {
     setActivePage,
     type,
     searchQuery,
+    setSearchQuery,
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
     searchActivitiesQueryHandler,
@@ -226,6 +227,7 @@ function Controller(props) {
                         if (subTypeState === 'Manage Roles')
                           dispatch(roleDetail(activeOrganization.id, head.id));
                         if (subTypeState === 'All users') {
+                          setSearchQuery('');
                           setActiveRole(head.id);
                           setActivePage(1);
                         }
