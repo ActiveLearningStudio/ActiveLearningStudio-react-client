@@ -1,16 +1,24 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import logo from 'assets/images/studio_new_logo.png';
-import currikistudio from 'assets/images/currikistudio.png';
+import logo from 'assets/images/Katy_logo.png';
 
 export default function Logo() {
   const logoState = useSelector((state) => state.organization.currentOrganization);
+  const [image, setImage] = useState(null);
+  useEffect(() => {
+    if (logoState?.id === 1) {
+      setImage(null);
+    } else {
+      setImage(logoState?.image);
+    }
+  }, [logoState]);
   return (
     <div className="auth-leftpane">
-      {/* <img src={logoState?.image ? global.config.resourceUrl + logoState.image : logo} className="auth-header-logo" alt="" /> */}
-      <img src={logoState?.domain === 'currikistudio' ? currikistudio : logoState?.image ? global.config.resourceUrl + logoState.image : logo} className="auth-header-logo" alt="" />
+      {image ? (
+        <img className="auth-header-logo" src={global.config.resourceUrl + image} alt="logo" title="" />
+      ) : <img className="auth-header-logo" src={logo} alt="logo" title="" />}
     </div>
   );
 }

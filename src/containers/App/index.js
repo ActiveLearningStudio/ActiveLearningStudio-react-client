@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import logo from 'assets/images/studio_new_logo.png';
+import logo from 'assets/images/Katy_logo.png';
 import loader from 'assets/images/dotsloader.gif';
 import { getUserAction } from 'store/actions/auth';
 import { cloneDuplicationRequest } from 'store/actions/notification';
