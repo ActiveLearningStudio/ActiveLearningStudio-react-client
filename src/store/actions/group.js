@@ -60,6 +60,33 @@ export const loadGroupsAction = () => async (dispatch) => {
   }
 };
 
+export const loadSubOrganizationGroupsAction = () => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  try {
+    dispatch({
+      type: actionTypes.PAGE_LOADING,
+    });
+
+    const { groups } = await groupService.getAllSubOrganizationGroups(activeOrganization?.id);
+
+    dispatch({
+      type: actionTypes.LOAD_GROUPS,
+      payload: { groups },
+    });
+
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+
+    throw e;
+  }
+};
+
 export const createGroupAction = (data) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;

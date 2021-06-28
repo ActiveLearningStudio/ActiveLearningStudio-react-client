@@ -8,6 +8,11 @@ const getAll = (subOrgId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const getAllSubOrganizationTeams = (subOrgId) => httpService
+  .get(`/${apiVersion}/suborganization/${subOrgId}/get-teams`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const create = (team, subOrgId) => httpService
   .post(`/${apiVersion}/suborganization/${subOrgId}/teams`, team)
   .then(({ data }) => data)
@@ -82,4 +87,5 @@ export default {
   removeProject,
   addMembersToProject,
   removeMemberFromProject,
+  getAllSubOrganizationTeams,
 };

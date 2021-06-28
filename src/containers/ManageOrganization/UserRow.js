@@ -15,7 +15,7 @@ export default function UserRow(props) {
   const [deleteButtonDisplay, setDeleteButtonDisplay] = useState(false);
   useEffect(() => {
     if (user && auth) {
-      if (user?.organization_role === 'Administrator' && user.email === auth?.user?.email) {
+      if (user?.organization_role === 'Administrator' || user.email === auth?.user?.email) {
         setDeleteButtonDisplay(true);
       }
     }
