@@ -435,7 +435,7 @@ function Controller(props) {
           </button>
         </div>
       )}
-      {!!btnText && subTypeState === 'Manage Roles' && (
+      {!!btnText && subTypeState === 'Manage Roles' && permission?.Organization.includes('organization:add-role') && (
         <div className="btn-text">
           <button
             onClick={() => {
