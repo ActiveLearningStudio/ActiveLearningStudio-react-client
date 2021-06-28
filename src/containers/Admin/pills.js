@@ -464,7 +464,7 @@ export default function Pills(props) {
                 paginationCounter={false}
                 search={true}
                 print={false}
-                btnText="create New LMS"
+                btnText="Create New LMS"
                 btnAction="add_lms"
                 importUser={false}
                 filter={false}
