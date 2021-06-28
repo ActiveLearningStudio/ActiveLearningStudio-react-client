@@ -42,6 +42,7 @@ function Starter(props) {
     inviteUser,
     setCurrentTab,
     setChangeIndexValue,
+    permissionRender,
   } = props;
   return (
     <>
@@ -75,10 +76,11 @@ function Starter(props) {
         roles={roles}
         subType={subType}
         setChangeIndexValue={setChangeIndexValue}
+        
       />
       {subTypeState === 'All settings' && <Settings /> }
       {roles?.length && subTypeState === "Manage Roles" ? (
-        <Userroles />
+        <Userroles permissionRender={permissionRender} />
       ) : (
         <TableData
           tableHead={tableHead}

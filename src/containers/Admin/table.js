@@ -358,13 +358,13 @@ function Table(props) {
                           &nbsp;&nbsp;Remove&nbsp;&nbsp;
                         </Link>
                       )}
-                      {permission?.Organization.includes('organization:delete-user') && (
+                      {/* {permission?.Organization.includes('organization:delete-user') && (
                         <Link
                           onClick={() => handleDeleteUser(user)}
                         >
                           Delete
                         </Link>
-                      )}
+                      )} */}
                     </div>
                   </td>
                 </tr>
