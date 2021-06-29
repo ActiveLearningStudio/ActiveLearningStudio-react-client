@@ -523,7 +523,7 @@ function Table(props) {
                         });
                       }}
                     >
-                      Edit
+                     &nbsp;&nbsp; Edit &nbsp;&nbsp;
                     </Link>
                   )}
                   {permission?.Organization.includes('organization:delete') && (
@@ -557,7 +557,7 @@ function Table(props) {
                         });
                       }}
                     >
-                      Delete
+                     &nbsp;&nbsp; Delete &nbsp;&nbsp;
                     </Link>
                   )}
                   </div>

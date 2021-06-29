@@ -290,7 +290,7 @@ export default function CreateUser(prop) {
                   const lmsApi = organizationapi.getAllUsers(organization.activeOrganization?.id, e.target.value, 'create');
                   lmsApi.then((data) => {
                     setLoaderlmsImgUser(false);
-                    setStateOrgUsers(data['member-options']);
+                    setStateOrgUsers(data?.['member-options']);
                     
                   })
                 }}

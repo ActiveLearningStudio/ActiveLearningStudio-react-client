@@ -43,7 +43,7 @@ export default function Pills(props) {
     const result = await dispatch(
       searchUserInOrganization(activeOrganization?.id, query, page, activeRole)
     );
-    if (result.data.length > 0) {
+    if (result?.data?.length > 0) {
       setUsers(result);
       setSearchAlertToggler(1);
     } else {
