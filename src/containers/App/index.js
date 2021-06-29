@@ -70,7 +70,8 @@ function App(props) {
   }, []);
 
   useEffect(() => {
-    if ((window.location.href.includes('/login') || window.location.pathname.includes('/register'))) {
+    if ((window.location.href.includes('/login')
+      || window.location.pathname.includes('/register') || window.location.pathname.includes('/forgot-password') || window.location.pathname.includes('/reset-password'))) {
       const subDomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
       if (subDomain?.includes('login') || subDomain?.includes('register') || subDomain?.includes('forgot-password')) {
         dispatch(getBranding('currikistudio'));

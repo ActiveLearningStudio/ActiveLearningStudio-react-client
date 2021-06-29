@@ -31,7 +31,7 @@ function UserRoles({permissionRender}) {
   return (
     <div className="user-roles">
       <h2>Roles Permissions</h2>
-      {permissionRender ?
+      {true ?
       <div className="box-group">
         <Formik
           initialValues={{
