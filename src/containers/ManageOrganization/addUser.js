@@ -8,7 +8,6 @@ import organization from 'services/organizations.services';
 import loader from 'assets/images/dotsloader.gif';
 import Swal from 'sweetalert2';
 import { inviteUserOutside } from 'store/actions/organization';
-import { errorCatcher } from 'services/errors';
 
 export default function AddUser(props) {
   const {
@@ -49,7 +48,7 @@ export default function AddUser(props) {
           }
           return errors;
         }}
-        onSubmit={(values) => {
+        onSubmit={(values, { resetForm }) => {
           Swal.fire({
             title: 'Please Wait !',
             html: 'Sending Invite ...',
@@ -68,11 +67,12 @@ export default function AddUser(props) {
               if (res) {
                 Swal.fire({
                   icon: 'success',
-                  text: 'Invite Sent',
+                  text: 'Invitation sent',
                 });
               }
-            }).catch((err) => {
-              errorCatcher(err);
+              resetForm();
+            }).catch(() => {
+              resetForm();
             });
         }}
       >

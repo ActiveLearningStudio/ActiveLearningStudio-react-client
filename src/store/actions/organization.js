@@ -211,7 +211,7 @@ export const getRoles = () => async (dispatch) => {
   const result = await organization.getRoles(activeOrganization?.id);
   dispatch({
     type: actionTypes.ALL_ROLES,
-    payload: result.data,
+    payload: result?.data,
   });
 };
 
@@ -303,7 +303,7 @@ export const roleDetail = (id, roleId) => async (dispatch) => {
   const result = await organization.roleDetail(id, roleId);
   dispatch({
     type: actionTypes.SET_ACTIVE_PERMISSION,
-    payload: result.data,
+    payload: result?.data,
   });
 };
 

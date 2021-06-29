@@ -79,7 +79,7 @@ function Starter(props) {
         
       />
       {subTypeState === 'All settings' && <Settings /> }
-      {roles?.length && subTypeState === "Manage Roles" ? (
+      {subTypeState === "Manage Roles" ? (
         <Userroles permissionRender={permissionRender} />
       ) : (
         <TableData

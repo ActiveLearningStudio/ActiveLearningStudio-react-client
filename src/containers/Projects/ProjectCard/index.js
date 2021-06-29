@@ -24,7 +24,6 @@ const ProjectCard = (props) => {
   } = props;
   const organization = useSelector((state) => state.organization);
   const dispatch = useDispatch();
-
   return (
     <div className="col-md-3 check" id={activeFilter}>
       <div className="program-tile">
@@ -88,26 +87,26 @@ const ProjectCard = (props) => {
               <FontAwesomeIcon icon="plus" className="mr-2" />
               Add
             </Link>
-
-            <Link
-              to="#"
-              onClick={async () => {
-                const protocol = `${window.location.href.split('/')[0]}//`;
-                const url = `${protocol + window.location.host}/project/${project.id}/shared`;
-                if (!project.shared) {
-                  Swal.showLoading();
-                  await dispatch(toggleProjectShareAction(project.id, project.name));
-                  Swal.close();
-                  SharePreviewPopup(url, project.name);
-                } else {
-                  SharePreviewPopup(url, project.name);
-                }
-              }}
-            >
-              <FontAwesomeIcon icon="share" className="mr-2" />
-              Share
-            </Link>
-
+            {organization.permission?.Project.includes('project:share') && (
+              <Link
+                to="#"
+                onClick={async () => {
+                  const protocol = `${window.location.href.split('/')[0]}//`;
+                  const url = `${protocol + window.location.host}/project/${project.id}/shared`;
+                  if (!project.shared) {
+                    Swal.showLoading();
+                    await dispatch(toggleProjectShareAction(project.id, project.name));
+                    Swal.close();
+                    SharePreviewPopup(url, project.name);
+                  } else {
+                    SharePreviewPopup(url, project.name);
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon="share" className="mr-2" />
+                Share
+              </Link>
+            )}
             <Link>
               <ProjectCardDropdown
                 project={project}

@@ -65,7 +65,7 @@ class LoginPage extends React.Component {
       const result = await login({
         email: email.trim(),
         password: password.trim(),
-        domain: domain?.domain,
+        domain: domain?.domain || 'currikistudio',
       });
       console.log(result);
       history.push(`/org/${domain?.domain}`);
