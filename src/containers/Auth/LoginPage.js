@@ -108,7 +108,7 @@ class LoginPage extends React.Component {
     return (
       <div className="auth-page">
         <Logo />
-        {!clicked ? (
+        {(!clicked && false) ? (
           <div className="auth-container">
             <div className="d-flex align-items-center justify-content-between">
               <h1 className="auth-title mb-0">Log In</h1>
@@ -205,9 +205,9 @@ class LoginPage extends React.Component {
               className="auth-form"
             >
               <div className="form-group">
-                <button type="button" className="back-button" onClick={() => this.setState({ clicked: false })}>
+                {/* <button type="button" className="back-button" onClick={() => this.setState({ clicked: false })}>
                   Back
-                </button>
+                </button> */}
               </div>
               <div className="form-group">
                 <FontAwesomeIcon icon="envelope" />
