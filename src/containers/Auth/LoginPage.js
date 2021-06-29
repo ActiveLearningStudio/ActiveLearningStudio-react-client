@@ -139,6 +139,8 @@ class LoginPage extends React.Component {
               autoComplete="off"
               className="auth-form"
             >
+              {false
+              && (
               <div className="form-group text-center mb-0">
                 <GoogleLogin
                   clientId={global.config.gapiClientId}
@@ -154,8 +156,8 @@ class LoginPage extends React.Component {
                   scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
                   cookiePolicy="single_host_origin"
                 />
-
               </div>
+              )}
               <div className="form-group text-center mb-0">
                 <button
                   type="button"
