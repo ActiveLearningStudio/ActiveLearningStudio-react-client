@@ -9,6 +9,7 @@ const INITIAL_STATE = {
   h5pSettings: null,
   safariMontagePublishTool: null,
   safariMontageErrors: [],
+  user: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -18,6 +19,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         showLogin: false,
         showActivity: true,
+        user: action.results,
       };
 
     case actionTypes.GENERIC_LMS_LOGIN_ERROR:
@@ -25,6 +27,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         showLogin: true,
         showActivity: false,
+        user: null,
         errors: action.results.errors,
       };
 
