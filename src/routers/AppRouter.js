@@ -130,7 +130,7 @@ const AppRouter = (props) => {
         />
         <OpenRoute
           exact
-          path="/genericlms/:lmsName/lmsurl/:lmsUrl/client/:lmsClientId/lmscourse/:lmsCourseId/activity/:activityId/"
+          path="/genericlms/:lmsName/lmsurl/:lmsUrl/client/:lmsClientId/lmscourse/:lmsCourseId/lmsunit/:lmsUnitId/activity/:activityId"
           component={GenericLMSActivityPage}
         />
         <OpenRoute
