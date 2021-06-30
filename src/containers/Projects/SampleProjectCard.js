@@ -15,11 +15,14 @@ const SampleProjectCard = (props) => {
   const {
     projects,
     type,
+    activeTab,
     setShowSampleSort,
   } = props;
 
   const dispatch = useDispatch();
   const [selectId, setSelectId] = useState(null);
+  const [selectFavId, setSelectFavId] = useState(null);
+  const [selectSampleId, setSelectSampleId] = useState(null);
   const [modalShow, setModalShow] = useState(false);
   const [currentActivity, setCurrentActivity] = useState(null);
 
@@ -80,7 +83,15 @@ const SampleProjectCard = (props) => {
                           <Dropdown.Menu>
                             <Dropdown.Item
                               as={Link}
-                              onClick={() => setSelectId(project.id)}
+                              onClick={() => {
+                                if (type) {
+                                  setSelectFavId(project.id);
+                                  setSelectId(project.id);
+                                } else {
+                                  setSelectSampleId(project.id);
+                                  setSelectId(project.id);
+                                }
+                              }}
                             >
                               <FontAwesomeIcon icon="eye" className="mr-2" />
                               Preview
@@ -141,11 +152,19 @@ const SampleProjectCard = (props) => {
             Back
           </div>
 
-          <ProjectPreviewShared
-            sampleId={selectId}
-            setModalShow={setModalShow}
-            setCurrentActivity={setCurrentActivity}
-          />
+          {activeTab ? (
+            <ProjectPreviewShared
+              sampleId={selectFavId}
+              setModalShow={setModalShow}
+              setCurrentActivity={setCurrentActivity}
+            />
+          ) : (
+            <ProjectPreviewShared
+              sampleId={selectSampleId}
+              setModalShow={setModalShow}
+              setCurrentActivity={setCurrentActivity}
+            />
+          )}
         </div>
       )}
 
@@ -162,6 +181,7 @@ SampleProjectCard.propTypes = {
   projects: PropTypes.array.isRequired,
   type: PropTypes.string.isRequired,
   setShowSampleSort: PropTypes.func.isRequired,
+  activeTab: PropTypes.string.isRequired,
 };
 
 export default SampleProjectCard;

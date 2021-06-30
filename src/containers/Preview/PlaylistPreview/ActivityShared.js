@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { useDispatch } from 'react-redux';
+import TinCan from 'tincanjs';
 
 import gifloader from 'assets/images/dotsloader.gif';
 import { loadH5pResourceSettingsShared, loadH5pResourceSettingsEmbed, loadH5pResourceXapi } from 'store/actions/resource';
@@ -11,10 +12,14 @@ import * as xAPIHelper from 'helpers/xapi';
 import './style.scss';
 
 let counter = 0;
+let lrs = null;
 
 const ActivityShared = (props) => {
   const { match, embed } = props;
+  const lrsEndpoint = new URLSearchParams(window.location.search).get('endpoint');
+  const lrsAuth = new URLSearchParams(window.location.search).get('auth');
   const [authorized, setAuthorized] = useState(false);
+  // const [lrs, setLrs] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -48,6 +53,17 @@ const ActivityShared = (props) => {
       document.body.appendChild(script);
     });
   };
+
+  // Checking if in a tincan env
+  useEffect(() => {
+    if (!lrsEndpoint && !lrsAuth && lrs === null) return;
+
+    lrs = new TinCan.LRS({
+      endpoint: lrsEndpoint,
+      auth: lrsAuth,
+      allowFail: true,
+    });
+  }, [lrsEndpoint, lrsAuth]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -89,6 +105,41 @@ const ActivityShared = (props) => {
                     { path: match.path },
                   );
                   dispatch(loadH5pResourceXapi(JSON.stringify(extendedStatement)));
+
+                  if (lrs) {
+                  // If an lrs has been defined, send tincanjs statement
+                    const doceboStatement = new TinCan.Statement({
+                          actor: {
+                            ...extendedStatement.actor,
+                            mbox: 'mailto:info@currikistudio.org',
+                          },
+                          verb: extendedStatement.verb,
+                          context: extendedStatement.context,
+                          object: extendedStatement.object,
+                    });
+
+                    lrs.saveStatement(
+                      doceboStatement,
+                      {
+                        callback: (err, xhr) => {
+                            if (err !== null) {
+                                if (xhr !== null) {
+                                    console.log(`Failed to save statement: ${xhr.responseText} (${xhr.status})`);
+                                    // TODO: do something with error, didn't save statement
+                                    return;
+                                }
+
+                                console.log(`Failed to save statement: ${err}`);
+                                // TODO: do something with error, didn't save statement
+                                return;
+                            }
+
+                            console.log('Statement saved');
+                            // TOOO: do something with success (possibly ignore)
+                        },
+                      },
+                    );
+                  }
                 }
                 counter += 1;
               });

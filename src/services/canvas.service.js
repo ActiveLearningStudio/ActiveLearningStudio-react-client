@@ -32,9 +32,25 @@ const tsugiGradePassback = (session, gpb, score) => axios({
 })
   .then((response) => response);
 
+const getLtiSummary = (actor, activity) => httpService.post(
+ `/${apiVersion}/outcome/summary`,
+ { actor, activity },
+)
+.then(({ data }) => data)
+.catch((error) => {
+  if (error && error.response && error.response.data && error.response.data.errors) {
+    return error.response.data;
+  }
+
+  console.log('Unexpected error in summary endpoint:');
+  console.log(error);
+  return null;
+});
+
 export default {
   browse,
   search,
   getH5pSettings,
   tsugiGradePassback,
+  getLtiSummary,
 };

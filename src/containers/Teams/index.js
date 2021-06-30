@@ -4,7 +4,7 @@ import { connect, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert } from 'react-bootstrap';
 
-import { loadTeamsAction } from 'store/actions/team';
+import { loadSubOrganizationTeamsAction, loadTeamsAction } from 'store/actions/team';
 // import Header from 'components/Header';
 // import Sidebar from 'components/Sidebar';
 import Footer from 'components/Footer';
@@ -38,9 +38,10 @@ function TeamsPage(props) {
     projectShow,
     channelShow,
     loadTeams,
+    loadSubOrgTeams,
   } = props;
   const organization = useSelector((state) => state.organization);
-  const { activeOrganization, permission } = organization;
+  const { activeOrganization, currentOrganization, permission } = organization;
   const [alertCheck, setAlertCheck] = useState(false);
   const [breadCrumb, setBreadCrumb] = useState([]);
   const history = useHistory();
@@ -53,13 +54,16 @@ function TeamsPage(props) {
       // } else if (!permission?.Team?.includes('team:view')) {
       //   await loadTeams();
       // }
-      if (activeOrganization && permission?.Team) {
+      if ((activeOrganization?.id === currentOrganization?.id) && permission?.Team) {
         await loadTeams();
+        setAlertCheck(true);
+      } else if (activeOrganization?.id !== currentOrganization?.id) {
+        await loadSubOrgTeams();
         setAlertCheck(true);
       }
     }
     )();
-  }, [loadTeams, activeOrganization, permission?.Team, setAlertCheck]);
+  }, [loadTeams, loadSubOrgTeams, activeOrganization, currentOrganization, permission?.Team, setAlertCheck]);
 
   const status = creation
     ? 'creation'
@@ -177,6 +181,7 @@ TeamsPage.propTypes = {
   projectShow: PropTypes.bool,
   channelShow: PropTypes.bool,
   loadTeams: PropTypes.func.isRequired,
+  loadSubOrgTeams: PropTypes.func.isRequired,
 };
 
 TeamsPage.defaultProps = {
@@ -194,6 +199,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   loadTeams: () => dispatch(loadTeamsAction()),
+  loadSubOrgTeams: () => dispatch(loadSubOrganizationTeamsAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamsPage);

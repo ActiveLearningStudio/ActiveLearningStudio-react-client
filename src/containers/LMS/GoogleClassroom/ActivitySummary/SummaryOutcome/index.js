@@ -47,8 +47,8 @@ const SummaryOutcome = (props) => {
           data.forEach((deeperData) => getId(deeperData));
         }
 
-        if (data.sub_content_id) {
-          newToggles.push(data.sub_content_id);
+        if (data.title) {
+          newToggles.push(data.title);
         }
 
         if (data.type === 'section') {
@@ -63,19 +63,19 @@ const SummaryOutcome = (props) => {
   };
 
   const renderNode = (data) => {
-    const opened = toggles.includes(data.sub_content_id) ? '' : 'section-container-closed';
+    const opened = toggles.includes(data.title) ? '' : 'section-container-closed';
 
     if (Array.isArray(data)) {
       return data.map((node) => renderNode(node));
     }
 
-    if (data.type === 'section') {
+    if (data.children) {
       // Show expand buttons only when we have nesting
       if (showExpandButtons === false) setShowExpandButtons(true);
 
       return (
         <div className="section-container">
-          <div className="section-title" onClick={() => toggleNode(data.sub_content_id)}>
+          <div className="section-title" onClick={() => toggleNode(data.title)}>
             {data.title}
             <span>{opened === '' ? '▼' : '◀'}</span>
           </div>
@@ -86,7 +86,7 @@ const SummaryOutcome = (props) => {
       );
     }
 
-    if (data.type === 'question') {
+    if (data.answer) {
       return (
         <div className="question-container">
           <div className="question-question">
@@ -97,44 +97,40 @@ const SummaryOutcome = (props) => {
           </div>
           <div className="question-answers">
             <ul>
-              {data.answers.map((answer) => (
-                <li>
-                  <div className="answer-container">
-                    <div className="response-container">
-                      {answer.response?.length === 1 && (
-                        <span>
-                          {answer.response[0]}
-                        </span>
-                      )}
-                      {answer.response?.length > 1 && (
-                        <ul>
-                          {answer.response.map((response) => (
-                            <li>
-                              {response}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                    <div className="score-container">
-                      {answer.score?.max !== 0 && (
-                        <div className="score-badge">
-                          <div className="score-badge-header">SCORE</div>
-                          <div className="score-badge-score">
-                            {`${answer.score.raw} / ${answer.score.max}`}
-                          </div>
-                          <div className="score-badge-header">
-                            <FontAwesomeIcon icon="clock" />
-                          </div>
-                          <div className="score-badge-score">
-                            {answer.duration}
-                          </div>
-                        </div>
-                      )}
+              <li>
+                <div className="answer-container">
+                  <div className="response-container">
+                    {data.answer.responses?.length === 1 && (
+                      <span>
+                        {data.answer.responses[0]}
+                      </span>
+                    )}
+                    {data.answer.responses?.length > 1 && (
+                      <ul>
+                        {data.answer.responses.map((response) => (
+                          <li>
+                            {response}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                  <div className="score-container">
+                    <div className="score-badge">
+                      <div className="score-badge-header">SCORE</div>
+                      <div className="score-badge-score">
+                        {`${data.answer.score.raw} / ${data.answer.score.max}`}
+                      </div>
+                      <div className="score-badge-header">
+                        <FontAwesomeIcon icon="clock" />
+                      </div>
+                      <div className="score-badge-score">
+                        {data.answer.duration}
+                      </div>
                     </div>
                   </div>
-                </li>
-              ))}
+                </div>
+              </li>
             </ul>
           </div>
         </div>

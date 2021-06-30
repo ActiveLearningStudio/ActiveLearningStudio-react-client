@@ -4,7 +4,7 @@ import { connect, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert } from 'react-bootstrap';
 
-import { loadGroupsAction } from 'store/actions/group';
+import { loadGroupsAction, loadSubOrganizationGroupsAction } from 'store/actions/group';
 // import Header from 'components/Header';
 // import Sidebar from 'components/Sidebar';
 import Footer from 'components/Footer';
@@ -38,9 +38,10 @@ function GroupPage(props) {
     projectShow,
     channelShow,
     loadGroups,
+    loadSubOrgGroups,
   } = props;
   const organization = useSelector((state) => state.organization);
-  const { activeOrganization, permission } = organization;
+  const { activeOrganization, currentOrganization, permission } = organization;
   const [alertCheck, setAlertCheck] = useState(false);
   const [breadCrumb, setBreadCrumb] = useState([]);
   const history = useHistory();
@@ -53,13 +54,16 @@ function GroupPage(props) {
       // } else {
       //   await loadGroups();
       // }
-      if (activeOrganization && permission?.Group) {
+      if ((activeOrganization?.id === currentOrganization?.id) && permission?.Group) {
         await loadGroups();
+        setAlertCheck(true);
+      } else if ((activeOrganization?.id !== currentOrganization?.id) && permission?.Group) {
+        await loadSubOrgGroups();
         setAlertCheck(true);
       }
     }
     )();
-  }, [loadGroups, activeOrganization, permission?.Group]);
+  }, [loadGroups, loadSubOrgGroups, activeOrganization, currentOrganization, permission?.Group]);
 
   const status = creation
     ? 'creation'
@@ -183,6 +187,7 @@ GroupPage.propTypes = {
   projectShow: PropTypes.bool,
   channelShow: PropTypes.bool,
   loadGroups: PropTypes.func.isRequired,
+  loadSubOrgGroups: PropTypes.func.isRequired,
 };
 
 GroupPage.defaultProps = {
@@ -200,6 +205,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   loadGroups: () => dispatch(loadGroupsAction()),
+  loadSubOrgGroups: () => dispatch(loadSubOrganizationGroupsAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupPage);

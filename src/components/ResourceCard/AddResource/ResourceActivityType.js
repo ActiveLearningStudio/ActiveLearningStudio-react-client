@@ -35,7 +35,7 @@ let ResourceActivityType = (props) => {
 
   const { handleSubmit, onChangeActivityType } = props;
 
-  const activityTypesContent = activityTypes.map((activityType) => (
+  const activityTypesContent = activityTypes?.map((activityType) => (
     <div className="col-md-3" key={activityType.id}>
       <label className="activity-label">
         <Field

@@ -114,6 +114,14 @@ const gapiReducer = (state = defaultAuthState(), action) => {
         };
       }
 
+      if (action.outcomeSummary.summary.length === 0) {
+        return {
+          ...state,
+          outcomeSummary: false,
+          summaryError: 'The outcome data for this summary is still being processed. Please try again later.',
+        };
+      }
+
       return {
         ...state,
         outcomeSummary: action.outcomeSummary.summary,

@@ -48,7 +48,7 @@ export const ProjectsPage = (props) => {
   const [favProject, setFavProjects] = useState([]);
   const [activeTab, setActiveTab] = useState('My Projects');
   const [showSampleSort, setShowSampleSort] = useState(true);
-
+  const [tabToggle, setTabToggle] = useState([]);
   const {
     ui,
     match,
@@ -292,8 +292,15 @@ export const ProjectsPage = (props) => {
     shareProject(projectId);
   };
 
-  const { pageLoading, showDeletePlaylistPopup } = ui;
+  const handleTabChange = (key) => {
+    if (key === 'Favorite Projects') {
+      setTabToggle(true);
+    } else if (key === 'Sample Projects') {
+      setTabToggle(false);
+    }
+  };
 
+  const { pageLoading, showDeletePlaylistPopup } = ui;
   return (
     <>
       <ReactPlaceholder
@@ -306,8 +313,9 @@ export const ProjectsPage = (props) => {
           <div className="content">
             <Headline />
             <Tabs
-              onSelect={() => {
+              onSelect={(eventKey) => {
                 setShowSampleSort(true);
+                handleTabChange(eventKey);
               }}
               className="main-tabs"
               defaultActiveKey={activeTab}
@@ -457,7 +465,7 @@ export const ProjectsPage = (props) => {
                     <div className="program-page-title">
                       <h1>Sample Projects</h1>
 
-                      {showSampleSort && (
+                      {(showSampleSort && sampleProject.length === 0) && (
                         <div className="project-page-settings">
                           <div className="sort-project-btns">
                             <div
@@ -500,7 +508,9 @@ export const ProjectsPage = (props) => {
 
                   <div className="col-md-12">
                     <div className="flex-smaple">
-                      <SampleProjectCard projects={sampleProject} type="" setShowSampleSort={setShowSampleSort} />
+                      {sampleProject.length > 0
+                        ? <SampleProjectCard projects={sampleProject} activeTab={tabToggle} type="" setShowSampleSort={setShowSampleSort} />
+                      : <Alert variant="warning"> No sample project found.</Alert>}
                     </div>
                   </div>
                 </div>
@@ -511,7 +521,7 @@ export const ProjectsPage = (props) => {
                   <div className="col-md-12" style={{ display: 'none' }}>
                     <div className="program-page-title">
                       <h1>Favorite Projects</h1>
-                      {showSampleSort && (
+                      {(showSampleSort && favProject.length === 0) && (
                         <div className="project-page-settings">
                           <div className="sort-project-btns">
                             <div
@@ -567,7 +577,7 @@ export const ProjectsPage = (props) => {
                   <div className="col-md-12">
                     <div className="flex-smaple">
                       {favProject.length > 0 ? (
-                        <SampleProjectCard projects={favProject} type="fav" setShowSampleSort={setShowSampleSort} />
+                        <SampleProjectCard projects={favProject} type="fav" activeTab={tabToggle} setShowSampleSort={setShowSampleSort} />
                       ) : (
                         <Alert variant="warning">No Favorite Project Found.</Alert>
                       )}

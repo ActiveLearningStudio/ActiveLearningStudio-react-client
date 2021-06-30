@@ -7,6 +7,8 @@ import {
   DELETE_PLAYLIST_SUCCESS,
   DELETE_RESOURCE_SUCCESS,
   SIDE_BAR_COLLAPSE_TOGGLE,
+  SHOW_HELP,
+  HIDE_HELP,
 } from '../actionTypes';
 
 const defaultUIState = () => ({
@@ -14,6 +16,7 @@ const defaultUIState = () => ({
   selectedPlaylist: null,
   showDeletePlaylistPopup: false,
   sideBarCollapsed: false,
+  help: false,
 });
 
 export default (state = defaultUIState(), action) => {
@@ -67,6 +70,16 @@ export default (state = defaultUIState(), action) => {
       return {
         ...state,
         sideBarCollapsed: !state.sideBarCollapsed,
+      };
+    case SHOW_HELP:
+      return {
+        ...state,
+        help: true,
+      };
+    case HIDE_HELP:
+      return {
+        ...state,
+        help: false,
       };
 
     default:

@@ -11,6 +11,8 @@ import {
   GRADE_PASS_BACK,
   LTI_ACTIVITY_INIT,
   DO_BROWSE,
+  GET_LTI_SUMMARY,
+  GET_LTI_SUMMARY_ACTIVITY_INFO,
 } from '../actionTypes';
 
 const INITIAL_STATE = {
@@ -25,6 +27,9 @@ const INITIAL_STATE = {
   ltiFinished: false,
   attemptId: null,
   browseResults: null,
+  summary: null,
+  summaryActivityInfo: null,
+  summaryError: null,
 };
 
 const canvasReducer = (state = INITIAL_STATE, action) => {
@@ -111,6 +116,35 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
         ...state,
         attemptId: (state.attemptId) ? state.attemptId : Date.now(),
       };
+
+    case GET_LTI_SUMMARY:
+      if (!action.summary) {
+        return {
+          ...state,
+          summary: false,
+          summaryError: null,
+        };
+      }
+
+      if (action.summary.errors) {
+        return {
+          ...state,
+          summary: false,
+          summaryError: action.summary.errors[0],
+        };
+      }
+
+      return {
+        ...state,
+        summary: action.summary.summary,
+        summaryError: null,
+      };
+
+      case GET_LTI_SUMMARY_ACTIVITY_INFO:
+        return {
+          ...state,
+          summaryActivityInfo: action.summaryActivityInfo.activity,
+        };
 
     default:
       return state;

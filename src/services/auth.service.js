@@ -1,4 +1,5 @@
 import config from 'config';
+import { errorCatcher } from './errors';
 import httpService from './http.service';
 
 const { apiVersion } = config;
@@ -26,7 +27,10 @@ const loginWithGoogle = (body) => httpService
 const register = (body) => httpService
   .post('/register', body)
   .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    Promise.reject(err.response.data);
+  });
 
 const confirmEmail = (body) => httpService
   .post('/verify-email', body)

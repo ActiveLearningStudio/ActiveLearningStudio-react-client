@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -13,7 +14,11 @@ export default function Logo() {
       setImage(logoState?.image);
     }
   }, [logoState]);
-  return image ? (
-    <img className="auth-header-logo" src={global.config.resourceUrl + image} alt="logo" title="" />
-  ) : <img className="auth-header-logo" src={logo} alt="logo" title="" />;
+  return (
+    <div className="auth-leftpane">
+      {image ? (
+        <img className="auth-header-logo" src={global.config.resourceUrl + image} alt="logo" title="" />
+      ) : <img className="auth-header-logo" src={logo} alt="logo" title="" />}
+    </div>
+  );
 }

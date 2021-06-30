@@ -15,11 +15,14 @@ export const loadResourceTypesAction = () => async (dispatch) => {
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPES_REQUEST,
     });
-
     const { activityTypes } = await resourceService.getTypes();
 
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPES_SUCCESS,
+      payload: { activityTypes },
+    });
+    dispatch({
+      type: actionTypes.GET_ACTIVITY_TYPES,
       payload: { activityTypes },
     });
   } catch (e) {
@@ -29,6 +32,39 @@ export const loadResourceTypesAction = () => async (dispatch) => {
 
     throw e;
   }
+};
+
+export const selectActivityType = (type) => (dispatch) => {
+  dispatch({
+    type: actionTypes.SELECTED_ACTIVITY_TYPE,
+    payload: type,
+  });
+};
+
+export const createActivityType = (data) => async (dispatch) => {
+  const result = await resourceService.createActivityType(data);
+  dispatch({
+    type: actionTypes.ADD_ACTIVITY_TYPE,
+    payload: result,
+  });
+  return result;
+};
+
+export const editActivityType = (data, typeId) => async (dispatch) => {
+  const result = await resourceService.editActivityType(data, typeId);
+  dispatch({
+    type: actionTypes.EDIT_ACTIVITY_TYPE,
+    payload: result,
+  });
+  return result;
+};
+
+export const deleteActivityType = (typeId) => async (dispatch) => {
+  const result = resourceService.deleteActivityType(typeId);
+  dispatch({
+    type: actionTypes.DELETE_ACTIVITY_TYPE,
+  });
+  return result;
 };
 
 export const loadResourceItemsAction = (activityTypeId) => async (dispatch) => {
@@ -52,6 +88,48 @@ export const loadResourceItemsAction = (activityTypeId) => async (dispatch) => {
 
     throw e;
   }
+};
+
+export const getActivityItems = (query, page) => async (dispatch) => {
+  const allActivityItems = await resourceService.getActivityItems(query, page);
+  dispatch({
+    type: actionTypes.GET_ACTIVITY_ITEMS_ADMIN,
+    payload: allActivityItems.data,
+  });
+  return allActivityItems;
+};
+
+export const selectActivityItem = (type) => (dispatch) => {
+  dispatch({
+    type: actionTypes.SELECTED_ACTIVITY_ITEM,
+    payload: type,
+  });
+};
+
+export const createActivityItem = (data) => async (dispatch) => {
+  const result = await resourceService.createActivityItem(data);
+  dispatch({
+    type: actionTypes.ADD_ACTIVITY_ITEM,
+    payload: result,
+  });
+  return result;
+};
+
+export const editActivityItem = (data, itemId) => async (dispatch) => {
+  const result = await resourceService.editActivityItem(data, itemId);
+  dispatch({
+    type: actionTypes.EDIT_ACTIVITY_ITEM,
+    payload: result,
+  });
+  return result;
+};
+
+export const deleteActivityItem = (itemId) => async (dispatch) => {
+  const result = resourceService.deleteActivityItem(itemId);
+  dispatch({
+    type: actionTypes.DELETE_ACTIVITY_ITEM,
+  });
+  return result;
 };
 
 export const loadResourceAction = (activityId) => async (dispatch) => {
@@ -220,6 +298,24 @@ export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
   });
 };
 
+export const uploadActivityTypeThumbAction = (formData) => async (dispatch) => {
+  const { image } = await resourceService.uploadActivityTypeThumb(formData);
+  dispatch({
+    type: actionTypes.UPLOAD_ACTIVITY_TYPE_THUMBNAIL,
+    payload: { image },
+  });
+  return image;
+};
+
+export const uploadActivityItemThumbAction = (formData) => async (dispatch) => {
+  const { image } = await resourceService.uploadActivityItemThumb(formData);
+  dispatch({
+    type: actionTypes.UPLOAD_ACTIVITY_ITEM_THUMBNAIL,
+    payload: { image },
+  });
+  return image;
+};
+
 export const deleteResourceAction = (activityId, playlistId) => async (dispatch) => {
   try {
     dispatch({
@@ -360,14 +456,7 @@ export const createResourceByH5PUploadAction = (
   // projectId,
 ) => async (dispatch) => {
   try {
-    Swal.fire({
-      title: 'Please Wait !',
-      html: 'Uploading Activity ...',
-      allowOutsideClick: false,
-      onBeforeOpen: () => {
-        Swal.showLoading();
-      },
-    });
+    Swal.showLoading();
     const formData = new FormData();
     formData.append('h5p_file', payload.h5pFile);
     formData.append('action', 'upload');

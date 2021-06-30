@@ -12,6 +12,8 @@ import {
   GRADE_PASS_BACK,
   LTI_ACTIVITY_INIT,
   DO_BROWSE,
+  GET_LTI_SUMMARY,
+  GET_LTI_SUMMARY_ACTIVITY_INFO,
 } from '../actionTypes';
 
 export const browseAction = (params) => async (dispatch) => {
@@ -92,5 +94,21 @@ export const gradePassBackAction = (session, gpb, score, isLearner) => async (di
 export const activityInitAction = () => async (dispatch) => {
   dispatch({
     type: LTI_ACTIVITY_INIT,
+  });
+};
+
+export const getLtiSummaryAction = (actor, activityId) => async (dispatch) => {
+  const summary = await canvasService.getLtiSummary(actor, activityId);
+  dispatch({
+    type: GET_LTI_SUMMARY,
+    summary,
+  });
+};
+
+export const getLtiSummaryActivityInfoAction = (activityId) => async (dispatch) => {
+  const summaryActivityInfo = await canvasService.getH5pSettings(activityId);
+  dispatch({
+    type: GET_LTI_SUMMARY_ACTIVITY_INFO,
+    summaryActivityInfo,
   });
 };

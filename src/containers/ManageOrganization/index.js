@@ -35,7 +35,7 @@ export default function ManageOrganizations() {
   } = state;
   useMemo(() => {
     if (activeOrganization?.id && permission?.activeRole === 'admin') {
-      dispatch(getOrganization(activeOrganization?.id));
+      if (permission?.Organization?.includes('organization:view')) dispatch(getOrganization(activeOrganization?.id));
     }
   }, [activeOrganization?.id, permission?.activeRole]);
   console.log(history);

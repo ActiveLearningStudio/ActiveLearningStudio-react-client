@@ -60,6 +60,33 @@ export const loadTeamsAction = () => async (dispatch) => {
   }
 };
 
+export const loadSubOrganizationTeamsAction = () => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  try {
+    dispatch({
+      type: actionTypes.PAGE_LOADING,
+    });
+
+    const { teams } = await teamService.getAllSubOrganizationTeams(activeOrganization?.id);
+
+    dispatch({
+      type: actionTypes.LOAD_TEAMS,
+      payload: { teams },
+    });
+
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+
+    throw e;
+  }
+};
+
 export const createTeamAction = (data) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
