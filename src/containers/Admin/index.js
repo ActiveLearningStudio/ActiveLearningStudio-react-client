@@ -24,7 +24,7 @@ function AdminPanel() {
   const { permission, roles, currentOrganization, activeOrganization } = organization;
   const { activeForm, activeTab } = adminState;
   useEffect(() => {
-    if (roles.length === 0 && activeOrganization?.id || (activeOrganization?.id !== currentOrganization?.id)) {
+    if (roles?.length === 0 && activeOrganization?.id || (activeOrganization?.id !== currentOrganization?.id)) {
       dispatch(getRoles())
     }
   }, [activeOrganization])

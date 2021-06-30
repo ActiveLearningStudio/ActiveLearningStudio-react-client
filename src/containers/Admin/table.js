@@ -510,8 +510,10 @@ function Table(props) {
                     </Link>
                   ) : 'N/A' }
                 </td>
+                
                 <td>
                   <div className="links">
+                  {permission?.Organization.includes('organization:edit') && (
                     <Link
                       onClick={() => {
                         dispatch(setActiveAdminForm("edit_org"));
@@ -521,8 +523,10 @@ function Table(props) {
                         });
                       }}
                     >
-                      Edit
+                     &nbsp;&nbsp; Edit &nbsp;&nbsp;
                     </Link>
+                  )}
+                  {permission?.Organization.includes('organization:delete') && (
                     <Link
                       onClick={() => {
                         Swal.fire({
@@ -553,10 +557,12 @@ function Table(props) {
                         });
                       }}
                     >
-                      Delete
+                     &nbsp;&nbsp; Delete &nbsp;&nbsp;
                     </Link>
+                  )}
                   </div>
                 </td>
+                
               </tr>
             )) :
               <tr>
@@ -920,6 +926,7 @@ function Table(props) {
               totalItemsCount={data?.meta?.total}
               onChange={(e) => {
                 // setCurrentTab("index");
+                window.scrollTo(0, 0)
                 setActivePage(e);
               }}
             />
@@ -932,6 +939,7 @@ function Table(props) {
               totalItemsCount={data?.meta?.total}
               onChange={(e) => {
                 // setCurrentTab("index");
+                window.scrollTo(0, 0)
                 setActivePage(e);
               }}
             />
@@ -944,6 +952,7 @@ function Table(props) {
               totalItemsCount={data?.meta?.total}
               onChange={(e) => {
                 // setCurrentTab("index");
+                window.scrollTo(0, 0)
                 setActivePage(e);
               }}
             />
@@ -957,6 +966,7 @@ function Table(props) {
                 totalItemsCount={data?.meta?.total}
                 onChange={(e) => {
                   // setCurrentTab("all");
+                  window.scrollTo(0, 0)
                   setActivePage(e);
                 }}
               />
@@ -970,6 +980,7 @@ function Table(props) {
                 itemsCountPerPage={data?.meta?.per_page}
                 totalItemsCount={data?.meta?.total}
                 onChange={(e) => {
+                  window.scrollTo(0, 0)
                   setCurrentTab("all");
                   setActivePage(e);
                 }}
@@ -984,6 +995,7 @@ function Table(props) {
                 itemsCountPerPage={data?.meta?.per_page}
                 totalItemsCount={data?.meta?.total}
                 onChange={(e) => {
+                  window.scrollTo(0, 0)
                   setCurrentTab("user");
                   setActivePage(e);
                 }}
@@ -1012,6 +1024,7 @@ function Table(props) {
               totalItemsCount={data?.meta?.total}
               onChange={(e) => {
                 // setCurrentTab("index");
+                window.scrollTo(0, 0)
                 setActivePage(e);
               }}
             />
@@ -1024,6 +1037,7 @@ function Table(props) {
               totalItemsCount={data?.meta?.total}
               onChange={(e) => {
                 // setCurrentTab("index");
+                window.scrollTo(0, 0)
                 setActivePage(e);
               }}
             />
@@ -1036,6 +1050,7 @@ function Table(props) {
               totalItemsCount={data?.meta?.total}
               onChange={(e) => {
                 // setCurrentTab("index");
+                window.scrollTo(0, 0)
                 setActivePage(e);
               }}
             />

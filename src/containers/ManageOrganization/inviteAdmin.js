@@ -53,7 +53,7 @@ export default function AddUser() {
             result.then(() => {
               Swal.fire({
                 icon: 'success',
-                text: 'Invite Sent',
+                text: 'Invitation sent',
               });
             }).catch((err) => {
               try {

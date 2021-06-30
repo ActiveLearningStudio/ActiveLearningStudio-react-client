@@ -17,7 +17,7 @@ const getRoles = (subOrgId) => httpService
   .get(`/${apiVersion}/suborganizations/${subOrgId}/roles`)
   .then(({ data }) => data)
   .catch((err) => {
-    errorCatcher(err.response.data);
+    // errorCatcher(err.response.data);
     Promise.reject(err.response.data);
   });
 
@@ -42,7 +42,7 @@ const inviteUserOutside = (id, info) => httpService
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
+    return Promise.reject(err.response.data);
   });
 
 const branding = (domain) => httpService
@@ -183,7 +183,7 @@ const roleDetail = (id, roleId) => httpService
   .get(`/${apiVersion}/suborganizations/${id}/role/${roleId}`)
   .then(({ data }) => data)
   .catch((err) => {
-    errorCatcher(err.response.data);
+    // errorCatcher(err.response.data);
     Promise.reject(err.response.data);
   });
 export default {

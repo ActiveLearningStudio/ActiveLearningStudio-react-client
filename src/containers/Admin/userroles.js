@@ -23,13 +23,15 @@ function UserRoles({permissionRender}) {
 
   useEffect(() => {
     dispatch(getAllPermissionId(activeOrganization?.id));
-    if (roles.length !== 0) dispatch(roleDetail(activeOrganization.id, roles[0]?.id));
+    if(!!roles) {
+    if (roles?.length !== 0) dispatch(roleDetail(activeOrganization.id, roles[0]?.id));
+    }
   }, []);
 
   return (
     <div className="user-roles">
       <h2>Roles Permissions</h2>
-      {permissionRender ?
+      {true ?
       <div className="box-group">
         <Formik
           initialValues={{
