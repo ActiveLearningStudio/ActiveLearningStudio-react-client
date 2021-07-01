@@ -65,9 +65,9 @@ function AdminPanel() {
                     <h2>Project</h2>
                     <Pills
                       modules={[
+                        "All Projects",
                         "Indexing Queue",
                         "User Projects",
-                        "All Projects",
                       ]}
                       type="Project"
                     />

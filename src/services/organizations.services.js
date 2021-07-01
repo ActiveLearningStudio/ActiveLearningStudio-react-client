@@ -111,10 +111,7 @@ const allPermission = (id) => httpService
 const getOrgUsers = (id, page, size, activeRole) => httpService
   .get(`/${apiVersion}/suborganizations/${id}/users?page=${page}&size=${size}${activeRole ? `&role=${activeRole}` : ''}`)
   .then(({ data }) => data)
-  .catch((err) => {
-    errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
-  });
+  .catch((err) => Promise.reject(err.response.data));
 
 const deleteUserFromOrganization = (id, body) => httpService
   .remove(`/${apiVersion}/suborganizations/${id}/delete-user`, body)
@@ -135,10 +132,12 @@ const removeUserFromOrganization = (subOrgId, body) => httpService
 const searchUserInOrganization = (id, query, page, role) => httpService
   .get(`/${apiVersion}/suborganizations/${id}/users?query=${query}&page=${page}&role=${role}`)
   .then(({ data }) => data)
-  .catch((err) => {
-    errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
-  });
+  .catch((err) => Promise.reject(err.response.data));
+
+const searchUserInView = (id, query) => httpService
+  .get(`/${apiVersion}/suborganizations/${id}/users?query=${query}&page=1`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
 
 const getAllPermissions = (id) => httpService
   .get(`/${apiVersion}/suborganizations/${id}/permissions`)
@@ -210,4 +209,5 @@ export default {
   roleDetail,
   permissionId,
   updateRole,
+  searchUserInView,
 };

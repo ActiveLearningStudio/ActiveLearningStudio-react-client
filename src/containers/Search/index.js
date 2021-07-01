@@ -14,7 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import Pagination from 'react-js-pagination';
 import QueryString from 'query-string';
-import { searchUserInOrganization } from 'store/actions/organization';
+import { searchUserInOrganizationView } from 'store/actions/organization';
 import { simpleSearchAction, cloneProject } from 'store/actions/search';
 import { loadResourceTypesAction } from 'store/actions/resource';
 import { addProjectFav } from 'store/actions/project';
@@ -439,7 +439,7 @@ function SearchInterface(props) {
                                   value={author}
                                   onChange={({ target }) => {
                                     SetAuthor(target.value);
-                                    dispatch(searchUserInOrganization(activeOrganization?.id, target.value));
+                                    dispatch(searchUserInOrganizationView(activeOrganization?.id, target.value));
                                   }}
                                 />
                               </div>
