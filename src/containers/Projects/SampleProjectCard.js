@@ -44,6 +44,7 @@ const SampleProjectCard = (props) => {
                   onClick={() => {
                     setSelectId(project.id);
                     setShowSampleSort(false);
+                    setSelectSampleId(project.id);
                   }}
                 >
                   {project.thumb_url && (
@@ -67,6 +68,7 @@ const SampleProjectCard = (props) => {
                             onClick={() => {
                               setSelectId(project.id);
                               setShowSampleSort(false);
+                              setSelectSampleId(project.id);
                             }}
                           >
                             {project.name}
