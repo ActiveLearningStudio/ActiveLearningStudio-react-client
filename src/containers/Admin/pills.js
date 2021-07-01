@@ -308,8 +308,8 @@ export default function Pills(props) {
 
   useEffect(() => {
     if (activeTab === 'Project') {
-      setSubTypeState('Indexing Queue');
-      setCurrentTab('index');
+      setSubTypeState('All Projects');
+      setCurrentTab('all');
     } else if (activeTab === 'Activities') {
       setSubTypeState('Activity Types');
     } else if (activeTab === 'Users') {

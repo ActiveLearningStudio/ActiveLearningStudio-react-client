@@ -64,7 +64,7 @@ export function extendStatement(h5pObj, statement, params, skipped = false) {
     }
   }
 
-  if (platform[path] === 'LTI client') {
+  if (platform[path] === 'LTI client' || 'GenericLMS') {
     other.push({
       objectType: 'Activity',
       id: `${window.location.origin}/lti/${courseId}`,

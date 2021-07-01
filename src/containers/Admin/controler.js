@@ -75,7 +75,7 @@ function Controller(props) {
         setActiveRoleInComponent(roles[0]?.display_name);
       }
       else if (activeRole) {
-        setActiveRoleInComponent(roles.filter(role => role.id === activeRole)[0].display_name);
+        setActiveRoleInComponent(roles.filter(role => role.id === activeRole)[0]?.display_name);
       };
     } else if (roles?.length > 0 && subTypeState === "Manage Roles") {
       setActiveRoleInComponent(roles[0]?.display_name);
