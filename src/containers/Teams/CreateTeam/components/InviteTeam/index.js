@@ -50,7 +50,7 @@ function InviteTeam(props) {
           <h2 className="title">Invite Team Members</h2>
           <div className="title-cross" />
         </div>
-        Invite atlease 1 or more member to your team
+        Invite atleast 1 or more member to your team
         <div className="invite-member-wrapper">
           <div className="search-box">
             {/*
