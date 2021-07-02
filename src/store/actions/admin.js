@@ -46,7 +46,14 @@ export const addUserInOrganization = (user) => async (dispatch) => {
 export const editUserInOrganization = (user) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
-  const result = await adminService.editUserInOrganization(user, activeOrganization?.id);
+  let result;
+  if (user.password) {
+    result = await adminService.editUserInOrganization(user, activeOrganization?.id);
+  } else {
+    // eslint-disable-next-line no-param-reassign
+    delete user.password;
+    result = await adminService.editUserInOrganization(user, activeOrganization?.id);
+  }
   dispatch({
     type: actionTypes.CLEAR_USERS_STATE,
   });

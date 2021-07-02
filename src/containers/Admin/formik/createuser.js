@@ -33,7 +33,7 @@ export default function CreateUser(prop) {
           job_title:editMode ? currentUser?.job_title :"",
           role_id:editMode ? currentUser?.organization_role_id : '',
           email:editMode ? currentUser?.email :'',
-          password:editMode ? undefined : '',
+          password:'',
         }}
         validate={(values) => {
           const errors = {};
@@ -172,12 +172,12 @@ export default function CreateUser(prop) {
                 {errors.email && touched.email && errors.email}
               </div>
             </div>
-            {!editMode ?
             <div className="form-group-create">
               <h3>Password</h3>
               <input
                 type="password"
                 name="password"
+                placeholder={editMode ? 'Leave blank for unchanged' : 'password'}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.password}
@@ -186,8 +186,6 @@ export default function CreateUser(prop) {
                 {errors.password && touched.password && errors.password}
               </div>
               </div>
-              : null
-            }
             <div className="form-group-create">
               <h3>Role</h3>
               {/* <input
