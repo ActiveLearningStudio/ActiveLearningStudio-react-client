@@ -976,7 +976,7 @@ function Table(props) {
                   totalItemsCount={data?.meta?.total}
                   onChange={(e) => {
                     // setCurrentTab("all");
-                    window.scrollTo(0, 0)
+                    window.scrollTo(0, 0);
                     setActivePage(e);
                   }}
                 />

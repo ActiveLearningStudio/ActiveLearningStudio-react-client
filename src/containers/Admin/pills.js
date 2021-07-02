@@ -13,8 +13,8 @@ import { getActivityItems, loadResourceTypesAction } from "store/actions/resourc
 import { getJobListing, getLogsListing, getUserReport } from "store/actions/admin";
 export default function Pills(props) {
   const { modules, type, subType } = props;
- 
- 
+
+
   const [subTypeState, setSubTypeState] = useState(subType);
   // All User Business Logic Start
   const dispatch = useDispatch();
@@ -40,25 +40,27 @@ export default function Pills(props) {
   const [logType, SetLogType] = useState({ value: 'all' , display_name: 'All'});
   const [changeIndexValue, setChangeIndexValue] = useState("1");
   const searchUsers = async (query, page) => {
-    const result = await dispatch(
-      searchUserInOrganization(activeOrganization?.id, query, page, activeRole)
-    );
-    if (result?.data?.length > 0) {
-      setUsers(result);
-      setSearchAlertToggler(1);
-    } else {
-      setSearchAlertToggler(0);
+    if (query.length > 2) {
+      const result = await dispatch(
+        searchUserInOrganization(activeOrganization?.id, query, page, activeRole)
+      );
+      if (result?.data?.length > 0) {
+        setUsers(result);
+        setSearchAlertToggler(1);
+      } else {
+        setSearchAlertToggler(0);
+      }
     }
   };
   const searchQueryChangeHandler = async ({ target }) => {
-    if (target.value) {
+    if (target.value.length) {
       setSearchQuery(target.value);
       searchUsers(target.value, activePage);
-      setUsers(null);
+      if (target.value.length> 2 ) setUsers(null);
     } else {
       setSearchQuery("");
       const result = await dispatch(
-        getOrgUsers(activeOrganization?.id, activePage, size, activeRole)
+        getOrgUsers(activeOrganization?.id, activePage, activeRole)
       );
       setUsers(result);
     }
@@ -128,19 +130,18 @@ export default function Pills(props) {
       subTypeState === "All users" &&
       activeTab === "Users"
     ) {
-      if (searchQuery) {
+      if (searchQuery.length > 2) {
         searchUserInOrganization(activeOrganization?.id, searchQuery, activePage, activeRole)
       }
       else if (
         organization?.users?.data?.length > 0 &&
         activePage === organization?.activePage &&
-        size === organization?.size &&
         !activeRole
       ) {
         setUsers(organization?.users);
       } else if (activeRole) {
         const result = await dispatch(
-          getOrgUsers(activeOrganization?.id, activePage, size, activeRole)
+          getOrgUsers(activeOrganization?.id, activePage, activeRole)
         );
         setUsers(result);
       }
@@ -154,7 +155,6 @@ export default function Pills(props) {
     type,
     subTypeState,
     activeTab,
-    size,
     activeRole,
     organization?.users?.length
   ]);
@@ -403,7 +403,7 @@ export default function Pills(props) {
             )}
             {type === "Users" && subTypeState === "All users" && (
               <Starter
-                paginationCounter={true}
+                // paginationCounter={true}
                 search={true}
                 print={false}
                 btnText="Create new user"
@@ -413,8 +413,8 @@ export default function Pills(props) {
                 tableHead={columnData.userall}
                 data={users}
                 activePage={activePage}
-                size={size}
-                setSize={setSize}
+                // size={size}
+                // setSize={setSize}
                 activeRole={activeRole}
                 setActiveRole={setActiveRole}
                 subTypeState={'All users'}
