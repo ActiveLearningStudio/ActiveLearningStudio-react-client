@@ -85,7 +85,7 @@ export default function CreateUser(prop) {
                 confirmButtonText: 'OK',
               }).then((result) => {
                 if (result.isConfirmed) {
-                  dispatch(getOrgUsers(organization?.activeOrganization?.id, organization?.activePage, organization?.size, organization?.activeRole));
+                  dispatch(getOrgUsers(organization?.activeOrganization?.id, organization?.activePage, organization?.activeRole));
                   dispatch(removeActiveAdminForm());
                 }
               });
@@ -112,7 +112,7 @@ export default function CreateUser(prop) {
                 confirmButtonText: 'OK',
               }).then((result) => {
                 if (result.isConfirmed) {
-                  dispatch(getOrgUsers(organization?.activeOrganization?.id, organization?.activePage, organization?.size, organization?.activeRole));
+                  dispatch(getOrgUsers(organization?.activeOrganization?.id, organization?.activePage, organization?.activeRole));
                   dispatch(removeActiveAdminForm());
                 }
               });

@@ -34,6 +34,9 @@ export const addUserInOrganization = (user) => async (dispatch) => {
   const { organization: { activeOrganization } } = centralizedState;
   const result = await adminService.addUserInOrganization(user, activeOrganization?.id);
   dispatch({
+    type: actionTypes.CLEAR_USERS_STATE,
+  });
+  dispatch({
     type: actionTypes.ADD_NEW_USER,
     payload: result,
   });
