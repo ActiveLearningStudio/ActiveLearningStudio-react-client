@@ -18,6 +18,7 @@ const ActivityShared = (props) => {
   const { match, embed } = props;
   const lrsEndpoint = new URLSearchParams(window.location.search).get('endpoint');
   const lrsAuth = new URLSearchParams(window.location.search).get('auth');
+  const lrsRegistration = new URLSearchParams(window.location.search).get('registration');
   const [authorized, setAuthorized] = useState(false);
   // const [lrs, setLrs] = useState(null);
 
@@ -114,7 +115,10 @@ const ActivityShared = (props) => {
                             mbox: 'mailto:info@currikistudio.org',
                           },
                           verb: extendedStatement.verb,
-                          context: extendedStatement.context,
+                          context: {
+                            ...extendedStatement.context,
+                            registration: lrsRegistration,
+                          },
                           object: extendedStatement.object,
                     });
 
