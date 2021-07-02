@@ -233,20 +233,19 @@ export const clearHistory = () => async (dispatch) => {
   });
 };
 
-export const getOrgUsers = (id, page, size, activeRole) => async (dispatch) => {
+export const getOrgUsers = (id, page, activeRole) => async (dispatch) => {
   let result = '';
   // const centralizedState = store.getState();
   // const { organization: { activeOrganization, currentOrganization } } = centralizedState;
   // if (activeOrganization?.id !== currentOrganization?.id) {
   //   result = await organization.getOrgUsers(id, page, size);
   // }
-  result = await organization.getOrgUsers(id, page, size, activeRole);
+  result = await organization.getOrgUsers(id, page, activeRole);
   dispatch({
     type: actionTypes.GET_ORGANIZATION_USERS,
     payload: {
       result,
       page,
-      size,
       activeRole,
     },
   });
