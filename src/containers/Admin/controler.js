@@ -96,7 +96,7 @@ function Controller(props) {
     <div className="controller">
       {paginationCounter && (
         <div className="pagination-counter drop-counter ">
-          show:
+          Show:
           <span>
             <Dropdown>
               <Dropdown.Toggle id="dropdown-basic">{size}</Dropdown.Toggle>
