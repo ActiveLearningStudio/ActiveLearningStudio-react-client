@@ -97,6 +97,7 @@ export const columnData = {
     'URL',
     'Type',
     'User',
+    'Description',
     'Action',
   ],
 

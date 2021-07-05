@@ -53,18 +53,12 @@ const branding = (domain) => httpService
 const getSubOrganizationList = (id) => httpService
   .get(`/${apiVersion}/suborganizations/${id}/index`)
   .then(({ data }) => data)
-  .catch((err) => {
-    errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
-  });
+  .catch((err) => Promise.reject(err.response.data));
 
 const getAllUsers = (id, name, method) => httpService
   .get(`/${apiVersion}/suborganizations/${id}/member-options?query=${name}&page=${method}`)
   .then(({ data }) => data)
-  .catch((err) => {
-    errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
-  });
+  .catch((err) => Promise.reject(err.response.data));
 
 const deleteOrganization = (id) => httpService
   .remove(`/${apiVersion}/suborganizations/${id}`)
@@ -103,10 +97,7 @@ const upload = (id, formData) => httpService
 const allPermission = (id) => httpService
   .get(`/${apiVersion}/suborganizations/${id}/permissions`)
   .then(({ data }) => data)
-  .catch((err) => {
-    errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
-  });
+  .catch((err) => Promise.reject(err.response.data));
 
 const getOrgUsers = (id, page, activeRole) => httpService
   .get(`/${apiVersion}/suborganizations/${id}/users?page=${page}${activeRole ? `&role=${activeRole}` : ''}`)
@@ -150,10 +141,7 @@ const getAllPermissions = (id) => httpService
 const getAllRoles = (id) => httpService
   .get(`/${apiVersion}/suborganizations/${id}/roles`)
   .then(({ data }) => data)
-  .catch((err) => {
-    errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
-  });
+  .catch((err) => Promise.reject(err.response.data));
 
 const addRole = (id, rolesData) => httpService
   .post(`/${apiVersion}/suborganizations/${id}/add-role`, rolesData)
@@ -174,17 +162,13 @@ const updateRole = (id, rolesData) => httpService
 const permissionId = (id) => httpService
   .get(`/${apiVersion}/suborganizations/${id}/default-permissions`)
   .then(({ data }) => data)
-  .catch((err) => {
-    errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
-  });
+  .catch((err) => Promise.reject(err.response.data));
+
 const roleDetail = (id, roleId) => httpService
   .get(`/${apiVersion}/suborganizations/${id}/role/${roleId}`)
   .then(({ data }) => data)
-  .catch((err) => {
-    // errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
-  });
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   getOrganization,

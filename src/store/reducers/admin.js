@@ -14,6 +14,8 @@ const INITIAL_STATE = {
   currentUser: null,
   newUser: null,
   editUser: null,
+  newlyCreated: null,
+  newlyEdit: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -22,6 +24,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         activeForm: action.payload,
+      };
+    case actionTypes.NEWLY_CREATED_RESOURCE:
+      return {
+        ...state,
+        newlyCreated: action.payload,
+      };
+    case actionTypes.NEWLY_EDIT_RESOURCE:
+      return {
+        ...state,
+        newlyEdit: action.payload,
       };
     case actionTypes.CLEAR_ACTIVE_FORM:
       return {
