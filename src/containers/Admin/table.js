@@ -3,16 +3,13 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Pagination from "react-js-pagination";
 import adminService from "services/admin.service";
+import * as actionTypes from 'store/actionTypes';
 //import { useHistory } from 'react-router-dom';
 import {
   deleteUserFromOrganization,
-  updateFeedbackScreen,
-  updateOrganizationScreen,
-  updatePreviousScreen,
   deleteOrganization,
   getOrganization,
   clearOrganizationState,
-  getOrgUsers,
   removeUserFromOrganization,
   getRoles,
 } from "store/actions/organization";
@@ -45,13 +42,47 @@ function Table(props) {
     setCurrentTab,
   } = props;
   const organization = useSelector((state) => state.organization);
+  const { newlyCreated, newlyEdit } = useSelector((state) => state.admin);
   const { activeOrganization, allSuborgList, permission } = organization;
   const allState = useSelector((state) => state);
   const dispatch = useDispatch();
   const [localStateData, setLocalStateData] = useState([]);
+  //update table after crud 
   useEffect(() => {
     if (type === "LMS") {
-      setLocalStateData(data?.data)
+      if(newlyCreated) {
+        setLocalStateData([newlyCreated, ...data?.data])
+      } else if(newlyEdit){
+        setLocalStateData( data?.data.map((lms)=>{
+          if(lms.id === newlyEdit?.id) {
+             return newlyEdit
+          } else {
+            return lms
+          }
+
+        }))
+      }
+    }
+    dispatch({
+      type: actionTypes.NEWLY_EDIT_RESOURCE,
+      payload: null,
+    });
+    dispatch({
+      type: actionTypes.NEWLY_CREATED_RESOURCE,
+      payload: null,
+    });
+  }, [newlyCreated, newlyEdit]);
+
+  //update table after search and first time 
+  useEffect(() => {
+    console.log(data)
+    if (type === "LMS") {
+      
+      if(data?.data) {
+        setLocalStateData(data?.data)
+      } else {
+        setLocalStateData(data)
+      }
     }
   }, [data]);
   const handleDeleteUser = (user) => {
@@ -219,7 +250,10 @@ function Table(props) {
                   <tr>
                     <td>{row.lms_url}</td>
                     <td>{row.lms_name}</td>
-                    <td>{row.user?.name}</td>
+                    <td>{row.user?.first_name +" "+ row.user?.last_name}</td>
+                    <td>{row?.user.email}</td>
+                    <td>{row?.site_name}</td>
+                    <td>{row?.description}</td>
                     <td>
                       <div className="links">
                         {true && (
