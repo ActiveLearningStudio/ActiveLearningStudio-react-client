@@ -208,7 +208,7 @@ export default function CreateUser(prop) {
             <div className="form-group-create">
               <h3>Organization Type</h3>
               <select name="organization_type" onChange={handleChange} onBlur={handleBlur} value={values.organization_type}>
-                <option value="">{' '}</option>
+                <option value="">{'---Select an option---'}</option>
                 {organizationTypes?.length > 0 && organizationTypes?.map((type) => (
                   <option value={type?.label} key={type?.label}>{type?.label}</option>
                 ))}

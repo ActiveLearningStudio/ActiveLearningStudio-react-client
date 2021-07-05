@@ -47,7 +47,7 @@ function Table(props) {
   const allState = useSelector((state) => state);
   const dispatch = useDispatch();
   const [localStateData, setLocalStateData] = useState([]);
-  //update table after crud 
+  //update table after crud
   useEffect(() => {
     if (type === "LMS") {
       if(newlyCreated) {
@@ -73,11 +73,11 @@ function Table(props) {
     });
   }, [newlyCreated, newlyEdit]);
 
-  //update table after search and first time 
+  //update table after search and first time
   useEffect(() => {
-   
+
     if (type === "LMS" || type === 'Project') {
-      
+
       if(data?.data) {
         setLocalStateData(data?.data)
       } else {
@@ -266,7 +266,7 @@ function Table(props) {
                               dispatch(setActiveAdminForm("clone_lms"));
                             }}
                           >
-                           &nbsp;&nbsp; clone &nbsp;&nbsp;
+                            Clone
                           </Link>
                         )}
                         {true && (
@@ -311,7 +311,7 @@ function Table(props) {
                               });
                             }}
                           >
-                           &nbsp;&nbsp; delete &nbsp;&nbsp;
+                            Delete
                           </Link>
                         )}
                         {true && (
@@ -324,7 +324,7 @@ function Table(props) {
                               dispatch(setActiveAdminForm("edit_lms"));
                             }}
                           >
-                           &nbsp;&nbsp; edit &nbsp;&nbsp;
+                            Edit
                           </Link>
                         )}
                       </div>
@@ -632,10 +632,10 @@ function Table(props) {
                             height: '100px',
                             backgroundPosition: 'center',
                             width:'100px'
-                            
+
                         }} >
                         </div>
-                      
+
                       </td>
                       <td>{row.name}</td>
                       <td>{createNew.toDateString()}</td>

@@ -224,7 +224,7 @@ function Controller(props) {
                         setActiveRoleInComponent(head.display_name);
                         if (subTypeState === 'Manage Roles')
                           dispatch(roleDetail(activeOrganization.id, head.id));
-                        if (subTypeState === 'All users') {
+                        if (subTypeState === 'All Users') {
                           setSearchQuery('');
                           setActiveRole(head.id);
                           setActivePage(1);
@@ -452,7 +452,7 @@ function Controller(props) {
           </button>
         </div>
       )}
-      {!!btnText && subTypeState === 'All users' && permission?.Organization.includes('organization:add-user')  && (
+      {!!btnText && subTypeState === 'All Users' && permission?.Organization.includes('organization:add-user')  && (
         <div className="btn-text">
           <button
             onClick={() => {
@@ -508,7 +508,7 @@ function Controller(props) {
           </div>
         </div>
       )}
-      {permission?.Organization?.includes('organization:view-user') && type === "Users" && subTypeState === 'All users' && (
+      {permission?.Organization?.includes('organization:view-user') && type === "Users" && subTypeState === 'All Users' && (
         <div className="btn-text">
           <div className="add-user-btn">
             <Dropdown>

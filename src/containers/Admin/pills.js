@@ -127,7 +127,7 @@ export default function Pills(props) {
     if (
       activeOrganization &&
       type === "Users" &&
-      subTypeState === "All users" &&
+      subTypeState === "All Users" &&
       activeTab === "Users"
     ) {
       if (searchQuery.length > 2) {
@@ -313,7 +313,7 @@ export default function Pills(props) {
     } else if (activeTab === 'Activities') {
       setSubTypeState('Activity Types');
     } else if (activeTab === 'Users') {
-      setSubTypeState('All users');
+      setSubTypeState('All Users');
     } else if (activeTab === 'Stats') {
       setSubTypeState('Report');
     }
@@ -401,7 +401,7 @@ export default function Pills(props) {
                 type={type}
               />
             )}
-            {type === "Users" && subTypeState === "All users" && (
+            {type === "Users" && subTypeState === "All Users" && (
               <Starter
                 // paginationCounter={true}
                 search={true}
@@ -417,7 +417,7 @@ export default function Pills(props) {
                 // setSize={setSize}
                 activeRole={activeRole}
                 setActiveRole={setActiveRole}
-                subTypeState={'All users'}
+                subTypeState={'All Users'}
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
                 searchQueryChangeHandler={searchQueryChangeHandler}

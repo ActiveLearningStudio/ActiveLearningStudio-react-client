@@ -25,7 +25,7 @@ function SearchForm() {
   const activityTypesState = useSelector((state) => state.resource.types);
   const searchState = useSelector((state) => state.search);
   const auth = useSelector((state) => state.auth);
-  const { currentOrganization } = useSelector((state) => state.organization);
+  const { currentOrganization, permission } = useSelector((state) => state.organization);
 
   useEffect(() => {
     if (activityTypesState.length === 0 && auth?.user) {
@@ -76,7 +76,7 @@ function SearchForm() {
                 Swal.fire('Search field is required');
               } else if (simpleSearch.length > 255) {
                 Swal.fire('Character limit should be less than 255 ');
-              } else {
+              } else if (permission?.Search?.includes('search:advance')) {
                 const searchData = {
                   phrase: simpleSearch.trim(),
                   from: 0,
@@ -86,6 +86,17 @@ function SearchForm() {
                 dispatcher(simpleSearchAction(searchData));
                 localStorage.setItem('loading', 'true');
                 history.push(`/org/${currentOrganization?.domain}/search?q=${simpleSearch.trim()}&type=public`);
+                localStorage.setItem('refreshPage', false);
+              } else if (permission?.Search?.includes('search:dashboard')) {
+                const searchData = {
+                  phrase: simpleSearch.trim(),
+                  from: 0,
+                  size: 20,
+                  type: 'private',
+                };
+                dispatcher(simpleSearchAction(searchData));
+                localStorage.setItem('loading', 'true');
+                history.push(`/org/${currentOrganization?.domain}/search?q=${simpleSearch.trim()}&type=private`);
                 localStorage.setItem('refreshPage', false);
               }
             }
@@ -183,39 +194,48 @@ function SearchForm() {
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <div className="radio-btns">
-                    <label>
-                      <input
-                        name="type"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value="private"
-                        checked={values.type === 'private'}
-                        type="radio"
-                      />
-                      <span>Search My Projects</span>
-                    </label>
-                    <label>
-                      <input
-                        name="type"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value="public"
-                        checked={values.type === 'public'}
-                        type="radio"
-                      />
-                      <span>Search Project Showcase</span>
-                    </label>
-                    <label>
-                      <input
-                        name="type"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value="orgSearch"
-                        checked={values.type === 'orgSearch'}
-                        type="radio"
-                      />
-                      <span>Search All Projects in Organization</span>
-                    </label>
+                    {permission?.Search?.includes('search:dashboard')
+                      && (
+                      <label>
+                        <input
+                          name="type"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value="private"
+                          checked={values.type === 'private'}
+                          type="radio"
+                        />
+                        <span>Search My Projects</span>
+                      </label>
+                      )}
+                    {permission?.Search?.includes('search:advance')
+                      && (
+                        <label>
+                          <input
+                            name="type"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value="public"
+                            checked={values.type === 'public'}
+                            type="radio"
+                          />
+                          <span>Search Project Showcase</span>
+                        </label>
+                      )}
+                    {permission?.Search?.includes('search:advance')
+                      && (
+                      <label>
+                        <input
+                          name="type"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value="orgSearch"
+                          checked={values.type === 'orgSearch'}
+                          type="radio"
+                        />
+                        <span>Search All Projects in Organization</span>
+                      </label>
+                      )}
                   </div>
                 </div>
 

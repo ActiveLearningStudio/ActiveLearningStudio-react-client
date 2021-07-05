@@ -138,7 +138,7 @@
       margin-right: 8px;
       margin-top: 3px;
       margin-bottom: 3px;
-     
+
     }
 
     .retryandforget {
@@ -382,6 +382,9 @@
         .links {
           display: flex;
           justify-content: space-between;
+          a {
+            text-decoration: none;
+          }
         }
       }
       .image-size {
