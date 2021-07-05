@@ -75,8 +75,8 @@ function Table(props) {
 
   //update table after search and first time
   useEffect(() => {
-    console.log(data)
-    if (type === "LMS") {
+
+    if (type === "LMS" || type === 'Project') {
 
       if(data?.data) {
         setLocalStateData(data?.data)
@@ -617,17 +617,24 @@ function Table(props) {
             )}
             {type === "Project" &&
               subType === "all" &&
-              (data ? (
-                data?.data?.map((row) => {
+              (localStateData ? (
+                localStateData.map((row) => {
                   const createNew = new Date(row.created_at);
                   const updateNew = new Date(row.updated_at);
                   return (
                     <tr className="org-rows">
                       <td>
-                        <img
-                          src={global.config.resourceUrl + row.thumb_url}
-                          alt=""
-                        />
+                        <div style={{
+                          backgroundImage: row.thumb_url.includes('pexels.com')
+                            ? `url(${row.thumb_url})`
+                            : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                            backgroundSize: 'cover',
+                            height: '100px',
+                            backgroundPosition: 'center'
+
+                        }} >
+                        </div>
+
                       </td>
                       <td>{row.name}</td>
                       <td>{createNew.toDateString()}</td>
@@ -682,8 +689,8 @@ function Table(props) {
 
             {type === "Project" &&
               subType === "user" &&
-              (data ? (
-                data?.data?.map((row) => {
+              (localStateData ? (
+                localStateData?.map((row) => {
                   const createNew = new Date(row.created_at);
                   const updateNew = new Date(row.updated_at);
                   return (
@@ -722,8 +729,8 @@ function Table(props) {
 
             {type === "Project" &&
               subType === "index" &&
-              (data ? (
-                data?.data?.map((row) => {
+              (localStateData ? (
+                localStateData.map((row) => {
                   const createNew = new Date(row.created_at);
                   const updateNew = new Date(row.updated_at);
                   return (
@@ -764,6 +771,7 @@ function Table(props) {
                               const result = adminService.updateIndex(row.id, 3)
                               result.then((data) => {
                                 // console.log(data)
+                                setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id))
                                 Swal.fire({
                                   icon: 'success',
                                   text: data.message,
@@ -791,6 +799,7 @@ function Table(props) {
                               const result = adminService.updateIndex(row.id, 2)
                               result.then((data) => {
                                 // console.log(data)
+                                setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id))
                                 Swal.fire({
                                   icon: 'success',
                                   text: data.message,
@@ -838,7 +847,7 @@ function Table(props) {
                           dispatch(setActiveAdminForm("edit_activity_type"));
                         }}
                       >
-                        Edit
+                        &nbsp;&nbsp;Edit&nbsp;&nbsp;
                       </Link>
                       <Link
                         onClick={
@@ -909,7 +918,7 @@ function Table(props) {
                           dispatch(setActiveAdminForm("edit_activity_item"));
                         }}
                       >
-                        Edit
+                        &nbsp;&nbsp;Edit&nbsp;&nbsp;
                       </Link>
                       <Link
                         onClick={

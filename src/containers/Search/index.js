@@ -876,7 +876,7 @@ function SearchInterface(props) {
                                     </ul>
                                     <p>{res.description}</p>
                                   </div>
-                                  {res.model === 'Project' && (
+                                  {(res.model === 'Project' && permission?.Project?.includes('project:favorite')) && (
                                     <div
                                       className={`btn-fav ${res.favored}`}
                                       onClick={((e) => {
@@ -1010,6 +1010,7 @@ function SearchInterface(props) {
                                         </ul>
                                         <p>{res.description}</p>
                                       </div>
+                                      {permission?.Project?.includes('project:favorite') &&
                                       <div
                                         className={`btn-fav ${res.favored}`}
                                         onClick={((e) => {
@@ -1027,6 +1028,7 @@ function SearchInterface(props) {
                                         />
                                         Favorite
                                       </div>
+                                      }
                                     </div>
                                     <Dropdown>
                                       <Dropdown.Toggle>
