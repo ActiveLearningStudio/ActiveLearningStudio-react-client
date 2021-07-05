@@ -50,7 +50,7 @@ class LoginPage extends React.Component {
       const { email, password } = this.state;
       const { history, login, domain } = this.props;
 
-      if (!validator.isEmail(email.trim())) {
+      if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{1,4}$/i.test(email?.trim())) {
         this.setState({
           error: 'Please input valid email.',
         });
