@@ -630,7 +630,8 @@ function Table(props) {
                             : `url(${global.config.resourceUrl}${row.thumb_url})`,
                             backgroundSize: 'cover',
                             height: '100px',
-                            backgroundPosition: 'center'
+                            backgroundPosition: 'center',
+                            width:'100px'
 
                         }} >
                         </div>
