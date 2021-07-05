@@ -86,16 +86,16 @@ function AdminPanel() {
                   <div className="module-content">
                     <h2>Users</h2>
                     <Pills
-                      modules={["All users", "Manage Roles"]}
+                      modules={["All Users", "Manage Roles"]}
                       type="Users"
-                      subType="All users"
+                      subType="All Users"
                     />
                   </div>
                 </Tab>
                 <Tab eventKey="LMS" title="LMS">
                   <div className="module-content">
                     <h2>LMS</h2>
-                    <Pills modules={["All settings"]} type="LMS" />
+                    <Pills modules={["All Settings"]} type="LMS" />
                   </div>
                 </Tab>
                 {/* <Tab eventKey="Settings" title="Settings">

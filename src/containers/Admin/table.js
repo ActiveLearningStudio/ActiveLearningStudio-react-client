@@ -47,7 +47,7 @@ function Table(props) {
   const allState = useSelector((state) => state);
   const dispatch = useDispatch();
   const [localStateData, setLocalStateData] = useState([]);
-  //update table after crud 
+  //update table after crud
   useEffect(() => {
     if (type === "LMS") {
       if(newlyCreated) {
@@ -73,11 +73,11 @@ function Table(props) {
     });
   }, [newlyCreated, newlyEdit]);
 
-  //update table after search and first time 
+  //update table after search and first time
   useEffect(() => {
     console.log(data)
     if (type === "LMS") {
-      
+
       if(data?.data) {
         setLocalStateData(data?.data)
       } else {
@@ -266,7 +266,7 @@ function Table(props) {
                               dispatch(setActiveAdminForm("clone_lms"));
                             }}
                           >
-                            clone
+                            Clone
                           </Link>
                         )}
                         {true && (
@@ -311,7 +311,7 @@ function Table(props) {
                               });
                             }}
                           >
-                            delete
+                            Delete
                           </Link>
                         )}
                         {true && (
@@ -324,7 +324,7 @@ function Table(props) {
                               dispatch(setActiveAdminForm("edit_lms"));
                             }}
                           >
-                            edit
+                            Edit
                           </Link>
                         )}
                       </div>
