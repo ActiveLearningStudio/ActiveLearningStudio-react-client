@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
+import * as actionTypes from 'store/actionTypes';
 
 import { removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
@@ -104,6 +105,10 @@ export default function CreateUser(prop) {
                 text:res?.message
               })
               dispatch(removeActiveAdminForm());
+              dispatch({
+                type: actionTypes.NEWLY_EDIT_RESOURCE,
+                payload: res?.data,
+              });
             })
 
           } else {
@@ -125,6 +130,10 @@ export default function CreateUser(prop) {
                 text:res?.message
               })
               dispatch(removeActiveAdminForm());
+              dispatch({
+                type: actionTypes.NEWLY_CREATED_RESOURCE,
+                payload: res?.data,
+              });
             })
           
             
@@ -285,7 +294,10 @@ export default function CreateUser(prop) {
                 autoComplete="off"
                 onChange={async (e) => {
                   setFieldValue('name', e.target.value);
-                  
+                  if (e.target.value == "") {
+                    setStateOrgUsers([]);
+                    return;
+                  }
                   setLoaderlmsImgUser(true);
                   const lmsApi = organizationapi.getAllUsers(organization.activeOrganization?.id, e.target.value, 'create');
                   lmsApi.then((data) => {
