@@ -250,7 +250,9 @@ function Table(props) {
                   <tr>
                     <td>{row.lms_url}</td>
                     <td>{row.lms_name}</td>
-                    <td>{row.user?.first_name}</td>
+                    <td>{row.user?.first_name +" "+ row.user?.last_name}</td>
+                    <td>{row?.user.email}</td>
+                    <td>{row?.site_name}</td>
                     <td>{row?.description}</td>
                     <td>
                       <div className="links">
