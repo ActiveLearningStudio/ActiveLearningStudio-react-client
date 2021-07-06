@@ -196,7 +196,7 @@ export default function CreateUser(prop) {
                 value={values.role}
               /> */}
               <select name="role_id" onChange={handleChange} onBlur={handleBlur} value={values.role_id}>
-                <option value="">{''}</option>
+                <option value="">{'---Select a role---'}</option>
                 {roles?.length > 0 && roles?.map((role)=>(
                   <option value={role?.id} key={role?.id}>{role?.display_name}</option>
                 ))}
@@ -208,7 +208,7 @@ export default function CreateUser(prop) {
             <div className="form-group-create">
               <h3>Organization Type</h3>
               <select name="organization_type" onChange={handleChange} onBlur={handleBlur} value={values.organization_type}>
-                <option value="">{'---Select an option---'}</option>
+                <option value="">{'---Select an organization type---'}</option>
                 {organizationTypes?.length > 0 && organizationTypes?.map((type) => (
                   <option value={type?.label} key={type?.label}>{type?.label}</option>
                 ))}
