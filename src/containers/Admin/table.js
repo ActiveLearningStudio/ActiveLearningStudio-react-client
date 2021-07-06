@@ -251,7 +251,7 @@ function Table(props) {
                     <td>{row.lms_url}</td>
                     <td>{row.lms_name}</td>
                     <td>{row.user?.first_name +" "+ row.user?.last_name}</td>
-                    <td>{row?.user.email}</td>
+                    <td>{row?.user?.email}</td>
                     <td>{row?.site_name}</td>
                     <td>{row?.description}</td>
                     <td>
@@ -266,7 +266,7 @@ function Table(props) {
                               dispatch(setActiveAdminForm("clone_lms"));
                             }}
                           >
-                            Clone
+                            &nbsp;&nbsp;Clone&nbsp;&nbsp;
                           </Link>
                         )}
                         {true && (
@@ -311,7 +311,7 @@ function Table(props) {
                               });
                             }}
                           >
-                            Delete
+                             &nbsp;&nbsp;Delete&nbsp;&nbsp;
                           </Link>
                         )}
                         {true && (
@@ -324,7 +324,7 @@ function Table(props) {
                               dispatch(setActiveAdminForm("edit_lms"));
                             }}
                           >
-                            Edit
+                            &nbsp;&nbsp;Edit&nbsp;&nbsp;
                           </Link>
                         )}
                       </div>
@@ -560,7 +560,9 @@ function Table(props) {
                               if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                               dispatch(clearOrganizationState());
                               dispatch(getRoles());
-                              dispatch(setActiveTab('Project'));
+                              // dispatch(setActiveTab('Project'));
+                              // dispatch(clearOrganizationState());
+                              // dispatch(getRoles());
                             }
                           }}
                         >
