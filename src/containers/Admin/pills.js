@@ -11,6 +11,7 @@ import { columnData } from "./column";
 import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from "store/actions/resource";
 import { getJobListing, getLogsListing, getUserReport } from "store/actions/admin";
+import { alphaNumeric } from "utils";
 export default function Pills(props) {
   const { modules, type, subType } = props;
 
@@ -54,7 +55,9 @@ export default function Pills(props) {
   };
   const searchQueryChangeHandler = async ({ target }) => {
     if (target.value.length) {
-      setSearchQuery(target.value);
+      if(!!alphaNumeric(target.value)) {
+        setSearchQuery(target.value);
+      }
       searchUsers(target.value, activePage);
       if (target.value.length> 2 ) setUsers(null);
     } else {
