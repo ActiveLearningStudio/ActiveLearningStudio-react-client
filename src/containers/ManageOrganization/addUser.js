@@ -102,6 +102,9 @@ export default function AddUser(props) {
                     result.then((data) => {
                       setLoaderImgUser(false);
                       setStateOrgUsers(data['member-options']);
+                    }).catch(() => {
+                      setLoaderImgUser(false);
+                      setStateOrgUsers([]);
                     });
                   } else if (e.target.value === '') {
                     setLoaderImgUser(false);
