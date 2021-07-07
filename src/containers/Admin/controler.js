@@ -286,17 +286,20 @@ function Controller(props) {
         </div>
       )}
       {!!search && type === "Users" && (
-        <div className="search-bar">
-          <input
-            className=""
-            type="text"
-            title="Enter atleast 3 characters"
-            placeholder="Search by email"
-            value={searchQuery}
-            onChange={searchQueryChangeHandler}
-          />
-          <img src={searchimg} alt="search" />
-        </div>
+        <>
+          <div className="search-bar">
+            <input
+              className=""
+              type="text"
+              title="Enter at least 3 characters"
+              placeholder="Search by email"
+              value={searchQuery}
+              onChange={searchQueryChangeHandler}
+            />
+            <img src={searchimg} alt="search" />
+          </div>
+          {(searchQuery.length > 0 && searchQuery.length < 3) && <label className="flex" style={{ color: 'red' }}>Enter at least 3 characters</label> }
+        </>
       )}
       {!!search && type === "LMS" && (
         <div className="search-bar">
