@@ -8,6 +8,7 @@ import organization from 'services/organizations.services';
 import loader from 'assets/images/dotsloader.gif';
 import Swal from 'sweetalert2';
 import { inviteUserOutside } from 'store/actions/organization';
+import { alphaNumeric } from 'utils';
 
 export default function AddUser(props) {
   const {
@@ -94,10 +95,12 @@ export default function AddUser(props) {
                 name="name"
                 autoComplete="off"
                 onChange={async (e) => {
-                  setFieldValue('name', e.target.value);
-                  setFieldValue('email', '');
-                  setLoaderImgUser(true);
-                  if (e.target.value) {
+                  if (alphaNumeric(e.target.value)) {
+                    setFieldValue('name', e.target.value);
+                    setFieldValue('email', '');
+                    setLoaderImgUser(true);
+                  }
+                  if (e.target.value && alphaNumeric(e.target.value)) {
                     const result = organization.getAllUsers(stateOrg.activeOrganization?.id, e.target.value, method);
                     result.then((data) => {
                       setLoaderImgUser(false);
