@@ -21,6 +21,11 @@ export default function CreateUser(prop) {
   useEffect(() => {
     dispatch(loadOrganizationTypesAction());
   }, [])
+  const validatePassword=(pwd) => {
+    // eslint-disable-next-line quotes
+    const regex = new RegExp("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$");
+    return regex.test(pwd);
+  };
   return (
     <div className="create-form">
       <Formik
@@ -48,6 +53,11 @@ export default function CreateUser(prop) {
           }
           if (!values.password && !editMode) {
             errors.password = 'Required';
+          }
+          if (values.password) {
+            if(!validatePassword(values.password)) {
+              errors.password = 'Password must contain An alphabet, a number and a special character';
+            }
           }
           if (!values.role_id) {
             errors.role_id = 'Required';
