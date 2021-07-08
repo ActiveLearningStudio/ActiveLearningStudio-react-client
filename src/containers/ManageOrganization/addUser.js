@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Formik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -19,6 +19,7 @@ export default function AddUser(props) {
   } = props;
   const stateOrg = useSelector((state) => state.organization);
   const { activeOrganization } = stateOrg;
+  const resetvalue = useRef();
   const dispatch = useDispatch();
   const [stateOrgUsers, setStateOrgUsers] = useState([]);
   const [loaderImgUser, setLoaderImgUser] = useState(false);
@@ -26,6 +27,7 @@ export default function AddUser(props) {
   return (
     <div className="add-user-organization">
       <Formik
+        enableReinitialize
         initialValues={{
           name: '',
           role_id: '',
@@ -71,8 +73,10 @@ export default function AddUser(props) {
                   text: 'Invitation sent',
                 });
               }
+              resetvalue.current.selectedIndex = '0';
               resetForm();
             }).catch(() => {
+              resetvalue.current.selectedIndex = '0';
               resetForm();
             });
         }}
@@ -171,6 +175,7 @@ export default function AddUser(props) {
                 }}
                 onBlur={handleBlur}
                 value={values.role_id.name}
+                ref={resetvalue}
               >
                 <option value="">Select Role</option>
                 {stateOrg.roles.map((role) => (
