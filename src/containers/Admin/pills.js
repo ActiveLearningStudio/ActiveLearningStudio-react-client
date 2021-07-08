@@ -31,6 +31,7 @@ export default function Pills(props) {
   const [users, setUsers] = useState(null);
   const [searchAlertToggler, setSearchAlertToggler] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchQueryProject, setSearchQueryProject] = useState("");
   const [allProjectTab, setAllProjectTab] = useState(null);
   const [allProjectUserTab, setAllProjectUserTab] = useState(null);
   const [allProjectIndexTab, setAllProjectIndexTab] = useState(null);
@@ -74,14 +75,18 @@ export default function Pills(props) {
 
     if (subType === 'index') {
       if (!!target.value) {
-        setAllProjectIndexTab(null);
-        const searchapi = adminService.userSerchIndexs(activeOrganization?.id, undefined, index, target.value)
-        searchapi.then((data) => {
-          // console.log(data)
-          setAllProjectIndexTab(data)
+        if (!!alphaNumeric(target.value)) {
+          setSearchQueryProject(target.value);
+          setAllProjectIndexTab(null);
+          const searchapi = adminService.userSerchIndexs(activeOrganization?.id, undefined, index, target.value)
+          searchapi.then((data) => {
+            // console.log(data)
+            setAllProjectIndexTab(data)
 
-        })
+          })
+        }
       } else {
+        setSearchQueryProject('');
         const searchapi = adminService.getAllProjectIndex(activeOrganization?.id, activePage, index)
         searchapi.then((data) => {
           // console.log(data)
@@ -91,14 +96,18 @@ export default function Pills(props) {
       }
     } else if (subType === 'all') {
       if (!!target.value) {
-        setAllProjectTab(null);
-        const allproject = adminService.getAllProjectSearch(activeOrganization?.id, undefined, target.value)
-        // console.log(allproject)
-        allproject.then((data) => {
-          console.log(data)
-          setAllProjectTab(data)
-        })
+        if (!!alphaNumeric(target.value)) {
+          setSearchQueryProject(target.value);
+          setAllProjectTab(null);
+          const allproject = adminService.getAllProjectSearch(activeOrganization?.id, undefined, target.value)
+          // console.log(allproject)
+          allproject.then((data) => {
+            console.log(data)
+            setAllProjectTab(data)
+          })
+        }
       } else {
+        setSearchQueryProject('');
         const allproject = adminService.getAllProject(activeOrganization?.id, activePage)
         allproject.then((data) => {
           // console.log(data)
@@ -107,12 +116,16 @@ export default function Pills(props) {
       }
     } else if (subType === 'user') {
       if (!!target.value) {
-        setAllProjectUserTab(null);
-        const userproject = adminService.getUserProjectSearch(activeOrganization?.id, undefined, target.value)
-        userproject.then((data) => {
-          setAllProjectUserTab(data)
-        })
+        if (!!alphaNumeric(target.value)) {
+          setSearchQueryProject(target.value);
+          setAllProjectUserTab(null);
+          const userproject = adminService.getUserProjectSearch(activeOrganization?.id, undefined, target.value)
+          userproject.then((data) => {
+            setAllProjectUserTab(data)
+          })
+        }
       } else {
+        setSearchQueryProject('');
         const userproject = adminService.getUserProject(activeOrganization?.id, activePage)
         userproject.then((data) => {
           // console.log(data)
@@ -328,6 +341,7 @@ export default function Pills(props) {
       id="uncontrolled-tab-example"
       onSelect={(key) => {
         setSubTypeState(key);
+        setSearchQueryProject('');
         if (key === "All Projects") {
           setCurrentTab("all");
         } else if (key === "User Projects") {
@@ -492,9 +506,7 @@ export default function Pills(props) {
                 searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
                 type={type}
                 importUser={true}
-                // searchQuery={searchQuery}
-                // searchProjectQueryChangeHandler={searchProjectQueryChangeHandle}
-                // searchAlertToggler={searchAlertToggler}
+                searchQueryProject={searchQueryProject}
                 setActivePage={setActivePage}
                 activePage={activePage}
                 subType="all"
@@ -512,6 +524,7 @@ export default function Pills(props) {
                 activePage={activePage}
                 subType="user"
                 setCurrentTab={setCurrentTab}
+                searchQueryProject={searchQueryProject}
                 searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
               />
             )}
@@ -530,6 +543,7 @@ export default function Pills(props) {
                 subType="index"
                 setCurrentTab={setCurrentTab}
                 filter={true}
+                searchQueryProject={searchQueryProject}
                 setChangeIndexValue={setChangeIndexValue}
               />
             )}
