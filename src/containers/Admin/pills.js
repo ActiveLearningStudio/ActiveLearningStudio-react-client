@@ -42,7 +42,7 @@ export default function Pills(props) {
   const [logType, SetLogType] = useState({ value: 'all' , display_name: 'All'});
   const [changeIndexValue, setChangeIndexValue] = useState("1");
   const searchUsers = async (query, page) => {
-    if (query.length > 2) {
+    if (query.length > 1) {
       const result = await dispatch(
         searchUserInOrganization(activeOrganization?.id, query, page, activeRole)
       );
@@ -60,7 +60,7 @@ export default function Pills(props) {
         setSearchQuery(target.value);
       }
       searchUsers(target.value, activePage);
-      if (target.value.length> 2 ) setUsers(null);
+      if (target.value.length> 1 ) setUsers(null);
     } else {
       setSearchQuery("");
       const result = await dispatch(
@@ -69,6 +69,8 @@ export default function Pills(props) {
       setUsers(result);
     }
   };
+
+
 
   const searchProjectQueryChangeHandler = async ({ target }, index, subType) => {
     console.log(target.value, subType)
@@ -140,17 +142,15 @@ export default function Pills(props) {
   }, [activeTab])
 
   useMemo(async () => {
+
     if (
       activeOrganization &&
       type === "Users" &&
-      subTypeState === "All Users" &&
-      activeTab === "Users"
+      subTypeState === "All Users"
     ) {
-      if (searchQuery.length > 2) {
+      if (searchQuery.length > 1) {
         const result = await dispatch(searchUserInOrganization(activeOrganization?.id, searchQuery, activePage, activeRole));
-        if (result?.data?.length > 0) {
-          setUsers(result);
-        }
+        setUsers(result);
       }
       else if (
         organization?.users?.data?.length > 0 &&
@@ -163,6 +163,7 @@ export default function Pills(props) {
           getOrgUsers(activeOrganization?.id, activePage, activeRole)
         );
         setUsers(result);
+        setActivePage(1)
       }
     }
     if (type === 'Organization' ) {
@@ -211,7 +212,7 @@ export default function Pills(props) {
       );
       setAllProjectIndexTab(result);
     }
-  }, [type, activePage, changeIndexValue, currentTab]);
+  }, [activeOrganization?.id, type, activePage, changeIndexValue, currentTab]);
   // Activity Tab Business Logic
   useEffect(() => {
     if (type=== 'Activities' && subTypeState === 'Activity Items') {
@@ -479,6 +480,7 @@ export default function Pills(props) {
                 tableHead={columnData.organization}
                 data={[]}
                 type={type}
+
               />
             )}
 

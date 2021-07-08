@@ -73,7 +73,7 @@ function App(props) {
     if ((window.location.href.includes('/login')
       || window.location.pathname.includes('/register') || window.location.pathname.includes('/forgot-password') || window.location.pathname.includes('/reset-password'))) {
       const subDomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
-      if (subDomain?.includes('login') || subDomain?.includes('register') || subDomain?.includes('forgot-password')) {
+      if (subDomain?.includes('login') || subDomain?.includes('register') || subDomain?.includes('forgot-password') || window.location.pathname.includes('/reset-password')) {
         dispatch(getBranding('currikistudio'));
       } else if (subDomain) {
         const result = dispatch(getBranding(subDomain));

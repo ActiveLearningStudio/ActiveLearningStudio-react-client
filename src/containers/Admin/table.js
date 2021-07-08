@@ -40,6 +40,8 @@ function Table(props) {
     searchAlertToggler,
     subType,
     setCurrentTab,
+    setChangeIndexValue,
+    changeProjectFromorg,
   } = props;
   const organization = useSelector((state) => state.organization);
   const auth = useSelector((state) => state.auth);
@@ -1048,7 +1050,7 @@ function Table(props) {
               type === "Project" && subType === "user" && (
                 <Pagination
                   activePage={activePage}
-                  pageRangeDisplayed={3}
+                  pageRangeDisplayed={5}
                   itemsCountPerPage={data?.meta?.per_page}
                   totalItemsCount={data?.meta?.total}
                   onChange={(e) => {
@@ -1067,6 +1069,7 @@ function Table(props) {
                   itemsCountPerPage={data?.meta?.per_page}
                   totalItemsCount={data?.meta?.total}
                   onChange={(e) => {
+                    window.scrollTo(0, 0)
                     setCurrentTab("index");
                     setActivePage(e);
                   }}
