@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   activeScreen: 'intro',
   activePage: 1,
   activeRole: '',
-  size: 25,
+  size: 10,
   backScreen: '',
   roles: [],
   users: [],

@@ -23,7 +23,7 @@ export default function Pills(props) {
   const { activityTypes, activityItems, usersReport } = useSelector ((state) => state.admin)
   const admin = useSelector((state) => state.admin);
   const [ activePage, setActivePage ] = useState(1);
-  const [ size, setSize ] = useState(25);
+  const [ size, setSize ] = useState(10);
   const { activeOrganization, roles, permission } = organization;
   const [ activeRole,setActiveRole ] = useState('');
   const { activeTab, activityType } = admin
@@ -251,7 +251,7 @@ export default function Pills(props) {
     if (type=== 'Stats' && subTypeState === 'Report' && (activePage !== organization?.activePage || size !== organization?.size)) {
       //pagination
       dispatch(getUserReport('all',size,activePage,''));
-    } else if (type=== 'Stats' && subTypeState === 'Report' && (activePage === 1 || size === 25)) {
+    } else if (type=== 'Stats' && subTypeState === 'Report' && (activePage === 1 || size === 10)) {
       //on page 1
       dispatch (getUserReport('all'));
     }
@@ -260,7 +260,7 @@ export default function Pills(props) {
       result.then((data) => {
         setJobs(data.data);
       });
-    } else if (type === 'Stats' && subTypeState === 'Queues:Jobs' && (activePage === 1 || size === 25)) {
+    } else if (type === 'Stats' && subTypeState === 'Queues:Jobs' && (activePage === 1 || size === 10)) {
       const result = dispatch(getJobListing(jobType.value))
       result.then((data) => {
         setJobs(data.data);
@@ -272,7 +272,7 @@ export default function Pills(props) {
       result.then((data) => {
         setLogs(data.data);
       });
-    } else if (type === 'Stats' && subTypeState === 'Queues:Logs' && (activePage === 1 || size === 25)) {
+    } else if (type === 'Stats' && subTypeState === 'Queues:Logs' && (activePage === 1 || size === 10)) {
       const result = dispatch(getLogsListing(logType.value))
       result.then((data) => {
         setLogs(data.data);
