@@ -203,8 +203,10 @@ export const confirmEmailAction = (data) => async (dispatch) => {
 };
 
 export const logoutAction = () => async () => {
+  const centralizedState = store.getState();
+  const { organization: { currentOrganization } } = centralizedState;
   storageService.removeItem(USER_TOKEN_KEY);
-  window.location.href = '/';
+  window.location.href = `/login/${currentOrganization?.domain}`;
 };
 
 export const updateProfileAction = (data) => async (dispatch) => {

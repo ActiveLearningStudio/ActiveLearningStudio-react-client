@@ -23,7 +23,8 @@ export default function CreateUser(prop) {
   }, [])
   const validatePassword=(pwd) => {
     // eslint-disable-next-line quotes
-    const regex = new RegExp("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$");
+    const regex = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$");
+    console.log(regex.test(pwd));
     return regex.test(pwd);
   };
   return (
@@ -56,7 +57,7 @@ export default function CreateUser(prop) {
           }
           if (values.password) {
             if(!validatePassword(values.password)) {
-              errors.password = 'Password must contain An alphabet, a number and a special character';
+              errors.password = 'Password must be more than 8 characters long, should contain at-least 1 Uppercase, 1 Lowercase and 1 Numeric character.';
             }
           }
           if (!values.role_id) {

@@ -39,6 +39,7 @@ function Controller(props) {
     setActivePage,
     type,
     searchQuery,
+    searchQueryProject,
     setSearchQuery,
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
@@ -331,7 +332,7 @@ function Controller(props) {
             className=""
             type="text"
             placeholder="Search"
-
+            value={searchQueryProject}
             onChange={(e) => searchProjectQueryChangeHandler(e, selectedIndexValueid, subType)}
           />
           <img src={searchimg} alt="search" />
