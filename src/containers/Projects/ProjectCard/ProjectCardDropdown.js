@@ -60,18 +60,16 @@ const ProjectCardDropdown = (props) => {
         )}
 
         {permission?.Project?.includes('project:clone') && (
-          !previewMode && (
-            <Dropdown.Item
-              to="#"
-              onClick={() => {
-                Swal.showLoading();
-                cloneProject(project.id);
-              }}
-            >
-              <FontAwesomeIcon icon="clone" className="mr-2" />
-              Duplicate
-            </Dropdown.Item>
-          )
+          <Dropdown.Item
+            to="#"
+            onClick={() => {
+              Swal.showLoading();
+              cloneProject(project.id);
+            }}
+          >
+            <FontAwesomeIcon icon="clone" className="mr-2" />
+            Duplicate
+          </Dropdown.Item>
         )}
         {permission?.Project?.includes('project:share') && (
           <Dropdown.Item
