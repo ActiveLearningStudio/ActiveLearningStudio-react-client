@@ -42,6 +42,7 @@ function Table(props) {
     setCurrentTab,
   } = props;
   const organization = useSelector((state) => state.organization);
+  const auth = useSelector((state) => state.auth);
   const { newlyCreated, newlyEdit } = useSelector((state) => state.admin);
   const { activeOrganization, allSuborgList, permission } = organization;
   const allState = useSelector((state) => state);
@@ -370,14 +371,14 @@ function Table(props) {
                             Edit
                           </Link>
                         )}
-                        {permission?.Organization.includes('organization:remove-user') && (
+                        {permission?.Organization.includes('organization:remove-user') && auth?.user?.email!== user.email && (
                           <Link
                             onClick={() => handleRemoveUser(user)}
                           >
                             &nbsp;&nbsp;Remove&nbsp;&nbsp;
                           </Link>
                         )}
-                        {permission?.Organization.includes('organization:delete-user') && (
+                        {permission?.Organization.includes('organization:delete-user') && auth?.user?.email!== user.email && (
                           <Link
                             onClick={() => handleDeleteUser(user)}
                           >
