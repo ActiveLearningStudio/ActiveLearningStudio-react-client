@@ -312,3 +312,13 @@ export const loadOrganizationTypesAction = () => async (dispatch) => {
     payload: organizationTypes.data,
   });
 };
+
+export const handleSsoLoginAction = (params) => async (dispatch) => {
+  storageService.setItem(USER_TOKEN_KEY, params.access_token);
+  dispatch({
+    type: actionTypes.LOGIN_SUCCESS,
+    payload: {
+      user: { ...params.user },
+    },
+  });
+};
