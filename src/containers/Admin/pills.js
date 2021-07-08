@@ -147,7 +147,10 @@ export default function Pills(props) {
       activeTab === "Users"
     ) {
       if (searchQuery.length > 2) {
-        searchUserInOrganization(activeOrganization?.id, searchQuery, activePage, activeRole)
+        const result = await dispatch(searchUserInOrganization(activeOrganization?.id, searchQuery, activePage, activeRole));
+        if (result?.data?.length > 0) {
+          setUsers(result);
+        }
       }
       else if (
         organization?.users?.data?.length > 0 &&
