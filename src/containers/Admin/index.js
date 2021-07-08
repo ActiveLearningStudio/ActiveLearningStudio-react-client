@@ -82,20 +82,23 @@ function AdminPanel() {
                     />
                   </div>
                 </Tab>
-                <Tab eventKey="Users" title="Users">
-                  <div className="module-content">
-                    <h2>Users</h2>
-                    <Pills
-                      modules={["All users", "Manage Roles"]}
-                      type="Users"
-                      subType="All users"
-                    />
-                  </div>
-                </Tab>
+                {permission?.Organization?.includes('organization:view-user')
+                 && (
+                  <Tab eventKey="Users" title="Users">
+                    <div className="module-content">
+                      <h2>Users</h2>
+                      <Pills
+                        modules={["All Users", "Manage Roles"]}
+                        type="Users"
+                        subType="All Users"
+                      />
+                    </div>
+                  </Tab>
+                 )}
                 <Tab eventKey="LMS" title="LMS">
                   <div className="module-content">
                     <h2>LMS</h2>
-                    <Pills modules={["All settings"]} type="LMS" />
+                    <Pills modules={["All Settings"]} type="LMS" />
                   </div>
                 </Tab>
                 {/* <Tab eventKey="Settings" title="Settings">

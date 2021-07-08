@@ -3,16 +3,13 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Pagination from "react-js-pagination";
 import adminService from "services/admin.service";
+import * as actionTypes from 'store/actionTypes';
 //import { useHistory } from 'react-router-dom';
 import {
   deleteUserFromOrganization,
-  updateFeedbackScreen,
-  updateOrganizationScreen,
-  updatePreviousScreen,
   deleteOrganization,
   getOrganization,
   clearOrganizationState,
-  getOrgUsers,
   removeUserFromOrganization,
   getRoles,
 } from "store/actions/organization";
@@ -43,15 +40,52 @@ function Table(props) {
     searchAlertToggler,
     subType,
     setCurrentTab,
+    setChangeIndexValue,
+    changeProjectFromorg,
   } = props;
   const organization = useSelector((state) => state.organization);
+  const auth = useSelector((state) => state.auth);
+  const { newlyCreated, newlyEdit } = useSelector((state) => state.admin);
   const { activeOrganization, allSuborgList, permission } = organization;
   const allState = useSelector((state) => state);
   const dispatch = useDispatch();
   const [localStateData, setLocalStateData] = useState([]);
+  //update table after crud
   useEffect(() => {
     if (type === "LMS") {
-      setLocalStateData(data?.data)
+      if(newlyCreated) {
+        setLocalStateData([newlyCreated, ...data?.data])
+      } else if(newlyEdit){
+        setLocalStateData( data?.data.map((lms)=>{
+          if(lms.id === newlyEdit?.id) {
+             return newlyEdit
+          } else {
+            return lms
+          }
+
+        }))
+      }
+    }
+    dispatch({
+      type: actionTypes.NEWLY_EDIT_RESOURCE,
+      payload: null,
+    });
+    dispatch({
+      type: actionTypes.NEWLY_CREATED_RESOURCE,
+      payload: null,
+    });
+  }, [newlyCreated, newlyEdit]);
+
+  //update table after search and first time
+  useEffect(() => {
+
+    if (type === "LMS" || type === 'Project') {
+
+      if(data?.data) {
+        setLocalStateData(data?.data)
+      } else {
+        setLocalStateData(data)
+      }
     }
   }, [data]);
   const handleDeleteUser = (user) => {
@@ -219,7 +253,10 @@ function Table(props) {
                   <tr>
                     <td>{row.lms_url}</td>
                     <td>{row.lms_name}</td>
-                    <td>{row.user?.name}</td>
+                    <td>{row.user?.first_name +" "+ row.user?.last_name}</td>
+                    <td>{row?.user?.email}</td>
+                    <td>{row?.site_name}</td>
+                    <td>{row?.description}</td>
                     <td>
                       <div className="links">
                         {true && (
@@ -232,7 +269,7 @@ function Table(props) {
                               dispatch(setActiveAdminForm("clone_lms"));
                             }}
                           >
-                            clone
+                            &nbsp;&nbsp;Clone&nbsp;&nbsp;
                           </Link>
                         )}
                         {true && (
@@ -277,7 +314,7 @@ function Table(props) {
                               });
                             }}
                           >
-                            delete
+                             &nbsp;&nbsp;Delete&nbsp;&nbsp;
                           </Link>
                         )}
                         {true && (
@@ -290,7 +327,7 @@ function Table(props) {
                               dispatch(setActiveAdminForm("edit_lms"));
                             }}
                           >
-                            edit
+                            &nbsp;&nbsp;Edit&nbsp;&nbsp;
                           </Link>
                         )}
                       </div>
@@ -336,14 +373,14 @@ function Table(props) {
                             Edit
                           </Link>
                         )}
-                        {permission?.Organization.includes('organization:remove-user') && (
+                        {permission?.Organization.includes('organization:remove-user') && auth?.user?.email!== user.email && (
                           <Link
                             onClick={() => handleRemoveUser(user)}
                           >
                             &nbsp;&nbsp;Remove&nbsp;&nbsp;
                           </Link>
                         )}
-                        {permission?.Organization.includes('organization:delete-user') && (
+                        {permission?.Organization.includes('organization:delete-user') && auth?.user?.email!== user.email && (
                           <Link
                             onClick={() => handleDeleteUser(user)}
                           >
@@ -526,7 +563,9 @@ function Table(props) {
                               if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                               dispatch(clearOrganizationState());
                               dispatch(getRoles());
-                              dispatch(setActiveTab('Project'));
+                              // dispatch(setActiveTab('Project'));
+                              // dispatch(clearOrganizationState());
+                              // dispatch(getRoles());
                             }
                           }}
                         >
@@ -583,17 +622,25 @@ function Table(props) {
             )}
             {type === "Project" &&
               subType === "all" &&
-              (data ? (
-                data?.data?.map((row) => {
+              (localStateData ? (
+                localStateData.map((row) => {
                   const createNew = new Date(row.created_at);
                   const updateNew = new Date(row.updated_at);
                   return (
                     <tr className="org-rows">
                       <td>
-                        <img
-                          src={global.config.resourceUrl + row.thumb_url}
-                          alt=""
-                        />
+                        <div style={{
+                          backgroundImage: row.thumb_url.includes('pexels.com')
+                            ? `url(${row.thumb_url})`
+                            : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                            backgroundSize: 'cover',
+                            height: '100px',
+                            backgroundPosition: 'center',
+                            width:'100px'
+
+                        }} >
+                        </div>
+
                       </td>
                       <td>{row.name}</td>
                       <td>{createNew.toDateString()}</td>
@@ -648,8 +695,8 @@ function Table(props) {
 
             {type === "Project" &&
               subType === "user" &&
-              (data ? (
-                data?.data?.map((row) => {
+              (localStateData ? (
+                localStateData?.map((row) => {
                   const createNew = new Date(row.created_at);
                   const updateNew = new Date(row.updated_at);
                   return (
@@ -688,8 +735,8 @@ function Table(props) {
 
             {type === "Project" &&
               subType === "index" &&
-              (data ? (
-                data?.data?.map((row) => {
+              (localStateData ? (
+                localStateData.map((row) => {
                   const createNew = new Date(row.created_at);
                   const updateNew = new Date(row.updated_at);
                   return (
@@ -730,6 +777,7 @@ function Table(props) {
                               const result = adminService.updateIndex(row.id, 3)
                               result.then((data) => {
                                 // console.log(data)
+                                setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id))
                                 Swal.fire({
                                   icon: 'success',
                                   text: data.message,
@@ -757,6 +805,7 @@ function Table(props) {
                               const result = adminService.updateIndex(row.id, 2)
                               result.then((data) => {
                                 // console.log(data)
+                                setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id))
                                 Swal.fire({
                                   icon: 'success',
                                   text: data.message,
@@ -804,7 +853,7 @@ function Table(props) {
                           dispatch(setActiveAdminForm("edit_activity_type"));
                         }}
                       >
-                        Edit
+                        &nbsp;&nbsp;Edit&nbsp;&nbsp;
                       </Link>
                       <Link
                         onClick={
@@ -875,7 +924,7 @@ function Table(props) {
                           dispatch(setActiveAdminForm("edit_activity_item"));
                         }}
                       >
-                        Edit
+                        &nbsp;&nbsp;Edit&nbsp;&nbsp;
                       </Link>
                       <Link
                         onClick={
@@ -976,7 +1025,7 @@ function Table(props) {
                   totalItemsCount={data?.meta?.total}
                   onChange={(e) => {
                     // setCurrentTab("all");
-                    window.scrollTo(0, 0)
+                    window.scrollTo(0, 0);
                     setActivePage(e);
                   }}
                 />
@@ -1001,7 +1050,7 @@ function Table(props) {
               type === "Project" && subType === "user" && (
                 <Pagination
                   activePage={activePage}
-                  pageRangeDisplayed={3}
+                  pageRangeDisplayed={5}
                   itemsCountPerPage={data?.meta?.per_page}
                   totalItemsCount={data?.meta?.total}
                   onChange={(e) => {
@@ -1020,6 +1069,7 @@ function Table(props) {
                   itemsCountPerPage={data?.meta?.per_page}
                   totalItemsCount={data?.meta?.total}
                   onChange={(e) => {
+                    window.scrollTo(0, 0)
                     setCurrentTab("index");
                     setActivePage(e);
                   }}

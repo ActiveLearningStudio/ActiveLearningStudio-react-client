@@ -37,14 +37,14 @@ export default function CreateActivity(props) {
         }}
         validate={(values) => {
           const errors = {};
-          if (!values.title) {
-            errors.title = 'Required';
+          if (!values.title || values.title.length > 255) {
+            errors.title = values.title.length > 255 ? 'Length must be 255 characters or less' : 'Required';
           }
           if (!values.image) {
             errors.image = 'Required';
           }
-          if (!values.order) {
-            errors.order = 'Required';
+          if (!values.order || (values.order < 0 && values.order !== 0)) {
+            errors.order = values.order < 0 ? 'Negative Order is not allowed' : values.order !== 0 && 'Required';
           }
           return errors;
         }}

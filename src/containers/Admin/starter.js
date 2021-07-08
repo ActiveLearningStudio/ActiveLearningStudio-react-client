@@ -30,6 +30,7 @@ function Starter(props) {
     activeRole,
     setActiveRole,
     searchQuery,
+    searchQueryProject,
     setSearchQuery,
     subTypeState,
     searchQueryChangeHandler,
@@ -63,6 +64,7 @@ function Starter(props) {
         logType={logType}
         SetLogType={SetLogType}
         searchQuery={searchQuery}
+        searchQueryProject={searchQueryProject}
         setSearchQuery={setSearchQuery}
         setActivePage={setActivePage}
         searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
@@ -76,7 +78,7 @@ function Starter(props) {
         roles={roles}
         subType={subType}
         setChangeIndexValue={setChangeIndexValue}
-        
+
       />
       {subTypeState === 'All settings' && <Settings /> }
       {subTypeState === "Manage Roles" ? (

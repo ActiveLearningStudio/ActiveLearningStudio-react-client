@@ -59,10 +59,10 @@ function UserRoles({permissionRender}) {
 
               <div className="form-group-create dynamic-roles ">
               {permission?.Organization?.includes('organization:edit-role') && (
-              
+
                 <div className="button-group" style={{ display: 'flex', justifyContent: 'flex-end' }}>
                   <button type="submit" className="curriki-white-button">
-                    update Role
+                    Update Role
                   </button>
 
                 </div>

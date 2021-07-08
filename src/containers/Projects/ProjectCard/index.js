@@ -107,7 +107,7 @@ const ProjectCard = (props) => {
                 Share
               </Link>
             )}
-            <Link>
+            <Link style={{ padding: '0px' }}>
               <ProjectCardDropdown
                 project={project}
                 showDeletePopup={showDeletePopup}

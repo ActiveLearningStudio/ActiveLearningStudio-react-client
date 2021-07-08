@@ -21,6 +21,12 @@ export default function CreateUser(prop) {
   useEffect(() => {
     dispatch(loadOrganizationTypesAction());
   }, [])
+  const validatePassword=(pwd) => {
+    // eslint-disable-next-line quotes
+    const regex = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$");
+    console.log(regex.test(pwd));
+    return regex.test(pwd);
+  };
   return (
     <div className="create-form">
       <Formik
@@ -33,7 +39,7 @@ export default function CreateUser(prop) {
           job_title:editMode ? currentUser?.job_title :"",
           role_id:editMode ? currentUser?.organization_role_id : '',
           email:editMode ? currentUser?.email :'',
-          password:editMode ? undefined : '',
+          password:'',
         }}
         validate={(values) => {
           const errors = {};
@@ -48,6 +54,11 @@ export default function CreateUser(prop) {
           }
           if (!values.password && !editMode) {
             errors.password = 'Required';
+          }
+          if (values.password) {
+            if(!validatePassword(values.password)) {
+              errors.password = 'Password must be more than 8 characters long, should contain at-least 1 Uppercase, 1 Lowercase and 1 Numeric character.';
+            }
           }
           if (!values.role_id) {
             errors.role_id = 'Required';
@@ -85,7 +96,7 @@ export default function CreateUser(prop) {
                 confirmButtonText: 'OK',
               }).then((result) => {
                 if (result.isConfirmed) {
-                  dispatch(getOrgUsers(organization?.activeOrganization?.id, organization?.activePage, organization?.size, organization?.activeRole));
+                  dispatch(getOrgUsers(organization?.activeOrganization?.id, organization?.activePage, organization?.activeRole));
                   dispatch(removeActiveAdminForm());
                 }
               });
@@ -112,7 +123,7 @@ export default function CreateUser(prop) {
                 confirmButtonText: 'OK',
               }).then((result) => {
                 if (result.isConfirmed) {
-                  dispatch(getOrgUsers(organization?.activeOrganization?.id, organization?.activePage, organization?.size, organization?.activeRole));
+                  dispatch(getOrgUsers(organization?.activeOrganization?.id, organization?.activePage, organization?.activeRole));
                   dispatch(removeActiveAdminForm());
                 }
               });
@@ -172,12 +183,12 @@ export default function CreateUser(prop) {
                 {errors.email && touched.email && errors.email}
               </div>
             </div>
-            {!editMode ?
             <div className="form-group-create">
               <h3>Password</h3>
               <input
                 type="password"
                 name="password"
+                placeholder={editMode ? 'Leave blank for unchanged' : 'password'}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.password}
@@ -186,8 +197,6 @@ export default function CreateUser(prop) {
                 {errors.password && touched.password && errors.password}
               </div>
               </div>
-              : null
-            }
             <div className="form-group-create">
               <h3>Role</h3>
               {/* <input
@@ -198,7 +207,7 @@ export default function CreateUser(prop) {
                 value={values.role}
               /> */}
               <select name="role_id" onChange={handleChange} onBlur={handleBlur} value={values.role_id}>
-                <option value="">{''}</option>
+                <option value="">{'---Select a role---'}</option>
                 {roles?.length > 0 && roles?.map((role)=>(
                   <option value={role?.id} key={role?.id}>{role?.display_name}</option>
                 ))}
@@ -210,7 +219,7 @@ export default function CreateUser(prop) {
             <div className="form-group-create">
               <h3>Organization Type</h3>
               <select name="organization_type" onChange={handleChange} onBlur={handleBlur} value={values.organization_type}>
-                <option value="">{' '}</option>
+                <option value="">{'---Select an organization type---'}</option>
                 {organizationTypes?.length > 0 && organizationTypes?.map((type) => (
                   <option value={type?.label} key={type?.label}>{type?.label}</option>
                 ))}

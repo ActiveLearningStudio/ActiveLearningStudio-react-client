@@ -27,6 +27,7 @@ class PlaylistCardDropdown extends React.Component {
     const {
       playlist,
       handleClickPlaylistTitle,
+      setSelectedForEdit,
       organization,
     } = this.props;
     const { permission } = organization;
@@ -46,12 +47,16 @@ class PlaylistCardDropdown extends React.Component {
             Preview
           </Dropdown.Item>
           {permission?.Playlist?.includes('playlist:edit') && (
-            <Dropdown.Item onClick={handleClickPlaylistTitle}>
+            <Dropdown.Item onClick={() => {
+              handleClickPlaylistTitle();
+              setSelectedForEdit(playlist);
+            }}
+            >
               <FontAwesomeIcon icon="edit" className="mr-2" />
               Edit
             </Dropdown.Item>
           )}
-          {permission?.Playlist?.includes('playlist:clone') && (
+          {permission?.Playlist?.includes('playlist:duplicate') && (
             <Dropdown.Item
               to="#"
               onClick={() => {
@@ -100,6 +105,7 @@ PlaylistCardDropdown.propTypes = {
   playlist: PropTypes.object.isRequired,
   showDeletePopup: PropTypes.func.isRequired,
   handleClickPlaylistTitle: PropTypes.func.isRequired,
+  setSelectedForEdit: PropTypes.func.isRequired,
   organization: PropTypes.string.isRequired,
 };
 

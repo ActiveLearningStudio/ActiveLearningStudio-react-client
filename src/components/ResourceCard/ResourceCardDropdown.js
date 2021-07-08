@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown, Modal } from 'react-bootstrap';
 
 // import logo from 'assets/images/logo.svg';
+import config from 'config';
 import { shareActivity, deleteResourceAction } from 'store/actions/resource';
 import { cloneActivity } from 'store/actions/search';
 import { getUserLmsSettingsAction } from 'store/actions/account';
@@ -81,7 +82,7 @@ const ResourceCardDropdown = (props) => {
             Edit
           </Dropdown.Item>
         )}
-        {permission?.Activity?.includes('activity:clone') && (
+        {permission?.Activity?.includes('activity:duplicate') && (
           <Dropdown.Item
             to="#"
             onClick={() => {
@@ -94,8 +95,8 @@ const ResourceCardDropdown = (props) => {
           </Dropdown.Item>
         )}
         {permission?.Activity?.includes('activity:share') && lmsSettings.length !== 0 && (
-          <li className="dropdown-submenu send">
-            <a tabIndex="-1">
+          <>
+            <a tabIndex="-1" className="dropdown-item">
               <FontAwesomeIcon icon="newspaper" className="mr-2" />
               Publish
             </a>
@@ -136,7 +137,7 @@ const ResourceCardDropdown = (props) => {
                 );
               })}
             </ul>
-          </li>
+          </>
         )}
         {permission?.Activity?.includes('activity:share') && (
           <Dropdown.Item
@@ -211,6 +212,18 @@ const ResourceCardDropdown = (props) => {
             Share
           </Dropdown.Item>
         )}
+        {permission?.Activity?.includes('activity:share') && (
+          <Dropdown.Item href={`${process.env.REACT_APP_API_URL}/${config.apiVersion}/go/getxapifile/${resource.id}`}>
+            <FontAwesomeIcon icon="download" className="mr-2" />
+            xAPI Download
+          </Dropdown.Item>
+        )}
+        {permission?.Activity?.includes('activity:delete') && (
+          <Dropdown.Item onClick={handleDelete}>
+            <FontAwesomeIcon icon="times-circle" className="mr-2" />
+            Delete
+          </Dropdown.Item>
+        )}
 
         {/* <Dropdown.Item
           href="#"
@@ -228,12 +241,6 @@ const ResourceCardDropdown = (props) => {
           <FontAwesomeIcon icon="times-circle" className="mr-2" />
           Executable
         </Dropdown.Item> */}
-        {permission?.Activity?.includes('activity:delete') && (
-          <Dropdown.Item onClick={handleDelete}>
-            <FontAwesomeIcon icon="times-circle" className="mr-2" />
-            Delete
-          </Dropdown.Item>
-        )}
       </Dropdown.Menu>
     </Dropdown>
   );

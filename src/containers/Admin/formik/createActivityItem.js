@@ -42,8 +42,8 @@ export default function CreateActivityItem(props) {
         }}
         validate={(values) => {
           const errors = {};
-          if (!values.title) {
-            errors.title = 'Required';
+          if (!values.title || values.title.length > 255) {
+            errors.title = values.title.length > 255 ? 'Length must be 255 characters or less ' : 'Required';
           }
           if (!values.description) {
             errors.description = 'Required';
