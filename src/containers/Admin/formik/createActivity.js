@@ -43,8 +43,8 @@ export default function CreateActivity(props) {
           if (!values.image) {
             errors.image = 'Required';
           }
-          if (!values.order) {
-            errors.order = 'Required';
+          if (!values.order || (values.order < 0 && values.order !== 0)) {
+            errors.order = values.order < 0 ? 'Negative Order is not allowed' : values.order !== 0 && 'Required';
           }
           return errors;
         }}
