@@ -137,7 +137,7 @@ function Controller(props) {
           entries
         </div>
       )}
-      {(currentOrganization?.id !== activeOrganization?.id && type !== 'Users' ) && (
+      {currentOrganization?.id !== activeOrganization?.id && (
         <div className="btn-text">
           <button
             onClick={async () => {
