@@ -345,6 +345,7 @@ export default function Pills(props) {
       id="uncontrolled-tab-example"
       onSelect={(key) => {
         setSubTypeState(key);
+        setActivePage(1)
         setSearchQueryProject('');
         if (key === "All Projects") {
           setCurrentTab("all");
