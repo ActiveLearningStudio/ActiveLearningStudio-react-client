@@ -315,7 +315,7 @@ class RegisterPage extends React.Component {
                       value={organizationType}
                       onChange={this.onChangeField}
                     >
-                      <option selected> -- select an option -- </option>
+                      <option selected value=""> -- select an option -- </option>
 
                       {organizationTypes.map((type) => (
                         <option value={type.label}>{type.label}</option>
