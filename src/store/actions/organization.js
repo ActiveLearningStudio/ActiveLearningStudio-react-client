@@ -319,7 +319,7 @@ export const roleDetail = (id, roleId) => async (dispatch) => {
   });
 };
 
-export const updateRole = (id, roleId) => async () => {
+export const updateRole = (id, roleId) => async (dispatch) => {
   Swal.fire({
     title: 'Please Wait !',
     html: 'Updating Role ...',
@@ -330,6 +330,7 @@ export const updateRole = (id, roleId) => async () => {
   });
   const result = organization.updateRole(id, roleId);
   result.then((res) => {
+    dispatch(getAllPermission(id));
     Swal.fire({
       icon: 'success',
       title: res?.message,
