@@ -250,7 +250,7 @@ class RegisterPage extends React.Component {
                     value={password}
                     onChange={this.onChangeField}
                   />
-                  <p>8 characters minimum. Use a number and a special character.</p>
+                  <p>8 characters minimum. Use a number, one uppercase & one lowercase at least</p>
                 </div>
                 <Error error={error} />
                 <div className="form-group mb-0">
