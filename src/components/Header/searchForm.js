@@ -116,6 +116,7 @@ function SearchForm() {
             initialValues={{
               phrase: '',
               subjectArray: [],
+              author: [],
               subject: '',
               grade: '',
               gradeArray: [],
@@ -147,7 +148,7 @@ function SearchForm() {
               values.standardArray.filter((h5p) => h5pNameArray.push(h5p.value));
               values.standardArray = h5pNameArray;
               // eslint-disable-next-line max-len
-              history.push(`/org/${currentOrganization?.domain}/search?q=${values.phrase}&type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${h5pNameArray}`);
+              history.push(`/org/${currentOrganization?.domain}/search?q=${values.phrase}&type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${h5pNameArray}&author=${values.author}`);
               localStorage.setItem('refreshPage', false);
               // const allSubjects = values.subjectArray;
               // values.subjectArray = allSubjects.forEach((subject) => {
@@ -166,6 +167,7 @@ function SearchForm() {
               resetForm({
                 phrase: '',
                 subjectArray: [],
+                author: '',
                 subject: '',
                 grade: '',
                 gradeArray: [],
@@ -448,6 +450,15 @@ function SearchForm() {
                     value={values.words}
                   />
                 </div> */}
+                <div className="form-group" style={{ display: permission?.Organization?.includes('organization:view-user') && values.type !== 'private' ? 'block' : 'none' }}>
+                  <input
+                    name="author"
+                    placeholder="Enter author name"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.no_words}
+                  />
+                </div>
                 <div className="form-group">
                   <input
                     name="no_words"
