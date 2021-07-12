@@ -158,7 +158,6 @@ export default function Pills(props) {
           getOrgUsers(activeOrganization?.id, activePage, activeRole)
         );
         setUsers(result);
-        setActivePage(1)
       }
     }
     if (type === 'Organization' ) {
