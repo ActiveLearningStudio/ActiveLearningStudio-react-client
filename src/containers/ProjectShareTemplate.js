@@ -71,23 +71,28 @@ function ProjectShareTemplate(props) {
       setError('Please enter valid password');
     }
   }
-  useEffect(async () => {
-    if (!localStorage.auth_token) {
-      await dispatch(
-        loginAction({
-          email: process.env.REACT_APP_SHARED_PROJECT_DEMO_USER,
-          password: process.env.REACT_APP_SHARED_PROJECT_DEMO_PASS,
-          domain: 'currikistudio'
-        })
-      );
-    }
-    const shareResult = await shareProjectsService.shareProjects(process.env.REACT_APP_SHARED_PROJECT_USERID);
-    ;
-    setAllProject(shareResult.projects);
-    if (shareResult.projects.length == 0) {
-      setErrorShow(true);
-    }
-  }, []);
+  useEffect( () => {
+
+    (async ()=>{
+      if (!localStorage.auth_token) {
+        await dispatch(
+          loginAction({
+            email: process.env.REACT_APP_SHARED_PROJECT_DEMO_USER,
+            password: process.env.REACT_APP_SHARED_PROJECT_DEMO_PASS,
+            domain: 'currikistudio'
+          })
+        );
+      }
+      const shareResult = await shareProjectsService.shareProjects(process.env.REACT_APP_SHARED_PROJECT_USERID);
+      ;
+      setAllProject(shareResult.projects);
+      if (shareResult.projects.length == 0) {
+        setErrorShow(true);
+      }
+
+    })();
+    
+  }, [localStorage]);
 
   return (
     passwordCheck ? 
