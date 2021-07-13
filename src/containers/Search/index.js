@@ -142,7 +142,7 @@ function SearchInterface(props) {
           subjectArray: activeSubject,
           gradeArray: activeEducation,
           standardArray: activeType,
-          author: authorName,
+          author: authorName || undefined,
           type: searchType,
           from: 0,
           size: 20,
@@ -153,7 +153,7 @@ function SearchInterface(props) {
           subjectArray: activeSubject,
           gradeArray: activeEducation,
           standardArray: activeType,
-          author: authorName,
+          author: authorName || undefined,
           type: searchType,
           from: 0,
           size: 20,
@@ -345,7 +345,7 @@ function SearchInterface(props) {
                                               dataSend = {
                                                 subjectArray: activeSubject,
                                                 gradeArray: activeEducation,
-                                                authors: authorName,
+                                                authors: authorName || undefined,
                                                 standardArray: activeType,
                                                 type: searchType,
                                                 from: 0,
@@ -356,7 +356,7 @@ function SearchInterface(props) {
                                                 phrase: searchInput.trim(),
                                                 subjectArray: activeSubject,
                                                 gradeArray: activeEducation,
-                                                authors: authorName,
+                                                authors: authorName || undefined,
                                                 standardArray: activeType,
                                                 type: searchType,
                                                 from: 0,
@@ -453,7 +453,9 @@ function SearchInterface(props) {
                                         className="authorName"
                                         value={authorName}
                                         onChange={({ target }) => {
-                                          SetAuthor(target.value);
+                                          if (target.value) {
+                                            SetAuthor(target.value);
+                                          }
                                         }}
                                       />
                                     </div>
@@ -479,7 +481,7 @@ function SearchInterface(props) {
                                               subjectArray: activeSubject,
                                               gradeArray: activeEducation,
                                               standardArray: activeType,
-                                              author: authorName,
+                                              author: authorName || undefined,
                                               type: searchType,
                                               from: 0,
                                               size: 20,
@@ -488,7 +490,7 @@ function SearchInterface(props) {
                                             dataSend = {
                                               phrase: searchInput.trim(),
                                               subjectArray: activeSubject,
-                                              author: authorName,
+                                              author: authorName || undefined,
                                               gradeArray: activeEducation,
                                               standardArray: activeType,
                                               type: searchType,
@@ -684,7 +686,7 @@ function SearchInterface(props) {
                                 from: 0,
                                 size: 20,
                                 type: searchType,
-                                author: authorName,
+                                author: authorName || undefined,
 
                                 subjectArray: activeSubject,
                                 gradeArray: activeEducation,
@@ -695,7 +697,7 @@ function SearchInterface(props) {
                                   phrase: searchQueries.trim(),
                                   from: 0,
                                   size: 20,
-                                  author: authorName,
+                                  author: authorName || undefined,
                                   type: searchType,
                                   subjectArray: activeSubject,
                                   gradeArray: activeEducation,
@@ -720,7 +722,7 @@ function SearchInterface(props) {
                                 searchData = {
                                 from: 0,
                                 size: 20,
-                                author: authorName,
+                                author: authorName || undefined,
                                 model: e,
                                 type: searchType,
                                 subjectArray: activeSubject,
@@ -733,7 +735,7 @@ function SearchInterface(props) {
                                   from: 0,
                                   size: 20,
                                   model: e,
-                                  author: authorName,
+                                  author: authorName || undefined,
                                   type: searchType,
                                   subjectArray: activeSubject,
                                   gradeArray: activeEducation,
