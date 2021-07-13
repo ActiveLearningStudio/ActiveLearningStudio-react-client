@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Accordion, Card, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 
-import { loadMyProjectsAction } from 'store/actions/project';
+import { loadMyCloneProjectsAction } from 'store/actions/project';
 import { clonePlaylist, cloneActivity } from 'store/actions/search';
 
 function LtiProjectShared(props) {
@@ -21,8 +21,8 @@ function LtiProjectShared(props) {
 
   useEffect(() => {
     dispatch(
-      // loadMyCloneProjectsAction(),
-      loadMyProjectsAction(),
+      loadMyCloneProjectsAction(),
+      // loadMyProjectsAction(),
     );
   }, [dispatch]);
 
@@ -49,7 +49,7 @@ function LtiProjectShared(props) {
           </div>
         </div>
         <Accordion className="top-box-project">
-          {!!project.clone && project.projects.map((data, counterTop) => (
+          {!!project.clone && project.clone.map((data, counterTop) => (
             <Card>
               <Card.Header className="top-card">
                 <Accordion.Toggle

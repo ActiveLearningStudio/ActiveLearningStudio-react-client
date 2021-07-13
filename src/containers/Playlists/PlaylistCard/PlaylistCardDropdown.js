@@ -38,6 +38,7 @@ class PlaylistCardDropdown extends React.Component {
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
+          {permission?.Playlist?.includes('playlist:view') && (
           <Dropdown.Item
             as={Link}
             className="hidden"
@@ -46,6 +47,7 @@ class PlaylistCardDropdown extends React.Component {
             <FontAwesomeIcon icon="eye" className="mr-2" />
             Preview
           </Dropdown.Item>
+          )}
           {permission?.Playlist?.includes('playlist:edit') && (
             <Dropdown.Item onClick={() => {
               handleClickPlaylistTitle();

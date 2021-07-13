@@ -12,15 +12,18 @@ import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles } from '
 import { getActivityItems, loadResourceTypesAction } from "store/actions/resource";
 import { getJobListing, getLogsListing, getUserReport } from "store/actions/admin";
 import { alphaNumeric } from "utils";
+
 export default function Pills(props) {
   const { modules, type, subType } = props;
 
+  const [key, setKey] = useState(modules && modules[0]);
 
   const [subTypeState, setSubTypeState] = useState(subType);
   // All User Business Logic Start
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const { activityTypes, activityItems, usersReport } = useSelector ((state) => state.admin)
+
   const admin = useSelector((state) => state.admin);
   const [ activePage, setActivePage ] = useState(1);
   const [ size, setSize ] = useState(10);
@@ -32,6 +35,7 @@ export default function Pills(props) {
   const [searchAlertToggler, setSearchAlertToggler] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchQueryProject, setSearchQueryProject] = useState("");
+  const [searchQueryStats, setSearchQueryStats] = useState("");
   const [allProjectTab, setAllProjectTab] = useState(null);
   const [allProjectUserTab, setAllProjectUserTab] = useState(null);
   const [allProjectIndexTab, setAllProjectIndexTab] = useState(null);
@@ -41,6 +45,10 @@ export default function Pills(props) {
   const [logs, setLogs ] = useState(null);
   const [logType, SetLogType] = useState({ value: 'all' , display_name: 'All'});
   const [changeIndexValue, setChangeIndexValue] = useState("1");
+  useEffect(()=>{
+    setKey(modules?.[0])
+   
+  },[activeTab])
   const searchUsers = async (query, page) => {
     if (query.length > 1) {
       const result = await dispatch(
@@ -77,16 +85,14 @@ export default function Pills(props) {
 
     if (subType === 'index') {
       if (!!target.value) {
-        if (!!alphaNumeric(target.value)) {
-          setSearchQueryProject(target.value);
-          setAllProjectIndexTab(null);
-          const searchapi = adminService.userSerchIndexs(activeOrganization?.id, undefined, index, target.value)
-          searchapi.then((data) => {
-            // console.log(data)
-            setAllProjectIndexTab(data)
+        setSearchQueryProject(target.value);
+        setAllProjectIndexTab(null);
+        const searchapi = adminService.userSerchIndexs(activeOrganization?.id, undefined, index, target.value)
+        searchapi.then((data) => {
+          // console.log(data)
+          setAllProjectIndexTab(data)
 
-          })
-        }
+        })
       } else {
         setSearchQueryProject('');
         const searchapi = adminService.getAllProjectIndex(activeOrganization?.id, activePage, index)
@@ -98,16 +104,14 @@ export default function Pills(props) {
       }
     } else if (subType === 'all') {
       if (!!target.value) {
-        if (!!alphaNumeric(target.value)) {
-          setSearchQueryProject(target.value);
-          setAllProjectTab(null);
-          const allproject = adminService.getAllProjectSearch(activeOrganization?.id, undefined, target.value)
-          // console.log(allproject)
-          allproject.then((data) => {
-            console.log(data)
-            setAllProjectTab(data)
-          })
-        }
+        setSearchQueryProject(target.value);
+        setAllProjectTab(null);
+        const allproject = adminService.getAllProjectSearch(activeOrganization?.id, undefined, target.value)
+        // console.log(allproject)
+        allproject.then((data) => {
+          console.log(data)
+          setAllProjectTab(data)
+        })
       } else {
         setSearchQueryProject('');
         const allproject = adminService.getAllProject(activeOrganization?.id, activePage)
@@ -118,14 +122,12 @@ export default function Pills(props) {
       }
     } else if (subType === 'user') {
       if (!!target.value) {
-        if (!!alphaNumeric(target.value)) {
-          setSearchQueryProject(target.value);
-          setAllProjectUserTab(null);
-          const userproject = adminService.getUserProjectSearch(activeOrganization?.id, undefined, target.value)
-          userproject.then((data) => {
-            setAllProjectUserTab(data)
-          })
-        }
+        setSearchQueryProject(target.value);
+        setAllProjectUserTab(null);
+        const userproject = adminService.getUserProjectSearch(activeOrganization?.id, undefined, target.value)
+        userproject.then((data) => {
+          setAllProjectUserTab(data)
+        })
       } else {
         setSearchQueryProject('');
         const userproject = adminService.getUserProject(activeOrganization?.id, activePage)
@@ -163,7 +165,6 @@ export default function Pills(props) {
           getOrgUsers(activeOrganization?.id, activePage, activeRole)
         );
         setUsers(result);
-        setActivePage(1)
       }
     }
     if (type === 'Organization' ) {
@@ -249,14 +250,21 @@ export default function Pills(props) {
   }
   // Stats User Report
   useEffect(() => {
-    if (type=== 'Stats' && subTypeState === 'Report' && (activePage !== organization?.activePage || size !== organization?.size)) {
+    if (type=== 'Stats' && subTypeState === 'Report' && searchQueryStats) {
+      dispatch(getUserReport('all', size, activePage, searchQueryStats));
+    }
+    else if (type=== 'Stats' && subTypeState === 'Report' && (activePage !== organization?.activePage || size !== organization?.size)) {
       //pagination
       dispatch(getUserReport('all',size,activePage,''));
     } else if (type=== 'Stats' && subTypeState === 'Report' && (activePage === 1 || size === 10)) {
       //on page 1
       dispatch (getUserReport('all'));
     }
-    if (type === 'Stats' && subTypeState === 'Queues:Jobs' && (activePage !== organization?.activePage || size !== organization?.size) && jobType) {
+    if (type === 'Stats' && subTypeState === 'Queues:Jobs' && searchQueryStats) {
+      let result = dispatch(getJobListing(jobType.value, size, activePage ,searchQueryStats));
+      result.then((data) => setJobs(data.data));
+    }
+    else if (type === 'Stats' && subTypeState === 'Queues:Jobs' && (activePage !== organization?.activePage || size !== organization?.size) && jobType) {
       const result = dispatch(getJobListing(jobType.value, size, activePage))
       result.then((data) => {
         setJobs(data.data);
@@ -267,7 +275,11 @@ export default function Pills(props) {
         setJobs(data.data);
       });
     }
-    if (type === 'Stats' && subTypeState === 'Queues:Logs' && (activePage !== organization?.activePage || size !== organization?.size) && logType) {
+    if (type === 'Stats' && subTypeState === 'Queues:Logs' && searchQueryStats) {
+      let result = dispatch(getLogsListing(logType.value, size, activePage , searchQueryStats));
+      result.then((data) => setLogs(data.data));
+    }
+    else if (type === 'Stats' && subTypeState === 'Queues:Logs' && (activePage !== organization?.activePage || size !== organization?.size) && logType) {
       const result = dispatch(getLogsListing(logType.value, size, activePage))
       console.log(result);
       result.then((data) => {
@@ -283,25 +295,31 @@ export default function Pills(props) {
   const searchUserReportQueryHandler = async ({target}, subTypeRecieved) => {
     if (subTypeRecieved === 'Report') {
       if (target.value) {
+        setSearchQueryStats(target.value);
         await dispatch(getUserReport('all', size, undefined, target.value));
       } else {
+        setSearchQueryStats('');
         await dispatch(getUserReport('all', size, activePage));
       }
     }
     if (subTypeRecieved === 'Queues:Jobs') {
       if (target.value) {
+        setSearchQueryStats(target.value);
         let result = dispatch(getJobListing(jobType.value, size, undefined ,target.value));
         result.then((data) => setJobs(data.data));
       } else {
+        setSearchQueryStats('');
         let result = dispatch(getJobListing(jobType.value, size, activePage));
         result.then((data) => setJobs(data.data));
       }
     }
     if (subTypeRecieved === 'Queues:Logs') {
       if (target.value) {
+        setSearchQueryStats(target.value);
         let result = dispatch(getLogsListing(logType.value, size, undefined , target.value));
         result.then((data) => setLogs(data.data));
       } else {
+        setSearchQueryStats('');
         let result = dispatch(getLogsListing(logType.value, size, activePage));
         result.then((data) => setLogs(data.data));
       }
@@ -342,10 +360,14 @@ export default function Pills(props) {
   return (
     <Tabs
       defaultActiveKey={modules && modules[0]}
-      id="uncontrolled-tab-example"
+      id="controlled-tab-example"
+      activeKey={key}
       onSelect={(key) => {
         setSubTypeState(key);
+        setKey(key);
+        setActivePage(1)
         setSearchQueryProject('');
+        setSearchQueryStats('');
         if (key === "All Projects") {
           setCurrentTab("all");
         } else if (key === "User Projects") {
@@ -367,6 +389,7 @@ export default function Pills(props) {
                 searchUserReportQueryHandler={searchUserReportQueryHandler}
                 btnText=""
                 btnAction=""
+                searchQueryStats={searchQueryStats}
                 subTypeState={subTypeState}
                 importUser={false}
                 filter={true}
@@ -393,6 +416,7 @@ export default function Pills(props) {
                 setSize={setSize}
                 activePage={activePage}
                 btnAction=""
+                searchQueryStats={searchQueryStats}
                 importUser={false}
                 filter={true}
                 setActivePage={setActivePage}
@@ -414,6 +438,7 @@ export default function Pills(props) {
                 SetLogType={SetLogType}
                 setSize={setSize}
                 btnAction=""
+                searchQueryStats={searchQueryStats}
                 importUser={false}
                 filter={true}
                 activePage={activePage}

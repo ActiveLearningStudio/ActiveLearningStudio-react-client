@@ -373,14 +373,14 @@ function Table(props) {
                             Edit
                           </Link>
                         )}
-                        {permission?.Organization.includes('organization:remove-user') && auth?.user?.email!== user.email && (
+                        {permission?.Organization.includes('organization:remove-user') && auth?.user?.id!== user.id && (
                           <Link
                             onClick={() => handleRemoveUser(user)}
                           >
                             &nbsp;&nbsp;Remove&nbsp;&nbsp;
                           </Link>
                         )}
-                        {permission?.Organization.includes('organization:delete-user') && auth?.user?.email!== user.email && (
+                        {permission?.Organization.includes('organization:delete-user') && auth?.user?.id !== user.id && (
                           <Link
                             onClick={() => handleDeleteUser(user)}
                           >
@@ -648,6 +648,7 @@ function Table(props) {
                       <td>{row.description}</td>
 
                       <td>{row.id}</td>
+                      <td>{row.users?.[0].email}</td>
                       <td>{row.indexing_text}</td>
 
                       <td>{row.organization_id}</td>
@@ -713,6 +714,7 @@ function Table(props) {
                       {/* <td>{row.description}</td> */}
 
                       <td>{row.id}</td>
+                      <td>{row.users?.[0].email}</td>
                       <td>{row.indexing_text}</td>
 
                       <td>{row.organization_id}</td>
@@ -753,6 +755,7 @@ function Table(props) {
                       {/* <td>{row.description}</td> */}
 
                       <td>{row.id}</td>
+                      <td>{row.users?.[0].email}</td>
                       <td>{row.indexing_text}</td>
 
                       <td>{row.organization_id}</td>

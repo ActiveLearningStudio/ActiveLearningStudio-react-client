@@ -253,23 +253,29 @@ export const getOrgUsers = (id, page, activeRole) => async (dispatch) => {
 };
 
 export const deleteUserFromOrganization = (id, preserveData) => async (dispatch) => {
-  const { organization: { activeOrganization, users } } = store.getState();
-  await organization.deleteUserFromOrganization(activeOrganization?.id, { user_id: id, preserve_data: preserveData });
-  users.data = users.data?.filter((user) => user.id !== id);
-  dispatch({
-    type: actionTypes.DELETE_USER_FROM_ORGANIZATION,
-    payload: users,
-  });
+  const { organization: { activeOrganization, users, searchUsers } } = store.getState();
+  const result = await organization.deleteUserFromOrganization(activeOrganization?.id, { user_id: id, preserve_data: preserveData });
+  if (result) {
+    users.data = users.data?.filter((user) => user.id !== id);
+    searchUsers.data = searchUsers.data?.filter((user) => user.id !== id);
+    dispatch({
+      type: actionTypes.DELETE_USER_FROM_ORGANIZATION,
+      payload: { users, searchUsers },
+    });
+  }
 };
 
 export const removeUserFromOrganization = (id, preserveData) => async (dispatch) => {
-  const { organization: { activeOrganization, users } } = store.getState();
-  await organization.removeUserFromOrganization(activeOrganization?.id, { user_id: id, preserve_data: preserveData });
-  users.data = users.data?.filter((user) => user.id !== id);
-  dispatch({
-    type: actionTypes.REMOVE_USER_FROM_ORGANIZATION,
-    payload: users,
-  });
+  const { organization: { activeOrganization, users, searchUsers } } = store.getState();
+  const result = await organization.removeUserFromOrganization(activeOrganization?.id, { user_id: id, preserve_data: preserveData });
+  if (result) {
+    users.data = users.data?.filter((user) => user.id !== id);
+    searchUsers.data = searchUsers.data?.filter((user) => user.id !== id);
+    dispatch({
+      type: actionTypes.REMOVE_USER_FROM_ORGANIZATION,
+      payload: { users, searchUsers },
+    });
+  }
 };
 
 export const searchUserInOrganization = (id, query, page, role) => async (dispatch) => {
@@ -315,7 +321,7 @@ export const roleDetail = (id, roleId) => async (dispatch) => {
   });
 };
 
-export const updateRole = (id, roleId) => async () => {
+export const updateRole = (id, roleId) => async (dispatch) => {
   Swal.fire({
     title: 'Please Wait !',
     html: 'Updating Role ...',
@@ -326,6 +332,7 @@ export const updateRole = (id, roleId) => async () => {
   });
   const result = organization.updateRole(id, roleId);
   result.then((res) => {
+    dispatch(getAllPermission(id));
     Swal.fire({
       icon: 'success',
       title: res?.message,

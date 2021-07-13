@@ -40,6 +40,7 @@ function Controller(props) {
     type,
     searchQuery,
     searchQueryProject,
+    searchQueryStats,
     setSearchQuery,
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
@@ -137,7 +138,7 @@ function Controller(props) {
           entries
         </div>
       )}
-      {currentOrganization?.id !== activeOrganization?.id && (
+      {(currentOrganization?.id !== activeOrganization?.id && type !== 'Users' ) && (
         <div className="btn-text">
           <button
             onClick={async () => {
@@ -288,18 +289,19 @@ function Controller(props) {
       )}
       {!!search && type === "Users" && (
         <>
-          <div className="search-bar">
+          <div className="search-bar" style={{ display:"flex", flexDirection:"column"}}>
             <input
               className=""
               type="text"
-              title="Enter at least 2 characters"
+              // title="Enter at least 2 characters"
               placeholder="Search by email"
               value={searchQuery}
               onChange={searchQueryChangeHandler}
             />
             <img src={searchimg} alt="search" />
+            {(searchQuery.length > 0 && searchQuery.length < 2) && <label className="flex" style={{ color: 'red' }}>Enter at least 2 characters</label> }
           </div>
-          {(searchQuery.length > 0 && searchQuery.length < 2) && <label className="flex" style={{ color: 'red' }}>Enter at least 2 characters</label> }
+
         </>
       )}
       {!!search && type === "LMS" && (
@@ -320,6 +322,7 @@ function Controller(props) {
             className=""
             type="text"
             placeholder="Search"
+            value={searchQueryStats}
             onChange={(e) => searchUserReportQueryHandler(e, subTypeState)}
           />
           <img src={searchimg} alt="search" />
