@@ -47,7 +47,7 @@ export default function Pills(props) {
   const [changeIndexValue, setChangeIndexValue] = useState("1");
   useEffect(()=>{
     setKey(modules?.[0])
-   
+
   },[activeTab])
   const searchUsers = async (query, page) => {
     if (query.length > 1) {
@@ -291,7 +291,7 @@ export default function Pills(props) {
         setLogs(data.data);
       });
     }
-  },[activePage, subTypeState, type, size, jobType, logType])
+  },[activePage, subTypeState, type, size, jobType, logType, usersReport])
   const searchUserReportQueryHandler = async ({target}, subTypeRecieved) => {
     if (subTypeRecieved === 'Report') {
       if (target.value) {
