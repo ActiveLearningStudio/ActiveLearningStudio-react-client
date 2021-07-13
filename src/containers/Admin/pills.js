@@ -12,15 +12,18 @@ import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles } from '
 import { getActivityItems, loadResourceTypesAction } from "store/actions/resource";
 import { getJobListing, getLogsListing, getUserReport } from "store/actions/admin";
 import { alphaNumeric } from "utils";
+
 export default function Pills(props) {
   const { modules, type, subType } = props;
 
+  const [key, setKey] = useState(modules && modules[0]);
 
   const [subTypeState, setSubTypeState] = useState(subType);
   // All User Business Logic Start
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const { activityTypes, activityItems, usersReport } = useSelector ((state) => state.admin)
+
   const admin = useSelector((state) => state.admin);
   const [ activePage, setActivePage ] = useState(1);
   const [ size, setSize ] = useState(10);
@@ -42,6 +45,10 @@ export default function Pills(props) {
   const [logs, setLogs ] = useState(null);
   const [logType, SetLogType] = useState({ value: 'all' , display_name: 'All'});
   const [changeIndexValue, setChangeIndexValue] = useState("1");
+  useEffect(()=>{
+    setKey(modules?.[0])
+   
+  },[activeTab])
   const searchUsers = async (query, page) => {
     if (query.length > 1) {
       const result = await dispatch(
@@ -353,9 +360,11 @@ export default function Pills(props) {
   return (
     <Tabs
       defaultActiveKey={modules && modules[0]}
-      id="uncontrolled-tab-example"
+      id="controlled-tab-example"
+      activeKey={key}
       onSelect={(key) => {
         setSubTypeState(key);
+        setKey(key);
         setActivePage(1)
         setSearchQueryProject('');
         setSearchQueryStats('');
