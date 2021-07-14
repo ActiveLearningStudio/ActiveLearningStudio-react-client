@@ -365,3 +365,16 @@ export const addRole = (id, data) => async () => {
   });
   return result;
 };
+
+export const updatePageNumber = (pageNo) => (dispatch) => {
+  dispatch({
+    type: actionTypes.UPDATE_PAGE_NUMBER,
+    payload: pageNo,
+  });
+};
+
+export const resetPageNumber = () => (dispatch) => {
+  dispatch({
+    type: actionTypes.UPDATE_PAGE_NUMBER,
+  });
+};

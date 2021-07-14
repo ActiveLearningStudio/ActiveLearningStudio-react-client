@@ -8,7 +8,7 @@ import Starter from "./starter";
 import { columnData } from "./column";
 
 
-import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization } from 'store/actions/organization';
+import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization, updatePageNumber, resetPageNumber } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from "store/actions/resource";
 import { getJobListing, getLogsListing, getUserReport } from "store/actions/admin";
 import { alphaNumeric } from "utils";
@@ -222,18 +222,22 @@ export default function Pills(props) {
     if (type=== 'Activities' && subTypeState === 'Activity Items') {
       //pagination
       dispatch(getActivityItems('', activePage));
+      dispatch(updatePageNumber(activePage));
     } else if (type=== 'Activities' && subTypeState === 'Activity Items' && activePage === 1) {
       //on page 1
       dispatch (getActivityItems());
+      dispatch(updatePageNumber(activePage));
     }
   }, [type, subTypeState, activePage])
   useEffect(() => {
     if (type=== 'Activities' && subTypeState === 'Activity Types' && activePage !== organization?.activePage) {
       //pagination
       dispatch(loadResourceTypesAction('', activePage));
+      dispatch(updatePageNumber(activePage));
     } else if (type=== 'Activities' && subTypeState === 'Activity Types' && activePage === 1) {
       //on page 1
       dispatch (loadResourceTypesAction());
+      dispatch(updatePageNumber(activePage));
     }
   },[activePage, subTypeState, type])
   const searchActivitiesQueryHandler = async ({target}, subTypeRecieved) => {
@@ -385,6 +389,7 @@ export default function Pills(props) {
         setKey(key);
         setActivePage(1)
         setSearchQueryProject('');
+        dispatch(resetPageNumber());
         setSearchQueryStats('');
         if (key === "All Projects") {
           setCurrentTab("all");
