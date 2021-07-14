@@ -12,16 +12,28 @@ import
 //  getOrganizationFirstTime
 }
   from 'store/actions/organization';
-import logo from 'assets/images/vivensity.png';
+import logo from 'assets/images/studio_new_logo.png';
+import vivensity from 'assets/images/vivensity.png';
+import Katylogo from 'assets/images/Katy_logo.png';
+import bu from 'assets/images/bu.png';
+import safari from 'assets/images/safari.png';
+import shepherds from 'assets/images/shepherds.svg';
+import sndt from 'assets/images/sndt.png';
+import nevada from 'assets/images/nevada.png';
+import { SHOW_HELP } from 'store/actionTypes';
 import add from 'assets/images/add-icon.png';
-import profile from 'assets/images/user-profile.png';
+// import profile from 'assets/images/user-profile.png';
 import searchImg from 'assets/images/search.png';
 import createProjectIcon from 'assets/images/create-project-icon.png';
-// import help from 'assets/images/help.png';
+import help from 'assets/images/help.png';
+import edit from 'assets/images/edit1.png';
+import changePassword from 'assets/images/changepassword.png';
+import logoutIcon from 'assets/images/logout.png';
+// import dashboard from 'assets/images/dashboard.png';
 import { logoutAction } from 'store/actions/auth';
 import { Event } from 'trackers/ga';
-import MultitenancyDropdown from './multitenancyDropdown';
 
+import MultitenancyDropdown from './multitenancyDropdown';
 import SearchForm from './searchForm';
 import HeaderNotification from './notification';
 
@@ -30,16 +42,35 @@ import './style.scss';
 function Header(props) {
   const { /* user, */ logout } = props;
   const stateHeader = useSelector((state) => state.organization);
+  const { user } = useSelector((state) => state.auth);
   const { permission: { Project } } = stateHeader;
   const { permission, currentOrganization } = stateHeader;
   const dispatch = useDispatch();
   const [image, setImage] = useState(null);
+  const [defaultLogo, setdefaultLogo] = useState(logo);
   // useMemo(() => {
   //   dispatch(getOrganizationFirstTime(stateHeader?.currentOrganization?.id));
   // }, [stateHeader?.currentOrganization?.id]);
   useEffect(() => {
     if (currentOrganization?.id === 1) {
       setImage(null);
+      if (window.location.host.includes('katyisd')) {
+        setdefaultLogo(Katylogo);
+      } else if (window.location.host.includes('baylor')) {
+        setdefaultLogo(bu);
+      } else if (window.location.host.includes('scde')) {
+        setdefaultLogo(safari);
+      } else if (window.location.host.includes('shepherds')) {
+        setdefaultLogo(shepherds);
+      } else if (window.location.host.includes('sndt')) {
+        setdefaultLogo(sndt);
+      } else if (window.location.host.includes('nvdoe')) {
+        setdefaultLogo(nevada);
+      } else if (window.location.host.includes('imsparked')) {
+        setdefaultLogo(vivensity);
+      } else {
+        setdefaultLogo(logo);
+      }
     } else {
       setImage(currentOrganization?.image);
     }
@@ -50,17 +81,20 @@ function Header(props) {
         <div className="group-search-logo">
           <div className="tophd_left">
             <Link to={`/org/${stateHeader?.currentOrganization?.domain}`} className="top_logo">
-              {image ? <img src={global.config.resourceUrl + image} alt="logo" title="" /> : <img src={logo} style={{ height: '30px' }} alt="logo" title="" />}
+              {image ? <img src={global.config.resourceUrl + image} alt="logo" title="" /> : <img src={defaultLogo} alt="logo" title="" />}
             </Link>
           </div>
         </div>
         <div className="tophd_right flexdiv search-div  d-flex flex-wrap ">
-          <div className="search-div">
-            <SearchForm />
-          </div>
+          {(permission?.Search?.includes('search:advance') || permission?.Search?.includes('search:dashboard'))
+           && (
+             <div className="search-div">
+               <SearchForm />
+             </div>
+           )}
           <div className="navbar-link">
             <ul className="top-info flex-div">
-              {permission?.Organization?.includes('organization:view') && (
+              {false && permission?.Organization?.includes('organization:view') && (
                 <>
                   <li>
                     <Link
@@ -84,15 +118,23 @@ function Header(props) {
               <li>
                 <MultitenancyDropdown />
               </li>
-              {/* <li>
-                <Link to="">
+              <li>
+                <div
+                  style={{ padding: '0.375rem 0.75rem', cursor: 'pointer' }}
+                  onClick={() => {
+                    dispatch({
+                      type: SHOW_HELP,
+                      payload: true,
+                    });
+                  }}
+                >
                   <img src={help} alt="help" />
                   <p className="header-icon-text">
                     Help
                   </p>
-                </Link>
-              </li> */}
-              {Project?.includes('project:create') && (
+                </div>
+              </li>
+              {false && Project?.includes('project:create') && (
                 <li className="align-items-center" style={{ paddingTop: '4px' }}>
                   <Dropdown className="create-project">
                     <Dropdown.Toggle className="align-items-center">
@@ -128,8 +170,10 @@ function Header(props) {
               <li className="menu-user-settings d-flex align-items-center">
                 <Dropdown>
                   <Dropdown.Toggle className="align-items-center">
-                    <img src={profile} alt="user" title="" />
-                    <p className="header-icon-text">Profile</p>
+                    <div className="profile-avatar">
+                      {user?.first_name[0]}
+                    </div>
+                    <p className="header-icon-text">My Profile</p>
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu className="user-dropdown">
@@ -139,19 +183,46 @@ function Header(props) {
                         {user && user.displayName}
                       </span>
                     </Dropdown.Item> */}
-
+                    {/* <Dropdown.Item className="align-items-center"> */}
+                    <div className="user-dropdown-item-name">
+                      <div className="profile-avatar">
+                        {user?.first_name[0]}
+                      </div>
+                      <div className="basic-info">
+                        <b>
+                          <p className="name">
+                            {user?.first_name}
+                            &nbsp;
+                            {user?.last_name}
+                          </p>
+                        </b>
+                        <p className="email">{user?.email}</p>
+                      </div>
+                    </div>
+                    <hr />
+                    {/* </Dropdown.Item> */}
                     {/* <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/dashboard`}>
-                      Dashboard
+                      <div className="user-dropdown-item">
+                        <img className="img-dhashboard" src={dashboard} alt="dashboard" />
+                        Dashboard
+                      </div>
+                      <hr />
                     </Dropdown.Item> */}
 
                     <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/account`}>
-                      My Account
+                      <div className="user-dropdown-item">
+                        <img src={edit} alt="edit" />
+                        My Account
+                      </div>
                     </Dropdown.Item>
-
+                    <hr />
                     <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/change-password`}>
-                      Change Password
+                      <div className="user-dropdown-item">
+                        <img className="img-change-password" src={changePassword} alt="changePassword" />
+                        Change Password
+                      </div>
                     </Dropdown.Item>
-
+                    <hr />
                     <Dropdown.Item
                       href="#"
                       onClick={() => {
@@ -159,7 +230,10 @@ function Header(props) {
                         logout();
                       }}
                     >
-                      Logout
+                      <div className="user-dropdown-item">
+                        <img src={logoutIcon} alt="logoutIcon" />
+                        Logout
+                      </div>
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>

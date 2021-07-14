@@ -92,11 +92,11 @@ export const loadProjectPlaylistsAction = (projectId) => async (dispatch) => {
       type: actionTypes.PAGE_LOADING_COMPLETE,
     });
   } catch (e) {
-    Swal.fire({
-      title: 'Error',
-      icon: 'error',
-      html: e.message || 'Something went wrong! We are unable to load activity.',
-    });
+    // Swal.fire({
+    //   title: 'Error',
+    //   icon: 'error',
+    //   html: e.message || 'Something went wrong! We are unable to load activity.',
+    // });
     dispatch({
       type: actionTypes.PAGE_LOADING_COMPLETE,
     });

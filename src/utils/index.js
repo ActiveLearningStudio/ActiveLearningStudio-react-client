@@ -33,3 +33,8 @@ export const zeroFill = (value) => {
   const newValue = `00${value}`;
   return newValue.slice(newValue.length - 2, newValue.length);
 };
+
+export const alphaNumeric = (value) => {
+  const alphaNumericRegex = new RegExp('[^0-9a-zA-Z@ .]');
+  return !alphaNumericRegex.test(value);
+};

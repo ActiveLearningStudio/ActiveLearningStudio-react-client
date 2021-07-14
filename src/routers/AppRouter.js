@@ -34,6 +34,7 @@ const NeafRegister = loadable(() => import('../containers/Auth/NeafRegistration'
 const NeafLogin = loadable(() => import('../containers/Auth/NeafLogin'));
 const VevensityRegister = loadable(() => import('../containers/Auth/VevinsityRegistration'));
 const VevensityLogin = loadable(() => import('../containers/Auth/VevinsityLogin'));
+const AdminPanel = loadable(() => import('../containers/Admin'));
 
 const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
 const ChangePasswordPage = loadable(() => import('../containers/Account/ChangePasswordPage'));
@@ -59,9 +60,11 @@ const GenericLMSActivityPage = loadable(() => import('../containers/LMS/Generic/
 const ActivityCreate = loadable(() => import('../containers/CreateActivity'));
 const EditActivity = loadable(() => import('../containers/EditActivity'));
 const GclassSummaryPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassSummaryPage'));
+const CanvasSummaryPage = loadable(() => import('../containers/LMS/Canvas/CanvasSummaryPage'));
 const SearchPage = loadable(() => import('../containers/LMS/Canvas/DeepLinking/SearchPage'));
 const LtiActivity = loadable(() => import('../containers/LMS/LTI/Activity'));
 const ManageOrganization = loadable(() => import('../containers/ManageOrganization'));
+const SSOLogin = loadable(() => import('../containers/Auth/SSOLogin'));
 const AppRouter = (props) => {
   const SelectedOrganization = localStorage.getItem('current_org');
   useEffect(() => {
@@ -78,6 +81,7 @@ const AppRouter = (props) => {
   return (
     <Router history={history}>
       <Switch>
+        <OpenRoute exact path="/sso/dologin/:ssodata" component={SSOLogin} />
         <OpenRoute
           exact
           path="/projects/shared"
@@ -128,8 +132,13 @@ const AppRouter = (props) => {
         />
         <OpenRoute
           exact
-          path="/genericlms/:lmsName/lmsurl/:lmsUrl/client/:lmsClientId/lmscourse/:lmsCourseId/activity/:activityId/"
+          path="/genericlms/:lmsName/lmsurl/:lmsUrl/client/:lmsClientId/lmscourse/:lmsCourseId/lmsunit/:lmsUnitId/activity/:activityId"
           component={GenericLMSActivityPage}
+        />
+        <OpenRoute
+          exact
+          path="/lti/summary"
+          component={CanvasSummaryPage}
         />
         <OpenRoute
           path="/playlist/:playlistId/activity/:activityId/preview/lti"
@@ -184,7 +193,7 @@ const AppRouter = (props) => {
 
                      {/* <PrivateRoute exact path="/org/:organization/dashboard" component={DashboardPage} /> */}
                      <PrivateRoute exact path="/org/:organization/notification" component={NotificationPage} />
-
+                     <PrivateRoute exact path="/org/:organization/admin" component={AdminPanel} />
                      <PrivateRoute exact path="/org/:organization/teams" component={TeamsPage} overview />
                      <PrivateRoute exact path="/org/:organization/teams/create-team" component={TeamsPage} creation />
                      <PrivateRoute exact path="/org/:organization/teams/:teamId" component={TeamsPage} teamShow />

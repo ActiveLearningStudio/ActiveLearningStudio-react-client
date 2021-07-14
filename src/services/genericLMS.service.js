@@ -19,7 +19,16 @@ const loadH5PSettings = (activityId, studentId = null) => httpService
     Promise.reject(err.response.data);
   });
 
+const loadSafariMontagePublishTool = (projectId, playlistId, activityId, lmsSettingId) => httpService
+  .post(
+    `/${apiVersion}/go/safarimontage/projects/${projectId}/playlists/${playlistId}/activities/${activityId}/publish`,
+    { setting_id: lmsSettingId, count: 1 },
+  )
+  .then(({ data }) => data)
+  .catch((err) => err.response.data);
+
 export default {
   login,
   loadH5PSettings,
+  loadSafariMontagePublishTool,
 };

@@ -1,25 +1,51 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useSelector } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { confirmAlert } from 'react-confirm-alert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown, Modal } from 'react-bootstrap';
 
 // import logo from 'assets/images/logo.svg';
+import config from 'config';
 import { shareActivity, deleteResourceAction } from 'store/actions/resource';
 import { cloneActivity } from 'store/actions/search';
+import { getUserLmsSettingsAction } from 'store/actions/account';
+import { loadSafariMontagePublishToolAction, closeSafariMontageToolAction } from 'store/actions/LMS/genericLMS';
 
 import './style.scss';
 
 const ResourceCardDropdown = (props) => {
+  const {
+    lmsSettings,
+    lmsSettingsLoaded,
+    getLmsSettings,
+    resource,
+    playlist,
+    deleteResource,
+    loadSafariMontagePublishTool,
+    closeSafariMontageTool,
+    safariMontagePublishTool,
+    match,
+  } = props;
   const organization = useSelector((state) => state.organization);
   const { permission } = organization;
+  const [safariToolHtml, setSafariToolHtml] = useState(null);
+
+  useEffect(() => {
+    setSafariToolHtml(encodeURI(safariMontagePublishTool));
+  }, [safariMontagePublishTool]);
+
+  useEffect(() => {
+    if (lmsSettingsLoaded) return;
+
+    getLmsSettings();
+  }, [match]);
+
   const handleDelete = (e) => {
     e.preventDefault();
 
-    const { resource, playlist, deleteResource } = props;
     Swal.fire({
       title: 'Are you sure you want to delete this activity?',
       showDenyButton: true,
@@ -33,12 +59,6 @@ const ResourceCardDropdown = (props) => {
     });
   };
 
-  const {
-    resource,
-    playlist,
-    match,
-  } = props;
-
   return (
     <Dropdown className="pull-right resource-dropdown check">
       <Dropdown.Toggle className="resource-dropdown-btn">
@@ -46,6 +66,7 @@ const ResourceCardDropdown = (props) => {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
+        {permission?.Activity?.includes('activity:view') && (
         <Dropdown.Item
           as={Link}
           to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview`}
@@ -53,6 +74,7 @@ const ResourceCardDropdown = (props) => {
           <FontAwesomeIcon icon="eye" className="mr-2" />
           Preview
         </Dropdown.Item>
+        )}
         {permission?.Activity?.includes('activity:edit') && (
           <Dropdown.Item
             as={Link}
@@ -62,7 +84,7 @@ const ResourceCardDropdown = (props) => {
             Edit
           </Dropdown.Item>
         )}
-        {permission?.Activity?.includes('activity:clone') && (
+        {permission?.Activity?.includes('activity:duplicate') && (
           <Dropdown.Item
             to="#"
             onClick={() => {
@@ -73,6 +95,51 @@ const ResourceCardDropdown = (props) => {
             <FontAwesomeIcon icon="clone" className="mr-2" />
             Duplicate
           </Dropdown.Item>
+        )}
+        {permission?.Activity?.includes('activity:share') && lmsSettings.length !== 0 && (
+          <>
+            <a tabIndex="-1" className="dropdown-item">
+              <FontAwesomeIcon icon="newspaper" className="mr-2" />
+              Publish
+            </a>
+            <ul className="dropdown-menu check">
+              {lmsSettings.map((data) => {
+                if (data.site_name !== 'Safari Montage') return false;
+
+                return (
+                  <li>
+                    <a
+                      onClick={() => {
+                        loadSafariMontagePublishTool(
+                          playlist.project.id,
+                          playlist.id,
+                          resource.id,
+                          data.id,
+                        );
+                      }}
+                    >
+                      {data.site_name}
+                    </a>
+                    <Modal
+                      dialogClassName="safari-modal"
+                      show={safariMontagePublishTool}
+                      onHide={() => closeSafariMontageTool()}
+                      aria-labelledby="example-modal-sizes-title-lg"
+                    >
+                      <Modal.Header closeButton>
+                        <Modal.Title id="example-modal-sizes-title-lg">
+                          Safari Montage
+                        </Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariToolHtml}`} />
+                      </Modal.Body>
+                    </Modal>
+                  </li>
+                );
+              })}
+            </ul>
+          </>
         )}
         {permission?.Activity?.includes('activity:share') && (
           <Dropdown.Item
@@ -147,6 +214,21 @@ const ResourceCardDropdown = (props) => {
             Share
           </Dropdown.Item>
         )}
+        {permission?.Activity?.includes('activity:share') && (
+          <Dropdown.Item
+            href={`${process.env.REACT_APP_API_URL}/${config.apiVersion}/go/getxapifile/${resource.id}`}
+            onClick={() => shareActivity(resource.id)}
+          >
+            <FontAwesomeIcon icon="download" className="mr-2" />
+            xAPI Download
+          </Dropdown.Item>
+        )}
+        {permission?.Activity?.includes('activity:delete') && (
+          <Dropdown.Item onClick={handleDelete}>
+            <FontAwesomeIcon icon="times-circle" className="mr-2" />
+            Delete
+          </Dropdown.Item>
+        )}
 
         {/* <Dropdown.Item
           href="#"
@@ -164,27 +246,36 @@ const ResourceCardDropdown = (props) => {
           <FontAwesomeIcon icon="times-circle" className="mr-2" />
           Executable
         </Dropdown.Item> */}
-        {permission?.Activity?.includes('activity:delete') && (
-          <Dropdown.Item onClick={handleDelete}>
-            <FontAwesomeIcon icon="times-circle" className="mr-2" />
-            Delete
-          </Dropdown.Item>
-        )}
       </Dropdown.Menu>
     </Dropdown>
   );
 };
 
 ResourceCardDropdown.propTypes = {
+  lmsSettings: PropTypes.array.isRequired,
+  lmsSettingsLoaded: PropTypes.bool.isRequired,
   resource: PropTypes.object.isRequired,
   playlist: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   projectId: PropTypes.number.isRequired,
   deleteResource: PropTypes.func.isRequired,
+  getLmsSettings: PropTypes.func.isRequired,
+  loadSafariMontagePublishTool: PropTypes.func.isRequired,
+  closeSafariMontageTool: PropTypes.func.isRequired,
+  safariMontagePublishTool: PropTypes.string.isRequired,
 };
+
+const mapStateToProps = (state) => ({
+  lmsSettings: state.account.userLmsSettings,
+  lmsSettingsLoaded: state.account.userLmsSettingsLoaded,
+  safariMontagePublishTool: state.genericLMS.safariMontagePublishTool,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   deleteResource: (activityId, playlistId) => dispatch(deleteResourceAction(activityId, playlistId)),
+  getLmsSettings: () => dispatch(getUserLmsSettingsAction()),
+  loadSafariMontagePublishTool: (projectId, playlistId, activityId, lmsSettingId) => dispatch(loadSafariMontagePublishToolAction(projectId, playlistId, activityId, lmsSettingId)),
+  closeSafariMontageTool: () => dispatch(closeSafariMontageToolAction()),
 });
 
-export default withRouter(connect(null, mapDispatchToProps)(ResourceCardDropdown));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ResourceCardDropdown));

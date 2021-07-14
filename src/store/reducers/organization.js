@@ -3,6 +3,9 @@ import * as actionTypes from '../actionTypes';
 const INITIAL_STATE = {
   isLoading: false,
   activeScreen: 'intro',
+  activePage: 1,
+  activeRole: '',
+  size: 10,
   backScreen: '',
   roles: [],
   users: [],
@@ -10,7 +13,7 @@ const INITIAL_STATE = {
   allOrganizations: [],
   currentOrganization: null,
   activeOrganization: null,
-  allSuborgList: null,
+  allSuborgList: [],
   newlyCreated: null,
   editOrganization: null,
   logo: '',
@@ -18,6 +21,9 @@ const INITIAL_STATE = {
   history: null,
   searchOrg: [],
   permission: {},
+  activePermission: null,
+  permissionsId: null,
+  activeEdit: null,
   // permission: {
   //   activeRole: 'member',
   //   roleId: 3,
@@ -113,11 +119,27 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         newlyCreated: action.payload,
+        allSuborgList: [action.payload, ...state.allSuborgList],
       };
     case actionTypes.REMOVE_SUBORG_ADD:
       return {
         ...state,
         newlyCreated: null,
+      };
+    case actionTypes.REMOVE_SUBORG_DEL:
+      return {
+        ...state,
+        allSuborgList: state.allSuborgList.filter((remove) => remove.id !== action.payload.id),
+      };
+    case actionTypes.ADD_SUBORG_EDIT:
+      return {
+        ...state,
+        allSuborgList: state.allSuborgList.map((edit) => {
+          if (edit.id === action.payload.id) {
+            return action.payload;
+          }
+          return edit;
+        }),
       };
     case actionTypes.EDIT_ORGANIZATION:
       return {
@@ -157,12 +179,22 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.GET_ORGANIZATION_USERS:
       return {
         ...state,
-        users: action.payload,
+        users: action.payload.result,
+        activePage: action.payload.page,
+        size: action.payload.size,
+        activeRole: action.payload.activeRole,
       };
     case actionTypes.DELETE_USER_FROM_ORGANIZATION:
       return {
         ...state,
-        users: action.payload,
+        users: action.payload.users,
+        searchUsers: action.payload.searchUsers,
+      };
+    case actionTypes.REMOVE_USER_FROM_ORGANIZATION:
+      return {
+        ...state,
+        users: action.payload.users,
+        searchUsers: action.payload.searchUsers,
       };
     case actionTypes.SEARCH_USER_IN_ORGANIZATION:
       return {
@@ -173,6 +205,34 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         permission: action.payload,
+      };
+    case actionTypes.SET_ACTIVE_PERMISSION:
+      return {
+        ...state,
+        activePermission: action.payload,
+      };
+    case actionTypes.SET_ALL_PERSMISSION_ID:
+      return {
+        ...state,
+        permissionsId: action.payload,
+      };
+    case actionTypes.SET_ACTIVE_EDIT:
+      return {
+        ...state,
+        activeEdit: action.payload,
+      };
+    case actionTypes.CLEAR_STATES_IN_ORGANIZATION:
+      return {
+        ...state,
+        users: [],
+        roles: [],
+        searchUsers: [],
+        searchOrg: [],
+      };
+    case actionTypes.CLEAR_USERS_STATE:
+      return {
+        ...state,
+        users: [],
       };
     default:
       return state;

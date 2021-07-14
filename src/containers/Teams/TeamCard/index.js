@@ -48,7 +48,7 @@ function TeamCard(props) {
             Edit
           </Link>
         )}
-        <h2 className="describe">{description}</h2>
+        <h2 className="describe">{description.length > 50 ? `${description?.slice(0, 50)}...` : description}</h2>
       </div>
 
       <div className="team-member-content mid-border">

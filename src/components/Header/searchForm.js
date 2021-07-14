@@ -8,12 +8,12 @@ import { Formik } from 'formik';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { simpleSearchAction } from 'store/actions/search';
-import { loadResourceTypesAction } from 'store/actions/resource';
+import { getActivityItems, loadResourceTypesAction } from 'store/actions/resource';
 import {
   educationLevels,
   subjects,
 } from 'components/ResourceCard/AddResource/dropdownData';
-import { searchUserInOrganization } from 'store/actions/organization';
+import { getUserReport } from 'store/actions/admin';
 
 function SearchForm() {
   const history = useHistory();
@@ -24,16 +24,14 @@ function SearchForm() {
   const [value, setValue] = useState(0);
   const activityTypesState = useSelector((state) => state.resource.types);
   const searchState = useSelector((state) => state.search);
-  const {
-    currentOrganization,
-    searchUsers,
-    permission,
-    activeOrganization,
-  } = useSelector((state) => state.organization);
+  const auth = useSelector((state) => state.auth);
+  const { currentOrganization, permission } = useSelector((state) => state.organization);
 
   useEffect(() => {
-    if (activityTypesState.length === 0) {
+    if (activityTypesState.length === 0 && auth?.user) {
       dispatcher(loadResourceTypesAction());
+      dispatcher(getActivityItems());
+      dispatcher(getUserReport('all'));
     }
   }, []);
 
@@ -53,7 +51,7 @@ function SearchForm() {
 
   useEffect(() => {
     const allItems = [];
-    activityTypesState?.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
+    activityTypesState?.map((data) => data?.activityItems?.map((itm) => allItems.push(itm)));
     setActivityTypes(allItems.sort(compare));
     if (searchState?.searchQuery !== simpleSearch) {
       setSimpleSearch('');
@@ -78,7 +76,7 @@ function SearchForm() {
                 Swal.fire('Search field is required');
               } else if (simpleSearch.length > 255) {
                 Swal.fire('Character limit should be less than 255 ');
-              } else {
+              } else if (permission?.Search?.includes('search:advance')) {
                 const searchData = {
                   phrase: simpleSearch.trim(),
                   from: 0,
@@ -88,6 +86,17 @@ function SearchForm() {
                 dispatcher(simpleSearchAction(searchData));
                 localStorage.setItem('loading', 'true');
                 history.push(`/org/${currentOrganization?.domain}/search?q=${simpleSearch.trim()}&type=public`);
+                localStorage.setItem('refreshPage', false);
+              } else if (permission?.Search?.includes('search:dashboard')) {
+                const searchData = {
+                  phrase: simpleSearch.trim(),
+                  from: 0,
+                  size: 20,
+                  type: 'private',
+                };
+                dispatcher(simpleSearchAction(searchData));
+                localStorage.setItem('loading', 'true');
+                history.push(`/org/${currentOrganization?.domain}/search?q=${simpleSearch.trim()}&type=private`);
                 localStorage.setItem('refreshPage', false);
               }
             }
@@ -107,10 +116,8 @@ function SearchForm() {
             initialValues={{
               phrase: '',
               subjectArray: [],
+              author: [],
               subject: '',
-              author: '',
-              selectedAuthor: [],
-              authors: [],
               grade: '',
               gradeArray: [],
               standard: '',
@@ -135,13 +142,13 @@ function SearchForm() {
               }
               return errors;
             }}
-            onSubmit={(values) => {
+            onSubmit={(values, { resetForm }) => {
               closeModel.current.click();
               const h5pNameArray = [];
               values.standardArray.filter((h5p) => h5pNameArray.push(h5p.value));
               values.standardArray = h5pNameArray;
               // eslint-disable-next-line max-len
-              history.push(`/org/${currentOrganization?.domain}/search?q=${values.phrase}&type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${h5pNameArray}`);
+              history.push(`/org/${currentOrganization?.domain}/search?q=${values.phrase}&type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${h5pNameArray}&author=${values.author}`);
               localStorage.setItem('refreshPage', false);
               // const allSubjects = values.subjectArray;
               // values.subjectArray = allSubjects.forEach((subject) => {
@@ -155,27 +162,27 @@ function SearchForm() {
               //     grade = grade.replace('and', '&');
               //   }
               // });
-              console.log(values.gradeArray, values.subjectArray, values);
               Swal.showLoading();
               dispatcher(simpleSearchAction(values));
-              // resetForm({
-              //   phrase: values.phrase,
-              //   subjectArray: values.subjectArray,
-              //   subject: values.subject,
-              //   grade: values.grade,
-              //   gradeArray: values.gradeArray,
-              //   standard: values.standard,
-              //   standardArray: values.standardArray,
-              //   email: values.email,
-              //   words: values.words,
-              //   no_words: values.no_words,
-              //   type: values.type,
-              //   toDate: values.toDate,
-              //   fromDate: values.fromDate,
-              //   from: values.from,
-              //   size: values.size,
-              //   model: values.model,
-              // });
+              resetForm({
+                phrase: '',
+                subjectArray: [],
+                author: '',
+                subject: '',
+                grade: '',
+                gradeArray: [],
+                standard: '',
+                standardArray: [],
+                email: '',
+                words: '',
+                no_words: undefined,
+                type: 'public',
+                toDate: undefined,
+                fromDate: undefined,
+                from: 0,
+                size: 20,
+                model: undefined,
+              });
             }}
           >
             {({
@@ -185,44 +192,52 @@ function SearchForm() {
               handleChange,
               handleBlur,
               handleSubmit,
-              setFieldValue,
             }) => (
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <div className="radio-btns">
-                    <label>
-                      <input
-                        name="type"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value="private"
-                        checked={values.type === 'private'}
-                        type="radio"
-                      />
-                      <span>Search My Projects</span>
-                    </label>
-                    <label>
-                      <input
-                        name="type"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value="public"
-                        checked={values.type === 'public'}
-                        type="radio"
-                      />
-                      <span>Search Project Showcase</span>
-                    </label>
-                    <label>
-                      <input
-                        name="type"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value="orgSearch"
-                        checked={values.type === 'orgSearch'}
-                        type="radio"
-                      />
-                      <span>Search All Projects in Organization</span>
-                    </label>
+                    {permission?.Search?.includes('search:dashboard')
+                      && (
+                      <label>
+                        <input
+                          name="type"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value="private"
+                          checked={values.type === 'private'}
+                          type="radio"
+                        />
+                        <span>Search My Projects</span>
+                      </label>
+                      )}
+                    {permission?.Search?.includes('search:advance')
+                      && (
+                        <label>
+                          <input
+                            name="type"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value="public"
+                            checked={values.type === 'public'}
+                            type="radio"
+                          />
+                          <span>Search Project Showcase</span>
+                        </label>
+                      )}
+                    {permission?.Search?.includes('search:advance')
+                      && (
+                      <label>
+                        <input
+                          name="type"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value="orgSearch"
+                          checked={values.type === 'orgSearch'}
+                          type="radio"
+                        />
+                        <span>Search All Projects in Organization</span>
+                      </label>
+                      )}
                   </div>
                 </div>
 
@@ -238,62 +253,7 @@ function SearchForm() {
                     {errors.phrase && touched.phrase && errors.phrase}
                   </div>
                 </div>
-                <div className="form-group" style={{ display: permission?.Organization?.includes('organization:view-user') && values.type !== 'private' ? 'block' : 'none' }}>
-                  <input
-                    value={values.author}
-                    placeholder="Enter Author name"
-                    onChange={({ target }) => {
-                      setFieldValue('author', target.value);
-                      dispatcher(searchUserInOrganization(activeOrganization?.id, target.value));
-                    }}
-                    className="author"
-                    onBlur={handleBlur}
-                    name="author"
-                  />
-                </div>
-                {values.author !== '' && (
-                  <div className="author-main-box">
-                    {searchUsers?.data?.length > 0 && searchUsers?.data.map((u) => (
-                      <div className="author-box" data-list="true" key={u.id}>
-                        <div
-                          onClick={() => {
-                            setFieldValue('author', '');
-                            values.selectedAuthor.push(u);
-                            values.authors.push(u.id);
-                          }}
-                        >
-                          <div className="invite-member-name-mark">
-                            <span>{`${u.first_name[0] || ''}${u.last_name[0] || ''}` }</span>
-                          </div>
 
-                          <div className="invite-member-info">
-                            <h2 className="invite-member-name">{`${`${u.first_name } ${u.last_name}`} (${u.email})`}</h2>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                {values.selectedAuthor.length > 0 && (
-                  <div className="form-group wrap-keyword" data-name={value}>
-                    {values.selectedAuthor.map((data) => (
-                      <div className="keywords-de" key={data.id}>
-                        {data?.first_name}
-                        <div
-                          className="iocns"
-                          onClick={() => {
-                            // eslint-disable-next-line no-param-reassign
-                            values.selectedAuthor = values.selectedAuthor.filter((index) => index !== data);
-                            values.authors = values.authors.filter((index) => index !== data.id);
-                            setValue(value + 1);
-                          }}
-                        >
-                          <FontAwesomeIcon icon="times" />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
                 <div className="form-group">
                   <select
                     name="subject"
@@ -490,6 +450,15 @@ function SearchForm() {
                     value={values.words}
                   />
                 </div> */}
+                <div className="form-group" style={{ display: permission?.Organization?.includes('organization:view-user') && values.type !== 'private' ? 'block' : 'none' }}>
+                  <input
+                    name="author"
+                    placeholder="Enter author name"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.no_words}
+                  />
+                </div>
                 <div className="form-group">
                   <input
                     name="no_words"

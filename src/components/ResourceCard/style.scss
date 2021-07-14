@@ -99,3 +99,14 @@
     margin-bottom: 10px;
   }
 }
+
+.safari-modal {
+  width: 80vw;
+  height: 90vh;
+  max-width: 90vw;
+}
+
+.safari-modal iframe {
+  height: 80vh;
+  width: 100%;
+}

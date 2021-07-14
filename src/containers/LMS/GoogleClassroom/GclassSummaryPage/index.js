@@ -53,7 +53,6 @@ function GclassSummaryPage(props) {
                     <div className="row m-4">
                       <div className="col text-center">
                         <Alert variant="warning">
-                          <p>An error has occurred:</p>
                           <p>
                             {errors[0].msg}
                           </p>
@@ -66,7 +65,6 @@ function GclassSummaryPage(props) {
                     <div className="row m-4">
                       <div className="col text-center">
                         <Alert variant="warning">
-                          <p>An error has occurred:</p>
                           <p>
                             {summaryError}
                           </p>

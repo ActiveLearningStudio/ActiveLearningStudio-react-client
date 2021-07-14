@@ -24,12 +24,11 @@ const ProjectCard = (props) => {
   } = props;
   const organization = useSelector((state) => state.organization);
   const dispatch = useDispatch();
-
   return (
     <div className="col-md-3 check" id={activeFilter}>
       <div className="program-tile">
         <div className="program-thumb">
-          <Link to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/preview`}>
+          <Link to={`/org/${organization?.currentOrganization?.domain}/project/${project.id}/preview`}>
             {project.thumb_url && (
               <div
                 className="project-thumb"
@@ -48,7 +47,7 @@ const ProjectCard = (props) => {
             <div className="row">
               <div className="col-md-12">
                 <h3 className="program-title">
-                  <Link to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/preview`}>
+                  <Link to={`/org/${organization?.currentOrganization?.domain}/project/${project.id}/preview`}>
                     {project.name && project.name.length > 50 ? `${project.name.substring(0, 50)}...` : project.name}
                   </Link>
                 </h3>
@@ -84,31 +83,31 @@ const ProjectCard = (props) => {
           </div>
 
           <div className="button-bottom">
-            <Link to={`/org/${organization.currentOrganization?.domain}/project/${project.id}`}>
+            <Link to={`/org/${organization?.currentOrganization?.domain}/project/${project.id}`}>
               <FontAwesomeIcon icon="plus" className="mr-2" />
               Add
             </Link>
-
-            <Link
-              to="#"
-              onClick={async () => {
-                const protocol = `${window.location.href.split('/')[0]}//`;
-                const url = `${protocol + window.location.host}/project/${project.id}/shared`;
-                if (!project.shared) {
-                  Swal.showLoading();
-                  await dispatch(toggleProjectShareAction(project.id, project.name));
-                  Swal.close();
-                  SharePreviewPopup(url, project.name);
-                } else {
-                  SharePreviewPopup(url, project.name);
-                }
-              }}
-            >
-              <FontAwesomeIcon icon="share" className="mr-2" />
-              Share
-            </Link>
-
-            <Link>
+            {organization?.permission?.Project?.includes('project:share') && (
+              <Link
+                to="#"
+                onClick={async () => {
+                  const protocol = `${window.location.href.split('/')[0]}//`;
+                  const url = `${protocol + window.location.host}/project/${project.id}/shared`;
+                  if (!project.shared) {
+                    Swal.showLoading();
+                    await dispatch(toggleProjectShareAction(project.id, project.name));
+                    Swal.close();
+                    SharePreviewPopup(url, project.name);
+                  } else {
+                    SharePreviewPopup(url, project.name);
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon="share" className="mr-2" />
+                Share
+              </Link>
+            )}
+            <Link style={{ padding: '0px' }}>
               <ProjectCardDropdown
                 project={project}
                 showDeletePopup={showDeletePopup}
