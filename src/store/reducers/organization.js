@@ -234,6 +234,16 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         users: [],
       };
+    case actionTypes.UPDATE_PAGE_NUMBER:
+      return {
+        ...state,
+        activePage: action.payload,
+      };
+    case actionTypes.RESET_PAGE_NUMBER:
+      return {
+        ...state,
+        activePage: 1,
+      };
     default:
       return state;
   }
