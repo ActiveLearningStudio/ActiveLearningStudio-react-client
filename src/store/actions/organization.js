@@ -287,6 +287,13 @@ export const searchUserInOrganization = (id, query, page, role) => async (dispat
   return result;
 };
 
+export const clearSearchUserInOrganization = () => (dispatch) => {
+  dispatch({
+    type: actionTypes.SEARCH_USER_IN_ORGANIZATION,
+    payload: null,
+  });
+};
+
 export const searchUserInOrganizationView = (id, query) => async (dispatch) => {
   const result = await organization.searchUserInView(id, query);
   dispatch({

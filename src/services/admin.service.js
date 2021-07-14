@@ -25,7 +25,7 @@ const getAllProject = (subOrgId, page) => httpService
   .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}`)
   .then(({ data }) => data)
   .catch((err) => {
-    errorCatcher(err.response.data);
+    // errorCatcher(err.response.data);
     Promise.reject(err.response.data);
   });
 

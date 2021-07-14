@@ -1,6 +1,7 @@
 import adminService from 'services/admin.service';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
+import { getUserAction } from './auth';
 
 export const setActiveAdminForm = (type) => async (dispatch) => {
   dispatch({
@@ -53,6 +54,9 @@ export const editUserInOrganization = (user) => async (dispatch) => {
     // eslint-disable-next-line no-param-reassign
     delete user.password;
     result = await adminService.editUserInOrganization(user, activeOrganization?.id);
+  }
+  if (result) {
+    dispatch(getUserAction());
   }
   dispatch({
     type: actionTypes.CLEAR_USERS_STATE,

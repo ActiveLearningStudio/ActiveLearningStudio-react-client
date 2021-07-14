@@ -8,7 +8,7 @@ import Starter from "./starter";
 import { columnData } from "./column";
 
 
-import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles } from 'store/actions/organization';
+import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from "store/actions/resource";
 import { getJobListing, getLogsListing, getUserReport } from "store/actions/admin";
 import { alphaNumeric } from "utils";
@@ -27,7 +27,7 @@ export default function Pills(props) {
   const admin = useSelector((state) => state.admin);
   const [ activePage, setActivePage ] = useState(1);
   const [ size, setSize ] = useState(10);
-  const { activeOrganization, roles, permission } = organization;
+  const { activeOrganization, roles, permission, searchUsers } = organization;
   const [ activeRole,setActiveRole ] = useState('');
   const { activeTab, activityType } = admin
   const [currentTab, setCurrentTab] = useState("all");
@@ -47,12 +47,12 @@ export default function Pills(props) {
   const [changeIndexValue, setChangeIndexValue] = useState("1");
   useEffect(()=>{
     setKey(modules?.[0])
-   
+
   },[activeTab])
-  const searchUsers = async (query, page) => {
+  const searchUsersFromOrganization = async (query, page) => {
     if (query.length > 1) {
       const result = await dispatch(
-        searchUserInOrganization(activeOrganization?.id, query, page, activeRole)
+        searchUserInOrganization(activeOrganization?.id, query, searchUsers ? activePage : 1, activeRole)
       );
       if (result?.data?.length > 0) {
         setUsers(result);
@@ -67,12 +67,15 @@ export default function Pills(props) {
       if(!!alphaNumeric(target.value)) {
         setSearchQuery(target.value);
       }
-      searchUsers(target.value, activePage);
+      searchUsersFromOrganization(target.value, activePage);
+      setActivePage(searchUsers ? activePage : 1);
       if (target.value.length> 1 ) setUsers(null);
     } else {
+      dispatch(clearSearchUserInOrganization());
+      setActivePage(1);
       setSearchQuery("");
       const result = await dispatch(
-        getOrgUsers(activeOrganization?.id, activePage, activeRole)
+        getOrgUsers(activeOrganization?.id, 1, activeRole)
       );
       setUsers(result);
     }
@@ -291,7 +294,7 @@ export default function Pills(props) {
         setLogs(data.data);
       });
     }
-  },[activePage, subTypeState, type, size, jobType, logType])
+  },[activePage, subTypeState, type, size, jobType, logType, usersReport])
   const searchUserReportQueryHandler = async ({target}, subTypeRecieved) => {
     if (subTypeRecieved === 'Report') {
       if (target.value) {
