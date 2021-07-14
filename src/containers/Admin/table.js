@@ -469,7 +469,7 @@ function Table(props) {
                     ) : 'N/A'}
                   </td>
                   <td>
-                    {row.users_count > 0 && permission?.Organization?.includes('organization:view-user') ? (
+                    {row.users_count > 0 ? (
                       <Link
                         className="view-all"
                         onClick={async () => {
