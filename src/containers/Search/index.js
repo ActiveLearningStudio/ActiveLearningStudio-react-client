@@ -455,6 +455,8 @@ function SearchInterface(props) {
                                         onChange={({ target }) => {
                                           if (target.value) {
                                             SetAuthor(target.value);
+                                          } else {
+                                            SetAuthor('');
                                           }
                                         }}
                                       />
