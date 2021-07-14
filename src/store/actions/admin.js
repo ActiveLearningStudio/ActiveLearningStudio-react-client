@@ -82,6 +82,7 @@ export const getUserReport = (mode, size, page, query) => async (dispatch) => {
     type: actionTypes.GET_USERS_REPORT,
     payload: result,
   });
+  return result;
 };
 
 export const getJobListing = (filter, size, page, query) => async (dispatch) => {
