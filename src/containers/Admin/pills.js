@@ -316,7 +316,8 @@ export default function Pills(props) {
       } else {
         setSearchQueryStats('');
         setUserReportStats(null);
-        setUserReportStats(await dispatch(getUserReport('all', size, activePage)));
+        setUserReportStats(await dispatch(getUserReport('all', size, 1)));
+        setActivePage(1);
       }
     }
     if (subTypeRecieved === 'Queues:Jobs') {
