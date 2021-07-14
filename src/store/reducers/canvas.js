@@ -1,32 +1,41 @@
 import {
+  // Deeplinking browse tab
+  DO_BROWSE,
+  // Deelinking search tab
+  UPDATE_PARAMS,
   BACK_TO_SEARCH,
   DO_SEARCH,
-  UPDATE_PARAMS,
-  SET_PREVIEW_ACTIVITY,
-  CLOSE_PREVIEW,
-  GET_H5P_SETTINGS,
+  SHOW_SEARCH_PROJECT,
+  SET_SEARCH_PREVIEW_ACTIVITY,
+  CLOSE_SEARCH_PREVIEW_ACTIVITY,
   PREVIOUS_PAGE,
   NEXT_PAGE,
   SHOW_RESULTS,
+  // Other
+  GET_H5P_SETTINGS,
   GRADE_PASS_BACK,
   LTI_ACTIVITY_INIT,
-  DO_BROWSE,
   GET_LTI_SUMMARY,
   GET_LTI_SUMMARY_ACTIVITY_INFO,
 } from '../actionTypes';
 
 const INITIAL_STATE = {
+  // Deeplinking
   currentPage: 'search',
+  // Deeplinking browse tab
+  browseResults: null,
+  // Deeplinking search tab
   searchParams: {
     private: '0',
   },
-  activities: null,
-  previewActivity: null,
+  searchProjects: null,
+  searchSelectedProject: null,
+  searchPreviewActivity: null,
+  searchHasMoreResults: false,
+  // Other
   h5pSettings: null,
-  hasMoreResults: false,
   ltiFinished: false,
   attemptId: null,
-  browseResults: null,
   summary: null,
   summaryActivityInfo: null,
   summaryError: null,
@@ -34,18 +43,20 @@ const INITIAL_STATE = {
 
 const canvasReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    // Deeplinking browse tab
     case DO_BROWSE:
       return {
         ...state,
         browseResults: action.results.projects.slice(0, 10),
       };
 
+    // Deeplinking search tab
     case DO_SEARCH:
       return {
         ...state,
-        activities: action.results.activities.slice(0, 10),
         currentPage: 'results',
-        hasMoreResults: action.results.activities.length > 10,
+        searchProjects: action.results.projects.slice(0, 10),
+        searchHasMoreResults: action.results.projects.length > 10,
       };
 
     case SHOW_RESULTS:
@@ -59,7 +70,10 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
         ...state,
         currentPage: 'search',
         searchParams: INITIAL_STATE.searchParams,
-        activities: null,
+        searchProjects: null,
+        searchSelectedProject: null,
+        searchPreviewActivity: null,
+        h5pSettings: null,
       };
 
     case UPDATE_PARAMS:
@@ -68,23 +82,17 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
         searchParams: action.params,
       };
 
-    case SET_PREVIEW_ACTIVITY:
+    case SET_SEARCH_PREVIEW_ACTIVITY:
       return {
         ...state,
-        previewActivity: action.activity,
+        searchPreviewActivity: action.activity,
       };
 
-    case CLOSE_PREVIEW:
+    case CLOSE_SEARCH_PREVIEW_ACTIVITY:
       return {
         ...state,
-        previewActivity: null,
+        searchPreviewActivity: null,
         h5pSettings: null,
-      };
-
-    case GET_H5P_SETTINGS:
-      return {
-        ...state,
-        h5pSettings: action.h5pSettings,
       };
 
     case PREVIOUS_PAGE:
@@ -103,6 +111,13 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
           ...state.searchParams,
           from: (state.searchParams.from) ? state.searchParams.from + 10 : 10,
         },
+      };
+
+    // Other
+    case GET_H5P_SETTINGS:
+      return {
+        ...state,
+        h5pSettings: action.h5pSettings,
       };
 
     case GRADE_PASS_BACK:
@@ -144,6 +159,12 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
         return {
           ...state,
           summaryActivityInfo: action.summaryActivityInfo.activity,
+        };
+
+      case SHOW_SEARCH_PROJECT:
+        return {
+          ...state,
+          searchSelectedProject: action.project,
         };
 
     default:
