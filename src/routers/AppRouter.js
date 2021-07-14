@@ -64,6 +64,7 @@ const CanvasSummaryPage = loadable(() => import('../containers/LMS/Canvas/Canvas
 const SearchPage = loadable(() => import('../containers/LMS/Canvas/DeepLinking/SearchPage'));
 const LtiActivity = loadable(() => import('../containers/LMS/LTI/Activity'));
 const ManageOrganization = loadable(() => import('../containers/ManageOrganization'));
+const SSOLogin = loadable(() => import('../containers/Auth/SSOLogin'));
 const AppRouter = (props) => {
   const SelectedOrganization = localStorage.getItem('current_org');
   useEffect(() => {
@@ -80,6 +81,7 @@ const AppRouter = (props) => {
   return (
     <Router history={history}>
       <Switch>
+        <OpenRoute exact path="/sso/dologin/:ssodata" component={SSOLogin} />
         <OpenRoute
           exact
           path="/projects/shared"

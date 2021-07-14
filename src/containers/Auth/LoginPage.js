@@ -12,6 +12,7 @@ import { GoogleLogin } from 'react-google-login';
 import loader from 'assets/images/loader.svg';
 import googleIcon from 'assets/images/google.png';
 import emailIcon from 'assets/images/email.png';
+import stemuliIcon from 'assets/images/stemuli_logo.png';
 import { loginAction, googleLoginAction } from 'store/actions/auth';
 import { getErrors } from 'utils';
 import Error from './Error';
@@ -50,7 +51,7 @@ class LoginPage extends React.Component {
       const { email, password } = this.state;
       const { history, login, domain } = this.props;
 
-      if (!validator.isEmail(email.trim())) {
+      if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{1,4}$/i.test(email?.trim())) {
         this.setState({
           error: 'Please input valid email.',
         });
@@ -156,6 +157,18 @@ class LoginPage extends React.Component {
                 />
 
               </div>
+              {process.env.REACT_APP_STEMULI === 'true' && (
+                <div className="form-group text-center mb-4">
+                  <button
+                    type="button"
+                    className="email-button"
+                    onClick={() => { window.location.href = `${process.env.REACT_APP_API_URL}/oauth/stemuli/redirect`; }}
+                  >
+                    <img src={stemuliIcon} alt="stemuli icon" style={{ float: 'left', paddingRight: '19.23px' }} />
+                    <span>Continue with Stemuli</span>
+                  </button>
+                </div>
+              )}
               <div className="form-group text-center mb-0">
                 <button
                   type="button"
@@ -164,7 +177,7 @@ class LoginPage extends React.Component {
                     clicked: true,
                   })}
                 >
-                  <img src={emailIcon} alt="googleIcon" style={{ float: 'left', paddingRight: '19.23px' }} />
+                  <img src={emailIcon} alt="email icon" style={{ float: 'left', paddingRight: '19.23px' }} />
                   <span>Continue with Email</span>
                 </button>
               </div>

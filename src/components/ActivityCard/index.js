@@ -67,10 +67,12 @@ const ActivityCard = (props) => {
             </Link>
             {!lti
             && (
-              <ResourceCardDropdown
-                playlist={playlist}
-                resource={activity}
-              />
+              <div className="activity-options-wrapper check">
+                <ResourceCardDropdown
+                  playlist={playlist}
+                  resource={activity}
+                />
+              </div>
             )}
           </>
         )}

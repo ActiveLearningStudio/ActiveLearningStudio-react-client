@@ -45,16 +45,16 @@ export default function CreateOrg(prop) {
         }}
         validate={(values) => {
           const errors = {};
-          if (!values.name) {
-            errors.name = "Required";
+          if (!values.name || values.name.length > 255) {
+            errors.name = values.name.length > 255 ? 'Length must be 255 characters or less.' : "Required";
           }
-          if (!values.description) {
-            errors.description = "Required";
+          if (!values.description || values.description.length > 255) {
+            errors.description = values.description.length > 255 ? 'Length must be 255 characters or less.' : "Required";
           }
           if (!values.domain) {
             errors.domain = "Required";
-          } else if (values.domain?.length < 2) {
-            errors.domain = "Character limit should be greater then one";
+          } else if (values.domain?.length < 2 || values.domain?.length > 255) {
+            errors.domain = "Character limit should be greater then one and less than 255";
           }
           if (!values.image) {
             errors.image = "Required";

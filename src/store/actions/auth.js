@@ -203,8 +203,10 @@ export const confirmEmailAction = (data) => async (dispatch) => {
 };
 
 export const logoutAction = () => async () => {
+  const centralizedState = store.getState();
+  const { organization: { currentOrganization } } = centralizedState;
   storageService.removeItem(USER_TOKEN_KEY);
-  window.location.href = '/';
+  window.location.href = `/login/${currentOrganization?.domain}`;
 };
 
 export const updateProfileAction = (data) => async (dispatch) => {
@@ -308,5 +310,15 @@ export const loadOrganizationTypesAction = () => async (dispatch) => {
   dispatch({
     type: actionTypes.LOAD_ORGANIZATION_TYPES,
     payload: organizationTypes.data,
+  });
+};
+
+export const handleSsoLoginAction = (params) => async (dispatch) => {
+  storageService.setItem(USER_TOKEN_KEY, params.access_token);
+  dispatch({
+    type: actionTypes.LOGIN_SUCCESS,
+    payload: {
+      user: { ...params.user },
+    },
   });
 };

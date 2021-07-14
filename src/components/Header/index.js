@@ -1,6 +1,4 @@
-import React
-// ,{ useMemo }
-  from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -15,6 +13,12 @@ import
 }
   from 'store/actions/organization';
 import logo from 'assets/images/studio_new_logo.png';
+import Katylogo from 'assets/images/Katy_logo.png';
+import bu from 'assets/images/bu.png';
+import safari from 'assets/images/safari.png';
+import shepherds from 'assets/images/shepherds.svg';
+import sndt from 'assets/images/sndt.png';
+import nevada from 'assets/images/nevada.png';
 import { SHOW_HELP } from 'store/actionTypes';
 import add from 'assets/images/add-icon.png';
 // import profile from 'assets/images/user-profile.png';
@@ -41,23 +45,51 @@ function Header(props) {
   const { permission: { Project } } = stateHeader;
   const { permission } = stateHeader;
   const dispatch = useDispatch();
+  const { currentOrganization } = stateHeader;
+  const [image, setImage] = useState(null);
+  const [defaultLogo, setdefaultLogo] = useState(logo);
   // useMemo(() => {
   //   dispatch(getOrganizationFirstTime(stateHeader?.currentOrganization?.id));
   // }, [stateHeader?.currentOrganization?.id]);
+  useEffect(() => {
+    if (currentOrganization?.id === 1) {
+      setImage(null);
+      if (window.location.host.includes('katyisd')) {
+        setdefaultLogo(Katylogo);
+      } else if (window.location.host.includes('baylor')) {
+        setdefaultLogo(bu);
+      } else if (window.location.host.includes('scde')) {
+        setdefaultLogo(safari);
+      } else if (window.location.host.includes('shepherds')) {
+        setdefaultLogo(shepherds);
+      } else if (window.location.host.includes('sndt')) {
+        setdefaultLogo(sndt);
+      } else if (window.location.host.includes('nvdoe')) {
+        setdefaultLogo(nevada);
+      } else {
+        setdefaultLogo(logo);
+      }
+    } else {
+      setImage(currentOrganization?.image);
+    }
+  }, [currentOrganization]);
   return (
     <header>
       <div className="top-header flex-div align-items-center">
         <div className="group-search-logo">
           <div className="tophd_left">
             <Link to={`/org/${stateHeader?.currentOrganization?.domain}`} className="top_logo">
-              {stateHeader?.logo ? <img src={`${global.config.resourceUrl}${stateHeader.logo}`} alt="logo" title="" /> : <img src={logo} alt="logo" title="" />}
+              {image ? <img src={global.config.resourceUrl + image} alt="logo" title="" /> : <img src={defaultLogo} alt="logo" title="" />}
             </Link>
           </div>
         </div>
         <div className="tophd_right flexdiv search-div  d-flex flex-wrap ">
-          <div className="search-div">
-            <SearchForm />
-          </div>
+          {(permission?.Search?.includes('search:advance') || permission?.Search?.includes('search:dashboard'))
+           && (
+             <div className="search-div">
+               <SearchForm />
+             </div>
+           )}
           <div className="navbar-link">
             <ul className="top-info flex-div">
               {false && permission?.Organization?.includes('organization:view') && (

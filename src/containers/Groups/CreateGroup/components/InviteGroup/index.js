@@ -51,7 +51,7 @@ function InviteGroup(props) {
           <h2 className="title">Invite Group Members</h2>
           <div className="title-cross" />
         </div>
-        Invite atlease 1 or more member to your group
+        Invite atleast 1 or more member to your group
         <div className="invite-member-wrapper">
           <div className="search-box">
             {/*

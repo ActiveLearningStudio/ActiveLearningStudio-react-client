@@ -22,6 +22,7 @@ function LtiProjectShared(props) {
   useEffect(() => {
     dispatch(
       loadMyCloneProjectsAction(),
+      // loadMyProjectsAction(),
     );
   }, [dispatch]);
 

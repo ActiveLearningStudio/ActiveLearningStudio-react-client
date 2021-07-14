@@ -8,28 +8,34 @@ import Starter from "./starter";
 import { columnData } from "./column";
 
 
-import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles } from 'store/actions/organization';
+import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from "store/actions/resource";
 import { getJobListing, getLogsListing, getUserReport } from "store/actions/admin";
+import { alphaNumeric } from "utils";
+
 export default function Pills(props) {
   const { modules, type, subType } = props;
- 
- 
+
+  const [key, setKey] = useState(modules && modules[0]);
+
   const [subTypeState, setSubTypeState] = useState(subType);
   // All User Business Logic Start
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const { activityTypes, activityItems, usersReport } = useSelector ((state) => state.admin)
+
   const admin = useSelector((state) => state.admin);
   const [ activePage, setActivePage ] = useState(1);
-  const [ size, setSize ] = useState(25);
-  const { activeOrganization, roles, permission } = organization;
+  const [ size, setSize ] = useState(10);
+  const { activeOrganization, roles, permission, searchUsers } = organization;
   const [ activeRole,setActiveRole ] = useState('');
   const { activeTab, activityType } = admin
   const [currentTab, setCurrentTab] = useState("all");
   const [users, setUsers] = useState(null);
   const [searchAlertToggler, setSearchAlertToggler] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchQueryProject, setSearchQueryProject] = useState("");
+  const [searchQueryStats, setSearchQueryStats] = useState("");
   const [allProjectTab, setAllProjectTab] = useState(null);
   const [allProjectUserTab, setAllProjectUserTab] = useState(null);
   const [allProjectIndexTab, setAllProjectIndexTab] = useState(null);
@@ -39,36 +45,50 @@ export default function Pills(props) {
   const [logs, setLogs ] = useState(null);
   const [logType, SetLogType] = useState({ value: 'all' , display_name: 'All'});
   const [changeIndexValue, setChangeIndexValue] = useState("1");
-  const searchUsers = async (query, page) => {
-    const result = await dispatch(
-      searchUserInOrganization(activeOrganization?.id, query, page, activeRole)
-    );
-    if (result?.data?.length > 0) {
-      setUsers(result);
-      setSearchAlertToggler(1);
-    } else {
-      setSearchAlertToggler(0);
+  useEffect(()=>{
+    setKey(modules?.[0])
+
+  },[activeTab])
+  const searchUsersFromOrganization = async (query, page) => {
+    if (query.length > 1) {
+      const result = await dispatch(
+        searchUserInOrganization(activeOrganization?.id, query, searchUsers ? activePage : 1, activeRole)
+      );
+      if (result?.data?.length > 0) {
+        setUsers(result);
+        setSearchAlertToggler(1);
+      } else {
+        setSearchAlertToggler(0);
+      }
     }
   };
   const searchQueryChangeHandler = async ({ target }) => {
-    if (target.value) {
-      setSearchQuery(target.value);
-      searchUsers(target.value, activePage);
-      setUsers(null);
+    if (target.value.length) {
+      if(!!alphaNumeric(target.value)) {
+        setSearchQuery(target.value);
+      }
+      searchUsersFromOrganization(target.value, activePage);
+      setActivePage(searchUsers ? activePage : 1);
+      if (target.value.length> 1 ) setUsers(null);
     } else {
+      dispatch(clearSearchUserInOrganization());
+      setActivePage(1);
       setSearchQuery("");
       const result = await dispatch(
-        getOrgUsers(activeOrganization?.id, activePage, size, activeRole)
+        getOrgUsers(activeOrganization?.id, 1, activeRole)
       );
       setUsers(result);
     }
   };
+
+
 
   const searchProjectQueryChangeHandler = async ({ target }, index, subType) => {
     console.log(target.value, subType)
 
     if (subType === 'index') {
       if (!!target.value) {
+        setSearchQueryProject(target.value);
         setAllProjectIndexTab(null);
         const searchapi = adminService.userSerchIndexs(activeOrganization?.id, undefined, index, target.value)
         searchapi.then((data) => {
@@ -77,6 +97,7 @@ export default function Pills(props) {
 
         })
       } else {
+        setSearchQueryProject('');
         const searchapi = adminService.getAllProjectIndex(activeOrganization?.id, activePage, index)
         searchapi.then((data) => {
           // console.log(data)
@@ -86,6 +107,7 @@ export default function Pills(props) {
       }
     } else if (subType === 'all') {
       if (!!target.value) {
+        setSearchQueryProject(target.value);
         setAllProjectTab(null);
         const allproject = adminService.getAllProjectSearch(activeOrganization?.id, undefined, target.value)
         // console.log(allproject)
@@ -94,6 +116,7 @@ export default function Pills(props) {
           setAllProjectTab(data)
         })
       } else {
+        setSearchQueryProject('');
         const allproject = adminService.getAllProject(activeOrganization?.id, activePage)
         allproject.then((data) => {
           // console.log(data)
@@ -102,12 +125,14 @@ export default function Pills(props) {
       }
     } else if (subType === 'user') {
       if (!!target.value) {
+        setSearchQueryProject(target.value);
         setAllProjectUserTab(null);
         const userproject = adminService.getUserProjectSearch(activeOrganization?.id, undefined, target.value)
         userproject.then((data) => {
           setAllProjectUserTab(data)
         })
       } else {
+        setSearchQueryProject('');
         const userproject = adminService.getUserProject(activeOrganization?.id, activePage)
         userproject.then((data) => {
           // console.log(data)
@@ -122,25 +147,25 @@ export default function Pills(props) {
   }, [activeTab])
 
   useMemo(async () => {
+
     if (
       activeOrganization &&
       type === "Users" &&
-      subTypeState === "All users" &&
-      activeTab === "Users"
+      subTypeState === "All Users"
     ) {
-      if (searchQuery) {
-        searchUserInOrganization(activeOrganization?.id, searchQuery, activePage, activeRole)
+      if (searchQuery.length > 1) {
+        const result = await dispatch(searchUserInOrganization(activeOrganization?.id, searchQuery, activePage, activeRole));
+        setUsers(result);
       }
       else if (
         organization?.users?.data?.length > 0 &&
         activePage === organization?.activePage &&
-        size === organization?.size &&
         !activeRole
       ) {
         setUsers(organization?.users);
       } else if (activeRole) {
         const result = await dispatch(
-          getOrgUsers(activeOrganization?.id, activePage, size, activeRole)
+          getOrgUsers(activeOrganization?.id, activePage, activeRole)
         );
         setUsers(result);
       }
@@ -154,7 +179,6 @@ export default function Pills(props) {
     type,
     subTypeState,
     activeTab,
-    size,
     activeRole,
     organization?.users?.length
   ]);
@@ -192,7 +216,7 @@ export default function Pills(props) {
       );
       setAllProjectIndexTab(result);
     }
-  }, [type, activePage, changeIndexValue, currentTab]);
+  }, [activeOrganization?.id, type, activePage, changeIndexValue, currentTab]);
   // Activity Tab Business Logic
   useEffect(() => {
     if (type=== 'Activities' && subTypeState === 'Activity Items') {
@@ -229,59 +253,76 @@ export default function Pills(props) {
   }
   // Stats User Report
   useEffect(() => {
-    if (type=== 'Stats' && subTypeState === 'Report' && (activePage !== organization?.activePage || size !== organization?.size)) {
+    if (type=== 'Stats' && subTypeState === 'Report' && searchQueryStats) {
+      dispatch(getUserReport('all', size, activePage, searchQueryStats));
+    }
+    else if (type=== 'Stats' && subTypeState === 'Report' && (activePage !== organization?.activePage || size !== organization?.size)) {
       //pagination
       dispatch(getUserReport('all',size,activePage,''));
-    } else if (type=== 'Stats' && subTypeState === 'Report' && (activePage === 1 || size === 25)) {
+    } else if (type=== 'Stats' && subTypeState === 'Report' && (activePage === 1 || size === 10)) {
       //on page 1
       dispatch (getUserReport('all'));
     }
-    if (type === 'Stats' && subTypeState === 'Queues:Jobs' && (activePage !== organization?.activePage || size !== organization?.size) && jobType) {
+    if (type === 'Stats' && subTypeState === 'Queues:Jobs' && searchQueryStats) {
+      let result = dispatch(getJobListing(jobType.value, size, activePage ,searchQueryStats));
+      result.then((data) => setJobs(data.data));
+    }
+    else if (type === 'Stats' && subTypeState === 'Queues:Jobs' && (activePage !== organization?.activePage || size !== organization?.size) && jobType) {
       const result = dispatch(getJobListing(jobType.value, size, activePage))
       result.then((data) => {
         setJobs(data.data);
       });
-    } else if (type === 'Stats' && subTypeState === 'Queues:Jobs' && (activePage === 1 || size === 25)) {
+    } else if (type === 'Stats' && subTypeState === 'Queues:Jobs' && (activePage === 1 || size === 10)) {
       const result = dispatch(getJobListing(jobType.value))
       result.then((data) => {
         setJobs(data.data);
       });
     }
-    if (type === 'Stats' && subTypeState === 'Queues:Logs' && (activePage !== organization?.activePage || size !== organization?.size) && logType) {
+    if (type === 'Stats' && subTypeState === 'Queues:Logs' && searchQueryStats) {
+      let result = dispatch(getLogsListing(logType.value, size, activePage , searchQueryStats));
+      result.then((data) => setLogs(data.data));
+    }
+    else if (type === 'Stats' && subTypeState === 'Queues:Logs' && (activePage !== organization?.activePage || size !== organization?.size) && logType) {
       const result = dispatch(getLogsListing(logType.value, size, activePage))
       console.log(result);
       result.then((data) => {
         setLogs(data.data);
       });
-    } else if (type === 'Stats' && subTypeState === 'Queues:Logs' && (activePage === 1 || size === 25)) {
+    } else if (type === 'Stats' && subTypeState === 'Queues:Logs' && (activePage === 1 || size === 10)) {
       const result = dispatch(getLogsListing(logType.value))
       result.then((data) => {
         setLogs(data.data);
       });
     }
-  },[activePage, subTypeState, type, size, jobType, logType])
+  },[activePage, subTypeState, type, size, jobType, logType, usersReport])
   const searchUserReportQueryHandler = async ({target}, subTypeRecieved) => {
     if (subTypeRecieved === 'Report') {
       if (target.value) {
+        setSearchQueryStats(target.value);
         await dispatch(getUserReport('all', size, undefined, target.value));
       } else {
+        setSearchQueryStats('');
         await dispatch(getUserReport('all', size, activePage));
       }
     }
     if (subTypeRecieved === 'Queues:Jobs') {
       if (target.value) {
+        setSearchQueryStats(target.value);
         let result = dispatch(getJobListing(jobType.value, size, undefined ,target.value));
         result.then((data) => setJobs(data.data));
       } else {
+        setSearchQueryStats('');
         let result = dispatch(getJobListing(jobType.value, size, activePage));
         result.then((data) => setJobs(data.data));
       }
     }
     if (subTypeRecieved === 'Queues:Logs') {
       if (target.value) {
+        setSearchQueryStats(target.value);
         let result = dispatch(getLogsListing(logType.value, size, undefined , target.value));
         result.then((data) => setLogs(data.data));
       } else {
+        setSearchQueryStats('');
         let result = dispatch(getLogsListing(logType.value, size, activePage));
         result.then((data) => setLogs(data.data));
       }
@@ -313,7 +354,7 @@ export default function Pills(props) {
     } else if (activeTab === 'Activities') {
       setSubTypeState('Activity Types');
     } else if (activeTab === 'Users') {
-      setSubTypeState('All users');
+      setSubTypeState('All Users');
     } else if (activeTab === 'Stats') {
       setSubTypeState('Report');
     }
@@ -322,9 +363,14 @@ export default function Pills(props) {
   return (
     <Tabs
       defaultActiveKey={modules && modules[0]}
-      id="uncontrolled-tab-example"
+      id="controlled-tab-example"
+      activeKey={key}
       onSelect={(key) => {
         setSubTypeState(key);
+        setKey(key);
+        setActivePage(1)
+        setSearchQueryProject('');
+        setSearchQueryStats('');
         if (key === "All Projects") {
           setCurrentTab("all");
         } else if (key === "User Projects") {
@@ -346,6 +392,7 @@ export default function Pills(props) {
                 searchUserReportQueryHandler={searchUserReportQueryHandler}
                 btnText=""
                 btnAction=""
+                searchQueryStats={searchQueryStats}
                 subTypeState={subTypeState}
                 importUser={false}
                 filter={true}
@@ -372,6 +419,7 @@ export default function Pills(props) {
                 setSize={setSize}
                 activePage={activePage}
                 btnAction=""
+                searchQueryStats={searchQueryStats}
                 importUser={false}
                 filter={true}
                 setActivePage={setActivePage}
@@ -393,6 +441,7 @@ export default function Pills(props) {
                 SetLogType={SetLogType}
                 setSize={setSize}
                 btnAction=""
+                searchQueryStats={searchQueryStats}
                 importUser={false}
                 filter={true}
                 activePage={activePage}
@@ -401,9 +450,9 @@ export default function Pills(props) {
                 type={type}
               />
             )}
-            {type === "Users" && subTypeState === "All users" && (
+            {type === "Users" && subTypeState === "All Users" && (
               <Starter
-                paginationCounter={true}
+                // paginationCounter={true}
                 search={true}
                 print={false}
                 btnText="Create new user"
@@ -413,11 +462,11 @@ export default function Pills(props) {
                 tableHead={columnData.userall}
                 data={users}
                 activePage={activePage}
-                size={size}
-                setSize={setSize}
+                // size={size}
+                // setSize={setSize}
                 activeRole={activeRole}
                 setActiveRole={setActiveRole}
-                subTypeState={'All users'}
+                subTypeState={'All Users'}
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
                 searchQueryChangeHandler={searchQueryChangeHandler}
@@ -459,6 +508,7 @@ export default function Pills(props) {
                 tableHead={columnData.organization}
                 data={[]}
                 type={type}
+
               />
             )}
 
@@ -489,9 +539,7 @@ export default function Pills(props) {
                 searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
                 type={type}
                 importUser={true}
-                // searchQuery={searchQuery}
-                // searchProjectQueryChangeHandler={searchProjectQueryChangeHandle}
-                // searchAlertToggler={searchAlertToggler}
+                searchQueryProject={searchQueryProject}
                 setActivePage={setActivePage}
                 activePage={activePage}
                 subType="all"
@@ -509,6 +557,7 @@ export default function Pills(props) {
                 activePage={activePage}
                 subType="user"
                 setCurrentTab={setCurrentTab}
+                searchQueryProject={searchQueryProject}
                 searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
               />
             )}
@@ -527,6 +576,7 @@ export default function Pills(props) {
                 subType="index"
                 setCurrentTab={setCurrentTab}
                 filter={true}
+                searchQueryProject={searchQueryProject}
                 setChangeIndexValue={setChangeIndexValue}
               />
             )}

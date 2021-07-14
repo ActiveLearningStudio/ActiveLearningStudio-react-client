@@ -1,6 +1,7 @@
 import adminService from 'services/admin.service';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
+import { getUserAction } from './auth';
 
 export const setActiveAdminForm = (type) => async (dispatch) => {
   dispatch({
@@ -34,6 +35,9 @@ export const addUserInOrganization = (user) => async (dispatch) => {
   const { organization: { activeOrganization } } = centralizedState;
   const result = await adminService.addUserInOrganization(user, activeOrganization?.id);
   dispatch({
+    type: actionTypes.CLEAR_USERS_STATE,
+  });
+  dispatch({
     type: actionTypes.ADD_NEW_USER,
     payload: result,
   });
@@ -43,7 +47,17 @@ export const addUserInOrganization = (user) => async (dispatch) => {
 export const editUserInOrganization = (user) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
-  const result = await adminService.editUserInOrganization(user, activeOrganization?.id);
+  let result;
+  if (user.password) {
+    result = await adminService.editUserInOrganization(user, activeOrganization?.id);
+  } else {
+    // eslint-disable-next-line no-param-reassign
+    delete user.password;
+    result = await adminService.editUserInOrganization(user, activeOrganization?.id);
+  }
+  if (result) {
+    dispatch(getUserAction());
+  }
   dispatch({
     type: actionTypes.CLEAR_USERS_STATE,
   });

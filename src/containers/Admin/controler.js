@@ -39,6 +39,9 @@ function Controller(props) {
     setActivePage,
     type,
     searchQuery,
+    searchQueryProject,
+    searchQueryStats,
+    setSearchQuery,
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
     searchActivitiesQueryHandler,
@@ -95,7 +98,7 @@ function Controller(props) {
     <div className="controller">
       {paginationCounter && (
         <div className="pagination-counter drop-counter ">
-          show:
+          Show:
           <span>
             <Dropdown>
               <Dropdown.Toggle id="dropdown-basic">{size}</Dropdown.Toggle>
@@ -135,7 +138,7 @@ function Controller(props) {
           entries
         </div>
       )}
-      {currentOrganization?.id !== activeOrganization?.id && (
+      {(currentOrganization?.id !== activeOrganization?.id && type !== 'Users' ) && (
         <div className="btn-text">
           <button
             onClick={async () => {
@@ -223,7 +226,8 @@ function Controller(props) {
                         setActiveRoleInComponent(head.display_name);
                         if (subTypeState === 'Manage Roles')
                           dispatch(roleDetail(activeOrganization.id, head.id));
-                        if (subTypeState === 'All users') {
+                        if (subTypeState === 'All Users') {
+                          setSearchQuery('');
                           setActiveRole(head.id);
                           setActivePage(1);
                         }
@@ -284,16 +288,21 @@ function Controller(props) {
         </div>
       )}
       {!!search && type === "Users" && (
-        <div className="search-bar">
-          <input
-            className=""
-            type="text"
-            placeholder="Search"
-            value={searchQuery}
-            onChange={searchQueryChangeHandler}
-          />
-          <img src={searchimg} alt="search" />
-        </div>
+        <>
+          <div className="search-bar" style={{ display:"flex", flexDirection:"column"}}>
+            <input
+              className=""
+              type="text"
+              // title="Enter at least 2 characters"
+              placeholder="Search by email"
+              value={searchQuery}
+              onChange={searchQueryChangeHandler}
+            />
+            <img src={searchimg} alt="search" />
+            {(searchQuery.length > 0 && searchQuery.length < 2) && <label className="flex" style={{ color: 'red' }}>Enter at least 2 characters</label> }
+          </div>
+
+        </>
       )}
       {!!search && type === "LMS" && (
         <div className="search-bar">
@@ -313,6 +322,7 @@ function Controller(props) {
             className=""
             type="text"
             placeholder="Search"
+            value={searchQueryStats}
             onChange={(e) => searchUserReportQueryHandler(e, subTypeState)}
           />
           <img src={searchimg} alt="search" />
@@ -325,7 +335,7 @@ function Controller(props) {
             className=""
             type="text"
             placeholder="Search"
-
+            value={searchQueryProject}
             onChange={(e) => searchProjectQueryChangeHandler(e, selectedIndexValueid, subType)}
           />
           <img src={searchimg} alt="search" />
@@ -449,7 +459,7 @@ function Controller(props) {
           </button>
         </div>
       )}
-      {!!btnText && subTypeState === 'All users' && permission?.Organization.includes('organization:add-user')  && (
+      {!!btnText && subTypeState === 'All Users' && permission?.Organization.includes('organization:add-user')  && (
         <div className="btn-text">
           <button
             onClick={() => {
@@ -505,7 +515,7 @@ function Controller(props) {
           </div>
         </div>
       )}
-      {permission?.Organization?.includes('organization:view-user') && type === "Users" && subTypeState === 'All users' && (
+      {permission?.Organization?.includes('organization:view-user') && type === "Users" && subTypeState === 'All Users' && (
         <div className="btn-text">
           <div className="add-user-btn">
             <Dropdown>
