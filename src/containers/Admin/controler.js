@@ -504,7 +504,7 @@ function Controller(props) {
       {inviteUser && permission?.Organization?.includes('organization:invite-members') && (
         <div className="btn-text">
           <div className="add-user-btn">
-            <Dropdown>
+            <Dropdown drop="down">
               <Dropdown.Toggle variant="success" id="dropdown-basic">
                 Invite external user
               </Dropdown.Toggle>
@@ -518,7 +518,7 @@ function Controller(props) {
       {permission?.Organization?.includes('organization:view-user') && type === "Users" && subTypeState === 'All Users' && (
         <div className="btn-text">
           <div className="add-user-btn">
-            <Dropdown>
+            <Dropdown drop="down">
               <Dropdown.Toggle variant="success" id="dropdown-basic">
                 Add internal user
               </Dropdown.Toggle>
