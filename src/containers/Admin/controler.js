@@ -41,6 +41,7 @@ function Controller(props) {
     searchQuery,
     searchQueryProject,
     searchQueryStats,
+    setSearchQueryStats,
     setSearchQuery,
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
@@ -323,9 +324,16 @@ function Controller(props) {
             type="text"
             placeholder="Search"
             value={searchQueryStats}
-            onChange={(e) => searchUserReportQueryHandler(e, subTypeState)}
+            onChange={(e) => {
+              if (e.target.value) {
+                setSearchQueryStats(e.target.value)
+              } else {
+                setSearchQueryStats('');
+                searchUserReportQueryHandler('', subTypeState)
+              }
+            }}
           />
-          <img src={searchimg} alt="search" />
+          <img src={searchimg} alt="search" onClick={() => searchUserReportQueryHandler(searchQueryStats, subTypeState)}/>
         </div>
       )}
 
