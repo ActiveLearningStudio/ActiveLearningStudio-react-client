@@ -166,7 +166,7 @@ function Table(props) {
         <table>
           <thead>
             {tableHead?.map((head) => (
-              <th>{head}</th>
+             (head === 'Users' && permission?.Organization?.includes('organization:view-user')) ? <th> {head} </th>: head !== 'Users' ? <th>{head}</th> : null
             ))}
           </thead>
           <tbody>
@@ -468,33 +468,35 @@ function Table(props) {
                       </Link>
                     ) : 'N/A'}
                   </td>
-                  <td>
-                    {row.users_count > 0 ? (
-                      <Link
-                        className="view-all"
-                        onClick={async () => {
-                          if (row.users_count > 0) {
-                            Swal.fire({
-                              title: 'Please Wait !',
-                              html: 'Updating View ...',
-                              allowOutsideClick: false,
-                              onBeforeOpen: () => {
-                                Swal.showLoading();
-                              },
-                            });
-                            if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
-                            Swal.close()
-                            dispatch(clearOrganizationState());
-                            dispatch(getRoles());
-                            dispatch(setActiveTab('Users'));
-                          }
+                  {permission?.Organization?.includes('organization:view-user') && (
+                    <td>
+                      {row.users_count > 0 ? (
+                        <Link
+                          className="view-all"
+                          onClick={async () => {
+                            if (row.users_count > 0) {
+                              Swal.fire({
+                                title: 'Please Wait !',
+                                html: 'Updating View ...',
+                                allowOutsideClick: false,
+                                onBeforeOpen: () => {
+                                  Swal.showLoading();
+                                },
+                              });
+                              if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
+                              Swal.close()
+                              dispatch(clearOrganizationState());
+                              dispatch(getRoles());
+                              dispatch(setActiveTab('Users'));
+                            }
 
 
-                        }}>
-                        {row.users_count}
-                      </Link>
-                    ) : 'N/A'}
-                  </td>
+                          }}>
+                          {row.users_count}
+                        </Link>
+                      ) : 'N/A'}
+                    </td>
+                  )}
                   <td>
                     {row.groups_count > 0 ? (
                       <Link

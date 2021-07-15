@@ -412,12 +412,12 @@
     top: 0px;
     z-index:-1
   }
-  // div.text{
-  //   text-overflow: ellipsis;
-  //   overflow: hidden;
-  //   text-align: center;
-  //   width: 60px;
-  // }
+  div.text{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-align: center;
+    width: 60px;
+  }
   .dropdown-toggle {
     color: $fun-blue-1 !important;
     font-size: 9.42px;
