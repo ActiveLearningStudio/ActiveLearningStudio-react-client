@@ -19,6 +19,7 @@ import {
   getRoles,
   roleDetail,
 } from "store/actions/organization";
+import { alphaNumeric } from "utils";
 
 function Controller(props) {
   const {
@@ -325,9 +326,9 @@ function Controller(props) {
             placeholder="Search"
             value={searchQueryStats}
             onChange={(e) => {
-              if (e.target.value) {
+              if (e.target.value && alphaNumeric(e.target.value)) {
                 setSearchQueryStats(e.target.value)
-              } else {
+              } else if (e.target.value === '') {
                 setSearchQueryStats('');
                 searchUserReportQueryHandler('', subTypeState)
               }

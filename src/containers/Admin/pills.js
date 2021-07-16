@@ -33,6 +33,7 @@ export default function Pills(props) {
   const [currentTab, setCurrentTab] = useState("all");
   const [users, setUsers] = useState(null);
   const [searchAlertToggler, setSearchAlertToggler] = useState(1);
+  const [searchAlertTogglerStats, setSearchAlertTogglerStats] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchQueryProject, setSearchQueryProject] = useState("");
   const [searchQueryStats, setSearchQueryStats] = useState("");
@@ -317,6 +318,11 @@ export default function Pills(props) {
         setUserReportStats(null);
         let result = await dispatch(getUserReport('all', size, undefined, query));
         setUserReportStats(result);
+        if (result?.data?.length > 0) {
+          setSearchAlertTogglerStats(1);
+        } else {
+          setSearchAlertTogglerStats(0);
+        }
       } else {
         setUserReportStats(null);
         let result = await dispatch(getUserReport('all', size, 1));
@@ -327,7 +333,16 @@ export default function Pills(props) {
     if (subTypeRecieved === 'Queues:Jobs') {
       if (query) {
         let result = dispatch(getJobListing(jobType.value, size, undefined ,query));
-        result.then((data) => setJobs(data.data));
+        result.then((data) => {
+          setJobs(data.data)
+          if (data?.data?.length > 0) {
+            console.log(data?.data);
+            setSearchAlertTogglerStats(1);
+          } else {
+            console.log(data?.data);
+            setSearchAlertTogglerStats(0);
+          }
+        });
       } else {
         let result = dispatch(getJobListing(jobType.value, size, activePage));
         result.then((data) => setJobs(data.data));
@@ -336,7 +351,14 @@ export default function Pills(props) {
     if (subTypeRecieved === 'Queues:Logs') {
       if (query) {
         let result = dispatch(getLogsListing(logType.value, size, undefined , query));
-        result.then((data) => setLogs(data.data));
+        result.then((data) => {
+          setLogs(data.data)
+          if (data?.data?.length > 0) {
+            setSearchAlertTogglerStats(1);
+          } else {
+            setSearchAlertTogglerStats(0);
+          }
+        });
       } else {
         let result = dispatch(getLogsListing(logType.value, size, activePage));
         result.then((data) => setLogs(data.data));
@@ -385,6 +407,7 @@ export default function Pills(props) {
         setKey(key);
         setActivePage(1)
         setSearchQueryProject('');
+        setSearchAlertTogglerStats(1);
         dispatch(resetPageNumber());
         setSearchQueryStats('');
         if (key === "All Projects") {
@@ -410,6 +433,7 @@ export default function Pills(props) {
                 btnAction=""
                 searchQueryStats={searchQueryStats}
                 setSearchQueryStats={setSearchQueryStats}
+                searchAlertTogglerStats={searchAlertTogglerStats}
                 subTypeState={subTypeState}
                 importUser={false}
                 filter={true}
@@ -438,6 +462,7 @@ export default function Pills(props) {
                 btnAction=""
                 searchQueryStats={searchQueryStats}
                 setSearchQueryStats={setSearchQueryStats}
+                searchAlertTogglerStats={searchAlertTogglerStats}
                 importUser={false}
                 filter={true}
                 setActivePage={setActivePage}
@@ -461,6 +486,7 @@ export default function Pills(props) {
                 btnAction=""
                 searchQueryStats={searchQueryStats}
                 setSearchQueryStats={setSearchQueryStats}
+                searchAlertTogglerStats={searchAlertTogglerStats}
                 importUser={false}
                 filter={true}
                 activePage={activePage}

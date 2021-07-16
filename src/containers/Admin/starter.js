@@ -40,6 +40,7 @@ function Starter(props) {
     searchActivitiesQueryHandler,
     searchUserReportQueryHandler,
     searchAlertToggler,
+    searchAlertTogglerStats,
     setActivePage,
     subType,
     inviteUser,
@@ -93,6 +94,7 @@ function Starter(props) {
           activePage={activePage}
           setActivePage={setActivePage}
           searchAlertToggler={searchAlertToggler}
+          searchAlertTogglerStats={searchAlertTogglerStats}
           type={type}
           jobType={jobType}
           data={data}
