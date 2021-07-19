@@ -55,6 +55,18 @@ export const getOrganizationFirstTime = (id) => async (dispatch) => {
   });
 };
 
+export const getAllOrganizationforSSO = () => async (dispatch) => {
+  const result = await organization.getAll();
+  dispatch({
+  type: actionTypes.ADD_ACTIVE_ORG,
+  payload: result?.data[0],
+  });
+  dispatch({
+  type: actionTypes.ADD_CURRENT_ORG,
+  payload: result?.data[0],
+  });
+};
+
 export const clearOrganizationState = () => (dispatch) => {
   dispatch({
     type: actionTypes.CLEAR_STATES_IN_ORGANIZATION,

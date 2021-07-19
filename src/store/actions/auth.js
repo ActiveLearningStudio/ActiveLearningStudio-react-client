@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2';
 
 import authService from 'services/auth.service';
-import { getAllPermission } from 'store/actions/organization';
+import { getAllPermission, getAllOrganizationforSSO } from 'store/actions/organization';
 import storageService from 'services/storage.service';
 import { USER_TOKEN_KEY, CURRENT_ORG } from 'constants/index';
 import * as actionTypes from '../actionTypes';
@@ -321,4 +321,24 @@ export const handleSsoLoginAction = (params) => async (dispatch) => {
       user: { ...params.user },
     },
   });
+};
+
+export const SSOLoginAction = (data) => async (dispatch) => {
+  try {
+    const response = await authService.loginSSO(data);
+    storageService.setItem(USER_TOKEN_KEY, response.access_token);
+    storageService.setItem(CURRENT_ORG, 'currikistudio');
+    dispatch(getAllOrganizationforSSO(1));
+    await dispatch(getAllPermission(1));
+    dispatch({
+      type: actionTypes.LOGIN_SUCCESS,
+      payload: { user: response.user },
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.LOGIN_FAIL,
+    });
+
+    throw e;
+  }
 };
