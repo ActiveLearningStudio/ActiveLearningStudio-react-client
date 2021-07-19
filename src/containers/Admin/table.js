@@ -659,6 +659,7 @@ function Table(props) {
             {type === "Project" &&
               subType === "all" &&
               (localStateData ? (
+                localStateData?.length > 1 ?
                 localStateData.map((row) => {
                   const createNew = new Date(row.created_at);
                   const updateNew = new Date(row.updated_at);
@@ -721,7 +722,13 @@ function Table(props) {
                       </td>
                     </tr>
                   );
-                })
+                }):(
+                  <tr>
+                  <td colspan="11">
+                    <Alert variant="warning">No result found.</Alert>
+                  </td>
+                </tr>
+                )
               ) : (
                 <tr>
                   <td colspan="11">
@@ -733,6 +740,7 @@ function Table(props) {
             {type === "Project" &&
               subType === "user" &&
               (localStateData ? (
+                localStateData?.length > 1 ?
                 localStateData?.map((row) => {
                   const createNew = new Date(row.created_at);
                   const updateNew = new Date(row.updated_at);
@@ -770,10 +778,16 @@ function Table(props) {
                       <td>{updateNew.toDateString()}</td>
                     </tr>
                   );
-                })
+                }):(
+                  <tr>
+                  <td colspan="11">
+                    <Alert variant="warning">No result found.</Alert>
+                  </td>
+                </tr>
+                )
               ) : (
                 <tr>
-                  <td colspan="11">
+                  <td colspan="13">
                     <Alert variant="primary">Loading data...</Alert>
                   </td>
                 </tr>
@@ -782,6 +796,7 @@ function Table(props) {
             {type === "Project" &&
               subType === "index" &&
               (localStateData ? (
+                localStateData?.length > 1 ?
                 localStateData.map((row) => {
                   const createNew = new Date(row.created_at);
                   const updateNew = new Date(row.updated_at);
@@ -877,10 +892,16 @@ function Table(props) {
                       </td>
                     </tr>
                   );
-                })
+                }):(
+                  <tr>
+                  <td colspan="11">
+                    <Alert variant="warning">No result found.</Alert>
+                  </td>
+                </tr>
+                )
               ) : (
                 <tr>
-                  <td colspan="11">
+                  <td colspan="13">
                     <Alert variant="primary">Loading data...</Alert>
                   </td>
                 </tr>
