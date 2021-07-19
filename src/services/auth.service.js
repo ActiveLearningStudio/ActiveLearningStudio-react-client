@@ -14,6 +14,11 @@ const login = (body) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const loginSSO = (body) => httpService
+  .post('/login/sso', body)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const loginWithGoogle = (body) => httpService
   .post('/login/google', body)
   .then(({ data }) => data)
@@ -80,4 +85,5 @@ export default {
   subscribe,
   searchUsers,
   loadOrganizationTypes,
+  loginSSO,
 };
