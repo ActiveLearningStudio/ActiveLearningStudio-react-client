@@ -107,13 +107,16 @@ function ProjectPreview(props) {
       let activities;
       if (playlist.activities && playlist.activities.length > 0) {
         activities = playlist.activities.map((activity) => (
-          <ActivityCard
-            activity={activity}
-            projectId={parseInt(match.params.projectId, 10)}
-            playlistId={playlist.id}
-            key={activity.id}
-            playlist={playlist}
-          />
+          permission?.Activity?.includes('activity:view')
+          ? (
+            <ActivityCard
+              activity={activity}
+              projectId={parseInt(match.params.projectId, 10)}
+              playlistId={playlist.id}
+              key={activity.id}
+              playlist={playlist}
+            />
+          ) : null
         ));
       } else {
         activities = (
@@ -126,71 +129,74 @@ function ProjectPreview(props) {
       }
 
       return (
-        <div className="check-each" key={playlist.id}>
-          {(permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload')) && (
-            <div className="add-btn-activity">
-              <button
-                type="button"
-                className="add-resource-to-playlist-btn"
-                onClick={() => {
-                  // dispatch(clearSearch());
-                  history.push(`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/create`);
-                }}
-              >
-                <FontAwesomeIcon icon="plus-circle" className="mr-2" />
-                Add new activity
-              </button>
-            </div>
-          )}
-          <button
-            type="button"
-            ref={(el) => {
-              accordion.current[counter] = el;
-            }}
-            className={counter === 0 ? 'active accordion' : ' accordion'}
-            onClick={() => {
-              if (!editTitle) {
-                accordion.current[counter].classList.toggle('active');
-                const tempCollapsed = [...collapsed];
-                tempCollapsed[counter] = !tempCollapsed[counter];
-                setCollapsed(tempCollapsed);
-              }
-            }}
-          >
-            <FontAwesomeIcon icon={collapsed[counter] ? 'minus' : 'plus'} className="mr-2" />
-            {(editTitle && playlist === selectedForEdit)
-              && (
-                <input
-                  name="playlist-title"
-                  defaultValue={playlist.title}
-                  onChange={(e) => {
-                    if (playlist.title !== e.target.value) {
-                      changePlaylistTitle(projectState?.projectSelect?.id, playlist.id, e.target.value);
-                    }
+        permission?.Playlist?.includes('playlist:view')
+        ? (
+          <div className="check-each" key={playlist.id}>
+            {(permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload')) && (
+              <div className="add-btn-activity">
+                <button
+                  type="button"
+                  className="add-resource-to-playlist-btn"
+                  onClick={() => {
+                    // dispatch(clearSearch());
+                    history.push(`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/create`);
                   }}
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter' || e.key === 'Escape') {
-                      setEditTitle(false);
-                    }
-                  }}
-                />
-              )}
-            {!editTitle && playlist.title}
-          </button>
+                >
+                  <FontAwesomeIcon icon="plus-circle" className="mr-2" />
+                  Add new activity
+                </button>
+              </div>
+            )}
+            <button
+              type="button"
+              ref={(el) => {
+                accordion.current[counter] = el;
+              }}
+              className={counter === 0 ? 'active accordion' : ' accordion'}
+              onClick={() => {
+                if (!editTitle) {
+                  accordion.current[counter].classList.toggle('active');
+                  const tempCollapsed = [...collapsed];
+                  tempCollapsed[counter] = !tempCollapsed[counter];
+                  setCollapsed(tempCollapsed);
+                }
+              }}
+            >
+              <FontAwesomeIcon icon={collapsed[counter] ? 'minus' : 'plus'} className="mr-2" />
+              {(editTitle && playlist === selectedForEdit)
+                && (
+                  <input
+                    name="playlist-title"
+                    defaultValue={playlist.title}
+                    onChange={(e) => {
+                      if (playlist.title !== e.target.value) {
+                        changePlaylistTitle(projectState?.projectSelect?.id, playlist.id, e.target.value);
+                      }
+                    }}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter' || e.key === 'Escape') {
+                        setEditTitle(false);
+                      }
+                    }}
+                  />
+                )}
+              {!editTitle && playlist.title}
+            </button>
 
-          <div className="panel">
-            <ul>
-              <Slider {...settings}>{activities}</Slider>
-            </ul>
+            <div className="panel">
+              <ul>
+                <Slider {...settings}>{activities}</Slider>
+              </ul>
+            </div>
+            <PlaylistCardDropdown
+              playlist={playlist}
+              projectId={playlist.project_id}
+              selectedProject={playlist.project}
+              setSelectedForEdit={setSelectedForEdit}
+              handleClickPlaylistTitle={handleClickPlaylistTitle}
+            />
           </div>
-          <PlaylistCardDropdown
-            playlist={playlist}
-            projectId={playlist.project_id}
-            selectedProject={playlist.project}
-            setSelectedForEdit={setSelectedForEdit}
-            handleClickPlaylistTitle={handleClickPlaylistTitle}
-          />
-        </div>
+        ) : null
       );
     });
   } else {

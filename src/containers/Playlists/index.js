@@ -424,13 +424,17 @@ function PlaylistsPage(props) {
                           ref={provided.innerRef}
                         >
                           {playlists.map((playlist, index) => (
-                            <PlaylistCard
-                              key={playlist.id}
-                              index={index}
-                              playlist={playlist}
-                              projectId={parseInt(match.params.projectId, 10)}
-                              handleCreateResource={handleShowCreateResourceModal}
-                            />
+                            permission?.Playlist?.includes('playlist:view')
+                            ? (
+                              <PlaylistCard
+                                key={playlist.id}
+                                index={index}
+                                playlist={playlist}
+                                projectId={parseInt(match.params.projectId, 10)}
+                                handleCreateResource={handleShowCreateResourceModal}
+                              />
+                            )
+                            : null
                           ))}
                           {provided.placeholder}
                         </div>

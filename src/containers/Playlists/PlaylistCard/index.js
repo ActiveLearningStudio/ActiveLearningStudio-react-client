@@ -43,7 +43,7 @@ class PlaylistCard extends React.Component {
   };
 
   renderResources = () => {
-    const { playlist } = this.props;
+    const { playlist, organization } = this.props;
 
     if (!playlist.activities || playlist.activities.length === 0) {
       return (
@@ -52,12 +52,15 @@ class PlaylistCard extends React.Component {
     }
 
     return playlist.activities.map((resource, index) => (
+      organization?.permission?.Activity?.includes('activitiy:view')
+      ? (
       <ResourceCard
         {...this.props}
         resource={resource}
         key={resource.id}
         index={index}
       />
+      ) : null
     ));
   };
 
