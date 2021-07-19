@@ -21,7 +21,7 @@ function HeaderNotification() {
     if (auth?.user) {
       dispatch(getAllNotifications());
     }
-  }, [dispatch]);
+  }, [auth?.user, dispatch]);
 
   useEffect(() => {
     if (notificationData.yesterday) {
