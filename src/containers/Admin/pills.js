@@ -85,8 +85,7 @@ export default function Pills(props) {
 
 
   const searchProjectQueryChangeHandler = async ({ target }, index, subType) => {
-    console.log(target.value, subType)
-
+  
     if (subType === 'index') {
       if (!!target.value) {
         setSearchQueryProject(target.value);
@@ -96,7 +95,7 @@ export default function Pills(props) {
           // console.log(data)
           setAllProjectIndexTab(data)
 
-        })
+        }).catch(e=>setAllProjectIndexTab([]))
       } else {
         setSearchQueryProject('');
         const searchapi = adminService.getAllProjectIndex(activeOrganization?.id, activePage, index)
@@ -115,7 +114,7 @@ export default function Pills(props) {
         allproject.then((data) => {
           console.log(data)
           setAllProjectTab(data)
-        })
+        }).catch(e=>setAllProjectTab([]))
       } else {
         setSearchQueryProject('');
         const allproject = adminService.getAllProject(activeOrganization?.id, activePage)
@@ -131,7 +130,7 @@ export default function Pills(props) {
         const userproject = adminService.getUserProjectSearch(activeOrganization?.id, undefined, target.value)
         userproject.then((data) => {
           setAllProjectUserTab(data)
-        })
+        }).catch(e=>setAllProjectUserTab([]))
       } else {
         setSearchQueryProject('');
         const userproject = adminService.getUserProject(activeOrganization?.id, activePage)

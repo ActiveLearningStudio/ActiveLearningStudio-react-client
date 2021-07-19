@@ -50,7 +50,7 @@ const getAllProjectSearch = (subOrgId, page, search) => httpService
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
+    return Promise.reject(err.response.data);
   });
 
 const getUserProject = (subOrgId, page) => httpService
@@ -66,7 +66,7 @@ const getUserProjectSearch = (subOrgId, page, search) => httpService
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
+    return Promise.reject(err.response.data);
   });
 
 const getAllProjectIndex = (subOrgId, page, index) => httpService
@@ -74,7 +74,7 @@ const getAllProjectIndex = (subOrgId, page, index) => httpService
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
+    return Promise.reject(err.response.data);
   });
 
 const userSerchIndexs = (subOrgId, page, index, search) => httpService
@@ -82,7 +82,7 @@ const userSerchIndexs = (subOrgId, page, index, search) => httpService
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
+    return Promise.reject(err.response.data);
   });
 
 const updateIndex = (projectId, index) => httpService
