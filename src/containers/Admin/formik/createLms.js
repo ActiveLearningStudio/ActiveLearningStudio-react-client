@@ -6,7 +6,7 @@ import * as actionTypes from 'store/actionTypes';
 
 import { removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
-import organizationapi from '../../../services/organizations.services';
+import authapi from '../../../services/auth.service';
 import adminapi from '../../../services/admin.service';
 import loader from 'assets/images/dotsloader.gif';
 import Switch from 'react-switch';
@@ -299,10 +299,10 @@ export default function CreateUser(prop) {
                     return;
                   }
                   setLoaderlmsImgUser(true);
-                  const lmsApi = organizationapi.getAllUsers(organization.activeOrganization?.id, e.target.value, 'create');
+                  const lmsApi = authapi.searchUsers(e.target.value);
                   lmsApi.then((data) => {
                     setLoaderlmsImgUser(false);
-                    setStateOrgUsers(data?.['member-options']);
+                    setStateOrgUsers(data?.users);
                     
                   })
                 }}
