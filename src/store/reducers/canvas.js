@@ -6,6 +6,7 @@ import {
   BACK_TO_SEARCH,
   DO_SEARCH,
   SHOW_SEARCH_PROJECT,
+  SHOW_SEARCH_PLAYLIST,
   SET_SEARCH_PREVIEW_ACTIVITY,
   CLOSE_SEARCH_PREVIEW_ACTIVITY,
   PREVIOUS_PAGE,
@@ -30,6 +31,7 @@ const INITIAL_STATE = {
   },
   searchProjects: null,
   searchSelectedProject: null,
+  searchSelectedPlaylist: null,
   searchPreviewActivity: null,
   searchHasMoreResults: false,
   // Other
@@ -113,6 +115,18 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
         },
       };
 
+    case SHOW_SEARCH_PROJECT:
+      return {
+        ...state,
+        searchSelectedProject: action.project,
+      };
+
+    case SHOW_SEARCH_PLAYLIST:
+      return {
+        ...state,
+        searchSelectedPlaylist: action.playlist,
+      };
+
     // Other
     case GET_H5P_SETTINGS:
       return {
@@ -159,12 +173,6 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
         return {
           ...state,
           summaryActivityInfo: action.summaryActivityInfo.activity,
-        };
-
-      case SHOW_SEARCH_PROJECT:
-        return {
-          ...state,
-          searchSelectedProject: action.project,
         };
 
     default:

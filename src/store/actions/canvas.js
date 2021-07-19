@@ -7,6 +7,7 @@ import {
   BACK_TO_SEARCH,
   DO_SEARCH,
   SHOW_SEARCH_PROJECT,
+  SHOW_SEARCH_PLAYLIST,
   SET_SEARCH_PREVIEW_ACTIVITY,
   CLOSE_SEARCH_PREVIEW_ACTIVITY,
   PREVIOUS_PAGE,
@@ -87,6 +88,13 @@ export const showSearchProjectAction = (project) => async (dispatch) => {
   dispatch({
     type: SHOW_SEARCH_PROJECT,
     project: fullProject.project,
+  });
+};
+
+export const showSearchPlaylistAction = (playlist) => async (dispatch) => {
+  dispatch({
+    type: SHOW_SEARCH_PLAYLIST,
+    playlist,
   });
 };
 
