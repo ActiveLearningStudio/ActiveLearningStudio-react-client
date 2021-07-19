@@ -29,6 +29,7 @@ function ProjectPreview(props) {
 
   const dispatch = useDispatch();
   const [editTitle, setEditTitle] = useState(false);
+  const editFieldRef = useRef();
   const organization = useSelector((state) => state.organization);
   const projectState = useSelector((state) => state.project);
   const playlistState = useSelector((state) => state.playlist);
@@ -127,7 +128,7 @@ function ProjectPreview(props) {
           </div>
         );
       }
-
+      console.log(editTitle);
       return (
         permission?.Playlist?.includes('playlist:view')
         ? (
@@ -164,23 +165,27 @@ function ProjectPreview(props) {
             >
               <FontAwesomeIcon icon={collapsed[counter] ? 'minus' : 'plus'} className="mr-2" />
               {(editTitle && playlist === selectedForEdit)
-                && (
-                  <input
-                    name="playlist-title"
-                    defaultValue={playlist.title}
-                    onChange={(e) => {
-                      if (playlist.title !== e.target.value) {
-                        changePlaylistTitle(projectState?.projectSelect?.id, playlist.id, e.target.value);
-                      }
-                    }}
-                    onKeyPress={(e) => {
-                      if (e.key === 'Enter' || e.key === 'Escape') {
+                ? (
+                  <>
+                    <input
+                      name="playlist-title"
+                      defaultValue={playlist.title}
+                      ref={editFieldRef}
+                    />
+                    &nbsp;
+                    <FontAwesomeIcon
+                      icon="edit"
+                      className="mr-4"
+                      onClick={() => {
+                        if (playlist.title !== editFieldRef.current.value && editFieldRef.current.value) {
+                          changePlaylistTitle(projectState?.projectSelect?.id, playlist.id, editFieldRef.current.value);
+                        }
                         setEditTitle(false);
-                      }
-                    }}
-                  />
-                )}
-              {!editTitle && playlist.title}
+                      }}
+                    />
+
+                  </>
+                ) : playlist.title }
             </button>
 
             <div className="panel">
