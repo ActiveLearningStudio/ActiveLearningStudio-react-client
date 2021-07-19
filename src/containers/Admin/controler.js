@@ -19,6 +19,7 @@ import {
   getRoles,
   roleDetail,
 } from "store/actions/organization";
+import { alphaNumeric } from "utils";
 
 function Controller(props) {
   const {
@@ -41,6 +42,7 @@ function Controller(props) {
     searchQuery,
     searchQueryProject,
     searchQueryStats,
+    setSearchQueryStats,
     setSearchQuery,
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
@@ -326,9 +328,16 @@ function Controller(props) {
             type="text"
             placeholder="Search"
             value={searchQueryStats}
-            onChange={(e) => searchUserReportQueryHandler(e, subTypeState)}
+            onChange={(e) => {
+              if (e.target.value && alphaNumeric(e.target.value)) {
+                setSearchQueryStats(e.target.value)
+              } else if (e.target.value === '') {
+                setSearchQueryStats('');
+                searchUserReportQueryHandler('', subTypeState)
+              }
+            }}
           />
-          <img src={searchimg} alt="search" />
+          <img src={searchimg} alt="search" onClick={() => searchUserReportQueryHandler(searchQueryStats, subTypeState)}/>
         </div>
       )}
 
@@ -507,7 +516,7 @@ function Controller(props) {
       {inviteUser && permission?.Organization?.includes('organization:invite-members') && (
         <div className="btn-text">
           <div className="add-user-btn">
-            <Dropdown>
+            <Dropdown drop="down">
               <Dropdown.Toggle variant="success" id="dropdown-basic">
                 Invite external user
               </Dropdown.Toggle>
@@ -521,7 +530,7 @@ function Controller(props) {
       {permission?.Organization?.includes('organization:view-user') && type === "Users" && subTypeState === 'All Users' && (
         <div className="btn-text">
           <div className="add-user-btn">
-            <Dropdown>
+            <Dropdown drop="down">
               <Dropdown.Toggle variant="success" id="dropdown-basic">
                 Add internal user
               </Dropdown.Toggle>

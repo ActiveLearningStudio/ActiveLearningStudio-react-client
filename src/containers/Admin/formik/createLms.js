@@ -63,7 +63,7 @@ export default function CreateUser(prop) {
           // if (!values.moodle) {
           //   errors.moodle = 'required';
           // }
-         
+
           // if (!values.canvas) {
           //   errors.canvas = 'required';
           // }
@@ -96,8 +96,8 @@ export default function CreateUser(prop) {
               },
               button: false,
             });
-           
-            
+
+
             const result =  adminapi.updateLmsProject(activeEdit?.id, values);
             result.then(res => {
               Swal.fire({
@@ -135,8 +135,8 @@ export default function CreateUser(prop) {
                 payload: res?.data,
               });
             })
-          
-            
+
+
 
           }
         }}
@@ -152,7 +152,7 @@ export default function CreateUser(prop) {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <h2>{editMode ? clone ? 'Create ' : 'Edit' : 'Create'}LMS Setting</h2>
+            <h2>{editMode ? clone ? 'Create ' : 'Edit ' : 'Create '}LMS Setting</h2>
             <div className="form-group-create">
               <h3>LMS URL</h3>
               <input
@@ -221,7 +221,7 @@ export default function CreateUser(prop) {
                 <option value="moodle">Moodle</option>
                 <option value="canvas">Canvas</option>
                 <option value="safarimontage">Safari Montage</option>
-               
+
               </select>
               <div className="error">
                 {errors.lms_name && touched.lms_name && errors.lms_name}
@@ -302,8 +302,10 @@ export default function CreateUser(prop) {
                   const lmsApi = authapi.searchUsers(e.target.value);
                   lmsApi.then((data) => {
                     setLoaderlmsImgUser(false);
+
                     setStateOrgUsers(data?.users);
                     
+
                   })
                 }}
                 onBlur={handleBlur}
@@ -335,10 +337,10 @@ export default function CreateUser(prop) {
                 {errors.user_id && touched.user_id && errors.user_id}
               </div>
             </div>
-          
+
             <div className="button-group">
               <button type="submit">
-              {editMode ? clone ? 'Create ' : 'Edit' : 'Create'}LMS Setting
+              {editMode ? clone ? 'Create ' : 'Edit ' : 'Create '}LMS Setting
               </button>
               <button
                 type="button"

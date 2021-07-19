@@ -19,6 +19,7 @@ export default function CreateActivityItem(props) {
   const dispatch = useDispatch();
   const activityTypes = useSelector((state) => state.admin.activityTypes);
   const selectedItem = useSelector((state) => state.resource.selectedItem);
+  const { activePage } = useSelector((state) => state.organization);
   useEffect(() => {
     if (editMode) {
       setImgActive(selectedItem?.image);
@@ -95,7 +96,7 @@ export default function CreateActivityItem(props) {
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
-                  dispatch(getActivityItems('', 1));
+                  dispatch(getActivityItems('', activePage));
                 }
               });
             }
@@ -121,7 +122,7 @@ export default function CreateActivityItem(props) {
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
-                  dispatch(getActivityItems('', 1));
+                  dispatch(getActivityItems('', activePage));
                 }
               });
             }

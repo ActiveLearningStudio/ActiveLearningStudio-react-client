@@ -8,7 +8,7 @@ import Starter from "./starter";
 import { columnData } from "./column";
 
 
-import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization } from 'store/actions/organization';
+import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization, updatePageNumber, resetPageNumber } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from "store/actions/resource";
 import { getJobListing, getLogsListing, getUserReport } from "store/actions/admin";
 import { alphaNumeric } from "utils";
@@ -23,7 +23,7 @@ export default function Pills(props) {
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const { activityTypes, activityItems, usersReport } = useSelector ((state) => state.admin)
-
+  const [userReportsStats, setUserReportStats] = useState(null);
   const admin = useSelector((state) => state.admin);
   const [ activePage, setActivePage ] = useState(1);
   const [ size, setSize ] = useState(10);
@@ -33,6 +33,7 @@ export default function Pills(props) {
   const [currentTab, setCurrentTab] = useState("all");
   const [users, setUsers] = useState(null);
   const [searchAlertToggler, setSearchAlertToggler] = useState(1);
+  const [searchAlertTogglerStats, setSearchAlertTogglerStats] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchQueryProject, setSearchQueryProject] = useState("");
   const [searchQueryStats, setSearchQueryStats] = useState("");
@@ -221,18 +222,22 @@ export default function Pills(props) {
     if (type=== 'Activities' && subTypeState === 'Activity Items') {
       //pagination
       dispatch(getActivityItems('', activePage));
+      dispatch(updatePageNumber(activePage));
     } else if (type=== 'Activities' && subTypeState === 'Activity Items' && activePage === 1) {
       //on page 1
       dispatch (getActivityItems());
+      dispatch(updatePageNumber(activePage));
     }
   }, [type, subTypeState, activePage])
   useEffect(() => {
     if (type=== 'Activities' && subTypeState === 'Activity Types' && activePage !== organization?.activePage) {
       //pagination
       dispatch(loadResourceTypesAction('', activePage));
+      dispatch(updatePageNumber(activePage));
     } else if (type=== 'Activities' && subTypeState === 'Activity Types' && activePage === 1) {
       //on page 1
       dispatch (loadResourceTypesAction());
+      dispatch(updatePageNumber(activePage));
     }
   },[activePage, subTypeState, type])
   const searchActivitiesQueryHandler = async ({target}, subTypeRecieved) => {
@@ -253,14 +258,26 @@ export default function Pills(props) {
   // Stats User Report
   useEffect(() => {
     if (type=== 'Stats' && subTypeState === 'Report' && searchQueryStats) {
-      dispatch(getUserReport('all', size, activePage, searchQueryStats));
+      setUserReportStats(null);
+      let result = dispatch(getUserReport('all', size, activePage, searchQueryStats));
+      result.then((data) =>{
+        setUserReportStats(data);
+      });
     }
     else if (type=== 'Stats' && subTypeState === 'Report' && (activePage !== organization?.activePage || size !== organization?.size)) {
       //pagination
-      dispatch(getUserReport('all',size,activePage,''));
+      setUserReportStats(null);
+      let result = dispatch(getUserReport('all',size,activePage,''));
+      result.then((data) =>{
+        setUserReportStats(data);
+      });
     } else if (type=== 'Stats' && subTypeState === 'Report' && (activePage === 1 || size === 10)) {
       //on page 1
-      dispatch (getUserReport('all'));
+      setUserReportStats(null);
+      let result = dispatch (getUserReport('all'));
+      result.then((data) =>{
+        setUserReportStats(data);
+      });
     }
     if (type === 'Stats' && subTypeState === 'Queues:Jobs' && searchQueryStats) {
       let result = dispatch(getJobListing(jobType.value, size, activePage ,searchQueryStats));
@@ -293,35 +310,55 @@ export default function Pills(props) {
         setLogs(data.data);
       });
     }
-  },[activePage, subTypeState, type, size, jobType, logType, usersReport])
-  const searchUserReportQueryHandler = async ({target}, subTypeRecieved) => {
+  },[activePage, subTypeState, type, size, jobType, logType])
+  const searchUserReportQueryHandler = async (query, subTypeRecieved) => {
     if (subTypeRecieved === 'Report') {
-      if (target.value) {
-        setSearchQueryStats(target.value);
-        await dispatch(getUserReport('all', size, undefined, target.value));
+      if (query) {
+        setUserReportStats(null);
+        let result = await dispatch(getUserReport('all', size, undefined, query));
+        setUserReportStats(result);
+        if (result?.data?.length > 0) {
+          setSearchAlertTogglerStats(1);
+        } else {
+          setSearchAlertTogglerStats(0);
+        }
       } else {
-        setSearchQueryStats('');
-        await dispatch(getUserReport('all', size, activePage));
+        setUserReportStats(null);
+        let result = await dispatch(getUserReport('all', size, 1));
+        setUserReportStats(result);
+        setActivePage(1);
       }
     }
     if (subTypeRecieved === 'Queues:Jobs') {
-      if (target.value) {
-        setSearchQueryStats(target.value);
-        let result = dispatch(getJobListing(jobType.value, size, undefined ,target.value));
-        result.then((data) => setJobs(data.data));
+      if (query) {
+        let result = dispatch(getJobListing(jobType.value, size, undefined ,query));
+        result.then((data) => {
+          setJobs(data.data)
+          if (data?.data?.length > 0) {
+            console.log(data?.data);
+            setSearchAlertTogglerStats(1);
+          } else {
+            console.log(data?.data);
+            setSearchAlertTogglerStats(0);
+          }
+        });
       } else {
-        setSearchQueryStats('');
         let result = dispatch(getJobListing(jobType.value, size, activePage));
         result.then((data) => setJobs(data.data));
       }
     }
     if (subTypeRecieved === 'Queues:Logs') {
-      if (target.value) {
-        setSearchQueryStats(target.value);
-        let result = dispatch(getLogsListing(logType.value, size, undefined , target.value));
-        result.then((data) => setLogs(data.data));
+      if (query) {
+        let result = dispatch(getLogsListing(logType.value, size, undefined , query));
+        result.then((data) => {
+          setLogs(data.data)
+          if (data?.data?.length > 0) {
+            setSearchAlertTogglerStats(1);
+          } else {
+            setSearchAlertTogglerStats(0);
+          }
+        });
       } else {
-        setSearchQueryStats('');
         let result = dispatch(getLogsListing(logType.value, size, activePage));
         result.then((data) => setLogs(data.data));
       }
@@ -369,6 +406,8 @@ export default function Pills(props) {
         setKey(key);
         setActivePage(1)
         setSearchQueryProject('');
+        setSearchAlertTogglerStats(1);
+        dispatch(resetPageNumber());
         setSearchQueryStats('');
         if (key === "All Projects") {
           setCurrentTab("all");
@@ -387,11 +426,13 @@ export default function Pills(props) {
                 paginationCounter={true}
                 search={true}
                 print={true}
-                data={usersReport}
+                data={userReportsStats}
                 searchUserReportQueryHandler={searchUserReportQueryHandler}
                 btnText=""
                 btnAction=""
                 searchQueryStats={searchQueryStats}
+                setSearchQueryStats={setSearchQueryStats}
+                searchAlertTogglerStats={searchAlertTogglerStats}
                 subTypeState={subTypeState}
                 importUser={false}
                 filter={true}
@@ -419,6 +460,8 @@ export default function Pills(props) {
                 activePage={activePage}
                 btnAction=""
                 searchQueryStats={searchQueryStats}
+                setSearchQueryStats={setSearchQueryStats}
+                searchAlertTogglerStats={searchAlertTogglerStats}
                 importUser={false}
                 filter={true}
                 setActivePage={setActivePage}
@@ -441,6 +484,8 @@ export default function Pills(props) {
                 setSize={setSize}
                 btnAction=""
                 searchQueryStats={searchQueryStats}
+                setSearchQueryStats={setSearchQueryStats}
+                searchAlertTogglerStats={searchAlertTogglerStats}
                 importUser={false}
                 filter={true}
                 activePage={activePage}
