@@ -28,7 +28,7 @@ import help from 'assets/images/help.png';
 import edit from 'assets/images/edit1.png';
 import changePassword from 'assets/images/changepassword.png';
 import logoutIcon from 'assets/images/logout.png';
-import openeducation from 'assets/images/openeducation.png';
+// import openeducation from 'assets/images/openeducation.png';
 // import dashboard from 'assets/images/dashboard.png';
 import { logoutAction } from 'store/actions/auth';
 import { Event } from 'trackers/ga';
@@ -68,9 +68,9 @@ function Header(props) {
       } else if (window.location.host.includes('nvdoe')) {
         setdefaultLogo(nevada);
       } else if (window.location.host.includes('cc.curriki')) {
-        setdefaultLogo(openeducation);
+        setdefaultLogo(logo);
       } else {
-        setdefaultLogo(openeducation);
+        setdefaultLogo(logo);
       }
     } else {
       setImage(currentOrganization?.image);
