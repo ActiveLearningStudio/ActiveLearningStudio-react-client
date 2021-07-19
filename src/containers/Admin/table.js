@@ -50,6 +50,7 @@ function Table(props) {
   const allState = useSelector((state) => state);
   const dispatch = useDispatch();
   const [localStateData, setLocalStateData] = useState([]);
+  const [localstatePagination, setLocalStatePagination] = useState()
   //update table after crud
   useEffect(() => {
     if (type === "LMS") {
@@ -86,6 +87,7 @@ function Table(props) {
       } else {
         setLocalStateData(data)
       }
+      setLocalStatePagination(data)
     }
   }, [data]);
   const handleDeleteUser = (user) => {
@@ -702,11 +704,19 @@ function Table(props) {
                   const updateNew = new Date(row.updated_at);
                   return (
                     <tr className="org-rows">
-                      <td>
-                        <img
-                          src={global.config.resourceUrl + row.thumb_url}
-                          alt=""
-                        />
+                       <td>
+                        <div style={{
+                          backgroundImage: row.thumb_url.includes('pexels.com')
+                            ? `url(${row.thumb_url})`
+                            : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                            backgroundSize: 'cover',
+                            height: '100px',
+                            backgroundPosition: 'center',
+                            width:'100px'
+
+                        }} >
+                        </div>
+
                       </td>
                       <td>{row.name}</td>
                       <td>{createNew.toDateString()}</td>
@@ -743,11 +753,19 @@ function Table(props) {
                   const updateNew = new Date(row.updated_at);
                   return (
                     <tr className="org-rows">
-                      <td>
-                        <img
-                          src={global.config.resourceUrl + row.thumb_url}
-                          alt=""
-                        />
+                       <td>
+                        <div style={{
+                          backgroundImage: row.thumb_url.includes('pexels.com')
+                            ? `url(${row.thumb_url})`
+                            : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                            backgroundSize: 'cover',
+                            height: '100px',
+                            backgroundPosition: 'center',
+                            width:'100px'
+
+                        }} >
+                        </div>
+
                       </td>
                       <td>{row.name}</td>
                       <td>{createNew.toDateString()}</td>
@@ -808,16 +826,14 @@ function Table(props) {
                               const result = adminService.updateIndex(row.id, 2)
                               result.then((data) => {
                                 // console.log(data)
+                                // console.log({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
                                 setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id))
+                  
+                                // setLocalStatePagination({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
                                 Swal.fire({
                                   icon: 'success',
                                   text: data.message,
                                 })
-                              }).catch((err) => {
-                                Swal.fire({
-                                  icon: 'error',
-                                  text: 'Error',
-                                });
                               })
                             }}>
                               Reject
@@ -1069,8 +1085,8 @@ function Table(props) {
                 <Pagination
                   activePage={activePage}
                   pageRangeDisplayed={5}
-                  itemsCountPerPage={data?.meta?.per_page}
-                  totalItemsCount={data?.meta?.total}
+                  itemsCountPerPage={localstatePagination?.meta?.per_page}
+                  totalItemsCount={localstatePagination?.meta?.total}
                   onChange={(e) => {
                     window.scrollTo(0, 0)
                     setCurrentTab("index");
