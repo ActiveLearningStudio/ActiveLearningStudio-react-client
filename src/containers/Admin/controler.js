@@ -187,6 +187,7 @@ function Controller(props) {
                 <Dropdown.Item
                   onClick={() => {
                     updateIndexAction("REQUESTED", 1);
+                    setActivePage(1);
                   }}
                 >
                   REQUESTED
@@ -194,6 +195,7 @@ function Controller(props) {
                 <Dropdown.Item
                   onClick={() => {
                     updateIndexAction("REJECTED", 2);
+                    setActivePage(1);
                   }}
                 >
                   REJECTED
@@ -201,6 +203,7 @@ function Controller(props) {
                 <Dropdown.Item
                   onClick={() => {
                     updateIndexAction("APPROVED", 3);
+                    setActivePage(1);
                   }}
                 >
                   APPROVED
