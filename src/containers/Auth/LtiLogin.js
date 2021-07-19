@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import QueryString from 'query-string';
 import { withRouter } from 'react-router-dom';
-
+import Swal from 'sweetalert2';
 import { SSOLoginAction } from 'store/actions/auth';
 import Logo from './Logo';
 import './style.scss';
@@ -16,9 +16,16 @@ function LtiSSO(props) {
 		(async () => {
 			if (!localStorage.getItem('auth_token')) {
 				const query = QueryString.parse(window.location.search);
-				const result = await dispatch(SSOLoginAction({ sso_info: query.sso_info }));
-				console.log(result);
-				history.push('/org/currikistudio');
+				const result = dispatch(SSOLoginAction({ sso_info: query.sso_info }));
+				result.then(() => {
+					history.push('/org/currikistudio');
+				}).catch((err) => {
+                    Swal.fire({
+						icon:'error',
+						title:"please refresh your page with valid key",
+						html:err.errors[0]
+					})
+				})
 			}
 		})();
 	}, []);
