@@ -14,9 +14,14 @@ const browse = (params) => httpService
 
 const search = (params) => httpService
   .post(
-    `/${apiVersion}/go/lms/activities`,
+    `/${apiVersion}/go/lms/projects`,
     { ...params },
   )
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const getProject = (projectId) => httpService
+  .get(`/${apiVersion}/go/lms/project/${projectId}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -50,6 +55,7 @@ const getLtiSummary = (actor, activity) => httpService.post(
 export default {
   browse,
   search,
+  getProject,
   getH5pSettings,
   tsugiGradePassback,
   getLtiSummary,

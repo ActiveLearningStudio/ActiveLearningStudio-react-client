@@ -54,7 +54,7 @@ const PreviewActivity = (props) => {
   }, [h5pSettings]);
 
   return (
-    <div className="activity-wrapper">
+    <div className="activity-wrapper mt-2">
       <div className="row mb-2">
         <div className="col">
           <h2>
@@ -81,15 +81,19 @@ const PreviewActivity = (props) => {
   );
 };
 
+PreviewActivity.defaultProps = {
+  h5pSettings: null,
+};
+
 PreviewActivity.propTypes = {
   activity: PropTypes.object.isRequired,
-  h5pSettings: PropTypes.object.isRequired,
+  h5pSettings: PropTypes.object,
   getH5pSettings: PropTypes.func.isRequired,
   closePreview: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  activity: state.canvas.previewActivity,
+  activity: state.canvas.searchPreviewActivity,
   h5pSettings: state.canvas.h5pSettings,
 });
 
