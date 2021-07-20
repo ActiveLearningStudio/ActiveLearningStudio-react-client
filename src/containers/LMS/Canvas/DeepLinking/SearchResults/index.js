@@ -17,7 +17,7 @@ import {
 } from 'store/actions/canvas';
 // import PreviewActivity from 'containers/LMS/Canvas/DeepLinking/PreviewActivity';
 import Project from 'containers/LMS/Canvas/DeepLinking/Project';
-import './style.scss';
+// import './style.scss';
 
 const SearchResults = (props) => {
   const {

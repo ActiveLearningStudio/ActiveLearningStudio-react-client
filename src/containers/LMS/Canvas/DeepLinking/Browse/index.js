@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { browseAction } from 'store/actions/canvas';
 import Project from 'containers/LMS/Canvas/DeepLinking/Project';
 import gifloader from 'assets/images/dotsloader.gif';
-import './style.scss';
+// import './style.scss';
 
 const Browse = (props) => {
   const {

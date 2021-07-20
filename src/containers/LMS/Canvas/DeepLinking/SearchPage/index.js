@@ -56,10 +56,14 @@ const SearchPage = (props) => {
   );
 };
 
+SearchPage.defaultProps = {
+  searchPreviewActivity: null,
+};
+
 SearchPage.propTypes = {
   match: PropTypes.object.isRequired,
   currentPage: PropTypes.string.isRequired,
-  searchPreviewActivity: PropTypes.object.isRequired,
+  searchPreviewActivity: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({

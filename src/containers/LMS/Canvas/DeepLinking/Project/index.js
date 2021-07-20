@@ -16,6 +16,7 @@ import {
   showSearchPlaylistAction,
   setPreviewActivityAction,
 } from 'store/actions/canvas';
+import './style.scss';
 
 const Project = (props) => {
   const {
@@ -66,7 +67,7 @@ const Project = (props) => {
   };
 
   return (
-    <div className="row">
+    <div className="row mt-2 mb-2 lti-deeplink-project-container">
       <div className="col">
         <div key={project.id} className="row result">
           <div className="col-2">
@@ -118,7 +119,11 @@ const Project = (props) => {
                                 onClick={() => showPlaylist(playlist)}
                               >
                                 <div className="row">
-                                  <div className="col">{playlist.title}</div>
+                                  <div className="col">
+                                    <h4>
+                                      {playlist.title}
+                                    </h4>
+                                  </div>
                                   <div className="col text-right">
                                     <FontAwesomeIcon
                                       className="pull-right"
@@ -146,7 +151,7 @@ const Project = (props) => {
                                       />
                                     </div>
                                     <div className="col">
-                                      <h3>{activity.title}</h3>
+                                      <h5>{activity.title}</h5>
                                     </div>
                                     <div className="col text-right">
                                       <Dropdown>
@@ -192,7 +197,7 @@ const Project = (props) => {
               </div>
             </div>
           </div>
-          {selectedProject.id !== project.id && (
+          {selectedProject?.id !== project.id && (
             <div className="col-2 text-right actions">
               <button
                 className="btn btn-primary"

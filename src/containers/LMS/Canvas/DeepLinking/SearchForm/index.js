@@ -55,7 +55,7 @@ const SearchForm = (props) => {
       <div className="row">
         <div className="col">
           <div className="form-group">
-            <select className="form-control" name="private" onChange={fieldChanged} value="0">
+            <select className="form-control" name="private" onChange={fieldChanged} defaultValue="0">
               <option value="0">Public Activities</option>
               <option value="1">Private Activities</option>
             </select>
@@ -67,7 +67,7 @@ const SearchForm = (props) => {
           <div className="row">
             <div className="col">
               <div className="form-group">
-                <select className="form-control" name="subject" onChange={fieldChanged} value="">
+                <select className="form-control" name="subject" onChange={fieldChanged} defaultValue="">
                   <option value="" disabled>Subject Area</option>
                   {subjects.map((subject) => <option value={subject.value} key={subject.value}>{subject.subject}</option>)}
                 </select>
@@ -77,7 +77,7 @@ const SearchForm = (props) => {
           <div className="row">
             <div className="col">
               <div className="form-group">
-                <select className="form-control" name="level" onChange={fieldChanged} value="">
+                <select className="form-control" name="level" onChange={fieldChanged} defaultValue="">
                   <option value="" disabled>Education Level</option>
                   {levels.map((level) => <option value={level.value} key={level.value}>{level.name}</option>)}
                 </select>
