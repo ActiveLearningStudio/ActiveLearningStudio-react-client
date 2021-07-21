@@ -52,7 +52,7 @@ class PlaylistCard extends React.Component {
     }
 
     return playlist.activities.map((resource, index) => (
-      organization?.permission?.Activity?.includes('activitiy:view')
+      organization?.permission?.Activity?.includes('activity:view')
       ? (
       <ResourceCard
         {...this.props}
