@@ -174,7 +174,7 @@ function Table(props) {
           </thead>
           <tbody>
             {(type === "Stats" && subTypeState === 'Report') && (
-              data?.data ? data?.data?.map((row) => (
+              data?.data?.length > 0 ? data?.data?.map((row) => (
                 <tr>
                   <td>{row.first_name}</td>
                   <td>{row.last_name}</td>
@@ -198,7 +198,7 @@ function Table(props) {
               )
             )}
             {(type === 'Stats' && subTypeState === 'Queues:Jobs') && (
-              data?.data ? (data?.data.map((job) => (
+              data?.data?.length > 0 ? (data?.data.map((job) => (
                 <tr>
                   <td>{job.id}</td>
                   <td>{job.queue}</td>
@@ -245,8 +245,7 @@ function Table(props) {
               )
             )}
             {(type === 'Stats' && subTypeState === 'Queues:Logs') && (
-
-              data?.data ? data?.data.map((job) => (
+              data?.data?.length > 0 ? data?.data.map((job) => (
                 <tr>
                   <td>{job.name}</td>
                   <td>
@@ -877,7 +876,6 @@ function Table(props) {
                                 // console.log(data)
                                 // console.log({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
                                 setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id))
-                  
                                 // setLocalStatePagination({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
                                 Swal.fire({
                                   icon: 'success',
