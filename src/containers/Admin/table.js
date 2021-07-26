@@ -174,7 +174,7 @@ function Table(props) {
           </thead>
           <tbody>
             {(type === "Stats" && subTypeState === 'Report') && (
-              data?.data ? data?.data?.map((row) => (
+              data?.data?.length > 0 ? data?.data?.map((row) => (
                 <tr>
                   <td>{row.first_name}</td>
                   <td>{row.last_name}</td>
@@ -197,8 +197,8 @@ function Table(props) {
                 </tr>
               )
             )}
-            {(type === 'Stats' && subTypeState === 'Queues:Jobs') && (
-              data?.data ? (data?.data.map((job) => (
+            {(type === 'Stats' && subTypeState === 'Queues: Jobs') && (
+              data?.data?.length > 0 ? (data?.data.map((job) => (
                 <tr>
                   <td>{job.id}</td>
                   <td>{job.queue}</td>
@@ -233,7 +233,7 @@ function Table(props) {
                 : (data?.data?.length === 0 || searchAlertTogglerStats === 0) ? (
                 <tr>
                   <td colspan="6">
-                    <Alert variant="warning">No Queue:Jobs Found</Alert>
+                    <Alert variant="warning">No Queue: Jobs Found</Alert>
                   </td>
                 </tr>
               ) : (
@@ -244,9 +244,8 @@ function Table(props) {
                 </tr>
               )
             )}
-            {(type === 'Stats' && subTypeState === 'Queues:Logs') && (
-
-              data?.data ? data?.data.map((job) => (
+            {(type === 'Stats' && subTypeState === 'Queues: Logs') && (
+              data?.data?.length > 0 ? data?.data.map((job) => (
                 <tr>
                   <td>{job.name}</td>
                   <td>
@@ -269,7 +268,7 @@ function Table(props) {
               : (data?.data?.length === 0 || searchAlertTogglerStats === 0) ? (
                 <tr>
                   <td colspan="6">
-                    <Alert variant="warning">No Queue:Logs Found</Alert>
+                    <Alert variant="warning">No Queue: Logs Found</Alert>
                   </td>
                 </tr>
               ) : (
@@ -877,7 +876,6 @@ function Table(props) {
                                 // console.log(data)
                                 // console.log({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
                                 setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id))
-                  
                                 // setLocalStatePagination({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
                                 Swal.fire({
                                   icon: 'success',
@@ -1044,7 +1042,7 @@ function Table(props) {
           </tbody>
         </table>
       </div>
-      {data?.meta &&
+      {(data?.data?.length > 0 && data?.meta) &&
         <div className="pagination-top">
           <div className="pagination_state">
             Showing {data?.meta?.from} to {data?.meta?.to} of {data?.meta?.total}{" "}
@@ -1064,7 +1062,7 @@ function Table(props) {
                 }}
               />
             )}
-            {type === 'Stats' && subTypeState === 'Queues:Logs' && (
+            {type === 'Stats' && subTypeState === 'Queues: Logs' && (
               <Pagination
                 activePage={activePage}
                 pageRangeDisplayed={5}
@@ -1077,7 +1075,7 @@ function Table(props) {
                 }}
               />
             )}
-            {type === 'Stats' && subTypeState === 'Queues:Jobs' && (
+            {type === 'Stats' && subTypeState === 'Queues: Jobs' && (
               <Pagination
                 activePage={activePage}
                 pageRangeDisplayed={5}

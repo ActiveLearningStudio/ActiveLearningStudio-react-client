@@ -85,57 +85,55 @@ export default function Pills(props) {
 
 
   const searchProjectQueryChangeHandler = async ({ target }, index, subType) => {
-  
+
     if (subType === 'index') {
-      if (!!target.value) {
+      if (!!target.value && alphaNumeric(target.value)) {
         setSearchQueryProject(target.value);
         setAllProjectIndexTab(null);
-        const searchapi = adminService.userSerchIndexs(activeOrganization?.id, undefined, index, target.value)
+        const searchapi = adminService.userSerchIndexs(activeOrganization?.id, activePage, index, target.value)
         searchapi.then((data) => {
-          // console.log(data)
           setAllProjectIndexTab(data)
 
         }).catch(e=>setAllProjectIndexTab([]))
       } else {
         setSearchQueryProject('');
-        const searchapi = adminService.getAllProjectIndex(activeOrganization?.id, activePage, index)
+        setActivePage(1);
+        const searchapi = adminService.getAllProjectIndex(activeOrganization?.id, 1, index)
         searchapi.then((data) => {
-          // console.log(data)
           setAllProjectIndexTab(data)
 
         })
       }
     } else if (subType === 'all') {
-      if (!!target.value) {
+      if (!!target.value && alphaNumeric(target.value)) {
         setSearchQueryProject(target.value);
         setAllProjectTab(null);
-        const allproject = adminService.getAllProjectSearch(activeOrganization?.id, undefined, target.value)
-        // console.log(allproject)
+        const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, target.value)
         allproject.then((data) => {
           console.log(data)
           setAllProjectTab(data)
         }).catch(e=>setAllProjectTab([]))
       } else {
         setSearchQueryProject('');
-        const allproject = adminService.getAllProject(activeOrganization?.id, activePage)
+        setActivePage(1);
+        const allproject = adminService.getAllProject(activeOrganization?.id, 1)
         allproject.then((data) => {
-          // console.log(data)
           setAllProjectTab(data)
         })
       }
     } else if (subType === 'user') {
-      if (!!target.value) {
+      if (!!target.value && alphaNumeric(target.value)) {
         setSearchQueryProject(target.value);
         setAllProjectUserTab(null);
-        const userproject = adminService.getUserProjectSearch(activeOrganization?.id, undefined, target.value)
+        const userproject = adminService.getUserProjectSearch(activeOrganization?.id, activePage, target.value)
         userproject.then((data) => {
           setAllProjectUserTab(data)
         }).catch(e=>setAllProjectUserTab([]))
       } else {
         setSearchQueryProject('');
-        const userproject = adminService.getUserProject(activeOrganization?.id, activePage)
+        setActivePage(1);
+        const userproject = adminService.getUserProject(activeOrganization?.id, 1)
         userproject.then((data) => {
-          // console.log(data)
           setAllProjectUserTab(data)
         })
       }
@@ -189,32 +187,55 @@ export default function Pills(props) {
     setAllProjectUserTab(null);
     setAllProjectIndexTab(null);
     if (activeOrganization && type === "Project" && currentTab == "all") {
-      const result = await adminService.getAllProject(
-        activeOrganization?.id,
-        activePage || 1
-      );
-      setAllProjectTab(result);
+      if (searchQueryProject) {
+        const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, searchQueryProject)
+        allproject.then((data) => {
+          console.log(data)
+          setAllProjectTab(data)
+        }).catch(e=>setAllProjectTab([]))
+      } else {
+        const result = await adminService.getAllProject(
+          activeOrganization?.id,
+          activePage || 1
+        );
+        setAllProjectTab(result);
+      }
     } else if (
       activeOrganization &&
       type === "Project" &&
       currentTab === "user"
     ) {
-      const result = await adminService.getUserProject(
-        activeOrganization?.id,
-        activePage || 1
-      );
-      setAllProjectUserTab(result);
+      if (searchQueryProject) {
+        const userproject = adminService.getUserProjectSearch(activeOrganization?.id, activePage,searchQueryProject)
+        userproject.then((data) => {
+          setAllProjectUserTab(data)
+        }).catch(e=>setAllProjectUserTab([]))
+      } else {
+        const result = await adminService.getUserProject(
+          activeOrganization?.id,
+          activePage || 1
+        );
+        setAllProjectUserTab(result);
+      }
     } else if (
       activeOrganization &&
       type === "Project" &&
       currentTab === "index"
     ) {
-      const result = await adminService.getAllProjectIndex(
-        activeOrganization?.id,
-        activePage || 1,
-        changeIndexValue
-      );
-      setAllProjectIndexTab(result);
+      if (searchQueryProject) {
+        const searchapi = adminService.userSerchIndexs(activeOrganization?.id, activePage, index, searchQueryProject)
+        searchapi.then((data) => {
+          setAllProjectIndexTab(data)
+
+        }).catch(e=>setAllProjectIndexTab([]))
+      } else {
+        const result = await adminService.getAllProjectIndex(
+          activeOrganization?.id,
+          activePage || 1,
+          changeIndexValue
+        );
+        setAllProjectIndexTab(result);
+      }
     }
   }, [activeOrganization?.id, type, activePage, changeIndexValue, currentTab]);
   // Activity Tab Business Logic
@@ -279,32 +300,32 @@ export default function Pills(props) {
         setUserReportStats(data);
       });
     }
-    if (type === 'Stats' && subTypeState === 'Queues:Jobs' && searchQueryStats) {
+    if (type === 'Stats' && subTypeState === 'Queues: Jobs' && searchQueryStats) {
       let result = dispatch(getJobListing(jobType.value, size, activePage ,searchQueryStats));
       result.then((data) => setJobs(data.data));
     }
-    else if (type === 'Stats' && subTypeState === 'Queues:Jobs' && (activePage !== organization?.activePage || size !== organization?.size) && jobType) {
+    else if (type === 'Stats' && subTypeState === 'Queues: Jobs' && (activePage !== organization?.activePage || size !== organization?.size) && jobType) {
       const result = dispatch(getJobListing(jobType.value, size, activePage))
       result.then((data) => {
         setJobs(data.data);
       });
-    } else if (type === 'Stats' && subTypeState === 'Queues:Jobs' && (activePage === 1 || size === 10)) {
+    } else if (type === 'Stats' && subTypeState === 'Queues: Jobs' && (activePage === 1 || size === 10)) {
       const result = dispatch(getJobListing(jobType.value))
       result.then((data) => {
         setJobs(data.data);
       });
     }
-    if (type === 'Stats' && subTypeState === 'Queues:Logs' && searchQueryStats) {
+    if (type === 'Stats' && subTypeState === 'Queues: Logs' && searchQueryStats) {
       let result = dispatch(getLogsListing(logType.value, size, activePage , searchQueryStats));
       result.then((data) => setLogs(data.data));
     }
-    else if (type === 'Stats' && subTypeState === 'Queues:Logs' && (activePage !== organization?.activePage || size !== organization?.size) && logType) {
+    else if (type === 'Stats' && subTypeState === 'Queues: Logs' && (activePage !== organization?.activePage || size !== organization?.size) && logType) {
       const result = dispatch(getLogsListing(logType.value, size, activePage))
       console.log(result);
       result.then((data) => {
         setLogs(data.data);
       });
-    } else if (type === 'Stats' && subTypeState === 'Queues:Logs' && (activePage === 1 || size === 10)) {
+    } else if (type === 'Stats' && subTypeState === 'Queues: Logs' && (activePage === 1 || size === 10)) {
       const result = dispatch(getLogsListing(logType.value))
       result.then((data) => {
         setLogs(data.data);
@@ -329,7 +350,7 @@ export default function Pills(props) {
         setActivePage(1);
       }
     }
-    if (subTypeRecieved === 'Queues:Jobs') {
+    if (subTypeRecieved === 'Queues: Jobs') {
       if (query) {
         let result = dispatch(getJobListing(jobType.value, size, undefined ,query));
         result.then((data) => {
@@ -347,7 +368,7 @@ export default function Pills(props) {
         result.then((data) => setJobs(data.data));
       }
     }
-    if (subTypeRecieved === 'Queues:Logs') {
+    if (subTypeRecieved === 'Queues: Logs') {
       if (query) {
         let result = dispatch(getLogsListing(logType.value, size, undefined , query));
         result.then((data) => {
@@ -445,7 +466,7 @@ export default function Pills(props) {
                 type={type}
               />
             )}
-            {type === "Stats" && subTypeState === "Queues:Jobs" && (
+            {type === "Stats" && subTypeState === "Queues: Jobs" && (
               <Starter
                 paginationCounter={true}
                 search={true}
@@ -470,7 +491,7 @@ export default function Pills(props) {
                 type={type}
               />
             )}
-            {type === "Stats" && subTypeState === "Queues:Logs" && (
+            {type === "Stats" && subTypeState === "Queues: Logs" && (
               <Starter
                 paginationCounter={true}
                 search={true}
