@@ -97,7 +97,7 @@ const ResourceCardDropdown = (props) => {
           </Dropdown.Item>
         )}
         {permission?.Activity?.includes('activity:share') && lmsSettings.length !== 0 && (
-          <>
+          <li className="dropdown-submenu send">
             <a tabIndex="-1" className="dropdown-item">
               <FontAwesomeIcon icon="newspaper" className="mr-2" />
               Publish
@@ -139,7 +139,7 @@ const ResourceCardDropdown = (props) => {
                 );
               })}
             </ul>
-          </>
+          </li>
         )}
         {permission?.Activity?.includes('activity:share') && (
           <Dropdown.Item
