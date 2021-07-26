@@ -11,7 +11,7 @@ import * as xAPIHelper from 'helpers/xapi';
 
 import './style.scss';
 
-let counter = 0;
+let counter = 1;
 let lrs = null;
 
 const ActivityShared = (props) => {
