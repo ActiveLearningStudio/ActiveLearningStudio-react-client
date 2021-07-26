@@ -270,6 +270,10 @@
         background-color: #5952c6;
         color: #fff;
         text-decoration: none;
+
+        button span, button svg {
+          color: #fff !important;
+        }
       }
     }
   }
@@ -3735,20 +3739,28 @@ a:hover {
 .text-added-project-dropdown  {
   button {
     width:100%;
+    padding-left: 0px !important; 
+    height: 28px;
+    //  border-radius: 0px;
+    //  border: 1px solid #ece9e9 !important;
+    //  width:33%;
     span {
       font-size: 12px;
       line-height: 16px;
       color: #084892 !important;
-      padding-left: 10px !important;
+      padding-left: 5px !important;
       font-weight: bold;
     }
-
     &:hover {
-      span {
+      background-color: #084892 !important;;
+      span,svg {
         color: #ffffff !important;
       }
     }
+
+   
   }
+
 }
 
 @media (max-width: 767px) {
