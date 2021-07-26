@@ -247,7 +247,7 @@ function Controller(props) {
           </span>
         </div>
       ) : null}
-      {type === 'Stats' && subTypeState === 'Queues:Jobs' &&
+      {type === 'Stats' && subTypeState === 'Queues: Jobs' &&
         <Dropdown name="jobType" id="jobType">
           <Dropdown.Toggle id="dropdown-basic">
             {jobType.display_name}
@@ -258,7 +258,7 @@ function Controller(props) {
           </Dropdown.Menu>
         </Dropdown>
       }
-      {type === 'Stats' && subTypeState === 'Queues:Logs' &&
+      {type === 'Stats' && subTypeState === 'Queues: Logs' &&
         <Dropdown name="logType" id="logType">
           <Dropdown.Toggle id="dropdown-basic">
             {logType.display_name}
@@ -271,7 +271,7 @@ function Controller(props) {
           </Dropdown.Menu>
         </Dropdown>
       }
-      {type === 'Stats' && subTypeState === 'Queues:Jobs' && jobType.value === 2 && (
+      {type === 'Stats' && subTypeState === 'Queues: Jobs' && jobType.value === 2 && (
         <div className="retryandforget">
           <button
             className="retry"

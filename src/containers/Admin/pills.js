@@ -300,32 +300,32 @@ export default function Pills(props) {
         setUserReportStats(data);
       });
     }
-    if (type === 'Stats' && subTypeState === 'Queues:Jobs' && searchQueryStats) {
+    if (type === 'Stats' && subTypeState === 'Queues: Jobs' && searchQueryStats) {
       let result = dispatch(getJobListing(jobType.value, size, activePage ,searchQueryStats));
       result.then((data) => setJobs(data.data));
     }
-    else if (type === 'Stats' && subTypeState === 'Queues:Jobs' && (activePage !== organization?.activePage || size !== organization?.size) && jobType) {
+    else if (type === 'Stats' && subTypeState === 'Queues: Jobs' && (activePage !== organization?.activePage || size !== organization?.size) && jobType) {
       const result = dispatch(getJobListing(jobType.value, size, activePage))
       result.then((data) => {
         setJobs(data.data);
       });
-    } else if (type === 'Stats' && subTypeState === 'Queues:Jobs' && (activePage === 1 || size === 10)) {
+    } else if (type === 'Stats' && subTypeState === 'Queues: Jobs' && (activePage === 1 || size === 10)) {
       const result = dispatch(getJobListing(jobType.value))
       result.then((data) => {
         setJobs(data.data);
       });
     }
-    if (type === 'Stats' && subTypeState === 'Queues:Logs' && searchQueryStats) {
+    if (type === 'Stats' && subTypeState === 'Queues: Logs' && searchQueryStats) {
       let result = dispatch(getLogsListing(logType.value, size, activePage , searchQueryStats));
       result.then((data) => setLogs(data.data));
     }
-    else if (type === 'Stats' && subTypeState === 'Queues:Logs' && (activePage !== organization?.activePage || size !== organization?.size) && logType) {
+    else if (type === 'Stats' && subTypeState === 'Queues: Logs' && (activePage !== organization?.activePage || size !== organization?.size) && logType) {
       const result = dispatch(getLogsListing(logType.value, size, activePage))
       console.log(result);
       result.then((data) => {
         setLogs(data.data);
       });
-    } else if (type === 'Stats' && subTypeState === 'Queues:Logs' && (activePage === 1 || size === 10)) {
+    } else if (type === 'Stats' && subTypeState === 'Queues: Logs' && (activePage === 1 || size === 10)) {
       const result = dispatch(getLogsListing(logType.value))
       result.then((data) => {
         setLogs(data.data);
@@ -350,7 +350,7 @@ export default function Pills(props) {
         setActivePage(1);
       }
     }
-    if (subTypeRecieved === 'Queues:Jobs') {
+    if (subTypeRecieved === 'Queues: Jobs') {
       if (query) {
         let result = dispatch(getJobListing(jobType.value, size, undefined ,query));
         result.then((data) => {
@@ -368,7 +368,7 @@ export default function Pills(props) {
         result.then((data) => setJobs(data.data));
       }
     }
-    if (subTypeRecieved === 'Queues:Logs') {
+    if (subTypeRecieved === 'Queues: Logs') {
       if (query) {
         let result = dispatch(getLogsListing(logType.value, size, undefined , query));
         result.then((data) => {
@@ -465,7 +465,7 @@ export default function Pills(props) {
                 type={type}
               />
             )}
-            {type === "Stats" && subTypeState === "Queues:Jobs" && (
+            {type === "Stats" && subTypeState === "Queues: Jobs" && (
               <Starter
                 paginationCounter={true}
                 search={true}
@@ -490,7 +490,7 @@ export default function Pills(props) {
                 type={type}
               />
             )}
-            {type === "Stats" && subTypeState === "Queues:Logs" && (
+            {type === "Stats" && subTypeState === "Queues: Logs" && (
               <Starter
                 paginationCounter={true}
                 search={true}

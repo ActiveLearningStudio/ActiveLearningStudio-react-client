@@ -48,7 +48,7 @@ function AdminPanel() {
                   <div className="module-content">
                     <h2>Stats</h2>
                     <Pills
-                      modules={["Report", "Queues:Jobs", "Queues:Logs"]}
+                      modules={["Report", "Queues: Jobs", "Queues: Logs"]}
                       type="Stats"
                       subType="Report"
                     />
