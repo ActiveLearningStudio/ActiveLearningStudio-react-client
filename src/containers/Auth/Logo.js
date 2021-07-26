@@ -9,7 +9,7 @@ import safari from 'assets/images/safari.png';
 import shepherds from 'assets/images/shepherds.svg';
 import sndt from 'assets/images/sndt.png';
 import nevada from 'assets/images/nevada.png';
-// import openeducation from 'assets/images/openeducation.png';
+import openeducation from 'assets/images/openeducation.png';
 
 export default function Logo() {
   const logoState = useSelector((state) => state.organization.currentOrganization);
@@ -31,7 +31,7 @@ export default function Logo() {
       } else if (window.location.host.includes('nvdoe')) {
         setdefaultLogo(nevada);
       } else if (window.location.host.includes('cc.curriki')) {
-        setdefaultLogo(logo);
+        setdefaultLogo(openeducation);
       } else {
         setdefaultLogo(logo);
       }
