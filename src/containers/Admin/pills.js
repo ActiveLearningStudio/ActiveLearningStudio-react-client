@@ -85,12 +85,12 @@ export default function Pills(props) {
 
 
   const searchProjectQueryChangeHandler = async ({ target }, index, subType) => {
-  
+
     if (subType === 'index') {
       if (!!target.value) {
         setSearchQueryProject(target.value);
         setAllProjectIndexTab(null);
-        const searchapi = adminService.userSerchIndexs(activeOrganization?.id, undefined, index, target.value)
+        const searchapi = adminService.userSerchIndexs(activeOrganization?.id, activePage, index, target.value)
         searchapi.then((data) => {
           // console.log(data)
           setAllProjectIndexTab(data)
@@ -109,7 +109,7 @@ export default function Pills(props) {
       if (!!target.value) {
         setSearchQueryProject(target.value);
         setAllProjectTab(null);
-        const allproject = adminService.getAllProjectSearch(activeOrganization?.id, undefined, target.value)
+        const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, target.value)
         // console.log(allproject)
         allproject.then((data) => {
           console.log(data)
@@ -127,7 +127,7 @@ export default function Pills(props) {
       if (!!target.value) {
         setSearchQueryProject(target.value);
         setAllProjectUserTab(null);
-        const userproject = adminService.getUserProjectSearch(activeOrganization?.id, undefined, target.value)
+        const userproject = adminService.getUserProjectSearch(activeOrganization?.id, activePage, target.value)
         userproject.then((data) => {
           setAllProjectUserTab(data)
         }).catch(e=>setAllProjectUserTab([]))
@@ -189,32 +189,55 @@ export default function Pills(props) {
     setAllProjectUserTab(null);
     setAllProjectIndexTab(null);
     if (activeOrganization && type === "Project" && currentTab == "all") {
-      const result = await adminService.getAllProject(
-        activeOrganization?.id,
-        activePage || 1
-      );
-      setAllProjectTab(result);
+      if (searchQueryProject) {
+        const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, searchQueryProject)
+        allproject.then((data) => {
+          console.log(data)
+          setAllProjectTab(data)
+        }).catch(e=>setAllProjectTab([]))
+      } else {
+        const result = await adminService.getAllProject(
+          activeOrganization?.id,
+          activePage || 1
+        );
+        setAllProjectTab(result);
+      }
     } else if (
       activeOrganization &&
       type === "Project" &&
       currentTab === "user"
     ) {
-      const result = await adminService.getUserProject(
-        activeOrganization?.id,
-        activePage || 1
-      );
-      setAllProjectUserTab(result);
+      if (searchQueryProject) {
+        const userproject = adminService.getUserProjectSearch(activeOrganization?.id, activePage,searchQueryProject)
+        userproject.then((data) => {
+          setAllProjectUserTab(data)
+        }).catch(e=>setAllProjectUserTab([]))
+      } else {
+        const result = await adminService.getUserProject(
+          activeOrganization?.id,
+          activePage || 1
+        );
+        setAllProjectUserTab(result);
+      }
     } else if (
       activeOrganization &&
       type === "Project" &&
       currentTab === "index"
     ) {
-      const result = await adminService.getAllProjectIndex(
-        activeOrganization?.id,
-        activePage || 1,
-        changeIndexValue
-      );
-      setAllProjectIndexTab(result);
+      if (searchQueryProject) {
+        const searchapi = adminService.userSerchIndexs(activeOrganization?.id, activePage, index, searchQueryProject)
+        searchapi.then((data) => {
+          setAllProjectIndexTab(data)
+
+        }).catch(e=>setAllProjectIndexTab([]))
+      } else {
+        const result = await adminService.getAllProjectIndex(
+          activeOrganization?.id,
+          activePage || 1,
+          changeIndexValue
+        );
+        setAllProjectIndexTab(result);
+      }
     }
   }, [activeOrganization?.id, type, activePage, changeIndexValue, currentTab]);
   // Activity Tab Business Logic
