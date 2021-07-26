@@ -436,6 +436,7 @@ export default function Pills(props) {
           setCurrentTab("user");
         } else if (key === "Indexing Queue") {
           setCurrentTab("index");
+          setChangeIndexValue(1);
         }
       }}
     >
