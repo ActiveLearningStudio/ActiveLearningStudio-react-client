@@ -39,6 +39,8 @@ function Controller(props) {
     setActiveRole,
     setActivePage,
     type,
+    searchQueryActivities,
+    setSearchQueryActivities,
     searchQuery,
     searchQueryProject,
     searchQueryStats,
@@ -361,8 +363,21 @@ function Controller(props) {
       )} */}
       {!!search && type === 'Activities' && subType === 'Activity Items' && (
         <div className="search-bar">
-          <input type="text" placeholder="Search" onChange={(e) => searchActivitiesQueryHandler(e, subType)} />
-          <img src={searchimg} alt="search" />
+          <input
+            type="text"
+            placeholder="Search"
+            onChange={
+              (e) => {
+                if (e.target.value && alphaNumeric(e.target.value)) {
+                  setSearchQueryActivities(e.target.value)
+                } else if (e.target.value === '') {
+                  setSearchQueryActivities('');
+                  searchActivitiesQueryHandler('', subType)
+                }
+              }
+            }
+          />
+          <img src={searchimg} alt="search" onClick={() => searchActivitiesQueryHandler(searchQueryActivities, subType)}/>
         </div>
       )}
       {!!importUser && type === 'Project' && subType === 'all' && (

@@ -57,7 +57,7 @@ function AdminPanel() {
                 <Tab eventKey="Organization" title="Organization">
                   <div className="module-content">
                     <h2>Organizations</h2>
-                    <Pills modules={["All Organizations"]} type="Organization" />
+                    <Pills modules={["All Organizations"]} type="Organization" subType="All Organizations"/>
                   </div>
                 </Tab>
                 <Tab eventKey="Project" title="Project">
