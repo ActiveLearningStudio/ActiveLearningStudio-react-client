@@ -44,7 +44,7 @@ function AdminPanel() {
                 id="uncontrolled-tab-example"
                 onSelect={(key) => dispatch(setActiveTab(key))}
               >
-                <Tab eventKey="Stats" title="Stats">
+                {/* <Tab eventKey="Stats" title="Stats">
                   <div className="module-content">
                     <h2>Stats</h2>
                     <Pills
@@ -53,7 +53,7 @@ function AdminPanel() {
                       subType="Report"
                     />
                   </div>
-                </Tab>
+                </Tab> */}
                 <Tab eventKey="Organization" title="Organization">
                   <div className="module-content">
                     <h2>Organizations</h2>
