@@ -18,6 +18,8 @@ import QueryString from 'query-string';
 import { simpleSearchAction, cloneProject } from 'store/actions/search';
 import { loadResourceTypesAction } from 'store/actions/resource';
 import { addProjectFav } from 'store/actions/project';
+import { getProjectId, googleShare } from 'store/actions/gapi';
+import GoogleModel from 'components/models/GoogleLoginModal';
 import { educationLevels, subjects } from 'components/ResourceCard/AddResource/dropdownData';
 // import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -69,7 +71,8 @@ function SearchInterface(props) {
   const activityTypesState = useSelector((state) => state.resource.types);
   const { currentOrganization, permission } = useSelector((state) => state.organization);
   const dispatch = useDispatch();
-
+  const [show, setShow] = useState(false);
+  const [selectedProjectId, setSelectedProjectId] = useState(0);
   const [activityTypes, setActivityTypes] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const [search, setSearch] = useState([]);
@@ -878,6 +881,21 @@ function SearchInterface(props) {
                                             <FontAwesomeIcon className="mr-2" icon="clone" />
                                             Duplicate
                                           </div>
+                                          <div>
+                                            <li
+                                              onClick={() => {
+                                                setShow(true);
+                                                getProjectId(res.id);
+                                                setSelectedProjectId(res.id);
+                                                dispatch(googleShare(false));
+                                              }}
+                                            >
+                                              <a>
+                                                <FontAwesomeIcon className="mr-2" icon="newspaper" />
+                                                Publish Google Classroom
+                                              </a>
+                                            </li>
+                                          </div>
                                         </Dropdown.Menu>
                                       </Dropdown>
                                     )}
@@ -1049,6 +1067,21 @@ function SearchInterface(props) {
                                               >
                                                 <FontAwesomeIcon className="mr-2" icon="clone" />
                                                 Clone
+                                              </div>
+                                              <div>
+                                                <li
+                                                  onClick={() => {
+                                                    setShow(true);
+                                                    getProjectId(res.id);
+                                                    setSelectedProjectId(res.id);
+                                                    dispatch(googleShare(false));
+                                                  }}
+                                                >
+                                                  <a>
+                                                    <FontAwesomeIcon className="mr-2" icon="newspaper" />
+                                                    Publish Google Classroom
+                                                  </a>
+                                                </li>
                                               </div>
                                             </Dropdown.Menu>
                                           </Dropdown>
@@ -1357,6 +1390,11 @@ function SearchInterface(props) {
                 )}
           </div>
         </div>
+        <GoogleModel
+          projectId={selectedProjectId}
+          show={show} // {props.show}
+          onHide={() => { setShow(false); }}
+        />
       </div>
 
       <Footer />
