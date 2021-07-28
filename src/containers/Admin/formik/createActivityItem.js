@@ -253,6 +253,7 @@ export default function CreateActivityItem(props) {
               <input
                 type="number"
                 name="order"
+                min="0"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.order}
