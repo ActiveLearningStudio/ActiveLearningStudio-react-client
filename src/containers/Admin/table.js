@@ -658,7 +658,7 @@ function Table(props) {
             {type === "Project" &&
               subType === "all" &&
               (localStateData ? (
-                localStateData?.length > 1 ?
+                localStateData?.length > 0 ?
                 localStateData.map((row) => {
                   const createNew = new Date(row.created_at);
                   const updateNew = new Date(row.updated_at);
@@ -739,7 +739,7 @@ function Table(props) {
             {type === "Project" &&
               subType === "user" &&
               (localStateData ? (
-                localStateData?.length > 1 ?
+                localStateData?.length > 0 ?
                 localStateData?.map((row) => {
                   const createNew = new Date(row.created_at);
                   const updateNew = new Date(row.updated_at);
