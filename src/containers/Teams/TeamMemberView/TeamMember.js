@@ -35,7 +35,6 @@ function TeamMember(props) {
         });
       });
   }, [removeMember, teamId, id, iEmail]);
-
   return (
     <>
       <div className="col-md-12 member-item">
