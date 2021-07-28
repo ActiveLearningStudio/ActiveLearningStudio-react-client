@@ -2025,7 +2025,7 @@ a:hover {
     padding: 10px 20px 40px 20px;
     display: none;
     background-color: white;
-    overflow: hidden;
+    overflow-x: hidden;
 
     .slick-list {
       overflow: visible;
@@ -2140,11 +2140,8 @@ a:hover {
   }
 
   li {
-    height: 100%;
-    min-height: 180px;
     border: 1px solid #ececec;
     border-radius: 3px;
-    box-shadow: 0 2px 2px #0000000d;
     list-style-type: none;
   }
 
@@ -3739,7 +3736,7 @@ a:hover {
 .text-added-project-dropdown  {
   button {
     width:100%;
-    padding-left: 0px !important; 
+    padding-left: 0px !important;
     height: 28px;
     //  border-radius: 0px;
     //  border: 1px solid #ece9e9 !important;
@@ -3758,7 +3755,7 @@ a:hover {
       }
     }
 
-   
+
   }
 
 }
