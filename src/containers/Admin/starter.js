@@ -29,6 +29,8 @@ function Starter(props) {
     setSize,
     activeRole,
     setActiveRole,
+    searchQueryActivities,
+    setSearchQueryActivities,
     searchQuery,
     searchQueryProject,
     searchQueryStats,
@@ -66,6 +68,8 @@ function Starter(props) {
         SetJobType={SetJobType}
         logType={logType}
         SetLogType={SetLogType}
+        searchQueryActivities={searchQueryActivities}
+        setSearchQueryActivities={setSearchQueryActivities}
         searchQuery={searchQuery}
         searchQueryProject={searchQueryProject}
         searchQueryStats={searchQueryStats}

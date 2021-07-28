@@ -192,7 +192,7 @@ export default function CreateUser(prop) {
               <input
                 type="password"
                 name="password"
-                placeholder={editMode ? 'Leave blank for unchanged' : 'password'}
+                placeholder={editMode ? 'Leave blank for unchanged' : 'Password'}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.password}

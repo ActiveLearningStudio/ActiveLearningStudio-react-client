@@ -276,14 +276,12 @@ export default function CreateOrg(prop) {
                 onBlur={handleBlur}
                 // value={values.admin}
               />
-              {loaderImg && (
-                <img
-                  src={loader}
-                  style={{ width: "25px" }}
-                  alt=""
-                  className="loader"
-                />
-              )}
+              <img
+                src={loader}
+                style={{ width: "25px",marginTop: '5px',visibility: loaderImg ? 'visible' : 'hidden' }}
+                alt=""
+                className="loader"
+              />
               <div className="error">
                 {errors.domain && touched.domain && errors.domain}
               </div>

@@ -37,6 +37,7 @@ export default function Pills(props) {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchQueryProject, setSearchQueryProject] = useState("");
   const [searchQueryStats, setSearchQueryStats] = useState("");
+  const [searchQueryActivities, setSearchQueryActivities ] = useState("");
   const [allProjectTab, setAllProjectTab] = useState(null);
   const [allProjectUserTab, setAllProjectUserTab] = useState(null);
   const [allProjectIndexTab, setAllProjectIndexTab] = useState(null);
@@ -261,16 +262,16 @@ export default function Pills(props) {
       dispatch(updatePageNumber(activePage));
     }
   },[activePage, subTypeState, type])
-  const searchActivitiesQueryHandler = async ({target}, subTypeRecieved) => {
+  const searchActivitiesQueryHandler = async (query, subTypeRecieved) => {
     if (subTypeRecieved === 'Activity Types') {
-      if (target.value) {
-        await dispatch(loadResourceTypesAction(target.value, ''));
+      if (query) {
+        await dispatch(loadResourceTypesAction(query, ''));
       } else {
         await dispatch(loadResourceTypesAction());
       }
     } else if (subTypeRecieved === 'Activity Items') {
-      if (target.value) {
-        await dispatch(getActivityItems(target.value, ''));
+      if (query) {
+        await dispatch(getActivityItems(query, ''));
       } else {
         await dispatch(getActivityItems());
       }
@@ -412,8 +413,12 @@ export default function Pills(props) {
       setSubTypeState('Activity Types');
     } else if (activeTab === 'Users') {
       setSubTypeState('All Users');
-    } else if (activeTab === 'Stats') {
-      setSubTypeState('Report');
+    }
+    // else if (activeTab === 'Stats') {
+    //   setSubTypeState('Report');
+    // }
+    else if (activeTab === 'Organization') {
+      setSubTypeState('All Organizations');
     }
   },[activeTab]);
   // console.log(columnData)
@@ -651,6 +656,8 @@ export default function Pills(props) {
                 search={true}
                 tableHead={columnData.ActivityTypes}
                 subType={'Activity Types'}
+                searchQueryActivities={searchQueryActivities}
+                setSearchQueryActivities={setSearchQueryActivities}
                 searchActivitiesQueryHandler={searchActivitiesQueryHandler}
                 btnText="Add Activity Type"
                 btnAction="add_activity_type"
@@ -665,6 +672,8 @@ export default function Pills(props) {
                 search={true}
                 tableHead={columnData.ActivityItems}
                 subType={'Activity Items'}
+                searchQueryActivities={searchQueryActivities}
+                setSearchQueryActivities={setSearchQueryActivities}
                 searchActivitiesQueryHandler={searchActivitiesQueryHandler}
                 btnText="Add Activity Item"
                 btnAction="add_activity_item"
