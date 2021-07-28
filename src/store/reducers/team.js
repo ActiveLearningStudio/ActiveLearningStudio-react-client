@@ -9,6 +9,7 @@ const INITIAL_STATE = {
   showAssigning: false,
   teams: [],
   selectedTeam: {},
+  roles: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -166,6 +167,12 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         teams: action.payload.teams,
+      };
+
+    case actionTypes.ADD_TEAM_ROLES:
+      return {
+        ...state,
+        roles: action.payload,
       };
 
     case actionTypes.INVITE_MEMBERS_REQUEST:
