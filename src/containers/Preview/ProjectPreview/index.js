@@ -237,13 +237,15 @@ function ProjectPreview(props) {
                       <div>{currentProject.name}</div>
 
                       <div className="configuration">
-                        <DropdownProject
-                          project={currentProject}
-                          handleShow={handleShow}
-                          setProjectId={setProjectId}
-                          showDeletePopup={showDeletePopup}
-                          previewMode
-                        />
+                        {!(permission?.Project?.includes('project:view') && permission?.Project.length === 1) && (
+                          <DropdownProject
+                            project={currentProject}
+                            handleShow={handleShow}
+                            setProjectId={setProjectId}
+                            showDeletePopup={showDeletePopup}
+                            previewMode
+                          />
+                        )}
                         <Link to={`/org/${organization.currentOrganization?.domain}`} onClick={history.goBack} className="go-back-button-preview">
                           <FontAwesomeIcon icon="undo" className="mr-2" />
                           Exit Preview Mode
