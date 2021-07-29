@@ -88,7 +88,7 @@ export default function Pills(props) {
   const searchProjectQueryChangeHandler = async ({ target }, index, subType) => {
 
     if (subType === 'index') {
-      if (!!target.value && alphaNumeric(target.value)) {
+      if (!!target.value) {
         setSearchQueryProject(target.value);
         setAllProjectIndexTab(null);
         const searchapi = adminService.userSerchIndexs(activeOrganization?.id, activePage, index, target.value)
@@ -106,7 +106,7 @@ export default function Pills(props) {
         })
       }
     } else if (subType === 'all') {
-      if (!!target.value && alphaNumeric(target.value)) {
+      if (!!target.value) {
         setSearchQueryProject(target.value);
         setAllProjectTab(null);
         const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, target.value)
@@ -123,7 +123,7 @@ export default function Pills(props) {
         })
       }
     } else if (subType === 'user') {
-      if (!!target.value && alphaNumeric(target.value)) {
+      if (!!target.value) {
         setSearchQueryProject(target.value);
         setAllProjectUserTab(null);
         const userproject = adminService.getUserProjectSearch(activeOrganization?.id, activePage, target.value)
