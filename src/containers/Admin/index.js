@@ -88,7 +88,7 @@ function AdminPanel() {
                     <div className="module-content">
                       <h2>Users</h2>
                       <Pills
-                        modules={["All Users", "Manage Roles"]}
+                        modules={["All Users", permission?.Organization?.includes('organization:add-role') || permission?.Organization?.includes('organization:edit-role') ? "Manage Roles" : null]}
                         type="Users"
                         subType="All Users"
                       />

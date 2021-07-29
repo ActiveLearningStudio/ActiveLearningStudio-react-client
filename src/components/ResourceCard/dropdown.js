@@ -20,6 +20,7 @@ const ResourceCardDropdown = (props) => {
     match,
   } = props;
   const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
   const handleDelete = (e) => {
     e.preventDefault();
     Swal.fire({
@@ -42,39 +43,46 @@ const ResourceCardDropdown = (props) => {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item
-          as={Link}
-          to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview`}
-        >
-          <FontAwesomeIcon icon="eye" className="mr-2" />
-          Preview
-        </Dropdown.Item>
+        {permission?.Activity?.includes('activity:view') && (
+          <Dropdown.Item
+            as={Link}
+            to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview`}
+          >
+            <FontAwesomeIcon icon="eye" className="mr-2" />
+            Preview
+          </Dropdown.Item>
+        )}
+        {permission?.Activity?.includes('activity:edit') && (
+          <Dropdown.Item
+            as={Link}
+            to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
+          >
+            <FontAwesomeIcon icon="pen" className="mr-2" />
+            Edit
+          </Dropdown.Item>
+        )}
+        {permission?.Activity?.includes('activity:duplicate') && (
+          <Dropdown.Item
+            to="#"
+            onClick={() => {
+              Swal.showLoading();
+              cloneActivity(playlist.id, resource.id);
+            }}
+          >
+            <FontAwesomeIcon icon="clone" className="mr-2" />
+            Duplicate
+          </Dropdown.Item>
+        )}
+        {permission?.Activity?.includes('activity:share') && (
+          <ResourceCardDropdownShare resource={resource} />
+        )}
+        {permission?.Activity?.includes('activity:delete') && (
+          <Dropdown.Item onClick={handleDelete}>
+            <FontAwesomeIcon icon="times-circle" className="mr-2" />
+            Delete
+          </Dropdown.Item>
+        )}
 
-        <Dropdown.Item
-          as={Link}
-          to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
-        >
-          <FontAwesomeIcon icon="pen" className="mr-2" />
-          Edit
-        </Dropdown.Item>
-
-        <Dropdown.Item
-          to="#"
-          onClick={() => {
-            Swal.showLoading();
-            cloneActivity(playlist.id, resource.id);
-          }}
-        >
-          <FontAwesomeIcon icon="clone" className="mr-2" />
-          Duplicate
-        </Dropdown.Item>
-
-        <ResourceCardDropdownShare resource={resource} />
-
-        <Dropdown.Item onClick={handleDelete}>
-          <FontAwesomeIcon icon="times-circle" className="mr-2" />
-          Delete
-        </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );
