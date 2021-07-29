@@ -429,6 +429,9 @@
     flex-direction: row;
     justify-content: space-between;
     padding: 10px;
+    .text-align-left{
+      text-align: left;
+    }
   }
 
   .btn {
