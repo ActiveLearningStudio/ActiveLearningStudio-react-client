@@ -80,16 +80,16 @@ function App(props) {
         result.then().catch((err) => err && window.location.replace('/login'));
       }
     }
-    if (window.HubSpotConversations) {
-      // console.log('The api is ready already');
-    } else {
-      window.hsConversationsOnReady = [
-        () => {
-          // console.log('Now the api is ready');
-          window.HubSpotConversations.widget.load();
-        },
-      ];
-    }
+    // if (window.HubSpotConversations) {
+    //   // console.log('The api is ready already');
+    // } else {
+    //   window.hsConversationsOnReady = [
+    //     () => {
+    //       // console.log('Now the api is ready');
+    //       window.HubSpotConversations.widget.load();
+    //     },
+    //   ];
+    // }
   }, [window.location.href]);
 
   useEffect(() => {
@@ -185,13 +185,13 @@ function App(props) {
         <meta name="description" content="CurrikiStudio" />
         <meta name="theme-color" content="#008f68" />
 
-        <script
+        {/* <script
           type="text/javascript"
           id="hs-script-loader"
           async
           defer
           src={`//js.hs-scripts.com/${process.env.REACT_APP_HUBSPOT}.js`}
-        />
+        /> */}
       </Helmet>
       <AppRouter />
       {Object.keys(permission)?.length === 0 && (
