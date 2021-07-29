@@ -38,11 +38,11 @@ class PlaylistCardDropdown extends React.Component {
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
-          {permission?.Playlist?.includes('playlist:view') && (
+          {permission?.Playlist?.includes('playlist:view') && playlist.activities[0] && (
           <Dropdown.Item
             as={Link}
             className="hidden"
-            to={`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/preview`}
+            to={`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/${playlist?.activities[0]?.id}/preview`}
           >
             <FontAwesomeIcon icon="eye" className="mr-2" />
             Preview
