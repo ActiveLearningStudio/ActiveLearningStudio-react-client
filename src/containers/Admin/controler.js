@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React, { useState, useMemo, useEffect, useRef } from "react";
 // import PropTypes from "prop-types";
-import { Dropdown, DropdownButton } from "react-bootstrap";
+import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
@@ -531,34 +531,32 @@ function Controller(props) {
       {inviteUser && permission?.Organization?.includes('organization:invite-members') && (
         <div className="btn-text">
           <div className="add-user-btn">
-            <DropdownButton
-              drop="down"
-              title="Invite external user"
-              id="dropdown-button-drop-down"
-            >
-              <Dropdown.Item>
+          <Dropdown drop="down" id="dropdown-button-drop-down">
+              <Dropdown.Toggle variant="success" id="dropdown-basic">
+                Invite external user
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
                 <InviteUser />
-              </Dropdown.Item>
-            </DropdownButton>
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
         </div>
       )}
       {permission?.Organization?.includes('organization:view-user') && type === "Users" && subTypeState === 'All Users' && (
         <div className="btn-text">
           <div className="add-user-btn">
-            <DropdownButton
-              drop="down"
-              title="Add internal user"
-              id="dropdown-button-drop-down"
-            >
-              <Dropdown.Item>
+          <Dropdown drop="down"  id="dropdown-button-drop-down">
+              <Dropdown.Toggle variant="success" id="dropdown-basic">
+                Add internal user
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
                 <AddUser
                   setAllUsersAdded={setAllUsersAdded}
                   allUsersAdded={allUsersAdded}
                   method="create"
                 />
-              </Dropdown.Item>
-            </DropdownButton>
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
         </div>
       )}
