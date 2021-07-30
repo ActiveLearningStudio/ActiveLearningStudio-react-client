@@ -29,9 +29,13 @@ function Starter(props) {
     setSize,
     activeRole,
     setActiveRole,
+    searchQueryActivities,
+    setSearchQueryActivities,
     searchQuery,
     searchQueryProject,
+    setSearchQueryProject,
     searchQueryStats,
+    setSearchQueryStats,
     setSearchQuery,
     subTypeState,
     searchQueryChangeHandler,
@@ -39,6 +43,7 @@ function Starter(props) {
     searchActivitiesQueryHandler,
     searchUserReportQueryHandler,
     searchAlertToggler,
+    searchAlertTogglerStats,
     setActivePage,
     subType,
     inviteUser,
@@ -64,9 +69,13 @@ function Starter(props) {
         SetJobType={SetJobType}
         logType={logType}
         SetLogType={SetLogType}
+        searchQueryActivities={searchQueryActivities}
+        setSearchQueryActivities={setSearchQueryActivities}
         searchQuery={searchQuery}
         searchQueryProject={searchQueryProject}
+        setSearchQueryProject={setSearchQueryProject}
         searchQueryStats={searchQueryStats}
+        setSearchQueryStats={setSearchQueryStats}
         setSearchQuery={setSearchQuery}
         setActivePage={setActivePage}
         searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
@@ -91,6 +100,7 @@ function Starter(props) {
           activePage={activePage}
           setActivePage={setActivePage}
           searchAlertToggler={searchAlertToggler}
+          searchAlertTogglerStats={searchAlertTogglerStats}
           type={type}
           jobType={jobType}
           data={data}

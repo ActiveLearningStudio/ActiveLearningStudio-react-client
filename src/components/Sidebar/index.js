@@ -166,7 +166,7 @@ function Sidebar(props) {
                     <div className="row-sidebar">
                       <img src={administrate} alt="" />
                       <div className="sidebar-headings">
-                        Administrate
+                        Admin Panel
                       </div>
                       <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
                     </div>
@@ -245,9 +245,15 @@ function Sidebar(props) {
                 </Link>
               </>
             )}
-            <div className="org-name">
-              Create
-            </div>
+            {(permission?.Project?.includes('project:create')
+              || permission?.Team?.includes('team:create')
+              || permission?.Group?.includes('group:create')
+              || permission?.Organization?.includes('organization:add-user'))
+              && (
+              <div className="org-name">
+                Create
+              </div>
+            )}
             <div style={{ overflowX: 'hidden', overflowY: 'auto', height: '250px' }}>
               {permission?.Project?.includes('project:create')
                 && (
@@ -338,12 +344,12 @@ function Sidebar(props) {
             <div className="toggleSidebar collapsedown">
               {permission?.Organization?.includes('organization:view') && (
                 <Link
-                  to={`/org/${allState.organization.currentOrganization.domain}/admin`}
+                  to={`/org/${allState.organization.currentOrganization?.domain}/admin`}
                   onClick={() => dispatch(updateOrganizationScreen('intro'))}
                 >
                   <img src={administrateLargeIcom} alt="" />
                   <div className="tagline">
-                    Administrate
+                    Admin Panel
                   </div>
                 </Link>
               )}

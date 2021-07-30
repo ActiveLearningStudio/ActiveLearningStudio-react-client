@@ -142,7 +142,7 @@ function SearchForm() {
               }
               return errors;
             }}
-            onSubmit={(values, { resetForm }) => {
+            onSubmit={(values) => {
               closeModel.current.click();
               const h5pNameArray = [];
               values.standardArray.filter((h5p) => h5pNameArray.push(h5p.value));
@@ -164,25 +164,25 @@ function SearchForm() {
               // });
               Swal.showLoading();
               dispatcher(simpleSearchAction(values));
-              resetForm({
-                phrase: '',
-                subjectArray: [],
-                author: '',
-                subject: '',
-                grade: '',
-                gradeArray: [],
-                standard: '',
-                standardArray: [],
-                email: '',
-                words: '',
-                no_words: undefined,
-                type: 'public',
-                toDate: undefined,
-                fromDate: undefined,
-                from: 0,
-                size: 20,
-                model: undefined,
-              });
+              // resetForm({
+              //   phrase: '',
+              //   subjectArray: [],
+              //   author: '',
+              //   subject: '',
+              //   grade: '',
+              //   gradeArray: [],
+              //   standard: '',
+              //   standardArray: [],
+              //   email: '',
+              //   words: '',
+              //   no_words: undefined,
+              //   type: 'public',
+              //   toDate: undefined,
+              //   fromDate: undefined,
+              //   from: 0,
+              //   size: 20,
+              //   model: undefined,
+              // });
             }}
           >
             {({

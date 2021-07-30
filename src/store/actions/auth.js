@@ -59,7 +59,7 @@ export const loginAction = (data) => async (dispatch) => {
     const centralizedState = store.getState();
     const { organization: { activeOrganization } } = centralizedState;
     storageService.setItem(CURRENT_ORG, activeOrganization?.domain);
-    await dispatch(getAllPermission(activeOrganization?.id));
+    await dispatch(getAllPermission(activeOrganization?.id || 1));
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
       payload: { user: response.user },

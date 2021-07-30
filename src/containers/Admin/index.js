@@ -44,20 +44,20 @@ function AdminPanel() {
                 id="uncontrolled-tab-example"
                 onSelect={(key) => dispatch(setActiveTab(key))}
               >
-                <Tab eventKey="Stats" title="Stats">
+                {/* <Tab eventKey="Stats" title="Stats">
                   <div className="module-content">
                     <h2>Stats</h2>
                     <Pills
-                      modules={["Report", "Queues:Jobs", "Queues:Logs"]}
+                      modules={["Report", "Queues: Jobs", "Queues: Logs"]}
                       type="Stats"
                       subType="Report"
                     />
                   </div>
-                </Tab>
+                </Tab> */}
                 <Tab eventKey="Organization" title="Organization">
                   <div className="module-content">
                     <h2>Organizations</h2>
-                    <Pills modules={["All Organizations"]} type="Organization" />
+                    <Pills modules={["All Organizations"]} type="Organization" subType="All Organizations"/>
                   </div>
                 </Tab>
                 <Tab eventKey="Project" title="Project">
@@ -88,7 +88,7 @@ function AdminPanel() {
                     <div className="module-content">
                       <h2>Users</h2>
                       <Pills
-                        modules={["All Users", "Manage Roles"]}
+                        modules={["All Users", permission?.Organization?.includes('organization:add-role') || permission?.Organization?.includes('organization:edit-role') ? "Manage Roles" : null]}
                         type="Users"
                         subType="All Users"
                       />

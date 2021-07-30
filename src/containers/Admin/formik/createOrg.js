@@ -42,6 +42,9 @@ export default function CreateOrg(prop) {
           name: editMode ? activeEdit?.name : "",
           description: editMode ? activeEdit?.description : "",
           domain: editMode ? activeEdit?.domain : "",
+          account_id: editMode ? activeEdit?.account_id : "",
+          api_key: editMode ? activeEdit?.api_key : "",
+          unit_path: editMode ? activeEdit?.unit_path : "",
         }}
         validate={(values) => {
           const errors = {};
@@ -276,17 +279,45 @@ export default function CreateOrg(prop) {
                 onBlur={handleBlur}
                 // value={values.admin}
               />
-              {loaderImg && (
-                <img
-                  src={loader}
-                  style={{ width: "25px" }}
-                  alt=""
-                  className="loader"
-                />
-              )}
+              <img
+                src={loader}
+                style={{ width: "25px",marginTop: '5px',visibility: loaderImg ? 'visible' : 'hidden' }}
+                alt=""
+                className="loader"
+              />
               <div className="error">
                 {errors.domain && touched.domain && errors.domain}
               </div>
+            </div>
+            <div className="form-group-create">
+              <h3>LearnSafe Account ID</h3>
+              <input
+                type="text"
+                name="account_id"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.account_id}
+              />
+            </div>
+            <div className="form-group-create">
+              <h3>LearnSafe API Key</h3>
+              <input
+                type="text"
+                name="api_key"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.api_key}
+              />
+            </div>
+            <div className="form-group-create">
+              <h3>LearnSafe Unit Path </h3>
+              <input
+                type="text"
+                name="unit_path"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.unit_path}
+              />
             </div>
             <div className="button-group">
               <button type="submit">

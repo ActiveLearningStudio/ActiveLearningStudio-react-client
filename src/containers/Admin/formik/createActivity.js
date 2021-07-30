@@ -20,6 +20,7 @@ export default function CreateActivity(props) {
   const imgUpload = useRef();
   const dispatch = useDispatch();
   const selectedType = useSelector((state) => state.resource.selectedType);
+  const { activePage } = useSelector((state) => state.organization);
   useEffect(() => {
     if (editMode) {
       setImgActive(selectedType?.image);
@@ -71,7 +72,7 @@ export default function CreateActivity(props) {
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
-                  dispatch(loadResourceTypesAction('', 1));
+                  dispatch(loadResourceTypesAction('', activePage));
                 }
               });
             }
@@ -97,7 +98,7 @@ export default function CreateActivity(props) {
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
-                  dispatch(loadResourceTypesAction('', 1));
+                  dispatch(loadResourceTypesAction('', activePage));
                 }
               });
             }
@@ -215,6 +216,7 @@ export default function CreateActivity(props) {
               <input
                 type="number"
                 name="order"
+                min="0"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.order}

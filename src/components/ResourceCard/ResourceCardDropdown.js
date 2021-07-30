@@ -104,7 +104,7 @@ const ResourceCardDropdown = (props) => {
             </a>
             <ul className="dropdown-menu check">
               {lmsSettings.map((data) => {
-                if (data.site_name !== 'Safari Montage') return false;
+                if (data.lms_name !== 'safarimontage') return false;
 
                 return (
                   <li>

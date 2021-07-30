@@ -3,7 +3,7 @@ import * as actionTypes from '../actionTypes';
 const INITIAL_STATE = {
   activeForm: null,
   loading: true,
-  activeTab: 'Stats',
+  activeTab: 'Organization',
   activityTypes: [],
   activityItems: [],
   usersReport: [],

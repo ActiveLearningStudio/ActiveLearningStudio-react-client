@@ -70,6 +70,7 @@
     margin: 0 0 10px 0 !important;
     padding: 0 !important;
     font-size: 18px;
+    word-break: break-all;
   }
 
   .describe {
@@ -77,5 +78,6 @@
     margin-bottom: 0;
     font-size: 12px;
     line-height: 18px;
+    word-break: break-all;
   }
 }

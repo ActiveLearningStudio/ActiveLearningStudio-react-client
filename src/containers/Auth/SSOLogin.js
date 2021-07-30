@@ -6,7 +6,6 @@ import { withRouter } from 'react-router-dom';
 
 function SSOLogin(props) {
   const {
-    history,
     match,
     user,
     handleSsoLogin,
@@ -15,7 +14,7 @@ function SSOLogin(props) {
   // Init
   useEffect(() => {
     if (user !== null) {
-      history.push('/');
+      window.location.replace('/');
     } else {
       handleSsoLogin(JSON.parse(atob(match.params.ssodata)));
     }
@@ -32,7 +31,6 @@ function SSOLogin(props) {
 
 SSOLogin.propTypes = {
   match: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   handleSsoLogin: PropTypes.func.isRequired,
 };
