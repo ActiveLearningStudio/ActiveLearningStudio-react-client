@@ -580,7 +580,7 @@ export const ProjectsPage = (props) => {
                         {favProject.length > 0 ? (
                           <SampleProjectCard projects={favProject} type="fav" activeTab={tabToggle} setShowSampleSort={setShowSampleSort} />
                         ) : (
-                          <Alert variant="warning">No Favorite Project Found.</Alert>
+                          <Alert variant="warning">No Favorite Project found.</Alert>
                         )}
                       </div>
                     </div>
