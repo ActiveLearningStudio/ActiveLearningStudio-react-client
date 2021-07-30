@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, {
   useCallback,
   useEffect,
@@ -7,7 +6,6 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { useSelector, useDispatch } from 'react-redux';
 import validator from 'validator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import _debounce from 'lodash/debounce';
@@ -15,8 +13,6 @@ import _sortBy from 'lodash/sortBy';
 
 import { inviteMembersAction, removeMemberAction } from 'store/actions/team';
 import { searchUsersAction } from 'store/actions/auth';
-import teamService from 'services/team.service';
-import { AddTeamRoles } from 'store/actions/team'
 
 import './style.scss';
 
@@ -36,35 +32,23 @@ function InviteDialog(props) {
     authUser,
     isSearching,
   } = props;
-  const dispatch = useDispatch();
+
   const [email, setEmail] = useState('');
   const [emailNote, setEmailNote] = useState('');
   const [showInvitableUsers, setShowInvitableUsers] = useState(false);
-  const stateOrg = useSelector((state) => state.organization);
-  const { roles } = useSelector((state) => state.team);
+
   const [mode, setMode] = useState(INPUT_MODE);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const inputRef = useRef(null);
   const inviteRef = useRef(null);
   const autoPanRef = useRef(null);
-  const [roleUser, setRoleUser] = useState([]);
-  const [activeRole, setActiveRole] = useState('');
-  const [activeSelectedMember, setActiveSelectedMember] = useState({});
-  const [addbtnText, setbtnText] = useState("Add Member")
-  const [selectMember, setSelectMember] = useState(false)
+
   let userSelected = false;
 
   const searchInvitableMembers = _debounce((value) => {
     searchUsers(value);
   }, 1000);
-  useEffect(() => {
-    setRoleUser(roles);
-    setActiveRole(roles?.[0]?.id)
-  }, [roles]);
 
-  useEffect(() => {
-    dispatch(AddTeamRoles(stateOrg.currentOrganization.id))
-  }, [])
   const toggleInvitableUsers = useCallback((val = null) => {
     if (userSelected === true) {
       userSelected = false;
@@ -139,138 +123,74 @@ function InviteDialog(props) {
             </h2>
 
             {mode === INPUT_MODE && (
-              <>
-                <div className="email-input">
-                  <div className="input-box" onClick={() => inputRef.current.focus()}>
-                    {/* {selectedUsers && selectedUsers.map((u) => (
-                      <span key={u.id} className="user-chip">
-                        {u.name || u.email}
-                        <span className="close-circle" onClick={() => deselectUser(u)} />
-                      </span>
-                    ))} */}
+              <div className="email-input">
+                <div className="input-box" onClick={() => inputRef.current.focus()}>
+                  {selectedUsers && selectedUsers.map((u) => (
+                    <span key={u.id} className="user-chip">
+                      {u.name || u.email}
+                      <span className="close-circle" onClick={() => deselectUser(u)} />
+                    </span>
+                  ))}
 
-                    <div className="input-container">
-                      <input
-                        ref={inputRef}
-                        type="text"
-                        placeholder="User name or Email"
-                        value={email}
-                        // maxLength={15}
-                        // size={email.length}
-                        onChange={onChange}
-                        // onKeyPress={({ key }) => {
-                        //   if (validator.isEmail(email) && key === 'Enter') {
-                        //     setActiveSelectedMember({
-                        //       id: selectedUsers.length * -1,
-                        //       name: '',
-                        //       first_name: '',
-                        //       last_name: '',
-                        //       email,
-                        //     });
-                        //   }
-                        // }}
-                      />
-                      <span
-                        className="close-circle"
+                  <div className="input-container">
+                    <input
+                      ref={inputRef}
+                      type="text"
+                      placeholder="User name or Email"
+                      value={email}
+                      // maxLength={15}
+                      // size={email.length}
+                      onChange={onChange}
+                      onKeyPress={({ key }) => {
+                        if (validator.isEmail(email) && key === 'Enter') {
+                          selectUser({
+                            id: selectedUsers.length * -1,
+                            name: '',
+                            first_name: '',
+                            last_name: '',
+                            email,
+                          });
+                        }
+                      }}
+                    />
+                    <span
+                      className="close-circle"
+                      onClick={() => {
+                        setEmail('');
+                        searchInvitableMembers('');
+                      }}
+                    >
+                      {isSearching && (
+                        <FontAwesomeIcon icon="spinner" />
+                      )}
+                    </span>
+                  </div>
+                </div>
+
+                {(showInvitableUsers && usersNotInvited.length > 0) && (
+                  <div className="non-invitee-members" ref={autoPanRef}>
+                    {email && usersNotInvited.map((u) => (
+                      <div
+                        key={u.id}
+                        className="invite-member-item"
+                        data-list="true"
                         onClick={() => {
-                          setEmail('');
-                          searchInvitableMembers('');
+                          selectUser(u);
+                          userSelected = true;
                         }}
                       >
-                        {isSearching && (
-                          <FontAwesomeIcon icon="spinner" />
-                        )}
-                      </span>
-                    </div>
-
-                  </div>
-
-                  {(showInvitableUsers && usersNotInvited.length > 0) && (
-                    <div className="non-invitee-members" ref={autoPanRef}>
-                      {email && usersNotInvited.map((u) => (
-                        <div
-                          key={u.id}
-                          className="invite-member-item"
-                          data-list="true"
-                          onClick={() => {
-                            setEmail(u.email);
-                            setActiveSelectedMember(u);
-                            setShowInvitableUsers(false);
-                            userSelected = true;
-                            setSelectMember(true)
-                          }}
-                        >
-                          <div className="invite-member-name-mark">
-                            <span>{`${u.first_name[0] || ''}${u.last_name[0] || ''}`}</span>
-                          </div>
-
-                          <div className="invite-member-info">
-                            <h2 className="invite-member-name">{`${u.name} (${u.email})`}</h2>
-                          </div>
+                        <div className="invite-member-name-mark">
+                          <span>{`${u.first_name[0] || ''}${u.last_name[0] || ''}` }</span>
                         </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                <h2>
-                  {mode === INPUT_MODE && 'Select Role'}
 
-                </h2>
-                <div>
-                  <div className="input-container">
-                    <select onChange={(e) => setActiveRole(e.target.value)}>
-                      {roleUser?.map((roletype) => (
-                        <option value={roletype.id}>
-                          {roletype.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <button disabled={selectMember ? false: true} onClick={() => {
-                  const combine = {
-                    organization_id: stateOrg.currentOrganization.id,
-                    user_id: activeSelectedMember.id,
-                  };
-                  setbtnText('Adding ...')
-                  const result = teamService.checkUserBeforeAdd(stateOrg.currentOrganization.id, combine)
-                  result.then((data) => {
-                    setbtnText('Add Member')
-                    if (data.invited) {
-                      selectUser({
-                        ...activeSelectedMember,
-
-                        role_id: activeRole
-                      });
-                      setSelectMember(false)
-                    }
-                  }).catch((err) => {
-                    setbtnText('Add Member')
-                    setSelectMember(false)
-                  });
-
-                }}>
-                  
-                  {addbtnText}
-                </button>
-
-                <div className="email-input" style={{ border: 'none' }}>
-                  <div className="input-box">
-                    {selectedUsers && selectedUsers.map((u) => (
-
-
-                      <span key={u.id} className="user-chip">
-                        {u.name || u.email}
-                        <span className="close-circle" onClick={() => deselectUser(u)} />
-                      </span>
-
+                        <div className="invite-member-info">
+                          <h2 className="invite-member-name">{`${u.name} (${u.email})`}</h2>
+                        </div>
+                      </div>
                     ))}
                   </div>
-                </div>
-
-
-              </>
+                )}
+              </div>
             )}
 
             <h2 style={{ fontSize: '13px', marginBottom: mode === INVITE_MODE ? '2em' : '1em' }}>
@@ -281,7 +201,7 @@ function InviteDialog(props) {
                 </>
               )}
 
-              {mode === INVITE_MODE && `You can add a note to personalize your invitation to "${selectedUsers[0].name || selectedUsers[0].email}", ...`}
+              {mode === INVITE_MODE && `You can add a note to personalize your invitation to "${selectedUsers[0].name || selectedUsers[0].email}", ...` }
             </h2>
 
             {mode === INPUT_MODE && (
