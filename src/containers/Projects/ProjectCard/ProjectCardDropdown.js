@@ -110,6 +110,7 @@ const ProjectCardDropdown = (props) => {
               </li>
 
               {allLms.shareVendors && allLms.shareVendors.map((data) => (
+                data.lms_name !== 'safarimontage' && (
                 <li>
                   <a
                     onClick={async () => {
@@ -130,7 +131,7 @@ const ProjectCardDropdown = (props) => {
                     {data.site_name}
                   </a>
                 </li>
-              ))}
+              )))}
             </ul>
           </li>
         )}

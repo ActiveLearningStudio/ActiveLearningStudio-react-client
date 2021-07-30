@@ -17,7 +17,7 @@ node {
     stage('Push image') {	
         docker.withRegistry('https://quay.io', 'docker-private-credentials') {            
             app.push("${env.BUILD_NUMBER}")            
-            app.push("latest")        
+            app.push("stage")        
         }    
          
     }
@@ -35,23 +35,6 @@ node {
                     }
                 } else {
                     stage ('currikistage') {
-                        echo "currikistage is offline"
-                        exit 1
-                    }
-                }
-                
-            },
-            "StageB": {
-                if(Jenkins.instance.getNode('artificialchat').toComputer().isOnline()){
-                    node('artificialchat') {
-                        stage ('artificialchat') {
-                                echo 'Copy'
-                                sh "yes | sudo docker stack deploy --compose-file /home/ubuntu/curriki/docker-compose.yml currikistack" 
-                                echo 'Copy completed'
-                        }
-                    }
-                } else {
-                    stage ('artificialchat') {
                         echo "currikistage is offline"
                         exit 1
                     }
