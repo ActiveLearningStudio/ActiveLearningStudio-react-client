@@ -33,6 +33,7 @@ function Starter(props) {
     setSearchQueryActivities,
     searchQuery,
     searchQueryProject,
+    setSearchQueryProject,
     searchQueryStats,
     setSearchQueryStats,
     setSearchQuery,
@@ -72,6 +73,7 @@ function Starter(props) {
         setSearchQueryActivities={setSearchQueryActivities}
         searchQuery={searchQuery}
         searchQueryProject={searchQueryProject}
+        setSearchQueryProject={setSearchQueryProject}
         searchQueryStats={searchQueryStats}
         setSearchQueryStats={setSearchQueryStats}
         setSearchQuery={setSearchQuery}

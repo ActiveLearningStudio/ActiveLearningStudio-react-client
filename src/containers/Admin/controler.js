@@ -43,6 +43,7 @@ function Controller(props) {
     setSearchQueryActivities,
     searchQuery,
     searchQueryProject,
+    setSearchQueryProject,
     searchQueryStats,
     setSearchQueryStats,
     setSearchQuery,
@@ -350,9 +351,16 @@ function Controller(props) {
             type="text"
             placeholder="Search"
             value={searchQueryProject}
-            onChange={(e) => searchProjectQueryChangeHandler(e, selectedIndexValueid, subType)}
+            onChange={(e) =>{
+              if (e.target.value) {
+                setSearchQueryProject(e.target.value)
+              } else if (e.target.value === '') {
+                setSearchQueryProject('');
+                searchProjectQueryChangeHandler('', selectedIndexValueid,subType)
+              }
+            }}
           />
-          <img src={searchimg} alt="search" />
+          <img src={searchimg} alt="search" onClick={()=> searchProjectQueryChangeHandler(searchQueryProject, selectedIndexValueid, subType)} />
         </div>
       )}
       {/* {!!search && type === 'Activities' && subType === 'Activity Types' && (

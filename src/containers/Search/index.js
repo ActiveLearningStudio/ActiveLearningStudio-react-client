@@ -855,47 +855,51 @@ function SearchInterface(props) {
                                         </div>
                                       )}
                                     </div>
-                                    {permission?.Project?.includes('project:clone') && res.model === 'Project'
+                                    {(permission?.Project?.includes('project:clone') || permission?.Project?.includes('project:publish')) && res.model === 'Project'
                                     && (
                                       <Dropdown>
                                         <Dropdown.Toggle>
                                           <FontAwesomeIcon icon="ellipsis-v" />
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
-                                          <div
-                                            onClick={() => {
-                                              Swal.fire({
-                                                html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
-                                                showCancelButton: true,
-                                                confirmButtonColor: '#3085d6',
-                                                cancelButtonColor: '#d33',
-                                                confirmButtonText: 'Ok',
-                                              })
-                                                .then((result) => {
-                                                  if (result.value) {
-                                                    cloneProject(res.id);
-                                                  }
-                                                });
-                                            }}
-                                          >
-                                            <FontAwesomeIcon className="mr-2" icon="clone" />
-                                            Duplicate
-                                          </div>
-                                          <div>
-                                            <li
+                                          {permission?.Project?.includes('project:clone') && (
+                                            <div
                                               onClick={() => {
-                                                setShow(true);
-                                                getProjectId(res.id);
-                                                setSelectedProjectId(res.id);
-                                                dispatch(googleShare(false));
+                                                Swal.fire({
+                                                  html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
+                                                  showCancelButton: true,
+                                                  confirmButtonColor: '#3085d6',
+                                                  cancelButtonColor: '#d33',
+                                                  confirmButtonText: 'Ok',
+                                                })
+                                                  .then((result) => {
+                                                    if (result.value) {
+                                                      cloneProject(res.id);
+                                                    }
+                                                  });
                                               }}
                                             >
-                                              <a>
-                                                <FontAwesomeIcon className="mr-2" icon="newspaper" />
-                                                Publish Google Classroom
-                                              </a>
-                                            </li>
-                                          </div>
+                                              <FontAwesomeIcon className="mr-2" icon="clone" />
+                                              Duplicate
+                                            </div>
+                                          )}
+                                          {permission?.Project?.includes('project:publish') && (
+                                            <div>
+                                              <li
+                                                onClick={() => {
+                                                  setShow(true);
+                                                  getProjectId(res.id);
+                                                  setSelectedProjectId(res.id);
+                                                  dispatch(googleShare(false));
+                                                }}
+                                              >
+                                                <a>
+                                                  <FontAwesomeIcon className="mr-2" icon="newspaper" />
+                                                  Publish Google Classroom
+                                                </a>
+                                              </li>
+                                            </div>
+                                          )}
                                         </Dropdown.Menu>
                                       </Dropdown>
                                     )}
@@ -1036,7 +1040,7 @@ function SearchInterface(props) {
                                           </div>
                                           )}
                                         </div>
-                                        {permission?.Project?.includes('project:clone')
+                                        {(permission?.Project?.includes('project:clone') || permission?.Project?.includes('project:publish'))
                                           && (
                                           <Dropdown>
                                             <Dropdown.Toggle>
@@ -1044,45 +1048,49 @@ function SearchInterface(props) {
                                             </Dropdown.Toggle>
 
                                             <Dropdown.Menu>
-                                              <div
-                                                onClick={() => {
-                                                  if (res.model === 'Project') {
-                                                    Swal.fire({
-                                                      html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
-                                                      showCancelButton: true,
-                                                      confirmButtonColor: '#3085d6',
-                                                      cancelButtonColor: '#d33',
-                                                      confirmButtonText: 'Ok',
-                                                    })
-                                                      .then((result) => {
-                                                        if (result.value) {
-                                                          cloneProject(res.id);
-                                                        }
-                                                      });
-                                                  } else {
-                                                    setModalShow(true);
-                                                    setClone(res);
-                                                  }
-                                                }}
-                                              >
-                                                <FontAwesomeIcon className="mr-2" icon="clone" />
-                                                Clone
-                                              </div>
-                                              <div>
-                                                <li
+                                              {permission?.Project?.includes('project:clone') && (
+                                                <div
                                                   onClick={() => {
-                                                    setShow(true);
-                                                    getProjectId(res.id);
-                                                    setSelectedProjectId(res.id);
-                                                    dispatch(googleShare(false));
+                                                    if (res.model === 'Project') {
+                                                      Swal.fire({
+                                                        html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
+                                                        showCancelButton: true,
+                                                        confirmButtonColor: '#3085d6',
+                                                        cancelButtonColor: '#d33',
+                                                        confirmButtonText: 'Ok',
+                                                      })
+                                                        .then((result) => {
+                                                          if (result.value) {
+                                                            cloneProject(res.id);
+                                                          }
+                                                        });
+                                                    } else {
+                                                      setModalShow(true);
+                                                      setClone(res);
+                                                    }
                                                   }}
                                                 >
-                                                  <a>
-                                                    <FontAwesomeIcon className="mr-2" icon="newspaper" />
-                                                    Publish Google Classroom
-                                                  </a>
-                                                </li>
-                                              </div>
+                                                  <FontAwesomeIcon className="mr-2" icon="clone" />
+                                                  Clone
+                                                </div>
+                                              )}
+                                              {permission?.Project?.includes('project:publish') && (
+                                                <div>
+                                                  <li
+                                                    onClick={() => {
+                                                      setShow(true);
+                                                      getProjectId(res.id);
+                                                      setSelectedProjectId(res.id);
+                                                      dispatch(googleShare(false));
+                                                    }}
+                                                  >
+                                                    <a>
+                                                      <FontAwesomeIcon className="mr-2" icon="newspaper" />
+                                                      Publish Google Classroom
+                                                    </a>
+                                                  </li>
+                                                </div>
+                                              )}
                                             </Dropdown.Menu>
                                           </Dropdown>
                                           )}
