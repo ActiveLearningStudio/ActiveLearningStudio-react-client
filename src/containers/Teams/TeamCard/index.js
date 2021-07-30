@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import './style.scss';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteTeamAction } from 'store/actions/team';
+import { deleteTeamAction, AddTeamPermission } from 'store/actions/team';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function TeamCard(props) {
@@ -41,7 +41,15 @@ function TeamCard(props) {
   return (
     <div className="team-card-content">
       <div className="team-title">
-        <Link to={`/org/${organization.currentOrganization?.domain}/teams/${id}`} className="title m-0">{name}</Link>
+        <Link
+          onClick={() => {
+            dispatch(AddTeamPermission(organization.currentOrganization.id, id));
+          }}
+          to={`/org/${organization.currentOrganization?.domain}/teams/${id}`}
+          className="title m-0"
+        >
+          {name}
+        </Link>
         {permission?.Team?.includes('team:edit') && (
           <Link className="edit-button" to={`/org/${organization.currentOrganization?.domain}/teams/${id}/edit`}>
             <FontAwesomeIcon icon="pen" className="mr-2" />

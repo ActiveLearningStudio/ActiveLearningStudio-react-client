@@ -10,6 +10,7 @@ const INITIAL_STATE = {
   teams: [],
   selectedTeam: {},
   roles: null,
+  teamPermission: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -37,6 +38,12 @@ export default (state = INITIAL_STATE, action) => {
         showCreation: true,
         showAssigning: false,
         showInviting: false,
+      };
+
+    case actionTypes.ADD_TEAM_PERMISSION:
+      return {
+        ...state,
+        teamPermission: action.payload,
       };
 
     case actionTypes.SHOW_INVITE_MEMBER:

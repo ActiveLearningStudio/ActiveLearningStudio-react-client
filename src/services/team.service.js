@@ -17,7 +17,10 @@ const getAllSubOrganizationTeams = (subOrgId) => httpService
 const create = (team, subOrgId) => httpService
   .post(`/${apiVersion}/suborganization/${subOrgId}/teams`, team)
   .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject(err.response.data);
+  });
 
 const get = (id, subOrgId) => httpService
   .get(`/${apiVersion}/suborganization/${subOrgId}/teams/${id}`)
@@ -74,8 +77,8 @@ const removeMemberFromProject = (teamId, projectId, id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const teamPermisison = (teamId, orgId) => httpService
-  .get(`/${apiVersion}/suborganization/${orgId}/teams/${teamId}/team-permissions`)
+const teamPermisison = (orgId, teamId) => httpService
+  .get(`/${apiVersion}/suborganization/${orgId}/team/${teamId}/team-permissions`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
