@@ -51,6 +51,7 @@ function InviteDialog(props) {
   const [activeRole, setActiveRole] = useState('');
   const [activeSelectedMember, setActiveSelectedMember] = useState({});
   const [addbtnText, setbtnText] = useState("Add Member")
+  const [selectMember, setSelectMember] = useState(false)
   let userSelected = false;
 
   const searchInvitableMembers = _debounce((value) => {
@@ -157,17 +158,17 @@ function InviteDialog(props) {
                         // maxLength={15}
                         // size={email.length}
                         onChange={onChange}
-                        onKeyPress={({ key }) => {
-                          if (validator.isEmail(email) && key === 'Enter') {
-                            setActiveSelectedMember({
-                              id: selectedUsers.length * -1,
-                              name: '',
-                              first_name: '',
-                              last_name: '',
-                              email,
-                            });
-                          }
-                        }}
+                        // onKeyPress={({ key }) => {
+                        //   if (validator.isEmail(email) && key === 'Enter') {
+                        //     setActiveSelectedMember({
+                        //       id: selectedUsers.length * -1,
+                        //       name: '',
+                        //       first_name: '',
+                        //       last_name: '',
+                        //       email,
+                        //     });
+                        //   }
+                        // }}
                       />
                       <span
                         className="close-circle"
@@ -196,6 +197,7 @@ function InviteDialog(props) {
                             setActiveSelectedMember(u);
                             setShowInvitableUsers(false);
                             userSelected = true;
+                            setSelectMember(true)
                           }}
                         >
                           <div className="invite-member-name-mark">
@@ -226,7 +228,7 @@ function InviteDialog(props) {
                   </div>
                 </div>
 
-                <button disabled={validator.isEmail(email)  ? false: true} onClick={() => {
+                <button disabled={selectMember ? false: true} onClick={() => {
                   const combine = {
                     organization_id: stateOrg.currentOrganization.id,
                     user_id: activeSelectedMember.id,
@@ -241,8 +243,12 @@ function InviteDialog(props) {
 
                         role_id: activeRole
                       });
+                      setSelectMember(false)
                     }
-                  }).catch((err) => setbtnText('Add Member'));
+                  }).catch((err) => {
+                    setbtnText('Add Member')
+                    setSelectMember(false)
+                  });
 
                 }}>
                   

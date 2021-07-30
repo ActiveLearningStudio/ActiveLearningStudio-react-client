@@ -171,7 +171,8 @@ $filled: #44ca92;
           width: 100%;
           max-height: 170px;
           background: #fff;
-          border: solid 1px #e5e5e5;
+          z-index:1;
+          border: solid 1px #aaa8a8;
 
           .invite-member-item {
             margin: 0;

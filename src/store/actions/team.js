@@ -343,3 +343,11 @@ export const AddTeamRoles = (orgId) => async (dispatch) => {
     payload: result?.teamRoleTypes,
   });
 };
+
+export const AddTeamPermission = (orgId, TeamId) => async (dispatch) => {
+  const result = await teamService.teamPermisison(orgId, TeamId);
+  dispatch({
+    type: actionTypes.ADD_TEAM_PERMISSION,
+    payload: result?.teamPermissions,
+  });
+};
