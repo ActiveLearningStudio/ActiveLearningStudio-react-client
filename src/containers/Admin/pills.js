@@ -85,19 +85,16 @@ export default function Pills(props) {
 
 
 
-  const searchProjectQueryChangeHandler = async ({ target }, index, subType) => {
-
+  const searchProjectQueryChangeHandler = async (query, index, subType) => {
     if (subType === 'index') {
-      if (!!target.value) {
-        setSearchQueryProject(target.value);
+      if (!!query) {
         setAllProjectIndexTab(null);
-        const searchapi = adminService.userSerchIndexs(activeOrganization?.id, activePage, index, target.value)
+        const searchapi = adminService.userSerchIndexs(activeOrganization?.id, activePage, index, query)
         searchapi.then((data) => {
           setAllProjectIndexTab(data)
 
         }).catch(e=>setAllProjectIndexTab([]))
       } else {
-        setSearchQueryProject('');
         setActivePage(1);
         const searchapi = adminService.getAllProjectIndex(activeOrganization?.id, 1, index)
         searchapi.then((data) => {
@@ -106,16 +103,14 @@ export default function Pills(props) {
         })
       }
     } else if (subType === 'all') {
-      if (!!target.value) {
-        setSearchQueryProject(target.value);
+      if (!!query) {
         setAllProjectTab(null);
-        const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, target.value)
+        const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, query)
         allproject.then((data) => {
           console.log(data)
           setAllProjectTab(data)
         }).catch(e=>setAllProjectTab([]))
       } else {
-        setSearchQueryProject('');
         setActivePage(1);
         const allproject = adminService.getAllProject(activeOrganization?.id, 1)
         allproject.then((data) => {
@@ -123,15 +118,13 @@ export default function Pills(props) {
         })
       }
     } else if (subType === 'user') {
-      if (!!target.value) {
-        setSearchQueryProject(target.value);
+      if (!!query) {
         setAllProjectUserTab(null);
-        const userproject = adminService.getUserProjectSearch(activeOrganization?.id, activePage, target.value)
+        const userproject = adminService.getUserProjectSearch(activeOrganization?.id, activePage, query)
         userproject.then((data) => {
           setAllProjectUserTab(data)
         }).catch(e=>setAllProjectUserTab([]))
       } else {
-        setSearchQueryProject('');
         setActivePage(1);
         const userproject = adminService.getUserProject(activeOrganization?.id, 1)
         userproject.then((data) => {
@@ -611,6 +604,7 @@ export default function Pills(props) {
                 type={type}
                 importUser={true}
                 searchQueryProject={searchQueryProject}
+                setSearchQueryProject={setSearchQueryProject}
                 setActivePage={setActivePage}
                 activePage={activePage}
                 subType="all"
@@ -629,6 +623,7 @@ export default function Pills(props) {
                 subType="user"
                 setCurrentTab={setCurrentTab}
                 searchQueryProject={searchQueryProject}
+                setSearchQueryProject={setSearchQueryProject}
                 searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
               />
             )}
@@ -648,6 +643,7 @@ export default function Pills(props) {
                 setCurrentTab={setCurrentTab}
                 filter={true}
                 searchQueryProject={searchQueryProject}
+                setSearchQueryProject={setSearchQueryProject}
                 setChangeIndexValue={setChangeIndexValue}
               />
             )}
