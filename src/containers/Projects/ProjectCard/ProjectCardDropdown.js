@@ -110,7 +110,7 @@ const ProjectCardDropdown = (props) => {
               </li>
 
               {allLms.shareVendors && allLms.shareVendors.map((data) => (
-                data.type !== 'safari' && (
+                data.lms_name !== 'safarimontage' && (
                 <li>
                   <a
                     onClick={async () => {

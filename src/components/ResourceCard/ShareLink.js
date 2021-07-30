@@ -40,7 +40,7 @@ function ShareLink(props) {
 
       <ul className="dropdown-menu check">
         {allLms.shareVendors && allLms.shareVendors.map((data) => (
-          data.type !== 'safari' && (
+          data.lms_name !== 'safarimontage' && (
           <li key={data.id}>
             <a
               href="#"
