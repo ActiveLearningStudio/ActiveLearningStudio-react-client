@@ -151,8 +151,9 @@ export const createOrganizationNew = (id, data) => async (dispatch) => {
     description: data.description,
     image: data.image,
     parent_id: id,
-    // admins: adminUsers,
-    // users: usersList,
+    account_id: data.account_id,
+    api_key: data.api_key,
+    unit_path: data.unit_path,
     domain: data.domain,
   };
   const result = organization.createOrganization(details);

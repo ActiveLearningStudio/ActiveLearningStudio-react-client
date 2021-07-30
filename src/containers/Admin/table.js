@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Pagination from "react-js-pagination";
 import adminService from "services/admin.service";
+import projectService from "services/project.service";
 import * as actionTypes from 'store/actionTypes';
-//import { useHistory } from 'react-router-dom';
 import {
   deleteUserFromOrganization,
   deleteOrganization,
@@ -718,6 +718,47 @@ function Table(props) {
                         >
                           Export
                         </Link>
+                        <Link
+                                     onClick={() => {
+                                      Swal.fire({
+                                        title: "Are you sure you want to delete this Project?",
+                                        text: "This action is Irreversible",
+                                        icon: "warning",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#084892",
+                                        cancelButtonColor: "#d33",
+                                        confirmButtonText: "Yes, delete it!",
+                                      }).then((result) => {
+                                        if (result.isConfirmed) {
+                                          Swal.fire({
+                                            icon: 'info',
+                                            text: 'Deleting Project...',
+                                            allowOutsideClick: false,
+                                            onBeforeOpen: () => {
+                                              Swal.showLoading();
+                                            },
+                                            button: false,
+                                          });
+                                          const response = projectService.remove(row.id, activeOrganization.id);
+                                          response
+                                            .then((res) => {
+        
+        
+                                              Swal.fire({
+                                                icon: "success",
+                                                text: res?.message,
+        
+                                              });
+                                              const filterProject = localStateData.filter(each => each.id != row.id);
+                                              setLocalStateData(filterProject)
+        
+                                            }).catch(err => console.log(err))
+                                        }
+                                      });
+                                    }}
+                        >
+                          &nbsp;&nbsp;Delete&nbsp;&nbsp;
+                        </Link>
                       </td>
                     </tr>
                   );
@@ -730,7 +771,7 @@ function Table(props) {
                 )
               ) : (
                 <tr>
-                  <td colspan="11">
+                  <td colspan="13">
                     <Alert variant="primary">Loading data...</Alert>
                   </td>
                 </tr>
