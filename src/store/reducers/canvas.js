@@ -49,7 +49,7 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
     case DO_BROWSE:
       return {
         ...state,
-        browseResults: action.results.projects.slice(0, 10),
+        browseResults: action.results.projects,
       };
 
     // Deeplinking search tab
