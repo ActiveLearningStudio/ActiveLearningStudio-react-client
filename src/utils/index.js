@@ -35,6 +35,6 @@ export const zeroFill = (value) => {
 };
 
 export const alphaNumeric = (value) => {
-  const alphaNumericRegex = new RegExp('[^0-9a-zA-Z@ .]');
+  const alphaNumericRegex = new RegExp('[^0-9a-zA-Z@ ._-]');
   return !alphaNumericRegex.test(value);
 };

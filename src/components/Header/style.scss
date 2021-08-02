@@ -45,7 +45,7 @@
       // box-shadow: 0 0 99px #00000021;
       // border-radius: 3px;
 
-      width: 281px !important;
+      width: 470px !important;
       height: 290px;
       left: calc(50% - 281px/2 + 2.5px);
       top: calc(50% - 290px/2 - 4px);
@@ -412,12 +412,12 @@
     top: 0px;
     z-index:-1
   }
-  // div.text{
-  //   text-overflow: ellipsis;
-  //   overflow: hidden;
-  //   text-align: center;
-  //   width: 60px;
-  // }
+  div.text{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-align: center;
+    width: 60px;
+  }
   .dropdown-toggle {
     color: $fun-blue-1 !important;
     font-size: 9.42px;

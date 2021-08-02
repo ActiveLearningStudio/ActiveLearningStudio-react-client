@@ -76,8 +76,10 @@ function App(props) {
       if (subDomain?.includes('login') || subDomain?.includes('register') || subDomain?.includes('forgot-password') || window.location.pathname.includes('/reset-password')) {
         dispatch(getBranding('currikistudio'));
       } else if (subDomain) {
-        const result = dispatch(getBranding(subDomain));
+        const result = dispatch(getBranding(subDomain || 'currikistudio'));
         result.then().catch((err) => err && window.location.replace('/login'));
+      } else {
+        dispatch(getBranding('currikistudio'));
       }
     }
     // if (window.HubSpotConversations) {

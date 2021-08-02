@@ -97,14 +97,14 @@ const ResourceCardDropdown = (props) => {
           </Dropdown.Item>
         )}
         {permission?.Activity?.includes('activity:share') && lmsSettings.length !== 0 && (
-          <>
+          <li className="dropdown-submenu send">
             <a tabIndex="-1" className="dropdown-item">
               <FontAwesomeIcon icon="newspaper" className="mr-2" />
               Publish
             </a>
             <ul className="dropdown-menu check">
               {lmsSettings.map((data) => {
-                if (data.site_name !== 'Safari Montage') return false;
+                if (data.lms_name !== 'safarimontage') return false;
 
                 return (
                   <li>
@@ -139,7 +139,7 @@ const ResourceCardDropdown = (props) => {
                 );
               })}
             </ul>
-          </>
+          </li>
         )}
         {permission?.Activity?.includes('activity:share') && (
           <Dropdown.Item

@@ -270,6 +270,10 @@
         background-color: #5952c6;
         color: #fff;
         text-decoration: none;
+
+        button span, button svg {
+          color: #fff !important;
+        }
       }
     }
   }
@@ -2021,7 +2025,7 @@ a:hover {
     padding: 10px 20px 40px 20px;
     display: none;
     background-color: white;
-    overflow: hidden;
+    overflow-x: hidden;
 
     .slick-list {
       overflow: visible;
@@ -2136,11 +2140,8 @@ a:hover {
   }
 
   li {
-    height: 100%;
-    min-height: 180px;
     border: 1px solid #ececec;
     border-radius: 3px;
-    box-shadow: 0 2px 2px #0000000d;
     list-style-type: none;
   }
 
@@ -3735,20 +3736,28 @@ a:hover {
 .text-added-project-dropdown  {
   button {
     width:100%;
+    padding-left: 0px !important;
+    height: 28px;
+    //  border-radius: 0px;
+    //  border: 1px solid #ece9e9 !important;
+    //  width:33%;
     span {
       font-size: 12px;
       line-height: 16px;
       color: #084892 !important;
-      padding-left: 10px !important;
+      padding-left: 5px !important;
       font-weight: bold;
     }
-
     &:hover {
-      span {
+      background-color: #084892 !important;;
+      span,svg {
         color: #ffffff !important;
       }
     }
+
+
   }
+
 }
 
 @media (max-width: 767px) {
@@ -3924,4 +3933,25 @@ body.collapsed {
 
     }
   }
+}
+
+.iframe-height-resource-shared.defaultcontainer{
+
+  .flex-container.previews {
+  max-width: 1040px !important;
+  margin:0 auto;
+  padding: 20px;
+  
+  @media (max-width:1280px) {
+    padding: 0px;
+  }
+  }
+
+  .activity-bg.left-vdo {
+    height: auto !important
+  }
+  .item-container,.h5p-iframe-wrapper{
+    padding-bottom: 0 !important;
+  }
+
 }

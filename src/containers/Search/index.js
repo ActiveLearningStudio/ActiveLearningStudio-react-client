@@ -458,6 +458,8 @@ function SearchInterface(props) {
                                         onChange={({ target }) => {
                                           if (target.value) {
                                             SetAuthor(target.value);
+                                          } else {
+                                            SetAuthor('');
                                           }
                                         }}
                                       />
@@ -853,7 +855,7 @@ function SearchInterface(props) {
                                         </div>
                                       )}
                                     </div>
-                                    {permission?.Project?.includes('project:clone') && res.model === 'Project'
+                                    {(permission?.Project?.includes('project:clone') || permission?.Project?.includes('project:publish')) && res.model === 'Project'
                                     && (
                                       <Dropdown>
                                         <Dropdown.Toggle>
@@ -1034,7 +1036,7 @@ function SearchInterface(props) {
                                           </div>
                                           )}
                                         </div>
-                                        {permission?.Project?.includes('project:clone')
+                                        {(permission?.Project?.includes('project:clone') || permission?.Project?.includes('project:publish'))
                                           && (
                                           <Dropdown>
                                             <Dropdown.Toggle>

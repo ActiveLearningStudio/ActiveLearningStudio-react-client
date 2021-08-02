@@ -55,6 +55,18 @@ export const getOrganizationFirstTime = (id) => async (dispatch) => {
   });
 };
 
+export const getAllOrganizationforSSO = () => async (dispatch) => {
+  const result = await organization.getAll();
+  dispatch({
+  type: actionTypes.ADD_ACTIVE_ORG,
+  payload: result?.data[0],
+  });
+  dispatch({
+  type: actionTypes.ADD_CURRENT_ORG,
+  payload: result?.data[0],
+  });
+};
+
 export const clearOrganizationState = () => (dispatch) => {
   dispatch({
     type: actionTypes.CLEAR_STATES_IN_ORGANIZATION,
@@ -139,8 +151,9 @@ export const createOrganizationNew = (id, data) => async (dispatch) => {
     description: data.description,
     image: data.image,
     parent_id: id,
-    // admins: adminUsers,
-    // users: usersList,
+    account_id: data.account_id,
+    api_key: data.api_key,
+    unit_path: data.unit_path,
     domain: data.domain,
   };
   const result = organization.createOrganization(details);
@@ -364,4 +377,17 @@ export const addRole = (id, data) => async () => {
     });
   });
   return result;
+};
+
+export const updatePageNumber = (pageNo) => (dispatch) => {
+  dispatch({
+    type: actionTypes.UPDATE_PAGE_NUMBER,
+    payload: pageNo,
+  });
+};
+
+export const resetPageNumber = () => (dispatch) => {
+  dispatch({
+    type: actionTypes.UPDATE_PAGE_NUMBER,
+  });
 };

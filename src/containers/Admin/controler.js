@@ -19,6 +19,7 @@ import {
   getRoles,
   roleDetail,
 } from "store/actions/organization";
+import { alphaNumeric } from "utils";
 
 function Controller(props) {
   const {
@@ -38,9 +39,13 @@ function Controller(props) {
     setActiveRole,
     setActivePage,
     type,
+    searchQueryActivities,
+    setSearchQueryActivities,
     searchQuery,
     searchQueryProject,
+    setSearchQueryProject,
     searchQueryStats,
+    setSearchQueryStats,
     setSearchQuery,
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
@@ -186,6 +191,7 @@ function Controller(props) {
                 <Dropdown.Item
                   onClick={() => {
                     updateIndexAction("REQUESTED", 1);
+                    setActivePage(1);
                   }}
                 >
                   REQUESTED
@@ -193,6 +199,7 @@ function Controller(props) {
                 <Dropdown.Item
                   onClick={() => {
                     updateIndexAction("REJECTED", 2);
+                    setActivePage(1);
                   }}
                 >
                   REJECTED
@@ -200,6 +207,7 @@ function Controller(props) {
                 <Dropdown.Item
                   onClick={() => {
                     updateIndexAction("APPROVED", 3);
+                    setActivePage(1);
                   }}
                 >
                   APPROVED
@@ -242,7 +250,7 @@ function Controller(props) {
           </span>
         </div>
       ) : null}
-      {type === 'Stats' && subTypeState === 'Queues:Jobs' &&
+      {type === 'Stats' && subTypeState === 'Queues: Jobs' &&
         <Dropdown name="jobType" id="jobType">
           <Dropdown.Toggle id="dropdown-basic">
             {jobType.display_name}
@@ -253,7 +261,7 @@ function Controller(props) {
           </Dropdown.Menu>
         </Dropdown>
       }
-      {type === 'Stats' && subTypeState === 'Queues:Logs' &&
+      {type === 'Stats' && subTypeState === 'Queues: Logs' &&
         <Dropdown name="logType" id="logType">
           <Dropdown.Toggle id="dropdown-basic">
             {logType.display_name}
@@ -266,7 +274,7 @@ function Controller(props) {
           </Dropdown.Menu>
         </Dropdown>
       }
-      {type === 'Stats' && subTypeState === 'Queues:Jobs' && jobType.value === 2 && (
+      {type === 'Stats' && subTypeState === 'Queues: Jobs' && jobType.value === 2 && (
         <div className="retryandforget">
           <button
             className="retry"
@@ -323,9 +331,16 @@ function Controller(props) {
             type="text"
             placeholder="Search"
             value={searchQueryStats}
-            onChange={(e) => searchUserReportQueryHandler(e, subTypeState)}
+            onChange={(e) => {
+              if (e.target.value && alphaNumeric(e.target.value)) {
+                setSearchQueryStats(e.target.value)
+              } else if (e.target.value === '') {
+                setSearchQueryStats('');
+                searchUserReportQueryHandler('', subTypeState)
+              }
+            }}
           />
-          <img src={searchimg} alt="search" />
+          <img src={searchimg} alt="search" onClick={() => searchUserReportQueryHandler(searchQueryStats, subTypeState)}/>
         </div>
       )}
 
@@ -336,9 +351,16 @@ function Controller(props) {
             type="text"
             placeholder="Search"
             value={searchQueryProject}
-            onChange={(e) => searchProjectQueryChangeHandler(e, selectedIndexValueid, subType)}
+            onChange={(e) =>{
+              if (e.target.value) {
+                setSearchQueryProject(e.target.value)
+              } else if (e.target.value === '') {
+                setSearchQueryProject('');
+                searchProjectQueryChangeHandler('', selectedIndexValueid,subType)
+              }
+            }}
           />
-          <img src={searchimg} alt="search" />
+          <img src={searchimg} alt="search" onClick={()=> searchProjectQueryChangeHandler(searchQueryProject, selectedIndexValueid, subType)} />
         </div>
       )}
       {/* {!!search && type === 'Activities' && subType === 'Activity Types' && (
@@ -349,8 +371,21 @@ function Controller(props) {
       )} */}
       {!!search && type === 'Activities' && subType === 'Activity Items' && (
         <div className="search-bar">
-          <input type="text" placeholder="Search" onChange={(e) => searchActivitiesQueryHandler(e, subType)} />
-          <img src={searchimg} alt="search" />
+          <input
+            type="text"
+            placeholder="Search"
+            onChange={
+              (e) => {
+                if (e.target.value && alphaNumeric(e.target.value)) {
+                  setSearchQueryActivities(e.target.value)
+                } else if (e.target.value === '') {
+                  setSearchQueryActivities('');
+                  searchActivitiesQueryHandler('', subType)
+                }
+              }
+            }
+          />
+          <img src={searchimg} alt="search" onClick={() => searchActivitiesQueryHandler(searchQueryActivities, subType)}/>
         </div>
       )}
       {!!importUser && type === 'Project' && subType === 'all' && (
@@ -504,7 +539,7 @@ function Controller(props) {
       {inviteUser && permission?.Organization?.includes('organization:invite-members') && (
         <div className="btn-text">
           <div className="add-user-btn">
-            <Dropdown>
+          <Dropdown drop="down" id="dropdown-button-drop-down">
               <Dropdown.Toggle variant="success" id="dropdown-basic">
                 Invite external user
               </Dropdown.Toggle>
@@ -518,7 +553,7 @@ function Controller(props) {
       {permission?.Organization?.includes('organization:view-user') && type === "Users" && subTypeState === 'All Users' && (
         <div className="btn-text">
           <div className="add-user-btn">
-            <Dropdown>
+          <Dropdown drop="down"  id="dropdown-button-drop-down">
               <Dropdown.Toggle variant="success" id="dropdown-basic">
                 Add internal user
               </Dropdown.Toggle>

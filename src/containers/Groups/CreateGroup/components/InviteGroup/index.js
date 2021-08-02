@@ -51,7 +51,7 @@ function InviteGroup(props) {
           <h2 className="title">Invite Group Members</h2>
           <div className="title-cross" />
         </div>
-        Invite atleast 1 or more member to your group
+        Invite at least 1 or more member to your group
         <div className="invite-member-wrapper">
           <div className="search-box">
             {/*
@@ -114,7 +114,7 @@ function InviteGroup(props) {
               if (selectedMembers.length > 0) {
                 nextStep();
               } else {
-                setErrorMsg('Invite atleast 1 member');
+                setErrorMsg('Invite at least 1 member');
               }
             }}
           >

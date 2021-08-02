@@ -1,5 +1,6 @@
 import config from 'config';
 import httpService from './http.service';
+import { errorCatcher } from './errors';
 
 const { apiVersion } = config;
 
@@ -16,7 +17,10 @@ const getAllSubOrganizationTeams = (subOrgId) => httpService
 const create = (team, subOrgId) => httpService
   .post(`/${apiVersion}/suborganization/${subOrgId}/teams`, team)
   .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject(err.response.data);
+  });
 
 const get = (id, subOrgId) => httpService
   .get(`/${apiVersion}/suborganization/${subOrgId}/teams/${id}`)
@@ -73,6 +77,24 @@ const removeMemberFromProject = (teamId, projectId, id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const teamPermisison = (orgId, teamId) => httpService
+  .get(`/${apiVersion}/suborganization/${orgId}/team/${teamId}/team-permissions`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const teamRoleType = (orgId) => httpService
+  .get(`/${apiVersion}/suborganization/${orgId}/team-role-types`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const checkUserBeforeAdd = (orgId, values) => httpService
+  .post(`/${apiVersion}/suborganization/${orgId}/users/check`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject(err.response.data);
+  });
+
 export default {
   getAll,
   create,
@@ -88,4 +110,7 @@ export default {
   addMembersToProject,
   removeMemberFromProject,
   getAllSubOrganizationTeams,
+  teamRoleType,
+  teamPermisison,
+  checkUserBeforeAdd,
 };

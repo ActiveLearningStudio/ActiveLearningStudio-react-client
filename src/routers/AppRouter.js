@@ -35,7 +35,7 @@ const NeafLogin = loadable(() => import('../containers/Auth/NeafLogin'));
 const VevensityRegister = loadable(() => import('../containers/Auth/VevinsityRegistration'));
 const VevensityLogin = loadable(() => import('../containers/Auth/VevinsityLogin'));
 const AdminPanel = loadable(() => import('../containers/Admin'));
-
+const LtiLogin = loadable(() => import('../containers/Auth/LtiLogin'));
 const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
 const ChangePasswordPage = loadable(() => import('../containers/Account/ChangePasswordPage'));
 // const DashboardPage = loadable(() => import('../containers/Dashboard'));
@@ -81,6 +81,11 @@ const AppRouter = (props) => {
   return (
     <Router history={history}>
       <Switch>
+        <PublicRoute
+          exact
+          path="/lti-sso"
+          component={LtiLogin}
+        />
         <OpenRoute exact path="/sso/dologin/:ssodata" component={SSOLogin} />
         <OpenRoute
           exact

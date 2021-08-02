@@ -10,6 +10,7 @@ import shepherds from 'assets/images/shepherds.svg';
 import sndt from 'assets/images/sndt.png';
 import nevada from 'assets/images/nevada.png';
 import vivensity from 'assets/images/vivensity.png';
+import openeducation from 'assets/images/openeducation.png';
 
 export default function Logo() {
   const logoState = useSelector((state) => state.organization.currentOrganization);
@@ -32,6 +33,8 @@ export default function Logo() {
         setdefaultLogo(nevada);
       } else if (window.location.host.includes('imsparked')) {
         setdefaultLogo(vivensity);
+      } else if (window.location.host.includes('cc.curriki')) {
+        setdefaultLogo(openeducation);
       } else {
         setdefaultLogo(logo);
       }

@@ -70,7 +70,7 @@ function GclassActivityPage(props) {
 
   return (
     <div className="gclass-activity-container">
-      <section className="main-page-content preview iframe-height-resource-shared">
+      <section className="main-page-content preview iframe-height-resource-shared defaultcontainer">
         <Helmet>
           <script
             src="https://dev.currikistudio.org/api/storage/h5p/h5p-core/js/h5p-resizer.js"
