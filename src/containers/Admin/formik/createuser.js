@@ -260,7 +260,7 @@ export default function CreateUser(prop) {
             </div>
             <div className="button-group">
               <button type="submit">
-                {editMode ? 'Edit ' : 'Add '} User
+                {editMode ? 'Save ' : 'Add '} User
               </button>
               <button
                 type="button"
