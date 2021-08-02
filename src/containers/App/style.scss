@@ -1848,7 +1848,7 @@ a:hover {
       line-height: 20px;
       padding: 0;
       text-transform: unset;
-      margin-right: 20px;
+      margin: 20px;
 
       .publish-btn {
         display: flex;
@@ -3941,7 +3941,7 @@ body.collapsed {
   max-width: 1040px !important;
   margin:0 auto;
   padding: 20px;
-  
+
   @media (max-width:1280px) {
     padding: 0px;
   }
@@ -3955,3 +3955,4 @@ body.collapsed {
   }
 
 }
+
