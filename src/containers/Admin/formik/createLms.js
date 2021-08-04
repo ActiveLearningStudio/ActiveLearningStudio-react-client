@@ -49,38 +49,38 @@ export default function CreateUser(prop) {
         validate={(values) => {
           const errors = {};
           if (!values.lms_url) {
-            errors.lms_url = 'required';
+            errors.lms_url = 'Required';
           }
           if (!values.lms_access_token) {
-            errors.lms_access_token = 'required';
+            errors.lms_access_token = 'Required';
           }
           if (!values.site_name) {
-            errors.site_name = 'required';
+            errors.site_name = 'Required';
           }
           if (!values.lti_client_id) {
-            errors.lti_client_id = 'required';
+            errors.lti_client_id = 'Required';
           }
           // if (!values.moodle) {
           //   errors.moodle = 'required';
           // }
 
           // if (!values.canvas) {
-          //   errors.canvas = 'required';
+          //   errors.canvas = 'Required';
           // }
           // if (!values.access_key) {
-          //   errors.access_key = 'required';
+          //   errors.access_key = 'Required';
           // }
           // if (!values.secret_key) {
-          //   errors.secret_key = 'required';
+          //   errors.secret_key = 'Required';
           // }
           // if (!values.description) {
-          //   errors.description = 'required';
+          //   errors.description = 'Required';
           // }
           if (!values.user_id) {
             errors.user_id = 'Required';
           }
           if (!values.lms_login_id) {
-            errors.lms_login_id = 'required';
+            errors.lms_login_id = 'Required';
           }
           return errors;
         }}
@@ -304,7 +304,7 @@ export default function CreateUser(prop) {
                     setLoaderlmsImgUser(false);
 
                     setStateOrgUsers(data?.users);
-                    
+
 
                   })
                 }}
