@@ -17,10 +17,14 @@ import Pagination from 'react-js-pagination';
 import QueryString from 'query-string';
 import { simpleSearchAction, cloneProject } from 'store/actions/search';
 import { loadResourceTypesAction } from 'store/actions/resource';
-import { addProjectFav } from 'store/actions/project';
+import { addProjectFav, loadLmsAction, getProjectCourseFromLMS } from 'store/actions/project';
 import { getProjectId, googleShare } from 'store/actions/gapi';
 import GoogleModel from 'components/models/GoogleLoginModal';
 import { educationLevels, subjects } from 'components/ResourceCard/AddResource/dropdownData';
+import ShareLink from 'components/ResourceCard/ShareLink';
+import { lmsPlaylist } from 'store/actions/playlist';
+import { loadSafariMontagePublishToolAction, closeSafariMontageToolAction } from 'store/actions/LMS/genericLMS';
+
 // import Header from 'components/Header';
 import Footer from 'components/Footer';
 // import Sidebar from 'components/Sidebar';
@@ -70,6 +74,8 @@ function SearchInterface(props) {
   const allState = useSelector((state) => state.search);
   const activityTypesState = useSelector((state) => state.resource.types);
   const { currentOrganization, permission } = useSelector((state) => state.organization);
+  const safariMontagePublishTool = useSelector((state) => state.genericLMS.safariMontagePublishTool);
+  const allLms = useSelector((state) => state.share);
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(0);
@@ -88,6 +94,10 @@ function SearchInterface(props) {
   const [activeEducation, setActiveEducation] = useState([]);
   const [searchType, setSearchType] = useState(null);
   const [authorName, SetAuthor] = useState('');
+  const [safariToolHtml, setSafariToolHtml] = useState(null);
+  useEffect(() => {
+    setSafariToolHtml(encodeURI(safariMontagePublishTool));
+  }, [safariMontagePublishTool]);
   // const [selectedAuthor, setSelectedAuthor] = useState([]);
   // const [authors, setAuthors] = useState([]);
   // var activeSubject1;
@@ -95,6 +105,9 @@ function SearchInterface(props) {
 
 // activeSubject1 = activeSubject.map((data1) => data1.replace('and', '&'))
 //   },[activeSubject])
+  useMemo(() => {
+    dispatch(loadLmsAction());
+  }, []);
   useMemo(() => {
     setActiveEducation([]);
     setActiveSubject([]);
@@ -857,13 +870,13 @@ function SearchInterface(props) {
                                     </div>
                                     {(permission?.Project?.includes('project:clone') || permission?.Project?.includes('project:publish')) && res.model === 'Project'
                                     && (
-                                      <Dropdown>
+                                      <Dropdown className="playlist-dropdown check">
                                         <Dropdown.Toggle>
                                           <FontAwesomeIcon icon="ellipsis-v" />
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
                                           {permission?.Project?.includes('project:clone') && (
-                                            <div
+                                            <Dropdown.Item
                                               onClick={() => {
                                                 Swal.fire({
                                                   html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
@@ -881,36 +894,64 @@ function SearchInterface(props) {
                                             >
                                               <FontAwesomeIcon className="mr-2" icon="clone" />
                                               Duplicate
-                                            </div>
+                                            </Dropdown.Item>
                                           )}
                                           {permission?.Project?.includes('project:publish') && (
-                                            <div>
-                                              <li
-                                                onClick={() => {
-                                                  setShow(true);
-                                                  getProjectId(res.id);
-                                                  setSelectedProjectId(res.id);
-                                                  dispatch(googleShare(false));
-                                                }}
-                                              >
-                                                <a>
-                                                  <FontAwesomeIcon className="mr-2" icon="newspaper" />
-                                                  Publish Google Classroom
-                                                </a>
-                                              </li>
-                                            </div>
+                                            <li className="dropdown-submenu send">
+                                              <a tabIndex="-1">
+                                                <FontAwesomeIcon icon="newspaper" className="mr-2" />
+                                                Publish
+                                              </a>
+                                              <ul className="dropdown-menu check">
+                                                <li
+                                                  onClick={() => {
+                                                    setShow(true);
+                                                    getProjectId(res.id);
+                                                    setSelectedProjectId(res.id);
+                                                    dispatch(googleShare(false));
+                                                  }}
+                                                >
+                                                  <a>
+                                                    Google Classroom
+                                                  </a>
+                                                </li>
+                                                {allLms.shareVendors && allLms.shareVendors.map((data) => (
+                                                  data.lms_name !== 'safarimontage' && (
+                                                  <li>
+                                                    <a
+                                                      onClick={async () => {
+                                                        const allPlaylist = await dispatch(lmsPlaylist(res.id));
+                                                        if (allPlaylist) {
+                                                          dispatch(
+                                                            getProjectCourseFromLMS(
+                                                              data.lms_name.toLowerCase(),
+                                                              data.id,
+                                                              res.id,
+                                                              allPlaylist.playlists,
+                                                              data.lms_url,
+                                                            ),
+                                                          );
+                                                        }
+                                                      }}
+                                                    >
+                                                      {data.site_name}
+                                                    </a>
+                                                  </li>
+                                                )))}
+                                              </ul>
+                                            </li>
                                           )}
                                         </Dropdown.Menu>
                                       </Dropdown>
                                     )}
                                     {permission?.Playlist?.includes('playlist:duplicate') && res.model === 'Playlist'
                                     && (
-                                      <Dropdown>
+                                      <Dropdown className="playlist-dropdown check">
                                         <Dropdown.Toggle>
                                           <FontAwesomeIcon icon="ellipsis-v" />
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
-                                          <div
+                                          <Dropdown.Item
                                             onClick={() => {
                                               setModalShow(true);
                                               setClone(res);
@@ -918,26 +959,79 @@ function SearchInterface(props) {
                                           >
                                             <FontAwesomeIcon className="mr-2" icon="clone" />
                                             Duplicate
-                                          </div>
+                                          </Dropdown.Item>
+                                          {permission?.Playlist?.includes('playlist:publish') && (
+                                            <ShareLink
+                                              playlistId={res.id}
+                                              projectId={res.project_id}
+                                            />
+                                          )}
                                         </Dropdown.Menu>
                                       </Dropdown>
                                     )}
                                     {permission?.Activity?.includes('activity:duplicate') && res.model === 'Activity'
                                     && (
-                                      <Dropdown>
+                                      <Dropdown className="playlist-dropdown check">
                                         <Dropdown.Toggle>
                                           <FontAwesomeIcon icon="ellipsis-v" />
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
-                                          <div
-                                            onClick={() => {
-                                              setModalShow(true);
-                                              setClone(res);
-                                            }}
-                                          >
-                                            <FontAwesomeIcon className="mr-2" icon="clone" />
-                                            Duplicate
-                                          </div>
+                                          <>
+                                            <Dropdown.Item
+                                              onClick={() => {
+                                                setModalShow(true);
+                                                setClone(res);
+                                              }}
+                                            >
+                                              <FontAwesomeIcon className="mr-2" icon="clone" />
+                                              Duplicate
+                                            </Dropdown.Item>
+                                            {permission?.Activity?.includes('activity:share') && allLms?.length !== 0 && (
+                                              <li className="dropdown-submenu send">
+                                                <a tabIndex="-1" className="dropdown-item">
+                                                  <FontAwesomeIcon icon="newspaper" className="mr-2" />
+                                                  Publish
+                                                </a>
+                                                <ul className="dropdown-menu check">
+                                                  {allLms.shareVendors.map((data) => {
+                                                    if (data.lms_name !== 'safarimontage') return false;
+
+                                                    return (
+                                                      <li>
+                                                        <a
+                                                          onClick={() => {
+                                                            dispatch(loadSafariMontagePublishToolAction(
+                                                              res.project_id,
+                                                              res.playlist_id,
+                                                              res.id,
+                                                              data.id,
+                                                            ));
+                                                          }}
+                                                        >
+                                                          {data.site_name}
+                                                        </a>
+                                                      </li>
+                                                    );
+                                                  })}
+                                                  <Modal
+                                                    dialogClassName="safari-modal"
+                                                    show={safariMontagePublishTool}
+                                                    onHide={() => dispatch(closeSafariMontageToolAction())}
+                                                    aria-labelledby="example-modal-sizes-title-lg"
+                                                  >
+                                                    <Modal.Header closeButton>
+                                                      <Modal.Title id="example-modal-sizes-title-lg">
+                                                        Safari Montage
+                                                      </Modal.Title>
+                                                    </Modal.Header>
+                                                    <Modal.Body>
+                                                      <iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariToolHtml}`} />
+                                                    </Modal.Body>
+                                                  </Modal>
+                                                </ul>
+                                              </li>
+                                            )}
+                                          </>
                                         </Dropdown.Menu>
                                       </Dropdown>
                                     )}
@@ -1042,58 +1136,80 @@ function SearchInterface(props) {
                                         </div>
                                         {(permission?.Project?.includes('project:clone') || permission?.Project?.includes('project:publish'))
                                           && (
-                                          <Dropdown>
+                                          <Dropdown className="playlist-dropdown check">
                                             <Dropdown.Toggle>
                                               <FontAwesomeIcon icon="ellipsis-v" />
                                             </Dropdown.Toggle>
-
                                             <Dropdown.Menu>
                                               {permission?.Project?.includes('project:clone') && (
-                                                <div
+                                                <Dropdown.Item
                                                   onClick={() => {
-                                                    if (res.model === 'Project') {
-                                                      Swal.fire({
-                                                        html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
-                                                        showCancelButton: true,
-                                                        confirmButtonColor: '#3085d6',
-                                                        cancelButtonColor: '#d33',
-                                                        confirmButtonText: 'Ok',
-                                                      })
-                                                        .then((result) => {
-                                                          if (result.value) {
-                                                            cloneProject(res.id);
-                                                          }
-                                                        });
-                                                    } else {
-                                                      setModalShow(true);
-                                                      setClone(res);
-                                                    }
+                                                    Swal.fire({
+                                                      html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
+                                                      showCancelButton: true,
+                                                      confirmButtonColor: '#3085d6',
+                                                      cancelButtonColor: '#d33',
+                                                      confirmButtonText: 'Ok',
+                                                    })
+                                                      .then((result) => {
+                                                        if (result.value) {
+                                                          cloneProject(res.id);
+                                                        }
+                                                      });
                                                   }}
                                                 >
                                                   <FontAwesomeIcon className="mr-2" icon="clone" />
-                                                  Clone
-                                                </div>
+                                                  Duplicate
+                                                </Dropdown.Item>
                                               )}
                                               {permission?.Project?.includes('project:publish') && (
-                                                <div>
-                                                  <li
-                                                    onClick={() => {
-                                                      setShow(true);
-                                                      getProjectId(res.id);
-                                                      setSelectedProjectId(res.id);
-                                                      dispatch(googleShare(false));
-                                                    }}
-                                                  >
-                                                    <a>
-                                                      <FontAwesomeIcon className="mr-2" icon="newspaper" />
-                                                      Publish Google Classroom
-                                                    </a>
-                                                  </li>
-                                                </div>
+                                                <li className="dropdown-submenu send">
+                                                  <a tabIndex="-1">
+                                                    <FontAwesomeIcon icon="newspaper" className="mr-2" />
+                                                    Publish
+                                                  </a>
+                                                  <ul className="dropdown-menu check">
+                                                    <li
+                                                      onClick={() => {
+                                                        setShow(true);
+                                                        getProjectId(res.id);
+                                                        setSelectedProjectId(res.id);
+                                                        dispatch(googleShare(false));
+                                                      }}
+                                                    >
+                                                      <a>
+                                                        Google Classroom
+                                                      </a>
+                                                    </li>
+                                                    {allLms.shareVendors && allLms.shareVendors.map((data) => (
+                                                      data.lms_name !== 'safarimontage' && (
+                                                      <li>
+                                                        <a
+                                                          onClick={async () => {
+                                                            const allPlaylist = await dispatch(lmsPlaylist(res.id));
+                                                            if (allPlaylist) {
+                                                              dispatch(
+                                                                getProjectCourseFromLMS(
+                                                                  data.lms_name.toLowerCase(),
+                                                                  data.id,
+                                                                  res.id,
+                                                                  allPlaylist.playlists,
+                                                                  data.lms_url,
+                                                                ),
+                                                              );
+                                                            }
+                                                          }}
+                                                        >
+                                                          {data.site_name}
+                                                        </a>
+                                                      </li>
+                                                    )))}
+                                                  </ul>
+                                                </li>
                                               )}
                                             </Dropdown.Menu>
                                           </Dropdown>
-                                          )}
+                                        )}
                                       </div>
                                     )}
                                   </>
@@ -1178,37 +1294,27 @@ function SearchInterface(props) {
                                             <p>{res.description}</p>
                                           </div>
                                           {permission?.Playlist?.includes('playlist:duplicate')
-                                            && (
-                                            <Dropdown>
+                                          && (
+                                            <Dropdown className="playlist-dropdown check">
                                               <Dropdown.Toggle>
                                                 <FontAwesomeIcon icon="ellipsis-v" />
                                               </Dropdown.Toggle>
-
                                               <Dropdown.Menu>
-                                                <div
+                                                <Dropdown.Item
                                                   onClick={() => {
-                                                    if (res.model === 'Project') {
-                                                      Swal.fire({
-                                                        html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
-                                                        showCancelButton: true,
-                                                        confirmButtonColor: '#3085d6',
-                                                        cancelButtonColor: '#d33',
-                                                        confirmButtonText: 'Ok',
-                                                      })
-                                                        .then((result) => {
-                                                          if (result.value) {
-                                                            cloneProject(res.id);
-                                                          }
-                                                        });
-                                                    } else {
-                                                      setModalShow(true);
-                                                      setClone(res);
-                                                    }
+                                                    setModalShow(true);
+                                                    setClone(res);
                                                   }}
                                                 >
                                                   <FontAwesomeIcon className="mr-2" icon="clone" />
                                                   Duplicate
-                                                </div>
+                                                </Dropdown.Item>
+                                                {permission?.Playlist?.includes('playlist:publish') && (
+                                                  <ShareLink
+                                                    playlistId={res.id}
+                                                    projectId={res.project_id}
+                                                  />
+                                                )}
                                               </Dropdown.Menu>
                                             </Dropdown>
                                           )}
@@ -1296,37 +1402,69 @@ function SearchInterface(props) {
                                               </ul>
                                               <p>{res.description}</p>
                                             </div>
-                                            {permission?.Activity?.includes('activity:duplicate')
+                                            {permission?.Activity?.includes('activity:duplicate') && res.model === 'Activity'
                                             && (
-                                              <Dropdown>
+                                              <Dropdown className="playlist-dropdown check">
                                                 <Dropdown.Toggle>
                                                   <FontAwesomeIcon icon="ellipsis-v" />
                                                 </Dropdown.Toggle>
-
                                                 <Dropdown.Menu>
-                                                  <div
-                                                    onClick={() => {
-                                                      if (res.model === 'Project') {
-                                                        Swal.fire({
-                                                          html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
-                                                          showCancelButton: true,
-                                                          confirmButtonColor: '#3085d6',
-                                                          cancelButtonColor: '#d33',
-                                                          confirmButtonText: 'Ok',
-                                                        }).then((result) => {
-                                                          if (result.value) {
-                                                            cloneProject(res.id);
-                                                          }
-                                                        });
-                                                      } else {
+                                                  <>
+                                                    <Dropdown.Item
+                                                      onClick={() => {
                                                         setModalShow(true);
                                                         setClone(res);
-                                                      }
-                                                    }}
-                                                  >
-                                                    <FontAwesomeIcon className="mr-2" icon="clone" />
-                                                    Duplicate
-                                                  </div>
+                                                      }}
+                                                    >
+                                                      <FontAwesomeIcon className="mr-2" icon="clone" />
+                                                      Duplicate
+                                                    </Dropdown.Item>
+                                                    {permission?.Activity?.includes('activity:share') && allLms?.length !== 0 && (
+                                                      <li className="dropdown-submenu send">
+                                                        <a tabIndex="-1" className="dropdown-item">
+                                                          <FontAwesomeIcon icon="newspaper" className="mr-2" />
+                                                          Publish
+                                                        </a>
+                                                        <ul className="dropdown-menu check">
+                                                          {allLms.shareVendors.map((data) => {
+                                                            if (data.lms_name !== 'safarimontage') return false;
+
+                                                            return (
+                                                              <li>
+                                                                <a
+                                                                  onClick={() => {
+                                                                    dispatch(loadSafariMontagePublishToolAction(
+                                                                      res.project_id,
+                                                                      res.playlist_id,
+                                                                      res.id,
+                                                                      data.id,
+                                                                    ));
+                                                                  }}
+                                                                >
+                                                                  {data.site_name}
+                                                                </a>
+                                                              </li>
+                                                            );
+                                                          })}
+                                                          <Modal
+                                                            dialogClassName="safari-modal"
+                                                            show={safariMontagePublishTool}
+                                                            onHide={() => dispatch(closeSafariMontageToolAction())}
+                                                            aria-labelledby="example-modal-sizes-title-lg"
+                                                          >
+                                                            <Modal.Header closeButton>
+                                                              <Modal.Title id="example-modal-sizes-title-lg">
+                                                                Safari Montage
+                                                              </Modal.Title>
+                                                            </Modal.Header>
+                                                            <Modal.Body>
+                                                              <iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariToolHtml}`} />
+                                                            </Modal.Body>
+                                                          </Modal>
+                                                        </ul>
+                                                      </li>
+                                                    )}
+                                                  </>
                                                 </Dropdown.Menu>
                                               </Dropdown>
                                             )}
