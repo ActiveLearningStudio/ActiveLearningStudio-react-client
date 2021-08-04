@@ -183,6 +183,9 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
     image: data.image,
     parent_id: parent,
     domain: data.domain,
+    account_id: data.account_id || undefined,
+    api_key: data.api_key || undefined,
+    unit_path: data.unit_path || undefined,
     // admins: adminUsers,
     // users: usersList,
   };
