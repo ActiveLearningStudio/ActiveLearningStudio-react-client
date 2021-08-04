@@ -42,9 +42,9 @@ export default function CreateOrg(prop) {
           name: editMode ? activeEdit?.name : "",
           description: editMode ? activeEdit?.description : "",
           domain: editMode ? activeEdit?.domain : "",
-          account_id: editMode ? activeEdit?.account_id : "",
-          api_key: editMode ? activeEdit?.api_key : "",
-          unit_path: editMode ? activeEdit?.unit_path : "",
+          account_id: editMode ? activeEdit?.account_id : undefined,
+          api_key: editMode ? activeEdit?.api_key : undefined,
+          unit_path: editMode ? activeEdit?.unit_path : undefined,
         }}
         validate={(values) => {
           const errors = {};
