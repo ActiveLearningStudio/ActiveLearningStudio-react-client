@@ -62,6 +62,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         startDate: values.fromDate,
         endDate: values.toDate,
         organization_id: activeOrganization?.id,
+        searchType: 'org_projects',
       };
     } else {
       sendData = {
@@ -77,6 +78,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         startDate: values.fromDate,
         endDate: values.toDate,
         organization_id: activeOrganization?.id,
+        searchType: values.type === 'public' ? 'showcase_projects' : 'my_projects',
       };
     }
   } else {
@@ -94,6 +96,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         startDate: values.fromDate,
         endDate: values.toDate,
         organization_id: activeOrganization?.id,
+        searchType: 'org_projects',
       };
     } else {
       sendData = {
@@ -109,6 +112,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         startDate: values.fromDate,
         endDate: values.toDate,
         organization_id: activeOrganization?.id,
+        searchType: values.type === 'public' ? 'showcase_projects' : 'my_projects',
       };
     }
   }
