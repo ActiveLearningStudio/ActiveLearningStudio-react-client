@@ -3938,13 +3938,16 @@ body.collapsed {
 .iframe-height-resource-shared.defaultcontainer{
 
   .flex-container.previews {
-  max-width: 1040px !important;
+  max-width: 75% !important;
   margin:0 auto;
   padding: 20px;
 
   @media (max-width:1280px) {
     padding: 0px;
   }
+  // @media (max-width:767px) {
+  //   max-width: 95% !important;
+  // }
   }
 
   .activity-bg.left-vdo {
