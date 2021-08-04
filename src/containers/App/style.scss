@@ -3941,6 +3941,10 @@ body.collapsed {
   max-width: 65% !important;
   margin:0 auto;
   padding: 20px;
+  display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 
   @media (max-width:1280px) {
     padding: 0px;
