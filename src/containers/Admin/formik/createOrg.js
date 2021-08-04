@@ -57,7 +57,7 @@ export default function CreateOrg(prop) {
           if (!values.domain) {
             errors.domain = "Required";
           } else if (values.domain?.length < 2 || values.domain?.length > 255) {
-            errors.domain = "Character limit should be greater then one and less than 255";
+            errors.domain = "Character limit should be greater than one and less than 255";
           }
           if (!values.image) {
             errors.image = "Required";
