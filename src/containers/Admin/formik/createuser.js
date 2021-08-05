@@ -146,7 +146,7 @@ export default function CreateUser(prop) {
           setFieldValue,
           /* and other goodies */
         }) => (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} autoComplete="off">
             <h2>{editMode ? 'Edit ' : 'Add '} User</h2>
             <div className="form-group-create">
               <h3>First Name</h3>
@@ -180,6 +180,7 @@ export default function CreateUser(prop) {
                 type="email"
                 name="email"
                 onChange={handleChange}
+                autoComplete="nope"
                 onBlur={handleBlur}
                 value={values.email}
               />
@@ -192,6 +193,7 @@ export default function CreateUser(prop) {
               <input
                 type="password"
                 name="password"
+                autoComplete="new-password"
                 placeholder={editMode ? 'Leave blank for unchanged' : 'Password'}
                 onChange={handleChange}
                 onBlur={handleBlur}
