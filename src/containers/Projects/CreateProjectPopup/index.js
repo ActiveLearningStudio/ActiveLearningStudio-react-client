@@ -125,21 +125,6 @@ const onSubmit = async (values, dispatch, props) => {
   history.push('/projects');
 };
 
-export const uploadThumb = async (e, props) => {
-  const formData = new FormData();
-  try {
-    formData.append('thumb', e.target.files[0]);
-    imageValidation = '';
-    await props.uploadProjectThumbnail(formData);
-  } catch (err) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: 'Image upload failed, kindly try again',
-    });
-  }
-};
-
 let CreateProjectPopup = (props) => {
   const {
     isLoading,
@@ -149,6 +134,7 @@ let CreateProjectPopup = (props) => {
     handleCloseProjectModal,
     showCreateProjectModal,
     getProjectVisibilityTypes,
+    uploadProjectThumbnail,
     vType,
   } = props;
   const stateHeader = useSelector((state) => state.organization);
@@ -166,7 +152,20 @@ let CreateProjectPopup = (props) => {
     },
     [handleCloseProjectModal],
   );
-
+  const uploadThumb = async (e) => {
+    const formData = new FormData();
+    try {
+      formData.append('thumb', e.target.files[0]);
+      imageValidation = '';
+      await uploadProjectThumbnail(formData);
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: permission?.Project?.includes('project:upload-thumb') ? 'Image upload failed, kindly try again' : 'You do not have permission to upload image',
+      });
+    }
+  };
   useEffect(() => {
     if (!editMode) {
       showCreateProjectModal();
@@ -262,7 +261,7 @@ let CreateProjectPopup = (props) => {
                         text: 'Selected file size should be less then 100MB.',
                       });
                     } else {
-                      uploadThumb(e, props);
+                      uploadThumb(e);
                     }
                   }}
                 />
@@ -395,6 +394,7 @@ CreateProjectPopup.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   handleCloseProjectModal: PropTypes.func.isRequired,
+  uploadProjectThumbnail: PropTypes.func.isRequired,
   showCreateProjectModal: PropTypes.func.isRequired,
   getProjectVisibilityTypes: PropTypes.func.isRequired,
   vType: PropTypes.string.isRequired,
