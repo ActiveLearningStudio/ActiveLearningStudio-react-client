@@ -110,7 +110,6 @@ function InviteDialog(props) {
 
   return (
     <div className="invite-wrapper" ref={inviteRef}>
-      {authUser && authUser.role === 'owner' && (
         <button
           type="button"
           className="invite-btn"
@@ -118,7 +117,6 @@ function InviteDialog(props) {
         >
           Invite a Team Member
         </button>
-      )}
 
       {visible && (
         <div onFocus={() => toggleInvitableUsers(false)} className="invite-dialog">

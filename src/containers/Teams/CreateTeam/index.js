@@ -59,9 +59,12 @@ function CreateTeam(props) {
   const [selectedProjects, setSelectedProjects] = useState([]);
   const [searchProject, setSearchProject] = useState('');
   const organization = useSelector((state) => state.organization);
+  const { activeOrganization } = organization;
   const { permission } = organization;
   useEffect(() => {
-    loadProjects();
+    if (activeOrganization) {
+      loadProjects();
+    }
     resetSelectedTeam();
     showCreate();
     if (editMode) {
@@ -69,7 +72,7 @@ function CreateTeam(props) {
       setSelectedMembers(selectedTeam?.users);
       setSelectedProjects(selectedTeam?.projects.map((project) => project.id));
     }
-  }, [loadProjects, resetSelectedTeam, showCreate, editMode, selectedTeam, updateSelectedTeam]);
+  }, [loadProjects, resetSelectedTeam, showCreate, editMode, selectedTeam, updateSelectedTeam, activeOrganization]);
 
   const submitBack = () => {
     if (showInviting) {

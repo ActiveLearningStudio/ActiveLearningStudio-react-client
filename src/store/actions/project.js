@@ -166,7 +166,7 @@ export const loadMyProjectsAction = () => async (dispatch) => {
     dispatch({
       type: actionTypes.PAGE_LOADING,
     });
-    const { projects } = await projectService.getAll(activeOrganization.id);
+    const { projects } = await projectService.getAll(activeOrganization?.id);
 
     dispatch({
       type: actionTypes.LOAD_MY_PROJECTS,

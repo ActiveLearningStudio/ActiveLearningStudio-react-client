@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 
-import { inviteMembersAction, removeMemberAction } from 'store/actions/team';
+import { getTeamPermission, inviteMembersAction, removeMemberAction } from 'store/actions/team';
 import { searchUsersAction } from 'store/actions/auth';
 import InviteDialog from 'components/InviteDialog';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -27,6 +27,10 @@ function TeamMemberView(props) {
     removeMember,
   } = props;
   const organization = useSelector((state) => state.organization);
+  const team = useSelector((state) => state.team);
+  const dispatch = useDispatch();
+
+  const { teamPermission } = team;
   const { permission } = organization;
   const [search, setSearch] = useState('');
   const handleChangeSearch = useCallback((e) => {
@@ -36,6 +40,12 @@ function TeamMemberView(props) {
   const [showInvite, setShowInvite] = useState(false);
 
   const [selectedMember, setSelectedMember] = useState(null);
+
+  useEffect(() => {
+    if (!teamPermission) {
+      dispatch(getTeamPermission(organization?.currentOrganization?.id, id));
+    }
+  }, [team]);
 
   const handleInvite = useCallback((selectedUsers, emailNote) => {
     inviteMembers(id, selectedUsers, emailNote)

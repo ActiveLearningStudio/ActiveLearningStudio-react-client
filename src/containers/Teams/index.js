@@ -54,12 +54,14 @@ function TeamsPage(props) {
       // } else if (!permission?.Team?.includes('team:view')) {
       //   await loadTeams();
       // }
-      if ((activeOrganization?.id === currentOrganization?.id) && permission?.Team) {
-        await loadTeams();
-        setAlertCheck(true);
-      } else if (activeOrganization?.id !== currentOrganization?.id) {
-        await loadSubOrgTeams();
-        setAlertCheck(true);
+      if (activeOrganization && currentOrganization) {
+        if (activeOrganization?.id !== currentOrganization?.id) {
+          await loadSubOrgTeams();
+          setAlertCheck(true);
+        } else if ((activeOrganization?.id === currentOrganization?.id) && permission?.Team) {
+          await loadTeams();
+          setAlertCheck(true);
+        }
       }
     }
     )();
