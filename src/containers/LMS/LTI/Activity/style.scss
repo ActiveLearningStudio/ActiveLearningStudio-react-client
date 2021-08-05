@@ -1,1 +1,21 @@
 @import 'assets/css/index';
+.added-middle-height-width {
+	max-width: 65% !important;
+	margin:0 auto;
+	padding: 20px;
+	height: 100vh;
+	.h5p-iframe-wrapper{
+      display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  height: 100%;
+	}
+
+
+	  @media (max-width:1280px) {
+		padding: 0px;
+	  }
+	  @media (max-width:767px) {
+		max-width: 95% !important;
+	  }
+  }
