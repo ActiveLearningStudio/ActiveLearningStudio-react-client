@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
@@ -35,7 +35,8 @@ function PlaylistPreview(props) {
     collapsed,
     setCollapsed,
   } = props;
-
+  const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
   useEffect(() => {
     window.scrollTo(0, 0);
     loadPlaylist(projectId, playlistId);
@@ -296,29 +297,31 @@ function PlaylistPreview(props) {
                     />
                   </div>
                 </Tab>
-                <Tab eventKey="profile" title="Share">
-                  <div className="watcher spaner">
-                    {activityShared && (
-                      <div className="shared-link" onClick={viewSharedLink}>
-                        <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
-                        View Shared Link
+                {permission?.Activity?.includes('activity:share') && (
+                  <Tab eventKey="profile" title="Share">
+                    <div className="watcher spaner">
+                      {activityShared && (
+                        <div className="shared-link" onClick={viewSharedLink}>
+                          <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
+                          View Shared Link
+                        </div>
+                      )}
+                      <div>
+                        Share Activity
+                        <Switch
+                          onColor="#084892"
+                          onChange={share}
+                          checked={activityShared}
+                          className="react-switch"
+                          id="material-switch"
+                          handleDiameter={30}
+                          uncheckedIcon={false}
+                          checkedIcon={false}
+                        />
                       </div>
-                    )}
-                    <div>
-                      Share Activity
-                      <Switch
-                        onColor="#084892"
-                        onChange={share}
-                        checked={activityShared}
-                        className="react-switch"
-                        id="material-switch"
-                        handleDiameter={30}
-                        uncheckedIcon={false}
-                        checkedIcon={false}
-                      />
                     </div>
-                  </div>
-                </Tab>
+                  </Tab>
+                )}
                 <Tab eventKey="contact" title="About">
                   <div className="descr-">
                     <div className="tti">

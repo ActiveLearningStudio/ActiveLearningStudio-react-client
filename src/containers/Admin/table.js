@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Pagination from "react-js-pagination";
 import adminService from "services/admin.service";
+import projectService from "services/project.service";
 import * as actionTypes from 'store/actionTypes';
-//import { useHistory } from 'react-router-dom';
 import {
   deleteUserFromOrganization,
   deleteOrganization,
@@ -38,6 +38,7 @@ function Table(props) {
     activePage,
     setActivePage,
     searchAlertToggler,
+    searchAlertTogglerStats,
     subType,
     setCurrentTab,
     setChangeIndexValue,
@@ -50,6 +51,7 @@ function Table(props) {
   const allState = useSelector((state) => state);
   const dispatch = useDispatch();
   const [localStateData, setLocalStateData] = useState([]);
+  const [localstatePagination, setLocalStatePagination] = useState()
   //update table after crud
   useEffect(() => {
     if (type === "LMS") {
@@ -86,6 +88,7 @@ function Table(props) {
       } else {
         setLocalStateData(data)
       }
+      setLocalStatePagination(data)
     }
   }, [data]);
   const handleDeleteUser = (user) => {
@@ -166,12 +169,12 @@ function Table(props) {
         <table>
           <thead>
             {tableHead?.map((head) => (
-              <th>{head}</th>
+             (head === 'Users' && permission?.Organization?.includes('organization:view-user')) ? <th> {head} </th>: head !== 'Users' ? <th>{head}</th> : null
             ))}
           </thead>
           <tbody>
-            {type === "Stats" && subTypeState === 'Report' &&
-              data ? data?.data?.map((row) => (
+            {(type === "Stats" && subTypeState === 'Report') && (
+              data?.data?.length > 0 ? data?.data?.map((row) => (
                 <tr>
                   <td>{row.first_name}</td>
                   <td>{row.last_name}</td>
@@ -180,10 +183,22 @@ function Table(props) {
                   <td>{row.playlists_count}</td>
                   <td>{row.activities_count}</td>
                 </tr>
-              )) :
-              null}
-            {type === 'Stats' && subTypeState === 'Queues:Jobs' && (
-              data ? (data?.data.map((job) => (
+              )) : (data?.data?.length === 0 || searchAlertTogglerStats === 0) ? (
+                <tr>
+                  <td colspan="6">
+                    <Alert variant="warning">No Reports Found</Alert>
+                  </td>
+                </tr>
+              ) : (
+                <tr>
+                  <td colspan="6">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              )
+            )}
+            {(type === 'Stats' && subTypeState === 'Queues: Jobs') && (
+              data?.data?.length > 0 ? (data?.data.map((job) => (
                 <tr>
                   <td>{job.id}</td>
                   <td>{job.queue}</td>
@@ -215,15 +230,22 @@ function Table(props) {
                   )}
                 </tr>
               )))
-                : (
-                  <tr colSpan="6">
-                    No data available in table
-                  </tr>
-                )
+                : (data?.data?.length === 0 || searchAlertTogglerStats === 0) ? (
+                <tr>
+                  <td colspan="6">
+                    <Alert variant="warning">No Queue: Jobs Found</Alert>
+                  </td>
+                </tr>
+              ) : (
+                <tr>
+                  <td colspan="6">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              )
             )}
-            {type === 'Stats' && subTypeState === 'Queues:Logs' && (
-
-              data ? data?.data.map((job) => (
+            {(type === 'Stats' && subTypeState === 'Queues: Logs') && (
+              data?.data?.length > 0 ? data?.data.map((job) => (
                 <tr>
                   <td>{job.name}</td>
                   <td>
@@ -243,8 +265,19 @@ function Table(props) {
                   <td>{job.exception_message}</td>
                 </tr>
               ))
-                :
-                null
+              : (data?.data?.length === 0 || searchAlertTogglerStats === 0) ? (
+                <tr>
+                  <td colspan="6">
+                    <Alert variant="warning">No Queue: Logs Found</Alert>
+                  </td>
+                </tr>
+              ) : (
+                <tr>
+                  <td colspan="6">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              )
             )
             }
             {type === "LMS" && (
@@ -468,33 +501,35 @@ function Table(props) {
                       </Link>
                     ) : 'N/A'}
                   </td>
-                  <td>
-                    {row.users_count > 0 ? (
-                      <Link
-                        className="view-all"
-                        onClick={async () => {
-                          if (row.users_count > 0) {
-                            Swal.fire({
-                              title: 'Please Wait !',
-                              html: 'Updating View ...',
-                              allowOutsideClick: false,
-                              onBeforeOpen: () => {
-                                Swal.showLoading();
-                              },
-                            });
-                            if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
-                            Swal.close()
-                            dispatch(clearOrganizationState());
-                            dispatch(getRoles());
-                            dispatch(setActiveTab('Users'));
-                          }
+                  {permission?.Organization?.includes('organization:view-user') && (
+                    <td>
+                      {row.users_count > 0 ? (
+                        <Link
+                          className="view-all"
+                          onClick={async () => {
+                            if (row.users_count > 0) {
+                              Swal.fire({
+                                title: 'Please Wait !',
+                                html: 'Updating View ...',
+                                allowOutsideClick: false,
+                                onBeforeOpen: () => {
+                                  Swal.showLoading();
+                                },
+                              });
+                              if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
+                              Swal.close()
+                              dispatch(clearOrganizationState());
+                              dispatch(getRoles());
+                              dispatch(setActiveTab('Users'));
+                            }
 
 
-                        }}>
-                        {row.users_count}
-                      </Link>
-                    ) : 'N/A'}
-                  </td>
+                          }}>
+                          {row.users_count}
+                        </Link>
+                      ) : 'N/A'}
+                    </td>
+                  )}
                   <td>
                     {row.groups_count > 0 ? (
                       <Link
@@ -623,6 +658,7 @@ function Table(props) {
             {type === "Project" &&
               subType === "all" &&
               (localStateData ? (
+                localStateData?.length > 0 ?
                 localStateData.map((row) => {
                   const createNew = new Date(row.created_at);
                   const updateNew = new Date(row.updated_at);
@@ -648,7 +684,7 @@ function Table(props) {
                       <td>{row.description}</td>
 
                       <td>{row.id}</td>
-                      <td>{row.users?.[0].email}</td>
+                      <td>{row.users?.[0]?.email}</td>
                       <td>{row.indexing_text}</td>
 
                       <td>{row.organization_id}</td>
@@ -682,13 +718,60 @@ function Table(props) {
                         >
                           Export
                         </Link>
+                        <Link
+                                     onClick={() => {
+                                      Swal.fire({
+                                        title: "Are you sure you want to delete this Project?",
+                                        text: "This action is Irreversible",
+                                        icon: "warning",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#084892",
+                                        cancelButtonColor: "#d33",
+                                        confirmButtonText: "Yes, delete it!",
+                                      }).then((result) => {
+                                        if (result.isConfirmed) {
+                                          Swal.fire({
+                                            icon: 'info',
+                                            text: 'Deleting Project...',
+                                            allowOutsideClick: false,
+                                            onBeforeOpen: () => {
+                                              Swal.showLoading();
+                                            },
+                                            button: false,
+                                          });
+                                          const response = projectService.remove(row.id, activeOrganization.id);
+                                          response
+                                            .then((res) => {
+        
+        
+                                              Swal.fire({
+                                                icon: "success",
+                                                text: res?.message,
+        
+                                              });
+                                              const filterProject = localStateData.filter(each => each.id != row.id);
+                                              setLocalStateData(filterProject)
+        
+                                            }).catch(err => console.log(err))
+                                        }
+                                      });
+                                    }}
+                        >
+                          &nbsp;&nbsp;Delete&nbsp;&nbsp;
+                        </Link>
                       </td>
                     </tr>
                   );
-                })
+                }):(
+                  <tr>
+                  <td colspan="11">
+                    <Alert variant="warning">No result found.</Alert>
+                  </td>
+                </tr>
+                )
               ) : (
                 <tr>
-                  <td colspan="11">
+                  <td colspan="13">
                     <Alert variant="primary">Loading data...</Alert>
                   </td>
                 </tr>
@@ -697,16 +780,25 @@ function Table(props) {
             {type === "Project" &&
               subType === "user" &&
               (localStateData ? (
+                localStateData?.length > 0 ?
                 localStateData?.map((row) => {
                   const createNew = new Date(row.created_at);
                   const updateNew = new Date(row.updated_at);
                   return (
                     <tr className="org-rows">
-                      <td>
-                        <img
-                          src={global.config.resourceUrl + row.thumb_url}
-                          alt=""
-                        />
+                       <td>
+                        <div style={{
+                          backgroundImage: row.thumb_url.includes('pexels.com')
+                            ? `url(${row.thumb_url})`
+                            : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                            backgroundSize: 'cover',
+                            height: '100px',
+                            backgroundPosition: 'center',
+                            width:'100px'
+
+                        }} >
+                        </div>
+
                       </td>
                       <td>{row.name}</td>
                       <td>{createNew.toDateString()}</td>
@@ -714,7 +806,7 @@ function Table(props) {
                       {/* <td>{row.description}</td> */}
 
                       <td>{row.id}</td>
-                      <td>{row.users?.[0].email}</td>
+                      <td>{row.users?.[0]?.email}</td>
                       <td>{row.indexing_text}</td>
 
                       <td>{row.organization_id}</td>
@@ -726,10 +818,16 @@ function Table(props) {
                       <td>{updateNew.toDateString()}</td>
                     </tr>
                   );
-                })
+                }):(
+                  <tr>
+                  <td colspan="11">
+                    <Alert variant="warning">No result found.</Alert>
+                  </td>
+                </tr>
+                )
               ) : (
                 <tr>
-                  <td colspan="11">
+                  <td colspan="13">
                     <Alert variant="primary">Loading data...</Alert>
                   </td>
                 </tr>
@@ -738,16 +836,25 @@ function Table(props) {
             {type === "Project" &&
               subType === "index" &&
               (localStateData ? (
+                localStateData?.length > 0 ?
                 localStateData.map((row) => {
                   const createNew = new Date(row.created_at);
                   const updateNew = new Date(row.updated_at);
                   return (
                     <tr className="org-rows">
-                      <td>
-                        <img
-                          src={global.config.resourceUrl + row.thumb_url}
-                          alt=""
-                        />
+                       <td>
+                        <div style={{
+                          backgroundImage: row.thumb_url.includes('pexels.com')
+                            ? `url(${row.thumb_url})`
+                            : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                            backgroundSize: 'cover',
+                            height: '100px',
+                            backgroundPosition: 'center',
+                            width:'100px'
+
+                        }} >
+                        </div>
+
                       </td>
                       <td>{row.name}</td>
                       <td>{createNew.toDateString()}</td>
@@ -755,7 +862,7 @@ function Table(props) {
                       {/* <td>{row.description}</td> */}
 
                       <td>{row.id}</td>
-                      <td>{row.users?.[0].email}</td>
+                      <td>{row.users?.[0]?.email}</td>
                       <td>{row.indexing_text}</td>
 
                       <td>{row.organization_id}</td>
@@ -808,16 +915,13 @@ function Table(props) {
                               const result = adminService.updateIndex(row.id, 2)
                               result.then((data) => {
                                 // console.log(data)
+                                // console.log({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
                                 setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id))
+                                // setLocalStatePagination({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
                                 Swal.fire({
                                   icon: 'success',
                                   text: data.message,
                                 })
-                              }).catch((err) => {
-                                Swal.fire({
-                                  icon: 'error',
-                                  text: 'Error',
-                                });
                               })
                             }}>
                               Reject
@@ -827,10 +931,16 @@ function Table(props) {
                       </td>
                     </tr>
                   );
-                })
+                }):(
+                  <tr>
+                  <td colspan="11">
+                    <Alert variant="warning">No result found.</Alert>
+                  </td>
+                </tr>
+                )
               ) : (
                 <tr>
-                  <td colspan="11">
+                  <td colspan="13">
                     <Alert variant="primary">Loading data...</Alert>
                   </td>
                 </tr>
@@ -973,7 +1083,7 @@ function Table(props) {
           </tbody>
         </table>
       </div>
-      {data?.meta &&
+      {(data?.data?.length > 0 && data?.meta) &&
         <div className="pagination-top">
           <div className="pagination_state">
             Showing {data?.meta?.from} to {data?.meta?.to} of {data?.meta?.total}{" "}
@@ -993,7 +1103,7 @@ function Table(props) {
                 }}
               />
             )}
-            {type === 'Stats' && subTypeState === 'Queues:Logs' && (
+            {type === 'Stats' && subTypeState === 'Queues: Logs' && (
               <Pagination
                 activePage={activePage}
                 pageRangeDisplayed={5}
@@ -1006,7 +1116,7 @@ function Table(props) {
                 }}
               />
             )}
-            {type === 'Stats' && subTypeState === 'Queues:Jobs' && (
+            {type === 'Stats' && subTypeState === 'Queues: Jobs' && (
               <Pagination
                 activePage={activePage}
                 pageRangeDisplayed={5}
@@ -1069,8 +1179,8 @@ function Table(props) {
                 <Pagination
                   activePage={activePage}
                   pageRangeDisplayed={5}
-                  itemsCountPerPage={data?.meta?.per_page}
-                  totalItemsCount={data?.meta?.total}
+                  itemsCountPerPage={localstatePagination?.meta?.per_page}
+                  totalItemsCount={localstatePagination?.meta?.total}
                   onChange={(e) => {
                     window.scrollTo(0, 0)
                     setCurrentTab("index");

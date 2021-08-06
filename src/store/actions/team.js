@@ -335,3 +335,19 @@ export const removeMemberFromProjectAction = (teamId, projectId, id) => async (d
     throw e;
   }
 };
+
+export const AddTeamRoles = (orgId) => async (dispatch) => {
+  const result = await teamService.teamRoleType(orgId);
+  dispatch({
+    type: actionTypes.ADD_TEAM_ROLES,
+    payload: result?.teamRoleTypes,
+  });
+};
+
+export const AddTeamPermission = (orgId, TeamId) => async (dispatch) => {
+  const result = await teamService.teamPermisison(orgId, TeamId);
+  dispatch({
+    type: actionTypes.ADD_TEAM_PERMISSION,
+    payload: result?.teamPermissions,
+  });
+};

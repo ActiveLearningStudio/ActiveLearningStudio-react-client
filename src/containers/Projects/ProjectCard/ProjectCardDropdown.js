@@ -36,7 +36,7 @@ const ProjectCardDropdown = (props) => {
   return (
     <Dropdown className="project-dropdown check d-flex  align-items-center text-added-project-dropdown">
       <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
-        <FontAwesomeIcon icon="ellipsis-v" style={{ marginLeft: '9px' }} />
+        <FontAwesomeIcon icon="ellipsis-v" style={{ fontSize: '13px', color: '#084892', marginLeft: '5px' }} />
         <span>
           {text}
         </span>
@@ -110,6 +110,7 @@ const ProjectCardDropdown = (props) => {
               </li>
 
               {allLms.shareVendors && allLms.shareVendors.map((data) => (
+                data.lms_name !== 'safarimontage' && (
                 <li>
                   <a
                     onClick={async () => {
@@ -130,7 +131,7 @@ const ProjectCardDropdown = (props) => {
                     {data.site_name}
                   </a>
                 </li>
-              ))}
+              )))}
             </ul>
           </li>
         )}

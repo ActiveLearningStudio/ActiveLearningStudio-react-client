@@ -171,7 +171,7 @@ const Activity = (props) => {
       )}
 
       {!ltiFinished && (
-        <div id="curriki-h5p-wrapper">
+        <div id="curriki-h5p-wrapper" className="added-middle-height-width">
           <div className="loader_gif">
             <img style={{ width: '50px' }} src={gifloader} alt="" />
           </div>

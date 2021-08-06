@@ -131,14 +131,14 @@ function CreateTeam(props) {
             title: 'Successfully created.',
           });
           history.push(`/org/${organization.currentOrganization?.domain}/teams`);
-        })
-        .catch(() => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Create Team failed, kindly try again.',
-          });
         });
+        // .catch(() => {
+        //   Swal.fire({
+        //     icon: 'error',
+        //     title: 'Error',
+        //     text: 'Create Team failed, kindly try again.',
+        //   });
+        // });
     }
   }, [createTeam, team.selectedTeam, history, selectedMembers, updateTeam]);
 

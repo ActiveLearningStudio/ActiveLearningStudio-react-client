@@ -43,7 +43,7 @@ class PlaylistCard extends React.Component {
   };
 
   renderResources = () => {
-    const { playlist } = this.props;
+    const { playlist, organization } = this.props;
 
     if (!playlist.activities || playlist.activities.length === 0) {
       return (
@@ -52,12 +52,15 @@ class PlaylistCard extends React.Component {
     }
 
     return playlist.activities.map((resource, index) => (
+      organization?.permission?.Activity?.includes('activity:view')
+      ? (
       <ResourceCard
         {...this.props}
         resource={resource}
         key={resource.id}
         index={index}
       />
+      ) : null
     ));
   };
 
@@ -139,7 +142,7 @@ class PlaylistCard extends React.Component {
                     onClick={this.handleClickPlaylistTitle}
                   >
                     <span>{playlist.title}</span>
-                    {permission?.Playlist.includes('playlist:edit') && <FontAwesomeIcon icon="pencil-alt" className="ml-2 edit-icon" />}
+                    {permission?.Playlist?.includes('playlist:edit') && <FontAwesomeIcon icon="pencil-alt" className="ml-2 edit-icon" />}
                   </div>
 
                   <textarea

@@ -11,7 +11,7 @@ import * as xAPIHelper from 'helpers/xapi';
 
 import './style.scss';
 
-let counter = 0;
+let counter = 1;
 let lrs = null;
 
 const ActivityShared = (props) => {
@@ -160,7 +160,9 @@ const ActivityShared = (props) => {
 
   return (
     <>
-      <section className={embed ? 'embed main-page-content preview iframe-height-resource-shared ' : 'main-page-content preview iframe-height-resource-shared'}>
+      <section className={embed ? 'embed main-page-content preview iframe-height-resource-shared defaultcontainer'
+      : 'main-page-content preview iframe-height-resource-shared defaultcontainer'}
+      >
         {!!embed && (
           <Helmet>
             <script src="https://dev.currikistudio.org/api/storage/h5p/h5p-core/js/h5p-resizer.js" charset="UTF-8" />
