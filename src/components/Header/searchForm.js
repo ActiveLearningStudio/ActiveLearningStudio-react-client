@@ -460,7 +460,7 @@ function SearchForm() {
                     placeholder="Enter author name"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.no_words}
+                    value={values.author}
                   />
                 </div>
                 <div className="form-group">
