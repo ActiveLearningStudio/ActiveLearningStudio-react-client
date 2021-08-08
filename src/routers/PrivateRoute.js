@@ -28,7 +28,7 @@ const PrivateRoute = ({
 
       if (!isLoading && !isAuthenticated) {
         return (
-          <Redirect to="/login" />
+          <Redirect to="/studio/login" />
         );
       }
 
