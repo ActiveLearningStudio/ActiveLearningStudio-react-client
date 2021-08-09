@@ -63,7 +63,7 @@ class LoginPage extends React.Component {
         password: password.trim(),
       });
 
-      history.push('/');
+      history.push('/studio');
     } catch (err) {
       this.setState({
         error: getErrors(err),
@@ -87,7 +87,7 @@ class LoginPage extends React.Component {
 
   goToRegister = () => {
     const { history } = this.props;
-    history.push('/nevada-register');
+    history.push('/studio/nevada-register');
   };
 
   render() {
@@ -168,7 +168,7 @@ class LoginPage extends React.Component {
                 Remember Me
               </label>
               <div className="forgot-password-box">
-                <Link to="/forgot-password">Forgot Password ?</Link>
+                <Link to="/studio/forgot-password">Forgot Password ?</Link>
               </div>
             </div>
 

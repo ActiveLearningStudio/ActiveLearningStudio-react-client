@@ -67,7 +67,7 @@ function ProjectList(props) {
 
               <div className="col">
                 <h2>
-                  <a href={`/org/${organization.currentOrganization?.domain}/project/${project.id}`} target="_blank" rel="noreferrer">
+                  <a href={`/studio/org/${organization.currentOrganization?.domain}/project/${project.id}`} target="_blank" rel="noreferrer">
                     {project.name}
                   </a>
                 </h2>
@@ -75,7 +75,7 @@ function ProjectList(props) {
               </div>
 
               <div className="col-2 text-right">
-                <a href={`/org/${organization.currentOrganization?.domain}/project/${project.id}`} target="_blank" rel="noreferrer">
+                <a href={`/studio/org/${organization.currentOrganization?.domain}/project/${project.id}`} target="_blank" rel="noreferrer">
                   <FontAwesomeIcon className="project-go-icon" icon="arrow-right" />
                 </a>
               </div>

@@ -200,7 +200,7 @@ function PlaylistPreview(props) {
         <section className="main-page-content preview iframe-height-resource">
           <div className="container-flex-upper">
             <div className="both-p">
-              <Link to={`/project/${selectedPlaylist.project.id}/preview`}>
+              <Link to={`/studio/project/${selectedPlaylist.project.id}/preview`}>
                 <div className="project-title">
                   <img src={projectIcon} alt="" />
                   {`Project: ${selectedPlaylist.project.name}`}
@@ -213,7 +213,7 @@ function PlaylistPreview(props) {
                 </div>
               </Link>
             </div>
-            <Link to={`/project/${selectedPlaylist.project.id}`}>
+            <Link to={`/studio/project/${selectedPlaylist.project.id}`}>
               <FontAwesomeIcon icon="times" />
             </Link>
           </div>

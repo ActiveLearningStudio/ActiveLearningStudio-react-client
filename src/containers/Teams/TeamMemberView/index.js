@@ -123,7 +123,7 @@ function TeamMemberView(props) {
             {description}
           </h2>
         </div>
-        <Link to={`/org/${organization.currentOrganization?.domain}/teams/${id}/projects`}>
+        <Link to={`/studio/org/${organization.currentOrganization?.domain}/teams/${id}/projects`}>
           <div className="btn-left-page">
             <FontAwesomeIcon icon="project-diagram" className="mr-2" />
             Projects

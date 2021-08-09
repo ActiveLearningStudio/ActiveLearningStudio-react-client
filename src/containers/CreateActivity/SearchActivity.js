@@ -79,7 +79,7 @@ function SearchForm() {
         Swal.showLoading();
         dispatcher(simpleSearchAction(values));
         closeModel.current.click();
-        history.push(`/search?type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${values.standardArray}`);
+        history.push(`/studio/search?type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${values.standardArray}`);
         resetForm({
           phrase: '',
           subjectArray: [],

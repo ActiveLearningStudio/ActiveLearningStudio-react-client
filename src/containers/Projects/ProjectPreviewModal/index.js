@@ -50,7 +50,7 @@ const ProjectPreviewModal = (props) => {
             <div className="modal-title">
               <h1>
                 Project Preview
-                <Link to="/" className="close" data-dismiss="modal" aria-label="Close">
+                <Link to="/studio" className="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </Link>
               </h1>

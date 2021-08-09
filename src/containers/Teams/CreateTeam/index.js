@@ -109,7 +109,7 @@ function CreateTeam(props) {
           icon: 'success',
           title: 'Successfully updated.',
         });
-        history.push(`/org/${organization.currentOrganization?.domain}/teams`);
+        history.push(`/studio/org/${organization.currentOrganization?.domain}/teams`);
       })
         .catch(() => {
           Swal.fire({
@@ -130,7 +130,7 @@ function CreateTeam(props) {
             icon: 'success',
             title: 'Successfully created.',
           });
-          history.push(`/org/${organization.currentOrganization?.domain}/teams`);
+          history.push(`/studio/org/${organization.currentOrganization?.domain}/teams`);
         });
         // .catch(() => {
         //   Swal.fire({

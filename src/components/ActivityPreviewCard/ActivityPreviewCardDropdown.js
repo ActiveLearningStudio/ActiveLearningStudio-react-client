@@ -21,11 +21,11 @@ const ActivityPreviewCardDropdown = (props) => {
       style={{ borderBottom: '1px solid #eee', padding: '10px' }}
       to={
         shared
-          ? `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview/shared`
+          ? `/studio/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview/shared`
           : (
             showLti
-              ? `/playlist/${playlistId}/activity/${activity.id}/preview/lti`
-              : `/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
+              ? `/studio/playlist/${playlistId}/activity/${activity.id}/preview/lti`
+              : `/studio/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
           )
       }
     >

@@ -43,7 +43,7 @@ function AddProjectsPage(props) {
       projectIds,
     )
       .then(() => {
-        history.push(`/org/${organization.currentOrganization?.domain}/teams/${teamId}/projects`);
+        history.push(`/studio/org/${organization.currentOrganization?.domain}/teams/${teamId}/projects`);
       })
       .catch(() => {});
   }, [addProjects, teamId, history]);

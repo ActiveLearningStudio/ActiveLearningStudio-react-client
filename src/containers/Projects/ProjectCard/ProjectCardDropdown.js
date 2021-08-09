@@ -46,14 +46,14 @@ const ProjectCardDropdown = (props) => {
         {!previewMode && (
           <Dropdown.Item
             as={Link}
-            to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/preview`}
+            to={`/studio/org/${organization.currentOrganization?.domain}/project/${project.id}/preview`}
           >
             <FontAwesomeIcon icon="eye" className="mr-2" />
             Preview
           </Dropdown.Item>
         )}
         {permission?.Project?.includes('project:edit') && (
-          <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/edit`}>
+          <Dropdown.Item as={Link} to={`/studio/org/${organization.currentOrganization?.domain}/project/${project.id}/edit`}>
             <FontAwesomeIcon icon="pen" className="mr-2" />
             Edit
           </Dropdown.Item>

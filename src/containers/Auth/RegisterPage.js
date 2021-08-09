@@ -89,7 +89,7 @@ class RegisterPage extends React.Component {
       })
         .then((result) => {
           if (result.isConfirmed) {
-            history.push(`/login/${domain?.domain}`);
+            history.push(`/studio/login/${domain?.domain}`);
           }
         });
       // history.push('/login');
@@ -136,7 +136,7 @@ class RegisterPage extends React.Component {
 
   goToLogin = () => {
     const { history } = this.props;
-    history.push('/login');
+    history.push('/studio/login');
   };
 
   validatePassword=(pwd) => {

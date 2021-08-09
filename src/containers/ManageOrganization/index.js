@@ -90,7 +90,7 @@ export default function ManageOrganizations() {
                         Back
                       </div>
                     ) : (
-                      <Link className="back-button" to={`/org/${currentOrganization?.domain}`}>
+                      <Link className="back-button" to={`/studio/org/${currentOrganization?.domain}`}>
                         <FontAwesomeIcon icon="chevron-left" />
                         View All Projects
                       </Link>

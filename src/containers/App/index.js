@@ -43,7 +43,7 @@ function App(props) {
               result.then((data) => {
                 if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
                 dispatch(getAllPermission(data?.organization?.id));
-              }).catch((err) => err && window.location.replace('/org/currikistudio'));
+              }).catch((err) => err && window.location.replace('/studio/org/currikistudio'));
             })();
           } else {
             const subDomain = window.location.pathname.split('/org/')[1].split('/')[0]?.replace(/\//g, '');
@@ -52,7 +52,7 @@ function App(props) {
               result.then((data) => {
                 if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
                 dispatch(getAllPermission(data?.organization?.id));
-              }).catch((err) => err && window.location.replace('/org/currikistudio'));
+              }).catch((err) => err && window.location.replace('/studio/org/currikistudio'));
             })();
           }
         }
@@ -77,7 +77,7 @@ function App(props) {
         dispatch(getBranding('currikistudio'));
       } else if (subDomain) {
         const result = dispatch(getBranding(subDomain || 'currikistudio'));
-        result.then().catch((err) => err && window.location.replace('/login'));
+        result.then().catch((err) => err && window.location.replace('/studio/login'));
       } else {
         dispatch(getBranding('currikistudio'));
       }

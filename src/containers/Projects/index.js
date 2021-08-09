@@ -278,7 +278,7 @@ export const ProjectsPage = (props) => {
   const handleCloseProjectModal = (e) => {
     e.preventDefault();
     const { history } = props;
-    history.push('/projects');
+    history.push('/studio/projects');
   };
 
   const handleDeleteProject = (projectId) => {

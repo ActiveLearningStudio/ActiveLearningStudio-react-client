@@ -90,7 +90,7 @@ class NeafRegister extends React.Component {
       })
         .then((result) => {
           if (result.isConfirmed) {
-            history.push('/nevada-login');
+            history.push('/studio/nevada-login');
           }
         });
       // history.push('/login');
@@ -123,7 +123,7 @@ class NeafRegister extends React.Component {
 
   goToLogin = () => {
     const { history } = this.props;
-    history.push('/nevada-login');
+    history.push('/studio/nevada-login');
   };
 
   render() {

@@ -99,7 +99,7 @@ function Header(props) {
                 <>
                   <li>
                     <Link
-                      to={`/org/${stateHeader.currentOrganization?.domain}/manage`}
+                      to={`/studio/org/${stateHeader.currentOrganization?.domain}/manage`}
                       onClick={() => {
                         if (stateHeader.currentOrganization) {
                           // dispatch(setActiveOrganization(stateHeader.currentOrganization));
@@ -143,7 +143,7 @@ function Header(props) {
                       <p className="header-icon-text">Create</p>
                     </Dropdown.Toggle>
                     <Dropdown.Menu className="user-dropdown">
-                      <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/project/create`} className="menuLinks">
+                      <Dropdown.Item as={Link} to={`/studio/org/${stateHeader.currentOrganization?.domain}/project/create`} className="menuLinks">
                         <div className="notify-box">
                           <div className="notify-icon">
                             <img src={createProjectIcon} alt="create" />

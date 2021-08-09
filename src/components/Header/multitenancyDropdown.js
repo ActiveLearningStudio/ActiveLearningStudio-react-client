@@ -48,7 +48,7 @@ export default function MultitenancyDropdown() {
               await dispatch(getAllPermission(org.id));
               await dispatch(getRoles());
               storageService.setItem(CURRENT_ORG, org.domain);
-              history.push(`/org/${org.domain}`);
+              history.push(`/studio/org/${org.domain}`);
             }}
             >
               {org.name}

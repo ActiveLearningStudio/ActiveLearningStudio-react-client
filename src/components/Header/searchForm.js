@@ -85,7 +85,7 @@ function SearchForm() {
                 };
                 dispatcher(simpleSearchAction(searchData));
                 localStorage.setItem('loading', 'true');
-                history.push(`/org/${currentOrganization?.domain}/search?q=${simpleSearch.trim()}&type=public`);
+                history.push(`/studio/org/${currentOrganization?.domain}/search?q=${simpleSearch.trim()}&type=public`);
                 localStorage.setItem('refreshPage', false);
               } else if (permission?.Search?.includes('search:dashboard')) {
                 const searchData = {
@@ -96,7 +96,7 @@ function SearchForm() {
                 };
                 dispatcher(simpleSearchAction(searchData));
                 localStorage.setItem('loading', 'true');
-                history.push(`/org/${currentOrganization?.domain}/search?q=${simpleSearch.trim()}&type=private`);
+                history.push(`/studio/org/${currentOrganization?.domain}/search?q=${simpleSearch.trim()}&type=private`);
                 localStorage.setItem('refreshPage', false);
               }
             }
@@ -148,7 +148,7 @@ function SearchForm() {
               values.standardArray.filter((h5p) => h5pNameArray.push(h5p.value));
               values.standardArray = h5pNameArray;
               // eslint-disable-next-line max-len
-              history.push(`/org/${currentOrganization?.domain}/search?q=${values.phrase}&type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${h5pNameArray}&author=${values.author}`);
+              history.push(`/studio/org/${currentOrganization?.domain}/search?q=${values.phrase}&type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${h5pNameArray}&author=${values.author}`);
               localStorage.setItem('refreshPage', false);
               // const allSubjects = values.subjectArray;
               // values.subjectArray = allSubjects.forEach((subject) => {

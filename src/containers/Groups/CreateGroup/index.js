@@ -109,7 +109,7 @@ function CreateGroup(props) {
           icon: 'success',
           title: 'Successfully updated.',
         });
-        history.push(`/org/${organization.currentOrganization?.domain}/groups`);
+        history.push(`/studio/org/${organization.currentOrganization?.domain}/groups`);
       }).catch(() => {
         Swal.fire({
           icon: 'error',
@@ -129,7 +129,7 @@ function CreateGroup(props) {
             icon: 'success',
             title: 'Successfully created.',
           });
-          history.push(`/org/${organization.currentOrganization?.domain}/groups`);
+          history.push(`/studio/org/${organization.currentOrganization?.domain}/groups`);
         })
         .catch(() => {
           Swal.fire({

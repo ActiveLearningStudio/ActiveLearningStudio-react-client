@@ -106,7 +106,7 @@ function LtiPlaylistPreview(props) {
             </div>
           </Link>
         </div>
-        <Link to={`/project/${selectedPlaylist.project.id}/shared`}>
+        <Link to={`/studio/project/${selectedPlaylist.project.id}/shared`}>
           <FontAwesomeIcon icon="times" />
         </Link>
       </div>

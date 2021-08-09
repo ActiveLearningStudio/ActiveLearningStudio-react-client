@@ -38,7 +38,7 @@ function ActivityCreate(props) {
                 <h2>Edit Resource</h2>
                 <div className="line" />
               </div>
-              <Link to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`}>
+              <Link to={`/studio/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`}>
                 <div className="back-playlist">
                   <FontAwesomeIcon icon="arrow-left" />
                   Back to Playlist

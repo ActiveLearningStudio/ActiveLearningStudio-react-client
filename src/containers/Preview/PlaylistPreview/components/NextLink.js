@@ -24,18 +24,18 @@ function NextLink(props) {
   const organization = useSelector((state) => state.organization);
   let nextLink = '#';
   if (nextResource) {
-    nextLink = `/playlist/${playlistId}/activity/${nextResource.id}/preview`;
+    nextLink = `/studio/playlist/${playlistId}/activity/${nextResource.id}/preview`;
   } else if (nextPlaylist) {
-    nextLink = `/playlist/${nextPlaylist.id}/preview`;
+    nextLink = `/studio/playlist/${nextPlaylist.id}/preview`;
   }
   if (nextLink !== '#') {
     if (showLti) {
-      nextLink += '/lti';
+      nextLink += '/studio/lti';
     } else {
-      nextLink = `/org/${organization.currentOrganization?.domain}/project/${projectId}${nextLink}`;
+      nextLink = `/studio/org/${organization.currentOrganization?.domain}/project/${projectId}${nextLink}`;
 
       if (shared) {
-        nextLink += '/shared';
+        nextLink += '/studio/shared';
       }
     }
   }
@@ -79,9 +79,9 @@ function NextLink(props) {
                     .then((result) => {
                       if (result.value) {
                         if (showLti) {
-                          history.push(`/project/${projectId}/shared`);
+                          history.push(`/studio/project/${projectId}/shared`);
                         } else {
-                          history.push(`/org/${organization.currentOrganization?.domain}/project/${projectId}/preview`);
+                          history.push(`/studio/org/${organization.currentOrganization?.domain}/project/${projectId}/preview`);
                         }
                       }
                     });

@@ -41,7 +41,7 @@ function CompleteProfileAlert() {
         <FontAwesomeIcon className="close" icon="window-close" onClick={hideAlert} />
         Your organization name is missing in the profile, Kindly go to My Account to update your
           &nbsp;
-        <Link className="goto-button" to="/account">profile info.</Link>
+        <Link className="goto-button" to="/studio/account">profile info.</Link>
       </Alert>
     </div>
   );

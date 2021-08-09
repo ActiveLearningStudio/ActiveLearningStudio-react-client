@@ -24,18 +24,18 @@ function PreviousLink(props) {
 
   let prevLink = '#';
   if (previousResource) {
-    prevLink = `/playlist/${playlistId}/activity/${previousResource.id}/preview`;
+    prevLink = `/studio/playlist/${playlistId}/activity/${previousResource.id}/preview`;
   } else if (prevPlaylist) {
-    prevLink = `/playlist/${prevPlaylist.id}/preview`;
+    prevLink = `/studio/playlist/${prevPlaylist.id}/preview`;
   }
   if (prevLink !== '#') {
     if (showLti) {
-      prevLink += '/lti';
+      prevLink += '/studio/lti';
     } else {
-      prevLink = `/org/${organization.currentOrganization?.domain}/project/${projectId}${prevLink}`;
+      prevLink = `/studio/org/${organization.currentOrganization?.domain}/project/${projectId}${prevLink}`;
 
       if (shared) {
-        prevLink += '/shared';
+        prevLink += '/studio/shared';
       }
     }
   }
@@ -78,9 +78,9 @@ function PreviousLink(props) {
                     .then((result) => {
                       if (result.value) {
                         if (showLti) {
-                          history.push(`/project/${projectId}/shared`);
+                          history.push(`/studio/project/${projectId}/shared`);
                         } else {
-                          history.push(`/org/${organization.currentOrganization?.domain}/project/${projectId}/preview`);
+                          history.push(`/studio/org/${organization.currentOrganization?.domain}/project/${projectId}/preview`);
                         }
                       }
                     });

@@ -122,7 +122,7 @@ const onSubmit = async (values, dispatch, props) => {
     //   });
     // }
   }
-  history.push('/projects');
+  history.push('/studio/projects');
 };
 
 export const uploadThumb = async (e, props) => {

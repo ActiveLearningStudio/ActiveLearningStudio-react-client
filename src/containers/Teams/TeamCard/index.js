@@ -45,13 +45,13 @@ function TeamCard(props) {
           onClick={() => {
             dispatch(AddTeamPermission(organization.currentOrganization.id, id));
           }}
-          to={`/org/${organization.currentOrganization?.domain}/teams/${id}`}
+          to={`/studio/org/${organization.currentOrganization?.domain}/teams/${id}`}
           className="title m-0"
         >
           {name}
         </Link>
         {permission?.Team?.includes('team:edit') && (
-          <Link className="edit-button" to={`/org/${organization.currentOrganization?.domain}/teams/${id}/edit`}>
+          <Link className="edit-button" to={`/studio/org/${organization.currentOrganization?.domain}/teams/${id}/edit`}>
             <FontAwesomeIcon icon="pen" className="mr-2" />
             Edit
           </Link>

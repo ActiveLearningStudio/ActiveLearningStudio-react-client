@@ -40,7 +40,7 @@ function GroupCard(props) {
   return (
     <div className="group-card-content">
       <div className="group-title">
-        <Link to={`/org/${organization.currentOrganization?.domain}/groups/${id}`} className="title m-0">{name}</Link>
+        <Link to={`/studio/org/${organization.currentOrganization?.domain}/groups/${id}`} className="title m-0">{name}</Link>
         {permission?.Group?.includes('group:edit') && (
           <Link className="edit-button" to={`/org/${organization.currentOrganization?.domain}/groups/${id}/edit`}>
             <FontAwesomeIcon icon="pen" className="mr-2" />

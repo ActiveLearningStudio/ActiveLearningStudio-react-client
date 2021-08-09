@@ -533,7 +533,7 @@ function Table(props) {
                   <td>
                     {row.groups_count > 0 ? (
                       <Link
-                        to={`/org/${allState?.organization?.currentOrganization?.domain}/groups`}
+                        to={`/studio/org/${allState?.organization?.currentOrganization?.domain}/groups`}
                         className="view-all"
                         onClick={
                           async () => {
@@ -550,7 +550,7 @@ function Table(props) {
                   <td>
                     {row.teams_count > 0 ? (
                       <Link
-                        to={`/org/${allState?.organization?.currentOrganization?.domain}/teams`}
+                        to={`/studio/org/${allState?.organization?.currentOrganization?.domain}/teams`}
                         className="view-all"
                         onClick={
                           async () => {

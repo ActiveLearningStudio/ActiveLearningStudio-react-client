@@ -18,7 +18,7 @@ function Unauthorized(props) {
 
         {showButton ? (
           <Link
-            to="/"
+            to="/studio"
             onClick={() => {
               loadHP('Loading...');
             }}
@@ -28,7 +28,7 @@ function Unauthorized(props) {
           </Link>
         ) : (
           <Link
-            to="/"
+            to="/studio"
             onClick={() => {
               loadHP('Loading...');
             }}

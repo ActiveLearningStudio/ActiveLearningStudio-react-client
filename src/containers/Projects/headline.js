@@ -25,7 +25,7 @@ export default function Headline() {
           </Link>
         )} */}
         {permission?.Project?.includes('project:create') && (
-          <Link to={`/org/${currentOrganization?.domain}/project/create`} onClick={() => { setCurrentVisibilityType(null); }}>
+          <Link to={`/studio/org/${currentOrganization?.domain}/project/create`} onClick={() => { setCurrentVisibilityType(null); }}>
             <div className="btn-top-page">
               <FontAwesomeIcon icon="plus" className="mr-2" />
               Create a Project

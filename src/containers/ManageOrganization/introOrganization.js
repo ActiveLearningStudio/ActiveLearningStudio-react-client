@@ -122,7 +122,7 @@ export default function IntroOrganizations(props) {
               </div>
               <div
                 onClick={() => {
-                  history.push(`/org/${currentOrganization?.domain}/groups`);
+                  history.push(`/studio/org/${currentOrganization?.domain}/groups`);
                 }}
                 className="more"
               >
@@ -136,7 +136,7 @@ export default function IntroOrganizations(props) {
               </div>
               <div
                 onClick={() => {
-                  history.push(`/org/${currentOrganization?.domain}/teams`);
+                  history.push(`/studio/org/${currentOrganization?.domain}/teams`);
                 }}
                 className="more"
               >
@@ -163,7 +163,7 @@ export default function IntroOrganizations(props) {
                     type: 'orgSearch',
                   }));
                   Swal.close();
-                  history.push(`/org/${currentOrganization?.domain}/search?type=orgSearch`);
+                  history.push(`/studio/org/${currentOrganization?.domain}/search?type=orgSearch`);
                 }}
                 className="more"
               >

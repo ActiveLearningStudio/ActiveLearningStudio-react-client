@@ -46,7 +46,7 @@ const ResourceCardDropdown = (props) => {
         {permission?.Activity?.includes('activity:view') && (
           <Dropdown.Item
             as={Link}
-            to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview`}
+            to={`/studio/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview`}
           >
             <FontAwesomeIcon icon="eye" className="mr-2" />
             Preview
@@ -55,7 +55,7 @@ const ResourceCardDropdown = (props) => {
         {permission?.Activity?.includes('activity:edit') && (
           <Dropdown.Item
             as={Link}
-            to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
+            to={`/studio/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
           >
             <FontAwesomeIcon icon="pen" className="mr-2" />
             Edit

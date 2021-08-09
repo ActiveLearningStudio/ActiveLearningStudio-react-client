@@ -59,7 +59,7 @@ function ActivityWizard(props) {
         ));
       }
 
-      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
+      history.push(`/studio/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
     } catch (e) {
       Swal.fire({
         title: 'Error',

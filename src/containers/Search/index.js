@@ -192,7 +192,7 @@ function SearchInterface(props) {
         setActiveSubject(tempSubject);
       }
       // eslint-disable-next-line max-len
-      history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`);
+      history.push(`/studio/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`);
     }
   }, [currentOrganization]);
   useEffect(() => {
@@ -393,7 +393,7 @@ function SearchInterface(props) {
                                               setActiveSubject(tempSubject);
                                             }
                                             // eslint-disable-next-line max-len
-                                            history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`);
+                                            history.push(`/studio/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`);
                                           }
                                         }
                                       }}
@@ -530,7 +530,7 @@ function SearchInterface(props) {
                                             setActiveSubject(tempSubject);
                                           }
                                           // eslint-disable-next-line max-len
-                                          history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`);
+                                          history.push(`/studio/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`);
                                         }
                                         // setModalShow(true);
                                       }}

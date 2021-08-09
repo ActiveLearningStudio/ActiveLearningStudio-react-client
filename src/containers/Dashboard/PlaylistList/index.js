@@ -77,7 +77,7 @@ function PlaylistList(props) {
                     <h3 className="playlist-title">{playlist.title}</h3>
                   </div>
                   <div className="col-1 text-right">
-                    <a href={`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}`} target="_blank" rel="noreferrer">
+                    <a href={`/studio/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}`} target="_blank" rel="noreferrer">
                       <FontAwesomeIcon className="project-go-icon" icon="arrow-right" />
                     </a>
                   </div>

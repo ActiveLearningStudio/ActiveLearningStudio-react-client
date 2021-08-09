@@ -162,7 +162,7 @@ const Activity = (props) => {
   useEffect(() => {
     if (submission && submission.state === 'TURNED_IN') {
       clearInterval(intervalPointer);
-      history.push(`/gclass/summary/${match.params.userId}/${match.params.courseId}/${match.params.activityId}/${submission.coursework_id}/${submission.id}`);
+      history.push(`/studio/gclass/summary/${match.params.userId}/${match.params.courseId}/${match.params.activityId}/${submission.coursework_id}/${submission.id}`);
     }
   }, [submission]);
 
