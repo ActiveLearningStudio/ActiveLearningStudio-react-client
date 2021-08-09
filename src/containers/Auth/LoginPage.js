@@ -112,7 +112,7 @@ class LoginPage extends React.Component {
         {!clicked ? (
           <div className="auth-container">
             <div className="d-flex align-items-center justify-content-between">
-              <h1 className="auth-title mb-0">Log In</h1>
+              <h1 className="auth-title ">Welcome to Curriki</h1>
 
               {/* <strong>OR</strong> */}
 
@@ -124,17 +124,10 @@ class LoginPage extends React.Component {
                 Sign Up
               </button> */}
             </div>
-
             {/* <h2 className="auth-subtitle">Powering the creation of the world’s Most Immersive Learning Experience</h2> */}
-
-            <h3 className="auth-description">
-              Need a Curriki Studio account?&nbsp;
-              <a
-                onClick={this.goToRegister}
-              >
-                Create an account
-              </a>
-            </h3>
+            <p className="auth-Pdescrip">
+              Sign Up and start making a difference in the way learning experiences are created.
+            </p>
             <form
               onSubmit={this.onSubmit}
               autoComplete="off"
@@ -182,6 +175,22 @@ class LoginPage extends React.Component {
                 </button>
               </div>
             </form>
+            <p className="auth-description">
+              Already have an account?&nbsp;
+              <a onClick={this.goToRegister}>
+                Log in
+              </a>
+            </p>
+            <p className="auth-p2-descrip">
+              By clicking the Sign Up button, you are creating a CurrikiStudio  account, and you agree to Currikis&nbsp;
+              <a href="/">
+                Terms of Use&nbsp;
+              </a>
+              and&nbsp;
+              <a href="/">
+                Privacy Policy.
+              </a>
+            </p>
           </div>
         ) : (
           <div className="auth-container">
