@@ -28,7 +28,7 @@ function ResetPasswordPage(props) {
 
   const query = QueryString.parse(location.search);
   if (!query.token) {
-    history.push('/login');
+    history.push('/studio/login');
   }
 
   const [state, setState] = useState({
@@ -159,7 +159,7 @@ function ResetPasswordPage(props) {
           </div>
 
           <div className="form-group text-center">
-            <Link to="/login">Back to Login</Link>
+            <Link to="/studio/login">Back to Login</Link>
           </div>
         </form>
       </div>

@@ -22,12 +22,12 @@ function ConfirmEmailPage(props) {
 
   const query = QueryString.parse(location.search);
   if (!query.id || !query.hash) {
-    history.push('/login');
+    history.push('/studio/login');
   }
 
   useEffect(() => {
     confirmEmail(query).catch(() => {
-      history.push('/login');
+      history.push('/studio/login');
     });
   }, [confirmEmail, history]);
 
@@ -44,7 +44,7 @@ function ConfirmEmailPage(props) {
               <h1 className="auth-title">Congratulations.</h1>
               <h3 className="auth-description">Thanks for joining. Your Email has been Confirmed!</h3>
               <div className="mt-5 text-center">
-                <Link to="/login">
+                <Link to="/studio/login">
                   Please click here when you are ready to Sign In
                 </Link>
               </div>

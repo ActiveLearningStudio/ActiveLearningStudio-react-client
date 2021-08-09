@@ -37,7 +37,7 @@ class SubscribePage extends Component {
     if (allTerms) {
       const { history } = this.props;
       acceptTerms();
-      history.push('/');
+      history.push('/studio');
     }
   };
 

@@ -90,7 +90,7 @@ function HeaderNotification() {
             {errorNotification && <div className="error-notification">{errorNotification}</div> }
           </div>
           <div className="btn-all-notification">
-            <Dropdown.Item className="all-notification" as={Link} to={`/org/${organization.currentOrganization?.domain}/notification`}>
+            <Dropdown.Item className="all-notification" as={Link} to={`/studio/org/${organization.currentOrganization?.domain}/notification`}>
               See all notifications
             </Dropdown.Item>
             {/* <Dropdown.Item className="notification-setting" as={Link} to="/notification">

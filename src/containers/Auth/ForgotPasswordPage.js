@@ -98,7 +98,7 @@ function ForgotPasswordPage(props) {
           </div>
 
           <div className="form-group text-center">
-            <Link to="/login">Back to Login</Link>
+            <Link to="/studio/login">Back to Login</Link>
           </div>
         </form>
       </div>

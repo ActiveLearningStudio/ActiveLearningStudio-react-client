@@ -14,7 +14,7 @@ function SSOLogin(props) {
   // Init
   useEffect(() => {
     if (user !== null) {
-      window.location.replace('/');
+      window.location.replace('/studio');
     } else {
       handleSsoLogin(JSON.parse(atob(match.params.ssodata)));
     }

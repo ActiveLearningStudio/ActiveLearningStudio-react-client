@@ -81,7 +81,7 @@ function Header(props) {
       <div className="top-header flex-div align-items-center">
         <div className="group-search-logo">
           <div className="tophd_left">
-            <Link to={`/org/${stateHeader?.currentOrganization?.domain}`} className="top_logo">
+            <Link to={`/studio/org/${stateHeader?.currentOrganization?.domain}`} className="top_logo">
               {image ? <img src={global.config.resourceUrl + image} alt="logo" title="" /> : <img src={defaultLogo} alt="logo" title="" />}
             </Link>
           </div>
@@ -210,14 +210,14 @@ function Header(props) {
                       <hr />
                     </Dropdown.Item> */}
 
-                    <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/account`}>
+                    <Dropdown.Item as={Link} to={`/studio/org/${stateHeader.currentOrganization?.domain}/account`}>
                       <div className="user-dropdown-item">
                         <img src={edit} alt="edit" />
                         My Account
                       </div>
                     </Dropdown.Item>
                     <hr />
-                    <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/change-password`}>
+                    <Dropdown.Item as={Link} to={`/studio/org/${stateHeader.currentOrganization?.domain}/change-password`}>
                       <div className="user-dropdown-item">
                         <img className="img-change-password" src={changePassword} alt="changePassword" />
                         Change Password

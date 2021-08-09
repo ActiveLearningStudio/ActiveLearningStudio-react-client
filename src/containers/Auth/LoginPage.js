@@ -69,7 +69,7 @@ class LoginPage extends React.Component {
         domain: domain?.domain || 'currikistudio',
       });
       console.log(result);
-      history.push(`/org/${domain?.domain}`);
+      history.push(`/studio/org/${domain?.domain}`);
     } catch (err) {
       this.setState({
         error: getErrors(err),
@@ -93,7 +93,7 @@ class LoginPage extends React.Component {
 
   goToRegister = () => {
     const { history } = this.props;
-    history.push('/register');
+    history.push('/studio/register');
   };
 
   render() {
@@ -258,7 +258,7 @@ class LoginPage extends React.Component {
                   Remember Me
                 </label>
                 <div className="forgot-password-box">
-                  <Link to="/forgot-password">Forgot Password ?</Link>
+                  <Link to="/studio/forgot-password">Forgot Password ?</Link>
                 </div>
               </div>
 
