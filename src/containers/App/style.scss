@@ -3945,6 +3945,10 @@ body.collapsed {
     align-items: center;
     justify-content: center;
     height: 100vh;
+    .main-item-wrapper {
+      width:100%;
+      margin-bottom: 0;
+     }
 
   @media (max-width:1280px) {
     padding: 0px;
