@@ -9,6 +9,7 @@ import {
   SIDE_BAR_COLLAPSE_TOGGLE,
   SHOW_HELP,
   HIDE_HELP,
+  UPDATE_PAGINATION,
 } from '../actionTypes';
 
 const defaultUIState = () => ({
@@ -17,6 +18,7 @@ const defaultUIState = () => ({
   showDeletePlaylistPopup: false,
   sideBarCollapsed: false,
   help: false,
+  paginations: null,
 });
 
 export default (state = defaultUIState(), action) => {
@@ -34,6 +36,11 @@ export default (state = defaultUIState(), action) => {
       return {
         ...state,
         showDeletePlaylistPopup: false,
+      };
+    case UPDATE_PAGINATION:
+      return {
+        ...state,
+        paginations: action.payload,
       };
 
     case DELETE_PROJECT_SUCCESS:

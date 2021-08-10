@@ -78,7 +78,7 @@ export default function CreateOrg(prop) {
           });
           if (editMode) {
             const response = await dispatch(
-              updateOrganization(activeEdit.id, values, activeEdit.parent.id)
+              updateOrganization(activeEdit.id, values, (activeEdit.parent ? activeEdit.parent.id: undefined))
             );
             if (response) {
               Swal.fire({

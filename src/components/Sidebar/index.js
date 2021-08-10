@@ -388,6 +388,44 @@ function Sidebar(props) {
                   </div>
                 </Link>
               )}
+              {/* {permission?.Project?.includes('project:create') && (
+                <Link to={`/org/${allState.organization?.currentOrganization?.domain}/project/create`}>
+                  <img src={projectLargeIcon} alt="" />
+                  <div className="tagline">
+                    Create Project
+                  </div>
+                </Link>
+              )}
+              {permission?.Team?.includes('team:create') && (
+                <Link to={`/org/${allState.organization?.currentOrganization?.domain}/teams/create-team`}>
+                  <img src={teamLargeIcon} alt="" />
+                  <div className="tagline">
+                    Create Team
+                  </div>
+                </Link>
+              )}
+              {permission?.Group?.includes('group:create') && (
+                <Link to={`/org/${allState.organization?.currentOrganization?.domain}/groups/create-group`}>
+                  <img src={groupLargeIcon} alt="" />
+                  <div className="tagline">
+                    Create Group
+                  </div>
+                </Link>
+              )}
+              {permission?.Organization?.includes('organization:add-user') && (
+                <Link
+                  to={`/org/${allState.organization?.currentOrganization?.domain}/admin`}
+                  onClick={() => {
+                    dispatch(setActiveTab('Users'));
+                    dispatch(setActiveAdminForm('create_user'));
+                  }}
+                >
+                  <img src={usersidebaricon} alt="" />
+                  <div className="tagline">
+                    Create User
+                  </div>
+                </Link>
+              )} */}
               {/* {permission?.Organization?.includes('organization:view-user') && (
                 <Link
                   to={`/org/${allState.organization.currentOrganization?.domain}/admin`}

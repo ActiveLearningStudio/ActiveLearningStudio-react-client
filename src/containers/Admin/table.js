@@ -47,6 +47,7 @@ function Table(props) {
   const organization = useSelector((state) => state.organization);
   const auth = useSelector((state) => state.auth);
   const { newlyCreated, newlyEdit } = useSelector((state) => state.admin);
+  const { paginations } = useSelector((state) => state.ui);
   const { activeOrganization, allSuborgList, permission } = organization;
   const allState = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -438,13 +439,40 @@ function Table(props) {
                 </tr>
               ))}
             {type === "Organization" && (
-              allSuborgList.length > 0 ? allSuborgList?.map((row) => (
+              allSuborgList ? allSuborgList.length > 0 ? allSuborgList?.map((row) => (
                 <tr className="org-rows">
                   <td>
                     <img src={global.config.resourceUrl + row.image} alt="" />
                   </td>
-                  <td>{row.name}</td>
-                  <td>{row.domain}</td>
+                  <td>
+                    <a href="#" onClick={async () => {
+                      Swal.fire({
+                        title: 'Please Wait !',
+                        html: 'Updating View ...',
+                        allowOutsideClick: false,
+                        onBeforeOpen: () => {
+                          Swal.showLoading();
+                        },
+                      });
+                      if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
+                      Swal.close();
+                      dispatch({
+                        type: actionTypes.UPDATE_PAGINATION,
+                        payload: [...paginations, row],
+                      });
+                      if (row.projects_count > 0) {
+                        if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
+                        dispatch(clearOrganizationState());
+                        dispatch(getRoles());
+                        // dispatch(setActiveTab('Project'));
+                        // dispatch(clearOrganizationState());
+                        // dispatch(getRoles());
+                      }
+                    }}>
+                      {row.name}
+                    </a>
+                  </td>
+                <td>{row.domain}</td>
                   <td>
                     {row.projects_count > 0 ? (
                       <div
@@ -530,7 +558,7 @@ function Table(props) {
                       ) : 'N/A'}
                     </td>
                   )}
-                  <td>
+                  {/* <td>
                     {row.groups_count > 0 ? (
                       <Link
                         to={`/org/${allState?.organization?.currentOrganization?.domain}/groups`}
@@ -546,7 +574,7 @@ function Table(props) {
                         {row.groups_count}
                       </Link>
                     ) : 'N/A'}
-                  </td>
+                  </td> */}
                   <td>
                     {row.teams_count > 0 ? (
                       <Link
@@ -594,10 +622,15 @@ function Table(props) {
                             });
                             if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                             Swal.close();
+                            dispatch({
+                              type: actionTypes.UPDATE_PAGINATION,
+                              payload: [...paginations, row],
+                            });
                             if (row.projects_count > 0) {
                               if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                               dispatch(clearOrganizationState());
                               dispatch(getRoles());
+                              
                               // dispatch(setActiveTab('Project'));
                               // dispatch(clearOrganizationState());
                               // dispatch(getRoles());
@@ -648,13 +681,20 @@ function Table(props) {
                   </td>
 
                 </tr>
-              )) :
+              )) :(
                 <tr>
                   <td colSpan="9" style={{ textAlign: 'center' }}>
-                    No sub-organization available
+                   
+                  <Alert variant="warning"> No sub-organization available</Alert>
                   </td>
                 </tr>
-            )}
+              ): (
+                <tr>
+                  <td colspan="9">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+            ))}
             {type === "Project" &&
               subType === "all" &&
               (localStateData ? (
