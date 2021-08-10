@@ -12,7 +12,8 @@ import AddRole from './formik/addRole';
 import CreateUser from './formik/createuser'
 import Pills from './pills';
 import Heading from './heading';
-import Bradecrumd from './bradecrumd';
+import Breadcrump from 'utils/BreadCrump/breadcrump';
+import * as actionTypes from 'store/actionTypes';
 import CreateLms from './formik/createLms'
 import './style.scss';
 import { getRoles } from 'store/actions/organization';
@@ -30,13 +31,20 @@ function AdminPanel() {
   }, [activeOrganization])
   useEffect(() => {
   }, [activeTab])
+  useEffect(() => {
+    dispatch({
+      type: actionTypes.UPDATE_PAGINATION,
+      payload: [currentOrganization || []],
+    });
+  }, [currentOrganization])
   return (
     <div className="admin-panel">
       {permission?.Organization?.includes('organization:view') ? (
         <>
           <div className="content-wrapper">
+            
             <div className="inner-content">
-
+              <Breadcrump />
               <Heading />
               <Tabs
                 defaultActiveKey={activeTab}
@@ -54,15 +62,15 @@ function AdminPanel() {
                     />
                   </div>
                 </Tab> */}
-                <Tab eventKey="Organization" title="Organization">
+                <Tab eventKey="Organization" title="Organizations">
                   <div className="module-content">
-                    <h2>Organizations</h2>
+                   
                     <Pills modules={["All Organizations"]} type="Organization" subType="All Organizations"/>
                   </div>
                 </Tab>
-                <Tab eventKey="Project" title="Project">
+                <Tab eventKey="Project" title="Projects">
                   <div className="module-content">
-                    <h2>Project</h2>
+              
                     <Pills
                       modules={[
                         "All Projects",
@@ -75,7 +83,7 @@ function AdminPanel() {
                 </Tab>
                 <Tab eventKey="Activities" title="Activities">
                   <div className="module-content">
-                    <h2>Activities</h2>
+                   
                     <Pills
                       modules={["Activity Types", "Activity Items"]}
                       type="Activities"
@@ -86,7 +94,7 @@ function AdminPanel() {
                  && (
                   <Tab eventKey="Users" title="Users">
                     <div className="module-content">
-                      <h2>Users</h2>
+                     
                       <Pills
                         modules={["All Users", permission?.Organization?.includes('organization:add-role') || permission?.Organization?.includes('organization:edit-role') ? "Manage Roles" : null]}
                         type="Users"
@@ -95,9 +103,9 @@ function AdminPanel() {
                     </div>
                   </Tab>
                  )}
-                <Tab eventKey="LMS" title="LMS">
+                <Tab eventKey="LMS" title="Integrations">
                   <div className="module-content">
-                    <h2>LMS</h2>
+                   
                     <Pills modules={["All Settings"]} type="LMS" />
                   </div>
                 </Tab>

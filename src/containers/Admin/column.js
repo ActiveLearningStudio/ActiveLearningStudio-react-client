@@ -113,7 +113,7 @@ export const columnData = {
     'Projects ',
     'Sub Org.',
     'Users',
-    'Groups ',
+    
     'Teams ',
     'Action',
   ],

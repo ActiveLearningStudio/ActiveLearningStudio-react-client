@@ -18,6 +18,8 @@ import {
   getOrganization,
   getRoles,
   roleDetail,
+  getAllOrganizationSearch,
+  getsubOrgList,
 } from "store/actions/organization";
 import { alphaNumeric } from "utils";
 
@@ -143,7 +145,7 @@ function Controller(props) {
           entries
         </div>
       )}
-      {(currentOrganization?.id !== activeOrganization?.id && type !== 'Users' ) && (
+      {/* {(currentOrganization?.id !== activeOrganization?.id && type !== 'Users' ) && (
         <div className="btn-text">
           <button
             onClick={async () => {
@@ -155,7 +157,8 @@ function Controller(props) {
             Go to root organization
           </button>
         </div>
-      )}
+      )} */}
+      
       {/* {!!filter && (
         <div className="filter-dropdown drop-counter ">
           Fillter by:
@@ -217,6 +220,19 @@ function Controller(props) {
           </span>
         </div>
       )}
+      {/* {(currentOrganization?.id !== activeOrganization?.id && type !== 'Users' ) && (
+        <div className="btn-text">
+          <button
+            onClick={async () => {
+              await dispatch(getOrganization(currentOrganization?.id));
+              dispatch(clearOrganizationState());
+              dispatch(getRoles());
+            }}
+          >
+            Go to root organization
+          </button>
+        </div>
+      )} */}
       {(roles?.length > 0 && type === "Users") ? (
         <div className="filter-dropdown drop-counter ">
           {subTypeState === 'Manage Roles' ? "Select role:" : "Filter by role:"}
@@ -363,6 +379,25 @@ function Controller(props) {
           <img src={searchimg} alt="search" onClick={()=> searchProjectQueryChangeHandler(searchQueryProject, selectedIndexValueid, subType)} />
         </div>
       )}
+      
+       {!!search && type === "Organization" && (
+        <div className="search-bar">
+          <input
+            className=""
+            type="text"
+            placeholder="Search Organization"
+            value={searchQueryProject}
+            onChange={(e) =>{
+              if (e.target.value?.trim()) {
+                dispatch(getAllOrganizationSearch(activeOrganization.id, e.target.value?.trim()));
+              } else if (e.target.value === '') {
+                dispatch(getsubOrgList(activeOrganization?.id));
+              }
+            }}
+          />
+          <img src={searchimg} alt="search" onClick={()=> searchProjectQueryChangeHandler(searchQueryProject, selectedIndexValueid, subType)} />
+        </div>
+      )}
       {/* {!!search && type === 'Activities' && subType === 'Activity Types' && (
         <div className="search-bar">
           <input type="text" placeholder="Search" onChange={(e) => searchActivitiesQueryHandler(e, subType)} />
@@ -430,7 +465,7 @@ function Controller(props) {
                 formData.append("project", e.target.files[0]);
                 const response = adminService.importProject(activeOrganization.id, formData);
                 response.then((res) => {
-
+                  Data
                   Swal.fire({
                     icon: "success",
                     text: res?.message,
@@ -548,6 +583,22 @@ function Controller(props) {
               </Dropdown.Menu>
             </Dropdown>
           </div>
+        </div>
+      )}
+      {(type === 'Organization' ) && (
+        <div className="btn-text">
+          <button
+            onClick={() => {
+              dispatch(setActiveAdminForm("edit_org"));
+              dispatch({
+                type: "SET_ACTIVE_EDIT",
+                payload: activeOrganization,
+              });
+            }}
+          >
+            <FontAwesomeIcon icon="edit" />
+            Edit Orginzation
+          </button>
         </div>
       )}
       {permission?.Organization?.includes('organization:view-user') && type === "Users" && subTypeState === 'All Users' && (
