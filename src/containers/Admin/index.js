@@ -17,6 +17,7 @@ import * as actionTypes from 'store/actionTypes';
 import CreateLms from './formik/createLms'
 import './style.scss';
 import { getRoles } from 'store/actions/organization';
+import EditProject from './formik/editProject';
 
 function AdminPanel() {
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ function AdminPanel() {
       {permission?.Organization?.includes('organization:view') ? (
         <>
           <div className="content-wrapper">
-            
+
             <div className="inner-content">
               <Breadcrump />
               <Heading />
@@ -64,18 +65,17 @@ function AdminPanel() {
                 </Tab> */}
                 <Tab eventKey="Organization" title="Organizations">
                   <div className="module-content">
-                   
+
                     <Pills modules={["All Organizations"]} type="Organization" subType="All Organizations"/>
                   </div>
                 </Tab>
                 <Tab eventKey="Project" title="Projects">
                   <div className="module-content">
-              
                     <Pills
                       modules={[
                         "All Projects",
                         "Indexing Queue",
-                        "User Projects",
+                        // "User Projects",
                       ]}
                       type="Project"
                     />
@@ -83,7 +83,6 @@ function AdminPanel() {
                 </Tab>
                 <Tab eventKey="Activities" title="Activities">
                   <div className="module-content">
-                   
                     <Pills
                       modules={["Activity Types", "Activity Items"]}
                       type="Activities"
@@ -94,7 +93,6 @@ function AdminPanel() {
                  && (
                   <Tab eventKey="Users" title="Users">
                     <div className="module-content">
-                     
                       <Pills
                         modules={["All Users", permission?.Organization?.includes('organization:add-role') || permission?.Organization?.includes('organization:edit-role') ? "Manage Roles" : null]}
                         type="Users"
@@ -105,7 +103,6 @@ function AdminPanel() {
                  )}
                 <Tab eventKey="LMS" title="Integrations">
                   <div className="module-content">
-                   
                     <Pills modules={["All Settings"]} type="LMS" />
                   </div>
                 </Tab>
@@ -230,9 +227,20 @@ function AdminPanel() {
               </div>
             </div>
           )}
-
-
-
+          {activeForm === "edit_project" && (
+            <div className="form-new-popup-admin">
+            <FontAwesomeIcon
+              icon="times"
+              className="cross-all-pop"
+              onClick={() => {
+                dispatch(removeActiveAdminForm());
+              }}
+            />
+            <div className="inner-form-content">
+              <EditProject editMode/>
+              </div>
+            </div>
+          )}
           {(activeForm === "create_user" || activeForm === "edit_user") && (
             <div className="form-new-popup-admin">
               <FontAwesomeIcon

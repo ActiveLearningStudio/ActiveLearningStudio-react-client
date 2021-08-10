@@ -158,7 +158,7 @@ function Controller(props) {
           </button>
         </div>
       )} */}
-      
+
       {/* {!!filter && (
         <div className="filter-dropdown drop-counter ">
           Fillter by:
@@ -379,7 +379,7 @@ function Controller(props) {
           <img src={searchimg} alt="search" onClick={()=> searchProjectQueryChangeHandler(searchQueryProject, selectedIndexValueid, subType)} />
         </div>
       )}
-      
+
        {!!search && type === "Organization" && (
         <div className="search-bar">
           <input
@@ -597,7 +597,7 @@ function Controller(props) {
             }}
           >
             <FontAwesomeIcon icon="edit" />
-            Edit Orginzation
+            Edit Organization
           </button>
         </div>
       )}
