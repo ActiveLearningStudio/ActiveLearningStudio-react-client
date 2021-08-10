@@ -13,6 +13,7 @@ import {
   removeUserFromOrganization,
   getRoles,
 } from "store/actions/organization";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, withRouter } from "react-router-dom";
 import { simpleSearchAction } from "store/actions/search";
 import Swal from "sweetalert2";
@@ -23,6 +24,7 @@ import {
   retrySpecificFailedJob,
   setActiveAdminForm,
   setActiveTab,
+  setCurrentProject,
   setCurrentUser,
 } from "store/actions/admin";
 import { deleteActivityItem, deleteActivityType, getActivityItems, loadResourceTypesAction, selectActivityItem, selectActivityType } from "store/actions/resource";
@@ -630,7 +632,7 @@ function Table(props) {
                               if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                               dispatch(clearOrganizationState());
                               dispatch(getRoles());
-                              
+
                               // dispatch(setActiveTab('Project'));
                               // dispatch(clearOrganizationState());
                               // dispatch(getRoles());
@@ -684,7 +686,6 @@ function Table(props) {
               )) :(
                 <tr>
                   <td colSpan="9" style={{ textAlign: 'center' }}>
-                   
                   <Alert variant="warning"> No sub-organization available</Alert>
                   </td>
                 </tr>
@@ -718,7 +719,9 @@ function Table(props) {
                         </div>
 
                       </td>
-                      <td>{row.name}</td>
+                      <td>
+                        <Link to={`/org/${organization?.currentOrganization?.domain}/project/${row.id}/preview`}>{row.name}</Link>
+                      </td>
                       <td>{createNew.toDateString()}</td>
 
                       <td>{row.description}</td>
@@ -726,12 +729,20 @@ function Table(props) {
                       <td>{row.id}</td>
                       <td>{row.users?.[0].email}</td>
                       <td>{row.indexing_text}</td>
-
-                      <td>{row.organization_id}</td>
-
-                      <td>{String(row.shared)}</td>
-                      <td>{String(row.starter_project)}</td>
-
+                      {/* <td>{row.organization_id}</td> */}
+                      <td>
+                        {row.shared ? (
+                        <Link className="shared-link" target="_blank" to={`/project/${row.id}/shared`}>
+                          <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
+                          Open Shared Link
+                        </Link>
+                        ) : (
+                          <>
+                            {String(row.shared)}
+                          </>
+                          )}
+                      </td>
+                      {/* <td>{String(row.starter_project)}</td> */}
                       <td>{row.status_text}</td>
                       <td>{updateNew.toDateString()}</td>
                       <td>
@@ -759,43 +770,51 @@ function Table(props) {
                           Export
                         </Link>
                         <Link
-                                     onClick={() => {
-                                      Swal.fire({
-                                        title: "Are you sure you want to delete this Project?",
-                                        text: "This action is Irreversible",
-                                        icon: "warning",
-                                        showCancelButton: true,
-                                        confirmButtonColor: "#084892",
-                                        cancelButtonColor: "#d33",
-                                        confirmButtonText: "Yes, delete it!",
-                                      }).then((result) => {
-                                        if (result.isConfirmed) {
-                                          Swal.fire({
-                                            icon: 'info',
-                                            text: 'Deleting Project...',
-                                            allowOutsideClick: false,
-                                            onBeforeOpen: () => {
-                                              Swal.showLoading();
-                                            },
-                                            button: false,
-                                          });
-                                          const response = projectService.remove(row.id, activeOrganization.id);
-                                          response
-                                            .then((res) => {
-        
-        
-                                              Swal.fire({
-                                                icon: "success",
-                                                text: res?.message,
-        
-                                              });
-                                              const filterProject = localStateData.filter(each => each.id != row.id);
-                                              setLocalStateData(filterProject)
-        
-                                            }).catch(err => console.log(err))
-                                        }
-                                      });
-                                    }}
+                          onClick={()=> {
+                            dispatch(setActiveAdminForm("edit_project"));
+                            dispatch(setCurrentProject(row));
+                          }}
+                        >
+                           &nbsp;&nbsp;Edit&nbsp;&nbsp;
+                        </Link>
+                        <Link
+                          onClick={() => {
+                          Swal.fire({
+                            title: "Are you sure you want to delete this Project?",
+                            text: "This action is Irreversible",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#084892",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Yes, delete it!",
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              Swal.fire({
+                                icon: 'info',
+                                text: 'Deleting Project...',
+                                allowOutsideClick: false,
+                                onBeforeOpen: () => {
+                                  Swal.showLoading();
+                                },
+                                button: false,
+                              });
+                              const response = projectService.remove(row.id, activeOrganization.id);
+                              response
+                                .then((res) => {
+
+
+                                  Swal.fire({
+                                    icon: "success",
+                                    text: res?.message,
+
+                                  });
+                                  const filterProject = localStateData.filter(each => each.id != row.id);
+                                  setLocalStateData(filterProject)
+
+                                }).catch(err => console.log(err))
+                            }
+                          });
+                        }}
                         >
                           &nbsp;&nbsp;Delete&nbsp;&nbsp;
                         </Link>
@@ -896,7 +915,9 @@ function Table(props) {
                         </div>
 
                       </td>
-                      <td>{row.name}</td>
+                      <td>
+                        <Link to={`/org/${organization?.currentOrganization?.domain}/project/${row.id}/preview`}>{row.name}</Link>
+                      </td>
                       <td>{createNew.toDateString()}</td>
 
                       {/* <td>{row.description}</td> */}
@@ -905,12 +926,12 @@ function Table(props) {
                       <td>{row.users?.[0].email}</td>
                       <td>{row.indexing_text}</td>
 
-                      <td>{row.organization_id}</td>
+                      {/* <td>{row.organization_id}</td> */}
 
                       <td>{String(row.shared)}</td>
-                      <td>{String(row.starter_project)}</td>
+                      {/* <td>{String(row.starter_project)}</td> */}
 
-                      <td>{row.status_text}</td>
+                      {/* <td>{row.status_text}</td> */}
                       <td>{updateNew.toDateString()}</td>
                       <td>
                         <div className="links">
