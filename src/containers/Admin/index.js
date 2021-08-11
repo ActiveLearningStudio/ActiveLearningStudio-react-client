@@ -18,8 +18,10 @@ import CreateLms from './formik/createLms'
 import './style.scss';
 import { getRoles } from 'store/actions/organization';
 import EditProject from './formik/editProject';
+import { useHistory } from 'react-router-dom';
 
 function AdminPanel() {
+  const history = useHistory();
   const dispatch = useDispatch();
   const adminState = useSelector((state) => state.admin);
   const organization = useSelector((state) => state.organization);
@@ -29,9 +31,16 @@ function AdminPanel() {
     if (roles?.length === 0 && activeOrganization?.id || (activeOrganization?.id !== currentOrganization?.id)) {
       dispatch(getRoles())
     }
+
   }, [activeOrganization])
   useEffect(() => {
   }, [activeTab])
+  useEffect(()=> {
+    const tab = localStorage.getItem('activeTab');
+    if(tab) {
+      dispatch(setActiveTab(tab));
+    }
+  },[]);
   useEffect(() => {
     dispatch({
       type: actionTypes.UPDATE_PAGINATION,
@@ -51,7 +60,10 @@ function AdminPanel() {
                 defaultActiveKey={activeTab}
                 activeKey={activeTab}
                 id="uncontrolled-tab-example"
-                onSelect={(key) => dispatch(setActiveTab(key))}
+                onSelect={(key) =>{
+                   dispatch(setActiveTab(key));
+                   localStorage.setItem('activeTab',key);
+                }}
               >
                 {/* <Tab eventKey="Stats" title="Stats">
                   <div className="module-content">
