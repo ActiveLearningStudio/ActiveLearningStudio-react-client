@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeActiveAdminForm } from 'store/actions/admin';
-import { visibilityTypes } from 'store/actions/project';
+import { updateProjectAction, visibilityTypes } from 'store/actions/project';
 import imgAvatar from 'assets/images/img-avatar.png';
 import loader from 'assets/images/dotsloader.gif';
 import Swal from 'sweetalert2';
@@ -38,7 +38,8 @@ export default function EditProject() {
           description: currentProject?.description,
           thumb_url: currentProject.thumb_url,
           organization_visibility_type_id: currentProject.organization_visibility_type_id,
-          users: currentProject?.users[0],
+          username: currentProject?.users[0].name,
+          user_id: currentProject?.users[0].id,
           shared: currentProject.shared,
         }}
         validate={(values) => {
@@ -46,10 +47,45 @@ export default function EditProject() {
           if (!values.name || values.name.length > 255) {
             errors.name = values.name.length > 255 ? 'Length must be 255 characters or less ' : 'Required';
           }
+          if (!values.description || values.description.length > 255) {
+            errors.description = values.description.length > 255 ? 'Length must be 255 characters or less ' : 'Required';
+          }
+          if (!values.organization_visibility_type_id) {
+            errors.organization_visibility_type_id = 'Required';
+          }
+          if (!values.username) {
+            errors.username = 'Required';
+          }
           return errors;
         }}
         onSubmit={async (values) => {
           console.log(values);
+          Swal.fire({
+            title: 'Projects',
+            icon: 'info',
+            text: 'Updating Project...',
+            allowOutsideClick: false,
+            onBeforeOpen: () => {
+              Swal.showLoading();
+            },
+            button: false,
+          });
+          // eslint-disable-next-line no-param-reassign
+          delete values.username;
+          const response = await dispatch(updateProjectAction(currentProject.id, values));
+          if (response) {
+            Swal.fire({
+              text: 'You have successfully updated the project!',
+              icon: 'success',
+              showCancelButton: false,
+              confirmButtonColor: '#084892',
+              confirmButtonText: 'OK',
+            }).then(async (result) => {
+              if (result.isConfirmed) {
+                dispatch(removeActiveAdminForm());
+              }
+            });
+          }
         }}
       >
         {({
@@ -182,17 +218,17 @@ export default function EditProject() {
                 ))}
               </select>
               <div className="error">
-                {errors.role_id && touched.role_id && errors.role_id}
+                {errors.organization_visibility_type_id && touched.organization_visibility_type_id && errors.organization_visibility_type_id}
               </div>
             </div>
             <div className="form-group-create" style={{ position: 'relative' }}>
               <h3>Ownership&nbsp; (search users from dropdown list only)</h3>
               <input
                 type="text"
-                name="users"
+                name="username"
                 autoComplete="off"
                 onChange={async (e) => {
-                  setFieldValue('users', e.target.value);
+                  setFieldValue('username', e.target.value);
                   if (e.target.value === '') {
                     setStateOrgUsers([]);
                     return;
@@ -205,7 +241,7 @@ export default function EditProject() {
                   });
                 }}
                 onBlur={handleBlur}
-                value={values.users.name}
+                value={values.username}
               />
               {loaderlmsImgUser && <img src={loader} alt="" style={{ width: '25px' }} className="loader" />}
               {stateOrgUsers?.length > 0 && (
@@ -214,7 +250,8 @@ export default function EditProject() {
                     <li
                       value={user}
                       onClick={() => {
-                        setFieldValue('users', user);
+                        setFieldValue('user_id', user.id);
+                        setFieldValue('username', user.first_name);
                         setStateOrgUsers([]);
                       }}
                     >
@@ -229,7 +266,7 @@ export default function EditProject() {
                 </ul>
               )}
               <div className="error">
-                {errors.users && touched.users && errors.users}
+                {errors.username && touched.username && errors.username}
               </div>
             </div>
             <div className="form-group-create">

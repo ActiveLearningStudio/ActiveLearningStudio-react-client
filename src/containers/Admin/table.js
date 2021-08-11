@@ -916,7 +916,7 @@ function Table(props) {
 
                       </td>
                       <td>
-                        <Link to={`/org/${organization?.currentOrganization?.domain}/project/${row.id}/preview`}>{row.name}</Link>
+                        <Link target="_blank" to={`/org/${organization?.currentOrganization?.domain}/project/${row.id}/preview`}>{row.name}</Link>
                       </td>
                       <td>{createNew.toDateString()}</td>
 

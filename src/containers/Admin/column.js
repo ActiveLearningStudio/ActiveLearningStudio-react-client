@@ -59,7 +59,7 @@ export const columnData = {
     'Created',
     'Description',
     'ID',
-    'Email',
+    'Author',
 	  'Indexing',
     // 'Org ID',
     'Shared',
