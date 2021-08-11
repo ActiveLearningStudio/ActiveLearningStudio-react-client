@@ -206,6 +206,7 @@ export const logoutAction = () => async () => {
   const centralizedState = store.getState();
   const { organization: { currentOrganization } } = centralizedState;
   storageService.removeItem(USER_TOKEN_KEY);
+  localStorage.removeItem('activeTab');
   window.location.href = `/login/${currentOrganization?.domain}`;
 };
 
