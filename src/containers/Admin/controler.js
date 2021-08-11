@@ -69,7 +69,7 @@ function Controller(props) {
   const organization = useSelector((state) => state.organization);
   const { permission, activeOrganization, currentOrganization } = organization;
   const { activeForm } = adminState;
-  const [selectedIndexValue, setSelectedIndexValue] = useState("REQUESTED");
+  const [selectedIndexValue, setSelectedIndexValue] = useState("ALL");
   const [selectedIndexValueid, setSelectedIndexValueid] = useState(1);
   useMemo(() => {
     if (type === "Users") {
@@ -191,6 +191,14 @@ function Controller(props) {
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
+                <Dropdown.Item
+                  onClick={() => {
+                    updateIndexAction("ALL", 0);
+                    setActivePage(1);
+                  }}
+                >
+                  ALL
+                </Dropdown.Item>
                 <Dropdown.Item
                   onClick={() => {
                     updateIndexAction("REQUESTED", 1);

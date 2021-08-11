@@ -46,7 +46,7 @@ export default function Pills(props) {
   const [jobType, SetJobType] = useState({ value: 1 , display_name: 'Pending'});
   const [logs, setLogs ] = useState(null);
   const [logType, SetLogType] = useState({ value: 'all' , display_name: 'All'});
-  const [changeIndexValue, setChangeIndexValue] = useState("1");
+  const [changeIndexValue, setChangeIndexValue] = useState("0");
   useEffect(()=>{
     setKey(modules?.[0])
 
@@ -226,7 +226,7 @@ export default function Pills(props) {
         const result = await adminService.getAllProjectIndex(
           activeOrganization?.id,
           activePage || 1,
-          changeIndexValue
+          changeIndexValue,
         );
         setAllProjectIndexTab(result);
       }
@@ -434,7 +434,7 @@ export default function Pills(props) {
           setCurrentTab("user");
         } else if (key === "Indexing Queue") {
           setCurrentTab("index");
-          setChangeIndexValue(1);
+          setChangeIndexValue(0);
         }
       }}
     >
