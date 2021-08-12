@@ -593,7 +593,7 @@ function Controller(props) {
           </div>
         </div>
       )}
-      {(type === 'Organization' ) && (
+      {(type === 'Organization' ) && permission?.Organization.includes('organization:edit') && (
         <div className="btn-text">
           <button
             onClick={() => {
