@@ -22,6 +22,7 @@ const Breadcrump = ({ text }) => {
         <a
           href="#"
           className=""
+          key={bread.id}
           onClick={async () => {
             Swal.fire({
               title: 'Please Wait !',

@@ -2,12 +2,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
+import * as actionTypes from 'store/actionTypes';
 import {
   uploadImage,
   createOrganizationNew,
   checkBranding,
   updateOrganization,
   getsubOrgList,
+  getOrganization,
 } from "store/actions/organization";
 import { removeActiveAdminForm } from "store/actions/admin";
 import imgAvatar from "assets/images/img-avatar.png";
@@ -18,6 +20,7 @@ import EditActivity from "containers/EditActivity";
 export default function CreateOrg(prop) {
   const { editMode } = prop;
   const [imageActive, setImgActive] = useState(null);
+  const { paginations } = useSelector((state) => state.ui);
   const [activityImage, setActivityImage] = useState("");
   const imgUpload = useRef();
   const allListState = useSelector((state) => state.organization);
@@ -87,10 +90,22 @@ export default function CreateOrg(prop) {
                 showCancelButton: false,
                 confirmButtonColor: '#084892',
                 confirmButtonText: 'OK',
-              }).then((result) => {
+              }).then(async (result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
                   dispatch(getsubOrgList(activeOrganization?.id));
+                  const responseMessage = await dispatch(getOrganization(activeEdit?.id));
+                  if (activeEdit?.id === activeOrganization?.id) {
+                    const newBreadCrums =paginations?.slice(0, paginations.length - 1)
+                    dispatch({
+                      type: actionTypes.UPDATE_PAGINATION,
+                      payload: newBreadCrums,
+                    });
+                    dispatch({
+                      type: actionTypes.UPDATE_PAGINATION,
+                      payload: [...newBreadCrums, responseMessage],
+                    });
+                  }
                 }
               });
             }

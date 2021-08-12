@@ -40,6 +40,7 @@ export const getOrganization = (id) => async (dispatch) => {
     type: actionTypes.ADD_ACTIVE_ORG,
     payload: result.suborganization,
   });
+  return result.suborganization;
 };
 
 export const getOrganizationFirstTime = (id) => async (dispatch) => {
