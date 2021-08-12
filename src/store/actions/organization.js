@@ -40,6 +40,7 @@ export const getOrganization = (id) => async (dispatch) => {
     type: actionTypes.ADD_ACTIVE_ORG,
     payload: result.suborganization,
   });
+  return result.suborganization;
 };
 
 export const getOrganizationFirstTime = (id) => async (dispatch) => {
@@ -183,9 +184,9 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
     image: data.image,
     parent_id: parent,
     domain: data.domain,
-    account_id: data.account_id || undefined,
-    api_key: data.api_key || undefined,
-    unit_path: data.unit_path || undefined,
+    account_id: data.account_id || '',
+    api_key: data.api_key || '',
+    unit_path: data.unit_path || '',
     // admins: adminUsers,
     // users: usersList,
   };
