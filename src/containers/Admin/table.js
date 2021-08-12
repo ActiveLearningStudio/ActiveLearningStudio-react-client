@@ -447,7 +447,7 @@ function Table(props) {
                     <img src={global.config.resourceUrl + row.image} alt="" />
                   </td>
                   <td>
-                    <a href="#" onClick={async () => {
+                    <Link onClick={async () => {
                       Swal.fire({
                         title: 'Please Wait !',
                         html: 'Updating View ...',
@@ -472,7 +472,7 @@ function Table(props) {
                       }
                     }}>
                       {row.name}
-                    </a>
+                    </Link>
                   </td>
                 <td>{row.domain}</td>
                   <td>
