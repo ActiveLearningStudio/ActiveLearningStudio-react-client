@@ -166,7 +166,7 @@ const ResourceCardDropdown = (props) => {
                     >
                       <input
                         id="urllink_clip"
-                        value={`${protocol + window.location.host}/activity/${resource.id}/shared`}
+                        value={`${protocol + window.location.host}/studio/activity/${resource.id}/shared`}
                       />
                     </a>
 

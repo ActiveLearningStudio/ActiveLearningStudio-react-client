@@ -297,7 +297,7 @@ function ProjectPreview(props) {
                                 window.gapi.sharetoclassroom.go('croom');
                               }
                               const protocol = `${window.location.href.split('/')[0]}//`;
-                              const url = `${protocol}${window.location.host}/project/${match.params.projectId}/shared`;
+                              const url = `${protocol}${window.location.host}/studio/project/${match.params.projectId}/shared`;
                               return SharePreviewPopup(url, currentProject.name);
                             }}
                           >

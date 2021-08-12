@@ -30,12 +30,12 @@ const ResourceCardDropdownShare = (props) => {
 
               <a
                 target="_blank"
-                href={`/activity/${resource.id}/shared`}
+                href={`/studio/activity/${resource.id}/shared`}
                 rel="noopener noreferrer"
               >
                 <input
                   id="urllink_clip"
-                  value={`${protocol + window.location.host}/activity/${resource.id}/shared`}
+                  value={`${protocol + window.location.host}/studio/activity/${resource.id}/shared`}
                 />
               </a>
 

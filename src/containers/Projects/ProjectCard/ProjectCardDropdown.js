@@ -76,7 +76,7 @@ const ProjectCardDropdown = (props) => {
             to="#"
             onClick={async () => {
               const protocol = `${window.location.href.split('/')[0]}//`;
-              const url = `${protocol + window.location.host}/project/${project.id}/shared`;
+              const url = `${protocol + window.location.host}/studio/project/${project.id}/shared`;
               if (!project.shared) {
                 Swal.showLoading();
                 await dispatch(toggleProjectShareAction(project.id, project.name));

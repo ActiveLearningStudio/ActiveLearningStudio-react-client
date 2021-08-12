@@ -280,7 +280,7 @@ export const toggleProjectShareAction = (projectId, ProjectName) => async (dispa
   });
 
   const protocol = `${window.location.href.split('/')[0]}//`;
-  const url = `${protocol + window.location.host}/project/${projectId}/shared`;
+  const url = `${protocol + window.location.host}/studio/project/${projectId}/shared`;
   return SharePreviewPopup(url, ProjectName);
 };
 
