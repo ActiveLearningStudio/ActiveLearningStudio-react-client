@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tabs, Tab, Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,6 +23,7 @@ import { useHistory } from 'react-router-dom';
 function AdminPanel() {
   const history = useHistory();
   const dispatch = useDispatch();
+  const [allProjectTab, setAllProjectTab] = useState(null);
   const adminState = useSelector((state) => state.admin);
   const organization = useSelector((state) => state.organization);
   const { permission, roles, currentOrganization, activeOrganization } = organization;
@@ -89,6 +90,8 @@ function AdminPanel() {
                         "Indexing Queue",
                         // "User Projects",
                       ]}
+                      allProjectTab={allProjectTab}
+                      setAllProjectTab={setAllProjectTab}
                       type="Project"
                     />
                   </div>
@@ -249,7 +252,7 @@ function AdminPanel() {
               }}
             />
             <div className="inner-form-content">
-              <EditProject editMode/>
+              <EditProject editMode setAllProjectTab={setAllProjectTab} />
               </div>
             </div>
           )}

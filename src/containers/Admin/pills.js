@@ -14,7 +14,7 @@ import { getJobListing, getLogsListing, getUserReport } from "store/actions/admi
 import { alphaNumeric } from "utils";
 
 export default function Pills(props) {
-  const { modules, type, subType } = props;
+  const { modules, type, subType, allProjectTab,setAllProjectTab } = props;
 
   const [key, setKey] = useState(modules && modules[0]);
 
@@ -38,7 +38,6 @@ export default function Pills(props) {
   const [searchQueryProject, setSearchQueryProject] = useState("");
   const [searchQueryStats, setSearchQueryStats] = useState("");
   const [searchQueryActivities, setSearchQueryActivities ] = useState("");
-  const [allProjectTab, setAllProjectTab] = useState(null);
   const [allProjectUserTab, setAllProjectUserTab] = useState(null);
   const [allProjectIndexTab, setAllProjectIndexTab] = useState(null);
   const [lmsProject, setLmsProject] = useState(null);
@@ -177,7 +176,7 @@ export default function Pills(props) {
   // All Users Business Logic End
 
   useMemo(async () => {
-    setAllProjectTab(null);
+    setAllProjectTab && setAllProjectTab(null);
     setAllProjectUserTab(null);
     setAllProjectIndexTab(null);
     if (activeOrganization && type === "Project" && currentTab == "all") {
@@ -217,7 +216,7 @@ export default function Pills(props) {
       currentTab === "index"
     ) {
       if (searchQueryProject) {
-        const searchapi = adminService.userSerchIndexs(activeOrganization?.id, activePage, index, searchQueryProject)
+        const searchapi = adminService.userSerchIndexs(activeOrganization?.id, activePage, changeIndexValue, searchQueryProject)
         searchapi.then((data) => {
           setAllProjectIndexTab(data)
 
@@ -644,6 +643,7 @@ export default function Pills(props) {
                 filter={true}
                 searchQueryProject={searchQueryProject}
                 setSearchQueryProject={setSearchQueryProject}
+                changeIndexValue={changeIndexValue}
                 setChangeIndexValue={setChangeIndexValue}
               />
             )}

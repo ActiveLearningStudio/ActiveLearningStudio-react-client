@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Formik } from 'formik';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeActiveAdminForm } from 'store/actions/admin';
 import { updateProjectAction, visibilityTypes } from 'store/actions/project';
@@ -8,9 +9,11 @@ import loader from 'assets/images/dotsloader.gif';
 import Swal from 'sweetalert2';
 import { uploadThumb } from 'containers/Projects/CreateProjectPopup';
 import Switch from 'react-switch';
+import adminService from 'services/admin.service';
 import authapi from '../../../services/auth.service';
 
-export default function EditProject() {
+export default function EditProject(props) {
+  const { setAllProjectTab } = props;
   const dispatch = useDispatch();
   // image Ref
   const imgUpload = useRef();
@@ -82,6 +85,11 @@ export default function EditProject() {
               confirmButtonText: 'OK',
             }).then(async (result) => {
               if (result.isConfirmed) {
+                const projects = await adminService.getAllProject(
+                  allListState?.activeOrganization?.id,
+                  allListState?.activePage || 1,
+                );
+                setAllProjectTab(projects);
                 dispatch(removeActiveAdminForm());
               }
             });
@@ -300,5 +308,5 @@ export default function EditProject() {
 }
 
 EditProject.propTypes = {
-
+  setAllProjectTab: PropTypes.func.isRequired,
 };

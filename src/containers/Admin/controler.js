@@ -70,7 +70,7 @@ function Controller(props) {
   const { permission, activeOrganization, currentOrganization } = organization;
   const { activeForm } = adminState;
   const [selectedIndexValue, setSelectedIndexValue] = useState("ALL");
-  const [selectedIndexValueid, setSelectedIndexValueid] = useState(1);
+  const [selectedIndexValueid, setSelectedIndexValueid] = useState(0);
   useMemo(() => {
     if (type === "Users") {
       dispatch(getRoles());
@@ -99,7 +99,7 @@ function Controller(props) {
   const updateIndexAction = (value, id) => {
     setSelectedIndexValue(value);
     setChangeIndexValue(id);
-    setSelectedIndexValueid(id)
+    setSelectedIndexValueid(id);
   };
   return (
     <div className="controller">
