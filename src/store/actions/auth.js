@@ -325,6 +325,7 @@ export const handleSsoLoginAction = (params) => async (dispatch) => {
 };
 
 export const SSOLoginAction = (data) => async (dispatch) => {
+  console.log('SSOLoginAction called');
   try {
     const response = await authService.loginSSO(data);
     storageService.setItem(USER_TOKEN_KEY, response.access_token);
@@ -335,7 +336,9 @@ export const SSOLoginAction = (data) => async (dispatch) => {
       type: actionTypes.LOGIN_SUCCESS,
       payload: { user: response.user },
     });
+    console.log('SSOLoginAction success');
   } catch (e) {
+    console.log('SSOLoginAction failed');
     dispatch({
       type: actionTypes.LOGIN_FAIL,
     });
