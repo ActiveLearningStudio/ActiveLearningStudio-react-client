@@ -12,6 +12,7 @@ import {
   clearOrganizationState,
   removeUserFromOrganization,
   getRoles,
+  updatePageNumber,
 } from "store/actions/organization";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, withRouter } from "react-router-dom";
@@ -1216,6 +1217,7 @@ function Table(props) {
                     window.scrollTo(0, 0)
                     setCurrentTab("all");
                     setActivePage(e);
+                    dispatch(updatePageNumber(e));
                   }}
                 />
               )
@@ -1246,6 +1248,7 @@ function Table(props) {
                     window.scrollTo(0, 0)
                     setCurrentTab("index");
                     setActivePage(e);
+                    dispatch(updatePageNumber(e));
                   }}
                 />
               )
