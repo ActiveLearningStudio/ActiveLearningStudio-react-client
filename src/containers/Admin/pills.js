@@ -643,6 +643,7 @@ export default function Pills(props) {
                 filter={true}
                 searchQueryProject={searchQueryProject}
                 setSearchQueryProject={setSearchQueryProject}
+                changeIndexValue={changeIndexValue}
                 setChangeIndexValue={setChangeIndexValue}
               />
             )}

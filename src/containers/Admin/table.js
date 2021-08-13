@@ -45,6 +45,7 @@ function Table(props) {
     subType,
     setCurrentTab,
     setChangeIndexValue,
+    changeIndexValue,
     changeProjectFromorg,
   } = props;
   const organization = useSelector((state) => state.organization);
@@ -949,7 +950,9 @@ function Table(props) {
                               const result = adminService.updateIndex(row.id, 3)
                               result.then((data) => {
                                 // console.log(data)
-                                setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id))
+                                if(changeIndexValue !== 0) {
+                                  setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id));
+                                }
                                 Swal.fire({
                                   icon: 'success',
                                   text: data.message,
@@ -978,7 +981,9 @@ function Table(props) {
                               result.then((data) => {
                                 // console.log(data)
                                 // console.log({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
-                                setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id))
+                                if (changeIndexValue) {
+                                  setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id));
+                                }
                                 // setLocalStatePagination({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
                                 Swal.fire({
                                   icon: 'success',

@@ -49,6 +49,7 @@ function Starter(props) {
     inviteUser,
     setCurrentTab,
     setChangeIndexValue,
+    changeIndexValue,
     permissionRender,
   } = props;
   return (
@@ -105,6 +106,7 @@ function Starter(props) {
           jobType={jobType}
           data={data}
           subType={subType}
+          changeIndexValue={changeIndexValue}
           subTypeState={subTypeState}
           setCurrentTab={setCurrentTab}
         />
