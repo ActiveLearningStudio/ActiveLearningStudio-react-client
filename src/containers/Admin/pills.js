@@ -217,7 +217,7 @@ export default function Pills(props) {
       currentTab === "index"
     ) {
       if (searchQueryProject) {
-        const searchapi = adminService.userSerchIndexs(activeOrganization?.id, activePage, index, searchQueryProject)
+        const searchapi = adminService.userSerchIndexs(activeOrganization?.id, activePage, changeIndexValue, searchQueryProject)
         searchapi.then((data) => {
           setAllProjectIndexTab(data)
 
