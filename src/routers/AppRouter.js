@@ -81,7 +81,7 @@ const AppRouter = (props) => {
   return (
     <Router history={history}>
       <Switch>
-        <PublicRoute
+        <OpenRoute
           exact
           path="/lti-sso"
           component={LtiLogin}
