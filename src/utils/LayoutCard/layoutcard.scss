@@ -1,0 +1,24 @@
+.curriki-utility-layoutcard {
+  width: 131px;
+  height: 115px;
+  box-shadow: 0px 4px 12px rgba(81, 81, 81, 0.16);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 0 10px;
+  box-sizing: border-box;
+  border-bottom: 5px solid transparent;
+  img {
+    width: 43px;
+    height: 50px;
+  }
+  p {
+    margin-top: 13px;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    font-family: "Open Sans", sans-serif;
+  }
+}

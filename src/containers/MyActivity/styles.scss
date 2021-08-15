@@ -1,0 +1,165 @@
+@import "assets/css/index";
+
+.myactivity {
+  .inner-content {
+    background: $white;
+    padding: 30px;
+    margin: 13px 39px 81px 59px;
+    border-radius: 3px;
+
+    .topHeadingBtn {
+      display: flex;
+      justify-content: space-between;
+      .topBtn {
+        display: flex;
+        align-items: flex-end;
+      }
+    }
+    .topDescription {
+      margin-top: 21px;
+      border-bottom: 1px solid $gray;
+    }
+    .activityTitle {
+      width: max-content;
+      margin-top: 33px;
+    }
+    .activityBlocks {
+      display: flex;
+      margin-top: 64px;
+      .blockBody {
+        width: 485px;
+        height: 255px;
+        border-radius: 5px;
+        background-color: #f1f1f1;
+        .blockBody-detail {
+          margin-top: 70px;
+          margin-right: 28px;
+          margin-left: 255px;
+          .mb-20 {
+            margin-bottom: 20px;
+          }
+          .mb-13 {
+            margin-bottom: 13px;
+          }
+        }
+        .blockBody-text {
+          margin-top: 119px;
+          margin-left: 172px;
+        }
+      }
+      .ml-54 {
+        margin-left: 54px;
+      }
+    }
+  }
+}
+.form-new-popup-activity {
+  position: fixed;
+  background: #0848928f;
+  top: 0;
+  width: 100%;
+  z-index: 1060;
+  height: 100%;
+  overflow-y: auto;
+  padding-left: 285px;
+  .cross-all-pop {
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    font-size: 28px;
+    cursor: pointer;
+  }
+  .inner-form-content {
+    background: #fff;
+    opacity: 1;
+    width: 100%;
+    height: 120vh;
+    padding: 50px;
+  }
+}
+.create-form-activity {
+  .activityHeading {
+    width: 350px;
+    margin: 40px auto 0 auto;
+    .headingText {
+      text-align: center;
+    }
+  }
+  .createActivity-layoutCard {
+    display: flex;
+    justify-content: center;
+    margin-top: 80px;
+    .layoutCard {
+      box-shadow: 0px 4px 12px rgba(81, 81, 81, 0.16);
+      padding: 32px 20px;
+      width: 320px;
+      height: 241px;
+      text-align: center;
+      cursor: pointer;
+      .mb-16 {
+        margin-bottom: 16px;
+      }
+    }
+    .ml-40 {
+      margin-left: 40px;
+    }
+  }
+  .layoutCard-active {
+    border-bottom: 5px solid $crusta;
+  }
+  .createActivity-btns {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 134px;
+  }
+}
+
+.activity-layout-form {
+  padding: 0 50px;
+  .activity-layout-tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .ml-10 {
+      margin-left: 10px;
+    }
+    .mt-10 {
+      margin-top: 15px;
+    }
+  }
+  .activity-layout-title {
+    margin-top: 50px;
+    width: 480px;
+  }
+  .activity-layout-detail {
+    margin-top: 10px;
+    // margin-right: 100px;
+    // width: 970px;
+  }
+  .activity-layout-cards {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    .ml-30 {
+      margin-left: 30px;
+    }
+    .activity-layoutCard-active {
+      border-bottom: 5px solid $crusta;
+    }
+  }
+  .activity-layout-process-box {
+    background-color: #f1f1f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    height: 130px;
+    margin-top: 52px;
+  }
+  .activity-layout-btns {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+  }
+}
