@@ -10,7 +10,7 @@ import VideoTagImage from "../../../assets/images/Group 616.png";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TopHeading from "utils/TopHeading/topheading";
-
+import DialogCardImage from "assets/images/Rectangle 127.png";
 const PreviewLayout = () => {
   return (
     <div className="preview-layout-form">
@@ -52,7 +52,36 @@ const PreviewLayout = () => {
           </div>
         </div>
         <div className="preview-layout-project">
-          <div></div>
+          <div className="project-title-link">
+            <div className="project-title">
+              <HeadingTwo
+                text="Project: "
+                color="#084892"
+                className="project-heading"
+              />
+              <HeadingText text="Project title here" color="#515151" />
+              <HeadingTwo
+                text="Playlist: "
+                color="#084892"
+                className="playlist-heading"
+              />
+              <HeadingText text="Playlist name here" color="#515151" />
+            </div>
+            <div className="project-link">
+              <Link className="get-link">
+                <FontAwesomeIcon icon="link" className="icon-link" />
+                Get link
+              </Link>
+            </div>
+          </div>
+          <div className="dialog-card-box">
+            <img src={DialogCardImage} alt="" />
+            <HeadingText
+              text="Dialog Cards"
+              color="#084892"
+              className="ml-15"
+            />
+          </div>
         </div>
       </div>
     </div>
