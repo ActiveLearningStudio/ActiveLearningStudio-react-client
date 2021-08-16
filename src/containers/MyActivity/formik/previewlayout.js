@@ -6,13 +6,12 @@ import Tabs from "utils/Tabs/tabs";
 import HeadingThree from "utils/HeadingThree/headingthree";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-
+import TopHeading from "utils/TopHeading/topheading";
+import DialogCardImage from "assets/images/Rectangle 127.png";
 const PreviewLayout = (props) => {
   const {
     changeScreenHandler,
   } = props;
-  const [layout, setLayout] = useState("");
   return (
     <div className="preview-layout-form">
       <div className="preview-layout-back">
@@ -56,8 +55,35 @@ const PreviewLayout = (props) => {
           </div>
         </div>
         <div className="preview-layout-project">
-          <div>
-      
+          <div className="project-title-link">
+            <div className="project-title">
+              <HeadingTwo
+                text="Project: "
+                color="#084892"
+                className="project-heading"
+              />
+              <HeadingText text="Project title here" color="#515151" />
+              <HeadingTwo
+                text="Playlist: "
+                color="#084892"
+                className="playlist-heading"
+              />
+              <HeadingText text="Playlist name here" color="#515151" />
+            </div>
+            <div className="project-link">
+              <Link className="get-link">
+                <FontAwesomeIcon icon="link" className="icon-link" />
+                Get link
+              </Link>
+            </div>
+          </div>
+          <div className="dialog-card-box">
+            <img src={DialogCardImage} alt="" />
+            <HeadingText
+              text="Dialog Cards"
+              color="#084892"
+              className="ml-15"
+            />
           </div>
         </div>
       </div>

@@ -374,7 +374,11 @@
     }
   }
   .preview-layout-card-project {
+    display: flex;
     .preview-layout-dialogcard {
+      border-right: 1px solid #dddddd;
+      height: 100vh;
+      width: 650px;
       .dialogcard-subtitle {
         margin-top: 15px;
         .subtitle-text {
@@ -392,7 +396,53 @@
           }
         }
         .sub-heading {
-          margin-top: 15px;
+          h3 {
+            font-size: 18px;
+            line-height: 21px;
+          }
+        }
+      }
+    }
+    .preview-layout-project {
+      width: 352px;
+      padding-left: 30px;
+      .project-title-link {
+        display: flex;
+        justify-content: space-between;
+        .project-title {
+          margin-top: 30px;
+          .project-heading {
+            h2 {
+              border: none;
+            }
+          }
+          .playlist-heading {
+            margin-top: 37px;
+            h2 {
+              border: none;
+            }
+          }
+        }
+        .project-link {
+          margin-top: 30px;
+          .get-link {
+            color: $curriki-main-blue;
+            .icon-link {
+              margin-right: 10px;
+              font-size: 12px;
+            }
+          }
+        }
+      }
+      .dialog-card-box {
+        margin-top: 50px;
+
+        display: flex;
+        align-items: center;
+        padding-bottom: 15px;
+        border-bottom: 1px solid $crusta;
+        .ml-15 {
+          margin-left: 15px;
         }
       }
     }
