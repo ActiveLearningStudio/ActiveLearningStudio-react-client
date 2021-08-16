@@ -1,21 +1,25 @@
 /* eslint-disable */
-import React from "react";
+import React, {useState} from "react";
 import HeadingText from "utils/HeadingText/headingtext";
 import HeadingTwo from "utils/HeadingTwo/headingtwo";
 import Tabs from "utils/Tabs/tabs";
-import Buttons from "utils/Buttons/buttons";
-import { Formik } from "formik";
 import HeadingThree from "utils/HeadingThree/headingthree";
-import VideoTagImage from "../../../assets/images/Group 616.png";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import TopHeading from "utils/TopHeading/topheading";
 
-const PreviewLayout = () => {
+
+const PreviewLayout = (props) => {
+  const {
+    changeScreenHandler,
+  } = props;
+  const [layout, setLayout] = useState("");
   return (
     <div className="preview-layout-form">
       <div className="preview-layout-back">
-        <Link className="back-link">
+        <Link 
+          className="back-link"
+          onClick={() => changeScreenHandler('addactivity')}
+        >
           <FontAwesomeIcon icon="chevron-left" className="icon-link" />
           Back
         </Link>
@@ -52,7 +56,9 @@ const PreviewLayout = () => {
           </div>
         </div>
         <div className="preview-layout-project">
-          <div></div>
+          <div>
+      
+          </div>
         </div>
       </div>
     </div>

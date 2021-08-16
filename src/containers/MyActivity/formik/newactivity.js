@@ -6,30 +6,14 @@ import FrameImage2 from "assets/images/Frame 870.png";
 import HeadingThree from "utils/HeadingThree/headingthree";
 import HeadingText from "utils/HeadingText/headingtext";
 import Buttons from "utils/Buttons/buttons";
-import ActivityLayout from "./activitylayout";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-const NewActivity = () => {
+
+const NewActivity = (props) => {
+  const {
+    changeScreenHandler,
+  } = props;
   const [layout, setLayout] = useState("");
-  const [activityLayout, setActivityLayout] = useState(false);
-
-  const activityHandler = () => {
-    setActivityLayout(!activityLayout);
-  };
-
   return (
     <>
-      {activityLayout && (
-        <div className="form-new-popup-activity">
-          <FontAwesomeIcon
-            icon="times"
-            className="cross-all-pop"
-            onClick={activityHandler}
-          />
-          <div className="inner-form-content">
-            <ActivityLayout />
-          </div>
-        </div>
-      )}
       <div className="create-form-activity">
         <div className="activityHeading">
           <HeadingTwo
@@ -69,12 +53,20 @@ const NewActivity = () => {
           </div>
         </div>
         <div className="createActivity-btns">
-          <Buttons text="Cancel" secondary={true} width="111px" height="36px" />
+          <Buttons 
+            text="Cancel"
+            secondary={true}
+            width="111px"
+            height="36px"
+            onClick={() => changeScreenHandler('')}
+          />
           <Buttons
             text="Next"
             defaultgrey={layout ? false : true}
             width="96px"
             height="36px"
+            disabled={layout ? false : true}
+            onClick={() => changeScreenHandler('layout')}
           />
         </div>
       </div>

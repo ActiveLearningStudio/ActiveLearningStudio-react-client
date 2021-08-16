@@ -1,15 +1,20 @@
 /*eslint-disable*/
-import React from "react";
+import React,{useState} from "react";
 import HeadingText from "utils/HeadingText/headingtext";
 import HeadingTwo from "utils/HeadingTwo/headingtwo";
 import Tabs from "utils/Tabs/tabs";
 import Buttons from "utils/Buttons/buttons";
-import { Formik } from "formik";
+import { Formik, Field } from "formik";
 import HeadingThree from "utils/HeadingThree/headingthree";
 import VideoTagImage from "../../../assets/images/Group 616.png";
 import { Link } from "react-router-dom";
+import H5PEditor from 'components/ResourceCard/AddResource/Editors/H5PEditorV2';
 
-const AddActivity = () => {
+const AddActivity = (props) => {
+  const {
+    changeScreenHandler,
+  } = props;
+  const [upload, setupload] = useState(false);
   return (
     <div className="add-activity-form">
       <div className="add-activity-tabs">
@@ -30,6 +35,7 @@ const AddActivity = () => {
             initialValues={{
               method: "",
               layoutTitle: "",
+              picked: "create",
             }}
           >
             <form>
@@ -38,12 +44,26 @@ const AddActivity = () => {
                 <div className="radioBtns">
                   <div className="formik-radioBtn">
                     <label className="check-input">
-                      <input type="checkbox" /> <span></span> Create{" "}
+                      <Field 
+                        onClick={()=>{
+                          setupload(false)
+                        }}
+                        type="radio"
+                        name="picked"
+                        value="create"
+                      />
+                      Create
                     </label>
                   </div>
                   <div className="formik-radioBtn">
                     <label className="check-input">
-                      <input type="checkbox" /> <span></span> Upload{" "}
+                      <Field
+                       onClick={()=>{
+                        
+                          setupload(true)
+                        }}
+                      type="radio" name="picked" value="upload" />
+                      Upload
                     </label>
                   </div>
                 </div>
@@ -65,29 +85,48 @@ const AddActivity = () => {
                   placeholder="Give your layout a name..."
                 />
               </div>
-              <div className="layout-colums-box">
-                <HeadingThree
-                  text="List of column content"
-                  color="#084892"
-                  className="box-title"
-                />
-                <div className="layout-colums-inner-box"></div>
-              </div>
-            </form>
-          </Formik>
+              </form>
+              </Formik>
+              
+         
+       
         </div>
         <div className="add-activity-layout-videoTag">
           <div className="videoTag">
-            <img src={VideoTagImage} alt="" />
             <div className="videoTag-link">
               <Link to="/">View Demo</Link>
             </div>
+            <iframe width="100%" height="200" src="https://www.youtube.com/embed/ngXSzWNYzU4" title="https://youtu.be/ngXSzWNYzU4"></iframe>
           </div>
         </div>
+       
+      </div>
+      <div className="layout-colums-box">
+          <HeadingThree
+            text="List of column content"
+            color="#084892"
+            className="box-title"
+          />
+          <div className="layout-colums-inner-box">
+              <H5PEditor upload={upload} />
+          </div>
       </div>
       <div className="add-activity-btns">
-        <Buttons text="Back" secondary={true} width="110px" height="35px" />
-        <Buttons text="Next" primary={true} width="132px" height="36px" />
+        <Buttons
+          text="Back"
+          secondary={true}
+          width="110px"
+          height="35px"
+          onClick={() => changeScreenHandler('layout')}
+        />
+        <Buttons
+          text="Next"
+          primary={true}
+          width="132px"
+          height="36px"
+          // disabled={layout ? false : true}
+          onClick={() => changeScreenHandler('preview')}
+        />
       </div>
     </div>
   );

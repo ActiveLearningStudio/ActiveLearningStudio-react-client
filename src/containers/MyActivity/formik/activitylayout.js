@@ -7,7 +7,10 @@ import ColoumImage from "assets/images/Group 648.png";
 import PresentationImage from "assets/images/Group 646.png";
 import Tabs from "utils/Tabs/tabs";
 import Buttons from "utils/Buttons/buttons";
-const ActivityLayout = () => {
+const ActivityLayout = (props) => {
+  const {
+    changeScreenHandler,
+  } = props;
   const [layout, setLayout] = useState("");
   return (
     <div className="activity-layout-form">
@@ -85,6 +88,8 @@ const ActivityLayout = () => {
           defaultgrey={layout ? false : true}
           width="147px"
           height="36px"
+          disabled={layout ? false : true}
+          onClick={() => changeScreenHandler('addactivity')}
         />
       </div>
     </div>

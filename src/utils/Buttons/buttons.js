@@ -18,6 +18,7 @@ const Buttons = ({
   width,
   height,
   radius,
+  disabled,
   onClick = () => {},
 }) => {
   const btnCurriki = classNames(
@@ -40,6 +41,7 @@ const Buttons = ({
       type={type}
       style={btnCurrikiStyle}
       onClick={onClick}
+      disabled={disabled}
     >
       {icon && <FontAwesomeIcon icon={icon} className="curriki_btn-mr-2" />}
       {text}
@@ -60,5 +62,6 @@ Buttons.propTypes = {
   height: PropTypes.string,
   radius: PropTypes.string,
   onClick: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 export default Buttons;

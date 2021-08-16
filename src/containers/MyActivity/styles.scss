@@ -85,6 +85,7 @@
   }
 }
 .create-form-activity {
+
   .activityHeading {
     width: 350px;
     margin: 40px auto 0 auto;
@@ -173,6 +174,65 @@
 
 .add-activity-form {
   padding: 0 50px;
+  .layout-colums-box {
+    margin-top: 22px;
+    background-color: #dddddd;
+  
+    border-radius: 5px;
+    padding: 10px 15px 15px 15px;
+    .box-title {
+      margin-top: 15px;
+      h3 {
+        font-size: 18px;
+        line-height: 21px;
+      }
+    }
+    .layout-colums-inner-box {
+      margin-top: 30px;
+     
+      min-height: 200px;
+      background-color: $white;
+
+      .laravel-h5p-upload {
+        height: 240px;
+        background: transparent;
+        border: 3px dashed #ddd;
+        border-radius: 10px;
+        margin-top: 15px;
+    }
+    .drop-area {
+      position: relative;
+
+      .upload-holder {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%,-50%);
+          text-align: center;
+          font: normal normal normal 16px/22px $rubik;
+          letter-spacing: 0px;
+          color: #5A5A5A;
+          z-index:1;
+
+          svg {
+           color:#084892;
+           font-size: 30px;
+           margin-bottom: 15px;
+          }
+
+          span {
+           font: normal normal normal 16px/22px $rubik;
+           letter-spacing: 0px;
+           color: #084892;
+           text-decoration: underline;
+           cursor: pointer;
+          }
+       }
+   }
+
+
+    }
+  }
   .add-activity-tabs {
     display: flex;
     justify-content: center;
@@ -190,6 +250,8 @@
   }
   .add-activity-layout-formik-videoTag {
     display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
     .add-activity-layout-formik {
       @media screen and (max-width: 1024px) {
         width: 400px;
@@ -207,14 +269,15 @@
               display: flex;
               align-items: center;
               input {
-                display: none;
-                &:checked + span {
-                  background-color: $alert;
-                  background-image: url("../../assets/images/svg/tick.svg");
-                  background-repeat: no-repeat;
-                  background-size: 71% 71%;
-                  background-position: center;
-                }
+                margin-right: 5px;
+                // display: none;
+                // &:checked + span {
+                //   background-color: $alert;
+                //   background-image: url("../../assets/images/svg/tick.svg");
+                //   background-repeat: no-repeat;
+                //   background-size: 71% 71%;
+                //   background-position: center;
+                // }
               }
               span {
                 display: inline-block;
@@ -252,37 +315,19 @@
           text-indent: 10px;
         }
       }
-      .layout-colums-box {
-        margin-top: 22px;
-        background-color: #dddddd;
-        height: 629px;
-        border-radius: 5px;
-        padding: 10px 15px 0 15px;
-        .box-title {
-          margin-top: 15px;
-          h3 {
-            font-size: 18px;
-            line-height: 21px;
-          }
-        }
-        .layout-colums-inner-box {
-          margin-top: 30px;
-          height: 529px;
-          border-radius: 5px;
-          background-color: $white;
-        }
-      }
+      
     }
     .add-activity-layout-videoTag {
       @media screen and (max-width: 1024px) {
         margin-left: 10px;
       }
-      margin-top: 30px;
-      margin-left: 101px;
+      
+      margin-left: 20px;
       .videoTag {
         display: flex;
         flex-direction: column;
         justify-content: center;
+
         img {
           @media screen and (max-width: 1024px) {
             width: 300px;

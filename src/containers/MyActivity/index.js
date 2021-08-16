@@ -4,6 +4,8 @@ import TopHeading from "utils/TopHeading/topheading";
 import TopHeadingImage from "assets/images/svg/Vector.svg";
 import "./styles.scss";
 import Buttons from "utils/Buttons/buttons";
+import * as actionTypes from 'store/actionTypes';
+import { useSelector, useDispatch} from 'react-redux';
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import HeadingText from "utils/HeadingText/headingtext";
 import HeadingTwo from "utils/HeadingTwo/headingtwo";
@@ -15,24 +17,52 @@ import AddActivity from "./formik/addactivity";
 import PreviewLayout from "./formik/previewlayout";
 
 const MyActivity = () => {
-  const [newActivity, setNewActivity] = useState(false);
-  const setActivityForm = () => {
-    setNewActivity(!newActivity);
-  };
+  const { screenState } =  useSelector((state) => state.myactivities);
+  const dispatch = useDispatch();
+  const changeScreenHandler = (payload) => {
+    dispatch({
+      type:actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+      payload: payload,
+    })
+  }
   return (
     <>
-      {newActivity && (
+      {screenState  && (
         <div className="form-new-popup-activity">
           <FontAwesomeIcon
             icon="times"
             className="cross-all-pop"
-            onClick={setActivityForm}
+            onClick={() => changeScreenHandler('')}
           />
           <div className="inner-form-content">
-            {/* <NewActivity /> */}
-            {/* <ActivityLayout /> */}
-            {/* <AddActivity /> */}
-            <PreviewLayout />
+            {screenState === 'newactivity'
+            && (
+              <NewActivity
+                changeScreenHandler={changeScreenHandler}
+                screenState={screenState}
+              />
+            )}
+            {screenState === 'layout'
+            && (
+              <ActivityLayout
+                changeScreenHandler={changeScreenHandler}
+                screenState={screenState}
+              />
+            )}
+            {screenState === 'addactivity'
+            && (
+              <AddActivity
+                changeScreenHandler={changeScreenHandler}
+                screenState={screenState}
+              />
+            )}
+            {screenState === 'preview'
+            && (
+              <PreviewLayout
+                changeScreenHandler={changeScreenHandler}
+                screenState={screenState}
+              />
+            )}
           </div>
         </div>
       )}
@@ -55,7 +85,7 @@ const MyActivity = () => {
                   icon={faPlus}
                   width="163px"
                   height="35px"
-                  onClick={setActivityForm}
+                  onClick={() => changeScreenHandler('newactivity')}
                 />
               </div>
             </div>
@@ -79,9 +109,9 @@ const MyActivity = () => {
                   />
                   <HeadingText
                     text="Learn how to create awesome 
-activities using +50 Activty Types
-like Dialog Cards, Interactive Videos 
-and more..."
+                    activities using +50 Activty Types
+                    like Dialog Cards, Interactive Videos 
+                    and more..."
                     color="#515151"
                     className="mb-13"
                   />
