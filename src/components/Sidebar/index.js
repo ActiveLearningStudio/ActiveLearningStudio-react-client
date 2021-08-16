@@ -371,6 +371,15 @@ function Sidebar(props) {
           <div className="toggleSidebar collapsedown">
             {permission?.Organization?.includes("organization:view") && (
               <Link
+                to={`/org/${allState.organization.currentOrganization?.domain}/myactivity`}
+                onClick={() => dispatch(updateOrganizationScreen("intro"))}
+              >
+                <img src={myActivitySvg} alt="" />
+                <div className="tagline">My Activity</div>
+              </Link>
+            )}
+            {permission?.Organization?.includes("organization:view") && (
+              <Link
                 to={`/org/${allState.organization.currentOrganization?.domain}/admin`}
                 onClick={() => dispatch(updateOrganizationScreen("intro"))}
               >

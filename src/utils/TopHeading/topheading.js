@@ -11,7 +11,8 @@ const TopHeading = ({ description, image, heading, color }) => {
     <div className={currikiUtility} style={{ color: color }}>
       <p>{description}</p>
       <div className="curriki-imageHeading">
-        <img src={image} alt="" />
+        {image && <img src={image} alt="" />}
+
         <h1>{heading}</h1>
       </div>
     </div>

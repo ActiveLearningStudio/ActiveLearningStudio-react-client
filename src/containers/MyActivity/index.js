@@ -11,6 +11,8 @@ import HeadingThree from "utils/HeadingThree/headingthree";
 import NewActivity from "./formik/newactivity";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ActivityLayout from "./formik/activitylayout";
+import AddActivity from "./formik/addactivity";
+import PreviewLayout from "./formik/previewlayout";
 
 const MyActivity = () => {
   const [newActivity, setNewActivity] = useState(false);
@@ -28,7 +30,9 @@ const MyActivity = () => {
           />
           <div className="inner-form-content">
             {/* <NewActivity /> */}
-            <ActivityLayout />
+            {/* <ActivityLayout /> */}
+            {/* <AddActivity /> */}
+            <PreviewLayout />
           </div>
         </div>
       )}

@@ -35,14 +35,21 @@
           margin-top: 70px;
           margin-right: 28px;
           margin-left: 255px;
+
           .mb-20 {
             margin-bottom: 20px;
           }
           .mb-13 {
             margin-bottom: 13px;
           }
+          @media screen and (max-width: 1024px) {
+            margin-left: 15px;
+          }
         }
         .blockBody-text {
+          @media screen and (max-width: 1024px) {
+            margin-left: 15px;
+          }
           margin-top: 119px;
           margin-left: 172px;
         }
@@ -73,7 +80,7 @@
     background: #fff;
     opacity: 1;
     width: 100%;
-    height: 120vh;
+    height: 180vh;
     padding: 50px;
   }
 }
@@ -161,5 +168,188 @@
     display: flex;
     justify-content: space-between;
     margin-top: 50px;
+  }
+}
+
+.add-activity-form {
+  padding: 0 50px;
+  .add-activity-tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .ml-10 {
+      margin-left: 10px;
+    }
+    .mt-10 {
+      margin-top: 15px;
+    }
+  }
+  .add-activity-title {
+    margin-top: 50px;
+    width: max-content;
+  }
+  .add-activity-layout-formik-videoTag {
+    display: flex;
+    .add-activity-layout-formik {
+      @media screen and (max-width: 1024px) {
+        width: 400px;
+      }
+      width: 500px;
+      .layout-formik-radioBtn {
+        margin-top: 38px;
+        .radioBtns {
+          display: flex;
+          align-items: center;
+          .formik-radioBtn {
+            margin-right: 60px;
+            label {
+              // border: 1px solid red;
+              display: flex;
+              align-items: center;
+              input {
+                display: none;
+                &:checked + span {
+                  background-color: $alert;
+                  background-image: url("../../assets/images/svg/tick.svg");
+                  background-repeat: no-repeat;
+                  background-size: 71% 71%;
+                  background-position: center;
+                }
+              }
+              span {
+                display: inline-block;
+                height: 20px;
+                width: 20px;
+                border: 1px solid $gray;
+                border-radius: 50%;
+                margin-right: 16px;
+              }
+            }
+          }
+        }
+      }
+      .layout-title-formik-textField {
+        margin-top: 39px;
+        .textField-title {
+          h3 {
+            font-size: 18px;
+            line-height: 21px;
+          }
+        }
+        .textField-detailText {
+          p {
+            font-size: 12px;
+            line-height: 16px;
+          }
+        }
+        input {
+          width: 100%;
+          height: 40px;
+          border-radius: 5px;
+          outline: none;
+          border: 1px solid $white;
+          box-shadow: 0px 0px 4px $curriki-main-blue;
+          text-indent: 10px;
+        }
+      }
+      .layout-colums-box {
+        margin-top: 22px;
+        background-color: #dddddd;
+        height: 629px;
+        border-radius: 5px;
+        padding: 10px 15px 0 15px;
+        .box-title {
+          margin-top: 15px;
+          h3 {
+            font-size: 18px;
+            line-height: 21px;
+          }
+        }
+        .layout-colums-inner-box {
+          margin-top: 30px;
+          height: 529px;
+          border-radius: 5px;
+          background-color: $white;
+        }
+      }
+    }
+    .add-activity-layout-videoTag {
+      @media screen and (max-width: 1024px) {
+        margin-left: 10px;
+      }
+      margin-top: 30px;
+      margin-left: 101px;
+      .videoTag {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        img {
+          @media screen and (max-width: 1024px) {
+            width: 300px;
+            height: 180px;
+          }
+          width: 369px;
+          height: 213px;
+        }
+        .videoTag-link {
+          margin-top: 10px;
+          text-align: center;
+        }
+      }
+    }
+  }
+  .add-activity-btns {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+  }
+}
+
+.preview-layout-form {
+  // padding: 0 50px;
+  .preview-layout-back {
+    .back-link {
+      color: $curriki-main-blue;
+      .icon-link {
+        margin-right: 10px;
+        font-size: 12px;
+      }
+    }
+  }
+  .preview-layout-tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #dddddd;
+    .ml-10 {
+      margin-left: 10px;
+    }
+    .mt-10 {
+      margin-top: 15px;
+    }
+  }
+  .preview-layout-card-project {
+    .preview-layout-dialogcard {
+      .dialogcard-subtitle {
+        margin-top: 15px;
+        .subtitle-text {
+          p {
+            font-size: 12px;
+            line-height: 16px;
+          }
+        }
+      }
+      .dialogcard-title {
+        margin-top: 15px;
+        .title-heading {
+          h2 {
+            border: none;
+          }
+        }
+        .sub-heading {
+          margin-top: 15px;
+        }
+      }
+    }
   }
 }

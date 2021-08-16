@@ -12,7 +12,7 @@ const ActivityLayout = () => {
   return (
     <div className="activity-layout-form">
       <div className="activity-layout-tabs">
-        <Tabs text="1. Select a layout" />
+        <Tabs text="1. Select a layout" tabActive={true} />
         <Tabs text="2. Add activities to Layout" className="ml-10 mt-10" />
         <Tabs text="3. Preview Layout" className="ml-10" />
       </div>
@@ -22,8 +22,7 @@ const ActivityLayout = () => {
       <div className="activity-layout-detail">
         <HeadingText
           text="Within the six categories, there are over 50 learning activity types. These range from Interactive Video, Flashcards, to Memory Games. We also have special activity types that we will refer to as layouts. "
-          color="#515151
-"
+          color="#515151"
         />
       </div>
       <div className="activity-layout-cards">

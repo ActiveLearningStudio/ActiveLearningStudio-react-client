@@ -75,7 +75,6 @@ const NewActivity = () => {
             defaultgrey={layout ? false : true}
             width="96px"
             height="36px"
-            onClick={activityHandler}
           />
         </div>
       </div>
