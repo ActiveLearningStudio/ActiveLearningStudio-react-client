@@ -46,6 +46,7 @@ function Table(props) {
     setCurrentTab,
     setChangeIndexValue,
     changeIndexValue,
+    setAllProjectIndexTab,
     changeProjectFromorg,
   } = props;
   const organization = useSelector((state) => state.organization);
@@ -938,7 +939,7 @@ function Table(props) {
                       <td>
                         <div className="links">
                           {(row.indexing === 1 || row.indexing === 2) && (
-                            <Link onClick={() => {
+                            <Link onClick={async () => {
                               Swal.fire({
                                 title: 'Please Wait !',
                                 html: 'Approving Project ...',
@@ -947,28 +948,52 @@ function Table(props) {
                                   Swal.showLoading();
                                 },
                               });
-                              const result = adminService.updateIndex(row.id, 3)
-                              result.then((data) => {
-                                // console.log(data)
+                              const result = await adminService.updateIndex(row.id, 3);
+                              if(result?.message) {
                                 if(changeIndexValue !== 0) {
                                   setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id));
                                 }
                                 Swal.fire({
                                   icon: 'success',
-                                  text: data.message,
+                                  text: result.message,
                                 });
-                              }).catch((err) => {
+                              } else {
                                 Swal.fire({
                                   icon: 'error',
                                   text: 'Error',
                                 });
-                              })
+                              }
+                              // result.then((data) => {
+                              //   // console.log(data)
+                              //   if(changeIndexValue !== 0) {
+                              //     setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id));
+                              //   }
+                              //   Swal.fire({
+                              //     icon: 'success',
+                              //     text: data.message,
+                              //   });
+                              // }).catch((err) => {
+                              //   Swal.fire({
+                              //     icon: 'error',
+                              //     text: 'Error',
+                              //   });
+                              // });
+                              if (result) {
+                                const response = adminService.getAllProjectIndex(
+                                  activeOrganization?.id,
+                                  activePage || 1,
+                                  changeIndexValue,
+                                );
+                                response.then((data) => {
+                                  setAllProjectIndexTab(data);
+                                }).catch(e=>setAllProjectIndexTab([]));
+                              }
                             }}>
                               Approve&nbsp;&nbsp;
                             </Link>
                           )}
                           {(row.indexing === 1 || row.indexing === 3) && (
-                            <Link onClick={() => {
+                            <Link onClick={async () => {
                               Swal.fire({
                                 title: 'Please Wait !',
                                 html: 'Reject Project ...',
@@ -977,19 +1002,48 @@ function Table(props) {
                                   Swal.showLoading();
                                 },
                               });
-                              const result = adminService.updateIndex(row.id, 2)
-                              result.then((data) => {
-                                // console.log(data)
-                                // console.log({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
+                              const result = await adminService.updateIndex(row.id, 2);
+                              if (result?.message) {
                                 if (changeIndexValue) {
                                   setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id));
                                 }
-                                // setLocalStatePagination({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
                                 Swal.fire({
                                   icon: 'success',
-                                  text: data.message,
+                                  text: result.message,
                                 })
-                              })
+                              } else {
+                                Swal.fire({
+                                  icon: 'error',
+                                  text: 'Error',
+                                });
+                              }
+                              // result.then((data) => {
+                              //   // console.log(data)
+                              //   // console.log({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
+                              //   if (changeIndexValue) {
+                              //     setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id));
+                              //   }
+                              //   // setLocalStatePagination({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
+                              //   Swal.fire({
+                              //     icon: 'success',
+                              //     text: data.message,
+                              //   })
+                              // }).catch((err) => {
+                              //   Swal.fire({
+                              //     icon: 'error',
+                              //     text: 'Error',
+                              //   });
+                              // });
+                              if (result?.message) {
+                                const response = adminService.getAllProjectIndex(
+                                  activeOrganization?.id,
+                                  activePage || 1,
+                                  changeIndexValue,
+                                );
+                                response.then((data) => {
+                                  setAllProjectIndexTab(data);
+                                }).catch(e=>setAllProjectIndexTab([]));
+                              }
                             }}>
                               Reject
                             </Link>

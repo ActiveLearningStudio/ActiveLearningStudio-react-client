@@ -98,7 +98,6 @@ export default function Pills(props) {
         const searchapi = adminService.getAllProjectIndex(activeOrganization?.id, 1, index)
         searchapi.then((data) => {
           setAllProjectIndexTab(data)
-
         })
       }
     } else if (subType === 'all') {
@@ -639,6 +638,7 @@ export default function Pills(props) {
                 setActivePage={setActivePage}
                 activePage={activePage}
                 subType="index"
+                setAllProjectIndexTab={setAllProjectIndexTab}
                 setCurrentTab={setCurrentTab}
                 filter={true}
                 searchQueryProject={searchQueryProject}
