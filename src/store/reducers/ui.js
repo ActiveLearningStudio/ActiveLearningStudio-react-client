@@ -10,6 +10,7 @@ import {
   SHOW_HELP,
   HIDE_HELP,
   UPDATE_PAGINATION,
+  CHANGE_ORIENTATION,
 } from '../actionTypes';
 
 const defaultUIState = () => ({
@@ -19,6 +20,7 @@ const defaultUIState = () => ({
   sideBarCollapsed: false,
   help: false,
   paginations: null,
+  orientation: 0,
 });
 
 export default (state = defaultUIState(), action) => {
@@ -36,6 +38,11 @@ export default (state = defaultUIState(), action) => {
       return {
         ...state,
         showDeletePlaylistPopup: false,
+      };
+    case CHANGE_ORIENTATION:
+      return {
+        ...state,
+        orientation: action.payload,
       };
     case UPDATE_PAGINATION:
       return {
