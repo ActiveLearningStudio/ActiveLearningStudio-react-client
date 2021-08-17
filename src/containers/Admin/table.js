@@ -46,6 +46,7 @@ function Table(props) {
     setCurrentTab,
     setChangeIndexValue,
     changeIndexValue,
+    setAllProjectIndexTab,
     changeProjectFromorg,
   } = props;
   const organization = useSelector((state) => state.organization);
@@ -286,7 +287,7 @@ function Table(props) {
             )
             }
             {type === "LMS" && (
-              localStateData ?
+              localStateData ? localStateData?.length > 0 ?
                 localStateData?.map((row) => (
                   <tr>
                     <td>{row.lms_url}</td>
@@ -333,7 +334,7 @@ function Table(props) {
                                     },
                                     button: false,
                                   });
-                                  const response = adminService.deleteLmsProject(row?.id);
+                                  const response = adminService.deleteLmsProject(activeOrganization?.id, row?.id);
                                   response
                                     .then((res) => {
 
@@ -374,9 +375,15 @@ function Table(props) {
                 )) : (
                   <tr>
                     <td colspan="11">
-                      <Alert variant="primary">Loading data...</Alert>
+                      <Alert variant="warning">No integration found.</Alert>
                     </td>
                   </tr>
+                ) : (
+                  <tr>
+                  <td colspan="11">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
                 ))}
             {type === "Users" &&
               (data?.data?.length > 0 ? (
@@ -938,7 +945,7 @@ function Table(props) {
                       <td>
                         <div className="links">
                           {(row.indexing === 1 || row.indexing === 2) && (
-                            <Link onClick={() => {
+                            <Link onClick={async () => {
                               Swal.fire({
                                 title: 'Please Wait !',
                                 html: 'Approving Project ...',
@@ -947,28 +954,52 @@ function Table(props) {
                                   Swal.showLoading();
                                 },
                               });
-                              const result = adminService.updateIndex(row.id, 3)
-                              result.then((data) => {
-                                // console.log(data)
+                              const result = await adminService.updateIndex(row.id, 3);
+                              if(result?.message) {
                                 if(changeIndexValue !== 0) {
                                   setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id));
                                 }
                                 Swal.fire({
                                   icon: 'success',
-                                  text: data.message,
+                                  text: result.message,
                                 });
-                              }).catch((err) => {
+                              } else {
                                 Swal.fire({
                                   icon: 'error',
                                   text: 'Error',
                                 });
-                              })
+                              }
+                              // result.then((data) => {
+                              //   // console.log(data)
+                              //   if(changeIndexValue !== 0) {
+                              //     setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id));
+                              //   }
+                              //   Swal.fire({
+                              //     icon: 'success',
+                              //     text: data.message,
+                              //   });
+                              // }).catch((err) => {
+                              //   Swal.fire({
+                              //     icon: 'error',
+                              //     text: 'Error',
+                              //   });
+                              // });
+                              if (result) {
+                                const response = adminService.getAllProjectIndex(
+                                  activeOrganization?.id,
+                                  activePage || 1,
+                                  changeIndexValue,
+                                );
+                                response.then((data) => {
+                                  setAllProjectIndexTab(data);
+                                }).catch(e=>setAllProjectIndexTab([]));
+                              }
                             }}>
                               Approve&nbsp;&nbsp;
                             </Link>
                           )}
                           {(row.indexing === 1 || row.indexing === 3) && (
-                            <Link onClick={() => {
+                            <Link onClick={async () => {
                               Swal.fire({
                                 title: 'Please Wait !',
                                 html: 'Reject Project ...',
@@ -977,19 +1008,48 @@ function Table(props) {
                                   Swal.showLoading();
                                 },
                               });
-                              const result = adminService.updateIndex(row.id, 2)
-                              result.then((data) => {
-                                // console.log(data)
-                                // console.log({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
+                              const result = await adminService.updateIndex(row.id, 2);
+                              if (result?.message) {
                                 if (changeIndexValue) {
                                   setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id));
                                 }
-                                // setLocalStatePagination({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
                                 Swal.fire({
                                   icon: 'success',
-                                  text: data.message,
+                                  text: result.message,
                                 })
-                              })
+                              } else {
+                                Swal.fire({
+                                  icon: 'error',
+                                  text: 'Error',
+                                });
+                              }
+                              // result.then((data) => {
+                              //   // console.log(data)
+                              //   // console.log({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
+                              //   if (changeIndexValue) {
+                              //     setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id));
+                              //   }
+                              //   // setLocalStatePagination({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
+                              //   Swal.fire({
+                              //     icon: 'success',
+                              //     text: data.message,
+                              //   })
+                              // }).catch((err) => {
+                              //   Swal.fire({
+                              //     icon: 'error',
+                              //     text: 'Error',
+                              //   });
+                              // });
+                              if (result?.message) {
+                                const response = adminService.getAllProjectIndex(
+                                  activeOrganization?.id,
+                                  activePage || 1,
+                                  changeIndexValue,
+                                );
+                                response.then((data) => {
+                                  setAllProjectIndexTab(data);
+                                }).catch(e=>setAllProjectIndexTab([]));
+                              }
                             }}>
                               Reject
                             </Link>
@@ -1074,10 +1134,10 @@ function Table(props) {
                     </div>
                   </td>
                 </tr>
-              )) : null
+              )) : <Alert variant="warning">No activity type found</Alert>
             )}
             {(type === 'Activities' && subType === 'Activity Items') && (
-              data?.data ? data?.data.map((item) => (
+              data?.data ? data?.data?.length > 0 ? data?.data.map((item) => (
                 <tr>
                   <td>{item.title}</td>
                   <td><img className="image-size" src={global.config.resourceUrl + item.image} alt="activity-item-image" /></td>
@@ -1145,7 +1205,20 @@ function Table(props) {
                     </div>
                   </td>
                 </tr>
-              )) : null
+              )) :
+              (
+                <tr>
+                  <td colspan="5">
+                    <Alert variant="warning"> No activity item found</Alert>
+                  </td>
+                </tr>
+              )  : (
+                <tr>
+                  <td colspan="5">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              )
             )}
           </tbody>
         </table>

@@ -43,8 +43,7 @@ export default function CreateUser(prop) {
           lms_login_id: editMode ? activeEdit?.lms_login_id : "",
           lti_client_id: editMode ? activeEdit?.lti_client_id : "",
           published:editMode ? clone ? false:activeEdit?.published: false,
-
-
+          organization_id: organization?.activeOrganization?.id,
         }}
         validate={(values) => {
           const errors = {};
@@ -98,7 +97,7 @@ export default function CreateUser(prop) {
             });
 
 
-            const result =  adminapi.updateLmsProject(activeEdit?.id, values);
+            const result =  adminapi.updateLmsProject(organization?.activeOrganization?.id,activeEdit?.id, values);
             result.then(res => {
               Swal.fire({
                 icon:'success',
@@ -123,7 +122,7 @@ export default function CreateUser(prop) {
               },
               button: false,
             });
-            const result =  adminapi.createLmsProject(values);
+            const result =  adminapi.createLmsProject(organization?.activeOrganization?.id,values);
             result.then(res => {
               Swal.fire({
                 icon:'success',
