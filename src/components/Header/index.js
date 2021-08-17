@@ -28,7 +28,7 @@ import help from 'assets/images/help.png';
 import edit from 'assets/images/edit1.png';
 import changePassword from 'assets/images/changepassword.png';
 import logoutIcon from 'assets/images/logout.png';
-// import openeducation from 'assets/images/openeducation.png';
+import openeducation from 'assets/images/openeducation.png';
 // import dashboard from 'assets/images/dashboard.png';
 import { logoutAction } from 'store/actions/auth';
 import { Event } from 'trackers/ga';
@@ -38,6 +38,7 @@ import SearchForm from './searchForm';
 import HeaderNotification from './notification';
 
 import './style.scss';
+// import urllink from 'socket.io-client/lib/url';
 
 function Header(props) {
   const { /* user, */ logout } = props;
@@ -67,8 +68,8 @@ function Header(props) {
         setdefaultLogo(sndt);
       } else if (window.location.host.includes('nvdoe')) {
         setdefaultLogo(nevada);
-      } else if (window.location.host.includes('cc.curriki')) {
-        setdefaultLogo(logo);
+      } else if (window.location.host.includes('open.curriki')) {
+        setdefaultLogo(openeducation);
       } else {
         setdefaultLogo(logo);
       }
@@ -82,7 +83,27 @@ function Header(props) {
         <div className="group-search-logo">
           <div className="tophd_left">
             <Link to={`/org/${stateHeader?.currentOrganization?.domain}`} className="top_logo">
-              {image ? <img src={global.config.resourceUrl + image} alt="logo" title="" /> : <img src={defaultLogo} alt="logo" title="" />}
+              {image ? (
+                <div
+                  className="nav-logo"
+                  style={{
+                  backgroundImage: `url(${global.config.resourceUrl + image})`,
+                  backgroundPosition: 'center',
+                  backgroundSize: 'contain',
+                  backgroundRepeat: 'no-repeat',
+                  }}
+                />
+              ) : (
+                <div
+                  className="nav-logo"
+                  style={{
+                  backgroundImage: `url(${defaultLogo})`,
+                  backgroundPosition: 'center',
+                  backgroundSize: 'contain',
+                  backgroundRepeat: 'no-repeat',
+                  }}
+                />
+              )}
             </Link>
           </div>
         </div>

@@ -165,7 +165,7 @@ class RegisterPage extends React.Component {
 
         <div className="auth-container">
           <div className="d-flex align-items-center justify-content-between">
-            <h1 className="auth-title mb-0">
+            <h1 className="auth-title ">
               Welcome
               {!clicked ? ' to Curriki' : `, ${firstName}`}
             </h1>
@@ -181,7 +181,7 @@ class RegisterPage extends React.Component {
             </button> */}
           </div>
 
-          <h3 className="auth-description">
+          <h3 className="auth-description text-left">
             {!clicked
               ? 'Sign up and start making a difference in the way learning experiences are created.'
               : 'Before start creating awesome content, please let us know the usage your are giving to Curriki. '}
@@ -256,7 +256,7 @@ class RegisterPage extends React.Component {
                 <div className="form-group mb-0">
                   <button
                     type="button"
-                    className="btn btn-primary submit"
+                    className="signUp-btn submit"
                     onClick={() => {
                       const passwordValidator = this.validatePassword(password);
                       const emailValidator = validator.isEmail(email.trim());
@@ -284,6 +284,19 @@ class RegisterPage extends React.Component {
                     )}
                   </button>
                 </div>
+                <div className="vertical-line">
+                  <div className="line" />
+                  <p className="line-or">or</p>
+                  <div className="line" />
+                </div>
+
+                <p className="auth-description text-center">
+                  Back to Curriki?&nbsp;
+                  <a onClick={this.goToLogin}>
+                    LogIn
+                  </a>
+                </p>
+
                 <div className="termsandcondition">
                   By clicking the &quot;Sign Up&quot; button, you are creating a CurrikiStudio  account, and you agree to Curriki&apos; s
                   {' '}
