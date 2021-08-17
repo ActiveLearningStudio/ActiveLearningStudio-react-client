@@ -99,10 +99,54 @@
           }
         }
       }
-      .activity-cards-cards {
+      .search-filter-form {
+        height: 116px;
+        background-color: #f1f1f1;
+        border-radius: 8px;
+        margin-top: 16px;
+        form {
+          .sort-filter-form {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            .sortby {
+              select {
+                margin-left: 8px;
+                width: 170px;
+                height: 36px;
+                background: #ffffff;
+                border: 1px solid #515151;
+                box-sizing: border-box;
+                border-radius: 4px;
+              }
+            }
+          }
+          .filter-form-radio {
+            padding: 16px;
+            display: flex;
+            label {
+              display: flex;
+              align-items: center;
+              input {
+                margin-right: 11px;
+              }
+            }
+            .ml-35 {
+              margin-left: 35px;
+            }
+          }
+        }
+      }
+      .activity-cards-box {
         margin-top: 36px;
         display: flex;
-        justify-content: space-between;
+        .ml-102 {
+          margin-left: 102px;
+          @media screen and (max-width: 1024px) {
+            margin-left: 20px;
+          }
+        }
       }
     }
   }

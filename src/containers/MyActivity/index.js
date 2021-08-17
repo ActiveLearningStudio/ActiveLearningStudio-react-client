@@ -16,7 +16,7 @@ import ActivityLayout from "./formik/activitylayout";
 import AddActivity from "./formik/addactivity";
 import PreviewLayout from "./formik/previewlayout";
 import { Link } from "react-router-dom";
-
+import { Formik, Field } from "formik";
 import CardImage from "assets/images/activitycard.png";
 import ActivityCardBox from "utils/ActivityCard/activitycard";
 const MyActivity = () => {
@@ -86,6 +86,7 @@ const MyActivity = () => {
                   width="163px"
                   height="35px"
                   onClick={() => changeScreenHandler("newactivity")}
+                  hover={true}
                 />
               </div>
             </div>
@@ -121,7 +122,59 @@ const MyActivity = () => {
                     </Link>
                   </div>
                 </div>
-                <div className="activity-cards-cards">
+                <div className="search-filter-form">
+                  <Formik
+                    initialValues={{
+                      method: "",
+                      layoutTitle: "",
+                      picked: "create",
+                    }}
+                  >
+                    <form>
+                      <div className="sort-filter-form">
+                        <div className="sortby">
+                          <label>Sort by</label>
+                          <select>
+                            <option>A to Z</option>
+                            <option>A to Z</option>
+                            <option>A to Z</option>
+                          </select>
+                        </div>
+                        <div className="sortby">
+                          <label>Subject</label>
+                          <select>
+                            <option>Analisis</option>
+                            <option>Analisis</option>
+                            <option>Analisis</option>
+                          </select>
+                        </div>
+                        <div className="sortby">
+                          <label>Best for</label>
+                          <select>
+                            <option>Analisis</option>
+                            <option>Analisis</option>
+                            <option>Analisis</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="filter-form-radio">
+                        <label className="check-input">
+                          <Field type="radio" name="sort" value="sort" />
+                          Image based
+                        </label>
+                        <label className="check-input ml-35">
+                          <Field type="radio" name="sort" value="sort" />
+                          Accesible
+                        </label>
+                        <label className="check-input ml-35">
+                          <Field type="radio" name="sort" value="sort" />
+                          Multimedia
+                        </label>
+                      </div>
+                    </form>
+                  </Formik>
+                </div>
+                <div className="activity-cards-box">
                   <div>
                     <ActivityCardBox
                       img={CardImage}
@@ -129,6 +182,22 @@ const MyActivity = () => {
                       description="Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect"
                     />
                   </div>
+                  <div className="ml-102">
+                    <ActivityCardBox
+                      img={CardImage}
+                      title="My first activity"
+                      description="Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect"
+                    />
+                  </div>
+                  <div className="ml-102">
+                    <ActivityCardBox
+                      img={CardImage}
+                      title="My first activity"
+                      description="Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect"
+                    />
+                  </div>
+                </div>
+                <div className="activity-cards-box">
                   <div>
                     <ActivityCardBox
                       img={CardImage}
@@ -136,7 +205,14 @@ const MyActivity = () => {
                       description="Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect"
                     />
                   </div>
-                  <div>
+                  <div className="ml-102">
+                    <ActivityCardBox
+                      img={CardImage}
+                      title="My first activity"
+                      description="Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect"
+                    />
+                  </div>
+                  <div className="ml-102">
                     <ActivityCardBox
                       img={CardImage}
                       title="My first activity"

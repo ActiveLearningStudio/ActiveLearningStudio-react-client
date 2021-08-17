@@ -65,6 +65,7 @@ const NewActivity = (props) => {
             height="36px"
             disabled={layout ? false : true}
             onClick={() => changeScreenHandler("layout")}
+            hover={true}
           />
         </div>
       </div>

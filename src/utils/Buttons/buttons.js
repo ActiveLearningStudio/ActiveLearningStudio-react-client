@@ -19,6 +19,7 @@ const Buttons = ({
   height,
   radius,
   disabled,
+  hover,
   onClick = () => {},
 }) => {
   const btnCurriki = classNames(
@@ -27,6 +28,7 @@ const Buttons = ({
     secondary && "curriki-theme-secondary-button",
     defaultgrey && "curriki-theme-defaultgrey-button",
     defaultwhite && "curriki-theme-defaultwhite-button",
+    hover && "curriki-theme-hover",
     className
   );
 
@@ -35,6 +37,7 @@ const Buttons = ({
     width: width ? width : null,
     borderRadius: radius ? radius : null,
   };
+
   return (
     <button
       className={btnCurriki}
@@ -63,5 +66,6 @@ Buttons.propTypes = {
   radius: PropTypes.string,
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
+  hover: PropTypes.bool,
 };
 export default Buttons;

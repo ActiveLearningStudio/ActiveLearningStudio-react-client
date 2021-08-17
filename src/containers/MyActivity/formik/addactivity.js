@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React,{useState} from "react";
+import React, { useState } from "react";
 import HeadingText from "utils/HeadingText/headingtext";
 import HeadingTwo from "utils/HeadingTwo/headingtwo";
 import Tabs from "utils/Tabs/tabs";
@@ -8,12 +8,10 @@ import { Formik, Field } from "formik";
 import HeadingThree from "utils/HeadingThree/headingthree";
 import VideoTagImage from "../../../assets/images/Group 616.png";
 import { Link } from "react-router-dom";
-import H5PEditor from 'components/ResourceCard/AddResource/Editors/H5PEditorV2';
+import H5PEditor from "components/ResourceCard/AddResource/Editors/H5PEditorV2";
 
 const AddActivity = (props) => {
-  const {
-    changeScreenHandler,
-  } = props;
+  const { changeScreenHandler } = props;
   const [upload, setupload] = useState(false);
   return (
     <div className="add-activity-form">
@@ -44,9 +42,9 @@ const AddActivity = (props) => {
                 <div className="radioBtns">
                   <div className="formik-radioBtn">
                     <label className="check-input">
-                      <Field 
-                        onClick={()=>{
-                          setupload(false)
+                      <Field
+                        onClick={() => {
+                          setupload(false);
                         }}
                         type="radio"
                         name="picked"
@@ -58,11 +56,13 @@ const AddActivity = (props) => {
                   <div className="formik-radioBtn">
                     <label className="check-input">
                       <Field
-                       onClick={()=>{
-                        
-                          setupload(true)
+                        onClick={() => {
+                          setupload(true);
                         }}
-                      type="radio" name="picked" value="upload" />
+                        type="radio"
+                        name="picked"
+                        value="upload"
+                      />
                       Upload
                     </label>
                   </div>
@@ -85,31 +85,32 @@ const AddActivity = (props) => {
                   placeholder="Give your layout a name..."
                 />
               </div>
-              </form>
-              </Formik>
-              
-         
-       
+            </form>
+          </Formik>
         </div>
         <div className="add-activity-layout-videoTag">
           <div className="videoTag">
             <div className="videoTag-link">
               <Link to="/">View Demo</Link>
             </div>
-            <iframe width="100%" height="200" src="https://www.youtube.com/embed/ngXSzWNYzU4" title="https://youtu.be/ngXSzWNYzU4"></iframe>
+            <iframe
+              width="100%"
+              height="200"
+              src="https://www.youtube.com/embed/ngXSzWNYzU4"
+              title="https://youtu.be/ngXSzWNYzU4"
+            ></iframe>
           </div>
         </div>
-       
       </div>
       <div className="layout-colums-box">
-          <HeadingThree
-            text="List of column content"
-            color="#084892"
-            className="box-title"
-          />
-          <div className="layout-colums-inner-box">
-              <H5PEditor upload={upload} />
-          </div>
+        <HeadingThree
+          text="List of column content"
+          color="#084892"
+          className="box-title"
+        />
+        <div className="layout-colums-inner-box">
+          <H5PEditor upload={upload} />
+        </div>
       </div>
       <div className="add-activity-btns">
         <Buttons
@@ -117,7 +118,7 @@ const AddActivity = (props) => {
           secondary={true}
           width="110px"
           height="35px"
-          onClick={() => changeScreenHandler('layout')}
+          onClick={() => changeScreenHandler("layout")}
         />
         <Buttons
           text="Next"
@@ -125,7 +126,8 @@ const AddActivity = (props) => {
           width="132px"
           height="36px"
           // disabled={layout ? false : true}
-          onClick={() => changeScreenHandler('preview')}
+          onClick={() => changeScreenHandler("preview")}
+          hover={true}
         />
       </div>
     </div>

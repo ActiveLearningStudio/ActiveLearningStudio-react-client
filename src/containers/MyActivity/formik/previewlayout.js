@@ -128,7 +128,13 @@ const PreviewLayout = (props) => {
             <Link color="#084892" className="edit-link">
               Edit
             </Link>
-            <Buttons text="SAVE" primary={true} width="126px" height="43px" />
+            <Buttons
+              text="SAVE"
+              primary={true}
+              width="126px"
+              height="43px"
+              hover={true}
+            />
           </div>
         </div>
       </div>

@@ -8,9 +8,7 @@ import PresentationImage from "assets/images/Group 646.png";
 import Tabs from "utils/Tabs/tabs";
 import Buttons from "utils/Buttons/buttons";
 const ActivityLayout = (props) => {
-  const {
-    changeScreenHandler,
-  } = props;
+  const { changeScreenHandler } = props;
   const [layout, setLayout] = useState("");
   return (
     <div className="activity-layout-form">
@@ -89,7 +87,8 @@ const ActivityLayout = (props) => {
           width="147px"
           height="36px"
           disabled={layout ? false : true}
-          onClick={() => changeScreenHandler('addactivity')}
+          onClick={() => changeScreenHandler("addactivity")}
+          hover={true}
         />
       </div>
     </div>

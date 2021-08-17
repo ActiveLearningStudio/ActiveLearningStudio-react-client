@@ -7,21 +7,21 @@
   align-items: center;
   height: 30px;
   width: 163px;
-  background: $curriki-main-blue;
-  border: 1px solid $curriki-main-blue;
+  background: $fun-blue-1;
+  border: 1px solid $fun-blue-1;
   box-sizing: border-box;
   border-radius: 50px;
   color: $white;
 }
 .curriki-theme-primary-button {
-  background: $curriki-main-blue;
-  border: 1px solid $curriki-main-blue;
+  background: $fun-blue-1;
+  border: 1px solid $fun-blue-1;
   color: $white;
 }
 .curriki-theme-secondary-button {
   background: $white;
-  border: 1px solid $curriki-main-blue;
-  color: $curriki-main-blue;
+  border: 1px solid $fun-blue-1;
+  color: $fun-blue-1;
 }
 .curriki-theme-defaultgrey-button {
   background: $gray;
@@ -35,4 +35,8 @@
 }
 .curriki_btn-mr-2 {
   margin-right: 10px;
+}
+.curriki-theme-hover:hover {
+  background-color: $curriki-main-blue;
+  color: $white;
 }
