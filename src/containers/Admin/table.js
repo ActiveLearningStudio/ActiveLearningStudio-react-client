@@ -287,7 +287,7 @@ function Table(props) {
             )
             }
             {type === "LMS" && (
-              localStateData ?
+              localStateData ? localStateData?.length > 0 ?
                 localStateData?.map((row) => (
                   <tr>
                     <td>{row.lms_url}</td>
@@ -375,9 +375,15 @@ function Table(props) {
                 )) : (
                   <tr>
                     <td colspan="11">
-                      <Alert variant="primary">Loading data...</Alert>
+                      <Alert variant="primary">No integration found.</Alert>
                     </td>
                   </tr>
+                ) : (
+                  <tr>
+                  <td colspan="11">
+                    <Alert variant="warning">Loading...</Alert>
+                  </td>
+                </tr>
                 ))}
             {type === "Users" &&
               (data?.data?.length > 0 ? (
@@ -1128,10 +1134,10 @@ function Table(props) {
                     </div>
                   </td>
                 </tr>
-              )) : null
+              )) : <Alert variant="warning">No activity type found</Alert>
             )}
             {(type === 'Activities' && subType === 'Activity Items') && (
-              data?.data ? data?.data.map((item) => (
+              data?.data ? data?.data?.length > 0 ? data?.data.map((item) => (
                 <tr>
                   <td>{item.title}</td>
                   <td><img className="image-size" src={global.config.resourceUrl + item.image} alt="activity-item-image" /></td>
@@ -1199,7 +1205,20 @@ function Table(props) {
                     </div>
                   </td>
                 </tr>
-              )) : null
+              )) :
+              (
+                <tr>
+                  <td colspan="5">
+                    <Alert variant="warning"> No activity item found</Alert>
+                  </td>
+                </tr>
+              )  : (
+                <tr>
+                  <td colspan="5">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              )
             )}
           </tbody>
         </table>
