@@ -31,7 +31,7 @@ export default function Logo() {
         setdefaultLogo(sndt);
       } else if (window.location.host.includes('nvdoe')) {
         setdefaultLogo(nevada);
-      } else if (window.location.host.includes('cc.curriki')) {
+      } else if (window.location.host.includes('open.curriki')) {
         setdefaultLogo(openeducation);
       } else {
         setdefaultLogo(logo);

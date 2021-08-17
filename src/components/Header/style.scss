@@ -16,6 +16,17 @@
   .group-search-logo {
     display: flex;
     align-items: center;
+
+    .tophd_left{
+      .top_logo{
+        width: 300px;
+        height: 80px;
+        .nav-logo{
+          width: 222px;
+          height: 100%;
+        }
+      }
+    }
   }
 
   .notification-bar {
