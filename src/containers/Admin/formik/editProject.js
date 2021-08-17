@@ -183,7 +183,7 @@ export default function EditProject(props) {
                     <div
                       className="playimg"
                       style={{
-                        backgroundImage: `url(${global.config.resourceUrl}${values.thumb_url})`,
+                        backgroundImage: `${values.thumb_url.includes('pexels') ? `url(${values.thumb_url})` : `url(${global.config.resourceUrl}${values.thumb_url})` }`,
                       }}
                     />
                     <div
