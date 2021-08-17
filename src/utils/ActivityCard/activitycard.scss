@@ -1,0 +1,116 @@
+@import "../../assets/css/index.scss";
+
+.curriki-utility-activity-card {
+  .published_card {
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+    background: #ffffff;
+    width: 264px;
+    // height: 437px;
+    .published_card_header {
+      justify-content: space-between;
+      align-items: center;
+      display: flex;
+      padding: 17px 18px;
+      .published_card_text {
+        p {
+          color: green;
+          align-items: center;
+          display: flex;
+          font-family: $rubik;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 14px;
+          span {
+            display: inline-block;
+            height: 8px;
+            width: 8px;
+            background-color: green;
+            border-radius: 50px;
+            margin-right: 10px;
+          }
+        }
+      }
+      .published_card_icon {
+        .ellipsis-icon {
+          color: $curriki-main-blue;
+        }
+      }
+    }
+
+    .published-card-detail {
+      padding: 0 17px;
+      .published-card-title {
+        margin-top: 26px;
+        color: $curriki-main-blue;
+        font-family: $rubik;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 21px;
+      }
+      .published-card-dialog {
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        p {
+          margin-left: 4px;
+          font-family: "Open Sans", sans-serif;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 10px;
+          line-height: 14px;
+        }
+      }
+      .published-card-descrption {
+        margin-top: 11px;
+        p {
+          font-family: "Open Sans", sans-serif;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 12px;
+          line-height: 16px;
+        }
+        h3 {
+          margin-top: 10px;
+          font-family: $rubik;
+          font-style: normal;
+          font-weight: bold;
+          font-size: 12px;
+          line-height: 14px;
+          color: #515151;
+        }
+      }
+      .published-card-in-links {
+        margin-top: 14px;
+        padding-bottom: 17px;
+        h3 {
+          font-family: $rubik;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 14px;
+          color: #767676;
+        }
+        .published-card-links {
+          margin-top: 6px;
+
+          .card-links {
+            color: $curriki-main-blue;
+            text-decoration: none;
+            margin-right: 10px;
+            font-family: "Open Sans", sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 12px;
+            line-height: 16px;
+          }
+          .published-share-icon {
+            margin-left: 83px;
+            color: $curriki-main-blue;
+          }
+        }
+      }
+    }
+  }
+}

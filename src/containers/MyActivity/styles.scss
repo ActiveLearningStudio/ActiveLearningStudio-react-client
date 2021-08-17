@@ -1,11 +1,17 @@
 @import "assets/css/index";
-
+* {
+  padding: 0;
+  margin: 0;
+}
 .myactivity {
   .inner-content {
     background: $white;
     padding: 30px;
-    margin: 13px 39px 81px 59px;
+    margin: 13px 39px 81px 29px;
     border-radius: 3px;
+    @media screen and (max-width: 1024px) {
+      margin: 13px 20px 81px 20px;
+    }
 
     .topHeadingBtn {
       display: flex;
@@ -34,7 +40,7 @@
         .blockBody-detail {
           margin-top: 70px;
           margin-right: 28px;
-          margin-left: 255px;
+          margin-left: 195px;
 
           .mb-20 {
             margin-bottom: 20px;
@@ -58,6 +64,51 @@
         margin-left: 54px;
       }
     }
+    .activity-cards-show {
+      margin-top: 18px;
+      .activity-cards-search {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .search-textfield {
+          display: flex;
+          width: 313px;
+          height: 35px;
+          background: #ffffff;
+          border-radius: 30px;
+          border: 1px solid $curriki-main-blue;
+          padding: 9px 20px;
+          input {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-family: "Open Sans", sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 12px;
+            line-height: 16px;
+          }
+        }
+        .search-filter {
+          margin-left: -120px;
+        }
+        .create-project-portion {
+          margin-right: 74px;
+          .project-portion-icon {
+            margin-right: 18px;
+          }
+        }
+      }
+      .activity-cards-cards {
+        margin-top: 36px;
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+
+  .primary-color {
+    color: $curriki-main-blue;
   }
 }
 .form-new-popup-activity {
@@ -85,7 +136,6 @@
   }
 }
 .create-form-activity {
-
   .activityHeading {
     width: 350px;
     margin: 40px auto 0 auto;
@@ -177,7 +227,7 @@
   .layout-colums-box {
     margin-top: 22px;
     background-color: #dddddd;
-  
+
     border-radius: 5px;
     padding: 10px 15px 15px 15px;
     .box-title {
@@ -189,7 +239,7 @@
     }
     .layout-colums-inner-box {
       margin-top: 30px;
-     
+
       min-height: 200px;
       background-color: $white;
 
@@ -199,38 +249,36 @@
         border: 3px dashed #ddd;
         border-radius: 10px;
         margin-top: 15px;
-    }
-    .drop-area {
-      position: relative;
+      }
+      .drop-area {
+        position: relative;
 
-      .upload-holder {
+        .upload-holder {
           position: absolute;
           left: 50%;
           top: 50%;
-          transform: translate(-50%,-50%);
+          transform: translate(-50%, -50%);
           text-align: center;
           font: normal normal normal 16px/22px $rubik;
           letter-spacing: 0px;
-          color: #5A5A5A;
-          z-index:1;
+          color: #5a5a5a;
+          z-index: 1;
 
           svg {
-           color:#084892;
-           font-size: 30px;
-           margin-bottom: 15px;
+            color: #084892;
+            font-size: 30px;
+            margin-bottom: 15px;
           }
 
           span {
-           font: normal normal normal 16px/22px $rubik;
-           letter-spacing: 0px;
-           color: #084892;
-           text-decoration: underline;
-           cursor: pointer;
+            font: normal normal normal 16px/22px $rubik;
+            letter-spacing: 0px;
+            color: #084892;
+            text-decoration: underline;
+            cursor: pointer;
           }
-       }
-   }
-
-
+        }
+      }
     }
   }
   .add-activity-tabs {
@@ -315,13 +363,12 @@
           text-indent: 10px;
         }
       }
-      
     }
     .add-activity-layout-videoTag {
       @media screen and (max-width: 1024px) {
         margin-left: 10px;
       }
-      
+
       margin-left: 20px;
       .videoTag {
         display: flex;
@@ -402,6 +449,62 @@
           }
         }
       }
+      .detail-dialogcard {
+        margin-top: 35px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .card-actvity {
+          width: 400px;
+          padding: 10px;
+          box-shadow: 0px 4px 12px rgba(81, 81, 81, 0.16);
+          border-radius: 5px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          .card-actvity-icon {
+            background-color: $curriki-main-blue;
+            color: $white;
+            border-radius: 50%;
+            margin-top: 10px;
+            width: 30px;
+            height: 30px;
+            padding: 5px;
+          }
+          .card-actvity-title {
+            margin-top: 15px;
+          }
+          .card-actvity-btn {
+            margin-top: 70px;
+          }
+        }
+      }
+      .card-pagination {
+        margin: 16px auto 0 auto;
+        width: 400px;
+        // margin-top: 16px;
+        display: flex;
+        justify-content: space-between;
+        .pagination-text {
+          width: 60%;
+          display: flex;
+          justify-content: flex-end;
+        }
+        .pagination-icon {
+          width: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          .icon-next {
+            background-color: $curriki-main-blue;
+            color: $white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            padding: 5px;
+          }
+        }
+      }
     }
     .preview-layout-project {
       width: 352px;
@@ -443,6 +546,30 @@
         border-bottom: 1px solid $crusta;
         .ml-15 {
           margin-left: 15px;
+        }
+      }
+      .add-more-activity {
+        margin-top: 53px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .more-activity-icon {
+          margin-bottom: 16px;
+          color: $curriki-main-blue;
+        }
+        .more-activity-link {
+          color: $curriki-main-blue;
+        }
+      }
+      .project-link-button {
+        margin-top: 70px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .edit-link {
+          color: $curriki-main-blue;
         }
       }
     }

@@ -8,9 +8,7 @@ import HeadingText from "utils/HeadingText/headingtext";
 import Buttons from "utils/Buttons/buttons";
 
 const NewActivity = (props) => {
-  const {
-    changeScreenHandler,
-  } = props;
+  const { changeScreenHandler } = props;
   const [layout, setLayout] = useState("");
   return (
     <>
@@ -53,12 +51,12 @@ const NewActivity = (props) => {
           </div>
         </div>
         <div className="createActivity-btns">
-          <Buttons 
+          <Buttons
             text="Cancel"
             secondary={true}
             width="111px"
             height="36px"
-            onClick={() => changeScreenHandler('')}
+            onClick={() => changeScreenHandler("")}
           />
           <Buttons
             text="Next"
@@ -66,7 +64,7 @@ const NewActivity = (props) => {
             width="96px"
             height="36px"
             disabled={layout ? false : true}
-            onClick={() => changeScreenHandler('layout')}
+            onClick={() => changeScreenHandler("layout")}
           />
         </div>
       </div>
