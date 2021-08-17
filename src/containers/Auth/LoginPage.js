@@ -193,7 +193,7 @@ class LoginPage extends React.Component {
             </p>
           </div>
         ) : (
-          <div className="auth-container" style={{ paddingTop: '85px' }}>
+          <div className="auth-container">
             <div className="d-flex align-items-center justify-content-between">
               <h1 className="auth-title mb-2">Welcome to Curriki</h1>
 
