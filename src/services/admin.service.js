@@ -93,8 +93,8 @@ const updateIndex = (projectId, index) => httpService
     Promise.reject(err.response.data);
   });
 
-const getLmsProject = (page) => httpService
-  .get(`${apiVersion}/lms-settings?page=${page}`)
+const getLmsProject = (subOrgId, page) => httpService
+  .get(`${apiVersion}/suborganizations/${subOrgId}/lms-settings?page=${page}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
@@ -124,8 +124,8 @@ const createLmsProject = (values) => httpService
     return Promise.reject();
   });
 
-const getLmsProjectSearch = (search, page) => httpService
-  .get(`${apiVersion}/lms-settings?page=${page}&query=${search}`)
+const getLmsProjectSearch = (subOrgId, search, page) => httpService
+  .get(`${apiVersion}/suborganizations/${subOrgId}/lms-settings?page=${page}&query=${search}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
