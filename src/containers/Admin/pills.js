@@ -389,7 +389,7 @@ export default function Pills(props) {
   }, [type, activePage]);
 
   const searchQueryChangeHandlerLMS = (search) => {
-    // setLmsProject(null);
+    setLmsProject(null);
     const result =  adminService.getLmsProjectSearch(activeOrganization?.id, search.target.value,(activePage|| 1));
     result.then((data) => {
       setLmsProject(data)

@@ -100,24 +100,24 @@ const getLmsProject = (subOrgId, page) => httpService
     Promise.reject(err.response.data);
   });
 
-const deleteLmsProject = (id) => httpService
-  .remove(`${apiVersion}/lms-settings/${id}`)
+const deleteLmsProject = (subOrgId, id) => httpService
+  .remove(`${apiVersion}/suborganizations/${subOrgId}/lms-settings/${id}`)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
     return Promise.reject();
   });
 
-const updateLmsProject = (id, values) => httpService
-  .put(`${apiVersion}/lms-settings/${id}`, values)
+const updateLmsProject = (subOrgId, id, values) => httpService
+  .put(`${apiVersion}/suborganizations/${subOrgId}/lms-settings/${id}`, values)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
     return Promise.reject();
   });
 
-const createLmsProject = (values) => httpService
-  .post(`${apiVersion}/lms-settings`, values)
+const createLmsProject = (subOrgId, values) => httpService
+  .post(`${apiVersion}/suborganizations/${subOrgId}/lms-settings`, values)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);

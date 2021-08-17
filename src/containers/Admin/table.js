@@ -334,7 +334,7 @@ function Table(props) {
                                     },
                                     button: false,
                                   });
-                                  const response = adminService.deleteLmsProject(row?.id);
+                                  const response = adminService.deleteLmsProject(activeOrganization?.id, row?.id);
                                   response
                                     .then((res) => {
 
@@ -375,13 +375,13 @@ function Table(props) {
                 )) : (
                   <tr>
                     <td colspan="11">
-                      <Alert variant="primary">No integration found.</Alert>
+                      <Alert variant="warning">No integration found.</Alert>
                     </td>
                   </tr>
                 ) : (
                   <tr>
                   <td colspan="11">
-                    <Alert variant="warning">Loading...</Alert>
+                    <Alert variant="primary">Loading...</Alert>
                   </td>
                 </tr>
                 ))}
