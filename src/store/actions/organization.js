@@ -65,6 +65,18 @@ export const getAllOrganizationforSSO = () => async (dispatch) => {
   type: actionTypes.ADD_CURRENT_ORG,
   payload: result?.data[0],
   });
+
+  const permissionsResult = await organization.allPermission(result?.data[0].id);
+  dispatch({
+    type: actionTypes.SET_ALL_PERSMISSION,
+    payload: permissionsResult.permissions,
+  });
+
+  const rolesResult = await organization.getRoles(result?.data[0].id);
+  dispatch({
+    type: actionTypes.ALL_ROLES,
+    payload: rolesResult?.data,
+  });
 };
 
 export const clearOrganizationState = () => (dispatch) => {
