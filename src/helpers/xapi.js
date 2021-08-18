@@ -35,6 +35,9 @@ export function extendStatement(h5pObj, statement, params, skipped = false) {
     homepage,
     toolPlatform,
     activeCourse,
+    customCourseName,
+    customApiDomainUrl,
+    customCourseCode,
   } = params;
 
   const platform = H5PActvityPathMapToPlatform().find((el) => el[path]);
@@ -69,6 +72,12 @@ export function extendStatement(h5pObj, statement, params, skipped = false) {
       objectType: 'Activity',
       id: `${window.location.origin}/lti/${courseId}`,
     });
+
+    if (statementExtended?.object?.definition?.extensions) {
+      statementExtended.object.definition.extensions.EXTENSION_LMS_COURSE_NAME = customCourseName;
+      statementExtended.object.definition.extensions.EXTENSION_LMS_DOMAIN_URL = customApiDomainUrl;
+      statementExtended.object.definition.extensions.EXTENSION_LMS_COURSE_CODE = customCourseCode;
+    }
   }
 
   const actor = {
