@@ -18,7 +18,7 @@ function LtiSSO(props) {
 			if (query.sso_info) {
 				const result = dispatch(SSOLoginAction({ sso_info: query.sso_info }));
 				result.then(() => {
-					history.push('/org/currikistudio');
+					history.push('/');
 				}).catch((err) => {
                     Swal.fire({
 						icon:'error',

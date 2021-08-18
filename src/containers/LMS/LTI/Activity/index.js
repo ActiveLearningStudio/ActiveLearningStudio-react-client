@@ -32,6 +32,9 @@ const Activity = (props) => {
   const isLearner = searchParams.get('is_learner') !== '';
   const courseId = searchParams.get('course_id');
   const toolPlatform = searchParams.get('tool_platform');
+  const customCourseName = searchParams.get('custom_course_name');
+  const customApiDomainUrl = searchParams.get('custom_api_domain_url');
+  const customCourseCode = searchParams.get('custom_course_code');
   const [xAPILoaded, setXAPILoaded] = useState(false);
   const [xAPIEventHooked, setXAPIEventHooked] = useState(false);
 
@@ -119,6 +122,9 @@ const Activity = (props) => {
         homepage,
         courseId,
         toolPlatform,
+        customCourseName,
+        customApiDomainUrl,
+        customCourseCode,
       };
 
       // Extending the xAPI statement with our custom values and sending it off to LRS
