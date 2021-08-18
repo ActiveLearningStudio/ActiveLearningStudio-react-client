@@ -324,13 +324,12 @@ export const handleSsoLoginAction = (params) => async (dispatch) => {
 };
 
 export const SSOLoginAction = (data) => async (dispatch) => {
-  console.log('SSOLoginAction called');
   try {
     const response = await authService.loginSSO(data);
     storageService.setItem(USER_TOKEN_KEY, response.access_token);
     storageService.setItem(CURRENT_ORG, 'currikistudio');
-    dispatch(getAllOrganizationforSSO(1));
-    await dispatch(getAllPermission(1));
+    await dispatch(getAllOrganizationforSSO());
+
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
       payload: { user: response.user },
