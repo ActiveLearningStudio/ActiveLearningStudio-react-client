@@ -159,7 +159,7 @@ const ActivityShared = (props) => {
   }, [dispatch, embed, match.params.activityId]);
 
   return (
-    orientation < 90 ? (
+    <>
       <section className={embed ? 'embed main-page-content preview iframe-height-resource-shared defaultcontainer'
       : 'main-page-content preview iframe-height-resource-shared defaultcontainer'}
       >
@@ -191,12 +191,13 @@ const ActivityShared = (props) => {
           </div>
         </div>
       </section>
-    ) : (
-      <>
-        <div id="curriki-h5p-wrapper" style={{ display: 'none' }} />
+      {(orientation >= 90)
+      && (
+      <div className="coverallareas">
         <Alert variant="warning">Please use Portrait mode!</Alert>
-      </>
-    )
+      </div>
+      )}
+    </>
   );
 };
 

@@ -71,7 +71,7 @@ function GclassActivityPage(props) {
   };
 
   return (
-    orientation < 90 ? (
+    <>
       <div className="gclass-activity-container">
         <section className="main-page-content preview iframe-height-resource-shared defaultcontainer">
           <Helmet>
@@ -154,15 +154,15 @@ function GclassActivityPage(props) {
           </div>
         </section>
       </div>
-    ) : (
-      <>
-        <div id="curriki-h5p-wrapper" style={{ display: 'none' }} />
+      {(orientation >= 90)
+      && (
+      <div className="coverallareas">
         <Alert variant="warning">Please use Portrait mode!</Alert>
-      </>
-    )
+      </div>
+      )}
+    </>
   );
 }
-
 GclassActivityPage.propTypes = {
   match: PropTypes.object.isRequired,
   student: PropTypes.object.isRequired,
