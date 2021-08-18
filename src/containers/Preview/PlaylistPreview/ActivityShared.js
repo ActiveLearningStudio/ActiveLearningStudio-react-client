@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import TinCan from 'tincanjs';
-
+import { Alert } from 'react-bootstrap';
 import gifloader from 'assets/images/dotsloader.gif';
 import { loadH5pResourceSettingsShared, loadH5pResourceSettingsEmbed, loadH5pResourceXapi } from 'store/actions/resource';
 import * as xAPIHelper from 'helpers/xapi';
@@ -21,7 +21,7 @@ const ActivityShared = (props) => {
   const lrsRegistration = new URLSearchParams(window.location.search).get('registration');
   const [authorized, setAuthorized] = useState(false);
   // const [lrs, setLrs] = useState(null);
-
+  const { orientation } = useSelector((state) => state.ui);
   const dispatch = useDispatch();
 
   const h5pInsertion = async (data) => {
@@ -191,6 +191,12 @@ const ActivityShared = (props) => {
           </div>
         </div>
       </section>
+      {(orientation >= 90)
+      && (
+      <div className="coverallareas">
+        <Alert variant="warning">Please use Portrait mode!</Alert>
+      </div>
+      )}
     </>
   );
 };
