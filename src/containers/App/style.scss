@@ -3959,7 +3959,10 @@ body.collapsed {
     max-width: 95% !important;
   }
   }
-
+  @media (orientation: landscape) {
+    max-width: 70% !important;
+    margin:0 auto
+  }
   .activity-bg.left-vdo {
     height: auto !important
   }
