@@ -1,0 +1,26 @@
+@import "assets/css/index";
+.curriki-utility-uploadimage {
+  p {
+    font-family: $rubik;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+  }
+  .uploadimage-box {
+    width: 250px;
+    height: 150px;
+    background: #f1f1f1;
+    border-radius: 10px;
+    margin-top: 5px;
+  }
+  .uploadimage-option {
+    margin-top: 10px;
+    .upload-option {
+      cursor: pointer;
+    }
+    .mr-20 {
+      margin-right: 20px;
+    }
+  }
+}

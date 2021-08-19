@@ -139,13 +139,16 @@
         }
       }
       .activity-cards-box {
-        margin-top: 36px;
         display: flex;
+        justify-content: center;
+        // justify-content: space-between;
+        flex-wrap: wrap;
         .ml-102 {
-          margin-left: 102px;
-          @media screen and (max-width: 1024px) {
-            margin-left: 20px;
-          }
+          margin-top: 36px;
+          margin-left: 20px;
+          // @media screen and (max-width: 1024px) {
+          //   margin-left: 20px;
+          // }
         }
       }
     }

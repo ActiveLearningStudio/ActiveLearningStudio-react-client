@@ -62,6 +62,7 @@ const ChangePasswordPage = loadable(() =>
 const NotificationPage = loadable(() => import("../containers/Notification"));
 
 const ProjectsPage = loadable(() => import("../containers/Projects"));
+// const MyProjects = loadable(() => import("../containers/MyProjects"));
 const PlaylistsPage = loadable(() => import("../containers/Playlists"));
 const PreviewPage = loadable(() => import("../containers/Preview"));
 const LtiPreviewPage = loadable(() => import("../containers/LtiPreviewPage"));
@@ -381,6 +382,14 @@ const AppRouter = (props) => {
                     showCreateProjectPopup
                     editMode={false}
                   />
+                  {/* Update Project Page */}
+                  {/* <PrivateRoute
+                    exact
+                    path="/org/:organization/project/create/one"
+                    component={MyProjects}
+                    showCreateProjectPopup
+                    editMode={false}
+                  /> */}
                   <PrivateRoute
                     exact
                     path="/org/:organization/project/:projectId"

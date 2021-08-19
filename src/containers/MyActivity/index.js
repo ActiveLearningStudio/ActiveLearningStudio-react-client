@@ -175,13 +175,6 @@ const MyActivity = () => {
                   </Formik>
                 </div>
                 <div className="activity-cards-box">
-                  <div>
-                    <ActivityCardBox
-                      img={CardImage}
-                      title="My first activity"
-                      description="Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect"
-                    />
-                  </div>
                   <div className="ml-102">
                     <ActivityCardBox
                       img={CardImage}
@@ -196,9 +189,14 @@ const MyActivity = () => {
                       description="Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect"
                     />
                   </div>
-                </div>
-                <div className="activity-cards-box">
-                  <div>
+                  <div className="ml-102">
+                    <ActivityCardBox
+                      img={CardImage}
+                      title="My first activity"
+                      description="Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect"
+                    />
+                  </div>
+                  <div className="ml-102">
                     <ActivityCardBox
                       img={CardImage}
                       title="My first activity"

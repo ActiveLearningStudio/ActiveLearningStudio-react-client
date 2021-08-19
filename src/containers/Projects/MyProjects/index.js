@@ -1,0 +1,52 @@
+/*eslint-disable*/
+import { Formik } from "formik";
+import React from "react";
+import Buttons from "utils/Buttons/buttons";
+import HeadingTwo from "utils/HeadingTwo/headingtwo";
+import InputLabel from "utils/InputLabel/inputlabel";
+import InputTextField from "utils/InputTextField/inputtextfield";
+import UploadImage from "utils/UploadImage/uploadimage";
+import "./styles.scss";
+
+const MyProjects = () => {
+  return (
+    <div className="myproject-layout">
+      <div className="myproject-layout-title">
+        <HeadingTwo text="Create a project" color="#084892" />
+      </div>
+      <div className="myproject-layout-formik">
+        <Formik>
+          <form>
+            <div className="layout-formik-input">
+              <InputLabel text="Project Name" className="input-label">
+                <InputTextField placeholder="e.g Course Name" />
+              </InputLabel>
+            </div>
+            <div className="layout-formik-input">
+              <InputLabel
+                text="What is your project about?"
+                className="input-label"
+              >
+                <InputTextField placeholder="Write a brief description of your project" />
+              </InputLabel>
+            </div>
+            <div className="layout-formik-uploadimage">
+              <UploadImage />
+            </div>
+          </form>
+        </Formik>
+      </div>
+      <div className="myproject-button">
+        <Buttons
+          text="Next"
+          primary={true}
+          width="126px"
+          height="43px"
+          hover={true}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default MyProjects;

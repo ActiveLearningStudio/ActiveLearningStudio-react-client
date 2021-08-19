@@ -1,0 +1,55 @@
+.myproject-layout {
+  margin-top: 80px;
+  .myproject-layout-title {
+    width: max-content;
+  }
+  .myproject-layout-formik {
+    width: 370px;
+    .layout-formik-input {
+      width: 100%;
+      margin-top: 33px;
+      .input-label {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+      }
+    }
+    .layout-formik-uploadimage {
+      margin-top: 33px;
+    }
+  }
+  .myproject-button {
+    margin-top: 81px;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.form-new-popup-myproject {
+  position: fixed;
+  background: #0848928f;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1060;
+  height: 100%;
+  overflow-y: auto;
+  padding-left: 285px;
+  .cross-all-pop {
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 99999;
+  }
+  .inner-form-content {
+    position: absolute;
+    right: 0;
+    background: #fff;
+    opacity: 1;
+    width: 470px;
+    height: 130vh;
+    padding: 50px;
+  }
+}
