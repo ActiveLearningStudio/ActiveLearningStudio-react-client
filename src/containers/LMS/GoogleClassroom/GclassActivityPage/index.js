@@ -24,7 +24,7 @@ function GclassActivityPage(props) {
     refreshStudentAuthToken,
     getStudentCourses,
     submissionError,
-    orientation,
+    // orientation,
   } = props;
   const { activityId, courseId } = match.params;
   const [authorized, setAuthorized] = useState(null);
@@ -154,12 +154,12 @@ function GclassActivityPage(props) {
           </div>
         </section>
       </div>
-      {(orientation >= 90)
+      {/* {(orientation >= 90)
       && (
       <div className="coverallareas">
         <Alert variant="warning">Please use Portrait mode!</Alert>
       </div>
-      )}
+      )} */}
     </>
   );
 }
@@ -171,7 +171,7 @@ GclassActivityPage.propTypes = {
   setStudentAuth: PropTypes.func.isRequired,
   refreshStudentAuthToken: PropTypes.func.isRequired,
   submissionError: PropTypes.string.isRequired,
-  orientation: PropTypes.number.isRequired,
+  // orientation: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
