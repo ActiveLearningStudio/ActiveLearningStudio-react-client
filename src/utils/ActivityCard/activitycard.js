@@ -9,6 +9,7 @@ import { faShare, faShareAlt } from "@fortawesome/free-solid-svg-icons";
 import HeadingTwo from "utils/HeadingTwo/headingtwo";
 import PropTypes from "prop-types";
 import { icon } from "@fortawesome/fontawesome-svg-core";
+import ActivityCardDropDown from "utils/ActivityCardDropDown/activitycarddropdown";
 
 const ActivityCardBox = ({ img, title, description, icon }) => {
   return (
@@ -21,7 +22,7 @@ const ActivityCardBox = ({ img, title, description, icon }) => {
             </p>
           </div>
           <div className="published_card_icon">
-            <FontAwesomeIcon icon={faEllipsisV} className="ellipsis-icon" />
+            <ActivityCardDropDown />
           </div>
         </div>
         <div>

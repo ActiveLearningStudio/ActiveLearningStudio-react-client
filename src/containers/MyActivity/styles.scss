@@ -198,6 +198,10 @@
       height: 241px;
       text-align: center;
       cursor: pointer;
+      border-radius: 5px;
+      &:hover {
+        border-bottom: 5px solid $crusta;
+      }
       .mb-16 {
         margin-bottom: 16px;
       }
