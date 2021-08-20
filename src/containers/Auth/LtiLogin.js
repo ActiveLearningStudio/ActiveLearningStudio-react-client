@@ -14,11 +14,11 @@ function LtiSSO(props) {
 	const dispatch = useDispatch();
 	useEffect(() => {
 		(async () => {
-			if (!localStorage.getItem('auth_token')) {
-				const query = QueryString.parse(window.location.search);
+			const query = QueryString.parse(window.location.search);
+			if (query.sso_info) {
 				const result = dispatch(SSOLoginAction({ sso_info: query.sso_info }));
 				result.then(() => {
-					history.push('/org/currikistudio');
+					history.push('/');
 				}).catch((err) => {
                     Swal.fire({
 						icon:'error',
