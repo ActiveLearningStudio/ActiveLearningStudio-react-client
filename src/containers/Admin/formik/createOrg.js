@@ -16,6 +16,7 @@ import imgAvatar from "assets/images/img-avatar.png";
 import Swal from "sweetalert2";
 import loader from "assets/images/dotsloader.gif";
 import EditActivity from "containers/EditActivity";
+import { alphabetsOnly } from "utils";
 
 export default function CreateOrg(prop) {
   const { editMode } = prop;
@@ -271,8 +272,9 @@ export default function CreateOrg(prop) {
                 autoComplete="off"
                 disabled={editMode ? true : false}
                 value={values.domain}
-                onChange={(e) => {
-                  setFieldValue("domain", e.target?.value);
+                onChange={async (e) => {
+                  if(alphabetsOnly(e.target.value) && !e.target.value.includes('@')) {
+                    setFieldValue("domain", e.target?.value);
                   if (e.target.value.length > 1) {
 
                     setLoaderImg(true);
@@ -289,6 +291,7 @@ export default function CreateOrg(prop) {
 
                         }
                       });
+                    }
                   }
                 }}
                 onBlur={handleBlur}
