@@ -419,7 +419,7 @@ function Controller(props) {
             placeholder="Search"
             onChange={
               (e) => {
-                if (e.target.value && alphaNumeric(e.target.value)) {
+                if (e.target.value) {
                   setSearchQueryActivities(e.target.value)
                 } else if (e.target.value === '') {
                   setSearchQueryActivities('');
