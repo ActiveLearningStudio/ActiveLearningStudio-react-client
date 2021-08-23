@@ -139,7 +139,7 @@ function TeamProjectView(props) {
                               <span>{`${u.first_name.charAt(0)}${u.last_name.charAt(0)}`}</span>
                             </div>
                             <div>
-                              <span>{`${u.first_name} ${u.last_name}`}</span>
+                              <span className="username">{`${u.first_name} ${u.last_name}`}</span>
                               <span>{u.email}</span>
                             </div>
                           </div>

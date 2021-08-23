@@ -124,6 +124,20 @@ const onSubmit = async (values, dispatch, props) => {
   }
   history.push('/projects');
 };
+export const uploadThumb = async (e, permission) => {
+  const formData = new FormData();
+  try {
+    formData.append('thumb', e.target.files[0]);
+    imageValidation = '';
+    await uploadProjectThumbnailAction(formData);
+  } catch (err) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: permission?.Project?.includes('project:upload-thumb') ? 'Image upload failed, kindly try again' : 'You do not have permission to upload image',
+    });
+  }
+};
 
 let CreateProjectPopup = (props) => {
   const {
@@ -134,7 +148,6 @@ let CreateProjectPopup = (props) => {
     handleCloseProjectModal,
     showCreateProjectModal,
     getProjectVisibilityTypes,
-    uploadProjectThumbnail,
     vType,
   } = props;
   const stateHeader = useSelector((state) => state.organization);
@@ -152,20 +165,7 @@ let CreateProjectPopup = (props) => {
     },
     [handleCloseProjectModal],
   );
-  const uploadThumb = async (e) => {
-    const formData = new FormData();
-    try {
-      formData.append('thumb', e.target.files[0]);
-      imageValidation = '';
-      await uploadProjectThumbnail(formData);
-    } catch (err) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: permission?.Project?.includes('project:upload-thumb') ? 'Image upload failed, kindly try again' : 'You do not have permission to upload image',
-      });
-    }
-  };
+
   useEffect(() => {
     if (!editMode) {
       showCreateProjectModal();
@@ -261,7 +261,7 @@ let CreateProjectPopup = (props) => {
                         text: 'Selected file size should be less then 100MB.',
                       });
                     } else {
-                      uploadThumb(e);
+                      uploadThumb(e, permission);
                     }
                   }}
                 />
@@ -394,7 +394,6 @@ CreateProjectPopup.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   handleCloseProjectModal: PropTypes.func.isRequired,
-  uploadProjectThumbnail: PropTypes.func.isRequired,
   showCreateProjectModal: PropTypes.func.isRequired,
   getProjectVisibilityTypes: PropTypes.func.isRequired,
   vType: PropTypes.string.isRequired,
@@ -407,7 +406,6 @@ CreateProjectPopup = reduxForm({
 })(CreateProjectPopup);
 
 const mapDispatchToProps = (dispatch) => ({
-  uploadProjectThumbnail: (formData) => dispatch(uploadProjectThumbnailAction(formData)),
   showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
   getProjectVisibilityTypes: () => dispatch(visibilityTypes()),
 });

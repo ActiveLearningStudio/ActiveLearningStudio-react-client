@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert } from 'react-bootstrap';
-
 import { loadSubOrganizationTeamsAction, loadTeamsAction } from 'store/actions/team';
 // import Header from 'components/Header';
 // import Sidebar from 'components/Sidebar';
@@ -141,6 +140,17 @@ function TeamsPage(props) {
             <>
               {overview && (
               <div className="row overview">
+                {permission?.Team?.includes('team:create')
+                && (
+                  <>
+                    <Link to={`/org/${organization?.currentOrganization?.domain}/teams/create-team`}>
+                      <div className="btn-top-page">
+                        <FontAwesomeIcon icon="plus" className="mr-2" />
+                        Create a Team
+                      </div>
+                    </Link>
+                  </>
+                )}
                 {permission?.Team?.includes('team:view') ? (
                   <>
                     {teams.length > 0 ? teams.map((team) => (

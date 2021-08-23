@@ -103,6 +103,7 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
       payload: { project },
     });
     dispatch(allSidebarProjects());
+    return project;
   } catch (e) {
     dispatch({ type: actionTypes.UPDATE_PROJECT_FAIL });
     Swal.fire({
@@ -110,6 +111,7 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
       title: 'Error',
       text: e.message || 'Something went wrong !',
     });
+    return e;
   }
 };
 

@@ -69,8 +69,8 @@ function Controller(props) {
   const organization = useSelector((state) => state.organization);
   const { permission, activeOrganization, currentOrganization } = organization;
   const { activeForm } = adminState;
-  const [selectedIndexValue, setSelectedIndexValue] = useState("REQUESTED");
-  const [selectedIndexValueid, setSelectedIndexValueid] = useState(1);
+  const [selectedIndexValue, setSelectedIndexValue] = useState("ALL");
+  const [selectedIndexValueid, setSelectedIndexValueid] = useState(0);
   useMemo(() => {
     if (type === "Users") {
       dispatch(getRoles());
@@ -99,7 +99,7 @@ function Controller(props) {
   const updateIndexAction = (value, id) => {
     setSelectedIndexValue(value);
     setChangeIndexValue(id);
-    setSelectedIndexValueid(id)
+    setSelectedIndexValueid(id);
   };
   return (
     <div className="controller">
@@ -158,7 +158,7 @@ function Controller(props) {
           </button>
         </div>
       )} */}
-      
+
       {/* {!!filter && (
         <div className="filter-dropdown drop-counter ">
           Fillter by:
@@ -191,6 +191,14 @@ function Controller(props) {
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
+                <Dropdown.Item
+                  onClick={() => {
+                    updateIndexAction("ALL", 0);
+                    setActivePage(1);
+                  }}
+                >
+                  ALL
+                </Dropdown.Item>
                 <Dropdown.Item
                   onClick={() => {
                     updateIndexAction("REQUESTED", 1);
@@ -379,7 +387,7 @@ function Controller(props) {
           <img src={searchimg} alt="search" onClick={()=> searchProjectQueryChangeHandler(searchQueryProject, selectedIndexValueid, subType)} />
         </div>
       )}
-      
+
        {!!search && type === "Organization" && (
         <div className="search-bar">
           <input
@@ -411,7 +419,7 @@ function Controller(props) {
             placeholder="Search"
             onChange={
               (e) => {
-                if (e.target.value && alphaNumeric(e.target.value)) {
+                if (e.target.value) {
                   setSearchQueryActivities(e.target.value)
                 } else if (e.target.value === '') {
                   setSearchQueryActivities('');
@@ -585,7 +593,7 @@ function Controller(props) {
           </div>
         </div>
       )}
-      {(type === 'Organization' ) && (
+      {(type === 'Organization' ) && permission?.Organization.includes('organization:edit') && (
         <div className="btn-text">
           <button
             onClick={() => {
@@ -597,7 +605,7 @@ function Controller(props) {
             }}
           >
             <FontAwesomeIcon icon="edit" />
-            Edit Orginzation
+            Edit Organization
           </button>
         </div>
       )}
