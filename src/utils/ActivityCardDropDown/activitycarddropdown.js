@@ -11,15 +11,18 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import "./activitycarddropdown.scss";
+import { propTypes } from "react-bootstrap/esm/Image";
 
-const ActivityCardDropDown = () => {
+const ActivityCardDropDown = ({ iconColor }) => {
+  const IconColor = iconColor ? iconColor : "#084892";
+
   return (
     <div className="curriki-utility-activity-dropdown">
       <Dropdown className="activity-dropdown check ">
         <Dropdown.Toggle className="activity-dropdown-btn">
           <FontAwesomeIcon
             icon={faEllipsisV}
-            style={{ fontSize: "13px", color: "#084892", marginLeft: "5px" }}
+            style={{ fontSize: "13px", color: IconColor, marginLeft: "5px" }}
           />
           {/* <span>EditActivity</span> */}
         </Dropdown.Toggle>

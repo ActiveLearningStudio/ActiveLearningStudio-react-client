@@ -11,7 +11,9 @@
       .input-label {
         display: flex;
         flex-direction: column;
-        margin-bottom: 10px;
+      }
+      .input-field {
+        margin-top: 5px;
       }
     }
     .layout-formik-uploadimage {
@@ -52,4 +54,7 @@
     height: 130vh;
     padding: 50px;
   }
+}
+.z-index {
+  z-index: 0;
 }

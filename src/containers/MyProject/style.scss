@@ -1,0 +1,36 @@
+@import "assets/css/index";
+
+.myprojectmain {
+  .inner-content {
+    background: $white;
+    padding: 30px;
+    margin: 13px 39px 81px 29px;
+    border-radius: 3px;
+    @media screen and (max-width: 1024px) {
+      margin: 13px 20px 81px 20px;
+    }
+    .topHeading-prject-detail {
+      display: flex;
+      flex-direction: column;
+      .top-project-detail {
+        margin-top: 25px;
+        .project-title-btn {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .project-detail {
+          margin-top: 20px;
+        }
+      }
+    }
+    .project-playlist-card {
+      margin-top: 45px;
+      display: flex;
+      flex-wrap: wrap;
+      .playlist-card {
+        margin-right: 30px;
+      }
+    }
+  }
+}

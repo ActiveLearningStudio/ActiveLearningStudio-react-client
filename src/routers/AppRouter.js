@@ -52,6 +52,7 @@ const VevensityLogin = loadable(() =>
   import("../containers/Auth/VevinsityLogin")
 );
 const MyActivity = loadable(() => import("../containers/MyActivity"));
+const MyProjectMain = loadable(() => import("../containers/MyProject"));
 const AdminPanel = loadable(() => import("../containers/Admin"));
 const LtiLogin = loadable(() => import("../containers/Auth/LtiLogin"));
 const ProfilePage = loadable(() => import("../containers/Account/ProfilePage"));
@@ -382,14 +383,16 @@ const AppRouter = (props) => {
                     showCreateProjectPopup
                     editMode={false}
                   />
-                  {/* Update Project Page */}
-                  {/* <PrivateRoute
+                  {/* Update Project Page -Start- */}
+
+                  <PrivateRoute
                     exact
                     path="/org/:organization/project/create/one"
-                    component={MyProjects}
+                    component={MyProjectMain}
                     showCreateProjectPopup
                     editMode={false}
-                  /> */}
+                  />
+                  {/* Update Project Page -End- */}
                   <PrivateRoute
                     exact
                     path="/org/:organization/project/:projectId"

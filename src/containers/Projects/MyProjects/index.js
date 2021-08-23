@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import { Formik } from "formik";
-import React from "react";
+import React, { setState } from "react";
 import Buttons from "utils/Buttons/buttons";
 import HeadingTwo from "utils/HeadingTwo/headingtwo";
 import InputLabel from "utils/InputLabel/inputlabel";
@@ -8,7 +8,7 @@ import InputTextField from "utils/InputTextField/inputtextfield";
 import UploadImage from "utils/UploadImage/uploadimage";
 import "./styles.scss";
 
-const MyProjects = () => {
+const MyProjectsCreate = ({ setUploadImageStatus }) => {
   return (
     <div className="myproject-layout">
       <div className="myproject-layout-title">
@@ -19,7 +19,10 @@ const MyProjects = () => {
           <form>
             <div className="layout-formik-input">
               <InputLabel text="Project Name" className="input-label">
-                <InputTextField placeholder="e.g Course Name" />
+                <InputTextField
+                  placeholder="e.g Course Name"
+                  className="input-field"
+                />
               </InputLabel>
             </div>
             <div className="layout-formik-input">
@@ -27,11 +30,14 @@ const MyProjects = () => {
                 text="What is your project about?"
                 className="input-label"
               >
-                <InputTextField placeholder="Write a brief description of your project" />
+                <InputTextField
+                  placeholder="Write a brief description of your project"
+                  className="input-field"
+                />
               </InputLabel>
             </div>
             <div className="layout-formik-uploadimage">
-              <UploadImage />
+              <UploadImage setUploadImageStatus={setUploadImageStatus} />
             </div>
           </form>
         </Formik>
@@ -49,4 +55,4 @@ const MyProjects = () => {
   );
 };
 
-export default MyProjects;
+export default MyProjectsCreate;

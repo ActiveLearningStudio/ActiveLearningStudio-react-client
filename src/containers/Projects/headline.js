@@ -6,23 +6,30 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import foldericon from "assets/images/sidebar/folder-icon.png";
 import { useSelector } from "react-redux";
 import { setCurrentVisibilityType } from "store/actions/project";
-import MyProjects from "./MyProjects";
+import MyProjectsCreate from "./MyProjects";
 
 export default function Headline() {
   const organization = useSelector((state) => state.organization);
   const { currentOrganization, permission } = organization;
   const [openMyProject, setOpenMyProject] = useState(false);
+  const [uploadImageStatus, setUploadImageStatus] = useState(false);
   return (
     <>
       {openMyProject && (
-        <div className="form-new-popup-myproject">
+        <div
+          className={
+            uploadImageStatus
+              ? "form-new-popup-myproject z-index"
+              : "form-new-popup-myproject"
+          }
+        >
           <FontAwesomeIcon
             icon="times"
             className="cross-all-pop"
             onClick={() => setOpenMyProject(!openMyProject)}
           />
           <div className="inner-form-content">
-            <MyProjects />
+            <MyProjectsCreate setUploadImageStatus={setUploadImageStatus} />
           </div>
         </div>
       )}

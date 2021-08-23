@@ -14,4 +14,6 @@ const Template = (args) => <ActivityCardDropDown {...args} />;
 
 export const ActivityCardDropDownProps = Template.bind({});
 
-ActivityCardDropDownProps.args = {};
+ActivityCardDropDownProps.args = {
+  iconColor: "",
+};
