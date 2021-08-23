@@ -263,7 +263,7 @@ export default function Pills(props) {
     } else if (subTypeRecieved === 'Activity Items') {
       if (query) {
         await dispatch(getActivityItems(query, ''));
-      } else {
+      } else if (query === '') {
         await dispatch(getActivityItems());
       }
     }
@@ -390,7 +390,8 @@ export default function Pills(props) {
 
   const searchQueryChangeHandlerLMS = (search) => {
     setLmsProject(null);
-    const result =  adminService.getLmsProjectSearch(activeOrganization?.id, search.target.value,(activePage|| 1));
+    const encodeQuery = encodeURI(search.target.value);
+    const result =  adminService.getLmsProjectSearch(activeOrganization?.id, encodeQuery,(activePage|| 1));
     result.then((data) => {
       setLmsProject(data)
     })
