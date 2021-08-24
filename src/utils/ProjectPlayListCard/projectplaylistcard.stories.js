@@ -20,4 +20,5 @@ export const ProjectPlayListCardProps = Template.bind({});
 ProjectPlayListCardProps.args = {
   className: "",
   playList: playList,
+  title: "",
 };
