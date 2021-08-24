@@ -129,10 +129,37 @@ function TeamsPage(props) {
       <div className="teams-page">
         <div className="content-wrapper">
           <div className="content">
-            <div className="row">
+            <div className="row" style={{ justifyContent: 'space-between' }}>
               <h1 className={`title${projectShow ? ' project-title' : ''}${channelShow ? ' channel-title' : ''}`}>
                 {overview ? 'Teams' : (title[status] || 'Teams')}
               </h1>
+              {permission?.Team?.includes('team:add-projects') && projectShow && (
+                <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}/add-projects`}>
+                  <div className="btn-top-page">
+                    <FontAwesomeIcon icon="plus" className="mr-2" />
+                    Add projects
+                  </div>
+                </Link>
+              )}
+              {permission?.Team?.includes('team:invite-member') && projectShow && (
+                <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}`}>
+                  <div className="btn-top-page">
+                    <FontAwesomeIcon icon="plus" className="mr-2" />
+                    Add Members
+                  </div>
+                </Link>
+              )}
+              {permission?.Team?.includes('team:create')
+              && overview && (
+                <>
+                  <Link to={`/org/${organization?.currentOrganization?.domain}/teams/create-team`}>
+                    <div className="btn-top-page">
+                      <FontAwesomeIcon icon="plus" className="mr-2" />
+                      Create a Team
+                    </div>
+                  </Link>
+                </>
+              )}
               {projectShow && (
                 <></>
               )}
@@ -140,17 +167,6 @@ function TeamsPage(props) {
             <>
               {overview && (
               <div className="row overview">
-                {permission?.Team?.includes('team:create')
-                && (
-                  <>
-                    <Link to={`/org/${organization?.currentOrganization?.domain}/teams/create-team`}>
-                      <div className="btn-top-page">
-                        <FontAwesomeIcon icon="plus" className="mr-2" />
-                        Create a Team
-                      </div>
-                    </Link>
-                  </>
-                )}
                 {permission?.Team?.includes('team:view') ? (
                   <>
                     {teams.length > 0 ? teams.map((team) => (

@@ -62,15 +62,17 @@ function CreateTeam(props) {
   const { activeOrganization } = organization;
   const { permission } = organization;
   useEffect(() => {
+  }, [team.selectedTeam]);
+  useEffect(() => {
     if (activeOrganization) {
       loadProjects();
     }
     resetSelectedTeam();
     showCreate();
     if (editMode) {
-      updateSelectedTeam(selectedTeam);
-      setSelectedMembers(selectedTeam?.users);
-      setSelectedProjects(selectedTeam?.projects.map((project) => project.id));
+      updateSelectedTeam({ name: selectedTeam.name, description: selectedTeam.description });
+      // setSelectedMembers(selectedTeam?.users);
+      // setSelectedProjects(selectedTeam?.projects.map((project) => project.id));
     }
   }, [loadProjects, resetSelectedTeam, showCreate, editMode, selectedTeam, updateSelectedTeam, activeOrganization]);
 
@@ -96,23 +98,21 @@ function CreateTeam(props) {
     </button>
   );
 
-  const handleSubmit = useCallback((projectIds) => {
-    setInvitedMembers(selectedMembers.map(
-      // eslint-disable-next-line no-restricted-globals
-      ({ id, ...mem }) => ({ id: isNaN(id) ? 0 : id, ...mem }),
-    ));
+  const handleSubmit = useCallback((projectIds = 0) => {
     if (editMode) {
+      console.log(selectedTeam, team.selectedTeam);
       updateTeam(selectedTeam?.id, {
         organization_id: organization.activeOrganization?.id,
-        ...team.selectedTeam,
-        users: selectedMembers || [],
-        projects: projectIds,
+        name: team.selectedTeam.name,
+        description: team.selectedTeam.description,
+        // users: selectedMembers || [],
+        // projects: projectIds,
       }).then(() => {
         Swal.fire({
           icon: 'success',
           title: 'Successfully updated.',
         });
-        history.push(`/org/${organization.currentOrganization?.domain}/teams`);
+        history.push(`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam?.id}`);
       })
         .catch(() => {
           Swal.fire({
@@ -122,6 +122,10 @@ function CreateTeam(props) {
           });
         });
     } else {
+      setInvitedMembers(selectedMembers.map(
+        // eslint-disable-next-line no-restricted-globals
+        ({ id, ...mem }) => ({ id: isNaN(id) ? 0 : id, ...mem }),
+      ));
       createTeam({
         organization_id: organization.activeOrganization?.id,
         ...team.selectedTeam,
@@ -143,7 +147,8 @@ function CreateTeam(props) {
         //   });
         // });
     }
-  }, [createTeam, team.selectedTeam, history, selectedMembers, updateTeam]);
+  // eslint-disable-next-line max-len
+  }, [editMode, selectedTeam, team.selectedTeam, updateTeam, organization.activeOrganization?.id, organization.currentOrganization?.domain, history, setInvitedMembers, selectedMembers, createTeam]);
 
   return (
     <div className="create-team">
@@ -155,11 +160,11 @@ function CreateTeam(props) {
           </div>
           <div className="create-team-content">
             {showCreation && (
-              <Creation editMode={editMode} selectedTeam={selectedTeam} updateTeam={updateSelectedTeam} nextStep={showInvite} />
+              <Creation editMode={editMode} selectedTeam={selectedTeam} updateTeam={updateSelectedTeam} nextStep={showInvite} handleSubmitInEditMode={handleSubmit} />
             )}
 
             {
-              showInviting && (
+              showInviting && !editMode && (
                 <InviteTeam
                   team={team.selectedTeam}
                   editMode={editMode}
@@ -175,7 +180,7 @@ function CreateTeam(props) {
               )
             }
 
-            {showAssigning && (
+            {showAssigning && !editMode && (
               <AssignProject
                 isSaving={team.isLoading}
                 editMode={editMode}

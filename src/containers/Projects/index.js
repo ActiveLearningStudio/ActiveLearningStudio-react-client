@@ -28,6 +28,7 @@ import DeletePopup from 'components/DeletePopup';
 import ProjectsLoading from 'components/Loading/ProjectsLoading';
 import GoogleModel from 'components/models/GoogleLoginModal';
 // import CompleteProfileAlert from 'components/CompleteProfileAlert';
+import { getTeamProject } from 'store/actions/team';
 import ProjectCard from './ProjectCard';
 import SampleProjectCard from './SampleProjectCard';
 import NewProjectPage from './NewProjectPage';
@@ -46,6 +47,7 @@ export const ProjectsPage = (props) => {
   const [sortNumber, setSortNumber] = useState(5);
   const [sampleProject, setSampleProjects] = useState([]);
   const [favProject, setFavProjects] = useState([]);
+  const [teamProjects, setTeamProjects] = useState([]);
   const [activeTab, setActiveTab] = useState('My Projects');
   const [showSampleSort, setShowSampleSort] = useState(true);
   const [tabToggle, setTabToggle] = useState([]);
@@ -65,6 +67,7 @@ export const ProjectsPage = (props) => {
     loadProject,
     loadMyProjects,
     loadLms,
+    getTeamProjects,
   } = props;
 
   const allState = useSelector((state) => state);
@@ -79,6 +82,11 @@ export const ProjectsPage = (props) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (organization?.activeOrganization) {
+      setTeamProjects(getTeamProjects());
+    }
+  }, [organization.activeOrganization]);
   useEffect(() => {
     if (organization.activeOrganization) {
       sampleProjectsData();
@@ -293,13 +301,13 @@ export const ProjectsPage = (props) => {
     shareProject(projectId);
   };
 
-  const handleTabChange = (key) => {
-    if (key === 'Favorite Projects') {
-      setTabToggle(true);
-    } else if (key === 'Sample Projects') {
-      setTabToggle(false);
-    }
-  };
+  // const handleTabChange = (key) => {
+  //   if (key === 'Favorite Projects') {
+  //     setTabToggle(true);
+  //   } else if (key === 'Sample Projects') {
+  //     setTabToggle(false);
+  //   }
+  // };
 
   const { pageLoading, showDeletePlaylistPopup } = ui;
   return (
@@ -316,7 +324,7 @@ export const ProjectsPage = (props) => {
             <Tabs
               onSelect={(eventKey) => {
                 setShowSampleSort(true);
-                handleTabChange(eventKey);
+                setTabToggle(eventKey);
               }}
               className="main-tabs"
               defaultActiveKey={activeTab}
@@ -510,7 +518,7 @@ export const ProjectsPage = (props) => {
                   <div className="col-md-12">
                     <div className="flex-smaple">
                       {sampleProject.length > 0
-                        ? <SampleProjectCard projects={sampleProject} activeTab={tabToggle} type="" setShowSampleSort={setShowSampleSort} />
+                        ? <SampleProjectCard projects={sampleProject} activeTab={tabToggle} type="sample" setShowSampleSort={setShowSampleSort} />
                       : <Alert variant="warning"> No sample project found.</Alert>}
                     </div>
                   </div>
@@ -587,6 +595,65 @@ export const ProjectsPage = (props) => {
                   </div>
                 </Tab>
               )}
+              <Tab
+                eventKey="Team Projects"
+                title="Team Projects"
+              >
+                <div className="row">
+                  <div className="col-md-12" style={{ display: 'none' }}>
+                    <div className="program-page-title">
+                      <h1>Team Projects</h1>
+                      {(showSampleSort && teamProjects.length === 0) && (
+                        <div className="project-page-settings">
+                          <div className="sort-project-btns">
+                            <div
+                              className={activeFilter === 'list-grid' ? 'sort-btn active' : 'sort-btn'}
+                              onClick={() => {
+                                // const allchunk = [];
+                                // let counterSimpl = 0;
+                                setActiveFilter('list-grid');
+                                setSortNumber(-1);
+                                divideProjects(teamProjects);
+                              }}
+                            >
+                              <FontAwesomeIcon icon="bars" />
+                            </div>
+                            <div
+                              className={activeFilter === 'small-grid' ? 'sort-btn active' : 'sort-btn'}
+                              onClick={() => {
+                                setActiveFilter('small-grid');
+                                setSortNumber(5);
+                                divideProjects(teamProjects);
+                              }}
+                            >
+                              <FontAwesomeIcon icon="grip-horizontal" />
+                            </div>
+                            <div
+                              className={activeFilter === 'normal-grid' ? 'sort-btn active' : 'sort-btn'}
+                              onClick={() => {
+                                setActiveFilter('normal-grid');
+                                setSortNumber(4);
+                                divideProjects(teamProjects);
+                              }}
+                            >
+                              <FontAwesomeIcon icon="th-large" />
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="col-md-12">
+                    <div className="flex-smaple">
+                      {teamProjects.length > 0 ? (
+                        <SampleProjectCard projects={teamProjects} type="team" activeTab={tabToggle} setShowSampleSort={setShowSampleSort} />
+                      ) : (
+                        <Alert variant="warning">No Team Project found.</Alert>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </Tab>
             </Tabs>
           </div>
         </div>
@@ -633,6 +700,7 @@ ProjectsPage.propTypes = {
   location: PropTypes.object.isRequired,
   sampleProjectsData: PropTypes.func.isRequired,
   loadMyFavProjectsActionData: PropTypes.func.isRequired,
+  getTeamProjects: PropTypes.func.isRequired,
 };
 
 ProjectsPage.defaultProps = {
@@ -660,6 +728,7 @@ const mapDispatchToProps = (dispatch) => ({
   allSidebarProjectsUpdate: () => dispatch(allSidebarProjects()),
   sampleProjectsData: () => dispatch(sampleProjects()),
   loadMyFavProjectsActionData: () => dispatch(loadMyFavProjectsAction()),
+  getTeamProjects: () => dispatch(getTeamProject()),
 });
 
 export default withRouter(

@@ -54,14 +54,14 @@ function TeamProjectView(props) {
 
   return (
     <div className="team-information">
-      {permission?.Team?.includes('team:add-projects') && (
+      {/* {permission?.Team?.includes('team:add-projects') && (
         <Link to={`/org/${organization.currentOrganization?.domain}/teams/${id}/add-projects`}>
           <div className="btn-top-page">
             <FontAwesomeIcon icon="plus" className="mr-2" />
             Add projects
           </div>
         </Link>
-      )}
+      )} */}
 
       <div className="projects-wrapper">
         <div className="project-list">
