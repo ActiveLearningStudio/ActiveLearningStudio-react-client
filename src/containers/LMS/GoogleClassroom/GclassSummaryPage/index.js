@@ -129,6 +129,7 @@ function GclassSummaryPage(props) {
                           https://www.googleapis.com/auth/classroom.coursework.me
                           https://www.googleapis.com/auth/classroom.coursework.students
                           https://www.googleapis.com/auth/classroom.rosters.readonly
+                          https://www.googleapis.com/auth/classroom.profile.emails
                         "
                         cookiePolicy="single_host_origin"
                       />

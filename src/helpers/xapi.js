@@ -74,9 +74,9 @@ export function extendStatement(h5pObj, statement, params, skipped = false) {
     });
 
     if (statementExtended?.object?.definition?.extensions) {
-      statementExtended.object.definition.extensions.EXTENSION_LMS_COURSE_NAME = customCourseName;
-      statementExtended.object.definition.extensions.EXTENSION_LMS_DOMAIN_URL = customApiDomainUrl;
-      statementExtended.object.definition.extensions.EXTENSION_LMS_COURSE_CODE = customCourseCode;
+      statementExtended.object.definition.extensions['http://currikistudio.org/x-api/lms-course-name'] = customCourseName;
+      statementExtended.object.definition.extensions['http://currikistudio.org/x-api/lms-domain-url'] = customApiDomainUrl;
+      statementExtended.object.definition.extensions['http://currikistudio.org/x-api/lms-course-code'] = customCourseCode;
     }
   }
 
