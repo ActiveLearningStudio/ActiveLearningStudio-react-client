@@ -23,6 +23,7 @@ import DeletePopup from 'components/DeletePopup';
 import { hideDeletePopupAction, showDeletePopupAction } from 'store/actions/ui';
 
 import './style.scss';
+import { getTeamPermission } from 'store/actions/team';
 
 function ProjectPreview(props) {
   const { match, history, changePlaylistTitle } = props;
@@ -36,7 +37,8 @@ function ProjectPreview(props) {
   const ui = useSelector((state) => state.ui);
   const accordion = useRef([]);
   const { permission } = organization;
-
+  const team = useSelector((state) => state.team);
+  const { teamPermission } = team;
   const { showDeletePlaylistPopup } = ui;
   const [currentProject, setCurrentProject] = useState(null);
   const [activeShared, setActiveShared] = useState(true);
@@ -49,7 +51,11 @@ function ProjectPreview(props) {
     setCurrentProject(projectState.projectSelect);
     setActiveShared(projectState.projectSelect.shared);
   }, [projectState.projectSelect]);
-
+  useEffect(() => {
+    if (!teamPermission && projectState?.selectedProject.team_id && organization?.currentOrganization?.id) {
+      getTeamPermission(organization?.currentOrganization?.id, projectState?.selectedProject?.team_id);
+    }
+  }, [teamPermission, organization?.currentOrganization, projectState.selectedProject]);
   useEffect(() => {
     if (playlistState.playlists.length === 0) {
       dispatch(loadProjectPlaylistsAction(match.params.projectId));
@@ -116,6 +122,7 @@ function ProjectPreview(props) {
               playlistId={playlist.id}
               key={activity.id}
               playlist={playlist}
+              teamPermission={teamPermission || []}
             />
           ) : null
         ));
@@ -133,7 +140,7 @@ function ProjectPreview(props) {
         permission?.Playlist?.includes('playlist:view')
         ? (
           <div className="check-each" key={playlist.id}>
-            {(permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload')) && (
+            {(permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload') || teamPermission?.Team?.includes('team:add-activity')) && (
               <div className="add-btn-activity">
                 <button
                   type="button"
@@ -199,6 +206,7 @@ function ProjectPreview(props) {
               selectedProject={playlist.project}
               setSelectedForEdit={setSelectedForEdit}
               handleClickPlaylistTitle={handleClickPlaylistTitle}
+              teamPermission={teamPermission || []}
             />
           </div>
         ) : null
@@ -234,6 +242,7 @@ function ProjectPreview(props) {
                 <ul className="bar_list flex-div check">
                   <li>
                     <div className="title_lg check">
+                      <div>{teamPermission ? 'Team Project:' : null}</div>
                       <div>{currentProject.name}</div>
 
                       <div className="configuration">

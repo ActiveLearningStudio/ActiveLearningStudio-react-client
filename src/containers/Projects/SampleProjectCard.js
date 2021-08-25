@@ -37,7 +37,7 @@ const SampleProjectCard = (props) => {
     <>
       {!selectId ? (
         projects.map((project) => (
-          <div className="playlist-resource">
+          <div className="playlist-resource" key={project.id}>
             <div className="col-md-3 check">
               <div className="program-tile">
                 <div
@@ -137,6 +137,19 @@ const SampleProjectCard = (props) => {
                       <div className="row">
                         <div className="col-md-12">
                           <p>
+                            {type === 'team' && (
+                              <div>
+                                Team Id:
+                                <strong>
+                                  {` ${project?.team?.id}`}
+                                </strong>
+                                {' '}
+                                Team Name:
+                                <strong>
+                                  {` ${project?.team?.name}`}
+                                </strong>
+                              </div>
+                            )}
                             {project.description && project.description.length > 130
                               ? `${project.description.substring(0, 130)} ...`
                               : project.description}

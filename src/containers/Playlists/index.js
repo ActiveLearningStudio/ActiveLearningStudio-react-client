@@ -88,10 +88,10 @@ function PlaylistsPage(props) {
     getTeamPermissions,
   } = props;
   useEffect(() => {
-    if (!teamPermission && match.params.teamId && organization?.currentOrganization?.id) {
-      getTeamPermissions(organization?.currentOrganization?.id, match?.params?.teamId);
+    if (!teamPermission && selectedProject.team_id && organization?.currentOrganization?.id) {
+      getTeamPermissions(organization?.currentOrganization?.id, selectedProject?.team_id);
     }
-  }, [teamPermission, organization?.currentOrganization]);
+  }, [teamPermission, organization?.currentOrganization, selectedProject]);
   useEffect(() => {
     loadLms();
     window.scrollTo(0, 0);
@@ -362,7 +362,11 @@ function PlaylistsPage(props) {
               <>
                 <div className="col playlist-page-project-title project-each-view">
                   <div className="flex-se">
-                    <h1>{selectedProject ? selectedProject.name : ''}</h1>
+                    <h1>
+                      {teamPermission ? 'Team Project:' : null}
+                      {' '}
+                      {selectedProject ? selectedProject.name : ''}
+                    </h1>
                     {permission?.Project?.includes('project:request-indexing') && (
                       <div className="react-touch">
                         <div className="publish-btn">
@@ -371,7 +375,7 @@ function PlaylistsPage(props) {
                         </div>
                       </div>
                     )}
-                    {permission?.Playlist?.includes('playlist:create') && (
+                    {(permission?.Playlist?.includes('playlist:create') || teamPermission?.Team?.includes('team:add-playlist')) && (
                       <button
                         type="button"
                         className="create-playlist-btn"
@@ -440,6 +444,7 @@ function PlaylistsPage(props) {
                                 playlist={playlist}
                                 projectId={parseInt(match.params.projectId, 10)}
                                 handleCreateResource={handleShowCreateResourceModal}
+                                teamPermission={teamPermission || []}
                               />
                             )
                             : null
