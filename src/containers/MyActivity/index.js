@@ -21,6 +21,8 @@ import CardImage from "assets/images/activitycard.png";
 import ActivityCardBox from "utils/ActivityCard/activitycard";
 const MyActivity = () => {
   const [cardShow, setCardShow] = useState(true);
+  const [uploadImageStatus, setUploadImageStatus] = useState(false);
+
   const { screenState } = useSelector((state) => state.myactivities);
   const dispatch = useDispatch();
   const changeScreenHandler = (payload) => {
@@ -32,19 +34,25 @@ const MyActivity = () => {
   return (
     <>
       {screenState && (
-        <div className="form-new-popup-activity">
+        <div
+          className={
+            uploadImageStatus
+              ? "form-new-popup-activity z-index"
+              : "form-new-popup-activity"
+          }
+        >
           <FontAwesomeIcon
             icon="times"
             className="cross-all-pop"
             onClick={() => changeScreenHandler("")}
           />
           <div className="inner-form-content">
-            {screenState === "newactivity" && (
+            {/* {screenState === "newactivity" && (
               <NewActivity
                 changeScreenHandler={changeScreenHandler}
                 screenState={screenState}
               />
-            )}
+            )} */}
             {screenState === "layout" && (
               <ActivityLayout
                 changeScreenHandler={changeScreenHandler}
@@ -55,6 +63,7 @@ const MyActivity = () => {
               <AddActivity
                 changeScreenHandler={changeScreenHandler}
                 screenState={screenState}
+                setUploadImageStatus={setUploadImageStatus}
               />
             )}
             {screenState === "preview" && (
@@ -85,7 +94,7 @@ const MyActivity = () => {
                   icon={faPlus}
                   width="163px"
                   height="35px"
-                  onClick={() => changeScreenHandler("newactivity")}
+                  onClick={() => changeScreenHandler("layout")}
                   hover={true}
                 />
               </div>

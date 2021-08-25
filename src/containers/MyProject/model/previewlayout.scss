@@ -1,0 +1,27 @@
+.preview-layout-model {
+  //   z-index: 999999;
+  position: fixed;
+  background: #0848928f;
+  top: 0;
+  width: 100%;
+  z-index: 1060;
+  overflow-y: auto;
+  padding: 15px;
+}
+
+.interactive-proceed-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .interactive-video-tag {
+    display: flex;
+    .video-icon {
+      margin-right: 10px;
+    }
+  }
+}
+.interactive-video-H5P {
+  margin-top: 40px;
+  width: 100%;
+  padding: 0px 40px;
+}

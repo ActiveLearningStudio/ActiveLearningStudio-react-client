@@ -5,6 +5,7 @@ import classNames from "classnames";
 import "./uploadimage.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PexelsAPI from "../../components/models/pexels";
+import DefaultImage from "assets/images/activitycard.png";
 import {
   faLaptop,
   faLink,
@@ -15,11 +16,11 @@ import {
 const UploadImage = ({ className, setUploadImageStatus }) => {
   const [modalShow, setModalShow] = useState(false);
   const currikiUtility = classNames("curriki-utility-uploadimage", className);
+  const [project, setProject] = useState();
   return (
     <>
       <PexelsAPI
         show={modalShow}
-        project="project"
         onHide={() => {
           setModalShow(false);
           setUploadImageStatus(false);
@@ -28,7 +29,9 @@ const UploadImage = ({ className, setUploadImageStatus }) => {
       />
       <div className={currikiUtility}>
         <p>Upload an image</p>
-        <div className="uploadimage-box"></div>
+        <div className="uploadimage-box">
+          <img src={DefaultImage} alt="" />
+        </div>
         <div className="uploadimage-option">
           <FontAwesomeIcon icon={faLaptop} className="upload-option mr-20" />
           <FontAwesomeIcon icon={faLink} className="upload-option mr-20" />

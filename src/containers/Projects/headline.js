@@ -11,28 +11,9 @@ import MyProjectsCreate from "./MyProjects";
 export default function Headline() {
   const organization = useSelector((state) => state.organization);
   const { currentOrganization, permission } = organization;
-  const [openMyProject, setOpenMyProject] = useState(false);
-  const [uploadImageStatus, setUploadImageStatus] = useState(false);
+
   return (
     <>
-      {openMyProject && (
-        <div
-          className={
-            uploadImageStatus
-              ? "form-new-popup-myproject z-index"
-              : "form-new-popup-myproject"
-          }
-        >
-          <FontAwesomeIcon
-            icon="times"
-            className="cross-all-pop"
-            onClick={() => setOpenMyProject(!openMyProject)}
-          />
-          <div className="inner-form-content">
-            <MyProjectsCreate setUploadImageStatus={setUploadImageStatus} />
-          </div>
-        </div>
-      )}
       <div className="project-headline">
         <div className="title">
           <div>
@@ -49,19 +30,17 @@ export default function Headline() {
         )} */}
           {/* Update The Code */}
           {permission?.Project?.includes("project:create") && (
-            <Link onClick={() => setOpenMyProject(!openMyProject)}>
+            <Link
+              to={`/org/${currentOrganization?.domain}/project/create`}
+              onClick={() => {
+                setCurrentVisibilityType(null);
+              }}
+            >
               <div className="btn-top-page">
                 <FontAwesomeIcon icon="plus" className="mr-2" />
                 Create a Project
               </div>
             </Link>
-
-            // <Link to={`/org/${currentOrganization?.domain}/project/create`} onClick={() => { setCurrentVisibilityType(null); }}>
-            //   <div className="btn-top-page">
-            //     <FontAwesomeIcon icon="plus" className="mr-2" />
-            //     Create a Project
-            //   </div>
-            // </Link>
           )}
         </div>
         <p>

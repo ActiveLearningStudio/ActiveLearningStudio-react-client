@@ -5,11 +5,16 @@ import HeadingTwo from "utils/HeadingTwo/headingtwo";
 import LayoutCard from "utils/LayoutCard/layoutcard";
 import ColoumImage from "assets/images/Group 648.png";
 import PresentationImage from "assets/images/Group 646.png";
+import InteractivevideoImage from "assets/images/layout/interactive-video.png";
+import InteractivebookImage from "assets/images/layout/timeline.png";
+import QuizImage from "assets/images/layout/questionsquiz.png";
+import ColoumImage1 from "assets/images/layout/singleactivit.png";
 import Tabs from "utils/Tabs/tabs";
 import Buttons from "utils/Buttons/buttons";
+import HeadingThree from "utils/HeadingThree/headingthree";
 const ActivityLayout = (props) => {
   const { changeScreenHandler } = props;
-  const [layout, setLayout] = useState("");
+  const [layout, setLayout] = useState("Interactivevideo");
   return (
     <div className="activity-layout-form">
       <div className="activity-layout-tabs">
@@ -22,16 +27,38 @@ const ActivityLayout = (props) => {
       </div>
       <div className="activity-layout-detail">
         <HeadingText
-          text="Within the six categories, there are over 50 learning activity types. These range from Interactive Video, Flashcards, to Memory Games. We also have special activity types that we will refer to as layouts. "
+          text="Start creating by selecting a layout and then add activity types."
           color="#515151"
         />
       </div>
       <div className="activity-layout-cards">
         <LayoutCard
+          image={InteractivevideoImage}
+          text="Interactive video"
+          className={
+            layout == "Interactivevideo" ? "activity-layoutCard-active" : null
+          }
+          onClick={() => setLayout("Interactivevideo")}
+        />
+        <LayoutCard
           image={ColoumImage}
-          text="Column Layout"
-          className={layout == "column" ? "activity-layoutCard-active" : null}
-          onClick={() => setLayout("column")}
+          text="ColumnLayout"
+          className={
+            layout == "ColumnLayout"
+              ? "activity-layoutCard-active ml-30"
+              : "ml-30"
+          }
+          onClick={() => setLayout("ColumnLayout")}
+        />
+        <LayoutCard
+          image={InteractivebookImage}
+          text="Interactive book"
+          className={
+            layout == "Interactivebook"
+              ? "activity-layoutCard-active ml-30"
+              : "ml-30"
+          }
+          onClick={() => setLayout("Interactivebook")}
         />
         <LayoutCard
           image={PresentationImage}
@@ -44,33 +71,28 @@ const ActivityLayout = (props) => {
           onClick={() => setLayout("Presentation")}
         />
         <LayoutCard
-          image={ColoumImage}
-          text="Interactive book"
-          className={
-            layout == "book" ? "activity-layoutCard-active ml-30" : "ml-30"
-          }
-          onClick={() => setLayout("book")}
-        />
-        <LayoutCard
-          image={PresentationImage}
-          text="Interactive Video"
-          className={
-            layout == "Video" ? "activity-layoutCard-active ml-30" : "ml-30"
-          }
-          onClick={() => setLayout("Video")}
-        />
-        <LayoutCard
-          image={ColoumImage}
+          image={QuizImage}
           text="Quiz"
           className={
             layout == "Quiz" ? "activity-layoutCard-active ml-30" : "ml-30"
           }
           onClick={() => setLayout("Quiz")}
         />
+        <LayoutCard
+          image={ColoumImage1}
+          text="Column Layout"
+          className={
+            layout == "ColumnLayout1"
+              ? "activity-layoutCard-active ml-30"
+              : "ml-30"
+          }
+          onClick={() => setLayout("ColumnLayout1")}
+        />
       </div>
       <div className="activity-layout-process-box">
+        <HeadingThree text="Interactive Video" color="#084892" />
         <HeadingText
-          text="Start your creation process by selecting a layout."
+          text="An HTML5-based interactive video content type allowing users to add multiple choice and fill in the blank questions, pop-up text and other types of interactions to their videos using only a web browser. Make your videos more engaging with H5P and interactive video in publishing systems like Canvas, Brightspace, Blackboard, Moodle and WordPress."
           color="#515151"
         />
       </div>

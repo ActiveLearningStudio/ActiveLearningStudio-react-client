@@ -259,12 +259,13 @@
   }
   .activity-layout-process-box {
     background-color: #f1f1f1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
     border-radius: 10px;
-    height: 130px;
+    height: 153px;
     margin-top: 52px;
+    padding: 33px 48px;
   }
   .activity-layout-btns {
     display: flex;
@@ -349,7 +350,7 @@
   }
   .add-activity-layout-formik-videoTag {
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
     justify-content: space-between;
     .add-activity-layout-formik {
       @media screen and (max-width: 1024px) {
@@ -407,12 +408,37 @@
         input {
           width: 100%;
           height: 40px;
-          border-radius: 5px;
           outline: none;
-          border: 1px solid $white;
-          box-shadow: 0px 0px 4px $curriki-main-blue;
+          // border: 1px solid $white;
+          // box-shadow: 0px 0px 4px $curriki-main-blue;
+          background: #ffffff;
+          border: 1px solid #515151;
+          border-radius: 4px;
           text-indent: 10px;
         }
+      }
+      .layout-formik-select {
+        margin-top: 33px;
+        display: flex;
+        .formik-select {
+          flex: 1;
+          .formik-select-title {
+            margin: 0;
+          }
+          select {
+            width: 100%;
+            height: 36px;
+            background: #ffffff;
+            border: 1px solid #515151;
+            border-radius: 4px;
+          }
+        }
+        .mr-32 {
+          margin-right: 32px;
+        }
+      }
+      .formik-uploadimage {
+        margin-top: 33px;
       }
     }
     .add-activity-layout-videoTag {
@@ -421,6 +447,7 @@
       }
 
       margin-left: 20px;
+
       .videoTag {
         display: flex;
         flex-direction: column;
@@ -439,6 +466,18 @@
           text-align: center;
         }
       }
+    }
+  }
+  .open-editor-box {
+    margin-top: 47px;
+    display: flex;
+    align-items: center;
+    .editor-title {
+      width: max-content;
+      margin-right: 48px;
+    }
+    .editor-preview-link {
+      color: $curriki-main-blue;
     }
   }
   .add-activity-btns {
@@ -625,4 +664,8 @@
       }
     }
   }
+}
+
+.z-index {
+  z-index: 0;
 }
