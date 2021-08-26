@@ -52,10 +52,10 @@ function ProjectPreview(props) {
     setActiveShared(projectState.projectSelect.shared);
   }, [projectState.projectSelect]);
   useEffect(() => {
-    if (!teamPermission && projectState?.selectedProject.team_id && organization?.currentOrganization?.id) {
-      getTeamPermission(organization?.currentOrganization?.id, projectState?.selectedProject?.team_id);
+    if (!teamPermission && currentProject?.team?.id && organization?.currentOrganization?.id) {
+      dispatch(getTeamPermission(organization?.currentOrganization?.id, currentProject.team.id));
     }
-  }, [teamPermission, organization?.currentOrganization, projectState.selectedProject]);
+  }, [teamPermission, organization?.currentOrganization, currentProject]);
   useEffect(() => {
     if (playlistState.playlists.length === 0) {
       dispatch(loadProjectPlaylistsAction(match.params.projectId));
@@ -242,7 +242,7 @@ function ProjectPreview(props) {
                 <ul className="bar_list flex-div check">
                   <li>
                     <div className="title_lg check">
-                      <div>{teamPermission ? 'Team Project:' : null}</div>
+                      {teamPermission ? 'Team Project: ' : null}
                       <div>{currentProject.name}</div>
 
                       <div className="configuration">

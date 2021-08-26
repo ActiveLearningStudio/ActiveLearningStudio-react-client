@@ -139,7 +139,7 @@ function TeamsPage(props) {
               <h1 className={`title${projectShow ? ' project-title' : ''}${channelShow ? ' channel-title' : ''}`}>
                 {overview ? 'Teams' : (title[status] || 'Teams')}
               </h1>
-              {(permission?.Team?.includes('team:add-projects') || teamPermission?.Team?.includes('add-project')) && projectShow && (
+              {(permission?.Team?.includes('team:add-projects') || teamPermission?.Team?.includes('team:add-project')) && projectShow && (
                 <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}/add-projects`}>
                   <div className="btn-top-page">
                     <FontAwesomeIcon icon="plus" className="mr-2" />
@@ -147,11 +147,12 @@ function TeamsPage(props) {
                   </div>
                 </Link>
               )}
-              {(permission?.Team?.includes('team:invite-member') || teamPermission?.Team?.includes('add-team-user')) && projectShow && (
+              {(permission?.Team?.includes('team:invite-member')
+              || teamPermission?.Team?.includes('team:add-team-user')
+              || teamPermission?.Team?.includes('team:remove-project-user')) && projectShow && (
                 <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}`}>
                   <div className="btn-top-page">
-                    <FontAwesomeIcon icon="plus" className="mr-2" />
-                    Add Members
+                    Add/Remove Members
                   </div>
                 </Link>
               )}

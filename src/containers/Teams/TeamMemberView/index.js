@@ -86,7 +86,7 @@ function TeamMemberView(props) {
                   value={search}
                   onChange={handleChangeSearch}
                 />
-                {(permission?.Team?.includes('team:invite-member') || teamPermission.includes('team:add-team-user')) && user && (
+                {(permission?.Team?.includes('team:invite-member') || teamPermission?.Team?.includes('team:add-team-user')) && user && (
                   <InviteDialog
                     users={users}
                     visible={showInvite}
@@ -115,6 +115,7 @@ function TeamMemberView(props) {
                         selectMe={() => setSelectedMember(u.id)}
                         deselectMe={() => setSelectedMember(null)}
                         removeMember={removeMember}
+                        teamPermission={teamPermission || {}}
                       />
                     </div>
                   ))
