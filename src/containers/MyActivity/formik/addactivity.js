@@ -19,6 +19,14 @@ const AddActivity = (props) => {
 
   const [modalShow, setModalShow] = useState(false);
   const [upload, setupload] = useState(false);
+
+  const [title, setTitle] = useState("Interactive Video");
+  const [successMessage, setSuccessMessage] = useState(false);
+
+  successMessage &&
+    setInterval(() => {
+      setSuccessMessage(false);
+    }, 5000);
   return (
     <>
       <PreviewLayoutModel
@@ -27,6 +35,7 @@ const AddActivity = (props) => {
           setModalShow(false);
         }}
         searchName="abstract"
+        setSuccessMessage={setSuccessMessage}
       />
       <div className="add-activity-form">
         <div className="add-activity-tabs">
@@ -40,18 +49,18 @@ const AddActivity = (props) => {
         </div>
         <div className="add-activity-title-select">
           <div className="add-activity-title">
-            <HeadingTwo text="Interactive Video" color="#084892" />
+            <HeadingTwo text={title} color="#084892" />
           </div>
 
           <div className="activity-title-change-layout">
-            <select>
-              <option>Change Layout</option>
-              <option>Interactive video</option>
-              <option>Column layout</option>
-              <option>Interactive book</option>
-              <option>Course presentation</option>
-              <option>Quiz</option>
-              <option>Single activity</option>
+            <select onChange={(e) => setTitle(e.target.value)}>
+              {/* <option value="">Change Layout</option> */}
+              <option value="Interactive video">Interactive video</option>
+              <option value="Column layout">Column layout</option>
+              <option value="Interactive book">Interactive book</option>
+              <option value="Course presentation">Course presentation</option>
+              <option value="Quiz">Quiz</option>
+              <option value="Single activity">Single activity</option>
             </select>
           </div>
         </div>
@@ -152,7 +161,7 @@ const AddActivity = (props) => {
                   </div>
                 </div>
                 <div className="formik-uploadimage">
-                  <UploadImageV2 />
+                  <UploadImageV2 setUploadImageStatus={setUploadImageStatus} />
                 </div>
               </form>
             </Formik>
@@ -196,6 +205,18 @@ const AddActivity = (props) => {
                 hover={true}
               />
             </div>
+            {successMessage && (
+              <div className="successMessage">
+                <HeadingThree
+                  text="Changes saved succesfully!"
+                  color="#12B347"
+                />
+                <HeadingText
+                  text="To continue editing Open the editor again."
+                  color="#12B347"
+                />
+              </div>
+            )}
           </div>
         </div>
 

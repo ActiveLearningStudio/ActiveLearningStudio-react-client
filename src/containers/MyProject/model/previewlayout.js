@@ -28,7 +28,14 @@ const PreviewLayoutModel = (props) => {
             <HeadingThree text="Interactive Video" />
           </div>
           <div className="proceed-save">
-            <Buttons text="Proceed to save" className="Proceed-btn" />
+            <Buttons
+              text="Proceed to save"
+              className="Proceed-btn"
+              onClick={() => {
+                props.onHide();
+                props.setSuccessMessage(true);
+              }}
+            />
           </div>
         </div>
         <div className="interactive-video-H5P">

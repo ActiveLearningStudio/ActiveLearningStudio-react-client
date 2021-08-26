@@ -20,6 +20,8 @@ const UploadInteractiveVideo = (props) => {
 
   const [modalShow, setModalShow] = useState(false);
   const [upload, setupload] = useState(false);
+
+  const [title, setTitle] = useState("Interactive Video");
   return (
     <>
       <div className="interactive-activity-form">
@@ -34,23 +36,23 @@ const UploadInteractiveVideo = (props) => {
         </div>
         <div className="interactive-activity-title-select">
           <div className="interactive-activity-title">
-            <HeadingTwo text="Interactive Video" color="#084892" />
+            <HeadingTwo text={title} color="#084892" />
           </div>
 
           <div className="interactive-title-change-layout">
-            <select>
-              <option>Change Layout</option>
-              <option>Interactive video</option>
-              <option>Column layout</option>
-              <option>Interactive book</option>
-              <option>Course presentation</option>
-              <option>Quiz</option>
-              <option>Single activity</option>
+            <select onChange={(e) => setTitle(e.target.value)}>
+              {/* <option value="">Change Layout</option> */}
+              <option value="Interactive video">Interactive video</option>
+              <option value="Column layout">Column layout</option>
+              <option value="Interactive book">Interactive book</option>
+              <option value="Course presentation">Course presentation</option>
+              <option value="Quiz">Quiz</option>
+              <option value="Single activity">Single activity</option>
             </select>
           </div>
         </div>
         <div className="interactive-activity-selection">
-          <button>
+          <button onClick={() => changeScreenHandler("addactivity")}>
             Create New
             <FontAwesomeIcon icon="plus" className="btn-icon" />
           </button>

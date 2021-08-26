@@ -93,7 +93,14 @@ const ActivityLayout = (props) => {
         <div className="layout-process-btn">
           <HeadingThree text="Interactive Video" color="#084892" />
           <div className="activity-layout-process-box">
-            <img src={PlayIcon} />
+            <iframe
+              width="100%"
+              height="168"
+              frameborder="0"
+              src="https://www.youtube.com/embed/ngXSzWNYzU4"
+              title="https://youtu.be/ngXSzWNYzU4"
+            ></iframe>
+            {/* <img src={PlayIcon} /> */}
           </div>
           <HeadingText
             text="An HTML5-based interactive video content type allowing users to add multiple choice and fill in the blank questions, pop-up text and other types of interactions to their videos using only a web browser. Make your videos more engaging with H5P and interactive video in publishing systems like Canvas, Brightspace, Blackboard, Moodle and WordPress."
@@ -115,6 +122,7 @@ const ActivityLayout = (props) => {
               secondary={true}
               width="153px"
               height="36px"
+              onClick={() => changeScreenHandler("")}
             />
 
             <div className="btns-margin">

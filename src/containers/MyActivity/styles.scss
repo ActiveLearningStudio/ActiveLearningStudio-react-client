@@ -70,7 +70,7 @@
       .activity-cards-search {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        // justify-content: space-between;
         .search-textfield {
           display: flex;
           width: 313px;
@@ -91,7 +91,7 @@
           }
         }
         .search-filter {
-          margin-left: -120px;
+          margin-left: 120px;
         }
         .create-project-portion {
           margin-right: 74px;
@@ -141,7 +141,7 @@
       }
       .activity-cards-box {
         display: flex;
-        justify-content: center;
+        // justify-content: center;
         // justify-content: space-between;
         flex-wrap: wrap;
         .ml-102 {
@@ -289,7 +289,8 @@
         margin-bottom: 16px;
 
         // margin-top: 52px;
-        padding: 15px 15px;
+        // padding: 15px 15px;
+        padding: 2px;
       }
       .layout-useful-box {
         margin-top: 33px;
@@ -404,6 +405,7 @@
         font-size: 16px;
         line-height: 22px;
         color: #515151;
+        width: 170px;
         option {
           border: none;
           background-color: $white;
@@ -553,6 +555,9 @@
         justify-content: space-between;
         margin-top: 50px;
       }
+      .successMessage {
+        margin-top: 50px;
+      }
 
       .videoTag {
         display: flex;
@@ -622,6 +627,7 @@
         font-size: 16px;
         line-height: 22px;
         color: #515151;
+        width: 170px;
         option {
           border: none;
           background-color: $white;

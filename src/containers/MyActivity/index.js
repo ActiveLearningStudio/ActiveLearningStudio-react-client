@@ -128,7 +128,7 @@ const MyActivity = () => {
                       Sort & Filter
                     </Link>
                   </div>
-                  <div className="create-project-portion">
+                  {/* <div className="create-project-portion">
                     <Link to="#" className="primary-color">
                       <FontAwesomeIcon
                         icon="plus-square"
@@ -136,7 +136,7 @@ const MyActivity = () => {
                       />
                       Create project
                     </Link>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="search-filter-form">
                   <Formik

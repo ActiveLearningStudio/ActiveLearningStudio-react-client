@@ -43,7 +43,7 @@ const PreviewLayout = (props) => {
           <HeadingTwo text="Interactive Video" color="#084892" />
         </div>
 
-        <div className="preview-layout-change-layout">
+        {/* <div className="preview-layout-change-layout">
           <select>
             <option>Change Layout</option>
             <option>Interactive video</option>
@@ -53,7 +53,7 @@ const PreviewLayout = (props) => {
             <option>Quiz</option>
             <option>Single activity</option>
           </select>
-        </div>
+        </div> */}
       </div>
       <div className="preview-layout-card-project">
         <div className="preview-layout-dialogcard">
@@ -195,6 +195,7 @@ const PreviewLayout = (props) => {
               width="126px"
               height="43px"
               hover={true}
+              onClick={() => changeScreenHandler("")}
             />
           </div>
         </div>
