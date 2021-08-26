@@ -11,6 +11,8 @@ import { Link } from "react-router-dom";
 import H5PEditor from "components/ResourceCard/AddResource/Editors/H5PEditorV2";
 import UploadImage from "utils/UploadImage/uploadimage";
 import PreviewLayoutModel from "containers/MyProject/model/previewlayout";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import UploadImageV2 from "utils/uploadimagev2/uploadimagev2";
 
 const AddActivity = (props) => {
   const { changeScreenHandler, setUploadImageStatus } = props;
@@ -36,8 +38,35 @@ const AddActivity = (props) => {
           />
           <Tabs text="3. Preview Layout" className="ml-10" />
         </div>
-        <div className="add-activity-title">
-          <HeadingTwo text="Add activities to Column Layout" color="#084892" />
+        <div className="add-activity-title-select">
+          <div className="add-activity-title">
+            <HeadingTwo text="Interactive Video" color="#084892" />
+          </div>
+
+          <div className="activity-title-change-layout">
+            <select>
+              <option>Change Layout</option>
+              <option>Interactive video</option>
+              <option>Column layout</option>
+              <option>Interactive book</option>
+              <option>Course presentation</option>
+              <option>Quiz</option>
+              <option>Single activity</option>
+            </select>
+          </div>
+        </div>
+        <div className="add-activity-selection">
+          <button>
+            Create New
+            <FontAwesomeIcon icon="plus" className="btn-icon" />
+          </button>
+          <button
+            className="upload-btn"
+            onClick={() => changeScreenHandler("uploadinteractivevideo")}
+          >
+            Upload
+            <FontAwesomeIcon icon="plus" className="btn-icon" />
+          </button>
         </div>
         <div className="add-activity-layout-formik-videoTag">
           <div className="add-activity-layout-formik">
@@ -49,7 +78,12 @@ const AddActivity = (props) => {
               }}
             >
               <form>
-                <div className="layout-formik-radioBtn">
+                <HeadingTwo
+                  text="Layout description"
+                  color="#084892"
+                  className="layout-description-title"
+                />
+                {/* <div className="layout-formik-radioBtn">
                   <HeadingThree text="Method" color="#515151" />
                   <div className="radioBtns">
                     <div className="formik-radioBtn">
@@ -79,7 +113,7 @@ const AddActivity = (props) => {
                       </label>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <div className="layout-title-formik-textField">
                   <HeadingThree
                     text="Layout Title"
@@ -118,13 +152,13 @@ const AddActivity = (props) => {
                   </div>
                 </div>
                 <div className="formik-uploadimage">
-                  <UploadImage setUploadImageStatus={setUploadImageStatus} />
+                  <UploadImageV2 />
                 </div>
               </form>
             </Formik>
           </div>
           <div className="add-activity-layout-videoTag">
-            <div className="videoTag">
+            {/* <div className="videoTag">
               <div className="videoTag-link">
                 <Link to="/">View Demo</Link>
               </div>
@@ -134,6 +168,33 @@ const AddActivity = (props) => {
                 src="https://www.youtube.com/embed/ngXSzWNYzU4"
                 title="https://youtu.be/ngXSzWNYzU4"
               ></iframe>
+            </div> */}
+            <HeadingTwo
+              text="Add Activities"
+              color="#084892"
+              className="layout-add-activity-title"
+            />
+            <HeadingText
+              text="Start adding activities by opening the editor. Once you finish, hit the Preview Layout button to see your results."
+              color="#515151"
+            />
+            <div className="add-activity-btns">
+              <Buttons
+                text="Open editor"
+                primary={true}
+                width="142px"
+                height="35px"
+                onClick={() => setModalShow(true)}
+              />
+              <Buttons
+                text="Preview Layout"
+                secondary={true}
+                width="159px"
+                height="36px"
+                // disabled={layout ? false : true}
+                onClick={() => changeScreenHandler("preview")}
+                hover={true}
+              />
             </div>
           </div>
         </div>
@@ -148,7 +209,8 @@ const AddActivity = (props) => {
           <H5PEditor upload={upload} />
         </div>
       </div> */}
-        <div className="open-editor-box">
+
+        {/* <div className="open-editor-box">
           <div className="editor-title">
             <HeadingTwo text="Open Editor" color="#084892" />
           </div>
@@ -158,9 +220,9 @@ const AddActivity = (props) => {
           >
             Preview Layout
           </Link>
-        </div>
+        </div> */}
 
-        <div className="add-activity-btns">
+        {/* <div className="add-activity-btns">
           <Buttons
             text="Cancel"
             secondary={true}
@@ -168,7 +230,7 @@ const AddActivity = (props) => {
             height="35px"
             onClick={() => changeScreenHandler("layout")}
           />
-          {/* <Buttons
+          <Buttons
           text="Next"
           primary={true}
           width="132px"
@@ -176,8 +238,8 @@ const AddActivity = (props) => {
           // disabled={layout ? false : true}
           onClick={() => changeScreenHandler("preview")}
           hover={true}
-        /> */}
-        </div>
+        />
+        </div> */}
       </div>
     </>
   );

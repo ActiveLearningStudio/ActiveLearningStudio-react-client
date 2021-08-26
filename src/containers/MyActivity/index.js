@@ -19,6 +19,7 @@ import { Link } from "react-router-dom";
 import { Formik, Field } from "formik";
 import CardImage from "assets/images/activitycard.png";
 import ActivityCardBox from "utils/ActivityCard/activitycard";
+import UploadInteractiveVideo from "./formik/uploadinteractivevideo";
 const MyActivity = () => {
   const [cardShow, setCardShow] = useState(true);
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
@@ -64,6 +65,12 @@ const MyActivity = () => {
                 changeScreenHandler={changeScreenHandler}
                 screenState={screenState}
                 setUploadImageStatus={setUploadImageStatus}
+              />
+            )}
+            {screenState === "uploadinteractivevideo" && (
+              <UploadInteractiveVideo
+                changeScreenHandler={changeScreenHandler}
+                screenState={screenState}
               />
             )}
             {screenState === "preview" && (

@@ -1,0 +1,55 @@
+@import "../../assets/css/index";
+.curriki-utility-uploadfile {
+  h3 {
+    font-family: $rubik;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    color: $curriki-main-blue;
+  }
+  .uploadfile-box {
+    box-sizing: border-box;
+    width: 512px;
+    height: 160px;
+    background: #f1f1f1;
+    border-radius: 10px;
+    margin-top: 5px;
+    padding: 10px;
+    button {
+      font-family: "Open Sans", sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 22px;
+      color: $curriki-main-blue;
+      background-color: $white;
+      border: none;
+      padding: 5px;
+      cursor: pointer;
+    }
+    .uploadfile-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      img {
+        width: 64px;
+        height: 64px;
+      }
+      p {
+        font-family: $rubik;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 17px;
+        color: #515151;
+        .upload-browse {
+          color: $curriki-main-blue;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}

@@ -15,8 +15,5 @@ const Template = (args) => <UploadImage {...args} />;
 export const UploadImageProps = Template.bind({});
 
 UploadImageProps.args = {
-  text: "",
-  color: "",
   className: "",
-  id: "",
 };

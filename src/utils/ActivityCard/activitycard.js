@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 import { icon } from "@fortawesome/fontawesome-svg-core";
 import ActivityCardDropDown from "utils/ActivityCardDropDown/activitycarddropdown";
 
-const ActivityCardBox = ({ img, title, description, icon }) => {
+const ActivityCardBox = ({ img, title, description }) => {
   return (
     <div className="curriki-utility-activity-card">
       <div className="published_card">
@@ -65,6 +65,5 @@ ActivityCardBox.prototype = {
   img: PropTypes.string,
   title: PropTypes.string,
   description: PropTypes.string,
-  icon: PropTypes.string,
 };
 export default ActivityCardBox;
