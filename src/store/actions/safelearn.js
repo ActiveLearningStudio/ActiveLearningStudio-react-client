@@ -4,10 +4,12 @@ import service from 'services/safelearn.service';
 
 // Generates a screenshot based on the statement data
 export const saveResultScreenshotAction = (org, statement, title, studentName) => async (dispatch) => {
+  const parsedStatement = JSON.parse(statement);
+
   if (
-    statement?.result?.response
-    && statement?.verb?.display['en-US'] === 'interacted'
-    && statement?.context?.contextActivities?.category[0]?.id === 'http://h5p.org/libraries/H5P.OpenEndedQuestion-1.0'
+    parsedStatement?.result?.response
+    && parsedStatement?.verb?.display['en-US'] === 'interacted'
+    && parsedStatement?.context?.contextActivities?.category[0]?.id === 'http://h5p.org/libraries/H5P.OpenEndedQuestion-1.0'
     && org.account_id
     && org.api_key
     && org.unit_path
@@ -18,9 +20,9 @@ export const saveResultScreenshotAction = (org, statement, title, studentName) =
     customhtml.setAttribute('id', 'specfic-detail-safe-learn');
     customhtml.innerHTML = `
       <div>
-        <h3>${statement?.object?.definition?.description?.['en-US']}</h3>
+        <h3>${parsedStatement?.object?.definition?.description?.['en-US']}</h3>
         <hr />
-        <h4>${statement?.result?.response}</h4>
+        <h4>${parsedStatement?.result?.response}</h4>
       </div>`;
     document.body.prepend(customhtml);
     html2canvas(customhtml, { scrollY: -window.scrollY })
@@ -29,7 +31,17 @@ export const saveResultScreenshotAction = (org, statement, title, studentName) =
         const base64image = canvas.toDataURL('image/png');
         if (safeData.data) {
           const timeSafe = new Date();
-          service.safeApiCheck(safeData.data.token, org.account_id, org.unit_path, org.name, base64image, statement?.result?.response, timeSafe.getTime(), studentName, title);
+          service.safeApiCheck(
+            safeData.data.token,
+            org.account_id,
+            org.unit_path,
+            org.name,
+            base64image,
+            parsedStatement?.result?.response,
+            timeSafe.getTime(),
+            studentName,
+            title,
+          );
         }
       }).catch((err) => console.log(err));
   }
