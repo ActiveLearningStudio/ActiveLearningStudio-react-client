@@ -226,12 +226,12 @@ const AppRouter = (props) => {
                      />
                      <PrivateRoute
                        exact
-                       path="/org/:organization/project/:projectId/:teamId?"
+                       path="/org/:organization/project/:projectId"
                        component={PlaylistsPage}
                      />
                      <PrivateRoute
                        exact
-                       path="/org/:organization/project/:projectId/preview/:teamId?"
+                       path="/org/:organization/project/:projectId/preview"
                        component={PreviewPage}
                      />
                      <PrivateRoute
