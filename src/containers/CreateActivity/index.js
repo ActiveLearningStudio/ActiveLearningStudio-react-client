@@ -15,6 +15,7 @@ import Footer from 'components/Footer';
 // import Sidebar from 'components/Sidebar';
 // import Header from 'components/Header';
 import { loadPlaylistAction } from 'store/actions/playlist';
+import { getTeamPermission } from 'store/actions/team';
 import ActivityWizard from './ActivityWizard';
 import UploadActivity from './UploadActivity';
 // import SearchIndex from './SearchIndex';
@@ -23,11 +24,19 @@ import './style.scss';
 
 function ActivityCreate(props) {
   const { match, history } = props;
+  const { teamPermission } = useSelector((state) => state.team);
+  const { selectedPlaylist } = useSelector((state) => state.playlist);
   const organization = useSelector((state) => state.organization.permission);
+  const organizationState = useSelector((state) => state.organization);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadPlaylistAction(match.params.projectId, match.params.playlistId));
   }, []);
+  useEffect(() => {
+    if (!teamPermission && selectedPlaylist?.project?.team?.id && organizationState?.currentOrganization?.id) {
+      dispatch(getTeamPermission(organizationState?.currentOrganization?.id, selectedPlaylist?.project?.team?.id));
+    }
+  }, [teamPermission, selectedPlaylist, organizationState]);
   return (
     <>
       <div>
@@ -50,7 +59,10 @@ function ActivityCreate(props) {
             {!organization?.Activity?.includes('activity:create') && !organization?.Activity?.includes('activity:upload') && (
               <Alert variant="danger" alt="">You are not authorized to create or upload an activity.</Alert>
             )}
-            <Tab.Container id="left-tabs-example" defaultActiveKey={organization?.Activity?.includes('activity:create') ? 'create' : 'upload'}>
+            <Tab.Container
+              id="left-tabs-example"
+              defaultActiveKey={(organization?.Activity?.includes('activity:create') || teamPermission?.Team?.includes('team:add-activity')) ? 'create' : 'upload'}
+            >
               <Row>
                 <Col sm={3}>
                   <Nav variant="pills" className="flex-column">
@@ -60,7 +72,7 @@ function ActivityCreate(props) {
                         Search for an Existing Activity
                       </Nav.Link>
                     </Nav.Item> */}
-                    {organization?.Activity?.includes('activity:create') && (
+                    {(organization?.Activity?.includes('activity:create') || teamPermission?.Team?.includes('team:add-activity')) && (
                       <Nav.Item>
                         <Nav.Link eventKey="create">
                           <FontAwesomeIcon icon="plus" />
@@ -88,7 +100,7 @@ function ActivityCreate(props) {
                         <UploadActivity />
                       </Tab.Pane>
                     )}
-                    {organization?.Activity?.includes('activity:create') && (
+                    {(organization?.Activity?.includes('activity:create') || teamPermission?.Team?.includes('team:add-activity')) && (
                       <Tab.Pane eventKey="create">
                         <ActivityWizard />
                       </Tab.Pane>

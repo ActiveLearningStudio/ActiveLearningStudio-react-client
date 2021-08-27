@@ -62,7 +62,7 @@ function AddProjectsPage(props) {
       <div className="teams-page">
         <FadeDiv className="assign-projects">
           <div className="assign-projects-content">
-            {permission?.Team?.includes('team:add-projects')
+            {(permission?.Team?.includes('team:add-projects') || teamPermission?.Team?.includes('team:add-project'))
               ? (
                 <AssignProject
                   isSaving={team.isLoading}
