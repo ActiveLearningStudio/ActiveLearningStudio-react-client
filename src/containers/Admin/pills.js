@@ -386,7 +386,7 @@ export default function Pills(props) {
       setLmsProject(data)
     })
     }
-  }, [type, activePage]);
+  }, [type, activePage, activeOrganization?.id,]);
 
   const searchQueryChangeHandlerLMS = (search) => {
     setLmsProject(null);
