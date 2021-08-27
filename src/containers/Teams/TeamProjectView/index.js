@@ -106,7 +106,7 @@ function TeamProjectView(props) {
                        Add member
                      </Dropdown.Item>
                      )}
-                    {(permission?.Team?.includes('team:remove-projects') || teamPermission.includes('team:remove-project') || teamPermission.includes('team:remove-member-project'))
+                    {permission?.Team?.includes('team:remove-projects')
                       && (
                         <Dropdown.Item onClick={() => removeProjectSubmit(project.id)}>
                           <FontAwesomeIcon icon="times-circle" className="mr-2" />
@@ -145,7 +145,7 @@ function TeamProjectView(props) {
                           </div>
 
                           <div className="dropdown-divider" />
-                          {(permission?.Team?.includes('team:remove-project-user') || teamPermission.includes('team:remove-team-user'))
+                          {permission?.Team?.includes('team:remove-project-user')
                           && (
                           <Dropdown.Item onClick={() => removeMemberSubmit(project.id, u.id)}>
                             <FontAwesomeIcon icon="times" className="mr-2" />

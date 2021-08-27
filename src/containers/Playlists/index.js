@@ -521,7 +521,6 @@ PlaylistsPage.propTypes = {
   loadLms: PropTypes.func.isRequired,
   getIndexedData: PropTypes.func.isRequired,
   getElasticData: PropTypes.func.isRequired,
-  getTeamPermissions: PropTypes.func.isRequired,
 };
 
 PlaylistsPage.defaultProps = {
