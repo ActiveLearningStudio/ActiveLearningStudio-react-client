@@ -32,10 +32,7 @@ const getOrganization = (id) => httpService
 const getOrganizationSearch = (id, search) => httpService
   .get(`/${apiVersion}/suborganizations/${id}/index?query=${search}`)
   .then(({ data }) => data)
-  .catch((err) => {
-    errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
-  });
+  .catch((err) => Promise.reject(err.response.data));
 
 const inviteUserOutside = (id, info) => httpService
   .post(`/${apiVersion}/suborganizations/${id}/invite-members`, info)

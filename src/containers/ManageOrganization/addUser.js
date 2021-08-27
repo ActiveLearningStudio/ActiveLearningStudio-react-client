@@ -122,7 +122,7 @@ export default function AddUser(props) {
                 value={values.name}
               />
               {loaderImgUser && <img src={loader} alt="" className="loader" />}
-              {stateOrgUsers?.length > 0 && (
+              {stateOrgUsers?.length > 0 && values.name && (
                 <ul className="all-users-list">
                   {stateOrgUsers?.map((user) => (
                     <li

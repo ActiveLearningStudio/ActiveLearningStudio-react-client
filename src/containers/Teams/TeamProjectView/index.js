@@ -1,13 +1,13 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 
 // import { zeroFill } from 'utils';
-import { removeMemberFromProjectAction, removeProjectAction } from 'store/actions/team';
+import { getTeamPermission, removeMemberFromProjectAction, removeProjectAction } from 'store/actions/team';
 
 import './style.scss';
 
@@ -19,8 +19,16 @@ function TeamProjectView(props) {
     removeMember,
   } = props;
   const organization = useSelector((state) => state.organization);
+  const { teamPermission } = useSelector((state) => state.team);
+  const dispatch = useDispatch();
   const { permission } = organization;
   const authUser = users.find((u) => u.id === (user || {}).id);
+  // Fetch team permission if page reloads
+  useEffect(() => {
+    if (!teamPermission) {
+      dispatch(getTeamPermission(organization?.currentOrganization?.id, id));
+    }
+  }, [teamPermission]);
 
   const removeProjectSubmit = useCallback((projectId) => {
     removeProject(id, projectId)
@@ -82,7 +90,7 @@ function TeamProjectView(props) {
                       Preview
                     </Dropdown.Item>
 
-                    <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}`}>
+                    <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/${id}`}>
                       <FontAwesomeIcon icon="globe" className="mr-2" />
                       Build
                     </Dropdown.Item>
@@ -131,7 +139,7 @@ function TeamProjectView(props) {
                               <span>{`${u.first_name.charAt(0)}${u.last_name.charAt(0)}`}</span>
                             </div>
                             <div>
-                              <span>{`${u.first_name} ${u.last_name}`}</span>
+                              <span className="username">{`${u.first_name} ${u.last_name}`}</span>
                               <span>{u.email}</span>
                             </div>
                           </div>

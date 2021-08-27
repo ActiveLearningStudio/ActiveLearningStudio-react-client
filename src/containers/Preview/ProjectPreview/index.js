@@ -250,7 +250,7 @@ function ProjectPreview(props) {
                           <FontAwesomeIcon icon="undo" className="mr-2" />
                           Exit Preview Mode
                         </Link>
-
+                        {permission?.Project?.includes('project:share') && (
                         <div className="share-button">
                           Share Project
                           <Switch
@@ -288,6 +288,7 @@ function ProjectPreview(props) {
                             checkedIcon={false}
                           />
                         </div>
+                        )}
 
                         {activeShared && (
                           <div

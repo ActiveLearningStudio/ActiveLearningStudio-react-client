@@ -413,6 +413,8 @@ function SearchForm() {
                     placeholder="From Date"
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    min="2005-01-01"
+                    max="2050-12-31"
                     value={values.fromDate}
                     onFocus={(e) => {
                       e.target.type = 'date';
@@ -424,6 +426,8 @@ function SearchForm() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.toDate}
+                    min="2005-01-01"
+                    max="2050-12-31"
                     onFocus={(e) => {
                       e.target.type = 'date';
                     }}
@@ -456,7 +460,7 @@ function SearchForm() {
                     placeholder="Enter author name"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.no_words}
+                    value={values.author}
                   />
                 </div>
                 <div className="form-group">
