@@ -42,7 +42,6 @@ import {
 import Footer from 'components/Footer';
 import DeletePopup from 'components/DeletePopup';
 import AddResource from 'components/ResourceCard/AddResource';
-import { getTeamPermission } from 'store/actions/team';
 import EditResource from 'components/ResourceCard/EditResource';
 import PlaylistCard from './PlaylistCard';
 import PreviewResourcePage from './PreviewResourcePage';
@@ -56,8 +55,6 @@ function PlaylistsPage(props) {
   const [error, setError] = useState(null);
   const [indexStatus, setIndexStatus] = useState(null);
   const organization = useSelector((state) => state.organization);
-  const team = useSelector((state) => state.team);
-  const { teamPermission } = team;
   const { permission, activeOrganization } = organization;
   const state = useSelector((s) => s.project.selectedProject);
 
@@ -85,13 +82,7 @@ function PlaylistsPage(props) {
     ui,
     getIndexedData,
     getElasticData,
-    getTeamPermissions,
   } = props;
-  useEffect(() => {
-    if (!teamPermission && match.params.teamId && organization?.currentOrganization?.id) {
-      getTeamPermissions(organization?.currentOrganization?.id, match?.params?.teamId);
-    }
-  }, [teamPermission, organization?.currentOrganization]);
   useEffect(() => {
     loadLms();
     window.scrollTo(0, 0);
@@ -566,7 +557,6 @@ const mapDispatchToProps = (dispatch) => ({
   loadLms: () => dispatch(loadLmsAction()),
   getIndexedData: (id) => dispatch(getIndexed(id)),
   getElasticData: (id) => dispatch(getElastic(id)),
-  getTeamPermissions: (orgId, teamId) => dispatch(getTeamPermission(orgId, teamId)),
 });
 
 const mapStateToProps = (state) => ({

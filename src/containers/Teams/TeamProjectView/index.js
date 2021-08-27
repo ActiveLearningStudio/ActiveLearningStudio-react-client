@@ -77,7 +77,7 @@ function TeamProjectView(props) {
               />
 
               <div className="project-title">
-                <Link to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/${id}`}>{project.name}</Link>
+                <Link to={`/org/${organization.currentOrganization?.domain}/project/${project.id}`}>{project.name}</Link>
 
                 <Dropdown className="project-dropdown check d-flex justify-content-center align-items-center">
                   <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
@@ -85,7 +85,7 @@ function TeamProjectView(props) {
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                    <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/preview/${id}`}>
+                    <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/preview`}>
                       <FontAwesomeIcon icon="eye" className="mr-2" />
                       Preview
                     </Dropdown.Item>
