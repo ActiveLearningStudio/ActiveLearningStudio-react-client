@@ -11,6 +11,7 @@ function ActivitiesList(props) {
     playlistId,
     activities,
     playlist,
+    teamPermission,
   } = props;
 
   if (activities.length === 0) {
@@ -32,6 +33,7 @@ function ActivitiesList(props) {
       playlistId={playlistId}
       activity={activity}
       playlist={playlist}
+      teamPermission={teamPermission || {}}
     />
   ));
 }
@@ -43,6 +45,7 @@ ActivitiesList.propTypes = {
   playlistId: PropTypes.number.isRequired,
   activities: PropTypes.array,
   playlist: PropTypes.object.isRequired,
+  teamPermission: PropTypes.object.isRequired,
 };
 
 ActivitiesList.defaultProps = {

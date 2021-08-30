@@ -351,3 +351,23 @@ export const getTeamPermission = (orgId, TeamId) => async (dispatch) => {
     payload: result?.teamPermissions,
   });
 };
+
+export const getTeamProject = () => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const result = await teamService.getTeamProject(activeOrganization?.id);
+  dispatch({
+    type: actionTypes.GET_TEAM_PROJECTS,
+    payload: result.data,
+  });
+  return result.data;
+};
+
+export const changeUserRole = (teamId, data) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  await teamService.changeUserRole(activeOrganization?.id, teamId, data);
+  dispatch({
+    type: actionTypes.CHANGE_USER_ROLE,
+  });
+};

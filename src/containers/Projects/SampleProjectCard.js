@@ -23,6 +23,7 @@ const SampleProjectCard = (props) => {
   const [selectId, setSelectId] = useState(null);
   const [selectFavId, setSelectFavId] = useState(null);
   const [selectSampleId, setSelectSampleId] = useState(null);
+  const [selectTeamProjectId, setSelectedTeamProjectId] = useState(null);
   const [modalShow, setModalShow] = useState(false);
   const [currentActivity, setCurrentActivity] = useState(null);
 
@@ -36,7 +37,7 @@ const SampleProjectCard = (props) => {
     <>
       {!selectId ? (
         projects.map((project) => (
-          <div className="playlist-resource">
+          <div className="playlist-resource" key={project.id}>
             <div className="col-md-3 check">
               <div className="program-tile">
                 <div
@@ -46,6 +47,7 @@ const SampleProjectCard = (props) => {
                     setShowSampleSort(false);
                     setSelectSampleId(project.id);
                     setSelectFavId(project.id);
+                    setSelectedTeamProjectId(project.id);
                   }}
                 >
                   {project.thumb_url && (
@@ -71,6 +73,7 @@ const SampleProjectCard = (props) => {
                               setShowSampleSort(false);
                               setSelectSampleId(project.id);
                               setSelectFavId(project.id);
+                              setSelectedTeamProjectId(project.id);
                             }}
                           >
                             {project.name}
@@ -88,11 +91,14 @@ const SampleProjectCard = (props) => {
                             <Dropdown.Item
                               as={Link}
                               onClick={() => {
-                                if (type) {
+                                if (type === 'fav') {
                                   setSelectFavId(project.id);
                                   setSelectId(project.id);
-                                } else {
+                                } else if (type === 'sample') {
                                   setSelectSampleId(project.id);
+                                  setSelectId(project.id);
+                                } else if (type === 'team') {
+                                  setSelectedTeamProjectId(project.id);
                                   setSelectId(project.id);
                                 }
                               }}
@@ -112,7 +118,7 @@ const SampleProjectCard = (props) => {
                               Duplicate
                             </Dropdown.Item>
 
-                            {type && (
+                            {type === 'fav' && (
                               <Dropdown.Item
                                 to="#"
                                 onClick={() => dispatch(deleteFavObj(project.id))}
@@ -131,6 +137,14 @@ const SampleProjectCard = (props) => {
                       <div className="row">
                         <div className="col-md-12">
                           <p>
+                            {type === 'team' && (
+                              <div>
+                                Team Name:
+                                <strong>
+                                  {` ${project?.team?.name}`}
+                                </strong>
+                              </div>
+                            )}
                             {project.description && project.description.length > 130
                               ? `${project.description.substring(0, 130)} ...`
                               : project.description}
@@ -156,15 +170,23 @@ const SampleProjectCard = (props) => {
             Back
           </div>
 
-          {activeTab ? (
+          {type === 'fav' && activeTab === 'Favorite Projects' && (
             <ProjectPreviewShared
               sampleId={selectFavId}
               setModalShow={setModalShow}
               setCurrentActivity={setCurrentActivity}
             />
-          ) : (
+          )}
+          {type === 'sample' && activeTab === 'Sample Projects' && (
             <ProjectPreviewShared
               sampleId={selectSampleId}
+              setModalShow={setModalShow}
+              setCurrentActivity={setCurrentActivity}
+            />
+          )}
+          {type === 'team' && activeTab === 'Team Projects' && (
+            <ProjectPreviewShared
+              sampleId={selectTeamProjectId}
               setModalShow={setModalShow}
               setCurrentActivity={setCurrentActivity}
             />
