@@ -19,4 +19,5 @@ ActivityCardBoxProps.args = {
   title: "My first activity created",
   description:
     "Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect.",
+  listView: false,
 };

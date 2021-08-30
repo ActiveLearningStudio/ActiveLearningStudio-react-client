@@ -1,11 +1,14 @@
 @import "../../assets/css/index.scss";
 
 .curriki-utility-activity-card {
+  .published-card-detail-body {
+    width: 320px;
+  }
   .published_card {
     box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
     border-radius: 8px;
     background: #ffffff;
-    width: 264px;
+    // width: 264px;
     // height: 437px;
     .published_card_header {
       justify-content: space-between;
@@ -39,13 +42,35 @@
         }
       }
     }
-    // .published-card-detail-body {
-    //   width: 264px;
-    // }
-    // .published-card-detail-body-listview {
-    //   display: flex;
-    //   height: 169px;
-    // }
+
+    .published-card-detail-body-listview {
+      display: flex;
+      height: 154px;
+      padding: 0 10px;
+      .published-card-image {
+        img {
+          width: 192px;
+          height: 120px;
+          object-fit: cover;
+          border-radius: 5px;
+        }
+      }
+      .published-card-detail {
+        padding: 0 17px;
+        .published-card-title {
+          h4 {
+            margin-top: 0;
+          }
+        }
+      }
+    }
+    .published-card-image {
+      img {
+        width: 320px;
+        height: 200px;
+        object-fit: cover;
+      }
+    }
 
     .published-card-detail {
       padding: 0 17px;
@@ -93,19 +118,47 @@
           color: #515151;
         }
       }
+
+      .published-card-in-links-list-view {
+        display: flex;
+        justify-content: space-between;
+      }
+      .published-card-links-list-view {
+        display: flex;
+        align-items: center;
+        .published-share-icon {
+          display: none;
+        }
+        .list-view-ml-5 {
+          margin-left: 5px;
+        }
+      }
       .published-card-in-links {
         margin-top: 14px;
         padding-bottom: 17px;
-        h3 {
-          font-family: $rubik;
-          font-style: normal;
-          font-weight: 500;
-          font-size: 12px;
-          line-height: 14px;
-          color: #767676;
+        .published-card-complete-status {
+          h3 {
+            font-family: $rubik;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 12px;
+            line-height: 14px;
+            color: #515151;
+          }
         }
+
         .published-card-links {
           margin-top: 6px;
+          .published-title {
+            span {
+              font-family: $rubik;
+              font-style: normal;
+              font-weight: 500;
+              font-size: 12px;
+              line-height: 14px;
+              color: #767676;
+            }
+          }
 
           .card-links {
             color: $curriki-main-blue;

@@ -70,15 +70,15 @@
       .activity-cards-search {
         display: flex;
         align-items: center;
-        // justify-content: space-between;
+        justify-content: space-between;
         .search-textfield {
           display: flex;
           width: 313px;
           height: 35px;
           background: #ffffff;
-          border-radius: 30px;
-          border: 1px solid $curriki-main-blue;
-          padding: 9px 20px;
+          // border-radius: 30px;
+          border-bottom: 1px solid;
+          padding: 5px 10px;
           input {
             width: 100%;
             border: none;
@@ -91,12 +91,19 @@
           }
         }
         .search-filter {
-          margin-left: 120px;
+          margin-left: -120px;
+          .search-filter-link {
+            cursor: pointer;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
         }
         .create-project-portion {
-          margin-right: 74px;
+          // margin-right: 74px;
           .project-portion-icon {
             margin-right: 18px;
+            cursor: pointer;
           }
         }
       }
@@ -144,12 +151,16 @@
         // justify-content: center;
         // justify-content: space-between;
         flex-wrap: wrap;
-        .ml-102 {
+        .ml-20 {
           margin-top: 36px;
           margin-left: 20px;
           // @media screen and (max-width: 1024px) {
           //   margin-left: 20px;
           // }
+        }
+        .width-100 {
+          width: 100%;
+          margin-top: 36px;
         }
       }
     }

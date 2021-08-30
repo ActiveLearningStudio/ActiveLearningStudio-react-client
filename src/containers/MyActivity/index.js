@@ -6,7 +6,13 @@ import "./styles.scss";
 import Buttons from "utils/Buttons/buttons";
 import * as actionTypes from "store/actionTypes";
 import { useSelector, useDispatch } from "react-redux";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBoxTissue,
+  faList,
+  faListAlt,
+  faPlus,
+  faTh,
+} from "@fortawesome/free-solid-svg-icons";
 import HeadingText from "utils/HeadingText/headingtext";
 import HeadingTwo from "utils/HeadingTwo/headingtwo";
 import HeadingThree from "utils/HeadingThree/headingthree";
@@ -20,9 +26,12 @@ import { Formik, Field } from "formik";
 import CardImage from "assets/images/activitycard.png";
 import ActivityCardBox from "utils/ActivityCard/activitycard";
 import UploadInteractiveVideo from "./formik/uploadinteractivevideo";
+// import H5PEditor from "components/ResourceCard/AddResource/Editors/H5PEditorV2";
 const MyActivity = () => {
   const [cardShow, setCardShow] = useState(true);
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
+  const [listView, setListView] = useState(false);
 
   const { screenState } = useSelector((state) => state.myactivities);
   const dispatch = useDispatch();
@@ -85,6 +94,7 @@ const MyActivity = () => {
       <div className="myactivity">
         <div className="content-wrapper">
           <div className="inner-content">
+            {/* <H5PEditor /> */}
             <div className="topHeadingBtn">
               <div className="topHeading">
                 <TopHeading
@@ -124,113 +134,137 @@ const MyActivity = () => {
                     <FontAwesomeIcon icon="search" />
                   </div>
                   <div className="search-filter">
-                    <Link to="#" className="primary-color search-filter-link ">
+                    {/* <Link to="#" className="primary-color search-filter-link " >
                       Sort & Filter
-                    </Link>
+                    </Link> */}
+                    <span
+                      className="primary-color search-filter-link"
+                      onClick={() => setShowFilter(!showFilter)}
+                    >
+                      Sort & Filter
+                    </span>
                   </div>
-                  {/* <div className="create-project-portion">
-                    <Link to="#" className="primary-color">
+                  <div className="create-project-portion">
+                    {/* <Link to="#" className="primary-color">
                       <FontAwesomeIcon
                         icon="plus-square"
                         className="project-portion-icon"
                       />
                       Create project
-                    </Link>
-                  </div> */}
+                    </Link> */}
+                    <FontAwesomeIcon
+                      icon={faList}
+                      className="project-portion-icon primary-color"
+                      onClick={() => setListView(true)}
+                    />
+                    <FontAwesomeIcon
+                      icon={faTh}
+                      className="project-portion-icon primary-color"
+                      onClick={() => setListView(false)}
+                    />
+                  </div>
                 </div>
-                <div className="search-filter-form">
-                  <Formik
-                    initialValues={{
-                      method: "",
-                      layoutTitle: "",
-                      picked: "create",
-                    }}
-                  >
-                    <form>
-                      <div className="sort-filter-form">
-                        <div className="sortby">
-                          <label>Sort by</label>
-                          <select>
-                            <option>A to Z</option>
-                            <option>A to Z</option>
-                            <option>A to Z</option>
-                          </select>
+                {showFilter && (
+                  <div className="search-filter-form">
+                    <Formik
+                      initialValues={{
+                        method: "",
+                        layoutTitle: "",
+                        picked: "create",
+                      }}
+                    >
+                      <form>
+                        <div className="sort-filter-form">
+                          <div className="sortby">
+                            <label>Sort by</label>
+                            <select>
+                              <option>A to Z</option>
+                              <option>A to Z</option>
+                              <option>A to Z</option>
+                            </select>
+                          </div>
+                          <div className="sortby">
+                            <label>Subject</label>
+                            <select>
+                              <option>Analisis</option>
+                              <option>Analisis</option>
+                              <option>Analisis</option>
+                            </select>
+                          </div>
+                          <div className="sortby">
+                            <label>Best for</label>
+                            <select>
+                              <option>Analisis</option>
+                              <option>Analisis</option>
+                              <option>Analisis</option>
+                            </select>
+                          </div>
                         </div>
-                        <div className="sortby">
-                          <label>Subject</label>
-                          <select>
-                            <option>Analisis</option>
-                            <option>Analisis</option>
-                            <option>Analisis</option>
-                          </select>
+                        <div className="filter-form-radio">
+                          <label className="check-input">
+                            <Field type="radio" name="sort" value="sort" />
+                            Image based
+                          </label>
+                          <label className="check-input ml-35">
+                            <Field type="radio" name="sort" value="sort" />
+                            Accesible
+                          </label>
+                          <label className="check-input ml-35">
+                            <Field type="radio" name="sort" value="sort" />
+                            Multimedia
+                          </label>
                         </div>
-                        <div className="sortby">
-                          <label>Best for</label>
-                          <select>
-                            <option>Analisis</option>
-                            <option>Analisis</option>
-                            <option>Analisis</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div className="filter-form-radio">
-                        <label className="check-input">
-                          <Field type="radio" name="sort" value="sort" />
-                          Image based
-                        </label>
-                        <label className="check-input ml-35">
-                          <Field type="radio" name="sort" value="sort" />
-                          Accesible
-                        </label>
-                        <label className="check-input ml-35">
-                          <Field type="radio" name="sort" value="sort" />
-                          Multimedia
-                        </label>
-                      </div>
-                    </form>
-                  </Formik>
-                </div>
+                      </form>
+                    </Formik>
+                  </div>
+                )}
                 <div className="activity-cards-box">
-                  <div className="ml-102">
+                  <div className={listView ? "width-100" : "ml-20"}>
                     <ActivityCardBox
                       img={CardImage}
                       title="My first activity"
                       description="Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect"
+                      listView={listView}
                     />
                   </div>
-                  <div className="ml-102">
+                  <div className={listView ? "width-100" : "ml-20"}>
                     <ActivityCardBox
                       img={CardImage}
                       title="My first activity"
                       description="Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect"
+                      listView={listView}
                     />
                   </div>
-                  <div className="ml-102">
+                  <div className={listView ? "width-100" : "ml-20"}>
                     <ActivityCardBox
                       img={CardImage}
                       title="My first activity"
                       description="Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect"
+                      listView={listView}
                     />
                   </div>
-                  <div className="ml-102">
+                  <div className={listView ? "width-100" : "ml-20"}>
                     <ActivityCardBox
                       img={CardImage}
                       title="My first activity"
                       description="Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect"
+                      listView={listView}
                     />
                   </div>
-                  <div className="ml-102">
+                  <div className={listView ? "width-100" : "ml-20"}>
                     <ActivityCardBox
                       img={CardImage}
                       title="My first activity"
                       description="Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect"
+                      listView={listView}
                     />
                   </div>
-                  <div className="ml-102">
+                  <div className={listView ? "width-100" : "ml-20"}>
                     <ActivityCardBox
                       img={CardImage}
                       title="My first activity"
                       description="Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect"
+                      listView={listView}
                     />
                   </div>
                 </div>

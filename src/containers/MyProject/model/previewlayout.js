@@ -8,7 +8,12 @@ import { faVideo } from "@fortawesome/free-solid-svg-icons";
 import HeadingThree from "utils/HeadingThree/headingthree";
 import Buttons from "utils/Buttons/buttons";
 import H5PEditor from "components/ResourceCard/AddResource/Editors/H5PEditorV2";
+
+import { FadeDiv } from "utils";
+import { useSelector, useDispatch } from "react-redux";
+
 const PreviewLayoutModel = (props) => {
+  const resource = useSelector((state) => state.resource);
   return (
     <Modal
       {...props}
@@ -17,12 +22,12 @@ const PreviewLayoutModel = (props) => {
       centered
       className="preview-layout-model"
     >
-      <Modal.Header closeButton>
+      <Modal.Header closeButton style={{ display: "block !important" }}>
         <Modal.Title id="contained-modal-title-vcenter"></Modal.Title>
       </Modal.Header>
 
-      <Modal.Body>
-        <div className="interactive-proceed-box">
+      <Modal.Body style={{ display: "block !important" }}>
+        {/* <div className="interactive-proceed-box">
           <div className="interactive-video-tag">
             <FontAwesomeIcon icon={faVideo} className="video-icon" />
             <HeadingThree text="Interactive Video" />
@@ -37,7 +42,10 @@ const PreviewLayoutModel = (props) => {
               }}
             />
           </div>
-        </div>
+        </div> */}
+        {/* <FadeDiv>
+          <H5PEditor h5pLib={resource.editResource.editor} />
+        </FadeDiv> */}
         <div className="interactive-video-H5P">
           <H5PEditor />
         </div>
