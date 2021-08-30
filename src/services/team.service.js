@@ -101,6 +101,13 @@ const getTeamProject = (orgId) => httpService
     errorCatcher(err.response.data);
     return Promise.reject(err.response.data);
   });
+const changeUserRole = (orgId, teamId, body) => httpService
+  .put(`/${apiVersion}/suborganization/${orgId}/team/${teamId}/update-team-member-role`, body)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject(err.response.data);
+  });
 
 export default {
   getAll,
@@ -121,4 +128,5 @@ export default {
   teamPermisison,
   checkUserBeforeAdd,
   getTeamProject,
+  changeUserRole,
 };

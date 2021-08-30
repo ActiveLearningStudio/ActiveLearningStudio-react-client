@@ -362,3 +362,12 @@ export const getTeamProject = () => async (dispatch) => {
   });
   return result.data;
 };
+
+export const changeUserRole = (teamId, data) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  await teamService.changeUserRole(activeOrganization?.id, teamId, data);
+  dispatch({
+    type: actionTypes.CHANGE_USER_ROLE,
+  });
+};
