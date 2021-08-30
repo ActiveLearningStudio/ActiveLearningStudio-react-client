@@ -119,48 +119,52 @@ function TeamProjectView(props) {
                 </Dropdown>
               </div>
 
-              <div className="team-member-content mid-border">
-                <div className="sub-title">
-                  <span>Team Members</span>
-                  <span>{`(${project.users.length})`}</span>
-                </div>
+              {false && (
+                <>
+                  <div className="team-member-content mid-border">
+                    <div className="sub-title">
+                      <span>Team Members</span>
+                      <span>{`(${project.users.length})`}</span>
+                    </div>
 
-                <div className="member-mark-container">
-                  {project.users.map((u, index) => (
-                    <Dropdown key={u.id} className="member-dropdown">
-                      <Dropdown.Toggle className="member-dropdown-btn">
-                        <div className={`member-name-mark${index > 0 ? ' over' : ''}`}>
-                          <span>{`${u.first_name.charAt(0)}${u.last_name.charAt(0)}`}</span>
-                        </div>
-                      </Dropdown.Toggle>
-
-                      {authUser && authUser.id !== u.id && (
-                        <Dropdown.Menu>
-                          <div className="drop-title">
-                            <div className="member-name-mark">
+                    <div className="member-mark-container">
+                      {false && project.users.map((u, index) => (
+                        <Dropdown key={u.id} className="member-dropdown">
+                          <Dropdown.Toggle className="member-dropdown-btn">
+                            <div className={`member-name-mark${index > 0 ? ' over' : ''}`}>
                               <span>{`${u.first_name.charAt(0)}${u.last_name.charAt(0)}`}</span>
                             </div>
-                            <div>
-                              <span className="username">{`${u.first_name} ${u.last_name}`}</span>
-                              <span>{u.email}</span>
-                            </div>
-                          </div>
+                          </Dropdown.Toggle>
 
-                          <div className="dropdown-divider" />
-                          {(permission?.Team?.includes('team:remove-project-user') || teamPermission?.Team?.includes('team:remove-project-user'))
-                          && (
-                          <Dropdown.Item onClick={() => removeMemberSubmit(project.id, u.id)}>
-                            <FontAwesomeIcon icon="times" className="mr-2" />
-                            Remove from project
-                          </Dropdown.Item>
+                          {authUser && authUser.id !== u.id && (
+                            <Dropdown.Menu>
+                              <div className="drop-title">
+                                <div className="member-name-mark">
+                                  <span>{`${u.first_name.charAt(0)}${u.last_name.charAt(0)}`}</span>
+                                </div>
+                                <div>
+                                  <span className="username">{`${u.first_name} ${u.last_name}`}</span>
+                                  <span>{u.email}</span>
+                                </div>
+                              </div>
+
+                              <div className="dropdown-divider" />
+                              {(permission?.Team?.includes('team:remove-project-user') || teamPermission?.Team?.includes('team:remove-project-user'))
+                              && (
+                              <Dropdown.Item onClick={() => removeMemberSubmit(project.id, u.id)}>
+                                <FontAwesomeIcon icon="times" className="mr-2" />
+                                Remove from project
+                              </Dropdown.Item>
+                              )}
+
+                            </Dropdown.Menu>
                           )}
-
-                        </Dropdown.Menu>
-                      )}
-                    </Dropdown>
-                  ))}
-                </div>
-              </div>
+                        </Dropdown>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           ))}
         </div>
