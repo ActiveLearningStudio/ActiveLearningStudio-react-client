@@ -48,6 +48,7 @@ const LtiPreviewPage = loadable(() => import('../containers/LtiPreviewPage'));
 const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared'));
 const SecureProjectPreview = loadable(() => import('../containers/SecureProjectPreview'));
 const SearchResult = loadable(() => import('../containers/Search'));
+const Searchnetlify = loadable(() => import('../containers/Search/SearchNetlify'));
 // const LtiModel = loadable(() => import('../containers/LtiModel'));
 const TeamsPage = loadable(() => import('../containers/Teams'));
 const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
@@ -104,7 +105,12 @@ const AppRouter = (props) => {
         />
         <OpenRoute
           exact
-          path="/studio/lti-tools/activity/:activityId"
+          path="/opensearch"
+          component={Searchnetlify}
+        />
+        <OpenRoute
+          exact
+          path="/lti-tools/activity/:activityId"
           component={LtiActivity}
         />
         <OpenRoute
@@ -266,7 +272,6 @@ const AppRouter = (props) => {
                        path="/studio/org/:organization/search"
                        component={SearchResult}
                      />
-
                      <PrivateRoute
                        exact
                        path="/studio/org/:organization/manage"
