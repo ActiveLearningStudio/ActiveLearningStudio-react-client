@@ -56,59 +56,63 @@ function ActivityCreate(props) {
               </Link>
             </div>
             {/* Tabs */}
-            {!organization?.Activity?.includes('activity:create') && !organization?.Activity?.includes('activity:upload') && (
-              <Alert variant="danger" alt="">You are not authorized to create or upload an activity.</Alert>
+            {!organization?.Activity?.includes('activity:create')
+              && !organization?.Activity?.includes('activity:upload')
+              && !teamPermission?.Team?.includes('team:add-activity') ? (
+                <Alert variant="danger" alt="">You are not authorized to create or upload an activity.</Alert>
+            ) : (
+              <Tab.Container
+                id="left-tabs-example"
+                defaultActiveKey={(organization?.Activity?.includes('activity:create') || teamPermission?.Team?.includes('team:add-activity')) ? 'create' : 'upload'}
+              >
+                <Row>
+                  <Col sm={3}>
+                    <Nav variant="pills" className="flex-column">
+                      {/* <Nav.Item>
+                        <Nav.Link eventKey="search">
+                          <FontAwesomeIcon icon="search" />
+                          Search for an Existing Activity
+                        </Nav.Link>
+                      </Nav.Item> */}
+                      {(organization?.Activity?.includes('activity:create') || teamPermission?.Team?.includes('team:add-activity')) && (
+                        <Nav.Item>
+                          <Nav.Link eventKey="create">
+                            <FontAwesomeIcon icon="plus" />
+                            Create A New Activity
+                          </Nav.Link>
+                        </Nav.Item>
+                      )}
+                      {organization?.Activity?.includes('activity:upload') && (
+                        <Nav.Item>
+                          <Nav.Link eventKey="upload">
+                            <FontAwesomeIcon icon="upload" />
+                            Upload a Saved Activity
+                          </Nav.Link>
+                        </Nav.Item>
+                      )}
+                    </Nav>
+                  </Col>
+                  <Col sm={9}>
+                    <Tab.Content>
+                      {/* <Tab.Pane eventKey="search">
+                        <SearchIndex />
+                      </Tab.Pane> */}
+                      {organization?.Activity?.includes('activity:upload') && (
+                        <Tab.Pane eventKey="upload">
+                          <UploadActivity />
+                        </Tab.Pane>
+                      )}
+                      {(organization?.Activity?.includes('activity:create') || teamPermission?.Team?.includes('team:add-activity')) && (
+                        <Tab.Pane eventKey="create">
+                          <ActivityWizard />
+                        </Tab.Pane>
+                      )}
+                    </Tab.Content>
+                  </Col>
+                </Row>
+              </Tab.Container>
             )}
-            <Tab.Container
-              id="left-tabs-example"
-              defaultActiveKey={(organization?.Activity?.includes('activity:create') || teamPermission?.Team?.includes('team:add-activity')) ? 'create' : 'upload'}
-            >
-              <Row>
-                <Col sm={3}>
-                  <Nav variant="pills" className="flex-column">
-                    {/* <Nav.Item>
-                      <Nav.Link eventKey="search">
-                        <FontAwesomeIcon icon="search" />
-                        Search for an Existing Activity
-                      </Nav.Link>
-                    </Nav.Item> */}
-                    {(organization?.Activity?.includes('activity:create') || teamPermission?.Team?.includes('team:add-activity')) && (
-                      <Nav.Item>
-                        <Nav.Link eventKey="create">
-                          <FontAwesomeIcon icon="plus" />
-                          Create A New Activity
-                        </Nav.Link>
-                      </Nav.Item>
-                    )}
-                    {organization?.Activity?.includes('activity:upload') && (
-                      <Nav.Item>
-                        <Nav.Link eventKey="upload">
-                          <FontAwesomeIcon icon="upload" />
-                          Upload a Saved Activity
-                        </Nav.Link>
-                      </Nav.Item>
-                    )}
-                  </Nav>
-                </Col>
-                <Col sm={9}>
-                  <Tab.Content>
-                    {/* <Tab.Pane eventKey="search">
-                      <SearchIndex />
-                    </Tab.Pane> */}
-                    {organization?.Activity?.includes('activity:upload') && (
-                      <Tab.Pane eventKey="upload">
-                        <UploadActivity />
-                      </Tab.Pane>
-                    )}
-                    {(organization?.Activity?.includes('activity:create') || teamPermission?.Team?.includes('team:add-activity')) && (
-                      <Tab.Pane eventKey="create">
-                        <ActivityWizard />
-                      </Tab.Pane>
-                    )}
-                  </Tab.Content>
-                </Col>
-              </Row>
-            </Tab.Container>
+
           </div>
         </div>
       </div>

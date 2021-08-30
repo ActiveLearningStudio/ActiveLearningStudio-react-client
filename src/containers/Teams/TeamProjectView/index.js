@@ -104,7 +104,7 @@ function TeamProjectView(props) {
                         Edit
                       </Dropdown.Item>
                     )}
-                    {permission?.Team?.includes('team:add-project-user')
+                    {(permission?.Team?.includes('team:add-project-user') || teamPermission?.Team?.includes('team:add-project-user'))
                      && (
                      <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/teams/${id}/projects/${project.id}/add-member`}>
                        <FontAwesomeIcon icon="crosshairs" className="mr-2" />

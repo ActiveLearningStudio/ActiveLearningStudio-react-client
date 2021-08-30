@@ -149,7 +149,7 @@ function TeamsPage(props) {
               )}
               {(permission?.Team?.includes('team:invite-member')
               || teamPermission?.Team?.includes('team:add-team-user')
-              || teamPermission?.Team?.includes('team:remove-project-user')) && projectShow && (
+              || teamPermission?.Team?.includes('team:remove-team-user')) && projectShow && (
                 <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}`}>
                   <div className="btn-top-page">
                     Add/Remove Members
