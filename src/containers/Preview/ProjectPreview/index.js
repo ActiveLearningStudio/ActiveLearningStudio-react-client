@@ -241,10 +241,11 @@ function ProjectPreview(props) {
               <div className="sce_cont">
                 <ul className="bar_list flex-div check">
                   <li>
+                    <div className="team-name">
+                      {currentProject?.team?.name ? `Team Name: ${currentProject?.team?.name}` : null}
+                    </div>
                     <div className="title_lg check">
-                      {teamPermission ? 'Team Project: ' : null}
                       <div>{currentProject.name}</div>
-
                       <div className="configuration">
                         {!(permission?.Project?.includes('project:view') && permission?.Project.length === 1) && (
                           <DropdownProject

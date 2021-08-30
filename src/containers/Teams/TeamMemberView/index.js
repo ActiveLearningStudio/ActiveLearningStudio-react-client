@@ -42,7 +42,7 @@ function TeamMemberView(props) {
   const [selectedMember, setSelectedMember] = useState(null);
   // Fetch team permission if page reloads
   useEffect(() => {
-    if (!teamPermission) {
+    if (!teamPermission && organization?.currentOrganization?.id && id) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, id));
     }
   }, [team]);

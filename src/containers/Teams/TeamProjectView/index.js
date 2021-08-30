@@ -25,7 +25,7 @@ function TeamProjectView(props) {
   const authUser = users.find((u) => u.id === (user || {}).id);
   // Fetch team permission if page reloads
   useEffect(() => {
-    if (!teamPermission) {
+    if (!teamPermission && organization?.currentOrganization?.id && id) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, id));
     }
   }, [teamPermission]);

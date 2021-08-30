@@ -360,11 +360,12 @@ function PlaylistsPage(props) {
               <Alert style={{ marginTop: '15px' }} variant="primary">Loading ...</Alert>
             ) : (
               <>
+                <div style={{ marginLeft: '15px' }}>
+                  {selectedProject?.team?.name ? `Team Name: ${selectedProject?.team?.name}` : null}
+                </div>
                 <div className="col playlist-page-project-title project-each-view">
                   <div className="flex-se">
                     <h1>
-                      {teamPermission ? 'Team Project:' : null}
-                      {' '}
                       {selectedProject ? selectedProject.name : ''}
                     </h1>
                     {permission?.Project?.includes('project:request-indexing') && (

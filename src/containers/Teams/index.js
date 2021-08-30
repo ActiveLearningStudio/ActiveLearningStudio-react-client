@@ -92,7 +92,7 @@ function TeamsPage(props) {
     setBreadCrumb(crumb.split('/'));
   }, [selectedTeam, status, teamShow, teams]);
   useEffect(() => {
-    if (!teamPermission) {
+    if (!teamPermission && organization?.currentOrganization?.id && selectedTeam?.id) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, selectedTeam?.id));
     }
   }, [teamPermission, selectedTeam]);

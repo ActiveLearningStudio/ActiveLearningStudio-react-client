@@ -58,7 +58,7 @@ function PlaylistPreview(props) {
     loadProjectPlaylists(projectId);
   }, [projectId, loadProjectPlaylists]);
   useEffect(() => {
-    if (!teamPermission) {
+    if (!teamPermission && organization?.currentOrganization?.id && selectedPlaylist?.project?.team?.id) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, selectedPlaylist?.project?.team?.id));
     }
   }, [teamPermission, selectedPlaylist, dispatch, organization?.currentOrganization?.id]);
