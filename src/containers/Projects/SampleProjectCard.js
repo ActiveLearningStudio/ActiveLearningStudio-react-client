@@ -139,11 +139,6 @@ const SampleProjectCard = (props) => {
                           <p>
                             {type === 'team' && (
                               <div>
-                                Team Id:
-                                <strong>
-                                  {` ${project?.team?.id}`}
-                                </strong>
-                                {' '}
                                 Team Name:
                                 <strong>
                                   {` ${project?.team?.name}`}

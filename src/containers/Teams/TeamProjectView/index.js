@@ -85,20 +85,25 @@ function TeamProjectView(props) {
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                    <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/preview`}>
-                      <FontAwesomeIcon icon="eye" className="mr-2" />
-                      Preview
-                    </Dropdown.Item>
+                    {permission?.Project?.includes('project:view') && (
+                      <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/preview`}>
+                        <FontAwesomeIcon icon="eye" className="mr-2" />
+                        Preview
+                      </Dropdown.Item>
+                    )}
+                    {permission?.Project?.includes('project:view') && (
+                      <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}`}>
+                        <FontAwesomeIcon icon="globe" className="mr-2" />
+                        Build
+                      </Dropdown.Item>
+                    )}
 
-                    <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/${id}`}>
-                      <FontAwesomeIcon icon="globe" className="mr-2" />
-                      Build
-                    </Dropdown.Item>
-
-                    <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/edit`}>
-                      <FontAwesomeIcon icon="pen" className="mr-2" />
-                      Edit
-                    </Dropdown.Item>
+                    {permission?.Project?.includes('project:edit') && (
+                      <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/edit`}>
+                        <FontAwesomeIcon icon="pen" className="mr-2" />
+                        Edit
+                      </Dropdown.Item>
+                    )}
                     {permission?.Team?.includes('team:add-project-user')
                      && (
                      <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/teams/${id}/projects/${project.id}/add-member`}>
