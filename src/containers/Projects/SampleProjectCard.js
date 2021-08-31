@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { deleteFavObj } from 'store/actions/project';
+import { deleteFavObj, toggleProjectShareAction } from 'store/actions/project';
 import { cloneProject } from 'store/actions/search';
 import ProjectPreviewShared from 'containers/Preview/ProjectPreview/ProjectPreviewShared';
 import MyVerticallyCenteredModal from 'components/models/activitySample';
+import SharePreviewPopup from 'components/SharePreviewPopup';
 
 const SampleProjectCard = (props) => {
   const {
@@ -26,6 +27,8 @@ const SampleProjectCard = (props) => {
   const [selectTeamProjectId, setSelectedTeamProjectId] = useState(null);
   const [modalShow, setModalShow] = useState(false);
   const [currentActivity, setCurrentActivity] = useState(null);
+  const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
 
   useEffect(() => {
     if (selectId) {
@@ -106,7 +109,26 @@ const SampleProjectCard = (props) => {
                               <FontAwesomeIcon icon="eye" className="mr-2" />
                               Preview
                             </Dropdown.Item>
-
+                            {permission?.Project?.includes('project:share') && type === 'team' && (
+                              <Dropdown.Item
+                                to="#"
+                                onClick={async () => {
+                                  const protocol = `${window.location.href.split('/')[0]}//`;
+                                  const url = `${protocol + window.location.host}/project/${project.id}/shared`;
+                                  if (!project.shared) {
+                                    Swal.showLoading();
+                                    await dispatch(toggleProjectShareAction(project.id, project.name));
+                                    Swal.close();
+                                    SharePreviewPopup(url, project.name);
+                                  } else {
+                                    SharePreviewPopup(url, project.name);
+                                  }
+                                }}
+                              >
+                                <FontAwesomeIcon icon="share" className="mr-2" />
+                                Share
+                              </Dropdown.Item>
+                            )}
                             <Dropdown.Item
                               to="#"
                               onClick={() => {

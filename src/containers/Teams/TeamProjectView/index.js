@@ -10,6 +10,8 @@ import Swal from 'sweetalert2';
 import { getTeamPermission, removeMemberFromProjectAction, removeProjectAction } from 'store/actions/team';
 
 import './style.scss';
+import SharePreviewPopup from 'components/SharePreviewPopup';
+import { toggleProjectShareAction } from 'store/actions/project';
 
 function TeamProjectView(props) {
   const {
@@ -97,7 +99,26 @@ function TeamProjectView(props) {
                         Build
                       </Dropdown.Item>
                     )}
-
+                    {(permission?.Project?.includes('project:share') || teamPermission?.Team?.includes('team:share-project')) && (
+                      <Dropdown.Item
+                        to="#"
+                        onClick={async () => {
+                          const protocol = `${window.location.href.split('/')[0]}//`;
+                          const url = `${protocol + window.location.host}/project/${project.id}/shared`;
+                          if (!project.shared) {
+                            Swal.showLoading();
+                            await dispatch(toggleProjectShareAction(project.id, project.name));
+                            Swal.close();
+                            SharePreviewPopup(url, project.name);
+                          } else {
+                            SharePreviewPopup(url, project.name);
+                          }
+                        }}
+                      >
+                        <FontAwesomeIcon icon="share" className="mr-2" />
+                        Share
+                      </Dropdown.Item>
+                    )}
                     {permission?.Project?.includes('project:edit') && (
                       <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/edit`}>
                         <FontAwesomeIcon icon="pen" className="mr-2" />
