@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { deleteFavObj } from 'store/actions/project';
+import { deleteFavObj, toggleProjectShareAction, getProjectCourseFromLMS } from 'store/actions/project';
 import { cloneProject } from 'store/actions/search';
 import ProjectPreviewShared from 'containers/Preview/ProjectPreview/ProjectPreviewShared';
 import MyVerticallyCenteredModal from 'components/models/activitySample';
+import SharePreviewPopup from 'components/SharePreviewPopup';
+import { lmsPlaylist } from 'store/actions/playlist';
+import { getProjectId, googleShare } from 'store/actions/gapi';
+import GoogleModel from 'components/models/GoogleLoginModal';
 
 const SampleProjectCard = (props) => {
   const {
@@ -26,7 +30,18 @@ const SampleProjectCard = (props) => {
   const [selectTeamProjectId, setSelectedTeamProjectId] = useState(null);
   const [modalShow, setModalShow] = useState(false);
   const [currentActivity, setCurrentActivity] = useState(null);
-
+  const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
+  const [selectedProjectId, setSelectedProjectId] = useState(0);
+  const [show, setShow] = useState(false);
+  const AllLms = useSelector((state) => state.share);
+  const [allLms, setAllLms] = useState([]);
+  const handleShow = () => {
+    setShow(!show); //! state.show
+  };
+  useEffect(() => {
+    setAllLms(AllLms);
+  }, [AllLms, AllLms.shareVendors]);
   useEffect(() => {
     if (selectId) {
       setShowSampleSort(false);
@@ -106,7 +121,70 @@ const SampleProjectCard = (props) => {
                               <FontAwesomeIcon icon="eye" className="mr-2" />
                               Preview
                             </Dropdown.Item>
+                            {permission?.Project?.includes('project:share') && type === 'team' && (
+                              <Dropdown.Item
+                                to="#"
+                                onClick={async () => {
+                                  const protocol = `${window.location.href.split('/')[0]}//`;
+                                  const url = `${protocol + window.location.host}/project/${project.id}/shared`;
+                                  if (!project.shared) {
+                                    Swal.showLoading();
+                                    await dispatch(toggleProjectShareAction(project.id, project.name));
+                                    Swal.close();
+                                    SharePreviewPopup(url, project.name);
+                                  } else {
+                                    SharePreviewPopup(url, project.name);
+                                  }
+                                }}
+                              >
+                                <FontAwesomeIcon icon="share" className="mr-2" />
+                                Share
+                              </Dropdown.Item>
+                            )}
+                            {permission?.Project?.includes('project:publish') && type === 'team' && (
+                              <li className="dropdown-submenu send">
+                                <a tabIndex="-1">
+                                  <FontAwesomeIcon icon="newspaper" className="mr-2" />
+                                  Publish
+                                </a>
+                                <ul className="dropdown-menu check">
+                                  <li
+                                    onClick={() => {
+                                      handleShow();
+                                      getProjectId(project.id);
+                                      setSelectedProjectId(project.id);
+                                      dispatch(googleShare(false));
+                                    }}
+                                  >
+                                    <a>Google Classroom</a>
+                                  </li>
 
+                                  {allLms?.shareVendors && allLms.shareVendors.map((data) => (
+                                    data.lms_name !== 'safarimontage' && (
+                                    <li>
+                                      <a
+                                        onClick={async () => {
+                                          const allPlaylist = await dispatch(lmsPlaylist(project.id));
+                                          if (allPlaylist) {
+                                            dispatch(
+                                              getProjectCourseFromLMS(
+                                                data.lms_name.toLowerCase(),
+                                                data.id,
+                                                project.id,
+                                                allPlaylist.playlists,
+                                                data.lms_url,
+                                              ),
+                                            );
+                                          }
+                                        }}
+                                      >
+                                        {data.site_name}
+                                      </a>
+                                    </li>
+                                  )))}
+                                </ul>
+                              </li>
+                            )}
                             <Dropdown.Item
                               to="#"
                               onClick={() => {
@@ -193,7 +271,11 @@ const SampleProjectCard = (props) => {
           )}
         </div>
       )}
-
+      <GoogleModel
+        projectId={selectedProjectId}
+        show={show} // {props.show}
+        onHide={handleShow}
+      />
       <MyVerticallyCenteredModal
         show={modalShow}
         onHide={() => setModalShow(false)}
