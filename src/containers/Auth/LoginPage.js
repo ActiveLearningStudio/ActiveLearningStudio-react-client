@@ -144,7 +144,6 @@ class LoginPage extends React.Component {
               <div className="form-group text-center mb-0">
                 <GoogleLogin
                   clientId={global.config.gapiClientId}
-                  uxMode="redirect"
                   theme="dark"
                   render={(renderProps) => (
                     <button type="button" className="google-button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
