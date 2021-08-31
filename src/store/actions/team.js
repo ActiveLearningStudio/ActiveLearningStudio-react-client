@@ -1,4 +1,5 @@
 import teamService from 'services/team.service';
+import Swal from 'sweetalert2';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
 
@@ -366,7 +367,12 @@ export const getTeamProject = () => async (dispatch) => {
 export const changeUserRole = (teamId, data) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
-  await teamService.changeUserRole(activeOrganization?.id, teamId, data);
+  const result = await teamService.changeUserRole(activeOrganization?.id, teamId, data);
+  console.log(result);
+  Swal.fire({
+    icon: 'success',
+    message: result,
+  });
   dispatch({
     type: actionTypes.CHANGE_USER_ROLE,
   });
