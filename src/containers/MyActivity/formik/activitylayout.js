@@ -56,22 +56,22 @@ const ActivityLayout = (props) => {
             onClick={() => setLayout("ColumnLayout")}
           />
           <LayoutCard
+            image={PresentationImage}
+            text="Course Presentation "
+            className={
+              layout == "Presentation" ? "activity-layoutCard-active " : null
+            }
+            onClick={() => setLayout("Presentation")}
+          />
+          <LayoutCard
             image={InteractivebookImage}
             text="Interactive book"
             className={
-              layout == "Interactivebook" ? "activity-layoutCard-active " : null
-            }
-            onClick={() => setLayout("Interactivebook")}
-          />
-          <LayoutCard
-            image={PresentationImage}
-            text="Course Presentation"
-            className={
-              layout == "Presentation"
+              layout == "Interactivebook"
                 ? "activity-layoutCard-active ml-30"
                 : "ml-30"
             }
-            onClick={() => setLayout("Presentation")}
+            onClick={() => setLayout("Interactivebook")}
           />
           <LayoutCard
             image={QuizImage}

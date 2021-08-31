@@ -52,14 +52,15 @@ const UploadInteractiveVideo = (props) => {
           </div>
         </div>
         <div className="interactive-activity-selection">
-          <button onClick={() => changeScreenHandler("addactivity")}>
+          <HeadingThree text="Upload from existing activity" color="#084892" />
+          {/* <button onClick={() => changeScreenHandler("addactivity")}>
             Create New
             <FontAwesomeIcon icon="plus" className="btn-icon" />
           </button>
           <button className="upload-btn">
             Upload
             <FontAwesomeIcon icon="plus" className="btn-icon" />
-          </button>
+          </button> */}
         </div>
         <div className="interactive-load-save-activity">
           <UploadFile />

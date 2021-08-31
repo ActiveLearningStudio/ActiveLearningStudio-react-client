@@ -12,11 +12,12 @@ import {
   faHdd,
   faParachuteBox,
 } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from "react-redux";
 
 const UploadImage = ({ className, setUploadImageStatus }) => {
   const [modalShow, setModalShow] = useState(false);
   const currikiUtility = classNames("curriki-utility-uploadimage", className);
-  const [project, setProject] = useState();
+  const project = useSelector((state) => state.project);
   return (
     <>
       <PexelsAPI
@@ -25,12 +26,22 @@ const UploadImage = ({ className, setUploadImageStatus }) => {
           setModalShow(false);
           setUploadImageStatus(false);
         }}
+        project={project}
         searchName="abstract"
       />
       <div className={currikiUtility}>
         <p>Upload an image</p>
-        <div className="uploadimage-box">
-          <img src={DefaultImage} alt="" />
+        <div
+          className="uploadimage-box"
+          style={{
+            backgroundImage: project.thumbUrl
+              ? project.thumbUrl.includes("pexels.com")
+                ? `url(${project.thumbUrl})`
+                : `url(${global.config.resourceUrl}${project.thumbUrl})`
+              : `url(${DefaultImage})`,
+          }}
+        >
+          {/* <img src={DefaultImage} alt="" /> */}
         </div>
         <div className="uploadimage-option">
           <FontAwesomeIcon icon={faLaptop} className="upload-option mr-20" />

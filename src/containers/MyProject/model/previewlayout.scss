@@ -16,7 +16,7 @@
     right: 0;
     bottom: 0;
     z-index: 101;
-}
+  }
 }
 
 .interactive-proceed-box {
@@ -31,7 +31,34 @@
   }
 }
 .interactive-video-H5P {
-  margin-top: 40px;
+  margin-top: 10px;
   width: 100%;
   padding: 0px 57px;
+}
+.interactive-btns {
+  padding: 0px 57px;
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .cancel {
+    span {
+      font-family: "Open Sans", sans-serif;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 16px;
+      text-decoration: underline;
+      color: #084892;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+  }
+  .save-close {
+    display: flex;
+    .save-btn {
+      margin-right: 10px;
+      margin-left: 10px;
+    }
+  }
 }

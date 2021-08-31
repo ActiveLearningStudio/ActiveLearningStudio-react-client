@@ -43,11 +43,31 @@ const PreviewLayoutModel = (props) => {
             />
           </div>
         </div> */}
-        {/* <FadeDiv>
-          <H5PEditor h5pLib={resource.editResource.editor} />
-        </FadeDiv> */}
         <div className="interactive-video-H5P">
           <H5PEditor />
+        </div>
+        <div className="interactive-btns">
+          <div className="cancel">
+            <span
+              onClick={() => {
+                props.onHide();
+              }}
+            >
+              Cancel
+            </span>
+          </div>
+          <div className="save-close">
+            <Buttons
+              text="Save & Close"
+              width="151px"
+              secondary={true}
+              onClick={() => {
+                props.onHide();
+                props.setSuccessMessage(true);
+              }}
+            />
+            <Buttons text="Save" width="97px" className="save-btn" />
+          </div>
         </div>
       </Modal.Body>
     </Modal>

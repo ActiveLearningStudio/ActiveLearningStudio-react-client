@@ -8,6 +8,7 @@ import PexelsAPI from "../../components/models/pexels";
 import DefaultImage from "assets/images/activitycard.png";
 import PixelUpload from "assets/images/svg/pixelupload.svg";
 import uploadimageoption from "assets/images/uploadimageoption.png";
+import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import {
   faLaptop,
@@ -17,14 +18,17 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const UploadImageV2 = ({ className, setUploadImageStatus }) => {
+  const project = useSelector((state) => state.project);
+
   const [modalShow, setModalShow] = useState(false);
   const currikiUtility = classNames("curriki-utility-uploadimageV2", className);
-  const [project, setProject] = useState();
+
   const openFile = useRef();
   return (
     <>
       <PexelsAPI
         show={modalShow}
+        project={project}
         onHide={() => {
           setModalShow(false);
           setUploadImageStatus(false);
@@ -33,8 +37,17 @@ const UploadImageV2 = ({ className, setUploadImageStatus }) => {
       />
       <div className={currikiUtility}>
         <h3>Upload an image</h3>
-        <div className="uploadimage-box">
-          <img src={DefaultImage} alt="" />
+        <div
+          className="uploadimage-box"
+          style={{
+            backgroundImage: project.thumbUrl
+              ? project.thumbUrl.includes("pexels.com")
+                ? `url(${project.thumbUrl})`
+                : `url(${global.config.resourceUrl}${project.thumbUrl})`
+              : `url(${DefaultImage})`,
+          }}
+        >
+          {/* <img src={DefaultImage} alt="" /> */}
         </div>
         <div className="uploadimage-option">
           <label style={{ display: "none" }}>

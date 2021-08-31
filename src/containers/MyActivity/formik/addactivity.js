@@ -65,7 +65,8 @@ const AddActivity = (props) => {
           </div>
         </div>
         <div className="add-activity-selection">
-          <button>
+          <HeadingThree text="Create New" color="#084892" />
+          {/* <button>
             Create New
             <FontAwesomeIcon icon="plus" className="btn-icon" />
           </button>
@@ -75,7 +76,7 @@ const AddActivity = (props) => {
           >
             Upload
             <FontAwesomeIcon icon="plus" className="btn-icon" />
-          </button>
+          </button> */}
         </div>
         <div className="add-activity-layout-formik-videoTag">
           <div className="add-activity-layout-formik">
@@ -87,11 +88,13 @@ const AddActivity = (props) => {
               }}
             >
               <form>
-                <HeadingTwo
+                <HeadingThree text="Layout description" color="#084892" />
+
+                {/* <HeadingTwo
                   text="Layout description"
                   color="#084892"
                   className="layout-description-title"
-                />
+                /> */}
                 {/* <div className="layout-formik-radioBtn">
                   <HeadingThree text="Method" color="#515151" />
                   <div className="radioBtns">
@@ -178,11 +181,16 @@ const AddActivity = (props) => {
                 title="https://youtu.be/ngXSzWNYzU4"
               ></iframe>
             </div> */}
-            <HeadingTwo
+            <HeadingThree
               text="Add Activities"
               color="#084892"
               className="layout-add-activity-title"
             />
+            {/* <HeadingTwo
+              text="Add Activities"
+              color="#084892"
+              className="layout-add-activity-title"
+            /> */}
             <HeadingText
               text="Start adding activities by opening the editor. Once you finish, hit the Preview Layout button to see your results."
               color="#515151"
@@ -196,6 +204,15 @@ const AddActivity = (props) => {
                 onClick={() => setModalShow(true)}
               />
               <Buttons
+                text="Upload existing Activity"
+                secondary={true}
+                width="200px"
+                height="36px"
+                // disabled={layout ? false : true}
+                onClick={() => changeScreenHandler("uploadinteractivevideo")}
+                hover={true}
+              />
+              {/* <Buttons
                 text="Preview Layout"
                 secondary={true}
                 width="159px"
@@ -203,7 +220,7 @@ const AddActivity = (props) => {
                 // disabled={layout ? false : true}
                 onClick={() => changeScreenHandler("preview")}
                 hover={true}
-              />
+              /> */}
             </div>
             {successMessage && (
               <div className="successMessage">
