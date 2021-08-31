@@ -138,3 +138,10 @@ export const getLogsListing = (filter, size, page, query) => async (dispatch) =>
   });
   return result;
 };
+
+export const setCurrentProject = (project) => (dispatch) => {
+  dispatch({
+    type: actionTypes.SET_CURRENT_PROJECT,
+    payload: project,
+  });
+};

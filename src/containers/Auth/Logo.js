@@ -2,14 +2,15 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import logo from 'assets/images/studio_new_logo.png';
+import logo from 'assets/images/login_logo.svg';
 import Katylogo from 'assets/images/Katy_logo.png';
 import bu from 'assets/images/bu.png';
 import safari from 'assets/images/safari.png';
 import shepherds from 'assets/images/shepherds.svg';
-import sndt from 'assets/images/sndt.png';
+import sndt from 'assets/images/SNDT-LOGO-blue.png';
 import nevada from 'assets/images/nevada.png';
 import openeducation from 'assets/images/openeducation.png';
+import bodyImg from 'assets/images/login_bglogo.svg';
 
 export default function Logo() {
   const logoState = useSelector((state) => state.organization.currentOrganization);
@@ -30,7 +31,7 @@ export default function Logo() {
         setdefaultLogo(sndt);
       } else if (window.location.host.includes('nvdoe')) {
         setdefaultLogo(nevada);
-      } else if (window.location.host.includes('cc.curriki')) {
+      } else if (window.location.host.includes('open.curriki')) {
         setdefaultLogo(openeducation);
       } else {
         setdefaultLogo(logo);
@@ -45,6 +46,9 @@ export default function Logo() {
       {image ? (
         <img className="auth-header-logo" src={global.config.resourceUrl + image} alt="logo" title="" />
       ) : <img className="auth-header-logo" src={defaultLogo} alt="logo" title="" />}
+      <div className="auth-body">
+        <img src={bodyImg} alt="ff" className="auth-body-img" />
+      </div>
     </div>
   );
 }

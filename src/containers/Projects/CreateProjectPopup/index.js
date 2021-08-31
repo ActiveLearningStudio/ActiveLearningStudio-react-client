@@ -124,18 +124,17 @@ const onSubmit = async (values, dispatch, props) => {
   }
   history.push('/studio/projects');
 };
-
-export const uploadThumb = async (e, props) => {
+export const uploadThumb = async (e, permission) => {
   const formData = new FormData();
   try {
     formData.append('thumb', e.target.files[0]);
     imageValidation = '';
-    await props.uploadProjectThumbnail(formData);
+    await uploadProjectThumbnailAction(formData);
   } catch (err) {
     Swal.fire({
       icon: 'error',
       title: 'Error',
-      text: 'Image upload failed, kindly try again',
+      text: permission?.Project?.includes('project:upload-thumb') ? 'Image upload failed, kindly try again' : 'You do not have permission to upload image',
     });
   }
 };
@@ -262,7 +261,7 @@ let CreateProjectPopup = (props) => {
                         text: 'Selected file size should be less then 100MB.',
                       });
                     } else {
-                      uploadThumb(e, props);
+                      uploadThumb(e, permission);
                     }
                   }}
                 />
@@ -407,7 +406,6 @@ CreateProjectPopup = reduxForm({
 })(CreateProjectPopup);
 
 const mapDispatchToProps = (dispatch) => ({
-  uploadProjectThumbnail: (formData) => dispatch(uploadProjectThumbnailAction(formData)),
   showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
   getProjectVisibilityTypes: () => dispatch(visibilityTypes()),
 });

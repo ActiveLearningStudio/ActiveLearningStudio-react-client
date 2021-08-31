@@ -147,7 +147,7 @@ function ResetPasswordPage(props) {
           <div className="form-group">
             <button
               type="submit"
-              className="btn btn-primary submit"
+              className="signUp-btn submit"
               disabled={isLoading || isDisabled}
             >
               {isLoading ? (

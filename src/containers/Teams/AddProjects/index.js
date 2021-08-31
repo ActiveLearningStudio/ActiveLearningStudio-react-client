@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { connect, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 
 import { FadeDiv } from 'utils';
 import { loadMyProjectsAction } from 'store/actions/project';
-import { loadTeamAction, addProjectsAction } from 'store/actions/team';
+import { loadTeamAction, addProjectsAction, getTeamPermission } from 'store/actions/team';
 // import Sidebar from 'components/Sidebar';
 // import Header from 'components/Header';
 import { Alert } from 'react-bootstrap';
@@ -23,13 +23,22 @@ function AddProjectsPage(props) {
     loadTeam,
     addProjects,
   } = props;
-
-  useEffect(() => {
-    loadProjects();
-    loadTeam(teamId);
-  }, [loadProjects, loadTeam, teamId]);
+  const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const { permission } = organization;
+  const { permission, activeOrganization } = organization;
+  const { teamPermission } = useSelector((state) => state.team);
+  useEffect(() => {
+    if (activeOrganization) {
+      loadProjects();
+    }
+    loadTeam(teamId);
+  }, [loadProjects, loadTeam, teamId, activeOrganization]);
+  // Fetch team permission if page reloads
+  useEffect(() => {
+    if (!teamPermission) {
+      dispatch(getTeamPermission(organization?.currentOrganization?.id, teamId));
+    }
+  }, [team]);
   const [selectedProjects, setSelectedProjects] = useState([]);
   const [searchProject, setSearchProject] = useState('');
 

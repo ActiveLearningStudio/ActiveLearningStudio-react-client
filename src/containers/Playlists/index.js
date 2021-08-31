@@ -83,7 +83,6 @@ function PlaylistsPage(props) {
     getIndexedData,
     getElasticData,
   } = props;
-
   useEffect(() => {
     loadLms();
     window.scrollTo(0, 0);

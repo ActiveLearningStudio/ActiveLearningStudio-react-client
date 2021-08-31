@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import './style.scss';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteTeamAction, AddTeamPermission } from 'store/actions/team';
+import { deleteTeamAction, getTeamPermission } from 'store/actions/team';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function TeamCard(props) {
@@ -43,7 +43,7 @@ function TeamCard(props) {
       <div className="team-title">
         <Link
           onClick={() => {
-            dispatch(AddTeamPermission(organization.currentOrganization.id, id));
+            dispatch(getTeamPermission(organization.currentOrganization.id, id));
           }}
           to={`/studio/org/${organization.currentOrganization?.domain}/teams/${id}`}
           className="title m-0"

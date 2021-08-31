@@ -25,7 +25,7 @@ const ActivityPreviewCard = (props) => {
             : (
               showLti
                 ? `/playlist/${playlistId}/activity/${activity.id}/preview/lti`
-                : `/org/${organization.currentOrganization?.domain}/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
+                : `/studio/org/${organization.currentOrganization?.domain}/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
             )
         }
       >

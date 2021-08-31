@@ -69,6 +69,19 @@ function App(props) {
     }
   }, []);
 
+  // useEffect(() => {
+  //   dispatch({
+  //     type: 'CHANGE_ORIENTATION',
+  //     payload: window.screen.orientation.angle || 0,
+  //   });
+  //   window.addEventListener('orientationchange', (event) => {
+  //     dispatch({
+  //       type: 'CHANGE_ORIENTATION',
+  //       payload: event.target.screen.orientation.angle,
+  //     });
+  //   });
+  // }, []);
+
   useEffect(() => {
     if ((window.location.href.includes('/login')
       || window.location.pathname.includes('/register') || window.location.pathname.includes('/forgot-password') || window.location.pathname.includes('/reset-password'))) {

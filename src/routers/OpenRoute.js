@@ -6,6 +6,8 @@ import { useDispatch } from 'react-redux';
 const OpenRoute = ({ component: Component, path, ...rest }) => {
   const dispatch = useDispatch();
   useEffect(() => {
+    if (path === '/lti-sso') return; // This route sets its own permissions
+
     dispatch({
       type: 'SET_ALL_PERSMISSION',
       payload: { loading: false },

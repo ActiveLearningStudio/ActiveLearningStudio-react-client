@@ -42,7 +42,7 @@ class PlaylistCardDropdown extends React.Component {
           <Dropdown.Item
             as={Link}
             className="hidden"
-            to={`/studio/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/preview`}
+            to={`/studio/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/${playlist?.activities[0]?.id}/preview`}
           >
             <FontAwesomeIcon icon="eye" className="mr-2" />
             Preview

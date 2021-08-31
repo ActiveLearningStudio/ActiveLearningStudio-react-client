@@ -24,9 +24,9 @@ function PreviousLink(props) {
 
   let prevLink = '#';
   if (previousResource) {
-    prevLink = `/studio/playlist/${playlistId}/activity/${previousResource.id}/preview`;
+    prevLink = `/playlist/${playlistId}/activity/${previousResource.id}/preview`;
   } else if (prevPlaylist) {
-    prevLink = `/studio/playlist/${prevPlaylist.id}/preview`;
+    prevLink = `/playlist/${prevPlaylist.id}/preview`;
   }
   if (prevLink !== '#') {
     if (showLti) {
