@@ -11,6 +11,7 @@ const INITIAL_STATE = {
   selectedTeam: {},
   roles: null,
   teamPermission: null,
+  teamProjects: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -240,7 +241,11 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         isLoading: false,
       };
-
+    case actionTypes.GET_TEAM_PROJECTS:
+      return {
+        ...state,
+        teamProjects: action.payload,
+      };
     default:
       return state;
   }

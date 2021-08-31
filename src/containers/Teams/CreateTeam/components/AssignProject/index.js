@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FadeDiv } from 'utils';
 
 import './style.scss';
+import Swal from 'sweetalert2';
 
 function AssignProject(props) {
   const {
@@ -80,7 +81,17 @@ function AssignProject(props) {
               <div
                 key={project.id}
                 className="assign-project-item"
-                onClick={() => selectProject(project.id)}
+                onClick={() => {
+                  if (selectedProjects.length === 0 || selectedProjects[0] === project.id) {
+                    selectProject(project.id);
+                  } else {
+                    Swal.fire({
+                      icon: 'warning',
+                      title: 'Action Prohibited',
+                      text: 'You are only allowed to select 1 project.',
+                    });
+                  }
+                }}
               >
                 <div
                   className="project-img"

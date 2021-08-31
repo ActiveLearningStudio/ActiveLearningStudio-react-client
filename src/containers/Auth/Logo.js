@@ -7,7 +7,7 @@ import Katylogo from 'assets/images/Katy_logo.png';
 import bu from 'assets/images/bu.png';
 import safari from 'assets/images/safari.png';
 import shepherds from 'assets/images/shepherds.svg';
-import sndt from 'assets/images/sndt.png';
+import sndt from 'assets/images/SNDT-LOGO-blue.png';
 import nevada from 'assets/images/nevada.png';
 import openeducation from 'assets/images/openeducation.png';
 import bodyImg from 'assets/images/login_bglogo.svg';
@@ -31,7 +31,7 @@ export default function Logo() {
         setdefaultLogo(sndt);
       } else if (window.location.host.includes('nvdoe')) {
         setdefaultLogo(nevada);
-      } else if (window.location.host.includes('cc.curriki')) {
+      } else if (window.location.host.includes('open.curriki')) {
         setdefaultLogo(openeducation);
       } else {
         setdefaultLogo(logo);

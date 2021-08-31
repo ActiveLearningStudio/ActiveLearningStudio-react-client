@@ -43,7 +43,7 @@ class PlaylistCard extends React.Component {
   };
 
   renderResources = () => {
-    const { playlist, organization } = this.props;
+    const { playlist, organization, teamPermission } = this.props;
 
     if (!playlist.activities || playlist.activities.length === 0) {
       return (
@@ -59,6 +59,7 @@ class PlaylistCard extends React.Component {
         resource={resource}
         key={resource.id}
         index={index}
+        teamPermission={teamPermission || []}
       />
       ) : null
     ));
@@ -120,6 +121,7 @@ class PlaylistCard extends React.Component {
       index,
       playlist,
       organization,
+      teamPermission,
     } = this.props;
     const { permission } = organization;
     return (
@@ -142,7 +144,7 @@ class PlaylistCard extends React.Component {
                     onClick={this.handleClickPlaylistTitle}
                   >
                     <span>{playlist.title}</span>
-                    {permission?.Playlist?.includes('playlist:edit') && <FontAwesomeIcon icon="pencil-alt" className="ml-2 edit-icon" />}
+                    {(permission?.Playlist?.includes('playlist:edit') || teamPermission?.Team?.includes('team:edit-playlist')) && <FontAwesomeIcon icon="pencil-alt" className="ml-2 edit-icon" />}
                   </div>
 
                   <textarea
@@ -159,6 +161,7 @@ class PlaylistCard extends React.Component {
                   <PlaylistCardDropdown
                     playlist={playlist}
                     handleClickPlaylistTitle={this.handleClickPlaylistTitle}
+                    teamPermission={teamPermission || []}
                   />
                 </h2>
               </div>
@@ -181,7 +184,7 @@ class PlaylistCard extends React.Component {
                   </div>
                 )}
               </Droppable>
-              {(permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload')) && (
+              {(permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload') || teamPermission?.Team?.includes('team:add-activity')) && (
                 <div className="playlist-add-res-button">
                   <button
                     type="button"
@@ -218,6 +221,7 @@ PlaylistCard.propTypes = {
   clearForm: PropTypes.func.isRequired,
   clearSearchform: PropTypes.func.isRequired,
   organization: PropTypes.object.isRequired,
+  teamPermission: PropTypes.object.isRequired,
 };
 
 PlaylistCard.defaultProps = {

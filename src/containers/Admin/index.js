@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tabs, Tab, Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,9 +17,13 @@ import * as actionTypes from 'store/actionTypes';
 import CreateLms from './formik/createLms'
 import './style.scss';
 import { getRoles } from 'store/actions/organization';
+import EditProject from './formik/editProject';
+import { useHistory } from 'react-router-dom';
 
 function AdminPanel() {
+  const history = useHistory();
   const dispatch = useDispatch();
+  const [allProjectTab, setAllProjectTab] = useState(null);
   const adminState = useSelector((state) => state.admin);
   const organization = useSelector((state) => state.organization);
   const { permission, roles, currentOrganization, activeOrganization } = organization;
@@ -28,9 +32,16 @@ function AdminPanel() {
     if (roles?.length === 0 && activeOrganization?.id || (activeOrganization?.id !== currentOrganization?.id)) {
       dispatch(getRoles())
     }
+
   }, [activeOrganization])
   useEffect(() => {
   }, [activeTab])
+  useEffect(()=> {
+    const tab = localStorage.getItem('activeTab');
+    if(tab) {
+      dispatch(setActiveTab(tab));
+    }
+  },[]);
   useEffect(() => {
     dispatch({
       type: actionTypes.UPDATE_PAGINATION,
@@ -42,7 +53,7 @@ function AdminPanel() {
       {permission?.Organization?.includes('organization:view') ? (
         <>
           <div className="content-wrapper">
-            
+
             <div className="inner-content">
               <Breadcrump />
               <Heading />
@@ -50,7 +61,10 @@ function AdminPanel() {
                 defaultActiveKey={activeTab}
                 activeKey={activeTab}
                 id="uncontrolled-tab-example"
-                onSelect={(key) => dispatch(setActiveTab(key))}
+                onSelect={(key) =>{
+                   dispatch(setActiveTab(key));
+                   localStorage.setItem('activeTab',key);
+                }}
               >
                 {/* <Tab eventKey="Stats" title="Stats">
                   <div className="module-content">
@@ -64,26 +78,26 @@ function AdminPanel() {
                 </Tab> */}
                 <Tab eventKey="Organization" title="Organizations">
                   <div className="module-content">
-                   
+
                     <Pills modules={["All Organizations"]} type="Organization" subType="All Organizations"/>
                   </div>
                 </Tab>
                 <Tab eventKey="Project" title="Projects">
                   <div className="module-content">
-              
                     <Pills
                       modules={[
                         "All Projects",
                         "Indexing Queue",
-                        "User Projects",
+                        // "User Projects",
                       ]}
+                      allProjectTab={allProjectTab}
+                      setAllProjectTab={setAllProjectTab}
                       type="Project"
                     />
                   </div>
                 </Tab>
                 <Tab eventKey="Activities" title="Activities">
                   <div className="module-content">
-                   
                     <Pills
                       modules={["Activity Types", "Activity Items"]}
                       type="Activities"
@@ -94,7 +108,6 @@ function AdminPanel() {
                  && (
                   <Tab eventKey="Users" title="Users">
                     <div className="module-content">
-                     
                       <Pills
                         modules={["All Users", permission?.Organization?.includes('organization:add-role') || permission?.Organization?.includes('organization:edit-role') ? "Manage Roles" : null]}
                         type="Users"
@@ -105,7 +118,6 @@ function AdminPanel() {
                  )}
                 <Tab eventKey="LMS" title="Integrations">
                   <div className="module-content">
-                   
                     <Pills modules={["All Settings"]} type="LMS" />
                   </div>
                 </Tab>
@@ -230,9 +242,20 @@ function AdminPanel() {
               </div>
             </div>
           )}
-
-
-
+          {activeForm === "edit_project" && (
+            <div className="form-new-popup-admin">
+            <FontAwesomeIcon
+              icon="times"
+              className="cross-all-pop"
+              onClick={() => {
+                dispatch(removeActiveAdminForm());
+              }}
+            />
+            <div className="inner-form-content">
+              <EditProject editMode setAllProjectTab={setAllProjectTab} />
+              </div>
+            </div>
+          )}
           {(activeForm === "create_user" || activeForm === "edit_user") && (
             <div className="form-new-popup-admin">
               <FontAwesomeIcon

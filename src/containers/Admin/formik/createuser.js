@@ -43,10 +43,10 @@ export default function CreateUser(prop) {
         }}
         validate={(values) => {
           const errors = {};
-          if (!values.first_name || values.first_name.length > 255) {
+          if (!values.first_name || values.first_name.trim() === '' || values.first_name.length > 255) {
             errors.first_name = values.first_name.length > 255 ? 'Length must be 255 characters or less ' : 'Required';
           }
-          if (!values.last_name || values.last_name.length > 255) {
+          if (!values.last_name || values.last_name.trim() === '' || values.last_name.length > 255) {
             errors.last_name = values.last_name.length > 255 ? 'Length must be 255 characters or less ' : 'Required';
           }
           if (!values.email) {
@@ -70,10 +70,10 @@ export default function CreateUser(prop) {
           if (!values.organization_type) {
             errors.organization_type = 'Required';
           }
-          if (!values.organization_name || values.organization_name.length > 255) {
+          if (!values.organization_name || values.organization_name.trim() === '' || values.organization_name.length > 255) {
             errors.organization_name = values.organization_name.length > 255 ? 'Length must be 255 characters or less ' : 'Required';;
           }
-          if (!values.job_title || values.job_title.length > 255) {
+          if (!values.job_title || values.job_title.trim() === '' || values.job_title.length > 255) {
             errors.job_title = values.job_title.length > 255 ? 'Length must be 255 characters or less ' : 'Required';
           }
           return errors;

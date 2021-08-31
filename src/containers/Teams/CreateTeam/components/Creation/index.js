@@ -54,8 +54,16 @@ let Creation = (props) => {
                 </div>
               </div>
 
-              <button type="submit" className="create-team-continue-btn">
-                Continue
+              <button
+                type="submit"
+                className="create-team-continue-btn"
+              //   onClick={() => {
+              //     if (editMode) {
+              //       handleSubmitInEditMode();
+              //     }
+              // }}
+              >
+                {editMode ? 'Update' : 'Continue'}
               </button>
             </form>
           </div>
@@ -68,6 +76,7 @@ let Creation = (props) => {
 Creation.propTypes = {
   // updateTeam: PropTypes.func.isRequired,
   // nextStep: PropTypes.func.isRequired,
+  // handleSubmitInEditMode: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   editMode: PropTypes.bool.isRequired,
 };
@@ -75,11 +84,21 @@ Creation.propTypes = {
 Creation = reduxForm({
   form: 'CreateTeamForm',
   enableReinitialize: true,
-  onSubmit: (values, dispatch, props) => {
+  onSubmit: async (values, dispatch, props) => {
     try {
-      const { updateTeam, nextStep } = props;
-      updateTeam(values);
-      nextStep();
+      const {
+        updateTeam,
+        nextStep,
+        editMode,
+        handleSubmitInEditMode,
+      } = props;
+      await updateTeam(values);
+      if (editMode) {
+        handleSubmitInEditMode();
+      }
+      if (!editMode) {
+        nextStep();
+      }
     } catch (e) {
       console.log(e.message);
     }

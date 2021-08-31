@@ -25,7 +25,7 @@ function TeamProjectView(props) {
   const authUser = users.find((u) => u.id === (user || {}).id);
   // Fetch team permission if page reloads
   useEffect(() => {
-    if (!teamPermission) {
+    if (!teamPermission && organization?.currentOrganization?.id && id) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, id));
     }
   }, [teamPermission]);
@@ -54,14 +54,14 @@ function TeamProjectView(props) {
 
   return (
     <div className="team-information">
-      {permission?.Team?.includes('team:add-projects') && (
+      {/* {permission?.Team?.includes('team:add-projects') && (
         <Link to={`/org/${organization.currentOrganization?.domain}/teams/${id}/add-projects`}>
           <div className="btn-top-page">
             <FontAwesomeIcon icon="plus" className="mr-2" />
             Add projects
           </div>
         </Link>
-      )}
+      )} */}
 
       <div className="projects-wrapper">
         <div className="project-list">
@@ -85,28 +85,35 @@ function TeamProjectView(props) {
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                    <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/preview`}>
-                      <FontAwesomeIcon icon="eye" className="mr-2" />
-                      Preview
-                    </Dropdown.Item>
+                    {permission?.Project?.includes('project:view') && (
+                      <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/preview`}>
+                        <FontAwesomeIcon icon="eye" className="mr-2" />
+                        Preview
+                      </Dropdown.Item>
+                    )}
+                    {permission?.Project?.includes('project:view') && (
+                      <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}`}>
+                        <FontAwesomeIcon icon="globe" className="mr-2" />
+                        Build
+                      </Dropdown.Item>
+                    )}
 
-                    <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}`}>
-                      <FontAwesomeIcon icon="globe" className="mr-2" />
-                      Build
-                    </Dropdown.Item>
-
-                    <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/edit`}>
-                      <FontAwesomeIcon icon="pen" className="mr-2" />
-                      Edit
-                    </Dropdown.Item>
-                    {permission?.Team?.includes('team:add-project-user')
+                    {permission?.Project?.includes('project:edit') && (
+                      <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/edit`}>
+                        <FontAwesomeIcon icon="pen" className="mr-2" />
+                        Edit
+                      </Dropdown.Item>
+                    )}
+                    {(permission?.Team?.includes('team:add-project-user') || teamPermission?.Team?.includes('team:add-project-user'))
                      && (
                      <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/teams/${id}/projects/${project.id}/add-member`}>
                        <FontAwesomeIcon icon="crosshairs" className="mr-2" />
                        Add member
                      </Dropdown.Item>
                      )}
-                    {permission?.Team?.includes('team:remove-projects')
+                    {(permission?.Team?.includes('team:remove-projects')
+                    || teamPermission?.Team?.includes('team:remove-project')
+                    || teamPermission?.Team?.includes('team:remove-member-project'))
                       && (
                         <Dropdown.Item onClick={() => removeProjectSubmit(project.id)}>
                           <FontAwesomeIcon icon="times-circle" className="mr-2" />
@@ -117,48 +124,52 @@ function TeamProjectView(props) {
                 </Dropdown>
               </div>
 
-              <div className="team-member-content mid-border">
-                <div className="sub-title">
-                  <span>Team Members</span>
-                  <span>{`(${project.users.length})`}</span>
-                </div>
+              {false && (
+                <>
+                  <div className="team-member-content mid-border">
+                    <div className="sub-title">
+                      <span>Team Members</span>
+                      <span>{`(${project.users.length})`}</span>
+                    </div>
 
-                <div className="member-mark-container">
-                  {project.users.map((u, index) => (
-                    <Dropdown key={u.id} className="member-dropdown">
-                      <Dropdown.Toggle className="member-dropdown-btn">
-                        <div className={`member-name-mark${index > 0 ? ' over' : ''}`}>
-                          <span>{`${u.first_name.charAt(0)}${u.last_name.charAt(0)}`}</span>
-                        </div>
-                      </Dropdown.Toggle>
-
-                      {authUser && authUser.id !== u.id && (
-                        <Dropdown.Menu>
-                          <div className="drop-title">
-                            <div className="member-name-mark">
+                    <div className="member-mark-container">
+                      {false && project.users.map((u, index) => (
+                        <Dropdown key={u.id} className="member-dropdown">
+                          <Dropdown.Toggle className="member-dropdown-btn">
+                            <div className={`member-name-mark${index > 0 ? ' over' : ''}`}>
                               <span>{`${u.first_name.charAt(0)}${u.last_name.charAt(0)}`}</span>
                             </div>
-                            <div>
-                              <span>{`${u.first_name} ${u.last_name}`}</span>
-                              <span>{u.email}</span>
-                            </div>
-                          </div>
+                          </Dropdown.Toggle>
 
-                          <div className="dropdown-divider" />
-                          {permission?.Team?.includes('team:remove-project-user')
-                          && (
-                          <Dropdown.Item onClick={() => removeMemberSubmit(project.id, u.id)}>
-                            <FontAwesomeIcon icon="times" className="mr-2" />
-                            Remove from project
-                          </Dropdown.Item>
+                          {authUser && authUser.id !== u.id && (
+                            <Dropdown.Menu>
+                              <div className="drop-title">
+                                <div className="member-name-mark">
+                                  <span>{`${u.first_name.charAt(0)}${u.last_name.charAt(0)}`}</span>
+                                </div>
+                                <div>
+                                  <span className="username">{`${u.first_name} ${u.last_name}`}</span>
+                                  <span>{u.email}</span>
+                                </div>
+                              </div>
+
+                              <div className="dropdown-divider" />
+                              {(permission?.Team?.includes('team:remove-project-user') || teamPermission?.Team?.includes('team:remove-project-user'))
+                              && (
+                              <Dropdown.Item onClick={() => removeMemberSubmit(project.id, u.id)}>
+                                <FontAwesomeIcon icon="times" className="mr-2" />
+                                Remove from project
+                              </Dropdown.Item>
+                              )}
+
+                            </Dropdown.Menu>
                           )}
-
-                        </Dropdown.Menu>
-                      )}
-                    </Dropdown>
-                  ))}
-                </div>
-              </div>
+                        </Dropdown>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           ))}
         </div>

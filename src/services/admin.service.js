@@ -93,39 +93,39 @@ const updateIndex = (projectId, index) => httpService
     Promise.reject(err.response.data);
   });
 
-const getLmsProject = (page) => httpService
-  .get(`${apiVersion}/lms-settings?page=${page}`)
+const getLmsProject = (subOrgId, page) => httpService
+  .get(`${apiVersion}/suborganizations/${subOrgId}/lms-settings?page=${page}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
   });
 
-const deleteLmsProject = (id) => httpService
-  .remove(`${apiVersion}/lms-settings/${id}`)
+const deleteLmsProject = (subOrgId, id) => httpService
+  .remove(`${apiVersion}/suborganizations/${subOrgId}/lms-settings/${id}`)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
     return Promise.reject();
   });
 
-const updateLmsProject = (id, values) => httpService
-  .put(`${apiVersion}/lms-settings/${id}`, values)
+const updateLmsProject = (subOrgId, id, values) => httpService
+  .put(`${apiVersion}/suborganizations/${subOrgId}/lms-settings/${id}`, values)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
     return Promise.reject();
   });
 
-const createLmsProject = (values) => httpService
-  .post(`${apiVersion}/lms-settings`, values)
+const createLmsProject = (subOrgId, values) => httpService
+  .post(`${apiVersion}/suborganizations/${subOrgId}/lms-settings`, values)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
     return Promise.reject();
   });
 
-const getLmsProjectSearch = (search, page) => httpService
-  .get(`${apiVersion}/lms-settings?page=${page}&query=${search}`)
+const getLmsProjectSearch = (subOrgId, search, page) => httpService
+  .get(`${apiVersion}/suborganizations/${subOrgId}/lms-settings?page=${page}&query=${search}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);

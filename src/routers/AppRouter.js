@@ -62,18 +62,14 @@ const ChangePasswordPage = loadable(() =>
 // const DashboardPage = loadable(() => import('../containers/Dashboard'));
 const NotificationPage = loadable(() => import("../containers/Notification"));
 
-const ProjectsPage = loadable(() => import("../containers/Projects"));
-// const MyProjects = loadable(() => import("../containers/MyProjects"));
-const PlaylistsPage = loadable(() => import("../containers/Playlists"));
-const PreviewPage = loadable(() => import("../containers/Preview"));
-const LtiPreviewPage = loadable(() => import("../containers/LtiPreviewPage"));
-const PreviewPageShared = loadable(() =>
-  import("../containers/PreviewPageShared")
-);
-const SecureProjectPreview = loadable(() =>
-  import("../containers/SecureProjectPreview")
-);
-const SearchResult = loadable(() => import("../containers/Search"));
+const ProjectsPage = loadable(() => import('../containers/Projects'));
+const PlaylistsPage = loadable(() => import('../containers/Playlists'));
+const PreviewPage = loadable(() => import('../containers/Preview'));
+const LtiPreviewPage = loadable(() => import('../containers/LtiPreviewPage'));
+const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared'));
+const SecureProjectPreview = loadable(() => import('../containers/SecureProjectPreview'));
+const SearchResult = loadable(() => import('../containers/Search'));
+const Searchnetlify = loadable(() => import('../containers/Search/SearchNetlify'));
 // const LtiModel = loadable(() => import('../containers/LtiModel'));
 const TeamsPage = loadable(() => import("../containers/Teams"));
 const AddTeamProjectsPage = loadable(() =>
@@ -132,7 +128,11 @@ const AppRouter = (props) => {
   return (
     <Router history={history}>
       <Switch>
-        <PublicRoute exact path="/lti-sso" component={LtiLogin} />
+        <OpenRoute
+          exact
+          path="/lti-sso" // see OpenRoute for some special permissions logic for this route if you change it
+          component={LtiLogin}
+        />
         <OpenRoute exact path="/sso/dologin/:ssodata" component={SSOLogin} />
         <OpenRoute
           exact
@@ -148,6 +148,11 @@ const AppRouter = (props) => {
           exact
           path="/project/:projectId/secure/shared"
           component={SecureProjectPreview}
+        />
+        <OpenRoute
+          exact
+          path="/opensearch"
+          component={Searchnetlify}
         />
         <OpenRoute
           exact
@@ -430,29 +435,23 @@ const AppRouter = (props) => {
                     openEditResourcePopup
                   />
 
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/search"
-                    component={SearchResult}
-                  />
-
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/manage"
-                    component={ManageOrganization}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization"
-                    component={ProjectsPage}
-                  />
-                  <Redirect
-                    to={`/org/${SelectedOrganization || "currikistudio"}`}
-                  />
-                </Switch>
-              </div>
-            </>
-          )}
+                     <PrivateRoute
+                       exact
+                       path="/org/:organization/search"
+                       component={SearchResult}
+                     />
+                     <PrivateRoute
+                       exact
+                       path="/org/:organization/manage"
+                       component={ManageOrganization}
+                     />
+                     <PrivateRoute exact path="/org/:organization" component={ProjectsPage} />
+                     <Redirect to={`/org/${SelectedOrganization || 'currikistudio'}`} />
+                   </Switch>
+                 </div>
+               </>
+             )
+           }
         </Route>
       </Switch>
     </Router>

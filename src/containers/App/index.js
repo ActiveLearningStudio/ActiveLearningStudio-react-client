@@ -11,8 +11,8 @@ import { updatedActivity } from 'store/actions/resource';
 import { updatedProject } from 'store/actions/project';
 import { updatedPlaylist } from 'store/actions/playlist';
 import AppRouter from 'routers/AppRouter';
-
 import Help from './help';
+
 import './style.scss';
 
 let runOnce = true;
@@ -68,6 +68,19 @@ function App(props) {
       });
     }
   }, []);
+
+  // useEffect(() => {
+  //   dispatch({
+  //     type: 'CHANGE_ORIENTATION',
+  //     payload: window.screen.orientation.angle || 0,
+  //   });
+  //   window.addEventListener('orientationchange', (event) => {
+  //     dispatch({
+  //       type: 'CHANGE_ORIENTATION',
+  //       payload: event.target.screen.orientation.angle,
+  //     });
+  //   });
+  // }, []);
 
   useEffect(() => {
     if ((window.location.href.includes('/login')

@@ -32,7 +32,11 @@ const Activity = (props) => {
   const isLearner = searchParams.get('is_learner') !== '';
   const courseId = searchParams.get('course_id');
   const toolPlatform = searchParams.get('tool_platform');
+  const customCourseName = searchParams.get('custom_course_name');
+  const customApiDomainUrl = searchParams.get('custom_api_domain_url');
+  const customCourseCode = searchParams.get('custom_course_code');
   const [xAPILoaded, setXAPILoaded] = useState(false);
+  const [intervalPointer, setIntervalPointer] = useState(null);
   const [xAPIEventHooked, setXAPIEventHooked] = useState(false);
 
   // Init
@@ -76,21 +80,19 @@ const Activity = (props) => {
     });
 
     // Loops until it finds H5P object
-    const checkXapi = setInterval(() => {
-      if (xAPILoaded) {
-        console.log('Loaded hit, returning');
-        return;
-      }
+    setIntervalPointer(setInterval(() => {
+      console.log('Enterig h5p check interval function');
+      console.log(intervalPointer);
+      console.log(xAPILoaded);
 
       const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
       if (!x.H5P) return;
       if (!x.H5P.externalDispatcher) return;
 
-      console.log('AE H5P supposedly ready');
-      clearInterval(checkXapi);
-      setTimeout(() => { setXAPILoaded(true); });
-    });
-    // setIntervalPointer(checkXapi);
+      clearInterval(intervalPointer);
+      setIntervalPointer(null);
+      setXAPILoaded(true);
+    }));
   }, [h5pSettings]);
 
   // Patch into xAPI events
@@ -119,6 +121,9 @@ const Activity = (props) => {
         homepage,
         courseId,
         toolPlatform,
+        customCourseName,
+        customApiDomainUrl,
+        customCourseCode,
       };
 
       // Extending the xAPI statement with our custom values and sending it off to LRS
@@ -159,7 +164,7 @@ const Activity = (props) => {
     });
     console.log('AE maybe hooked?');
     setXAPIEventHooked(true);
-  }, [xAPILoaded, match.path, match.params, activityId]);
+  }, [xAPILoaded]);
 
   return (
     <div>

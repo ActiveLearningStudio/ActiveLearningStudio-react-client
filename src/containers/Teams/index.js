@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert } from 'react-bootstrap';
-
-import { loadSubOrganizationTeamsAction, loadTeamsAction } from 'store/actions/team';
+import { getTeamPermission, loadSubOrganizationTeamsAction, loadTeamsAction } from 'store/actions/team';
 // import Header from 'components/Header';
 // import Sidebar from 'components/Sidebar';
 import Footer from 'components/Footer';
@@ -41,10 +40,12 @@ function TeamsPage(props) {
     loadSubOrgTeams,
   } = props;
   const organization = useSelector((state) => state.organization);
+  const { teamPermission } = useSelector((state) => state.team);
   const { activeOrganization, currentOrganization, permission } = organization;
   const [alertCheck, setAlertCheck] = useState(false);
   const [breadCrumb, setBreadCrumb] = useState([]);
   const history = useHistory();
+  const dispatch = useDispatch();
   useEffect(() => {
     (async () => {
       // if (activeOrganization && overview && !creation && !editMode && permission?.Team?.includes('team:view')) {
@@ -90,7 +91,11 @@ function TeamsPage(props) {
 
     setBreadCrumb(crumb.split('/'));
   }, [selectedTeam, status, teamShow, teams]);
-
+  useEffect(() => {
+    if (!teamPermission && organization?.currentOrganization?.id && selectedTeam?.id) {
+      dispatch(getTeamPermission(organization?.currentOrganization?.id, selectedTeam?.id));
+    }
+  }, [teamPermission, selectedTeam]);
   if (location.pathname.includes('teams/') && !selectedTeam && !creation) {
     return <></>;
   }
@@ -130,10 +135,38 @@ function TeamsPage(props) {
       <div className="teams-page">
         <div className="content-wrapper">
           <div className="content">
-            <div className="row">
+            <div className="row" style={{ justifyContent: 'space-between' }}>
               <h1 className={`title${projectShow ? ' project-title' : ''}${channelShow ? ' channel-title' : ''}`}>
                 {overview ? 'Teams' : (title[status] || 'Teams')}
               </h1>
+              {(permission?.Team?.includes('team:add-projects') || teamPermission?.Team?.includes('team:add-project')) && projectShow && (
+                <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}/add-projects`}>
+                  <div className="btn-top-page">
+                    <FontAwesomeIcon icon="plus" className="mr-2" />
+                    Add projects
+                  </div>
+                </Link>
+              )}
+              {(permission?.Team?.includes('team:invite-member')
+              || teamPermission?.Team?.includes('team:add-team-user')
+              || teamPermission?.Team?.includes('team:remove-team-user')) && projectShow && (
+                <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}`}>
+                  <div className="btn-top-page">
+                    Add/Remove Members
+                  </div>
+                </Link>
+              )}
+              {permission?.Team?.includes('team:create')
+              && overview && (
+                <>
+                  <Link to={`/org/${organization?.currentOrganization?.domain}/teams/create-team`}>
+                    <div className="btn-top-page">
+                      <FontAwesomeIcon icon="plus" className="mr-2" />
+                      Create a Team
+                    </div>
+                  </Link>
+                </>
+              )}
               {projectShow && (
                 <></>
               )}

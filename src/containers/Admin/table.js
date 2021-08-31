@@ -12,7 +12,9 @@ import {
   clearOrganizationState,
   removeUserFromOrganization,
   getRoles,
+  updatePageNumber,
 } from "store/actions/organization";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, withRouter } from "react-router-dom";
 import { simpleSearchAction } from "store/actions/search";
 import Swal from "sweetalert2";
@@ -23,6 +25,7 @@ import {
   retrySpecificFailedJob,
   setActiveAdminForm,
   setActiveTab,
+  setCurrentProject,
   setCurrentUser,
 } from "store/actions/admin";
 import { deleteActivityItem, deleteActivityType, getActivityItems, loadResourceTypesAction, selectActivityItem, selectActivityType } from "store/actions/resource";
@@ -42,6 +45,8 @@ function Table(props) {
     subType,
     setCurrentTab,
     setChangeIndexValue,
+    changeIndexValue,
+    setAllProjectIndexTab,
     changeProjectFromorg,
   } = props;
   const organization = useSelector((state) => state.organization);
@@ -282,7 +287,7 @@ function Table(props) {
             )
             }
             {type === "LMS" && (
-              localStateData ?
+              localStateData ? localStateData?.length > 0 ?
                 localStateData?.map((row) => (
                   <tr>
                     <td>{row.lms_url}</td>
@@ -329,7 +334,7 @@ function Table(props) {
                                     },
                                     button: false,
                                   });
-                                  const response = adminService.deleteLmsProject(row?.id);
+                                  const response = adminService.deleteLmsProject(activeOrganization?.id, row?.id);
                                   response
                                     .then((res) => {
 
@@ -370,9 +375,15 @@ function Table(props) {
                 )) : (
                   <tr>
                     <td colspan="11">
-                      <Alert variant="primary">Loading data...</Alert>
+                      <Alert variant="warning">No integration found.</Alert>
                     </td>
                   </tr>
+                ) : (
+                  <tr>
+                  <td colspan="11">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
                 ))}
             {type === "Users" &&
               (data?.data?.length > 0 ? (
@@ -445,7 +456,7 @@ function Table(props) {
                     <img src={global.config.resourceUrl + row.image} alt="" />
                   </td>
                   <td>
-                    <a href="#" onClick={async () => {
+                    <Link onClick={async () => {
                       Swal.fire({
                         title: 'Please Wait !',
                         html: 'Updating View ...',
@@ -470,7 +481,7 @@ function Table(props) {
                       }
                     }}>
                       {row.name}
-                    </a>
+                    </Link>
                   </td>
                 <td>{row.domain}</td>
                   <td>
@@ -630,7 +641,7 @@ function Table(props) {
                               if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                               dispatch(clearOrganizationState());
                               dispatch(getRoles());
-                              
+
                               // dispatch(setActiveTab('Project'));
                               // dispatch(clearOrganizationState());
                               // dispatch(getRoles());
@@ -684,7 +695,6 @@ function Table(props) {
               )) :(
                 <tr>
                   <td colSpan="9" style={{ textAlign: 'center' }}>
-                   
                   <Alert variant="warning"> No sub-organization available</Alert>
                   </td>
                 </tr>
@@ -718,20 +728,30 @@ function Table(props) {
                         </div>
 
                       </td>
-                      <td>{row.name}</td>
+                      <td>
+                        <Link to={`/org/${organization?.currentOrganization?.domain}/project/${row.id}/preview`}>{row.name}</Link>
+                      </td>
                       <td>{createNew.toDateString()}</td>
 
                       <td>{row.description}</td>
 
                       <td>{row.id}</td>
-                      <td>{row.users?.[0].email}</td>
+                      <td>{row.users?.[0]?.email}</td>
                       <td>{row.indexing_text}</td>
-
-                      <td>{row.organization_id}</td>
-
-                      <td>{String(row.shared)}</td>
-                      <td>{String(row.starter_project)}</td>
-
+                      {/* <td>{row.organization_id}</td> */}
+                      <td>
+                        {row.shared ? (
+                        <Link className="shared-link" target="_blank" to={`/project/${row.id}/shared`}>
+                          <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
+                          Open Shared Link
+                        </Link>
+                        ) : (
+                          <>
+                            {String(row.shared)}
+                          </>
+                          )}
+                      </td>
+                      {/* <td>{String(row.starter_project)}</td> */}
                       <td>{row.status_text}</td>
                       <td>{updateNew.toDateString()}</td>
                       <td>
@@ -759,43 +779,51 @@ function Table(props) {
                           Export
                         </Link>
                         <Link
-                                     onClick={() => {
-                                      Swal.fire({
-                                        title: "Are you sure you want to delete this Project?",
-                                        text: "This action is Irreversible",
-                                        icon: "warning",
-                                        showCancelButton: true,
-                                        confirmButtonColor: "#084892",
-                                        cancelButtonColor: "#d33",
-                                        confirmButtonText: "Yes, delete it!",
-                                      }).then((result) => {
-                                        if (result.isConfirmed) {
-                                          Swal.fire({
-                                            icon: 'info',
-                                            text: 'Deleting Project...',
-                                            allowOutsideClick: false,
-                                            onBeforeOpen: () => {
-                                              Swal.showLoading();
-                                            },
-                                            button: false,
-                                          });
-                                          const response = projectService.remove(row.id, activeOrganization.id);
-                                          response
-                                            .then((res) => {
-        
-        
-                                              Swal.fire({
-                                                icon: "success",
-                                                text: res?.message,
-        
-                                              });
-                                              const filterProject = localStateData.filter(each => each.id != row.id);
-                                              setLocalStateData(filterProject)
-        
-                                            }).catch(err => console.log(err))
-                                        }
-                                      });
-                                    }}
+                          onClick={()=> {
+                            dispatch(setActiveAdminForm("edit_project"));
+                            dispatch(setCurrentProject(row));
+                          }}
+                        >
+                           &nbsp;&nbsp;Edit&nbsp;&nbsp;
+                        </Link>
+                        <Link
+                          onClick={() => {
+                          Swal.fire({
+                            title: "Are you sure you want to delete this Project?",
+                            text: "This action is Irreversible",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#084892",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Yes, delete it!",
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              Swal.fire({
+                                icon: 'info',
+                                text: 'Deleting Project...',
+                                allowOutsideClick: false,
+                                onBeforeOpen: () => {
+                                  Swal.showLoading();
+                                },
+                                button: false,
+                              });
+                              const response = projectService.remove(row.id, activeOrganization.id);
+                              response
+                                .then((res) => {
+
+
+                                  Swal.fire({
+                                    icon: "success",
+                                    text: res?.message,
+
+                                  });
+                                  const filterProject = localStateData.filter(each => each.id != row.id);
+                                  setLocalStateData(filterProject)
+
+                                }).catch(err => console.log(err))
+                            }
+                          });
+                        }}
                         >
                           &nbsp;&nbsp;Delete&nbsp;&nbsp;
                         </Link>
@@ -846,7 +874,7 @@ function Table(props) {
                       {/* <td>{row.description}</td> */}
 
                       <td>{row.id}</td>
-                      <td>{row.users?.[0].email}</td>
+                      <td>{row.users?.[0]?.email}</td>
                       <td>{row.indexing_text}</td>
 
                       <td>{row.organization_id}</td>
@@ -896,26 +924,28 @@ function Table(props) {
                         </div>
 
                       </td>
-                      <td>{row.name}</td>
+                      <td>
+                        <Link target="_blank" to={`/org/${organization?.currentOrganization?.domain}/project/${row.id}/preview`}>{row.name}</Link>
+                      </td>
                       <td>{createNew.toDateString()}</td>
 
                       {/* <td>{row.description}</td> */}
 
                       <td>{row.id}</td>
-                      <td>{row.users?.[0].email}</td>
+                      <td>{row.users?.[0]?.email}</td>
                       <td>{row.indexing_text}</td>
 
-                      <td>{row.organization_id}</td>
+                      {/* <td>{row.organization_id}</td> */}
 
                       <td>{String(row.shared)}</td>
-                      <td>{String(row.starter_project)}</td>
+                      {/* <td>{String(row.starter_project)}</td> */}
 
-                      <td>{row.status_text}</td>
+                      {/* <td>{row.status_text}</td> */}
                       <td>{updateNew.toDateString()}</td>
                       <td>
                         <div className="links">
                           {(row.indexing === 1 || row.indexing === 2) && (
-                            <Link onClick={() => {
+                            <Link onClick={async () => {
                               Swal.fire({
                                 title: 'Please Wait !',
                                 html: 'Approving Project ...',
@@ -924,26 +954,52 @@ function Table(props) {
                                   Swal.showLoading();
                                 },
                               });
-                              const result = adminService.updateIndex(row.id, 3)
-                              result.then((data) => {
-                                // console.log(data)
-                                setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id))
+                              const result = await adminService.updateIndex(row.id, 3);
+                              if(result?.message) {
+                                if(changeIndexValue !== 0) {
+                                  setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id));
+                                }
                                 Swal.fire({
                                   icon: 'success',
-                                  text: data.message,
+                                  text: result.message,
                                 });
-                              }).catch((err) => {
+                              } else {
                                 Swal.fire({
                                   icon: 'error',
                                   text: 'Error',
                                 });
-                              })
+                              }
+                              // result.then((data) => {
+                              //   // console.log(data)
+                              //   if(changeIndexValue !== 0) {
+                              //     setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id));
+                              //   }
+                              //   Swal.fire({
+                              //     icon: 'success',
+                              //     text: data.message,
+                              //   });
+                              // }).catch((err) => {
+                              //   Swal.fire({
+                              //     icon: 'error',
+                              //     text: 'Error',
+                              //   });
+                              // });
+                              if (result) {
+                                const response = adminService.getAllProjectIndex(
+                                  activeOrganization?.id,
+                                  activePage || 1,
+                                  changeIndexValue,
+                                );
+                                response.then((data) => {
+                                  setAllProjectIndexTab(data);
+                                }).catch(e=>setAllProjectIndexTab([]));
+                              }
                             }}>
                               Approve&nbsp;&nbsp;
                             </Link>
                           )}
                           {(row.indexing === 1 || row.indexing === 3) && (
-                            <Link onClick={() => {
+                            <Link onClick={async () => {
                               Swal.fire({
                                 title: 'Please Wait !',
                                 html: 'Reject Project ...',
@@ -952,17 +1008,48 @@ function Table(props) {
                                   Swal.showLoading();
                                 },
                               });
-                              const result = adminService.updateIndex(row.id, 2)
-                              result.then((data) => {
-                                // console.log(data)
-                                // console.log({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
-                                setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id))
-                                // setLocalStatePagination({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
+                              const result = await adminService.updateIndex(row.id, 2);
+                              if (result?.message) {
+                                if (changeIndexValue) {
+                                  setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id));
+                                }
                                 Swal.fire({
                                   icon: 'success',
-                                  text: data.message,
+                                  text: result.message,
                                 })
-                              })
+                              } else {
+                                Swal.fire({
+                                  icon: 'error',
+                                  text: 'Error',
+                                });
+                              }
+                              // result.then((data) => {
+                              //   // console.log(data)
+                              //   // console.log({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
+                              //   if (changeIndexValue) {
+                              //     setLocalStateData(localStateData.filter(indexing => indexing.id !== row.id));
+                              //   }
+                              //   // setLocalStatePagination({...localStatePagination,meta:{...localStatePagination.meta,total:localStatePagination.meta.total-1}})
+                              //   Swal.fire({
+                              //     icon: 'success',
+                              //     text: data.message,
+                              //   })
+                              // }).catch((err) => {
+                              //   Swal.fire({
+                              //     icon: 'error',
+                              //     text: 'Error',
+                              //   });
+                              // });
+                              if (result?.message) {
+                                const response = adminService.getAllProjectIndex(
+                                  activeOrganization?.id,
+                                  activePage || 1,
+                                  changeIndexValue,
+                                );
+                                response.then((data) => {
+                                  setAllProjectIndexTab(data);
+                                }).catch(e=>setAllProjectIndexTab([]));
+                              }
                             }}>
                               Reject
                             </Link>
@@ -1047,10 +1134,10 @@ function Table(props) {
                     </div>
                   </td>
                 </tr>
-              )) : null
+              )) : <Alert variant="warning">No activity type found</Alert>
             )}
             {(type === 'Activities' && subType === 'Activity Items') && (
-              data?.data ? data?.data.map((item) => (
+              data?.data ? data?.data?.length > 0 ? data?.data.map((item) => (
                 <tr>
                   <td>{item.title}</td>
                   <td><img className="image-size" src={global.config.resourceUrl + item.image} alt="activity-item-image" /></td>
@@ -1118,7 +1205,20 @@ function Table(props) {
                     </div>
                   </td>
                 </tr>
-              )) : null
+              )) :
+              (
+                <tr>
+                  <td colspan="5">
+                    <Alert variant="warning"> No activity item found</Alert>
+                  </td>
+                </tr>
+              )  : (
+                <tr>
+                  <td colspan="5">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              )
             )}
           </tbody>
         </table>
@@ -1195,6 +1295,7 @@ function Table(props) {
                     window.scrollTo(0, 0)
                     setCurrentTab("all");
                     setActivePage(e);
+                    dispatch(updatePageNumber(e));
                   }}
                 />
               )
@@ -1225,6 +1326,7 @@ function Table(props) {
                     window.scrollTo(0, 0)
                     setCurrentTab("index");
                     setActivePage(e);
+                    dispatch(updatePageNumber(e));
                   }}
                 />
               )
