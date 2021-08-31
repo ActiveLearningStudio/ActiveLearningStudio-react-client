@@ -1,8 +1,8 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import Echo from 'laravel-echo';
+// import Echo from 'laravel-echo';
 
-import socketConnection from 'services/http.service';
+// import socketConnection from 'services/http.service';
 import playlistService from 'services/playlist.service';
 import * as actionTypes from '../actionTypes';
 
@@ -273,35 +273,35 @@ export const reorderPlaylistActivitiesAction = (playlist) => async (dispatch) =>
     });
 };
 
-export const updatedPlaylist = (userId) => async () => {
-  const echo = new Echo(socketConnection.notificationSocket());
+// export const updatedPlaylist = (userId) => async () => {
+//   const echo = new Echo(socketConnection.notificationSocket());
 
-  echo.private('playlist-update')
-    .listen('PlaylistUpdatedEvent', (msg) => {
-      if (msg.userId !== userId) {
-        const path = window.location.pathname;
+//   echo.private('playlist-update')
+//     .listen('PlaylistUpdatedEvent', (msg) => {
+//       if (msg.userId !== userId) {
+//         const path = window.location.pathname;
 
-        let message = '';
-        if (path.includes(`playlist/${msg.playlistId}`)) {
-          message = 'This playlist has been modified by other team member. Are you ok to refresh page to see what is updated?';
-        } else if (path.includes(`project/${msg.projectId}`)) {
-          message = 'This project has been modified by other team member. Are you ok to refresh page to see what is updated?';
-        }
+//         let message = '';
+//         if (path.includes(`playlist/${msg.playlistId}`)) {
+//           message = 'This playlist has been modified by other team member. Are you ok to refresh page to see what is updated?';
+//         } else if (path.includes(`project/${msg.projectId}`)) {
+//           message = 'This project has been modified by other team member. Are you ok to refresh page to see what is updated?';
+//         }
 
-        if (message) {
-          Swal.fire({
-            title: message,
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'Yes',
-            denyButtonText: 'No',
-          })
-            .then((result) => {
-              if (result.isConfirmed) {
-                window.location.reload();
-              }
-            });
-        }
-      }
-    });
-};
+//         if (message) {
+//           Swal.fire({
+//             title: message,
+//             showDenyButton: true,
+//             showCancelButton: true,
+//             confirmButtonText: 'Yes',
+//             denyButtonText: 'No',
+//           })
+//             .then((result) => {
+//               if (result.isConfirmed) {
+//                 window.location.reload();
+//               }
+//             });
+//         }
+//       }
+//     });
+// };
