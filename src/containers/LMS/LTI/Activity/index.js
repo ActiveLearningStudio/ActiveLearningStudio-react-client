@@ -1,5 +1,5 @@
 /* eslint-disable react/no-this-in-sfc */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useReducer } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -11,6 +11,15 @@ import { loadH5pResourceXapi } from 'store/actions/resource';
 import { loadH5pResourceSettings } from 'store/actions/gapi';
 import { gradePassBackAction, activityInitAction } from 'store/actions/canvas';
 import './style.scss';
+
+const reducer = (intervalPointer, action) => {
+  if (action.type === 'set') return action.intervalId;
+
+  if (action.type === 'clear') {
+    clearInterval(intervalPointer);
+    return null;
+  }
+};
 
 const Activity = (props) => {
   const {
@@ -36,7 +45,7 @@ const Activity = (props) => {
   const customApiDomainUrl = searchParams.get('custom_api_domain_url');
   const customCourseCode = searchParams.get('custom_course_code');
   const [xAPILoaded, setXAPILoaded] = useState(false);
-  const [intervalPointer, setIntervalPointer] = useState(null);
+  const [intervalPointer, dispatch] = useReducer(reducer, 0);
   const [xAPIEventHooked, setXAPIEventHooked] = useState(false);
 
   // Init
@@ -44,7 +53,7 @@ const Activity = (props) => {
     window.scrollTo(0, 0);
     loadH5pSettings(match.params.activityId);
     activityInit();
-  }, [match]);
+  }, [activityId]);
 
   // Load H5P
   useEffect(() => {
@@ -78,40 +87,39 @@ const Activity = (props) => {
       script.async = false;
       document.body.appendChild(script);
     });
-
-    // Loops until it finds H5P object
-    setIntervalPointer(setInterval(() => {
-      console.log('Enterig h5p check interval function');
-      console.log(intervalPointer);
-      console.log(xAPILoaded);
-
-      const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
-      if (!x.H5P) return;
-      if (!x.H5P.externalDispatcher) return;
-
-      clearInterval(intervalPointer);
-      setIntervalPointer(null);
-      setXAPILoaded(true);
-    }));
   }, [h5pSettings]);
+
+  useEffect(() => {
+    // Loops until it finds H5P object
+    const intervalId = setInterval(() => {
+      const x = document.getElementsByClassName('h5p-iframe')[0]?.contentWindow;
+      if (!x?.H5P?.externalDispatcher) return;
+
+      console.log('H5P dispatcher found');
+      setXAPILoaded(true);
+      console.log(`Clearing interval ${intervalPointer}`);
+      dispatch({ type: 'clear' });
+    }, 500);
+    dispatch({ type: 'set', intervalId });
+  }, []);
 
   // Patch into xAPI events
   useEffect(() => {
-    console.log('AE entered hook func');
+    console.log('Patching into xAPI event dispatcher');
     if (!xAPILoaded || !isLearner || xAPIEventHooked) {
-      console.log('hit over here');
+      console.log('Abort patching into xAPI event dispatcher');
       return;
     }
 
-    const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
+    const x = document.getElementsByClassName('h5p-iframe')[0]?.contentWindow;
     // if (!x.H5P.externalDispatcher || xAPIHelper.isxAPINeeded(match.path) === false) return;
     if (!x.H5P.externalDispatcher || xAPIHelper.isxAPINeeded(match.path) === false) {
-      console.log('AE missing dispatcher');
+      console.log('Missing H5P event dispatcher');
       return;
     }
-    console.log('AE found dispatcher, trying to hook');
+
     x.H5P.externalDispatcher.on('xAPI', function (event) {
-      console.log('AE running listener');
+      console.log('Running xAPI listener callback');
       const params = {
         path: match.path,
         studentId,
@@ -162,7 +170,7 @@ const Activity = (props) => {
         sendStatement(JSON.stringify(xapiData));
       }
     });
-    console.log('AE maybe hooked?');
+    console.log('Patched into xAPI event dispatcher');
     setXAPIEventHooked(true);
   }, [xAPILoaded]);
 
@@ -186,11 +194,16 @@ const Activity = (props) => {
   );
 };
 
+Activity.defaultProps = {
+  h5pSettings: null,
+  attemptId: null,
+};
+
 Activity.propTypes = {
   match: PropTypes.object.isRequired,
-  h5pSettings: PropTypes.object.isRequired,
+  h5pSettings: PropTypes.object,
   ltiFinished: PropTypes.bool.isRequired,
-  attemptId: PropTypes.number.isRequired,
+  attemptId: PropTypes.number,
   loadH5pSettings: PropTypes.func.isRequired,
   sendStatement: PropTypes.func.isRequired,
   gradePassBack: PropTypes.func.isRequired,
