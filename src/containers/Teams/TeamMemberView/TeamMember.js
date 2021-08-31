@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeUserRole } from 'store/actions/team';
+import { changeUserRole, getTeamPermission, loadTeamAction } from 'store/actions/team';
 
 function TeamMember(props) {
   const {
@@ -28,10 +28,14 @@ function TeamMember(props) {
   } = props;
   const [activeRole, setActiveRole] = useState(role?.id);
   const { roles } = useSelector((state) => state.team);
+  const { activeOrganization } = useSelector((state) => state.organization);
+  const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const roleChangeHandler = (roleId) => {
+  const roleChangeHandler = async (roleId) => {
     setActiveRole(roleId);
-    dispatch(changeUserRole(teamId, { user_id: id, role_id: roleId }));
+    await dispatch(changeUserRole(teamId, { user_id: id, role_id: roleId }));
+    await dispatch(loadTeamAction(teamId));
+    await dispatch(getTeamPermission(activeOrganization?.id, teamId));
   };
   const handleRemove = useCallback(() => {
     removeMember(teamId, id, iEmail)
@@ -67,7 +71,7 @@ function TeamMember(props) {
                   {role.name === 'member' && <div style={{ color: 'red' }}> Member </div>}
                 </>
               ) : null}
-              {`Assigned to ${projects.length} Projects`}
+              {/* {`Assigned to ${projects.length} Projects`} */}
             </h2>
 
             {projects.length > 0 && (
@@ -91,7 +95,10 @@ function TeamMember(props) {
               <span>Invited</span>
             </button>
           )}
-          {(teamPermission?.Team?.includes('team:remove-team-user') || teamPermission?.Team?.includes('team:add-team-user') || permission?.Team?.includes('team:edit')) && (
+          {(teamPermission?.Team?.includes('team:remove-team-user')
+          || teamPermission?.Team?.includes('team:add-team-user')
+          || permission?.Team?.includes('team:edit'))
+          && auth.user.id !== id && (
             <div className="role-container">
               <select value={activeRole} onChange={(e) => roleChangeHandler(e.target.value)}>
                 {roles?.map((roletype) => (
