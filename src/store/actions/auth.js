@@ -97,7 +97,8 @@ export const googleLoginAction = (data) => async (dispatch) => {
     ]);
 
     storageService.setItem(USER_TOKEN_KEY, response.access_token);
-
+    storageService.setItem(CURRENT_ORG, activeOrganization?.domain);
+    await dispatch(getAllPermission(activeOrganization?.id || 1));
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
       payload: { user: response.user },

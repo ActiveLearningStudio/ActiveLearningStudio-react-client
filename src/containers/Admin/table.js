@@ -736,7 +736,7 @@ function Table(props) {
                       <td>{row.description}</td>
 
                       <td>{row.id}</td>
-                      <td>{row.users?.[0].email}</td>
+                      <td>{row.users?.[0]?.email}</td>
                       <td>{row.indexing_text}</td>
                       {/* <td>{row.organization_id}</td> */}
                       <td>
@@ -874,7 +874,7 @@ function Table(props) {
                       {/* <td>{row.description}</td> */}
 
                       <td>{row.id}</td>
-                      <td>{row.users?.[0].email}</td>
+                      <td>{row.users?.[0]?.email}</td>
                       <td>{row.indexing_text}</td>
 
                       <td>{row.organization_id}</td>
@@ -932,7 +932,7 @@ function Table(props) {
                       {/* <td>{row.description}</td> */}
 
                       <td>{row.id}</td>
-                      <td>{row.users?.[0].email}</td>
+                      <td>{row.users?.[0]?.email}</td>
                       <td>{row.indexing_text}</td>
 
                       {/* <td>{row.organization_id}</td> */}

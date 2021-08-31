@@ -1,4 +1,5 @@
 import teamService from 'services/team.service';
+import Swal from 'sweetalert2';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
 
@@ -349,5 +350,30 @@ export const getTeamPermission = (orgId, TeamId) => async (dispatch) => {
   dispatch({
     type: actionTypes.ADD_TEAM_PERMISSION,
     payload: result?.teamPermissions,
+  });
+};
+
+export const getTeamProject = () => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const result = await teamService.getTeamProject(activeOrganization?.id);
+  dispatch({
+    type: actionTypes.GET_TEAM_PROJECTS,
+    payload: result.data,
+  });
+  return result.data;
+};
+
+export const changeUserRole = (teamId, data) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const result = await teamService.changeUserRole(activeOrganization?.id, teamId, data);
+  console.log(result);
+  Swal.fire({
+    icon: 'success',
+    message: result,
+  });
+  dispatch({
+    type: actionTypes.CHANGE_USER_ROLE,
   });
 };

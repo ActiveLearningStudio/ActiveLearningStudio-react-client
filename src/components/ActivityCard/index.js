@@ -17,6 +17,7 @@ const ActivityCard = (props) => {
     setModalShow,
     setCurrentActivity,
     playlist,
+    teamPermission,
   } = props;
   const organization = useSelector((state) => state.organization);
   return (
@@ -71,6 +72,7 @@ const ActivityCard = (props) => {
                 <ResourceCardDropdown
                   playlist={playlist}
                   resource={activity}
+                  teamPermission={teamPermission || {}}
                 />
               </div>
             )}
@@ -89,6 +91,7 @@ ActivityCard.propTypes = {
   setModalShow: PropTypes.func,
   setCurrentActivity: PropTypes.func,
   playlist: PropTypes.object.isRequired,
+  teamPermission: PropTypes.object.isRequired,
 };
 
 ActivityCard.defaultProps = {

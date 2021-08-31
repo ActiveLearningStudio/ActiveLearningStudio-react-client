@@ -18,6 +18,7 @@ const ResourceCardDropdown = (props) => {
     deleteResource,
     playlist,
     match,
+    teamPermission,
   } = props;
   const organization = useSelector((state) => state.organization);
   const { permission } = organization;
@@ -52,7 +53,7 @@ const ResourceCardDropdown = (props) => {
             Preview
           </Dropdown.Item>
         )}
-        {permission?.Activity?.includes('activity:edit') && (
+        {(permission?.Activity?.includes('activity:edit') || teamPermission?.Team?.includes('team:edit-activity')) && (
           <Dropdown.Item
             as={Link}
             to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
@@ -73,10 +74,10 @@ const ResourceCardDropdown = (props) => {
             Duplicate
           </Dropdown.Item>
         )}
-        {permission?.Activity?.includes('activity:share') && (
+        {(permission?.Activity?.includes('activity:share') || teamPermission?.Team?.includes('team:share-activity')) && (
           <ResourceCardDropdownShare resource={resource} />
         )}
-        {permission?.Activity?.includes('activity:delete') && (
+        {(permission?.Activity?.includes('activity:delete') || teamPermission?.Team?.includes('team:delete-activity')) && (
           <Dropdown.Item onClick={handleDelete}>
             <FontAwesomeIcon icon="times-circle" className="mr-2" />
             Delete
@@ -93,6 +94,7 @@ ResourceCardDropdown.propTypes = {
   playlist: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   deleteResource: PropTypes.func.isRequired,
+  teamPermission: PropTypes.object.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

@@ -28,6 +28,7 @@ const ResourceCardDropdown = (props) => {
     closeSafariMontageTool,
     safariMontagePublishTool,
     match,
+    teamPermission,
   } = props;
   const organization = useSelector((state) => state.organization);
   const { permission } = organization;
@@ -75,7 +76,7 @@ const ResourceCardDropdown = (props) => {
           Preview
         </Dropdown.Item>
         )}
-        {permission?.Activity?.includes('activity:edit') && (
+        {(permission?.Activity?.includes('activity:edit') || teamPermission?.Team?.includes('team:edit-activity')) && (
           <Dropdown.Item
             as={Link}
             to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
@@ -141,7 +142,7 @@ const ResourceCardDropdown = (props) => {
             </ul>
           </li>
         )}
-        {permission?.Activity?.includes('activity:share') && (
+        {(permission?.Activity?.includes('activity:share') || teamPermission?.Team?.includes('team:share-activity')) && (
           <Dropdown.Item
             onClick={() => {
               shareActivity(resource.id);
@@ -223,7 +224,7 @@ const ResourceCardDropdown = (props) => {
             xAPI Download
           </Dropdown.Item>
         )}
-        {permission?.Activity?.includes('activity:delete') && (
+        {(permission?.Activity?.includes('activity:delete') || teamPermission?.Team?.includes('team:delete-activity')) && (
           <Dropdown.Item onClick={handleDelete}>
             <FontAwesomeIcon icon="times-circle" className="mr-2" />
             Delete
@@ -263,6 +264,7 @@ ResourceCardDropdown.propTypes = {
   loadSafariMontagePublishTool: PropTypes.func.isRequired,
   closeSafariMontageTool: PropTypes.func.isRequired,
   safariMontagePublishTool: PropTypes.string.isRequired,
+  teamPermission: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({

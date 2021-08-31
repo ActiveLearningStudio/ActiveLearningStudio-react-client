@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
@@ -13,6 +13,7 @@ import { loadPlaylistAction, loadProjectPlaylistsAction, LoadHP } from 'store/ac
 import { shareActivity, removeShareActivity, loadH5pResourceSettings } from 'store/actions/resource';
 import { collapsedSideBar } from 'store/actions/ui';
 import Unauthorized from 'components/Unauthorized';
+import { getTeamPermission } from 'store/actions/team';
 import PreviousLink from './components/PreviousLink';
 import NextLink from './components/NextLink';
 import ActivitiesList from './components/ActivitiesList';
@@ -36,7 +37,9 @@ function PlaylistPreview(props) {
     setCollapsed,
   } = props;
   const organization = useSelector((state) => state.organization);
+  const { teamPermission } = useSelector((state) => state.team);
   const { permission } = organization;
+  const dispatch = useDispatch();
   useEffect(() => {
     window.scrollTo(0, 0);
     loadPlaylist(projectId, playlistId);
@@ -47,14 +50,18 @@ function PlaylistPreview(props) {
     loadPlaylist,
   ]);
 
-  useEffect(() => {
-    loadProjectPlaylists(projectId);
-  }, [projectId, loadProjectPlaylists]);
-
   let { selectedPlaylist } = playlist;
   if (selectedPlaylist && selectedPlaylist.id !== playlistId) {
     selectedPlaylist = null;
   }
+  useEffect(() => {
+    loadProjectPlaylists(projectId);
+  }, [projectId, loadProjectPlaylists]);
+  useEffect(() => {
+    if (!teamPermission && organization?.currentOrganization?.id && selectedPlaylist?.project?.team?.id) {
+      dispatch(getTeamPermission(organization?.currentOrganization?.id, selectedPlaylist?.project?.team?.id));
+    }
+  }, [teamPermission, selectedPlaylist, dispatch, organization?.currentOrganization?.id]);
 
   let currentActivityId = activityId;
   let currentActivity;
@@ -294,10 +301,11 @@ function PlaylistPreview(props) {
                       playlistId={playlistId}
                       activities={selectedPlaylist.activities}
                       playlist={playlist.selectedPlaylist}
+                      teamPermission={teamPermission || {}}
                     />
                   </div>
                 </Tab>
-                {permission?.Activity?.includes('activity:share') && (
+                {(permission?.Activity?.includes('activity:share') || teamPermission?.Team?.includes('team:share-activity')) && (
                   <Tab eventKey="profile" title="Share">
                     <div className="watcher spaner">
                       {activityShared && (
