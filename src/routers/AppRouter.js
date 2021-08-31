@@ -27,7 +27,7 @@ const LoginPage = loadable(() => import('../containers/Auth/LoginPage'));
 const ProjectShareTemplate = loadable(() => import('../containers/ProjectShareTemplate'));
 const SubscribePage = loadable(() => import('../containers/Auth/SubscribePage'));
 const RegisterPage = loadable(() => import('../containers/Auth/RegisterPage'));
-const ForgotPasswordPage = loadable(() => import('../containers/Auth/ForgotPasswordPage'));
+// const ForgotPasswordPage = loadable(() => import('../containers/Auth/ForgotPasswordPage'));
 const ResetPasswordPage = loadable(() => import('../containers/Auth/ResetPasswordPage'));
 const ConfirmEmailPage = loadable(() => import('../containers/Auth/ConfirmEmailPage'));
 const NeafRegister = loadable(() => import('../containers/Auth/NeafRegistration'));
@@ -39,7 +39,7 @@ const LtiLogin = loadable(() => import('../containers/Auth/LtiLogin'));
 const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
 const ChangePasswordPage = loadable(() => import('../containers/Account/ChangePasswordPage'));
 // const DashboardPage = loadable(() => import('../containers/Dashboard'));
-const NotificationPage = loadable(() => import('../containers/Notification'));
+// const NotificationPage = loadable(() => import('../containers/Notification'));
 
 const ProjectsPage = loadable(() => import('../containers/Projects'));
 const PlaylistsPage = loadable(() => import('../containers/Playlists'));
@@ -47,7 +47,7 @@ const PreviewPage = loadable(() => import('../containers/Preview'));
 const LtiPreviewPage = loadable(() => import('../containers/LtiPreviewPage'));
 const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared'));
 const SecureProjectPreview = loadable(() => import('../containers/SecureProjectPreview'));
-const SearchResult = loadable(() => import('../containers/Search'));
+// const SearchResult = loadable(() => import('../containers/Search'));
 // const LtiModel = loadable(() => import('../containers/LtiModel'));
 const TeamsPage = loadable(() => import('../containers/Teams'));
 const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
@@ -173,8 +173,8 @@ const AppRouter = (props) => {
         <PublicRoute exact path="/login/:organization" component={LoginPage} />
         <PublicRoute exact path="/register" component={RegisterPage} />
         <PublicRoute exact path="/register/:organization" component={RegisterPage} />
-        <PublicRoute exact path="/forgot-password" component={ForgotPasswordPage} />
-        <PublicRoute exact path="/forgot-password/:organization" component={ForgotPasswordPage} />
+        {/* <PublicRoute exact path="/forgot-password" component={ForgotPasswordPage} />
+        <PublicRoute exact path="/forgot-password/:organization" component={ForgotPasswordPage} /> */}
         <PublicRoute exact path="/reset-password" component={ResetPasswordPage} />
         <PublicRoute exact path="/verify-email" component={ConfirmEmailPage} />
         <PublicRoute exact path="/neaf-register" component={NeafRegister} />
@@ -197,7 +197,7 @@ const AppRouter = (props) => {
                      <PrivateRoute exact path="/org/:organization/change-password" component={ChangePasswordPage} />
 
                      {/* <PrivateRoute exact path="/org/:organization/dashboard" component={DashboardPage} /> */}
-                     <PrivateRoute exact path="/org/:organization/notification" component={NotificationPage} />
+                     {/* <PrivateRoute exact path="/org/:organization/notification" component={NotificationPage} /> */}
                      <PrivateRoute exact path="/org/:organization/admin" component={AdminPanel} />
                      <PrivateRoute exact path="/org/:organization/teams" component={TeamsPage} overview />
                      <PrivateRoute exact path="/org/:organization/teams/create-team" component={TeamsPage} creation />
@@ -261,11 +261,11 @@ const AppRouter = (props) => {
                        openEditResourcePopup
                      />
 
-                     <PrivateRoute
+                     {/* <PrivateRoute
                        exact
                        path="/org/:organization/search"
                        component={SearchResult}
-                     />
+                     /> */}
 
                      <PrivateRoute
                        exact

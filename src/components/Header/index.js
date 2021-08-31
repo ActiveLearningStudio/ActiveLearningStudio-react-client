@@ -19,12 +19,12 @@ import safari from 'assets/images/safari.png';
 import shepherds from 'assets/images/shepherds.svg';
 import sndt from 'assets/images/SNDT-LOGO-blue.png';
 import nevada from 'assets/images/nevada.png';
-import { SHOW_HELP } from 'store/actionTypes';
+// import { SHOW_HELP } from 'store/actionTypes';
 import add from 'assets/images/add-icon.png';
 // import profile from 'assets/images/user-profile.png';
-import searchImg from 'assets/images/search.png';
+// import searchImg from 'assets/images/search.png';
 import createProjectIcon from 'assets/images/create-project-icon.png';
-import help from 'assets/images/help.png';
+// import help from 'assets/images/help.png';
 import edit from 'assets/images/edit1.png';
 import changePassword from 'assets/images/changepassword.png';
 import logoutIcon from 'assets/images/logout.png';
@@ -34,8 +34,8 @@ import { logoutAction } from 'store/actions/auth';
 import { Event } from 'trackers/ga';
 
 import MultitenancyDropdown from './multitenancyDropdown';
-import SearchForm from './searchForm';
-import HeaderNotification from './notification';
+// import SearchForm from './searchForm';
+// import HeaderNotification from './notification';
 
 import './style.scss';
 // import urllink from 'socket.io-client/lib/url';
@@ -108,12 +108,12 @@ function Header(props) {
           </div>
         </div>
         <div className="tophd_right flexdiv search-div  d-flex flex-wrap ">
-          {(permission?.Search?.includes('search:advance') || permission?.Search?.includes('search:dashboard'))
+          {/* {(permission?.Search?.includes('search:advance') || permission?.Search?.includes('search:dashboard'))
            && (
              <div className="search-div">
                <SearchForm />
              </div>
-           )}
+           )} */}
           <div className="navbar-link">
             <ul className="top-info flex-div">
               {false && permission?.Organization?.includes('organization:view') && (
@@ -140,7 +140,7 @@ function Header(props) {
               <li>
                 <MultitenancyDropdown />
               </li>
-              <li>
+              {/* <li>
                 <div
                   style={{ padding: '0.375rem 0.75rem', cursor: 'pointer' }}
                   onClick={() => {
@@ -155,7 +155,7 @@ function Header(props) {
                     Help
                   </p>
                 </div>
-              </li>
+              </li> */}
               {false && Project?.includes('project:create') && (
                 <li className="align-items-center" style={{ paddingTop: '4px' }}>
                   <Dropdown className="create-project">
@@ -183,12 +183,12 @@ function Header(props) {
                   </Dropdown>
                 </li>
               )}
-              <HeaderNotification />
-              <li className="mobile-links">
+              {/* <HeaderNotification /> */}
+              {/* <li className="mobile-links">
                 <Link to="#">
                   <img src={searchImg} alt="search" />
                 </Link>
-              </li>
+              </li> */}
               <li className="menu-user-settings d-flex align-items-center">
                 <Dropdown>
                   <Dropdown.Toggle className="align-items-center">

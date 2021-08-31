@@ -6,7 +6,7 @@ import { Field, reduxForm } from 'redux-form';
 import Swal from 'sweetalert2';
 
 import computer from 'assets/images/computer.svg';
-import pexel from 'assets/images/pexel.png';
+import PexelImg from 'assets/images/pexels-photo-593158.jpeg';
 import { FadeDiv } from 'utils';
 import {
   uploadResourceThumbnailAction,
@@ -235,7 +235,7 @@ let ResourceDescribeActivity = (props) => {
                               <div className="imgbox">
                                 {/* eslint-disable-next-line max-len */}
                                 <img
-                                  src="https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280"
+                                  src={PexelImg}
                                   alt=""
                                 />
                               </div>
@@ -246,13 +246,13 @@ let ResourceDescribeActivity = (props) => {
                         <div className="button-flex">
                           <h2>Change thumbnail from below options</h2>
 
-                          <div
+                          {/* <div
                             className="pexel"
                             onClick={() => setModalShow(true)}
                           >
                             <img src={pexel} alt="pexel" />
                             <p>Select from Pexels</p>
-                          </div>
+                          </div> */}
 
                           <div
                             className="gallery"

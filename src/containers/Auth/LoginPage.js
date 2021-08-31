@@ -2,10 +2,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import validator from 'validator';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { GoogleLogin } from 'react-google-login';
+ import { GoogleLogin } from 'react-google-login';
 
 // import bg from 'assets/images/loginbg.png';
 // import bg1 from 'assets/images/loginbg2.png';
@@ -261,9 +261,9 @@ class LoginPage extends React.Component {
                   />
                   Keep me logged in.
                 </label>
-                <div className="forgot-password-box">
+                {/* <div className="forgot-password-box">
                   <Link to="/forgot-password">Forgot Password ?</Link>
-                </div>
+                </div> */}
               </div>
 
               <Error error={error} />
@@ -294,7 +294,7 @@ class LoginPage extends React.Component {
                 </a>
               </p>
 
-              <div className="form-group text-center mb-0">
+              {/* <div className="form-group text-center mb-0">
                 <GoogleLogin
                   clientId={global.config.gapiClientId}
                   theme="dark"
@@ -310,7 +310,7 @@ class LoginPage extends React.Component {
                   cookiePolicy="single_host_origin"
                 />
 
-              </div>
+              </div> */}
 
               <div className="termsandcondition">
                 By clicking the &quot;Sign Up&quot; button, you are creating a CurrikiStudio  account, and you agree to Curriki&apos; s

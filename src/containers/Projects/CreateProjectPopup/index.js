@@ -11,10 +11,9 @@ import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import Swal from 'sweetalert2';
 import { Alert } from 'react-bootstrap';
-
 import computer from 'assets/images/computer.svg';
 import loader from 'assets/images/loader.svg';
-import pexel from 'assets/images/pexel.png';
+import PexelImg from 'assets/images/project-pexels-photo.jpeg';
 import { required, maxLength } from 'utils';
 import {
   createProjectAction,
@@ -302,7 +301,7 @@ let CreateProjectPopup = (props) => {
                     <div className="imgbox">
                       {/* eslint-disable-next-line max-len */}
                       <img
-                        src="https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280"
+                        src={PexelImg}
                         alt=""
                       />
                     </div>
@@ -313,10 +312,10 @@ let CreateProjectPopup = (props) => {
               <div className="button-flex">
                 <h2>Change thumbnail from below options</h2>
 
-                <div className="pexel" onClick={() => setModalShow(true)}>
+                {/* <div className="pexel" onClick={() => setModalShow(true)}>
                   <img src={pexel} alt="pexel" />
                   <p>Select from Pexels</p>
-                </div>
+                </div> */}
 
                 <div
                   className="gallery"
@@ -350,7 +349,7 @@ let CreateProjectPopup = (props) => {
             <Field
               name="vType"
               component="select"
-              // onChange={({ target }) => { currentVisibilityType(target.value); }}
+            // onChange={({ target }) => { currentVisibilityType(target.value); }}
             >
               {visibilityTypeArray.map((vT) => (
                 <option className="all-tg-lister" value={vT.id}>{vT.display_name}</option>

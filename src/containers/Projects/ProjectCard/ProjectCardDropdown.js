@@ -106,7 +106,7 @@ const ProjectCardDropdown = (props) => {
                   dispatch(googleShare(false));
                 }}
               >
-                <a>Google Classroom</a>
+                {/* <a>Google Classroom</a> */}
               </li>
 
               {allLms.shareVendors && allLms.shareVendors.map((data) => (
