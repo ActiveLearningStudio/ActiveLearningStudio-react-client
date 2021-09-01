@@ -134,6 +134,56 @@ export const simpleSearchAction = (values) => async (dispatch) => {
   return response;
 };
 
+export const openprojectsearch = (values) => async (dispatch) => {
+  const activeGrades = [];
+  if (values.gradeArray) {
+    values.gradeArray.forEach((grade) => {
+      let temp;
+      if (grade.includes('and')) {
+        temp = grade.replace('and', '&');
+        activeGrades.push(temp);
+      } else {
+        activeGrades.push(grade);
+      }
+    });
+  }
+  const activeSubjects = [];
+  if (values.subjectArray) {
+    values.subjectArray.forEach((subject) => {
+      let temp;
+      if (subject.includes('and')) {
+        temp = subject.replace('and', '&');
+        activeSubjects.push(temp);
+      } else {
+        activeSubjects.push(subject);
+      }
+    });
+  }
+  const sendData = {
+    query: values.phrase,
+    h5pLibraries: values.standardArray,
+    from: values.from,
+    size: values.size,
+    author: values.author || undefined,
+    model: values.model || undefined,
+    negativeQuery: values.no_words || undefined,
+    subjectIds: activeSubjects,
+    educationLevelIds: activeGrades,
+    startDate: values.fromDate,
+    endDate: values.toDate,
+    organization_id: 1,
+    searchType: 'showcase_projects',
+  };
+  const response = await searchService.opensearch(sendData);
+  if (response.errors) {
+    if (response.errors.query) {
+      Swal.fire(response.errors.query[0]);
+    }
+  } else {
+    dispatch(searchRedux(response.data, values.phrase, response.meta));
+  }
+};
+
 export const cloneProject = (projectID) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;

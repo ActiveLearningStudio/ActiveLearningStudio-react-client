@@ -111,6 +111,11 @@ const getCourses = () => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const opensearch = (sendData) => httpService
+  .get(`/${apiVersion}/search/public`, '', sendData)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   searchResult,
   cloneProject,
@@ -120,4 +125,5 @@ export default {
   googleShareToken,
   getCourses,
   advancedSearch,
+  opensearch,
 };

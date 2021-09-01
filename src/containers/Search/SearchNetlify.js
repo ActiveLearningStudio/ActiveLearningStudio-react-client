@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -13,7 +13,6 @@ import { educationLevels, subjects } from 'components/ResourceCard/AddResource/d
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import Pagination from 'react-js-pagination';
-import QueryString from 'query-string';
 import { simpleSearchAction } from 'store/actions/search';
 import { loadResourceTypesAction } from 'store/actions/resource';
 
@@ -38,108 +37,8 @@ function SearchInterface(props) {
   const [activeType, setActiveType] = useState([]);
   const [activeSubject, setActiveSubject] = useState([]);
   const [activeEducation, setActiveEducation] = useState([]);
-  const [searchType, setSearchType] = useState(null);
-  const [authorName, SetAuthor] = useState('');
-  useMemo(() => {
-    setActiveEducation([]);
-    setActiveSubject([]);
-    setActiveType([]);
-    // eslint-disable-next-line no-restricted-globals
-    const query = QueryString.parse(location.search);
-    console.log(query);
-    if (query.type) {
-      if (query.type === 'private') {
-        setSearchType('private');
-      } else if (query.type === 'public') {
-        setSearchType('public');
-      } else {
-        setSearchType('orgSearch');
-      }
-    }
-    if (query.h5p) {
-      setActiveType(query.h5p.split(','));
-    }
-    if (query.grade) {
-      // if (query.grade.includes('and')) {
-      //   query.grade = query.grade.replace('and', '&');
-      // }
-      setActiveSubject(query?.grade?.replace('and', '&')?.split(','));
-    }
-    if (query.education) {
-      // if (query.education.includes('and')) {
-      //   query.education = query.education.replace('and', '&');
-      // }
-      setActiveEducation(query?.education?.replace('and', '&')?.split(','));
-    }
-    if (query.author) {
-      SetAuthor(query.author);
-    }
-    if (query?.q) {
-      setSearchInput(query?.q);
-    }
-  // eslint-disable-next-line no-restricted-globals
-  }, [location.search]);
-  window.onbeforeunload = () => {
-    localStorage.setItem('refreshPage', 'true');
-  };
-  useEffect(() => {
-    if (localStorage.getItem('refreshPage') === 'true' && currentOrganization && searchType) {
-      let dataSend;
-      if (searchType === 'orgSearch') {
-        dataSend = {
-          subjectArray: activeSubject,
-          gradeArray: activeEducation,
-          standardArray: activeType,
-          author: authorName || undefined,
-          type: searchType,
-          from: 0,
-          size: 20,
-        };
-      } else {
-        dataSend = {
-          phrase: searchInput.trim(),
-          subjectArray: activeSubject,
-          gradeArray: activeEducation,
-          standardArray: activeType,
-          author: authorName || undefined,
-          type: searchType,
-          from: 0,
-          size: 20,
-        };
-      }
-      let result;
-      (async () => {
-        result = await dispatch(simpleSearchAction(dataSend));
-      })();
-      setTotalCount(result?.meta?.total);
-      const tempEducation = [];
-      const tempSubject = [];
-      if (activeEducation) {
-        activeEducation.forEach((edu) => {
-          if (String(edu).includes('&')) {
-            const temp = String(edu).replace('&', 'and');
-            tempEducation.push(temp);
-          } else {
-            tempEducation.push(edu);
-          }
-        });
-        setActiveEducation(tempEducation);
-      }
-      if (activeSubject) {
-        activeSubject.forEach((sub) => {
-          if (String(sub).includes('&')) {
-            const temp = String(sub).replace('&', 'and');
-            tempSubject.push(temp);
-          } else {
-            tempSubject.push(sub);
-          }
-        });
-        setActiveSubject(tempSubject);
-      }
-      // eslint-disable-next-line max-len
-      history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`);
-    }
-  }, [currentOrganization]);
+  const [searchType] = useState(null);
+  const [authorName] = useState('');
   useEffect(() => {
     if (allState.searchResult) {
       if (allState.searchResult.length > 0) {
@@ -170,25 +69,9 @@ function SearchInterface(props) {
   }, [allState.searchMeta, allState.searchResult, totalCount]);
 
   useEffect(() => {
-    if (localStorage.getItem('loading') === 'true') {
-      Swal.fire({
-        html: 'Searching...', // add html attribute if you want or remove
-        allowOutsideClick: false,
-        onBeforeOpen: () => {
-          Swal.showLoading();
-        },
-      });
-    }
-  });
-
-  useEffect(() => {
-    // setTimeout(() => {
-    //   Swal.close();
-    //   localStorage.setItem('loading', 'false');
-    // }, 5000);
-  });
-
-  useEffect(() => {
+    setActiveEducation([]);
+    setActiveSubject([]);
+    setActiveType([]);
     if (activityTypesState.length === 0) {
       dispatch(loadResourceTypesAction());
     }
@@ -261,14 +144,13 @@ function SearchInterface(props) {
                                 <Card.Body>
                                   <div className="body-search">
                                     <input
-                                      style={{ display: searchType === 'orgSearch' ? 'none' : 'block' }}
                                       value={searchInput}
                                       onChange={(e) => {
                                         setSearchInput(e.target.value);
                                       }}
                                       onKeyPress={async (e) => {
                                         if (e.key === 'Enter') {
-                                          if (!searchInput.trim() && searchType !== 'orgSearch') {
+                                          if (!searchInput.trim()) {
                                             Swal.fire('Search field is required.');
                                           } else if (searchInput.length > 255) {
                                             Swal.fire('Character limit should be less than 255.');
@@ -281,29 +163,16 @@ function SearchInterface(props) {
                                                 Swal.showLoading();
                                               },
                                             });
-                                            let dataSend;
-                                            if (searchType === 'orgSearch') {
-                                              dataSend = {
-                                                subjectArray: activeSubject,
-                                                gradeArray: activeEducation,
-                                                authors: authorName || undefined,
-                                                standardArray: activeType,
-                                                type: searchType,
-                                                from: 0,
-                                                size: 20,
-                                              };
-                                            } else {
-                                              dataSend = {
-                                                phrase: searchInput.trim(),
-                                                subjectArray: activeSubject,
-                                                gradeArray: activeEducation,
-                                                authors: authorName || undefined,
-                                                standardArray: activeType,
-                                                type: searchType,
-                                                from: 0,
-                                                size: 20,
-                                              };
-                                            }
+                                            const dataSend = {
+                                              phrase: searchInput.trim(),
+                                              subjectArray: activeSubject,
+                                              gradeArray: activeEducation,
+                                              authors: authorName || undefined,
+                                              standardArray: activeType,
+                                              type: searchType,
+                                              size: 20,
+                                              organization_id: 1,
+                                            };
                                             const result = await dispatch(simpleSearchAction(dataSend));
                                             setTotalCount(result.meta?.total);
                                             const tempEducation = [];
@@ -338,24 +207,10 @@ function SearchInterface(props) {
                                       type="search"
                                       placeholder="Search"
                                     />
-                                    <div className="form-group" style={{ display: permission?.Organization?.includes('organization:view-user') && searchType !== 'private' ? 'block' : 'none' }}>
-                                      <input
-                                        placeholder="Enter author name"
-                                        className="authorName"
-                                        value={authorName}
-                                        onChange={({ target }) => {
-                                          if (target.value) {
-                                            SetAuthor(target.value);
-                                          } else {
-                                            SetAuthor('');
-                                          }
-                                        }}
-                                      />
-                                    </div>
                                     <div
                                       className="src-btn"
                                       onClick={async () => {
-                                        if (!searchInput.trim() && searchType !== 'orgSearch') {
+                                        if (!searchInput.trim()) {
                                           Swal.fire('Search field is required.');
                                         } else if (searchInput.length > 255) {
                                           Swal.fire('Character limit should be less than 255.');
@@ -368,29 +223,17 @@ function SearchInterface(props) {
                                               Swal.showLoading();
                                             },
                                           });
-                                          let dataSend;
-                                          if (searchType === 'orgSearch') {
-                                            dataSend = {
-                                              subjectArray: activeSubject,
-                                              gradeArray: activeEducation,
-                                              standardArray: activeType,
-                                              author: authorName || undefined,
-                                              type: searchType,
-                                              from: 0,
-                                              size: 20,
-                                            };
-                                          } else {
-                                            dataSend = {
-                                              phrase: searchInput.trim(),
-                                              subjectArray: activeSubject,
-                                              author: authorName || undefined,
-                                              gradeArray: activeEducation,
-                                              standardArray: activeType,
-                                              type: searchType,
-                                              from: 0,
-                                              size: 20,
-                                            };
-                                          }
+                                          const dataSend = {
+                                            phrase: searchInput.trim(),
+                                            subjectArray: activeSubject,
+                                            author: authorName || undefined,
+                                            gradeArray: activeEducation,
+                                            standardArray: activeType,
+                                            type: searchType,
+                                            from: 0,
+                                            size: 20,
+                                            organization_id: 1,
+                                          };
                                           const result = await dispatch(simpleSearchAction(dataSend));
                                           setTotalCount(result.meta?.total);
                                           const tempEducation = [];
