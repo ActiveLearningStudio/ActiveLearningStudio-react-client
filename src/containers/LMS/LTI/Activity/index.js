@@ -10,6 +10,7 @@ import * as xAPIHelper from 'helpers/xapi';
 import { loadH5pResourceXapi } from 'store/actions/resource';
 import { loadH5pResourceSettings } from 'store/actions/gapi';
 import { gradePassBackAction, activityInitAction } from 'store/actions/canvas';
+import { saveResultScreenshotAction } from 'store/actions/safelearn';
 import './style.scss';
 
 const reducer = (intervalPointer, action) => {
@@ -31,6 +32,7 @@ const Activity = (props) => {
     sendStatement,
     gradePassBack,
     activityInit,
+    sendScreenshot,
   } = props;
   const { activityId } = match.params;
   const searchParams = new URLSearchParams(window.location.search);
@@ -168,6 +170,9 @@ const Activity = (props) => {
         gradePassBack(session, 1, score, isLearner);
       } else {
         sendStatement(JSON.stringify(xapiData));
+        if (h5pSettings.organization.api_key) {
+          sendScreenshot(h5pSettings.organization, xapiData, h5pSettings.activity.title, studentId);
+        }
       }
     });
     console.log('Patched into xAPI event dispatcher');
@@ -208,6 +213,7 @@ Activity.propTypes = {
   sendStatement: PropTypes.func.isRequired,
   gradePassBack: PropTypes.func.isRequired,
   activityInit: PropTypes.func.isRequired,
+  sendScreenshot: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -221,6 +227,7 @@ const mapDispatchToProps = (dispatch) => ({
   sendStatement: (statement) => dispatch(loadH5pResourceXapi(statement)),
   gradePassBack: (session, gpb, score, isLearner) => dispatch(gradePassBackAction(session, gpb, score, isLearner)),
   activityInit: () => dispatch(activityInitAction()),
+  sendScreenshot: (statement, title, studentName) => dispatch(saveResultScreenshotAction(statement, title, studentName)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Activity));
