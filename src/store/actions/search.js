@@ -182,6 +182,7 @@ export const openprojectsearch = (values) => async (dispatch) => {
   } else {
     dispatch(searchRedux(response.data, values.phrase, response.meta));
   }
+  return response;
 };
 
 export const cloneProject = (projectID) => {

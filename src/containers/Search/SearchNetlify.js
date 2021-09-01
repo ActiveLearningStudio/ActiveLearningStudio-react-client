@@ -13,7 +13,7 @@ import { educationLevels, subjects } from 'components/ResourceCard/AddResource/d
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import Pagination from 'react-js-pagination';
-import { simpleSearchAction } from 'store/actions/search';
+import { openprojectsearch } from 'store/actions/search';
 import { loadResourceTypesAction } from 'store/actions/resource';
 
 import './style.scss';
@@ -24,7 +24,7 @@ function SearchInterface(props) {
   const { history } = props;
   const allState = useSelector((state) => state.search);
   const activityTypesState = useSelector((state) => state.resource.types);
-  const { currentOrganization, permission } = useSelector((state) => state.organization);
+  const { currentOrganization } = useSelector((state) => state.organization);
   const dispatch = useDispatch();
   const [activityTypes, setActivityTypes] = useState([]);
   const [search, setSearch] = useState([]);
@@ -169,11 +169,9 @@ function SearchInterface(props) {
                                               gradeArray: activeEducation,
                                               authors: authorName || undefined,
                                               standardArray: activeType,
-                                              type: searchType,
                                               size: 20,
-                                              organization_id: 1,
                                             };
-                                            const result = await dispatch(simpleSearchAction(dataSend));
+                                            const result = await dispatch(openprojectsearch(dataSend));
                                             setTotalCount(result.meta?.total);
                                             const tempEducation = [];
                                             const tempSubject = [];
@@ -229,12 +227,10 @@ function SearchInterface(props) {
                                             author: authorName || undefined,
                                             gradeArray: activeEducation,
                                             standardArray: activeType,
-                                            type: searchType,
                                             from: 0,
                                             size: 20,
-                                            organization_id: 1,
                                           };
-                                          const result = await dispatch(simpleSearchAction(dataSend));
+                                          const result = await dispatch(openprojectsearch(dataSend));
                                           setTotalCount(result.meta?.total);
                                           const tempEducation = [];
                                           const tempSubject = [];
@@ -261,7 +257,7 @@ function SearchInterface(props) {
                                             setActiveSubject(tempSubject);
                                           }
                                           // eslint-disable-next-line max-len
-                                          history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`);
+                                         // history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`);
                                         }
                                         // setModalShow(true);
                                       }}
@@ -275,7 +271,7 @@ function SearchInterface(props) {
                           </Accordion>
                         </div>
 
-                        <div className="refine-search">
+                        <div className="refine-search" style={{ display: 'none' }}>
                           <div className="headline">Refine your search</div>
 
                           <Accordion defaultActiveKey="0">
@@ -447,7 +443,7 @@ function SearchInterface(props) {
                                   Swal.showLoading();
                                 },
                               });
-                              const resultModel = await dispatch(simpleSearchAction(searchData));
+                              const resultModel = await dispatch(openprojectsearch(searchData));
                               Swal.close();
                               setTotalCount(resultModel.meta[e]);
                               setActiveModel(e);
@@ -485,7 +481,7 @@ function SearchInterface(props) {
                                   Swal.showLoading();
                                 },
                               });
-                              const resultModel = await dispatch(simpleSearchAction(searchData));
+                              const resultModel = await dispatch(openprojectsearch(searchData));
                               Swal.close();
                               setTotalCount(resultModel.meta[e]);
                               setActiveModel(e);
@@ -531,10 +527,10 @@ function SearchInterface(props) {
                                           href={
                                             res.model === 'Activity'
                                               // eslint-disable-next-line max-len
-                                              ? (permission?.activeRole === 'admin' && searchType !== 'public') || (searchType === 'private') ? `/org/${currentOrganization?.domain}/project/${res.project_id}/playlist/${res.playlist_id}/activity/${res.id}/preview` : `/activity/${res.id}/shared`
+                                              ? `/studio/activity/${res.id}/shared`
                                               : res.model === 'Playlist'
-                                                ? `/playlist/${res.id}/preview/lti`
-                                                : `/project/${res.id}/shared`
+                                                ? `/studio/playlist/${res.id}/preview/lti`
+                                                : `/studio/project/${res.id}/shared`
                                           }
                                           target="_blank"
                                           rel="noreferrer"
@@ -611,10 +607,10 @@ function SearchInterface(props) {
                                             <a
                                               href={
                                                 res.model === 'Activity'
-                                                  ? `/activity/${res.id}/shared`
+                                                  ? `/studio/activity/${res.id}/shared`
                                                   : res.model === 'Playlist'
-                                                    ? `/playlist/${res.id}/preview/lti`
-                                                    : `/project/${res.id}/shared`
+                                                    ? `/studio/playlist/${res.id}/preview/lti`
+                                                    : `/studio/project/${res.id}/shared`
                                               }
                                               target="_blank"
                                               rel="noreferrer"
@@ -695,10 +691,10 @@ function SearchInterface(props) {
                                               href={
                                                 res.model === 'Activity'
                                                   // eslint-disable-next-line max-len
-                                                  ? (permission?.activeRole === 'admin' && searchType !== 'public') || (searchType === 'private') ? `/org/${currentOrganization?.domain}/project/${res.project_id}/playlist/${res.playlist_id}/activity/${res.id}/preview` : `/activity/${res.id}/shared`
+                                                  ? `/studio/activity/${res.id}/shared`
                                                   : res.model === 'Playlist'
-                                                    ? `/playlist/${res.id}/preview/lti`
-                                                    : `/project/${res.id}/shared`
+                                                    ? `/studio/playlist/${res.id}/preview/lti`
+                                                    : `/studio/project/${res.id}/shared`
                                               }
                                               target="_blank"
                                               rel="noreferrer"
@@ -779,10 +775,10 @@ function SearchInterface(props) {
                                               <a
                                                 href={
                                                   res.model === 'Activity'
-                                                    ? `/activity/${res.id}/shared`
+                                                    ? `/studio/activity/${res.id}/shared`
                                                     : res.model === 'Playlist'
-                                                      ? `/playlist/${res.id}/preview/lti`
-                                                      : `/project/${res.id}/shared`
+                                                      ? `/studio/playlist/${res.id}/preview/lti`
+                                                      : `/studio/project/${res.id}/shared`
                                                 }
                                                 target="_blank"
                                                 rel="noreferrer"
@@ -845,7 +841,7 @@ function SearchInterface(props) {
                                     Swal.showLoading();
                                   },
                                 });
-                                await dispatch(simpleSearchAction(searchData));
+                                await dispatch(openprojectsearch(searchData));
                                 Swal.close();
                               } else {
                                 const searchData = {
@@ -862,7 +858,7 @@ function SearchInterface(props) {
                                     Swal.showLoading();
                                   },
                                 });
-                                await dispatch(simpleSearchAction(searchData));
+                                await dispatch(openprojectsearch(searchData));
                                 Swal.close();
                               }
                             }}

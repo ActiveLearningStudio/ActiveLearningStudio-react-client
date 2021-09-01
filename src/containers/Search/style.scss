@@ -24,10 +24,17 @@
   .main-content-search {
     display: flex;
     justify-content: space-between;
+
+    @media (max-width:767px) {
+      flex-direction: column;
+    }
   }
 
   .left-search {
     width: 25%;
+    @media (max-width:767px) {
+      width: 100%;
+    }
   }
 
   .search-library {
@@ -185,6 +192,9 @@
     background-color: #fff;
     display: flex;
     flex-direction: column;
+    @media (max-width:767px) {
+      width: 100%;
+    }
 
     nav {
       width: 100%;

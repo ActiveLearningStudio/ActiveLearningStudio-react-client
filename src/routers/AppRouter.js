@@ -74,7 +74,8 @@ const AppRouter = (props) => {
 
   if (window.location.href.includes('/shared') || window.location.href.includes('/lti')
     || window.location.href.includes('/embed') || window.location.href.includes('/register')
-    || window.location.href.includes('/forgot-password') || window.location.href.includes('gclass/launch')) {
+    || window.location.href.includes('/forgot-password') || window.location.href.includes('gclass/launch')
+    || window.location.href.includes('/opensearch')) {
     document.body.classList.add('mobile-responsive');
   }
 
@@ -105,7 +106,7 @@ const AppRouter = (props) => {
         />
         <OpenRoute
           exact
-          path="/opensearch"
+          path="/studio/opensearch"
           component={Searchnetlify}
         />
         <OpenRoute
