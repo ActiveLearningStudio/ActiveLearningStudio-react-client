@@ -1,31 +1,23 @@
 import axios from 'axios';
-import config from 'config';
 
-const {
-  safeLearnAuthUrl,
-  safeLearnCheckUrl,
-  safeLearnUnipath,
-  safeLearnKey,
-} = config;
-
-const safeApiAuth = () => axios
-  .post(safeLearnAuthUrl, null, {
+const safeApiAuth = (accountId, authKey) => axios
+  .post(`https://api.v10.learnsafe.com/accounts/${accountId}/integrators/auth/token`, null, {
     headers: {
-      Authorization: `Bearer ${safeLearnKey}`,
+      Authorization: `Bearer ${authKey}`,
     },
   })
   .then(({ data }) => data)
   .catch((err) => err.response.data);
 
-const safeApiCheck = (token, imagData, actualText, time, info, activityName) => axios
-  .post(safeLearnCheckUrl,
+const safeApiCheck = (token, accountId, unitPath, orgName, imagData, actualText, time, info, activityName) => axios
+  .post(`https://api.v10.learnsafe.com/accounts/${accountId}/integrators/content/check`,
     {
       userName: info,
       workstationName: activityName,
       reportedAt: time,
-      applicationName: 'imSparked',
+      applicationName: orgName,
       ipAddress: '0.0.0.0',
-      unitPath: safeLearnUnipath,
+      unitPath,
       image: imagData,
       content: actualText,
     }, {

@@ -1,16 +1,14 @@
 /* eslint-disable react/no-this-in-sfc */
-/* eslint-disable import/prefer-default-export */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Swal from 'sweetalert2';
 import gifloader from 'assets/images/dotsloader.gif';
-import config from 'config';
 import * as xAPIHelper from 'helpers/xapi';
 import { loadH5pResourceXapi } from 'store/actions/resource';
-import { saveResultScreenshotAction } from 'store/actions/safelearn';
 import { loadH5pResourceSettings, getSubmissionAction, turnInAction } from 'store/actions/gapi';
+import { saveResultScreenshotAction } from 'store/actions/safelearn';
 import './style.scss';
 
 const Activity = (props) => {
@@ -26,7 +24,7 @@ const Activity = (props) => {
     getSubmission,
     sendStatement,
     turnIn,
-    saveResultScreenshot,
+    sendScreenshot,
   } = props;
   const [xAPILoaded, setXAPILoaded] = useState(false);
   const [intervalPointer, setIntervalPointer] = useState(null);
@@ -118,8 +116,9 @@ const Activity = (props) => {
       };
 
       // Extending the xAPI statement with our custom values and sending it off to LRS
-      const extendedStatementObj = xAPIHelper.extendStatement(this, event.data.statement, params);
-      const xapiData = JSON.stringify(extendedStatementObj);
+      const xapiData = JSON.stringify(
+        xAPIHelper.extendStatement(this, event.data.statement, params),
+      );
 
       if (event.data.statement.verb.display['en-US'] === 'submitted-curriki') {
         // Check if all questions/interactions have been accounted for in LRS
@@ -154,9 +153,10 @@ const Activity = (props) => {
           }
         });
       } else {
-        // If safelearn has been configured in this instance, we send the statement there for checking
-        if (config.safeLearnKey) saveResultScreenshot(extendedStatementObj, h5pSettings.activity.title, student.profile.data.name.fullName);
         sendStatement(xapiData);
+        if (h5pSettings.organization.api_key) {
+          sendScreenshot(h5pSettings.organization, xapiData, h5pSettings.activity.title, student.profile.data.name.fullName);
+        }
       }
     });
     console.log('? AE hooked');
@@ -192,7 +192,7 @@ Activity.propTypes = {
   getSubmission: PropTypes.func.isRequired,
   sendStatement: PropTypes.func.isRequired,
   turnIn: PropTypes.func.isRequired,
-  saveResultScreenshot: PropTypes.func.isRequired,
+  sendScreenshot: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -206,7 +206,7 @@ const mapDispatchToProps = (dispatch) => ({
   getSubmission: (classworkId, courseId, auth) => dispatch(getSubmissionAction(classworkId, courseId, auth)),
   sendStatement: (statement) => dispatch(loadH5pResourceXapi(statement)),
   turnIn: (classworkId, courseId, auth) => dispatch(turnInAction(classworkId, courseId, auth)),
-  saveResultScreenshot: (statement, title, studentName) => dispatch(saveResultScreenshotAction(statement, title, studentName)),
+  sendScreenshot: (org, statement, title, studentName) => dispatch(saveResultScreenshotAction(org, statement, title, studentName)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Activity));

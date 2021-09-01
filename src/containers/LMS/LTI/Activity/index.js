@@ -1,5 +1,5 @@
 /* eslint-disable react/no-this-in-sfc */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useReducer } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -10,7 +10,17 @@ import * as xAPIHelper from 'helpers/xapi';
 import { loadH5pResourceXapi } from 'store/actions/resource';
 import { loadH5pResourceSettings } from 'store/actions/gapi';
 import { gradePassBackAction, activityInitAction } from 'store/actions/canvas';
+import { saveResultScreenshotAction } from 'store/actions/safelearn';
 import './style.scss';
+
+const reducer = (intervalPointer, action) => {
+  if (action.type === 'set') return action.intervalId;
+
+  if (action.type === 'clear') {
+    clearInterval(intervalPointer);
+    return null;
+  }
+};
 
 const Activity = (props) => {
   const {
@@ -22,6 +32,7 @@ const Activity = (props) => {
     sendStatement,
     gradePassBack,
     activityInit,
+    sendScreenshot,
   } = props;
   const { activityId } = match.params;
   const searchParams = new URLSearchParams(window.location.search);
@@ -36,6 +47,7 @@ const Activity = (props) => {
   const customApiDomainUrl = searchParams.get('custom_api_domain_url');
   const customCourseCode = searchParams.get('custom_course_code');
   const [xAPILoaded, setXAPILoaded] = useState(false);
+  const [intervalPointer, dispatch] = useReducer(reducer, 0);
   const [xAPIEventHooked, setXAPIEventHooked] = useState(false);
 
   // Init
@@ -43,7 +55,7 @@ const Activity = (props) => {
     window.scrollTo(0, 0);
     loadH5pSettings(match.params.activityId);
     activityInit();
-  }, [match]);
+  }, [activityId]);
 
   // Load H5P
   useEffect(() => {
@@ -77,42 +89,39 @@ const Activity = (props) => {
       script.async = false;
       document.body.appendChild(script);
     });
-
-    // Loops until it finds H5P object
-    const checkXapi = setInterval(() => {
-      if (xAPILoaded) {
-        console.log('Loaded hit, returning');
-        return;
-      }
-
-      const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
-      if (!x.H5P) return;
-      if (!x.H5P.externalDispatcher) return;
-
-      console.log('AE H5P supposedly ready');
-      clearInterval(checkXapi);
-      setTimeout(() => { setXAPILoaded(true); });
-    });
-    // setIntervalPointer(checkXapi);
   }, [h5pSettings]);
+
+  useEffect(() => {
+    // Loops until it finds H5P object
+    const intervalId = setInterval(() => {
+      const x = document.getElementsByClassName('h5p-iframe')[0]?.contentWindow;
+      if (!x?.H5P?.externalDispatcher) return;
+
+      console.log('H5P dispatcher found');
+      setXAPILoaded(true);
+      console.log(`Clearing interval ${intervalPointer}`);
+      dispatch({ type: 'clear' });
+    }, 500);
+    dispatch({ type: 'set', intervalId });
+  }, []);
 
   // Patch into xAPI events
   useEffect(() => {
-    console.log('AE entered hook func');
+    console.log('Patching into xAPI event dispatcher');
     if (!xAPILoaded || !isLearner || xAPIEventHooked) {
-      console.log('hit over here');
+      console.log('Abort patching into xAPI event dispatcher');
       return;
     }
 
-    const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
+    const x = document.getElementsByClassName('h5p-iframe')[0]?.contentWindow;
     // if (!x.H5P.externalDispatcher || xAPIHelper.isxAPINeeded(match.path) === false) return;
     if (!x.H5P.externalDispatcher || xAPIHelper.isxAPINeeded(match.path) === false) {
-      console.log('AE missing dispatcher');
+      console.log('Missing H5P event dispatcher');
       return;
     }
-    console.log('AE found dispatcher, trying to hook');
+
     x.H5P.externalDispatcher.on('xAPI', function (event) {
-      console.log('AE running listener');
+      console.log('Running xAPI listener callback');
       const params = {
         path: match.path,
         studentId,
@@ -154,18 +163,22 @@ const Activity = (props) => {
         Swal.fire({
           title: 'You have completed this activity.',
           confirmButtonText: 'OK',
-        });
-
-        // Sending grade passback
-        const score = xapiData.result.score.scaled;
-        gradePassBack(session, 1, score, isLearner);
+        }).then(() => {
+          // Sending grade passback
+          const score = xapiData.result.score.scaled;
+          gradePassBack(session, 1, score, isLearner);
+          });
       } else {
-        sendStatement(JSON.stringify(xapiData));
+        const jsonStatement = JSON.stringify(xapiData);
+        sendStatement(jsonStatement);
+        if (h5pSettings.organization.api_key) {
+          sendScreenshot(h5pSettings.organization, jsonStatement, h5pSettings.activity.title, params.studentId);
+        }
       }
     });
-    console.log('AE maybe hooked?');
+    console.log('Patched into xAPI event dispatcher');
     setXAPIEventHooked(true);
-  }, [xAPILoaded, match.path, match.params, activityId]);
+  }, [xAPILoaded]);
 
   return (
     <div>
@@ -187,15 +200,21 @@ const Activity = (props) => {
   );
 };
 
+Activity.defaultProps = {
+  h5pSettings: null,
+  attemptId: null,
+};
+
 Activity.propTypes = {
   match: PropTypes.object.isRequired,
-  h5pSettings: PropTypes.object.isRequired,
+  h5pSettings: PropTypes.object,
   ltiFinished: PropTypes.bool.isRequired,
-  attemptId: PropTypes.number.isRequired,
+  attemptId: PropTypes.number,
   loadH5pSettings: PropTypes.func.isRequired,
   sendStatement: PropTypes.func.isRequired,
   gradePassBack: PropTypes.func.isRequired,
   activityInit: PropTypes.func.isRequired,
+  sendScreenshot: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -209,6 +228,7 @@ const mapDispatchToProps = (dispatch) => ({
   sendStatement: (statement) => dispatch(loadH5pResourceXapi(statement)),
   gradePassBack: (session, gpb, score, isLearner) => dispatch(gradePassBackAction(session, gpb, score, isLearner)),
   activityInit: () => dispatch(activityInitAction()),
+  sendScreenshot: (org, statement, title, studentName) => dispatch(saveResultScreenshotAction(org, statement, title, studentName)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Activity));
