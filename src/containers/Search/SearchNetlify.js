@@ -1,6 +1,5 @@
 /* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   Accordion,
@@ -20,11 +19,11 @@ import './style.scss';
 
 let paginationStarter = true;
 
-function SearchInterface(props) {
-  const { history } = props;
+function SearchInterface() {
+  // const { history } = props;
   const allState = useSelector((state) => state.search);
   const activityTypesState = useSelector((state) => state.resource.types);
-  const { currentOrganization } = useSelector((state) => state.organization);
+  // const { currentOrganization } = useSelector((state) => state.organization);
   const dispatch = useDispatch();
   const [activityTypes, setActivityTypes] = useState([]);
   const [search, setSearch] = useState([]);
@@ -197,8 +196,8 @@ function SearchInterface(props) {
                                               });
                                               setActiveSubject(tempSubject);
                                             }
-                                            // eslint-disable-next-line max-len
-                                            history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`);
+                                            // // eslint-disable-next-line max-len
+                                            // history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`);
                                           }
                                         }
                                       }}
@@ -880,8 +879,8 @@ function SearchInterface(props) {
   );
 }
 
-SearchInterface.propTypes = {
-  history: PropTypes.object.isRequired,
-};
+// SearchInterface.propTypes = {
+//   history: PropTypes.object.isRequired,
+// };
 
 export default SearchInterface;
