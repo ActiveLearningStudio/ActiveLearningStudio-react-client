@@ -3935,6 +3935,7 @@ body.collapsed {
   }
 }
 
+
 .iframe-height-resource-shared.defaultcontainer{
 
   .flex-container.previews {
@@ -3945,15 +3946,23 @@ body.collapsed {
     align-items: center;
     justify-content: center;
     height: 100vh;
+    .main-item-wrapper {
+     width:100%;
+     margin-bottom: 0;
+    }
 
   @media (max-width:1280px) {
     padding: 0px;
+    
   }
-  @media (max-width:767px) {
+  @media (max-width:768px) {
     max-width: 95% !important;
   }
   }
-
+  @media (orientation: landscape) and (max-width:768px) {
+    max-width: 70% !important;
+    margin:0 auto
+  }
   .activity-bg.left-vdo {
     height: auto !important
   }
@@ -3961,4 +3970,20 @@ body.collapsed {
     padding-bottom: 0 !important;
   }
 
+}
+
+.coverallareas {
+  display: none;
+@media(max-width: 991px){
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index:1111;
+  background: #f8f9fa;
+  top: 0;
+}
 }

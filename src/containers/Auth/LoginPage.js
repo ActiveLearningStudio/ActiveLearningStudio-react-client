@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import validator from 'validator';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GoogleLogin } from 'react-google-login';
 
 // import bg from 'assets/images/loginbg.png';
@@ -16,6 +16,7 @@ import stemuliIcon from 'assets/images/stemuli_logo.png';
 
 import { loginAction, googleLoginAction } from 'store/actions/auth';
 import { getErrors } from 'utils';
+
 import Error from './Error';
 import Logo from './Logo';
 
@@ -29,7 +30,7 @@ class LoginPage extends React.Component {
       email: '',
       password: '',
       rememberMe: false,
-      clicked: false,
+      clicked: true,
       error: null,
     };
   }
@@ -113,7 +114,7 @@ class LoginPage extends React.Component {
         {!clicked ? (
           <div className="auth-container">
             <div className="d-flex align-items-center justify-content-between">
-              <h1 className="auth-title mb-0">Log In</h1>
+              <h1 className="auth-title ">Welcome to Curriki</h1>
 
               {/* <strong>OR</strong> */}
 
@@ -125,17 +126,10 @@ class LoginPage extends React.Component {
                 Sign Up
               </button> */}
             </div>
-
             {/* <h2 className="auth-subtitle">Powering the creation of the world’s Most Immersive Learning Experience</h2> */}
-
-            <h3 className="auth-description">
-              Need a Curriki Studio account?&nbsp;
-              <a
-                onClick={this.goToRegister}
-              >
-                Create an account
-              </a>
-            </h3>
+            <p className="auth-Pdescrip">
+              Sign Up and start making a difference in the way learning experiences are created.
+            </p>
             <form
               onSubmit={this.onSubmit}
               autoComplete="off"
@@ -153,7 +147,7 @@ class LoginPage extends React.Component {
                   )}
                   onSuccess={this.onGoogleLoginSuccess}
                   onFailure={this.onGoogleLoginFailure}
-                  scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
+                  scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students https://www.googleapis.com/auth/classroom.profile.emails"
                   cookiePolicy="single_host_origin"
                 />
 
@@ -183,11 +177,27 @@ class LoginPage extends React.Component {
                 </button>
               </div>
             </form>
+            <p className="auth-description">
+              New to Curriki?&nbsp;
+              <a onClick={this.goToRegister}>
+                Sign up
+              </a>
+            </p>
+            <p className="auth-p2-descrip">
+              By clicking the Sign Up button, you are creating a CurrikiStudio  account, and you agree to Currikis&nbsp;
+              <a href="/" target="_blank">
+                Terms of Use&nbsp;
+              </a>
+              and&nbsp;
+              <a href="/" target="_blank">
+                Privacy Policy.
+              </a>
+            </p>
           </div>
         ) : (
           <div className="auth-container">
             <div className="d-flex align-items-center justify-content-between">
-              <h1 className="auth-title mb-0">Log In</h1>
+              <h1 className="auth-title mb-2">Welcome to Curriki</h1>
 
               {/* <strong>OR</strong> */}
 
@@ -202,33 +212,28 @@ class LoginPage extends React.Component {
 
             {/* <h2 className="auth-subtitle">Powering the creation of the world’s Most Immersive Learning Experience</h2> */}
 
-            <h3 className="auth-description">
-              Need a Curriki Studio account?&nbsp;
-              <a
-                onClick={this.goToRegister}
-              >
-                Create an account
-              </a>
-            </h3>
+            <p className="auth-Pdescrip">
+              Sign Up and start making a difference in the way learning experiences are created.
+            </p>
 
             <form
               onSubmit={this.onSubmit}
               autoComplete="off"
               className="auth-form"
             >
-              <div className="form-group">
+              {/* <div className="form-group">
                 <button type="button" className="back-button" onClick={() => this.setState({ clicked: false })}>
                   Back
                 </button>
-              </div>
+              </div> */}
               <div className="form-group">
-                <FontAwesomeIcon icon="envelope" />
+                {/* <FontAwesomeIcon icon="envelope" /> */}
+                <span>Email</span>
                 <input
                   autoFocus
                   className="input-box"
                   // type="email"
                   name="email"
-                  placeholder="Email*"
                   required
                   value={email}
                   onChange={this.onChangeField}
@@ -236,12 +241,12 @@ class LoginPage extends React.Component {
               </div>
 
               <div className="form-group">
-                <FontAwesomeIcon icon="lock" />
+                {/* <FontAwesomeIcon icon="lock" /> */}
+                <span>Password</span>
                 <input
                   className="password-box"
                   type="password"
                   name="password"
-                  placeholder="Password*"
                   required
                   value={password}
                   onChange={this.onChangeField}
@@ -256,7 +261,7 @@ class LoginPage extends React.Component {
                     value={rememberMe}
                     onChange={this.onChangeField}
                   />
-                  Remember Me
+                  Keep me logged in.
                 </label>
                 <div className="forgot-password-box">
                   <Link to="/forgot-password">Forgot Password ?</Link>
@@ -265,7 +270,7 @@ class LoginPage extends React.Component {
 
               <Error error={error} />
 
-              <div className="form-group">
+              <div className="form-button">
                 <button
                   type="submit"
                   className="btn btn-primary submit"
@@ -274,9 +279,53 @@ class LoginPage extends React.Component {
                   {isLoading ? (
                     <img src={loader} alt="" />
                   ) : (
-                    'Login'
+                    'LOG IN'
                   )}
                 </button>
+              </div>
+              <div className="vertical-line">
+                <div className="line" />
+                <p className="line-or">or</p>
+                <div className="line" />
+              </div>
+
+              <p className="auth-description text-center">
+                New to Curriki?&nbsp;
+                <a onClick={this.goToRegister}>
+                  Sign up
+                </a>
+              </p>
+
+              <div className="form-group text-center mb-0">
+                <GoogleLogin
+                  clientId={global.config.gapiClientId}
+                  theme="dark"
+                  render={(renderProps) => (
+                    <button type="button" className="google-button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                      <img src={googleIcon} alt="googleIcon" style={{ float: 'left', paddingRight: '19.23px' }} />
+                      Sign Up with Google
+                    </button>
+                  )}
+                  onSuccess={this.onGoogleLoginSuccess}
+                  onFailure={this.onGoogleLoginFailure}
+                  scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
+                  cookiePolicy="single_host_origin"
+                />
+
+              </div>
+
+              <div className="termsandcondition">
+                By clicking the &quot;Sign Up&quot; button, you are creating a CurrikiStudio  account, and you agree to Curriki&apos; s
+                {' '}
+                <a href="https://www.curriki.org/terms-of-service/">
+                  Terms of Use
+                </a>
+                {' '}
+                and
+                {' '}
+                <a href="https://www.curriki.org/privacy-policy/">
+                  Privacy Policy.
+                </a>
               </div>
 
               {/* <div className="form-group text-center mb-0">
