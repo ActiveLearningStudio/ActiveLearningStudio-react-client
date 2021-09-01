@@ -163,11 +163,11 @@ const Activity = (props) => {
         Swal.fire({
           title: 'You have completed this activity.',
           confirmButtonText: 'OK',
-        });
-
-        // Sending grade passback
-        const score = xapiData.result.score.scaled;
-        gradePassBack(session, 1, score, isLearner);
+        }).then(() => {
+          // Sending grade passback
+          const score = xapiData.result.score.scaled;
+          gradePassBack(session, 1, score, isLearner);
+          });
       } else {
         const jsonStatement = JSON.stringify(xapiData);
         sendStatement(jsonStatement);
