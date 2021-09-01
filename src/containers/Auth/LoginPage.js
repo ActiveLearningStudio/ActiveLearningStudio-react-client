@@ -79,7 +79,12 @@ class LoginPage extends React.Component {
 
   onGoogleLoginSuccess = (response) => {
     const { googleLogin } = this.props;
-    googleLogin(response);
+    const result = googleLogin(response);
+    result.catch((err) => {
+      this.setState({
+        error: getErrors(err),
+      });
+    });
   };
 
   onGoogleLoginFailure = (response) => {
