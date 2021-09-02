@@ -118,7 +118,7 @@ const ProjectCardDropdown = (props) => {
                       if (allPlaylist) {
                         dispatch(
                           getProjectCourseFromLMS(
-                            data.lms_name.toLowerCase(),
+                            data.lms_name?.toLowerCase(),
                             data.id,
                             project.id,
                             allPlaylist.playlists,
