@@ -184,10 +184,10 @@ function ProjectPreviewShared(props) {
                           <div>
                             {currentProject.name}
                           </div>
-                          <div className="googleSign" onClick={() => setShow(true)}>
+                          {/* <div className="googleSign" onClick={() => setShow(true)}>
                             <FontAwesomeIcon icon="google" />
                             Publish Google Class
-                          </div>
+                          </div> */}
                         </div>
                       </li>
                     </ul>

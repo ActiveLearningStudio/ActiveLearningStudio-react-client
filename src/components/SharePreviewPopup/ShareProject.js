@@ -49,7 +49,7 @@ const ShareProject = ({ url, projectName, onClose }) => (
     </h1>
     <hr />
 
-    <div className="margin-bottom-20">
+    {/* <div className="margin-bottom-20">
       <span>
         <div id="croom" className="d-flex align-items-center">
           <div
@@ -64,7 +64,7 @@ const ShareProject = ({ url, projectName, onClose }) => (
           </span>
         </div>
       </span>
-    </div>
+    </div> */}
 
     <div className="margin-bottom-20">
       <span>

@@ -26,14 +26,14 @@ history.listen((location) => {
 const LoginPage = loadable(() => import('../containers/Auth/LoginPage'));
 const ProjectShareTemplate = loadable(() => import('../containers/ProjectShareTemplate'));
 const SubscribePage = loadable(() => import('../containers/Auth/SubscribePage'));
-const RegisterPage = loadable(() => import('../containers/Auth/RegisterPage'));
+// const RegisterPage = loadable(() => import('../containers/Auth/RegisterPage'));
 // const ForgotPasswordPage = loadable(() => import('../containers/Auth/ForgotPasswordPage'));
 const ResetPasswordPage = loadable(() => import('../containers/Auth/ResetPasswordPage'));
 const ConfirmEmailPage = loadable(() => import('../containers/Auth/ConfirmEmailPage'));
-const NeafRegister = loadable(() => import('../containers/Auth/NeafRegistration'));
-const NeafLogin = loadable(() => import('../containers/Auth/NeafLogin'));
-const VevensityRegister = loadable(() => import('../containers/Auth/VevinsityRegistration'));
-const VevensityLogin = loadable(() => import('../containers/Auth/VevinsityLogin'));
+// const NeafRegister = loadable(() => import('../containers/Auth/NeafRegistration'));
+// const NeafLogin = loadable(() => import('../containers/Auth/NeafLogin'));
+// const VevensityRegister = loadable(() => import('../containers/Auth/VevinsityRegistration'));
+// const VevensityLogin = loadable(() => import('../containers/Auth/VevinsityLogin'));
 const AdminPanel = loadable(() => import('../containers/Admin'));
 const LtiLogin = loadable(() => import('../containers/Auth/LtiLogin'));
 const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
@@ -49,12 +49,12 @@ const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared
 const SecureProjectPreview = loadable(() => import('../containers/SecureProjectPreview'));
 // const SearchResult = loadable(() => import('../containers/Search'));
 // const LtiModel = loadable(() => import('../containers/LtiModel'));
-const TeamsPage = loadable(() => import('../containers/Teams'));
-const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
-const AddTeamProjectMemberPage = loadable(() => import('../containers/Teams/AddMembers'));
-const GroupsPage = loadable(() => import('../containers/Groups'));
-const AddGroupProjectsPage = loadable(() => import('../containers/Groups/AddProjects'));
-const AddGroupProjectMemberPage = loadable(() => import('../containers/Groups/AddMembers'));
+// const TeamsPage = loadable(() => import('../containers/Teams'));
+// const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
+// const AddTeamProjectMemberPage = loadable(() => import('../containers/Teams/AddMembers'));
+// const GroupsPage = loadable(() => import('../containers/Groups'));
+// const AddGroupProjectsPage = loadable(() => import('../containers/Groups/AddProjects'));
+// const AddGroupProjectMemberPage = loadable(() => import('../containers/Groups/AddMembers'));
 const GclassActivityPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassActivityPage'));
 const GenericLMSActivityPage = loadable(() => import('../containers/LMS/Generic/GenericLMSActivityPage'));
 const ActivityCreate = loadable(() => import('../containers/CreateActivity'));
@@ -171,16 +171,16 @@ const AppRouter = (props) => {
         />
         <PublicRoute exact path="/login" component={LoginPage} />
         <PublicRoute exact path="/login/:organization" component={LoginPage} />
-        <PublicRoute exact path="/register" component={RegisterPage} />
-        <PublicRoute exact path="/register/:organization" component={RegisterPage} />
+        {/* <PublicRoute exact path="/register" component={RegisterPage} /> */}
+        {/* <PublicRoute exact path="/register/:organization" component={RegisterPage} /> */}
         {/* <PublicRoute exact path="/forgot-password" component={ForgotPasswordPage} />
         <PublicRoute exact path="/forgot-password/:organization" component={ForgotPasswordPage} /> */}
         <PublicRoute exact path="/reset-password" component={ResetPasswordPage} />
         <PublicRoute exact path="/verify-email" component={ConfirmEmailPage} />
-        <PublicRoute exact path="/neaf-register" component={NeafRegister} />
-        <PublicRoute exact path="/neaf-login" component={NeafLogin} />
-        <PublicRoute exact path="/nevada-register" component={VevensityRegister} />
-        <PublicRoute exact path="/nevada-login" component={VevensityLogin} />
+        {/* <PublicRoute exact path="/neaf-register" component={NeafRegister} /> */}
+        {/* <PublicRoute exact path="/neaf-login" component={NeafLogin} /> */}
+        {/* <PublicRoute exact path="/nevada-register" component={VevensityRegister} /> */}
+        {/* <PublicRoute exact path="/nevada-login" component={VevensityLogin} /> */}
         <Route>
           {
            (user && !user.subscribed)
@@ -199,23 +199,23 @@ const AppRouter = (props) => {
                      {/* <PrivateRoute exact path="/org/:organization/dashboard" component={DashboardPage} /> */}
                      {/* <PrivateRoute exact path="/org/:organization/notification" component={NotificationPage} /> */}
                      <PrivateRoute exact path="/org/:organization/admin" component={AdminPanel} />
-                     <PrivateRoute exact path="/org/:organization/teams" component={TeamsPage} overview />
+                     {/* <PrivateRoute exact path="/org/:organization/teams" component={TeamsPage} overview />
                      <PrivateRoute exact path="/org/:organization/teams/create-team" component={TeamsPage} creation />
                      <PrivateRoute exact path="/org/:organization/teams/:teamId" component={TeamsPage} teamShow />
                      <PrivateRoute exact path="/org/:organization/teams/:teamId/edit" component={TeamsPage} editMode />
                      <PrivateRoute exact path="/org/:organization/teams/:teamId/projects" component={TeamsPage} projectShow />
                      <PrivateRoute exact path="/org/:organization/teams/:teamId/channel" component={TeamsPage} channelShow />
                      <PrivateRoute exact path="/org/:organization/teams/:teamId/add-projects" component={AddTeamProjectsPage} />
-                     <PrivateRoute exact path="/org/:organization/teams/:teamId/projects/:projectId/add-member" component={AddTeamProjectMemberPage} />
+                     <PrivateRoute exact path="/org/:organization/teams/:teamId/projects/:projectId/add-member" component={AddTeamProjectMemberPage} /> */}
 
-                     <PrivateRoute exact path="/org/:organization/groups" component={GroupsPage} overview />
+                     {/* <PrivateRoute exact path="/org/:organization/groups" component={GroupsPage} overview />
                      <PrivateRoute exact path="/org/:organization/groups/create-group" component={GroupsPage} creation />
                      <PrivateRoute exact path="/org/:organization/groups/:groupId" component={GroupsPage} groupShow />
                      <PrivateRoute exact path="/org/:organization/groups/:groupId/edit" component={GroupsPage} editMode />
                      <PrivateRoute exact path="/org/:organization/groups/:groupId/projects" component={GroupsPage} projectShow />
                      <PrivateRoute exact path="/org/:organization/groups/:groupId/channel" component={GroupsPage} channelShow />
                      <PrivateRoute exact path="/org/:organization/groups/:groupId/add-projects" component={AddGroupProjectsPage} />
-                     <PrivateRoute exact path="/org/:organization/groups/:groupId/projects/:projectId/add-member" component={AddGroupProjectMemberPage} />
+                     <PrivateRoute exact path="/org/:organization/groups/:groupId/projects/:projectId/add-member" component={AddGroupProjectMemberPage} /> */}
 
                      <PrivateRoute
                        exact

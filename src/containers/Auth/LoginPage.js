@@ -281,18 +281,18 @@ class LoginPage extends React.Component {
                   )}
                 </button>
               </div>
-              <div className="vertical-line">
+              {/* <div className="vertical-line">
                 <div className="line" />
                 <p className="line-or">or</p>
                 <div className="line" />
-              </div>
+              </div> */}
 
-              <p className="auth-description text-center">
+              {/* <p className="auth-description text-center">
                 New to Curriki?&nbsp;
                 <a onClick={this.goToRegister}>
                   Sign up
                 </a>
-              </p>
+              </p> */}
 
               {/* <div className="form-group text-center mb-0">
                 <GoogleLogin

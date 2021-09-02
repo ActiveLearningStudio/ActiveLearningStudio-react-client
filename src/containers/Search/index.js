@@ -883,7 +883,7 @@ function SearchInterface(props) {
                                               Duplicate
                                             </div>
                                           )}
-                                          {permission?.Project?.includes('project:publish') && (
+                                          {/* {permission?.Project?.includes('project:publish') && (
                                             <div>
                                               <li
                                                 onClick={() => {
@@ -899,7 +899,7 @@ function SearchInterface(props) {
                                                 </a>
                                               </li>
                                             </div>
-                                          )}
+                                          )} */}
                                         </Dropdown.Menu>
                                       </Dropdown>
                                     )}

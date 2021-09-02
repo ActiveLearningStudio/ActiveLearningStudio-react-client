@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { Helmet } from 'react-helmet';
+// import { Helmet } from 'react-helmet';
 import logo from 'assets/images/studio_new_logo.png';
 import loader from 'assets/images/dotsloader.gif';
 import { getUserAction } from 'store/actions/auth';
@@ -95,16 +95,16 @@ function App(props) {
         dispatch(getBranding('currikistudio'));
       }
     }
-    if (window.HubSpotConversations) {
-      // console.log('The api is ready already');
-    } else {
-      window.hsConversationsOnReady = [
-        () => {
-          // console.log('Now the api is ready');
-          window.HubSpotConversations.widget.load();
-        },
-      ];
-    }
+    // if (window.HubSpotConversations) {
+    //   // console.log('The api is ready already');
+    // } else {
+    //   window.hsConversationsOnReady = [
+    //     () => {
+    //       // console.log('Now the api is ready');
+    //       window.HubSpotConversations.widget.load();
+    //     },
+    //   ];
+    // }
   }, [window.location.href]);
 
   useEffect(() => {
@@ -196,7 +196,7 @@ function App(props) {
 
   return (
     <div>
-      <Helmet>
+      {/* <Helmet>
         <meta name="description" content="CurrikiStudio" />
         <meta name="theme-color" content="#008f68" />
 
@@ -207,7 +207,7 @@ function App(props) {
           defer
           src={`//js.hs-scripts.com/${process.env.REACT_APP_HUBSPOT}.js`}
         />
-      </Helmet>
+      </Helmet> */}
       <AppRouter />
       {Object.keys(permission)?.length === 0 && (
         <div className="loader-main-curriki-permission">

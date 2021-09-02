@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 
-import { getProjectId, googleShare } from 'store/actions/gapi';
+// import { getProjectId, googleShare } from 'store/actions/gapi';
 import { cloneProject } from 'store/actions/search';
 import { getProjectCourseFromLMS, toggleProjectShareAction } from 'store/actions/project';
 import { lmsPlaylist } from 'store/actions/playlist';
@@ -18,8 +18,8 @@ import { propTypes } from 'react-bootstrap/esm/Image';
 const ProjectCardDropdown = (props) => {
   const {
     project,
-    handleShow,
-    setProjectId,
+    // handleShow,
+    // setProjectId,
     showDeletePopup,
     previewMode,
     text,
@@ -98,7 +98,7 @@ const ProjectCardDropdown = (props) => {
               Publish
             </a>
             <ul className="dropdown-menu check">
-              <li
+              {/* <li
                 onClick={() => {
                   handleShow();
                   getProjectId(project.id);
@@ -106,8 +106,8 @@ const ProjectCardDropdown = (props) => {
                   dispatch(googleShare(false));
                 }}
               >
-                {/* <a>Google Classroom</a> */}
-              </li>
+                <a>Google Classroom</a>
+              </li> */}
 
               {allLms.shareVendors && allLms.shareVendors.map((data) => (
                 data.lms_name !== 'safarimontage' && (
@@ -152,8 +152,8 @@ const ProjectCardDropdown = (props) => {
 ProjectCardDropdown.propTypes = {
   project: PropTypes.object.isRequired,
   showDeletePopup: PropTypes.func.isRequired,
-  handleShow: PropTypes.func.isRequired,
-  setProjectId: PropTypes.func.isRequired,
+  // handleShow: PropTypes.func.isRequired,
+  // setProjectId: PropTypes.func.isRequired,
   previewMode: PropTypes.bool.isRequired,
   text: propTypes.text,
 };

@@ -269,7 +269,7 @@ function Sidebar(props) {
                     </Link>
                   </>
               )}
-              {permission?.Team?.includes('team:create')
+              {/* {permission?.Team?.includes('team:create')
                 && (
                   <>
                     <Link to={`/org/${allState.organization?.currentOrganization?.domain}/teams/create-team`}>
@@ -282,8 +282,8 @@ function Sidebar(props) {
                       </div>
                     </Link>
                   </>
-              )}
-              {permission?.Group?.includes('group:create')
+              )} */}
+              {/* {permission?.Group?.includes('group:create')
                 && (
                   <>
                     <Link to={`/org/${allState.organization?.currentOrganization?.domain}/groups/create-group`}>
@@ -296,7 +296,7 @@ function Sidebar(props) {
                       </div>
                     </Link>
                   </>
-              )}
+              )} */}
               {permission?.Organization?.includes('organization:add-user')
                 && (
                   <>
