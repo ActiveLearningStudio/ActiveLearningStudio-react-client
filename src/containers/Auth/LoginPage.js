@@ -312,7 +312,7 @@ class LoginPage extends React.Component {
 
               </div> */}
 
-              <div className="termsandcondition">
+              {/* <div className="termsandcondition">
                 By clicking the &quot;Sign Up&quot; button, you are creating a CurrikiStudio  account, and you agree to Curriki&apos; s
                 {' '}
                 <a href="https://www.curriki.org/terms-of-service/">
@@ -324,7 +324,7 @@ class LoginPage extends React.Component {
                 <a href="https://www.curriki.org/privacy-policy/">
                   Privacy Policy.
                 </a>
-              </div>
+              </div> */}
 
               {/* <div className="form-group text-center mb-0">
                 <GoogleLogin

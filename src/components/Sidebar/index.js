@@ -5,8 +5,8 @@ import React, {
 } from 'react';
 // import userLargeIcon from 'assets/images/sidebar/user80.png';
 // import organizationLargeIcon from 'assets/images/sidebar/organization80.png';
-import groupLargeIcon from 'assets/images/sidebar/group80.png';
-import teamLargeIcon from 'assets/images/sidebar/team80.png';
+// import groupLargeIcon from 'assets/images/sidebar/group80.png';
+// import teamLargeIcon from 'assets/images/sidebar/team80.png';
 import projectLargeIcon from 'assets/images/sidebar/project80.png';
 import administrateLargeIcom from 'assets/images/sidebar/administrate80.png'; //
 import PropTypes from 'prop-types';
@@ -15,9 +15,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { Accordion } from 'react-bootstrap';
 import foldericon from 'assets/images/sidebar/folder-icon.png';
-import teamicon from 'assets/images/sidebar/team-icon.png';
+// import teamicon from 'assets/images/sidebar/team-icon.png';
 import toggleButton from 'assets/images/sidebar/toggle-button.png';
-import groupicon from 'assets/images/sidebar/group-icon.png';
+// import groupicon from 'assets/images/sidebar/group-icon.png';
 import usersidebaricon from 'assets/images/sidebar/user-sidebar-icon.png';
 // import dashboardicon from 'assets/images/sidebar/dashboard-icon.png';
 import backgroundimg from 'assets/images/sidebar/background.png';
@@ -217,7 +217,7 @@ function Sidebar(props) {
                 </Link>
               </>
             )}
-            {permission?.Team?.includes('team:view')
+            {/* {permission?.Team?.includes('team:view')
             && (
               <>
                 <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
@@ -230,8 +230,8 @@ function Sidebar(props) {
                   </div>
                 </Link>
               </>
-            )}
-            {permission?.Group?.includes('group:view')
+            )} */}
+            {/* {permission?.Group?.includes('group:view')
             && (
               <>
                 <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
@@ -244,7 +244,7 @@ function Sidebar(props) {
                   </div>
                 </Link>
               </>
-            )}
+            )} */}
             {(permission?.Project?.includes('project:create')
               || permission?.Team?.includes('team:create')
               || permission?.Group?.includes('group:create')
@@ -372,22 +372,22 @@ function Sidebar(props) {
                   </div>
                 </Link>
               )}
-              {permission?.Team?.includes('team:view') && (
+              {/* {permission?.Team?.includes('team:view') && (
                 <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
                   <img src={teamLargeIcon} alt="" />
                   <div className="tagline">
                     Manage Teams
                   </div>
                 </Link>
-              )}
-              {permission?.Group?.includes('group:view') && (
+              )} */}
+              {/* {permission?.Group?.includes('group:view') && (
                 <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
                   <img src={groupLargeIcon} alt="" />
                   <div className="tagline">
                     Manage Groups
                   </div>
                 </Link>
-              )}
+              )} */}
               {/* {permission?.Organization?.includes('organization:view-user') && (
                 <Link
                   to={`/org/${allState.organization.currentOrganization?.domain}/admin`}
