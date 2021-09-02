@@ -154,7 +154,7 @@ const Activity = (props) => {
         });
       } else {
         sendStatement(xapiData);
-        if (h5pSettings.organization.api_key) {
+        if (h5pSettings?.organization?.api_key) {
           sendScreenshot(h5pSettings.organization, xapiData, h5pSettings.activity.title, student.profile.data.name.fullName);
         }
       }
