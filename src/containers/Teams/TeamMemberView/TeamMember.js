@@ -96,8 +96,7 @@ function TeamMember(props) {
             </button>
           )}
           {(teamPermission?.Team?.includes('team:remove-team-user')
-          || teamPermission?.Team?.includes('team:add-team-user')
-          || permission?.Team?.includes('team:edit'))
+          || teamPermission?.Team?.includes('team:add-team-user'))
           && auth.user.id !== id && (
             <div className="role-container">
               <select value={activeRole} onChange={(e) => roleChangeHandler(e.target.value)}>

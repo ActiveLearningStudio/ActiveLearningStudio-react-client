@@ -1,15 +1,19 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
-
+import GoogleModel from 'components/models/GoogleLoginModal';
 // import { zeroFill } from 'utils';
 import { getTeamPermission, removeMemberFromProjectAction, removeProjectAction } from 'store/actions/team';
 
 import './style.scss';
+import SharePreviewPopup from 'components/SharePreviewPopup';
+import { getProjectCourseFromLMS, loadLmsAction, toggleProjectShareAction } from 'store/actions/project';
+import { lmsPlaylist } from 'store/actions/playlist';
+import { getProjectId, googleShare } from 'store/actions/gapi';
 
 function TeamProjectView(props) {
   const {
@@ -22,7 +26,18 @@ function TeamProjectView(props) {
   const { teamPermission } = useSelector((state) => state.team);
   const dispatch = useDispatch();
   const { permission } = organization;
+  const [selectedProjectId, setSelectedProjectId] = useState(0);
+  const [show, setShow] = useState(false);
   const authUser = users.find((u) => u.id === (user || {}).id);
+  const AllLms = useSelector((state) => state.share);
+  const [allLms, setAllLms] = useState([]);
+  const handleShow = () => {
+    setShow(!show); //! state.show
+  };
+  useEffect(() => {
+    dispatch(loadLmsAction());
+    setAllLms(AllLms);
+  }, [AllLms, AllLms.shareVendors]);
   // Fetch team permission if page reloads
   useEffect(() => {
     if (!teamPermission && organization?.currentOrganization?.id && id) {
@@ -97,7 +112,70 @@ function TeamProjectView(props) {
                         Build
                       </Dropdown.Item>
                     )}
+                    {permission?.Project?.includes('project:publish') && (
+                      <li className="dropdown-submenu send">
+                        <a tabIndex="-1">
+                          <FontAwesomeIcon icon="newspaper" className="mr-2" />
+                          Publish
+                        </a>
+                        <ul className="dropdown-menu check">
+                          <li
+                            onClick={() => {
+                              handleShow();
+                              getProjectId(project.id);
+                              setSelectedProjectId(project.id);
+                              dispatch(googleShare(false));
+                            }}
+                          >
+                            <a>Google Classroom</a>
+                          </li>
 
+                          {allLms?.shareVendors && allLms.shareVendors.map((data) => (
+                            data.lms_name !== 'safarimontage' && (
+                            <li>
+                              <a
+                                onClick={async () => {
+                                  const allPlaylist = await dispatch(lmsPlaylist(project.id));
+                                  if (allPlaylist) {
+                                    dispatch(
+                                      getProjectCourseFromLMS(
+                                        data.lms_name.toLowerCase(),
+                                        data.id,
+                                        project.id,
+                                        allPlaylist.playlists,
+                                        data.lms_url,
+                                      ),
+                                    );
+                                  }
+                                }}
+                              >
+                                {data.site_name}
+                              </a>
+                            </li>
+                          )))}
+                        </ul>
+                      </li>
+                    )}
+                    {(permission?.Project?.includes('project:share') || teamPermission?.Team?.includes('team:share-project')) && (
+                      <Dropdown.Item
+                        to="#"
+                        onClick={async () => {
+                          const protocol = `${window.location.href.split('/')[0]}//`;
+                          const url = `${protocol + window.location.host}/project/${project.id}/shared`;
+                          if (!project.shared) {
+                            Swal.showLoading();
+                            await dispatch(toggleProjectShareAction(project.id, project.name));
+                            Swal.close();
+                            SharePreviewPopup(url, project.name);
+                          } else {
+                            SharePreviewPopup(url, project.name);
+                          }
+                        }}
+                      >
+                        <FontAwesomeIcon icon="share" className="mr-2" />
+                        Share
+                      </Dropdown.Item>
+                    )}
                     {permission?.Project?.includes('project:edit') && (
                       <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/edit`}>
                         <FontAwesomeIcon icon="pen" className="mr-2" />
@@ -123,7 +201,11 @@ function TeamProjectView(props) {
                   </Dropdown.Menu>
                 </Dropdown>
               </div>
-
+              <GoogleModel
+                projectId={selectedProjectId}
+                show={show} // {props.show}
+                onHide={handleShow}
+              />
               {false && (
                 <>
                   <div className="team-member-content mid-border">
