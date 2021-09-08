@@ -111,7 +111,7 @@ export default function EditProject(props) {
               Edit Project
             </h2>
             <div className="form-group-create">
-              <h3>Organization Name</h3>
+              <h3>Project Name</h3>
               <input
                 type="text"
                 name="name"
@@ -124,7 +124,7 @@ export default function EditProject(props) {
               </div>
             </div>
             <div className="form-group-create">
-              <h3>Organization Image</h3>
+              <h3>Project Image</h3>
               <div
                 className="img-upload-form"
                 onClick={() => imgUpload.current.click()}
@@ -218,7 +218,7 @@ export default function EditProject(props) {
               </div>
             </div>
             <div className="form-group-create">
-              <h3>Organization Visibility Type</h3>
+              <h3>Project Visibility Type</h3>
               <select name="organization_visibility_type_id" onChange={handleChange} onBlur={handleBlur} value={values.organization_visibility_type_id}>
                 <option value="">---Select a visibility type---</option>
                 {visibilityTypeArray?.length > 0 && visibilityTypeArray?.map((vT) => (

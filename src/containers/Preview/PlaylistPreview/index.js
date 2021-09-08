@@ -1,7 +1,7 @@
 import React, { Suspense, lazy, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter, Link, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import Switch from 'react-switch';
@@ -39,6 +39,7 @@ function PlaylistPreview(props) {
   const organization = useSelector((state) => state.organization);
   const { teamPermission } = useSelector((state) => state.team);
   const { permission } = organization;
+  const history = useHistory();
   const dispatch = useDispatch();
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -192,7 +193,9 @@ function PlaylistPreview(props) {
       ),
     });
   };
-
+  const goBack = () => {
+    history.goBack();
+  };
   return (
     <>
       {loading ? (
@@ -220,7 +223,7 @@ function PlaylistPreview(props) {
                 </div>
               </Link>
             </div>
-            <Link to={`/project/${selectedPlaylist.project.id}`}>
+            <Link onClick={goBack}>
               <FontAwesomeIcon icon="times" />
             </Link>
           </div>
