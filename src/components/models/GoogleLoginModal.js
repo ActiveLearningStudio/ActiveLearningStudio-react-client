@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useSelector } from 'react-redux';
@@ -72,7 +72,7 @@ const GoogleLoginModal = ({
                       googleClassRoomLogin(data);
                       setTokenTemp(JSON.stringify(data.tokenObj));
                     }}
-                    onFailure={googleClassRoomLoginFailure}
+                    // onFailure={googleClassRoomLoginFailure}
                     scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
                     cookiePolicy="single_host_origin"
                   >
