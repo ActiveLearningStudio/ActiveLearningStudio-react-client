@@ -48,10 +48,7 @@ const importProject = (subOrgId, projectData) => httpService
 const getAllProjectSearch = (subOrgId, page, search) => httpService
   .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&query=${search || ''}`)
   .then(({ data }) => data)
-  .catch((err) => {
-    errorCatcher(err.response.data);
-    return Promise.reject(err.response.data);
-  });
+  .catch((err) => Promise.reject(err.response.data));
 
 const getUserProject = (subOrgId, page) => httpService
   .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?exclude_starter=true&page=${page}`)

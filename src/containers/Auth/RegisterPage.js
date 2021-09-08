@@ -361,7 +361,7 @@ class RegisterPage extends React.Component {
                   <div className="form-group mb-0">
                     <button
                       type="submit"
-                      className="btn btn-primary submit"
+                      className="btn btn-primary submit get-started-btn"
                       onClick={() => this.setState({
                         clicked: true,
                       })}
