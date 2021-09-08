@@ -27,7 +27,7 @@ function TeamMember(props) {
     permission,
   } = props;
   const [activeRole, setActiveRole] = useState(role?.id);
-  const { roles } = useSelector((state) => state.team);
+  const { roles, teams } = useSelector((state) => state.team);
   const { activeOrganization } = useSelector((state) => state.organization);
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -38,7 +38,15 @@ function TeamMember(props) {
     await dispatch(getTeamPermission(activeOrganization?.id, teamId));
   };
   const handleRemove = useCallback(() => {
-    removeMember(teamId, id, iEmail)
+    const selectedTeam = teams.filter((filterTeam) => filterTeam.id === teamId);
+    const reamainingAdmin = selectedTeam[0]?.users?.filter((singleRole) => singleRole?.role?.id === 1);
+    if (reamainingAdmin?.length <= 1 && role.id === 1) {
+      Swal.fire({
+        icon: 'warning',
+        text: 'There should be atleast one admin',
+      });
+    } else {
+      removeMember(teamId, id, iEmail)
       .then(() => {
       })
       .catch(() => {
@@ -48,6 +56,7 @@ function TeamMember(props) {
           text: 'Failed to remove user.',
         });
       });
+    }
   }, [removeMember, teamId, id, iEmail]);
   return (
     <>
@@ -116,7 +125,7 @@ function TeamMember(props) {
               onClick={handleRemove}
             >
               <FontAwesomeIcon icon="plus" className="mr-2" />
-              <span>{authUser.id === id ? 'Leave' : 'Remove'}</span>
+              <span>{authUser?.id === id ? 'Leave' : 'Remove'}</span>
 
               {removingUserId === id && (
                 <FontAwesomeIcon icon="spinner" className="spinner" />

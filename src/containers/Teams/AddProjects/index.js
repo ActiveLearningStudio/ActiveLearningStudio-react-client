@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect, useDispatch, useSelector } from 'react-redux';
-
+import Swal from 'sweetalert2';
 import { FadeDiv } from 'utils';
 import { loadMyProjectsAction } from 'store/actions/project';
 import { loadTeamAction, addProjectsAction, getTeamPermission } from 'store/actions/team';
@@ -51,10 +51,13 @@ function AddProjectsPage(props) {
       teamId,
       projectIds,
     )
-      .then(() => {
+      .then((result) => {
         history.push(`/org/${organization.currentOrganization?.domain}/teams/${teamId}/projects`);
-      })
-      .catch(() => {});
+        Swal.fire({
+          icon: 'success',
+          title: result?.message,
+        });
+      });
   }, [addProjects, teamId, history]);
 
   return (

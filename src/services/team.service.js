@@ -60,7 +60,10 @@ const removeMember = (teamId, id, email) => httpService
 const addProjects = (teamId, ids) => httpService
   .post(`/${apiVersion}/teams/${teamId}/add-projects`, { ids })
   .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject(err.response.data);
+  });
 
 const removeProject = (teamId, id) => httpService
   .post(`/${apiVersion}/teams/${teamId}/remove-project`, { id })

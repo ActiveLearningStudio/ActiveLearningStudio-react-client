@@ -46,6 +46,7 @@ function CreateTeam(props) {
     createTeam,
     updateTeam,
     setInvitedMembers,
+    reduxform,
   } = props;
 
   const {
@@ -103,8 +104,8 @@ function CreateTeam(props) {
       console.log(selectedTeam, team.selectedTeam);
       updateTeam(selectedTeam?.id, {
         organization_id: organization.activeOrganization?.id,
-        name: team.selectedTeam.name,
-        description: team.selectedTeam.description,
+        name: reduxform.CreateTeamForm.values.name,
+        description: reduxform.CreateTeamForm.values.description,
         // users: selectedMembers || [],
         // projects: projectIds,
       }).then(() => {
@@ -155,7 +156,7 @@ function CreateTeam(props) {
       {(permission?.Team?.includes('team:create') && !editMode) || (permission?.Team?.includes('team:edit') && editMode) ? (
         <>
           <div>
-            {backButton}
+            {!editMode && backButton}
             <CreateTeamSidebar team={team} editMode={editMode} />
           </div>
           <div className="create-team-content">
@@ -225,6 +226,7 @@ CreateTeam.propTypes = {
   createTeam: PropTypes.func.isRequired,
   updateTeam: PropTypes.func.isRequired,
   setInvitedMembers: PropTypes.func.isRequired,
+  reduxform: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -233,6 +235,7 @@ const mapStateToProps = (state) => ({
   searchedUsers: state.auth.searchedUsers,
   projects: state.project.projects,
   setInvitedMembers: PropTypes.func.isRequired,
+  reduxform: state.form,
 });
 
 const mapDispatchToProps = (dispatch) => ({
