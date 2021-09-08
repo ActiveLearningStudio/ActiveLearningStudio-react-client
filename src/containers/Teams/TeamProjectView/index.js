@@ -36,6 +36,9 @@ function TeamProjectView(props) {
   };
   useEffect(() => {
     dispatch(loadLmsAction());
+  }, []);
+
+  useEffect(() => {
     setAllLms(AllLms);
   }, [AllLms, AllLms.shareVendors]);
   // Fetch team permission if page reloads
@@ -201,11 +204,6 @@ function TeamProjectView(props) {
                   </Dropdown.Menu>
                 </Dropdown>
               </div>
-              <GoogleModel
-                projectId={selectedProjectId}
-                show={show} // {props.show}
-                onHide={handleShow}
-              />
               {false && (
                 <>
                   <div className="team-member-content mid-border">
@@ -256,6 +254,11 @@ function TeamProjectView(props) {
           ))}
         </div>
       </div>
+      <GoogleModel
+        projectId={selectedProjectId}
+        show={show} // {props.show}
+        onHide={handleShow}
+      />
     </div>
   );
 }
