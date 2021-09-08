@@ -12,8 +12,7 @@ import ProjectPreviewShared from 'containers/Preview/ProjectPreview/ProjectPrevi
 import MyVerticallyCenteredModal from 'components/models/activitySample';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import { lmsPlaylist } from 'store/actions/playlist';
-import { getProjectId, googleShare } from 'store/actions/gapi';
-import GoogleModel from 'components/models/GoogleLoginModal';
+import { getProjectId } from 'store/actions/gapi';
 
 const SampleProjectCard = (props) => {
   const {
@@ -21,6 +20,8 @@ const SampleProjectCard = (props) => {
     type,
     activeTab,
     setShowSampleSort,
+    handleShow,
+    setProjectId,
   } = props;
 
   const dispatch = useDispatch();
@@ -32,13 +33,8 @@ const SampleProjectCard = (props) => {
   const [currentActivity, setCurrentActivity] = useState(null);
   const organization = useSelector((state) => state.organization);
   const { permission } = organization;
-  const [selectedProjectId, setSelectedProjectId] = useState(0);
-  const [show, setShow] = useState(false);
   const AllLms = useSelector((state) => state.share);
   const [allLms, setAllLms] = useState([]);
-  const handleShow = () => {
-    setShow(!show); //! state.show
-  };
   useEffect(() => {
     setAllLms(AllLms);
   }, [AllLms, AllLms.shareVendors]);
@@ -152,8 +148,7 @@ const SampleProjectCard = (props) => {
                                     onClick={() => {
                                       handleShow();
                                       getProjectId(project.id);
-                                      setSelectedProjectId(project.id);
-                                      dispatch(googleShare(false));
+                                      setProjectId(project.id);
                                     }}
                                   >
                                     <a>Google Classroom</a>
@@ -271,11 +266,6 @@ const SampleProjectCard = (props) => {
           )}
         </div>
       )}
-      <GoogleModel
-        projectId={selectedProjectId}
-        show={show} // {props.show}
-        onHide={handleShow}
-      />
       <MyVerticallyCenteredModal
         show={modalShow}
         onHide={() => setModalShow(false)}
@@ -290,6 +280,8 @@ SampleProjectCard.propTypes = {
   type: PropTypes.string.isRequired,
   setShowSampleSort: PropTypes.func.isRequired,
   activeTab: PropTypes.string.isRequired,
+  handleShow: PropTypes.func.isRequired,
+  setProjectId: PropTypes.func.isRequired,
 };
 
 export default SampleProjectCard;

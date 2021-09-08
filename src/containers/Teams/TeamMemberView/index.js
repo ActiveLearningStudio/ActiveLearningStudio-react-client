@@ -125,7 +125,7 @@ function TeamMemberView(props) {
           </div>
         </div>
       </div>
-      <div className="col">
+      <div className="">
         <div className="team-description">
           <h2 className="title">
             {`About the ${name}`}

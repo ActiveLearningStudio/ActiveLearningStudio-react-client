@@ -101,7 +101,6 @@ function CreateTeam(props) {
 
   const handleSubmit = useCallback((projectIds = 0) => {
     if (editMode) {
-      console.log(selectedTeam, team.selectedTeam);
       updateTeam(selectedTeam?.id, {
         organization_id: organization.activeOrganization?.id,
         name: reduxform.CreateTeamForm.values.name,

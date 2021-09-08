@@ -233,7 +233,7 @@ export default function CreateOrg(prop) {
                     />
                     <div
                       className="update-img"
-                      onClick={() => imgUpload.current.click()}
+                      // onClick={() => imgUpload.current.click()}
                     >
                       Update Image
                     </div>

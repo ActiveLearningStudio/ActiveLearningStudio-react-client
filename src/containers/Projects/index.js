@@ -656,7 +656,15 @@ export const ProjectsPage = (props) => {
                   <div className="col-md-12">
                     <div className="flex-smaple">
                       {teamProjects.length > 0 ? (
-                        <SampleProjectCard projects={teamProjects} type={type} activeTab={tabToggle} setShowSampleSort={setShowSampleSort} />
+                        <SampleProjectCard
+                          projects={teamProjects}
+                          type={type}
+                          activeTab={tabToggle}
+                          setShowSampleSort={setShowSampleSort}
+                          handleShow={handleShow}
+                          handleClose={handleClose}
+                          setProjectId={setProjectId}
+                        />
                       ) : (
                         <Alert variant="warning">No Team Project found.</Alert>
                       )}
