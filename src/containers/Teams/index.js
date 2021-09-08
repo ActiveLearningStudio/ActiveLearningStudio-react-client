@@ -117,7 +117,7 @@ function TeamsPage(props) {
           <div className="main-flex-top">
             {breadCrumb.map((node, index, these) => (
               <div key={node}>
-                <span className={index + 1 < these.length ? 'parent' : 'child'}>
+                <span className={index + 1 < these.length ? '' : 'child'}>
                   {node}
                 </span>
                 {index + 1 < these.length && (
@@ -126,10 +126,13 @@ function TeamsPage(props) {
               </div>
             ))}
           </div>
-          <Link className="back-button-main-page" onClick={goBack}>
-            <FontAwesomeIcon icon="chevron-left" />
-            Back
-          </Link>
+          {!overview
+          && (
+            <Link className="back-button-main-page" onClick={goBack}>
+              <FontAwesomeIcon icon="chevron-left" />
+              Back
+            </Link>
+          )}
         </div>
       </div>
       <div className="teams-page">
@@ -139,37 +142,39 @@ function TeamsPage(props) {
               <h1 className={`title${projectShow ? ' project-title' : ''}${channelShow ? ' channel-title' : ''}`}>
                 {overview ? 'Teams' : (title[status] || 'Teams')}
               </h1>
-              {(permission?.Team?.includes('team:add-projects') || teamPermission?.Team?.includes('team:add-project')) && projectShow && (
-                <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}/add-projects`}>
-                  <div className="btn-top-page">
-                    <FontAwesomeIcon icon="plus" className="mr-2" />
-                    Add projects
-                  </div>
-                </Link>
-              )}
-              {(permission?.Team?.includes('team:invite-member')
-              || teamPermission?.Team?.includes('team:add-team-user')
-              || teamPermission?.Team?.includes('team:remove-team-user')) && projectShow && (
-                <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}`}>
-                  <div className="btn-top-page">
-                    Add/Remove Members
-                  </div>
-                </Link>
-              )}
-              {permission?.Team?.includes('team:create')
-              && overview && (
-                <>
-                  <Link to={`/org/${organization?.currentOrganization?.domain}/teams/create-team`}>
+              <div className="flex-button-top">
+                {(permission?.Team?.includes('team:add-projects') || teamPermission?.Team?.includes('team:add-project')) && projectShow && (
+                  <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}/add-projects`}>
                     <div className="btn-top-page">
                       <FontAwesomeIcon icon="plus" className="mr-2" />
-                      Create a Team
+                      Add projects
                     </div>
                   </Link>
-                </>
-              )}
-              {projectShow && (
-                <></>
-              )}
+                )}
+                {(permission?.Team?.includes('team:invite-member')
+                || teamPermission?.Team?.includes('team:add-team-user')
+                || teamPermission?.Team?.includes('team:remove-team-user')) && projectShow && (
+                  <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}`}>
+                    <div className="btn-top-page">
+                      Add/Remove Members
+                    </div>
+                  </Link>
+                )}
+                {permission?.Team?.includes('team:create')
+                && overview && (
+                  <>
+                    <Link to={`/org/${organization?.currentOrganization?.domain}/teams/create-team`}>
+                      <div className="btn-top-page">
+                        <FontAwesomeIcon icon="plus" className="mr-2" />
+                        Create a Team
+                      </div>
+                    </Link>
+                  </>
+                )}
+                {projectShow && (
+                  <></>
+                )}
+              </div>
             </div>
             <>
               {overview && (
