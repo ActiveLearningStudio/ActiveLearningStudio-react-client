@@ -2,8 +2,12 @@
 
 .side-wrapper-team {
   position: fixed;
-  left: 292px;
+  padding-left: 350px;
   width: 100%;
+  
+
+
+  padding-right: 60px;
   // padding-bottom: 100px;
   border-right: 1px solid #dcdcdc;
   z-index: 1000;
@@ -32,7 +36,7 @@
     justify-content: space-between;
     // width: calc(140vw);
     width: 100%;
-    padding: 17px 0 8px 55px;
+    padding: 21px 0px 11px 0px;
     background-color: #eee;
     border-bottom: solid 1px #CBCBCB;
 
@@ -54,9 +58,8 @@
   }
   .back-button-main-page {
     width: fit-content;
-    margin-right: 24%;
-    height: 30px;
     padding: 8px 15px 9px 0px;
+   
     display: flex;
     align-items: center;
     justify-content: center;
@@ -80,6 +83,14 @@
 }
 
 .teams-page {
+
+  .flex-button-top {
+    display: flex;
+    a {
+      margin-left:20px
+    }
+   }
+   
   .title {
     padding-top: 11px;
     padding-bottom: 10px;
@@ -138,7 +149,7 @@
 
   .content {
     position: relative;
-    margin: 55px 55px 0 55px;
+    margin: 70px 55px 0 55px;
     overflow: visible;
 
     .overview {
