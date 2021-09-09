@@ -335,7 +335,7 @@ let CreateProjectPopup = (props) => {
             <p className="disclaimer">
               Project Image dimension should be
               {' '}
-              <strong>290px width and 200px height. </strong>
+              <strong>280px width and 200px height. </strong>
               Maximun File size allowed is
               {' '}
               <strong>100MB.</strong>
