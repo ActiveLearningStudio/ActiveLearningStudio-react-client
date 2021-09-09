@@ -35,7 +35,7 @@ export default function CreateUser(prop) {
           lti_client_id: editMode ? activeEdit?.lti_client_id : '',
           // moodle: editMode ? activeEdit?.moodle : '',
           // canvas: editMode ? activeEdit?.canvas : '',
-          lms_name: editMode ? activeEdit?.lms_name: '',
+          lms_name: editMode ? activeEdit?.lms_name || 'moodle': 'moodle',
           lms_access_key: editMode ? activeEdit?.lms_access_key : '',
           lms_access_secret: editMode ? activeEdit?.lms_access_secret : '',
           description: editMode ? activeEdit?.description : "",
@@ -44,24 +44,30 @@ export default function CreateUser(prop) {
           lti_client_id: editMode ? activeEdit?.lti_client_id : "",
           published:editMode ? clone ? false:activeEdit?.published: false,
           organization_id: organization?.activeOrganization?.id,
+
+
         }}
         validate={(values) => {
           const errors = {};
           if (!values.lms_url) {
-            errors.lms_url = 'Required';
+            errors.lms_url = 'required';
           }
           if (!values.lms_access_token) {
-            errors.lms_access_token = 'Required';
+            errors.lms_access_token = 'required';
+          }
+          if (!values.lms_access_token) {
+            errors.lms_access_token = 'required';
           }
           if (!values.site_name) {
-            errors.site_name = 'Required';
+            errors.site_name = 'required';
           }
           if (!values.lti_client_id) {
-            errors.lti_client_id = 'Required';
+            errors.lti_client_id = 'required';
           }
-          // if (!values.moodle) {
-          //   errors.moodle = 'required';
-          // }
+
+          if (!values.lms_name) {
+            errors.lms_name = 'required';
+          }
 
           // if (!values.canvas) {
           //   errors.canvas = 'Required';
@@ -79,7 +85,7 @@ export default function CreateUser(prop) {
             errors.user_id = 'Required';
           }
           if (!values.lms_login_id) {
-            errors.lms_login_id = 'Required';
+            errors.lms_login_id = 'required';
           }
           return errors;
         }}
@@ -217,7 +223,7 @@ export default function CreateUser(prop) {
                 value={values.role}
               /> */}
               <select name="lms_name" onChange={handleChange} onBlur={handleBlur} value={values.lms_name}>
-                <option value="moodle">Moodle</option>
+                <option selected value="moodle">Moodle</option>
                 <option value="canvas">Canvas</option>
                 <option value="safarimontage">Safari Montage</option>
 
