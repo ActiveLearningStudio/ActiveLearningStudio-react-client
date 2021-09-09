@@ -13,6 +13,7 @@ import UploadImage from "utils/UploadImage/uploadimage";
 import PreviewLayoutModel from "containers/MyProject/model/previewlayout";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import UploadImageV2 from "utils/uploadimagev2/uploadimagev2";
+import UploadInteractiveVideo from "./uploadinteractivevideo";
 
 const AddActivity = (props) => {
   const { changeScreenHandler, setUploadImageStatus } = props;
@@ -203,15 +204,7 @@ const AddActivity = (props) => {
                 height="35px"
                 onClick={() => setModalShow(true)}
               />
-              <Buttons
-                text="Upload existing Activity"
-                secondary={true}
-                width="200px"
-                height="36px"
-                // disabled={layout ? false : true}
-                onClick={() => changeScreenHandler("uploadinteractivevideo")}
-                hover={true}
-              />
+             
               {/* <Buttons
                 text="Preview Layout"
                 secondary={true}
@@ -222,6 +215,7 @@ const AddActivity = (props) => {
                 hover={true}
               /> */}
             </div>
+            <UploadInteractiveVideo />
             {successMessage && (
               <div className="successMessage">
                 <HeadingThree

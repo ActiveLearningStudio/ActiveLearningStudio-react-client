@@ -78,10 +78,10 @@ const ActivityCardBox = ({ img, title, description, listView }) => {
                 <a className="card-links" href="#">
                   Project #2
                 </a>
-                <FontAwesomeIcon
+                {/* <FontAwesomeIcon
                   icon={faShareAlt}
                   className="published-share-icon"
-                />
+                /> */}
               </div>
             </div>
           </div>

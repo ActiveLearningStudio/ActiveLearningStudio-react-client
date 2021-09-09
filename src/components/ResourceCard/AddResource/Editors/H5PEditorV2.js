@@ -129,7 +129,7 @@ const H5PEditor = (props) => {
           type="hidden"
           name="library"
           id="laravel-h5p-library"
-          value={resource?.newResource.activity.h5pLib || 'H5P.Column 1.13'}
+          value={resource?.newResource.activity.h5pLib || 'H5P.InteractiveVideo 1.22'}
         />
         <input
           type="hidden"

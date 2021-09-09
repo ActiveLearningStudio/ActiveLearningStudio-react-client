@@ -15,9 +15,11 @@ import HeadingThree from "utils/HeadingThree/headingthree";
 import PlayIcon from "assets/images/play.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { useHistory } from 'react-router-dom';
 
 const ActivityLayout = (props) => {
   const { changeScreenHandler } = props;
+  const history = useHistory();
   const [layout, setLayout] = useState("Interactivevideo");
   return (
     <div className="activity-layout-form">
@@ -38,30 +40,30 @@ const ActivityLayout = (props) => {
       <div className="layout-cards-process-btn">
         <div className="activity-layout-cards">
           <LayoutCard
-            image={InteractivevideoImage}
-            text="Interactive video"
-            className={
-              layout == "Interactivevideo" ? "activity-layoutCard-active" : null
-            }
-            onClick={() => setLayout("Interactivevideo")}
-          />
-          <LayoutCard
             image={ColoumImage}
-            text="ColumnLayout"
+            text="Column Layout"
             className={
-              layout == "ColumnLayout"
-                ? "activity-layoutCard-active ml-30"
-                : "ml-30"
+              layout == "ColumnLayout" ? "activity-layoutCard-active" : null
             }
             onClick={() => setLayout("ColumnLayout")}
           />
           <LayoutCard
             image={PresentationImage}
-            text="Course Presentation "
+            text="course Presentation"
             className={
-              layout == "Presentation" ? "activity-layoutCard-active " : null
+              layout == "Presentation"
+                ? "activity-layoutCard-active ml-30"
+                : "ml-30"
             }
             onClick={() => setLayout("Presentation")}
+          />
+          <LayoutCard
+            image={InteractivevideoImage}
+            text="Interactive Video"
+            className={
+              layout == "Interactivevideo" ? "activity-layoutCard-active " : null
+            }
+            onClick={() => setLayout("Interactivevideo")}
           />
           <LayoutCard
             image={InteractivebookImage}
@@ -81,13 +83,16 @@ const ActivityLayout = (props) => {
           />
           <LayoutCard
             image={ColoumImage1}
-            text="Column Layout"
+            text="Single Activity"
             className={
-              layout == "ColumnLayout1"
+              layout == "SingleActivity"
                 ? "activity-layoutCard-active ml-30"
                 : "ml-30"
             }
-            onClick={() => setLayout("ColumnLayout1")}
+            onClick={() => {
+              setLayout("SingleActivity");
+              history.push(`/org/currikistudio/project/6510/playlist/13623/activity/create`);
+            }}
           />
         </div>
         <div className="layout-process-btn">
@@ -95,7 +100,7 @@ const ActivityLayout = (props) => {
           <div className="activity-layout-process-box">
             <iframe
               width="100%"
-              height="168"
+              height="100%"
               frameborder="0"
               src="https://www.youtube.com/embed/ngXSzWNYzU4"
               title="https://youtu.be/ngXSzWNYzU4"
@@ -103,7 +108,7 @@ const ActivityLayout = (props) => {
             {/* <img src={PlayIcon} /> */}
           </div>
           <HeadingText
-            text="An HTML5-based interactive video content type allowing users to add multiple choice and fill in the blank questions, pop-up text and other types of interactions to their videos using only a web browser. Make your videos more engaging with H5P and interactive video in publishing systems like Canvas, Brightspace, Blackboard, Moodle and WordPress."
+            text="An HTML5-based interactive video content type allowing users to add multiple choice and fill in the blank questions, pop-up text and other types of interactions"
             color="#515151"
           />
           <div className="layout-useful-box">
