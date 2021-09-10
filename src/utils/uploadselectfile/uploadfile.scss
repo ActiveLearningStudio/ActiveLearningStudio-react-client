@@ -10,7 +10,7 @@
   }
   .uploadfile-box {
     box-sizing: border-box;
-    width: 512px;
+    max-width: 454px;
     height: 160px;
     background: #f1f1f1;
     border-radius: 10px;
@@ -51,5 +51,8 @@
         }
       }
     }
+  }
+  .upload-btn {
+    margin-top: 30px;
   }
 }

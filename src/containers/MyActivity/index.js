@@ -223,7 +223,7 @@ const MyActivity = () => {
                     <ActivityCardBox
                       img={CardImage}
                       title="My first activity"
-                      description="Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect"
+                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
                       listView={listView}
                     />
                   </div>
@@ -231,7 +231,7 @@ const MyActivity = () => {
                     <ActivityCardBox
                       img={CardImage}
                       title="My first activity"
-                      description="Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect"
+                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
                       listView={listView}
                     />
                   </div>
@@ -239,7 +239,7 @@ const MyActivity = () => {
                     <ActivityCardBox
                       img={CardImage}
                       title="My first activity"
-                      description="Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect"
+                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
                       listView={listView}
                     />
                   </div>
@@ -247,7 +247,7 @@ const MyActivity = () => {
                     <ActivityCardBox
                       img={CardImage}
                       title="My first activity"
-                      description="Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect"
+                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
                       listView={listView}
                     />
                   </div>
@@ -255,7 +255,7 @@ const MyActivity = () => {
                     <ActivityCardBox
                       img={CardImage}
                       title="My first activity"
-                      description="Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect"
+                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
                       listView={listView}
                     />
                   </div>
@@ -263,7 +263,7 @@ const MyActivity = () => {
                     <ActivityCardBox
                       img={CardImage}
                       title="My first activity"
-                      description="Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect"
+                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
                       listView={listView}
                     />
                   </div>

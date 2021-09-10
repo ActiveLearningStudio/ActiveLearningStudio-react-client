@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 150px;
+  min-width: 150px;
   .tabs {
     height: 10px;
     border-radius: 5px;

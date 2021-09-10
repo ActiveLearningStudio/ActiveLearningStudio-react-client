@@ -13,6 +13,8 @@ import UploadImage from "utils/UploadImage/uploadimage";
 import PreviewLayoutModel from "containers/MyProject/model/previewlayout";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import UploadImageV2 from "utils/uploadimagev2/uploadimagev2";
+import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
+import UploadFile from "utils/uploadselectfile/uploadfile";
 
 const AddActivity = (props) => {
   const { changeScreenHandler, setUploadImageStatus } = props;
@@ -22,6 +24,8 @@ const AddActivity = (props) => {
 
   const [title, setTitle] = useState("Interactive Video");
   const [successMessage, setSuccessMessage] = useState(false);
+
+  const [existingActivity, setExistingActivity] = useState(false);
 
   successMessage &&
     setInterval(() => {
@@ -41,11 +45,11 @@ const AddActivity = (props) => {
         <div className="add-activity-tabs">
           <Tabs text="1. Select a layout" tabActive={true} />
           <Tabs
-            text="2. Add activities to Layout"
-            className="ml-10 mt-10"
+            text="2.Layout description + activities"
+            className="ml-10"
             tabActive={true}
           />
-          <Tabs text="3. Preview Layout" className="ml-10" />
+          {/* <Tabs text="3. Preview Layout" className="ml-10" /> */}
         </div>
         <div className="add-activity-title-select">
           <div className="add-activity-title">
@@ -65,7 +69,7 @@ const AddActivity = (props) => {
           </div>
         </div>
         <div className="add-activity-selection">
-          <HeadingThree text="Create New" color="#084892" />
+          {/* <HeadingThree text="Create New" color="#084892" /> */}
           {/* <button>
             Create New
             <FontAwesomeIcon icon="plus" className="btn-icon" />
@@ -202,14 +206,17 @@ const AddActivity = (props) => {
                 width="142px"
                 height="35px"
                 onClick={() => setModalShow(true)}
+                hover={true}
               />
               <Buttons
+                icon={existingActivity ? faAngleUp : faAngleDown}
                 text="Upload existing Activity"
                 secondary={true}
                 width="200px"
                 height="36px"
                 // disabled={layout ? false : true}
-                onClick={() => changeScreenHandler("uploadinteractivevideo")}
+                // onClick={() => changeScreenHandler("uploadinteractivevideo")}
+                onClick={() => setExistingActivity(!existingActivity)}
                 hover={true}
               />
               {/* <Buttons
@@ -222,6 +229,12 @@ const AddActivity = (props) => {
                 hover={true}
               /> */}
             </div>
+            {existingActivity && (
+              <div className="existing-activity-dialog">
+                <UploadFile />
+              </div>
+            )}
+
             {successMessage && (
               <div className="successMessage">
                 <HeadingThree

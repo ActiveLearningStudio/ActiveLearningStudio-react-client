@@ -18,6 +18,7 @@ ActivityCardBoxProps.args = {
   img: CardImage,
   title: "My first activity created",
   description:
-    "Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consecte. Lorem ipsum dolor sit consecte. Lorem ipsum dolor sit amet, consect.",
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.",
   listView: false,
+  status: "published",
 };

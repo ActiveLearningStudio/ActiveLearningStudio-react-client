@@ -399,11 +399,12 @@
     }
   }
   .add-activity-title-select {
+    margin-top: 50px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     .add-activity-title {
-      margin-top: 50px;
+      // margin-top: 50px;
       width: max-content;
     }
     .activity-title-change-layout {
@@ -427,7 +428,7 @@
   }
 
   .add-activity-selection {
-    border-bottom: 1px solid $curriki-main-blue;
+    // border-bottom: 1px solid $curriki-main-blue;
     margin-top: 33px;
     button {
       width: 136px;
@@ -557,9 +558,9 @@
       margin-left: 60px;
       .layout-add-activity-title {
         margin-top: 34px;
-        // h2 {
-        //   border: none;
-        // }
+        h2 {
+          border: none;
+        }
       }
       .add-activity-btns {
         display: flex;
@@ -587,6 +588,9 @@
           margin-top: 10px;
           text-align: center;
         }
+      }
+      .existing-activity-dialog {
+        margin-top: 48px;
       }
     }
   }

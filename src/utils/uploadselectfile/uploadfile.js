@@ -6,6 +6,7 @@ import "./uploadfile.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import UploadImg from "../../assets/images/upload1.png";
 import { faCloud, faUpload } from "@fortawesome/free-solid-svg-icons";
+import Buttons from "utils/Buttons/buttons";
 
 const UploadFile = ({ className }) => {
   const currikiUtility = classNames("curriki-utility-uploadfile", className);
@@ -25,6 +26,15 @@ const UploadFile = ({ className }) => {
               to upload
             </p>
           </div>
+        </div>
+        <div className="upload-btn">
+          <Buttons
+            text="upload"
+            primary={true}
+            width="142px"
+            height="35px"
+            hover={true}
+          />
         </div>
       </div>
     </>

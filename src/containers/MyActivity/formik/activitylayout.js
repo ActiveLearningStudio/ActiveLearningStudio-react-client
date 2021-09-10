@@ -23,8 +23,9 @@ const ActivityLayout = (props) => {
     <div className="activity-layout-form">
       <div className="activity-layout-tabs">
         <Tabs text="1. Select a layout" tabActive={true} />
-        <Tabs text="2. Add activities to Layout" className="ml-10 mt-10" />
-        <Tabs text="3. Preview Layout" className="ml-10" />
+        <Tabs text="2.Layout description + activities" className="ml-10 " />
+        {/* mt-10 */}
+        {/* <Tabs text="3. Preview Layout" className="ml-10" /> */}
       </div>
       <div className="activity-layout-title">
         <HeadingTwo text="Select a layout" color="#084892" />
@@ -55,23 +56,31 @@ const ActivityLayout = (props) => {
             }
             onClick={() => setLayout("ColumnLayout")}
           />
-          <LayoutCard
+          {/* <LayoutCard
             image={PresentationImage}
             text="Course Presentation "
             className={
               layout == "Presentation" ? "activity-layoutCard-active " : null
             }
             onClick={() => setLayout("Presentation")}
-          />
+          /> */}
           <LayoutCard
             image={InteractivebookImage}
             text="Interactive book"
             className={
-              layout == "Interactivebook"
+              layout == "Interactivebook" ? "activity-layoutCard-active " : null
+            }
+            onClick={() => setLayout("Interactivebook")}
+          />
+          <LayoutCard
+            image={PresentationImage}
+            text="Course Presentation "
+            className={
+              layout == "Presentation"
                 ? "activity-layoutCard-active ml-30"
                 : "ml-30"
             }
-            onClick={() => setLayout("Interactivebook")}
+            onClick={() => setLayout("Presentation")}
           />
           <LayoutCard
             image={QuizImage}
@@ -123,6 +132,7 @@ const ActivityLayout = (props) => {
               width="153px"
               height="36px"
               onClick={() => changeScreenHandler("")}
+              hover={true}
             />
 
             <div className="btns-margin">

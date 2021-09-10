@@ -35,6 +35,11 @@
       border: 1px solid #515151;
       background-color: $white;
       color: #515151;
+      border-radius: 25px;
+      &:hover {
+        background-color: $curriki-main-blue;
+        color: $white;
+      }
     }
     .btn-mr-27 {
       margin-right: 27px;
