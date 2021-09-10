@@ -14,6 +14,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 const PreviewLayoutModel = (props) => {
   const resource = useSelector((state) => state.resource);
+  const dispatch = useDispatch()
   return (
     <Modal
       {...props}
@@ -63,10 +64,21 @@ const PreviewLayoutModel = (props) => {
               secondary={true}
               onClick={() => {
                 props.onHide();
+                dispatch({
+                  type: 'SET_ACTIVE_ACTIVITY_SCREEN',
+                  payload: "",
+                });
+              }}
+            />
+            <Buttons
+              text="Save"
+              width="97px"
+              className="save-btn"
+              onClick={() => {
+                props.onHide();
                 props.setSuccessMessage(true);
               }}
             />
-            <Buttons text="Save" width="97px" className="save-btn" />
           </div>
         </div>
       </Modal.Body>

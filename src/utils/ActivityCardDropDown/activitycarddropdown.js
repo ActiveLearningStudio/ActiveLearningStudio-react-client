@@ -10,12 +10,12 @@ import {
   faCopy,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch } from 'react-redux';
 import "./activitycarddropdown.scss";
-import { propTypes } from "react-bootstrap/esm/Image";
 
 const ActivityCardDropDown = ({ iconColor }) => {
   const IconColor = iconColor ? iconColor : "#084892";
-
+  const dispatch = useDispatch();
   return (
     <div className="curriki-utility-activity-dropdown">
       <Dropdown className="activity-dropdown check ">
@@ -28,14 +28,18 @@ const ActivityCardDropDown = ({ iconColor }) => {
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
-          <Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => {
+              dispatch({
+                type: 'SET_ACTIVE_ACTIVITY_SCREEN',
+                payload: "addactivity",
+              });
+            }}
+          >
             <FontAwesomeIcon icon={faEdit} className="mr-2" />
             Edit
           </Dropdown.Item>
-          <Dropdown.Item>
-            <FontAwesomeIcon icon={faPlusSquare} className="mr-2" />
-            Add to a project
-          </Dropdown.Item>
+          
           <Dropdown.Item>
             <FontAwesomeIcon icon={faCopy} className="mr-2" />
             Duplicate

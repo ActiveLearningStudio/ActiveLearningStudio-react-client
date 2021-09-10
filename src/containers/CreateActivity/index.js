@@ -51,7 +51,7 @@ function ActivityCreate(props) {
               <Link onClick={() => history.goBack()}>
                 <div className="back-playlist">
                   <FontAwesomeIcon icon="arrow-left" />
-                  Back to Playlist
+                  Back
                 </div>
               </Link>
             </div>

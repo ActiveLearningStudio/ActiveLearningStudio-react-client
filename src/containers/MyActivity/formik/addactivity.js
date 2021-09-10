@@ -232,6 +232,17 @@ const AddActivity = (props) => {
             {existingActivity && (
               <div className="existing-activity-dialog">
                 <UploadFile />
+
+                <div style={{ marginTop: "30px" }}>
+                  <Buttons
+                    text="upload"
+                    primary={true}
+                    width="142px"
+                    height="35px"
+                    hover={true}
+                    onClick={() => changeScreenHandler("")}
+                  />
+                </div>
               </div>
             )}
 

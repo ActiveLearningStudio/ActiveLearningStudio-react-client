@@ -27,7 +27,7 @@ const UploadFile = ({ className }) => {
             </p>
           </div>
         </div>
-        <div className="upload-btn">
+        {/* <div className="upload-btn">
           <Buttons
             text="upload"
             primary={true}
@@ -35,7 +35,7 @@ const UploadFile = ({ className }) => {
             height="35px"
             hover={true}
           />
-        </div>
+        </div> */}
       </div>
     </>
   );
