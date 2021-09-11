@@ -1,8 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeUserRole, getTeamPermission, loadTeamAction } from 'store/actions/team';
 
 function TeamMember(props) {
   const {
@@ -15,16 +17,36 @@ function TeamMember(props) {
       first_name: firstName,
       last_name: lastName,
       invited_email: iEmail,
-      role,
       projects = [],
+      role,
     },
     selectMe,
     deselectMe,
     removeMember,
+    teamPermission,
     permission,
   } = props;
+  const [activeRole, setActiveRole] = useState(role?.id);
+  const { roles, teams } = useSelector((state) => state.team);
+  const { activeOrganization } = useSelector((state) => state.organization);
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const roleChangeHandler = async (roleId) => {
+    setActiveRole(roleId);
+    await dispatch(changeUserRole(teamId, { user_id: id, role_id: roleId }));
+    await dispatch(loadTeamAction(teamId));
+    await dispatch(getTeamPermission(activeOrganization?.id, teamId));
+  };
   const handleRemove = useCallback(() => {
-    removeMember(teamId, id, iEmail)
+    const selectedTeam = teams.filter((filterTeam) => filterTeam.id === teamId);
+    const reamainingAdmin = selectedTeam[0]?.users?.filter((singleRole) => singleRole?.role?.id === 1);
+    if (reamainingAdmin?.length <= 1 && role.id === 1) {
+      Swal.fire({
+        icon: 'warning',
+        text: 'There should be atleast one admin',
+      });
+    } else {
+      removeMember(teamId, id, iEmail)
       .then(() => {
       })
       .catch(() => {
@@ -34,6 +56,7 @@ function TeamMember(props) {
           text: 'Failed to remove user.',
         });
       });
+    }
   }, [removeMember, teamId, id, iEmail]);
   return (
     <>
@@ -50,13 +73,14 @@ function TeamMember(props) {
 
           <div className="member-data d-flex align-items-center">
             <h2 className="m-0">
-              {role === 'owner' && (
+              {role?.name ? (
                 <>
-                  <span>Admin</span>
-                  <span style={{ margin: '0 9px' }}>●</span>
+                  {role.name === 'admin' && <div style={{ color: 'green' }}> Admin </div>}
+                  {role.name === 'contributor' && <div style={{ color: 'blue' }}> Contributor </div>}
+                  {role.name === 'member' && <div style={{ color: 'red' }}> Member </div>}
                 </>
-              )}
-              {`Assigned to ${projects.length} Projects`}
+              ) : null}
+              {/* {`Assigned to ${projects.length} Projects`} */}
             </h2>
 
             {projects.length > 0 && (
@@ -69,36 +93,47 @@ function TeamMember(props) {
           </div>
         </div>
 
-        {authUser?.role === 'owner' && authUser.id !== id && (
-          <div className="button-container">
-            {iEmail && (
-              <button
-                type="button"
-                className={classnames('invite-btn', { checked: true })}
-                disabled
-              >
-                <FontAwesomeIcon icon="check" className="mr-2" />
-                <span>Invited</span>
-              </button>
-            )}
-            {permission?.Team?.includes('team:remove-user') && (
-              <button
-                type="button"
-                className="eliminate-btn"
-                disabled={removingUserId}
-                onClick={handleRemove}
-              >
-                <FontAwesomeIcon icon="plus" className="mr-2" />
-                <span>{authUser.id === id ? 'Leave' : 'Remove'}</span>
+        <div className="button-container">
+          {iEmail && (
+            <button
+              type="button"
+              className={classnames('invite-btn', { checked: true })}
+              disabled
+            >
+              <FontAwesomeIcon icon="check" className="mr-2" />
+              <span>Invited</span>
+            </button>
+          )}
+          {(teamPermission?.Team?.includes('team:remove-team-user')
+          || teamPermission?.Team?.includes('team:add-team-user'))
+          && auth.user.id !== id && (
+            <div className="role-container">
+              <select value={activeRole} onChange={(e) => roleChangeHandler(e.target.value)}>
+                {roles?.map((roletype) => (
+                  <option value={roletype.id} key={roletype.id}>
+                    {roletype.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+          {(permission?.Team?.includes('team:remove-user') || teamPermission?.Team?.includes('team:remove-team-user')) && (
+            <button
+              type="button"
+              className="eliminate-btn"
+              disabled={removingUserId}
+              onClick={handleRemove}
+            >
+              <FontAwesomeIcon icon="plus" className="mr-2" />
+              <span>{authUser?.id === id ? 'Leave' : 'Remove'}</span>
 
-                {removingUserId === id && (
-                  <FontAwesomeIcon icon="spinner" className="spinner" />
-                )}
-              </button>
-            )}
+              {removingUserId === id && (
+                <FontAwesomeIcon icon="spinner" className="spinner" />
+              )}
+            </button>
+          )}
 
-          </div>
-        )}
+        </div>
       </div>
 
       {selected && (
@@ -128,6 +163,7 @@ TeamMember.propTypes = {
   selectMe: PropTypes.func.isRequired,
   deselectMe: PropTypes.func.isRequired,
   removeMember: PropTypes.func.isRequired,
+  teamPermission: PropTypes.object.isRequired,
 };
 
 TeamMember.defaultProps = {

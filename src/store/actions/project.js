@@ -159,6 +159,7 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
     type: actionTypes.UPLOAD_PROJECT_THUMBNAIL,
     payload: { thumbUrl },
   });
+  return thumbUrl;
 };
 
 export const loadMyProjectsAction = () => async (dispatch) => {

@@ -80,6 +80,7 @@ const onSubmit = async (values, dispatch, props) => {
     //     text: 'Project Settings Updated!',
     //   });
     // }
+    history.goBack();
   } else {
     // create
     // Swal.fire({
@@ -121,8 +122,8 @@ const onSubmit = async (values, dispatch, props) => {
     //     text: 'Project Created Successfully!',
     //   });
     // }
+    history.push('/projects');
   }
-  history.push('/projects');
 };
 export const uploadThumb = async (e, permission) => {
   const formData = new FormData();
@@ -334,7 +335,7 @@ let CreateProjectPopup = (props) => {
             <p className="disclaimer">
               Project Image dimension should be
               {' '}
-              <strong>290px width and 200px height. </strong>
+              <strong>280px width and 200px height. </strong>
               Maximun File size allowed is
               {' '}
               <strong>100MB.</strong>

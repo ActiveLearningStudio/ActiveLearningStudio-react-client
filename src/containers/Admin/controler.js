@@ -473,7 +473,6 @@ function Controller(props) {
                 formData.append("project", e.target.files[0]);
                 const response = adminService.importProject(activeOrganization.id, formData);
                 response.then((res) => {
-                  Data
                   Swal.fire({
                     icon: "success",
                     text: res?.message,

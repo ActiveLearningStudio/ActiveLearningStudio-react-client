@@ -29,6 +29,7 @@ class PlaylistCardDropdown extends React.Component {
       handleClickPlaylistTitle,
       setSelectedForEdit,
       organization,
+      teamPermission,
     } = this.props;
     const { permission } = organization;
     return (
@@ -48,7 +49,7 @@ class PlaylistCardDropdown extends React.Component {
             Preview
           </Dropdown.Item>
           )}
-          {permission?.Playlist?.includes('playlist:edit') && (
+          {(permission?.Playlist?.includes('playlist:edit') || teamPermission?.Team?.includes('team:edit-playlist')) && (
             <Dropdown.Item onClick={() => {
               handleClickPlaylistTitle();
               setSelectedForEdit(playlist);
@@ -70,7 +71,7 @@ class PlaylistCardDropdown extends React.Component {
               Duplicate
             </Dropdown.Item>
           )}
-          {permission?.Playlist?.includes('playlist:share') && (
+          {(permission?.Playlist?.includes('playlist:share') || teamPermission?.Team?.includes('team:share-playlist')) && (
             playlist.activities.length > 0
               ? <ResourceCardDropdownShare resource={playlist.activities[0]} />
               : (
@@ -91,7 +92,7 @@ class PlaylistCardDropdown extends React.Component {
               projectId={playlist.project_id}
             />
           )}
-          {permission?.Playlist?.includes('playlist:delete') && (
+          {(permission?.Playlist?.includes('playlist:delete') || teamPermission?.Team?.includes('team:delete-playlist')) && (
             <Dropdown.Item onClick={this.handleDelete}>
               <FontAwesomeIcon icon="times-circle" className="mr-2" />
               Delete
@@ -109,6 +110,7 @@ PlaylistCardDropdown.propTypes = {
   handleClickPlaylistTitle: PropTypes.func.isRequired,
   setSelectedForEdit: PropTypes.func.isRequired,
   organization: PropTypes.string.isRequired,
+  teamPermission: PropTypes.object.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

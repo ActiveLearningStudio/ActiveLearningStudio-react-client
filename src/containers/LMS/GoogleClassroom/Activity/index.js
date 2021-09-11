@@ -154,7 +154,7 @@ const Activity = (props) => {
         });
       } else {
         sendStatement(xapiData);
-        if (h5pSettings.organization.api_key) {
+        if (h5pSettings?.organization?.api_key) {
           sendScreenshot(h5pSettings.organization, xapiData, h5pSettings.activity.title, student.profile.data.name.fullName);
         }
       }
@@ -206,7 +206,7 @@ const mapDispatchToProps = (dispatch) => ({
   getSubmission: (classworkId, courseId, auth) => dispatch(getSubmissionAction(classworkId, courseId, auth)),
   sendStatement: (statement) => dispatch(loadH5pResourceXapi(statement)),
   turnIn: (classworkId, courseId, auth) => dispatch(turnInAction(classworkId, courseId, auth)),
-  sendScreenshot: (statement, title, studentName) => dispatch(saveResultScreenshotAction(statement, title, studentName)),
+  sendScreenshot: (org, statement, title, studentName) => dispatch(saveResultScreenshotAction(org, statement, title, studentName)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Activity));

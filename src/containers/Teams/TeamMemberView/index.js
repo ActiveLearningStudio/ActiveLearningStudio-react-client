@@ -42,7 +42,7 @@ function TeamMemberView(props) {
   const [selectedMember, setSelectedMember] = useState(null);
   // Fetch team permission if page reloads
   useEffect(() => {
-    if (!teamPermission) {
+    if (!teamPermission && organization?.currentOrganization?.id && id) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, id));
     }
   }, [team]);
@@ -86,7 +86,7 @@ function TeamMemberView(props) {
                   value={search}
                   onChange={handleChangeSearch}
                 />
-                {permission?.Team?.includes('team:invite-member') && user && (
+                {(permission?.Team?.includes('team:invite-member') || teamPermission?.Team?.includes('team:add-team-user')) && user && (
                   <InviteDialog
                     users={users}
                     visible={showInvite}
@@ -115,6 +115,7 @@ function TeamMemberView(props) {
                         selectMe={() => setSelectedMember(u.id)}
                         deselectMe={() => setSelectedMember(null)}
                         removeMember={removeMember}
+                        teamPermission={teamPermission || {}}
                       />
                     </div>
                   ))
@@ -124,7 +125,7 @@ function TeamMemberView(props) {
           </div>
         </div>
       </div>
-      <div className="col">
+      <div className="">
         <div className="team-description">
           <h2 className="title">
             {`About the ${name}`}
