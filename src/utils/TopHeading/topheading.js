@@ -5,8 +5,8 @@ import classNames from "classnames";
 import "./topheading.scss";
 import imageSvg from "../../assets/images/svg/Vector.svg";
 
-const TopHeading = ({ description, image, heading, color }) => {
-  const currikiUtility = classNames("curriki-utility-TopHeading");
+const TopHeading = ({ description, image, heading, color, className }) => {
+  const currikiUtility = classNames("curriki-utility-TopHeading", className);
   return (
     <div className={currikiUtility} style={{ color: color }}>
       <p>{description}</p>
@@ -24,6 +24,7 @@ TopHeading.propTypes = {
   image: PropTypes.string,
   heading: PropTypes.string,
   color: PropTypes.string,
+  className: PropTypes.string,
 };
 
 export default TopHeading;

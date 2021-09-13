@@ -43,9 +43,9 @@ const MyProjectsCreate = ({ setUploadImageStatus }) => {
       </div>
       <div className="myproject-button">
         <Buttons
-          text="Next"
+          text="Create Project"
           primary={true}
-          width="126px"
+          width="189px"
           height="43px"
           hover={true}
         />

@@ -53,6 +53,9 @@ const VevensityLogin = loadable(() =>
 );
 const MyActivity = loadable(() => import("../containers/MyActivity"));
 const MyProjectMain = loadable(() => import("../containers/MyProject"));
+const ProjectDetailList = loadable(() =>
+  import("../containers/MyProject/ProjectDetailList")
+);
 const AdminPanel = loadable(() => import("../containers/Admin"));
 const LtiLogin = loadable(() => import("../containers/Auth/LtiLogin"));
 const ProfilePage = loadable(() => import("../containers/Account/ProfilePage"));
@@ -62,14 +65,20 @@ const ChangePasswordPage = loadable(() =>
 // const DashboardPage = loadable(() => import('../containers/Dashboard'));
 const NotificationPage = loadable(() => import("../containers/Notification"));
 
-const ProjectsPage = loadable(() => import('../containers/Projects'));
-const PlaylistsPage = loadable(() => import('../containers/Playlists'));
-const PreviewPage = loadable(() => import('../containers/Preview'));
-const LtiPreviewPage = loadable(() => import('../containers/LtiPreviewPage'));
-const PreviewPageShared = loadable(() => import('../containers/PreviewPageShared'));
-const SecureProjectPreview = loadable(() => import('../containers/SecureProjectPreview'));
-const SearchResult = loadable(() => import('../containers/Search'));
-const Searchnetlify = loadable(() => import('../containers/Search/SearchNetlify'));
+const ProjectsPage = loadable(() => import("../containers/Projects"));
+const PlaylistsPage = loadable(() => import("../containers/Playlists"));
+const PreviewPage = loadable(() => import("../containers/Preview"));
+const LtiPreviewPage = loadable(() => import("../containers/LtiPreviewPage"));
+const PreviewPageShared = loadable(() =>
+  import("../containers/PreviewPageShared")
+);
+const SecureProjectPreview = loadable(() =>
+  import("../containers/SecureProjectPreview")
+);
+const SearchResult = loadable(() => import("../containers/Search"));
+const Searchnetlify = loadable(() =>
+  import("../containers/Search/SearchNetlify")
+);
 // const LtiModel = loadable(() => import('../containers/LtiModel'));
 const TeamsPage = loadable(() => import("../containers/Teams"));
 const AddTeamProjectsPage = loadable(() =>
@@ -149,11 +158,7 @@ const AppRouter = (props) => {
           path="/project/:projectId/secure/shared"
           component={SecureProjectPreview}
         />
-        <OpenRoute
-          exact
-          path="/opensearch"
-          component={Searchnetlify}
-        />
+        <OpenRoute exact path="/opensearch" component={Searchnetlify} />
         <OpenRoute
           exact
           path="/lti-tools/activity/:activityId"
@@ -397,6 +402,13 @@ const AppRouter = (props) => {
                     showCreateProjectPopup
                     editMode={false}
                   />
+                  <PrivateRoute
+                    exact
+                    path="/org/:organization/project/create/one/playlist"
+                    component={ProjectDetailList}
+                    showCreateProjectPopup
+                    editMode={false}
+                  />
                   {/* Update Project Page -End- */}
                   <PrivateRoute
                     exact
@@ -435,23 +447,28 @@ const AppRouter = (props) => {
                     openEditResourcePopup
                   />
 
-                     <PrivateRoute
-                       exact
-                       path="/org/:organization/search"
-                       component={SearchResult}
-                     />
-                     <PrivateRoute
-                       exact
-                       path="/org/:organization/manage"
-                       component={ManageOrganization}
-                     />
-                     <PrivateRoute exact path="/org/:organization" component={ProjectsPage} />
-                     <Redirect to={`/org/${SelectedOrganization || 'currikistudio'}`} />
-                   </Switch>
-                 </div>
-               </>
-             )
-           }
+                  <PrivateRoute
+                    exact
+                    path="/org/:organization/search"
+                    component={SearchResult}
+                  />
+                  <PrivateRoute
+                    exact
+                    path="/org/:organization/manage"
+                    component={ManageOrganization}
+                  />
+                  <PrivateRoute
+                    exact
+                    path="/org/:organization"
+                    component={ProjectsPage}
+                  />
+                  <Redirect
+                    to={`/org/${SelectedOrganization || "currikistudio"}`}
+                  />
+                </Switch>
+              </div>
+            </>
+          )}
         </Route>
       </Switch>
     </Router>

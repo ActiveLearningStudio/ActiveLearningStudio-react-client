@@ -7,6 +7,7 @@ import ActivityCardDropDown from "utils/ActivityCardDropDown/activitycarddropdow
 import ProjectPlayList from "utils/ProjectPlayList/projectplaylist";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faShare } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 const MyProjectCard = ({ className, backgroundImg, title }) => {
   const currikiUtility = classNames(
@@ -39,12 +40,17 @@ const MyProjectCard = ({ className, backgroundImg, title }) => {
       </div>
       <div className="myproject-card-add-share">
         <button style={{ width: "86px", height: "32px", marginRight: "24px" }}>
-          <FontAwesomeIcon
-            icon={faPlus}
-            style={{ marginRight: "20px" }}
-            color="#084892"
-          />
-          Add
+          <Link
+            to="/org/currikistudio/project/create/one/playlist"
+            style={{ textDecoration: "none", color: "#084892" }}
+          >
+            <FontAwesomeIcon
+              icon={faPlus}
+              style={{ marginRight: "20px" }}
+              color="#084892"
+            />
+            Add
+          </Link>
         </button>
         <button style={{ width: "108px", height: "32px" }}>
           <FontAwesomeIcon

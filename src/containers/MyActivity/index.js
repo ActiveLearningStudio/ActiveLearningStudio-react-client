@@ -1,7 +1,7 @@
 /*eslint-disable*/
 import React, { useState } from "react";
 import TopHeading from "utils/TopHeading/topheading";
-import TopHeadingImage from "assets/images/svg/Vector.svg";
+import TopHeadingImage from "assets/images/svg/myProject.svg";
 import "./styles.scss";
 import Buttons from "utils/Buttons/buttons";
 import * as actionTypes from "store/actionTypes";
