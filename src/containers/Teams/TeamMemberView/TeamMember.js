@@ -17,6 +17,7 @@ function TeamMember(props) {
       first_name: firstName,
       last_name: lastName,
       invited_email: iEmail,
+      email,
       projects = [],
       role,
     },
@@ -68,9 +69,10 @@ function TeamMember(props) {
         <div className="member-info">
           <h2 className="member-name">
             {`${firstName || ''} ${lastName || ''}`}
-            {!(firstName && lastName) ? iEmail : ''}
           </h2>
-
+          <div>
+            {email}
+          </div>
           <div className="member-data d-flex align-items-center">
             <h2 className="m-0">
               {role?.name ? (

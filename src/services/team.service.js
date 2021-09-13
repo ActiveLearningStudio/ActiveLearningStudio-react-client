@@ -97,8 +97,8 @@ const checkUserBeforeAdd = (orgId, values) => httpService
     errorCatcher(err.response.data);
     return Promise.reject(err.response.data);
   });
-const getTeamProject = (orgId) => httpService
-  .get(`/${apiVersion}/suborganization/${orgId}/team-projects`)
+const getTeamProject = (orgId, query) => httpService
+  .get(`/${apiVersion}/suborganization/${orgId}/team-projects?query=${query || ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);

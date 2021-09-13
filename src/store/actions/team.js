@@ -354,10 +354,10 @@ export const getTeamPermission = (orgId, TeamId) => async (dispatch) => {
   });
 };
 
-export const getTeamProject = () => async (dispatch) => {
+export const getTeamProject = (query) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
-  const result = await teamService.getTeamProject(activeOrganization?.id);
+  const result = await teamService.getTeamProject(activeOrganization?.id, query);
   dispatch({
     type: actionTypes.GET_TEAM_PROJECTS,
     payload: result.data,
