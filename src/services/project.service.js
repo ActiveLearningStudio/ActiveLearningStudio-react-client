@@ -2,6 +2,7 @@ import Swal from 'sweetalert2';
 
 import config from 'config';
 import httpService from './http.service';
+import { errorCatcher } from './errors';
 
 const { apiVersion } = config;
 
@@ -33,7 +34,10 @@ const get = (id, subOrgId) => httpService
 const getIndexed = (id) => httpService
   .get(`/${apiVersion}/projects/${id}/status-update`)
   .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject(err.response.data);
+  });
 
 const getelastic = (id) => httpService
   .get(`/${apiVersion}/projects/${id}/indexing`)

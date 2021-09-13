@@ -97,7 +97,6 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
     dispatch({ type: actionTypes.UPDATE_PROJECT_REQUEST });
     Swal.showLoading();
     const { project } = await projectService.update(projectId, data, activeOrganization.id);
-    Swal.close();
     dispatch({
       type: actionTypes.UPDATE_PROJECT_SUCCESS,
       payload: { project },

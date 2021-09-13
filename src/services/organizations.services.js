@@ -30,7 +30,7 @@ const getOrganization = (id) => httpService
   });
 
 const getOrganizationSearch = (id, search) => httpService
-  .get(`/${apiVersion}/suborganizations/${id}/index?query=${search}`)
+  .get(`/${apiVersion}/suborganizations/${id}/index?query=${search.replace(/#/, '%23')}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
