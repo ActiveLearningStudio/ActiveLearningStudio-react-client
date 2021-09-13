@@ -12,6 +12,12 @@
     .topHeading-prject-detail {
       display: flex;
       flex-direction: column;
+      .topHeading {
+        display: flex;
+        justify-content: space-between;
+        // align-items: center;
+        align-items: flex-end;
+      }
       .top-project-detail {
         margin-top: 25px;
         .project-title-btn {
@@ -22,6 +28,18 @@
         .project-detail {
           margin-top: 20px;
         }
+      }
+    }
+    .top-project-detail-btn-tabs {
+      border-bottom: 1px solid $curriki-main-blue;
+      margin-top: 33px;
+      display: flex;
+      .btn-tabs {
+        border-radius: 5px;
+        border: 1px solid $curriki-main-blue;
+        border-bottom-left-radius: none;
+        border-bottom-right-radius: none;
+        margin-right: 8px;
       }
     }
     .project-playlist-card {

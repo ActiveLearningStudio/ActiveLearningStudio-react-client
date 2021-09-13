@@ -10,7 +10,7 @@ import {
   faCopy,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import "./activitycarddropdown.scss";
 
 const ActivityCardDropDown = ({ iconColor }) => {
@@ -31,7 +31,7 @@ const ActivityCardDropDown = ({ iconColor }) => {
           <Dropdown.Item
             onClick={() => {
               dispatch({
-                type: 'SET_ACTIVE_ACTIVITY_SCREEN',
+                type: "SET_ACTIVE_ACTIVITY_SCREEN",
                 payload: "addactivity",
               });
             }}
@@ -39,7 +39,7 @@ const ActivityCardDropDown = ({ iconColor }) => {
             <FontAwesomeIcon icon={faEdit} className="mr-2" />
             Edit
           </Dropdown.Item>
-          
+
           <Dropdown.Item>
             <FontAwesomeIcon icon={faCopy} className="mr-2" />
             Duplicate

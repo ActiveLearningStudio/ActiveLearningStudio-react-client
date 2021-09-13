@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Buttons from "utils/Buttons/buttons";
 import TopHeading from "utils/TopHeading/topheading";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import projectFolder from "assets/images/svg/projectFolder.svg";
+import projectFolder from "assets/images/svg/myProject.svg";
 import "./style.scss";
 import HeadingThree from "utils/HeadingThree/headingthree";
 import HeadingText from "utils/HeadingText/headingtext";
@@ -13,7 +13,10 @@ import PlayListImage from "assets/images/svg/playlist1.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MyProjectsCreate from "./formik/createproject";
 import PlayCardImage from "assets/images/artcourseimg.png";
-
+import MyProjectCard from "utils/MyProjectCard/myprojectcard";
+import ProjectCard1 from "assets/images/myproject1.png";
+import ProjectCard2 from "assets/images/myproject2.png";
+import ProjectCard3 from "assets/images/myproject3.png";
 const MyProjectMain = () => {
   const playList1 = [
     { img: PlayListImage, title: "Guess the Answer" },
@@ -55,14 +58,23 @@ const MyProjectMain = () => {
             <div className="topHeading-prject-detail">
               <div className="topHeading">
                 <TopHeading
-                  description="Organization"
+                  description="Nevada Department of Education"
                   image={projectFolder}
                   heading="My Projects"
                   color="#084892"
                 />
+                <Buttons
+                  primary={true}
+                  text="Create a project"
+                  icon={faPlus}
+                  width="163px"
+                  height="35px"
+                  onClick={() => setOpenMyProject(!openMyProject)}
+                  hover={true}
+                />
               </div>
               <div className="top-project-detail">
-                <div className="project-title-btn">
+                {/* <div className="project-title-btn">
                   <HeadingThree text="Projects" color="#084892" />
                   <Buttons
                     primary={true}
@@ -73,7 +85,7 @@ const MyProjectMain = () => {
                     onClick={() => setOpenMyProject(!openMyProject)}
                     hover={true}
                   />
-                </div>
+                </div> */}
                 <div className="project-detail">
                   <HeadingText
                     text="This is the instrcutional text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -82,8 +94,55 @@ const MyProjectMain = () => {
                 </div>
               </div>
             </div>
+            <div className="top-project-detail-btn-tabs">
+              <Buttons
+                primary={true}
+                text="My Projects"
+                width="163px"
+                height="35px"
+                // onClick={() => setOpenMyProject(!openMyProject)}
+                hover={true}
+                className="btn-tabs"
+              />
+              <Buttons
+                secondary={true}
+                text="Sample Projects"
+                width="163px"
+                height="35px"
+                // onClick={() => setOpenMyProject(!openMyProject)}
+                hover={true}
+                className="btn-tabs"
+              />
+              <Buttons
+                secondary={true}
+                text="Favorite Projects"
+                width="163px"
+                height="35px"
+                // onClick={() => setOpenMyProject(!openMyProject)}
+                hover={true}
+                className="btn-tabs"
+              />
+            </div>
             <div className="project-playlist-card">
               <div className="playlist-card">
+                <MyProjectCard
+                  backgroundImg={ProjectCard1}
+                  title="Design, Art & History"
+                />
+              </div>
+              <div className="playlist-card">
+                <MyProjectCard
+                  backgroundImg={ProjectCard2}
+                  title="Project name #2"
+                />
+              </div>
+              <div className="playlist-card">
+                <MyProjectCard
+                  backgroundImg={ProjectCard3}
+                  title="Project name #3"
+                />
+              </div>
+              {/* <div className="playlist-card">
                 <ProjectPlayListCard
                   playList={playList1}
                   title="Project name #2"
@@ -96,7 +155,7 @@ const MyProjectMain = () => {
                   title="Art Course"
                   backgroundImg={PlayCardImage}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
