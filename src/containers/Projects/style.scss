@@ -206,6 +206,17 @@
     }
   }
 }
+.search-bar {
+  position: relative;
+  input {
+    border: none;
+    border-bottom: 1px solid #515151;
+    font-weight: 400;
+    font-size: 14px;
+    padding-right: 20px;
+    margin-bottom: 10px;
+  }
+}
 
 // TODO: didn't used, need to remove after confirm
 .program-search {

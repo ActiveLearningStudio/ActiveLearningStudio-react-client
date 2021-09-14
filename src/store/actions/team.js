@@ -354,10 +354,10 @@ export const getTeamPermission = (orgId, TeamId) => async (dispatch) => {
   });
 };
 
-export const getTeamProject = () => async (dispatch) => {
+export const getTeamProject = (query) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
-  const result = await teamService.getTeamProject(activeOrganization?.id);
+  const result = await teamService.getTeamProject(activeOrganization?.id, query);
   dispatch({
     type: actionTypes.GET_TEAM_PROJECTS,
     payload: result.data,
@@ -375,5 +375,12 @@ export const changeUserRole = (teamId, data) => async (dispatch) => {
   });
   dispatch({
     type: actionTypes.CHANGE_USER_ROLE,
+  });
+};
+
+export const selectedProjectForCloning = (projectName) => (dispatch) => {
+  dispatch({
+    type: actionTypes.PROJECT_SELECTED_FOR_CLONE,
+    payload: projectName,
   });
 };

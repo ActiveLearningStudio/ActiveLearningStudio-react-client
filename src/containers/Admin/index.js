@@ -252,7 +252,10 @@ function AdminPanel() {
               }}
             />
             <div className="inner-form-content">
-              <EditProject editMode setAllProjectTab={setAllProjectTab} />
+              <EditProject
+                editMode
+                allProjectTab={allProjectTab}
+                setAllProjectTab={setAllProjectTab}/>
               </div>
             </div>
           )}

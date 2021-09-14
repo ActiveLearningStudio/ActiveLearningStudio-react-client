@@ -17,7 +17,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import foldericon from 'assets/images/sidebar/folder-icon.png';
 import teamicon from 'assets/images/sidebar/team-icon.png';
 import toggleButton from 'assets/images/sidebar/toggle-button.png';
-import groupicon from 'assets/images/sidebar/group-icon.png';
+// import groupicon from 'assets/images/sidebar/group-icon.png';
 // import usersidebaricon from 'assets/images/sidebar/user-sidebar-icon.png';
 // import dashboardicon from 'assets/images/sidebar/dashboard-icon.png';
 import backgroundimg from 'assets/images/sidebar/background.png';
@@ -231,7 +231,7 @@ function Sidebar(props) {
                 </Link>
               </>
             )}
-            {permission?.Group?.includes('group:view')
+            {/* {permission?.Group?.includes('group:view')
             && (
               <>
                 <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
@@ -244,7 +244,7 @@ function Sidebar(props) {
                   </div>
                 </Link>
               </>
-            )}
+            )} */}
             {/* {(permission?.Project?.includes('project:create')
               || permission?.Team?.includes('team:create')
               || permission?.Group?.includes('group:create')

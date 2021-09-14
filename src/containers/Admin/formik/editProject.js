@@ -9,15 +9,13 @@ import loader from 'assets/images/dotsloader.gif';
 import Swal from 'sweetalert2';
 
 import Switch from 'react-switch';
-import adminService from 'services/admin.service';
 import authapi from '../../../services/auth.service';
 
 export default function EditProject(props) {
-  const { setAllProjectTab } = props;
+  const { setAllProjectTab, allProjectTab } = props;
   const dispatch = useDispatch();
   // image Ref
   const imgUpload = useRef();
-  const allListState = useSelector((state) => state.organization);
   // Visibility Dropdown
   const [visibilityTypeArray, setVisibilityTypeArray] = useState([]);
   // User Search variables
@@ -26,7 +24,6 @@ export default function EditProject(props) {
   // General State to use
   const adminState = useSelector((state) => state.admin);
   const { currentProject } = adminState;
-  console.log(currentProject);
   useEffect(() => {
     (async () => {
       const { data } = await dispatch(visibilityTypes());
@@ -41,8 +38,8 @@ export default function EditProject(props) {
           description: currentProject?.description,
           thumb_url: currentProject.thumb_url,
           organization_visibility_type_id: currentProject.organization_visibility_type_id,
-          username: currentProject?.users[0].name,
-          user_id: currentProject?.users[0].id,
+          username: currentProject?.users?.[0]?.name,
+          user_id: currentProject?.users?.[0]?.id,
           shared: currentProject.shared,
         }}
         validate={(values) => {
@@ -59,10 +56,12 @@ export default function EditProject(props) {
           if (!values.username) {
             errors.username = 'Required';
           }
+          if (!values.thumb_url) {
+            errors.thumb_url = 'Required';
+          }
           return errors;
         }}
         onSubmit={async (values) => {
-          console.log(values);
           Swal.fire({
             title: 'Projects',
             icon: 'info',
@@ -76,7 +75,7 @@ export default function EditProject(props) {
           // eslint-disable-next-line no-param-reassign
           delete values.username;
           const response = await dispatch(updateProjectAction(currentProject.id, values));
-          if (response) {
+          if (!response.errors) {
             Swal.fire({
               text: 'You have successfully updated the project!',
               icon: 'success',
@@ -85,11 +84,15 @@ export default function EditProject(props) {
               confirmButtonText: 'OK',
             }).then(async (result) => {
               if (result.isConfirmed) {
-                const projects = await adminService.getAllProject(
-                  allListState?.activeOrganization?.id,
-                  allListState?.activePage || 1,
-                );
-                setAllProjectTab(projects);
+                setAllProjectTab({
+                  ...allProjectTab,
+                  data: allProjectTab.data.map((eachProject) => {
+                    if (eachProject.id === response.id) {
+                      return response;
+                    }
+                    return eachProject;
+                   }),
+                });
                 dispatch(removeActiveAdminForm());
               }
             });
@@ -188,7 +191,7 @@ export default function EditProject(props) {
                   </>
                 )}
                 <div className="error">
-                  {errors.image && touched.image && errors.image}
+                  {errors.thumb_url && touched.thumb_url && errors.thumb_url}
                 </div>
               </div>
             </div>
@@ -297,4 +300,5 @@ export default function EditProject(props) {
 
 EditProject.propTypes = {
   setAllProjectTab: PropTypes.func.isRequired,
+  allProjectTab: PropTypes.object.isRequired,
 };

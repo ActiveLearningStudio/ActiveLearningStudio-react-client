@@ -2495,6 +2495,9 @@ a:hover {
     margin-top: 50px;
     .item-container {
       padding-bottom: 50px;
+      @media screen and (max-width: 1460px) {
+        margin-top: 20px;
+      }
     }
   }
   .slider-scroll-auto {
@@ -2631,6 +2634,9 @@ a:hover {
     top: 40px;
     z-index: 11;
   background-color: #fff;
+  @media screen and (max-width: 1460px) {
+    height: 70px;
+  }
     h3 {
       font-size: 16px;
       font-weight: bold;
