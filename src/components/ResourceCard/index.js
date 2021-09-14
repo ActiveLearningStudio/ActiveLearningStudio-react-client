@@ -64,6 +64,7 @@ const ResourceCard = (props) => {
                 resource={resource}
                 playlist={playlist}
                 teamPermission={teamPermission || []}
+                previewPage="buildPreview"
                 // wizard
               />
             </div>
