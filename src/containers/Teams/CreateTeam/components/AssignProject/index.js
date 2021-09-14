@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { FadeDiv } from 'utils';
-
+import { Alert } from 'react-bootstrap';
 import './style.scss';
 import Swal from 'sweetalert2';
+import { useDispatch } from 'react-redux';
+import { selectedProjectForCloning } from 'store/actions/team';
 
 function AssignProject(props) {
   const {
@@ -17,12 +19,13 @@ function AssignProject(props) {
     search,
     setSearch,
   } = props;
-
+  const dispatch = useDispatch();
   const onChange = useCallback((e) => {
     setSearch(e.target.value);
   }, [setSearch]);
-  const [filteredProjects, setFilteredProjects] = useState([]);
-  const selectProject = useCallback((projectId) => {
+  const [filteredProjects, setFilteredProjects] = useState(null);
+  const selectProject = useCallback((projectId, projectName) => {
+    dispatch(selectedProjectForCloning(projectName));
     const newProjects = [...selectedProjects];
     const projectIndex = newProjects.indexOf(projectId);
     if (projectIndex === -1) {
@@ -77,13 +80,13 @@ function AssignProject(props) {
           </div>
 
           <div className="assign-projects">
-            {filteredProjects.length > 0 ? filteredProjects.map((project) => (
+            {filteredProjects ? filteredProjects.length > 0 ? filteredProjects.map((project) => (
               <div
                 key={project.id}
                 className="assign-project-item"
                 onClick={() => {
                   if (selectedProjects.length === 0 || selectedProjects[0] === project.id) {
-                    selectProject(project.id);
+                    selectProject(project.id, project.name);
                   } else {
                     Swal.fire({
                       icon: 'warning',
@@ -112,7 +115,7 @@ function AssignProject(props) {
                   {project.name}
                 </div>
               </div>
-            )) : <div> No Project Found. </div>}
+            )) : <Alert variant="warning"> No Project Found. </Alert> : <Alert variant="primary">Loading...</Alert> }
           </div>
 
           {finishButton}

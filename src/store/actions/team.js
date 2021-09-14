@@ -377,3 +377,10 @@ export const changeUserRole = (teamId, data) => async (dispatch) => {
     type: actionTypes.CHANGE_USER_ROLE,
   });
 };
+
+export const selectedProjectForCloning = (projectName) => (dispatch) => {
+  dispatch({
+    type: actionTypes.PROJECT_SELECTED_FOR_CLONE,
+    payload: projectName,
+  });
+};
