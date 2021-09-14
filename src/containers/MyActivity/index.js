@@ -26,6 +26,7 @@ import { Formik, Field } from "formik";
 import CardImage from "assets/images/activitycard.png";
 import ActivityCardBox from "utils/ActivityCard/activitycard";
 import UploadInteractiveVideo from "./formik/uploadinteractivevideo";
+import ActivityCardV2 from "utils/ActivityCardV2/activitycardv2";
 // import H5PEditor from "components/ResourceCard/AddResource/Editors/H5PEditorV2";
 const MyActivity = () => {
   const [cardShow, setCardShow] = useState(true);
@@ -223,52 +224,89 @@ const MyActivity = () => {
                     </Formik>
                   </div>
                 )}
+                {/* <div className="activity-cards-box">
+                  <div className={listView ? "width-100" : "ml-20"}>
+                    <ActivityCardBox
+                      img={CardImage}
+                      title="My first activity"
+                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+                      listView={listView}
+                    />
+                  </div>
+                  <div className={listView ? "width-100" : "ml-20"}>
+                    <ActivityCardBox
+                      img={CardImage}
+                      title="My first activity"
+                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+                      listView={listView}
+                    />
+                  </div>
+                  <div className={listView ? "width-100" : "ml-20"}>
+                    <ActivityCardBox
+                      img={CardImage}
+                      title="My first activity"
+                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+                      listView={listView}
+                    />
+                  </div>
+                  <div className={listView ? "width-100" : "ml-20"}>
+                    <ActivityCardBox
+                      img={CardImage}
+                      title="My first activity"
+                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+                      listView={listView}
+                    />
+                  </div>
+                  <div className={listView ? "width-100" : "ml-20"}>
+                    <ActivityCardBox
+                      img={CardImage}
+                      title="My first activity"
+                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+                      listView={listView}
+                    />
+                  </div>
+                  <div className={listView ? "width-100" : "ml-20"}>
+                    <ActivityCardBox
+                      img={CardImage}
+                      title="My first activity"
+                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+                      listView={listView}
+                    />
+                  </div>
+                </div> */}
                 <div className="activity-cards-box">
-                  <div className={listView ? "width-100" : "ml-20"}>
-                    <ActivityCardBox
-                      img={CardImage}
+                  <div className={listView ? "width-100" : "mt-36"}>
+                    <ActivityCardV2
+                      backgroundImg={CardImage}
                       title="My first activity"
-                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
                       listView={listView}
                     />
                   </div>
-                  <div className={listView ? "width-100" : "ml-20"}>
-                    <ActivityCardBox
-                      img={CardImage}
+                  <div className={listView ? "width-100" : "mt-36"}>
+                    <ActivityCardV2
+                      backgroundImg={CardImage}
                       title="My first activity"
-                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
                       listView={listView}
                     />
                   </div>
-                  <div className={listView ? "width-100" : "ml-20"}>
-                    <ActivityCardBox
-                      img={CardImage}
+                  <div className={listView ? "width-100" : "mt-36"}>
+                    <ActivityCardV2
+                      backgroundImg={CardImage}
                       title="My first activity"
-                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
                       listView={listView}
                     />
                   </div>
-                  <div className={listView ? "width-100" : "ml-20"}>
-                    <ActivityCardBox
-                      img={CardImage}
+                  <div className={listView ? "width-100" : "mt-36"}>
+                    <ActivityCardV2
+                      backgroundImg={CardImage}
                       title="My first activity"
-                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
                       listView={listView}
                     />
                   </div>
-                  <div className={listView ? "width-100" : "ml-20"}>
-                    <ActivityCardBox
-                      img={CardImage}
+                  <div className={listView ? "width-100" : "mt-36"}>
+                    <ActivityCardV2
+                      backgroundImg={CardImage}
                       title="My first activity"
-                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
-                      listView={listView}
-                    />
-                  </div>
-                  <div className={listView ? "width-100" : "ml-20"}>
-                    <ActivityCardBox
-                      img={CardImage}
-                      title="My first activity"
-                      description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
                       listView={listView}
                     />
                   </div>

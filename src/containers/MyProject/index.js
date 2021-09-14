@@ -17,6 +17,7 @@ import MyProjectCard from "utils/MyProjectCard/myprojectcard";
 import ProjectCard1 from "assets/images/myproject1.png";
 import ProjectCard2 from "assets/images/myproject2.png";
 import ProjectCard3 from "assets/images/myproject3.png";
+import Footer from "components/Footer";
 const MyProjectMain = () => {
   const playList1 = [
     { img: PlayListImage, title: "Guess the Answer" },
@@ -122,6 +123,15 @@ const MyProjectMain = () => {
                 hover={true}
                 className="btn-tabs"
               />
+              <Buttons
+                secondary={true}
+                text="My Team Projects"
+                width="163px"
+                height="35px"
+                // onClick={() => setOpenMyProject(!openMyProject)}
+                hover={true}
+                className="btn-tabs"
+              />
             </div>
             <div className="project-playlist-card">
               <div className="playlist-card">
@@ -160,6 +170,7 @@ const MyProjectMain = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

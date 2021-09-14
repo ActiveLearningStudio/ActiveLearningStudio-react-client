@@ -22,9 +22,45 @@
       border-radius: 10px;
     }
   }
+  // .uploadimage-option {
+  //   margin-top: 10px;
+  //   .upload-option {
+  //     cursor: pointer;
+  //   }
+  //   .mr-20 {
+  //     margin-right: 20px;
+  //   }
+  // }
   .uploadimage-option {
-    margin-top: 10px;
-    .upload-option {
+    margin-top: 20px;
+    display: flex;
+    @media screen and (max-width: 1024px) {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    button {
+      width: 161px;
+      height: 45px;
+      padding: 13px;
+      border-radius: 5px;
+      text-align: center;
+      border: 1px solid #515151;
+      background-color: $white;
+      color: #515151;
+      border-radius: 25px;
+      &:hover {
+        background-color: $curriki-main-blue;
+        color: $white;
+      }
+    }
+    .btn-mr-27 {
+      margin-right: 27px;
+      @media screen and (max-width: 1024px) {
+        margin-bottom: 20px;
+      }
+    }
+    .upload-option-icons {
       cursor: pointer;
     }
     .mr-20 {
