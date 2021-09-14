@@ -12,6 +12,7 @@ const INITIAL_STATE = {
   roles: null,
   teamPermission: null,
   teamProjects: [],
+  selectedForClone: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -245,6 +246,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         teamProjects: action.payload,
+      };
+    case actionTypes.PROJECT_SELECTED_FOR_CLONE:
+      return {
+        ...state,
+        selectedForClone: action.payload,
       };
     default:
       return state;
