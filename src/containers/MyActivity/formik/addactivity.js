@@ -207,6 +207,7 @@ const AddActivity = (props) => {
                 height="35px"
                 onClick={() => setModalShow(true)}
                 hover={true}
+                className="mr-10"
               />
               <Buttons
                 icon={existingActivity ? faAngleUp : faAngleDown}

@@ -179,19 +179,27 @@
   height: 100%;
   overflow-y: auto;
   padding-left: 285px;
-  .cross-all-pop {
-    position: absolute;
-    top: 50px;
-    right: 50px;
-    font-size: 28px;
-    cursor: pointer;
-  }
+  // .cross-all-pop {
+  //   position: absolute;
+  //   top: 50px;
+  //   right: 50px;
+  //   font-size: 28px;
+  //   cursor: pointer;
+  // }
   .inner-form-content {
     background: #fff;
     opacity: 1;
     width: 100%;
     height: 180vh;
     padding: 50px;
+    .inner-form-content-box {
+      max-width: 1200px;
+      margin: 0 auto;
+      .cross-all-pop-box {
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
   }
 }
 .create-form-activity {
@@ -456,9 +464,9 @@
     // justify-content: space-between;
     .add-activity-layout-formik {
       @media screen and (max-width: 1024px) {
-        width: 400px;
+        width: 280px;
       }
-      width: 500px;
+      max-width: 500px;
       margin-top: 34px;
       .layout-description-title {
         h2 {
@@ -566,6 +574,11 @@
         display: flex;
         justify-content: space-between;
         margin-top: 50px;
+        .mr-10 {
+          @media screen and (max-width: 1024px) {
+            margin-right: 10px;
+          }
+        }
       }
       .successMessage {
         margin-top: 50px;

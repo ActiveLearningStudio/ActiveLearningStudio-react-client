@@ -51,43 +51,48 @@ const MyActivity = () => {
               : "form-new-popup-activity"
           }
         >
-          <FontAwesomeIcon
-            icon="times"
-            className="cross-all-pop"
-            onClick={() => changeScreenHandler("")}
-          />
           <div className="inner-form-content">
-            {/* {screenState === "newactivity" && (
+            <div className="inner-form-content-box">
+              <div className="cross-all-pop-box">
+                <FontAwesomeIcon
+                  icon="times"
+                  className="cross-all-pop"
+                  onClick={() => changeScreenHandler("")}
+                />
+              </div>
+
+              {/* {screenState === "newactivity" && (
               <NewActivity
                 changeScreenHandler={changeScreenHandler}
                 screenState={screenState}
               />
             )} */}
-            {screenState === "layout" && (
-              <ActivityLayout
-                changeScreenHandler={changeScreenHandler}
-                screenState={screenState}
-              />
-            )}
-            {screenState === "addactivity" && (
-              <AddActivity
-                changeScreenHandler={changeScreenHandler}
-                screenState={screenState}
-                setUploadImageStatus={setUploadImageStatus}
-              />
-            )}
-            {screenState === "uploadinteractivevideo" && (
-              <UploadInteractiveVideo
-                changeScreenHandler={changeScreenHandler}
-                screenState={screenState}
-              />
-            )}
-            {screenState === "preview" && (
-              <PreviewLayout
-                changeScreenHandler={changeScreenHandler}
-                screenState={screenState}
-              />
-            )}
+              {screenState === "layout" && (
+                <ActivityLayout
+                  changeScreenHandler={changeScreenHandler}
+                  screenState={screenState}
+                />
+              )}
+              {screenState === "addactivity" && (
+                <AddActivity
+                  changeScreenHandler={changeScreenHandler}
+                  screenState={screenState}
+                  setUploadImageStatus={setUploadImageStatus}
+                />
+              )}
+              {screenState === "uploadinteractivevideo" && (
+                <UploadInteractiveVideo
+                  changeScreenHandler={changeScreenHandler}
+                  screenState={screenState}
+                />
+              )}
+              {screenState === "preview" && (
+                <PreviewLayout
+                  changeScreenHandler={changeScreenHandler}
+                  screenState={screenState}
+                />
+              )}
+            </div>
           </div>
         </div>
       )}

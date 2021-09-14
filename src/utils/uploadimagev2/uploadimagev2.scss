@@ -9,7 +9,10 @@
     color: $curriki-main-blue;
   }
   .uploadimage-box {
-    width: 452px;
+    @media screen and (max-width: 1024px) {
+      width: 300px;
+    }
+    max-width: 452px;
     height: 128px;
     background: #f1f1f1;
     border-radius: 10px;
@@ -26,6 +29,11 @@
   .uploadimage-option {
     margin-top: 20px;
     display: flex;
+    @media screen and (max-width: 1024px) {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
     button {
       width: 213px;
       height: 45px;
@@ -43,6 +51,9 @@
     }
     .btn-mr-27 {
       margin-right: 27px;
+      @media screen and (max-width: 1024px) {
+        margin-bottom: 20px;
+      }
     }
     .upload-option-icons {
       cursor: pointer;
