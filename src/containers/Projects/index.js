@@ -8,6 +8,7 @@ import { Alert, Tabs, Tab } from 'react-bootstrap';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import QueryString from 'query-string';
 import WelcomeVideo from 'assets/video/welcome.mp4';
+import searchimg from 'assets/images/search-icon.png';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import {
   deleteProjectAction,
@@ -84,8 +85,8 @@ export const ProjectsPage = (props) => {
   }, []);
 
   useEffect(() => {
-    if (organization?.activeOrganization) {
-      getTeamProjects(searchTeamQuery || '').then((data) => {
+    if (organization?.activeOrganization || !searchTeamQuery) {
+      getTeamProjects().then((data) => {
         setTeamProjects(data);
       });
     }
@@ -113,7 +114,11 @@ export const ProjectsPage = (props) => {
       setSampleProjects(allState.sidebar.sampleProject);
     }
   }, [allState.sidebar.sampleProject]);
-
+  const handleSearchQueryTeams = () => {
+    getTeamProjects(searchTeamQuery || '').then((data) => {
+      setTeamProjects(data);
+    });
+  };
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -619,6 +624,8 @@ export const ProjectsPage = (props) => {
                     {showSampleSort && (
                       <div className="search-bar">
                         <input type="text" placeholder="Search team projects" value={searchTeamQuery} onChange={({ target }) => SetSearchTeamQuery(target.value)} />
+                        <img src={searchimg} alt="search" onClick={handleSearchQueryTeams} />
+
                       </div>
                     )}
                     <div className="flex-smaple">
