@@ -85,10 +85,12 @@ export const ProjectsPage = (props) => {
   }, []);
 
   useEffect(() => {
-    if (organization?.activeOrganization || !searchTeamQuery) {
-      getTeamProjects().then((data) => {
-        setTeamProjects(data);
-      });
+    if (!searchTeamQuery) {
+      if (organization?.activeOrganization) {
+        getTeamProjects().then((data) => {
+          setTeamProjects(data);
+        });
+      }
     }
   }, [getTeamProjects, organization?.activeOrganization, searchTeamQuery]);
   useEffect(() => {

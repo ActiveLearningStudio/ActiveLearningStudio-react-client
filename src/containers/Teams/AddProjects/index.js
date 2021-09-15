@@ -27,7 +27,7 @@ function AddProjectsPage(props) {
   const historyback = useHistory();
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const { permission, activeOrganization } = organization;
+  const { activeOrganization } = organization;
   const { teamPermission } = useSelector((state) => state.team);
   useEffect(() => {
     if (activeOrganization) {
@@ -84,7 +84,7 @@ function AddProjectsPage(props) {
         <br />
         <FadeDiv className="assign-projects">
           <div className="assign-projects-content">
-            {(permission?.Team?.includes('team:add-projects') || teamPermission?.Team?.includes('team:add-project'))
+            {teamPermission?.Team?.includes('team:add-project')
               ? (
                 <AssignProject
                   isSaving={team.isLoading}

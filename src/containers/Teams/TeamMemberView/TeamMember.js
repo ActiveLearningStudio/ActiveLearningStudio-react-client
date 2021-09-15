@@ -31,7 +31,7 @@ function TeamMember(props) {
     deselectMe,
     removeMember,
     teamPermission,
-    permission,
+    // permission,
   } = props;
   const [activeRole, setActiveRole] = useState(role?.id);
   const { roles, teams } = useSelector((state) => state.team);
@@ -130,7 +130,7 @@ function TeamMember(props) {
               </select>
             </div>
           )}
-          {(permission?.Team?.includes('team:remove-user') || teamPermission?.Team?.includes('team:remove-team-user')) && (
+          {teamPermission?.Team?.includes('team:remove-team-user') && (
             <button
               type="button"
               className="eliminate-btn"
@@ -172,7 +172,7 @@ TeamMember.propTypes = {
   removingUserId: PropTypes.number,
   selected: PropTypes.bool,
   user: PropTypes.object.isRequired,
-  permission: PropTypes.object.isRequired,
+  // permission: PropTypes.object.isRequired,
   selectMe: PropTypes.func.isRequired,
   deselectMe: PropTypes.func.isRequired,
   removeMember: PropTypes.func.isRequired,
