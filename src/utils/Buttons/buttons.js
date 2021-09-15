@@ -46,7 +46,9 @@ const Buttons = ({
       onClick={onClick}
       disabled={disabled}
     >
-      {icon && <FontAwesomeIcon icon={icon} className="curriki_btn-mr-2" />}
+      {icon && (
+        <FontAwesomeIcon icon={icon} className="curriki_btn-mr-2 btn-icon" />
+      )}
       {text}
     </button>
   );

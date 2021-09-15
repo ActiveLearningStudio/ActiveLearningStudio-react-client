@@ -74,7 +74,7 @@ const ActivityCardV2 = ({
       ) : (
         <div
           className={currikiUtility}
-          style={selectionStatus ? { height: "400px" } : { height: "336px" }}
+          style={selectionStatus ? { height: "400px" } : { height: "340px" }}
         >
           <div
             className="activitycard-card-top"

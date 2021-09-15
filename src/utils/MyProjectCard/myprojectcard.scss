@@ -15,7 +15,12 @@
     &:before {
       border-top-left-radius: 8px;
       border-top-right-radius: 8px;
-      background-color: rgba(113, 117, 119, 0.7);
+      // background-color: rgba(113, 117, 119, 0.7);
+      background: linear-gradient(
+        180deg,
+        rgba(81, 81, 81, 0.2) 0%,
+        rgba(0, 0, 0, 0.8) 100%
+      );
       content: "";
       display: block;
       height: 100%;
@@ -25,8 +30,8 @@
 
     .myproject-card-dropdown {
       position: absolute;
-      top: 5px;
-      right: 5px;
+      top: 17px;
+      right: 23px;
     }
     .myproject-card-title {
       position: absolute;
@@ -55,7 +60,7 @@
     }
   }
   .myproject-card-status {
-    padding: 0 20px;
+    padding: 4px 20px 0 20px;
     p {
       color: #12b347;
       align-items: center;
@@ -77,14 +82,14 @@
     }
   }
   .myproject-card-add-share {
-    margin-top: 24px;
+    margin-top: 26px;
     margin-left: 16px;
     button {
       border: none;
       cursor: pointer;
       background: #ffffff;
       color: $curriki-main-blue;
-      box-shadow: 0px 1px 2px 1px rgba(81, 81, 81, 0.16);
+      // box-shadow: 0px 1px 2px 1px rgba(81, 81, 81, 0.16);
       border-radius: 4px;
     }
   }

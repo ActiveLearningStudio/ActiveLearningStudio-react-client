@@ -98,7 +98,7 @@
       }
     }
     .btn-box {
-      margin-left: 40px;
+      margin-left: 65px;
       //   button {
       //     width: 122px;
       //     border: none;
@@ -112,7 +112,7 @@
   }
   .activity-selection-box {
     padding-top: 32px;
-    padding-right: 38px;
+    padding-right: 23px;
     text-align: right;
     span {
       margin-left: 8px;
@@ -226,6 +226,13 @@
         //   border-radius: 4px;
         // }
       }
+    }
+  }
+}
+.listproject-dropdown {
+  button {
+    &:focus {
+      box-shadow: none !important;
     }
   }
 }

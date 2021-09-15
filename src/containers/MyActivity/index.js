@@ -140,7 +140,14 @@ const MyActivity = () => {
               />
             </div>
             <div className="activityTitle">
-              <HeadingTwo text="Activities" color="#285AA5" />
+              {edit ? (
+                <HeadingTwo
+                  text="Select Activies to add to a project or create a new one."
+                  color="#285AA5"
+                />
+              ) : (
+                <HeadingTwo text="Activities" color="#285AA5" />
+              )}
             </div>
 
             {cardShow ? (

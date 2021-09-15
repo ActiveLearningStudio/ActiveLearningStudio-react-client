@@ -26,13 +26,13 @@
           justify-content: space-between;
         }
         .project-detail {
-          margin-top: 20px;
+          margin-top: 15px;
         }
       }
     }
     .top-project-detail-btn-tabs {
       border-bottom: 1px solid $curriki-main-blue;
-      margin-top: 33px;
+      margin-top: 48px;
       display: flex;
       .btn-tabs {
         border-radius: 5px;
@@ -43,7 +43,7 @@
       }
     }
     .project-playlist-card {
-      margin-top: 45px;
+      margin-top: 24px;
       display: flex;
       flex-wrap: wrap;
       .playlist-card {

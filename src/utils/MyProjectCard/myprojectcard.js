@@ -6,7 +6,11 @@ import "./myprojectcard.scss";
 import ActivityCardDropDown from "utils/ActivityCardDropDown/activitycarddropdown";
 import ProjectPlayList from "utils/ProjectPlayList/projectplaylist";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faShare } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faShare,
+  faShareSquare,
+} from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 const MyProjectCard = ({ className, backgroundImg, title }) => {
@@ -39,23 +43,30 @@ const MyProjectCard = ({ className, backgroundImg, title }) => {
         </p>
       </div>
       <div className="myproject-card-add-share">
-        <button style={{ width: "86px", height: "32px", marginRight: "24px" }}>
+        <button
+          style={{
+            width: "86px",
+            height: "32px",
+            marginRight: "24px",
+            textAlign: "left",
+          }}
+        >
           <Link
             to="/org/currikistudio/project/create/one/playlist"
             style={{ textDecoration: "none", color: "#084892" }}
           >
             <FontAwesomeIcon
               icon={faPlus}
-              style={{ marginRight: "20px" }}
+              style={{ marginRight: "16px" }}
               color="#084892"
             />
             Add
           </Link>
         </button>
-        <button style={{ width: "108px", height: "32px" }}>
+        <button style={{ width: "108px", height: "32px", textAlign: "right" }}>
           <FontAwesomeIcon
-            icon={faShare}
-            style={{ marginRight: "20px" }}
+            icon={faShareSquare}
+            style={{ marginRight: "16px" }}
             color="#084892"
           />
           Share

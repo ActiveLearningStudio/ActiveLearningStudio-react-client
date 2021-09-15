@@ -9,6 +9,7 @@ import {
   faPlusSquare,
   faCopy,
   faTrash,
+  faAngleDown,
 } from "@fortawesome/free-solid-svg-icons";
 // import { useDispatch } from "react-redux";
 import "./projectlistdropdown.scss";
@@ -18,22 +19,25 @@ const ProjectListDropDown = ({ iconColor, children }) => {
   const IconColor = iconColor ? iconColor : "#084892";
   // const dispatch = useDispatch();
   return (
-    <div className="curriki-utility-activity-dropdown">
+    <div className="curriki-utility-list-dropdown">
       <Dropdown className="listproject-dropdown check ">
         <Dropdown.Toggle className="project-dropdown-btn-list">
-          {/* {children} */}
-          {/* <FontAwesomeIcon
-            icon={faEllipsisV}
-            style={{ fontSize: "13px", color: IconColor, marginLeft: "5px" }}
-          /> */}
-          <button style={{ width: "108px", height: "32px" }}>
+          <span>
+            2 projects
+            <FontAwesomeIcon
+              icon={faAngleDown}
+              style={{ marginLeft: "11px" }}
+              color="#084892"
+            />
+          </span>
+          {/* <button style={{ width: "108px", height: "32px" }}>
             <FontAwesomeIcon
               icon={faFolderOpen}
               style={{ marginRight: "12px" }}
               color="#084892"
             />
             2 projects
-          </button>
+          </button> */}
         </Dropdown.Toggle>
 
         <Dropdown.Menu className="project-menu-list">

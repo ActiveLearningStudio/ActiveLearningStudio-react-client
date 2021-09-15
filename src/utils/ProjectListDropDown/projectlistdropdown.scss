@@ -1,7 +1,7 @@
 @import "assets/css/index";
 
-.curriki-utility-activity-dropdown {
-  //   width: 275px;
+.curriki-utility-list-dropdown {
+  max-width: 283px;
 
   //   .activity-dropdown {
   //     display: flex;
@@ -23,16 +23,24 @@
   //   }
   .project-dropdown-btn-list {
     border: none;
-
-    button {
-      width: 122px;
-      border: none;
-      cursor: pointer;
-      background: #ffffff;
+    span {
+      font-family: "Open Sans", sans-serif;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 20px;
       color: $curriki-main-blue;
-      box-shadow: 0px 1px 2px 1px rgba(81, 81, 81, 0.16);
-      border-radius: 4px;
+      text-decoration: underline;
     }
+    // button {
+    //   width: 122px;
+    //   border: none;
+    //   cursor: pointer;
+    //   background: #ffffff;
+    //   color: $curriki-main-blue;
+    //   box-shadow: 0px 1px 2px 1px rgba(81, 81, 81, 0.16);
+    //   border-radius: 4px;
+    // }
   }
 
   .listproject-dropdown.check {
@@ -85,7 +93,7 @@
 .project-menu-list {
   .projectlist-title {
     padding: 32px 32px 16px 32px;
-    width: 211px;
+    min-width: 211px;
     p {
       font-family: $rubik;
       font-style: normal;
