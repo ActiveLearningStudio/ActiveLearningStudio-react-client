@@ -4,7 +4,13 @@ import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeUserRole, getTeamPermission, loadTeamAction } from 'store/actions/team';
+import {
+  changeUserRole,
+  getTeamPermission,
+  loadTeamAction,
+  loadTeamsAction,
+} from 'store/actions/team';
+import { useHistory } from 'react-router-dom';
 
 function TeamMember(props) {
   const {
@@ -31,6 +37,7 @@ function TeamMember(props) {
   const { roles, teams } = useSelector((state) => state.team);
   const { activeOrganization } = useSelector((state) => state.organization);
   const auth = useSelector((state) => state.auth);
+  const history = useHistory();
   const dispatch = useDispatch();
   const roleChangeHandler = async (roleId) => {
     setActiveRole(roleId);
@@ -49,6 +56,10 @@ function TeamMember(props) {
     } else {
       removeMember(teamId, id, iEmail)
       .then(() => {
+        if (id === auth.user.id) {
+          history.push(`/org/${activeOrganization.domain}/teams`);
+          dispatch(loadTeamsAction());
+        }
       })
       .catch(() => {
         Swal.fire({
