@@ -6,6 +6,7 @@ import "./uploadimage.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PexelsAPI from "../../components/models/pexels";
 import DefaultImage from "assets/images/activitycard.png";
+import PixelIcon from "assets/images/svg/pixel.svg";
 import {
   faLaptop,
   faLink,
@@ -110,7 +111,7 @@ const UploadImage = ({ className, setUploadImageStatus }) => {
               setUploadImageStatus(true);
             }}
           >
-            <FontAwesomeIcon icon={faLaptop} className="mr-20" />
+            <img src={PixelIcon} className="mr-20" />
             Pexels
           </button>
         </div>

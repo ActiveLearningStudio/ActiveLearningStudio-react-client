@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import "./activitycardv2.scss";
@@ -16,7 +16,10 @@ const ActivityCardV2 = ({
   backgroundImg,
   title,
   listView = false,
+  selectionStatus = false,
+  setAddActivityPopUp,
 }) => {
+  const [changeAddActivityPopUp, setChangeAddActivityPopUp] = useState(false);
   const currikiUtility = classNames(
     "curriki-utility-activitycard-card",
     className
@@ -69,7 +72,10 @@ const ActivityCardV2 = ({
           </div>
         </div>
       ) : (
-        <div className={currikiUtility}>
+        <div
+          className={currikiUtility}
+          style={selectionStatus ? { height: "400px" } : { height: "336px" }}
+        >
           <div
             className="activitycard-card-top"
             style={{ backgroundImage: `url(${backgroundImg})` }}
@@ -108,6 +114,18 @@ const ActivityCardV2 = ({
               </button> */}
             </div>
           </div>
+          {selectionStatus && (
+            <div className="activity-selection-box">
+              <input
+                type="checkbox"
+                onClick={() => {
+                  setAddActivityPopUp(!changeAddActivityPopUp);
+                  setChangeAddActivityPopUp(!changeAddActivityPopUp);
+                }}
+              />
+              <span>Select</span>
+            </div>
+          )}
         </div>
       )}
 
@@ -121,6 +139,7 @@ ActivityCardV2.propTypes = {
   backgroundImg: PropTypes.string,
   title: PropTypes.string,
   listView: PropTypes.bool,
+  selectionStatus: PropTypes.bool,
 };
 
 export default ActivityCardV2;

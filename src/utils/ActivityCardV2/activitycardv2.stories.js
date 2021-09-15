@@ -19,4 +19,5 @@ ActivityCardV2Props.args = {
   title: "Activity No# 2",
   backgroundImg: ProjectBg,
   listView: false,
+  selectionStatus: true,
 };

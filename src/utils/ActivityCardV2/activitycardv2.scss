@@ -1,8 +1,9 @@
 @import "assets/css/index";
+
 .curriki-utility-activitycard-card {
   margin-right: 30px;
   width: 250px;
-  height: 336px;
+  // height: 336px;
   background: $white;
   box-shadow: 0px 4px 8px 2px rgba(81, 81, 81, 0.16);
   border-radius: 8px;
@@ -107,6 +108,20 @@
       //     box-shadow: 0px 1px 2px 1px rgba(81, 81, 81, 0.16);
       //     border-radius: 4px;
       //   }
+    }
+  }
+  .activity-selection-box {
+    padding-top: 32px;
+    padding-right: 38px;
+    text-align: right;
+    span {
+      margin-left: 8px;
+      font-family: "Open Sans", sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 19px;
+      color: #515151;
     }
   }
 }

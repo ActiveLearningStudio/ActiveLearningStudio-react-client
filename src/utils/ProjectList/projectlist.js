@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import "./projectlist.scss";
@@ -7,9 +7,11 @@ import ActivityCardDropDown from "utils/ActivityCardDropDown/activitycarddropdow
 import PlayList1 from "assets/images/svg/playlist1.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 const ProjectList = ({ className, projectTitle, playList }) => {
   const currikiUtility = classNames("curriki-utility-projectlist", className);
+  const [editStatus, setEditStatus] = useState(true);
   return (
     <div className={currikiUtility}>
       <div className="playlist-top">
@@ -59,10 +61,13 @@ const ProjectList = ({ className, projectTitle, playList }) => {
         })}
       </div>
       <div className="project-list-add-activity">
-        <a href="#" className="add-activity-link">
+        <Link
+          to={`/org/:organization/project/create/one/playlist/addactivity/${editStatus}`}
+          className="add-activity-link"
+        >
           <FontAwesomeIcon icon={faPlus} style={{ marginRight: "20px" }} />
           Add new Activity
-        </a>
+        </Link>
       </div>
     </div>
   );

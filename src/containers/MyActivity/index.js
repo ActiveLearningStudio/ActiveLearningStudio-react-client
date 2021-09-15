@@ -1,5 +1,6 @@
 /*eslint-disable*/
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router";
 import TopHeading from "utils/TopHeading/topheading";
 import TopHeadingImage from "assets/images/svg/myProject.svg";
 import "./styles.scss";
@@ -27,8 +28,18 @@ import CardImage from "assets/images/activitycard.png";
 import ActivityCardBox from "utils/ActivityCard/activitycard";
 import UploadInteractiveVideo from "./formik/uploadinteractivevideo";
 import ActivityCardV2 from "utils/ActivityCardV2/activitycardv2";
+import Footer from "components/Footer";
+import AddActivityPopup from "utils/AddActivityPopup/addactivitypopup";
 // import H5PEditor from "components/ResourceCard/AddResource/Editors/H5PEditorV2";
 const MyActivity = () => {
+  const [edit, setEdit] = useState(false);
+  const [addActivityPopUp, setAddActivityPopUp] = useState(false);
+  const params = useParams();
+  useEffect(() => {
+    if (params.statusbool) {
+      setEdit(params.statusbool);
+    }
+  }, []);
   const [cardShow, setCardShow] = useState(true);
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
@@ -280,6 +291,8 @@ const MyActivity = () => {
                       backgroundImg={CardImage}
                       title="My first activity"
                       listView={listView}
+                      selectionStatus={edit}
+                      setAddActivityPopUp={setAddActivityPopUp}
                     />
                   </div>
                   <div className={listView ? "width-100" : "mt-36"}>
@@ -287,6 +300,8 @@ const MyActivity = () => {
                       backgroundImg={CardImage}
                       title="My first activity"
                       listView={listView}
+                      selectionStatus={edit}
+                      setAddActivityPopUp={setAddActivityPopUp}
                     />
                   </div>
                   <div className={listView ? "width-100" : "mt-36"}>
@@ -294,6 +309,8 @@ const MyActivity = () => {
                       backgroundImg={CardImage}
                       title="My first activity"
                       listView={listView}
+                      selectionStatus={edit}
+                      setAddActivityPopUp={setAddActivityPopUp}
                     />
                   </div>
                   <div className={listView ? "width-100" : "mt-36"}>
@@ -301,6 +318,8 @@ const MyActivity = () => {
                       backgroundImg={CardImage}
                       title="My first activity"
                       listView={listView}
+                      selectionStatus={edit}
+                      setAddActivityPopUp={setAddActivityPopUp}
                     />
                   </div>
                   <div className={listView ? "width-100" : "mt-36"}>
@@ -308,6 +327,8 @@ const MyActivity = () => {
                       backgroundImg={CardImage}
                       title="My first activity"
                       listView={listView}
+                      selectionStatus={edit}
+                      setAddActivityPopUp={setAddActivityPopUp}
                     />
                   </div>
                 </div>
@@ -347,6 +368,7 @@ const MyActivity = () => {
           </div>
         </div>
       </div>
+      {addActivityPopUp ? <AddActivityPopup /> : <Footer />}
     </>
   );
 };

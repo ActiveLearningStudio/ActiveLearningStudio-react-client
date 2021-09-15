@@ -35,6 +35,13 @@ const MyProjectsCreate = ({ setUploadImageStatus }) => {
                 />
               </InputLabel>
             </div>
+            <div className="layout-formik-input">
+              <InputLabel text="Visibility type" className="input-label">
+                <select>
+                  <option>Private</option>
+                </select>
+              </InputLabel>
+            </div>
             <div className="layout-formik-uploadimage">
               <UploadImage setUploadImageStatus={setUploadImageStatus} />
             </div>

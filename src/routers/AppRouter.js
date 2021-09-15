@@ -409,6 +409,11 @@ const AppRouter = (props) => {
                     showCreateProjectPopup
                     editMode={false}
                   />
+                  <PrivateRoute
+                    exact
+                    path="/org/:organization/project/create/one/playlist/addactivity/:statusbool"
+                    component={MyActivity}
+                  />
                   {/* Update Project Page -End- */}
                   <PrivateRoute
                     exact
