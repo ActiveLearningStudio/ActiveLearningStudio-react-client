@@ -57,7 +57,7 @@ function TeamProjectView(props) {
     if (notification?.today[0]?.data.message.indexOf(selectedForClone) !== -1) {
       dispatch(loadTeamAction(id));
     }
-  }, [notification?.today, selectedForClone]);
+  }, [notification?.today]);
   const removeProjectSubmit = useCallback((projectId) => {
     removeProject(id, projectId)
       .catch(() => {
