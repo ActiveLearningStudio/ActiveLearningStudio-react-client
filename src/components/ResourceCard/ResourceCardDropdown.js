@@ -29,6 +29,7 @@ const ResourceCardDropdown = (props) => {
     safariMontagePublishTool,
     match,
     teamPermission,
+    previewPage,
   } = props;
   const organization = useSelector((state) => state.organization);
   const { permission } = organization;
@@ -71,6 +72,7 @@ const ResourceCardDropdown = (props) => {
         <Dropdown.Item
           as={Link}
           to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview`}
+          onClick={() => { if (previewPage === 'projectPreview') { localStorage.setItem('projectPreview', true); } else { localStorage.setItem('projectPreview', false); } }}
         >
           <FontAwesomeIcon icon="eye" className="mr-2" />
           Preview
@@ -265,6 +267,7 @@ ResourceCardDropdown.propTypes = {
   closeSafariMontageTool: PropTypes.func.isRequired,
   safariMontagePublishTool: PropTypes.string.isRequired,
   teamPermission: PropTypes.object.isRequired,
+  previewPage: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({

@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert, Tabs, Tab } from 'react-bootstrap';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import QueryString from 'query-string';
-
 import WelcomeVideo from 'assets/video/welcome.mp4';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import {
@@ -52,6 +51,7 @@ export const ProjectsPage = (props) => {
   const [showSampleSort, setShowSampleSort] = useState(true);
   const [tabToggle, setTabToggle] = useState([]);
   const [type, setType] = useState([]);
+  const [searchTeamQuery, SetSearchTeamQuery] = useState('');
   const {
     ui,
     match,
@@ -85,11 +85,11 @@ export const ProjectsPage = (props) => {
 
   useEffect(() => {
     if (organization?.activeOrganization) {
-      getTeamProjects().then((data) => {
+      getTeamProjects(searchTeamQuery || '').then((data) => {
         setTeamProjects(data);
       });
     }
-  }, [getTeamProjects, organization?.activeOrganization]);
+  }, [getTeamProjects, organization?.activeOrganization, searchTeamQuery]);
   useEffect(() => {
     if (organization.activeOrganization) {
       sampleProjectsData();
@@ -613,47 +613,14 @@ export const ProjectsPage = (props) => {
                   <div className="col-md-12" style={{ display: 'none' }}>
                     <div className="program-page-title">
                       <h1>Team Projects</h1>
-                      {(showSampleSort && teamProjects.length === 0) && (
-                        <div className="project-page-settings">
-                          <div className="sort-project-btns">
-                            <div
-                              className={activeFilter === 'list-grid' ? 'sort-btn active' : 'sort-btn'}
-                              onClick={() => {
-                                // const allchunk = [];
-                                // let counterSimpl = 0;
-                                setActiveFilter('list-grid');
-                                setSortNumber(-1);
-                                divideProjects(teamProjects);
-                              }}
-                            >
-                              <FontAwesomeIcon icon="bars" />
-                            </div>
-                            <div
-                              className={activeFilter === 'small-grid' ? 'sort-btn active' : 'sort-btn'}
-                              onClick={() => {
-                                setActiveFilter('small-grid');
-                                setSortNumber(5);
-                                divideProjects(teamProjects);
-                              }}
-                            >
-                              <FontAwesomeIcon icon="grip-horizontal" />
-                            </div>
-                            <div
-                              className={activeFilter === 'normal-grid' ? 'sort-btn active' : 'sort-btn'}
-                              onClick={() => {
-                                setActiveFilter('normal-grid');
-                                setSortNumber(4);
-                                divideProjects(teamProjects);
-                              }}
-                            >
-                              <FontAwesomeIcon icon="th-large" />
-                            </div>
-                          </div>
-                        </div>
-                      )}
                     </div>
                   </div>
                   <div className="col-md-12">
+                    {showSampleSort && (
+                      <div className="search-bar">
+                        <input type="text" placeholder="Search team projects" value={searchTeamQuery} onChange={({ target }) => SetSearchTeamQuery(target.value)} />
+                      </div>
+                    )}
                     <div className="flex-smaple">
                       {teamProjects.length > 0 ? (
                         <SampleProjectCard
@@ -746,7 +713,7 @@ const mapDispatchToProps = (dispatch) => ({
   allSidebarProjectsUpdate: () => dispatch(allSidebarProjects()),
   sampleProjectsData: () => dispatch(sampleProjects()),
   loadMyFavProjectsActionData: () => dispatch(loadMyFavProjectsAction()),
-  getTeamProjects: () => dispatch(getTeamProject()),
+  getTeamProjects: (query) => dispatch(getTeamProject(query)),
 });
 
 export default withRouter(

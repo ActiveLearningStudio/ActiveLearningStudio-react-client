@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 // import Switch from 'react-switch';
 import PropTypes from 'prop-types';
-import { connect, useSelector } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import Swal from 'sweetalert2';
@@ -125,12 +125,12 @@ const onSubmit = async (values, dispatch, props) => {
     history.push('/projects');
   }
 };
-export const uploadThumb = async (e, permission) => {
+export const uploadThumb = async (e, permission, dispatch) => {
   const formData = new FormData();
   try {
     formData.append('thumb', e.target.files[0]);
     imageValidation = '';
-    await uploadProjectThumbnailAction(formData);
+    await dispatch(uploadProjectThumbnailAction(formData));
   } catch (err) {
     Swal.fire({
       icon: 'error',
@@ -151,6 +151,7 @@ let CreateProjectPopup = (props) => {
     getProjectVisibilityTypes,
     vType,
   } = props;
+  const dispatch = useDispatch();
   const stateHeader = useSelector((state) => state.organization);
   const { permission } = stateHeader;
   const [modalShow, setModalShow] = useState(false);
@@ -262,7 +263,7 @@ let CreateProjectPopup = (props) => {
                         text: 'Selected file size should be less then 100MB.',
                       });
                     } else {
-                      uploadThumb(e, permission);
+                      uploadThumb(e, permission, dispatch);
                     }
                   }}
                 />

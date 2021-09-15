@@ -490,7 +490,7 @@
     width: -moz-fit-content;
     width: 70px;
     height: 35px;
-    margin: -18px 10px 10px 0;
+    margin: 0 10px 10px 0;
     /* padding: 3px 20px; */
     display: flex;
     justify-content: center;
@@ -2495,7 +2495,7 @@ a:hover {
     margin-top: 50px;
     .item-container {
       padding-bottom: 50px;
-      @media screen and (max-width: 1095px) {
+      @media screen and (max-width: 1499px) {
         margin-top: 20px;
       }
     }
@@ -2634,7 +2634,7 @@ a:hover {
     top: 40px;
     z-index: 11;
   background-color: #fff;
-  @media screen and (max-width: 1095px) {
+  @media screen and (max-width: 1499px) {
     height: 70px;
   }
     h3 {

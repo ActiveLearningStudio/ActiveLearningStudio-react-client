@@ -341,7 +341,7 @@ function Controller(props) {
           <input
             className=""
             type="text"
-            placeholder="Search by URL"
+            placeholder="Search by URL or Email"
             value={searchQuery}
             onChange={searchQueryChangeHandler}
           />
@@ -378,6 +378,7 @@ function Controller(props) {
             onChange={(e) =>{
               if (e.target.value) {
                 setSearchQueryProject(e.target.value)
+                searchProjectQueryChangeHandler(e.target.value, selectedIndexValueid,subType)
               } else if (e.target.value === '') {
                 setSearchQueryProject('');
                 searchProjectQueryChangeHandler('', selectedIndexValueid,subType)

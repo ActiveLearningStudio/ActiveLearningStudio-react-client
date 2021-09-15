@@ -7,7 +7,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import GoogleModel from 'components/models/GoogleLoginModal';
 // import { zeroFill } from 'utils';
-import { getTeamPermission, removeMemberFromProjectAction, removeProjectAction } from 'store/actions/team';
+import {
+  getTeamPermission,
+  loadTeamAction,
+  removeMemberFromProjectAction,
+  removeProjectAction,
+} from 'store/actions/team';
 
 import './style.scss';
 import SharePreviewPopup from 'components/SharePreviewPopup';
@@ -23,7 +28,8 @@ function TeamProjectView(props) {
     removeMember,
   } = props;
   const organization = useSelector((state) => state.organization);
-  const { teamPermission } = useSelector((state) => state.team);
+  const { teamPermission, selectedForClone } = useSelector((state) => state.team);
+  const { notification } = useSelector((state) => state.notification);
   const dispatch = useDispatch();
   const { permission } = organization;
   const [selectedProjectId, setSelectedProjectId] = useState(0);
@@ -47,7 +53,11 @@ function TeamProjectView(props) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, id));
     }
   }, [teamPermission]);
-
+  useEffect(() => {
+    if (notification?.today[0]?.data.message.indexOf(selectedForClone) !== -1) {
+      dispatch(loadTeamAction(id));
+    }
+  }, [notification?.today, selectedForClone]);
   const removeProjectSubmit = useCallback((projectId) => {
     removeProject(id, projectId)
       .catch(() => {
