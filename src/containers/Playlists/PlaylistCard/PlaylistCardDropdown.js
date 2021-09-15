@@ -32,6 +32,7 @@ class PlaylistCardDropdown extends React.Component {
       teamPermission,
     } = this.props;
     const { permission } = organization;
+
     return (
       <Dropdown className="pull-right playlist-dropdown check">
         <Dropdown.Toggle className="playlist-dropdown-btn">

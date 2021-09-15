@@ -616,9 +616,11 @@ export const ProjectsPage = (props) => {
                     </div>
                   </div>
                   <div className="col-md-12">
-                    <div className="search-bar">
-                      <input type="text" placeholder="Search team projects" value={searchTeamQuery} onChange={({ target }) => SetSearchTeamQuery(target.value)} />
-                    </div>
+                    {showSampleSort && (
+                      <div className="search-bar">
+                        <input type="text" placeholder="Search team projects" value={searchTeamQuery} onChange={({ target }) => SetSearchTeamQuery(target.value)} />
+                      </div>
+                    )}
                     <div className="flex-smaple">
                       {teamProjects.length > 0 ? (
                         <SampleProjectCard

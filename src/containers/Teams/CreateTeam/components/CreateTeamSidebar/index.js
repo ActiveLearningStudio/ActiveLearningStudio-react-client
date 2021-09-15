@@ -29,8 +29,8 @@ function CreateTeamSidebar(props) {
 
           {editMode ? null : <span className="bottom-vertical-line" />}
         </div>
-
-        <span className="name">
+        {editMode}
+        <span className={editMode ? 'editModeName' : 'name'}>
           {editMode ? 'Edit ' : 'Create '}
           Team
         </span>
