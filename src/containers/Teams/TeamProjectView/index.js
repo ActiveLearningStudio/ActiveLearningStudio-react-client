@@ -57,7 +57,7 @@ function TeamProjectView(props) {
     if (notification?.today[0]?.data.message.indexOf(selectedForClone) !== -1) {
       dispatch(loadTeamAction(id));
     }
-  }, [notification?.today, selectedForClone]);
+  }, [notification?.today]);
   const removeProjectSubmit = useCallback((projectId) => {
     removeProject(id, projectId)
       .catch(() => {
@@ -169,7 +169,7 @@ function TeamProjectView(props) {
                         </ul>
                       </li>
                     )}
-                    {(permission?.Project?.includes('project:share') || teamPermission?.Team?.includes('team:share-project')) && (
+                    {teamPermission?.Team?.includes('team:share-project') && (
                       <Dropdown.Item
                         to="#"
                         onClick={async () => {
@@ -202,8 +202,7 @@ function TeamProjectView(props) {
                        Add member
                      </Dropdown.Item>
                      )} */}
-                    {(permission?.Team?.includes('team:remove-projects')
-                    || teamPermission?.Team?.includes('team:remove-project')
+                    {(teamPermission?.Team?.includes('team:remove-project')
                     || teamPermission?.Team?.includes('team:remove-member-project'))
                       && (
                         <Dropdown.Item onClick={() => removeProjectSubmit(project.id)}>
@@ -244,7 +243,7 @@ function TeamProjectView(props) {
                               </div>
 
                               <div className="dropdown-divider" />
-                              {(permission?.Team?.includes('team:remove-project-user') || teamPermission?.Team?.includes('team:remove-project-user'))
+                              {teamPermission?.Team?.includes('team:remove-project-user')
                               && (
                               <Dropdown.Item onClick={() => removeMemberSubmit(project.id, u.id)}>
                                 <FontAwesomeIcon icon="times" className="mr-2" />
