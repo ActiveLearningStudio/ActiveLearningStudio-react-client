@@ -358,7 +358,6 @@ export const ProjectsPage = (props) => {
                     <div className="col-md-12">
                       {/* <div className="program-page-title">
                         <h1>My Projects</h1>
-
                         <div className="project-page-settings">
                           <div className="sort-project-btns">
                             <div
