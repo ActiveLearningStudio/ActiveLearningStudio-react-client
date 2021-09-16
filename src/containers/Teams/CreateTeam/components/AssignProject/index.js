@@ -66,7 +66,7 @@ function AssignProject(props) {
         <div className="title-box">
           <h2 className="title">Add/Assign Project</h2>
           <div className="title-cross" />
-          {finishButton}
+          {filteredProjects?.length > 0 ? finishButton : null}
         </div>
 
         <div className="assign-project-wrapper">
@@ -118,7 +118,7 @@ function AssignProject(props) {
             )) : <Alert variant="warning"> No Project Found. </Alert> : <Alert variant="primary">Loading...</Alert> }
           </div>
 
-          {finishButton}
+          {filteredProjects?.length > 0 ? finishButton : null}
         </div>
       </FadeDiv>
     </div>

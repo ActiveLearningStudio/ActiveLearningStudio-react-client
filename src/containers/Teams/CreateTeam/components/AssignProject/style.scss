@@ -68,6 +68,8 @@
 
       .assign-project-title {
         width: 180px;
+        text-overflow: ellipsis;
+        overflow:hidden;
         padding: 14px 22px 14px 13px;
         border-top: solid 1px #e2e2e2;
         line-height: 18px;
