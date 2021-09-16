@@ -316,7 +316,7 @@ function PlaylistPreview(props) {
                     />
                   </div>
                 </Tab>
-                {(permission?.Activity?.includes('activity:share') || teamPermission?.Team?.includes('team:share-activity')) && (
+                {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-activity') : permission?.Activity?.includes('activity:share')) && (
                   <Tab eventKey="profile" title="Share">
                     <div className="watcher spaner">
                       {activityShared && (

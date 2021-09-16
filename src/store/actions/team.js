@@ -354,6 +354,12 @@ export const getTeamPermission = (orgId, TeamId) => async (dispatch) => {
   });
 };
 
+export const clearTeamPermissions = () => (dispatch) => {
+  dispatch({
+    type: actionTypes.CLEAR_TEAM_PERMISSIONS,
+  });
+};
+
 export const getTeamProject = (query, page) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
