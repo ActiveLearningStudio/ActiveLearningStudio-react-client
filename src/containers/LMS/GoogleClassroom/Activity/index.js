@@ -33,9 +33,14 @@ const Activity = (props) => {
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
-    loadH5pSettings(activityId, student.auth.googleId);
     getSubmission(match.params.classworkId, match.params.courseId, student.auth);
   }, [activityId, student.auth]);
+
+  useEffect(() => {
+    if (submission === null) return;
+
+    loadH5pSettings(activityId, student.auth.googleId, submission.id);
+  }, [submission]);
 
   // Load H5P
   useEffect(() => {
@@ -202,7 +207,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  loadH5pSettings: (activityId, studentId) => dispatch(loadH5pResourceSettings(activityId, studentId)),
+  loadH5pSettings: (activityId, studentId, submissionId) => dispatch(loadH5pResourceSettings(activityId, studentId, submissionId)),
   getSubmission: (classworkId, courseId, auth) => dispatch(getSubmissionAction(classworkId, courseId, auth)),
   sendStatement: (statement) => dispatch(loadH5pResourceXapi(statement)),
   turnIn: (classworkId, courseId, auth) => dispatch(turnInAction(classworkId, courseId, auth)),
