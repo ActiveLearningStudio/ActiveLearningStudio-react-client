@@ -100,10 +100,8 @@ const checkUserBeforeAdd = (orgId, values) => httpService
 const getTeamProject = (orgId, query) => httpService
   .get(`/${apiVersion}/suborganization/${orgId}/team-projects?query=${query || ''}`)
   .then(({ data }) => data)
-  .catch((err) => {
-    errorCatcher(err.response.data);
-    return Promise.reject(err.response.data);
-  });
+  .catch((err) => Promise.reject(err.response.data));
+
 const changeUserRole = (orgId, teamId, body) => httpService
   .put(`/${apiVersion}/suborganization/${orgId}/team/${teamId}/update-team-member-role`, body)
   .then(({ data }) => data)

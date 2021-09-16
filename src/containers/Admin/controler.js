@@ -258,7 +258,7 @@ function Controller(props) {
                         setActiveRoleInComponent(head.display_name);
                         if (subTypeState === 'Manage Roles')
                           dispatch(roleDetail(activeOrganization.id, head.id));
-                        if (subTypeState === 'All Users') {
+                        if (subTypeState === 'All Users' && activeRole != head.id) {
                           setSearchQuery('');
                           setActiveRole(head.id);
                           setActivePage(1);
