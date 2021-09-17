@@ -49,10 +49,10 @@ function TeamProjectView(props) {
   }, [AllLms, AllLms.shareVendors]);
   // Fetch team permission if page reloads
   useEffect(() => {
-    if (organization?.currentOrganization?.id && id && !teamPermission) {
+    if (Object.keys(teamPermission).length === 0 && organization?.currentOrganization?.id && id) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, id));
     }
-  }, [id, teamPermission]);
+  }, [teamPermission]);
   useEffect(() => {
     if (notification?.today[0]?.data.message.indexOf(selectedForClone) !== -1) {
       dispatch(loadTeamAction(id));

@@ -62,10 +62,10 @@ function AddMembersPage(props) {
   }, [loadTeam, teamId]);
   // Fetch team permission if page reloads
   useEffect(() => {
-    if (organization?.currentOrganization?.id && id && !teamPermission) {
+    if (Object.keys(teamPermission).length === 0 && organization?.currentOrganization?.id && id) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, id));
     }
-  }, [id, teamPermission]);
+  }, [teamPermission]);
   const handleAssign = useCallback(() => {
     addMembers(id, projectId, chosenUsers)
       .then(() => {
