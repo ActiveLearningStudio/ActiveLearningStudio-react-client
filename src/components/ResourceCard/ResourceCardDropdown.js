@@ -78,7 +78,7 @@ const ResourceCardDropdown = (props) => {
           Preview
         </Dropdown.Item>
         )}
-        {(permission?.Activity?.includes('activity:edit') || teamPermission?.Team?.includes('team:edit-activity')) && (
+        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-activity') : permission?.Activity?.includes('activity:edit')) && (
           <Dropdown.Item
             as={Link}
             to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
@@ -144,7 +144,7 @@ const ResourceCardDropdown = (props) => {
             </ul>
           </li>
         )}
-        {(permission?.Activity?.includes('activity:share') || teamPermission?.Team?.includes('team:share-activity')) && (
+        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-activity') : permission?.Activity?.includes('activity:share')) && (
           <Dropdown.Item
             onClick={() => {
               shareActivity(resource.id);
@@ -226,7 +226,7 @@ const ResourceCardDropdown = (props) => {
             xAPI Download
           </Dropdown.Item>
         )}
-        {(permission?.Activity?.includes('activity:delete') || teamPermission?.Team?.includes('team:delete-activity')) && (
+        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:delete-activity') : permission?.Activity?.includes('activity:delete')) && (
           <Dropdown.Item onClick={handleDelete}>
             <FontAwesomeIcon icon="times-circle" className="mr-2" />
             Delete

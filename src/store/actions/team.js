@@ -354,15 +354,21 @@ export const getTeamPermission = (orgId, TeamId) => async (dispatch) => {
   });
 };
 
-export const getTeamProject = (query) => async (dispatch) => {
+export const clearTeamPermissions = () => (dispatch) => {
+  dispatch({
+    type: actionTypes.CLEAR_TEAM_PERMISSIONS,
+  });
+};
+
+export const getTeamProject = (query, page) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
-  const result = await teamService.getTeamProject(activeOrganization?.id, query);
+  const result = await teamService.getTeamProject(activeOrganization?.id, query, page);
   dispatch({
     type: actionTypes.GET_TEAM_PROJECTS,
     payload: result.data,
   });
-  return result.data;
+  return result;
 };
 
 export const changeUserRole = (teamId, data) => async (dispatch) => {

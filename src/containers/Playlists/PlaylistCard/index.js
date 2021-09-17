@@ -59,7 +59,7 @@ class PlaylistCard extends React.Component {
         resource={resource}
         key={resource.id}
         index={index}
-        teamPermission={teamPermission || []}
+        teamPermission={teamPermission || {}}
       />
       ) : null
     ));
@@ -144,7 +144,7 @@ class PlaylistCard extends React.Component {
                     onClick={this.handleClickPlaylistTitle}
                   >
                     <span>{playlist.title}</span>
-                    {(permission?.Playlist?.includes('playlist:edit') || teamPermission?.Team?.includes('team:edit-playlist')) && <FontAwesomeIcon icon="pencil-alt" className="ml-2 edit-icon" />}
+                    {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-playlist') : permission?.Playlist?.includes('playlist:edit')) && <FontAwesomeIcon icon="pencil-alt" className="ml-2 edit-icon" />}
                   </div>
 
                   <textarea
@@ -161,7 +161,7 @@ class PlaylistCard extends React.Component {
                   <PlaylistCardDropdown
                     playlist={playlist}
                     handleClickPlaylistTitle={this.handleClickPlaylistTitle}
-                    teamPermission={teamPermission || []}
+                    teamPermission={teamPermission || {}}
                   />
                 </h2>
               </div>
@@ -184,7 +184,7 @@ class PlaylistCard extends React.Component {
                   </div>
                 )}
               </Droppable>
-              {(permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload') || teamPermission?.Team?.includes('team:add-activity')) && (
+              {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:add-activity') : (permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload'))) && (
                 <div className="playlist-add-res-button">
                   <button
                     type="button"

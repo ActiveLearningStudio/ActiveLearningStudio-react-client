@@ -42,10 +42,10 @@ function TeamMemberView(props) {
   const [selectedMember, setSelectedMember] = useState(null);
   // Fetch team permission if page reloads
   useEffect(() => {
-    if (!teamPermission && organization?.currentOrganization?.id && id) {
+    if ((organization?.currentOrganization?.id && id) || !teamPermission) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, id));
     }
-  }, [team]);
+  }, [id]);
 
   const handleInvite = useCallback((selectedUsers, emailNote) => {
     inviteMembers(id, selectedUsers, emailNote)
@@ -86,7 +86,7 @@ function TeamMemberView(props) {
                   value={search}
                   onChange={handleChangeSearch}
                 />
-                {(permission?.Team?.includes('team:invite-member') || teamPermission?.Team?.includes('team:add-team-user')) && user && (
+                {teamPermission?.Team?.includes('team:add-team-user') && user && (
                   <InviteDialog
                     users={users}
                     visible={showInvite}

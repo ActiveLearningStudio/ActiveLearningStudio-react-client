@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import ReactPlaceholder from 'react-placeholder';
+import Pagination from 'react-js-pagination';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert, Tabs, Tab } from 'react-bootstrap';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import QueryString from 'query-string';
 import WelcomeVideo from 'assets/video/welcome.mp4';
+import searchimg from 'assets/images/search-icon.png';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import {
   deleteProjectAction,
@@ -49,6 +51,8 @@ export const ProjectsPage = (props) => {
   const [teamProjects, setTeamProjects] = useState([]);
   const [activeTab, setActiveTab] = useState('My Projects');
   const [showSampleSort, setShowSampleSort] = useState(true);
+  const [activePage, setActivePage] = useState(1);
+  const [meta, setMeta] = useState(1);
   const [tabToggle, setTabToggle] = useState([]);
   const [type, setType] = useState([]);
   const [searchTeamQuery, SetSearchTeamQuery] = useState('');
@@ -84,12 +88,15 @@ export const ProjectsPage = (props) => {
   }, []);
 
   useEffect(() => {
-    if (organization?.activeOrganization) {
-      getTeamProjects(searchTeamQuery || '').then((data) => {
-        setTeamProjects(data);
-      });
+    if (!searchTeamQuery) {
+      if (organization?.activeOrganization) {
+        getTeamProjects('', activePage).then((data) => {
+          setTeamProjects(data.data);
+          setMeta(data.meta);
+        });
+      }
     }
-  }, [getTeamProjects, organization?.activeOrganization, searchTeamQuery]);
+  }, [getTeamProjects, organization?.activeOrganization, searchTeamQuery, activePage]);
   useEffect(() => {
     if (organization.activeOrganization) {
       sampleProjectsData();
@@ -113,7 +120,12 @@ export const ProjectsPage = (props) => {
       setSampleProjects(allState.sidebar.sampleProject);
     }
   }, [allState.sidebar.sampleProject]);
-
+  const handleSearchQueryTeams = () => {
+    getTeamProjects(searchTeamQuery || '').then((data) => {
+      setTeamProjects(data.data);
+      setMeta(data.meta);
+    });
+  };
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -346,7 +358,6 @@ export const ProjectsPage = (props) => {
                     <div className="col-md-12">
                       {/* <div className="program-page-title">
                         <h1>My Projects</h1>
-
                         <div className="project-page-settings">
                           <div className="sort-project-btns">
                             <div
@@ -617,8 +628,10 @@ export const ProjectsPage = (props) => {
                   </div>
                   <div className="col-md-12">
                     {showSampleSort && (
-                      <div className="search-bar">
+                      <div className="search-bar-team-tab">
                         <input type="text" placeholder="Search team projects" value={searchTeamQuery} onChange={({ target }) => SetSearchTeamQuery(target.value)} />
+                        <img src={searchimg} alt="search" onClick={handleSearchQueryTeams} />
+
                       </div>
                     )}
                     <div className="flex-smaple">
@@ -636,6 +649,21 @@ export const ProjectsPage = (props) => {
                         <Alert variant="warning">No Team Project found.</Alert>
                       )}
                     </div>
+                  </div>
+                </div>
+                <div className="pagination-top-team">
+                  <div className="pagination_state">
+                    <Pagination
+                      activePage={activePage}
+                      pageRangeDisplayed={meta?.to}
+                      itemsCountPerPage={meta?.per_page}
+                      totalItemsCount={meta?.total}
+                      onChange={(e) => {
+                        // setCurrentTab("index");
+                        window.scrollTo(0, 0);
+                        setActivePage(e);
+                      }}
+                    />
                   </div>
                 </div>
               </Tab>
@@ -713,7 +741,7 @@ const mapDispatchToProps = (dispatch) => ({
   allSidebarProjectsUpdate: () => dispatch(allSidebarProjects()),
   sampleProjectsData: () => dispatch(sampleProjects()),
   loadMyFavProjectsActionData: () => dispatch(loadMyFavProjectsAction()),
-  getTeamProjects: (query) => dispatch(getTeamProject(query)),
+  getTeamProjects: (query, page) => dispatch(getTeamProject(query, page)),
 });
 
 export default withRouter(
