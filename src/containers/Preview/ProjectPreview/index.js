@@ -52,7 +52,7 @@ function ProjectPreview(props) {
     setActiveShared(projectState.projectSelect.shared);
   }, [projectState.projectSelect]);
   useEffect(() => {
-    if (!teamPermission && currentProject?.team?.id && organization?.currentOrganization?.id) {
+    if (Object.keys(teamPermission).length === 0 && currentProject?.team?.id && organization?.currentOrganization?.id) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, currentProject.team.id));
     }
   }, [teamPermission, organization?.currentOrganization, currentProject]);
