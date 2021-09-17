@@ -31,7 +31,7 @@ function ActivityCreate(props) {
     dispatch(loadPlaylistAction(match.params.projectId, match.params.playlistId));
   }, []);
   useEffect(() => {
-    if (!teamPermission && selectedPlaylist?.project?.team?.id && organization?.currentOrganization?.id) {
+    if (Object.keys(teamPermission).length === 0 && selectedPlaylist?.project?.team?.id && organization?.currentOrganization?.id) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, selectedPlaylist?.project?.team?.id));
     }
   }, [teamPermission, selectedPlaylist, organization?.currentOrganization?.id]);

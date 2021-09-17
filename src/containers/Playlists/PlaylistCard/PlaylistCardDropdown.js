@@ -72,7 +72,7 @@ class PlaylistCardDropdown extends React.Component {
               Duplicate
             </Dropdown.Item>
           )}
-          {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-playlist') : permission?.Playlist?.includes('playlist:share')) && (
+          {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-playlist') : permission?.Playlist?.includes('playlist:publish')) && (
             playlist.activities.length > 0
               ? <ResourceCardDropdownShare resource={playlist.activities[0]} />
               : (

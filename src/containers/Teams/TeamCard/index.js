@@ -53,7 +53,13 @@ function TeamCard(props) {
           {name}
         </Link>
         {permission?.Team?.includes('team:edit') && (
-          <Link className="edit-button" to={`/org/${organization.currentOrganization?.domain}/teams/${id}/edit`}>
+          <Link
+            onClick={() => {
+              dispatch(getTeamPermission(organization.currentOrganization.id, id));
+            }}
+            className="edit-button"
+            to={`/org/${organization.currentOrganization?.domain}/teams/${id}/edit`}
+          >
             <FontAwesomeIcon icon="pen" className="mr-2" />
             Edit
           </Link>
