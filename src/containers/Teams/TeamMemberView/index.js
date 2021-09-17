@@ -42,10 +42,10 @@ function TeamMemberView(props) {
   const [selectedMember, setSelectedMember] = useState(null);
   // Fetch team permission if page reloads
   useEffect(() => {
-    if ((organization?.currentOrganization?.id && id) || !teamPermission) {
+    if (organization?.currentOrganization?.id && id && !teamPermission) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, id));
     }
-  }, [id]);
+  }, [id, teamPermission]);
 
   const handleInvite = useCallback((selectedUsers, emailNote) => {
     inviteMembers(id, selectedUsers, emailNote)
