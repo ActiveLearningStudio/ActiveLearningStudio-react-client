@@ -627,7 +627,7 @@ export const ProjectsPage = (props) => {
                     </div>
                   </div>
                   <div className="col-md-12">
-                    {showSampleSort && (
+                    {showSampleSort && teamProjects.length > 0 && (
                       <div className="search-bar-team-tab">
                         <input type="text" placeholder="Search team projects" value={searchTeamQuery} onChange={({ target }) => SetSearchTeamQuery(target.value)} />
                         <img src={searchimg} alt="search" onClick={handleSearchQueryTeams} />
@@ -653,17 +653,19 @@ export const ProjectsPage = (props) => {
                 </div>
                 <div className="pagination-top-team">
                   <div className="pagination_state">
-                    <Pagination
-                      activePage={activePage}
-                      pageRangeDisplayed={meta?.to}
-                      itemsCountPerPage={meta?.per_page}
-                      totalItemsCount={meta?.total}
-                      onChange={(e) => {
-                        // setCurrentTab("index");
-                        window.scrollTo(0, 0);
-                        setActivePage(e);
-                      }}
-                    />
+                    {teamProjects.length > 0 && (
+                      <Pagination
+                        activePage={activePage}
+                        pageRangeDisplayed={meta?.to}
+                        itemsCountPerPage={meta?.per_page}
+                        totalItemsCount={meta?.total}
+                        onChange={(e) => {
+                          // setCurrentTab("index");
+                          window.scrollTo(0, 0);
+                          setActivePage(e);
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
               </Tab>
