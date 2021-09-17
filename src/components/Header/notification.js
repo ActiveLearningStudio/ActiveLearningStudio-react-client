@@ -37,8 +37,8 @@ function HeaderNotification() {
 
   return (
     <li className="notification-bar">
-      <Dropdown>
-        <Dropdown.Toggle className="d-flex align-items-center">
+      <Dropdown autoClose="outside">
+        <Dropdown.Toggle className="d-flex align-items-center" id="dropdown-autoclose-outside">
           <div className="notification-alert" onClick={() => dispatch(clearAllNotification())}>
             <img src={bell} alt="notification" />
             <p className="header-icon-text">Notifications</p>
@@ -57,9 +57,9 @@ function HeaderNotification() {
               <>
                 <div className="notification-status"> Today </div>
                 {notificationData.today.map((msg) => (
-                  <Dropdown.Item key={msg.id}>
+                  <a key={msg.id}>
                     <NotificationArea content={msg} />
-                  </Dropdown.Item>
+                  </a>
                 ))}
               </>
               )}
@@ -69,9 +69,9 @@ function HeaderNotification() {
               <>
                 <div className="notification-status"> Yesterday </div>
                 {notificationData.yesterday.map((msg) => (
-                  <Dropdown.Item key={msg.id}>
+                  <a key={msg.id}>
                     <NotificationArea content={msg} />
-                  </Dropdown.Item>
+                  </a>
                 ))}
               </>
               )}
@@ -81,9 +81,9 @@ function HeaderNotification() {
               <>
                 <div className="notification-status"> Older </div>
                 {notificationData.older.map((msg) => (
-                  <Dropdown.Item key={msg.id}>
+                  <a key={msg.id}>
                     <NotificationArea content={msg} />
-                  </Dropdown.Item>
+                  </a>
                 ))}
               </>
               )}
