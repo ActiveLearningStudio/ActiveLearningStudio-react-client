@@ -656,7 +656,7 @@ export const ProjectsPage = (props) => {
                     {teamProjects.length > 0 && (
                       <Pagination
                         activePage={activePage}
-                        pageRangeDisplayed={meta?.to}
+                        pageRangeDisplayed={5}
                         itemsCountPerPage={meta?.per_page}
                         totalItemsCount={meta?.total}
                         onChange={(e) => {
