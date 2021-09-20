@@ -9,7 +9,7 @@ import { addRole, getAllPermissionId } from 'store/actions/organization';
 export default function AddRole(props) {
 
   const dispatch = useDispatch();
-  const { permissionsId, activeOrganization, permission } = useSelector((state) => state.organization);
+  const { permissionsId, activeOrganization, permission, roles } = useSelector((state) => state.organization);
 
   useEffect(() => {
     dispatch(getAllPermissionId(activeOrganization?.id));
@@ -38,6 +38,10 @@ export default function AddRole(props) {
          const result =  dispatch(addRole(activeOrganization.id, values));
          result.then(res => {
           dispatch(removeActiveAdminForm());
+          dispatch({
+            type: 'ALL_ROLES',
+            payload: [...roles,res.data]
+          })
          })
         }}
       >

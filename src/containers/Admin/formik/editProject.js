@@ -211,7 +211,6 @@ export default function EditProject(props) {
             <div className="form-group-create">
               <h3>Project Visibility Type</h3>
               <select name="organization_visibility_type_id" onChange={handleChange} onBlur={handleBlur} value={values.organization_visibility_type_id}>
-                <option value="">---Select a visibility type---</option>
                 {visibilityTypeArray?.length > 0 && visibilityTypeArray?.map((vT) => (
                   <option value={vT?.id} key={vT?.id}>{vT?.display_name}</option>
                 ))}
