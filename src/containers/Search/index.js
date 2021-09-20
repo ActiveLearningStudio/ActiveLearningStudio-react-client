@@ -1011,7 +1011,7 @@ function SearchInterface(props) {
                                               <FontAwesomeIcon className="mr-2" icon="clone" />
                                               Duplicate
                                             </Dropdown.Item>
-                                            {permission?.Activity?.includes('activity:share') && allLms?.length !== 0 && (
+                                            {permission?.Activity?.includes('activity:publish') && allLms?.length !== 0 && (
                                               <li className="dropdown-submenu send">
                                                 <a tabIndex="-1" className="dropdown-item">
                                                   <FontAwesomeIcon icon="newspaper" className="mr-2" />
