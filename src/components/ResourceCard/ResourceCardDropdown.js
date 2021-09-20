@@ -99,7 +99,8 @@ const ResourceCardDropdown = (props) => {
             Duplicate
           </Dropdown.Item>
         )}
-        {permission?.Activity?.includes('activity:share') && lmsSettings.length !== 0 && (
+        {(Object.keys(teamPermission).length
+        ? teamPermission?.Team?.includes('team:publish-activity') : permission?.Activity?.includes('activity:publish')) && lmsSettings.length !== 0 && (
           <li className="dropdown-submenu send">
             <a tabIndex="-1" className="dropdown-item">
               <FontAwesomeIcon icon="newspaper" className="mr-2" />
