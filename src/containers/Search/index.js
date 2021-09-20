@@ -144,11 +144,15 @@ function SearchInterface(props) {
     if (query.author) {
       SetAuthor(query.author);
     }
-    if (query.fromDate) {
+    if (query.fromDate && query.fromDate !== 'undefined') {
       Setfromdate(query.fromDate);
+    } else {
+      Setfromdate(undefined);
     }
-    if (query.toDate) {
+    if (query.toDate && query.fromDate !== 'undefined') {
       Settodate(query.toDate);
+    } else {
+      Settodate(undefined);
     }
     if (query?.q) {
       setSearchInput(query?.q);
@@ -510,8 +514,8 @@ function SearchInterface(props) {
                                               gradeArray: activeEducation,
                                               standardArray: activeType,
                                               author: authorName || undefined,
-                                              fromDate: undefined,
-                                              toDate: undefined,
+                                              fromDate: fromdate || undefined,
+                                              toDate: todate || undefined,
                                               type: searchType,
                                               from: 0,
                                               size: 20,
@@ -521,8 +525,8 @@ function SearchInterface(props) {
                                               phrase: searchInput.trim(),
                                               subjectArray: activeSubject,
                                               author: authorName || undefined,
-                                              fromDate: undefined,
-                                              toDate: undefined,
+                                              fromDate: fromdate || undefined,
+                                              toDate: todate || undefined,
                                               gradeArray: activeEducation,
                                               standardArray: activeType,
                                               type: searchType,
