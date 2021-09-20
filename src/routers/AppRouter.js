@@ -87,13 +87,9 @@ const AddTeamProjectsPage = loadable(() =>
 const AddTeamProjectMemberPage = loadable(() =>
   import("../containers/Teams/AddMembers")
 );
-const GroupsPage = loadable(() => import("../containers/Groups"));
-const AddGroupProjectsPage = loadable(() =>
-  import("../containers/Groups/AddProjects")
-);
-const AddGroupProjectMemberPage = loadable(() =>
-  import("../containers/Groups/AddMembers")
-);
+// const GroupsPage = loadable(() => import('../containers/Groups'));
+// const AddGroupProjectsPage = loadable(() => import('../containers/Groups/AddProjects'));
+// const AddGroupProjectMemberPage = loadable(() => import('../containers/Groups/AddMembers'));
 const GclassActivityPage = loadable(() =>
   import("../containers/LMS/GoogleClassroom/GclassActivityPage")
 );
@@ -338,7 +334,7 @@ const AppRouter = (props) => {
                     path="/org/:organization/teams/:teamId/projects/:projectId/add-member"
                     component={AddTeamProjectMemberPage}
                   />
-
+                  {/* 
                   <PrivateRoute
                     exact
                     path="/org/:organization/groups"
@@ -384,16 +380,16 @@ const AppRouter = (props) => {
                     exact
                     path="/org/:organization/groups/:groupId/projects/:projectId/add-member"
                     component={AddGroupProjectMemberPage}
-                  />
+                  /> */}
 
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/project/create"
-                    component={ProjectsPage}
-                    showCreateProjectPopup
-                    editMode={false}
-                  />
-                  {/* Update Project Page -Start- */}
+                  {/* <PrivateRoute exact path="/org/:organization/groups" component={GroupsPage} overview />
+                     <PrivateRoute exact path="/org/:organization/groups/create-group" component={GroupsPage} creation />
+                     <PrivateRoute exact path="/org/:organization/groups/:groupId" component={GroupsPage} groupShow />
+                     <PrivateRoute exact path="/org/:organization/groups/:groupId/edit" component={GroupsPage} editMode />
+                     <PrivateRoute exact path="/org/:organization/groups/:groupId/projects" component={GroupsPage} projectShow />
+                     <PrivateRoute exact path="/org/:organization/groups/:groupId/channel" component={GroupsPage} channelShow />
+                     <PrivateRoute exact path="/org/:organization/groups/:groupId/add-projects" component={AddGroupProjectsPage} />
+                     <PrivateRoute exact path="/org/:organization/groups/:groupId/projects/:projectId/add-member" component={AddGroupProjectMemberPage} /> */}
 
                   <PrivateRoute
                     exact

@@ -1,4 +1,5 @@
 import teamService from 'services/team.service';
+import Swal from 'sweetalert2';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
 
@@ -262,13 +263,14 @@ export const addProjectsAction = (teamId, ids) => async (dispatch) => {
       type: actionTypes.ADD_TEAM_PROJECTS_REQUEST,
     });
 
-    await teamService.addProjects(teamId, ids);
+    const result = await teamService.addProjects(teamId, ids);
 
     dispatch({
       type: actionTypes.ADD_TEAM_PROJECTS_SUCCESS,
     });
 
     dispatch(loadTeamAction(teamId));
+    return result;
   } catch (e) {
     dispatch({ type: actionTypes.ADD_TEAM_PROJECTS_FAIL });
 
@@ -352,22 +354,39 @@ export const getTeamPermission = (orgId, TeamId) => async (dispatch) => {
   });
 };
 
-export const getTeamProject = () => async (dispatch) => {
+export const clearTeamPermissions = () => (dispatch) => {
+  dispatch({
+    type: actionTypes.CLEAR_TEAM_PERMISSIONS,
+  });
+};
+
+export const getTeamProject = (query, page) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
-  const result = await teamService.getTeamProject(activeOrganization?.id);
+  const result = await teamService.getTeamProject(activeOrganization?.id, query, page);
   dispatch({
     type: actionTypes.GET_TEAM_PROJECTS,
     payload: result.data,
   });
-  return result.data;
+  return result;
 };
 
 export const changeUserRole = (teamId, data) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
   await teamService.changeUserRole(activeOrganization?.id, teamId, data);
+  Swal.fire({
+    icon: 'success',
+    title: 'Permission Updated',
+  });
   dispatch({
     type: actionTypes.CHANGE_USER_ROLE,
+  });
+};
+
+export const selectedProjectForCloning = (projectName) => (dispatch) => {
+  dispatch({
+    type: actionTypes.PROJECT_SELECTED_FOR_CLONE,
+    payload: projectName,
   });
 };

@@ -19,6 +19,7 @@
     "bootstrap-switch-button-react": "^1.2.0",
     "classnames": "^2.2.6",
     "compression": "^1.7.4",
+    "curriki-design-system": "^1.0.4",
     "express": "^4.17.1",
     "formik": "^2.1.5",
     "history": "^5.0.0",

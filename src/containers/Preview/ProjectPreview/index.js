@@ -52,13 +52,13 @@ function ProjectPreview(props) {
     setActiveShared(projectState.projectSelect.shared);
   }, [projectState.projectSelect]);
   useEffect(() => {
-    if (!teamPermission && currentProject?.team?.id && organization?.currentOrganization?.id) {
+    if (Object.keys(teamPermission).length === 0 && currentProject?.team?.id && organization?.currentOrganization?.id) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, currentProject.team.id));
     }
   }, [teamPermission, organization?.currentOrganization, currentProject]);
   useEffect(() => {
     if (playlistState.playlists.length === 0) {
-      dispatch(loadProjectPlaylistsAction(match.params.projectId));
+      dispatch(loadProjectPlaylistsAction(match.params.projectId, true));
     }
   }, []);
 
@@ -122,7 +122,7 @@ function ProjectPreview(props) {
               playlistId={playlist.id}
               key={activity.id}
               playlist={playlist}
-              teamPermission={teamPermission || []}
+              teamPermission={teamPermission || {}}
             />
           ) : null
         ));
@@ -140,7 +140,8 @@ function ProjectPreview(props) {
         permission?.Playlist?.includes('playlist:view')
         ? (
           <div className="check-each" key={playlist.id}>
-            {(permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload') || teamPermission?.Team?.includes('team:add-activity')) && (
+            {(Object.keys(teamPermission).length
+            ? teamPermission?.Team?.includes('team:add-activity') : (permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload'))) && (
               <div className="add-btn-activity">
                 <button
                   type="button"
@@ -206,7 +207,7 @@ function ProjectPreview(props) {
               selectedProject={playlist.project}
               setSelectedForEdit={setSelectedForEdit}
               handleClickPlaylistTitle={handleClickPlaylistTitle}
-              teamPermission={teamPermission || []}
+              teamPermission={teamPermission || {}}
             />
           </div>
         ) : null
@@ -260,7 +261,7 @@ function ProjectPreview(props) {
                           <FontAwesomeIcon icon="undo" className="mr-2" />
                           Exit Preview Mode
                         </Link>
-                        {(permission?.Project?.includes('project:share') || teamPermission?.Team?.includes('team:share-project')) && (
+                        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-project') : permission?.Project?.includes('project:share')) && (
                         <div className="share-button">
                           Share Project
                           <Switch

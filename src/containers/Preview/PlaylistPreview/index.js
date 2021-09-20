@@ -39,6 +39,8 @@ function PlaylistPreview(props) {
   const organization = useSelector((state) => state.organization);
   const { teamPermission } = useSelector((state) => state.team);
   const { permission } = organization;
+  const projectPreview = localStorage.getItem('projectPreview');
+  // const history = useHistory();
   const dispatch = useDispatch();
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -58,7 +60,7 @@ function PlaylistPreview(props) {
     loadProjectPlaylists(projectId);
   }, [projectId, loadProjectPlaylists]);
   useEffect(() => {
-    if (!teamPermission && organization?.currentOrganization?.id && selectedPlaylist?.project?.team?.id) {
+    if (Object.keys(teamPermission).length === 0 && organization?.currentOrganization?.id && selectedPlaylist?.project?.team?.id) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, selectedPlaylist?.project?.team?.id));
     }
   }, [teamPermission, selectedPlaylist, dispatch, organization?.currentOrganization?.id]);
@@ -192,7 +194,9 @@ function PlaylistPreview(props) {
       ),
     });
   };
-
+  // const goBack = () => {
+  //   history.goBack();
+  // };
   return (
     <>
       {loading ? (
@@ -220,7 +224,14 @@ function PlaylistPreview(props) {
                 </div>
               </Link>
             </div>
-            <Link to={`/project/${selectedPlaylist.project.id}`}>
+
+            <Link
+              to={
+                projectPreview === 'true'
+                 ? `/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/preview`
+                 : `/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}`
+              }
+            >
               <FontAwesomeIcon icon="times" />
             </Link>
           </div>
@@ -305,7 +316,7 @@ function PlaylistPreview(props) {
                     />
                   </div>
                 </Tab>
-                {(permission?.Activity?.includes('activity:share') || teamPermission?.Team?.includes('team:share-activity')) && (
+                {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-activity') : permission?.Activity?.includes('activity:share')) && (
                   <Tab eventKey="profile" title="Share">
                     <div className="watcher spaner">
                       {activityShared && (

@@ -258,7 +258,7 @@ function Controller(props) {
                         setActiveRoleInComponent(head.display_name);
                         if (subTypeState === 'Manage Roles')
                           dispatch(roleDetail(activeOrganization.id, head.id));
-                        if (subTypeState === 'All Users') {
+                        if (subTypeState === 'All Users' && activeRole != head.id) {
                           setSearchQuery('');
                           setActiveRole(head.id);
                           setActivePage(1);
@@ -331,7 +331,7 @@ function Controller(props) {
               onChange={searchQueryChangeHandler}
             />
             <img src={searchimg} alt="search" />
-            {(searchQuery.length > 0 && searchQuery.length < 2) && <label className="flex" style={{ color: 'red' }}>Enter at least 2 characters</label> }
+            {(searchQuery.trim().length > 0 && searchQuery.trim().length < 2) && <label className="flex" style={{ color: 'red' }}>Enter at least 2 characters</label> }
           </div>
 
         </>
@@ -341,7 +341,7 @@ function Controller(props) {
           <input
             className=""
             type="text"
-            placeholder="Search by URL"
+            placeholder="Search by URL or Email"
             value={searchQuery}
             onChange={searchQueryChangeHandler}
           />
@@ -378,6 +378,7 @@ function Controller(props) {
             onChange={(e) =>{
               if (e.target.value) {
                 setSearchQueryProject(e.target.value)
+                searchProjectQueryChangeHandler(e.target.value, selectedIndexValueid,subType)
               } else if (e.target.value === '') {
                 setSearchQueryProject('');
                 searchProjectQueryChangeHandler('', selectedIndexValueid,subType)
@@ -473,7 +474,6 @@ function Controller(props) {
                 formData.append("project", e.target.files[0]);
                 const response = adminService.importProject(activeOrganization.id, formData);
                 response.then((res) => {
-                  Data
                   Swal.fire({
                     icon: "success",
                     text: res?.message,

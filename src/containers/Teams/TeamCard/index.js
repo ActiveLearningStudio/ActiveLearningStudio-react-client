@@ -21,6 +21,8 @@ function TeamCard(props) {
   const deleteTeam = () => {
     Swal.fire({
       title: 'Are you sure you want to delete this team?',
+      // eslint-disable-next-line max-len
+      html: '<strong>The projects associated with this team will no longer available in Team projects. If you want make a copy for that project then visit Team project page first to make a clone</strong>',
       showDenyButton: true,
       showCancelButton: true,
       confirmButtonText: 'Yes',
@@ -51,7 +53,13 @@ function TeamCard(props) {
           {name}
         </Link>
         {permission?.Team?.includes('team:edit') && (
-          <Link className="edit-button" to={`/org/${organization.currentOrganization?.domain}/teams/${id}/edit`}>
+          <Link
+            onClick={() => {
+              dispatch(getTeamPermission(organization.currentOrganization.id, id));
+            }}
+            className="edit-button"
+            to={`/org/${organization.currentOrganization?.domain}/teams/${id}/edit`}
+          >
             <FontAwesomeIcon icon="pen" className="mr-2" />
             Edit
           </Link>

@@ -63,7 +63,8 @@ const ResourceCard = (props) => {
               <ResourceCardDropdown
                 resource={resource}
                 playlist={playlist}
-                teamPermission={teamPermission || []}
+                teamPermission={teamPermission || {}}
+                previewPage="buildPreview"
                 // wizard
               />
             </div>

@@ -1002,7 +1002,7 @@ function Table(props) {
                             <Link onClick={async () => {
                               Swal.fire({
                                 title: 'Please Wait !',
-                                html: 'Reject Project ...',
+                                html: 'Rejecting Project ...',
                                 allowOutsideClick: false,
                                 onBeforeOpen: () => {
                                   Swal.showLoading();
@@ -1040,16 +1040,16 @@ function Table(props) {
                               //     text: 'Error',
                               //   });
                               // });
-                              if (result?.message) {
-                                const response = adminService.getAllProjectIndex(
-                                  activeOrganization?.id,
-                                  activePage || 1,
-                                  changeIndexValue,
-                                );
-                                response.then((data) => {
-                                  setAllProjectIndexTab(data);
-                                }).catch(e=>setAllProjectIndexTab([]));
-                              }
+                              // if (result?.message) {
+                              //   const response = adminService.getAllProjectIndex(
+                              //     activeOrganization?.id,
+                              //     activePage || 1,
+                              //     changeIndexValue,
+                              //   );
+                              //   response.then((data) => {
+                              //     setAllProjectIndexTab(data);
+                              //   }).catch(e=>setAllProjectIndexTab([]));
+                              // }
                             }}>
                               Reject
                             </Link>

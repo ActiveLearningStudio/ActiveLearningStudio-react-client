@@ -32,6 +32,7 @@ class PlaylistCardDropdown extends React.Component {
       teamPermission,
     } = this.props;
     const { permission } = organization;
+
     return (
       <Dropdown className="pull-right playlist-dropdown check">
         <Dropdown.Toggle className="playlist-dropdown-btn">
@@ -49,7 +50,7 @@ class PlaylistCardDropdown extends React.Component {
             Preview
           </Dropdown.Item>
           )}
-          {(permission?.Playlist?.includes('playlist:edit') || teamPermission?.Team?.includes('team:edit-playlist')) && (
+          {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-playlist') : permission?.Playlist?.includes('playlist:edit')) && (
             <Dropdown.Item onClick={() => {
               handleClickPlaylistTitle();
               setSelectedForEdit(playlist);
@@ -71,7 +72,7 @@ class PlaylistCardDropdown extends React.Component {
               Duplicate
             </Dropdown.Item>
           )}
-          {(permission?.Playlist?.includes('playlist:share') || teamPermission?.Team?.includes('team:share-playlist')) && (
+          {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-playlist') : permission?.Playlist?.includes('playlist:publish')) && (
             playlist.activities.length > 0
               ? <ResourceCardDropdownShare resource={playlist.activities[0]} />
               : (
@@ -92,7 +93,7 @@ class PlaylistCardDropdown extends React.Component {
               projectId={playlist.project_id}
             />
           )}
-          {(permission?.Playlist?.includes('playlist:delete') || teamPermission?.Team?.includes('team:delete-playlist')) && (
+          {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:delete-playlist') : permission?.Playlist?.includes('playlist:delete')) && (
             <Dropdown.Item onClick={this.handleDelete}>
               <FontAwesomeIcon icon="times-circle" className="mr-2" />
               Delete

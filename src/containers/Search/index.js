@@ -94,6 +94,8 @@ function SearchInterface(props) {
   const [activeEducation, setActiveEducation] = useState([]);
   const [searchType, setSearchType] = useState(null);
   const [authorName, SetAuthor] = useState('');
+  const [todate, Settodate] = useState(undefined);
+  const [fromdate, Setfromdate] = useState(undefined);
   const [safariToolHtml, setSafariToolHtml] = useState(null);
   useEffect(() => {
     setSafariToolHtml(encodeURI(safariMontagePublishTool));
@@ -141,6 +143,12 @@ function SearchInterface(props) {
     }
     if (query.author) {
       SetAuthor(query.author);
+    }
+    if (query.fromDate) {
+      Setfromdate(query.fromDate);
+    }
+    if (query.toDate) {
+      Settodate(query.toDate);
     }
     if (query?.q) {
       setSearchInput(query?.q);
@@ -480,6 +488,8 @@ function SearchInterface(props) {
                                     <div
                                       className="src-btn"
                                       onClick={async () => {
+                                        Setfromdate(undefined);
+                                        Settodate(undefined);
                                         if (!searchInput.trim() && searchType !== 'orgSearch') {
                                           Swal.fire('Search field is required.');
                                         } else if (searchInput.length > 255) {
@@ -500,6 +510,8 @@ function SearchInterface(props) {
                                               gradeArray: activeEducation,
                                               standardArray: activeType,
                                               author: authorName || undefined,
+                                              fromDate: undefined,
+                                              toDate: undefined,
                                               type: searchType,
                                               from: 0,
                                               size: 20,
@@ -509,6 +521,8 @@ function SearchInterface(props) {
                                               phrase: searchInput.trim(),
                                               subjectArray: activeSubject,
                                               author: authorName || undefined,
+                                              fromDate: undefined,
+                                              toDate: undefined,
                                               gradeArray: activeEducation,
                                               standardArray: activeType,
                                               type: searchType,
@@ -705,7 +719,8 @@ function SearchInterface(props) {
                                 size: 20,
                                 type: searchType,
                                 author: authorName || undefined,
-
+                                fromDate: fromdate || undefined,
+                                toDate: todate || undefined,
                                 subjectArray: activeSubject,
                                 gradeArray: activeEducation,
                                 standardArray: activeType,
@@ -716,6 +731,8 @@ function SearchInterface(props) {
                                   from: 0,
                                   size: 20,
                                   author: authorName || undefined,
+                                  fromDate: fromdate || undefined,
+                                  toDate: todate || undefined,
                                   type: searchType,
                                   subjectArray: activeSubject,
                                   gradeArray: activeEducation,
@@ -741,6 +758,8 @@ function SearchInterface(props) {
                                 from: 0,
                                 size: 20,
                                 author: authorName || undefined,
+                                fromDate: fromdate || undefined,
+                                toDate: todate || undefined,
                                 model: e,
                                 type: searchType,
                                 subjectArray: activeSubject,
@@ -754,6 +773,8 @@ function SearchInterface(props) {
                                   size: 20,
                                   model: e,
                                   author: authorName || undefined,
+                                  fromDate: fromdate || undefined,
+                                  toDate: todate || undefined,
                                   type: searchType,
                                   subjectArray: activeSubject,
                                   gradeArray: activeEducation,

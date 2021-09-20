@@ -60,7 +60,10 @@ const removeMember = (teamId, id, email) => httpService
 const addProjects = (teamId, ids) => httpService
   .post(`/${apiVersion}/teams/${teamId}/add-projects`, { ids })
   .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject(err.response.data);
+  });
 
 const removeProject = (teamId, id) => httpService
   .post(`/${apiVersion}/teams/${teamId}/remove-project`, { id })
@@ -94,13 +97,11 @@ const checkUserBeforeAdd = (orgId, values) => httpService
     errorCatcher(err.response.data);
     return Promise.reject(err.response.data);
   });
-const getTeamProject = (orgId) => httpService
-  .get(`/${apiVersion}/suborganization/${orgId}/team-projects`)
+const getTeamProject = (orgId, query, page) => httpService
+  .get(`/${apiVersion}/suborganization/${orgId}/team-projects?query=${query || ''}&page=${page}`)
   .then(({ data }) => data)
-  .catch((err) => {
-    errorCatcher(err.response.data);
-    return Promise.reject(err.response.data);
-  });
+  .catch((err) => Promise.reject(err.response.data));
+
 const changeUserRole = (orgId, teamId, body) => httpService
   .put(`/${apiVersion}/suborganization/${orgId}/team/${teamId}/update-team-member-role`, body)
   .then(({ data }) => data)

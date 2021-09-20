@@ -88,7 +88,7 @@ function PlaylistsPage(props) {
     getTeamPermissions,
   } = props;
   useEffect(() => {
-    if (!teamPermission && selectedProject.team_id && organization?.currentOrganization?.id) {
+    if (Object.keys(teamPermission).length === 0 && selectedProject.team_id && organization?.currentOrganization?.id) {
       getTeamPermissions(organization?.currentOrganization?.id, selectedProject?.team_id);
     }
   }, [teamPermission, organization?.currentOrganization, selectedProject]);
@@ -376,7 +376,7 @@ function PlaylistsPage(props) {
                         </div>
                       </div>
                     )}
-                    {(permission?.Playlist?.includes('playlist:create') || teamPermission?.Team?.includes('team:add-playlist')) && (
+                    {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:add-playlist') : permission?.Playlist?.includes('playlist:create')) && (
                       <button
                         type="button"
                         className="create-playlist-btn"
@@ -445,7 +445,7 @@ function PlaylistsPage(props) {
                                 playlist={playlist}
                                 projectId={parseInt(match.params.projectId, 10)}
                                 handleCreateResource={handleShowCreateResourceModal}
-                                teamPermission={teamPermission || []}
+                                teamPermission={teamPermission || {}}
                               />
                             )
                             : null

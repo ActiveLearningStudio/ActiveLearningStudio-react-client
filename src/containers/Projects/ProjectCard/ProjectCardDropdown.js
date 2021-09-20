@@ -1,19 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Dropdown } from 'react-bootstrap';
-import Swal from 'sweetalert2';
+/*eslint-disable*/
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Dropdown } from "react-bootstrap";
+import Swal from "sweetalert2";
 
-import { getProjectId, googleShare } from 'store/actions/gapi';
-import { cloneProject } from 'store/actions/search';
-import { getProjectCourseFromLMS, toggleProjectShareAction } from 'store/actions/project';
-import { lmsPlaylist } from 'store/actions/playlist';
-import SharePreviewPopup from 'components/SharePreviewPopup';
+import { getProjectId, googleShare } from "store/actions/gapi";
+import { cloneProject } from "store/actions/search";
+import {
+  getProjectCourseFromLMS,
+  toggleProjectShareAction,
+} from "store/actions/project";
+import { lmsPlaylist } from "store/actions/playlist";
+import SharePreviewPopup from "components/SharePreviewPopup";
 
-import './style.scss';
-import { propTypes } from 'react-bootstrap/esm/Image';
+import "./style.scss";
+import { propTypes } from "react-bootstrap/esm/Image";
 
 const ProjectCardDropdown = (props) => {
   const {
@@ -23,6 +27,7 @@ const ProjectCardDropdown = (props) => {
     showDeletePopup,
     previewMode,
     text,
+    iconColor,
   } = props;
   const organization = useSelector((state) => state.organization);
   const { permission } = organization;
@@ -36,10 +41,15 @@ const ProjectCardDropdown = (props) => {
   return (
     <Dropdown className="project-dropdown check d-flex  align-items-center text-added-project-dropdown">
       <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
-        <FontAwesomeIcon icon="ellipsis-v" style={{ fontSize: '13px', color: '#084892', marginLeft: '5px' }} />
-        <span>
-          {text}
-        </span>
+        <FontAwesomeIcon
+          icon="ellipsis-v"
+          style={{
+            fontSize: "13px",
+            color: iconColor ? iconColor : "#084892",
+            marginLeft: "5px",
+          }}
+        />
+        <span>{text}</span>
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
@@ -52,14 +62,17 @@ const ProjectCardDropdown = (props) => {
             Preview
           </Dropdown.Item>
         )}
-        {permission?.Project?.includes('project:edit') && (
-          <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/edit`}>
+        {permission?.Project?.includes("project:edit") && (
+          <Dropdown.Item
+            as={Link}
+            to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/edit`}
+          >
             <FontAwesomeIcon icon="pen" className="mr-2" />
             Edit
           </Dropdown.Item>
         )}
 
-        {permission?.Project?.includes('project:clone') && (
+        {permission?.Project?.includes("project:clone") && (
           <Dropdown.Item
             to="#"
             onClick={() => {
@@ -71,15 +84,19 @@ const ProjectCardDropdown = (props) => {
             Duplicate
           </Dropdown.Item>
         )}
-        {permission?.Project?.includes('project:share') && (
+        {permission?.Project?.includes("project:share") && (
           <Dropdown.Item
             to="#"
             onClick={async () => {
-              const protocol = `${window.location.href.split('/')[0]}//`;
-              const url = `${protocol + window.location.host}/project/${project.id}/shared`;
+              const protocol = `${window.location.href.split("/")[0]}//`;
+              const url = `${protocol + window.location.host}/project/${
+                project.id
+              }/shared`;
               if (!project.shared) {
                 Swal.showLoading();
-                await dispatch(toggleProjectShareAction(project.id, project.name));
+                await dispatch(
+                  toggleProjectShareAction(project.id, project.name)
+                );
                 Swal.close();
                 SharePreviewPopup(url, project.name);
               } else {
@@ -91,7 +108,7 @@ const ProjectCardDropdown = (props) => {
             Share
           </Dropdown.Item>
         )}
-        {permission?.Project?.includes('project:publish') && (
+        {permission?.Project?.includes("project:publish") && (
           <li className="dropdown-submenu send">
             <a tabIndex="-1">
               <FontAwesomeIcon icon="newspaper" className="mr-2" />
@@ -109,36 +126,41 @@ const ProjectCardDropdown = (props) => {
                 <a>Google Classroom</a>
               </li>
 
-              {allLms.shareVendors && allLms.shareVendors.map((data) => (
-                data.lms_name !== 'safarimontage' && (
-                <li>
-                  <a
-                    onClick={async () => {
-                      const allPlaylist = await dispatch(lmsPlaylist(project.id));
-                      if (allPlaylist) {
-                        dispatch(
-                          getProjectCourseFromLMS(
-                            data.lms_name.toLowerCase(),
-                            data.id,
-                            project.id,
-                            allPlaylist.playlists,
-                            data.lms_url,
-                          ),
-                        );
-                      }
-                    }}
-                  >
-                    {data.site_name}
-                  </a>
-                </li>
-              )))}
+              {allLms.shareVendors &&
+                allLms.shareVendors.map(
+                  (data) =>
+                    data.lms_name !== "safarimontage" && (
+                      <li>
+                        <a
+                          onClick={async () => {
+                            const allPlaylist = await dispatch(
+                              lmsPlaylist(project.id)
+                            );
+                            if (allPlaylist) {
+                              dispatch(
+                                getProjectCourseFromLMS(
+                                  data.lms_name.toLowerCase(),
+                                  data.id,
+                                  project.id,
+                                  allPlaylist.playlists,
+                                  data.lms_url
+                                )
+                              );
+                            }
+                          }}
+                        >
+                          {data.site_name}
+                        </a>
+                      </li>
+                    )
+                )}
             </ul>
           </li>
         )}
-        {permission?.Project?.includes('project:delete') && (
+        {permission?.Project?.includes("project:delete") && (
           <Dropdown.Item
             to="#"
-            onClick={() => showDeletePopup(project.id, project.name, 'Project')}
+            onClick={() => showDeletePopup(project.id, project.name, "Project")}
           >
             <FontAwesomeIcon icon="times-circle" className="mr-2" />
             Delete

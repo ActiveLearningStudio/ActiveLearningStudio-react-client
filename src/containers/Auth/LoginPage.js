@@ -79,7 +79,12 @@ class LoginPage extends React.Component {
 
   onGoogleLoginSuccess = (response) => {
     const { googleLogin } = this.props;
-    googleLogin(response);
+    const result = googleLogin(response);
+    result.catch((err) => {
+      this.setState({
+        error: getErrors(err),
+      });
+    });
   };
 
   onGoogleLoginFailure = (response) => {
@@ -145,7 +150,7 @@ class LoginPage extends React.Component {
                   )}
                   onSuccess={this.onGoogleLoginSuccess}
                   onFailure={this.onGoogleLoginFailure}
-                  scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
+                  scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students https://www.googleapis.com/auth/classroom.profile.emails"
                   cookiePolicy="single_host_origin"
                 />
 

@@ -94,19 +94,19 @@ export default function CreateOrg(prop) {
               }).then(async (result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
-                  dispatch(getsubOrgList(activeOrganization?.id));
-                  const responseMessage = await dispatch(getOrganization(activeEdit?.id));
-                  if (activeEdit?.id === activeOrganization?.id) {
-                    const newBreadCrums =paginations?.slice(0, paginations.length - 1)
-                    dispatch({
-                      type: actionTypes.UPDATE_PAGINATION,
-                      payload: newBreadCrums,
-                    });
-                    dispatch({
-                      type: actionTypes.UPDATE_PAGINATION,
-                      payload: [...newBreadCrums, responseMessage],
-                    });
-                  }
+                  // dispatch(getsubOrgList(activeOrganization?.id));
+                  // const responseMessage = await dispatch(getOrganization(activeEdit?.id));
+                  // if (activeEdit?.id === activeOrganization?.id) {
+                  //   const newBreadCrums =paginations?.slice(0, paginations.length - 1)
+                  //   dispatch({
+                  //     type: actionTypes.UPDATE_PAGINATION,
+                  //     payload: newBreadCrums,
+                  //   });
+                  //   dispatch({
+                  //     type: actionTypes.UPDATE_PAGINATION,
+                  //     payload: [...newBreadCrums, responseMessage],
+                  //   });
+                  // }
                 }
               });
             }
@@ -233,7 +233,7 @@ export default function CreateOrg(prop) {
                     />
                     <div
                       className="update-img"
-                      onClick={() => imgUpload.current.click()}
+                      // onClick={() => imgUpload.current.click()}
                     >
                       Update Image
                     </div>

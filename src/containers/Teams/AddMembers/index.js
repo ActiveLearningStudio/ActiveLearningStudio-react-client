@@ -62,7 +62,7 @@ function AddMembersPage(props) {
   }, [loadTeam, teamId]);
   // Fetch team permission if page reloads
   useEffect(() => {
-    if (!teamPermission && organization?.currentOrganization?.id && id) {
+    if (Object.keys(teamPermission).length === 0 && organization?.currentOrganization?.id && id) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, id));
     }
   }, [teamPermission]);
