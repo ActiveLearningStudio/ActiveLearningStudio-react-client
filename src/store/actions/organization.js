@@ -168,6 +168,7 @@ export const createOrganizationNew = (id, data) => async (dispatch) => {
     api_key: data.api_key,
     unit_path: data.unit_path,
     domain: data.domain,
+    self_registration: data.self_registration,
   };
   const result = organization.createOrganization(details);
   result.then((newOrg) => {
@@ -199,6 +200,8 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
     account_id: data.account_id || '',
     api_key: data.api_key || '',
     unit_path: data.unit_path || '',
+    self_registration: data.self_registration,
+
     // admins: adminUsers,
     // users: usersList,
   };
