@@ -92,11 +92,18 @@ const ProjectCard = (props) => {
                 : project.description}
             </p>
           </div>
-          <div className="myproject-card-status">
+          {project.shared && (
+            <div className="myproject-card-status">
+              <p>
+                <span></span> Published
+              </p>
+            </div>
+          )}
+          {/* <div className="myproject-card-status">
             <p>
               <span></span> Published
             </p>
-          </div>
+          </div> */}
           <div className="myproject-card-add-share">
             <button
               style={{

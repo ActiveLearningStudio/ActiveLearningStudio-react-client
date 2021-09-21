@@ -51,11 +51,6 @@ const VevensityRegister = loadable(() =>
 const VevensityLogin = loadable(() =>
   import("../containers/Auth/VevinsityLogin")
 );
-const MyActivity = loadable(() => import("../containers/MyActivity"));
-const MyProjectMain = loadable(() => import("../containers/MyProject"));
-const ProjectDetailList = loadable(() =>
-  import("../containers/MyProject/ProjectDetailList")
-);
 const AdminPanel = loadable(() => import("../containers/Admin"));
 const LtiLogin = loadable(() => import("../containers/Auth/LtiLogin"));
 const ProfilePage = loadable(() => import("../containers/Account/ProfilePage"));
@@ -280,11 +275,6 @@ const AppRouter = (props) => {
                   />
                   <PrivateRoute
                     exact
-                    path="/org/:organization/myactivity"
-                    component={MyActivity}
-                  />
-                  <PrivateRoute
-                    exact
                     path="/org/:organization/admin"
                     component={AdminPanel}
                   />
@@ -334,53 +324,6 @@ const AppRouter = (props) => {
                     path="/org/:organization/teams/:teamId/projects/:projectId/add-member"
                     component={AddTeamProjectMemberPage}
                   />
-                  {/* 
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/groups"
-                    component={GroupsPage}
-                    overview
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/groups/create-group"
-                    component={GroupsPage}
-                    creation
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/groups/:groupId"
-                    component={GroupsPage}
-                    groupShow
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/groups/:groupId/edit"
-                    component={GroupsPage}
-                    editMode
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/groups/:groupId/projects"
-                    component={GroupsPage}
-                    projectShow
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/groups/:groupId/channel"
-                    component={GroupsPage}
-                    channelShow
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/groups/:groupId/add-projects"
-                    component={AddGroupProjectsPage}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/groups/:groupId/projects/:projectId/add-member"
-                    component={AddGroupProjectMemberPage}
-                  /> */}
 
                   {/* <PrivateRoute exact path="/org/:organization/groups" component={GroupsPage} overview />
                      <PrivateRoute exact path="/org/:organization/groups/create-group" component={GroupsPage} creation />
@@ -393,24 +336,11 @@ const AppRouter = (props) => {
 
                   <PrivateRoute
                     exact
-                    path="/org/:organization/project/create/one"
-                    component={MyProjectMain}
+                    path="/org/:organization/project/create"
+                    component={ProjectsPage}
                     showCreateProjectPopup
                     editMode={false}
                   />
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/project/create/one/playlist"
-                    component={ProjectDetailList}
-                    showCreateProjectPopup
-                    editMode={false}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/project/create/one/playlist/addactivity/:statusbool"
-                    component={MyActivity}
-                  />
-                  {/* Update Project Page -End- */}
                   <PrivateRoute
                     exact
                     path="/org/:organization/project/:projectId"
