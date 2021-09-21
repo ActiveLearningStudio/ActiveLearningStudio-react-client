@@ -293,12 +293,12 @@ class RegisterPage extends React.Component {
                 <p className="auth-description text-center">
                   Back to Curriki?&nbsp;
                   <a onClick={this.goToLogin}>
-                    LogIn
+                    Login
                   </a>
                 </p>
 
                 <div className="termsandcondition">
-                  By clicking the &quot;Sign Up&quot; button, you are creating a CurrikiStudio  account, and you agree to Curriki&apos; s
+                  By clicking the &quot;Sign Up&quot; button, you are creating a CurrikiStudio  account, and you agree to Curriki&apos;s
                   {' '}
                   <a href="https://www.curriki.org/terms-of-service/">
                     Terms of Use

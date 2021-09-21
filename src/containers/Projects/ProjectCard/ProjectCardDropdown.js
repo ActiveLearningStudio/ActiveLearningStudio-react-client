@@ -21,6 +21,7 @@ const ProjectCardDropdown = (props) => {
     handleShow,
     setProjectId,
     showDeletePopup,
+    teamPermission,
     previewMode,
     text,
   } = props;
@@ -52,7 +53,7 @@ const ProjectCardDropdown = (props) => {
             Preview
           </Dropdown.Item>
         )}
-        {permission?.Project?.includes('project:edit') && (
+        {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project') : permission?.Project?.includes('project:edit')) && (
           <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/edit`}>
             <FontAwesomeIcon icon="pen" className="mr-2" />
             Edit
@@ -71,7 +72,7 @@ const ProjectCardDropdown = (props) => {
             Duplicate
           </Dropdown.Item>
         )}
-        {permission?.Project?.includes('project:share') && (
+        {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-project') : permission?.Project?.includes('project:share')) && (
           <Dropdown.Item
             to="#"
             onClick={async () => {
@@ -91,7 +92,7 @@ const ProjectCardDropdown = (props) => {
             Share
           </Dropdown.Item>
         )}
-        {permission?.Project?.includes('project:publish') && (
+        {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:publish-project') : permission?.Project?.includes('project:publish')) && (
           <li className="dropdown-submenu send">
             <a tabIndex="-1">
               <FontAwesomeIcon icon="newspaper" className="mr-2" />
@@ -135,7 +136,7 @@ const ProjectCardDropdown = (props) => {
             </ul>
           </li>
         )}
-        {permission?.Project?.includes('project:delete') && (
+        {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:remove-project') : permission?.Project?.includes('project:delete')) && (
           <Dropdown.Item
             to="#"
             onClick={() => showDeletePopup(project.id, project.name, 'Project')}
@@ -154,6 +155,7 @@ ProjectCardDropdown.propTypes = {
   showDeletePopup: PropTypes.func.isRequired,
   handleShow: PropTypes.func.isRequired,
   setProjectId: PropTypes.func.isRequired,
+  teamPermission: PropTypes.object.isRequired,
   previewMode: PropTypes.bool.isRequired,
   text: propTypes.text,
 };
