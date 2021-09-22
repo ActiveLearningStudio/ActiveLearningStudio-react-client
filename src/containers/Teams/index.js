@@ -92,10 +92,10 @@ function TeamsPage(props) {
     setBreadCrumb(crumb.split('/'));
   }, [selectedTeam, status, teamShow, teams]);
   useEffect(() => {
-    if ((organization?.currentOrganization?.id && selectedTeam?.id) || !teamPermission) {
+    if (Object.keys(teamPermission).length === 0 && organization?.currentOrganization?.id && selectedTeam?.id) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, selectedTeam?.id));
     }
-  }, [selectedTeam]);
+  }, [selectedTeam, teamPermission]);
   if (location.pathname.includes('teams/') && !selectedTeam && !creation) {
     return <></>;
   }

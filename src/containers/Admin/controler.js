@@ -331,7 +331,7 @@ function Controller(props) {
               onChange={searchQueryChangeHandler}
             />
             <img src={searchimg} alt="search" />
-            {(searchQuery.length > 0 && searchQuery.length < 2) && <label className="flex" style={{ color: 'red' }}>Enter at least 2 characters</label> }
+            {(searchQuery.trim().length > 0 && searchQuery.trim().length < 2) && <label className="flex" style={{ color: 'red' }}>Enter at least 2 characters</label> }
           </div>
 
         </>

@@ -52,7 +52,7 @@ function ProjectPreview(props) {
     setActiveShared(projectState.projectSelect.shared);
   }, [projectState.projectSelect]);
   useEffect(() => {
-    if (!teamPermission && currentProject?.team?.id && organization?.currentOrganization?.id) {
+    if (Object.keys(teamPermission).length === 0 && currentProject?.team?.id && organization?.currentOrganization?.id) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, currentProject.team.id));
     }
   }, [teamPermission, organization?.currentOrganization, currentProject]);
@@ -248,12 +248,13 @@ function ProjectPreview(props) {
                     <div className="title_lg check">
                       <div>{currentProject.name}</div>
                       <div className="configuration">
-                        {!(permission?.Project?.includes('project:view') && permission?.Project.length === 1) && (
+                        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-project') : permission?.Project?.includes('project:view')) && (
                           <DropdownProject
                             project={currentProject}
                             handleShow={handleShow}
                             setProjectId={setProjectId}
                             showDeletePopup={showDeletePopup}
+                            teamPermission={teamPermission || {}}
                             previewMode
                           />
                         )}

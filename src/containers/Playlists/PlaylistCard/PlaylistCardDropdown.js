@@ -87,7 +87,7 @@ class PlaylistCardDropdown extends React.Component {
                 </Dropdown.Item>
               )
           )}
-          {permission?.Playlist?.includes('playlist:publish') && (
+          {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:publish-playlist') : permission?.Playlist?.includes('playlist:publish')) && (
             <ShareLink
               playlistId={playlist.id}
               projectId={playlist.project_id}

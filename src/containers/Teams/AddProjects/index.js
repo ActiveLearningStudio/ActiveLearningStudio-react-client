@@ -37,10 +37,10 @@ function AddProjectsPage(props) {
   }, [loadProjects, loadTeam, teamId, activeOrganization]);
   // Fetch team permission if page reloads
   useEffect(() => {
-    if ((organization?.currentOrganization?.id && teamId) || !teamPermission) {
+    if (Object.keys(teamPermission).length === 0 && organization?.currentOrganization?.id && teamId) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, teamId));
     }
-  }, [teamId]);
+  }, [team]);
   const [selectedProjects, setSelectedProjects] = useState([]);
   const [searchProject, setSearchProject] = useState('');
 

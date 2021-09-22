@@ -336,233 +336,37 @@ export const ProjectsPage = (props) => {
         <div className={`content-wrapper ${activeFilter}`}>
           <div className="content">
             <Headline />
-            <Tabs
-              onSelect={(eventKey) => {
-                setShowSampleSort(true);
-                setTabToggle(eventKey);
-                if (eventKey === 'Sample Projects') {
-                  setType('sample');
-                } else if (eventKey === 'Favorite Projects') {
-                  setType('fav');
-                } else if (eventKey === 'Team Projects') {
-                  setType('team');
-                }
-              }}
-              className="main-tabs"
-              defaultActiveKey={activeTab}
-              id="uncontrolled-tab-example"
-            >
-              <Tab eventKey="My Projects" title="My Projects">
-                <div className="row">
-                  <div className="col-md-12">
-                    <div className="col-md-12">
-                      {/* <div className="program-page-title">
-                        <h1>My Projects</h1>
-                        <div className="project-page-settings">
-                          <div className="sort-project-btns">
-                            <div
-                              className={activeFilter === 'list-grid' ? 'sort-btn active' : 'sort-btn'}
-                              onClick={() => {
-                                // const allchunk = [];
-                                // let counterSimpl = 0;
-                                setActiveFilter('list-grid');
-                                setSortNumber(-1);
-                                divideProjects(allProjects);
-                              }}
-                            >
-                              <FontAwesomeIcon icon="bars" />
-                            </div>
-                            <div
-                              className={activeFilter === 'small-grid' ? 'sort-btn active' : 'sort-btn'}
-                              onClick={() => {
-                                setActiveFilter('small-grid');
-                                setSortNumber(5);
-                                divideProjects(allProjects);
-                              }}
-                            >
-                              <FontAwesomeIcon icon="grip-horizontal" />
-                            </div>
-                            <div
-                              className={activeFilter === 'normal-grid' ? 'sort-btn active' : 'sort-btn'}
-                              onClick={() => {
-                                setActiveFilter('normal-grid');
-                                setSortNumber(4);
-                                divideProjects(allProjects);
-                              }}
-                            >
-                              <FontAwesomeIcon icon="th-large" />
-                            </div>
-                          </div>
-                        </div>
-                      </div> */}
-                    </div>
-                    {
-                    !!projectDivider && projectDivider.length > 0 ? (
-                      <DragDropContext onDragEnd={onDragEnd}>
-                        {projectDivider.map((rowData) => (
-                          <Droppable
-                            key={rowData.id}
-                            droppableId={rowData.id}
-                            // direction="horizontal"
-                            // type="row"
-                            className="drag-class"
-                            direction="horizontal"
-                          >
-                            {(provided) => (
-                              <div
-                                {...provided.droppableProps}
-                                ref={provided.innerRef}
-                              >
-                                <div className="check-home" id={value}>
-                                  {rowData.collection.map((proj, index) => {
-                                    const res = {
-                                      title: proj.name,
-                                      id: proj.id,
-                                      deleteType: 'Project',
-                                    };
-                                    return (
-                                      <Draggable
-                                        key={proj.id}
-                                        draggableId={`${proj.id}`}
-                                        index={index}
-                                      >
-                                        {(provid) => (
-                                          <div
-                                            className="playlist-resource"
-                                            ref={provid.innerRef}
-                                            {...provid.draggableProps}
-                                            {...provid.dragHandleProps}
-                                          >
-                                            <ProjectCard
-                                              key={proj.id}
-                                              project={proj}
-                                              res={res}
-                                              handleDeleteProject={handleDeleteProject}
-                                              handleShareProject={handleShareProject}
-                                              showDeletePopup={showDeletePopup}
-                                              showPreview={showPreview === proj.id}
-                                              handleShow={handleShow}
-                                              handleClose={handleClose}
-                                              setProjectId={setProjectId}
-                                              activeFilter={activeFilter}
-                                            />
-                                          </div>
-                                        )}
-                                      </Draggable>
-                                    );
-                                  })}
-                                </div>
-                                {provided.placeholder}
-                              </div>
-                            )}
-                          </Droppable>
-                        ))}
-                      </DragDropContext>
-                    ) : (
-                      <>
-                        <Alert variant="success">
-                          Start building your first Project by clicking on the
-                          {' '}
-                          <b>Add Project</b>
-                          {' '}
-                          button.
-                          <br />
-                          For more information click here:
-                          <a
-                            target="_blank"
-                            rel="noreferrer noopener"
-                            className="alert-link-ref"
-                            href="https://support.curriki.org/creating-learning-projects"
-                          >
-                            <b>Getting Started.</b>
-                            {' '}
-                          </a>
-                        </Alert>
-
-                        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                        <video controls className="welcome-video">
-                          <source src={WelcomeVideo} type="video/mp4" />
-                        </video>
-                      </>
-                    )
-                    }
-                  </div>
-                </div>
-              </Tab>
-              <Tab eventKey="Sample Projects" title="Sample Projects">
-                <div className="row">
-                  <div className="col-md-12" style={{ display: 'none' }}>
-                    <div className="program-page-title">
-                      <h1>Sample Projects</h1>
-
-                      {(showSampleSort && sampleProject.length === 0) && (
-                        <div className="project-page-settings">
-                          <div className="sort-project-btns">
-                            <div
-                              className={activeFilter === 'list-grid' ? 'sort-btn active' : 'sort-btn'}
-                              onClick={() => {
-                                // const allchunk = [];
-                                // let counterSimpl = 0;
-                                setActiveFilter('list-grid');
-                                setSortNumber(-1);
-                                divideProjects(allProjects);
-                              }}
-                            >
-                              <FontAwesomeIcon icon="bars" />
-                            </div>
-                            <div
-                              className={activeFilter === 'small-grid' ? 'sort-btn active' : 'sort-btn'}
-                              onClick={() => {
-                                setActiveFilter('small-grid');
-                                setSortNumber(5);
-                                divideProjects(allProjects);
-                              }}
-                            >
-                              <FontAwesomeIcon icon="grip-horizontal" />
-                            </div>
-                            <div
-                              className={activeFilter === 'normal-grid' ? 'sort-btn active' : 'sort-btn'}
-                              onClick={() => {
-                                setActiveFilter('normal-grid');
-                                setSortNumber(4);
-                                divideProjects(allProjects);
-                              }}
-                            >
-                              <FontAwesomeIcon icon="th-large" />
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="col-md-12">
-                    <div className="flex-smaple">
-                      {sampleProject.length > 0
-                        ? <SampleProjectCard projects={sampleProject} activeTab={tabToggle} type={type} setShowSampleSort={setShowSampleSort} />
-                      : <Alert variant="warning"> No sample project found.</Alert>}
-                    </div>
-                  </div>
-                </div>
-              </Tab>
-              {permission?.Project?.includes('project:favorite') && (
-                <Tab eventKey="Favorite Projects" title="Favorite Projects">
+            {permission?.Project?.includes('project:view')
+            ? (
+              <Tabs
+                onSelect={(eventKey) => {
+                  setShowSampleSort(true);
+                  setTabToggle(eventKey);
+                  if (eventKey === 'Sample Projects') {
+                    setType('sample');
+                  } else if (eventKey === 'Favorite Projects') {
+                    setType('fav');
+                  } else if (eventKey === 'Team Projects') {
+                    setType('team');
+                  }
+                }}
+                className="main-tabs"
+                defaultActiveKey={activeTab}
+                id="uncontrolled-tab-example"
+              >
+                <Tab eventKey="My Projects" title="My Projects">
                   <div className="row">
-                    <div className="col-md-12" style={{ display: 'none' }}>
-                      <div className="program-page-title">
-                        <h1>Favorite Projects</h1>
-                        {(showSampleSort && favProject.length === 0) && (
+                    <div className="col-md-12">
+                      <div className="col-md-12">
+                        {/* <div className="program-page-title">
+                          <h1>My Projects</h1>
                           <div className="project-page-settings">
                             <div className="sort-project-btns">
                               <div
-                                className={
-                                  activeFilter === 'list-grid'
-                                    ? 'sort-btn active'
-                                    : 'sort-btn'
-                                }
+                                className={activeFilter === 'list-grid' ? 'sort-btn active' : 'sort-btn'}
                                 onClick={() => {
                                   // const allchunk = [];
-                                  // var counterSimpl = 0;
+                                  // let counterSimpl = 0;
                                   setActiveFilter('list-grid');
                                   setSortNumber(-1);
                                   divideProjects(allProjects);
@@ -571,11 +375,7 @@ export const ProjectsPage = (props) => {
                                 <FontAwesomeIcon icon="bars" />
                               </div>
                               <div
-                                className={
-                                  activeFilter === 'small-grid'
-                                    ? 'sort-btn active'
-                                    : 'sort-btn'
-                                }
+                                className={activeFilter === 'small-grid' ? 'sort-btn active' : 'sort-btn'}
                                 onClick={() => {
                                   setActiveFilter('small-grid');
                                   setSortNumber(5);
@@ -585,11 +385,145 @@ export const ProjectsPage = (props) => {
                                 <FontAwesomeIcon icon="grip-horizontal" />
                               </div>
                               <div
-                                className={
-                                  activeFilter === 'normal-grid'
-                                    ? 'sort-btn active'
-                                    : 'sort-btn'
-                                }
+                                className={activeFilter === 'normal-grid' ? 'sort-btn active' : 'sort-btn'}
+                                onClick={() => {
+                                  setActiveFilter('normal-grid');
+                                  setSortNumber(4);
+                                  divideProjects(allProjects);
+                                }}
+                              >
+                                <FontAwesomeIcon icon="th-large" />
+                              </div>
+                            </div>
+                          </div>
+                        </div> */}
+                      </div>
+                      {
+                      !!projectDivider && projectDivider.length > 0 ? (
+                        <DragDropContext onDragEnd={onDragEnd}>
+                          {projectDivider.map((rowData) => (
+                            <Droppable
+                              key={rowData.id}
+                              droppableId={rowData.id}
+                              // direction="horizontal"
+                              // type="row"
+                              className="drag-class"
+                              direction="horizontal"
+                            >
+                              {(provided) => (
+                                <div
+                                  {...provided.droppableProps}
+                                  ref={provided.innerRef}
+                                >
+                                  <div className="check-home" id={value}>
+                                    {rowData.collection.map((proj, index) => {
+                                      const res = {
+                                        title: proj.name,
+                                        id: proj.id,
+                                        deleteType: 'Project',
+                                      };
+                                      return (
+                                        <Draggable
+                                          key={proj.id}
+                                          draggableId={`${proj.id}`}
+                                          index={index}
+                                        >
+                                          {(provid) => (
+                                            <div
+                                              className="playlist-resource"
+                                              ref={provid.innerRef}
+                                              {...provid.draggableProps}
+                                              {...provid.dragHandleProps}
+                                            >
+                                              <ProjectCard
+                                                key={proj.id}
+                                                project={proj}
+                                                res={res}
+                                                handleDeleteProject={handleDeleteProject}
+                                                handleShareProject={handleShareProject}
+                                                showDeletePopup={showDeletePopup}
+                                                showPreview={showPreview === proj.id}
+                                                handleShow={handleShow}
+                                                handleClose={handleClose}
+                                                setProjectId={setProjectId}
+                                                activeFilter={activeFilter}
+                                              />
+                                            </div>
+                                          )}
+                                        </Draggable>
+                                      );
+                                    })}
+                                  </div>
+                                  {provided.placeholder}
+                                </div>
+                              )}
+                            </Droppable>
+                          ))}
+                        </DragDropContext>
+                      ) : (
+                        <>
+                          <Alert variant="success">
+                            Start building your first Project by clicking on the
+                            {' '}
+                            <b>Add Project</b>
+                            {' '}
+                            button.
+                            <br />
+                            For more information click here:
+                            <a
+                              target="_blank"
+                              rel="noreferrer noopener"
+                              className="alert-link-ref"
+                              href="https://support.curriki.org/creating-learning-projects"
+                            >
+                              <b>Getting Started.</b>
+                              {' '}
+                            </a>
+                          </Alert>
+
+                          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+                          <video controls className="welcome-video">
+                            <source src={WelcomeVideo} type="video/mp4" />
+                          </video>
+                        </>
+                      )
+                      }
+                    </div>
+                  </div>
+                </Tab>
+                <Tab eventKey="Sample Projects" title="Sample Projects">
+                  <div className="row">
+                    <div className="col-md-12" style={{ display: 'none' }}>
+                      <div className="program-page-title">
+                        <h1>Sample Projects</h1>
+
+                        {(showSampleSort && sampleProject.length === 0) && (
+                          <div className="project-page-settings">
+                            <div className="sort-project-btns">
+                              <div
+                                className={activeFilter === 'list-grid' ? 'sort-btn active' : 'sort-btn'}
+                                onClick={() => {
+                                  // const allchunk = [];
+                                  // let counterSimpl = 0;
+                                  setActiveFilter('list-grid');
+                                  setSortNumber(-1);
+                                  divideProjects(allProjects);
+                                }}
+                              >
+                                <FontAwesomeIcon icon="bars" />
+                              </div>
+                              <div
+                                className={activeFilter === 'small-grid' ? 'sort-btn active' : 'sort-btn'}
+                                onClick={() => {
+                                  setActiveFilter('small-grid');
+                                  setSortNumber(5);
+                                  divideProjects(allProjects);
+                                }}
+                              >
+                                <FontAwesomeIcon icon="grip-horizontal" />
+                              </div>
+                              <div
+                                className={activeFilter === 'normal-grid' ? 'sort-btn active' : 'sort-btn'}
                                 onClick={() => {
                                   setActiveFilter('normal-grid');
                                   setSortNumber(4);
@@ -606,68 +540,141 @@ export const ProjectsPage = (props) => {
 
                     <div className="col-md-12">
                       <div className="flex-smaple">
-                        {favProject.length > 0 ? (
-                          <SampleProjectCard projects={favProject} type={type} activeTab={tabToggle} setShowSampleSort={setShowSampleSort} />
-                        ) : (
-                          <Alert variant="warning">No Favorite Project found.</Alert>
-                        )}
+                        {sampleProject.length > 0
+                          ? <SampleProjectCard projects={sampleProject} activeTab={tabToggle} type={type} setShowSampleSort={setShowSampleSort} />
+                        : <Alert variant="warning"> No sample project found.</Alert>}
                       </div>
                     </div>
                   </div>
                 </Tab>
-              )}
-              <Tab
-                eventKey="Team Projects"
-                title="Team Projects"
-              >
-                <div className="row">
-                  <div className="col-md-12" style={{ display: 'none' }}>
-                    <div className="program-page-title">
-                      <h1>Team Projects</h1>
+                {permission?.Project?.includes('project:favorite') && (
+                  <Tab eventKey="Favorite Projects" title="Favorite Projects">
+                    <div className="row">
+                      <div className="col-md-12" style={{ display: 'none' }}>
+                        <div className="program-page-title">
+                          <h1>Favorite Projects</h1>
+                          {(showSampleSort && favProject.length === 0) && (
+                            <div className="project-page-settings">
+                              <div className="sort-project-btns">
+                                <div
+                                  className={
+                                    activeFilter === 'list-grid'
+                                      ? 'sort-btn active'
+                                      : 'sort-btn'
+                                  }
+                                  onClick={() => {
+                                    // const allchunk = [];
+                                    // var counterSimpl = 0;
+                                    setActiveFilter('list-grid');
+                                    setSortNumber(-1);
+                                    divideProjects(allProjects);
+                                  }}
+                                >
+                                  <FontAwesomeIcon icon="bars" />
+                                </div>
+                                <div
+                                  className={
+                                    activeFilter === 'small-grid'
+                                      ? 'sort-btn active'
+                                      : 'sort-btn'
+                                  }
+                                  onClick={() => {
+                                    setActiveFilter('small-grid');
+                                    setSortNumber(5);
+                                    divideProjects(allProjects);
+                                  }}
+                                >
+                                  <FontAwesomeIcon icon="grip-horizontal" />
+                                </div>
+                                <div
+                                  className={
+                                    activeFilter === 'normal-grid'
+                                      ? 'sort-btn active'
+                                      : 'sort-btn'
+                                  }
+                                  onClick={() => {
+                                    setActiveFilter('normal-grid');
+                                    setSortNumber(4);
+                                    divideProjects(allProjects);
+                                  }}
+                                >
+                                  <FontAwesomeIcon icon="th-large" />
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="col-md-12">
+                        <div className="flex-smaple">
+                          {favProject.length > 0 ? (
+                            <SampleProjectCard projects={favProject} type={type} activeTab={tabToggle} setShowSampleSort={setShowSampleSort} />
+                          ) : (
+                            <Alert variant="warning">No Favorite Project found.</Alert>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </Tab>
+                )}
+                <Tab
+                  eventKey="Team Projects"
+                  title="Team Projects"
+                >
+                  <div className="row">
+                    <div className="col-md-12" style={{ display: 'none' }}>
+                      <div className="program-page-title">
+                        <h1>Team Projects</h1>
+                      </div>
+                    </div>
+                    <div className="col-md-12">
+                      {showSampleSort && teamProjects.length > 0 && (
+                        <div className="search-bar-team-tab">
+                          <input type="text" placeholder="Search team projects" value={searchTeamQuery} onChange={({ target }) => SetSearchTeamQuery(target.value)} />
+                          <img src={searchimg} alt="search" onClick={handleSearchQueryTeams} />
+
+                        </div>
+                      )}
+                      <div className="flex-smaple">
+                        {teamProjects.length > 0 ? (
+                          <SampleProjectCard
+                            projects={teamProjects}
+                            type={type}
+                            activeTab={tabToggle}
+                            setShowSampleSort={setShowSampleSort}
+                            handleShow={handleShow}
+                            handleClose={handleClose}
+                            setProjectId={setProjectId}
+                          />
+                        ) : (
+                          <Alert variant="warning">No Team Project found.</Alert>
+                        )}
+                      </div>
                     </div>
                   </div>
-                  <div className="col-md-12">
-                    {showSampleSort && (
-                      <div className="search-bar-team-tab">
-                        <input type="text" placeholder="Search team projects" value={searchTeamQuery} onChange={({ target }) => SetSearchTeamQuery(target.value)} />
-                        <img src={searchimg} alt="search" onClick={handleSearchQueryTeams} />
-
-                      </div>
-                    )}
-                    <div className="flex-smaple">
-                      {teamProjects.length > 0 ? (
-                        <SampleProjectCard
-                          projects={teamProjects}
-                          type={type}
-                          activeTab={tabToggle}
-                          setShowSampleSort={setShowSampleSort}
-                          handleShow={handleShow}
-                          handleClose={handleClose}
-                          setProjectId={setProjectId}
+                  <div className="pagination-top-team">
+                    <div className="pagination_state">
+                      {teamProjects.length > 0 && (
+                        <Pagination
+                          activePage={activePage}
+                          pageRangeDisplayed={5}
+                          itemsCountPerPage={meta?.per_page}
+                          totalItemsCount={meta?.total}
+                          onChange={(e) => {
+                            // setCurrentTab("index");
+                            window.scrollTo(0, 0);
+                            setActivePage(e);
+                          }}
                         />
-                      ) : (
-                        <Alert variant="warning">No Team Project found.</Alert>
                       )}
                     </div>
                   </div>
-                </div>
-                <div className="pagination-top-team">
-                  <div className="pagination_state">
-                    <Pagination
-                      activePage={activePage}
-                      pageRangeDisplayed={meta?.to}
-                      itemsCountPerPage={meta?.per_page}
-                      totalItemsCount={meta?.total}
-                      onChange={(e) => {
-                        // setCurrentTab("index");
-                        window.scrollTo(0, 0);
-                        setActivePage(e);
-                      }}
-                    />
-                  </div>
-                </div>
-              </Tab>
-            </Tabs>
+                </Tab>
+              </Tabs>
+            ) : (
+              <Alert variant="danger"> You are not authorized to view Projects</Alert>
+            )}
           </div>
         </div>
         {(showCreateProjectPopup || showEditProjectPopup) && (

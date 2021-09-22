@@ -144,11 +144,15 @@ function SearchInterface(props) {
     if (query.author) {
       SetAuthor(query.author);
     }
-    if (query.fromDate) {
+    if (query.fromDate && query.fromDate !== 'undefined') {
       Setfromdate(query.fromDate);
+    } else {
+      Setfromdate(undefined);
     }
-    if (query.toDate) {
+    if (query.toDate && query.fromDate !== 'undefined') {
       Settodate(query.toDate);
+    } else {
+      Settodate(undefined);
     }
     if (query?.q) {
       setSearchInput(query?.q);
@@ -510,8 +514,8 @@ function SearchInterface(props) {
                                               gradeArray: activeEducation,
                                               standardArray: activeType,
                                               author: authorName || undefined,
-                                              fromDate: undefined,
-                                              toDate: undefined,
+                                              fromDate: fromdate || undefined,
+                                              toDate: todate || undefined,
                                               type: searchType,
                                               from: 0,
                                               size: 20,
@@ -521,8 +525,8 @@ function SearchInterface(props) {
                                               phrase: searchInput.trim(),
                                               subjectArray: activeSubject,
                                               author: authorName || undefined,
-                                              fromDate: undefined,
-                                              toDate: undefined,
+                                              fromDate: fromdate || undefined,
+                                              toDate: todate || undefined,
                                               gradeArray: activeEducation,
                                               standardArray: activeType,
                                               type: searchType,
@@ -1007,7 +1011,7 @@ function SearchInterface(props) {
                                               <FontAwesomeIcon className="mr-2" icon="clone" />
                                               Duplicate
                                             </Dropdown.Item>
-                                            {permission?.Activity?.includes('activity:share') && allLms?.length !== 0 && (
+                                            {permission?.Activity?.includes('activity:publish') && allLms?.length !== 0 && (
                                               <li className="dropdown-submenu send">
                                                 <a tabIndex="-1" className="dropdown-item">
                                                   <FontAwesomeIcon icon="newspaper" className="mr-2" />
