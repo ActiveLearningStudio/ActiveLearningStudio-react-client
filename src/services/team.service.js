@@ -98,7 +98,7 @@ const checkUserBeforeAdd = (orgId, values) => httpService
     return Promise.reject(err.response.data);
   });
 const getTeamProject = (orgId, query, page) => httpService
-  .get(`/${apiVersion}/suborganization/${orgId}/team-projects?query=${query || ''}&page=${page}`)
+  .get(`/${apiVersion}/suborganization/${orgId}/team-projects?query=${query || ''}&page=${page}&size=12`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
