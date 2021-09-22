@@ -56,15 +56,15 @@ function ActivityCreate(props) {
               </Link>
             </div>
             {/* Tabs */}
-            {Object.keys(teamPermission).length ? !teamPermission?.Team?.includes('team:add-activity') : (!organization?.Activity?.includes('activity:create')
-              && !organization?.Activity?.includes('activity:upload'))
+            {(Object.keys(teamPermission).length ? !teamPermission?.Team?.includes('team:add-activity') : (!organization?.Activity?.includes('activity:create')
+              && !organization?.Activity?.includes('activity:upload')))
               ? (
                 <Alert variant="danger" alt="">You are not authorized to create or upload an activity.</Alert>
             ) : (
               <Tab.Container
                 id="left-tabs-example"
                 // eslint-disable-next-line max-len
-                defaultActiveKey={Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:add-activity') : (organization?.Activity?.includes('activity:create')) ? 'create' : 'upload'}
+                defaultActiveKey={(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:add-activity') : organization?.Activity?.includes('activity:create')) ? 'create' : 'upload'}
               >
                 <Row>
                   <Col sm={3}>
