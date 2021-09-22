@@ -52,8 +52,8 @@ class PlaylistCard extends React.Component {
     }
 
     return playlist.activities.map((resource, index) => (
-      organization?.permission?.Activity?.includes('activity:view')
-      ? (
+      (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-activity') : organization?.permission?.Activity?.includes('activity:view'))
+      && (
       <ResourceCard
         {...this.props}
         resource={resource}
@@ -61,7 +61,7 @@ class PlaylistCard extends React.Component {
         index={index}
         teamPermission={teamPermission || {}}
       />
-      ) : null
+      )
     ));
   };
 
