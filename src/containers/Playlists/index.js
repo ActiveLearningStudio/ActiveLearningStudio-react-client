@@ -437,8 +437,8 @@ function PlaylistsPage(props) {
                           ref={provided.innerRef}
                         >
                           {playlists.map((playlist, index) => (
-                            permission?.Playlist?.includes('playlist:view')
-                            ? (
+                            (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-playlist') : permission?.Playlist?.includes('playlist:view'))
+                            && (
                               <PlaylistCard
                                 key={playlist.id}
                                 index={index}
@@ -448,7 +448,6 @@ function PlaylistsPage(props) {
                                 teamPermission={teamPermission || {}}
                               />
                             )
-                            : null
                           ))}
                           {provided.placeholder}
                         </div>

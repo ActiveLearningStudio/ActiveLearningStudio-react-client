@@ -40,7 +40,7 @@ class PlaylistCardDropdown extends React.Component {
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
-          {permission?.Playlist?.includes('playlist:view') && (
+          {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-playlist') : permission?.Playlist?.includes('playlist:view')) && (
           <Dropdown.Item
             as={Link}
             className="hidden"
