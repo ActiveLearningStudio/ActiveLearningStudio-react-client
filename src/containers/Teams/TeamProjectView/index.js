@@ -9,7 +9,7 @@ import GoogleModel from 'components/models/GoogleLoginModal';
 // import { zeroFill } from 'utils';
 import {
   getTeamPermission,
-  loadTeamAction,
+  loadTeamsAction,
   removeMemberFromProjectAction,
   removeProjectAction,
 } from 'store/actions/team';
@@ -55,7 +55,7 @@ function TeamProjectView(props) {
   }, [teamPermission]);
   useEffect(() => {
     if (notification?.today[0]?.data.message.indexOf(selectedForClone) !== -1) {
-      dispatch(loadTeamAction(id));
+      dispatch(loadTeamsAction());
     }
   }, [notification?.today]);
   const removeProjectSubmit = useCallback((projectId) => {
