@@ -97,6 +97,7 @@
 }
 
 .playlist-page-project-title {
+  margin-bottom: 76px;
   h1 {
     margin-top: 20px;
     font-size: 20px;
@@ -121,4 +122,20 @@
       border-radius: 18px;
     }
   }
+}
+.react-switch-bg {
+  background: #ffca70 !important;
+  height: 18px !important;
+  div {
+    display: none;
+  }
+}
+.react-switch-handle {
+  background: #f8af2c !important;
+  top: -4px !important;
+  border: none !important;
+}
+.react-touch {
+  background: none !important;
+  border: none !important;
 }

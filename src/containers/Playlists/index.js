@@ -431,11 +431,47 @@ function PlaylistsPage(props) {
                         </div>
                       </div>
                       {/* <h1>{selectedProject ? selectedProject.name : ""}</h1> */}
-                      {permission?.Project?.includes(
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        {permission?.Project?.includes(
+                          "project:request-indexing"
+                        ) && (
+                          <div className="react-touch">
+                            <div className="publish-btn">
+                              <Switch
+                                checked={checked}
+                                onChange={handleChange}
+                              />
+                              <span
+                                style={{
+                                  color: checked ? "#333" : "$mine-shaft",
+                                }}
+                              >
+                                Showcase
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                        {(Object.keys(teamPermission).length
+                          ? teamPermission?.Team?.includes("team:add-playlist")
+                          : permission?.Playlist?.includes(
+                              "playlist:create"
+                            )) && (
+                          <button
+                            type="button"
+                            className="create-playlist-btn"
+                            onClick={handleShowCreatePlaylistModal}
+                          >
+                            <FontAwesomeIcon icon="plus" className="mr-2" />
+                            Create new playlist
+                          </button>
+                        )}
+                      </div>
+                      {/* {permission?.Project?.includes(
                         "project:request-indexing"
                       ) && (
                         <div className="react-touch">
                           <div className="publish-btn">
+                            <Switch checked={checked} onChange={handleChange} />
                             <span
                               style={{
                                 color: checked ? "#333" : "$mine-shaft",
@@ -443,7 +479,6 @@ function PlaylistsPage(props) {
                             >
                               Showcase
                             </span>
-                            <Switch checked={checked} onChange={handleChange} />
                           </div>
                         </div>
                       )}
@@ -460,7 +495,7 @@ function PlaylistsPage(props) {
                           <FontAwesomeIcon icon="plus" className="mr-2" />
                           Create new playlist
                         </button>
-                      )}
+                      )} */}
                     </div>
 
                     <div className="project-preview">
