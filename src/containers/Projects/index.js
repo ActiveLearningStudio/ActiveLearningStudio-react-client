@@ -95,8 +95,21 @@ export const ProjectsPage = (props) => {
           setMeta(data.meta);
         });
       }
+    } else if (searchTeamQuery && organization?.activeOrganization) {
+      getTeamProjects(searchTeamQuery, activePage).then((data) => {
+        setTeamProjects(data.data);
+        setMeta(data.meta);
+      });
     }
-  }, [getTeamProjects, organization?.activeOrganization, searchTeamQuery, activePage]);
+  }, [getTeamProjects, organization?.activeOrganization, activePage]);
+  useEffect(() => {
+    if (!searchTeamQuery) {
+      getTeamProjects('', activePage).then((data) => {
+        setTeamProjects(data.data);
+        setMeta(data.meta);
+      });
+    }
+  }, [searchTeamQuery]);
   useEffect(() => {
     if (organization.activeOrganization) {
       sampleProjectsData();
@@ -121,7 +134,7 @@ export const ProjectsPage = (props) => {
     }
   }, [allState.sidebar.sampleProject]);
   const handleSearchQueryTeams = () => {
-    getTeamProjects(searchTeamQuery || '').then((data) => {
+    getTeamProjects(searchTeamQuery || '', activePage).then((data) => {
       setTeamProjects(data.data);
       setMeta(data.meta);
     });
@@ -629,7 +642,7 @@ export const ProjectsPage = (props) => {
                       </div>
                     </div>
                     <div className="col-md-12">
-                      {showSampleSort && teamProjects.length > 0 && (
+                      {showSampleSort && (
                         <div className="search-bar-team-tab">
                           <input type="text" placeholder="Search team projects" value={searchTeamQuery} onChange={({ target }) => SetSearchTeamQuery(target.value)} />
                           <img src={searchimg} alt="search" onClick={handleSearchQueryTeams} />
@@ -655,19 +668,17 @@ export const ProjectsPage = (props) => {
                   </div>
                   <div className="pagination-top-team">
                     <div className="pagination_state">
-                      {teamProjects.length > 0 && (
-                        <Pagination
-                          activePage={activePage}
-                          pageRangeDisplayed={5}
-                          itemsCountPerPage={meta?.per_page}
-                          totalItemsCount={meta?.total}
-                          onChange={(e) => {
-                            // setCurrentTab("index");
-                            window.scrollTo(0, 0);
-                            setActivePage(e);
-                          }}
-                        />
-                      )}
+                      <Pagination
+                        activePage={activePage}
+                        pageRangeDisplayed={5}
+                        itemsCountPerPage={meta?.per_page}
+                        totalItemsCount={meta?.total}
+                        onChange={(e) => {
+                          // setCurrentTab("index");
+                          window.scrollTo(0, 0);
+                          setActivePage(e);
+                        }}
+                      />
                     </div>
                   </div>
                 </Tab>
