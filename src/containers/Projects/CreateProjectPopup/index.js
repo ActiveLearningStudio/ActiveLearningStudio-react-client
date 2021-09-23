@@ -125,17 +125,20 @@ const onSubmit = async (values, dispatch, props) => {
     history.push('/projects');
   }
 };
-export const uploadThumb = async (e, permission, dispatch) => {
+export const uploadThumb = async (e, permission, teamPermission, id, dispatch) => {
   const formData = new FormData();
   try {
+    console.log(id);
     formData.append('thumb', e.target.files[0]);
+    formData.append('project_id', id);
     imageValidation = '';
     await dispatch(uploadProjectThumbnailAction(formData));
   } catch (err) {
     Swal.fire({
       icon: 'error',
       title: 'Error',
-      text: permission?.Project?.includes('project:upload-thumb') ? 'Image upload failed, kindly try again' : 'You do not have permission to upload image',
+      // eslint-disable-next-line max-len
+      text: permission?.Project?.includes('project:upload-thumb') || teamPermission?.Team?.includes('team:view-project') ? 'Image upload failed, kindly try again' : 'You do not have permission to upload image',
     });
   }
 };
@@ -153,6 +156,7 @@ let CreateProjectPopup = (props) => {
   } = props;
   const dispatch = useDispatch();
   const stateHeader = useSelector((state) => state.organization);
+  const projectState = useSelector((state) => state.project);
   const { teamPermission } = useSelector((state) => state.team);
   const { permission } = stateHeader;
   const [modalShow, setModalShow] = useState(false);
@@ -265,7 +269,7 @@ let CreateProjectPopup = (props) => {
                         text: 'Selected file size should be less then 100MB.',
                       });
                     } else {
-                      uploadThumb(e, permission, dispatch);
+                      uploadThumb(e, permission, teamPermission, projectState?.selectedProject?.id, dispatch);
                     }
                   }}
                 />
