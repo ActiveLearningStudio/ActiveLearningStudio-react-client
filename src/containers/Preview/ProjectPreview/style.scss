@@ -3,8 +3,16 @@
 /* CSS FOR PRoduct TOP */
 .inner_body .container {
   max-width: 1521px;
-  margin: 0 auto;
+  // margin: 0 auto;
   padding: 0 15px;
+}
+.inner-playlist {
+  margin-top: 32px;
+  width: 100%;
+}
+.slick-slide {
+  width: 250px !important;
+  margin-right: 24px !important;
 }
 .scene-playlist {
   display: flex;
@@ -23,6 +31,7 @@
   // //margin-right: 50px;
   // background-color: #fff;
   display: flex;
+  justify-content: space-between;
   padding-bottom: 32px;
   border-bottom: 2px solid #dddddd;
   .scene-project-name-description {
@@ -61,10 +70,13 @@
   //   align-items: center;
   //   justify-content: space-between;
   // }
-
+  .accordion-update {
+    color: $curriki-main-blue !important;
+    border-bottom: 2px solid #efefef !important;
+  }
   .playlist-dropdown {
     position: absolute;
-    top: 0;
+    top: -8px;
     right: 0;
     box-shadow: 0 0 1px 1px #ddd !important;
     width: 30px;
@@ -145,6 +157,9 @@ img {
         }
       }
       .configuration-button-preview {
+        @media screen and (max-width: 1024px) {
+          width: 182px;
+        }
         padding: 11px;
         width: 152px;
         height: 36px;
@@ -338,6 +353,7 @@ img {
 .playlist-title-div {
   // border-bottom: 1px solid #eeeeee;
   // padding: 30px 40px 0;
+  margin-bottom: 20px;
 
   .title-md:before {
     content: "";
@@ -615,6 +631,7 @@ img {
 
 .check-each {
   // display: flex;
+  border-bottom: none !important;
   .add-btn-activity {
     display: flex;
     justify-content: flex-end;
@@ -642,6 +659,10 @@ img {
     line-height: 20px;
     color: #084892;
     border: none;
+
+    position: absolute;
+    right: 0;
+    top: -10px;
   }
 }
 .check-each .playlist-dropdown {

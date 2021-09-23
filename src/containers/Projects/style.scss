@@ -1,5 +1,9 @@
 @import "assets/css/index";
 
+.project-list-all {
+  display: flex;
+  flex-wrap: wrap;
+}
 .inner-content {
   background: $white;
   padding: 30px;
@@ -371,7 +375,7 @@
     align-items: center;
   }
   .top-heading-detail {
-    margin-top: 40px;
+    margin-top: 30px;
     margin-bottom: 40px;
   }
 }

@@ -180,7 +180,11 @@ function ProjectPreview(props) {
               ref={(el) => {
                 accordion.current[counter] = el;
               }}
-              className={counter === 0 ? "active accordion" : " accordion"}
+              className={
+                counter === 0
+                  ? "active accordion accordion-update"
+                  : " accordion accordion-update"
+              }
               onClick={() => {
                 if (!editTitle) {
                   accordion.current[counter].classList.toggle("active");
@@ -255,69 +259,73 @@ function ProjectPreview(props) {
     <div>
       {currentProject && (
         <>
-          <div className="container" style={{ marginTop: "32px" }}>
-            <div className="scene-playlist">
-              <div className="scene">
-                <div className="scene-img">
-                  <div id="content" />
-                  <Link
-                    to={`/org/${organization.currentOrganization?.domain}/project/${currentProject.id}`}
-                  >
-                    {!!currentProject.thumb_url &&
-                    currentProject.thumb_url.includes("pexels.com") ? (
-                      <img src={currentProject.thumb_url} alt="thumbnail" />
-                    ) : (
-                      <img
-                        src={
-                          global.config.resourceUrl + currentProject.thumb_url
-                        }
-                        alt="thumbnail"
-                      />
-                    )}
-                  </Link>
-                </div>
-                <div className="scene-project-name-description">
-                  <div className="scene-project-name">
-                    <Headings
-                      text={currentProject.name}
-                      headingType="h2"
-                      color="#084892"
-                    />
-                  </div>
-                  <div className="scene-project-description">
-                    <Headings
-                      text={
-                        currentProject.description &&
-                        currentProject.description.length > 130
-                          ? `${currentProject.description.substring(
-                              0,
-                              130
-                            )} ...`
-                          : currentProject.description
-                      }
-                      headingType="body2"
-                      color="#515151"
-                    />
-                    {/* <p className="expandiv">
+          <div className="content-wrapper">
+            <div className="inner-playlist">
+              <div className="scene-playlist">
+                <div className="scene">
+                  <div style={{ display: "flex" }}>
+                    <div className="scene-img">
+                      <div id="content" />
+                      <Link
+                        to={`/org/${organization.currentOrganization?.domain}/project/${currentProject.id}`}
+                      >
+                        {!!currentProject.thumb_url &&
+                        currentProject.thumb_url.includes("pexels.com") ? (
+                          <img src={currentProject.thumb_url} alt="thumbnail" />
+                        ) : (
+                          <img
+                            src={
+                              global.config.resourceUrl +
+                              currentProject.thumb_url
+                            }
+                            alt="thumbnail"
+                          />
+                        )}
+                      </Link>
+                    </div>
+                    <div className="scene-project-name-description">
+                      <div className="scene-project-name">
+                        <Headings
+                          text={currentProject.name}
+                          headingType="h2"
+                          color="#084892"
+                        />
+                      </div>
+                      <div className="scene-project-description">
+                        <Headings
+                          text={
+                            currentProject.description &&
+                            currentProject.description.length > 130
+                              ? `${currentProject.description.substring(
+                                  0,
+                                  130
+                                )} ...`
+                              : currentProject.description
+                          }
+                          headingType="body2"
+                          color="#515151"
+                        />
+                        {/* <p className="expandiv">
                     {currentProject.description &&
                     currentProject.description.length > 130
                       ? `${currentProject.description.substring(0, 130)} ...`
                       : currentProject.description}
                   </p> */}
-                  </div>
-                </div>
-                <div className="sce_cont">
-                  <ul className="bar_list flex-div check">
-                    <li>
-                      <div className="team-name">
-                        {currentProject?.team?.name
-                          ? `Team Name: ${currentProject?.team?.name}`
-                          : null}
                       </div>
-                      <div className="title_lg check">
-                        {/* <div>{currentProject.name}</div> */}
-                        <div className="configuration">
-                          {/* {!(
+                    </div>
+                  </div>
+                  <div className="sce_cont">
+                    <ul className="bar_list flex-div check">
+                      <li>
+                        <div className="team-name">
+                          {currentProject?.team?.name
+                            ? `Team Name: ${currentProject?.team?.name}`
+                            : null}
+                        </div>
+                        <div className="title_lg check">
+                          {/* <div>{currentProject.name}</div> */}
+                          <div className="configuration">
+                            {/* {!(
                           permission?.Project?.includes("project:view") &&
                           permission?.Project.length === 1
                         ) && (
@@ -330,8 +338,8 @@ function ProjectPreview(props) {
                           />
                         )} */}
 
-                          <div className="configuration-shareproject-link">
-                            {/* <Link
+                            <div className="configuration-shareproject-link">
+                              {/* <Link
                             to={`/org/${organization.currentOrganization?.domain}`}
                             onClick={history.goBack}
                             className="go-back-button-preview"
@@ -339,129 +347,130 @@ function ProjectPreview(props) {
                             <FontAwesomeIcon icon="undo" className="mr-2" />
                             Exit Preview Mode
                           </Link> */}
-                            {(Object.keys(teamPermission).length
-                              ? teamPermission?.Team?.includes(
-                                  "team:share-project"
-                                )
-                              : permission?.Project?.includes(
-                                  "project:share"
-                                )) && (
-                              <div className="share-button share-button-update">
-                                {/* Share Project */}
-                                <Switch
-                                  onColor="#5952c6"
-                                  onChange={() => {
-                                    if (activeShared) {
-                                      Swal.fire({
-                                        icon: "warning",
-                                        title: `You are about to stop sharing <strong>"${currentProject.name}"</strong>`,
-                                        html: `Please remember that anyone you have shared this project
+                              {(Object.keys(teamPermission).length
+                                ? teamPermission?.Team?.includes(
+                                    "team:share-project"
+                                  )
+                                : permission?.Project?.includes(
+                                    "project:share"
+                                  )) && (
+                                <div className="share-button share-button-update">
+                                  {/* Share Project */}
+                                  <Switch
+                                    onColor="#5952c6"
+                                    onChange={() => {
+                                      if (activeShared) {
+                                        Swal.fire({
+                                          icon: "warning",
+                                          title: `You are about to stop sharing <strong>"${currentProject.name}"</strong>`,
+                                          html: `Please remember that anyone you have shared this project
                                     with will no longer have access its contents. Do you want to continue?`,
-                                        showCloseButton: true,
-                                        showCancelButton: true,
-                                        focusConfirm: false,
-                                        confirmButtonText: "Stop Sharing!",
-                                        confirmButtonAriaLabel: "Stop Sharing!",
-                                        cancelButtonText: "Cancel",
-                                        cancelButtonAriaLabel: "Cancel",
-                                      }).then((resp) => {
-                                        if (resp.isConfirmed) {
-                                          dispatch(
-                                            toggleProjectShareRemovedAction(
-                                              currentProject.id,
-                                              currentProject.name
-                                            )
-                                          );
-                                        }
-                                      });
-                                    } else {
-                                      dispatch(
-                                        toggleProjectShareAction(
-                                          currentProject?.id,
-                                          currentProject.name
-                                        )
-                                      );
-                                    }
-                                  }}
-                                  checked={activeShared || false}
-                                  className="react-switch"
-                                  handleDiameter={30}
-                                  uncheckedIcon={false}
-                                  checkedIcon={false}
-                                />
-                                <span>Share Project</span>
-
-                                <Link
-                                  to={`/org/${organization.currentOrganization?.domain}`}
-                                  onClick={history.goBack}
-                                  // className="go-back-button-preview"
-                                  className="configuration-button-preview"
-                                >
-                                  <FontAwesomeIcon
-                                    icon="undo"
-                                    className="mr-2"
-                                    color="#F8AF2C"
+                                          showCloseButton: true,
+                                          showCancelButton: true,
+                                          focusConfirm: false,
+                                          confirmButtonText: "Stop Sharing!",
+                                          confirmButtonAriaLabel:
+                                            "Stop Sharing!",
+                                          cancelButtonText: "Cancel",
+                                          cancelButtonAriaLabel: "Cancel",
+                                        }).then((resp) => {
+                                          if (resp.isConfirmed) {
+                                            dispatch(
+                                              toggleProjectShareRemovedAction(
+                                                currentProject.id,
+                                                currentProject.name
+                                              )
+                                            );
+                                          }
+                                        });
+                                      } else {
+                                        dispatch(
+                                          toggleProjectShareAction(
+                                            currentProject?.id,
+                                            currentProject.name
+                                          )
+                                        );
+                                      }
+                                    }}
+                                    checked={activeShared || false}
+                                    className="react-switch"
+                                    handleDiameter={30}
+                                    uncheckedIcon={false}
+                                    checkedIcon={false}
                                   />
-                                  Project Preview
-                                </Link>
+                                  <span>Share Project</span>
+
+                                  <Link
+                                    to={`/org/${organization.currentOrganization?.domain}`}
+                                    onClick={history.goBack}
+                                    // className="go-back-button-preview"
+                                    className="configuration-button-preview"
+                                  >
+                                    <FontAwesomeIcon
+                                      icon="undo"
+                                      className="mr-2"
+                                      color="#F8AF2C"
+                                    />
+                                    Project Preview
+                                  </Link>
+                                </div>
+                              )}
+                            </div>
+                            {activeShared && (
+                              <div
+                                className="shared-link "
+                                onClick={() => {
+                                  if (
+                                    window.gapi &&
+                                    window.gapi.sharetoclassroom
+                                  ) {
+                                    window.gapi.sharetoclassroom.go("croom");
+                                  }
+                                  const protocol = `${
+                                    window.location.href.split("/")[0]
+                                  }//`;
+                                  const url = `${protocol}${window.location.host}/project/${match.params.projectId}/shared`;
+                                  return SharePreviewPopup(
+                                    url,
+                                    currentProject.name
+                                  );
+                                }}
+                              >
+                                <FontAwesomeIcon
+                                  icon="external-link-alt"
+                                  className="mr-2"
+                                />
+                                Get shared link
                               </div>
                             )}
                           </div>
-                          {activeShared && (
-                            <div
-                              className="shared-link "
-                              onClick={() => {
-                                if (
-                                  window.gapi &&
-                                  window.gapi.sharetoclassroom
-                                ) {
-                                  window.gapi.sharetoclassroom.go("croom");
-                                }
-                                const protocol = `${
-                                  window.location.href.split("/")[0]
-                                }//`;
-                                const url = `${protocol}${window.location.host}/project/${match.params.projectId}/shared`;
-                                return SharePreviewPopup(
-                                  url,
-                                  currentProject.name
-                                );
-                              }}
-                            >
-                              <FontAwesomeIcon
-                                icon="external-link-alt"
-                                className="mr-2"
-                              />
-                              Get shared link
-                            </div>
-                          )}
                         </div>
-                      </div>
-                    </li>
-                    <li />
-                    <li />
-                    <li />
-                  </ul>
+                      </li>
+                      <li />
+                      <li />
+                      <li />
+                    </ul>
 
-                  <ul className="rating flex-div" />
+                    <ul className="rating flex-div" />
 
-                  {/* <p className="expandiv">{currentProject.description}</p> */}
+                    {/* <p className="expandiv">{currentProject.description}</p> */}
+                  </div>
+
+                  {/*  */}
                 </div>
-
-                {/*  */}
-              </div>
-              <div className="playlist-div">
-                <div className="playlist-title-div">
-                  <div className="title-md">Playlists</div>
-                </div>
-                <div className="all-playlist check-custom">
-                  <div className="playlist-accordion" id="custom_accordion">
-                    {playlists}
+                <div className="playlist-div">
+                  <div className="playlist-title-div">
+                    <div className="title-md">Playlists</div>
+                  </div>
+                  <div className="all-playlist check-custom">
+                    <div className="playlist-accordion" id="custom_accordion">
+                      {playlists}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
           {/* <div className="container">
             <div className="playlist-div">
               <div className="playlist-title-div">

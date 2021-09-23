@@ -424,75 +424,85 @@ export const ProjectsPage = (props) => {
                           </div>
                         </div> */}
                         </div>
+
                         {!!projectDivider && projectDivider.length > 0 ? (
-                          <DragDropContext onDragEnd={onDragEnd}>
-                            {projectDivider.map((rowData) => (
-                              <Droppable
-                                key={rowData.id}
-                                droppableId={rowData.id}
-                                // direction="horizontal"
-                                // type="row"
-                                className="drag-class"
-                                direction="horizontal"
-                              >
-                                {(provided) => (
-                                  <div
-                                    {...provided.droppableProps}
-                                    ref={provided.innerRef}
-                                  >
-                                    <div className="check-home" id={value}>
-                                      {rowData.collection.map((proj, index) => {
-                                        const res = {
-                                          title: proj.name,
-                                          id: proj.id,
-                                          deleteType: "Project",
-                                        };
-                                        return (
-                                          <Draggable
-                                            key={proj.id}
-                                            draggableId={`${proj.id}`}
-                                            index={index}
-                                          >
-                                            {(provid) => (
-                                              <div
-                                                className="playlist-resource"
-                                                ref={provid.innerRef}
-                                                {...provid.draggableProps}
-                                                {...provid.dragHandleProps}
+                          <div className="project-list-all">
+                            <DragDropContext onDragEnd={onDragEnd}>
+                              {projectDivider.map((rowData) => (
+                                <Droppable
+                                  key={rowData.id}
+                                  droppableId={rowData.id}
+                                  // direction="horizontal"
+                                  // type="row"
+                                  className="drag-class"
+                                  direction="horizontal"
+                                >
+                                  {(provided) => (
+                                    <div
+                                      {...provided.droppableProps}
+                                      ref={provided.innerRef}
+                                    >
+                                      {/* <div className="check-hom" id={value}> */}
+                                      <div id={value}>
+                                        {rowData.collection.map(
+                                          (proj, index) => {
+                                            const res = {
+                                              title: proj.name,
+                                              id: proj.id,
+                                              deleteType: "Project",
+                                            };
+                                            return (
+                                              <Draggable
+                                                key={proj.id}
+                                                draggableId={`${proj.id}`}
+                                                index={index}
                                               >
-                                                <ProjectCard
-                                                  key={proj.id}
-                                                  project={proj}
-                                                  res={res}
-                                                  handleDeleteProject={
-                                                    handleDeleteProject
-                                                  }
-                                                  handleShareProject={
-                                                    handleShareProject
-                                                  }
-                                                  showDeletePopup={
-                                                    showDeletePopup
-                                                  }
-                                                  showPreview={
-                                                    showPreview === proj.id
-                                                  }
-                                                  handleShow={handleShow}
-                                                  handleClose={handleClose}
-                                                  setProjectId={setProjectId}
-                                                  activeFilter={activeFilter}
-                                                />
-                                              </div>
-                                            )}
-                                          </Draggable>
-                                        );
-                                      })}
+                                                {(provid) => (
+                                                  <div
+                                                    className="playlist-resource"
+                                                    ref={provid.innerRef}
+                                                    {...provid.draggableProps}
+                                                    {...provid.dragHandleProps}
+                                                  >
+                                                    <ProjectCard
+                                                      key={proj.id}
+                                                      project={proj}
+                                                      res={res}
+                                                      handleDeleteProject={
+                                                        handleDeleteProject
+                                                      }
+                                                      handleShareProject={
+                                                        handleShareProject
+                                                      }
+                                                      showDeletePopup={
+                                                        showDeletePopup
+                                                      }
+                                                      showPreview={
+                                                        showPreview === proj.id
+                                                      }
+                                                      handleShow={handleShow}
+                                                      handleClose={handleClose}
+                                                      setProjectId={
+                                                        setProjectId
+                                                      }
+                                                      activeFilter={
+                                                        activeFilter
+                                                      }
+                                                    />
+                                                  </div>
+                                                )}
+                                              </Draggable>
+                                            );
+                                          }
+                                        )}
+                                      </div>
+                                      {provided.placeholder}
                                     </div>
-                                    {provided.placeholder}
-                                  </div>
-                                )}
-                              </Droppable>
-                            ))}
-                          </DragDropContext>
+                                  )}
+                                </Droppable>
+                              ))}
+                            </DragDropContext>
+                          </div>
                         ) : (
                           <>
                             <Alert variant="success">
