@@ -52,6 +52,7 @@ const VevensityLogin = loadable(() =>
   import("../containers/Auth/VevinsityLogin")
 );
 const AdminPanel = loadable(() => import("../containers/Admin"));
+const MyActivity = loadable(() => import("../containers/MyActivity"));
 const LtiLogin = loadable(() => import("../containers/Auth/LtiLogin"));
 const ProfilePage = loadable(() => import("../containers/Account/ProfilePage"));
 const ChangePasswordPage = loadable(() =>
@@ -277,6 +278,11 @@ const AppRouter = (props) => {
                     exact
                     path="/org/:organization/admin"
                     component={AdminPanel}
+                  />
+                  <PrivateRoute
+                    exact
+                    path="/org/:organization/myactivity"
+                    component={MyActivity}
                   />
                   <PrivateRoute
                     exact
