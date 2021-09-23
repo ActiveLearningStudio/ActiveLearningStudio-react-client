@@ -258,7 +258,7 @@ function Controller(props) {
                         setActiveRoleInComponent(head.display_name);
                         if (subTypeState === 'Manage Roles')
                           dispatch(roleDetail(activeOrganization.id, head.id));
-                        if (subTypeState === 'All Users') {
+                        if (subTypeState === 'All Users' && activeRole != head.id) {
                           setSearchQuery('');
                           setActiveRole(head.id);
                           setActivePage(1);
@@ -331,7 +331,7 @@ function Controller(props) {
               onChange={searchQueryChangeHandler}
             />
             <img src={searchimg} alt="search" />
-            {(searchQuery.length > 0 && searchQuery.length < 2) && <label className="flex" style={{ color: 'red' }}>Enter at least 2 characters</label> }
+            {(searchQuery.trim().length > 0 && searchQuery.trim().length < 2) && <label className="flex" style={{ color: 'red' }}>Enter at least 2 characters</label> }
           </div>
 
         </>

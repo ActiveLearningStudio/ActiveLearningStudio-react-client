@@ -101,6 +101,7 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
       type: actionTypes.UPDATE_PROJECT_SUCCESS,
       payload: { project },
     });
+    Swal.close();
     dispatch(allSidebarProjects());
     return project;
   } catch (e) {

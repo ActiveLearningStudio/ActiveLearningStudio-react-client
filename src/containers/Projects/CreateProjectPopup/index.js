@@ -153,6 +153,7 @@ let CreateProjectPopup = (props) => {
   } = props;
   const dispatch = useDispatch();
   const stateHeader = useSelector((state) => state.organization);
+  const { teamPermission } = useSelector((state) => state.team);
   const { permission } = stateHeader;
   const [modalShow, setModalShow] = useState(false);
   // const [publicProject, setPublicProject] = useState(true);
@@ -189,7 +190,8 @@ let CreateProjectPopup = (props) => {
 
   return (
 
-    (editMode && permission?.Project?.includes('project:edit')) || (!editMode && permission?.Project?.includes('project:create')) ? (
+    // eslint-disable-next-line max-len
+    (editMode && (teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project') : permission?.Project?.includes('project:edit'))) || (!editMode && permission?.Project?.includes('project:create')) ? (
       <div className="create-program-wrapper">
         <PexelsAPI
           show={modalShow}

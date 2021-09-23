@@ -33,7 +33,7 @@ function ActivityCreate(props) {
     dispatch(loadPlaylistAction(match.params.projectId, match.params.playlistId));
   }, []);
   useEffect(() => {
-    if (!teamPermission && selectedPlaylist?.project?.team?.id && organizationState?.currentOrganization?.id) {
+    if (Object.keys(teamPermission).length === 0 && selectedPlaylist?.project?.team?.id && organizationState?.currentOrganization?.id) {
       dispatch(getTeamPermission(organizationState?.currentOrganization?.id, selectedPlaylist?.project?.team?.id));
     }
   }, [teamPermission, selectedPlaylist, organizationState]);
@@ -56,14 +56,15 @@ function ActivityCreate(props) {
               </Link>
             </div>
             {/* Tabs */}
-            {!organization?.Activity?.includes('activity:create')
-              && !organization?.Activity?.includes('activity:upload')
-              && !teamPermission?.Team?.includes('team:add-activity') ? (
+            {(Object.keys(teamPermission).length ? !teamPermission?.Team?.includes('team:add-activity') : (!organization?.Activity?.includes('activity:create')
+              && !organization?.Activity?.includes('activity:upload')))
+              ? (
                 <Alert variant="danger" alt="">You are not authorized to create or upload an activity.</Alert>
             ) : (
               <Tab.Container
                 id="left-tabs-example"
-                defaultActiveKey={(organization?.Activity?.includes('activity:create') || teamPermission?.Team?.includes('team:add-activity')) ? 'create' : 'upload'}
+                // eslint-disable-next-line max-len
+                defaultActiveKey={(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:add-activity') : organization?.Activity?.includes('activity:create')) ? 'create' : 'upload'}
               >
                 <Row>
                   <Col sm={3}>
@@ -74,7 +75,7 @@ function ActivityCreate(props) {
                           Search for an Existing Activity
                         </Nav.Link>
                       </Nav.Item> */}
-                      {(organization?.Activity?.includes('activity:create') || teamPermission?.Team?.includes('team:add-activity')) && (
+                      {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:add-activity') : organization?.Activity?.includes('activity:create')) && (
                         <Nav.Item>
                           <Nav.Link eventKey="create">
                             <FontAwesomeIcon icon="plus" />
@@ -102,7 +103,7 @@ function ActivityCreate(props) {
                           <UploadActivity />
                         </Tab.Pane>
                       )}
-                      {(organization?.Activity?.includes('activity:create') || teamPermission?.Team?.includes('team:add-activity')) && (
+                      {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:add-activity') : organization?.Activity?.includes('activity:create')) && (
                         <Tab.Pane eventKey="create">
                           <ActivityWizard />
                         </Tab.Pane>

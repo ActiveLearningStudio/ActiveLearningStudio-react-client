@@ -10,7 +10,7 @@ const INITIAL_STATE = {
   teams: [],
   selectedTeam: {},
   roles: null,
-  teamPermission: null,
+  teamPermission: {},
   teamProjects: [],
   selectedForClone: '',
 };
@@ -46,6 +46,12 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         teamPermission: action.payload,
+      };
+
+    case actionTypes.CLEAR_TEAM_PERMISSIONS:
+      return {
+        ...state,
+        teamPermission: {},
       };
 
     case actionTypes.SHOW_INVITE_MEMBER:

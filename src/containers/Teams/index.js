@@ -92,10 +92,10 @@ function TeamsPage(props) {
     setBreadCrumb(crumb.split('/'));
   }, [selectedTeam, status, teamShow, teams]);
   useEffect(() => {
-    if (!teamPermission && organization?.currentOrganization?.id && selectedTeam?.id) {
+    if (Object.keys(teamPermission).length === 0 && organization?.currentOrganization?.id && selectedTeam?.id) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, selectedTeam?.id));
     }
-  }, [teamPermission, selectedTeam]);
+  }, [selectedTeam, teamPermission]);
   if (location.pathname.includes('teams/') && !selectedTeam && !creation) {
     return <></>;
   }
@@ -143,7 +143,7 @@ function TeamsPage(props) {
                 {overview ? 'Teams' : (title[status] || 'Teams')}
               </h1>
               <div className="flex-button-top">
-                {(permission?.Team?.includes('team:add-projects') || teamPermission?.Team?.includes('team:add-project')) && projectShow && (
+                {teamPermission?.Team?.includes('team:add-project') && projectShow && (
                   <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}/add-projects`}>
                     <div className="btn-top-page">
                       <FontAwesomeIcon icon="plus" className="mr-2" />
@@ -151,8 +151,7 @@ function TeamsPage(props) {
                     </div>
                   </Link>
                 )}
-                {(permission?.Team?.includes('team:invite-member')
-                || teamPermission?.Team?.includes('team:add-team-user')
+                {(teamPermission?.Team?.includes('team:add-team-user')
                 || teamPermission?.Team?.includes('team:remove-team-user')) && projectShow && (
                   <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}`}>
                     <div className="btn-top-page">
