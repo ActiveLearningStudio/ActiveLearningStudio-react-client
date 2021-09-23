@@ -114,8 +114,8 @@ function ProjectPreview(props) {
       let activities;
       if (playlist.activities && playlist.activities.length > 0) {
         activities = playlist.activities.map((activity) => (
-          permission?.Activity?.includes('activity:view')
-          ? (
+          (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-activity') : permission?.Activity?.includes('activity:view'))
+          && (
             <ActivityCard
               activity={activity}
               projectId={parseInt(match.params.projectId, 10)}
@@ -124,7 +124,7 @@ function ProjectPreview(props) {
               playlist={playlist}
               teamPermission={teamPermission || {}}
             />
-          ) : null
+          )
         ));
       } else {
         activities = (
@@ -137,8 +137,8 @@ function ProjectPreview(props) {
       }
       console.log(editTitle);
       return (
-        permission?.Playlist?.includes('playlist:view')
-        ? (
+        (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-playlist') : permission?.Playlist?.includes('playlist:view'))
+        && (
           <div className="check-each" key={playlist.id}>
             {(Object.keys(teamPermission).length
             ? teamPermission?.Team?.includes('team:add-activity') : (permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload'))) && (
@@ -210,7 +210,7 @@ function ProjectPreview(props) {
               teamPermission={teamPermission || {}}
             />
           </div>
-        ) : null
+        )
       );
     });
   } else {
