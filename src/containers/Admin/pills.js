@@ -408,6 +408,15 @@ export default function Pills(props) {
     }
   }, [type, activePage, activeOrganization?.id,]);
 
+  const searchQueryChangeHandlerDefautSso = (search) => {
+    setDefaultSso(null);
+    const encodeQuery = encodeURI(search.target.value);
+    const result =  adminService.searchDefaultSso(encodeQuery,(activePage|| 1));
+    result.then((data) => {
+      setDefaultSso(data)
+    })
+  }
+
   useEffect(() => {
     if (activeTab === 'Project') {
       setSubTypeState('All Projects');
@@ -712,7 +721,7 @@ export default function Pills(props) {
                 type={type}
                 setActivePage={setActivePage}
                 activePage={activePage}
-                searchQueryChangeHandler={searchQueryChangeHandlerLMS}
+                searchQueryChangeHandler={searchQueryChangeHandlerDefautSso}
               />
             )}
           </div>

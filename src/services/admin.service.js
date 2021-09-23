@@ -219,6 +219,13 @@ const deleteDefaultSso = (id) => httpService
     errorCatcher(err.response.data);
     return Promise.reject();
   });
+
+const searchDefaultSso = (search, page) => httpService
+  .get(`${apiVersion}/default-sso-settings?page=${page}&query=${search.replace(/#/, '%23')}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+  });
 export default {
   addUserInOrganization,
   editUserInOrganization,
@@ -248,4 +255,5 @@ export default {
   deleteDefaultSso,
   createDefaultSso,
   updateDefaultSso,
+  searchDefaultSso,
 };
