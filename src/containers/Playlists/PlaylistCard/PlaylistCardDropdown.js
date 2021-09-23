@@ -53,7 +53,9 @@ class PlaylistCardDropdown extends React.Component {
           {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-playlist') : permission?.Playlist?.includes('playlist:edit')) && (
             <Dropdown.Item onClick={() => {
               handleClickPlaylistTitle();
-              setSelectedForEdit(playlist);
+              if (setSelectedForEdit) {
+                setSelectedForEdit(playlist);
+              }
             }}
             >
               <FontAwesomeIcon icon="edit" className="mr-2" />
