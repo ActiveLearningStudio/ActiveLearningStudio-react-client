@@ -166,6 +166,11 @@ const roleDetail = (id, roleId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const searchOrganization = (searchKeyword) => httpService
+  .get(`/${apiVersion}/organizations/searchOrganizationByName?query=${searchKeyword.replace(/#/, '%23')}`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   getOrganization,
@@ -191,4 +196,5 @@ export default {
   permissionId,
   updateRole,
   searchUserInView,
+  searchOrganization,
 };

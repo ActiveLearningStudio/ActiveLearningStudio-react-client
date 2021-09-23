@@ -348,6 +348,19 @@ function Controller(props) {
           <img src={searchimg} alt="search" />
         </div>
       )}
+      
+      {!!search && type === "DefaultSso" && (
+        <div className="search-bar">
+          <input
+            className=""
+            type="text"
+            placeholder="Search by URL or Client Id"
+            value={searchQuery}
+            onChange={searchQueryChangeHandler}
+          />
+          <img src={searchimg} alt="search" />
+        </div>
+      )}
       {!!search && type === "Stats" && (
         <div className="search-bar">
           <input
@@ -571,6 +584,20 @@ function Controller(props) {
             onClick={() => {
              if (btnAction === "add_lms") {
                 dispatch(setActiveAdminForm("add_lms"));
+              }
+            }}
+          >
+            <FontAwesomeIcon icon="plus" />
+            {btnText}
+          </button>
+        </div>
+      )}
+      {!!btnText && type === 'DefaultSso' && (
+        <div className="btn-text">
+          <button
+            onClick={() => {
+             if (btnAction === "add_default_sso") {
+                dispatch(setActiveAdminForm("add_default_sso"));
               }
             }}
           >

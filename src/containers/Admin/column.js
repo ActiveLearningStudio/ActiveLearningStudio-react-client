@@ -117,4 +117,13 @@ export const columnData = {
     'Teams ',
     'Action',
   ],
+
+  defaultsso: [
+    'URL',
+    'Type',
+    'Site Name',
+    'Client Id',
+    'Description',
+    'Action',
+  ],
 };

@@ -188,6 +188,37 @@ const getLogsListing = (filter, size, page, query) => httpService
     errorCatcher(err.response.data);
     Promise.reject(err.response.data);
   });
+
+const getDefaultSso = (page) => httpService
+  .get(`${apiVersion}/default-sso-settings?page=${page}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+  });
+
+const createDefaultSso = (values) => httpService
+  .post(`${apiVersion}/default-sso-settings`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const updateDefaultSso = (id, values) => httpService
+  .put(`${apiVersion}/default-sso-settings/${id}`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const deleteDefaultSso = (id) => httpService
+  .remove(`${apiVersion}/default-sso-settings/${id}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
 export default {
   addUserInOrganization,
   editUserInOrganization,
@@ -213,4 +244,8 @@ export default {
   forgetSpecificFailedJob,
   getLogsListing,
   importProject,
+  getDefaultSso,
+  deleteDefaultSso,
+  createDefaultSso,
+  updateDefaultSso,
 };

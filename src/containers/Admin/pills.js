@@ -41,6 +41,7 @@ export default function Pills(props) {
   const [allProjectUserTab, setAllProjectUserTab] = useState(null);
   const [allProjectIndexTab, setAllProjectIndexTab] = useState(null);
   const [lmsProject, setLmsProject] = useState(null);
+  const [defaultSso, setDefaultSso] = useState(null);
   const [jobs, setJobs ] = useState(null);
   const [jobType, SetJobType] = useState({ value: 1 , display_name: 'Pending'});
   const [logs, setLogs ] = useState(null);
@@ -397,6 +398,16 @@ export default function Pills(props) {
     })
   }
 
+  //Default SSO ***************************************
+  useMemo(async () => {
+    if(type==="DefaultSso") {
+    const result =  adminService.getDefaultSso(activePage|| 1);
+    result.then((data) => {
+      setDefaultSso(data)
+    })
+    }
+  }, [type, activePage, activeOrganization?.id,]);
+
   useEffect(() => {
     if (activeTab === 'Project') {
       setSubTypeState('All Projects');
@@ -685,6 +696,23 @@ export default function Pills(props) {
                 type={type}
                 subType={'All settings'}
                 subTypeState={subTypeState}
+              />
+            )}    
+            {type === "DefaultSso" && (
+              <Starter
+                paginationCounter={false}
+                search={true}
+                print={false}
+                btnText="Create New Default SSO"
+                btnAction="add_default_sso"
+                importUser={false}
+                filter={false}
+                tableHead={columnData.defaultsso}
+                data={defaultSso}
+                type={type}
+                setActivePage={setActivePage}
+                activePage={activePage}
+                searchQueryChangeHandler={searchQueryChangeHandlerLMS}
               />
             )}
           </div>

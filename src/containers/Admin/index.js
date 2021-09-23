@@ -15,6 +15,7 @@ import Heading from './heading';
 import Breadcrump from 'utils/BreadCrump/breadcrump';
 import * as actionTypes from 'store/actionTypes';
 import CreateLms from './formik/createLms'
+import CreateDefaultSso from './formik/createDefaultSso'
 import './style.scss';
 import { getRoles } from 'store/actions/organization';
 import EditProject from './formik/editProject';
@@ -127,6 +128,14 @@ function AdminPanel() {
                     <Pills modules={["All settings"]} type="Settings" />
                   </div>
                 </Tab> */}
+                {permission?.Organization?.includes('organization:view-user')
+                 && (
+                  <Tab eventKey="DefaultSso" title="Default SSO Integrations">
+                    <div className="module-content">
+                      <Pills modules={["All Default SSO Settings"]} type="DefaultSso" />
+                    </div>
+                  </Tab>
+                )}
               </Tabs>
             </div>
           </div>
@@ -274,6 +283,34 @@ function AdminPanel() {
                 ) : (
                   <CreateUser editMode />
                 )}
+              </div>
+            </div>
+          )}
+          {activeForm === "add_default_sso" && (
+            <div className="form-new-popup-admin">
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">
+                <CreateDefaultSso method="create" />
+              </div>
+            </div>
+          )}
+          {activeForm === "edit_default_sso" && (
+            <div className="form-new-popup-admin">
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">
+                <CreateDefaultSso editMode />
               </div>
             </div>
           )}
