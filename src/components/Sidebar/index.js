@@ -17,8 +17,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import foldericon from 'assets/images/sidebar/folder-icon.png';
 import teamicon from 'assets/images/sidebar/team-icon.png';
 import toggleButton from 'assets/images/sidebar/toggle-button.png';
-import groupicon from 'assets/images/sidebar/group-icon.png';
-import usersidebaricon from 'assets/images/sidebar/user-sidebar-icon.png';
+// import groupicon from 'assets/images/sidebar/group-icon.png';
+// import usersidebaricon from 'assets/images/sidebar/user-sidebar-icon.png';
 // import dashboardicon from 'assets/images/sidebar/dashboard-icon.png';
 import backgroundimg from 'assets/images/sidebar/background.png';
 import administrate from 'assets/images/sidebar/administrate.png';
@@ -32,7 +32,7 @@ import {
 import { updateOrganizationScreen } from 'store/actions/organization';
 
 import './style.scss';
-import { setActiveAdminForm, setActiveTab } from 'store/actions/admin';
+// import { setActiveAdminForm, setActiveTab } from 'store/actions/admin';
 
 const PROJECTS = 'projects';
 const CHANNEL = 'channel';
@@ -231,7 +231,7 @@ function Sidebar(props) {
                 </Link>
               </>
             )}
-            {permission?.Group?.includes('group:view')
+            {/* {permission?.Group?.includes('group:view')
             && (
               <>
                 <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
@@ -244,8 +244,8 @@ function Sidebar(props) {
                   </div>
                 </Link>
               </>
-            )}
-            {(permission?.Project?.includes('project:create')
+            )} */}
+            {/* {(permission?.Project?.includes('project:create')
               || permission?.Team?.includes('team:create')
               || permission?.Group?.includes('group:create')
               || permission?.Organization?.includes('organization:add-user'))
@@ -253,72 +253,72 @@ function Sidebar(props) {
               <div className="org-name">
                 Create
               </div>
-            )}
-            <div style={{ overflowX: 'hidden', overflowY: 'auto', height: '250px' }}>
-              {permission?.Project?.includes('project:create')
-                && (
-                  <>
-                    <Link to={`/org/${allState.organization?.currentOrganization?.domain}/project/create`}>
-                      <div className="row-sidebar">
-                        <img src={foldericon} alt="" />
-                        <div className="sidebar-headings">
-                          New Project
-                        </div>
-                        <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
+            )} */}
+            {/* <div style={{ overflowX: 'hidden', overflowY: 'auto', height: '250px' }}> */}
+            {/* {permission?.Project?.includes('project:create')
+              && (
+                <>
+                  <Link to={`/org/${allState.organization?.currentOrganization?.domain}/project/create`}>
+                    <div className="row-sidebar">
+                      <img src={foldericon} alt="" />
+                      <div className="sidebar-headings">
+                        New Project
                       </div>
-                    </Link>
-                  </>
-              )}
-              {permission?.Team?.includes('team:create')
-                && (
-                  <>
-                    <Link to={`/org/${allState.organization?.currentOrganization?.domain}/teams/create-team`}>
-                      <div className="row-sidebar">
-                        <img src={teamicon} alt="" />
-                        <div className="sidebar-headings">
-                          New Team
-                        </div>
-                        <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
+                      <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
+                    </div>
+                  </Link>
+                </>
+            )} */}
+            {/* {permission?.Team?.includes('team:create')
+              && (
+                <>
+                  <Link to={`/org/${allState.organization?.currentOrganization?.domain}/teams/create-team`}>
+                    <div className="row-sidebar">
+                      <img src={teamicon} alt="" />
+                      <div className="sidebar-headings">
+                        New Team
                       </div>
-                    </Link>
-                  </>
-              )}
-              {permission?.Group?.includes('group:create')
-                && (
-                  <>
-                    <Link to={`/org/${allState.organization?.currentOrganization?.domain}/groups/create-group`}>
-                      <div className="row-sidebar">
-                        <img src={groupicon} alt="" />
-                        <div className="sidebar-headings">
-                          New Group
-                        </div>
-                        <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
+                      <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
+                    </div>
+                  </Link>
+                </>
+            )} */}
+            {/* {permission?.Group?.includes('group:create')
+              && (
+                <>
+                  <Link to={`/org/${allState.organization?.currentOrganization?.domain}/groups/create-group`}>
+                    <div className="row-sidebar">
+                      <img src={groupicon} alt="" />
+                      <div className="sidebar-headings">
+                        New Group
                       </div>
-                    </Link>
-                  </>
-              )}
-              {permission?.Organization?.includes('organization:add-user')
-                && (
-                  <>
-                    <Link
-                      to={`/org/${allState.organization?.currentOrganization?.domain}/admin`}
-                      onClick={() => {
-                        dispatch(setActiveTab('Users'));
-                        dispatch(setActiveAdminForm('create_user'));
-                      }}
-                    >
-                      <div className="row-sidebar">
-                        <img src={usersidebaricon} alt="" />
-                        <div className="sidebar-headings">
-                          New User
-                        </div>
-                        <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
+                      <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
+                    </div>
+                  </Link>
+                </>
+            )} */}
+            {/* {permission?.Organization?.includes('organization:add-user')
+              && (
+                <>
+                  <Link
+                    to={`/org/${allState.organization?.currentOrganization?.domain}/admin`}
+                    onClick={() => {
+                      dispatch(setActiveTab('Users'));
+                      dispatch(setActiveAdminForm('create_user'));
+                    }}
+                  >
+                    <div className="row-sidebar">
+                      <img src={usersidebaricon} alt="" />
+                      <div className="sidebar-headings">
+                        New User
                       </div>
-                    </Link>
-                  </>
-              )}
-              <img src={backgroundimg} alt="" />
-            </div>
+                      <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
+                    </div>
+                  </Link>
+                </>
+            )} */}
+            {/* </div> */}
+            <img src={backgroundimg} alt="" />
             {/* {permission?.Organization?.includes('organization:view-user')
             && (
               <>
@@ -388,6 +388,44 @@ function Sidebar(props) {
                   </div>
                 </Link>
               )}
+              {/* {permission?.Project?.includes('project:create') && (
+                <Link to={`/org/${allState.organization?.currentOrganization?.domain}/project/create`}>
+                  <img src={projectLargeIcon} alt="" />
+                  <div className="tagline">
+                    Create Project
+                  </div>
+                </Link>
+              )}
+              {permission?.Team?.includes('team:create') && (
+                <Link to={`/org/${allState.organization?.currentOrganization?.domain}/teams/create-team`}>
+                  <img src={teamLargeIcon} alt="" />
+                  <div className="tagline">
+                    Create Team
+                  </div>
+                </Link>
+              )}
+              {permission?.Group?.includes('group:create') && (
+                <Link to={`/org/${allState.organization?.currentOrganization?.domain}/groups/create-group`}>
+                  <img src={groupLargeIcon} alt="" />
+                  <div className="tagline">
+                    Create Group
+                  </div>
+                </Link>
+              )}
+              {permission?.Organization?.includes('organization:add-user') && (
+                <Link
+                  to={`/org/${allState.organization?.currentOrganization?.domain}/admin`}
+                  onClick={() => {
+                    dispatch(setActiveTab('Users'));
+                    dispatch(setActiveAdminForm('create_user'));
+                  }}
+                >
+                  <img src={usersidebaricon} alt="" />
+                  <div className="tagline">
+                    Create User
+                  </div>
+                </Link>
+              )} */}
               {/* {permission?.Organization?.includes('organization:view-user') && (
                 <Link
                   to={`/org/${allState.organization.currentOrganization?.domain}/admin`}

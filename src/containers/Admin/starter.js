@@ -38,6 +38,7 @@ function Starter(props) {
     setSearchQueryStats,
     setSearchQuery,
     subTypeState,
+    setAllProjectIndexTab,
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
     searchActivitiesQueryHandler,
@@ -49,6 +50,7 @@ function Starter(props) {
     inviteUser,
     setCurrentTab,
     setChangeIndexValue,
+    changeIndexValue,
     permissionRender,
   } = props;
   return (
@@ -83,6 +85,7 @@ function Starter(props) {
         searchUserReportQueryHandler={searchUserReportQueryHandler}
         searchQueryChangeHandler={searchQueryChangeHandler}
         importUser={importUser}
+        setAllProjectIndexTab={setAllProjectIndexTab}
         filter={filter}
         tableHead={tableHead}
         inviteUser={inviteUser}
@@ -105,6 +108,8 @@ function Starter(props) {
           jobType={jobType}
           data={data}
           subType={subType}
+          changeIndexValue={changeIndexValue}
+          setAllProjectIndexTab={setAllProjectIndexTab}
           subTypeState={subTypeState}
           setCurrentTab={setCurrentTab}
         />

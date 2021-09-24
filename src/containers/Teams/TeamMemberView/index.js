@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 
-import { inviteMembersAction, removeMemberAction } from 'store/actions/team';
+import { getTeamPermission, inviteMembersAction, removeMemberAction } from 'store/actions/team';
 import { searchUsersAction } from 'store/actions/auth';
 import InviteDialog from 'components/InviteDialog';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -27,6 +27,10 @@ function TeamMemberView(props) {
     removeMember,
   } = props;
   const organization = useSelector((state) => state.organization);
+  const team = useSelector((state) => state.team);
+  const dispatch = useDispatch();
+
+  const { teamPermission } = team;
   const { permission } = organization;
   const [search, setSearch] = useState('');
   const handleChangeSearch = useCallback((e) => {
@@ -36,6 +40,12 @@ function TeamMemberView(props) {
   const [showInvite, setShowInvite] = useState(false);
 
   const [selectedMember, setSelectedMember] = useState(null);
+  // Fetch team permission if page reloads
+  useEffect(() => {
+    if (Object.keys(teamPermission).length === 0 && organization?.currentOrganization?.id && id) {
+      dispatch(getTeamPermission(organization?.currentOrganization?.id, id));
+    }
+  }, [team]);
 
   const handleInvite = useCallback((selectedUsers, emailNote) => {
     inviteMembers(id, selectedUsers, emailNote)
@@ -76,7 +86,7 @@ function TeamMemberView(props) {
                   value={search}
                   onChange={handleChangeSearch}
                 />
-                {permission?.Team?.includes('team:invite-member') && user && (
+                {teamPermission?.Team?.includes('team:add-team-user') && user && (
                   <InviteDialog
                     users={users}
                     visible={showInvite}
@@ -105,6 +115,7 @@ function TeamMemberView(props) {
                         selectMe={() => setSelectedMember(u.id)}
                         deselectMe={() => setSelectedMember(null)}
                         removeMember={removeMember}
+                        teamPermission={teamPermission || {}}
                       />
                     </div>
                   ))
@@ -114,7 +125,7 @@ function TeamMemberView(props) {
           </div>
         </div>
       </div>
-      <div className="col">
+      <div className="">
         <div className="team-description">
           <h2 className="title">
             {`About the ${name}`}

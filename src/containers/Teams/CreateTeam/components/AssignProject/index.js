@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { FadeDiv } from 'utils';
-
+import { Alert } from 'react-bootstrap';
 import './style.scss';
+import Swal from 'sweetalert2';
+import { useDispatch } from 'react-redux';
+import { selectedProjectForCloning } from 'store/actions/team';
 
 function AssignProject(props) {
   const {
@@ -16,12 +19,13 @@ function AssignProject(props) {
     search,
     setSearch,
   } = props;
-
+  const dispatch = useDispatch();
   const onChange = useCallback((e) => {
     setSearch(e.target.value);
   }, [setSearch]);
-  const [filteredProjects, setFilteredProjects] = useState([]);
-  const selectProject = useCallback((projectId) => {
+  const [filteredProjects, setFilteredProjects] = useState(null);
+  const selectProject = useCallback((projectId, projectName) => {
+    dispatch(selectedProjectForCloning(projectName));
     const newProjects = [...selectedProjects];
     const projectIndex = newProjects.indexOf(projectId);
     if (projectIndex === -1) {
@@ -62,7 +66,7 @@ function AssignProject(props) {
         <div className="title-box">
           <h2 className="title">Add/Assign Project</h2>
           <div className="title-cross" />
-          {finishButton}
+          {filteredProjects?.length > 0 ? finishButton : null}
         </div>
 
         <div className="assign-project-wrapper">
@@ -76,11 +80,21 @@ function AssignProject(props) {
           </div>
 
           <div className="assign-projects">
-            {filteredProjects.length > 0 ? filteredProjects.map((project) => (
+            {filteredProjects ? filteredProjects.length > 0 ? filteredProjects.map((project) => (
               <div
                 key={project.id}
                 className="assign-project-item"
-                onClick={() => selectProject(project.id)}
+                onClick={() => {
+                  if (selectedProjects.length === 0 || selectedProjects[0] === project.id) {
+                    selectProject(project.id, project.name);
+                  } else {
+                    Swal.fire({
+                      icon: 'warning',
+                      title: 'Action Prohibited',
+                      text: 'You are only allowed to select 1 project.',
+                    });
+                  }
+                }}
               >
                 <div
                   className="project-img"
@@ -101,10 +115,10 @@ function AssignProject(props) {
                   {project.name}
                 </div>
               </div>
-            )) : <div> No Project Found. </div>}
+            )) : <Alert variant="warning"> No Project Found. </Alert> : <Alert variant="primary">Loading...</Alert> }
           </div>
 
-          {finishButton}
+          {filteredProjects?.length > 0 ? finishButton : null}
         </div>
       </FadeDiv>
     </div>

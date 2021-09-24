@@ -90,6 +90,9 @@ function ProjectPreviewShared(props) {
       loadMyProjectsPreviewShared(match.params.projectId);
     }
   }, [match.params.projectId, sampleId]);
+  useEffect(() => {
+      localStorage.setItem('lti_activity', true);
+  }, []);
 
   let playlists;
 

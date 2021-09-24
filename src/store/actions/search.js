@@ -54,14 +54,15 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         h5pLibraries: values.standardArray,
         from: values.from,
         size: values.size,
-        author: values.author,
+        author: values.author || undefined,
         model: values.model || undefined,
-        negativeQuery: values.no_words,
+        negativeQuery: values.no_words || undefined,
         subjectIds: activeSubjects,
         educationLevelIds: activeGrades,
-        startDate: values.fromDate,
-        endDate: values.toDate,
+        startDate: values.fromDate || undefined,
+        endDate: values.toDate || undefined,
         organization_id: activeOrganization?.id,
+        searchType: 'org_projects',
       };
     } else {
       sendData = {
@@ -70,13 +71,14 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         from: values.from,
         size: values.size,
         model: values.model || undefined,
-        negativeQuery: values.no_words,
+        negativeQuery: values.no_words || undefined,
         subjectIds: activeSubjects,
-        author: values.author,
+        author: values.author || undefined,
         educationLevelIds: activeGrades,
-        startDate: values.fromDate,
-        endDate: values.toDate,
+        startDate: values.fromDate || undefined,
+        endDate: values.toDate || undefined,
         organization_id: activeOrganization?.id,
+        searchType: values.type === 'public' ? 'showcase_projects' : 'my_projects',
       };
     }
   } else {
@@ -86,14 +88,15 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         h5pLibraries: values.standardArray,
         from: values.from,
         size: values.size,
-        author: values.author,
+        author: values.author || undefined,
         model: values.model || undefined,
-        negativeQuery: values.no_words,
+        negativeQuery: values.no_words || undefined,
         subjectIds: activeSubjects,
         educationLevelIds: activeGrades,
-        startDate: values.fromDate,
-        endDate: values.toDate,
+        startDate: values.fromDate || undefined,
+        endDate: values.toDate || undefined,
         organization_id: activeOrganization?.id,
+        searchType: 'org_projects',
       };
     } else {
       sendData = {
@@ -101,14 +104,15 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         h5pLibraries: values.standardArray,
         from: values.from,
         size: values.size,
-        author: values.author,
+        author: values.author || undefined,
         model: values.model || undefined,
-        negativeQuery: values.no_words,
+        negativeQuery: values.no_words || undefined,
         subjectIds: activeSubjects,
         educationLevelIds: activeGrades,
-        startDate: values.fromDate,
-        endDate: values.toDate,
+        startDate: values.fromDate || undefined,
+        endDate: values.toDate || undefined,
         organization_id: activeOrganization?.id,
+        searchType: values.type === 'public' ? 'showcase_projects' : 'my_projects',
       };
     }
   }
