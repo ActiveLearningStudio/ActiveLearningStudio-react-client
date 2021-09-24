@@ -106,7 +106,7 @@ class PlaylistCard extends React.Component {
   };
 
   handleClickPlaylistTitle = async () => {
-    if (this.props.organization?.permission?.Playlist?.includes('playlist:edit')) {
+    if (this.props.organization?.permission?.Playlist?.includes('playlist:edit') || this.props.teamPermission?.Team?.includes('team:edit-playlist')) {
       this.setState({
         editMode: true,
       }, () => {

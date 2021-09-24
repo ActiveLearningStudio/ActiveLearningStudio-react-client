@@ -40,7 +40,7 @@ function TeamsPage(props) {
     loadSubOrgTeams,
   } = props;
   const organization = useSelector((state) => state.organization);
-  const { teamPermission } = useSelector((state) => state.team);
+  const { teamPermission, selectedForClone } = useSelector((state) => state.team);
   const { activeOrganization, currentOrganization, permission } = organization;
   const [alertCheck, setAlertCheck] = useState(false);
   const [breadCrumb, setBreadCrumb] = useState([]);
@@ -82,7 +82,13 @@ function TeamsPage(props) {
 
   const teamId = parseInt(location.pathname.split('teams/')[1], 10);
   const selectedTeam = teams.find((team) => team.id === teamId);
+  const { notification } = useSelector((state) => state.notification);
 
+  useEffect(() => {
+    if (notification?.today[0]?.data.message.indexOf(selectedForClone) !== -1) {
+      dispatch(loadTeamsAction());
+    }
+  }, [notification?.today]);
   useEffect(() => {
     let crumb = breadCrumbData[status];
     if (teamShow && selectedTeam) {

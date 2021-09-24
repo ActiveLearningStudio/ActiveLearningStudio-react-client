@@ -32,7 +32,6 @@ class PlaylistCardDropdown extends React.Component {
       teamPermission,
     } = this.props;
     const { permission } = organization;
-
     return (
       <Dropdown className="pull-right playlist-dropdown check">
         <Dropdown.Toggle className="playlist-dropdown-btn">
@@ -44,7 +43,7 @@ class PlaylistCardDropdown extends React.Component {
           <Dropdown.Item
             as={Link}
             className="hidden"
-            to={`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/preview`}
+            to={`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/${playlist.activities[0]?.id}/preview`}
           >
             <FontAwesomeIcon icon="eye" className="mr-2" />
             Preview
@@ -53,7 +52,9 @@ class PlaylistCardDropdown extends React.Component {
           {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-playlist') : permission?.Playlist?.includes('playlist:edit')) && (
             <Dropdown.Item onClick={() => {
               handleClickPlaylistTitle();
-              setSelectedForEdit(playlist);
+              if (setSelectedForEdit) {
+                setSelectedForEdit(playlist);
+              }
             }}
             >
               <FontAwesomeIcon icon="edit" className="mr-2" />
