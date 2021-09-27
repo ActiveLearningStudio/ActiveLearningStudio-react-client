@@ -103,7 +103,7 @@ const ActivityShared = (props) => {
                   const extendedStatement = xAPIHelper.extendSharedActivityStatement(
                     this,
                     event.data.statement,
-                    { path: match.path },
+                    { path: match.path, activityId: match.params.activityId },
                   );
                   dispatch(loadH5pResourceXapi(JSON.stringify(extendedStatement)));
 
