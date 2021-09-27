@@ -32,6 +32,7 @@ import {
 import { updateOrganizationScreen } from 'store/actions/organization';
 
 import './style.scss';
+import { clearTeamPermissions } from 'store/actions/team';
 // import { setActiveAdminForm, setActiveTab } from 'store/actions/admin';
 
 const PROJECTS = 'projects';
@@ -162,7 +163,7 @@ function Sidebar(props) {
               {permission?.Organization?.includes('organization:view')
               && (
                 <>
-                  <Link to={`/org/${allState.organization.currentOrganization?.domain}/admin`}>
+                  <Link to={`/org/${allState.organization.currentOrganization?.domain}/admin`} onClick={() => dispatch(clearTeamPermissions())}>
                     <div className="row-sidebar">
                       <img src={administrate} alt="" />
                       <div className="sidebar-headings">
@@ -206,7 +207,7 @@ function Sidebar(props) {
             {permission?.Project?.includes('project:view')
             && (
               <>
-                <Link to={`/org/${allState.organization.currentOrganization?.domain}`}>
+                <Link to={`/org/${allState.organization.currentOrganization?.domain}`} onClick={() => dispatch(clearTeamPermissions())}>
                   <div className="row-sidebar">
                     <img src={foldericon} alt="" />
                     <div className="sidebar-headings">
@@ -345,7 +346,10 @@ function Sidebar(props) {
               {permission?.Organization?.includes('organization:view') && (
                 <Link
                   to={`/org/${allState.organization.currentOrganization?.domain}/admin`}
-                  onClick={() => dispatch(updateOrganizationScreen('intro'))}
+                  onClick={() => {
+                    dispatch(updateOrganizationScreen('intro'));
+                    dispatch(clearTeamPermissions());
+                  }}
                 >
                   <img src={administrateLargeIcom} alt="" />
                   <div className="tagline">
@@ -365,7 +369,7 @@ function Sidebar(props) {
                 </Link>
               )} */}
               {permission?.Project?.includes('project:view') && (
-                <Link to={`/org/${allState.organization.currentOrganization?.domain}`}>
+                <Link to={`/org/${allState.organization.currentOrganization?.domain}`} onClick={() => dispatch(clearTeamPermissions())}>
                   <img src={projectLargeIcon} alt="" />
                   <div className="tagline">
                     Manage Projects

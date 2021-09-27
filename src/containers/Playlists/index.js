@@ -88,10 +88,10 @@ function PlaylistsPage(props) {
     getTeamPermissions,
   } = props;
   useEffect(() => {
-    if (Object.keys(teamPermission).length === 0 && selectedProject.team_id && organization?.currentOrganization?.id) {
+    if (Object.keys(teamPermission).length === 0 && selectedProject.team_id && organization?.currentOrganization?.id && selectedProject.id === match.params.projectId) {
       getTeamPermissions(organization?.currentOrganization?.id, selectedProject?.team_id);
     }
-  }, [teamPermission, organization?.currentOrganization, selectedProject]);
+  }, [teamPermission, organization?.currentOrganization, selectedProject, match.params.projectId, getTeamPermissions]);
   useEffect(() => {
     loadLms();
     window.scrollTo(0, 0);
