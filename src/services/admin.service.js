@@ -88,14 +88,14 @@ const updateIndex = (projectId, index) => httpService
   });
 
 const getLmsProject = (subOrgId, page) => httpService
-  .get(`${apiVersion}//lms-settings?page=${page}`)
+  .get(`${apiVersion}/admin/lms-settings?page=${page}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
   });
 
 const deleteLmsProject = (subOrgId, id) => httpService
-  .remove(`${apiVersion}/lms-settings/${id}`)
+  .remove(`${apiVersion}/admin/lms-settings/${id}`)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
@@ -103,7 +103,7 @@ const deleteLmsProject = (subOrgId, id) => httpService
   });
 
 const updateLmsProject = (subOrgId, id, values) => httpService
-  .put(`${apiVersion}/lms-settings/${id}`, values)
+  .put(`${apiVersion}/admin/lms-settings/${id}`, values)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
@@ -111,7 +111,7 @@ const updateLmsProject = (subOrgId, id, values) => httpService
   });
 
 const createLmsProject = (subOrgId, values) => httpService
-  .post(`${apiVersion}/lms-settings`, values)
+  .post(`${apiVersion}/admin/lms-settings`, values)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
