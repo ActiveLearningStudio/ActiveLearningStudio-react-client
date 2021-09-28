@@ -150,7 +150,7 @@ function TeamsPage(props) {
               </h1>
               <div className="flex-button-top">
                 {teamPermission?.Team?.includes('team:add-project') && projectShow && (
-                  <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}/add-projects`}>
+                  <Link to={`/studio/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}/add-projects`}>
                     <div className="btn-top-page">
                       <FontAwesomeIcon icon="plus" className="mr-2" />
                       Add projects
@@ -159,7 +159,7 @@ function TeamsPage(props) {
                 )}
                 {(teamPermission?.Team?.includes('team:add-team-user')
                 || teamPermission?.Team?.includes('team:remove-team-user')) && projectShow && (
-                  <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}`}>
+                  <Link to={`/studio/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}`}>
                     <div className="btn-top-page">
                       Add/Remove Members
                     </div>
@@ -168,7 +168,7 @@ function TeamsPage(props) {
                 {permission?.Team?.includes('team:create')
                 && overview && (
                   <>
-                    <Link to={`/org/${organization?.currentOrganization?.domain}/teams/create-team`}>
+                    <Link to={`/studio/org/${organization?.currentOrganization?.domain}/teams/create-team`}>
                       <div className="btn-top-page">
                         <FontAwesomeIcon icon="plus" className="mr-2" />
                         Create a Team
