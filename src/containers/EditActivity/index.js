@@ -54,7 +54,7 @@ function ActivityCreate(props) {
               </Link>
             </div>
             {/* Tabs */}
-            {Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-activity') : permission?.Activity?.includes('activity:edit') ? (
+            {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-activity') : permission?.Activity?.includes('activity:edit')) ? (
               <Tab.Container id="left-tabs-example" defaultActiveKey="edit">
                 <Row>
                   <Col sm={3}>
