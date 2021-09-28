@@ -559,6 +559,10 @@ function Table(props) {
                               )
                                 await dispatch(getOrganization(row.id));
                               Swal.close();
+                              dispatch({
+                                type: actionTypes.UPDATE_PAGINATION,
+                                payload: [...paginations, row],
+                              });
                               if (row.projects_count > 0) {
                                 if (
                                   permission?.Organization?.includes(
@@ -600,6 +604,10 @@ function Table(props) {
                                 )
                                   await dispatch(getOrganization(row.id));
                                 Swal.close();
+                                dispatch({
+                                  type: actionTypes.UPDATE_PAGINATION,
+                                  payload: [...paginations, row],
+                                });
                                 dispatch(clearOrganizationState());
                                 dispatch(getRoles());
                               }
