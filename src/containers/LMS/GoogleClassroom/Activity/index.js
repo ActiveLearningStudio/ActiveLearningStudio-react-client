@@ -33,9 +33,14 @@ const Activity = (props) => {
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
-    loadH5pSettings(activityId, student.auth.googleId);
     getSubmission(match.params.classworkId, match.params.courseId, student.auth);
   }, [activityId, student.auth]);
+
+  useEffect(() => {
+    if (submission === null) return;
+
+    loadH5pSettings(activityId, student.auth.googleId, submission.id);
+  }, [submission]);
 
   // Load H5P
   useEffect(() => {
@@ -154,7 +159,7 @@ const Activity = (props) => {
         });
       } else {
         sendStatement(xapiData);
-        if (h5pSettings.organization.api_key) {
+        if (h5pSettings?.organization?.api_key) {
           sendScreenshot(h5pSettings.organization, xapiData, h5pSettings.activity.title, student.profile.data.name.fullName);
         }
       }
@@ -202,11 +207,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  loadH5pSettings: (activityId, studentId) => dispatch(loadH5pResourceSettings(activityId, studentId)),
+  loadH5pSettings: (activityId, studentId, submissionId) => dispatch(loadH5pResourceSettings(activityId, studentId, submissionId)),
   getSubmission: (classworkId, courseId, auth) => dispatch(getSubmissionAction(classworkId, courseId, auth)),
   sendStatement: (statement) => dispatch(loadH5pResourceXapi(statement)),
   turnIn: (classworkId, courseId, auth) => dispatch(turnInAction(classworkId, courseId, auth)),
-  sendScreenshot: (statement, title, studentName) => dispatch(saveResultScreenshotAction(statement, title, studentName)),
+  sendScreenshot: (org, statement, title, studentName) => dispatch(saveResultScreenshotAction(org, statement, title, studentName)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Activity));

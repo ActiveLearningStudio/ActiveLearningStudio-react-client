@@ -140,6 +140,11 @@ function SearchForm() {
               if (values.fromDate && values.toDate) {
                 if (values.fromDate > values.toDate) errors.dateError = 'Invalid Date Format';
               }
+              if (values.fromDate) {
+                if (!values.toDate) {
+                  errors.toDate = 'To Date required';
+                }
+              }
               return errors;
             }}
             onSubmit={(values) => {
@@ -198,17 +203,17 @@ function SearchForm() {
                   <div className="radio-btns">
                     {permission?.Search?.includes('search:dashboard')
                       && (
-                      <label>
-                        <input
-                          name="type"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value="private"
-                          checked={values.type === 'private'}
-                          type="radio"
-                        />
-                        <span>Search My Projects</span>
-                      </label>
+                        <label>
+                          <input
+                            name="type"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value="private"
+                            checked={values.type === 'private'}
+                            type="radio"
+                          />
+                          <span>Search My Projects</span>
+                        </label>
                       )}
                     {permission?.Search?.includes('search:advance')
                       && (
@@ -226,17 +231,17 @@ function SearchForm() {
                       )}
                     {permission?.Search?.includes('search:advance')
                       && (
-                      <label>
-                        <input
-                          name="type"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value="orgSearch"
-                          checked={values.type === 'orgSearch'}
-                          type="radio"
-                        />
-                        <span>Search All Projects in Organization</span>
-                      </label>
+                        <label>
+                          <input
+                            name="type"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value="orgSearch"
+                            checked={values.type === 'orgSearch'}
+                            type="radio"
+                          />
+                          <span>Search All Projects in Organization</span>
+                        </label>
                       )}
                   </div>
                 </div>
@@ -432,9 +437,10 @@ function SearchForm() {
                       e.target.type = 'date';
                     }}
                   />
-                  <div className="error">
-                    {errors.dateError}
-                  </div>
+                </div>
+                <div className="error" style={{ color: 'red', marginTop: '-15px' }}>
+                  {errors.toDate && errors.toDate && errors.toDate}
+                  {errors.dateError}
                 </div>
                 {/* <div className="form-group">
                   <input

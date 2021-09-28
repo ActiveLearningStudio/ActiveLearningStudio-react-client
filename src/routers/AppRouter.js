@@ -53,9 +53,9 @@ const Searchnetlify = loadable(() => import('../containers/Search/SearchNetlify'
 const TeamsPage = loadable(() => import('../containers/Teams'));
 const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
 const AddTeamProjectMemberPage = loadable(() => import('../containers/Teams/AddMembers'));
-const GroupsPage = loadable(() => import('../containers/Groups'));
-const AddGroupProjectsPage = loadable(() => import('../containers/Groups/AddProjects'));
-const AddGroupProjectMemberPage = loadable(() => import('../containers/Groups/AddMembers'));
+// const GroupsPage = loadable(() => import('../containers/Groups'));
+// const AddGroupProjectsPage = loadable(() => import('../containers/Groups/AddProjects'));
+// const AddGroupProjectMemberPage = loadable(() => import('../containers/Groups/AddMembers'));
 const GclassActivityPage = loadable(() => import('../containers/LMS/GoogleClassroom/GclassActivityPage'));
 const GenericLMSActivityPage = loadable(() => import('../containers/LMS/Generic/GenericLMSActivityPage'));
 const ActivityCreate = loadable(() => import('../containers/CreateActivity'));
@@ -215,14 +215,14 @@ const AppRouter = (props) => {
                      <PrivateRoute exact path="/studio/org/:organization/teams/:teamId/add-projects" component={AddTeamProjectsPage} />
                      <PrivateRoute exact path="/studio/org/:organization/teams/:teamId/projects/:projectId/add-member" component={AddTeamProjectMemberPage} />
 
-                     <PrivateRoute exact path="/studio/org/:organization/groups" component={GroupsPage} overview />
-                     <PrivateRoute exact path="/studio/org/:organization/groups/create-group" component={GroupsPage} creation />
-                     <PrivateRoute exact path="/studio/org/:organization/groups/:groupId" component={GroupsPage} groupShow />
-                     <PrivateRoute exact path="/studio/org/:organization/groups/:groupId/edit" component={GroupsPage} editMode />
-                     <PrivateRoute exact path="/studio/org/:organization/groups/:groupId/projects" component={GroupsPage} projectShow />
-                     <PrivateRoute exact path="/studio/org/:organization/groups/:groupId/channel" component={GroupsPage} channelShow />
-                     <PrivateRoute exact path="/studio/org/:organization/groups/:groupId/add-projects" component={AddGroupProjectsPage} />
-                     <PrivateRoute exact path="/studio/org/:organization/groups/:groupId/projects/:projectId/add-member" component={AddGroupProjectMemberPage} />
+                     {/* <PrivateRoute exact path="/org/:organization/groups" component={GroupsPage} overview />
+                     <PrivateRoute exact path="/org/:organization/groups/create-group" component={GroupsPage} creation />
+                     <PrivateRoute exact path="/org/:organization/groups/:groupId" component={GroupsPage} groupShow />
+                     <PrivateRoute exact path="/org/:organization/groups/:groupId/edit" component={GroupsPage} editMode />
+                     <PrivateRoute exact path="/org/:organization/groups/:groupId/projects" component={GroupsPage} projectShow />
+                     <PrivateRoute exact path="/org/:organization/groups/:groupId/channel" component={GroupsPage} channelShow />
+                     <PrivateRoute exact path="/org/:organization/groups/:groupId/add-projects" component={AddGroupProjectsPage} />
+                     <PrivateRoute exact path="/org/:organization/groups/:groupId/projects/:projectId/add-member" component={AddGroupProjectMemberPage} /> */}
 
                      <PrivateRoute
                        exact

@@ -3,21 +3,19 @@ import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeActiveAdminForm } from 'store/actions/admin';
-import { updateProjectAction, visibilityTypes } from 'store/actions/project';
+import { updateProjectAction, visibilityTypes, uploadProjectThumbnailAction } from 'store/actions/project';
 import imgAvatar from 'assets/images/img-avatar.png';
 import loader from 'assets/images/dotsloader.gif';
 import Swal from 'sweetalert2';
-import { uploadThumb } from 'containers/Projects/CreateProjectPopup';
+
 import Switch from 'react-switch';
-import adminService from 'services/admin.service';
 import authapi from '../../../services/auth.service';
 
 export default function EditProject(props) {
-  const { setAllProjectTab } = props;
+  const { setAllProjectTab, allProjectTab } = props;
   const dispatch = useDispatch();
   // image Ref
   const imgUpload = useRef();
-  const allListState = useSelector((state) => state.organization);
   // Visibility Dropdown
   const [visibilityTypeArray, setVisibilityTypeArray] = useState([]);
   // User Search variables
@@ -26,7 +24,6 @@ export default function EditProject(props) {
   // General State to use
   const adminState = useSelector((state) => state.admin);
   const { currentProject } = adminState;
-  console.log(currentProject);
   useEffect(() => {
     (async () => {
       const { data } = await dispatch(visibilityTypes());
@@ -41,8 +38,8 @@ export default function EditProject(props) {
           description: currentProject?.description,
           thumb_url: currentProject.thumb_url,
           organization_visibility_type_id: currentProject.organization_visibility_type_id,
-          username: currentProject?.users[0].name,
-          user_id: currentProject?.users[0].id,
+          username: currentProject?.users?.[0]?.name,
+          user_id: currentProject?.users?.[0]?.id,
           shared: currentProject.shared,
         }}
         validate={(values) => {
@@ -59,10 +56,12 @@ export default function EditProject(props) {
           if (!values.username) {
             errors.username = 'Required';
           }
+          if (!values.thumb_url) {
+            errors.thumb_url = 'Required';
+          }
           return errors;
         }}
         onSubmit={async (values) => {
-          console.log(values);
           Swal.fire({
             title: 'Projects',
             icon: 'info',
@@ -76,7 +75,7 @@ export default function EditProject(props) {
           // eslint-disable-next-line no-param-reassign
           delete values.username;
           const response = await dispatch(updateProjectAction(currentProject.id, values));
-          if (response) {
+          if (!response.errors) {
             Swal.fire({
               text: 'You have successfully updated the project!',
               icon: 'success',
@@ -85,11 +84,15 @@ export default function EditProject(props) {
               confirmButtonText: 'OK',
             }).then(async (result) => {
               if (result.isConfirmed) {
-                const projects = await adminService.getAllProject(
-                  allListState?.activeOrganization?.id,
-                  allListState?.activePage || 1,
-                );
-                setAllProjectTab(projects);
+                setAllProjectTab({
+                  ...allProjectTab,
+                  data: allProjectTab.data.map((eachProject) => {
+                    if (eachProject.id === response.id) {
+                      return response;
+                    }
+                    return eachProject;
+                   }),
+                });
                 dispatch(removeActiveAdminForm());
               }
             });
@@ -111,7 +114,7 @@ export default function EditProject(props) {
               Edit Project
             </h2>
             <div className="form-group-create">
-              <h3>Organization Name</h3>
+              <h3>Project Name</h3>
               <input
                 type="text"
                 name="name"
@@ -124,7 +127,7 @@ export default function EditProject(props) {
               </div>
             </div>
             <div className="form-group-create">
-              <h3>Organization Image</h3>
+              <h3>Project Image</h3>
               <div
                 className="img-upload-form"
                 onClick={() => imgUpload.current.click()}
@@ -154,24 +157,12 @@ export default function EditProject(props) {
                       });
                     } else {
                       const formData = new FormData();
-                      try {
+                      // try {
                         formData.append('thumb', e.target.files[0]);
-                        const imgurl = dispatch(
-                          uploadThumb(
-                            allListState.currentOrganization?.id,
-                            formData,
-                          ),
-                        );
-                        imgurl.then((img) => {
-                          setFieldValue('thumb_url', img.data?.thumbUrl);
+                        const result = dispatch(uploadProjectThumbnailAction(formData));
+                        result.then((img) => {
+                          setFieldValue('thumb_url', img);
                         });
-                      } catch (err) {
-                        Swal.fire({
-                          icon: 'error',
-                          title: 'Error',
-                          text: 'Image upload failed, kindly try again.',
-                        });
-                      }
                     }
                   }}
                   onBlur={handleBlur}
@@ -188,7 +179,7 @@ export default function EditProject(props) {
                     />
                     <div
                       className="update-img"
-                      onClick={() => imgUpload.current.click()}
+                      // onClick={() => imgUpload.current.click()}
                     >
                       Update Image
                     </div>
@@ -200,7 +191,7 @@ export default function EditProject(props) {
                   </>
                 )}
                 <div className="error">
-                  {errors.image && touched.image && errors.image}
+                  {errors.thumb_url && touched.thumb_url && errors.thumb_url}
                 </div>
               </div>
             </div>
@@ -218,9 +209,8 @@ export default function EditProject(props) {
               </div>
             </div>
             <div className="form-group-create">
-              <h3>Organization Visibility Type</h3>
+              <h3>Project Visibility Type</h3>
               <select name="organization_visibility_type_id" onChange={handleChange} onBlur={handleBlur} value={values.organization_visibility_type_id}>
-                <option value="">---Select a visibility type---</option>
                 {visibilityTypeArray?.length > 0 && visibilityTypeArray?.map((vT) => (
                   <option value={vT?.id} key={vT?.id}>{vT?.display_name}</option>
                 ))}
@@ -309,4 +299,5 @@ export default function EditProject(props) {
 
 EditProject.propTypes = {
   setAllProjectTab: PropTypes.func.isRequired,
+  allProjectTab: PropTypes.object.isRequired,
 };

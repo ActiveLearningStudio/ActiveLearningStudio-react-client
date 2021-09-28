@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { closePreviewAction, getH5pSettingsAction } from 'store/actions/canvas';
+import Swal from 'sweetalert2';
 import gifloader from 'assets/images/dotsloader.gif';
 import './style.scss';
 
@@ -12,6 +13,7 @@ const PreviewActivity = (props) => {
     closePreview,
     h5pSettings,
     getH5pSettings,
+    match,
   } = props;
 
   // Init
@@ -53,6 +55,25 @@ const PreviewActivity = (props) => {
     });
   }, [h5pSettings]);
 
+  const addToLMS = () => {
+    const finalUrl = `${decodeURIComponent(
+      match.params.redirectUrl,
+    )}&title=${encodeURIComponent(activity.title)}&entity=activity&id=${
+      activity.id
+    }`;
+    Swal.fire({
+      html: `You have selected <strong>Activity: ${activity.title}</strong><br>Do you want to continue ?`,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ok',
+    }).then((result) => {
+      if (result.value) {
+        window.location.href = finalUrl;
+      }
+    });
+  };
+
   return (
     <div className="activity-wrapper mt-2">
       <div className="row mb-2">
@@ -62,7 +83,8 @@ const PreviewActivity = (props) => {
           </h2>
         </div>
         <div className="col text-right">
-          <button type="button" className="btn close-preview-button" onClick={closePreview}>Close Preview</button>
+          <button type="button" className="btn close-preview-button m-1" onClick={addToLMS}>Add to Course</button>
+          <button type="button" className="btn close-preview-button m-1" onClick={closePreview}>Close Preview</button>
         </div>
       </div>
       <div className="row">
@@ -90,6 +112,7 @@ PreviewActivity.propTypes = {
   h5pSettings: PropTypes.object,
   getH5pSettings: PropTypes.func.isRequired,
   closePreview: PropTypes.func.isRequired,
+  match: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({

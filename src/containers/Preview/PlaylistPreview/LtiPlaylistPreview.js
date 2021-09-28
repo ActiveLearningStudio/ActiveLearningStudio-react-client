@@ -106,9 +106,11 @@ function LtiPlaylistPreview(props) {
             </div>
           </Link>
         </div>
+        { localStorage.getItem('lti_activity') === 'false' && (
         <Link to={`/studio/project/${selectedPlaylist.project.id}/shared`}>
           <FontAwesomeIcon icon="times" />
         </Link>
+        )}
       </div>
       <div className="flex-container previews">
         <div className={`activity-bg left-vdo${collapsed ? ' collapsed' : ''}`}>

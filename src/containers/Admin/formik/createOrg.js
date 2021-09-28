@@ -17,7 +17,7 @@ import Swal from "sweetalert2";
 import loader from "assets/images/dotsloader.gif";
 import EditActivity from "containers/EditActivity";
 import { alphabetsOnly } from "utils";
-
+import Switch from 'react-switch';
 export default function CreateOrg(prop) {
   const { editMode } = prop;
   const [imageActive, setImgActive] = useState(null);
@@ -49,6 +49,7 @@ export default function CreateOrg(prop) {
           account_id: editMode ? activeEdit?.account_id : undefined,
           api_key: editMode ? activeEdit?.api_key : undefined,
           unit_path: editMode ? activeEdit?.unit_path : undefined,
+          self_registration: editMode ? activeEdit?.self_registration : false,
         }}
         validate={(values) => {
           const errors = {};
@@ -94,19 +95,19 @@ export default function CreateOrg(prop) {
               }).then(async (result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
-                  dispatch(getsubOrgList(activeOrganization?.id));
-                  const responseMessage = await dispatch(getOrganization(activeEdit?.id));
-                  if (activeEdit?.id === activeOrganization?.id) {
-                    const newBreadCrums =paginations?.slice(0, paginations.length - 1)
-                    dispatch({
-                      type: actionTypes.UPDATE_PAGINATION,
-                      payload: newBreadCrums,
-                    });
-                    dispatch({
-                      type: actionTypes.UPDATE_PAGINATION,
-                      payload: [...newBreadCrums, responseMessage],
-                    });
-                  }
+                  // dispatch(getsubOrgList(activeOrganization?.id));
+                  // const responseMessage = await dispatch(getOrganization(activeEdit?.id));
+                  // if (activeEdit?.id === activeOrganization?.id) {
+                  //   const newBreadCrums =paginations?.slice(0, paginations.length - 1)
+                  //   dispatch({
+                  //     type: actionTypes.UPDATE_PAGINATION,
+                  //     payload: newBreadCrums,
+                  //   });
+                  //   dispatch({
+                  //     type: actionTypes.UPDATE_PAGINATION,
+                  //     payload: [...newBreadCrums, responseMessage],
+                  //   });
+                  // }
                 }
               });
             }
@@ -233,7 +234,7 @@ export default function CreateOrg(prop) {
                     />
                     <div
                       className="update-img"
-                      onClick={() => imgUpload.current.click()}
+                      // onClick={() => imgUpload.current.click()}
                     >
                       Update Image
                     </div>
@@ -335,6 +336,15 @@ export default function CreateOrg(prop) {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.unit_path}
+              />
+            </div>
+            <div className="form-group-create">
+              <h3>Self Registration</h3>
+              <Switch
+                checked={values.self_registration}
+                onChange={() => {
+                  setFieldValue('self_registration', !values.self_registration);
+                }}
               />
             </div>
             <div className="button-group">

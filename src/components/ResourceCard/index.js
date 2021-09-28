@@ -16,6 +16,7 @@ const ResourceCard = (props) => {
     playlist,
     match,
     index,
+    teamPermission,
     // wizard,
   } = props;
   const organization = useSelector((state) => state.organization);
@@ -62,6 +63,8 @@ const ResourceCard = (props) => {
               <ResourceCardDropdown
                 resource={resource}
                 playlist={playlist}
+                teamPermission={teamPermission || {}}
+                previewPage="buildPreview"
                 // wizard
               />
             </div>
@@ -80,6 +83,7 @@ ResourceCard.propTypes = {
   showDeletePopup: PropTypes.func.isRequired,
   hideDeletePopup: PropTypes.func.isRequired,
   deleteResource: PropTypes.func.isRequired,
+  teamPermission: PropTypes.object.isRequired,
   // wizard: PropTypes.func.isRequired,
 };
 

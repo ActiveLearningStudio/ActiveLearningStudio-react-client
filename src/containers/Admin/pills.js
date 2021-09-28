@@ -64,13 +64,13 @@ export default function Pills(props) {
     }
   };
   const searchQueryChangeHandler = async ({ target }) => {
-    if (target.value.length) {
+    if (target.value.trim().length) {
       if(!!alphaNumeric(target.value)) {
         setSearchQuery(target.value);
       }
       searchUsersFromOrganization(target.value, activePage);
       setActivePage(searchUsers ? activePage : 1);
-      if (target.value.length> 1 ) setUsers(null);
+      if (target.value.trim().length> 1 ) setUsers(null);
     } else {
       dispatch(clearSearchUserInOrganization());
       setActivePage(1);

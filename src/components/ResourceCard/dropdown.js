@@ -18,6 +18,7 @@ const ResourceCardDropdown = (props) => {
     deleteResource,
     playlist,
     match,
+    teamPermission,
   } = props;
   const organization = useSelector((state) => state.organization);
   const { permission } = organization;
@@ -43,7 +44,7 @@ const ResourceCardDropdown = (props) => {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        {permission?.Activity?.includes('activity:view') && (
+        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-activity') : permission?.Activity?.includes('activity:view')) && (
           <Dropdown.Item
             as={Link}
             to={`/studio/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview`}
@@ -52,7 +53,7 @@ const ResourceCardDropdown = (props) => {
             Preview
           </Dropdown.Item>
         )}
-        {permission?.Activity?.includes('activity:edit') && (
+        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-activity') : permission?.Activity?.includes('activity:edit')) && (
           <Dropdown.Item
             as={Link}
             to={`/studio/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
@@ -73,10 +74,10 @@ const ResourceCardDropdown = (props) => {
             Duplicate
           </Dropdown.Item>
         )}
-        {permission?.Activity?.includes('activity:share') && (
+        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-activity') : permission?.Activity?.includes('activity:share')) && (
           <ResourceCardDropdownShare resource={resource} />
         )}
-        {permission?.Activity?.includes('activity:delete') && (
+        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:delete-activity') : permission?.Activity?.includes('activity:delete')) && (
           <Dropdown.Item onClick={handleDelete}>
             <FontAwesomeIcon icon="times-circle" className="mr-2" />
             Delete
@@ -93,6 +94,7 @@ ResourceCardDropdown.propTypes = {
   playlist: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   deleteResource: PropTypes.func.isRequired,
+  teamPermission: PropTypes.object.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

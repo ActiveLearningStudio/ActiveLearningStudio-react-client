@@ -14,6 +14,7 @@ const ActivityPreviewCard = (props) => {
     projectId,
     playlistId,
     playlist,
+    teamPermission,
   } = props;
   const organization = useSelector((state) => state.organization);
   return (
@@ -50,6 +51,7 @@ const ActivityPreviewCard = (props) => {
         <DropdownActivity
           resource={activity}
           playlist={playlist}
+          teamPermission={teamPermission || {}}
         />
         )}
     </div>
@@ -63,6 +65,7 @@ ActivityPreviewCard.propTypes = {
   projectId: PropTypes.number,
   playlistId: PropTypes.number.isRequired,
   playlist: PropTypes.object.isRequired,
+  teamPermission: PropTypes.object.isRequired,
 };
 
 ActivityPreviewCard.defaultProps = {

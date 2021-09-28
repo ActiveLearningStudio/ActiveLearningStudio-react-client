@@ -23,6 +23,7 @@ import DeletePopup from 'components/DeletePopup';
 import { hideDeletePopupAction, showDeletePopupAction } from 'store/actions/ui';
 
 import './style.scss';
+import { getTeamPermission } from 'store/actions/team';
 
 function ProjectPreview(props) {
   const { match, history, changePlaylistTitle } = props;
@@ -36,7 +37,8 @@ function ProjectPreview(props) {
   const ui = useSelector((state) => state.ui);
   const accordion = useRef([]);
   const { permission } = organization;
-
+  const team = useSelector((state) => state.team);
+  const { teamPermission } = team;
   const { showDeletePlaylistPopup } = ui;
   const [currentProject, setCurrentProject] = useState(null);
   const [activeShared, setActiveShared] = useState(true);
@@ -49,10 +51,14 @@ function ProjectPreview(props) {
     setCurrentProject(projectState.projectSelect);
     setActiveShared(projectState.projectSelect.shared);
   }, [projectState.projectSelect]);
-
+  useEffect(() => {
+    if (Object.keys(teamPermission).length === 0 && currentProject?.team?.id && organization?.currentOrganization?.id) {
+      dispatch(getTeamPermission(organization?.currentOrganization?.id, currentProject.team.id));
+    }
+  }, [teamPermission, organization?.currentOrganization, currentProject]);
   useEffect(() => {
     if (playlistState.playlists.length === 0) {
-      dispatch(loadProjectPlaylistsAction(match.params.projectId));
+      dispatch(loadProjectPlaylistsAction(match.params.projectId, true));
     }
   }, []);
 
@@ -108,16 +114,17 @@ function ProjectPreview(props) {
       let activities;
       if (playlist.activities && playlist.activities.length > 0) {
         activities = playlist.activities.map((activity) => (
-          permission?.Activity?.includes('activity:view')
-          ? (
+          (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-activity') : permission?.Activity?.includes('activity:view'))
+          && (
             <ActivityCard
               activity={activity}
               projectId={parseInt(match.params.projectId, 10)}
               playlistId={playlist.id}
               key={activity.id}
               playlist={playlist}
+              teamPermission={teamPermission || {}}
             />
-          ) : null
+          )
         ));
       } else {
         activities = (
@@ -130,10 +137,11 @@ function ProjectPreview(props) {
       }
       console.log(editTitle);
       return (
-        permission?.Playlist?.includes('playlist:view')
-        ? (
+        (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-playlist') : permission?.Playlist?.includes('playlist:view'))
+        && (
           <div className="check-each" key={playlist.id}>
-            {(permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload')) && (
+            {(Object.keys(teamPermission).length
+            ? teamPermission?.Team?.includes('team:add-activity') : (permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload'))) && (
               <div className="add-btn-activity">
                 <button
                   type="button"
@@ -199,9 +207,10 @@ function ProjectPreview(props) {
               selectedProject={playlist.project}
               setSelectedForEdit={setSelectedForEdit}
               handleClickPlaylistTitle={handleClickPlaylistTitle}
+              teamPermission={teamPermission || {}}
             />
           </div>
-        ) : null
+        )
       );
     });
   } else {
@@ -233,16 +242,19 @@ function ProjectPreview(props) {
               <div className="sce_cont">
                 <ul className="bar_list flex-div check">
                   <li>
+                    <div className="team-name">
+                      {currentProject?.team?.name ? `Team Name: ${currentProject?.team?.name}` : null}
+                    </div>
                     <div className="title_lg check">
                       <div>{currentProject.name}</div>
-
                       <div className="configuration">
-                        {!(permission?.Project?.includes('project:view') && permission?.Project.length === 1) && (
+                        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-project') : permission?.Project?.includes('project:view')) && (
                           <DropdownProject
                             project={currentProject}
                             handleShow={handleShow}
                             setProjectId={setProjectId}
                             showDeletePopup={showDeletePopup}
+                            teamPermission={teamPermission || {}}
                             previewMode
                           />
                         )}
@@ -250,7 +262,7 @@ function ProjectPreview(props) {
                           <FontAwesomeIcon icon="undo" className="mr-2" />
                           Exit Preview Mode
                         </Link>
-                        {permission?.Project?.includes('project:share') && (
+                        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-project') : permission?.Project?.includes('project:share')) && (
                         <div className="share-button">
                           Share Project
                           <Switch

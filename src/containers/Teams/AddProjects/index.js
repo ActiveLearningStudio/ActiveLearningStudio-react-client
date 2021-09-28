@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link, useHistory } from 'react-router-dom';
 import { connect, useDispatch, useSelector } from 'react-redux';
-
+import Swal from 'sweetalert2';
 import { FadeDiv } from 'utils';
 import { loadMyProjectsAction } from 'store/actions/project';
 import { loadTeamAction, addProjectsAction, getTeamPermission } from 'store/actions/team';
 // import Sidebar from 'components/Sidebar';
 // import Header from 'components/Header';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert } from 'react-bootstrap';
 import AssignProject from '../CreateTeam/components/AssignProject';
 
@@ -23,9 +24,10 @@ function AddProjectsPage(props) {
     loadTeam,
     addProjects,
   } = props;
+  const historyback = useHistory();
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const { permission, activeOrganization } = organization;
+  const { activeOrganization } = organization;
   const { teamPermission } = useSelector((state) => state.team);
   useEffect(() => {
     if (activeOrganization) {
@@ -35,7 +37,7 @@ function AddProjectsPage(props) {
   }, [loadProjects, loadTeam, teamId, activeOrganization]);
   // Fetch team permission if page reloads
   useEffect(() => {
-    if (!teamPermission) {
+    if (Object.keys(teamPermission).length === 0 && organization?.currentOrganization?.id && teamId) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, teamId));
     }
   }, [team]);
@@ -51,18 +53,38 @@ function AddProjectsPage(props) {
       teamId,
       projectIds,
     )
-      .then(() => {
+      .then((result) => {
         history.push(`/studio/org/${organization.currentOrganization?.domain}/teams/${teamId}/projects`);
-      })
-      .catch(() => {});
+        Swal.fire({
+          icon: 'success',
+          title: result?.message,
+        });
+      });
   }, [addProjects, teamId, history]);
 
   return (
     <>
+      <div className="side-wrapper-team">
+        <div className="bread-crumb">
+          <div className="main-flex-top">
+            <div>
+              <span>Team</span>
+              <FontAwesomeIcon icon="angle-right" />
+              <span>Add Project</span>
+            </div>
+          </div>
+          <Link className="back-button-main-page" onClick={() => historyback.goBack()}>
+            <FontAwesomeIcon icon="chevron-left" />
+            Back
+          </Link>
+        </div>
+      </div>
       <div className="teams-page">
+        <br />
+        <br />
         <FadeDiv className="assign-projects">
           <div className="assign-projects-content">
-            {permission?.Team?.includes('team:add-projects')
+            {teamPermission?.Team?.includes('team:add-project')
               ? (
                 <AssignProject
                   isSaving={team.isLoading}

@@ -29,6 +29,7 @@ class PlaylistCardDropdown extends React.Component {
       handleClickPlaylistTitle,
       setSelectedForEdit,
       organization,
+      teamPermission,
     } = this.props;
     const { permission } = organization;
     return (
@@ -38,7 +39,7 @@ class PlaylistCardDropdown extends React.Component {
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
-          {permission?.Playlist?.includes('playlist:view') && (
+          {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-playlist') : permission?.Playlist?.includes('playlist:view')) && (
           <Dropdown.Item
             as={Link}
             className="hidden"
@@ -48,10 +49,12 @@ class PlaylistCardDropdown extends React.Component {
             Preview
           </Dropdown.Item>
           )}
-          {permission?.Playlist?.includes('playlist:edit') && (
+          {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-playlist') : permission?.Playlist?.includes('playlist:edit')) && (
             <Dropdown.Item onClick={() => {
               handleClickPlaylistTitle();
-              setSelectedForEdit(playlist);
+              if (setSelectedForEdit) {
+                setSelectedForEdit(playlist);
+              }
             }}
             >
               <FontAwesomeIcon icon="edit" className="mr-2" />
@@ -70,7 +73,7 @@ class PlaylistCardDropdown extends React.Component {
               Duplicate
             </Dropdown.Item>
           )}
-          {permission?.Playlist?.includes('playlist:share') && (
+          {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-playlist') : permission?.Playlist?.includes('playlist:share')) && (
             playlist.activities.length > 0
               ? <ResourceCardDropdownShare resource={playlist.activities[0]} />
               : (
@@ -85,13 +88,13 @@ class PlaylistCardDropdown extends React.Component {
                 </Dropdown.Item>
               )
           )}
-          {permission?.Playlist?.includes('playlist:publish') && (
+          {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:publish-playlist') : permission?.Playlist?.includes('playlist:publish')) && (
             <ShareLink
               playlistId={playlist.id}
               projectId={playlist.project_id}
             />
           )}
-          {permission?.Playlist?.includes('playlist:delete') && (
+          {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:delete-playlist') : permission?.Playlist?.includes('playlist:delete')) && (
             <Dropdown.Item onClick={this.handleDelete}>
               <FontAwesomeIcon icon="times-circle" className="mr-2" />
               Delete
@@ -109,6 +112,7 @@ PlaylistCardDropdown.propTypes = {
   handleClickPlaylistTitle: PropTypes.func.isRequired,
   setSelectedForEdit: PropTypes.func.isRequired,
   organization: PropTypes.string.isRequired,
+  teamPermission: PropTypes.object.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

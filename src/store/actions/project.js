@@ -97,11 +97,11 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
     dispatch({ type: actionTypes.UPDATE_PROJECT_REQUEST });
     Swal.showLoading();
     const { project } = await projectService.update(projectId, data, activeOrganization.id);
-    Swal.close();
     dispatch({
       type: actionTypes.UPDATE_PROJECT_SUCCESS,
       payload: { project },
     });
+    Swal.close();
     dispatch(allSidebarProjects());
     return project;
   } catch (e) {
@@ -159,6 +159,7 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
     type: actionTypes.UPLOAD_PROJECT_THUMBNAIL,
     payload: { thumbUrl },
   });
+  return thumbUrl;
 };
 
 export const loadMyProjectsAction = () => async (dispatch) => {

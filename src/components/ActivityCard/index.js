@@ -17,8 +17,10 @@ const ActivityCard = (props) => {
     setModalShow,
     setCurrentActivity,
     playlist,
+    teamPermission,
   } = props;
   const organization = useSelector((state) => state.organization);
+
   return (
     <li>
       {sampleID
@@ -51,6 +53,7 @@ const ActivityCard = (props) => {
                   ? `/studio/playlist/${playlistId}/activity/${activity.id}/preview/lti`
                   : `/org/${organization.currentOrganization?.domain}/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
               }
+              onClick={() => localStorage.setItem('projectPreview', true)}
             >
               <div
                 className="playimg"
@@ -71,6 +74,8 @@ const ActivityCard = (props) => {
                 <ResourceCardDropdown
                   playlist={playlist}
                   resource={activity}
+                  teamPermission={teamPermission || {}}
+                  previewPage="projectPreview"
                 />
               </div>
             )}
@@ -89,6 +94,7 @@ ActivityCard.propTypes = {
   setModalShow: PropTypes.func,
   setCurrentActivity: PropTypes.func,
   playlist: PropTypes.object.isRequired,
+  teamPermission: PropTypes.object.isRequired,
 };
 
 ActivityCard.defaultProps = {

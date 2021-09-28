@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 // import Switch from 'react-switch';
 import PropTypes from 'prop-types';
-import { connect, useSelector } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Field, reduxForm } from 'redux-form';
 import Swal from 'sweetalert2';
@@ -80,6 +80,7 @@ const onSubmit = async (values, dispatch, props) => {
     //     text: 'Project Settings Updated!',
     //   });
     // }
+    history.goBack();
   } else {
     // create
     // Swal.fire({
@@ -121,20 +122,24 @@ const onSubmit = async (values, dispatch, props) => {
     //     text: 'Project Created Successfully!',
     //   });
     // }
+    history.push('/projects');
   }
   history.push('/studio/projects');
 };
-export const uploadThumb = async (e, permission) => {
+export const uploadThumb = async (e, permission, teamPermission, id, dispatch) => {
   const formData = new FormData();
   try {
+    console.log(id);
     formData.append('thumb', e.target.files[0]);
+    formData.append('project_id', id);
     imageValidation = '';
-    await uploadProjectThumbnailAction(formData);
+    await dispatch(uploadProjectThumbnailAction(formData));
   } catch (err) {
     Swal.fire({
       icon: 'error',
       title: 'Error',
-      text: permission?.Project?.includes('project:upload-thumb') ? 'Image upload failed, kindly try again' : 'You do not have permission to upload image',
+      // eslint-disable-next-line max-len
+      text: permission?.Project?.includes('project:upload-thumb') || teamPermission?.Team?.includes('team:view-project') ? 'Image upload failed, kindly try again' : 'You do not have permission to upload image',
     });
   }
 };
@@ -150,7 +155,10 @@ let CreateProjectPopup = (props) => {
     getProjectVisibilityTypes,
     vType,
   } = props;
+  const dispatch = useDispatch();
   const stateHeader = useSelector((state) => state.organization);
+  const projectState = useSelector((state) => state.project);
+  const { teamPermission } = useSelector((state) => state.team);
   const { permission } = stateHeader;
   const [modalShow, setModalShow] = useState(false);
   // const [publicProject, setPublicProject] = useState(true);
@@ -187,7 +195,8 @@ let CreateProjectPopup = (props) => {
 
   return (
 
-    (editMode && permission?.Project?.includes('project:edit')) || (!editMode && permission?.Project?.includes('project:create')) ? (
+    // eslint-disable-next-line max-len
+    (editMode && (teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project') : permission?.Project?.includes('project:edit'))) || (!editMode && permission?.Project?.includes('project:create')) ? (
       <div className="create-program-wrapper">
         <PexelsAPI
           show={modalShow}
@@ -261,7 +270,7 @@ let CreateProjectPopup = (props) => {
                         text: 'Selected file size should be less then 100MB.',
                       });
                     } else {
-                      uploadThumb(e, permission);
+                      uploadThumb(e, permission, teamPermission, projectState?.selectedProject?.id, dispatch);
                     }
                   }}
                 />
@@ -334,7 +343,7 @@ let CreateProjectPopup = (props) => {
             <p className="disclaimer">
               Project Image dimension should be
               {' '}
-              <strong>290px width and 200px height. </strong>
+              <strong>280px width and 200px height. </strong>
               Maximun File size allowed is
               {' '}
               <strong>100MB.</strong>
