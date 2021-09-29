@@ -340,7 +340,7 @@ export const addProjectFav = (projectId) => async (/* dispatch */) => {
     })
       .then((result) => {
         if (result.value) {
-          window.location.href = `/org/${currentOrganization?.domain}/?active=fav`;
+          window.location.href = `/studio/org/${currentOrganization?.domain}/?active=fav`;
         }
       });
   }
