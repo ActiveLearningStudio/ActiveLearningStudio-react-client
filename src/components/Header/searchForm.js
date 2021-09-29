@@ -149,11 +149,11 @@ function SearchForm() {
             }}
             onSubmit={(values) => {
               closeModel.current.click();
-              const h5pNameArray = [];
-              values.standardArray.filter((h5p) => h5pNameArray.push(h5p.value));
-              values.standardArray = h5pNameArray;
+              // const h5pNameArray = [];
+              // values.standardArray.filter((h5p) => h5pNameArray.push(h5p.value));
+              // values.standardArray = h5pNameArray;
               // eslint-disable-next-line max-len
-              history.push(`/org/${currentOrganization?.domain}/search?q=${values.phrase}&type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${h5pNameArray}&fromDate=${values.fromDate}&toDate=${values.toDate}&author=${values.author}`);
+              history.push(`/org/${currentOrganization?.domain}/search?q=${values.phrase}&type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${values.standardArray}&fromDate=${values.fromDate}&toDate=${values.toDate}&author=${values.author}`);
               localStorage.setItem('refreshPage', false);
               // const allSubjects = values.subjectArray;
               // values.subjectArray = allSubjects.forEach((subject) => {
@@ -363,24 +363,35 @@ function SearchForm() {
                     placeholder="Standard"
                     onChange={(e) => {
                       handleChange(e);
-                      const nameSelected = activityTypes.filter((data) => {
-                        if (data.h5pLib === e.target.value) {
-                          return data;
-                        }
-                        return false;
-                      });
-                      let found = true;
-                      values.standardArray.map((data) => {
-                        if (data.value === e.target.value) {
-                          found = false;
-                        }
-                        return true;
-                      });
-                      if (found) {
-                        values.standardArray.push({ value: e.target.value, name: nameSelected[0].title });
+                    //   const nameSelected = activityTypes.filter((data) => {
+                    //     if (data.h5pLib === e.target.value) {
+                    //       return data;
+                    //     }
+                    //     return false;
+                    //   });
+                    //   let found = true;
+                    //   values.standardArray.map((data) => {
+                    //     if (data.value === e.target.value) {
+                    //       found = false;
+                    //     }
+                    //     return true;
+                    //   });
+                    //   if (found) {
+                    //     values.standardArray.push({ value: e.target.value, name: nameSelected[0].title });
+                    //   }
+                    // }}
+                    // onBlur={handleBlur}
+                    // value={values.standard}
+                    let updateValue = e.target.value;
+                    if (updateValue.includes('&')) {
+                      updateValue = e.target.value.replace('&', 'and');
+                      if (!values.standardArray.includes(updateValue)) {
+                        values.standardArray.push(updateValue);
                       }
-                    }}
-                    onBlur={handleBlur}
+                    } else if (!values.standardArray.includes(e.target.value)) {
+                      values.standardArray.push(e.target.value);
+                    }
+                  }}
                     value={values.standard}
                   >
                     <option value="" disabled selected hidden>Type of Activity</option>
@@ -396,7 +407,7 @@ function SearchForm() {
                   <div className="form-group wrap-keyword" data-name={value}>
                     {values.standardArray.map((data) => (
                       <div className="keywords-de">
-                        {data.name}
+                        {data}
                         <div
                           className="iocns"
                           onClick={() => {
