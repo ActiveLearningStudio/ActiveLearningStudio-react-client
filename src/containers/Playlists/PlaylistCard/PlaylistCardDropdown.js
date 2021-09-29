@@ -39,15 +39,16 @@ class PlaylistCardDropdown extends React.Component {
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
-          {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-playlist') : permission?.Playlist?.includes('playlist:view')) && (
-          <Dropdown.Item
-            as={Link}
-            className="hidden"
-            to={`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/${playlist.activities[0]?.id}/preview`}
-          >
-            <FontAwesomeIcon icon="eye" className="mr-2" />
-            Preview
-          </Dropdown.Item>
+          {(Object.keys(teamPermission).length
+            ? teamPermission?.Team?.includes('team:view-playlist') : (permission?.Playlist?.includes('playlist:view') && permission?.Activity?.includes('activity:view'))) && (
+            <Dropdown.Item
+              as={Link}
+              className="hidden"
+              to={`/studio/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/${playlist?.activities[0]?.id}/preview`}
+            >
+              <FontAwesomeIcon icon="eye" className="mr-2" />
+              Preview
+            </Dropdown.Item>
           )}
           {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-playlist') : permission?.Playlist?.includes('playlist:edit')) && (
             <Dropdown.Item onClick={() => {
