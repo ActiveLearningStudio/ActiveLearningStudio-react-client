@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Footer from 'components/Footer';
 // import Sidebar from 'components/Sidebar';
 // import Header from 'components/Header';
+import { getTeamPermission } from 'store/actions/team';
 import { loadPlaylistAction } from 'store/actions/playlist';
 import ActivityWizard from './ActivityWizard';
 
@@ -21,12 +22,19 @@ import 'containers/CreateActivity/style.scss';
 
 function ActivityCreate(props) {
   const organization = useSelector((state) => state.organization);
+  const { teamPermission } = useSelector((state) => state.team);
+  const { selectedPlaylist } = useSelector((state) => state.playlist);
   const { permission } = organization;
   const { match } = props;
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadPlaylistAction(match.params.projectId, match.params.playlistId));
   }, []);
+  useEffect(() => {
+    if (Object.keys(teamPermission).length === 0 && selectedPlaylist?.project?.team?.id && organization?.currentOrganization?.id) {
+      dispatch(getTeamPermission(organization?.currentOrganization?.id, selectedPlaylist?.project?.team?.id));
+    }
+  }, [teamPermission, selectedPlaylist, organization?.currentOrganization?.id]);
   return (
     <>
       <div>
@@ -46,7 +54,7 @@ function ActivityCreate(props) {
               </Link>
             </div>
             {/* Tabs */}
-            {permission?.Activity?.includes('activity:edit') ? (
+            {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-activity') : permission?.Activity?.includes('activity:edit')) ? (
               <Tab.Container id="left-tabs-example" defaultActiveKey="edit">
                 <Row>
                   <Col sm={3}>

@@ -103,7 +103,7 @@ const getItems = (activityTypeId) => httpService
   .catch((err) => Promise.reject(err.response.data));
 
 const getActivityItems = (query, page) => httpService
-  .get(`${apiVersion}/get-activity-items${query ? `?query=${query}` : ''}${page ? `?page=${page}` : ''}`)
+  .get(`${apiVersion}/get-activity-items${query ? `?query=${encodeURI(query)}` : ''}${page ? `?page=${page}` : ''}`)
   .catch((err) => {
     errorCatcher(err.response.data);
     Promise.reject(err.response.data);

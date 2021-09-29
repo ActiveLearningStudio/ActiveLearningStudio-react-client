@@ -255,6 +255,11 @@ export default function CreateActivityItem(props) {
                 name="order"
                 min="0"
                 onChange={handleChange}
+                onKeyDown={(e) => {
+                  if (['-', '+', 'e', 'E', '.'].includes(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
                 onBlur={handleBlur}
                 value={values.order}
               />

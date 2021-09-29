@@ -208,6 +208,7 @@ code {
   .flex-smaple {
     display: flex;
     flex-wrap: wrap;
+    overflow-y: auto;
   }
 
   .playlist-resource {
@@ -245,7 +246,7 @@ code {
       a {
         width: 33.3%;
         flex: 1;
-        
+
         &:hover {
           background: $fun-blue-1;
           color: #fff;

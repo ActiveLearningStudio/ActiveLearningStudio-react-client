@@ -43,10 +43,10 @@ export default function CreateUser(prop) {
         }}
         validate={(values) => {
           const errors = {};
-          if (!values.first_name || values.first_name.length > 255) {
+          if (!values.first_name || values.first_name.trim() === '' || values.first_name.length > 255) {
             errors.first_name = values.first_name.length > 255 ? 'Length must be 255 characters or less ' : 'Required';
           }
-          if (!values.last_name || values.last_name.length > 255) {
+          if (!values.last_name || values.last_name.trim() === '' || values.last_name.length > 255) {
             errors.last_name = values.last_name.length > 255 ? 'Length must be 255 characters or less ' : 'Required';
           }
           if (!values.email) {
@@ -70,10 +70,10 @@ export default function CreateUser(prop) {
           if (!values.organization_type) {
             errors.organization_type = 'Required';
           }
-          if (!values.organization_name || values.organization_name.length > 255) {
+          if (!values.organization_name || values.organization_name.trim() === '' || values.organization_name.length > 255) {
             errors.organization_name = values.organization_name.length > 255 ? 'Length must be 255 characters or less ' : 'Required';;
           }
-          if (!values.job_title || values.job_title.length > 255) {
+          if (!values.job_title || values.job_title.trim() === '' || values.job_title.length > 255) {
             errors.job_title = values.job_title.length > 255 ? 'Length must be 255 characters or less ' : 'Required';
           }
           return errors;
@@ -146,7 +146,7 @@ export default function CreateUser(prop) {
           setFieldValue,
           /* and other goodies */
         }) => (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} autoComplete="off">
             <h2>{editMode ? 'Edit ' : 'Add '} User</h2>
             <div className="form-group-create">
               <h3>First Name</h3>
@@ -180,6 +180,7 @@ export default function CreateUser(prop) {
                 type="email"
                 name="email"
                 onChange={handleChange}
+                autoComplete="nope"
                 onBlur={handleBlur}
                 value={values.email}
               />
@@ -192,6 +193,7 @@ export default function CreateUser(prop) {
               <input
                 type="password"
                 name="password"
+                autoComplete="new-password"
                 placeholder={editMode ? 'Leave blank for unchanged' : 'Password'}
                 onChange={handleChange}
                 onBlur={handleBlur}

@@ -140,6 +140,11 @@ function SearchForm() {
               if (values.fromDate && values.toDate) {
                 if (values.fromDate > values.toDate) errors.dateError = 'Invalid Date Format';
               }
+              if (values.fromDate) {
+                if (!values.toDate) {
+                  errors.toDate = 'To Date required';
+                }
+              }
               return errors;
             }}
             onSubmit={(values) => {
@@ -148,7 +153,7 @@ function SearchForm() {
               values.standardArray.filter((h5p) => h5pNameArray.push(h5p.value));
               values.standardArray = h5pNameArray;
               // eslint-disable-next-line max-len
-              history.push(`/org/${currentOrganization?.domain}/search?q=${values.phrase}&type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${h5pNameArray}&author=${values.author}`);
+              history.push(`/org/${currentOrganization?.domain}/search?q=${values.phrase}&type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${h5pNameArray}&fromDate=${values.fromDate}&toDate=${values.toDate}&author=${values.author}`);
               localStorage.setItem('refreshPage', false);
               // const allSubjects = values.subjectArray;
               // values.subjectArray = allSubjects.forEach((subject) => {
@@ -198,17 +203,17 @@ function SearchForm() {
                   <div className="radio-btns">
                     {permission?.Search?.includes('search:dashboard')
                       && (
-                      <label>
-                        <input
-                          name="type"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value="private"
-                          checked={values.type === 'private'}
-                          type="radio"
-                        />
-                        <span>Search My Projects</span>
-                      </label>
+                        <label>
+                          <input
+                            name="type"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value="private"
+                            checked={values.type === 'private'}
+                            type="radio"
+                          />
+                          <span>Search My Projects</span>
+                        </label>
                       )}
                     {permission?.Search?.includes('search:advance')
                       && (
@@ -226,17 +231,17 @@ function SearchForm() {
                       )}
                     {permission?.Search?.includes('search:advance')
                       && (
-                      <label>
-                        <input
-                          name="type"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value="orgSearch"
-                          checked={values.type === 'orgSearch'}
-                          type="radio"
-                        />
-                        <span>Search All Projects in Organization</span>
-                      </label>
+                        <label>
+                          <input
+                            name="type"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value="orgSearch"
+                            checked={values.type === 'orgSearch'}
+                            type="radio"
+                          />
+                          <span>Search All Projects in Organization</span>
+                        </label>
                       )}
                   </div>
                 </div>
@@ -413,6 +418,8 @@ function SearchForm() {
                     placeholder="From Date"
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    min="2005-01-01"
+                    max="2050-12-31"
                     value={values.fromDate}
                     onFocus={(e) => {
                       e.target.type = 'date';
@@ -424,13 +431,16 @@ function SearchForm() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.toDate}
+                    min="2005-01-01"
+                    max="2050-12-31"
                     onFocus={(e) => {
                       e.target.type = 'date';
                     }}
                   />
-                  <div className="error">
-                    {errors.dateError}
-                  </div>
+                </div>
+                <div className="error" style={{ color: 'red', marginTop: '-15px' }}>
+                  {errors.toDate && errors.toDate && errors.toDate}
+                  {errors.dateError}
                 </div>
                 {/* <div className="form-group">
                   <input
@@ -456,7 +466,7 @@ function SearchForm() {
                     placeholder="Enter author name"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.no_words}
+                    value={values.author}
                   />
                 </div>
                 <div className="form-group">

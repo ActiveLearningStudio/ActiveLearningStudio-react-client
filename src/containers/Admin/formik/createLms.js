@@ -35,7 +35,7 @@ export default function CreateUser(prop) {
           lti_client_id: editMode ? activeEdit?.lti_client_id : '',
           // moodle: editMode ? activeEdit?.moodle : '',
           // canvas: editMode ? activeEdit?.canvas : '',
-          lms_name: editMode ? activeEdit?.lms_name: '',
+          lms_name: editMode ? activeEdit?.lms_name || 'moodle': 'moodle',
           lms_access_key: editMode ? activeEdit?.lms_access_key : '',
           lms_access_secret: editMode ? activeEdit?.lms_access_secret : '',
           description: editMode ? activeEdit?.description : "",
@@ -43,6 +43,7 @@ export default function CreateUser(prop) {
           lms_login_id: editMode ? activeEdit?.lms_login_id : "",
           lti_client_id: editMode ? activeEdit?.lti_client_id : "",
           published:editMode ? clone ? false:activeEdit?.published: false,
+          organization_id: organization?.activeOrganization?.id,
 
 
         }}
@@ -54,27 +55,31 @@ export default function CreateUser(prop) {
           if (!values.lms_access_token) {
             errors.lms_access_token = 'required';
           }
+          if (!values.lms_access_token) {
+            errors.lms_access_token = 'required';
+          }
           if (!values.site_name) {
             errors.site_name = 'required';
           }
           if (!values.lti_client_id) {
             errors.lti_client_id = 'required';
           }
-          // if (!values.moodle) {
-          //   errors.moodle = 'required';
-          // }
+
+          if (!values.lms_name) {
+            errors.lms_name = 'required';
+          }
 
           // if (!values.canvas) {
-          //   errors.canvas = 'required';
+          //   errors.canvas = 'Required';
           // }
           // if (!values.access_key) {
-          //   errors.access_key = 'required';
+          //   errors.access_key = 'Required';
           // }
           // if (!values.secret_key) {
-          //   errors.secret_key = 'required';
+          //   errors.secret_key = 'Required';
           // }
           // if (!values.description) {
-          //   errors.description = 'required';
+          //   errors.description = 'Required';
           // }
           if (!values.user_id) {
             errors.user_id = 'Required';
@@ -98,7 +103,7 @@ export default function CreateUser(prop) {
             });
 
 
-            const result =  adminapi.updateLmsProject(activeEdit?.id, values);
+            const result =  adminapi.updateLmsProject(organization?.activeOrganization?.id,activeEdit?.id, values);
             result.then(res => {
               Swal.fire({
                 icon:'success',
@@ -123,7 +128,7 @@ export default function CreateUser(prop) {
               },
               button: false,
             });
-            const result =  adminapi.createLmsProject(values);
+            const result =  adminapi.createLmsProject(organization?.activeOrganization?.id,values);
             result.then(res => {
               Swal.fire({
                 icon:'success',
@@ -218,7 +223,7 @@ export default function CreateUser(prop) {
                 value={values.role}
               /> */}
               <select name="lms_name" onChange={handleChange} onBlur={handleBlur} value={values.lms_name}>
-                <option value="moodle">Moodle</option>
+                <option selected value="moodle">Moodle</option>
                 <option value="canvas">Canvas</option>
                 <option value="safarimontage">Safari Montage</option>
 
@@ -304,7 +309,7 @@ export default function CreateUser(prop) {
                     setLoaderlmsImgUser(false);
 
                     setStateOrgUsers(data?.users);
-                    
+
 
                   })
                 }}
