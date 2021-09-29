@@ -167,7 +167,7 @@ const roleDetail = (id, roleId) => httpService
   .catch((err) => Promise.reject(err.response.data));
 
 const searchOrganization = (searchKeyword) => httpService
-  .get(`/${apiVersion}/organizations/searchOrganizationByName?query=${searchKeyword.replace(/#/, '%23')}`)
+  .get(`/${apiVersion}/organizations/search?query=${searchKeyword.replace(/#/, '%23')}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 

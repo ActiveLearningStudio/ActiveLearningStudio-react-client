@@ -1427,7 +1427,9 @@ function Table(props) {
                       <td>{row?.description}</td>
                       <td>
                         <div className="links">
-                        {true && (
+                        {permission?.Organization.includes(
+                          "organization:update-default-sso")
+                         && (
                             <Link
                               onClick={() => {
                                 dispatch({
@@ -1440,7 +1442,9 @@ function Table(props) {
                               &nbsp;&nbsp;Edit&nbsp;&nbsp;
                             </Link>
                           )}
-                          {true && (
+                          {permission?.Organization.includes(
+                          "organization:delete-default-sso")
+                         && (
                             <Link
                               onClick={() => {
                                 Swal.fire({

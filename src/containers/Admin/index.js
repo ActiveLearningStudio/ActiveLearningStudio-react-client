@@ -128,7 +128,7 @@ function AdminPanel() {
                     <Pills modules={["All settings"]} type="Settings" />
                   </div>
                 </Tab> */}
-                {permission?.Organization?.includes('organization:view-user')
+                {permission?.Organization?.includes('organization:view-default-sso')
                  && (
                   <Tab eventKey="DefaultSso" title="Default SSO Integrations">
                     <div className="module-content">
