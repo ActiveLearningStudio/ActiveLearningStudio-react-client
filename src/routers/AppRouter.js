@@ -36,6 +36,7 @@ const VevensityRegister = loadable(() => import('../containers/Auth/VevinsityReg
 const VevensityLogin = loadable(() => import('../containers/Auth/VevinsityLogin'));
 const AdminPanel = loadable(() => import('../containers/Admin'));
 const LtiLogin = loadable(() => import('../containers/Auth/LtiLogin'));
+const CanvasLtiLogin = loadable(() => import('../containers/Auth/CanvasLtiLogin'));
 const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
 const ChangePasswordPage = loadable(() => import('../containers/Account/ChangePasswordPage'));
 // const DashboardPage = loadable(() => import('../containers/Dashboard'));
@@ -86,6 +87,11 @@ const AppRouter = (props) => {
           exact
           path="/lti-sso" // see OpenRoute for some special permissions logic for this route if you change it
           component={LtiLogin}
+        />
+        <OpenRoute
+          exact
+          path="/canvas-lti-sso"
+          component={CanvasLtiLogin}
         />
         <OpenRoute exact path="/sso/dologin/:ssodata" component={SSOLogin} />
         <OpenRoute

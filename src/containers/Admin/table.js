@@ -94,9 +94,10 @@ function Table(props) {
 
   //update table after search and first time
   useEffect(() => {
-    if (type === "LMS" || type === "Project") {
-      if (data?.data) {
-        setLocalStateData(data?.data);
+    if (type === "LMS" || type === 'Project' || type === 'DefaultSso') {
+
+      if(data?.data) {
+        setLocalStateData(data?.data)
       } else {
         setLocalStateData(data);
       }
@@ -1420,7 +1421,96 @@ function Table(props) {
                     <Alert variant="primary">Loading...</Alert>
                   </td>
                 </tr>
+              )
+            )}
+
+              {type === "DefaultSso" && (
+                localStateData ? localStateData?.length > 0 ?
+                  localStateData?.map((row) => (
+                    <tr>
+                      <td>{row.lms_url}</td>
+                      <td>{row.lms_name}</td>
+                      <td>{row?.site_name}</td>
+                      <td>{row.lti_client_id}</td>
+                      <td>{row?.description}</td>
+                      <td>
+                        <div className="links">
+                        {permission?.Organization.includes(
+                          "organization:update-default-sso")
+                         && (
+                            <Link
+                              onClick={() => {
+                                dispatch({
+                                  type: "SET_ACTIVE_EDIT",
+                                  payload: row,
+                                });
+                                dispatch(setActiveAdminForm("edit_default_sso"));
+                              }}
+                            >
+                              &nbsp;&nbsp;Edit&nbsp;&nbsp;
+                            </Link>
+                          )}
+                          {permission?.Organization.includes(
+                          "organization:delete-default-sso")
+                         && (
+                            <Link
+                              onClick={() => {
+                                Swal.fire({
+                                  title: "Are you sure you want to delete this SSO Integration?",
+                                  text: "This action is Irreversible",
+                                  icon: "warning",
+                                  showCancelButton: true,
+                                  confirmButtonColor: "#084892",
+                                  cancelButtonColor: "#d33",
+                                  confirmButtonText: "Yes, delete it!",
+                                }).then((result) => {
+                                  if (result.isConfirmed) {
+                                    Swal.fire({
+                                      title: 'Default SSO Integration',
+                                      icon: 'info',
+                                      text: 'Deleting Default SSO Integration...',
+                                      allowOutsideClick: false,
+                                      onBeforeOpen: () => {
+                                        Swal.showLoading();
+                                      },
+                                      button: false,
+                                    });
+                                    const response = adminService.deleteDefaultSso(row?.id);
+                                    response
+                                      .then((res) => {
+                                        Swal.fire({
+                                          icon: "success",
+                                          text: res?.message,
+
+                                        });
+                                        const filterLMS = localStateData.filter(each => each.id != row.id);
+                                        setLocalStateData(filterLMS)
+
+                                      }).catch(err => console.log(err))
+                                  }
+                                });
+                              }}
+                            >
+                              &nbsp;&nbsp;Delete&nbsp;&nbsp;
+                            </Link>
+                          )} 
+                        </div>
+                      </td>
+                    </tr>
+                  )) : (
+                    <tr>
+                      <td colspan="11">
+                        <Alert variant="warning">No Default SSO integration found.</Alert>
+                      </td>
+                    </tr>
+                  ) : (
+                    <tr>
+                      <td colspan="11">
+                        <Alert variant="primary">Loading...</Alert>
+                      </td>
+                    </tr>
               ))}
+
           </tbody>
         </table>
       </div>
@@ -1559,6 +1649,19 @@ function Table(props) {
                 onChange={(e) => {
                   // setCurrentTab("index");
                   window.scrollTo(0, 0);
+                  setActivePage(e);
+                }}
+              />
+            )}
+            {type === 'DefaultSso' && (
+              <Pagination
+                activePage={activePage}
+                pageRangeDisplayed={5}
+                itemsCountPerPage={data?.meta?.per_page}
+                totalItemsCount={data?.meta?.total}
+                onChange={(e) => {
+                  // setCurrentTab("index");
+                  window.scrollTo(0, 0)
                   setActivePage(e);
                 }}
               />
