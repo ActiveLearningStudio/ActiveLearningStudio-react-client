@@ -125,12 +125,14 @@ const onSubmit = async (values, dispatch, props) => {
     history.push('/projects');
   }
 };
-export const uploadThumb = async (e, permission, teamPermission, id, dispatch) => {
+export const uploadThumb = async (e, permission, teamPermission, id, dispatch, editMode) => {
   const formData = new FormData();
   try {
     console.log(id);
     formData.append('thumb', e.target.files[0]);
-    formData.append('project_id', id);
+    if (editMode) {
+      formData.append('project_id', id);
+    }
     imageValidation = '';
     await dispatch(uploadProjectThumbnailAction(formData));
   } catch (err) {
@@ -269,7 +271,7 @@ let CreateProjectPopup = (props) => {
                         text: 'Selected file size should be less then 100MB.',
                       });
                     } else {
-                      uploadThumb(e, permission, teamPermission, projectState?.selectedProject?.id, dispatch);
+                      uploadThumb(e, permission, teamPermission, projectState?.selectedProject?.id, dispatch, editMode);
                     }
                   }}
                 />
