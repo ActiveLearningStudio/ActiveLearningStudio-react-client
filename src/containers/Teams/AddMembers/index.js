@@ -4,7 +4,7 @@ import React, {
   useState,
 } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import _ from 'lodash';
@@ -12,6 +12,7 @@ import {
   removeMemberAction,
   loadTeamAction,
   addMembersToProjectAction,
+  getTeamPermission,
 } from 'store/actions/team';
 // import Header from 'components/Header';
 // import Sidebar from 'components/Sidebar';
@@ -39,7 +40,9 @@ function AddMembersPage(props) {
 
   const [search, setSearch] = useState('');
   const [chosenUsers, setChosenUsers] = useState([]);
-
+  const organization = useSelector((state) => state.organization);
+  const { teamPermission } = useSelector((state) => state.team);
+  const dispatch = useDispatch();
   const handleChangeSearch = useCallback((e) => {
     setSearch(e.target.value);
   }, []);
@@ -57,7 +60,12 @@ function AddMembersPage(props) {
   useEffect(() => {
     loadTeam(teamId);
   }, [loadTeam, teamId]);
-
+  // Fetch team permission if page reloads
+  useEffect(() => {
+    if (Object.keys(teamPermission).length === 0 && organization?.currentOrganization?.id && id) {
+      dispatch(getTeamPermission(organization?.currentOrganization?.id, id));
+    }
+  }, [teamPermission]);
   const handleAssign = useCallback(() => {
     addMembers(id, projectId, chosenUsers)
       .then(() => {

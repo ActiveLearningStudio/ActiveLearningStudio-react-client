@@ -490,7 +490,7 @@
     width: -moz-fit-content;
     width: 70px;
     height: 35px;
-    margin: -35px 10px 10px 0;
+    margin: 0 10px 10px 0;
     /* padding: 3px 20px; */
     display: flex;
     justify-content: center;
@@ -2495,6 +2495,9 @@ a:hover {
     margin-top: 50px;
     .item-container {
       padding-bottom: 50px;
+      @media screen and (max-width: 1499px) {
+        margin-top: 20px;
+      }
     }
   }
   .slider-scroll-auto {
@@ -2631,6 +2634,9 @@ a:hover {
     top: 40px;
     z-index: 11;
   background-color: #fff;
+  @media screen and (max-width: 1499px) {
+    height: 70px;
+  }
     h3 {
       font-size: 16px;
       font-weight: bold;
@@ -3074,7 +3080,7 @@ a:hover {
 .footer-img-section{
   position: fixed;
   bottom: 0;
-  z-index: 1001;
+  z-index: 999;
   width: 100%;
   height: 65px;
   padding: 10px 30px;
@@ -3831,8 +3837,12 @@ a:hover {
 
 body.collapsed {
   .main-content-wrapper {
+
+    .assign-projects .assign-projects-content {
+      margin-left:100px;
+    }
     .side-wrapper-team {
-      left:110px;
+      padding-left:160px;
       .bread-crumb {
         position: initial;
       }
@@ -3953,7 +3963,7 @@ body.collapsed {
 
   @media (max-width:1280px) {
     padding: 0px;
-    
+
   }
   @media (max-width:768px) {
     max-width: 95% !important;

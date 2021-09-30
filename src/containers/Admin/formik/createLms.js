@@ -15,15 +15,15 @@ export default function CreateUser(prop) {
   const { editMode, method, clone } = prop;
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const {activeEdit} = organization
+  const { activeEdit } = organization
   const [loaderlmsImgUser, setLoaderlmsImgUser] = useState(false)
   const [stateOrgUsers, setStateOrgUsers] = useState([]);
   const [checked, setChecked] = useState(false);
-  useEffect(()=>{
-    if(editMode && !clone) {
+  useEffect(() => {
+    if (editMode && !clone) {
       setChecked(activeEdit?.published)
     }
-  },[activeEdit, editMode])
+  }, [activeEdit, editMode])
   return (
     <div className="create-form">
       <Formik
@@ -31,18 +31,19 @@ export default function CreateUser(prop) {
           lms_url: editMode ? activeEdit?.lms_url : '',
           lms_access_token: editMode ? activeEdit?.lms_access_token : '',
           site_name: editMode ? activeEdit?.site_name : '',
-          user_id : editMode ? clone ? '':activeEdit?.user?.id : '',
+          user_id: editMode ? clone ? '' : activeEdit?.user?.id : '',
           lti_client_id: editMode ? activeEdit?.lti_client_id : '',
           // moodle: editMode ? activeEdit?.moodle : '',
           // canvas: editMode ? activeEdit?.canvas : '',
-          lms_name: editMode ? activeEdit?.lms_name || 'moodle': 'moodle',
+          lms_name: editMode ? activeEdit?.lms_name || 'moodle' : 'moodle',
           lms_access_key: editMode ? activeEdit?.lms_access_key : '',
           lms_access_secret: editMode ? activeEdit?.lms_access_secret : '',
           description: editMode ? activeEdit?.description : "",
-          name: editMode ? clone ? '':activeEdit?.user?.name : '',
+          name: editMode ? clone ? '' : activeEdit?.user?.name : '',
           lms_login_id: editMode ? activeEdit?.lms_login_id : "",
           lti_client_id: editMode ? activeEdit?.lti_client_id : "",
-          published:editMode ? clone ? false:activeEdit?.published: false,
+          published: editMode ? clone ? false : activeEdit?.published : false,
+          organization_id: organization?.activeOrganization?.id,
 
 
         }}
@@ -63,22 +64,21 @@ export default function CreateUser(prop) {
           if (!values.lti_client_id) {
             errors.lti_client_id = 'required';
           }
-        
           if (!values.lms_name) {
             errors.lms_name = 'required';
           }
 
           // if (!values.canvas) {
-          //   errors.canvas = 'required';
+          //   errors.canvas = 'Required';
           // }
           // if (!values.access_key) {
-          //   errors.access_key = 'required';
+          //   errors.access_key = 'Required';
           // }
           // if (!values.secret_key) {
-          //   errors.secret_key = 'required';
+          //   errors.secret_key = 'Required';
           // }
           // if (!values.description) {
-          //   errors.description = 'required';
+          //   errors.description = 'Required';
           // }
           if (!values.user_id) {
             errors.user_id = 'Required';
@@ -102,11 +102,11 @@ export default function CreateUser(prop) {
             });
 
 
-            const result =  adminapi.updateLmsProject(activeEdit?.id, values);
+            const result = adminapi.updateLmsProject(organization?.activeOrganization?.id, activeEdit?.id, values);
             result.then(res => {
               Swal.fire({
-                icon:'success',
-                text:res?.message
+                icon: 'success',
+                text: res?.message
               })
               dispatch(removeActiveAdminForm());
               dispatch({
@@ -127,11 +127,11 @@ export default function CreateUser(prop) {
               },
               button: false,
             });
-            const result =  adminapi.createLmsProject(values);
+            const result = adminapi.createLmsProject(organization?.activeOrganization?.id, values);
             result.then(res => {
               Swal.fire({
-                icon:'success',
-                text:res?.message
+                icon: 'success',
+                text: res?.message
               })
               dispatch(removeActiveAdminForm());
               dispatch({
@@ -197,19 +197,19 @@ export default function CreateUser(prop) {
               </div>
             </div>
             {/* {!editMode ? */}
-              <div className="form-group-create">
-                <h3>LTI Client ID</h3>
-                <input
-                  type="lti_client_id"
-                  name="lti_client_id"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.lti_client_id}
-                />
-                <div className="error">
-                  {errors.lti_client_id && touched.lti_client_id && errors.lti_client_id}
-                </div>
+            <div className="form-group-create">
+              <h3>LTI Client ID</h3>
+              <input
+                type="lti_client_id"
+                name="lti_client_id"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.lti_client_id}
+              />
+              <div className="error">
+                {errors.lti_client_id && touched.lti_client_id && errors.lti_client_id}
               </div>
+            </div>
             {/* //   : null
             // } */}
             <div className="form-group-create">
@@ -285,7 +285,7 @@ export default function CreateUser(prop) {
             </div>
             <div className="form-group-create">
               <h3>Published</h3>
-                <Switch checked={checked} onChange={()=>{
+              <Switch checked={checked} onChange={() => {
                 setChecked(!checked)
                 setFieldValue('published', !checked)
               }} />
@@ -308,7 +308,7 @@ export default function CreateUser(prop) {
                     setLoaderlmsImgUser(false);
 
                     setStateOrgUsers(data?.users);
-                    
+
 
                   })
                 }}
@@ -344,7 +344,7 @@ export default function CreateUser(prop) {
 
             <div className="button-group">
               <button type="submit">
-              {editMode ? clone ? 'Create ' : 'Edit ' : 'Create '}LMS Setting
+                {editMode ? clone ? 'Create ' : 'Edit ' : 'Create '}LMS Setting
               </button>
               <button
                 type="button"

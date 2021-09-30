@@ -97,12 +97,13 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
     dispatch({ type: actionTypes.UPDATE_PROJECT_REQUEST });
     Swal.showLoading();
     const { project } = await projectService.update(projectId, data, activeOrganization.id);
-    Swal.close();
     dispatch({
       type: actionTypes.UPDATE_PROJECT_SUCCESS,
       payload: { project },
     });
+    Swal.close();
     dispatch(allSidebarProjects());
+    return project;
   } catch (e) {
     dispatch({ type: actionTypes.UPDATE_PROJECT_FAIL });
     Swal.fire({
@@ -110,6 +111,7 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
       title: 'Error',
       text: e.message || 'Something went wrong !',
     });
+    return e;
   }
 };
 
@@ -157,6 +159,7 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
     type: actionTypes.UPLOAD_PROJECT_THUMBNAIL,
     payload: { thumbUrl },
   });
+  return thumbUrl;
 };
 
 export const loadMyProjectsAction = () => async (dispatch) => {
@@ -166,7 +169,7 @@ export const loadMyProjectsAction = () => async (dispatch) => {
     dispatch({
       type: actionTypes.PAGE_LOADING,
     });
-    const { projects } = await projectService.getAll(activeOrganization.id);
+    const { projects } = await projectService.getAll(activeOrganization?.id);
 
     dispatch({
       type: actionTypes.LOAD_MY_PROJECTS,

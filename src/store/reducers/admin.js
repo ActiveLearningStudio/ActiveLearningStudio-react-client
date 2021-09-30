@@ -16,6 +16,7 @@ const INITIAL_STATE = {
   editUser: null,
   newlyCreated: null,
   newlyEdit: null,
+  currentProject: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -104,6 +105,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         specificJob: action.payload,
+      };
+    case actionTypes.SET_CURRENT_PROJECT:
+      return {
+        ...state,
+        currentProject: action.payload,
       };
     default:
       return state;

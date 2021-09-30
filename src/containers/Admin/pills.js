@@ -14,7 +14,7 @@ import { getJobListing, getLogsListing, getUserReport } from "store/actions/admi
 import { alphaNumeric } from "utils";
 
 export default function Pills(props) {
-  const { modules, type, subType } = props;
+  const { modules, type, subType, allProjectTab,setAllProjectTab } = props;
 
   const [key, setKey] = useState(modules && modules[0]);
 
@@ -38,7 +38,6 @@ export default function Pills(props) {
   const [searchQueryProject, setSearchQueryProject] = useState("");
   const [searchQueryStats, setSearchQueryStats] = useState("");
   const [searchQueryActivities, setSearchQueryActivities ] = useState("");
-  const [allProjectTab, setAllProjectTab] = useState(null);
   const [allProjectUserTab, setAllProjectUserTab] = useState(null);
   const [allProjectIndexTab, setAllProjectIndexTab] = useState(null);
   const [lmsProject, setLmsProject] = useState(null);
@@ -46,7 +45,7 @@ export default function Pills(props) {
   const [jobType, SetJobType] = useState({ value: 1 , display_name: 'Pending'});
   const [logs, setLogs ] = useState(null);
   const [logType, SetLogType] = useState({ value: 'all' , display_name: 'All'});
-  const [changeIndexValue, setChangeIndexValue] = useState("1");
+  const [changeIndexValue, setChangeIndexValue] = useState("0");
   useEffect(()=>{
     setKey(modules?.[0])
 
@@ -65,13 +64,13 @@ export default function Pills(props) {
     }
   };
   const searchQueryChangeHandler = async ({ target }) => {
-    if (target.value.length) {
+    if (target.value.trim().length) {
       if(!!alphaNumeric(target.value)) {
         setSearchQuery(target.value);
       }
       searchUsersFromOrganization(target.value, activePage);
       setActivePage(searchUsers ? activePage : 1);
-      if (target.value.length> 1 ) setUsers(null);
+      if (target.value.trim().length> 1 ) setUsers(null);
     } else {
       dispatch(clearSearchUserInOrganization());
       setActivePage(1);
@@ -99,7 +98,6 @@ export default function Pills(props) {
         const searchapi = adminService.getAllProjectIndex(activeOrganization?.id, 1, index)
         searchapi.then((data) => {
           setAllProjectIndexTab(data)
-
         })
       }
     } else if (subType === 'all') {
@@ -177,7 +175,7 @@ export default function Pills(props) {
   // All Users Business Logic End
 
   useMemo(async () => {
-    setAllProjectTab(null);
+    setAllProjectTab && setAllProjectTab(null);
     setAllProjectUserTab(null);
     setAllProjectIndexTab(null);
     if (activeOrganization && type === "Project" && currentTab == "all") {
@@ -217,7 +215,7 @@ export default function Pills(props) {
       currentTab === "index"
     ) {
       if (searchQueryProject) {
-        const searchapi = adminService.userSerchIndexs(activeOrganization?.id, activePage, index, searchQueryProject)
+        const searchapi = adminService.userSerchIndexs(activeOrganization?.id, activePage, changeIndexValue, searchQueryProject)
         searchapi.then((data) => {
           setAllProjectIndexTab(data)
 
@@ -226,7 +224,7 @@ export default function Pills(props) {
         const result = await adminService.getAllProjectIndex(
           activeOrganization?.id,
           activePage || 1,
-          changeIndexValue
+          changeIndexValue,
         );
         setAllProjectIndexTab(result);
       }
@@ -265,7 +263,7 @@ export default function Pills(props) {
     } else if (subTypeRecieved === 'Activity Items') {
       if (query) {
         await dispatch(getActivityItems(query, ''));
-      } else {
+      } else if (query === '') {
         await dispatch(getActivityItems());
       }
     }
@@ -383,16 +381,17 @@ export default function Pills(props) {
   useMemo(async () => {
     if(type==="LMS") {
     // setLmsProject(null);
-    const result =  adminService.getLmsProject(activePage|| 1);
+    const result =  adminService.getLmsProject(activeOrganization?.id, activePage|| 1);
     result.then((data) => {
       setLmsProject(data)
     })
     }
-  }, [type, activePage]);
+  }, [type, activePage, activeOrganization?.id,]);
 
   const searchQueryChangeHandlerLMS = (search) => {
-    // setLmsProject(null);
-    const result =  adminService.getLmsProjectSearch(search.target.value,(activePage|| 1));
+    setLmsProject(null);
+    const encodeQuery = encodeURI(search.target.value);
+    const result =  adminService.getLmsProjectSearch(activeOrganization?.id, encodeQuery,(activePage|| 1));
     result.then((data) => {
       setLmsProject(data)
     })
@@ -434,7 +433,7 @@ export default function Pills(props) {
           setCurrentTab("user");
         } else if (key === "Indexing Queue") {
           setCurrentTab("index");
-          setChangeIndexValue(1);
+          setChangeIndexValue(0);
         }
       }}
     >
@@ -640,10 +639,12 @@ export default function Pills(props) {
                 setActivePage={setActivePage}
                 activePage={activePage}
                 subType="index"
+                setAllProjectIndexTab={setAllProjectIndexTab}
                 setCurrentTab={setCurrentTab}
                 filter={true}
                 searchQueryProject={searchQueryProject}
                 setSearchQueryProject={setSearchQueryProject}
+                changeIndexValue={changeIndexValue}
                 setChangeIndexValue={setChangeIndexValue}
               />
             )}
