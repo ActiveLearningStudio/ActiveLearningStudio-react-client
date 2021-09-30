@@ -94,6 +94,7 @@ function SearchInterface(props) {
   const [activeEducation, setActiveEducation] = useState([]);
   const [searchType, setSearchType] = useState(null);
   const [authorName, SetAuthor] = useState('');
+  const [activetab, setActiveTab] = useState('total');
   const [todate, Settodate] = useState(undefined);
   const [fromdate, Setfromdate] = useState(undefined);
   const [safariToolHtml, setSafariToolHtml] = useState(null);
@@ -494,6 +495,7 @@ function SearchInterface(props) {
                                       onClick={async () => {
                                         Setfromdate(undefined);
                                         Settodate(undefined);
+                                        setActiveTab('total');
                                         if (!searchInput.trim() && searchType !== 'orgSearch') {
                                           Swal.fire('Search field is required.');
                                         } else if (searchInput.length > 255) {
@@ -712,9 +714,10 @@ function SearchInterface(props) {
 
                       <div className="right-search">
                         <Tabs
-                          defaultActiveKey="total"
+                          activeKey={activetab}
                           id="uncontrolled-tab-example"
                           onSelect={async (e) => {
+                            setActiveTab(e);
                             if (e === 'total') {
                               let searchData;
                               if (searchType === 'orgSearch') {
@@ -1077,7 +1080,7 @@ function SearchInterface(props) {
                             }
                           >
                             <div className="results_search">
-                              {!!search && search.length > 0 ? (
+                              { !!search && search.length > 0 ? (
                                 search.map((res) => (
                                   <>
                                     {res.model === 'Project' && (

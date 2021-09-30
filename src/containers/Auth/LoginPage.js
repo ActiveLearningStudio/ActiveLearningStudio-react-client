@@ -109,7 +109,7 @@ class LoginPage extends React.Component {
       error,
       clicked,
     } = this.state;
-    const { isLoading } = this.props;
+    const { isLoading, domain } = this.props;
 
     return (
       <div className="auth-page">
@@ -286,37 +286,44 @@ class LoginPage extends React.Component {
                   )}
                 </button>
               </div>
-              <div className="vertical-line">
-                <div className="line" />
-                <p className="line-or">or</p>
-                <div className="line" />
-              </div>
+              {
+                domain?.self_registration === true ? (
+                  <>
+                    <div className="vertical-line">
+                      <div className="line" />
+                      <p className="line-or">or</p>
+                      <div className="line" />
+                    </div>
 
-              <p className="auth-description text-center">
-                New to Curriki?&nbsp;
-                <a onClick={this.goToRegister}>
-                  Sign up
-                </a>
-              </p>
+                    <p className="auth-description text-center">
+                      New to Curriki?&nbsp;
+                      <a onClick={this.goToRegister}>
+                        Sign up
+                      </a>
+                    </p>
 
-              <div className="form-group text-center mb-0">
-                <GoogleLogin
-                  clientId={global.config.gapiClientId}
-                  theme="dark"
-                  render={(renderProps) => (
-                    <button type="button" className="google-button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                      <img src={googleIcon} alt="googleIcon" style={{ float: 'left', paddingRight: '19.23px' }} />
-                      Sign Up with Google
-                    </button>
-                  )}
-                  onSuccess={this.onGoogleLoginSuccess}
-                  onFailure={this.onGoogleLoginFailure}
-                  scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
-                  cookiePolicy="single_host_origin"
-                />
-
-              </div>
-
+                    <div className="form-group text-center mb-0">
+                      <GoogleLogin
+                        clientId={global.config.gapiClientId}
+                        theme="dark"
+                        render={(renderProps) => (
+                          <button type="button" className="google-button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                            <img src={googleIcon} alt="googleIcon" style={{ float: 'left', paddingRight: '19.23px' }} />
+                            Sign Up with Google
+                          </button>
+                        )}
+                        onSuccess={this.onGoogleLoginSuccess}
+                        onFailure={this.onGoogleLoginFailure}
+                        scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
+                        cookiePolicy="single_host_origin"
+                      />
+                    </div>
+                  </>
+                )
+                : (
+                  null
+                )
+              }
               <div className="termsandcondition">
                 By clicking the &quot;Sign Up&quot; button, you are creating a CurrikiStudio  account, and you agree to Curriki&apos; s
                 {' '}
