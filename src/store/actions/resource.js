@@ -664,3 +664,13 @@ export const updatedActivity = (userId) => async () => {
       }
     });
 };
+
+export const getLayoutActivities = () => async (dispatch) => {
+  const { data } = await resourceService.getAllLayout();
+  if (data) {
+    dispatch({
+      type: actionTypes.SET_LAYOUT_ACTIVITY,
+      payload: data,
+    });
+  }
+};

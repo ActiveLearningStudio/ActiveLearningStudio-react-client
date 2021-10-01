@@ -4,7 +4,6 @@ import React, {
   useCallback,
   useState,
 } from 'react';
-// import Switch from 'react-switch';
 import PropTypes from 'prop-types';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -12,9 +11,9 @@ import { Field, reduxForm } from 'redux-form';
 import Swal from 'sweetalert2';
 import { Alert } from 'react-bootstrap';
 
-import computer from 'assets/images/computer.svg';
+import computer from 'assets/images/svg/desktop.svg';
 import loader from 'assets/images/loader.svg';
-import pexel from 'assets/images/pexel.png';
+import pexel from 'assets/images/svg/pixel.svg';
 import { required, maxLength } from 'utils';
 import {
   createProjectAction,
@@ -32,9 +31,6 @@ import './style.scss';
 const maxLength80 = maxLength(80);
 const maxLength1000 = maxLength(1000);
 
-// TODO: need to restructure code, clean up attributes
-// remove unused code,
-
 let imageValidation = '';
 const projectShare = true;
 
@@ -45,22 +41,8 @@ const onSubmit = async (values, dispatch, props) => {
     editMode,
   } = props;
   const { name, description, vType } = values;
-  // if (!thumbUrl) {
-  //   imageValidation = "* Required";
-  //   return false;
-  // }
   if (editMode) {
-    // UPDATE
-    // Swal.fire({
-    //   title: 'Please Wait !',
-    //   html: 'Updating Project Setting ...',
-    //   allowOutsideClick: false,
-    //   onBeforeOpen: () => {
-    //     Swal.showLoading();
-    //   },
-    // });
-    // const result = await
-    dispatch(
+    const result = await dispatch(
       updateProjectAction(props.match.params.projectId, {
         name,
         description,
@@ -68,31 +50,11 @@ const onSubmit = async (values, dispatch, props) => {
         organization_visibility_type_id: vType || 1,
       }),
     );
-    // if (result?.errors && result?.message) {
-    //   Swal.fire({
-    //     icon: 'error',
-    //     title: 'Oops...',
-    //     text: result?.message ? result?.message : 'Something went wrong!',
-    //   });
-    // } else {
-    //   Swal.fire({
-    //     icon: 'success',
-    //     text: 'Project Settings Updated!',
-    //   });
-    // }
-    history.goBack();
+    if (result) {
+      history.goBack();
+    }
   } else {
-    // create
-    // Swal.fire({
-    //   title: 'Please Wait !',
-    //   html: 'We are creating a brand new project for you ...',
-    //   allowOutsideClick: false,
-    //   onBeforeOpen: () => {
-    //     Swal.showLoading();
-    //   },
-    // });
-    // const result = await
-    dispatch(
+    const result = await dispatch(
       props.project.thumbUrl
         ? createProjectAction({
           name,
@@ -110,27 +72,18 @@ const onSubmit = async (values, dispatch, props) => {
           thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
         }),
     );
-    // if (result?.errors && result?.message) {
-    //   Swal.fire({
-    //     icon: 'error',
-    //     title: 'Oops...',
-    //     text: result?.message ? result?.message : 'Something went wrong!',
-    //   });
-    // } else {
-    //   Swal.fire({
-    //     icon: 'success',
-    //     text: 'Project Created Successfully!',
-    //   });
-    // }
-    history.push('/projects');
+    if (result) {
+      history.push('/projects');
+    }
   }
 };
 export const uploadThumb = async (e, permission, teamPermission, id, dispatch) => {
   const formData = new FormData();
   try {
-    console.log(id);
     formData.append('thumb', e.target.files[0]);
-    formData.append('project_id', id);
+    if (id) {
+      formData.append('project_id', id);
+    }
     imageValidation = '';
     await dispatch(uploadProjectThumbnailAction(formData));
   } catch (err) {
@@ -160,7 +113,6 @@ let CreateProjectPopup = (props) => {
   const { teamPermission } = useSelector((state) => state.team);
   const { permission } = stateHeader;
   const [modalShow, setModalShow] = useState(false);
-  // const [publicProject, setPublicProject] = useState(true);
   const openFile = useRef();
   const [visibilityTypeArray, setVisibilityTypeArray] = useState([]);
   // remove popup when escape is pressed
@@ -212,38 +164,41 @@ let CreateProjectPopup = (props) => {
           autoComplete="off"
         >
           <div className="project-name">
-            <div className="label-toggle">
-              <label>
-                Enter Project Name (Up to 80 characters)
-              </label>
-
-              {/* {!editMode && (
-                <div className="class-toggle" title="By default, it is not public">
-                  <label>Make Project Public</label>
-                  <Switch
-                    checkedIcon={false}
-                    uncheckedIcon={false}
-                    height={25}
-                    onChange={() => {
-                      setPublicProject(!publicProject);
-                      projectShare = !publicProject;
-                    }}
-                    checked={publicProject}
-                    value={publicProject}
-                  />
-                </div>
-              )} */}
-            </div>
-
             <Field
               name="name"
               component={InputField}
               type="text"
               validate={[required, maxLength80]}
               autoComplete="new-password"
+              className="reduxlabel"
+              label="Enter Project Name (Up to 80 characters)"
             />
           </div>
-
+          <div className="dropdown-visibilitytypes">
+            <label>
+              <h2>
+                Visibility Type
+              </h2>
+            </label>
+            <Field
+              name="vType"
+              component="select"
+              label="Visibility Type"
+            >
+              {visibilityTypeArray.map((vT) => (
+                <option className="all-tg-lister" value={vT.id}>{vT.display_name}</option>
+              ))}
+            </Field>
+          </div>
+          <div className="project-description">
+            <Field
+              name="description"
+              component={TextareaField}
+              validate={[required, maxLength1000]}
+              autoComplete="new-password"
+              label="Project Description"
+            />
+          </div>
           <div className="upload-thumbnail check">
             <div className="upload_placeholder">
               <label style={{ display: 'none' }}>
@@ -305,7 +260,9 @@ let CreateProjectPopup = (props) => {
                   </div>
                 ) : (
                   <div className="new-box">
-                    <h2>Default Selected thumbnail</h2>
+                    <label>
+                      <h2>Default Selected Thumbnail</h2>
+                    </label>
                     <div className="imgbox">
                       {/* eslint-disable-next-line max-len */}
                       <img
@@ -317,14 +274,7 @@ let CreateProjectPopup = (props) => {
                 )}
               </div>
 
-              <div className="button-flex">
-                <h2>Change thumbnail from below options</h2>
-
-                <div className="pexel" onClick={() => setModalShow(true)}>
-                  <img src={pexel} alt="pexel" />
-                  <p>Select from Pexels</p>
-                </div>
-
+              <div className="button-flex ">
                 <div
                   className="gallery"
                   onClick={() => {
@@ -332,7 +282,12 @@ let CreateProjectPopup = (props) => {
                   }}
                 >
                   <img src={computer} alt="" />
-                  <p>Upload a Photo From your computer</p>
+                  <p>My device</p>
+                </div>
+
+                <div className="pexel" onClick={() => setModalShow(true)}>
+                  <img src={pexel} alt="pexel" />
+                  <p>Pexels</p>
                 </div>
               </div>
             </div>
@@ -348,33 +303,6 @@ let CreateProjectPopup = (props) => {
               <strong>100MB.</strong>
             </p>
           </div>
-          <div className="dropdown-visibilitytypes">
-            <div id="dropdown-basic">
-              <h2 className="mt-4 mb-0" style={{ paddingBottom: '7px' }}>
-                Visibility Type
-              </h2>
-            </div>
-            <Field
-              name="vType"
-              component="select"
-              // onChange={({ target }) => { currentVisibilityType(target.value); }}
-            >
-              {visibilityTypeArray.map((vT) => (
-                <option className="all-tg-lister" value={vT.id}>{vT.display_name}</option>
-              ))}
-            </Field>
-          </div>
-          <div className="project-description">
-            <h2 className="mt-4 mb-0">Project Description</h2>
-
-            <Field
-              name="description"
-              component={TextareaField}
-              validate={[required, maxLength1000]}
-              autoComplete="new-password"
-            />
-          </div>
-
           <div className="create-project-template-wrapper">
             <button
               type="submit"

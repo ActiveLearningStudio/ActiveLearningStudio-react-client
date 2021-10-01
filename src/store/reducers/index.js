@@ -20,6 +20,7 @@ import group from './group';
 import organization from './organization';
 import genericLMS from './LMS/genericLMS';
 import admin from './admin';
+import myactivities from './myactivities';
 
 export default combineReducers({
   auth,
@@ -42,4 +43,5 @@ export default combineReducers({
   organization,
   genericLMS,
   admin,
+  myactivities,
 });

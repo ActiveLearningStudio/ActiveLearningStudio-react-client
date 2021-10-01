@@ -1,4 +1,45 @@
-@import 'assets/css/index';
+@import "assets/css/index";
+
+.project-list-all {
+  display: flex;
+  flex-wrap: wrap;
+}
+.inner-content {
+  background: $white;
+  padding: 30px;
+  margin-top: 16px;
+  // margin: 13px 39px 81px 29px;
+  border-radius: 3px;
+  // @media screen and (max-width: 1024px) {
+  //   margin: 13px 20px 81px 20px;
+  // }
+}
+
+// **************************** TAB CSS***********************************
+.nav-tabs .nav-link {
+  border: 1px solid $curriki-main-blue !important;
+  // background-color: $curriki-main-blue !important;
+  color: $curriki-main-blue !important;
+  font-weight: bold !important;
+
+  // & :hover {
+
+  // }
+}
+
+.nav-tabs .nav-link.hover :hover {
+  background-color: $curriki-main-blue !important;
+  color: $white !important;
+}
+
+.main-tabs .nav-item.active {
+  background-color: $curriki-main-blue !important;
+  color: $white !important;
+}
+.main-tabs .nav-item.active:after {
+  display: none !important;
+}
+// ***************************************************************
 
 .program-tile {
   height: 100%;
@@ -51,7 +92,7 @@
         line-height: 120%;
         display: block;
 
-        @media (max-width:1500px) {
+        @media (max-width: 1500px) {
           font-size: 18px;
         }
 
@@ -101,7 +142,8 @@
           margin-right: 8px;
           display: block;
           float: left;
-          background: url(../../assets/images/program-lesson-icon.png) no-repeat center;
+          background: url(../../assets/images/program-lesson-icon.png) no-repeat
+            center;
         }
       }
 
@@ -116,7 +158,8 @@
           margin-right: 8px;
           display: block;
           float: left;
-          background: url(../../assets/images/program-duration-icon.png) no-repeat center;
+          background: url(../../assets/images/program-duration-icon.png)
+            no-repeat center;
         }
       }
     }
@@ -301,16 +344,19 @@
     justify-content: space-between;
     margin-bottom: 15px;
     align-items: center;
+    .heading-image {
+      display: flex;
+    }
 
     img {
-      width:35px;
+      width: 35px;
       margin-right: 5px;
     }
   }
 
-  p{
+  p {
     font-size: 14px;
-    color: $dove-gray
+    color: $dove-gray;
   }
 
   .btn-top-page {
@@ -327,5 +373,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .top-heading-detail {
+    margin-top: 30px;
+    margin-bottom: 40px;
   }
 }

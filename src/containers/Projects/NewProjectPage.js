@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
-import { slideInRight } from 'react-animations';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+/*eslint-disable*/
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
+import styled, { keyframes } from "styled-components";
+import { slideInRight } from "react-animations";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import CreateProjectPopup from './CreateProjectPopup';
+import CreateProjectPopup from "./CreateProjectPopup";
 
 const bounceAnimation = keyframes`${slideInRight}`;
 
@@ -22,18 +23,17 @@ function NewProjectPage(props) {
 
   return (
     <div className="resource-modal">
-      <div
-        className="modal fade right"
-        role="dialog"
-        aria-hidden="true"
-      >
+      <div className="modal fade right" role="dialog" aria-hidden="true">
         <div className="modal-dialog" role="document">
           <BouncyDiv className="modal-content">
             <div className="modal-title">
               <div className="row">
                 <div className="col-md-12">
                   <h1 className="mt-4 mb-0">
-                    {`${editMode ? 'Update' : 'Create New'} Project`}
+                    <span>
+                      {" "}
+                      {`${editMode ? "Update" : "Create a"} Project`}
+                    </span>
 
                     <button
                       type="button"
@@ -44,9 +44,9 @@ function NewProjectPage(props) {
                       <FontAwesomeIcon
                         icon="times"
                         style={{
-                          WebkitTextStroke: '4px #fff',
-                          color: '#333',
-                          cursor: 'pointer',
+                          WebkitTextStroke: "4px #fff",
+                          color: "#333",
+                          cursor: "pointer",
                         }}
                       />
                     </button>
@@ -58,10 +58,7 @@ function NewProjectPage(props) {
             <div className="modal-body">
               <div className="row">
                 <div className="col-md-12">
-                  <CreateProjectPopup
-                    {...props}
-                    thumbUrl={project.thumbUrl}
-                  />
+                  <CreateProjectPopup {...props} thumbUrl={project.thumbUrl} />
                 </div>
               </div>
             </div>

@@ -161,20 +161,20 @@ function Sidebar(props) {
                 </Accordion>
                 )} */}
               {permission?.Organization?.includes('organization:view')
-              && (
-                <>
-                  <Link to={`/org/${allState.organization.currentOrganization?.domain}/admin`} onClick={() => dispatch(clearTeamPermissions())}>
-                    <div className="row-sidebar">
-                      <img src={administrate} alt="" />
-                      <div className="sidebar-headings">
-                        Admin Panel
+                && (
+                  <>
+                    <Link to={`/org/${allState.organization.currentOrganization?.domain}/admin`} onClick={() => dispatch(clearTeamPermissions())}>
+                      <div className="row-sidebar">
+                        <img src={administrate} alt="" />
+                        <div className="sidebar-headings">
+                          Admin Panel
+                        </div>
+                        <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
                       </div>
-                      <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
-                    </div>
 
-                  </Link>
-                </>
-              )}
+                    </Link>
+                  </>
+                )}
               {/* {permission?.Organization?.includes('organization:view') && (
                 <Link
                   to={`/org/${allState.organization.currentOrganization?.domain}/manage`}
@@ -205,33 +205,33 @@ function Sidebar(props) {
               </>
             )} */}
             {permission?.Project?.includes('project:view')
-            && (
-              <>
-                <Link to={`/org/${allState.organization.currentOrganization?.domain}`} onClick={() => dispatch(clearTeamPermissions())}>
-                  <div className="row-sidebar">
-                    <img src={foldericon} alt="" />
-                    <div className="sidebar-headings">
-                      My Projects
+              && (
+                <>
+                  <Link to={`/org/${allState.organization.currentOrganization?.domain}`} onClick={() => dispatch(clearTeamPermissions())}>
+                    <div className="row-sidebar">
+                      <img src={foldericon} alt="" />
+                      <div className="sidebar-headings">
+                        My Projects
+                      </div>
+                      <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
                     </div>
-                    <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
-                  </div>
-                </Link>
-              </>
-            )}
+                  </Link>
+                </>
+              )}
             {permission?.Team?.includes('team:view')
-            && (
-              <>
-                <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
-                  <div className="row-sidebar">
-                    <img src={teamicon} alt="" />
-                    <div className="sidebar-headings">
-                      Teams
+              && (
+                <>
+                  <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
+                    <div className="row-sidebar">
+                      <img src={teamicon} alt="" />
+                      <div className="sidebar-headings">
+                        Teams
+                      </div>
+                      <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
                     </div>
-                    <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
-                  </div>
-                </Link>
-              </>
-            )}
+                  </Link>
+                </>
+              )}
             {/* {permission?.Group?.includes('group:view')
             && (
               <>

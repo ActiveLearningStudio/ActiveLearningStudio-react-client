@@ -11,6 +11,10 @@ const getAll = () => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const getAllLayout = () => httpService
+  .get(`/${apiVersion}/activity-layouts`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
 const create = (activity, playlistId) => httpService
   .post(`/${apiVersion}/playlists/${playlistId}/activities`, activity)
   .then(({ data }) => data)
@@ -245,4 +249,5 @@ export default {
   loadH5pShared,
   removeShareActivity,
   getXapi,
+  getAllLayout,
 };

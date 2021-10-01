@@ -141,21 +141,21 @@ function ProjectPreview(props) {
         && (
           <div className="check-each" key={playlist.id}>
             {(Object.keys(teamPermission).length
-            ? teamPermission?.Team?.includes('team:add-activity') : (permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload'))) && (
-              <div className="add-btn-activity">
-                <button
-                  type="button"
-                  className="add-resource-to-playlist-btn"
-                  onClick={() => {
-                    // dispatch(clearSearch());
-                    history.push(`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/create`);
-                  }}
-                >
-                  <FontAwesomeIcon icon="plus-circle" className="mr-2" />
-                  Add new activity
-                </button>
-              </div>
-            )}
+              ? teamPermission?.Team?.includes('team:add-activity') : (permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload'))) && (
+                <div className="add-btn-activity">
+                  <button
+                    type="button"
+                    className="add-resource-to-playlist-btn"
+                    onClick={() => {
+                      // dispatch(clearSearch());
+                      history.push(`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/create`);
+                    }}
+                  >
+                    <FontAwesomeIcon icon="plus-circle" className="mr-2" />
+                    Add new activity
+                  </button>
+                </div>
+              )}
             <button
               type="button"
               ref={(el) => {
@@ -193,7 +193,7 @@ function ProjectPreview(props) {
                     />
 
                   </>
-                ) : playlist.title }
+                ) : playlist.title}
             </button>
 
             <div className="panel">
@@ -263,43 +263,43 @@ function ProjectPreview(props) {
                           Exit Preview Mode
                         </Link>
                         {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-project') : permission?.Project?.includes('project:share')) && (
-                        <div className="share-button">
-                          Share Project
-                          <Switch
-                            onColor="#5952c6"
-                            onChange={() => {
-                              if (activeShared) {
-                                Swal.fire({
-                                  icon: 'warning',
-                                  title: `You are about to stop sharing <strong>"${currentProject.name}"</strong>`,
-                                  html: `Please remember that anyone you have shared this project
+                          <div className="share-button">
+                            Share Project
+                            <Switch
+                              onColor="#5952c6"
+                              onChange={() => {
+                                if (activeShared) {
+                                  Swal.fire({
+                                    icon: 'warning',
+                                    title: `You are about to stop sharing <strong>"${currentProject.name}"</strong>`,
+                                    html: `Please remember that anyone you have shared this project
                                     with will no longer have access its contents. Do you want to continue?`,
-                                  showCloseButton: true,
-                                  showCancelButton: true,
-                                  focusConfirm: false,
-                                  confirmButtonText: 'Stop Sharing!',
-                                  confirmButtonAriaLabel: 'Stop Sharing!',
-                                  cancelButtonText: 'Cancel',
-                                  cancelButtonAriaLabel: 'Cancel',
-                                }).then((resp) => {
-                                  if (resp.isConfirmed) {
-                                    dispatch(toggleProjectShareRemovedAction(
-                                      currentProject.id,
-                                      currentProject.name,
-                                    ));
-                                  }
-                                });
-                              } else {
-                                dispatch(toggleProjectShareAction(currentProject?.id, currentProject.name));
-                              }
-                            }}
-                            checked={activeShared || false}
-                            className="react-switch"
-                            handleDiameter={30}
-                            uncheckedIcon={false}
-                            checkedIcon={false}
-                          />
-                        </div>
+                                    showCloseButton: true,
+                                    showCancelButton: true,
+                                    focusConfirm: false,
+                                    confirmButtonText: 'Stop Sharing!',
+                                    confirmButtonAriaLabel: 'Stop Sharing!',
+                                    cancelButtonText: 'Cancel',
+                                    cancelButtonAriaLabel: 'Cancel',
+                                  }).then((resp) => {
+                                    if (resp.isConfirmed) {
+                                      dispatch(toggleProjectShareRemovedAction(
+                                        currentProject.id,
+                                        currentProject.name,
+                                      ));
+                                    }
+                                  });
+                                } else {
+                                  dispatch(toggleProjectShareAction(currentProject?.id, currentProject.name));
+                                }
+                              }}
+                              checked={activeShared || false}
+                              className="react-switch"
+                              handleDiameter={30}
+                              uncheckedIcon={false}
+                              checkedIcon={false}
+                            />
+                          </div>
                         )}
 
                         {activeShared && (
@@ -357,8 +357,8 @@ function ProjectPreview(props) {
               deletePlaylist={deletePlaylist}
               hideDeletePopup={hideDeletePopup}
               deleteProject={deleteProject}
-              // deleteType="project"
-              // showDeletePopup={showDeletePopup}
+            // deleteType="project"
+            // showDeletePopup={showDeletePopup}
             />
           )}
         </>
