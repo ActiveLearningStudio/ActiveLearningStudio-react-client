@@ -87,9 +87,10 @@ const ActivityLayout = (props) => {
               }
               onClick={() => {
                 setLayout("SingleActivity");
-                history.push(
-                  `/org/currikistudio/project/6510/playlist/13623/activity/create`
-                );
+                dispatch({
+                  type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+                  payload: 'singleActivity',
+                })
               }}
           />
         

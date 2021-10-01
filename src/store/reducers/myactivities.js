@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   screenState: '',
   layout: null,
   selectedLayout: null,
+  singleLayout: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -22,6 +23,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         selectedLayout: action.payload,
+      };
+      case actionTypes.SET_SINGLE_ACTIVITY:
+      return {
+        ...state,
+        singleLayout: action.payload,
       };
     default:
       return state;

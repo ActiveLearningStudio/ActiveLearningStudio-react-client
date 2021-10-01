@@ -674,3 +674,13 @@ export const getLayoutActivities = () => async (dispatch) => {
     });
   }
 };
+
+export const getSingleLayoutActivities = () => async (dispatch) => {
+  const { data } = await resourceService.getSingleLayout();
+  if (data) {
+    dispatch({
+      type: actionTypes.SET_SINGLE_ACTIVITY,
+      payload: data,
+    });
+  }
+};

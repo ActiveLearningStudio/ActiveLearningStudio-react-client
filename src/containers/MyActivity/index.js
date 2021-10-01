@@ -20,6 +20,7 @@ import HeadingThree from "utils/HeadingThree/headingthree";
 import NewActivity from "./formik/newactivity";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ActivityLayout from "./formik/activitylayout";
+import SingleActivity from './formik/addSingleActivity';
 import AddActivity from "./formik/addactivity";
 import PreviewLayout from "./formik/previewlayout";
 import { Link } from "react-router-dom";
@@ -102,7 +103,13 @@ const MyActivity = ({playlistPreview}) => {
                 <PreviewLayout
                   changeScreenHandler={changeScreenHandler}
                   screenState={screenState}
-                />
+              />
+              )}
+               {screenState === "singleActivity" && (
+                <SingleActivity
+                  changeScreenHandler={changeScreenHandler}
+                  screenState={screenState}
+              />
               )}
             </div>
           </div>

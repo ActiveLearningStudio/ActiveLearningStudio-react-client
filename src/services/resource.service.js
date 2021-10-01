@@ -15,6 +15,11 @@ const getAllLayout = () => httpService
   .get(`/${apiVersion}/activity-layouts`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
+
+const getSingleLayout = () => httpService
+  .get(`/${apiVersion}/get-activity-items`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
 const create = (activity, playlistId) => httpService
   .post(`/${apiVersion}/playlists/${playlistId}/activities`, activity)
   .then(({ data }) => data)
@@ -250,4 +255,5 @@ export default {
   removeShareActivity,
   getXapi,
   getAllLayout,
+  getSingleLayout,
 };
