@@ -5,19 +5,21 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import { useDispatch } from 'react-redux';
 import { loadH5pSettingsActivity } from 'store/actions/resource';
 import { Alert } from 'react-bootstrap';
+import { createResourceAction } from 'store/actions/resource';
 
 const H5PEditor = (props) => {
   const {
-    match,
-    h5pParams,
-    resource,
-    loadH5pSettings,
-    handleCreateResourceSubmit,
+    playlistId,
+    h5pLib,
+    h5pLibType,
+    metadata,
+    projectId,
     upload,
-    layoutActviityH5p
+    loadH5pSettings,
+    h5pParams,
   } = props;
  
   const uploadFile = useRef();
@@ -25,6 +27,7 @@ const H5PEditor = (props) => {
   if (upload) {
     defaultState = 'upload';
   }
+  const dispatch =  useDispatch();
   const [submitAction, setSubmitAction] = useState(defaultState);
   const [h5pFile, setH5pFile] = useState(null);
 
@@ -61,7 +64,7 @@ const H5PEditor = (props) => {
         match.params.playlistId,
         resource.newResource.activity.h5pLib,
         resource.newResource.activity.h5pLibType,
-        payload,
+        upload,
         resource.newResource.metadata,
         match.params.projectId,
       );
@@ -85,18 +88,52 @@ const H5PEditor = (props) => {
           h5pFile,
         };
         handleCreateResourceSubmit(
-          match.params.playlistId,
-          resource.newResource.activity.h5pLib,
-          resource.newResource.activity.type,
+          playlistId,
+          h5pLib,
+          h5pLibType,
           payload,
-          resource.newResource.metadata,
-          match.params.projectId,
-          props,
+          metadata,
+          projectId,
+          
         );
       }
     }
   };
+  const handleCreateResourceSubmit = async (
+    currentPlaylistId,
+    editor,
+    editorType,
+    payload,
+    metadata,
+    projectId,
+  ) => {
+    // try {
+      if (payload.submitAction === 'create') {
+        Swal.fire({
+          title: 'Creating New Activity',
+          html: 'Please wait! While we create a brand new activity for you.',
+          allowOutsideClick: false,
+          onBeforeOpen: () => {
+            Swal.showLoading();
+          },
+        });
+        await dispatch(createResourceAction(
+          currentPlaylistId,
+          editor,
+          editorType,
+          metadata,
+          projectId,
+        ));
+      }
 
+    //  } catch (e) {
+    //   Swal.fire({
+    //     title: 'Error',
+    //     icon: 'error',
+    //     html: 'Error creating new activity',
+    //   });
+    // }
+  };
   if (h5pParams === '""') {
     return <></>;
   }
@@ -130,13 +167,13 @@ const H5PEditor = (props) => {
           type="hidden"
           name="library"
           id="laravel-h5p-library"
-          value={resource?.newResource.activity.h5pLib || layoutActviityH5p}
+          value={h5pLib}
         />
         <input
           type="hidden"
           name="parameters"
           id="laravel-h5p-parameters"
-          value={JSON.parse('{"params":{},"metadata":{}}')}
+          value={h5pParams || JSON.parse('{"params":{},"metadata":{}}')}
         />
 
         <fieldset>
@@ -231,7 +268,7 @@ const H5PEditor = (props) => {
             </div>
           </div>
 
-          <div className="form-group" style={{ display: 'none' }}>
+          <div className="form-group" >
             <div className="col-md-9 col-md-offset-3">
               <button
                 // ref={submitButtonRef}
@@ -254,7 +291,6 @@ H5PEditor.propTypes = {
   resource: PropTypes.object.isRequired,
   h5pLib: PropTypes.string,
   h5pParams: PropTypes.string,
-  handleCreateResourceSubmit: PropTypes.func.isRequired,
   loadH5pSettings: PropTypes.func.isRequired,
   upload: PropTypes.bool.isRequired,
   layoutActviityH5p : PropTypes.string.isRequired,

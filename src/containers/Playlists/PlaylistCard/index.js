@@ -127,7 +127,7 @@ class PlaylistCard extends React.Component {
 
   render() {
     const { editMode } = this.state;
-    const { index, playlist, organization, teamPermission } = this.props;
+    const { index, playlist, projectId, organization, teamPermission } = this.props;
     const { permission } = organization;
     return (
       <Draggable key={playlist.id} draggableId={`${playlist.id}`} index={index}>
@@ -205,7 +205,7 @@ class PlaylistCard extends React.Component {
                     onClick={() => {
                       const { clearSearchform } = this.props;
                      // this.handleAddNewResourceClick();
-                      this.props.openActivity();
+                      this.props.openActivity(playlist,projectId);
                       clearSearchform();
                     }}
                   >
@@ -249,9 +249,11 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(changePlaylistTitleAction(projectId, id, title)),
   clearForm: () => dispatch(clearFormData()),
   clearSearchform: () => dispatch(clearSearch()),
-  openActivity: () =>  dispatch({
+  openActivity: (playlist, project ) =>  dispatch({
     type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
     payload: 'layout',
+    playlist: playlist,
+    project: project
   })
 });
 

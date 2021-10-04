@@ -1,10 +1,10 @@
 /*eslint-disable*/
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import HeadingText from "utils/HeadingText/headingtext";
 import HeadingTwo from "utils/HeadingTwo/headingtwo";
 import Tabs from "utils/Tabs/tabs";
 import Buttons from "utils/Buttons/buttons";
-import { Formik, Field } from "formik";
+import { Formik } from "formik";
 import HeadingThree from "utils/HeadingThree/headingthree";
 import VideoTagImage from "../../../assets/images/Group 616.png";
 import { Link } from "react-router-dom";
@@ -21,7 +21,7 @@ import * as actionTypes from 'store/actionTypes';
 
 const AddActivity = (props) => {
   const { changeScreenHandler, setUploadImageStatus } = props;
-  const {layout, selectedLayout } =  useSelector((state) => state.myactivities);
+  const {layout, selectedLayout, activity } =  useSelector((state) => state.myactivities);
   const [modalShow, setModalShow] = useState(false);
   const [upload, setupload] = useState(false);
 
@@ -29,7 +29,8 @@ const AddActivity = (props) => {
   const [successMessage, setSuccessMessage] = useState(false);
   const dispatch = useDispatch();
   const [existingActivity, setExistingActivity] = useState(false);
-  
+  const [formData, setFormData] =  useState('');
+  const formRef = useRef()
   useEffect(() => {
     if(selectedLayout)  {
       setTitle(selectedLayout.title)
@@ -47,6 +48,7 @@ const AddActivity = (props) => {
         onHide={() => {
           setModalShow(false);
         }}
+        formData={formData}
         searchName="abstract"
         setSuccessMessage={setSuccessMessage}
       />
@@ -75,7 +77,7 @@ const AddActivity = (props) => {
               })
             }}>
               {/* <option value="">Change Layout</option> */}
-              {layout.map((data) => {
+              {layout?.map((data) => {
                 return (
                   <option key="" selected={data.title === title ? true : false} value={JSON.stringify(data)}>{data.title}</option>
                 )
@@ -103,9 +105,11 @@ const AddActivity = (props) => {
               initialValues={{
                 education_level_id: "",
                 subject_id: "",
-                thumb_url: "",
-                title: "",
+                thumb_url:  activity?.thumb_url || "",
+                title: activity?.title || "",
               }}
+              enableReinitialize
+              innerRef={formRef}
               validate={values => {
                 const errors = {};
                 if (!values.title) {
@@ -119,6 +123,7 @@ const AddActivity = (props) => {
                   alert(JSON.stringify(values, null, 2));
                   setSubmitting(false);
                 }, 400);
+                setFormData(values)
               }}
             >
                 {({
@@ -241,7 +246,10 @@ const AddActivity = (props) => {
                 height="36px"
                 // disabled={layout ? false : true}
                 // onClick={() => changeScreenHandler("uploadinteractivevideo")}
-                onClick={() => setExistingActivity(!existingActivity)}
+                onClick={() => {
+                  formRef.current.handleSubmit();
+                  setExistingActivity(!existingActivity)
+                }}
                 hover={true}
               />
               {/* <Buttons
@@ -256,7 +264,10 @@ const AddActivity = (props) => {
             </div>
             {existingActivity && (
               <div className="existing-activity-dialog">
-                <UploadFile />
+                <UploadFile
+                  metadata={formData}
+                  
+                />
 
                 <div style={{ marginTop: "30px" }}>
                   <Buttons

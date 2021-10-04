@@ -24,7 +24,7 @@ const ActivityLayout = (props) => {
   useEffect(() => {
     dispatch(getSingleLayoutActivities());
   },[])
-  const allActivity =  useSelector((state) => state.myactivities.layout);
+  const allActivity =  useSelector((state) => state.myactivities.singleLayout);
   useEffect(() => () => {
 
      
@@ -77,64 +77,36 @@ const ActivityLayout = (props) => {
               progress: undefined,
             })}
         </div>
-        {!!layout &&
-        (<div className="layout-process-btn">
-          <HeadingThree text={layout.title} color="#084892" />
-          <div className="activity-layout-process-box">
-            <iframe
-              width="100%"
-              height="100%"
-              frameborder="0"
-              src={layout.demo_video_id | 'https://www.youtube.com/embed/ngXSzWNYzU4'}
-              title={layout.title}
-            ></iframe>
-            {/* <img src={PlayIcon} /> */}
-          </div>
-          <HeadingText
-            text={layout.description}
-            color="#515151"
-          />
-          <div className="layout-useful-box">
-            <div className="useful-box">
-              <HeadingThree text="Useful for" color="#084892" />
-              <FontAwesomeIcon icon={faArrowRight} className="useful-icon" />
-            </div>
-            <HeadingText
-              text="Guided onboardings, Corporated presentations"
-              color="#515151"
-            />
-          </div>
-          <div className="activity-layout-btns">
-            <Buttons
-              text="Cancel"
-              secondary={true}
-              width="153px"
-              height="36px"
-              onClick={() => changeScreenHandler("")}
-              hover={true}
-            />
-
-            <div className="btns-margin">
-              <Buttons
-                text="Select Layout"
-                defaultgrey={layout ? false : true}
-                width="153px"
-                height="36px"
-                disabled={layout ? false : true}
-                onClick={() => {
-                  changeScreenHandler("addactivity")
-                  dispatch({
-                    type:actionTypes.SET_SELECTED_ACTIVITY,
-                    payload: layout,
-                  })
-                }}
-                hover={true}
-              />
-            </div>
-          </div>
-        </div>)}
       </div>
-    </div>
+      <div className="activity-layout-btns">
+        <Buttons
+          text="Cancel"
+          secondary={true}
+          width="153px"
+          height="36px"
+          onClick={() => changeScreenHandler("")}
+          hover={true}
+        />
+
+        <div className="btns-margin">
+          <Buttons
+            text="Select Layout"
+            defaultgrey={layout ? false : true}
+            width="153px"
+            height="36px"
+            disabled={layout ? false : true}
+            onClick={() => {
+              changeScreenHandler("addactivity")
+              dispatch({
+                type:actionTypes.SET_SELECTED_ACTIVITY,
+                payload: layout,
+              })
+            }}
+            hover={true}
+          />
+        </div>
+      </div>
+    </div>  
   );
 };
 

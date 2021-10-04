@@ -5,6 +5,9 @@ const INITIAL_STATE = {
   layout: null,
   selectedLayout: null,
   singleLayout: null,
+  playlist: null,
+  project: null,
+  activity: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -13,7 +16,10 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         screenState: action.payload,
-       };
+        playlist: action.playlist || state.playlist,
+        project: action.project || state.project,
+        activity: action.activity || state.activity,
+      };
     case actionTypes.SET_LAYOUT_ACTIVITY:
       return {
         ...state,

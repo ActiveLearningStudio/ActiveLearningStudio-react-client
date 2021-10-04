@@ -226,17 +226,13 @@ export const createResourceAction = (
     const activity = {
       h5p_content_id: resource.id,
       playlist_id: playlistId,
-      thumb_url: metadata.thumbUrl,
+      thumb_url: metadata?.thumbUrl,
       action: 'create',
-      title: metadata.metaContent.metaTitle,
+      title: metadata?.title,
       type: 'h5p',
       content: 'place_holder',
-      subject_id:
-        metadata.metaContent.metaSubject
-        && metadata.metaContent.metaSubject,
-      education_level_id:
-        metadata.metaContent.metaEducationLevels
-        && metadata.metaContent.metaEducationLevels,
+      subject_id: metadata.subject_id,
+      education_level_id: metadata.consoleeducation_level_id,
     };
     const insertedResource = await resourceService.create(activity, playlistId);
     Swal.close();
@@ -469,15 +465,11 @@ export const createResourceByH5PUploadAction = (
         playlist_id: playlistId,
         thumb_url: metadata.thumbUrl,
         action: 'create',
-        title: metadata.metaContent.metaTitle,
+        title: metadata.title,
         type: 'h5p',
         content: 'place_holder',
-        subject_id:
-          metadata.metaContent.metaSubject
-          && metadata.metaContent.metaSubject.subject,
-        education_level_id:
-          metadata.metaContent.metaEducationLevels
-          && metadata.metaContent.metaEducationLevels.name,
+        subject_id: metadata.subject_id,
+        education_level_id: metadata.education_level_id,
       };
 
       const responseActivity = await resourceService.create(createActivityUpload, playlistId);

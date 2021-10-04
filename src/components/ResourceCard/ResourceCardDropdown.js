@@ -1,13 +1,13 @@
 /*eslint-disable*/
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { connect, useSelector } from "react-redux";
+import { connect, useSelector, useDispatch } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { confirmAlert } from "react-confirm-alert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dropdown, Modal } from "react-bootstrap";
-
+import * as actionTypes from "store/actionTypes";
 // import logo from 'assets/images/logo.svg';
 import config from "config";
 import { shareActivity, deleteResourceAction } from "store/actions/resource";
@@ -38,7 +38,7 @@ const ResourceCardDropdown = (props) => {
   const organization = useSelector((state) => state.organization);
   const { permission } = organization;
   const [safariToolHtml, setSafariToolHtml] = useState(null);
-
+  const dispatch =  useDispatch();
   useEffect(() => {
     setSafariToolHtml(encodeURI(safariMontagePublishTool));
   }, [safariMontagePublishTool]);
@@ -86,8 +86,16 @@ const ResourceCardDropdown = (props) => {
           ? teamPermission?.Team?.includes("team:edit-activity")
           : permission?.Activity?.includes("activity:edit")) && (
             <Dropdown.Item
-              as={Link}
-              to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
+              onClick={() => { 
+                
+                dispatch({
+                  type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+                  payload: 'addactivity',
+                  playlist: playlist,
+                  project: match.params.projectId,
+                  activity: resource
+                })
+              }}
             >
               <FontAwesomeIcon icon="pen" className="mr-2" />
               Edit

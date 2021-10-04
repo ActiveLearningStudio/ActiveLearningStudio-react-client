@@ -13,7 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 const PreviewLayoutModel = (props) => {
   const resource = useSelector((state) => state.resource);
-  const { selectedLayout : { h5pLib } } = useSelector((state) => state.myactivities);
+  const { selectedLayout , playlist, project, activity } = useSelector((state) => state.myactivities);
   const dispatch = useDispatch()
   return (
     <Modal
@@ -45,7 +45,15 @@ const PreviewLayoutModel = (props) => {
           </div>
         </div> */}
         <div className="interactive-video-H5P">
-          <H5PEditor layoutActviityH5p={h5pLib} />
+          <H5PEditor
+            playlistId={playlist.id}
+            h5pLib={activity.h5p_content.h5pLib | selectedLayout?.h5pLib}
+            h5pLibType={activity.type | selectedLayout?.type}
+            payload={''}
+            metadata={props?.formData}
+            projectId={project}
+            h5pParams={activity.h5p_content?.parameters}
+           />
         </div>
         <div className="interactive-btns">
           <div className="cancel">
