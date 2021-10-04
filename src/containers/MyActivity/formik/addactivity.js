@@ -6,22 +6,25 @@ import Tabs from "utils/Tabs/tabs";
 import Buttons from "utils/Buttons/buttons";
 import { Formik } from "formik";
 import HeadingThree from "utils/HeadingThree/headingthree";
-import VideoTagImage from "../../../assets/images/Group 616.png";
-import { Link } from "react-router-dom";
-import H5PEditor from "components/ResourceCard/AddResource/Editors/H5PEditorV2";
-import UploadImage from "utils/UploadImage/uploadimage";
+
 import PreviewLayoutModel from "containers/MyProject/model/previewlayout";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import UploadImageV2 from "utils/uploadimagev2/uploadimagev2";
 import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
 import UploadFile from "utils/uploadselectfile/uploadfile";
-import { useSelector, useDispatch } from 'react-redux';
-import * as actionTypes from 'store/actionTypes';
+import { useSelector, useDispatch } from "react-redux";
+import * as actionTypes from "store/actionTypes";
+import {
+  educationLevels,
+  subjects,
+} from "components/ResourceCard/AddResource/dropdownData";
 // import { subjects, educationLevels } from 'components/ac /dropdownData';
 
 const AddActivity = (props) => {
   const { changeScreenHandler, setUploadImageStatus } = props;
-  const {layout, selectedLayout, activity } =  useSelector((state) => state.myactivities);
+  const { layout, selectedLayout, activity } = useSelector(
+    (state) => state.myactivities
+  );
   const [modalShow, setModalShow] = useState(false);
   const [upload, setupload] = useState(false);
 
@@ -29,13 +32,13 @@ const AddActivity = (props) => {
   const [successMessage, setSuccessMessage] = useState(false);
   const dispatch = useDispatch();
   const [existingActivity, setExistingActivity] = useState(false);
-  const [formData, setFormData] =  useState('');
-  const formRef = useRef()
+  const [formData, setFormData] = useState("");
+  const formRef = useRef();
   useEffect(() => {
-    if(selectedLayout)  {
-      setTitle(selectedLayout.title)
+    if (selectedLayout) {
+      setTitle(selectedLayout.title);
     }
-  }, [selectedLayout])
+  }, [selectedLayout]);
 
   successMessage &&
     setInterval(() => {
@@ -68,19 +71,27 @@ const AddActivity = (props) => {
           </div>
 
           <div className="activity-title-change-layout">
-            <select onChange={(e) => {
-              console.log(e.target.value);
-              
-              dispatch({
-                type:actionTypes.SET_SELECTED_ACTIVITY,
-                payload: JSON.parse(e.target.value),
-              })
-            }}>
+            <select
+              onChange={(e) => {
+                console.log(e.target.value);
+
+                dispatch({
+                  type: actionTypes.SET_SELECTED_ACTIVITY,
+                  payload: JSON.parse(e.target.value),
+                });
+              }}
+            >
               {/* <option value="">Change Layout</option> */}
               {layout?.map((data) => {
                 return (
-                  <option key="" selected={data.title === title ? true : false} value={JSON.stringify(data)}>{data.title}</option>
-                )
+                  <option
+                    key=""
+                    selected={data.title === title ? true : false}
+                    value={JSON.stringify(data)}
+                  >
+                    {data.title}
+                  </option>
+                );
               })}
             </select>
           </div>
@@ -103,100 +114,107 @@ const AddActivity = (props) => {
           <div className="add-activity-layout-formik">
             <Formik
               initialValues={{
-                education_level_id: "",
-                subject_id: "",
-                thumb_url:  activity?.thumb_url || "",
+                education_level_id: activity?.education_level_id || "",
+                subject_id: activity?.subject_id || "",
+                thumb_url: activity?.thumb_url || "",
                 title: activity?.title || "",
               }}
               enableReinitialize
               innerRef={formRef}
-              validate={values => {
+              validate={(values) => {
                 const errors = {};
                 if (!values.title) {
-                  errors.title = 'Required';
+                  errors.title = "Required";
                 }
-              
+
                 return errors;
               }}
               onSubmit={(values, { setSubmitting }) => {
-                setTimeout(() => {
-                  alert(JSON.stringify(values, null, 2));
-                  setSubmitting(false);
-                }, 400);
-                setFormData(values)
+                setFormData(values);
               }}
             >
-                {({
-         values,
-         errors,
-         touched,
-         handleChange,
-         handleBlur,
-         handleSubmit,
-         isSubmitting,
-         /* and other goodies */
-       }) => (
-              <form>
-                <HeadingThree text="Layout description" color="#084892" />
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+                /* and other goodies */
+              }) => (
+                <form>
+                  <HeadingThree text="Layout description" color="#084892" />
 
-                <div className="layout-title-formik-textField">
-                  <HeadingThree
-                    text="Layout Title"
-                    color="#515151"
-                    className="textField-title"
-                  />
-                  <HeadingText
-                    text="Used for searching, reports and copyright information"
-                    color="#515151"
-                    className="textField-detailText"
-                  />
-                  <input
-                    type="text"
-                    name="title"
-                    placeholder="Give your layout a name..."
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.title}
-                  />
-                   <div>{errors.title && touched.title && errors.title}</div>
-                </div>
-                <div className="layout-formik-select">
-                  <div className="formik-select mr-32">
-                    <HeadingText
-                      text="Subject"
-                      className="formik-select-title"
-                      
+                  <div className="layout-title-formik-textField">
+                    <HeadingThree
+                      text="Layout Title"
+                      color="#515151"
+                      className="textField-title"
                     />
-                    <select
-                      name="subject_id"
+                    <HeadingText
+                      text="Used for searching, reports and copyright information"
+                      color="#515151"
+                      className="textField-detailText"
+                    />
+                    <input
+                      type="text"
+                      name="title"
+                      placeholder="Give your layout a name..."
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.subject_id}
-                      
-                    >
-                      <option>Select</option>
-                    </select>
-                  </div>
-                  <div className="formik-select ">
-                    <HeadingText
-                      text="Education level"
-                      className="formik-select-title"
+                      value={values.title}
                     />
-                    <select>
-                      <option
+                    <div style={{ color: "red" }}>
+                      {errors.title && touched.title && errors.title}
+                    </div>
+                  </div>
+                  <div className="layout-formik-select">
+                    <div className="formik-select mr-32">
+                      <HeadingText
+                        text="Subject"
+                        className="formik-select-title"
+                      />
+                      <select
+                        name="subject_id"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.subject_id}
+                      >
+                        <option hidden>Select</option>
+                        {educationLevels.map((data) => (
+                          <option key={data.value} value={data.name}>
+                            {data.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="formik-select ">
+                      <HeadingText
+                        text="Education level"
+                        className="formik-select-title"
+                      />
+                      <select
                         name="education_level_id"
                         onChange={handleChange}
                         onBlur={handleBlur}
                         value={values.education_level_id}
-                      
-                      >Select</option>
-                    </select>
+                      >
+                        <option hidden>Select</option>
+                        {subjects.map((data) => (
+                          <option key={data.value} value={data.subject}>
+                            {data.subject}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                </div>
-                <div className="formik-uploadimage">
-                  <UploadImageV2 setUploadImageStatus={setUploadImageStatus} />
-                </div>
-              </form>
+                  <div className="formik-uploadimage">
+                    <UploadImageV2
+                      setUploadImageStatus={setUploadImageStatus}
+                    />
+                  </div>
+                </form>
               )}
             </Formik>
           </div>
@@ -233,7 +251,10 @@ const AddActivity = (props) => {
                 width="142px"
                 height="35px"
                 onClick={() => {
-                  setModalShow(true)
+                  formRef.current.handleSubmit();
+                  if (formRef.current.values.title) {
+                    setModalShow(true);
+                  }
                 }}
                 hover={true}
                 className="mr-10"
@@ -248,7 +269,9 @@ const AddActivity = (props) => {
                 // onClick={() => changeScreenHandler("uploadinteractivevideo")}
                 onClick={() => {
                   formRef.current.handleSubmit();
-                  setExistingActivity(!existingActivity)
+                  if (formRef.current.values.title) {
+                    setExistingActivity(!existingActivity);
+                  }
                 }}
                 hover={true}
               />
@@ -264,10 +287,7 @@ const AddActivity = (props) => {
             </div>
             {existingActivity && (
               <div className="existing-activity-dialog">
-                <UploadFile
-                  metadata={formData}
-                  
-                />
+                <UploadFile metadata={formData} />
 
                 <div style={{ marginTop: "30px" }}>
                   <Buttons

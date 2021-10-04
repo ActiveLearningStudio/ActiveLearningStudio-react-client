@@ -13,8 +13,11 @@ import { useSelector, useDispatch } from "react-redux";
 
 const PreviewLayoutModel = (props) => {
   const resource = useSelector((state) => state.resource);
-  const { selectedLayout , playlist, project, activity } = useSelector((state) => state.myactivities);
-  const dispatch = useDispatch()
+  console.log(props?.formData);
+  const { selectedLayout, playlist, project, activity } = useSelector(
+    (state) => state.myactivities
+  );
+  const dispatch = useDispatch();
   return (
     <Modal
       {...props}
@@ -28,32 +31,17 @@ const PreviewLayoutModel = (props) => {
       </Modal.Header>
 
       <Modal.Body style={{ display: "block !important" }}>
-        {/* <div className="interactive-proceed-box">
-          <div className="interactive-video-tag">
-            <FontAwesomeIcon icon={faVideo} className="video-icon" />
-            <HeadingThree text="Interactive Video" />
-          </div>
-          <div className="proceed-save">
-            <Buttons
-              text="Proceed to save"
-              className="Proceed-btn"
-              onClick={() => {
-                props.onHide();
-                props.setSuccessMessage(true);
-              }}
-            />
-          </div>
-        </div> */}
         <div className="interactive-video-H5P">
           <H5PEditor
             playlistId={playlist.id}
-            h5pLib={activity.h5p_content.h5pLib | selectedLayout?.h5pLib}
-            h5pLibType={activity.type | selectedLayout?.type}
-            payload={''}
-            metadata={props?.formData}
+            h5pLib={activity?.h5p_content?.h5pLib || selectedLayout?.h5pLib}
+            h5pLibType={activity?.type || selectedLayout?.type}
+            payload={""}
+            formData={props?.formData}
             projectId={project}
-            h5pParams={activity.h5p_content?.parameters}
-           />
+            h5pParams={activity?.h5p_content?.parameters}
+            hide={props.onHide}
+          />
         </div>
         <div className="interactive-btns">
           <div className="cancel">
@@ -73,7 +61,7 @@ const PreviewLayoutModel = (props) => {
               onClick={() => {
                 props.onHide();
                 dispatch({
-                  type: 'SET_ACTIVE_ACTIVITY_SCREEN',
+                  type: "SET_ACTIVE_ACTIVITY_SCREEN",
                   payload: "",
                 });
               }}

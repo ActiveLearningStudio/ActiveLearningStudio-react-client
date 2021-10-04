@@ -93,7 +93,7 @@ const UploadImageV2 = ({ className, setUploadImageStatus }) => {
             className="btn-mr-27"
           >
             Upload from computer
-            <FontAwesomeIcon icon={faLaptop} className="mr-20" />
+            {/* <FontAwesomeIcon icon={faLaptop} className="mr-20" /> */}
           </button>
           <button
             type="button"

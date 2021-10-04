@@ -1,33 +1,33 @@
 /* eslint-disable  */
-import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import Swal from 'sweetalert2';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useDispatch } from 'react-redux';
-import { loadH5pSettingsActivity } from 'store/actions/resource';
-import { Alert } from 'react-bootstrap';
-import { createResourceAction } from 'store/actions/resource';
+import React, { useState, useEffect, useRef } from "react";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useDispatch } from "react-redux";
+import { loadH5pSettingsActivity } from "store/actions/resource";
+import { Alert } from "react-bootstrap";
+import { createResourceAction } from "store/actions/resource";
 
 const H5PEditor = (props) => {
   const {
     playlistId,
     h5pLib,
     h5pLibType,
-    metadata,
+    formData,
     projectId,
     upload,
     loadH5pSettings,
     h5pParams,
+    hide,
   } = props;
- 
+
   const uploadFile = useRef();
-  let defaultState = 'create';
+  let defaultState = "create";
   if (upload) {
-    defaultState = 'upload';
+    defaultState = "upload";
   }
-  const dispatch =  useDispatch();
+  const dispatch = useDispatch();
   const [submitAction, setSubmitAction] = useState(defaultState);
   const [h5pFile, setH5pFile] = useState(null);
 
@@ -45,43 +45,11 @@ const H5PEditor = (props) => {
 
   const submitResource = (event) => {
     event.preventDefault();
-    if (submitAction === 'upload' && h5pFile === null) {
-      return true;
-    }
-    if (submitAction === 'upload' && h5pFile !== null) {
-      const fileArr = h5pFile.name.split('.');
-      const fileExtension = fileArr.length > 0 ? fileArr[fileArr.length - 1] : '';
-      if (fileExtension !== 'h5p') {
-        Swal.fire('Invalid file selected, kindly select h5p file.');
-        return true;
-      }
-      const payload = {
-        event,
-        submitAction,
-        h5pFile,
-      };
-      handleCreateResourceSubmit(
-        match.params.playlistId,
-        resource.newResource.activity.h5pLib,
-        resource.newResource.activity.h5pLibType,
-        upload,
-        resource.newResource.metadata,
-        match.params.projectId,
-      );
-      return;
-    }
+
     const parameters = window.h5peditorCopy.getParams();
     const { metadata } = parameters;
     if (metadata.title !== undefined) {
-      // Swal.fire({
-      //   title: 'New Activity',
-      //   html: 'Please wait! While we create a brand new activity for you.',
-      //   allowOutsideClick: false,
-      //   onBeforeOpen: () => {
-      //     Swal.showLoading();
-      //   },
-      // });
-      if (submitAction === 'create') {
+      if (submitAction === "create") {
         const payload = {
           event,
           submitAction,
@@ -92,9 +60,9 @@ const H5PEditor = (props) => {
           h5pLib,
           h5pLibType,
           payload,
-          metadata,
+          formData,
           projectId,
-          
+          hide
         );
       }
     }
@@ -104,35 +72,22 @@ const H5PEditor = (props) => {
     editor,
     editorType,
     payload,
-    metadata,
+    formData,
     projectId,
+    hide
   ) => {
     // try {
-      if (payload.submitAction === 'create') {
-        Swal.fire({
-          title: 'Creating New Activity',
-          html: 'Please wait! While we create a brand new activity for you.',
-          allowOutsideClick: false,
-          onBeforeOpen: () => {
-            Swal.showLoading();
-          },
-        });
-        await dispatch(createResourceAction(
+    if (payload.submitAction === "create") {
+      await dispatch(
+        createResourceAction(
           currentPlaylistId,
           editor,
           editorType,
-          metadata,
-          projectId,
-        ));
-      }
-
-    //  } catch (e) {
-    //   Swal.fire({
-    //     title: 'Error',
-    //     icon: 'error',
-    //     html: 'Error creating new activity',
-    //   });
-    // }
+          formData,
+          hide
+        )
+      );
+    }
   };
   if (h5pParams === '""') {
     return <></>;
@@ -146,8 +101,11 @@ const H5PEditor = (props) => {
         className="form-horizontal"
         id="laravel-h5p-form"
       >
-        <div className="form-group" style={{ position: 'inherit' }}>
-          <div className="col-md-9 col-md-offset-3" style={{ position: 'inherit' }}>
+        <div className="form-group" style={{ position: "inherit" }}>
+          <div
+            className="col-md-9 col-md-offset-3"
+            style={{ position: "inherit" }}
+          >
             {/* <button
               type="submit"
               className="add-resource-submit-btn top"
@@ -181,16 +139,13 @@ const H5PEditor = (props) => {
             <div className="col-md-12">
               <div>
                 <div id="laravel-h5p-editor">
-					<br />
-                  <Alert variant="primary">
-					  Loading ...
-				  </Alert>
-				</div>
+                  <br />
+                  <Alert variant="primary">Loading ...</Alert>
+                </div>
               </div>
             </div>
           </div>
-          {upload
-          && (
+          {upload && (
             <div className="form-group laravel-h5p-upload-container">
               {/* <label htmlFor="inputUpload" className="control-label col-md-3">
                 Upload
@@ -204,19 +159,16 @@ const H5PEditor = (props) => {
                     className="laravel-h5p-upload form-control"
                     onChange={setH5pFileUpload}
                     ref={uploadFile}
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: "pointer" }}
                     // style={{ display: 'none' }}
                   />
                   <div className="upload-holder">
                     <FontAwesomeIcon icon="file-upload" className="mr-2" />
                     <p>
                       Drag & Drop File or
-                      <span>
-                        &nbsp;Browse to upload
-                      </span>
+                      <span>&nbsp;Browse to upload</span>
                     </p>
-                    {!!h5pFile
-                    && (
+                    {!!h5pFile && (
                       <p>
                         Selected File:&nbsp;
                         {h5pFile.name}
@@ -239,7 +191,10 @@ const H5PEditor = (props) => {
             </div>
           )}
 
-          <div className="form-group methods option-choose-way" style={{ display: 'none' }}>
+          <div
+            className="form-group methods option-choose-way"
+            style={{ display: "none" }}
+          >
             <label className="control-label col-md-3">Method</label>
             <div className="col-md-6">
               <label className="radio-inline mr-4">
@@ -248,7 +203,7 @@ const H5PEditor = (props) => {
                   name="action"
                   value="upload"
                   className="laravel-h5p-type mr-2"
-                  checked={submitAction === 'upload'}
+                  checked={submitAction === "upload"}
                   onChange={onSubmitActionRadioChange}
                 />
                 Upload
@@ -260,7 +215,7 @@ const H5PEditor = (props) => {
                   name="action"
                   value="create"
                   className="laravel-h5p-type mr-2"
-                  checked={submitAction === 'create'}
+                  checked={submitAction === "create"}
                   onChange={onSubmitActionRadioChange}
                 />
                 Create
@@ -268,7 +223,7 @@ const H5PEditor = (props) => {
             </div>
           </div>
 
-          <div className="form-group" >
+          <div className="form-group">
             <div className="col-md-9 col-md-offset-3">
               <button
                 // ref={submitButtonRef}
@@ -293,12 +248,12 @@ H5PEditor.propTypes = {
   h5pParams: PropTypes.string,
   loadH5pSettings: PropTypes.func.isRequired,
   upload: PropTypes.bool.isRequired,
-  layoutActviityH5p : PropTypes.string.isRequired,
+  layoutActviityH5p: PropTypes.string.isRequired,
 };
 
 H5PEditor.defaultProps = {
-  h5pLib: '',
-  h5pParams: '',
+  h5pLib: "",
+  h5pParams: "",
 };
 
 const mapDispatchToProps = (dispatch) => ({

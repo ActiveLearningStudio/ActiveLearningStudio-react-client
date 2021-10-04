@@ -1,8 +1,8 @@
 {
-	"prettier.singleQuote": true,
-	"prettier.useEditorConfig": false,
-	"prettier.requireConfig": true,
+	"editor.detectIndentation": false,
 	"javascript.preferences.quoteStyle": "single",
-	"typescript.preferences.quoteStyle": "single",
-	"prettier.printWidth": 180
+	"prettier.singleQuote": true,
+	"editor.tabSize": 2,
+	"prettier.printWidth": 180,
+	"editor.formatOnSave": true
 }

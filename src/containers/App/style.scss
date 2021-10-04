@@ -519,13 +519,13 @@
 
 .main-tabs {
   width: 100%;
-  margin-top: 10px;
-  margin-bottom: 25px !important;
+  margin-top: 0px;
+  margin-bottom: 10px !important;
 
   .nav-item {
     position: relative;
     margin-right: 5px;
-    padding: 12px 30px;
+    padding: 6px 24px;
     background-color: #fff !important;
     font-size: 14px;
     font-weight: 400;
@@ -1230,6 +1230,9 @@ header {
   background: #fff;
   position: relative;
   z-index: 1001;
+  .flex-div {
+    flex-wrap: nowrap;
+  }
 }
 
 .menuoverlay:before {
@@ -3991,5 +3994,16 @@ body.collapsed {
     z-index: 1111;
     background: #f8f9fa;
     top: 0;
+  }
+}
+
+//toasitify styles
+.project-loading {
+  background: $fun-blue-1 !important;
+  color: #fff !important;
+  box-shadow: 0 1px 10px 0 #000000 !important;
+
+  .Toastify__progress-bar {
+    background: #fff !important;
   }
 }

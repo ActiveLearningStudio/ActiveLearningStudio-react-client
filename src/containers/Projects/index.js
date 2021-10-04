@@ -1,9 +1,9 @@
-/*eslint-disable*/
-import React, { useState, useEffect } from "react";
+/* eslint-disable */
+import React, { useState, useEffect, memo } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { connect, useSelector } from "react-redux";
-import ReactPlaceholder from "react-placeholder";
+// import ReactPlaceholder from "react-placeholder";
 import Pagination from "react-js-pagination";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Alert, Tabs, Tab } from "react-bootstrap";
@@ -12,6 +12,8 @@ import QueryString from "query-string";
 import WelcomeVideo from "assets/video/welcome.mp4";
 import searchimg from "assets/images/search-icon.png";
 import { showDeletePopupAction, hideDeletePopupAction } from "store/actions/ui";
+import { toast } from "react-toastify";
+import loader from "assets/images/loader.svg";
 import {
   deleteProjectAction,
   showCreateProjectModalAction,
@@ -35,10 +37,10 @@ import ProjectCard from "./ProjectCard";
 import SampleProjectCard from "./SampleProjectCard";
 import NewProjectPage from "./NewProjectPage";
 import Headline from "./headline";
-
+import { css } from "glamor";
 import "./style.scss";
 // import MyProjects from "./MyProjects";
-
+const ImgLoader = () => <img src={loader} />;
 export const ProjectsPage = (props) => {
   const allStateProject = useSelector((state) => state.project);
   const [show, setShow] = useState(false);
@@ -106,7 +108,7 @@ export const ProjectsPage = (props) => {
   }, [getTeamProjects, organization?.activeOrganization, activePage]);
   useEffect(() => {
     if (!searchTeamQuery) {
-      getTeamProjects('', activePage).then((data) => {
+      getTeamProjects("", activePage).then((data) => {
         setTeamProjects(data.data);
         setMeta(data.meta);
       });
@@ -136,7 +138,7 @@ export const ProjectsPage = (props) => {
     }
   }, [allState.sidebar.sampleProject]);
   const handleSearchQueryTeams = () => {
-    getTeamProjects(searchTeamQuery || '', activePage).then((data) => {
+    getTeamProjects(searchTeamQuery || "", activePage).then((data) => {
       setTeamProjects(data.data);
       setMeta(data.meta);
     });
@@ -270,7 +272,9 @@ export const ProjectsPage = (props) => {
   };
 
   useEffect(() => {
-    // if (allStateProject.projects.length > 0) {
+    if (allStateProject.projects.length > 0) {
+      toast.dismiss();
+    }
     setAllProjects(allStateProject.projects);
     divideProjects(allStateProject.projects);
     // }
@@ -295,6 +299,14 @@ export const ProjectsPage = (props) => {
       !showEditProjectPopup &&
       organization.activeOrganization
     ) {
+      toast.info("Loading Projects ...", {
+        className: "project-loading",
+        closeOnClick: false,
+        closeButton: false,
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 100000,
+        icon: ImgLoader,
+      });
       loadMyProjects();
     }
 
@@ -361,38 +373,32 @@ export const ProjectsPage = (props) => {
   const { pageLoading, showDeletePlaylistPopup } = ui;
   return (
     <>
-      <ReactPlaceholder
-        type="media"
-        showLoadingAnimation
-        customPlaceholder={<ProjectsLoading />}
-        ready={!pageLoading}
-      >
-        <div className={`content-wrapper ${activeFilter}`}>
-          <div className="inner-content">
-            <div className="content">
-              <Headline />
-              {permission?.Project?.includes("project:view") ? (
-                <Tabs
-                  onSelect={(eventKey) => {
-                    setShowSampleSort(true);
-                    setTabToggle(eventKey);
-                    if (eventKey === "Sample Projects") {
-                      setType("sample");
-                    } else if (eventKey === "Favorite Projects") {
-                      setType("fav");
-                    } else if (eventKey === "Team Projects") {
-                      setType("team");
-                    }
-                  }}
-                  className="main-tabs"
-                  defaultActiveKey={activeTab}
-                  id="uncontrolled-tab-example"
-                >
-                  <Tab eventKey="My Projects" title="My Projects">
-                    <div className="row">
+      <div className={`content-wrapper ${activeFilter}`}>
+        <div className="inner-content">
+          <div className="content">
+            <Headline />
+            {permission?.Project?.includes("project:view") ? (
+              <Tabs
+                onSelect={(eventKey) => {
+                  setShowSampleSort(true);
+                  setTabToggle(eventKey);
+                  if (eventKey === "Sample Projects") {
+                    setType("sample");
+                  } else if (eventKey === "Favorite Projects") {
+                    setType("fav");
+                  } else if (eventKey === "Team Projects") {
+                    setType("team");
+                  }
+                }}
+                className="main-tabs"
+                defaultActiveKey={activeTab}
+                id="uncontrolled-tab-example"
+              >
+                <Tab eventKey="My Projects" title="My Projects">
+                  <div className="row">
+                    <div className="col-md-12">
                       <div className="col-md-12">
-                        <div className="col-md-12">
-                          {/* <div className="program-page-title">
+                        {/* <div className="program-page-title">
                           <h1>My Projects</h1>
                           <div className="project-page-settings">
                             <div className="sort-project-btns">
@@ -431,272 +437,243 @@ export const ProjectsPage = (props) => {
                             </div>
                           </div>
                         </div> */}
-                        </div>
-
-                        {!!projectDivider && projectDivider.length > 0 ? (
-                          <div className="project-list-all">
-                            <DragDropContext onDragEnd={onDragEnd}>
-                              {projectDivider.map((rowData) => (
-                                <Droppable
-                                  key={rowData.id}
-                                  droppableId={rowData.id}
-                                  // direction="horizontal"
-                                  // type="row"
-                                  className="drag-class"
-                                  direction="horizontal"
-                                >
-                                  {(provided) => (
-                                    <div
-                                      {...provided.droppableProps}
-                                      ref={provided.innerRef}
-                                    >
-                                      {/* <div className="check-hom" id={value}> */}
-                                      <div id={value}>
-                                        {rowData.collection.map(
-                                          (proj, index) => {
-                                            const res = {
-                                              title: proj.name,
-                                              id: proj.id,
-                                              deleteType: "Project",
-                                            };
-                                            return (
-                                              <Draggable
-                                                key={proj.id}
-                                                draggableId={`${proj.id}`}
-                                                index={index}
-                                              >
-                                                {(provid) => (
-                                                  <div
-                                                    className="playlist-resource"
-                                                    ref={provid.innerRef}
-                                                    {...provid.draggableProps}
-                                                    {...provid.dragHandleProps}
-                                                  >
-                                                    <ProjectCard
-                                                      key={proj.id}
-                                                      project={proj}
-                                                      res={res}
-                                                      handleDeleteProject={
-                                                        handleDeleteProject
-                                                      }
-                                                      handleShareProject={
-                                                        handleShareProject
-                                                      }
-                                                      showDeletePopup={
-                                                        showDeletePopup
-                                                      }
-                                                      showPreview={
-                                                        showPreview === proj.id
-                                                      }
-                                                      handleShow={handleShow}
-                                                      handleClose={handleClose}
-                                                      setProjectId={
-                                                        setProjectId
-                                                      }
-                                                      activeFilter={
-                                                        activeFilter
-                                                      }
-                                                    />
-                                                  </div>
-                                                )}
-                                              </Draggable>
-                                            );
-                                          }
-                                        )}
-                                      </div>
-                                      {provided.placeholder}
-                                    </div>
-                                  )}
-                                </Droppable>
-                              ))}
-                            </DragDropContext>
-                          </div>
-                        ) : (
-                          <>
-                            <Alert variant="success">
-                              Start building your first Project by clicking on
-                              the <b>Add Project</b> button.
-                              <br />
-                              For more information click here:
-                              <a
-                                target="_blank"
-                                rel="noreferrer noopener"
-                                className="alert-link-ref"
-                                href="https://support.curriki.org/creating-learning-projects"
-                              >
-                                <b>Getting Started.</b>{" "}
-                              </a>
-                            </Alert>
-
-                            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                            <video controls className="welcome-video">
-                              <source src={WelcomeVideo} type="video/mp4" />
-                            </video>
-                          </>
-                        )}
                       </div>
-                    </div>
-                  </Tab>
-                  <Tab eventKey="Sample Projects" title="Sample Projects">
-                    <div className="row">
-                      <div className="col-md-12" style={{ display: "none" }}>
-                        <div className="program-page-title">
-                          <h1>Sample Projects</h1>
 
-                          {showSampleSort && sampleProject.length === 0 && (
-                            <div className="project-page-settings">
-                              <div className="sort-project-btns">
-                                <div
-                                  className={
-                                    activeFilter === "list-grid"
-                                      ? "sort-btn active"
-                                      : "sort-btn"
-                                  }
-                                  onClick={() => {
-                                    // const allchunk = [];
-                                    // let counterSimpl = 0;
-                                    setActiveFilter("list-grid");
-                                    setSortNumber(-1);
-                                    divideProjects(allProjects);
-                                  }}
-                                >
-                                  <FontAwesomeIcon icon="bars" />
-                                </div>
-                                <div
-                                  className={
-                                    activeFilter === "small-grid"
-                                      ? "sort-btn active"
-                                      : "sort-btn"
-                                  }
-                                  onClick={() => {
-                                    setActiveFilter("small-grid");
-                                    setSortNumber(5);
-                                    divideProjects(allProjects);
-                                  }}
-                                >
-                                  <FontAwesomeIcon icon="grip-horizontal" />
-                                </div>
-                                <div
-                                  className={
-                                    activeFilter === "normal-grid"
-                                      ? "sort-btn active"
-                                      : "sort-btn"
-                                  }
-                                  onClick={() => {
-                                    setActiveFilter("normal-grid");
-                                    setSortNumber(4);
-                                    divideProjects(allProjects);
-                                  }}
-                                >
-                                  <FontAwesomeIcon icon="th-large" />
-                                </div>
+                      {!!projectDivider && projectDivider.length > 0 && (
+                        <div className="project-list-all">
+                          <DragDropContext onDragEnd={onDragEnd}>
+                            {projectDivider.map((rowData) => (
+                              <Droppable
+                                key={rowData.id}
+                                droppableId={rowData.id}
+                                // direction="horizontal"
+                                // type="row"
+                                className="drag-class"
+                                direction="horizontal"
+                              >
+                                {(provided) => (
+                                  <div
+                                    {...provided.droppableProps}
+                                    ref={provided.innerRef}
+                                  >
+                                    {/* <div className="check-hom" id={value}> */}
+                                    <div id={value}>
+                                      {rowData.collection.map((proj, index) => {
+                                        const res = {
+                                          title: proj.name,
+                                          id: proj.id,
+                                          deleteType: "Project",
+                                        };
+                                        return (
+                                          <Draggable
+                                            key={proj.id}
+                                            draggableId={`${proj.id}`}
+                                            index={index}
+                                          >
+                                            {(provid) => (
+                                              <div
+                                                className="playlist-resource"
+                                                ref={provid.innerRef}
+                                                {...provid.draggableProps}
+                                                {...provid.dragHandleProps}
+                                              >
+                                                <ProjectCard
+                                                  key={proj.id}
+                                                  project={proj}
+                                                  res={res}
+                                                  handleDeleteProject={
+                                                    handleDeleteProject
+                                                  }
+                                                  handleShareProject={
+                                                    handleShareProject
+                                                  }
+                                                  showDeletePopup={
+                                                    showDeletePopup
+                                                  }
+                                                  showPreview={
+                                                    showPreview === proj.id
+                                                  }
+                                                  handleShow={handleShow}
+                                                  handleClose={handleClose}
+                                                  setProjectId={setProjectId}
+                                                  activeFilter={activeFilter}
+                                                />
+                                              </div>
+                                            )}
+                                          </Draggable>
+                                        );
+                                      })}
+                                    </div>
+                                    {provided.placeholder}
+                                  </div>
+                                )}
+                              </Droppable>
+                            ))}
+                          </DragDropContext>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </Tab>
+                <Tab eventKey="Sample Projects" title="Sample Projects">
+                  <div className="row">
+                    <div className="col-md-12" style={{ display: "none" }}>
+                      <div className="program-page-title">
+                        <h1>Sample Projects</h1>
+
+                        {showSampleSort && sampleProject.length === 0 && (
+                          <div className="project-page-settings">
+                            <div className="sort-project-btns">
+                              <div
+                                className={
+                                  activeFilter === "list-grid"
+                                    ? "sort-btn active"
+                                    : "sort-btn"
+                                }
+                                onClick={() => {
+                                  // const allchunk = [];
+                                  // let counterSimpl = 0;
+                                  setActiveFilter("list-grid");
+                                  setSortNumber(-1);
+                                  divideProjects(allProjects);
+                                }}
+                              >
+                                <FontAwesomeIcon icon="bars" />
+                              </div>
+                              <div
+                                className={
+                                  activeFilter === "small-grid"
+                                    ? "sort-btn active"
+                                    : "sort-btn"
+                                }
+                                onClick={() => {
+                                  setActiveFilter("small-grid");
+                                  setSortNumber(5);
+                                  divideProjects(allProjects);
+                                }}
+                              >
+                                <FontAwesomeIcon icon="grip-horizontal" />
+                              </div>
+                              <div
+                                className={
+                                  activeFilter === "normal-grid"
+                                    ? "sort-btn active"
+                                    : "sort-btn"
+                                }
+                                onClick={() => {
+                                  setActiveFilter("normal-grid");
+                                  setSortNumber(4);
+                                  divideProjects(allProjects);
+                                }}
+                              >
+                                <FontAwesomeIcon icon="th-large" />
                               </div>
                             </div>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="col-md-12">
-                        <div className="flex-smaple">
-                          {sampleProject.length > 0 ? (
-                            <SampleProjectCard
-                              projects={sampleProject}
-                              activeTab={tabToggle}
-                              type={type}
-                              setShowSampleSort={setShowSampleSort}
-                            />
-                          ) : (
-                            <Alert variant="warning">
-                              {" "}
-                              No sample project found.
-                            </Alert>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </Tab>
-                  <Tab eventKey="Team Projects" title="Team Projects">
-                    <div className="row">
-                      <div className="col-md-12" style={{ display: "none" }}>
-                        <div className="program-page-title">
-                          <h1>Team Projects</h1>
-                        </div>
-                      </div>
-                      <div className="col-md-12">
-                        {showSampleSort && teamProjects.length > 0 && (
-                          <div className="search-bar-team-tab">
-                            <input
-                              type="text"
-                              placeholder="Search team projects"
-                              value={searchTeamQuery}
-                              onChange={({ target }) =>
-                                SetSearchTeamQuery(target.value)
-                              }
-                            />
-                            <img
-                              src={searchimg}
-                              alt="search"
-                              onClick={handleSearchQueryTeams}
-                            />
                           </div>
                         )}
-                        <div className="flex-smaple">
-                          {teamProjects.length > 0 ? (
-                            <SampleProjectCard
-                              projects={teamProjects}
-                              type={type}
-                              activeTab={tabToggle}
-                              setShowSampleSort={setShowSampleSort}
-                              handleShow={handleShow}
-                              handleClose={handleClose}
-                              setProjectId={setProjectId}
-                            />
-                          ) : (
-                            <Alert variant="warning">
-                              No Team Project found.
-                            </Alert>
-                          )}
-                        </div>
                       </div>
                     </div>
 
-                    <div className="pagination-top-team">
-                      <div className="pagination_state">
-                        <Pagination
-                          activePage={activePage}
-                          pageRangeDisplayed={5}
-                          itemsCountPerPage={meta?.per_page}
-                          totalItemsCount={meta?.total}
-                          onChange={(e) => {
-                            // setCurrentTab("index");
-                            window.scrollTo(0, 0);
-                            setActivePage(e);
-                          }}
-                        />
+                    <div className="col-md-12">
+                      <div className="flex-smaple">
+                        {sampleProject.length > 0 ? (
+                          <SampleProjectCard
+                            projects={sampleProject}
+                            activeTab={tabToggle}
+                            type={type}
+                            setShowSampleSort={setShowSampleSort}
+                          />
+                        ) : (
+                          <Alert variant="warning">
+                            {" "}
+                            No sample project found.
+                          </Alert>
+                        )}
                       </div>
                     </div>
-                  </Tab>
-                </Tabs>
-              ) : (
-                <Alert variant="danger">
-                  {" "}
-                  You are not authorized to view Projects
-                </Alert>
-              )}
-            </div>
+                  </div>
+                </Tab>
+                <Tab eventKey="Team Projects" title="Team Projects">
+                  <div className="row">
+                    <div className="col-md-12" style={{ display: "none" }}>
+                      <div className="program-page-title">
+                        <h1>Team Projects</h1>
+                      </div>
+                    </div>
+                    <div className="col-md-12">
+                      {showSampleSort && teamProjects.length > 0 && (
+                        <div className="search-bar-team-tab">
+                          <input
+                            type="text"
+                            placeholder="Search team projects"
+                            value={searchTeamQuery}
+                            onChange={({ target }) =>
+                              SetSearchTeamQuery(target.value)
+                            }
+                          />
+                          <img
+                            src={searchimg}
+                            alt="search"
+                            onClick={handleSearchQueryTeams}
+                          />
+                        </div>
+                      )}
+                      <div className="flex-smaple">
+                        {teamProjects.length > 0 ? (
+                          <SampleProjectCard
+                            projects={teamProjects}
+                            type={type}
+                            activeTab={tabToggle}
+                            setShowSampleSort={setShowSampleSort}
+                            handleShow={handleShow}
+                            handleClose={handleClose}
+                            setProjectId={setProjectId}
+                          />
+                        ) : (
+                          <Alert variant="warning">
+                            No Team Project found.
+                          </Alert>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pagination-top-team">
+                    <div className="pagination_state">
+                      <Pagination
+                        activePage={activePage}
+                        pageRangeDisplayed={5}
+                        itemsCountPerPage={meta?.per_page}
+                        totalItemsCount={meta?.total}
+                        onChange={(e) => {
+                          // setCurrentTab("index");
+                          window.scrollTo(0, 0);
+                          setActivePage(e);
+                        }}
+                      />
+                    </div>
+                  </div>
+                </Tab>
+              </Tabs>
+            ) : (
+              <Alert variant="danger">
+                {" "}
+                You are not authorized to view Projects
+              </Alert>
+            )}
           </div>
         </div>
-        {(showCreateProjectPopup || showEditProjectPopup) && (
-          <NewProjectPage
-            {...props}
-            handleCloseProjectModal={handleCloseProjectModal}
-          />
-        )}
+      </div>
+      {(showCreateProjectPopup || showEditProjectPopup) && (
+        <NewProjectPage
+          {...props}
+          handleCloseProjectModal={handleCloseProjectModal}
+        />
+      )}
 
-        {showDeletePlaylistPopup && (
-          <DeletePopup {...props} deleteType="Project" />
-        )}
-      </ReactPlaceholder>
+      {showDeletePlaylistPopup && (
+        <DeletePopup {...props} deleteType="Project" />
+      )}
 
       <Footer />
 
@@ -763,6 +740,6 @@ const mapDispatchToProps = (dispatch) => ({
   getTeamProjects: (query, page) => dispatch(getTeamProject(query, page)),
 });
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ProjectsPage)
+export default memo(
+  withRouter(connect(mapStateToProps, mapDispatchToProps)(ProjectsPage))
 );

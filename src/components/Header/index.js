@@ -107,7 +107,7 @@ function Header(props) {
             </Link>
           </div>
         </div>
-        <div className="tophd_right flexdiv search-div  d-flex flex-wrap ">
+        <div className="tophd_right flexdiv search-div  d-flex">
           {(permission?.Search?.includes('search:advance') || permission?.Search?.includes('search:dashboard'))
            && (
              <div className="search-div">

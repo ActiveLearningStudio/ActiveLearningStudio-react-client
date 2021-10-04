@@ -3,35 +3,33 @@ import React, { useState, useEffect } from "react";
 import HeadingText from "utils/HeadingText/headingtext";
 import HeadingTwo from "utils/HeadingTwo/headingtwo";
 import LayoutCard from "utils/LayoutCard/layoutcard";
-import { useSelector, useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
-import ColoumImage1 from "assets/images/layout/singleactivit.png";
+import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+
 import Tabs from "utils/Tabs/tabs";
 import Buttons from "utils/Buttons/buttons";
-import HeadingThree from "utils/HeadingThree/headingthree";
-import PlayIcon from "assets/images/play.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { useHistory } from "react-router-dom";
-import { getSingleLayoutActivities } from 'store/actions/resource';
-import * as actionTypes from 'store/actionTypes';
 
+import { useHistory } from "react-router-dom";
+import { getSingleLayoutActivities } from "store/actions/resource";
+import * as actionTypes from "store/actionTypes";
+import loader from "assets/images/loader.svg";
+
+const ImgLoader = () => <img style={{ width: "100px" }} src={loader} />;
 const ActivityLayout = (props) => {
   const { changeScreenHandler } = props;
   const history = useHistory();
-  const [layout, setLayout] = useState({title:'Interactive Book'});
+  const [layout, setLayout] = useState({ title: "Interactive Book" });
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getSingleLayoutActivities());
-  },[])
-  const allActivity =  useSelector((state) => state.myactivities.singleLayout);
-  useEffect(() => () => {
-
-     
-      setLayout(allActivity?.[0] || null)
-      
-    
-  },[allActivity]);
+  }, []);
+  const allActivity = useSelector((state) => state.myactivities.singleLayout);
+  useEffect(
+    () => () => {
+      setLayout(allActivity?.[0] || null);
+    },
+    [allActivity]
+  );
   return (
     <div className="activity-layout-form">
       <div className="activity-layout-tabs">
@@ -50,35 +48,34 @@ const ActivityLayout = (props) => {
         />
       </div>
       <div className="layout-cards-process-btn">
-        <div className="activity-layout-cards">
-          
-            {allActivity ? (
-            toast.dismiss(),
-            allActivity.map((data) => {
-             return (
-              <LayoutCard
-                image={data.image}
-                text={data.title}
-                className={
-                  layout?.title == data.title
-                    ? "activity-layoutCard-active ml-30"
-                    : "ml-30"
-                }
-                onClick={() => setLayout(data)}
-              />
-             );
-            })):  toast.info(' Loading Activities ...', {
-              position: 'top-center',
-              hideProgressBar: false,
-              icon: '',
-              closeOnClick: true,
-              pauseOnHover: false,
-              draggable: true,
-              progress: undefined,
-            })}
+        <div className="activity-layout-cards" style={{ width: "100%" }}>
+          {allActivity
+            ? (toast.dismiss(),
+              allActivity.map((data) => {
+                return (
+                  <LayoutCard
+                    image={data.image}
+                    text={data.title}
+                    className={
+                      layout?.title == data.title
+                        ? "activity-layoutCard-active mr-3"
+                        : "mr-3"
+                    }
+                    onClick={() => setLayout(data)}
+                  />
+                );
+              }))
+            : toast.info("Loading Activities ...", {
+                className: "project-loading",
+                closeOnClick: false,
+                closeButton: false,
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 100000,
+                icon: ImgLoader,
+              })}
         </div>
       </div>
-      <div className="activity-layout-btns">
+      <div className="activity-layout-btns" style={{ display: "flex" }}>
         <Buttons
           text="Cancel"
           secondary={true}
@@ -96,17 +93,17 @@ const ActivityLayout = (props) => {
             height="36px"
             disabled={layout ? false : true}
             onClick={() => {
-              changeScreenHandler("addactivity")
+              changeScreenHandler("addactivity");
               dispatch({
-                type:actionTypes.SET_SELECTED_ACTIVITY,
+                type: actionTypes.SET_SELECTED_ACTIVITY,
                 payload: layout,
-              })
+              });
             }}
-            hover={true}
+            className="mr-3"
           />
         </div>
       </div>
-    </div>  
+    </div>
   );
 };
 

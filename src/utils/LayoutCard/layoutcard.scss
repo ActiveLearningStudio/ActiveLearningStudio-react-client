@@ -11,9 +11,9 @@
   padding: 0 10px;
   box-sizing: border-box;
   border-bottom: 5px solid transparent;
-  margin-top: 40px;
+  margin-bottom: 20px;
   img {
-    padding-top:20px
+    padding-top: 20px;
   }
   p {
     margin-top: 13px;
@@ -24,5 +24,11 @@
   }
   &:hover {
     border-bottom: 5px solid $crusta;
+  }
+
+  .activity-layout-btns {
+    button {
+      margin-right: 20px;
+    }
   }
 }
