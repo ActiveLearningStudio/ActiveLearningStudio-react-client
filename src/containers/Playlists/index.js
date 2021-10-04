@@ -502,7 +502,6 @@ function PlaylistsPage(props) {
                       </Link>
                     </div>
                   </div>
-
                   <div className="index-text">
                     {indexStatus === 1 && (
                       <Alert variant="warning">

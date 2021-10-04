@@ -20,7 +20,7 @@ import teamicon from 'assets/images/sidebar/team-icon.png';
 // import groupicon from 'assets/images/sidebar/group-icon.png';
 // import usersidebaricon from 'assets/images/sidebar/user-sidebar-icon.png';
 // import dashboardicon from 'assets/images/sidebar/dashboard-icon.png';
-import backgroundimg from 'assets/images/sidebar/background.png';
+// import backgroundimg from 'assets/images/sidebar/background.png';
 import administrate from 'assets/images/sidebar/administrate.png';
 // import { Accordion, Button } from 'react-bootstrap';
 // import dashboardChevron from 'assets/images/dashboard-chevron.png';
@@ -314,7 +314,7 @@ function Sidebar(props) {
           </>
       )} */}
       {/* </div> */}
-      <img src={backgroundimg} alt="" />
+      {/* <img src={backgroundimg} alt="" /> */}
       {/* {permission?.Organization?.includes('organization:view-user')
       && (
         <>

@@ -1451,7 +1451,8 @@ header.head_mobile {
         color: rgb(8, 72, 146) !important;
         font-weight: 500;
     font-family: "rubic";
-    line-height: normal;
+    font-size: 32px;
+    line-height: 36px;
     font-style: normal;
     margin: 0;
     padding: 0;
@@ -1460,7 +1461,7 @@ header.head_mobile {
     .project-description{
       margin-top: 16px;
       p{
-        color: rgb(81, 81, 81) !important;
+        color: #515151 !important;
         font-family: "Open Sans",sans-serif;
     font-size: 16px;
     font-weight: 400;
