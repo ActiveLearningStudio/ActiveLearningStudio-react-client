@@ -130,6 +130,10 @@ img {
   align-items: center;
 
   .configuration {
+    .config-content{
+      display: flex;
+      align-items: center;
+    }
     .configuration-shareproject-link {
       display: flex;
       .share-button-update {
@@ -175,7 +179,7 @@ img {
       }
     }
     .shared-link {
-      margin-top: 38px;
+      margin-top: 18px;
       text-align: end;
     }
     .project-dropdown {
@@ -344,7 +348,7 @@ img {
 
 /* CSS FOR PLAYLIST */
 .playlist-div {
-  margin-top: 40px;
+  // margin-top: 40px;
   // background: #fff;
   // box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05);
   //margin-right: 50px;

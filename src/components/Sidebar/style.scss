@@ -137,6 +137,7 @@ aside {
 }
 
 .sidebar-all {
+  padding: 0 16px;
   .expand {
     width: 100%;
     display: block;
@@ -193,6 +194,7 @@ aside {
         letter-spacing: 0.01em;
         color:$curriki-main-blue;
       }
+
       a::before {
         content: "-";
         color: #084892;
@@ -232,18 +234,26 @@ aside {
   }
   .row-sidebar {
     display: flex;
-    padding: 12px 52px;
+    align-items: center;
+    flex-direction: column;
+    // padding: 12px 52px;
     padding-top: 19px;
     padding-bottom: 17px;
-    justify-content:flex-end;
+    // justify-content:flex-end;
     border-top: 1px solid #e8e8e8;
+
+    &img {
+      width: 24px;
+      height: 24px;
+    }
   }
+
   .sidebar-headings {
-    padding-left: 13px;
+    // padding-left: 13px;  
     font-weight: normal;
     font-size: 16px;
     line-height: 19px;
-    margin-right: auto;
+    // margin-right: auto;
     letter-spacing: 0.01em;
     color: $curriki-main-blue;
   }
@@ -357,5 +367,8 @@ aside {
     color: $mine-shaft;
     text-align: left;
     opacity: 1;
+  }
+  a:first-child .row-sidebar:first-child{
+    border-top:none !important;
   }
 }
