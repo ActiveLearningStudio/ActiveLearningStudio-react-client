@@ -69,7 +69,7 @@ const ActivityCard = (props) => {
               {activity.metadata ? activity.metadata.title : activity.title}
             </div>
           </Link>
-          {!lti && (
+          {/* {!lti && (
             <div className="activity-options-wrapper check">
               <ResourceCardDropdown
                 playlist={playlist}
@@ -78,7 +78,7 @@ const ActivityCard = (props) => {
                 previewPage="projectPreview"
               />
             </div>
-          )}
+          )} */}
         </>
       )}
     </li>
