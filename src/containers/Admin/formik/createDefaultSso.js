@@ -83,7 +83,7 @@
                   });
 
 
-                  const result =  adminapi.updateDefaultSso(activeEdit?.id, values);
+                  const result =  adminapi.updateDefaultSso(organization?.activeOrganization?.id, activeEdit?.id, values);
                   result.then(res => {
                     Swal.fire({
                       icon:'success',
@@ -108,7 +108,7 @@
                     },
                     button: false,
                   });
-                  const result =  adminapi.createDefaultSso(values);
+                  const result =  adminapi.createDefaultSso(organization?.activeOrganization?.id, values);
                   result.then(res => {
                     Swal.fire({
                       icon:'success',
