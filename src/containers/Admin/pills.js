@@ -401,7 +401,7 @@ export default function Pills(props) {
   //Default SSO ***************************************
   useMemo(async () => {
     if(type==="DefaultSso") {
-    const result =  adminService.getDefaultSso(activePage|| 1);
+    const result =  adminService.getDefaultSso(activeOrganization?.id, activePage|| 1);
     result.then((data) => {
       setDefaultSso(data)
     })
@@ -411,7 +411,7 @@ export default function Pills(props) {
   const searchQueryChangeHandlerDefautSso = (search) => {
     setDefaultSso(null);
     const encodeQuery = encodeURI(search.target.value);
-    const result =  adminService.searchDefaultSso(encodeQuery,(activePage|| 1));
+    const result =  adminService.searchDefaultSso(activeOrganization?.id, encodeQuery,(activePage|| 1));
     result.then((data) => {
       setDefaultSso(data)
     })

@@ -189,39 +189,39 @@ const getLogsListing = (filter, size, page, query) => httpService
     Promise.reject(err.response.data);
   });
 
-const getDefaultSso = (page) => httpService
-  .get(`${apiVersion}/default-sso-settings?page=${page}`)
+const getDefaultSso = (orgId, page) => httpService
+  .get(`${apiVersion}/organizations/${orgId}/default-sso-settings?page=${page}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
   });
 
-const createDefaultSso = (values) => httpService
-  .post(`${apiVersion}/default-sso-settings`, values)
+const createDefaultSso = (orgId, values) => httpService
+  .post(`${apiVersion}/organizations/${orgId}/default-sso-settings`, values)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
     return Promise.reject();
   });
 
-const updateDefaultSso = (id, values) => httpService
-  .put(`${apiVersion}/default-sso-settings/${id}`, values)
+const updateDefaultSso = (orgId, id, values) => httpService
+  .put(`${apiVersion}/organizations/${orgId}/default-sso-settings/${id}`, values)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
     return Promise.reject();
   });
 
-const deleteDefaultSso = (id) => httpService
-  .remove(`${apiVersion}/default-sso-settings/${id}`)
+const deleteDefaultSso = (orgId, id) => httpService
+  .remove(`${apiVersion}/organizations/${orgId}/default-sso-settings/${id}`)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
     return Promise.reject();
   });
 
-const searchDefaultSso = (search, page) => httpService
-  .get(`${apiVersion}/default-sso-settings?page=${page}&query=${search.replace(/#/, '%23')}`)
+const searchDefaultSso = (orgId, search, page) => httpService
+  .get(`${apiVersion}/organizations/${orgId}/default-sso-settings?page=${page}&query=${search.replace(/#/, '%23')}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);

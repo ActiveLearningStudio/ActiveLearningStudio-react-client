@@ -1475,7 +1475,7 @@ function Table(props) {
                                       },
                                       button: false,
                                     });
-                                    const response = adminService.deleteDefaultSso(row?.id);
+                                    const response = adminService.deleteDefaultSso(activeOrganization?.id, row?.id);
                                     response
                                       .then((res) => {
                                         Swal.fire({
