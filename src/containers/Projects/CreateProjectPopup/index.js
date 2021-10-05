@@ -224,7 +224,7 @@ let CreateProjectPopup = (props) => {
                         text: 'Selected file size should be less then 100MB.',
                       });
                     } else {
-                      uploadThumb(e, permission, teamPermission, projectState?.selectedProject?.id, dispatch);
+                      uploadThumb(e, permission, teamPermission, projectState?.selectedProject?.id, dispatch, editMode);
                     }
                   }}
                 />
