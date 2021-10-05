@@ -71,7 +71,7 @@ const ActivityLayout = (props) => {
                 closeOnClick: false,
                 closeButton: false,
                 position: toast.POSITION.BOTTOM_RIGHT,
-                autoClose: 100000,
+                autoClose: 10000,
                 icon: ImgLoader,
               })}
           <LayoutCard

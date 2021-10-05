@@ -65,58 +65,49 @@ const AddActivity = (props) => {
           />
           {/* <Tabs text="3. Preview Layout" className="ml-10" /> */}
         </div>
-        <div className="add-activity-title-select">
-          <div className="add-activity-title">
-            <HeadingTwo text={title} color="#084892" />
-          </div>
+        {!activity && (
+          <div className="add-activity-title-select">
+            <div className="add-activity-title">
+              <HeadingTwo text={title} color="#084892" />
+            </div>
 
-          <div className="activity-title-change-layout">
-            <select
-              onChange={(e) => {
-                console.log(e.target.value);
+            <div className="activity-title-change-layout">
+              <select
+                onChange={(e) => {
+                  console.log(e.target.value);
 
-                dispatch({
-                  type: actionTypes.SET_SELECTED_ACTIVITY,
-                  payload: JSON.parse(e.target.value),
-                });
-              }}
-            >
-              {/* <option value="">Change Layout</option> */}
-              {layout?.map((data) => {
-                return (
-                  <option
-                    key=""
-                    selected={data.title === title ? true : false}
-                    value={JSON.stringify(data)}
-                  >
-                    {data.title}
-                  </option>
-                );
-              })}
-            </select>
+                  dispatch({
+                    type: actionTypes.SET_SELECTED_ACTIVITY,
+                    payload: JSON.parse(e.target.value),
+                  });
+                }}
+              >
+                {/* <option value="">Change Layout</option> */}
+                {layout?.map((data) => {
+                  return (
+                    <option
+                      key=""
+                      selected={data.title === title ? true : false}
+                      value={JSON.stringify(data)}
+                    >
+                      {data.title}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
           </div>
-        </div>
-        <div className="add-activity-selection">
-          {/* <HeadingThree text="Create New" color="#084892" /> */}
-          {/* <button>
-            Create New
-            <FontAwesomeIcon icon="plus" className="btn-icon" />
-          </button>
-          <button
-            className="upload-btn"
-            onClick={() => changeScreenHandler("uploadinteractivevideo")}
-          >
-            Upload
-            <FontAwesomeIcon icon="plus" className="btn-icon" />
-          </button> */}
-        </div>
+        )}
+        <div className="add-activity-selection"></div>
         <div className="add-activity-layout-formik-videoTag">
           <div className="add-activity-layout-formik">
             <Formik
               initialValues={{
                 education_level_id: activity?.education_level_id || "",
                 subject_id: activity?.subject_id || "",
-                thumb_url: activity?.thumb_url || "",
+                thumb_url:
+                  activity?.thumb_url ||
+                  "https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280",
                 title: activity?.title || "",
               }}
               enableReinitialize
@@ -211,7 +202,9 @@ const AddActivity = (props) => {
                   </div>
                   <div className="formik-uploadimage">
                     <UploadImageV2
+                      formRef={formRef}
                       setUploadImageStatus={setUploadImageStatus}
+                      thumb_url={activity?.thumb_url}
                     />
                   </div>
                 </form>
@@ -219,27 +212,12 @@ const AddActivity = (props) => {
             </Formik>
           </div>
           <div className="add-activity-layout-videoTag">
-            {/* <div className="videoTag">
-              <div className="videoTag-link">
-                <Link to="/">View Demo</Link>
-              </div>
-              <iframe
-                width="100%"
-                height="200"
-                src="https://www.youtube.com/embed/ngXSzWNYzU4"
-                title="https://youtu.be/ngXSzWNYzU4"
-              ></iframe>
-            </div> */}
             <HeadingThree
               text="Add Activities"
               color="#084892"
               className="layout-add-activity-title"
             />
-            {/* <HeadingTwo
-              text="Add Activities"
-              color="#084892"
-              className="layout-add-activity-title"
-            /> */}
+
             <HeadingText
               text="Start adding activities by opening the editor. Once you finish, hit the Preview Layout button to see your results."
               color="#515151"
@@ -275,15 +253,6 @@ const AddActivity = (props) => {
                 }}
                 hover={true}
               />
-              {/* <Buttons
-                text="Preview Layout"
-                secondary={true}
-                width="159px"
-                height="36px"
-                // disabled={layout ? false : true}
-                onClick={() => changeScreenHandler("preview")}
-                hover={true}
-              /> */}
             </div>
             {existingActivity && (
               <div className="existing-activity-dialog">
@@ -316,48 +285,6 @@ const AddActivity = (props) => {
             )}
           </div>
         </div>
-
-        {/* <div className="layout-colums-box">
-        <HeadingThree
-          text="List of column content"
-          color="#084892"
-          className="box-title"
-        />
-        <div className="layout-colums-inner-box">
-          <H5PEditor upload={upload} />
-        </div>
-      </div> */}
-
-        {/* <div className="open-editor-box">
-          <div className="editor-title">
-            <HeadingTwo text="Open Editor" color="#084892" />
-          </div>
-          <Link
-            onClick={() => setModalShow(true)}
-            className="editor-preview-link"
-          >
-            Preview Layout
-          </Link>
-        </div> */}
-
-        {/* <div className="add-activity-btns">
-          <Buttons
-            text="Cancel"
-            secondary={true}
-            width="110px"
-            height="35px"
-            onClick={() => changeScreenHandler("layout")}
-          />
-          <Buttons
-          text="Next"
-          primary={true}
-          width="132px"
-          height="36px"
-          // disabled={layout ? false : true}
-          onClick={() => changeScreenHandler("preview")}
-          hover={true}
-        />
-        </div> */}
       </div>
     </>
   );

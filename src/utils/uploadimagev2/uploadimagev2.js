@@ -3,27 +3,45 @@ import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import "./uploadimagev2.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PexelsAPI from "../../components/models/pexels";
-import DefaultImage from "assets/images/activitycard.png";
 import PixelUpload from "assets/images/svg/pixelupload.svg";
-import uploadimageoption from "assets/images/uploadimageoption.png";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Swal from "sweetalert2";
-import {
-  faLaptop,
-  faLink,
-  faHdd,
-  faParachuteBox,
-} from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
+import { uploadResourceThumbnailAction } from "store/actions/resource";
 
-const UploadImageV2 = ({ className, setUploadImageStatus }) => {
+const UploadImageV2 = ({
+  className,
+  setUploadImageStatus,
+  formRef,
+  thumb_url,
+}) => {
   const project = useSelector((state) => state.project);
 
   const [modalShow, setModalShow] = useState(false);
   const currikiUtility = classNames("curriki-utility-uploadimageV2", className);
-
+  const dispatch = useDispatch();
   const openFile = useRef();
+  const [uploadImage, setUploadImage] = useState(
+    thumb_url ||
+      "https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280"
+  );
+
+  const uploadThumb = async (e) => {
+    const formData = new FormData();
+    try {
+      formData.append("thumb", e.target.files[0]);
+      const result = await dispatch(uploadResourceThumbnailAction(formData));
+      setUploadImage(result);
+
+      formRef.current.setFieldValue("thumb_url", result);
+    } catch (err) {
+      toast.error("Upload Failed", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 4000,
+      });
+    }
+  };
   return (
     <>
       <PexelsAPI
@@ -34,17 +52,17 @@ const UploadImageV2 = ({ className, setUploadImageStatus }) => {
           setUploadImageStatus(false);
         }}
         searchName="abstract"
+        setUploadImage={setUploadImage}
+        formRef={formRef}
       />
       <div className={currikiUtility}>
         <h3>Upload an image</h3>
         <div
           className="uploadimage-box"
           style={{
-            backgroundImage: project.thumbUrl
-              ? project.thumbUrl.includes("pexels.com")
-                ? `url(${project.thumbUrl})`
-                : `url(${global.config.resourceUrl}${project.thumbUrl})`
-              : `url(${DefaultImage})`,
+            backgroundImage: uploadImage.includes("pexels.com")
+              ? `url(${uploadImage})`
+              : `url(${global.config.resourceUrl}${uploadImage})`,
           }}
         >
           {/* <img src={DefaultImage} alt="" /> */}
@@ -93,7 +111,7 @@ const UploadImageV2 = ({ className, setUploadImageStatus }) => {
             className="btn-mr-27"
           >
             Upload from computer
-            {/* <FontAwesomeIcon icon={faLaptop} className="mr-20" /> */}
+            <img className="mr-20" />
           </button>
           <button
             type="button"
@@ -103,7 +121,7 @@ const UploadImageV2 = ({ className, setUploadImageStatus }) => {
             }}
           >
             Select from Pexels
-            <FontAwesomeIcon icon={faLaptop} className="mr-20" />
+            <img src={PixelUpload} className="mr-20" />
           </button>
         </div>
       </div>

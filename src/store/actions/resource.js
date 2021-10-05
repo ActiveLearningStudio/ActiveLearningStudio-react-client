@@ -239,7 +239,7 @@ export const createResourceAction = (
     const activity = {
       h5p_content_id: resource.id,
       playlist_id: playlistId,
-      thumb_url: metadata?.thumbUrl,
+      thumb_url: metadata?.thumb_url,
       action: "create",
       title: metadata?.title,
       type: "h5p",
@@ -291,26 +291,18 @@ export const resourceThumbnailProgress = (progress) => ({
   progress,
 });
 
-export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
-  const configData = {
-    onUploadProgress: (progressEvent) => {
-      dispatch({
-        type: actionTypes.RESOURCE_THUMBNAIL_PROGRESS,
-        payload: {
-          progress: `Uploaded progress: ${Math.round(
-            (progressEvent.loaded / progressEvent.total) * 100
-          )}%`,
-        },
-      });
-    },
-  };
-
-  const { thumbUrl } = await resourceService.upload(formData, configData);
-
-  dispatch({
-    type: actionTypes.UPLOAD_RESOURCE_THUMBNAIL,
-    payload: { thumbUrl },
+export const uploadResourceThumbnailAction = (formData) => async () => {
+  toast.info("Uploading Image ...", {
+    className: "project-loading",
+    closeOnClick: false,
+    closeButton: false,
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 100000,
+    icon: "",
   });
+  const { thumbUrl } = await resourceService.upload(formData);
+  toast.dismiss();
+  return thumbUrl;
 };
 
 export const uploadActivityTypeThumbAction = (formData) => async (dispatch) => {
@@ -456,7 +448,7 @@ export const showDescribeActivityAction = (
           title: response.activity.title,
           subjectId: response.activity.subject_id,
           educationLevelId: response.activity.education_level_id,
-          thumbUrl: response.activity.thumb_url,
+          thumb_url: response.activity.thumb_url,
           type: response.activity.type,
         };
         dispatch(showDescribeActivity(activity, metadata));

@@ -34,7 +34,9 @@ const PreviewLayoutModel = (props) => {
         <div className="interactive-video-H5P">
           <H5PEditor
             playlistId={playlist.id}
-            h5pLib={activity?.h5p_content?.h5pLib || selectedLayout?.h5pLib}
+            h5pLib={
+              activity?.h5p_content?.library?.name || selectedLayout?.h5pLib
+            }
             h5pLibType={activity?.type || selectedLayout?.type}
             payload={""}
             formData={props?.formData}
