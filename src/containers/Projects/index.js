@@ -456,8 +456,8 @@ export const ProjectsPage = (props) => {
                                     {...provided.droppableProps}
                                     ref={provided.innerRef}
                                   >
-                                    {/* <div className="check-hom" id={value}> */}
-                                    <div id={value}>
+                                    <div className="check-home" id={value}>
+                                      {/* <div id={value}> */}
                                       {rowData.collection.map((proj, index) => {
                                         const res = {
                                           title: proj.name,
