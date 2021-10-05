@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import Echo from 'laravel-echo';
+import { toast } from 'react-toastify';
 
 import loaderImg from 'assets/images/loader.svg';
 import SharePreviewPopup from 'components/SharePreviewPopup';
@@ -41,13 +42,32 @@ export const createProjectAction = (data) => async (dispatch) => {
   const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({ type: actionTypes.CREATE_PROJECT_REQUEST });
-    Swal.showLoading();
+    toast.info('creating project ...', {
+      position: 'top-center',
+      hideProgressBar: false,
+      icon: '',
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+    });
     const { project } = await projectService.create(data, activeOrganization.id);
-    Swal.close();
     dispatch({
       type: actionTypes.CREATE_PROJECT_SUCCESS,
       payload: { project },
     });
+    toast.dismiss();
+    if (project) {
+    toast.success('New Project Created', {
+      position: 'top-center',
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    return project;
+  }
     dispatch(allSidebarProjects());
   } catch (e) {
     dispatch({ type: actionTypes.CREATE_PROJECT_FAIL });
@@ -94,14 +114,32 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
   try {
+    toast.info('Updating Project ...', {
+      position: 'top-center',
+      hideProgressBar: true,
+      icon: '',
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      autoClose: 5000,
+    });
     dispatch({ type: actionTypes.UPDATE_PROJECT_REQUEST });
-    Swal.showLoading();
     const { project } = await projectService.update(projectId, data, activeOrganization.id);
+    toast.dismiss();
+    toast.success('Project Edited', {
+      position: 'top-center',
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      autoClose: 2500,
+    });
     dispatch({
       type: actionTypes.UPDATE_PROJECT_SUCCESS,
       payload: { project },
     });
-    Swal.close();
     dispatch(allSidebarProjects());
     return project;
   } catch (e) {
@@ -111,7 +149,7 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
       title: 'Error',
       text: e.message || 'Something went wrong !',
     });
-    return e;
+    return e.message;
   }
 };
 
@@ -152,9 +190,19 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
     },
   };
   const centralizedState = store.getState();
+  toast.info('uploading image ...', {
+    position: 'top-center',
+    hideProgressBar: false,
+    icon: '',
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    autoClose: 30000,
+  });
   const { organization: { activeOrganization } } = centralizedState;
   const { thumbUrl } = await projectService.upload(formData, config, activeOrganization.id);
-
+  toast.dismiss();
   dispatch({
     type: actionTypes.UPLOAD_PROJECT_THUMBNAIL,
     payload: { thumbUrl },

@@ -1,0 +1,11 @@
+@import "../../assets/css/index.scss";
+.curriki-utility-headingTwo {
+  h2 {
+    font-weight: 500;
+    font-size: 22px;
+    font-family: $rubik;
+    line-height: 26px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid $crusta;
+  }
+}

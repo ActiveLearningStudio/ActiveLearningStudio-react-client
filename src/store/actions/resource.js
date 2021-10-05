@@ -1,11 +1,11 @@
-import axios from 'axios';
-import Swal from 'sweetalert2';
-import Echo from 'laravel-echo';
-
-import resourceService from 'services/resource.service';
-import socketConnection from 'services/http.service';
-// import { loadProjectPlaylistsAction } from './playlist';
-import * as actionTypes from '../actionTypes';
+/* eslint-disable */
+import axios from "axios";
+import Swal from "sweetalert2";
+import Echo from "laravel-echo";
+import { toast } from "react-toastify";
+import resourceService from "services/resource.service";
+import socketConnection from "services/http.service";
+import * as actionTypes from "../actionTypes";
 
 // global variable for h5p object
 let h5pid;
@@ -150,9 +150,10 @@ export const loadResourceAction = (activityId) => async (dispatch) => {
     });
   } catch (e) {
     Swal.fire({
-      title: 'Error',
-      icon: 'error',
-      html: e.message || 'Something went wrong! We are unable to load activity.',
+      title: "Error",
+      icon: "error",
+      html:
+        e.message || "Something went wrong! We are unable to load activity.",
     });
     dispatch({
       type: actionTypes.LOAD_RESOURCE_FAIL,
@@ -168,7 +169,7 @@ export const loadH5pSettingsActivity = () => async () => {
   window.H5PIntegration = response.h5p.settings;
 
   response.h5p.settings.editor.assets.js.forEach((value) => {
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.src = value;
     script.async = false;
     document.body.appendChild(script);
@@ -190,10 +191,14 @@ export const loadH5pResourceXapi = (xapiData) => async () => {
   resourceService.getXapi({ statement: xapiData });
 };
 
-export const loadH5pResourceSettings = (activityId) => resourceService.h5pResourceSettings(activityId);
-export const loadH5pResourceSettingsOpen = (activityId) => resourceService.h5pResourceSettingsOpen(activityId);
-export const loadH5pResourceSettingsShared = (activityId) => resourceService.h5pResourceSettingsShared(activityId);
-export const loadH5pResourceSettingsEmbed = (activityId) => resourceService.h5pResourceSettingsEmbed(activityId);
+export const loadH5pResourceSettings = (activityId) =>
+  resourceService.h5pResourceSettings(activityId);
+export const loadH5pResourceSettingsOpen = (activityId) =>
+  resourceService.h5pResourceSettingsOpen(activityId);
+export const loadH5pResourceSettingsShared = (activityId) =>
+  resourceService.h5pResourceSettingsShared(activityId);
+export const loadH5pResourceSettingsEmbed = (activityId) =>
+  resourceService.h5pResourceSettingsEmbed(activityId);
 
 // export const loadH5pResourceXapi = (data) => resourceService.getXapi(data);
 
@@ -209,7 +214,7 @@ export const createResourceAction = (
   editor,
   editorType,
   metadata,
-  // projectId,
+  hide
 ) => async (dispatch) => {
   // try {
   // h5pEditorCopy to be taken from h5papi/storage/h5p/laravel-h5p/js/laravel-h5p.js
@@ -217,8 +222,16 @@ export const createResourceAction = (
     playlistId,
     library: window.h5peditorCopy.getLibrary(),
     parameters: JSON.stringify(window.h5peditorCopy.getParams()),
-    action: 'create',
+    action: "create",
   };
+  toast.info("Creating new Activity ...", {
+    className: "project-loading",
+    closeOnClick: false,
+    closeButton: false,
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 100000,
+    icon: "",
+  });
   const insertedH5pResource = await resourceService.h5pToken(data);
   if (!insertedH5pResource.fail) {
     const resource = insertedH5pResource;
@@ -226,35 +239,37 @@ export const createResourceAction = (
     const activity = {
       h5p_content_id: resource.id,
       playlist_id: playlistId,
-      thumb_url: metadata.thumbUrl,
-      action: 'create',
-      title: metadata.metaContent.metaTitle,
-      type: 'h5p',
-      content: 'place_holder',
-      subject_id:
-        metadata.metaContent.metaSubject
-        && metadata.metaContent.metaSubject,
-      education_level_id:
-        metadata.metaContent.metaEducationLevels
-        && metadata.metaContent.metaEducationLevels,
+      thumb_url: metadata?.thumb_url,
+      action: "create",
+      title: metadata?.title,
+      type: "h5p",
+      content: "place_holder",
+      subject_id: metadata.subject_id,
+      education_level_id: metadata.education_level_id,
     };
     const insertedResource = await resourceService.create(activity, playlistId);
-    Swal.close();
+    toast.dismiss();
+    toast.success("Activity Created", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 4000,
+    });
 
     resourceSaved(true);
-
-    resource.id = insertedResource.id;
-    resource.mysqlid = insertedResource.mysqlid;
 
     dispatch({
       type: actionTypes.CREATE_RESOURCE,
       playlistId,
-      resource,
+      resource: insertedResource,
       editor,
       editorType,
     });
     dispatch({
       type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
+    });
+    hide();
+    dispatch({
+      type: "SET_ACTIVE_ACTIVITY_SCREEN",
+      payload: "",
     });
   } else {
     dispatch({
@@ -276,26 +291,18 @@ export const resourceThumbnailProgress = (progress) => ({
   progress,
 });
 
-export const uploadResourceThumbnailAction = (formData) => async (dispatch) => {
-  const configData = {
-    onUploadProgress: (progressEvent) => {
-      dispatch({
-        type: actionTypes.RESOURCE_THUMBNAIL_PROGRESS,
-        payload: {
-          progress: `Uploaded progress: ${Math.round(
-            (progressEvent.loaded / progressEvent.total) * 100,
-          )}%`,
-        },
-      });
-    },
-  };
-
-  const { thumbUrl } = await resourceService.upload(formData, configData);
-
-  dispatch({
-    type: actionTypes.UPLOAD_RESOURCE_THUMBNAIL,
-    payload: { thumbUrl },
+export const uploadResourceThumbnailAction = (formData) => async () => {
+  toast.info("Uploading Image ...", {
+    className: "project-loading",
+    closeOnClick: false,
+    closeButton: false,
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 100000,
+    icon: "",
   });
+  const { thumbUrl } = await resourceService.upload(formData);
+  toast.dismiss();
+  return thumbUrl;
 };
 
 export const uploadActivityTypeThumbAction = (formData) => async (dispatch) => {
@@ -316,7 +323,9 @@ export const uploadActivityItemThumbAction = (formData) => async (dispatch) => {
   return image;
 };
 
-export const deleteResourceAction = (activityId, playlistId) => async (dispatch) => {
+export const deleteResourceAction = (activityId, playlistId) => async (
+  dispatch
+) => {
   try {
     dispatch({
       type: actionTypes.DELETE_RESOURCE_REQUEST,
@@ -377,7 +386,10 @@ export const onChangeActivityAction = (activity) => ({
 });
 
 // Metadata saving inside state when metadata form is submitted
-export const onSubmitDescribeActivityAction = (metadata, activityId = null) => ({
+export const onSubmitDescribeActivityAction = (
+  metadata,
+  activityId = null
+) => ({
   type: actionTypes.DESCRIBE_ACTIVITY,
   payload: {
     activityId,
@@ -399,7 +411,7 @@ export const showBuildActivity = (editor, editorType, params) => ({
 export const showBuildActivityAction = (
   editor = null,
   editorType = null,
-  activityId = null,
+  activityId = null
 ) => async (dispatch) => {
   try {
     if (activityId) {
@@ -409,7 +421,7 @@ export const showBuildActivityAction = (
       const lib = `${activity.library_name} ${activity.major_version}.${activity.minor_version}`;
       dispatch(showBuildActivity(lib, activity.type, activity.h5p));
     } else {
-      dispatch(showBuildActivity(editor, editorType, ''));
+      dispatch(showBuildActivity(editor, editorType, ""));
     }
   } catch (e) {
     console.log(e);
@@ -422,7 +434,10 @@ export const showDescribeActivity = (activity, metadata = null) => ({
   metadata,
 });
 
-export const showDescribeActivityAction = (activity, activityId = null) => async (dispatch) => {
+export const showDescribeActivityAction = (
+  activity,
+  activityId = null
+) => async (dispatch) => {
   try {
     if (activityId) {
       Swal.showLoading();
@@ -433,7 +448,7 @@ export const showDescribeActivityAction = (activity, activityId = null) => async
           title: response.activity.title,
           subjectId: response.activity.subject_id,
           educationLevelId: response.activity.education_level_id,
-          thumbUrl: response.activity.thumb_url,
+          thumb_url: response.activity.thumb_url,
           type: response.activity.type,
         };
         dispatch(showDescribeActivity(activity, metadata));
@@ -452,14 +467,21 @@ export const createResourceByH5PUploadAction = (
   editor,
   editorType,
   payload,
-  metadata,
+  metadata
   // projectId,
 ) => async (dispatch) => {
   try {
-    Swal.showLoading();
+    toast.info("Uploading Activity ...", {
+      className: "project-loading",
+      closeOnClick: false,
+      closeButton: false,
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 100000,
+      icon: "",
+    });
     const formData = new FormData();
-    formData.append('h5p_file', payload.h5pFile);
-    formData.append('action', 'upload');
+    formData.append("h5p_file", payload.h5pFile);
+    formData.append("action", "upload");
 
     const responseUpload = await resourceService.h5pToken(formData);
 
@@ -468,27 +490,28 @@ export const createResourceByH5PUploadAction = (
         h5p_content_id: responseUpload.id,
         playlist_id: playlistId,
         thumb_url: metadata.thumbUrl,
-        action: 'create',
-        title: metadata.metaContent.metaTitle,
-        type: 'h5p',
-        content: 'place_holder',
-        subject_id:
-          metadata.metaContent.metaSubject
-          && metadata.metaContent.metaSubject.subject,
-        education_level_id:
-          metadata.metaContent.metaEducationLevels
-          && metadata.metaContent.metaEducationLevels.name,
+        action: "create",
+        title: metadata.title,
+        type: "h5p",
+        content: "place_holder",
+        subject_id: metadata.subject_id,
+        education_level_id: metadata.education_level_id,
       };
 
-      const responseActivity = await resourceService.create(createActivityUpload, playlistId);
-      Swal.close();
-      const resource = { ...responseActivity };
-      resource.id = responseActivity.activity.id;
+      const responseActivity = await resourceService.create(
+        createActivityUpload,
+        playlistId
+      );
+      toast.dismiss();
+      toast.success("Activity Uploaded", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 4000,
+      });
 
       dispatch({
         type: actionTypes.CREATE_RESOURCE,
         playlistId,
-        resource,
+        resource: responseActivity,
         editor,
         editorType,
       });
@@ -496,7 +519,7 @@ export const createResourceByH5PUploadAction = (
         type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
       });
     } else {
-      throw new Error('Error occurred while creating resource');
+      throw new Error("Error occurred while creating resource");
     }
   } catch (e) {
     console.log(e);
@@ -508,30 +531,33 @@ export const editResourceAction = (
   editor,
   editorType,
   activityId,
-  metadata,
+  metadata
 ) => async (dispatch) => {
   const h5pdata = {
     library: window.h5peditorCopy.getLibrary(),
     parameters: JSON.stringify(window.h5peditorCopy.getParams()),
-    action: 'create',
+    action: "create",
   };
   try {
     const dataUpload = {
       title: metadata.metaContent && metadata.metaContent.metaTitle,
-      content: 'create',
+      content: "create",
       thumb_url: metadata.thumbUrl,
-      type: 'h5p',
+      type: "h5p",
       subject_id:
-        metadata.metaContent.metaSubject
-        && metadata.metaContent.metaSubject,
+        metadata.metaContent.metaSubject && metadata.metaContent.metaSubject,
       education_level_id:
-        metadata.metaContent.metaEducationLevels
-        && metadata.metaContent.metaEducationLevels,
+        metadata.metaContent.metaEducationLevels &&
+        metadata.metaContent.metaEducationLevels,
       h5p_content_id: h5pid.h5p_content.id,
-      action: 'create',
+      action: "create",
       data: h5pdata,
     };
-    const response = await resourceService.h5pSettingsUpdate(activityId, dataUpload, playlistId);
+    const response = await resourceService.h5pSettingsUpdate(
+      activityId,
+      dataUpload,
+      playlistId
+    );
     Swal.close();
 
     resourceSaved(true);
@@ -554,9 +580,9 @@ export const editResourceAction = (
   } catch (e) {
     console.log(e);
     Swal.fire({
-      title: 'Error',
-      icon: 'error',
-      html: 'Error editing activity',
+      title: "Error",
+      icon: "error",
+      html: "Error editing activity",
     });
     throw e;
   }
@@ -583,8 +609,9 @@ export const removeShareActivity = async (activityId, resourceName) => {
   if (result.activity.id) {
     Swal.fire({
       title: `You stopped sharing <strong>"${resourceName}"</strong> ! `,
-      html: 'Please remember that anyone you have shared this activity with,'
-        + ' will no longer have access to its contents.',
+      html:
+        "Please remember that anyone you have shared this activity with," +
+        " will no longer have access to its contents.",
     });
   }
 };
@@ -596,14 +623,14 @@ export const loadH5pShareResource = async (activityId) => {
 
 // TODO: refactor bottom
 export const saveGenericResourceAction = (resourceData) => async (dispatch) => {
-  const { token } = JSON.parse(localStorage.getItem('auth'));
+  const { token } = JSON.parse(localStorage.getItem("auth"));
   const response = await axios.post(
     `${global.config.laravelAPIUrl}/activity`,
     resourceData,
-    { headers: { Authorization: `Bearer ${token}` } },
+    { headers: { Authorization: `Bearer ${token}` } }
   );
 
-  if (response.data.status === 'success') {
+  if (response.data.status === "success") {
     dispatch({
       type: actionTypes.SAVE_GENERIC_RESOURCE,
     });
@@ -633,34 +660,55 @@ export const saveFormDataInCreation = (formData) => async (dispatch) => {
 export const updatedActivity = (userId) => async () => {
   const echo = new Echo(socketConnection.notificationSocket());
 
-  echo.private('activity-update')
-    .listen('ActivityUpdatedEvent', (msg) => {
-      if (msg.userId !== userId) {
-        const path = window.location.pathname;
+  echo.private("activity-update").listen("ActivityUpdatedEvent", (msg) => {
+    if (msg.userId !== userId) {
+      const path = window.location.pathname;
 
-        let message = '';
-        if (path.includes(`activity/${msg.activityId}`)) {
-          message = 'This activity has been modified by other team member. Are you ok to refresh page to see what is updated?';
-        } else if (path.includes(`playlist/${msg.playlistId}`)) {
-          message = 'This playlist has been modified by other team member. Are you ok to refresh page to see what is updated?';
-        } else if (path.includes(`project/${msg.projectId}`)) {
-          message = 'This project has been modified by other team member. Are you ok to refresh page to see what is updated?';
-        }
-
-        if (message) {
-          Swal.fire({
-            title: message,
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'Yes',
-            denyButtonText: 'No',
-          })
-            .then((result) => {
-              if (result.isConfirmed) {
-                window.location.reload();
-              }
-            });
-        }
+      let message = "";
+      if (path.includes(`activity/${msg.activityId}`)) {
+        message =
+          "This activity has been modified by other team member. Are you ok to refresh page to see what is updated?";
+      } else if (path.includes(`playlist/${msg.playlistId}`)) {
+        message =
+          "This playlist has been modified by other team member. Are you ok to refresh page to see what is updated?";
+      } else if (path.includes(`project/${msg.projectId}`)) {
+        message =
+          "This project has been modified by other team member. Are you ok to refresh page to see what is updated?";
       }
+
+      if (message) {
+        Swal.fire({
+          title: message,
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: "Yes",
+          denyButtonText: "No",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.reload();
+          }
+        });
+      }
+    }
+  });
+};
+
+export const getLayoutActivities = () => async (dispatch) => {
+  const { data } = await resourceService.getAllLayout();
+  if (data) {
+    dispatch({
+      type: actionTypes.SET_LAYOUT_ACTIVITY,
+      payload: data,
     });
+  }
+};
+
+export const getSingleLayoutActivities = () => async (dispatch) => {
+  const { data } = await resourceService.getSingleLayout();
+  if (data) {
+    dispatch({
+      type: actionTypes.SET_SINGLE_ACTIVITY,
+      payload: data,
+    });
+  }
 };

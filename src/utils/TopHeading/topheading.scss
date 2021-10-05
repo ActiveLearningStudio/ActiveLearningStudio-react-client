@@ -1,0 +1,29 @@
+@import "../../assets/css/index.scss";
+* {
+  padding: 0;
+  margin: 0;
+}
+.curriki-utility-TopHeading {
+  p {
+    margin-bottom: 13px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 19px;
+    font-family: "Open Sans", sans-serif;
+  }
+  .curriki-imageHeading {
+    display: flex;
+    align-items: center;
+    img {
+      width: 29px;
+      height: 22px;
+    }
+    h1 {
+      margin-left: 11px;
+      font-family: $rubik;
+      font-weight: 500;
+      font-size: 31px;
+      line-height: 30px;
+    }
+  }
+}

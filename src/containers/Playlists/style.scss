@@ -1,18 +1,33 @@
-@import 'assets/css/index';
-
+@import "assets/css/index";
+.inner-content {
+  background: $white;
+  padding: 30px;
+  margin-top: 0px;
+  // margin: 13px 39px 81px 29px;
+  border-radius: 3px;
+  // @media screen and (max-width: 1024px) {
+  //   margin: 13px 20px 81px 20px;
+  // }
+}
 .create-playlist-btn {
   left: 1467px;
-  width: 201px !important;
+  width: 195px !important;
   height: 40px !important;
   margin: 20px 0;
   padding: 5px 10px 5px 35px;
-  background: #fafafa url(../../assets/images/create-playlist-plus-icon.png) no-repeat 96px 16px;
-  border: none;
-  border-radius: 3px;
+  // background: #fafafa url(../../assets/images/create-playlist-plus-icon.png) no-repeat 96px 16px;
+  // border: none;
+  // border-radius: 3px;
   font-size: 16px;
   font-weight: 500;
-  color: #607a9b;
+  // color: #607a9b;
   cursor: pointer;
+
+  color: #515151 !important;
+  background: #ffffff !important;
+  border: 1px solid #959595;
+  box-shadow: 0px 2px 6px 1px rgba(81, 81, 81, 0.16);
+  border-radius: 20px;
 
   &:hover {
     background-color: #fff;
@@ -82,6 +97,7 @@
 }
 
 .playlist-page-project-title {
+  margin-bottom: 76px;
   h1 {
     margin-top: 20px;
     font-size: 20px;
@@ -96,10 +112,30 @@
     a {
       margin-top: 0;
       margin-right: 32px;
-      background: #fff;
-      box-shadow: 1px 1px 8px #ccc;
+      // background: #fff;
+      // box-shadow: 1px 1px 8px #ccc;
       font-size: 16px;
-      color: #758ba8;
+      // color: #758ba8;
+      color: #ffffff;
+      background: #084892;
+      box-shadow: 0px 2px 6px 1px rgba(8, 72, 146, 0.16);
+      border-radius: 18px;
     }
   }
+}
+.react-switch-bg {
+  background: #ffca70 !important;
+  height: 18px !important;
+  div {
+    display: none;
+  }
+}
+.react-switch-handle {
+  background: #f8af2c !important;
+  top: -4px !important;
+  border: none !important;
+}
+.react-touch {
+  background: none !important;
+  border: none !important;
 }
