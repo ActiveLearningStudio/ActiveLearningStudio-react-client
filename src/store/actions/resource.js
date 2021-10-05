@@ -256,13 +256,10 @@ export const createResourceAction = (
 
     resourceSaved(true);
 
-    resource.id = insertedResource.id;
-    resource.mysqlid = insertedResource.mysqlid;
-
     dispatch({
       type: actionTypes.CREATE_RESOURCE,
       playlistId,
-      resource,
+      resource: insertedResource,
       editor,
       editorType,
     });
@@ -518,13 +515,11 @@ export const createResourceByH5PUploadAction = (
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 4000,
       });
-      const resource = { ...responseActivity };
-      resource.id = responseActivity.activity.id;
 
       dispatch({
         type: actionTypes.CREATE_RESOURCE,
         playlistId,
-        resource,
+        resource: responseActivity,
         editor,
         editorType,
       });

@@ -304,7 +304,7 @@ export const ProjectsPage = (props) => {
         closeOnClick: false,
         closeButton: false,
         position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 100000,
+        autoClose: 10000,
         icon: ImgLoader,
       });
       loadMyProjects();
@@ -515,6 +515,84 @@ export const ProjectsPage = (props) => {
                     </div>
                   </div>
                 </Tab>
+                {permission?.Project?.includes("project:favorite") && (
+                  <Tab eventKey="Favorite Projects" title="Favorite Projects">
+                    <div className="row">
+                      <div className="col-md-12" style={{ display: "none" }}>
+                        <div className="program-page-title">
+                          <h1>Favorite Projects</h1>
+                          {showSampleSort && favProject.length === 0 && (
+                            <div className="project-page-settings">
+                              <div className="sort-project-btns">
+                                <div
+                                  className={
+                                    activeFilter === "list-grid"
+                                      ? "sort-btn active"
+                                      : "sort-btn"
+                                  }
+                                  onClick={() => {
+                                    // const allchunk = [];
+                                    // var counterSimpl = 0;
+                                    setActiveFilter("list-grid");
+                                    setSortNumber(-1);
+                                    divideProjects(allProjects);
+                                  }}
+                                >
+                                  <FontAwesomeIcon icon="bars" />
+                                </div>
+                                <div
+                                  className={
+                                    activeFilter === "small-grid"
+                                      ? "sort-btn active"
+                                      : "sort-btn"
+                                  }
+                                  onClick={() => {
+                                    setActiveFilter("small-grid");
+                                    setSortNumber(5);
+                                    divideProjects(allProjects);
+                                  }}
+                                >
+                                  <FontAwesomeIcon icon="grip-horizontal" />
+                                </div>
+                                <div
+                                  className={
+                                    activeFilter === "normal-grid"
+                                      ? "sort-btn active"
+                                      : "sort-btn"
+                                  }
+                                  onClick={() => {
+                                    setActiveFilter("normal-grid");
+                                    setSortNumber(4);
+                                    divideProjects(allProjects);
+                                  }}
+                                >
+                                  <FontAwesomeIcon icon="th-large" />
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="col-md-12">
+                        <div className="flex-smaple">
+                          {favProject.length > 0 ? (
+                            <SampleProjectCard
+                              projects={favProject}
+                              type={type}
+                              activeTab={tabToggle}
+                              setShowSampleSort={setShowSampleSort}
+                            />
+                          ) : (
+                            <Alert variant="warning">
+                              No Favorite Project found.
+                            </Alert>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </Tab>
+                )}
                 <Tab eventKey="Sample Projects" title="Sample Projects">
                   <div className="row">
                     <div className="col-md-12" style={{ display: "none" }}>

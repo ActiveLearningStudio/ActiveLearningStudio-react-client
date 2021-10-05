@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { withRouter, Link } from "react-router-dom";
 import { connect, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Swal from "sweetalert2";
@@ -18,7 +20,7 @@ import {
   loadProjectPlaylistsAction,
   reorderPlaylistsAction,
 } from "store/actions/playlist";
-import MyActivity from 'containers/MyActivity';
+import MyActivity from "containers/MyActivity";
 import { showDeletePopupAction, hideDeletePopupAction } from "store/actions/ui";
 import {
   deleteResourceAction,
@@ -91,10 +93,24 @@ function PlaylistsPage(props) {
     getTeamPermissions,
   } = props;
   useEffect(() => {
-    if (Object.keys(teamPermission).length === 0 && selectedProject.team_id && organization?.currentOrganization?.id && selectedProject.id === match.params.projectId) {
-      getTeamPermissions(organization?.currentOrganization?.id, selectedProject?.team_id);
+    if (
+      Object.keys(teamPermission).length === 0 &&
+      selectedProject.team_id &&
+      organization?.currentOrganization?.id &&
+      selectedProject.id === match.params.projectId
+    ) {
+      getTeamPermissions(
+        organization?.currentOrganization?.id,
+        selectedProject?.team_id
+      );
     }
-  }, [teamPermission, organization?.currentOrganization, selectedProject, match.params.projectId, getTeamPermissions]);
+  }, [
+    teamPermission,
+    organization?.currentOrganization,
+    selectedProject,
+    match.params.projectId,
+    getTeamPermissions,
+  ]);
   useEffect(() => {
     loadLms();
     window.scrollTo(0, 0);
@@ -105,19 +121,18 @@ function PlaylistsPage(props) {
       !openEditResourcePopup &&
       activeOrganization
     ) {
+      toast.info("Loading Playlists ...", {
+        className: "project-loading",
+        closeOnClick: false,
+        closeButton: false,
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 10000,
+        icon: "",
+      });
       loadProject(match.params.projectId);
       loadProjectPlaylists(match.params.projectId);
     }
-  }, [
-    loadLms,
-    loadProject,
-    loadProjectPlaylists,
-    match.params.projectId,
-    openCreatePopup,
-    openCreateResourcePopup,
-    openEditResourcePopup,
-    activeOrganization,
-  ]);
+  }, [loadProject, activeOrganization]);
   useEffect(() => {
     if (state.status === 2) {
       setChecked(true);
@@ -385,7 +400,11 @@ function PlaylistsPage(props) {
   };
 
   const { showDeletePlaylistPopup, pageLoading } = ui;
-
+  useEffect(() => {
+    if (playlists) {
+      toast.dismiss();
+    }
+  }, [playlists]);
   return (
     <>
       <div className="content-wrapper">
@@ -393,9 +412,7 @@ function PlaylistsPage(props) {
           <div className="content">
             <div>
               {pageLoading !== false ? (
-                <Alert style={{ marginTop: "15px" }} variant="primary">
-                  Loading ...
-                </Alert>
+                <></>
               ) : (
                 <>
                   <div style={{ marginLeft: "15px" }}>
@@ -429,36 +446,36 @@ function PlaylistsPage(props) {
                         {permission?.Project?.includes(
                           "project:request-indexing"
                         ) && (
-                            <div className="react-touch">
-                              <div className="publish-btn">
-                                <Switch
-                                  checked={checked}
-                                  onChange={handleChange}
-                                />
-                                <span
-                                  style={{
-                                    color: checked ? "#333" : "$mine-shaft",
-                                  }}
-                                >
-                                  Showcase
-                                </span>
-                              </div>
+                          <div className="react-touch">
+                            <div className="publish-btn">
+                              <Switch
+                                checked={checked}
+                                onChange={handleChange}
+                              />
+                              <span
+                                style={{
+                                  color: checked ? "#333" : "$mine-shaft",
+                                }}
+                              >
+                                Showcase
+                              </span>
                             </div>
-                          )}
+                          </div>
+                        )}
                         {(Object.keys(teamPermission).length
                           ? teamPermission?.Team?.includes("team:add-playlist")
                           : permission?.Playlist?.includes(
-                            "playlist:create"
-                          )) && (
-                            <button
-                              type="button"
-                              className="create-playlist-btn"
-                              onClick={handleShowCreatePlaylistModal}
-                            >
-                              <FontAwesomeIcon icon="plus" className="mr-2" />
-                              Create new playlist
-                            </button>
-                          )}
+                              "playlist:create"
+                            )) && (
+                          <button
+                            type="button"
+                            className="create-playlist-btn"
+                            onClick={handleShowCreatePlaylistModal}
+                          >
+                            <FontAwesomeIcon icon="plus" className="mr-2" />
+                            Create new playlist
+                          </button>
+                        )}
                       </div>
                       {/* {permission?.Project?.includes(
                         "project:request-indexing"
@@ -570,7 +587,6 @@ function PlaylistsPage(props) {
                       No playlist available, kindly create your playlist.
                     </Alert>
                   )}
-
                 </>
               )}
             </div>
