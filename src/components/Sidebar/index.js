@@ -57,26 +57,6 @@ function Sidebar(props) {
 
   return (
     <aside className="sidebar-all">
-      <div className="row-sidebar">
-        <img src={childOrganizationIcon} alt="" />
-        <div className="sidebar-headings">
-          {allState.organization.currentOrganization?.name}
-        </div>
-      </div>
-      {permission?.Organization?.includes("organization:view") && (
-        <>
-          <Link
-            to={`/org/${allState.organization.currentOrganization?.domain}/admin`}
-            onClick={() => dispatch(clearTeamPermissions())}
-          >
-            <div className="row-sidebar">
-              <img src={administrate} alt="" />
-              <div className="sidebar-headings">Admin Panel</div>
-            </div>
-          </Link>
-        </>
-      )}
-
       {permission?.Project?.includes("project:view") && (
         <>
           <Link
@@ -98,6 +78,19 @@ function Sidebar(props) {
             <div className="row-sidebar">
               <img src={teamicon} alt="" />
               <div className="sidebar-headings">Teams</div>
+            </div>
+          </Link>
+        </>
+      )}
+      {permission?.Organization?.includes("organization:view") && (
+        <>
+          <Link
+            to={`/org/${allState.organization.currentOrganization?.domain}/admin`}
+            onClick={() => dispatch(clearTeamPermissions())}
+          >
+            <div className="row-sidebar">
+              <img src={administrate} alt="" />
+              <div className="sidebar-headings">Admin Panel</div>
             </div>
           </Link>
         </>

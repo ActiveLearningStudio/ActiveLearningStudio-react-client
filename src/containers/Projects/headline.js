@@ -20,7 +20,7 @@ export default function Headline() {
         <div className="title">
           <div className="title-name-heading-image">
             <Headings
-              text="Nevada Department of Education"
+              text={`${currentOrganization?.name}`}
               headingType="body2"
               color="#084892"
             />
