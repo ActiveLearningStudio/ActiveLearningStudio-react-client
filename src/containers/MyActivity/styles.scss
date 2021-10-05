@@ -213,6 +213,18 @@
     }
   }
 }
+.search-card-singleActivity {
+  display: flex;
+  justify-content: space-between;
+
+  input {
+    border: none;
+    border-bottom: 1px solid #515151;
+    font-weight: 400;
+    font-size: 14px;
+    padding-right: 20px;
+  }
+}
 .create-form-activity {
   .activityHeading {
     width: 350px;

@@ -7,7 +7,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch } from "react-redux";
 import { loadH5pSettingsActivity } from "store/actions/resource";
 import { Alert } from "react-bootstrap";
-import { createResourceAction } from "store/actions/resource";
+import {
+  createResourceAction,
+  editResourceAction,
+} from "store/actions/resource";
+import Buttons from "utils/Buttons/buttons";
 
 const H5PEditor = (props) => {
   const {
@@ -20,6 +24,8 @@ const H5PEditor = (props) => {
     loadH5pSettings,
     h5pParams,
     hide,
+    editActivity,
+    activityId,
   } = props;
 
   const uploadFile = useRef();
@@ -44,12 +50,21 @@ const H5PEditor = (props) => {
   };
 
   const submitResource = (event) => {
-    event.preventDefault();
-
     const parameters = window.h5peditorCopy.getParams();
     const { metadata } = parameters;
     if (metadata.title !== undefined) {
-      if (submitAction === "create") {
+      if (editActivity) {
+        dispatch(
+          editResourceAction(
+            playlistId,
+            h5pLib,
+            h5pLibType,
+            activityId,
+            formData,
+            hide
+          )
+        );
+      } else {
         const payload = {
           event,
           submitAction,
@@ -105,15 +120,7 @@ const H5PEditor = (props) => {
           <div
             className="col-md-9 col-md-offset-3"
             style={{ position: "inherit" }}
-          >
-            {/* <button
-              type="submit"
-              className="add-resource-submit-btn top"
-              onClick={submitResource}
-            >
-              Save & Exit
-            </button> */}
-          </div>
+          ></div>
         </div>
 
         <input
@@ -147,9 +154,6 @@ const H5PEditor = (props) => {
           </div>
           {upload && (
             <div className="form-group laravel-h5p-upload-container">
-              {/* <label htmlFor="inputUpload" className="control-label col-md-3">
-                Upload
-              </label> */}
               <div className="col-md-12">
                 <div className="drop-area">
                   <input
@@ -176,17 +180,6 @@ const H5PEditor = (props) => {
                     )}
                   </div>
                 </div>
-                {/* <small className="h5p-disable-file-check helper-block">
-                  <label>
-                    <input
-                      type="checkbox"
-                      className="mr-2"
-                      name="h5p_disable_file_check"
-                      id="h5p-disable-file-check"
-                    />
-                    Disable file extension check
-                  </label>
-                </small> */}
               </div>
             </div>
           )}
@@ -223,16 +216,35 @@ const H5PEditor = (props) => {
             </div>
           </div>
 
-          <div className="form-group">
-            <div className="col-md-9 col-md-offset-3">
-              <button
-                // ref={submitButtonRef}
-                type="submit"
-                className="add-resource-submit-btn"
-                onClick={submitResource}
-              >
-                Save & Exit
-              </button>
+          <div className="interactive-btns" style={{ marginTop: "20px" }}>
+            <div className="cancel">
+              <Buttons
+                text="cancel"
+                width="151px"
+                secondary
+                onClick={() => {
+                  hide();
+                }}
+              />
+            </div>
+            <div className="save-close">
+              <Buttons
+                text="Save & Close"
+                width="151px"
+                primary
+                onClick={() => {
+                  submitResource();
+                }}
+              />
+              {/* <Buttons
+              text="Save"
+              width="97px"
+              className="save-btn"
+              onClick={() => {
+                props.onHide();
+                props.setSuccessMessage(true);
+              }}
+            /> */}
             </div>
           </div>
         </fieldset>

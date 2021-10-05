@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import HeadingText from "utils/HeadingText/headingtext";
 import HeadingTwo from "utils/HeadingTwo/headingtwo";
 import LayoutCard from "utils/LayoutCard/layoutcard";
@@ -24,13 +24,23 @@ const ActivityLayout = (props) => {
   const [layout, setLayout] = useState({ title: "Interactive Book" });
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useMemo(() => {
+    toast.info("Loading Activities ...", {
+      className: "project-loading",
+      closeOnClick: false,
+      closeButton: false,
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 10000,
+      icon: "",
+    });
     dispatch(getLayoutActivities());
   }, []);
   const allActivity = useSelector((state) => state.myactivities.layout);
-  useEffect(() => {
+  useMemo(() => {
     setLayout(allActivity?.[0] || null);
-    toast.dismiss();
+    if (allActivity) {
+      toast.dismiss();
+    }
   }, [allActivity]);
   return (
     <div className="activity-layout-form">
@@ -51,46 +61,41 @@ const ActivityLayout = (props) => {
       </div>
       <div className="layout-cards-process-btn">
         <div className="activity-layout-cards">
-          {allActivity
-            ? allActivity.map((data) => {
-                return (
-                  <LayoutCard
-                    image={data.image}
-                    text={data.title}
-                    className={
-                      layout?.title == data.title
-                        ? "activity-layoutCard-active mr-3"
-                        : "mr-3"
-                    }
-                    onClick={() => setLayout(data)}
-                  />
-                );
-              })
-            : toast.info("Loading Activities ...", {
-                className: "project-loading",
-                closeOnClick: false,
-                closeButton: false,
-                position: toast.POSITION.BOTTOM_RIGHT,
-                autoClose: 10000,
-                icon: ImgLoader,
-              })}
-          <LayoutCard
-            image={ColoumImage1}
-            text="Single Activity"
-            importImg
-            className={
-              layout == "SingleActivity"
-                ? "activity-layoutCard-active mr-30"
-                : "mr-30"
-            }
-            onClick={() => {
-              setLayout("SingleActivity");
-              dispatch({
-                type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-                payload: "singleActivity",
-              });
-            }}
-          />
+          {!!allActivity &&
+            allActivity.map((data) => {
+              return (
+                <LayoutCard
+                  image={data.image}
+                  text={data.title}
+                  className={
+                    layout?.title == data.title
+                      ? "activity-layoutCard-active mr-3"
+                      : "mr-3"
+                  }
+                  onClick={() => setLayout(data)}
+                />
+              );
+            })}
+
+          {!!allActivity && (
+            <LayoutCard
+              image={ColoumImage1}
+              text="Single Activity"
+              importImg
+              className={
+                layout == "SingleActivity"
+                  ? "activity-layoutCard-active mr-30"
+                  : "mr-30"
+              }
+              onClick={() => {
+                setLayout("SingleActivity");
+                dispatch({
+                  type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+                  payload: "singleActivity",
+                });
+              }}
+            />
+          )}
         </div>
         {!!layout && (
           <div className="layout-process-btn">
@@ -101,7 +106,7 @@ const ActivityLayout = (props) => {
                 height="100%"
                 frameborder="0"
                 src={
-                  layout.demo_video_id |
+                  layout.demo_video_id ||
                   "https://www.youtube.com/embed/ngXSzWNYzU4"
                 }
                 title={layout.title}
