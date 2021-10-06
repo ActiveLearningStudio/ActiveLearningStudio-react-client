@@ -400,11 +400,11 @@ function PlaylistsPage(props) {
   };
 
   const { showDeletePlaylistPopup, pageLoading } = ui;
-  // useEffect(() => {
-  //   if (playlists) {
-  //     toast.dismiss();
-  //   }
-  // }, [playlists]);
+  useEffect(() => {
+    if (playlists.length > 0) {
+      toast.dismiss();
+    }
+  }, [playlists]);
   return (
     <>
       <div className="content-wrapper">
@@ -451,6 +451,10 @@ function PlaylistsPage(props) {
                               <Switch
                                 checked={checked}
                                 onChange={handleChange}
+                                offColor="#888"
+                                offHandleColor="#888"
+                                onColor="#ffca70"
+                                onHandleColor="#ffca70"
                               />
                               <span
                                 style={{

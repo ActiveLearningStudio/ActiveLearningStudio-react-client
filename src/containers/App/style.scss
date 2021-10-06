@@ -70,7 +70,8 @@
   user-select: none;
 
   .list-body {
-    min-height: 400px;
+    max-height: 320px;
+    min-height: 320px;
   }
 }
 
@@ -1440,14 +1441,14 @@ header.head_mobile {
   margin-left: 158px;
   margin-top: 32px;
   .container {
-    max-width: 1551px;
+    max-width: 100%;
     margin: 0 auto;
     background: #ffffff;
     padding: 32px;
     .project-details {
       display: flex;
       .project-title-desc {
-        width: 400px;
+        // width: 400px;
         margin-left: 32px;
         margin-right: 24px;
         .project-title {
@@ -2220,16 +2221,19 @@ a:hover {
 
 .back-header .go-back-button-preview,
 .sce_cont .go-back-button-preview {
-  background-color: #5952c6;
+  // background-color: #084892;
   display: block;
-  color: #fff;
+  color: rgb(127, 127, 127);
   width: fit-content;
   min-width: 190px;
   border-radius: 20px;
-  text-align: center;
+  text-align: end;
   font-size: 14px;
-  padding: 3px 20px;
+  padding: 3px 3px;
   margin-bottom: 10px;
+  @media screen and (min-width: 980px) {
+    padding: 3px 3px !important;
+  }
 
   .fa {
     padding-right: 5px;
