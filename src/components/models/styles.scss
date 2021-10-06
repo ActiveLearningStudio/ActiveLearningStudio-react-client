@@ -55,11 +55,13 @@
       background-repeat: no-repeat;
       background-position: center;
       border-radius: 10px;
+      cursor: default;
 
       img {
         border-radius: 10px;
         width: 100%;
         max-height: 100%;
+        cursor: default;
       }
     }
 

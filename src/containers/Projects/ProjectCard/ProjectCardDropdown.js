@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dropdown } from "react-bootstrap";
 import Swal from "sweetalert2";
-
+import { toast } from 'react-toastify';
 import { getProjectId, googleShare } from "store/actions/gapi";
 import { cloneProject } from "store/actions/search";
 import {
@@ -15,8 +15,8 @@ import {
 } from "store/actions/project";
 import { lmsPlaylist } from "store/actions/playlist";
 import SharePreviewPopup from "components/SharePreviewPopup";
-
 import "./style.scss";
+import loader from "assets/images/loader.svg";
 import { propTypes } from "react-bootstrap/esm/Image";
 
 const ProjectCardDropdown = (props) => {
@@ -30,6 +30,7 @@ const ProjectCardDropdown = (props) => {
     text,
     iconColor,
   } = props;
+  const ImgLoader = () => <img src={loader} />;
   const organization = useSelector((state) => state.organization);
   const { permission } = organization;
   const dispatch = useDispatch();
@@ -79,8 +80,16 @@ const ProjectCardDropdown = (props) => {
           <Dropdown.Item
             to="#"
             onClick={() => {
-              Swal.showLoading();
+              toast.info("Duplicating project...", {
+                className: "project-loading",
+                closeOnClick: false,
+                closeButton: false,
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 10000,
+                icon: ImgLoader,
+              });
               cloneProject(project.id);
+              toast.dismiss();
             }}
           >
             <FontAwesomeIcon icon="clone" className="mr-2" />
@@ -98,11 +107,18 @@ const ProjectCardDropdown = (props) => {
                 project.id
               }/shared`;
               if (!project.shared) {
-                Swal.showLoading();
+                toast.info("Sharing project...", {
+                  className: "project-loading",
+                  closeOnClick: false,
+                  closeButton: false,
+                  position: toast.POSITION.BOTTOM_RIGHT,
+                  autoClose: 10000,
+                  icon: ImgLoader,
+                });
                 await dispatch(
                   toggleProjectShareAction(project.id, project.name)
                 );
-                Swal.close();
+                toast.dismiss();
                 SharePreviewPopup(url, project.name);
               } else {
                 SharePreviewPopup(url, project.name);
