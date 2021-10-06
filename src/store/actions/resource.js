@@ -531,61 +531,77 @@ export const editResourceAction = (
   editor,
   editorType,
   activityId,
-  metadata
+  metadata,
+  hide
 ) => async (dispatch) => {
   const h5pdata = {
     library: window.h5peditorCopy.getLibrary(),
     parameters: JSON.stringify(window.h5peditorCopy.getParams()),
     action: "create",
   };
-  try {
-    const dataUpload = {
-      title: metadata.metaContent && metadata.metaContent.metaTitle,
-      content: "create",
-      thumb_url: metadata.thumbUrl,
-      type: "h5p",
-      subject_id:
-        metadata.metaContent.metaSubject && metadata.metaContent.metaSubject,
-      education_level_id:
-        metadata.metaContent.metaEducationLevels &&
-        metadata.metaContent.metaEducationLevels,
-      h5p_content_id: h5pid.h5p_content.id,
-      action: "create",
-      data: h5pdata,
-    };
-    const response = await resourceService.h5pSettingsUpdate(
-      activityId,
-      dataUpload,
-      playlistId
-    );
-    Swal.close();
+  toast.info("Updating  Activity ...", {
+    className: "project-loading",
+    closeOnClick: false,
+    closeButton: false,
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 100000,
+    icon: "",
+  });
 
-    resourceSaved(true);
+  //try {
+  const dataUpload = {
+    data: h5pdata,
 
-    const resource = {};
-    resource.id = response.id;
+    //h5p_content_id: h5pid.h5p_content.id,
 
-    dispatch({
-      type: actionTypes.EDIT_RESOURCE,
-      playlistId,
-      resource,
-      editor,
-      editorType,
-    });
+    playlist_id: playlistId,
+    thumb_url: metadata?.thumb_url,
+    action: "create",
+    title: metadata?.title,
+    type: "h5p",
+    content: "place_holder",
+    subject_id: metadata.subject_id,
+    education_level_id: metadata.education_level_id,
+  };
+  const response = await resourceService.h5pSettingsUpdate(
+    activityId,
+    dataUpload,
+    playlistId
+  );
+  toast.dismiss();
+  toast.success("Activity Edited", {
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 4000,
+  });
 
-    dispatch({
-      type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
-    });
-    return response;
-  } catch (e) {
-    console.log(e);
-    Swal.fire({
-      title: "Error",
-      icon: "error",
-      html: "Error editing activity",
-    });
-    throw e;
-  }
+  resourceSaved(true);
+
+  dispatch({
+    type: actionTypes.EDIT_RESOURCE,
+    playlistId,
+    resource: response,
+    editor,
+    editorType,
+  });
+
+  dispatch({
+    type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
+  });
+  hide();
+  dispatch({
+    type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+    payload: "",
+  });
+  return response;
+  // } catch (e) {
+  //   console.log(e);
+  //   Swal.fire({
+  //     title: "Error",
+  //     icon: "error",
+  //     html: "Error editing activity",
+  //   });
+  //   throw e;
+  // }
 };
 
 export const shareActivity = async (activityId) => {

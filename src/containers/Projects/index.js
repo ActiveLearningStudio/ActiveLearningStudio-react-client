@@ -50,6 +50,7 @@ export const ProjectsPage = (props) => {
   const [value, setValue] = useState(0);
   const [projectDivider, setProjectDivider] = useState([]);
   const [sortNumber, setSortNumber] = useState(5);
+  const [customCardWidth, setCustomCardWidth] = useState("customcard20");
   const [sampleProject, setSampleProjects] = useState([]);
   const [favProject, setFavProjects] = useState([]);
   const [teamProjects, setTeamProjects] = useState([]);
@@ -90,6 +91,14 @@ export const ProjectsPage = (props) => {
       setActiveTab("My Projects");
     }
   }, []);
+
+  useEffect(() => {
+    var sw = window.innerWidth;
+    if (sw < 1200) {
+      setSortNumber(2);
+      setCustomCardWidth("customcard50");
+    }
+  }, [window.innerWidth]);
 
   useEffect(() => {
     if (!searchTeamQuery) {
@@ -374,7 +383,7 @@ export const ProjectsPage = (props) => {
   return (
     <>
       <div className={`content-wrapper ${activeFilter}`}>
-        <div className="inner-content">
+        <div className={`inner-content  ${customCardWidth}`}>
           <div className="content">
             <Headline />
             {permission?.Project?.includes("project:view") ? (
