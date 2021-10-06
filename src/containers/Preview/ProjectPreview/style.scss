@@ -206,8 +206,8 @@ img {
 .flex-wrap {
   display: flex;
   flex-wrap: wrap;
-  @media screen and (max-width: 1060px) {
-    flex-wrap: nowrap;
+  @media screen and (min-width: 980px) {
+    flex-wrap: nowrap !important;
   }
 }
 

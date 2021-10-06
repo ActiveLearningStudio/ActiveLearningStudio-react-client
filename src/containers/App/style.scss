@@ -1448,7 +1448,7 @@ header.head_mobile {
     .project-details {
       display: flex;
       .project-title-desc {
-        width: 400px;
+        // width: 400px;
         margin-left: 32px;
         margin-right: 24px;
         .project-title {
@@ -2221,18 +2221,18 @@ a:hover {
 
 .back-header .go-back-button-preview,
 .sce_cont .go-back-button-preview {
-  background-color: #084892;
+  // background-color: #084892;
   display: block;
-  color: #fff;
+  color: rgb(127, 127, 127);
   width: fit-content;
   min-width: 190px;
   border-radius: 20px;
-  text-align: center;
+  text-align: end;
   font-size: 14px;
-  padding: 3px 20px;
+  padding: 3px 3px;
   margin-bottom: 10px;
-  @media screen and (max-width: 1060px) {
-    padding: 3px 14px;
+  @media screen and (min-width: 980px) {
+    padding: 3px 3px !important;
   }
 
   .fa {

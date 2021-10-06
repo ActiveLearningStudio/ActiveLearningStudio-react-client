@@ -400,11 +400,11 @@ function PlaylistsPage(props) {
   };
 
   const { showDeletePlaylistPopup, pageLoading } = ui;
-  // useEffect(() => {
-  //   if (playlists) {
-  //     toast.dismiss();
-  //   }
-  // }, [playlists]);
+  useEffect(() => {
+    if (playlists.length > 0) {
+      toast.dismiss();
+    }
+  }, [playlists]);
   return (
     <>
       <div className="content-wrapper">
