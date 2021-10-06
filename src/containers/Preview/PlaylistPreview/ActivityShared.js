@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { useDispatch } from 'react-redux';
+import Swal from 'sweetalert2';
 import TinCan from 'tincanjs';
 // import { Alert } from 'react-bootstrap';
 import gifloader from 'assets/images/dotsloader.gif';
@@ -108,41 +109,49 @@ const ActivityShared = (props) => {
                   dispatch(loadH5pResourceXapi(JSON.stringify(extendedStatement)));
 
                   if (lrs) {
-                  // If an lrs has been defined, send tincanjs statement
-                    const doceboStatement = new TinCan.Statement({
-                          actor: {
-                            ...extendedStatement.actor,
-                            mbox: 'mailto:info@currikistudio.org',
-                          },
-                          verb: extendedStatement.verb,
-                          context: {
-                            ...extendedStatement.context,
-                            registration: lrsRegistration,
-                          },
-                          object: extendedStatement.object,
-                    });
-
-                    lrs.saveStatement(
-                      doceboStatement,
-                      {
-                        callback: (err, xhr) => {
-                            if (err !== null) {
-                                if (xhr !== null) {
-                                    console.log(`Failed to save statement: ${xhr.responseText} (${xhr.status})`);
-                                    // TODO: do something with error, didn't save statement
-                                    return;
-                                }
-
-                                console.log(`Failed to save statement: ${err}`);
-                                // TODO: do something with error, didn't save statement
-                                return;
-                            }
-
-                            console.log('Statement saved');
-                            // TOOO: do something with success (possibly ignore)
+                    // If completed, check for passing grade. Cancel statement if not passing
+                    if (extendedStatement?.verb?.id === 'http://adlnet.gov/expapi/verbs/completed' && extendedStatement?.result?.score?.scaled !== 1) {
+                      Swal.fire({
+                        title: 'Please complete all the interactions correctly to finish the activity.',
+                        confirmButtonText: 'Continue',
+                      });
+                    } else {
+                      // If an lrs has been defined, send tincanjs statement
+                      const doceboStatement = new TinCan.Statement({
+                        actor: {
+                          ...extendedStatement.actor,
+                          mbox: 'mailto:info@currikistudio.org',
                         },
-                      },
-                    );
+                        verb: extendedStatement.verb,
+                        context: {
+                          ...extendedStatement.context,
+                          registration: lrsRegistration,
+                        },
+                        object: extendedStatement.object,
+                      });
+
+                      lrs.saveStatement(
+                        doceboStatement,
+                        {
+                          callback: (err, xhr) => {
+                              if (err !== null) {
+                                  if (xhr !== null) {
+                                      console.log(`Failed to save statement: ${xhr.responseText} (${xhr.status})`);
+                                      // TODO: do something with error, didn't save statement
+                                      return;
+                                  }
+
+                                  console.log(`Failed to save statement: ${err}`);
+                                  // TODO: do something with error, didn't save statement
+                                  return;
+                              }
+
+                              console.log('Statement saved');
+                              // TOOO: do something with success (possibly ignore)
+                          },
+                        },
+                      );
+                    }
                   }
                 }
                 counter += 1;
