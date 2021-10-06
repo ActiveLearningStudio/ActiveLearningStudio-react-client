@@ -532,15 +532,17 @@ export const getProjectCourseFromLMS = (
   playlist,
   lmsUrl,
 ) => async (dispatch, getState) => {
-  Swal.fire({
-    iconHtml: loaderImg,
-    title: 'Fetching Information....',
-    showCancelButton: false,
-    showConfirmButton: false,
-    allowOutsideClick: false,
+  const response = await toast.promise(projectService.fetchLmsDetails(lms, projectId, settingId), {
+    pending: 'Fetching information...',
+    success: 'Information fetched!',
+    error: 'Error fetching information',
+  }, {
+    className: 'project-loading',
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 10000,
+    closeOnClick: false,
+    closeButton: false,
   });
-
-  const response = await projectService.fetchLmsDetails(lms, projectId, settingId);
   const globalStoreClone = getState();
   if (response) {
     dispatch({
@@ -548,7 +550,7 @@ export const getProjectCourseFromLMS = (
       lmsCourse: response.project,
       allstate: globalStoreClone,
     });
-
+    toast.dismiss();
     Swal.fire({
       title: `This Project will be added to ${lms}. If the Project does not exist, it will be created.`,
       text: 'Would you like to proceed?',

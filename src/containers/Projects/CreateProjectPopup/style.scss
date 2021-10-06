@@ -39,18 +39,18 @@
 
 .create-program-wrapper {
   .dropdown-visibilitytypes {
-    margin-top:15px
+    margin-top: 15px;
   }
-  label{
-    display:block;
-   h2 {
-    font-family: $rubik, sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 20px;
-  }}
- 
+  label {
+    display: block;
+    h2 {
+      font-family: $rubik, sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
 
   h1 {
     margin: 0;
@@ -61,11 +61,8 @@
     text-transform: capitalize;
   }
 
-
   .create-playlist-form {
-    
     .project-name {
-      
       input {
         width: 100%;
         height: 36px;
@@ -75,13 +72,13 @@
         border-radius: 4px;
       }
     }
-    .imgbox{
-      width:100%
+    .imgbox {
+      width: 100%;
     }
 
     .project-description {
       margin-top: 20px;
-     
+
       textarea {
         width: 100%;
         height: 56px;
@@ -99,11 +96,10 @@
       .upload_placeholder {
         display: flex;
         flex-direction: column;
-        margin-top:15px;
+        margin-top: 15px;
       }
       label {
-        
-        display:block;
+        display: block;
         input {
           display: none;
         }
@@ -125,7 +121,7 @@
       }
 
       .thumb-display {
-        width: 280px;
+        // width: 280px;
         height: auto;
         overflow: hidden;
 
@@ -158,7 +154,7 @@
         border-radius: 20px;
 
         img {
-          width: 23px
+          width: 23px;
         }
       }
 
@@ -178,8 +174,6 @@
   }
 }
 .dropdown-visibilitytypes {
- 
-
   h2 {
     font-family: $rubik !important;
     font-style: normal !important;
