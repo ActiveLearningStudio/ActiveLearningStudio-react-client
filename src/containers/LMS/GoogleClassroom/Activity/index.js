@@ -43,7 +43,7 @@ const Activity = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     getSubmission(match.params.classworkId, match.params.courseId, student.auth);
-  }, [activityId, student.auth]);
+  }, [activityId]);
 
   useEffect(() => {
     if (submission === null) return;
