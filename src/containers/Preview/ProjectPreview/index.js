@@ -1,20 +1,25 @@
-import React, { useEffect, useState, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { Link, withRouter } from 'react-router-dom';
-import Slider from 'react-slick';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+/* eslint-disable */
+import React, { useEffect, useState, useRef } from "react";
+import PropTypes from "prop-types";
+import { Link, withRouter } from "react-router-dom";
+import Slider from "react-slick";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { changePlaylistTitleAction, deletePlaylistAction, loadProjectPlaylistsAction } from 'store/actions/playlist';
+import {
+  changePlaylistTitleAction,
+  deletePlaylistAction,
+  loadProjectPlaylistsAction,
+} from "store/actions/playlist";
 import {
   loadMyProjectsActionPreview,
   deleteProjectAction,
-} from 'store/actions/project';
-import SharePreviewPopup from 'components/SharePreviewPopup';
-import ActivityCard from 'components/ActivityCard';
-import DeletePopup from 'components/DeletePopup';
-import './style.scss';
-import { getTeamPermission } from 'store/actions/team';
+} from "store/actions/project";
+import SharePreviewPopup from "components/SharePreviewPopup";
+import ActivityCard from "components/ActivityCard";
+import DeletePopup from "components/DeletePopup";
+import "./style.scss";
+import { getTeamPermission } from "store/actions/team";
 
 function ProjectPreview(props) {
   const { match, history, changePlaylistTitle } = props;
@@ -32,16 +37,25 @@ function ProjectPreview(props) {
   const { teamPermission } = team;
   const { showDeletePlaylistPopup } = ui;
   const [currentProject, setCurrentProject] = useState(null);
-  const [activeShared, setActiveShared] = useState(true);
+  // const [setActiveShared] = useState(true);
   const [collapsed, setCollapsed] = useState([true]);
 
   useEffect(() => {
     setCurrentProject(projectState.projectSelect);
-    setActiveShared(projectState.projectSelect.shared);
+    // setActiveShared(projectState.projectSelect.shared);
   }, [projectState.projectSelect]);
   useEffect(() => {
-    if (Object.keys(teamPermission).length === 0 && currentProject?.team?.id && organization?.currentOrganization?.id) {
-      dispatch(getTeamPermission(organization?.currentOrganization?.id, currentProject.team.id));
+    if (
+      Object.keys(teamPermission).length === 0 &&
+      currentProject?.team?.id &&
+      organization?.currentOrganization?.id
+    ) {
+      dispatch(
+        getTeamPermission(
+          organization?.currentOrganization?.id,
+          currentProject.team.id
+        )
+      );
     }
   }, [teamPermission, organization?.currentOrganization, currentProject]);
   useEffect(() => {
@@ -60,7 +74,7 @@ function ProjectPreview(props) {
 
   const deleteProject = async (projectId) => {
     await dispatch(deleteProjectAction(projectId)); //! state.show
-    history.push('/');
+    history.push("/");
   };
   const settings = {
     dots: false,
@@ -72,60 +86,68 @@ function ProjectPreview(props) {
   };
 
   useEffect(() => {
-    if (organization?.currentOrganization?.id) dispatch(loadMyProjectsActionPreview(match.params.projectId));
+    if (organization?.currentOrganization?.id)
+      dispatch(loadMyProjectsActionPreview(match.params.projectId));
   }, [dispatch, match.params.projectId, organization?.currentOrganization?.id]);
 
   let playlists;
 
   if (currentProject) {
-    playlists = playlistState.playlists && playlistState.playlists.map((playlist, counter) => {
-      let activities;
-      if (playlist.activities && playlist.activities.length > 0) {
-        activities = playlist.activities.map((activity) => (
-          (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-activity') : permission?.Activity?.includes('activity:view'))
-          && (
-            <ActivityCard
-              activity={activity}
-              projectId={parseInt(match.params.projectId, 10)}
-              playlistId={playlist.id}
-              key={activity.id}
-              playlist={playlist}
-              teamPermission={teamPermission || {}}
-            />
-          )
-        ));
-      } else {
-        activities = (
-          <div className="col-md-12">
-            <div className="alert alert-info" role="alert">
-              No activity defined for this playlist.
+    playlists =
+      playlistState.playlists &&
+      playlistState.playlists.map((playlist, counter) => {
+        let activities;
+        if (playlist.activities && playlist.activities.length > 0) {
+          activities = playlist.activities.map(
+            (activity) =>
+              (Object.keys(teamPermission).length
+                ? teamPermission?.Team?.includes("team:view-activity")
+                : permission?.Activity?.includes("activity:view")) && (
+                <ActivityCard
+                  activity={activity}
+                  projectId={parseInt(match.params.projectId, 10)}
+                  playlistId={playlist.id}
+                  key={activity.id}
+                  playlist={playlist}
+                  teamPermission={teamPermission || {}}
+                />
+              )
+          );
+        } else {
+          activities = (
+            <div className="col-md-12">
+              <div className="alert alert-info" role="alert">
+                No activity defined for this playlist.
+              </div>
             </div>
-          </div>
-        );
-      }
-      console.log(editTitle);
-      return (
-        (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-playlist') : permission?.Playlist?.includes('playlist:view'))
-        && (
-          <div className="check-each" key={playlist.id}>
-            <button
-              type="button"
-              ref={(el) => {
-                accordion.current[counter] = el;
-              }}
-              className={counter === 0 ? 'active accordion' : ' accordion'}
-              onClick={() => {
-                if (!editTitle) {
-                  accordion.current[counter].classList.toggle('active');
-                  const tempCollapsed = [...collapsed];
-                  tempCollapsed[counter] = !tempCollapsed[counter];
-                  setCollapsed(tempCollapsed);
-                }
-              }}
-            >
-              <FontAwesomeIcon icon={collapsed[counter] ? 'minus' : 'plus'} className="mr-2" />
-              {(editTitle && playlist)
-                ? (
+          );
+        }
+        console.log(editTitle);
+        return (
+          (Object.keys(teamPermission).length
+            ? teamPermission?.Team?.includes("team:view-playlist")
+            : permission?.Playlist?.includes("playlist:view")) && (
+            <div className="check-each" key={playlist.id}>
+              <button
+                type="button"
+                ref={(el) => {
+                  accordion.current[counter] = el;
+                }}
+                className={counter === 0 ? "active accordion" : " accordion"}
+                onClick={() => {
+                  if (!editTitle) {
+                    accordion.current[counter].classList.toggle("active");
+                    const tempCollapsed = [...collapsed];
+                    tempCollapsed[counter] = !tempCollapsed[counter];
+                    setCollapsed(tempCollapsed);
+                  }
+                }}
+              >
+                <FontAwesomeIcon
+                  icon={collapsed[counter] ? "minus" : "plus"}
+                  className="mr-2"
+                />
+                {editTitle && playlist ? (
                   <>
                     <input
                       name="playlist-title"
@@ -137,26 +159,34 @@ function ProjectPreview(props) {
                       icon="edit"
                       className="mr-4"
                       onClick={() => {
-                        if (playlist.title !== editFieldRef.current.value && editFieldRef.current.value) {
-                          changePlaylistTitle(projectState?.projectSelect?.id, playlist.id, editFieldRef.current.value);
+                        if (
+                          playlist.title !== editFieldRef.current.value &&
+                          editFieldRef.current.value
+                        ) {
+                          changePlaylistTitle(
+                            projectState?.projectSelect?.id,
+                            playlist.id,
+                            editFieldRef.current.value
+                          );
                         }
                         setEditTitle(false);
                       }}
                     />
-
                   </>
-                ) : playlist.title}
-            </button>
+                ) : (
+                  playlist.title
+                )}
+              </button>
 
-            <div className="panel">
-              <ul>
-                <Slider {...settings}>{activities}</Slider>
-              </ul>
+              <div className="panel">
+                <ul>
+                  <Slider {...settings}>{activities}</Slider>
+                </ul>
+              </div>
             </div>
-          </div>
-        )
-      );
-    });
+          )
+        );
+      });
   } else {
     playlists = (
       <div className="col-md-12">
@@ -175,11 +205,19 @@ function ProjectPreview(props) {
             <div className="scene flex-wrap">
               <div className="project-details">
                 <div className="scene-img">
-                  <Link to={`/org/${organization.currentOrganization?.domain}/project/${currentProject.id}`}>
-                    {!!currentProject.thumb_url && currentProject.thumb_url.includes('pexels.com') ? (
+                  <Link
+                    to={`/org/${organization.currentOrganization?.domain}/project/${currentProject.id}`}
+                  >
+                    {!!currentProject.thumb_url &&
+                    currentProject.thumb_url.includes("pexels.com") ? (
                       <img src={currentProject.thumb_url} alt="thumbnail" />
                     ) : (
-                      <img src={global.config.resourceUrl + currentProject.thumb_url} alt="thumbnail" />
+                      <img
+                        src={
+                          global.config.resourceUrl + currentProject.thumb_url
+                        }
+                        alt="thumbnail"
+                      />
                     )}
                   </Link>
                 </div>
@@ -196,32 +234,43 @@ function ProjectPreview(props) {
                 <ul className="bar_list flex-div check">
                   <li>
                     <div className="team-name">
-                      {currentProject?.team?.name ? `Team Name: ${currentProject?.team?.name}` : null}
+                      {currentProject?.team?.name
+                        ? `Team Name: ${currentProject?.team?.name}`
+                        : null}
                     </div>
                     <div className="title_lg check">
                       <div className="configuration">
                         <div className="config-content">
-                          <Link to={`/org/${organization.currentOrganization?.domain}`} onClick={history.goBack} className="go-back-button-preview">
+                          <Link
+                            to={`/org/${organization.currentOrganization?.domain}`}
+                            onClick={history.goBack}
+                            className="go-back-button-preview"
+                          >
                             <FontAwesomeIcon icon="undo" className="mr-2" />
                             Close Preview Mode
                           </Link>
                         </div>
-                        {activeShared && (
-                          <div
-                            className="shared-link"
-                            onClick={() => {
-                              if (window.gapi && window.gapi.sharetoclassroom) {
-                                window.gapi.sharetoclassroom.go('croom');
-                              }
-                              const protocol = `${window.location.href.split('/')[0]}//`;
-                              const url = `${protocol}${window.location.host}/project/${match.params.projectId}/shared`;
-                              return SharePreviewPopup(url, currentProject.name);
-                            }}
-                          >
-                            <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
-                            Get Shared Link
-                          </div>
-                        )}
+                        {/* {activeShared && ( */}
+                        <div
+                          className="shared-link"
+                          onClick={() => {
+                            if (window.gapi && window.gapi.sharetoclassroom) {
+                              window.gapi.sharetoclassroom.go("croom");
+                            }
+                            const protocol = `${
+                              window.location.href.split("/")[0]
+                            }//`;
+                            const url = `${protocol}${window.location.host}/project/${match.params.projectId}/shared`;
+                            return SharePreviewPopup(url, currentProject.name);
+                          }}
+                        >
+                          <FontAwesomeIcon
+                            icon="external-link-alt"
+                            className="mr-2"
+                          />
+                          Get Shared Link
+                        </div>
+                        {/* )} */}
                       </div>
                     </div>
                   </li>
@@ -251,8 +300,8 @@ function ProjectPreview(props) {
               deletePlaylist={deletePlaylist}
               // hideDeletePopup={hideDeletePopup}
               deleteProject={deleteProject}
-            // deleteType="project"
-            // showDeletePopup={showDeletePopup}
+              // deleteType="project"
+              // showDeletePopup={showDeletePopup}
             />
           )}
         </>
@@ -268,7 +317,8 @@ ProjectPreview.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  changePlaylistTitle: (projectId, id, title) => dispatch(changePlaylistTitleAction(projectId, id, title)),
+  changePlaylistTitle: (projectId, id, title) =>
+    dispatch(changePlaylistTitleAction(projectId, id, title)),
 });
 
 export default withRouter(connect(null, mapDispatchToProps)(ProjectPreview));
