@@ -451,6 +451,10 @@ function PlaylistsPage(props) {
                               <Switch
                                 checked={checked}
                                 onChange={handleChange}
+                                offColor="#888"
+                                offHandleColor="#888"
+                                onColor="#ffca70"
+                                onHandleColor="#ffca70"
                               />
                               <span
                                 style={{

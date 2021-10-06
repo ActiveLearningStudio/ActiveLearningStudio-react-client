@@ -130,7 +130,7 @@ img {
   align-items: center;
 
   .configuration {
-    .config-content{
+    .config-content {
       display: flex;
       align-items: center;
     }
@@ -206,6 +206,9 @@ img {
 .flex-wrap {
   display: flex;
   flex-wrap: wrap;
+  @media screen and (max-width: 1060px) {
+    flex-wrap: nowrap;
+  }
 }
 
 .title_lg {
@@ -491,7 +494,7 @@ img {
 }
 
 .title_lg {
-  color: #4472c4;
+  color: #084892;
   font-size: 24px;
   font-family: $rubik, sans-serif;
   font-weight: 600;
@@ -557,9 +560,9 @@ img {
 
 @media (max-width: 1080px) {
   .scene-img,
-  .sce_cont {
-    width: 100%;
-  }
+  // .sce_cont {
+  //   width: 100%;
+  // }
 
   .scene {
     background: #fff;

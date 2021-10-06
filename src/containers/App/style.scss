@@ -70,7 +70,8 @@
   user-select: none;
 
   .list-body {
-    min-height: 400px;
+    max-height: 320px;
+    min-height: 320px;
   }
 }
 
@@ -1440,7 +1441,7 @@ header.head_mobile {
   margin-left: 158px;
   margin-top: 32px;
   .container {
-    max-width: 1551px;
+    max-width: 100%;
     margin: 0 auto;
     background: #ffffff;
     padding: 32px;
@@ -2220,7 +2221,7 @@ a:hover {
 
 .back-header .go-back-button-preview,
 .sce_cont .go-back-button-preview {
-  background-color: #5952c6;
+  background-color: #084892;
   display: block;
   color: #fff;
   width: fit-content;
@@ -2230,6 +2231,9 @@ a:hover {
   font-size: 14px;
   padding: 3px 20px;
   margin-bottom: 10px;
+  @media screen and (max-width: 1060px) {
+    padding: 3px 14px;
+  }
 
   .fa {
     padding-right: 5px;
