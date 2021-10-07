@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Badge } from "react-bootstrap";
 
 import { useDispatch, useSelector } from "react-redux";
-
 import "./style.scss";
 import "./projectcardstyle.scss";
 import Swal from "sweetalert2";
@@ -16,6 +15,8 @@ import ProjectCardDropdown from "./ProjectCardDropdown";
 import ProjectPreviewModal from "../ProjectPreviewModal";
 import ActivityCardDropDown from "utils/ActivityCardDropDown/activitycarddropdown";
 import { faPlus, faShareSquare } from "@fortawesome/free-solid-svg-icons";
+import { toast } from 'react-toastify';
+import loader from "assets/images/loader.svg";
 
 const ProjectCard = (props) => {
   const {
@@ -26,6 +27,7 @@ const ProjectCard = (props) => {
     setProjectId,
     activeFilter,
   } = props;
+  const ImgLoader = () => <img src={loader} />;
   const organization = useSelector((state) => state.organization);
   const dispatch = useDispatch();
   const [showing, setShowing] = useState(true);
@@ -145,11 +147,18 @@ const ProjectCard = (props) => {
                       project.id
                     }/shared`;
                     if (!project.shared) {
-                      Swal.showLoading();
+                      toast.info("Sharing project...", {
+                        className: "project-loading",
+                        closeOnClick: false,
+                        closeButton: false,
+                        position: toast.POSITION.BOTTOM_RIGHT,
+                        autoClose: 10000,
+                        icon: ImgLoader,
+                      });
                       await dispatch(
                         toggleProjectShareAction(project.id, project.name)
                       );
-                      Swal.close();
+                      toast.dismiss();
                       SharePreviewPopup(url, project.name);
                     } else {
                       SharePreviewPopup(url, project.name);

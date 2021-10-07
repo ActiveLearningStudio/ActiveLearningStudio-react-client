@@ -95,8 +95,14 @@ export const ProjectsPage = (props) => {
   useEffect(() => {
     var sw = window.innerWidth;
     if (sw < 1200) {
-      setSortNumber(2);
+      setSortNumber(3);
+      setCustomCardWidth("customcard30");
+    } else if (sw < 1600) {
+      setSortNumber(4);
       setCustomCardWidth("customcard50");
+    } else if (sw > 1600) {
+      setSortNumber(6);
+      setCustomCardWidth("customcard60");
     }
   }, [window.innerWidth]);
 
@@ -406,48 +412,6 @@ export const ProjectsPage = (props) => {
                 <Tab eventKey="My Projects" title="My Projects">
                   <div className="row">
                     <div className="col-md-12">
-                      <div className="col-md-12">
-                        {/* <div className="program-page-title">
-                          <h1>My Projects</h1>
-                          <div className="project-page-settings">
-                            <div className="sort-project-btns">
-                              <div
-                                className={activeFilter === 'list-grid' ? 'sort-btn active' : 'sort-btn'}
-                                onClick={() => {
-                                  // const allchunk = [];
-                                  // let counterSimpl = 0;
-                                  setActiveFilter('list-grid');
-                                  setSortNumber(-1);
-                                  divideProjects(allProjects);
-                                }}
-                              >
-                                <FontAwesomeIcon icon="bars" />
-                              </div>
-                              <div
-                                className={activeFilter === 'small-grid' ? 'sort-btn active' : 'sort-btn'}
-                                onClick={() => {
-                                  setActiveFilter('small-grid');
-                                  setSortNumber(5);
-                                  divideProjects(allProjects);
-                                }}
-                              >
-                                <FontAwesomeIcon icon="grip-horizontal" />
-                              </div>
-                              <div
-                                className={activeFilter === 'normal-grid' ? 'sort-btn active' : 'sort-btn'}
-                                onClick={() => {
-                                  setActiveFilter('normal-grid');
-                                  setSortNumber(4);
-                                  divideProjects(allProjects);
-                                }}
-                              >
-                                <FontAwesomeIcon icon="th-large" />
-                              </div>
-                            </div>
-                          </div>
-                        </div> */}
-                      </div>
-
                       {!!projectDivider && projectDivider.length > 0 && (
                         <div className="project-list-all">
                           <DragDropContext onDragEnd={onDragEnd}>

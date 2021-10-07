@@ -424,7 +424,7 @@ function PlaylistsPage(props) {
                     <div className="flex-se">
                       <div>
                         <Headings
-                          text="Nevada Department of Education"
+                            text={`${organization?.currentOrganization?.name}`}
                           headingType="body2"
                           color="#084892"
                         />
