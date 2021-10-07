@@ -398,7 +398,7 @@ export const ProjectsPage = (props) => {
                 <Tab eventKey="My Projects" title="My Projects">
                   <div className="row">
                     <div className="col-md-12">
-                      {!!projectDivider && projectDivider.length > 0 && (
+                      {!!projectDivider && projectDivider.length > 0 ? (
                         <div className="project-list-all">
                           <DragDropContext onDragEnd={onDragEnd}>
                             {projectDivider.map((rowData) => (
@@ -474,7 +474,7 @@ export const ProjectsPage = (props) => {
                             ))}
                           </DragDropContext>
                         </div>
-                      )}
+                      ) : (<Alert variant="warning">No Project found.</Alert>)}
                     </div>
                   </div>
                 </Tab>
