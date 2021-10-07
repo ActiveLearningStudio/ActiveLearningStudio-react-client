@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState, useEffect, memo } from "react";
+import React, { useState, useEffect, memo, useMemo } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { connect, useSelector } from "react-redux";
@@ -108,7 +108,7 @@ export const ProjectsPage = (props) => {
     }
   }, [window.innerWidth]);
 
-  useEffect(() => {
+  useMemo(() => {
     if (!searchTeamQuery) {
       if (organization?.activeOrganization) {
         getTeamProjects("", activePage).then((data) => {
@@ -707,7 +707,7 @@ export const ProjectsPage = (props) => {
       </div>
       {createProject && (
         <NewProjectPage
-          editMode
+          editMode={editMode}
           {...props}
           handleCloseProjectModal={setCreateProject}
         />

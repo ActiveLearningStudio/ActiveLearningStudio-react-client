@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dropdown } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { toast } from 'react-toastify';
-import { loadProjectAction } from "store/actions/project";
+import { loadProjectAction, setSelectedProject } from "store/actions/project";
 import { getProjectId, googleShare } from "store/actions/gapi";
 import { cloneProject } from "store/actions/search";
 import {
@@ -75,7 +75,7 @@ const ProjectCardDropdown = (props) => {
               onClick={() => {
                 setCreateProject(true);
                 seteditMode(true);
-                dispatch(loadProjectAction(project.id));
+                dispatch(setSelectedProject(project));
               }}
             // to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/edit`}
             >
