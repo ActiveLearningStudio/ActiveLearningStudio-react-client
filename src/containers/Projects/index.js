@@ -61,6 +61,8 @@ export const ProjectsPage = (props) => {
   const [tabToggle, setTabToggle] = useState([]);
   const [type, setType] = useState([]);
   const [searchTeamQuery, SetSearchTeamQuery] = useState("");
+  const [createProject, setCreateProject] = useState(false);
+  const [editMode, seteditMode] = useState(false);
   const {
     ui,
     match,
@@ -309,11 +311,7 @@ export const ProjectsPage = (props) => {
     window.scrollTo(0, 0);
     document.body.classList.remove("mobile-responsive");
 
-    if (
-      !showCreateProjectPopup &&
-      !showEditProjectPopup &&
-      organization.activeOrganization
-    ) {
+    if (organization.activeOrganization) {
       toast.info("Loading Projects ...", {
         className: "project-loading",
         closeOnClick: false,
@@ -324,22 +322,7 @@ export const ProjectsPage = (props) => {
       });
       loadMyProjects();
     }
-
-    if (showEditProjectPopup) {
-      loadProject(match.params.projectId);
-    } else if (showCreateProjectPopup) {
-      showCreateProjectModal();
-    }
-  }, [
-    match.params.projectId,
-    loadLms,
-    organization.activeOrganization,
-    loadMyProjects,
-    loadProject,
-    showCreateProjectPopup,
-    showCreateProjectModal,
-    showEditProjectPopup,
-  ]);
+  }, [organization.activeOrganization]);
 
   useEffect(() => {
     if (allProjects) {
@@ -391,7 +374,10 @@ export const ProjectsPage = (props) => {
       <div className={`content-wrapper ${activeFilter}`}>
         <div className={`inner-content  ${customCardWidth}`}>
           <div className="content">
-            <Headline />
+            <Headline
+              setCreateProject={setCreateProject}
+              seteditMode={seteditMode}
+            />
             {permission?.Project?.includes("project:view") ? (
               <Tabs
                 onSelect={(eventKey) => {
@@ -470,6 +456,10 @@ export const ProjectsPage = (props) => {
                                                   handleClose={handleClose}
                                                   setProjectId={setProjectId}
                                                   activeFilter={activeFilter}
+                                                  setCreateProject={
+                                                    setCreateProject
+                                                  }
+                                                  seteditMode={seteditMode}
                                                 />
                                               </div>
                                             )}
@@ -715,10 +705,11 @@ export const ProjectsPage = (props) => {
           </div>
         </div>
       </div>
-      {(showCreateProjectPopup || showEditProjectPopup) && (
+      {createProject && (
         <NewProjectPage
+          editMode
           {...props}
-          handleCloseProjectModal={handleCloseProjectModal}
+          handleCloseProjectModal={setCreateProject}
         />
       )}
 

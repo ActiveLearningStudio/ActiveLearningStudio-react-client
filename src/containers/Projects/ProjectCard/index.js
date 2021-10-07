@@ -26,6 +26,8 @@ const ProjectCard = (props) => {
     handleShow,
     setProjectId,
     activeFilter,
+    setCreateProject,
+    seteditMode,
   } = props;
   const ImgLoader = () => <img src={loader} />;
   const organization = useSelector((state) => state.organization);
@@ -57,6 +59,8 @@ const ProjectCard = (props) => {
                       setProjectId={setProjectId}
                       // text="More"
                       iconColor="#ffffff"
+                      setCreateProject={setCreateProject}
+                      seteditMode={seteditMode}
                     />
                   </div>
                   <Link

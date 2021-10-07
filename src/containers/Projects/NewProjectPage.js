@@ -39,7 +39,7 @@ function NewProjectPage(props) {
                       type="button"
                       className="close-btn"
                       data-dismiss="modal"
-                      onClick={handleCloseProjectModal}
+                      onClick={() => handleCloseProjectModal(false)}
                     >
                       <FontAwesomeIcon
                         icon="times"
@@ -58,7 +58,11 @@ function NewProjectPage(props) {
             <div className="modal-body">
               <div className="row">
                 <div className="col-md-12">
-                  <CreateProjectPopup {...props} thumbUrl={project.thumbUrl} />
+                  <CreateProjectPopup
+                    editMode
+                    {...props}
+                    thumbUrl={project.thumbUrl}
+                  />
                 </div>
               </div>
             </div>

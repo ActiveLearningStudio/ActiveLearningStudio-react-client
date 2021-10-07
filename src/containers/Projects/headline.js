@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+// import { ProjectPage } from "../../containers/Projects/index.js";
 // import foldericon from "assets/images/sidebar/folder-icon.png";
 import foldericon from "assets/images/svg/projectFolder.svg";
 import { useSelector } from "react-redux";
@@ -10,7 +10,7 @@ import { setCurrentVisibilityType } from "store/actions/project";
 import Headings from "curriki-design-system/dist/utils/Headings/headings";
 // import MyProjectsCreate from "./MyProjects";
 
-export default function Headline() {
+export default function Headline({ setCreateProject, seteditMode }) {
   const organization = useSelector((state) => state.organization);
   const { currentOrganization, permission } = organization;
 
@@ -41,9 +41,11 @@ export default function Headline() {
           {/* Update The Code */}
           {permission?.Project?.includes("project:create") && (
             <Link
-              to={`/org/${currentOrganization?.domain}/project/create`}
+              // to={`/org/${currentOrganization?.domain}/project/create`}
               onClick={() => {
                 setCurrentVisibilityType(null);
+                seteditMode(false);
+                setCreateProject(true);
               }}
             >
               <div className="btn-top-page">
