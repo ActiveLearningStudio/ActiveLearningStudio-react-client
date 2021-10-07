@@ -3,6 +3,7 @@ import React, {
   useRef,
   useCallback,
   useState,
+  useMemo,
 } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useSelector, useDispatch } from 'react-redux';
@@ -137,7 +138,7 @@ let CreateProjectPopup = (props) => {
       document.removeEventListener('keydown', escFunction, false);
     };
   }, [escFunction]);
-  useEffect(() => {
+  useMemo(() => {
     (async () => {
       const { data } = await getProjectVisibilityTypes();
       setVisibilityTypeArray(data.data);

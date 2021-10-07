@@ -58,16 +58,16 @@ export const createProjectAction = (data) => async (dispatch) => {
     });
     toast.dismiss();
     if (project) {
-    toast.success('New Project Created', {
-      position: 'top-center',
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-    return project;
-  }
+      toast.success('New Project Created', {
+        position: 'top-center',
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return project;
+    }
     dispatch(allSidebarProjects());
   } catch (e) {
     dispatch({ type: actionTypes.CREATE_PROJECT_FAIL });
@@ -77,6 +77,19 @@ export const createProjectAction = (data) => async (dispatch) => {
       text: e.message || 'Something went wrong !',
     });
   }
+};
+
+export const setSelectedProject = (project) => (dispatch) => {
+  dispatch({
+    type: actionTypes.SET_SELECTED_PROJECT,
+    payload: project,
+  });
+};
+
+export const clearSelectedProject = () => (dispatch) => {
+  dispatch({
+    type: actionTypes.CLEAR_SELECTED_PROJECT,
+  });
 };
 
 export const loadProjectAction = (projectId) => async (dispatch) => {
@@ -573,8 +586,8 @@ export const getProjectCourseFromLMS = (
           for (let x = 0; x < playlist.length; x += 1) {
             // eslint-disable-next-line no-await-in-loop
             const counter = !!globalStoreCloneUpdated.project.lmsCourse
-            && globalStoreCloneUpdated.project.lmsCourse.playlistsCopyCounter
-              .length > 0
+              && globalStoreCloneUpdated.project.lmsCourse.playlistsCopyCounter
+                .length > 0
               ? globalStoreCloneUpdated.project.lmsCourse
                 .playlistsCopyCounter[x].counter
               : 0;

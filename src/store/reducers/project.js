@@ -41,6 +41,21 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         isLoading: true,
       };
+    case actionTypes.SET_SELECTED_PROJECT:
+      return {
+        ...state,
+        isLoading: false,
+        selectedProject: action.payload,
+        thumbUrl: action.payload.thumb_url,
+        currentVisibilityType: action.payload.organization_visibility_type_id,
+      };
+    case actionTypes.CLEAR_SELECTED_PROJECT:
+      return {
+        ...state,
+        selectedProject: {},
+        thumbUrl: null,
+        currentVisibilityType: null,
+      };
     case actionTypes.LOAD_PROJECT_SUCCESS:
       return {
         ...state,

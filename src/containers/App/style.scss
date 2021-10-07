@@ -1448,9 +1448,12 @@ header.head_mobile {
     .project-details {
       display: flex;
       .project-title-desc {
-        // width: 400px;
+        width: 700px;
         margin-left: 32px;
         margin-right: 24px;
+        @media (max-width: 1024px) {
+          width: 400px;
+        }
         .project-title {
           margin-top: 16px;
           h2 {
@@ -2221,7 +2224,7 @@ a:hover {
 
 .back-header .go-back-button-preview,
 .sce_cont .go-back-button-preview {
-  // background-color: #084892;
+  background-color: $fun-blue-1;
   display: block;
   color: rgb(127, 127, 127);
   width: fit-content;
