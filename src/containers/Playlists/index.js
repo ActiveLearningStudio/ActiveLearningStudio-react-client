@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Swal from "sweetalert2";
-import { Alert } from "react-bootstrap";
+import { Alert, Modal } from "react-bootstrap";
 import Switch from "react-switch";
 import foldericon from "assets/images/svg/projectFolder.svg";
 import Headings from "curriki-design-system/dist/utils/Headings/headings";
@@ -44,6 +44,7 @@ import {
   getIndexed,
   getElastic,
 } from "store/actions/project";
+import { closeSafariMontageToolAction } from "store/actions/LMS/genericLMS";
 import Footer from "components/Footer";
 import DeletePopup from "components/DeletePopup";
 import AddResource from "components/ResourceCard/AddResource";
@@ -91,6 +92,8 @@ function PlaylistsPage(props) {
     getIndexedData,
     getElasticData,
     getTeamPermissions,
+    closeSafariMontageTool,
+    safariMontagePublishTool,
   } = props;
   useEffect(() => {
     if (
@@ -635,6 +638,25 @@ function PlaylistsPage(props) {
         />
       )}
       <MyActivity playlistPreview />
+
+      <Modal
+        dialogClassName="safari-modal"
+        show={safariMontagePublishTool}
+        onHide={() => closeSafariMontageTool()}
+        aria-labelledby="example-modal-sizes-title-lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="example-modal-sizes-title-lg">
+            Safari Montage
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <iframe
+            title="Safari Montage"
+            src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`}
+          />
+        </Modal.Body>
+      </Modal>
       <Footer />
     </>
   );
@@ -667,6 +689,8 @@ PlaylistsPage.propTypes = {
   getIndexedData: PropTypes.func.isRequired,
   getElasticData: PropTypes.func.isRequired,
   getTeamPermissions: PropTypes.func.isRequired,
+  closeSafariMontageTool: PropTypes.func.isRequired,
+  safariMontagePublishTool: PropTypes.string.isRequired,
 };
 
 PlaylistsPage.defaultProps = {
@@ -726,6 +750,7 @@ const mapDispatchToProps = (dispatch) => ({
   getElasticData: (id) => dispatch(getElastic(id)),
   getTeamPermissions: (orgId, teamId) =>
     dispatch(getTeamPermission(orgId, teamId)),
+  closeSafariMontageTool: () => dispatch(closeSafariMontageToolAction()),
 });
 
 const mapStateToProps = (state) => ({
@@ -733,6 +758,7 @@ const mapStateToProps = (state) => ({
   resource: state.resource,
   project: state.project,
   ui: state.ui,
+  safariMontagePublishTool: state.genericLMS.safariMontagePublishTool,
 });
 
 export default withRouter(

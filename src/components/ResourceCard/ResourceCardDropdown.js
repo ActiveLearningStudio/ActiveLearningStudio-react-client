@@ -6,7 +6,7 @@ import { withRouter, Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { confirmAlert } from "react-confirm-alert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Dropdown, Modal } from "react-bootstrap";
+import { Dropdown } from "react-bootstrap";
 import * as actionTypes from "store/actionTypes";
 import resourceService from "services/resource.service";
 import config from "config";
@@ -15,7 +15,6 @@ import { cloneActivity } from "store/actions/search";
 import { getUserLmsSettingsAction } from "store/actions/account";
 import {
   loadSafariMontagePublishToolAction,
-  closeSafariMontageToolAction,
 } from "store/actions/LMS/genericLMS";
 import { toast } from "react-toastify";
 import "./style.scss";
@@ -29,19 +28,13 @@ const ResourceCardDropdown = (props) => {
     playlist,
     deleteResource,
     loadSafariMontagePublishTool,
-    closeSafariMontageTool,
-    safariMontagePublishTool,
     match,
     teamPermission,
     previewPage,
   } = props;
   const organization = useSelector((state) => state.organization);
   const { permission } = organization;
-  const [safariToolHtml, setSafariToolHtml] = useState(null);
   const dispatch = useDispatch();
-  useEffect(() => {
-    setSafariToolHtml(encodeURI(safariMontagePublishTool));
-  }, [safariMontagePublishTool]);
 
   useEffect(() => {
     if (lmsSettingsLoaded) return;
@@ -158,24 +151,6 @@ const ResourceCardDropdown = (props) => {
                       >
                         {data.site_name}
                       </a>
-                      <Modal
-                        dialogClassName="safari-modal"
-                        show={safariMontagePublishTool}
-                        onHide={() => closeSafariMontageTool()}
-                        aria-labelledby="example-modal-sizes-title-lg"
-                      >
-                        <Modal.Header closeButton>
-                          <Modal.Title id="example-modal-sizes-title-lg">
-                            Safari Montage
-                          </Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                          <iframe
-                            title="Safari Montage"
-                            src={`data:text/html;charset=utf-8,${safariToolHtml}`}
-                          />
-                        </Modal.Body>
-                      </Modal>
                     </li>
                   );
                 })}
@@ -309,8 +284,6 @@ ResourceCardDropdown.propTypes = {
   deleteResource: PropTypes.func.isRequired,
   getLmsSettings: PropTypes.func.isRequired,
   loadSafariMontagePublishTool: PropTypes.func.isRequired,
-  closeSafariMontageTool: PropTypes.func.isRequired,
-  safariMontagePublishTool: PropTypes.string.isRequired,
   teamPermission: PropTypes.object.isRequired,
   previewPage: PropTypes.string.isRequired,
 };
@@ -318,7 +291,6 @@ ResourceCardDropdown.propTypes = {
 const mapStateToProps = (state) => ({
   lmsSettings: state.account.userLmsSettings,
   lmsSettingsLoaded: state.account.userLmsSettingsLoaded,
-  safariMontagePublishTool: state.genericLMS.safariMontagePublishTool,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -339,7 +311,6 @@ const mapDispatchToProps = (dispatch) => ({
         lmsSettingId
       )
     ),
-  closeSafariMontageTool: () => dispatch(closeSafariMontageToolAction()),
 });
 
 export default withRouter(
