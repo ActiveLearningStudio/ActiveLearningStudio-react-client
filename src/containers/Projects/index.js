@@ -58,8 +58,8 @@ export const ProjectsPage = (props) => {
   const [showSampleSort, setShowSampleSort] = useState(true);
   const [activePage, setActivePage] = useState(1);
   const [meta, setMeta] = useState(1);
-  const [tabToggle, setTabToggle] = useState([]);
-  const [type, setType] = useState([]);
+  const [tabToggle, setTabToggle] = useState("");
+  const [type, setType] = useState("");
   const [searchTeamQuery, SetSearchTeamQuery] = useState("");
   const {
     ui,
@@ -731,7 +731,7 @@ export const ProjectsPage = (props) => {
                         activePage={activePage}
                         pageRangeDisplayed={5}
                         itemsCountPerPage={meta?.per_page}
-                        totalItemsCount={meta?.total}
+                        totalItemsCount={parseInt(meta?.total)}
                         onChange={(e) => {
                           // setCurrentTab("index");
                           window.scrollTo(0, 0);
