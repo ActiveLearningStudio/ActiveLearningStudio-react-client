@@ -45,8 +45,8 @@ export default function MultitenancyDropdown() {
       <Dropdown.Menu>
         <h2 className="title">Organizations</h2>
         {stateHeader.allOrganizations.length > 0 &&
-          stateHeader.allOrganizations.map((org) => (
-            <div key={org} className="all-tg-lister">
+          stateHeader.allOrganizations.map((org, key) => (
+            <div key={key} className="all-tg-lister">
               <Dropdown.Item
                 onClick={async () => {
                   setSelectOrg(org.name);

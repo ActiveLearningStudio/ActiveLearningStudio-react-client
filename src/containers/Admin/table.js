@@ -94,10 +94,9 @@ function Table(props) {
 
   //update table after search and first time
   useEffect(() => {
-    if (type === "LMS" || type === 'Project' || type === 'DefaultSso') {
-
-      if(data?.data) {
-        setLocalStateData(data?.data)
+    if (type === "LMS" || type === "Project" || type === "DefaultSso") {
+      if (data?.data) {
+        setLocalStateData(data?.data);
       } else {
         setLocalStateData(data);
       }
@@ -189,22 +188,20 @@ function Table(props) {
     <div className="table-data">
       <div className="responsive-table">
         <table>
-          <thead>
-            {tableHead?.map((head) =>
-              head === "Users" &&
-              permission?.Organization?.includes("organization:view-user") ? (
-                <th> {head} </th>
-              ) : head !== "Users" ? (
-                <th>{head}</th>
-              ) : null
-            )}
-          </thead>
+          {tableHead?.map((head) =>
+            head === "Users" &&
+            permission?.Organization?.includes("organization:view-user") ? (
+              <th key={head}> {head} </th>
+            ) : head !== "Users" ? (
+              <th>{head}</th>
+            ) : null
+          )}
           <tbody>
             {type === "Stats" &&
               subTypeState === "Report" &&
               (data?.data?.length > 0 ? (
-                data?.data?.map((row) => (
-                  <tr>
+                data?.data?.map((row, key) => (
+                  <tr key={key}>
                     <td>{row.first_name}</td>
                     <td>{row.last_name}</td>
                     <td>{row.email}</td>
@@ -240,6 +237,7 @@ function Table(props) {
                       <td>
                         <div className="links">
                           <Link
+                            to=""
                             onClick={() => {
                               dispatch(retrySpecificFailedJob(job.id));
                             }}
@@ -247,6 +245,7 @@ function Table(props) {
                             Retry
                           </Link>
                           <Link
+                            to=""
                             onClick={() => {
                               dispatch(forgetSpecificFailedJob(job.id));
                             }}
@@ -328,6 +327,7 @@ function Table(props) {
                         <div className="links">
                           {true && (
                             <Link
+                              to=""
                               onClick={() => {
                                 dispatch({
                                   type: "SET_ACTIVE_EDIT",
@@ -389,6 +389,7 @@ function Table(props) {
                           )}
                           {true && (
                             <Link
+                              to=""
                               onClick={() => {
                                 dispatch({
                                   type: "SET_ACTIVE_EDIT",
@@ -447,6 +448,7 @@ function Table(props) {
                           "organization:update-user"
                         ) && (
                           <Link
+                            to=""
                             onClick={() => {
                               dispatch(setCurrentUser(user));
                               dispatch(setActiveAdminForm("edit_user"));
@@ -459,7 +461,7 @@ function Table(props) {
                           "organization:remove-user"
                         ) &&
                           auth?.user?.id !== user.id && (
-                            <Link onClick={() => handleRemoveUser(user)}>
+                            <Link to="" onClick={() => handleRemoveUser(user)}>
                               &nbsp;&nbsp;Remove&nbsp;&nbsp;
                             </Link>
                           )}
@@ -483,7 +485,7 @@ function Table(props) {
                 </tr>
               ) : (
                 <tr>
-                  <td colspan="8">
+                  <td colSpan="8">
                     <Alert variant="primary">Loading...</Alert>
                   </td>
                 </tr>
@@ -586,6 +588,7 @@ function Table(props) {
                       <td>
                         {row.suborganization_count > 0 ? (
                           <Link
+                            to=""
                             className="view-all"
                             onClick={async () => {
                               if (row.suborganization_count > 0) {
@@ -816,7 +819,7 @@ function Table(props) {
                 )
               ) : (
                 <tr>
-                  <td colspan="9">
+                  <td colSpan="9">
                     <Alert variant="primary">Loading...</Alert>
                   </td>
                 </tr>
@@ -1421,11 +1424,11 @@ function Table(props) {
                     <Alert variant="primary">Loading...</Alert>
                   </td>
                 </tr>
-              )
-            )}
+              ))}
 
-              {type === "DefaultSso" && (
-                localStateData ? localStateData?.length > 0 ?
+            {type === "DefaultSso" &&
+              (localStateData ? (
+                localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
                     <tr>
                       <td>{row.lms_url}</td>
@@ -1435,28 +1438,32 @@ function Table(props) {
                       <td>{row?.description}</td>
                       <td>
                         <div className="links">
-                        {permission?.Organization.includes(
-                          "organization:update-default-sso")
-                         && (
+                          {permission?.Organization.includes(
+                            "organization:update-default-sso"
+                          ) && (
                             <Link
+                              to=""
                               onClick={() => {
                                 dispatch({
                                   type: "SET_ACTIVE_EDIT",
                                   payload: row,
                                 });
-                                dispatch(setActiveAdminForm("edit_default_sso"));
+                                dispatch(
+                                  setActiveAdminForm("edit_default_sso")
+                                );
                               }}
                             >
                               &nbsp;&nbsp;Edit&nbsp;&nbsp;
                             </Link>
                           )}
                           {permission?.Organization.includes(
-                          "organization:delete-default-sso")
-                         && (
+                            "organization:delete-default-sso"
+                          ) && (
                             <Link
                               onClick={() => {
                                 Swal.fire({
-                                  title: "Are you sure you want to delete this SSO Integration?",
+                                  title:
+                                    "Are you sure you want to delete this SSO Integration?",
                                   text: "This action is Irreversible",
                                   icon: "warning",
                                   showCancelButton: true,
@@ -1466,51 +1473,59 @@ function Table(props) {
                                 }).then((result) => {
                                   if (result.isConfirmed) {
                                     Swal.fire({
-                                      title: 'Default SSO Integration',
-                                      icon: 'info',
-                                      text: 'Deleting Default SSO Integration...',
+                                      title: "Default SSO Integration",
+                                      icon: "info",
+                                      text:
+                                        "Deleting Default SSO Integration...",
                                       allowOutsideClick: false,
                                       onBeforeOpen: () => {
                                         Swal.showLoading();
                                       },
                                       button: false,
                                     });
-                                    const response = adminService.deleteDefaultSso(activeOrganization?.id, row?.id);
+                                    const response = adminService.deleteDefaultSso(
+                                      activeOrganization?.id,
+                                      row?.id
+                                    );
                                     response
                                       .then((res) => {
                                         Swal.fire({
                                           icon: "success",
                                           text: res?.message,
-
                                         });
-                                        const filterLMS = localStateData.filter(each => each.id != row.id);
-                                        setLocalStateData(filterLMS)
-
-                                      }).catch(err => console.log(err))
+                                        const filterLMS = localStateData.filter(
+                                          (each) => each.id != row.id
+                                        );
+                                        setLocalStateData(filterLMS);
+                                      })
+                                      .catch((err) => console.log(err));
                                   }
                                 });
                               }}
                             >
                               &nbsp;&nbsp;Delete&nbsp;&nbsp;
                             </Link>
-                          )} 
+                          )}
                         </div>
                       </td>
                     </tr>
-                  )) : (
-                    <tr>
-                      <td colspan="11">
-                        <Alert variant="warning">No Default SSO integration found.</Alert>
-                      </td>
-                    </tr>
-                  ) : (
-                    <tr>
-                      <td colspan="11">
-                        <Alert variant="primary">Loading...</Alert>
-                      </td>
-                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colspan="11">
+                      <Alert variant="warning">
+                        No Default SSO integration found.
+                      </Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colspan="11">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
               ))}
-
           </tbody>
         </table>
       </div>
@@ -1520,7 +1535,7 @@ function Table(props) {
             Showing {data?.meta?.from} to {data?.meta?.to} of{" "}
             {data?.meta?.total} results
           </div>
-          <div class="main-pagination">
+          <div className="main-pagination">
             {type === "Stats" && subTypeState === "Report" && (
               <Pagination
                 activePage={activePage}
@@ -1653,7 +1668,7 @@ function Table(props) {
                 }}
               />
             )}
-            {type === 'DefaultSso' && (
+            {type === "DefaultSso" && (
               <Pagination
                 activePage={activePage}
                 pageRangeDisplayed={5}
@@ -1661,7 +1676,7 @@ function Table(props) {
                 totalItemsCount={data?.meta?.total}
                 onChange={(e) => {
                   // setCurrentTab("index");
-                  window.scrollTo(0, 0)
+                  window.scrollTo(0, 0);
                   setActivePage(e);
                 }}
               />
@@ -1674,8 +1689,8 @@ function Table(props) {
 }
 
 Table.propTypes = {
-  headers: PropTypes.array.isRequired,
-  data: PropTypes.object.isRequired,
+  headers: PropTypes.array,
+  data: PropTypes.array,
 };
 
 export default withRouter(Table);

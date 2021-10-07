@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dropdown } from "react-bootstrap";
 import Swal from "sweetalert2";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import { getProjectId, googleShare } from "store/actions/gapi";
 import { cloneProject } from "store/actions/search";
 import {
@@ -27,7 +27,7 @@ const ProjectCardDropdown = (props) => {
     showDeletePopup,
     teamPermission,
     previewMode,
-    text,
+    // text,
     iconColor,
   } = props;
   const ImgLoader = () => <img src={loader} />;
@@ -51,7 +51,7 @@ const ProjectCardDropdown = (props) => {
             marginLeft: "5px",
           }}
         />
-        <span>{text}</span>
+        {/* <span>{text}</span> */}
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
@@ -153,7 +153,7 @@ const ProjectCardDropdown = (props) => {
                 allLms.shareVendors.map(
                   (data) =>
                     data.lms_name !== "safarimontage" && (
-                      <li>
+                      <li key={data}>
                         <a
                           onClick={async () => {
                             const allPlaylist = await dispatch(
@@ -201,13 +201,13 @@ ProjectCardDropdown.propTypes = {
   showDeletePopup: PropTypes.func.isRequired,
   handleShow: PropTypes.func.isRequired,
   setProjectId: PropTypes.func.isRequired,
-  teamPermission: PropTypes.object.isRequired,
-  previewMode: PropTypes.bool.isRequired,
-  text: propTypes.text,
+  teamPermission: PropTypes.object,
+  previewMode: PropTypes.bool,
+  // text: propTypes.string,
 };
 
-ProjectCardDropdown.defaultProps = {
-  text: propTypes.text,
-};
+// ProjectCardDropdown.defaultProps = {
+//   text: propTypes.string,
+// };
 
 export default ProjectCardDropdown;

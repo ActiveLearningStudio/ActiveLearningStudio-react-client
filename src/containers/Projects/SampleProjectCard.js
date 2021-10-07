@@ -184,9 +184,9 @@ const SampleProjectCard = (props) => {
 
                                     {allLms?.shareVendors &&
                                       allLms.shareVendors.map(
-                                        (data) =>
+                                        (data, key) =>
                                           data.lms_name !== "safarimontage" && (
-                                            <li>
+                                            <li key={key}>
                                               <a
                                                 onClick={async () => {
                                                   const allPlaylist = await dispatch(
@@ -246,7 +246,7 @@ const SampleProjectCard = (props) => {
                     <div className="lessons-duration">
                       <div className="row">
                         <div className="col-md-12">
-                          <p>
+                          <div>
                             {type === "team" && (
                               <div>
                                 Team Name:
@@ -257,7 +257,7 @@ const SampleProjectCard = (props) => {
                             project.description.length > 130
                               ? `${project.description.substring(0, 130)} ...`
                               : project.description}
-                          </p>
+                          </div>
                         </div>
                       </div>
                     </div>

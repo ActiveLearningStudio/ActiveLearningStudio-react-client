@@ -384,7 +384,7 @@ export const ProjectsPage = (props) => {
   //     setTabToggle(false);
   //   }
   // };
-  console.log(teamProjects);
+  // console.log(teamProjects);
   const { pageLoading, showDeletePlaylistPopup } = ui;
   return (
     <>
@@ -694,7 +694,7 @@ export const ProjectsPage = (props) => {
                       <Pagination
                         activePage={activePage}
                         pageRangeDisplayed={5}
-                        itemsCountPerPage={meta?.per_page}
+                        itemsCountPerPage={parseInt(meta?.per_page)}
                         totalItemsCount={parseInt(meta?.total)}
                         onChange={(e) => {
                           // setCurrentTab("index");
