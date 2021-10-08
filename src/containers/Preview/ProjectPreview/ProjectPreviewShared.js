@@ -91,7 +91,7 @@ function ProjectPreviewShared(props) {
     }
   }, [match.params.projectId, sampleId]);
   useEffect(() => {
-      localStorage.setItem('lti_activity', true);
+    localStorage.setItem('lti_activity', true);
   }, []);
 
   let playlists;
@@ -232,6 +232,6 @@ const mapDispatchToProps = (dispatch) => ({
   loadMyProjectsPreviewShared: (projectId) => dispatch(loadMyProjectsPreviewSharedAction(projectId)),
 });
 
-export default withRouter(
+export default React.memo(withRouter(
   connect(null, mapDispatchToProps)(ProjectPreviewShared),
-);
+));

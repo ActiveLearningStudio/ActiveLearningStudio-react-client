@@ -80,11 +80,17 @@ const SampleProjectCard = (props) => {
                         <h3 className="program-title">
                           <Link
                             onClick={() => {
-                              setSelectId(project.id);
                               setShowSampleSort(false);
-                              setSelectSampleId(project.id);
-                              setSelectFavId(project.id);
-                              setSelectedTeamProjectId(project.id);
+                              if (type === 'fav') {
+                                setSelectFavId(project.id);
+                                setSelectId(project.id);
+                              } else if (type === 'sample') {
+                                setSelectSampleId(project.id);
+                                setSelectId(project.id);
+                              } else if (type === 'team') {
+                                setSelectedTeamProjectId(project.id);
+                                setSelectId(project.id);
+                              }
                             }}
                           >
                             {project.name}
@@ -156,27 +162,27 @@ const SampleProjectCard = (props) => {
 
                                   {allLms?.shareVendors && allLms.shareVendors.map((data) => (
                                     data.lms_name !== 'safarimontage' && (
-                                    <li>
-                                      <a
-                                        onClick={async () => {
-                                          const allPlaylist = await dispatch(lmsPlaylist(project.id));
-                                          if (allPlaylist) {
-                                            dispatch(
-                                              getProjectCourseFromLMS(
-                                                data.lms_name.toLowerCase(),
-                                                data.id,
-                                                project.id,
-                                                allPlaylist.playlists,
-                                                data.lms_url,
-                                              ),
-                                            );
-                                          }
-                                        }}
-                                      >
-                                        {data.site_name}
-                                      </a>
-                                    </li>
-                                  )))}
+                                      <li>
+                                        <a
+                                          onClick={async () => {
+                                            const allPlaylist = await dispatch(lmsPlaylist(project.id));
+                                            if (allPlaylist) {
+                                              dispatch(
+                                                getProjectCourseFromLMS(
+                                                  data.lms_name.toLowerCase(),
+                                                  data.id,
+                                                  project.id,
+                                                  allPlaylist.playlists,
+                                                  data.lms_url,
+                                                ),
+                                              );
+                                            }
+                                          }}
+                                        >
+                                          {data.site_name}
+                                        </a>
+                                      </li>
+                                    )))}
                                 </ul>
                               </li>
                             )}
