@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
@@ -49,11 +50,7 @@ function CreateTeam(props) {
     reduxform,
   } = props;
 
-  const {
-    showCreation,
-    showInviting,
-    showAssigning,
-  } = team;
+  const { showCreation, showInviting, showAssigning } = team;
 
   const [selectedMembers, setSelectedMembers] = useState([]);
 
@@ -62,8 +59,7 @@ function CreateTeam(props) {
   const organization = useSelector((state) => state.organization);
   const { activeOrganization } = organization;
   const { permission } = organization;
-  useEffect(() => {
-  }, [team.selectedTeam]);
+  useEffect(() => {}, [team.selectedTeam]);
   useEffect(() => {
     if (activeOrganization) {
       loadProjects();
@@ -88,51 +84,49 @@ function CreateTeam(props) {
   };
 
   const backButton = (
-    <button
-      type="button"
-      className="back-button"
-      disabled={team.isLoading}
-      onClick={submitBack}
-    >
+    <button type="button" className="back-button" disabled={team.isLoading} onClick={submitBack}>
       <FontAwesomeIcon icon="chevron-left" className="mr-2" />
       Back
     </button>
   );
 
-  const handleSubmit = useCallback((projectIds = 0) => {
-    if (editMode) {
-      updateTeam(selectedTeam?.id, {
-        organization_id: organization.activeOrganization?.id,
-        name: reduxform.CreateTeamForm.values.name,
-        description: reduxform.CreateTeamForm.values.description,
-        // users: selectedMembers || [],
-        // projects: projectIds,
-      }).then(() => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Successfully updated.',
-        });
-        history.push(`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam?.id}`);
-      })
-        .catch(() => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Update Team failed, kindly try again.',
+  const handleSubmit = useCallback(
+    (projectIds = 0) => {
+      if (editMode) {
+        updateTeam(selectedTeam?.id, {
+          organization_id: organization.activeOrganization?.id,
+          name: reduxform.CreateTeamForm.values.name,
+          description: reduxform.CreateTeamForm.values.description,
+          // users: selectedMembers || [],
+          // projects: projectIds,
+        })
+          .then(() => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Successfully updated.',
+            });
+            history.push(`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam?.id}`);
+          })
+          .catch(() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Update Team failed, kindly try again.',
+            });
           });
-        });
-    } else {
-      setInvitedMembers(selectedMembers.map(
-        // eslint-disable-next-line no-restricted-globals
-        ({ id, ...mem }) => ({ id: isNaN(id) ? 0 : id, ...mem }),
-      ));
-      createTeam({
-        organization_id: organization.activeOrganization?.id,
-        ...team.selectedTeam,
-        users: selectedMembers || [],
-        projects: projectIds,
-      })
-        .then(() => {
+      } else {
+        setInvitedMembers(
+          selectedMembers.map(
+            // eslint-disable-next-line no-restricted-globals
+            ({ id, ...mem }) => ({ id: isNaN(id) ? 0 : id, ...mem })
+          )
+        );
+        createTeam({
+          organization_id: organization.activeOrganization?.id,
+          ...team.selectedTeam,
+          users: selectedMembers || [],
+          projects: projectIds,
+        }).then(() => {
           Swal.fire({
             icon: 'success',
             title: 'Successfully created.',
@@ -146,9 +140,22 @@ function CreateTeam(props) {
         //     text: 'Create Team failed, kindly try again.',
         //   });
         // });
-    }
-  // eslint-disable-next-line max-len
-  }, [editMode, selectedTeam, team.selectedTeam, updateTeam, organization.activeOrganization?.id, organization.currentOrganization?.domain, history, setInvitedMembers, selectedMembers, createTeam]);
+      }
+      // eslint-disable-next-line max-len
+    },
+    [
+      editMode,
+      selectedTeam,
+      team.selectedTeam,
+      updateTeam,
+      organization.activeOrganization?.id,
+      organization.currentOrganization?.domain,
+      history,
+      setInvitedMembers,
+      selectedMembers,
+      createTeam,
+    ]
+  );
 
   return (
     <div className="create-team">
@@ -163,22 +170,20 @@ function CreateTeam(props) {
               <Creation editMode={editMode} selectedTeam={selectedTeam} updateTeam={updateSelectedTeam} nextStep={showInvite} handleSubmitInEditMode={handleSubmit} />
             )}
 
-            {
-              showInviting && !editMode && (
-                <InviteTeam
-                  team={team.selectedTeam}
-                  editMode={editMode}
-                  isSearching={isSearching}
-                  searchedUsers={searchedUsers}
-                  isInviting={team.isInviting}
-                  searchUsers={searchUsers}
-                  inviteUser={inviteUser}
-                  selectedMembers={selectedMembers}
-                  setSelectedMembers={setSelectedMembers}
-                  nextStep={showAssign}
-                />
-              )
-            }
+            {showInviting && !editMode && (
+              <InviteTeam
+                team={team.selectedTeam}
+                editMode={editMode}
+                isSearching={isSearching}
+                searchedUsers={searchedUsers}
+                isInviting={team.isInviting}
+                searchUsers={searchUsers}
+                inviteUser={inviteUser}
+                selectedMembers={selectedMembers}
+                setSelectedMembers={setSelectedMembers}
+                nextStep={showAssign}
+              />
+            )}
 
             {showAssigning && !editMode && (
               <AssignProject
@@ -210,7 +215,7 @@ CreateTeam.propTypes = {
   history: PropTypes.object.isRequired,
   team: PropTypes.object.isRequired,
   editMode: PropTypes.bool.isRequired,
-  selectedTeam: PropTypes.object.isRequired,
+  selectedTeam: PropTypes.object,
   isSearching: PropTypes.bool.isRequired,
   searchedUsers: PropTypes.array.isRequired,
   projects: PropTypes.array.isRequired,

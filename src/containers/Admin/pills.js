@@ -598,7 +598,7 @@ export default function Pills(props) {
       }}
     >
       {modules?.map((asset) => (
-        <Tab eventKey={asset} title={asset}>
+        <Tab key={asset} eventKey={asset} title={asset}>
           <div key={asset} className="module-content-inner">
             {type === "Stats" && subTypeState === "Report" && (
               <Starter
@@ -731,7 +731,7 @@ export default function Pills(props) {
                 importUser={false}
                 filter={false}
                 tableHead={columnData.organization}
-                data={[]}
+                data={{}}
                 type={type}
               />
             )}

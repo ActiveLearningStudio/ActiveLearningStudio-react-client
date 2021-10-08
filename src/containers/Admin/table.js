@@ -1,10 +1,10 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import Pagination from "react-js-pagination";
-import adminService from "services/admin.service";
-import projectService from "services/project.service";
-import * as actionTypes from "store/actionTypes";
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import Pagination from 'react-js-pagination';
+import adminService from 'services/admin.service';
+import projectService from 'services/project.service';
+import * as actionTypes from 'store/actionTypes';
 import {
   deleteUserFromOrganization,
   deleteOrganization,
@@ -13,29 +13,16 @@ import {
   removeUserFromOrganization,
   getRoles,
   updatePageNumber,
-} from "store/actions/organization";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, withRouter } from "react-router-dom";
-import { simpleSearchAction } from "store/actions/search";
-import Swal from "sweetalert2";
-import { useDispatch, useSelector } from "react-redux";
-import { Alert } from "react-bootstrap";
-import {
-  forgetSpecificFailedJob,
-  retrySpecificFailedJob,
-  setActiveAdminForm,
-  setActiveTab,
-  setCurrentProject,
-  setCurrentUser,
-} from "store/actions/admin";
-import {
-  deleteActivityItem,
-  deleteActivityType,
-  getActivityItems,
-  loadResourceTypesAction,
-  selectActivityItem,
-  selectActivityType,
-} from "store/actions/resource";
+} from 'store/actions/organization';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link, withRouter } from 'react-router-dom';
+import { simpleSearchAction } from 'store/actions/search';
+import Swal from 'sweetalert2';
+import { useDispatch, useSelector } from 'react-redux';
+import { Alert } from 'react-bootstrap';
+import { forgetSpecificFailedJob, retrySpecificFailedJob, setActiveAdminForm, setActiveTab, setCurrentProject, setCurrentUser } from 'store/actions/admin';
+import { deleteActivityItem, deleteActivityType, getActivityItems, loadResourceTypesAction, selectActivityItem, selectActivityType } from 'store/actions/resource';
+import { headShake } from 'react-animations';
 
 function Table(props) {
   const {
@@ -67,7 +54,7 @@ function Table(props) {
   const [localstatePagination, setLocalStatePagination] = useState();
   //update table after crud
   useEffect(() => {
-    if (type === "LMS") {
+    if (type === 'LMS') {
       if (newlyCreated) {
         setLocalStateData([newlyCreated, ...data?.data]);
       } else if (newlyEdit) {
@@ -94,7 +81,7 @@ function Table(props) {
 
   //update table after search and first time
   useEffect(() => {
-    if (type === "LMS" || type === "Project" || type === "DefaultSso") {
+    if (type === 'LMS' || type === 'Project' || type === 'DefaultSso') {
       if (data?.data) {
         setLocalStateData(data?.data);
       } else {
@@ -105,28 +92,23 @@ function Table(props) {
   }, [data]);
   const handleDeleteUser = (user) => {
     Swal.fire({
-      title: "Are you sure you want to delete this User?",
-      text: "This action is Irreversible",
-      icon: "warning",
+      title: 'Are you sure you want to delete this User?',
+      text: 'This action is Irreversible',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#084892",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonColor: '#084892',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          title: "Do you want to preserve user data?",
+          title: 'Do you want to preserve user data?',
           showCancelButton: true,
-          confirmButtonColor: "#084892",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Yes",
+          confirmButtonColor: '#084892',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes',
         }).then((result) => {
-          const response = dispatch(
-            deleteUserFromOrganization(
-              user?.id,
-              result.isConfirmed ? true : false
-            )
-          );
+          const response = dispatch(deleteUserFromOrganization(user?.id, result.isConfirmed ? true : false));
           response
             .then(() => {
               // dispatch(getOrgUsers(organization?.activeOrganization?.id, organization?.activePage, organization?.size, organization?.activeRole));
@@ -134,9 +116,9 @@ function Table(props) {
             .catch((e) => {
               console.log(e);
               Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "User Deletion failed, kindly try again.",
+                icon: 'error',
+                title: 'Error',
+                text: 'User Deletion failed, kindly try again.',
               });
             });
         });
@@ -145,28 +127,23 @@ function Table(props) {
   };
   const handleRemoveUser = (user) => {
     Swal.fire({
-      title: "Are you sure you want to remove this User?",
-      text: "This action is Irreversible",
-      icon: "warning",
+      title: 'Are you sure you want to remove this User?',
+      text: 'This action is Irreversible',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#084892",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Remove it!",
+      confirmButtonColor: '#084892',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Remove it!',
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          title: "Do you want to preserve user data?",
+          title: 'Do you want to preserve user data?',
           showCancelButton: true,
-          confirmButtonColor: "#084892",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Yes",
+          confirmButtonColor: '#084892',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes',
         }).then((result) => {
-          const response = dispatch(
-            removeUserFromOrganization(
-              user?.id,
-              result.isConfirmed ? true : false
-            )
-          );
+          const response = dispatch(removeUserFromOrganization(user?.id, result.isConfirmed ? true : false));
           response
             .then(() => {
               //     dispatch(getOrgUsers(organization?.activeOrganization?.id, organization?.activePage, organization?.size, organization?.activeRole));
@@ -174,9 +151,9 @@ function Table(props) {
             .catch((e) => {
               console.log(e);
               Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "User Remove failed, kindly try again.",
+                icon: 'error',
+                title: 'Error',
+                text: 'User Remove failed, kindly try again.',
               });
             });
         });
@@ -188,20 +165,19 @@ function Table(props) {
     <div className="table-data">
       <div className="responsive-table">
         <table>
-          {tableHead?.map((head) =>
-            head === "Users" &&
-            permission?.Organization?.includes("organization:view-user") ? (
-              <th key={head}> {head} </th>
-            ) : head !== "Users" ? (
-              <th>{head}</th>
-            ) : null
-          )}
+          <thead>
+            <tr>
+              {tableHead?.map((head, keyid) =>
+                head === 'Users' && permission?.Organization?.includes('organization:view-user') ? <th key={keyid}> {head} </th> : head !== 'Users' ? <th>{head}</th> : null
+              )}
+            </tr>
+          </thead>
           <tbody>
-            {type === "Stats" &&
-              subTypeState === "Report" &&
+            {type === 'Stats' &&
+              subTypeState === 'Report' &&
               (data?.data?.length > 0 ? (
-                data?.data?.map((row, key) => (
-                  <tr key={key}>
+                data?.data?.map((row, keyid) => (
+                  <tr key={keyid}>
                     <td>{row.first_name}</td>
                     <td>{row.last_name}</td>
                     <td>{row.email}</td>
@@ -212,19 +188,19 @@ function Table(props) {
                 ))
               ) : data?.data?.length === 0 || searchAlertTogglerStats === 0 ? (
                 <tr>
-                  <td colspan="6">
+                  <td colSpan="6">
                     <Alert variant="warning">No Reports Found</Alert>
                   </td>
                 </tr>
               ) : (
                 <tr>
-                  <td colspan="6">
+                  <td colSpan="6">
                     <Alert variant="primary">Loading...</Alert>
                   </td>
                 </tr>
               ))}
-            {type === "Stats" &&
-              subTypeState === "Queues: Jobs" &&
+            {type === 'Stats' &&
+              subTypeState === 'Queues: Jobs' &&
               (data?.data?.length > 0 ? (
                 data?.data.map((job) => (
                   <tr>
@@ -237,7 +213,6 @@ function Table(props) {
                       <td>
                         <div className="links">
                           <Link
-                            to=""
                             onClick={() => {
                               dispatch(retrySpecificFailedJob(job.id));
                             }}
@@ -245,7 +220,6 @@ function Table(props) {
                             Retry
                           </Link>
                           <Link
-                            to=""
                             onClick={() => {
                               dispatch(forgetSpecificFailedJob(job.id));
                             }}
@@ -255,39 +229,33 @@ function Table(props) {
                         </div>
                       </td>
                     ) : (
-                      <td>{job.action ? job.action : "N/A"}</td>
+                      <td>{job.action ? job.action : 'N/A'}</td>
                     )}
                   </tr>
                 ))
               ) : data?.data?.length === 0 || searchAlertTogglerStats === 0 ? (
                 <tr>
-                  <td colspan="6">
+                  <td colSpan="6">
                     <Alert variant="warning">No Queue: Jobs Found</Alert>
                   </td>
                 </tr>
               ) : (
                 <tr>
-                  <td colspan="6">
+                  <td colSpan="6">
                     <Alert variant="primary">Loading...</Alert>
                   </td>
                 </tr>
               ))}
-            {type === "Stats" &&
-              subTypeState === "Queues: Logs" &&
+            {type === 'Stats' &&
+              subTypeState === 'Queues: Logs' &&
               (data?.data?.length > 0 ? (
                 data?.data.map((job) => (
                   <tr>
                     <td>{job.name}</td>
                     <td>
-                      {job.is_finished && job.failed && (
-                        <Alert variant="danger">Failed</Alert>
-                      )}
-                      {!job.is_finished && !job.failed && (
-                        <Alert variant="primary">Running</Alert>
-                      )}
-                      {job.is_finished && !job.failed && (
-                        <Alert variant="success">Success</Alert>
-                      )}
+                      {job.is_finished && job.failed && <Alert variant="danger">Failed</Alert>}
+                      {!job.is_finished && !job.failed && <Alert variant="primary">Running</Alert>}
+                      {job.is_finished && !job.failed && <Alert variant="success">Success</Alert>}
                     </td>
                     <td>{job.started_at}</td>
                     <td>
@@ -299,27 +267,25 @@ function Table(props) {
                 ))
               ) : data?.data?.length === 0 || searchAlertTogglerStats === 0 ? (
                 <tr>
-                  <td colspan="6">
+                  <td colSpan="6">
                     <Alert variant="warning">No Queue: Logs Found</Alert>
                   </td>
                 </tr>
               ) : (
                 <tr>
-                  <td colspan="6">
+                  <td colSpan="6">
                     <Alert variant="primary">Loading...</Alert>
                   </td>
                 </tr>
               ))}
-            {type === "LMS" &&
+            {type === 'LMS' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
-                    <tr>
+                    <tr key={row}>
                       <td>{row.lms_url}</td>
                       <td>{row.lms_name}</td>
-                      <td>
-                        {row.user?.first_name + " " + row.user?.last_name}
-                      </td>
+                      <td>{row.user?.first_name + ' ' + row.user?.last_name}</td>
                       <td>{row?.user?.email}</td>
                       <td>{row?.site_name}</td>
                       <td>{row?.description}</td>
@@ -327,13 +293,12 @@ function Table(props) {
                         <div className="links">
                           {true && (
                             <Link
-                              to=""
                               onClick={() => {
                                 dispatch({
-                                  type: "SET_ACTIVE_EDIT",
+                                  type: 'SET_ACTIVE_EDIT',
                                   payload: row,
                                 });
-                                dispatch(setActiveAdminForm("clone_lms"));
+                                dispatch(setActiveAdminForm('clone_lms'));
                               }}
                             >
                               &nbsp;&nbsp;Clone&nbsp;&nbsp;
@@ -343,39 +308,33 @@ function Table(props) {
                             <Link
                               onClick={() => {
                                 Swal.fire({
-                                  title:
-                                    "Are you sure you want to delete this User LMS settings?",
-                                  text: "This action is Irreversible",
-                                  icon: "warning",
+                                  title: 'Are you sure you want to delete this User LMS settings?',
+                                  text: 'This action is Irreversible',
+                                  icon: 'warning',
                                   showCancelButton: true,
-                                  confirmButtonColor: "#084892",
-                                  cancelButtonColor: "#d33",
-                                  confirmButtonText: "Yes, delete it!",
+                                  confirmButtonColor: '#084892',
+                                  cancelButtonColor: '#d33',
+                                  confirmButtonText: 'Yes, delete it!',
                                 }).then((result) => {
                                   if (result.isConfirmed) {
                                     Swal.fire({
-                                      title: "LMS Srttings",
-                                      icon: "info",
-                                      text: "Deleting User LMS Settings...",
+                                      title: 'LMS Srttings',
+                                      icon: 'info',
+                                      text: 'Deleting User LMS Settings...',
                                       allowOutsideClick: false,
                                       onBeforeOpen: () => {
                                         Swal.showLoading();
                                       },
                                       button: false,
                                     });
-                                    const response = adminService.deleteLmsProject(
-                                      activeOrganization?.id,
-                                      row?.id
-                                    );
+                                    const response = adminService.deleteLmsProject(activeOrganization?.id, row?.id);
                                     response
                                       .then((res) => {
                                         Swal.fire({
-                                          icon: "success",
+                                          icon: 'success',
                                           text: res?.message,
                                         });
-                                        const filterLMS = localStateData.filter(
-                                          (each) => each.id != row.id
-                                        );
+                                        const filterLMS = localStateData.filter((each) => each.id != row.id);
                                         console.log(filterLMS);
                                         setLocalStateData(filterLMS);
                                       })
@@ -389,13 +348,12 @@ function Table(props) {
                           )}
                           {true && (
                             <Link
-                              to=""
                               onClick={() => {
                                 dispatch({
-                                  type: "SET_ACTIVE_EDIT",
+                                  type: 'SET_ACTIVE_EDIT',
                                   payload: row,
                                 });
-                                dispatch(setActiveAdminForm("edit_lms"));
+                                dispatch(setActiveAdminForm('edit_lms'));
                               }}
                             >
                               &nbsp;&nbsp;Edit&nbsp;&nbsp;
@@ -407,79 +365,52 @@ function Table(props) {
                   ))
                 ) : (
                   <tr>
-                    <td colspan="11">
+                    <td colSpan="11">
                       <Alert variant="warning">No integration found.</Alert>
                     </td>
                   </tr>
                 )
               ) : (
                 <tr>
-                  <td colspan="11">
+                  <td colSpan="11">
                     <Alert variant="primary">Loading...</Alert>
                   </td>
                 </tr>
               ))}
-            {type === "Users" &&
+            {type === 'Users' &&
               (data?.data?.length > 0 ? (
                 data?.data.map((user) => (
                   <tr>
-                    <td>
-                      {user.organization_joined_at
-                        ? user.organization_joined_at
-                        : "NA"}
-                    </td>
-                    <td>{user.first_name ? user.first_name : "NA"}</td>
-                    <td>{user.last_name ? user.last_name : "NA"}</td>
-                    <td>{user.email ? user.email : "NA"}</td>
-                    <td>
-                      {activeOrganization?.name
-                        ? activeOrganization?.name
-                        : "NA"}
-                    </td>
-                    <td>
-                      {user.organization_type ? user.organization_type : "NA"}
-                    </td>
-                    <td>
-                      {user.organization_role ? user.organization_role : "NA"}
-                    </td>
+                    <td>{user.organization_joined_at ? user.organization_joined_at : 'NA'}</td>
+                    <td>{user.first_name ? user.first_name : 'NA'}</td>
+                    <td>{user.last_name ? user.last_name : 'NA'}</td>
+                    <td>{user.email ? user.email : 'NA'}</td>
+                    <td>{activeOrganization?.name ? activeOrganization?.name : 'NA'}</td>
+                    <td>{user.organization_type ? user.organization_type : 'NA'}</td>
+                    <td>{user.organization_role ? user.organization_role : 'NA'}</td>
                     <td>
                       <div className="links">
-                        {permission?.Organization.includes(
-                          "organization:update-user"
-                        ) && (
+                        {permission?.Organization.includes('organization:update-user') && (
                           <Link
-                            to=""
                             onClick={() => {
                               dispatch(setCurrentUser(user));
-                              dispatch(setActiveAdminForm("edit_user"));
+                              dispatch(setActiveAdminForm('edit_user'));
                             }}
                           >
                             Edit
                           </Link>
                         )}
-                        {permission?.Organization.includes(
-                          "organization:remove-user"
-                        ) &&
-                          auth?.user?.id !== user.id && (
-                            <Link to="" onClick={() => handleRemoveUser(user)}>
-                              &nbsp;&nbsp;Remove&nbsp;&nbsp;
-                            </Link>
-                          )}
-                        {permission?.Organization.includes(
-                          "organization:delete-user"
-                        ) &&
-                          auth?.user?.id !== user.id && (
-                            <Link onClick={() => handleDeleteUser(user)}>
-                              Delete
-                            </Link>
-                          )}
+                        {permission?.Organization.includes('organization:remove-user') && auth?.user?.id !== user.id && (
+                          <Link onClick={() => handleRemoveUser(user)}>&nbsp;&nbsp;Remove&nbsp;&nbsp;</Link>
+                        )}
+                        {permission?.Organization.includes('organization:delete-user') && auth?.user?.id !== user.id && <Link onClick={() => handleDeleteUser(user)}>Delete</Link>}
                       </div>
                     </td>
                   </tr>
                 ))
               ) : searchAlertToggler === 0 || data?.data?.length === 0 ? (
                 <tr>
-                  <td colspan="8">
+                  <td colSpan="8">
                     <Alert variant="warning">No User Found</Alert>
                   </td>
                 </tr>
@@ -490,46 +421,34 @@ function Table(props) {
                   </td>
                 </tr>
               ))}
-            {type === "Organization" &&
+            {type === 'Organization' &&
               (allSuborgList ? (
                 allSuborgList.length > 0 ? (
                   allSuborgList?.map((row) => (
-                    <tr className="org-rows">
+                    <tr key={row} className="org-rows">
                       <td>
-                        <img
-                          src={global.config.resourceUrl + row.image}
-                          alt=""
-                        />
+                        <img src={global.config.resourceUrl + row.image} alt="" />
                       </td>
                       <td>
                         <Link
+                          to="#"
                           onClick={async () => {
                             Swal.fire({
-                              title: "Please Wait !",
-                              html: "Updating View ...",
+                              title: 'Please Wait !',
+                              html: 'Updating View ...',
                               allowOutsideClick: false,
                               onBeforeOpen: () => {
                                 Swal.showLoading();
                               },
                             });
-                            if (
-                              permission?.Organization?.includes(
-                                "organization:view"
-                              )
-                            )
-                              await dispatch(getOrganization(row.id));
+                            if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                             Swal.close();
                             dispatch({
                               type: actionTypes.UPDATE_PAGINATION,
                               payload: [...paginations, row],
                             });
                             if (row.projects_count > 0) {
-                              if (
-                                permission?.Organization?.includes(
-                                  "organization:view"
-                                )
-                              )
-                                await dispatch(getOrganization(row.id));
+                              if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                               dispatch(clearOrganizationState());
                               dispatch(getRoles());
                               // dispatch(setActiveTab('Project'));
@@ -548,65 +467,49 @@ function Table(props) {
                             className="view-all"
                             onClick={async () => {
                               Swal.fire({
-                                title: "Please Wait !",
-                                html: "Updating View ...",
+                                title: 'Please Wait !',
+                                html: 'Updating View ...',
                                 allowOutsideClick: false,
                                 onBeforeOpen: () => {
                                   Swal.showLoading();
                                 },
                               });
-                              if (
-                                permission?.Organization?.includes(
-                                  "organization:view"
-                                )
-                              )
-                                await dispatch(getOrganization(row.id));
+                              if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                               Swal.close();
                               dispatch({
                                 type: actionTypes.UPDATE_PAGINATION,
                                 payload: [...paginations, row],
                               });
                               if (row.projects_count > 0) {
-                                if (
-                                  permission?.Organization?.includes(
-                                    "organization:view"
-                                  )
-                                )
-                                  await dispatch(getOrganization(row.id));
+                                if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                                 dispatch(clearOrganizationState());
                                 dispatch(getRoles());
-                                dispatch(setActiveTab("Project"));
+                                dispatch(setActiveTab('Project'));
                               }
                             }}
                           >
                             {row.projects_count}
                           </div>
                         ) : (
-                          "N/A"
+                          'N/A'
                         )}
                       </td>
                       <td>
                         {row.suborganization_count > 0 ? (
                           <Link
-                            to=""
                             className="view-all"
                             onClick={async () => {
                               if (row.suborganization_count > 0) {
                                 Swal.fire({
-                                  title: "Please Wait !",
-                                  html: "Updating View ...",
+                                  title: 'Please Wait !',
+                                  html: 'Updating View ...',
                                   allowOutsideClick: false,
                                   onBeforeOpen: () => {
                                     Swal.showLoading();
                                   },
                                 });
 
-                                if (
-                                  permission?.Organization?.includes(
-                                    "organization:view"
-                                  )
-                                )
-                                  await dispatch(getOrganization(row.id));
+                                if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                                 Swal.close();
                                 dispatch({
                                   type: actionTypes.UPDATE_PAGINATION,
@@ -620,12 +523,10 @@ function Table(props) {
                             {row.suborganization_count || 0}
                           </Link>
                         ) : (
-                          "N/A"
+                          'N/A'
                         )}
                       </td>
-                      {permission?.Organization?.includes(
-                        "organization:view-user"
-                      ) && (
+                      {permission?.Organization?.includes('organization:view-user') && (
                         <td>
                           {row.users_count > 0 ? (
                             <Link
@@ -633,19 +534,14 @@ function Table(props) {
                               onClick={async () => {
                                 if (row.users_count > 0) {
                                   Swal.fire({
-                                    title: "Please Wait !",
-                                    html: "Updating View ...",
+                                    title: 'Please Wait !',
+                                    html: 'Updating View ...',
                                     allowOutsideClick: false,
                                     onBeforeOpen: () => {
                                       Swal.showLoading();
                                     },
                                   });
-                                  if (
-                                    permission?.Organization?.includes(
-                                      "organization:view"
-                                    )
-                                  )
-                                    await dispatch(getOrganization(row.id));
+                                  if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                                   Swal.close();
                                   dispatch({
                                     type: actionTypes.UPDATE_PAGINATION,
@@ -653,14 +549,14 @@ function Table(props) {
                                   });
                                   dispatch(clearOrganizationState());
                                   dispatch(getRoles());
-                                  dispatch(setActiveTab("Users"));
+                                  dispatch(setActiveTab('Users'));
                                 }
                               }}
                             >
                               {row.users_count}
                             </Link>
                           ) : (
-                            "N/A"
+                            'N/A'
                           )}
                         </td>
                       )}
@@ -687,12 +583,7 @@ function Table(props) {
                             to={`/org/${allState?.organization?.currentOrganization?.domain}/teams`}
                             className="view-all"
                             onClick={async () => {
-                              if (
-                                permission?.Organization?.includes(
-                                  "organization:view"
-                                )
-                              )
-                                await dispatch(getOrganization(row.id));
+                              if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                               dispatch(clearOrganizationState());
                               dispatch(getRoles());
                             }}
@@ -700,20 +591,18 @@ function Table(props) {
                             {row.teams_count}
                           </Link>
                         ) : (
-                          "N/A"
+                          'N/A'
                         )}
                       </td>
 
                       <td>
                         <div className="links">
-                          {permission?.Organization.includes(
-                            "organization:edit"
-                          ) && (
+                          {permission?.Organization.includes('organization:edit') && (
                             <Link
                               onClick={() => {
-                                dispatch(setActiveAdminForm("edit_org"));
+                                dispatch(setActiveAdminForm('edit_org'));
                                 dispatch({
-                                  type: "SET_ACTIVE_EDIT",
+                                  type: 'SET_ACTIVE_EDIT',
                                   payload: row,
                                 });
                               }}
@@ -722,37 +611,25 @@ function Table(props) {
                             </Link>
                           )}
 
-                          {permission?.Organization.includes(
-                            "organization:edit"
-                          ) && (
+                          {permission?.Organization.includes('organization:edit') && (
                             <Link
                               onClick={async () => {
                                 Swal.fire({
-                                  title: "Please Wait !",
-                                  html: "Updating View ...",
+                                  title: 'Please Wait !',
+                                  html: 'Updating View ...',
                                   allowOutsideClick: false,
                                   onBeforeOpen: () => {
                                     Swal.showLoading();
                                   },
                                 });
-                                if (
-                                  permission?.Organization?.includes(
-                                    "organization:view"
-                                  )
-                                )
-                                  await dispatch(getOrganization(row.id));
+                                if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                                 Swal.close();
                                 dispatch({
                                   type: actionTypes.UPDATE_PAGINATION,
                                   payload: [...paginations, row],
                                 });
                                 if (row.projects_count > 0) {
-                                  if (
-                                    permission?.Organization?.includes(
-                                      "organization:view"
-                                    )
-                                  )
-                                    await dispatch(getOrganization(row.id));
+                                  if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                                   dispatch(clearOrganizationState());
                                   dispatch(getRoles());
 
@@ -766,34 +643,29 @@ function Table(props) {
                             </Link>
                           )}
 
-                          {permission?.Organization.includes(
-                            "organization:delete"
-                          ) && (
+                          {permission?.Organization.includes('organization:delete') && (
                             <Link
                               onClick={() => {
                                 Swal.fire({
-                                  title: "Are you sure?",
+                                  title: 'Are you sure?',
                                   text: "You won't be able to revert this!",
-                                  icon: "warning",
+                                  icon: 'warning',
                                   showCancelButton: true,
-                                  confirmButtonColor: "#084892",
-                                  cancelButtonColor: "#d33",
-                                  confirmButtonText: "Yes, delete it!",
+                                  confirmButtonColor: '#084892',
+                                  cancelButtonColor: '#d33',
+                                  confirmButtonText: 'Yes, delete it!',
                                 }).then(async (result) => {
                                   if (result.isConfirmed) {
                                     Swal.showLoading();
-                                    const resultDel = await dispatch(
-                                      deleteOrganization(row)
-                                    );
+                                    const resultDel = await dispatch(deleteOrganization(row));
                                     if (resultDel) {
                                       Swal.fire({
-                                        text:
-                                          "You have successfully deleted the organization",
-                                        icon: "success",
+                                        text: 'You have successfully deleted the organization',
+                                        icon: 'success',
                                         showCancelButton: false,
-                                        confirmButtonColor: "#084892",
-                                        cancelButtonColor: "#d33",
-                                        confirmButtonText: "OK",
+                                        confirmButtonColor: '#084892',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'OK',
                                       });
                                     }
                                   }
@@ -809,11 +681,8 @@ function Table(props) {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="9" style={{ textAlign: "center" }}>
-                      <Alert variant="warning">
-                        {" "}
-                        No sub-organization available
-                      </Alert>
+                    <td colSpan="9" style={{ textAlign: 'center' }}>
+                      <Alert variant="warning"> No sub-organization available</Alert>
                     </td>
                   </tr>
                 )
@@ -824,8 +693,8 @@ function Table(props) {
                   </td>
                 </tr>
               ))}
-            {type === "Project" &&
-              subType === "all" &&
+            {type === 'Project' &&
+              subType === 'all' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData.map((row) => {
@@ -836,24 +705,16 @@ function Table(props) {
                         <td>
                           <div
                             style={{
-                              backgroundImage: row.thumb_url.includes(
-                                "pexels.com"
-                              )
-                                ? `url(${row.thumb_url})`
-                                : `url(${global.config.resourceUrl}${row.thumb_url})`,
-                              backgroundSize: "cover",
-                              height: "100px",
-                              backgroundPosition: "center",
-                              width: "100px",
+                              backgroundImage: row.thumb_url.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                              backgroundSize: 'cover',
+                              height: '100px',
+                              backgroundPosition: 'center',
+                              width: '100px',
                             }}
                           ></div>
                         </td>
                         <td>
-                          <Link
-                            to={`/org/${organization?.currentOrganization?.domain}/project/${row.id}/preview`}
-                          >
-                            {row.name}
-                          </Link>
+                          <Link to={`/org/${organization?.currentOrganization?.domain}/project/${row.id}/preview`}>{row.name}</Link>
                         </td>
                         <td>{createNew.toDateString()}</td>
 
@@ -865,15 +726,8 @@ function Table(props) {
                         {/* <td>{row.organization_id}</td> */}
                         <td>
                           {row.shared ? (
-                            <Link
-                              className="shared-link"
-                              target="_blank"
-                              to={`/project/${row.id}/shared`}
-                            >
-                              <FontAwesomeIcon
-                                icon="external-link-alt"
-                                className="mr-2"
-                              />
+                            <Link className="shared-link" target="_blank" to={`/project/${row.id}/shared`}>
+                              <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
                               Open Shared Link
                             </Link>
                           ) : (
@@ -887,21 +741,18 @@ function Table(props) {
                           <Link
                             onClick={() => {
                               Swal.fire({
-                                title: "Please Wait !",
-                                html: "Exporting  Project ...",
+                                title: 'Please Wait !',
+                                html: 'Exporting  Project ...',
                                 allowOutsideClick: false,
                                 onBeforeOpen: () => {
                                   Swal.showLoading();
                                 },
                               });
-                              const result = adminService.exportProject(
-                                activeOrganization.id,
-                                row.id
-                              );
+                              const result = adminService.exportProject(activeOrganization.id, row.id);
                               result.then((data) => {
                                 // console.log(data)
                                 Swal.fire({
-                                  icon: "success",
+                                  icon: 'success',
                                   text: data?.message,
                                 });
                               });
@@ -910,8 +761,9 @@ function Table(props) {
                             Export
                           </Link>
                           <Link
+                            to=""
                             onClick={() => {
-                              dispatch(setActiveAdminForm("edit_project"));
+                              dispatch(setActiveAdminForm('edit_project'));
                               dispatch(setCurrentProject(row));
                             }}
                           >
@@ -920,38 +772,32 @@ function Table(props) {
                           <Link
                             onClick={() => {
                               Swal.fire({
-                                title:
-                                  "Are you sure you want to delete this Project?",
-                                text: "This action is Irreversible",
-                                icon: "warning",
+                                title: 'Are you sure you want to delete this Project?',
+                                text: 'This action is Irreversible',
+                                icon: 'warning',
                                 showCancelButton: true,
-                                confirmButtonColor: "#084892",
-                                cancelButtonColor: "#d33",
-                                confirmButtonText: "Yes, delete it!",
+                                confirmButtonColor: '#084892',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes, delete it!',
                               }).then((result) => {
                                 if (result.isConfirmed) {
                                   Swal.fire({
-                                    icon: "info",
-                                    text: "Deleting Project...",
+                                    icon: 'info',
+                                    text: 'Deleting Project...',
                                     allowOutsideClick: false,
                                     onBeforeOpen: () => {
                                       Swal.showLoading();
                                     },
                                     button: false,
                                   });
-                                  const response = projectService.remove(
-                                    row.id,
-                                    activeOrganization.id
-                                  );
+                                  const response = projectService.remove(row.id, activeOrganization.id);
                                   response
                                     .then((res) => {
                                       Swal.fire({
-                                        icon: "success",
+                                        icon: 'success',
                                         text: res?.message,
                                       });
-                                      const filterProject = localStateData.filter(
-                                        (each) => each.id != row.id
-                                      );
+                                      const filterProject = localStateData.filter((each) => each.id != row.id);
                                       setLocalStateData(filterProject);
                                     })
                                     .catch((err) => console.log(err));
@@ -967,21 +813,21 @@ function Table(props) {
                   })
                 ) : (
                   <tr>
-                    <td colspan="11">
+                    <td colSpan="11">
                       <Alert variant="warning">No result found.</Alert>
                     </td>
                   </tr>
                 )
               ) : (
                 <tr>
-                  <td colspan="13">
+                  <td colSpan="13">
                     <Alert variant="primary">Loading data...</Alert>
                   </td>
                 </tr>
               ))}
 
-            {type === "Project" &&
-              subType === "user" &&
+            {type === 'Project' &&
+              subType === 'user' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => {
@@ -992,15 +838,11 @@ function Table(props) {
                         <td>
                           <div
                             style={{
-                              backgroundImage: row.thumb_url.includes(
-                                "pexels.com"
-                              )
-                                ? `url(${row.thumb_url})`
-                                : `url(${global.config.resourceUrl}${row.thumb_url})`,
-                              backgroundSize: "cover",
-                              height: "100px",
-                              backgroundPosition: "center",
-                              width: "100px",
+                              backgroundImage: row.thumb_url.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                              backgroundSize: 'cover',
+                              height: '100px',
+                              backgroundPosition: 'center',
+                              width: '100px',
                             }}
                           ></div>
                         </td>
@@ -1025,21 +867,21 @@ function Table(props) {
                   })
                 ) : (
                   <tr>
-                    <td colspan="11">
+                    <td colSpan="11">
                       <Alert variant="warning">No result found.</Alert>
                     </td>
                   </tr>
                 )
               ) : (
                 <tr>
-                  <td colspan="13">
+                  <td colSpan="13">
                     <Alert variant="primary">Loading data...</Alert>
                   </td>
                 </tr>
               ))}
 
-            {type === "Project" &&
-              subType === "index" &&
+            {type === 'Project' &&
+              subType === 'index' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData.map((row) => {
@@ -1050,23 +892,16 @@ function Table(props) {
                         <td>
                           <div
                             style={{
-                              backgroundImage: row.thumb_url.includes(
-                                "pexels.com"
-                              )
-                                ? `url(${row.thumb_url})`
-                                : `url(${global.config.resourceUrl}${row.thumb_url})`,
-                              backgroundSize: "cover",
-                              height: "100px",
-                              backgroundPosition: "center",
-                              width: "100px",
+                              backgroundImage: row.thumb_url.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                              backgroundSize: 'cover',
+                              height: '100px',
+                              backgroundPosition: 'center',
+                              width: '100px',
                             }}
                           ></div>
                         </td>
                         <td>
-                          <Link
-                            target="_blank"
-                            to={`/org/${organization?.currentOrganization?.domain}/project/${row.id}/preview`}
-                          >
+                          <Link target="_blank" to={`/org/${organization?.currentOrganization?.domain}/project/${row.id}/preview`}>
                             {row.name}
                           </Link>
                         </td>
@@ -1091,46 +926,33 @@ function Table(props) {
                               <Link
                                 onClick={async () => {
                                   Swal.fire({
-                                    title: "Please Wait !",
-                                    html: "Approving Project ...",
+                                    title: 'Please Wait !',
+                                    html: 'Approving Project ...',
                                     allowOutsideClick: false,
                                     onBeforeOpen: () => {
                                       Swal.showLoading();
                                     },
                                   });
-                                  const result = await adminService.updateIndex(
-                                    row.id,
-                                    3
-                                  );
+                                  const result = await adminService.updateIndex(row.id, 3);
                                   if (result?.message) {
                                     if (changeIndexValue !== 0) {
-                                      setLocalStateData(
-                                        localStateData.filter(
-                                          (indexing) => indexing.id !== row.id
-                                        )
-                                      );
+                                      setLocalStateData(localStateData.filter((indexing) => indexing.id !== row.id));
                                     } else {
                                       const editRow = {
                                         ...row,
                                         indexing: 3,
-                                        indexing_text: "APPROVED",
+                                        indexing_text: 'APPROVED',
                                       };
-                                      setLocalStateData(
-                                        localStateData.map((indexing) =>
-                                          indexing.id == row.id
-                                            ? editRow
-                                            : indexing
-                                        )
-                                      );
+                                      setLocalStateData(localStateData.map((indexing) => (indexing.id == row.id ? editRow : indexing)));
                                     }
                                     Swal.fire({
-                                      icon: "success",
+                                      icon: 'success',
                                       text: result.message,
                                     });
                                   } else {
                                     Swal.fire({
-                                      icon: "error",
-                                      text: "Error",
+                                      icon: 'error',
+                                      text: 'Error',
                                     });
                                   }
                                   // result.then((data) => {
@@ -1169,46 +991,33 @@ function Table(props) {
                               <Link
                                 onClick={async () => {
                                   Swal.fire({
-                                    title: "Please Wait !",
-                                    html: "Rejecting Project ...",
+                                    title: 'Please Wait !',
+                                    html: 'Rejecting Project ...',
                                     allowOutsideClick: false,
                                     onBeforeOpen: () => {
                                       Swal.showLoading();
                                     },
                                   });
-                                  const result = await adminService.updateIndex(
-                                    row.id,
-                                    2
-                                  );
+                                  const result = await adminService.updateIndex(row.id, 2);
                                   if (result?.message) {
                                     if (changeIndexValue !== 0) {
-                                      setLocalStateData(
-                                        localStateData.filter(
-                                          (indexing) => indexing.id !== row.id
-                                        )
-                                      );
+                                      setLocalStateData(localStateData.filter((indexing) => indexing.id !== row.id));
                                     } else {
                                       const editRow = {
                                         ...row,
                                         indexing: 2,
-                                        indexing_text: "REJECT",
+                                        indexing_text: 'REJECT',
                                       };
-                                      setLocalStateData(
-                                        localStateData.map((indexing) =>
-                                          indexing.id == row.id
-                                            ? editRow
-                                            : indexing
-                                        )
-                                      );
+                                      setLocalStateData(localStateData.map((indexing) => (indexing.id == row.id ? editRow : indexing)));
                                     }
                                     Swal.fire({
-                                      icon: "success",
+                                      icon: 'success',
                                       text: result.message,
                                     });
                                   } else {
                                     Swal.fire({
-                                      icon: "error",
-                                      text: "Error",
+                                      icon: 'error',
+                                      text: 'Error',
                                     });
                                   }
                                   // result.then((data) => {
@@ -1250,30 +1059,26 @@ function Table(props) {
                   })
                 ) : (
                   <tr>
-                    <td colspan="11">
+                    <td colSpan="11">
                       <Alert variant="warning">No result found.</Alert>
                     </td>
                   </tr>
                 )
               ) : (
                 <tr>
-                  <td colspan="13">
+                  <td colSpan="13">
                     <Alert variant="primary">Loading data...</Alert>
                   </td>
                 </tr>
               ))}
-            {type === "Activities" &&
-              subType === "Activity Types" &&
+            {type === 'Activities' &&
+              subType === 'Activity Types' &&
               (data ? (
                 data?.map((type) => (
-                  <tr className="org-rows">
+                  <tr key={type} className="org-rows">
                     <td>{type.title}</td>
                     <td>
-                      <img
-                        className="image-size"
-                        src={global.config.resourceUrl + type.image}
-                        alt="activity-type-image"
-                      />
+                      <img className="image-size" src={global.config.resourceUrl + type.image} alt="activity-type-image" />
                     </td>
                     <td>{type.order}</td>
                     <td>
@@ -1286,7 +1091,7 @@ function Table(props) {
                         <Link
                           onClick={() => {
                             dispatch(selectActivityType(type));
-                            dispatch(setActiveAdminForm("edit_activity_type"));
+                            dispatch(setActiveAdminForm('edit_activity_type'));
                           }}
                         >
                           &nbsp;&nbsp;Edit&nbsp;&nbsp;
@@ -1294,31 +1099,28 @@ function Table(props) {
                         <Link
                           onClick={() => {
                             Swal.fire({
-                              title: "Are you sure?",
+                              title: 'Are you sure?',
                               text: "You won't be able to revert this!",
-                              icon: "warning",
+                              icon: 'warning',
                               showCancelButton: true,
-                              confirmButtonColor: "#084892",
-                              cancelButtonColor: "#d33",
-                              confirmButtonText: "Yes, delete it!",
+                              confirmButtonColor: '#084892',
+                              cancelButtonColor: '#d33',
+                              confirmButtonText: 'Yes, delete it!',
                             }).then(async (result) => {
                               if (result.isConfirmed) {
                                 Swal.showLoading();
-                                const resultDel = await dispatch(
-                                  deleteActivityType(type.id)
-                                );
+                                const resultDel = await dispatch(deleteActivityType(type.id));
                                 if (resultDel) {
                                   Swal.fire({
-                                    text:
-                                      "You have successfully deleted the activity type",
-                                    icon: "success",
+                                    text: 'You have successfully deleted the activity type',
+                                    icon: 'success',
                                     showCancelButton: false,
-                                    confirmButtonColor: "#084892",
-                                    cancelButtonColor: "#d33",
-                                    confirmButtonText: "OK",
+                                    confirmButtonColor: '#084892',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'OK',
                                   }).then((result) => {
                                     if (result.isConfirmed) {
-                                      dispatch(loadResourceTypesAction("", 1));
+                                      dispatch(loadResourceTypesAction('', 1));
                                     }
                                   });
                                 }
@@ -1335,19 +1137,15 @@ function Table(props) {
               ) : (
                 <Alert variant="warning">No activity type found</Alert>
               ))}
-            {type === "Activities" &&
-              subType === "Activity Items" &&
+            {type === 'Activities' &&
+              subType === 'Activity Items' &&
               (data?.data ? (
                 data?.data?.length > 0 ? (
                   data?.data.map((item) => (
-                    <tr>
+                    <tr key={item}>
                       <td>{item.title}</td>
                       <td>
-                        <img
-                          className="image-size"
-                          src={global.config.resourceUrl + item.image}
-                          alt="activity-item-image"
-                        />
+                        <img className="image-size" src={global.config.resourceUrl + item.image} alt="activity-item-image" />
                       </td>
                       <td>{item.order}</td>
                       <td>
@@ -1363,9 +1161,7 @@ function Table(props) {
                           <Link
                             onClick={() => {
                               dispatch(selectActivityItem(item));
-                              dispatch(
-                                setActiveAdminForm("edit_activity_item")
-                              );
+                              dispatch(setActiveAdminForm('edit_activity_item'));
                             }}
                           >
                             &nbsp;&nbsp;Edit&nbsp;&nbsp;
@@ -1373,31 +1169,28 @@ function Table(props) {
                           <Link
                             onClick={() => {
                               Swal.fire({
-                                title: "Are you sure?",
+                                title: 'Are you sure?',
                                 text: "You won't be able to revert this!",
-                                icon: "warning",
+                                icon: 'warning',
                                 showCancelButton: true,
-                                confirmButtonColor: "#084892",
-                                cancelButtonColor: "#d33",
-                                confirmButtonText: "Yes, delete it!",
+                                confirmButtonColor: '#084892',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes, delete it!',
                               }).then(async (result) => {
                                 if (result.isConfirmed) {
                                   Swal.showLoading();
-                                  const resultDel = await dispatch(
-                                    deleteActivityItem(item.id)
-                                  );
+                                  const resultDel = await dispatch(deleteActivityItem(item.id));
                                   if (resultDel) {
                                     Swal.fire({
-                                      text:
-                                        "You have successfully deleted the activity item",
-                                      icon: "success",
+                                      text: 'You have successfully deleted the activity item',
+                                      icon: 'success',
                                       showCancelButton: false,
-                                      confirmButtonColor: "#084892",
-                                      cancelButtonColor: "#d33",
-                                      confirmButtonText: "OK",
+                                      confirmButtonColor: '#084892',
+                                      cancelButtonColor: '#d33',
+                                      confirmButtonText: 'OK',
                                     }).then((result) => {
                                       if (result.isConfirmed) {
-                                        dispatch(getActivityItems("", 1));
+                                        dispatch(getActivityItems('', 1));
                                       }
                                     });
                                   }
@@ -1413,24 +1206,24 @@ function Table(props) {
                   ))
                 ) : (
                   <tr>
-                    <td colspan="5">
+                    <td colSpan="5">
                       <Alert variant="warning"> No activity item found</Alert>
                     </td>
                   </tr>
                 )
               ) : (
                 <tr>
-                  <td colspan="5">
+                  <td colSpan="5">
                     <Alert variant="primary">Loading...</Alert>
                   </td>
                 </tr>
               ))}
 
-            {type === "DefaultSso" &&
+            {type === 'DefaultSso' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
-                    <tr>
+                    <tr key={row}>
                       <td>{row.lms_url}</td>
                       <td>{row.lms_name}</td>
                       <td>{row?.site_name}</td>
@@ -1438,64 +1231,51 @@ function Table(props) {
                       <td>{row?.description}</td>
                       <td>
                         <div className="links">
-                          {permission?.Organization.includes(
-                            "organization:update-default-sso"
-                          ) && (
+                          {permission?.Organization.includes('organization:update-default-sso') && (
                             <Link
-                              to=""
+                              to="#"
                               onClick={() => {
                                 dispatch({
-                                  type: "SET_ACTIVE_EDIT",
+                                  type: 'SET_ACTIVE_EDIT',
                                   payload: row,
                                 });
-                                dispatch(
-                                  setActiveAdminForm("edit_default_sso")
-                                );
+                                dispatch(setActiveAdminForm('edit_default_sso'));
                               }}
                             >
                               &nbsp;&nbsp;Edit&nbsp;&nbsp;
                             </Link>
                           )}
-                          {permission?.Organization.includes(
-                            "organization:delete-default-sso"
-                          ) && (
+                          {permission?.Organization.includes('organization:delete-default-sso') && (
                             <Link
                               onClick={() => {
                                 Swal.fire({
-                                  title:
-                                    "Are you sure you want to delete this SSO Integration?",
-                                  text: "This action is Irreversible",
-                                  icon: "warning",
+                                  title: 'Are you sure you want to delete this SSO Integration?',
+                                  text: 'This action is Irreversible',
+                                  icon: 'warning',
                                   showCancelButton: true,
-                                  confirmButtonColor: "#084892",
-                                  cancelButtonColor: "#d33",
-                                  confirmButtonText: "Yes, delete it!",
+                                  confirmButtonColor: '#084892',
+                                  cancelButtonColor: '#d33',
+                                  confirmButtonText: 'Yes, delete it!',
                                 }).then((result) => {
                                   if (result.isConfirmed) {
                                     Swal.fire({
-                                      title: "Default SSO Integration",
-                                      icon: "info",
-                                      text:
-                                        "Deleting Default SSO Integration...",
+                                      title: 'Default SSO Integration',
+                                      icon: 'info',
+                                      text: 'Deleting Default SSO Integration...',
                                       allowOutsideClick: false,
                                       onBeforeOpen: () => {
                                         Swal.showLoading();
                                       },
                                       button: false,
                                     });
-                                    const response = adminService.deleteDefaultSso(
-                                      activeOrganization?.id,
-                                      row?.id
-                                    );
+                                    const response = adminService.deleteDefaultSso(activeOrganization?.id, row?.id);
                                     response
                                       .then((res) => {
                                         Swal.fire({
-                                          icon: "success",
+                                          icon: 'success',
                                           text: res?.message,
                                         });
-                                        const filterLMS = localStateData.filter(
-                                          (each) => each.id != row.id
-                                        );
+                                        const filterLMS = localStateData.filter((each) => each.id != row.id);
                                         setLocalStateData(filterLMS);
                                       })
                                       .catch((err) => console.log(err));
@@ -1512,16 +1292,14 @@ function Table(props) {
                   ))
                 ) : (
                   <tr>
-                    <td colspan="11">
-                      <Alert variant="warning">
-                        No Default SSO integration found.
-                      </Alert>
+                    <td colSpan="11">
+                      <Alert variant="warning">No Default SSO integration found.</Alert>
                     </td>
                   </tr>
                 )
               ) : (
                 <tr>
-                  <td colspan="11">
+                  <td colSpan="11">
                     <Alert variant="primary">Loading...</Alert>
                   </td>
                 </tr>
@@ -1532,11 +1310,10 @@ function Table(props) {
       {data?.data?.length > 0 && data?.meta && (
         <div className="pagination-top">
           <div className="pagination_state">
-            Showing {data?.meta?.from} to {data?.meta?.to} of{" "}
-            {data?.meta?.total} results
+            Showing {data?.meta?.from} to {data?.meta?.to} of {data?.meta?.total} results
           </div>
           <div className="main-pagination">
-            {type === "Stats" && subTypeState === "Report" && (
+            {type === 'Stats' && subTypeState === 'Report' && (
               <Pagination
                 activePage={activePage}
                 pageRangeDisplayed={5}
@@ -1549,7 +1326,7 @@ function Table(props) {
                 }}
               />
             )}
-            {type === "Stats" && subTypeState === "Queues: Logs" && (
+            {type === 'Stats' && subTypeState === 'Queues: Logs' && (
               <Pagination
                 activePage={activePage}
                 pageRangeDisplayed={5}
@@ -1562,7 +1339,7 @@ function Table(props) {
                 }}
               />
             )}
-            {type === "Stats" && subTypeState === "Queues: Jobs" && (
+            {type === 'Stats' && subTypeState === 'Queues: Jobs' && (
               <Pagination
                 activePage={activePage}
                 pageRangeDisplayed={5}
@@ -1575,7 +1352,7 @@ function Table(props) {
                 }}
               />
             )}
-            {type === "Users" && (
+            {type === 'Users' && (
               <Pagination
                 activePage={activePage}
                 pageRangeDisplayed={5}
@@ -1588,7 +1365,7 @@ function Table(props) {
                 }}
               />
             )}
-            {type === "Project" && subType === "all" && (
+            {type === 'Project' && subType === 'all' && (
               <Pagination
                 activePage={activePage}
                 pageRangeDisplayed={5}
@@ -1596,13 +1373,13 @@ function Table(props) {
                 totalItemsCount={data?.meta?.total}
                 onChange={(e) => {
                   window.scrollTo(0, 0);
-                  setCurrentTab("all");
+                  setCurrentTab('all');
                   setActivePage(e);
                   dispatch(updatePageNumber(e));
                 }}
               />
             )}
-            {type === "Project" && subType === "user" && (
+            {type === 'Project' && subType === 'user' && (
               <Pagination
                 activePage={activePage}
                 pageRangeDisplayed={5}
@@ -1610,12 +1387,12 @@ function Table(props) {
                 totalItemsCount={data?.meta?.total}
                 onChange={(e) => {
                   window.scrollTo(0, 0);
-                  setCurrentTab("user");
+                  setCurrentTab('user');
                   setActivePage(e);
                 }}
               />
             )}
-            {type === "Project" && subType === "index" && (
+            {type === 'Project' && subType === 'index' && (
               <Pagination
                 activePage={activePage}
                 pageRangeDisplayed={5}
@@ -1623,13 +1400,13 @@ function Table(props) {
                 totalItemsCount={localstatePagination?.meta?.total}
                 onChange={(e) => {
                   window.scrollTo(0, 0);
-                  setCurrentTab("index");
+                  setCurrentTab('index');
                   setActivePage(e);
                   dispatch(updatePageNumber(e));
                 }}
               />
             )}
-            {type === "Activities" && subType === "Activity Types" && (
+            {type === 'Activities' && subType === 'Activity Types' && (
               <Pagination
                 activePage={activePage}
                 pageRangeDisplayed={5}
@@ -1642,7 +1419,7 @@ function Table(props) {
                 }}
               />
             )}
-            {type === "Activities" && subType === "Activity Items" && (
+            {type === 'Activities' && subType === 'Activity Items' && (
               <Pagination
                 activePage={activePage}
                 pageRangeDisplayed={5}
@@ -1655,7 +1432,7 @@ function Table(props) {
                 }}
               />
             )}
-            {type === "LMS" && (
+            {type === 'LMS' && (
               <Pagination
                 activePage={activePage}
                 pageRangeDisplayed={5}
@@ -1668,7 +1445,7 @@ function Table(props) {
                 }}
               />
             )}
-            {type === "DefaultSso" && (
+            {type === 'DefaultSso' && (
               <Pagination
                 activePage={activePage}
                 pageRangeDisplayed={5}
@@ -1690,7 +1467,7 @@ function Table(props) {
 
 Table.propTypes = {
   headers: PropTypes.array,
-  data: PropTypes.array,
+  data: PropTypes.object,
 };
 
 export default withRouter(Table);

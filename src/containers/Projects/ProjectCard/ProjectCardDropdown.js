@@ -161,7 +161,7 @@ const ProjectCardDropdown = (props) => {
                 allLms.shareVendors.map(
                   (data) =>
                     data.lms_name !== "safarimontage" && (
-                      <li>
+                      <li key={data}>
                         <a
                           onClick={async () => {
                             const allPlaylist = await dispatch(

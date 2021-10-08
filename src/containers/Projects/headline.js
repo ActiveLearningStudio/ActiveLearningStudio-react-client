@@ -1,13 +1,13 @@
 /*eslint-disable*/
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { ProjectPage } from "../../containers/Projects/index.js";
 // import foldericon from "assets/images/sidebar/folder-icon.png";
-import foldericon from "assets/images/svg/projectFolder.svg";
-import { useSelector } from "react-redux";
-import { setCurrentVisibilityType } from "store/actions/project";
-import Headings from "curriki-design-system/dist/utils/Headings/headings";
+import foldericon from 'assets/images/svg/projectFolder.svg';
+import { useSelector } from 'react-redux';
+import { setCurrentVisibilityType } from 'store/actions/project';
+import Headings from 'curriki-design-system/dist/utils/Headings/headings';
 // import MyProjectsCreate from "./MyProjects";
 
 export default function Headline({ setCreateProject, seteditMode }) {
@@ -19,11 +19,7 @@ export default function Headline({ setCreateProject, seteditMode }) {
       <div className="project-headline">
         <div className="title">
           <div className="title-name-heading-image">
-            <Headings
-              text={`${currentOrganization?.name}`}
-              headingType="body2"
-              color="#084892"
-            />
+            <Headings text={`${currentOrganization?.name}`} headingType="body2" color="#084892" />
             <div className="heading-image">
               <img src={foldericon} alt="" />
               {/* Projects */}
@@ -39,9 +35,9 @@ export default function Headline({ setCreateProject, seteditMode }) {
           </Link>
         )} */}
           {/* Update The Code */}
-          {permission?.Project?.includes("project:create") && (
+          {permission?.Project?.includes('project:create') && (
             <Link
-              // to={`/org/${currentOrganization?.domain}/project/create`}
+              to="#"
               onClick={() => {
                 setCurrentVisibilityType(null);
                 seteditMode(false);
@@ -55,12 +51,7 @@ export default function Headline({ setCreateProject, seteditMode }) {
             </Link>
           )}
         </div>
-        <Headings
-          text="Create and organize your activities into projects to create complete courses."
-          headingType="body2"
-          color="#515151"
-          className="top-heading-detail"
-        />
+        <Headings text="Create and organize your activities into projects to create complete courses." headingType="body2" color="#515151" className="top-heading-detail" />
         {/* <p>
           In
           <strong> Projects </strong>
