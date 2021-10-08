@@ -1,5 +1,11 @@
 /* eslint-disable */
-import React, { useEffect, useRef, useCallback, useState } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useCallback,
+  useState,
+  useMemo,
+} from "react";
 import PropTypes from "prop-types";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -144,7 +150,7 @@ let CreateProjectPopup = (props) => {
       document.removeEventListener("keydown", escFunction, false);
     };
   }, [escFunction]);
-  useEffect(() => {
+  useMemo(() => {
     (async () => {
       const { data } = await getProjectVisibilityTypes();
       setVisibilityTypeArray(data.data);

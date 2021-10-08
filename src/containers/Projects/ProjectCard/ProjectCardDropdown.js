@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dropdown } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import { loadProjectAction, setSelectedProject } from "store/actions/project";
 import { getProjectId, googleShare } from "store/actions/gapi";
 import { cloneProject } from "store/actions/search";
 import {
@@ -29,6 +30,8 @@ const ProjectCardDropdown = (props) => {
     previewMode,
     // text,
     iconColor,
+    setCreateProject,
+    seteditMode,
   } = props;
   const ImgLoader = () => <img src={loader} />;
   const organization = useSelector((state) => state.organization);
@@ -69,7 +72,12 @@ const ProjectCardDropdown = (props) => {
           : permission?.Project?.includes("project:edit")) && (
           <Dropdown.Item
             as={Link}
-            to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/edit`}
+            onClick={() => {
+              setCreateProject(true);
+              seteditMode(true);
+              dispatch(setSelectedProject(project));
+            }}
+            // to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/edit`}
           >
             <FontAwesomeIcon icon="pen" className="mr-2" />
             Edit
@@ -153,7 +161,7 @@ const ProjectCardDropdown = (props) => {
                 allLms.shareVendors.map(
                   (data) =>
                     data.lms_name !== "safarimontage" && (
-                      <li key={data}>
+                      <li>
                         <a
                           onClick={async () => {
                             const allPlaylist = await dispatch(

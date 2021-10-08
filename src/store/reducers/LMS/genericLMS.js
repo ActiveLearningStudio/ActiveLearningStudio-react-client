@@ -48,7 +48,7 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.SAFARI_MONTAGE_LOAD_PUBLISH_TOOL:
       return {
         ...state,
-        safariMontagePublishTool: action.results.launch,
+        safariMontagePublishTool: encodeURI(action.results.launch),
         safariMontageErrors: [],
       };
 
