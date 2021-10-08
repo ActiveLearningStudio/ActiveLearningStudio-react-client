@@ -79,4 +79,4 @@ NewProjectPage.propTypes = {
   handleCloseProjectModal: PropTypes.func.isRequired,
 };
 
-export default withRouter(NewProjectPage);
+export default React.memo(withRouter(NewProjectPage));
