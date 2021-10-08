@@ -61,6 +61,7 @@ export const ProjectsPage = (props) => {
   const [searchTeamQuery, SetSearchTeamQuery] = useState('');
   const [createProject, setCreateProject] = useState(false);
   const [editMode, seteditMode] = useState(false);
+  const [noProjectAlert, setNoProjectAlert] = useState(false);
   const {
     ui,
     showPreview,
@@ -281,7 +282,10 @@ export const ProjectsPage = (props) => {
 
   useEffect(() => {
     if (allStateProject.projects.length > 0) {
+      setNoProjectAlert(false);
       toast.dismiss();
+    } else if (allProjects?.length === 0) {
+      setNoProjectAlert(true);
     }
     setAllProjects(allStateProject.projects);
     divideProjects(allStateProject.projects);
@@ -459,7 +463,7 @@ export const ProjectsPage = (props) => {
                             ))}
                           </DragDropContext>
                         </div>
-                      ) : (<Alert variant="warning">No Project found.</Alert>)}
+                      ) : noProjectAlert && (<Alert variant="warning">No Project found.</Alert>)}
                     </div>
                   </div>
                 </Tab>
