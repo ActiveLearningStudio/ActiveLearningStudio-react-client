@@ -39,13 +39,13 @@ const projectShare = true;
 const onSubmit = async (values, dispatch, props) => {
   const {
     history,
-    project: { thumbUrl },
+    project: { thumbUrl, selectedProject },
     editMode,
   } = props;
   const { name, description, vType } = values;
   if (editMode) {
     const result = await dispatch(
-      updateProjectAction(props.match.params.projectId, {
+      updateProjectAction(selectedProject?.id, {
         name,
         description,
         thumb_url: thumbUrl,
@@ -387,6 +387,8 @@ const mapStateToProps = (state) => ({
   isLoading: state.project.isLoading,
 });
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(CreateProjectPopup)
-);
+
+export default React.memo(withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(CreateProjectPopup),
+));
+

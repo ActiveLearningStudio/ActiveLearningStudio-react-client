@@ -91,11 +91,17 @@ const SampleProjectCard = (props) => {
                           <Link
                             to=""
                             onClick={() => {
-                              setSelectId(project.id);
                               setShowSampleSort(false);
-                              setSelectSampleId(project.id);
-                              setSelectFavId(project.id);
-                              setSelectedTeamProjectId(project.id);
+                              if (type === 'fav') {
+                                setSelectFavId(project.id);
+                                setSelectId(project.id);
+                              } else if (type === 'sample') {
+                                setSelectSampleId(project.id);
+                                setSelectId(project.id);
+                              } else if (type === 'team') {
+                                setSelectedTeamProjectId(project.id);
+                                setSelectId(project.id);
+                              }
                             }}
                           >
                             {project.name}
