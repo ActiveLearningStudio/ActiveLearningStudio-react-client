@@ -83,15 +83,15 @@ export default (state = INITIAL_STATE, action) => {
           ...state,
           isLoading: false,
           projects,
-          thumbUrl: null,
-          currentVisibilityType: null,
+          // thumbUrl: null,
+          // currentVisibilityType: null,
         };
       }
       return {
         ...state,
         isLoading: false,
         projects: [...projects, action.payload.project],
-        thumbUrl: null,
+        // thumbUrl: null,
       };
     case actionTypes.UPDATE_PROJECT_FAIL:
       return {
