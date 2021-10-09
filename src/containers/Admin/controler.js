@@ -261,7 +261,7 @@ function Controller(props) {
 
               <Dropdown.Menu>
                 {roles?.map((head) => (
-                  <div className="group">
+                  <div key={head} className="group">
                     <Dropdown.Item
                       onClick={() => {
                         setActiveRoleInComponent(head.display_name);
@@ -405,7 +405,7 @@ function Controller(props) {
           <img src={searchimg} alt="search" />
         </div>
       )}
-      
+
       {!!search && type === "DefaultSso" && (
         <div className="search-bar">
           <input

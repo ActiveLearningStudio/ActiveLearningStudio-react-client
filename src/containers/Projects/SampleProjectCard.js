@@ -1,18 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { Dropdown } from 'react-bootstrap';
-import Swal from 'sweetalert2';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+/* eslint-disable */
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Dropdown } from "react-bootstrap";
+import Swal from "sweetalert2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { deleteFavObj, toggleProjectShareAction, getProjectCourseFromLMS } from 'store/actions/project';
-import { cloneProject } from 'store/actions/search';
-import ProjectPreviewShared from 'containers/Preview/ProjectPreview/ProjectPreviewShared';
-import MyVerticallyCenteredModal from 'components/models/activitySample';
-import SharePreviewPopup from 'components/SharePreviewPopup';
-import { lmsPlaylist } from 'store/actions/playlist';
-import { getProjectId } from 'store/actions/gapi';
+import {
+  deleteFavObj,
+  toggleProjectShareAction,
+  getProjectCourseFromLMS,
+} from "store/actions/project";
+import { cloneProject } from "store/actions/search";
+import ProjectPreviewShared from "containers/Preview/ProjectPreview/ProjectPreviewShared";
+import MyVerticallyCenteredModal from "components/models/activitySample";
+import SharePreviewPopup from "components/SharePreviewPopup";
+import { lmsPlaylist } from "store/actions/playlist";
+import { getProjectId } from "store/actions/gapi";
 
 const SampleProjectCard = (props) => {
   const {
@@ -65,7 +70,9 @@ const SampleProjectCard = (props) => {
                     <div
                       className="project-thumb"
                       style={{
-                        backgroundImage: project.thumb_url.includes('pexels.com')
+                        backgroundImage: project.thumb_url.includes(
+                          "pexels.com"
+                        )
                           ? `url(${project.thumb_url})`
                           : `url(${global.config.resourceUrl}${project.thumb_url})`,
                       }}
@@ -73,12 +80,16 @@ const SampleProjectCard = (props) => {
                   )}
                 </div>
 
-                <div className="program-content" style={{ padding: '10px 15px' }}>
+                <div
+                  className="program-content"
+                  style={{ padding: "10px 15px" }}
+                >
                   <div>
                     <div className="row">
                       <div className="col-md-10">
                         <h3 className="program-title">
                           <Link
+                            to=""
                             onClick={() => {
                               setShowSampleSort(false);
                               if (type === 'fav') {
@@ -108,13 +119,13 @@ const SampleProjectCard = (props) => {
                             <Dropdown.Item
                               as={Link}
                               onClick={() => {
-                                if (type === 'fav') {
+                                if (type === "fav") {
                                   setSelectFavId(project.id);
                                   setSelectId(project.id);
-                                } else if (type === 'sample') {
+                                } else if (type === "sample") {
                                   setSelectSampleId(project.id);
                                   setSelectId(project.id);
-                                } else if (type === 'team') {
+                                } else if (type === "team") {
                                   setSelectedTeamProjectId(project.id);
                                   setSelectId(project.id);
                                 }
@@ -123,69 +134,91 @@ const SampleProjectCard = (props) => {
                               <FontAwesomeIcon icon="eye" className="mr-2" />
                               Preview
                             </Dropdown.Item>
-                            {permission?.Project?.includes('project:share') && type === 'team' && (
-                              <Dropdown.Item
-                                to="#"
-                                onClick={async () => {
-                                  const protocol = `${window.location.href.split('/')[0]}//`;
-                                  const url = `${protocol + window.location.host}/project/${project.id}/shared`;
-                                  if (!project.shared) {
-                                    Swal.showLoading();
-                                    await dispatch(toggleProjectShareAction(project.id, project.name));
-                                    Swal.close();
-                                    SharePreviewPopup(url, project.name);
-                                  } else {
-                                    SharePreviewPopup(url, project.name);
-                                  }
-                                }}
-                              >
-                                <FontAwesomeIcon icon="share" className="mr-2" />
-                                Share
-                              </Dropdown.Item>
-                            )}
-                            {permission?.Project?.includes('project:publish') && type === 'team' && (
-                              <li className="dropdown-submenu send">
-                                <a tabIndex="-1">
-                                  <FontAwesomeIcon icon="newspaper" className="mr-2" />
-                                  Publish
-                                </a>
-                                <ul className="dropdown-menu check">
-                                  <li
-                                    onClick={() => {
-                                      handleShow();
-                                      getProjectId(project.id);
-                                      setProjectId(project.id);
-                                    }}
-                                  >
-                                    <a>Google Classroom</a>
-                                  </li>
+                            {permission?.Project?.includes("project:share") &&
+                              type === "team" && (
+                                <Dropdown.Item
+                                  to="#"
+                                  onClick={async () => {
+                                    const protocol = `${
+                                      window.location.href.split("/")[0]
+                                    }//`;
+                                    const url = `${
+                                      protocol + window.location.host
+                                    }/project/${project.id}/shared`;
+                                    if (!project.shared) {
+                                      Swal.showLoading();
+                                      await dispatch(
+                                        toggleProjectShareAction(
+                                          project.id,
+                                          project.name
+                                        )
+                                      );
+                                      Swal.close();
+                                      SharePreviewPopup(url, project.name);
+                                    } else {
+                                      SharePreviewPopup(url, project.name);
+                                    }
+                                  }}
+                                >
+                                  <FontAwesomeIcon
+                                    icon="share"
+                                    className="mr-2"
+                                  />
+                                  Share
+                                </Dropdown.Item>
+                              )}
+                            {permission?.Project?.includes("project:publish") &&
+                              type === "team" && (
+                                <li className="dropdown-submenu send">
+                                  <a tabIndex="-1">
+                                    <FontAwesomeIcon
+                                      icon="newspaper"
+                                      className="mr-2"
+                                    />
+                                    Publish
+                                  </a>
+                                  <ul className="dropdown-menu check">
+                                    <li
+                                      onClick={() => {
+                                        handleShow();
+                                        getProjectId(project.id);
+                                        setProjectId(project.id);
+                                      }}
+                                    >
+                                      <a>Google Classroom</a>
+                                    </li>
 
-                                  {allLms?.shareVendors && allLms.shareVendors.map((data) => (
-                                    data.lms_name !== 'safarimontage' && (
-                                      <li>
-                                        <a
-                                          onClick={async () => {
-                                            const allPlaylist = await dispatch(lmsPlaylist(project.id));
-                                            if (allPlaylist) {
-                                              dispatch(
-                                                getProjectCourseFromLMS(
-                                                  data.lms_name.toLowerCase(),
-                                                  data.id,
-                                                  project.id,
-                                                  allPlaylist.playlists,
-                                                  data.lms_url,
-                                                ),
-                                              );
-                                            }
-                                          }}
-                                        >
-                                          {data.site_name}
-                                        </a>
-                                      </li>
-                                    )))}
-                                </ul>
-                              </li>
-                            )}
+                                    {allLms?.shareVendors &&
+                                      allLms.shareVendors.map(
+                                        (data, key) =>
+                                          data.lms_name !== "safarimontage" && (
+                                            <li key={key}>
+                                              <a
+                                                onClick={async () => {
+                                                  const allPlaylist = await dispatch(
+                                                    lmsPlaylist(project.id)
+                                                  );
+                                                  if (allPlaylist) {
+                                                    dispatch(
+                                                      getProjectCourseFromLMS(
+                                                        data.lms_name.toLowerCase(),
+                                                        data.id,
+                                                        project.id,
+                                                        allPlaylist.playlists,
+                                                        data.lms_url
+                                                      )
+                                                    );
+                                                  }
+                                                }}
+                                              >
+                                                {data.site_name}
+                                              </a>
+                                            </li>
+                                          )
+                                      )}
+                                  </ul>
+                                </li>
+                              )}
                             <Dropdown.Item
                               to="#"
                               onClick={() => {
@@ -197,37 +230,40 @@ const SampleProjectCard = (props) => {
                               Duplicate
                             </Dropdown.Item>
 
-                            {type === 'fav' && (
+                            {type === "fav" && (
                               <Dropdown.Item
                                 to="#"
-                                onClick={() => dispatch(deleteFavObj(project.id))}
+                                onClick={() =>
+                                  dispatch(deleteFavObj(project.id))
+                                }
                               >
-                                <FontAwesomeIcon icon="times-circle" className="mr-2" />
+                                <FontAwesomeIcon
+                                  icon="times-circle"
+                                  className="mr-2"
+                                />
                                 Remove
                               </Dropdown.Item>
                             )}
                           </Dropdown.Menu>
                         </Dropdown>
                       </div>
-
                     </div>
 
                     <div className="lessons-duration">
                       <div className="row">
                         <div className="col-md-12">
-                          <p>
-                            {type === 'team' && (
+                          <div>
+                            {type === "team" && (
                               <div>
                                 Team Name:
-                                <strong>
-                                  {` ${project?.team?.name}`}
-                                </strong>
+                                <strong>{` ${project?.team?.name}`}</strong>
                               </div>
                             )}
-                            {project.description && project.description.length > 130
+                            {project.description &&
+                            project.description.length > 130
                               ? `${project.description.substring(0, 130)} ...`
                               : project.description}
-                          </p>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -249,21 +285,21 @@ const SampleProjectCard = (props) => {
             Back
           </div>
 
-          {type === 'fav' && activeTab === 'Favorite Projects' && (
+          {type === "fav" && activeTab === "Favorite Projects" && (
             <ProjectPreviewShared
               sampleId={selectFavId}
               setModalShow={setModalShow}
               setCurrentActivity={setCurrentActivity}
             />
           )}
-          {type === 'sample' && activeTab === 'Sample Projects' && (
+          {type === "sample" && activeTab === "Sample Projects" && (
             <ProjectPreviewShared
               sampleId={selectSampleId}
               setModalShow={setModalShow}
               setCurrentActivity={setCurrentActivity}
             />
           )}
-          {type === 'team' && activeTab === 'Team Projects' && (
+          {type === "team" && activeTab === "Team Projects" && (
             <ProjectPreviewShared
               sampleId={selectTeamProjectId}
               setModalShow={setModalShow}
@@ -286,8 +322,8 @@ SampleProjectCard.propTypes = {
   type: PropTypes.string.isRequired,
   setShowSampleSort: PropTypes.func.isRequired,
   activeTab: PropTypes.string.isRequired,
-  handleShow: PropTypes.func.isRequired,
-  setProjectId: PropTypes.func.isRequired,
+  handleShow: PropTypes.func,
+  setProjectId: PropTypes.func,
 };
 
 export default SampleProjectCard;

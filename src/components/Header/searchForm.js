@@ -1,37 +1,42 @@
-/* eslint-disable no-param-reassign */
-import React, { useState, useEffect, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import Swal from 'sweetalert2';
-import { Dropdown } from 'react-bootstrap';
-import { Formik } from 'formik';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+/* eslint-disable */
+import React, { useState, useEffect, useRef } from "react";
+import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import { Dropdown } from "react-bootstrap";
+import { Formik } from "formik";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { simpleSearchAction } from 'store/actions/search';
-import { getActivityItems, loadResourceTypesAction } from 'store/actions/resource';
+import { simpleSearchAction } from "store/actions/search";
+import {
+  getActivityItems,
+  loadResourceTypesAction,
+} from "store/actions/resource";
 import {
   educationLevels,
   subjects,
-} from 'components/ResourceCard/AddResource/dropdownData';
-import { getUserReport } from 'store/actions/admin';
+} from "components/ResourceCard/AddResource/dropdownData";
+import { getUserReport } from "store/actions/admin";
 
 function SearchForm() {
   const history = useHistory();
   const dispatcher = useDispatch();
 
-  const [simpleSearch, setSimpleSearch] = useState();
+  const [simpleSearch, setSimpleSearch] = useState("");
   const [activityTypes, setActivityTypes] = useState([]);
   const [value, setValue] = useState(0);
   const activityTypesState = useSelector((state) => state.resource.types);
   const searchState = useSelector((state) => state.search);
   const auth = useSelector((state) => state.auth);
-  const { currentOrganization, permission } = useSelector((state) => state.organization);
+  const { currentOrganization, permission } = useSelector(
+    (state) => state.organization
+  );
 
   useEffect(() => {
     if (activityTypesState.length === 0 && auth?.user) {
       dispatcher(loadResourceTypesAction());
       dispatcher(getActivityItems());
-      dispatcher(getUserReport('all'));
+      dispatcher(getUserReport("all"));
     }
   }, []);
 
@@ -51,10 +56,12 @@ function SearchForm() {
 
   useEffect(() => {
     const allItems = [];
-    activityTypesState?.map((data) => data?.activityItems?.map((itm) => allItems.push(itm)));
+    activityTypesState?.map((data) =>
+      data?.activityItems?.map((itm) => allItems.push(itm))
+    );
     setActivityTypes(allItems.sort(compare));
     if (searchState?.searchQuery !== simpleSearch) {
-      setSimpleSearch('');
+      setSimpleSearch("");
     }
   }, [activityTypesState, searchState.searchQuery]);
 
@@ -71,33 +78,41 @@ function SearchForm() {
           }}
           ref={closeModel}
           onKeyPress={(e) => {
-            if (e.key === 'Enter') {
+            if (e.key === "Enter") {
               if (!simpleSearch.trim()) {
-                Swal.fire('Search field is required');
+                Swal.fire("Search field is required");
               } else if (simpleSearch.length > 255) {
-                Swal.fire('Character limit should be less than 255 ');
-              } else if (permission?.Search?.includes('search:advance')) {
+                Swal.fire("Character limit should be less than 255 ");
+              } else if (permission?.Search?.includes("search:advance")) {
                 const searchData = {
                   phrase: simpleSearch.trim(),
                   from: 0,
                   size: 20,
-                  type: 'public',
+                  type: "public",
                 };
                 dispatcher(simpleSearchAction(searchData));
-                localStorage.setItem('loading', 'true');
-                history.push(`/org/${currentOrganization?.domain}/search?q=${simpleSearch.trim()}&type=public`);
-                localStorage.setItem('refreshPage', false);
-              } else if (permission?.Search?.includes('search:dashboard')) {
+                localStorage.setItem("loading", "true");
+                history.push(
+                  `/org/${
+                    currentOrganization?.domain
+                  }/search?q=${simpleSearch.trim()}&type=public`
+                );
+                localStorage.setItem("refreshPage", false);
+              } else if (permission?.Search?.includes("search:dashboard")) {
                 const searchData = {
                   phrase: simpleSearch.trim(),
                   from: 0,
                   size: 20,
-                  type: 'private',
+                  type: "private",
                 };
                 dispatcher(simpleSearchAction(searchData));
-                localStorage.setItem('loading', 'true');
-                history.push(`/org/${currentOrganization?.domain}/search?q=${simpleSearch.trim()}&type=private`);
-                localStorage.setItem('refreshPage', false);
+                localStorage.setItem("loading", "true");
+                history.push(
+                  `/org/${
+                    currentOrganization?.domain
+                  }/search?q=${simpleSearch.trim()}&type=private`
+                );
+                localStorage.setItem("refreshPage", false);
               }
             }
             return true;
@@ -114,18 +129,18 @@ function SearchForm() {
           <h4>Advanced Search</h4>
           <Formik
             initialValues={{
-              phrase: '',
+              phrase: "",
               subjectArray: [],
               author: [],
-              subject: '',
-              grade: '',
+              subject: "",
+              grade: "",
               gradeArray: [],
-              standard: '',
+              standard: "",
               standardArray: [],
-              email: '',
-              words: '',
+              email: "",
+              words: "",
               no_words: undefined,
-              type: 'public',
+              type: "public",
               toDate: undefined,
               fromDate: undefined,
               from: 0,
@@ -134,15 +149,16 @@ function SearchForm() {
             }}
             validate={(values) => {
               const errors = {};
-              if (!values.phrase && values.type !== 'orgSearch') {
-                errors.phrase = 'required';
+              if (!values.phrase && values.type !== "orgSearch") {
+                errors.phrase = "required";
               }
               if (values.fromDate && values.toDate) {
-                if (values.fromDate > values.toDate) errors.dateError = 'Invalid Date Format';
+                if (values.fromDate > values.toDate)
+                  errors.dateError = "Invalid Date Format";
               }
               if (values.fromDate) {
                 if (!values.toDate) {
-                  errors.toDate = 'To Date required';
+                  errors.toDate = "To Date required";
                 }
               }
               return errors;
@@ -153,8 +169,10 @@ function SearchForm() {
               // values.standardArray.filter((h5p) => h5pNameArray.push(h5p.value));
               // values.standardArray = h5pNameArray;
               // eslint-disable-next-line max-len
-              history.push(`/org/${currentOrganization?.domain}/search?q=${values.phrase}&type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${values.standardArray}&fromDate=${values.fromDate}&toDate=${values.toDate}&author=${values.author}`);
-              localStorage.setItem('refreshPage', false);
+              history.push(
+                `/org/${currentOrganization?.domain}/search?q=${values.phrase}&type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${values.standardArray}&fromDate=${values.fromDate}&toDate=${values.toDate}&author=${values.author}`
+              );
+              localStorage.setItem("refreshPage", false);
               // const allSubjects = values.subjectArray;
               // values.subjectArray = allSubjects.forEach((subject) => {
               //   if (subject.includes('and')) {
@@ -201,52 +219,54 @@ function SearchForm() {
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <div className="radio-btns">
-                    {permission?.Search?.includes('search:dashboard')
-                      && (
-                        <label>
-                          <input
-                            name="type"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value="private"
-                            checked={values.type === 'private'}
-                            type="radio"
-                          />
-                          <span>Search My Projects</span>
-                        </label>
-                      )}
-                    {permission?.Search?.includes('search:advance')
-                      && (
-                        <label>
-                          <input
-                            name="type"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value="public"
-                            checked={values.type === 'public'}
-                            type="radio"
-                          />
-                          <span>Search Project Showcase</span>
-                        </label>
-                      )}
-                    {permission?.Search?.includes('search:advance')
-                      && (
-                        <label>
-                          <input
-                            name="type"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value="orgSearch"
-                            checked={values.type === 'orgSearch'}
-                            type="radio"
-                          />
-                          <span>Search All Projects in Organization</span>
-                        </label>
-                      )}
+                    {permission?.Search?.includes("search:dashboard") && (
+                      <label>
+                        <input
+                          name="type"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value="private"
+                          checked={values.type === "private"}
+                          type="radio"
+                        />
+                        <span>Search My Projects</span>
+                      </label>
+                    )}
+                    {permission?.Search?.includes("search:advance") && (
+                      <label>
+                        <input
+                          name="type"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value="public"
+                          checked={values.type === "public"}
+                          type="radio"
+                        />
+                        <span>Search Project Showcase</span>
+                      </label>
+                    )}
+                    {permission?.Search?.includes("search:advance") && (
+                      <label>
+                        <input
+                          name="type"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value="orgSearch"
+                          checked={values.type === "orgSearch"}
+                          type="radio"
+                        />
+                        <span>Search All Projects in Organization</span>
+                      </label>
+                    )}
                   </div>
                 </div>
 
-                <div className="form-group" style={{ display: values.type === 'orgSearch' ? 'none' : 'block' }}>
+                <div
+                  className="form-group"
+                  style={{
+                    display: values.type === "orgSearch" ? "none" : "block",
+                  }}
+                >
                   <input
                     name="phrase"
                     placeholder="Enter search phrase"
@@ -266,12 +286,14 @@ function SearchForm() {
                     onChange={(e) => {
                       handleChange(e);
                       let updatedValue = e.target.value;
-                      if (updatedValue.includes('&')) {
-                        updatedValue = e.target.value.replace('&', 'and');
+                      if (updatedValue.includes("&")) {
+                        updatedValue = e.target.value.replace("&", "and");
                         if (!values.subjectArray.includes(updatedValue)) {
                           values.subjectArray.push(updatedValue);
                         }
-                      } else if (!values.subjectArray.includes(e.target.value)) {
+                      } else if (
+                        !values.subjectArray.includes(e.target.value)
+                      ) {
                         values.subjectArray.push(e.target.value);
                       }
                     }}
@@ -279,7 +301,7 @@ function SearchForm() {
                     value={values.subject}
                   >
                     <option value="" disabled selected hidden>
-                      {' '}
+                      {" "}
                       Subject + Subject Area
                     </option>
                     {subjects.map((data) => (
@@ -299,7 +321,9 @@ function SearchForm() {
                           className="iocns"
                           onClick={() => {
                             // eslint-disable-next-line no-param-reassign
-                            values.subjectArray = values.subjectArray.filter((index) => index !== data);
+                            values.subjectArray = values.subjectArray.filter(
+                              (index) => index !== data
+                            );
                             setValue(value + 1);
                           }}
                         >
@@ -317,8 +341,8 @@ function SearchForm() {
                     onChange={(e) => {
                       handleChange(e);
                       let updatedValue = e.target.value;
-                      if (updatedValue.includes('&')) {
-                        updatedValue = e.target.value.replace('&', 'and');
+                      if (updatedValue.includes("&")) {
+                        updatedValue = e.target.value.replace("&", "and");
                         if (!values.gradeArray.includes(updatedValue)) {
                           values.gradeArray.push(updatedValue);
                         }
@@ -328,7 +352,9 @@ function SearchForm() {
                     }}
                     value={values.grade}
                   >
-                    <option value="" disabled selected hidden>Education Level</option>
+                    <option value="" disabled selected hidden>
+                      Education Level
+                    </option>
                     {educationLevels.map((data) => (
                       <option key={data.value} value={data.name}>
                         {data.name}
@@ -346,7 +372,9 @@ function SearchForm() {
                           className="iocns"
                           onClick={() => {
                             // eslint-disable-next-line no-param-reassign
-                            values.gradeArray = values.gradeArray.filter((index) => index !== data);
+                            values.gradeArray = values.gradeArray.filter(
+                              (index) => index !== data
+                            );
                             setValue(value + 1);
                           }}
                         >
@@ -363,38 +391,42 @@ function SearchForm() {
                     placeholder="Standard"
                     onChange={(e) => {
                       handleChange(e);
-                    //   const nameSelected = activityTypes.filter((data) => {
-                    //     if (data.h5pLib === e.target.value) {
-                    //       return data;
-                    //     }
-                    //     return false;
-                    //   });
-                    //   let found = true;
-                    //   values.standardArray.map((data) => {
-                    //     if (data.value === e.target.value) {
-                    //       found = false;
-                    //     }
-                    //     return true;
-                    //   });
-                    //   if (found) {
-                    //     values.standardArray.push({ value: e.target.value, name: nameSelected[0].title });
-                    //   }
-                    // }}
-                    // onBlur={handleBlur}
-                    // value={values.standard}
-                    let updateValue = e.target.value;
-                    if (updateValue.includes('&')) {
-                      updateValue = e.target.value.replace('&', 'and');
-                      if (!values.standardArray.includes(updateValue)) {
-                        values.standardArray.push(updateValue);
+                      //   const nameSelected = activityTypes.filter((data) => {
+                      //     if (data.h5pLib === e.target.value) {
+                      //       return data;
+                      //     }
+                      //     return false;
+                      //   });
+                      //   let found = true;
+                      //   values.standardArray.map((data) => {
+                      //     if (data.value === e.target.value) {
+                      //       found = false;
+                      //     }
+                      //     return true;
+                      //   });
+                      //   if (found) {
+                      //     values.standardArray.push({ value: e.target.value, name: nameSelected[0].title });
+                      //   }
+                      // }}
+                      // onBlur={handleBlur}
+                      // value={values.standard}
+                      let updateValue = e.target.value;
+                      if (updateValue.includes("&")) {
+                        updateValue = e.target.value.replace("&", "and");
+                        if (!values.standardArray.includes(updateValue)) {
+                          values.standardArray.push(updateValue);
+                        }
+                      } else if (
+                        !values.standardArray.includes(e.target.value)
+                      ) {
+                        values.standardArray.push(e.target.value);
                       }
-                    } else if (!values.standardArray.includes(e.target.value)) {
-                      values.standardArray.push(e.target.value);
-                    }
-                  }}
+                    }}
                     value={values.standard}
                   >
-                    <option value="" disabled selected hidden>Type of Activity</option>
+                    <option value="" disabled selected hidden>
+                      Type of Activity
+                    </option>
                     {activityTypes.map((data) => (
                       <option key={data.id} value={data.h5pLib}>
                         {data.title}
@@ -412,7 +444,9 @@ function SearchForm() {
                           className="iocns"
                           onClick={() => {
                             // eslint-disable-next-line no-param-reassign
-                            values.standardArray = values.standardArray.filter((index) => index !== data);
+                            values.standardArray = values.standardArray.filter(
+                              (index) => index !== data
+                            );
                             setValue(value + 1);
                           }}
                         >
@@ -433,7 +467,7 @@ function SearchForm() {
                     max="2050-12-31"
                     value={values.fromDate}
                     onFocus={(e) => {
-                      e.target.type = 'date';
+                      e.target.type = "date";
                     }}
                   />
                   <input
@@ -445,11 +479,14 @@ function SearchForm() {
                     min="2005-01-01"
                     max="2050-12-31"
                     onFocus={(e) => {
-                      e.target.type = 'date';
+                      e.target.type = "date";
                     }}
                   />
                 </div>
-                <div className="error" style={{ color: 'red', marginTop: '-15px' }}>
+                <div
+                  className="error"
+                  style={{ color: "red", marginTop: "-15px" }}
+                >
                   {errors.toDate && errors.toDate && errors.toDate}
                   {errors.dateError}
                 </div>
@@ -471,7 +508,17 @@ function SearchForm() {
                     value={values.words}
                   />
                 </div> */}
-                <div className="form-group" style={{ display: permission?.Organization?.includes('organization:view-user') && values.type !== 'private' ? 'block' : 'none' }}>
+                <div
+                  className="form-group"
+                  style={{
+                    display:
+                      permission?.Organization?.includes(
+                        "organization:view-user"
+                      ) && values.type !== "private"
+                        ? "block"
+                        : "none",
+                  }}
+                >
                   <input
                     name="author"
                     placeholder="Enter author name"

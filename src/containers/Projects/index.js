@@ -356,8 +356,9 @@ export const ProjectsPage = (props) => {
   //     setTabToggle(false);
   //   }
   // };
-  console.log(teamProjects);
+
   const { showDeletePlaylistPopup } = ui;
+
   return (
     <>
       <div className={`content-wrapper ${activeFilter}`}>
@@ -671,8 +672,8 @@ export const ProjectsPage = (props) => {
                       <Pagination
                         activePage={activePage}
                         pageRangeDisplayed={5}
-                        itemsCountPerPage={meta?.per_page}
-                        totalItemsCount={meta?.total}
+                        itemsCountPerPage={parseInt(meta?.per_page)}
+                        totalItemsCount={parseInt(meta?.total)}
                         onChange={(e) => {
                           // setCurrentTab("index");
                           window.scrollTo(0, 0);
