@@ -22,6 +22,7 @@ const AddActivity = (props) => {
   const { layout, selectedLayout, activity } = useSelector((state) => state.myactivities);
   const [modalShow, setModalShow] = useState(false);
   const [upload, setupload] = useState(false);
+	const [activeRadio, setActiveRadio] = useState('');
 
   const [title, setTitle] = useState('');
   const [successMessage, setSuccessMessage] = useState(false);
@@ -86,20 +87,23 @@ const AddActivity = (props) => {
         )}
 
         <form className="radio-group">
-          <div className="radio-button">
+          <div className={activtyMethod !== 'upload'? "radio-button active-radio": "radio-button"}>
             <input
               onClick={() => {
-                changeScreenHandler('layout', 'create');
+                changeScreenHandler('addactivity', 'create');
               }}
               name="selecttype"
               type="radio"
               className="input"
               id="Create new activity"
+							checked={activtyMethod !== 'upload'? true :  false}
             />
             <label for="Create new activity">Create new activity</label>
           </div>
-          <div className="radio-button active-radio ">
-            <input name="selecttype" type="radio" className="input" checked id="Upload activity" />
+          <div className={activtyMethod === 'upload'? "radio-button active-radio": "radio-button"}>
+            <input onClick={() => {
+                changeScreenHandler('addactivity', 'upload');
+              }} name="selecttype" type="radio" className="input" checked={activtyMethod === 'upload'? true :  false} id="Upload activity" />
             <label for="Upload activity">Upload activity</label>
           </div>
         </form>
@@ -179,50 +183,30 @@ const AddActivity = (props) => {
           <div className="add-activity-layout-videoTag">
             <HeadingThree text={activtyMethod === 'upload' ? 'Upload Activities' : 'Add Activities'} color="#084892" className="layout-add-activity-title" />
 
-            <HeadingText text="Start adding activities by opening the editor. Once you finish, hit the Save & close button to see your results." color="#515151" />
-            <div className="add-activity-btns">
+            <HeadingText text={activtyMethod === 'upload' ? "Upload an activity from an existing H5P file.":"Start adding activities by opening the editor. Once you finish, hit the Create & close button to see your results."} color="#515151" />
+            
               {activtyMethod !== 'upload' && (
-                <Buttons
-                  text="Open editor"
-                  primary={true}
-                  width="142px"
-                  height="35px"
-                  onClick={() => {
-                    formRef.current.handleSubmit();
-                    if (formRef.current.values.title) {
-                      setModalShow(true);
-                    }
-                  }}
-                  hover={true}
-                  className="mr-10"
-                />
+								<div className="add-activity-btns">
+									<Buttons
+										text="Open editor"
+										primary={true}
+										width="142px"
+										height="35px"
+										onClick={() => {
+											formRef.current.handleSubmit();
+											if (formRef.current.values.title) {
+												setModalShow(true);
+											}
+										}}
+										hover={true}
+										className="mr-10"
+									/>
+						    </div>
               )}
-              {activtyMethod === 'upload' && (
-                <Buttons
-                  icon={existingActivity ? faAngleUp : faAngleDown}
-                  text="Upload existing Activity"
-                  secondary={true}
-                  width="200px"
-                  height="36px"
-                  // disabled={layout ? false : true}
-                  // onClick={() => changeScreenHandler("uploadinteractivevideo")}
-                  onClick={() => {
-                    formRef.current.handleSubmit();
-                    if (formRef.current.values.title) {
-                      setExistingActivity(!existingActivity);
-                    }
-                  }}
-                  hover={true}
-                />
-              )}
-            </div>
-            {existingActivity && (
-              <div className="existing-activity-dialog">
-                <UploadFile metadata={formData} />
 
-                <div style={{ marginTop: '30px' }}>
-                  <Buttons text="upload" primary={true} width="142px" height="35px" hover={true} onClick={() => changeScreenHandler('')} />
-                </div>
+            {activtyMethod === 'upload'  && (
+              <div className="existing-activity-dialog">
+                <UploadFile metadata={formData} formRef={formRef} />
               </div>
             )}
 
