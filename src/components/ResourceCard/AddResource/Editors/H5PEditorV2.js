@@ -229,7 +229,7 @@ const H5PEditor = (props) => {
             </div>
             <div className="save-close">
               <Buttons
-                text="Save & Close"
+                text="Create & Close"
                 width="151px"
                 primary
                 onClick={() => {

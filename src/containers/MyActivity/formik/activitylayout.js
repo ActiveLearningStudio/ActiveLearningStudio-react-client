@@ -67,6 +67,10 @@ const ActivityLayout = (props) => {
             onClick={() => {
               changeScreenHandler('addactivity', 'upload');
               setActiveRadio('upload');
+							dispatch({
+								type: actionTypes.SET_SELECTED_ACTIVITY,
+								payload: layout,
+							});
             }}
             name="selecttype"
             type="radio"

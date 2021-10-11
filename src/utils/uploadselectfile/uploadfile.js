@@ -11,26 +11,33 @@ import { createResourceByH5PUploadAction } from "store/actions/resource";
 import { useSelector, useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 
-const UploadFile = ({ className, metadata }) => {
+const UploadFile = ({ className, metadata, formRef }) => {
   const { selectedLayout, playlist, project } = useSelector(
     (state) => state.myactivities
   );
+	console.log('formRef', formRef)
   const imgUpload = useRef();
   const dispatch = useDispatch();
   const currikiUtility = classNames("curriki-utility-uploadfile", className);
   return (
     <>
       <div className={currikiUtility}>
-        <h3>Load saved activity</h3>
+       
         <div className="uploadfile-box">
-          <button onClick={() => imgUpload.current.click()}>
+          <button onClick={() => {
+						 formRef.current.handleSubmit();
+						 if (formRef.current.values.title) {
+							imgUpload.current.click()
+						 }
+						  
+						}}>
             <FontAwesomeIcon icon={faUpload} className="curriki_btn-mr-2" />
             Select File
           </button>
           <div className="uploadfile-option">
             <img src={UploadImg} alt="" />
             <p>
-              Drag & Drop File or <span className="upload-browse">browse</span>{" "}
+              Drag & Drop File or browse
               to upload
             </p>
             <input
@@ -55,8 +62,8 @@ const UploadFile = ({ className, metadata }) => {
                 dispatch(
                   createResourceByH5PUploadAction(
                     playlist.id,
-                    selectedLayout.h5pLib,
-                    selectedLayout.type,
+                    selectedLayout?.h5pLib,
+                    'h5p',
                     payload,
                     metadata,
                     project

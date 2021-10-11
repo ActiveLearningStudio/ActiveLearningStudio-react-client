@@ -503,6 +503,10 @@ export const createResourceByH5PUploadAction = (
         playlistId
       );
       toast.dismiss();
+			dispatch({
+				type: "SET_ACTIVE_ACTIVITY_SCREEN",
+				payload: "",
+			});
       toast.success("Activity Uploaded", {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 4000,

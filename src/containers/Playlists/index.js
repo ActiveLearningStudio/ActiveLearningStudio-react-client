@@ -386,7 +386,7 @@ function PlaylistsPage(props) {
                   </div>
                   <div className="new-playlist">
                     {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:add-playlist') : permission?.Playlist?.includes('playlist:create')) && (
-                      <button type="button" className="create-playlist-btn" onClick={handleShowCreatePlaylistModal}>
+                      <button style={{whiteSpace: 'nowrap'}} type="button" className="create-playlist-btn" onClick={handleShowCreatePlaylistModal}>
                         <FontAwesomeIcon icon="plus" className="mr-2" />
                         New playlist
                       </button>
@@ -416,7 +416,7 @@ function PlaylistsPage(props) {
                                 color: checked ? '#333' : '$mine-shaft',
                               }}
                             >
-                              &nbsp;Enable external link
+                              &nbsp; Showcase
                             </span>
                           </div>
                         </div>
