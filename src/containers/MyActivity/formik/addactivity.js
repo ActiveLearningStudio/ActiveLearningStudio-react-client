@@ -260,7 +260,7 @@ const AddActivity = (props) => {
 
                 <div style={{ marginTop: "30px" }}>
                   <Buttons
-                    text="upload"
+                    text="Upload"
                     primary={true}
                     width="142px"
                     height="35px"

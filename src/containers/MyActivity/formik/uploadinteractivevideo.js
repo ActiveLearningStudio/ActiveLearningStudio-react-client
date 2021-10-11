@@ -7,19 +7,15 @@ import UploadFile from "utils/uploadselectfile/uploadfile";
 
 const UploadInteractiveVideo = (props) => {
   const dispatch = useDispatch();
-    return (
+  return (
     <>
       <div className="interactive-activity-form">
-        
-       
-       
         <div className="interactive-load-save-activity">
           <UploadFile />
         </div>
-
         <div className="interactive-activity-btns">
           <Buttons
-            text="upload"
+            text="Upload"
             primary={true}
             width="142px"
             height="35px"
@@ -30,7 +26,6 @@ const UploadInteractiveVideo = (props) => {
               });
             }}
           />
-          
         </div>
       </div>
     </>
