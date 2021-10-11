@@ -10,8 +10,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Swal from "sweetalert2";
 import { Alert, Modal } from "react-bootstrap";
 import Switch from "react-switch";
-import foldericon from "assets/images/svg/projectFolder.svg";
+import Dropdown from 'react-bootstrap/Dropdown'
+import DropdownButton from 'react-bootstrap/DropdownButton'
+
+import PlaylistImage from "../../assets/images/Playlist.png";
 import Headings from "curriki-design-system/dist/utils/Headings/headings";
+
 import {
   createPlaylistAction,
   deletePlaylistAction,
@@ -423,17 +427,21 @@ function PlaylistsPage(props) {
                       ? `Team Name: ${selectedProject?.team?.name}`
                       : null}
                   </div>
-                  <div className="col playlist-page-project-title project-each-view">
-                    <div className="flex-se">
-                      <div>
-                        <Headings
+                  <Headings
                             text={`${organization?.currentOrganization?.name}`}
                           headingType="body2"
                           color="#084892"
+                          className="mb-3"
                         />
-                        <div style={{ display: "flex" }}>
+                  <div className="col playlist-page-project-title project-each-view">
+                  
+                    <div className="flex-se">
+
+                      <div>
+                        
+                        <div style={{ display: "flex"}}>
                           <img
-                            src={foldericon}
+                            src={PlaylistImage }
                             alt=""
                             style={{ marginRight: "18px" }}
                           />
@@ -444,45 +452,27 @@ function PlaylistsPage(props) {
                           />
                         </div>
                       </div>
+                      <div className="edit">
+                      <FontAwesomeIcon icon="edit"  className="mr-2" />
+                      <Link
+                        className="edit-link"
+                        to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/preview`}
+                      >
+                        Edit project settings
+                      </Link>
+                      </div>
+
                       {/* <h1>{selectedProject ? selectedProject.name : ""}</h1> */}
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        {permission?.Project?.includes(
-                          "project:request-indexing"
-                        ) && (
-                          <div className="react-touch">
-                            <div className="publish-btn">
-                              <Switch
-                                checked={checked}
-                                onChange={handleChange}
-                                offColor="#888"
-                                offHandleColor="#888"
-                                onColor="#ffca70"
-                                onHandleColor="#ffca70"
-                              />
-                              <span
-                                style={{
-                                  color: checked ? "#333" : "$mine-shaft",
-                                }}
-                              >
-                                Showcase
-                              </span>
-                            </div>
-                          </div>
-                        )}
-                        {(Object.keys(teamPermission).length
-                          ? teamPermission?.Team?.includes("team:add-playlist")
-                          : permission?.Playlist?.includes(
-                              "playlist:create"
-                            )) && (
-                          <button
-                            type="button"
-                            className="create-playlist-btn"
-                            onClick={handleShowCreatePlaylistModal}
-                          >
-                            <FontAwesomeIcon icon="plus" className="mr-2" />
-                            Create new playlist
-                          </button>
-                        )}
+                      <div className="project-preview">
+                      <Link
+                        className="dropdown-item"
+                        to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/preview`}
+                      >
+                        <FontAwesomeIcon icon="eye" className="mr-2" />
+                        Project Preview
+                      </Link>
+                    </div>
+                       
                       </div>
                       {/* {permission?.Project?.includes(
                         "project:request-indexing"
@@ -515,17 +505,80 @@ function PlaylistsPage(props) {
                         </button>
                       )} */}
                     </div>
-
-                    <div className="project-preview">
-                      <Link
-                        className="dropdown-item"
-                        to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/preview`}
-                      >
-                        <FontAwesomeIcon icon="eye" className="mr-2" />
-                        Project Preview
-                      </Link>
+                    <div className="paragraph">
+                    <Headings
+                            text="   This project is about the influence the design of everyday objects and art had have over the main historic moments of the world. With this course you’ll have a big complete understanding of main social design needs and the technical approach to solve them. "
+                            headingType="body"
+                            color="#515151"
+                          />
+                      <p>
+                      </p>
                     </div>
+                    <div className="new-playlist">
+                    {(Object.keys(teamPermission).length
+                          ? teamPermission?.Team?.includes("team:add-playlist")
+                          : permission?.Playlist?.includes(
+                              "playlist:create"
+                            )) && (
+                          <button
+                            type="button"
+                            className="create-playlist-btn"
+                            onClick={handleShowCreatePlaylistModal}
+                          >
+                            <FontAwesomeIcon icon="plus" className="mr-2" />
+                            New playlist
+                          </button>
+                        )}
+                        <div className="dropdown">
+                        <Headings
+                            text="Search preferences:"
+                            headingType="body2"
+                            color="#515151"
+                          />
+                         
+                          <Dropdown className="d-inline mx-2" autoClose="outside">
+                            <Dropdown.Toggle id="dropdown-autoclose-outside">
+                            Private (Only me)
+                            </Dropdown.Toggle><FontAwesomeIcon icon="chevron-down" />
+
+                            <Dropdown.Menu>
+                              <Dropdown.Item href="#">My organization</Dropdown.Item>
+                              <Dropdown.Item href="#">My organization + Child Organizations</Dropdown.Item>
+                              <Dropdown.Item href="#">Public</Dropdown.Item>
+                            </Dropdown.Menu>
+                          </Dropdown>
+                          
+                        </div>
+
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                        {permission?.Project?.includes(
+                          "project:request-indexing"
+                        ) && (
+                          <div className="react-touch">
+                            <div className="publish-btn">
+                              <Switch
+                                checked={checked}
+                                onChange={handleChange}
+                                offColor="#888"
+                                offHandleColor="#888"
+                                onColor="#ffca70"
+                                onHandleColor="#ffca70"
+                              />
+                              <span
+                                style={{
+                                  color: checked ? "#333" : "$mine-shaft",
+                                }}
+                              >
+                                Enable external link
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                    </div>
+
+                   
                   </div>
+                  <hr />
                   <div className="index-text">
                     {indexStatus === 1 && (
                       <Alert variant="warning">
