@@ -17,6 +17,7 @@ export const createPlaylistAction = (projectId, title) => async (dispatch) => {
       type: actionTypes.CREATE_PLAYLIST_SUCCESS,
       payload: { playlist },
     });
+    return playlist;
   } catch (e) {
     dispatch({ type: actionTypes.CREATE_PLAYLIST_FAIL });
 

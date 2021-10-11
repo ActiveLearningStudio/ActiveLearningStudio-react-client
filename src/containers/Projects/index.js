@@ -590,8 +590,6 @@ export const ProjectsPage = (props) => {
                         pageRangeDisplayed={5}
                         itemsCountPerPage={Number(meta?.per_page)}
                         totalItemsCount={Number(meta?.total)}
-                        itemsCountPerPage={parseInt(meta?.per_page, 10)}
-                        totalItemsCount={parseInt(meta?.total, 10)}
                         onChange={(e) => {
                           // setCurrentTab("index");
                           window.scrollTo(0, 0);
