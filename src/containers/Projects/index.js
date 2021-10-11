@@ -672,8 +672,8 @@ export const ProjectsPage = (props) => {
                       <Pagination
                         activePage={activePage}
                         pageRangeDisplayed={5}
-                        itemsCountPerPage={parseInt(meta?.per_page)}
-                        totalItemsCount={parseInt(meta?.total)}
+                        itemsCountPerPage={parseInt(meta?.per_page, 10)}
+                        totalItemsCount={parseInt(meta?.total, 10)}
                         onChange={(e) => {
                           // setCurrentTab("index");
                           window.scrollTo(0, 0);
