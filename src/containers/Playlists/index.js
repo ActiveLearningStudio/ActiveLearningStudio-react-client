@@ -66,7 +66,7 @@ function PlaylistsPage(props) {
   const { teamPermission } = team;
   const { permission, activeOrganization } = organization;
   const state = useSelector((s) => s.project.selectedProject);
-
+  const [showPlaylistModal, setShowPlaylistModal] = useState(false);
   const {
     match,
     history,
@@ -74,7 +74,6 @@ function PlaylistsPage(props) {
     showCreateResourceModal,
     hideCreatePlaylistModal,
     hideCreateResourceModal,
-    openCreatePopup,
     openCreateResourcePopup,
     openEditResourcePopup,
     loadProject,
@@ -119,7 +118,7 @@ function PlaylistsPage(props) {
     window.scrollTo(0, 0);
 
     if (
-      !openCreatePopup &&
+      !showPlaylistModal &&
       !openCreateResourcePopup &&
       !openEditResourcePopup &&
       activeOrganization
@@ -184,11 +183,9 @@ function PlaylistsPage(props) {
 
     try {
       await showCreatePlaylistModal();
-      history.push(
-        `/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/create`
-      );
+      setShowPlaylistModal(true);
     } catch (err) {
-      // console.log(err.message);
+      console.log(err.message);
     }
   };
 
@@ -203,16 +200,15 @@ function PlaylistsPage(props) {
     }
   };
 
-  const handleHideCreatePlaylistModal = async (e) => {
-    e.preventDefault();
+  const handleHideCreatePlaylistModal = async () => {
+    // e.preventDefault();
 
     try {
       await hideCreatePlaylistModal();
-      history.push(
-        `/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`
-      );
+      setShowPlaylistModal(false);
+
     } catch (err) {
-      // console.log(err.message);
+      console.log(err.message);
     }
   };
 
@@ -256,14 +252,15 @@ function PlaylistsPage(props) {
     if (e.target.value) setError(null);
   };
 
-  const handleCreatePlaylistSubmit = async (e) => {
-    e.preventDefault();
+  const handleCreatePlaylistSubmit = async () => {
+    // e.preventDefault();
     if (!/^ *$/.test(title) && title) {
       try {
         await createPlaylist(match.params.projectId, title);
-        history.push(
-          `/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`
-        );
+        // history.push(
+        //   `/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`
+        // );
+        handleHideCreatePlaylistModal();
       } catch (err) {
         if (err.errors) {
           if (err.errors.title.length > 0) {
@@ -427,7 +424,7 @@ function PlaylistsPage(props) {
                     <div className="flex-se">
                       <div>
                         <Headings
-                            text={`${organization?.currentOrganization?.name}`}
+                          text={`${organization?.currentOrganization?.name}`}
                           headingType="body2"
                           color="#084892"
                         />
@@ -449,40 +446,40 @@ function PlaylistsPage(props) {
                         {permission?.Project?.includes(
                           "project:request-indexing"
                         ) && (
-                          <div className="react-touch">
-                            <div className="publish-btn">
-                              <Switch
-                                checked={checked}
-                                onChange={handleChange}
-                                offColor="#888"
-                                offHandleColor="#888"
-                                onColor="#ffca70"
-                                onHandleColor="#ffca70"
-                              />
-                              <span
-                                style={{
-                                  color: checked ? "#333" : "$mine-shaft",
-                                }}
-                              >
-                                Showcase
-                              </span>
+                            <div className="react-touch">
+                              <div className="publish-btn">
+                                <Switch
+                                  checked={checked}
+                                  onChange={handleChange}
+                                  offColor="#888"
+                                  offHandleColor="#888"
+                                  onColor="#ffca70"
+                                  onHandleColor="#ffca70"
+                                />
+                                <span
+                                  style={{
+                                    color: checked ? "#333" : "$mine-shaft",
+                                  }}
+                                >
+                                  Showcase
+                                </span>
+                              </div>
                             </div>
-                          </div>
-                        )}
+                          )}
                         {(Object.keys(teamPermission).length
                           ? teamPermission?.Team?.includes("team:add-playlist")
                           : permission?.Playlist?.includes(
-                              "playlist:create"
-                            )) && (
-                          <button
-                            type="button"
-                            className="create-playlist-btn"
-                            onClick={handleShowCreatePlaylistModal}
-                          >
-                            <FontAwesomeIcon icon="plus" className="mr-2" />
-                            Create new playlist
-                          </button>
-                        )}
+                            "playlist:create"
+                          )) && (
+                            <button
+                              type="button"
+                              className="create-playlist-btn"
+                              onClick={handleShowCreatePlaylistModal}
+                            >
+                              <FontAwesomeIcon icon="plus" className="mr-2" />
+                              Create new playlist
+                            </button>
+                          )}
                       </div>
                       {/* {permission?.Project?.includes(
                         "project:request-indexing"
@@ -601,7 +598,7 @@ function PlaylistsPage(props) {
         </div>
       </div>
 
-      {openCreatePopup && (
+      {showPlaylistModal && (
         <CreatePlaylistPopup
           handleHideCreatePlaylistModal={handleHideCreatePlaylistModal}
           handleCreatePlaylistSubmit={handleCreatePlaylistSubmit}
@@ -665,7 +662,6 @@ function PlaylistsPage(props) {
 PlaylistsPage.propTypes = {
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  openCreatePopup: PropTypes.bool,
   openCreateResourcePopup: PropTypes.bool,
   openEditResourcePopup: PropTypes.bool,
   playlist: PropTypes.object.isRequired,
@@ -694,7 +690,6 @@ PlaylistsPage.propTypes = {
 };
 
 PlaylistsPage.defaultProps = {
-  openCreatePopup: false,
   openCreateResourcePopup: false,
   openEditResourcePopup: false,
 };
