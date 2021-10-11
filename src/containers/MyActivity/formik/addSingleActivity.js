@@ -1,35 +1,37 @@
 /* eslint-disable */
-import React, { useState, useEffect } from "react";
-import HeadingText from "utils/HeadingText/headingtext";
-import HeadingTwo from "utils/HeadingTwo/headingtwo";
-import LayoutCard from "utils/LayoutCard/layoutcard";
-import { useSelector, useDispatch } from "react-redux";
-import { toast } from "react-toastify";
+import React, { useState, useEffect } from 'react';
+import HeadingText from 'utils/HeadingText/headingtext';
+import HeadingTwo from 'utils/HeadingTwo/headingtwo';
+import LayoutCard from 'utils/LayoutCard/layoutcard';
+import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import Headings from 'curriki-design-system/dist/utils/Headings/headings';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import Tabs from "utils/Tabs/tabs";
-import Buttons from "utils/Buttons/buttons";
+import Tabs from 'utils/Tabs/tabs';
+import Buttons from 'utils/Buttons/buttons';
 
-import { useHistory } from "react-router-dom";
-import { getSingleLayoutActivities } from "store/actions/resource";
-import * as actionTypes from "store/actionTypes";
-import loader from "assets/images/loader.svg";
+import { useHistory } from 'react-router-dom';
+import { getSingleLayoutActivities } from 'store/actions/resource';
+import * as actionTypes from 'store/actionTypes';
+import loader from 'assets/images/loader.svg';
 
-const ImgLoader = () => <img style={{ width: "100px" }} src={loader} />;
+const ImgLoader = () => <img style={{ width: '100px' }} src={loader} />;
 const ActivityLayout = (props) => {
   const [allActivitiesSingle, setAllSingleActivities] = useState(null);
   const { changeScreenHandler } = props;
   const history = useHistory();
-  const [layout, setLayout] = useState({ title: "Interactive Book" });
+  const [layout, setLayout] = useState({ title: 'Interactive Book' });
   const dispatch = useDispatch();
   useEffect(() => {
     toast.dismiss();
-    toast.info("Loading Activities ...", {
-      className: "project-loading",
+    toast.info('Loading Activities ...', {
+      className: 'project-loading',
       closeOnClick: false,
       closeButton: false,
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 10000,
-      icon: "",
+      icon: '',
     });
     dispatch(getSingleLayoutActivities());
   }, []);
@@ -48,72 +50,55 @@ const ActivityLayout = (props) => {
         <Tabs text="2.Layout description + activities" className="ml-10 " />
       </div>
       <div className="activity-layout-title">
-        <HeadingTwo text="Select a layout" color="#084892" />
+        <HeadingTwo text="Add an activity" color="#084892" />
       </div>
-
-      <div className="search-card-singleActivity">
-        <input
-          type="text"
-          placeholder="Search Activities"
-          onChange={(e) => {
-            if (e.target.value == "") {
-              setAllSingleActivities(allActivity);
-            } else {
-              setAllSingleActivities(
-                allActivity?.filter((data) =>
-                  data.title
-                    .toLowerCase()
-                    .includes(e.target.value.trim().toLowerCase())
-                )
-              );
-            }
-          }}
+      <div className="activity-layout-paragraph">
+        <Headings
+          headingType="body2"
+          color="#515151"
+          text="Within the six categories, there are over 50 learning activity types. These range from Interactive Video, Flashcards, to Memory Games. We also have special activity types that we will refer to as layouts. "
         />
-        {allActivitiesSingle?.length > 10 && (
-          <ConfigButtons
-            changeScreenHandler={changeScreenHandler}
-            layout={layout}
-            dispatch={dispatch}
+      </div>
+      <div className="search-card-singleActivity">
+        <div className="input-group">
+          <input
+            type="text"
+            placeholder="Search Activities"
+            onChange={(e) => {
+              if (e.target.value == '') {
+                setAllSingleActivities(allActivity);
+              } else {
+                setAllSingleActivities(allActivity?.filter((data) => data.title.toLowerCase().includes(e.target.value.trim().toLowerCase())));
+              }
+            }}
           />
-        )}
+          <FontAwesomeIcon icon="search" className="search-icon" />
+        </div>
+
+        {allActivitiesSingle?.length > 10 && <ConfigButtons changeScreenHandler={changeScreenHandler} layout={layout} dispatch={dispatch} />}
       </div>
       <div className="layout-cards-process-btn">
-        <div className="activity-layout-cards" style={{ width: "100%" }}>
+        <div className="activity-layout-cards" style={{ width: '100%' }}>
           {allActivitiesSingle?.map((data) => {
             return (
               <LayoutCard
                 image={data.image}
                 text={data.title}
-                className={
-                  layout?.title == data.title
-                    ? "activity-layoutCard-active mr-3"
-                    : "mr-3"
-                }
+                className={layout?.title == data.title ? 'activity-layoutCard-active mr-3' : 'mr-3'}
                 onClick={() => setLayout(data)}
               />
             );
           })}
         </div>
       </div>
-      <ConfigButtons
-        changeScreenHandler={changeScreenHandler}
-        layout={layout}
-        dispatch={dispatch}
-      />
+      <ConfigButtons changeScreenHandler={changeScreenHandler} layout={layout} dispatch={dispatch} />
     </div>
   );
 };
 
 const ConfigButtons = ({ changeScreenHandler, layout, dispatch }) => (
-  <div className="activity-layout-btns" style={{ display: "flex" }}>
-    <Buttons
-      text="Back"
-      secondary={true}
-      width="153px"
-      height="36px"
-      onClick={() => changeScreenHandler("layout")}
-      hover={true}
-    />
+  <div className="activity-layout-btns" style={{ display: 'flex' }}>
+    <Buttons text="Back" secondary={true} width="153px" height="36px" onClick={() => changeScreenHandler('layout')} hover={true} />
 
     <div className="btns-margin ml-3">
       <Buttons
@@ -123,7 +108,7 @@ const ConfigButtons = ({ changeScreenHandler, layout, dispatch }) => (
         height="36px"
         disabled={layout ? false : true}
         onClick={() => {
-          changeScreenHandler("addactivity");
+          changeScreenHandler('addactivity');
           dispatch({
             type: actionTypes.SET_SELECTED_ACTIVITY,
             payload: layout,
