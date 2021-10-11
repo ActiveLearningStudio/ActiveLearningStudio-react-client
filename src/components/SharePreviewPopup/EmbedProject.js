@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,8 +7,7 @@ import Swal from 'sweetalert2';
 const EmbedProject = ({ url, projectName, onClose }) => (
   <>
     <h1>
-      Your can now embed below html snippet for
-      {' '}
+      Your can now embed below html snippet for{' '}
       <strong>
         &quot;
         {projectName}
@@ -17,11 +17,7 @@ const EmbedProject = ({ url, projectName, onClose }) => (
     </h1>
 
     <div className="d-flex align-items-center justify-content-between">
-      <input
-        id="urllink_clip_iframe"
-        readOnly
-        value={`<iframe src="${url}" width="100%" height="600"></iframe>`}
-      />
+      <input id="urllink_clip_iframe" readOnly value={`<iframe src="${url}" width="100%" height="600"></iframe>`} />
 
       <FontAwesomeIcon
         title="Copy to clipboard"
@@ -46,9 +42,12 @@ const EmbedProject = ({ url, projectName, onClose }) => (
         }}
       />
     </div>
-
-    <div className="close-btn">
-      <button type="button" onClick={onClose}>Ok</button>
+    <div className="share-popup-btn">
+      <div className="close-btn">
+        <button type="button" onClick={onClose}>
+          close
+        </button>
+      </div>
     </div>
   </>
 );

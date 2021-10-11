@@ -1,6 +1,5 @@
-import React, {
-  useState, useEffect, memo, useMemo,
-} from 'react';
+/* eslint-disable */
+import React, { useState, useEffect, memo, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
@@ -12,6 +11,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import QueryString from 'query-string';
 import searchimg from 'assets/images/search-icon.png';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
+import Initialpage from './initialProjectPage.js';
 import { toast } from 'react-toastify';
 import loader from 'assets/images/loader.svg';
 import {
@@ -213,11 +213,7 @@ export const ProjectsPage = (props) => {
     if (source.droppableId === destination.droppableId) {
       projectDivider.forEach(async (data, index) => {
         if (data.id === source.droppableId) {
-          const items = reorder(
-            data.collection,
-            source.index,
-            destination.index,
-          );
+          const items = reorder(data.collection, source.index, destination.index);
 
           projectDivider[index] = {
             id: data.id,
@@ -226,9 +222,7 @@ export const ProjectsPage = (props) => {
 
           setProjectDivider(projectDivider);
           setValue((v) => v + 1);
-          const reorderData = await loadMyReorderProjectsActionMethod(
-            projectDivider,
-          );
+          const reorderData = await loadMyReorderProjectsActionMethod(projectDivider);
 
           allSidebarProjectsUpdate();
           setAllProjects(reorderData.projects);
@@ -246,12 +240,7 @@ export const ProjectsPage = (props) => {
         }
       });
 
-      const res = move(
-        verticalSource,
-        verticalDestination,
-        source,
-        destination,
-      );
+      const res = move(verticalSource, verticalDestination, source, destination);
 
       Object.keys(res).forEach((key) => {
         projectDivider.forEach((data, index) => {
@@ -265,15 +254,15 @@ export const ProjectsPage = (props) => {
       });
 
       const updateProjectList = [];
-      projectDivider.forEach((data) => data.collection.forEach((arrays) => {
-        updateProjectList.push(arrays);
-      }));
+      projectDivider.forEach((data) =>
+        data.collection.forEach((arrays) => {
+          updateProjectList.push(arrays);
+        })
+      );
 
       setProjectDivider(projectDivider);
       divideProjects(updateProjectList);
-      const reorderData = await loadMyReorderProjectsActionMethod(
-        projectDivider,
-      );
+      const reorderData = await loadMyReorderProjectsActionMethod(projectDivider);
 
       allSidebarProjectsUpdate();
       setAllProjects(reorderData.projects);
@@ -364,10 +353,7 @@ export const ProjectsPage = (props) => {
       <div className={`content-wrapper ${activeFilter}`}>
         <div className={`inner-content  ${customCardWidth}`}>
           <div className="content">
-            <Headline
-              setCreateProject={setCreateProject}
-              seteditMode={seteditMode}
-            />
+            <Headline setCreateProject={setCreateProject} seteditMode={seteditMode} />
             {permission?.Project?.includes('project:view') ? (
               <Tabs
                 onSelect={(eventKey) => {
@@ -401,10 +387,7 @@ export const ProjectsPage = (props) => {
                                 direction="horizontal"
                               >
                                 {(provided) => (
-                                  <div
-                                    {...provided.droppableProps}
-                                    ref={provided.innerRef}
-                                  >
+                                  <div {...provided.droppableProps} ref={provided.innerRef}>
                                     <div className="check-home" id={value}>
                                       {/* <div id={value}> */}
                                       {rowData.collection.map((proj, index) => {
@@ -414,41 +397,22 @@ export const ProjectsPage = (props) => {
                                           deleteType: 'Project',
                                         };
                                         return (
-                                          <Draggable
-                                            key={proj.id}
-                                            draggableId={`${proj.id}`}
-                                            index={index}
-                                          >
+                                          <Draggable key={proj.id} draggableId={`${proj.id}`} index={index}>
                                             {(provid) => (
-                                              <div
-                                                className="playlist-resource"
-                                                ref={provid.innerRef}
-                                                {...provid.draggableProps}
-                                                {...provid.dragHandleProps}
-                                              >
+                                              <div className="playlist-resource" ref={provid.innerRef} {...provid.draggableProps} {...provid.dragHandleProps}>
                                                 <ProjectCard
                                                   key={proj.id}
                                                   project={proj}
                                                   res={res}
-                                                  handleDeleteProject={
-                                                    handleDeleteProject
-                                                  }
-                                                  handleShareProject={
-                                                    handleShareProject
-                                                  }
-                                                  showDeletePopup={
-                                                    showDeletePopup
-                                                  }
-                                                  showPreview={
-                                                    showPreview === proj.id
-                                                  }
+                                                  handleDeleteProject={handleDeleteProject}
+                                                  handleShareProject={handleShareProject}
+                                                  showDeletePopup={showDeletePopup}
+                                                  showPreview={showPreview === proj.id}
                                                   handleShow={handleShow}
                                                   handleClose={handleClose}
                                                   setProjectId={setProjectId}
                                                   activeFilter={activeFilter}
-                                                  setCreateProject={
-                                                    setCreateProject
-                                                  }
+                                                  setCreateProject={setCreateProject}
                                                   seteditMode={seteditMode}
                                                 />
                                               </div>
@@ -464,7 +428,9 @@ export const ProjectsPage = (props) => {
                             ))}
                           </DragDropContext>
                         </div>
-                      ) : noProjectAlert && (<Alert variant="warning">No Project found.</Alert>)}
+                      ) : (
+                        <Initialpage />
+                      )}
                     </div>
                   </div>
                 </Tab>
@@ -478,11 +444,7 @@ export const ProjectsPage = (props) => {
                             <div className="project-page-settings">
                               <div className="sort-project-btns">
                                 <div
-                                  className={
-                                    activeFilter === 'list-grid'
-                                      ? 'sort-btn active'
-                                      : 'sort-btn'
-                                  }
+                                  className={activeFilter === 'list-grid' ? 'sort-btn active' : 'sort-btn'}
                                   onClick={() => {
                                     // const allchunk = [];
                                     // var counterSimpl = 0;
@@ -494,11 +456,7 @@ export const ProjectsPage = (props) => {
                                   <FontAwesomeIcon icon="bars" />
                                 </div>
                                 <div
-                                  className={
-                                    activeFilter === 'small-grid'
-                                      ? 'sort-btn active'
-                                      : 'sort-btn'
-                                  }
+                                  className={activeFilter === 'small-grid' ? 'sort-btn active' : 'sort-btn'}
                                   onClick={() => {
                                     setActiveFilter('small-grid');
                                     setSortNumber(5);
@@ -508,11 +466,7 @@ export const ProjectsPage = (props) => {
                                   <FontAwesomeIcon icon="grip-horizontal" />
                                 </div>
                                 <div
-                                  className={
-                                    activeFilter === 'normal-grid'
-                                      ? 'sort-btn active'
-                                      : 'sort-btn'
-                                  }
+                                  className={activeFilter === 'normal-grid' ? 'sort-btn active' : 'sort-btn'}
                                   onClick={() => {
                                     setActiveFilter('normal-grid');
                                     setSortNumber(4);
@@ -530,16 +484,9 @@ export const ProjectsPage = (props) => {
                       <div className="col-md-12">
                         <div className="flex-smaple">
                           {favProject.length > 0 ? (
-                            <SampleProjectCard
-                              projects={favProject}
-                              type={type}
-                              activeTab={tabToggle}
-                              setShowSampleSort={setShowSampleSort}
-                            />
+                            <SampleProjectCard projects={favProject} type={type} activeTab={tabToggle} setShowSampleSort={setShowSampleSort} />
                           ) : (
-                            <Alert variant="warning">
-                              No Favorite Project found.
-                            </Alert>
+                            <Alert variant="warning">No Favorite Project found.</Alert>
                           )}
                         </div>
                       </div>
@@ -556,11 +503,7 @@ export const ProjectsPage = (props) => {
                           <div className="project-page-settings">
                             <div className="sort-project-btns">
                               <div
-                                className={
-                                  activeFilter === 'list-grid'
-                                    ? 'sort-btn active'
-                                    : 'sort-btn'
-                                }
+                                className={activeFilter === 'list-grid' ? 'sort-btn active' : 'sort-btn'}
                                 onClick={() => {
                                   // const allchunk = [];
                                   // let counterSimpl = 0;
@@ -572,11 +515,7 @@ export const ProjectsPage = (props) => {
                                 <FontAwesomeIcon icon="bars" />
                               </div>
                               <div
-                                className={
-                                  activeFilter === 'small-grid'
-                                    ? 'sort-btn active'
-                                    : 'sort-btn'
-                                }
+                                className={activeFilter === 'small-grid' ? 'sort-btn active' : 'sort-btn'}
                                 onClick={() => {
                                   setActiveFilter('small-grid');
                                   setSortNumber(5);
@@ -586,11 +525,7 @@ export const ProjectsPage = (props) => {
                                 <FontAwesomeIcon icon="grip-horizontal" />
                               </div>
                               <div
-                                className={
-                                  activeFilter === 'normal-grid'
-                                    ? 'sort-btn active'
-                                    : 'sort-btn'
-                                }
+                                className={activeFilter === 'normal-grid' ? 'sort-btn active' : 'sort-btn'}
                                 onClick={() => {
                                   setActiveFilter('normal-grid');
                                   setSortNumber(4);
@@ -608,17 +543,9 @@ export const ProjectsPage = (props) => {
                     <div className="col-md-12">
                       <div className="flex-smaple">
                         {sampleProject.length > 0 ? (
-                          <SampleProjectCard
-                            projects={sampleProject}
-                            activeTab={tabToggle}
-                            type={type}
-                            setShowSampleSort={setShowSampleSort}
-                          />
+                          <SampleProjectCard projects={sampleProject} activeTab={tabToggle} type={type} setShowSampleSort={setShowSampleSort} />
                         ) : (
-                          <Alert variant="warning">
-                            {' '}
-                            No sample project found.
-                          </Alert>
+                          <Alert variant="warning"> No sample project found.</Alert>
                         )}
                       </div>
                     </div>
@@ -634,17 +561,8 @@ export const ProjectsPage = (props) => {
                     <div className="col-md-12">
                       {showSampleSort && teamProjects.length > 0 && (
                         <div className="search-bar-team-tab">
-                          <input
-                            type="text"
-                            placeholder="Search team projects"
-                            value={searchTeamQuery}
-                            onChange={({ target }) => SetSearchTeamQuery(target.value)}
-                          />
-                          <img
-                            src={searchimg}
-                            alt="search"
-                            onClick={handleSearchQueryTeams}
-                          />
+                          <input type="text" placeholder="Search team projects" value={searchTeamQuery} onChange={({ target }) => SetSearchTeamQuery(target.value)} />
+                          <img src={searchimg} alt="search" onClick={handleSearchQueryTeams} />
                         </div>
                       )}
                       <div className="flex-smaple">
@@ -659,9 +577,7 @@ export const ProjectsPage = (props) => {
                             setProjectId={setProjectId}
                           />
                         ) : (
-                          <Alert variant="warning">
-                            No Team Project found.
-                          </Alert>
+                          <Alert variant="warning">No Team Project found.</Alert>
                         )}
                       </div>
                     </div>
@@ -672,6 +588,8 @@ export const ProjectsPage = (props) => {
                       <Pagination
                         activePage={activePage}
                         pageRangeDisplayed={5}
+                        itemsCountPerPage={Number(meta?.per_page)}
+                        totalItemsCount={Number(meta?.total)}
                         itemsCountPerPage={parseInt(meta?.per_page, 10)}
                         totalItemsCount={parseInt(meta?.total, 10)}
                         onChange={(e) => {
@@ -685,25 +603,14 @@ export const ProjectsPage = (props) => {
                 </Tab>
               </Tabs>
             ) : (
-              <Alert variant="danger">
-                {' '}
-                You are not authorized to view Projects
-              </Alert>
+              <Alert variant="danger"> You are not authorized to view Projects</Alert>
             )}
           </div>
         </div>
       </div>
-      {createProject && (
-        <NewProjectPage
-          editMode={editMode}
-          {...props}
-          handleCloseProjectModal={setCreateProject}
-        />
-      )}
+      {createProject && <NewProjectPage editMode={editMode} {...props} handleCloseProjectModal={setCreateProject} />}
 
-      {showDeletePlaylistPopup && (
-        <DeletePopup {...props} deleteType="Project" />
-      )}
+      {showDeletePlaylistPopup && <DeletePopup {...props} deleteType="Project" />}
 
       <Footer />
 
@@ -767,6 +674,4 @@ const mapDispatchToProps = (dispatch) => ({
   getTeamProjects: (query, page) => dispatch(getTeamProject(query, page)),
 });
 
-export default memo(
-  withRouter(connect(mapStateToProps, mapDispatchToProps)(ProjectsPage)),
-);
+export default memo(withRouter(connect(mapStateToProps, mapDispatchToProps)(ProjectsPage)));
