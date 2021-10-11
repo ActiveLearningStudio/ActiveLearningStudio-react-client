@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 * {
   padding: 0;
   margin: 0;
@@ -91,7 +91,7 @@
             width: 100%;
             border: none;
             outline: none;
-            font-family: "Open Sans", sans-serif;
+            font-family: 'Open Sans', sans-serif;
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -357,6 +357,29 @@
       }
     }
   }
+  .radio-group {
+    display: flex;
+    align-items: center;
+    margin-top: 26px;
+
+    .radio-button {
+      display: flex;
+      align-items: center;
+      margin-right: 48px;
+      padding: 15px 16px 15px 19px;
+
+      .input {
+        margin-right: 11px;
+      }
+      input[type='radio'] {
+        width: 20px;
+        height: 20px;
+      }
+    }
+    input:checked.radio-button {
+      background-color: #f1f1f1;
+    }
+  }
 }
 
 .add-activity-form {
@@ -418,6 +441,29 @@
       }
     }
   }
+  .radio-group {
+    display: flex;
+    align-items: center;
+    margin-top: 26px;
+
+    .radio-button {
+      display: flex;
+      align-items: center;
+      margin-right: 48px;
+      padding: 15px 16px 15px 19px;
+
+      .input {
+        margin-right: 11px;
+      }
+      input[type='radio'] {
+        width: 20px;
+        height: 20px;
+      }
+    }
+    input:checked.radio-button {
+      background-color: #f1f1f1;
+    }
+  }
   .add-activity-tabs {
     display: flex;
     justify-content: center;
@@ -442,7 +488,7 @@
       select {
         border: none;
         width: 130px;
-        font-family: "Open Sans", sans-serif;
+        font-family: 'Open Sans', sans-serif;
         font-style: normal;
         font-weight: normal;
         font-size: 16px;
@@ -672,7 +718,7 @@
       select {
         border: none;
         width: 130px;
-        font-family: "Open Sans", sans-serif;
+        font-family: 'Open Sans', sans-serif;
         font-style: normal;
         font-weight: normal;
         font-size: 16px;
@@ -759,7 +805,7 @@
       select {
         border: none;
         width: 130px;
-        font-family: "Open Sans", sans-serif;
+        font-family: 'Open Sans', sans-serif;
         font-style: normal;
         font-weight: normal;
         font-size: 16px;

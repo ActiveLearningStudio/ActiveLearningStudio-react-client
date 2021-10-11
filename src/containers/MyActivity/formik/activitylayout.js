@@ -45,7 +45,7 @@ const ActivityLayout = (props) => {
   return (
     <div className="activity-layout-form">
       <div className="activity-layout-tabs">
-        <Tabs text="1. Select a layout" tabActive={true} />
+        <Tabs text="1. Select a layout" tabActive />
         <Tabs text="2.Layout description + activities" className="ml-10 " />
         {/* mt-10 */}
         {/* <Tabs text="3. Preview Layout" className="ml-10" /> */}
@@ -56,15 +56,26 @@ const ActivityLayout = (props) => {
       <div className="activity-layout-detail">
         <HeadingText text="Start creating by selecting a layout and then add activity types." color="#515151" />
       </div>
-      <div className="layout-cards-process-btn">
-        <div className="activity-layout-cards">
-          <div
+      <form className="radio-group">
+        <div className="radio-button">
+          <input name="selecttype" checked type="radio" className="input" />
+          <HeadingText text="Create new activity" color="#515151" />
+        </div>
+        <div className="radio-button">
+          <input
             onClick={() => {
               changeScreenHandler('addactivity', 'upload');
             }}
-          >
-            test
-          </div>
+            name="selecttype"
+            type="radio"
+            className="input"
+          />
+          <HeadingText text="Upload activity" color="#515151" />
+        </div>
+      </form>
+
+      <div className="layout-cards-process-btn">
+        <div className="activity-layout-cards">
           {!!allActivity &&
             allActivity.map((data) => {
               return (
@@ -114,10 +125,10 @@ const ActivityLayout = (props) => {
               <div className="btns-margin">
                 <Buttons
                   text="Select Layout"
-                  defaultgrey={layout ? false : true}
+                  defaultgrey={!layout}
                   width="153px"
                   height="36px"
-                  disabled={layout ? false : true}
+                  disabled={!layout}
                   onClick={() => {
                     changeScreenHandler('addactivity');
                     dispatch({
@@ -125,7 +136,7 @@ const ActivityLayout = (props) => {
                       payload: layout,
                     });
                   }}
-                  hover={true}
+                  hover
                 />
               </div>
             </div>
