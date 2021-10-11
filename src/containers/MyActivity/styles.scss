@@ -283,10 +283,26 @@
     margin-top: 50px;
     width: 480px;
   }
+  .activity-layout-paragraph {
+    margin: 17px 0 17px;
+  }
   .activity-layout-detail {
     margin-top: 10px;
     // margin-right: 100px;
     // width: 970px;
+  }
+  .input-group {
+    display: flex;
+    align-items: center;
+    width: 191px;
+    .input {
+      position: relative;
+    }
+    .search-icon {
+      position: absolute;
+      right: 0;
+      margin-bottom: 5px;
+    }
   }
 
   // Update new Task
@@ -365,8 +381,13 @@
     .radio-button {
       display: flex;
       align-items: center;
-      margin-right: 48px;
+      margin-right: 36px;
       padding: 15px 16px 15px 19px;
+
+      label {
+        margin: 0;
+        cursor: pointer;
+      }
 
       .input {
         margin-right: 11px;
@@ -376,8 +397,9 @@
         height: 20px;
       }
     }
-    input:checked.radio-button {
-      background-color: #f1f1f1;
+    .active-radio2 {
+      background: #f1f1f1;
+      padding-left: 15px;
     }
   }
 }
@@ -449,8 +471,13 @@
     .radio-button {
       display: flex;
       align-items: center;
-      margin-right: 48px;
+      margin-right: 38px;
       padding: 15px 16px 15px 19px;
+
+      label {
+        margin: 0;
+        cursor: pointer;
+      }
 
       .input {
         margin-right: 11px;
@@ -460,10 +487,11 @@
         height: 20px;
       }
     }
-    input:checked.radio-button {
-      background-color: #f1f1f1;
+    .active-radio {
+      background: #f1f1f1;
     }
   }
+
   .add-activity-tabs {
     display: flex;
     justify-content: center;

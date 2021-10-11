@@ -84,7 +84,7 @@ const AddActivity = (props) => {
             )}
           </div>
         )}
-        <div className="add-activity-selection"></div>
+
         <form className="radio-group">
           <div className="radio-button">
             <input
@@ -94,12 +94,13 @@ const AddActivity = (props) => {
               name="selecttype"
               type="radio"
               className="input"
+              id="Create new activity"
             />
-            <HeadingText text="Create new activity" color="#515151" />
+            <label for="Create new activity">Create new activity</label>
           </div>
-          <div className="radio-button">
-            <input name="selecttype" type="radio" className="input" checked />
-            <HeadingText text="Upload activity" color="#515151" />
+          <div className="radio-button active-radio ">
+            <input name="selecttype" type="radio" className="input" checked id="Upload activity" />
+            <label for="Upload activity">Upload activity</label>
           </div>
         </form>
         <div className="add-activity-layout-formik-videoTag">

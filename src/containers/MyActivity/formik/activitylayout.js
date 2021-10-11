@@ -23,6 +23,7 @@ const ActivityLayout = (props) => {
   const history = useHistory();
   const [layout, setLayout] = useState({ title: 'Interactive Book' });
   const dispatch = useDispatch();
+  const [activeRadio, setActiveRadio] = useState('create');
 
   useMemo(() => {
     toast.info('Loading Activities ...', {
@@ -56,21 +57,23 @@ const ActivityLayout = (props) => {
       <div className="activity-layout-detail">
         <HeadingText text="Start creating by selecting a layout and then add activity types." color="#515151" />
       </div>
-      <form className="radio-group">
-        <div className="radio-button">
-          <input name="selecttype" checked type="radio" className="input" />
-          <HeadingText text="Create new activity" color="#515151" />
+      <form className="radio-group ">
+        <div className="radio-button active-radio2 ">
+          <input name="selecttype" checked type="radio" className="input" id="Create new activity" />
+          <label for="Create new activity">Create new activity</label>
         </div>
         <div className="radio-button">
           <input
             onClick={() => {
               changeScreenHandler('addactivity', 'upload');
+              setActiveRadio('upload');
             }}
             name="selecttype"
             type="radio"
             className="input"
+            id="Upload activity"
           />
-          <HeadingText text="Upload activity" color="#515151" />
+          <label for="Upload activity">Upload activity</label>
         </div>
       </form>
 
