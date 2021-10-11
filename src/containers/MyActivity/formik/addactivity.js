@@ -56,36 +56,53 @@ const AddActivity = (props) => {
           <Tabs text="2.Layout description + activities" className="ml-10" tabActive={true} />
           {/* <Tabs text="3. Preview Layout" className="ml-10" /> */}
         </div>
-        {(!activity &&  activtyMethod !== 'upload') && (
+        {!activity && (
           <div className="add-activity-title-select">
             <div className="add-activity-title">
-              <HeadingTwo text={title} color="#084892" />
+              <HeadingTwo text={activtyMethod === 'upload' ? 'Upload Activity' : title} color="#084892" />
             </div>
-
-            <div className="activity-title-change-layout">
-              <select
-                onChange={(e) => {
-                  console.log(e.target.value);
-
-                  dispatch({
-                    type: actionTypes.SET_SELECTED_ACTIVITY,
-                    payload: JSON.parse(e.target.value),
-                  });
-                }}
-              >
-                {/* <option value="">Change Layout</option> */}
-                {layout?.map((data) => {
-                  return (
-                    <option key="" selected={data.title === title ? true : false} value={JSON.stringify(data)}>
-                      {data.title}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
+            {activtyMethod !== 'upload' && (
+              <div className="activity-title-change-layout">
+                <select
+                  onChange={(e) => {
+                    dispatch({
+                      type: actionTypes.SET_SELECTED_ACTIVITY,
+                      payload: JSON.parse(e.target.value),
+                    });
+                  }}
+                >
+                  {/* <option value="">Change Layout</option> */}
+                  {layout?.map((data) => {
+                    return (
+                      <option key="" selected={data.title === title ? true : false} value={JSON.stringify(data)}>
+                        {data.title}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            )}
           </div>
         )}
-        <div className="add-activity-selection"></div>
+
+        <form className="radio-group">
+          <div className="radio-button">
+            <input
+              onClick={() => {
+                changeScreenHandler('layout', 'create');
+              }}
+              name="selecttype"
+              type="radio"
+              className="input"
+              id="Create new activity"
+            />
+            <label for="Create new activity">Create new activity</label>
+          </div>
+          <div className="radio-button active-radio ">
+            <input name="selecttype" type="radio" className="input" checked id="Upload activity" />
+            <label for="Upload activity">Upload activity</label>
+          </div>
+        </form>
         <div className="add-activity-layout-formik-videoTag">
           <div className="add-activity-layout-formik">
             <Formik
@@ -160,7 +177,7 @@ const AddActivity = (props) => {
             </Formik>
           </div>
           <div className="add-activity-layout-videoTag">
-            <HeadingThree text={activtyMethod === 'upload' ? "Upload Activities" : "Add Activities"}  color="#084892" className="layout-add-activity-title" />
+            <HeadingThree text={activtyMethod === 'upload' ? 'Upload Activities' : 'Add Activities'} color="#084892" className="layout-add-activity-title" />
 
             <HeadingText text="Start adding activities by opening the editor. Once you finish, hit the Save & close button to see your results." color="#515151" />
             <div className="add-activity-btns">
