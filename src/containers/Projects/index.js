@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState, useEffect, memo, useMemo } from 'react';
+import React, { useState, useEffect, memo, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
@@ -62,6 +62,7 @@ export const ProjectsPage = (props) => {
   const [createProject, setCreateProject] = useState(false);
   const [editMode, seteditMode] = useState(false);
   const [noProjectAlert, setNoProjectAlert] = useState(false);
+  const samplerRef = useRef();
   const {
     ui,
     showPreview,
@@ -493,7 +494,7 @@ export const ProjectsPage = (props) => {
                     </div>
                   </Tab>
                 )}
-                <Tab eventKey="Sample Projects" title="Sample Projects">
+                <Tab eventKey="Sample Projects" ref={samplerRef} title="Sample Projects">
                   <div className="row">
                     <div className="col-md-12" style={{ display: 'none' }}>
                       <div className="program-page-title">

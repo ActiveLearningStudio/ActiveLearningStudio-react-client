@@ -1,0 +1,23 @@
+.share-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  margin-top: 10px;
+  text-transform: uppercase;
+  margin-right: 20px;
+
+  .react-switch {
+    padding-left: 5px;
+    .react-switch-bg {
+      width: 54px !important;
+    }
+  }
+  .react-switch-handle {
+    width: 26px !important;
+    height: 26px !important;
+  }
+  .react-switch-handle:checked {
+    transform: translateX(32px) !important;
+  }
+}
