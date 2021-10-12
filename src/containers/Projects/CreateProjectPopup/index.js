@@ -1,39 +1,27 @@
 /* eslint-disable */
-import React, {
-  useEffect,
-  useRef,
-  useCallback,
-  useState,
-  useMemo,
-} from "react";
-import PropTypes from "prop-types";
-import { connect, useSelector, useDispatch } from "react-redux";
-import { withRouter } from "react-router-dom";
-import { Field, reduxForm } from "redux-form";
-import Swal from "sweetalert2";
-import { Alert } from "react-bootstrap";
+import React, { useEffect, useRef, useCallback, useState, useMemo } from 'react';
+import PropTypes from 'prop-types';
+import { connect, useSelector, useDispatch } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { Field, reduxForm } from 'redux-form';
+import Swal from 'sweetalert2';
+import { Alert } from 'react-bootstrap';
 
-import computer from "assets/images/svg/desktop.svg";
-import loader from "assets/images/loader.svg";
-import pexel from "assets/images/svg/pixel.svg";
-import { required, maxLength } from "utils";
-import {
-  createProjectAction,
-  updateProjectAction,
-  uploadProjectThumbnailAction,
-  showCreateProjectModalAction,
-  visibilityTypes,
-} from "store/actions/project";
-import InputField from "components/InputField";
-import TextareaField from "components/TextareaField";
-import PexelsAPI from "components/models/pexels";
+import computer from 'assets/images/svg/desktop.svg';
+import loader from 'assets/images/loader.svg';
+import pexel from 'assets/images/svg/pixel.svg';
+import { required, maxLength } from 'utils';
+import { createProjectAction, updateProjectAction, uploadProjectThumbnailAction, showCreateProjectModalAction, visibilityTypes } from 'store/actions/project';
+import InputField from 'components/InputField';
+import TextareaField from 'components/TextareaField';
+import PexelsAPI from 'components/models/pexels';
 
-import "./style.scss";
+import './style.scss';
 
 const maxLength80 = maxLength(80);
 const maxLength1000 = maxLength(1000);
 
-let imageValidation = "";
+let imageValidation = '';
 const projectShare = true;
 
 const onSubmit = async (values, dispatch, props) => {
@@ -63,63 +51,46 @@ const onSubmit = async (values, dispatch, props) => {
             description,
             thumb_url: thumbUrl,
             is_public: projectShare,
-            organization_visibility_type_id: vType || 1,
+            organization_visibility_type_id: 1,
           })
         : createProjectAction({
             name,
             description,
             is_public: projectShare,
-            organization_visibility_type_id: vType || 1,
+            organization_visibility_type_id: 1,
             // eslint-disable-next-line max-len
-            thumb_url:
-              "https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280",
+            thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
           })
     );
     if (result) {
-      history.push("/projects");
+      history.push('/projects');
     }
   }
 };
-export const uploadThumb = async (
-  e,
-  permission,
-  teamPermission,
-  id,
-  dispatch
-) => {
+export const uploadThumb = async (e, permission, teamPermission, id, dispatch) => {
   const formData = new FormData();
   try {
-    formData.append("thumb", e.target.files[0]);
+    formData.append('thumb', e.target.files[0]);
     if (id) {
-      formData.append("project_id", id);
+      formData.append('project_id', id);
     }
-    imageValidation = "";
+    imageValidation = '';
     await dispatch(uploadProjectThumbnailAction(formData));
   } catch (err) {
     Swal.fire({
-      icon: "error",
-      title: "Error",
+      icon: 'error',
+      title: 'Error',
       // eslint-disable-next-line max-len
       text:
-        permission?.Project?.includes("project:upload-thumb") ||
-        teamPermission?.Team?.includes("team:view-project")
-          ? "Image upload failed, kindly try again"
-          : "You do not have permission to upload image",
+        permission?.Project?.includes('project:upload-thumb') || teamPermission?.Team?.includes('team:view-project')
+          ? 'Image upload failed, kindly try again'
+          : 'You do not have permission to upload image',
     });
   }
 };
 
 let CreateProjectPopup = (props) => {
-  const {
-    isLoading,
-    project,
-    editMode,
-    handleSubmit,
-    handleCloseProjectModal,
-    showCreateProjectModal,
-    getProjectVisibilityTypes,
-    vType,
-  } = props;
+  const { isLoading, project, editMode, handleSubmit, handleCloseProjectModal, showCreateProjectModal, getProjectVisibilityTypes, vType } = props;
   const dispatch = useDispatch();
   const stateHeader = useSelector((state) => state.organization);
   const projectState = useSelector((state) => state.project);
@@ -145,9 +116,9 @@ let CreateProjectPopup = (props) => {
   }, [editMode, showCreateProjectModal, vType]); // Runs only once
 
   useEffect(() => {
-    document.addEventListener("keydown", escFunction, false);
+    document.addEventListener('keydown', escFunction, false);
     return () => {
-      document.removeEventListener("keydown", escFunction, false);
+      document.removeEventListener('keydown', escFunction, false);
     };
   }, [escFunction]);
   useMemo(() => {
@@ -159,11 +130,8 @@ let CreateProjectPopup = (props) => {
 
   return (
     // eslint-disable-next-line max-len
-    (editMode &&
-      (teamPermission && Object.keys(teamPermission).length
-        ? teamPermission?.Team?.includes("team:edit-project")
-        : permission?.Project?.includes("project:edit"))) ||
-      (!editMode && permission?.Project?.includes("project:create")) ? (
+    (editMode && (teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project') : permission?.Project?.includes('project:edit'))) ||
+      (!editMode && permission?.Project?.includes('project:create')) ? (
       <div className="create-program-wrapper">
         <PexelsAPI
           show={modalShow}
@@ -174,11 +142,7 @@ let CreateProjectPopup = (props) => {
           searchName="abstract"
         />
 
-        <form
-          className="create-playlist-form"
-          onSubmit={handleSubmit}
-          autoComplete="off"
-        >
+        <form className="create-playlist-form" onSubmit={handleSubmit} autoComplete="off">
           <div className="project-name">
             <Field
               name="name"
@@ -190,7 +154,7 @@ let CreateProjectPopup = (props) => {
               label="Enter Project Name (Up to 80 characters)"
             />
           </div>
-          <div className="dropdown-visibilitytypes">
+          {/* <div className="dropdown-visibilitytypes">
             <label>
               <h2>Visibility Type</h2>
             </label>
@@ -201,19 +165,13 @@ let CreateProjectPopup = (props) => {
                 </option>
               ))}
             </Field>
-          </div>
+          </div> */}
           <div className="project-description">
-            <Field
-              name="description"
-              component={TextareaField}
-              validate={[required, maxLength1000]}
-              autoComplete="new-password"
-              label="Project Description"
-            />
+            <Field name="description" component={TextareaField} validate={[required, maxLength1000]} autoComplete="new-password" label="Project Description" />
           </div>
           <div className="upload-thumbnail check">
             <div className="upload_placeholder">
-              <label style={{ display: "none" }}>
+              <label style={{ display: 'none' }}>
                 <input
                   ref={openFile}
                   type="file"
@@ -224,32 +182,25 @@ let CreateProjectPopup = (props) => {
                     }
                     if (
                       !(
-                        e.target.files[0].type.includes("png") ||
-                        e.target.files[0].type.includes("jpg") ||
-                        e.target.files[0].type.includes("gif") ||
-                        e.target.files[0].type.includes("jpeg")
+                        e.target.files[0].type.includes('png') ||
+                        e.target.files[0].type.includes('jpg') ||
+                        e.target.files[0].type.includes('gif') ||
+                        e.target.files[0].type.includes('jpeg')
                       )
                     ) {
                       Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: "Invalid file selected.",
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Invalid file selected.',
                       });
                     } else if (e.target.files[0].size > 100000000) {
                       Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: "Selected file size should be less then 100MB.",
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Selected file size should be less then 100MB.',
                       });
                     } else {
-                      uploadThumb(
-                        e,
-                        permission,
-                        teamPermission,
-                        projectState?.selectedProject?.id,
-                        dispatch,
-                        editMode
-                      );
+                      uploadThumb(e, permission, teamPermission, projectState?.selectedProject?.id, dispatch, editMode);
                     }
                   }}
                 />
@@ -266,9 +217,9 @@ let CreateProjectPopup = (props) => {
                     <div
                       className="success"
                       style={{
-                        color: "green",
-                        marginBottom: "20px",
-                        fontSize: "20px",
+                        color: 'green',
+                        marginBottom: '20px',
+                        fontSize: '20px',
                       }}
                     >
                       Image Uploaded:
@@ -277,9 +228,7 @@ let CreateProjectPopup = (props) => {
                     <div
                       className="imgbox"
                       style={{
-                        backgroundImage: project.thumbUrl.includes("pexels.com")
-                          ? `url(${project.thumbUrl})`
-                          : `url(${global.config.resourceUrl}${project.thumbUrl})`,
+                        backgroundImage: project.thumbUrl.includes('pexels.com') ? `url(${project.thumbUrl})` : `url(${global.config.resourceUrl}${project.thumbUrl})`,
                       }}
                     />
                   </div>
@@ -290,10 +239,7 @@ let CreateProjectPopup = (props) => {
                     </label>
                     <div className="imgbox">
                       {/* eslint-disable-next-line max-len */}
-                      <img
-                        src="https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280"
-                        alt=""
-                      />
+                      <img src="https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280" alt="" />
                     </div>
                   </div>
                 )}
@@ -320,30 +266,19 @@ let CreateProjectPopup = (props) => {
             <br />
 
             <p className="disclaimer">
-              Project Image dimension should be{" "}
-              <strong>280px width and 200px height. </strong>
+              Project Image dimension should be <strong>280px width and 200px height. </strong>
               Maximun File size allowed is <strong>100MB.</strong>
             </p>
           </div>
           <div className="create-project-template-wrapper">
-            <button
-              type="submit"
-              className="create-project-submit-btn"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <img src={loader} alt="" />
-              ) : editMode ? (
-                "Update Project"
-              ) : (
-                "Create Project"
-              )}
+            <button type="submit" className="create-project-submit-btn" disabled={isLoading}>
+              {isLoading ? <img src={loader} alt="" /> : editMode ? 'Update Project' : 'Create Project'}
             </button>
           </div>
         </form>
       </div>
     ) : (
-      <Alert style={{ marginTop: "25px" }} variant="danger">
+      <Alert style={{ marginTop: '25px' }} variant="danger">
         You are not authorized to access this.
       </Alert>
     )
@@ -362,7 +297,7 @@ CreateProjectPopup.propTypes = {
 };
 
 CreateProjectPopup = reduxForm({
-  form: "createProjectForm",
+  form: 'createProjectForm',
   enableReinitialize: true,
   onSubmit,
 })(CreateProjectPopup);
@@ -374,21 +309,11 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   initialValues: {
-    name: state.project.selectedProject
-      ? state.project.selectedProject.name
-      : null,
-    description: state.project.selectedProject
-      ? state.project.selectedProject.description
-      : null,
-    vType: state.project.selectedProject?.organization_visibility_type_id
-      ? state.project.selectedProject?.organization_visibility_type_id
-      : null,
+    name: state.project.selectedProject ? state.project.selectedProject.name : null,
+    description: state.project.selectedProject ? state.project.selectedProject.description : null,
+    vType: state.project.selectedProject?.organization_visibility_type_id ? state.project.selectedProject?.organization_visibility_type_id : null,
   },
   isLoading: state.project.isLoading,
 });
 
-
-export default React.memo(withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(CreateProjectPopup),
-));
-
+export default React.memo(withRouter(connect(mapStateToProps, mapDispatchToProps)(CreateProjectPopup)));

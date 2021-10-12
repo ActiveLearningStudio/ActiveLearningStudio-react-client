@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
-import { connect, useSelector } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
@@ -39,10 +39,19 @@ import {
   showDescribeActivityAction,
   showBuildActivityAction,
 } from 'store/actions/resource';
-import { showCreateProjectModalAction, loadProjectAction, loadLmsAction, getIndexed, getElastic } from 'store/actions/project';
+import {
+  showCreateProjectModalAction,
+  loadProjectAction,
+  loadLmsAction,
+  toggleProjectShareAction,
+  toggleProjectShareRemovedAction,
+  getIndexed,
+  getElastic,
+} from 'store/actions/project';
 import { closeSafariMontageToolAction } from 'store/actions/LMS/genericLMS';
 import Footer from 'components/Footer';
 import DeletePopup from 'components/DeletePopup';
+import Projectsharing from 'components/ProjectSharing/index';
 import AddResource from 'components/ResourceCard/AddResource';
 import { getTeamPermission } from 'store/actions/team';
 import EditResource from 'components/ResourceCard/EditResource';
@@ -53,11 +62,14 @@ import CreatePlaylistPopup from './CreatePlaylistPopup';
 import './style.scss';
 
 function PlaylistsPage(props) {
+  const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
   const [title, setTitle] = useState(false);
   const [error, setError] = useState(null);
+  const projectState = useSelector((state) => state.project);
   const [indexStatus, setIndexStatus] = useState(null);
   const organization = useSelector((state) => state.organization);
+  const [activeShared, setActiveShared] = useState(true);
   const team = useSelector((state) => state.team);
   const { teamPermission } = team;
   const { permission, activeOrganization } = organization;
@@ -95,18 +107,17 @@ function PlaylistsPage(props) {
       getTeamPermissions(organization?.currentOrganization?.id, selectedProject?.team_id);
     }
   }, [teamPermission, organization?.currentOrganization, selectedProject, match.params.projectId, getTeamPermissions]);
+
+  useEffect(() => {
+    setActiveShared(projectState.selectedProject.shared);
+  }, [projectState.selectedProject]);
   useEffect(() => {
     loadLms();
     window.scrollTo(0, 0);
 
-    if (
-      !showPlaylistModal &&
-      !openCreateResourcePopup &&
-      !openEditResourcePopup &&
-      activeOrganization
-    ) {
-      toast.info("Loading Playlists ...", {
-        className: "project-loading",
+    if (!showPlaylistModal && !openCreateResourcePopup && !openEditResourcePopup && activeOrganization) {
+      toast.info('Loading Playlists ...', {
+        className: 'project-loading',
         closeOnClick: false,
         closeButton: false,
         position: toast.POSITION.BOTTOM_RIGHT,
@@ -186,7 +197,6 @@ function PlaylistsPage(props) {
     try {
       await hideCreatePlaylistModal();
       setShowPlaylistModal(false);
-
     } catch (err) {
       console.log(err.message);
     }
@@ -386,7 +396,7 @@ function PlaylistsPage(props) {
                   </div>
                   <div className="new-playlist">
                     {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:add-playlist') : permission?.Playlist?.includes('playlist:create')) && (
-                      <button style={{whiteSpace: 'nowrap'}} type="button" className="create-playlist-btn" onClick={handleShowCreatePlaylistModal}>
+                      <button style={{ whiteSpace: 'nowrap' }} type="button" className="create-playlist-btn" onClick={handleShowCreatePlaylistModal}>
                         <FontAwesomeIcon icon="plus" className="mr-2" />
                         New playlist
                       </button>
@@ -405,7 +415,9 @@ function PlaylistsPage(props) {
                         </Dropdown.Menu>
                       </Dropdown>
                     </div> */}
-
+                    {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-project') : permission?.Project?.includes('project:share')) && (
+                      <Projectsharing activeShared={activeShared} selectedProject={selectedProject} />
+                    )}
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                       {permission?.Project?.includes('project:request-indexing') && (
                         <div className="react-touch">
