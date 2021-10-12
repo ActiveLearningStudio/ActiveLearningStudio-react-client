@@ -1,4 +1,4 @@
-// /* eslint-disable */
+/* eslint-disable */
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
@@ -6,13 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import imgAvatar from 'assets/images/img-avatar.png';
 import { removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
-import {
-  createActivityType,
-  editActivityType,
-  loadResourceTypesAction,
-  uploadActivityTypeThumbAction,
-}
-from 'store/actions/resource';
+import { createActivityType, editActivityType, loadResourceTypesAction, uploadActivityTypeThumbAction } from 'store/actions/resource';
 
 export default function CreateActivity(props) {
   const { editMode } = props;
@@ -116,40 +110,26 @@ export default function CreateActivity(props) {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <h2>
-              {editMode ? 'Edit' : 'Add'}
-              {' '}
-              Activity Type
-            </h2>
+            <h2>{editMode ? 'Edit' : 'Add'} Activity Type</h2>
             <div className="form-group-create">
               <h3>Title</h3>
-              <input
-                type="text"
-                name="title"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.title}
-              />
-              <div className="error">
-                {errors.title && touched.title && errors.title}
-              </div>
+              <input type="text" name="title" onChange={handleChange} onBlur={handleBlur} value={values.title} />
+              <div className="error">{errors.title && touched.title && errors.title}</div>
             </div>
             <div className="form-group-create">
               <h3>Image</h3>
-              <div
-                className="img-upload-form"
-                onClick={() => imgUpload.current.click()}
-              >
+              <div className="img-upload-form">
                 <input
                   type="file"
                   name="image"
                   onChange={(e) => {
                     if (
                       !(
-                        e.target.files[0].type.includes('png')
-                        || e.target.files[0].type.includes('jpg')
-                        || e.target.files[0].type.includes('gif')
-                        || e.target.files[0].type.includes('jpeg')
+                        e.target.files[0].type.includes('png') ||
+                        e.target.files[0].type.includes('jpg') ||
+                        e.target.files[0].type.includes('gif') ||
+                        e.target.files[0].type.includes('jpeg') ||
+                        e.target.files[0].type.includes('svg')
                       )
                     ) {
                       Swal.fire({
@@ -193,10 +173,7 @@ export default function CreateActivity(props) {
                         backgroundImage: `url(${global.config.resourceUrl}${imageActive})`,
                       }}
                     />
-                    <div
-                      className="update-img"
-                      onClick={() => imgUpload.current.click()}
-                    >
+                    <div className="update-img" onClick={() => imgUpload.current.click()}>
                       Update Image
                     </div>
                   </>
@@ -206,9 +183,7 @@ export default function CreateActivity(props) {
                     <p>Upload Image</p>
                   </>
                 )}
-                <div className="error">
-                  {errors.image && touched.image && errors.image}
-                </div>
+                <div className="error">{errors.image && touched.image && errors.image}</div>
               </div>
             </div>
             <div className="form-group-create">
@@ -226,16 +201,10 @@ export default function CreateActivity(props) {
                 onBlur={handleBlur}
                 value={values.order}
               />
-              <div className="error">
-                {errors.order && touched.order && errors.order}
-              </div>
+              <div className="error">{errors.order && touched.order && errors.order}</div>
             </div>
             <div className="button-group">
-              <button type="submit">
-                {editMode ? 'Edit' : 'Create'}
-                {' '}
-                Activity Type
-              </button>
+              <button type="submit">{editMode ? 'Edit' : 'Create'} Activity Type</button>
               <button
                 type="button"
                 className="cancel"

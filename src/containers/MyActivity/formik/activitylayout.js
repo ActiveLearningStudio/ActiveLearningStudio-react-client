@@ -54,9 +54,7 @@ const ActivityLayout = (props) => {
       <div className="activity-layout-title">
         <HeadingTwo text="Select a layout" color="#084892" />
       </div>
-      <div className="activity-layout-detail">
-        <HeadingText text="Start creating by selecting a layout and then add activity types." color="#515151" />
-      </div>
+
       <form className="radio-group ">
         <div className="radio-button active-radio2 ">
           <input name="selecttype" checked type="radio" className="input" id="Create new activity" />
@@ -80,7 +78,9 @@ const ActivityLayout = (props) => {
           <label for="Upload activity">Upload activity</label>
         </div>
       </form>
-
+      <div className="activity-layout-detail">
+        <HeadingText text="Start creating by selecting a layout and then add activity types." color="#515151" />
+      </div>
       <div className="layout-cards-process-btn">
         <div className="activity-layout-cards">
           {!!allActivity &&
@@ -113,29 +113,27 @@ const ActivityLayout = (props) => {
         </div>
         {!!layout && (
           <div className="layout-process-btn">
-            <HeadingThree text={layout.title} color="#084892" />
+            <HeadingTwo text={layout.title} color="#084892" />
             <div className="activity-layout-process-box">
               <iframe
                 width="100%"
                 height="100%"
+                style={{ borderRadius: '8px' }}
                 src={layout.demo_video_id || 'https://www.youtube-nocookie.com/embed/lgzsJDcMvPI'}
                 title={layout.title}
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
               ></iframe>
-              {/* <iframe width="100%" height="100%" frameborder="0" src={layout.demo_video_id || 'https://www.youtube.com/embed/ngXSzWNYzU4'} ></iframe> */}
-              <iframe width="100%" height="100%" frameborder="0" src={layout.demo_video_id || 'https://www.youtube.com/embed/ngXSzWNYzU4'} title={layout.title}></iframe>
-              {/* <img src={PlayIcon} /> */}
             </div>
             <HeadingText text={layout.description} color="#515151" />
-            <div className="layout-useful-box">
+            {/* <div className="layout-useful-box">
               <div className="useful-box">
                 <HeadingThree text="Useful for" color="#084892" />
                 <FontAwesomeIcon icon={faArrowRight} className="useful-icon" />
               </div>
               <HeadingText text="Guided onboardings, Corporated presentations" color="#515151" />
-            </div>
+            </div> */}
             <div className="activity-layout-btns">
               <Buttons text="Cancel" secondary={true} width="153px" height="36px" onClick={() => changeScreenHandler('')} hover={true} />
 
