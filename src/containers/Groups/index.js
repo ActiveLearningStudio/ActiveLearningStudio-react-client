@@ -21,7 +21,7 @@ import './style.scss';
 // TODO: need to remove after connect API
 const breadCrumbData = {
   creation: 'group/create group',
-  editMode: 'edit team',
+  editMode: 'edit group',
   projectShow: 'projects',
   channelShow: 'projects',
   groupShow: 'groups',
@@ -96,7 +96,7 @@ function GroupPage(props) {
 
   const title = {
     creation: 'Create Group',
-    editMode: 'Edit Team',
+    editMode: 'Edit Group',
     groupShow: `${selectedGroup ? selectedGroup.name : 'Group'} Members`,
     projectShow: `${selectedGroup ? selectedGroup.name : 'Group'} Projects`,
     channelShow: 'Channels',
@@ -141,6 +141,17 @@ function GroupPage(props) {
             </div>
             {overview && (
               <div className="row overview">
+                {permission?.Group?.includes('group:create')
+                && (
+                  <>
+                    <Link to={`/org/${organization?.currentOrganization?.domain}/groups/create-group`}>
+                      <div className="btn-top-page">
+                        <FontAwesomeIcon icon="plus" className="mr-2" />
+                        Create a Group
+                      </div>
+                    </Link>
+                  </>
+                )}
                 {permission?.Group?.includes('group:view') ? (
                   <>
                     {groups.length > 0 ? groups.map((group) => (

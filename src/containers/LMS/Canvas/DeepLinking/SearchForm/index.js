@@ -27,6 +27,7 @@ const SearchForm = (props) => {
       ...params,
       ltiClientId: match.params.ltiClientId,
       userEmail,
+      mode: 'search',
     });
   }, [match]);
 
@@ -54,8 +55,8 @@ const SearchForm = (props) => {
       <div className="row">
         <div className="col">
           <div className="form-group">
-            <select className="form-control" name="private" onChange={fieldChanged}>
-              <option value="0" selected>Public Activities</option>
+            <select className="form-control" name="private" onChange={fieldChanged} defaultValue="0">
+              <option value="0">Public Activities</option>
               <option value="1">Private Activities</option>
             </select>
           </div>
@@ -66,9 +67,9 @@ const SearchForm = (props) => {
           <div className="row">
             <div className="col">
               <div className="form-group">
-                <select className="form-control" name="subject" onChange={fieldChanged}>
-                  <option value="" disabled selected>Subject Area</option>
-                  {subjects.map((subject) => <option value={subject.value}>{subject.subject}</option>)}
+                <select className="form-control" name="subject" onChange={fieldChanged} defaultValue="">
+                  <option value="" disabled>Subject Area</option>
+                  {subjects.map((subject) => <option value={subject.value} key={subject.value}>{subject.subject}</option>)}
                 </select>
               </div>
             </div>
@@ -76,9 +77,9 @@ const SearchForm = (props) => {
           <div className="row">
             <div className="col">
               <div className="form-group">
-                <select className="form-control" name="level" onChange={fieldChanged}>
-                  <option value="" disabled selected>Education Level</option>
-                  {levels.map((level) => <option value={level.value}>{level.name}</option>)}
+                <select className="form-control" name="level" onChange={fieldChanged} defaultValue="">
+                  <option value="" disabled>Education Level</option>
+                  {levels.map((level) => <option value={level.value} key={level.value}>{level.name}</option>)}
                 </select>
               </div>
             </div>
@@ -111,7 +112,7 @@ const SearchForm = (props) => {
         id="advancedSwitch"
         label="Advanced Search"
         checked={advanced}
-        onClick={() => setAdvanced(!advanced)}
+        onChange={() => setAdvanced(!advanced)}
       />
       <div className="row">
         <div className="col text-right">

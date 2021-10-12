@@ -22,6 +22,7 @@ function LtiProjectShared(props) {
   useEffect(() => {
     dispatch(
       loadMyCloneProjectsAction(),
+      // loadMyProjectsAction(),
     );
   }, [dispatch]);
 
@@ -71,7 +72,7 @@ function LtiProjectShared(props) {
                     }}
                   >
                     <div className="flex-bar">
-                      <div>
+                      <div className="text-align-left">
                         {activeProject === counterTop + 1 ? (
 
                           <FontAwesomeIcon icon="check-square" />
@@ -113,7 +114,7 @@ function LtiProjectShared(props) {
                                 }}
                               >
                                 <div className="flex-bar">
-                                  <div>
+                                  <div className="text-align-left">
                                     <span>
                                       {activePlaylist === counterPlaylist + counterTop + 1 ? (
                                         <FontAwesomeIcon icon="stop-circle" className="mr-2" />

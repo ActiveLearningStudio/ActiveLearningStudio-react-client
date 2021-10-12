@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert } from 'react-bootstrap';
-
-import { loadSubOrganizationTeamsAction, loadTeamsAction } from 'store/actions/team';
+import { getTeamPermission, loadSubOrganizationTeamsAction, loadTeamsAction } from 'store/actions/team';
 // import Header from 'components/Header';
 // import Sidebar from 'components/Sidebar';
 import Footer from 'components/Footer';
@@ -41,10 +40,12 @@ function TeamsPage(props) {
     loadSubOrgTeams,
   } = props;
   const organization = useSelector((state) => state.organization);
+  const { teamPermission, selectedForClone } = useSelector((state) => state.team);
   const { activeOrganization, currentOrganization, permission } = organization;
   const [alertCheck, setAlertCheck] = useState(false);
   const [breadCrumb, setBreadCrumb] = useState([]);
   const history = useHistory();
+  const dispatch = useDispatch();
   useEffect(() => {
     (async () => {
       // if (activeOrganization && overview && !creation && !editMode && permission?.Team?.includes('team:view')) {
@@ -54,12 +55,14 @@ function TeamsPage(props) {
       // } else if (!permission?.Team?.includes('team:view')) {
       //   await loadTeams();
       // }
-      if ((activeOrganization?.id === currentOrganization?.id) && permission?.Team) {
-        await loadTeams();
-        setAlertCheck(true);
-      } else if (activeOrganization?.id !== currentOrganization?.id) {
-        await loadSubOrgTeams();
-        setAlertCheck(true);
+      if (activeOrganization && currentOrganization) {
+        if (activeOrganization?.id !== currentOrganization?.id) {
+          await loadSubOrgTeams();
+          setAlertCheck(true);
+        } else if ((activeOrganization?.id === currentOrganization?.id) && permission?.Team) {
+          await loadTeams();
+          setAlertCheck(true);
+        }
       }
     }
     )();
@@ -79,7 +82,13 @@ function TeamsPage(props) {
 
   const teamId = parseInt(location.pathname.split('teams/')[1], 10);
   const selectedTeam = teams.find((team) => team.id === teamId);
+  const { notification } = useSelector((state) => state.notification);
 
+  useEffect(() => {
+    if (notification?.today[0]?.data.message.indexOf(selectedForClone) !== -1) {
+      dispatch(loadTeamsAction());
+    }
+  }, [notification?.today]);
   useEffect(() => {
     let crumb = breadCrumbData[status];
     if (teamShow && selectedTeam) {
@@ -88,7 +97,11 @@ function TeamsPage(props) {
 
     setBreadCrumb(crumb.split('/'));
   }, [selectedTeam, status, teamShow, teams]);
-
+  useEffect(() => {
+    if (Object.keys(teamPermission).length === 0 && organization?.currentOrganization?.id && selectedTeam?.id) {
+      dispatch(getTeamPermission(organization?.currentOrganization?.id, selectedTeam?.id));
+    }
+  }, [selectedTeam, teamPermission]);
   if (location.pathname.includes('teams/') && !selectedTeam && !creation) {
     return <></>;
   }
@@ -110,7 +123,7 @@ function TeamsPage(props) {
           <div className="main-flex-top">
             {breadCrumb.map((node, index, these) => (
               <div key={node}>
-                <span className={index + 1 < these.length ? 'parent' : 'child'}>
+                <span className={index + 1 < these.length ? '' : 'child'}>
                   {node}
                 </span>
                 {index + 1 < these.length && (
@@ -119,22 +132,54 @@ function TeamsPage(props) {
               </div>
             ))}
           </div>
-          <Link className="back-button-main-page" onClick={goBack}>
-            <FontAwesomeIcon icon="chevron-left" />
-            Back
-          </Link>
+          {!overview
+          && (
+            <Link className="back-button-main-page" onClick={goBack}>
+              <FontAwesomeIcon icon="chevron-left" />
+              Back
+            </Link>
+          )}
         </div>
       </div>
       <div className="teams-page">
         <div className="content-wrapper">
           <div className="content">
-            <div className="row">
+            <div className="row" style={{ justifyContent: 'space-between' }}>
               <h1 className={`title${projectShow ? ' project-title' : ''}${channelShow ? ' channel-title' : ''}`}>
                 {overview ? 'Teams' : (title[status] || 'Teams')}
               </h1>
-              {projectShow && (
-                <></>
-              )}
+              <div className="flex-button-top">
+                {teamPermission?.Team?.includes('team:add-project') && projectShow && (
+                  <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}/add-projects`}>
+                    <div className="btn-top-page">
+                      <FontAwesomeIcon icon="plus" className="mr-2" />
+                      Add projects
+                    </div>
+                  </Link>
+                )}
+                {(teamPermission?.Team?.includes('team:add-team-user')
+                || teamPermission?.Team?.includes('team:remove-team-user')) && projectShow && (
+                  <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}`}>
+                    <div className="btn-top-page">
+                      Add/Remove Members
+                    </div>
+                  </Link>
+                )}
+                {permission?.Team?.includes('team:create')
+                && overview && (
+                  <>
+                    <Link to={`/org/${organization?.currentOrganization?.domain}/teams/create-team`}>
+                      <div className="btn-top-page">
+                        <FontAwesomeIcon icon="plus" className="mr-2" />
+                        Create a Team
+                      </div>
+                    </Link>
+                  </>
+                )}
+                {projectShow && (
+                  <></>
+                )}
+              </div>
             </div>
             <>
               {overview && (

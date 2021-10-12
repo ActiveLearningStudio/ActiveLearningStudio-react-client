@@ -59,43 +59,12 @@ export const loginAction = (data) => async (dispatch) => {
     const centralizedState = store.getState();
     const { organization: { activeOrganization } } = centralizedState;
     storageService.setItem(CURRENT_ORG, activeOrganization?.domain);
-    await dispatch(getAllPermission(activeOrganization?.id));
+    await dispatch(getAllPermission(activeOrganization?.id || 1));
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
       payload: { user: response.user },
     });
     return response;
-  } catch (e) {
-    dispatch({
-      type: actionTypes.LOGIN_FAIL,
-    });
-
-    throw e;
-  }
-};
-
-export const SSOLoginAction = (data) => async (dispatch) => {
-  try {
-    const response = await authService.loginSSO(data);
-    // hubspot email tacking
-    // eslint-disable-next-line no-multi-assign
-    const _hsq = (window._hsq = window._hsq || []);
-    _hsq.push([
-      'identify',
-      {
-        email: response.user.email,
-        user_name: `${response.user.first_name} ${response.user.last_name}`,
-      },
-    ]);
-
-    storageService.setItem(USER_TOKEN_KEY, response.access_token);
-    storageService.setItem(CURRENT_ORG, 'currikistudio');
-    dispatch(getAllOrganizationforSSO(1));
-    await dispatch(getAllPermission(1));
-    dispatch({
-      type: actionTypes.LOGIN_SUCCESS,
-      payload: { user: response.user },
-    });
   } catch (e) {
     dispatch({
       type: actionTypes.LOGIN_FAIL,
@@ -128,7 +97,8 @@ export const googleLoginAction = (data) => async (dispatch) => {
     ]);
 
     storageService.setItem(USER_TOKEN_KEY, response.access_token);
-
+    storageService.setItem(CURRENT_ORG, activeOrganization?.domain);
+    await dispatch(getAllPermission(activeOrganization?.id || 1));
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
       payload: { user: response.user },
@@ -234,8 +204,11 @@ export const confirmEmailAction = (data) => async (dispatch) => {
 };
 
 export const logoutAction = () => async () => {
+  const centralizedState = store.getState();
+  const { organization: { currentOrganization } } = centralizedState;
   storageService.removeItem(USER_TOKEN_KEY);
-  window.location.href = '/';
+  localStorage.removeItem('activeTab');
+  window.location.href = `/login/${currentOrganization?.domain}`;
 };
 
 export const updateProfileAction = (data) => async (dispatch) => {
@@ -340,4 +313,36 @@ export const loadOrganizationTypesAction = () => async (dispatch) => {
     type: actionTypes.LOAD_ORGANIZATION_TYPES,
     payload: organizationTypes.data,
   });
+};
+
+export const handleSsoLoginAction = (params) => async (dispatch) => {
+  storageService.setItem(USER_TOKEN_KEY, params.access_token);
+  dispatch({
+    type: actionTypes.LOGIN_SUCCESS,
+    payload: {
+      user: { ...params.user },
+    },
+  });
+};
+
+export const SSOLoginAction = (data) => async (dispatch) => {
+  try {
+    const response = await authService.loginSSO(data);
+    storageService.setItem(USER_TOKEN_KEY, response.access_token);
+    storageService.setItem(CURRENT_ORG, 'currikistudio');
+    await dispatch(getAllOrganizationforSSO());
+
+    dispatch({
+      type: actionTypes.LOGIN_SUCCESS,
+      payload: { user: response.user },
+    });
+    console.log('SSOLoginAction success');
+  } catch (e) {
+    console.log('SSOLoginAction failed');
+    dispatch({
+      type: actionTypes.LOGIN_FAIL,
+    });
+
+    throw e;
+  }
 };

@@ -149,6 +149,9 @@ $filled: #44ca92;
                   & > * {
                     align-self: center;
                   }
+                  .username{
+                    display: flex;
+                  }
                 }
 
                 a {

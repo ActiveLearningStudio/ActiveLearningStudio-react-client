@@ -236,7 +236,7 @@
           text-transform: capitalize;
           opacity: 1;
         }
-
+       .search-content {
         ul {
           padding: 2px 0 8px 15px;
           display: flex;
@@ -257,6 +257,7 @@
             }
           }
         }
+      }
 
         p {
           text-align: left;
@@ -268,7 +269,7 @@
           margin-top: auto;
         }
         .dropdown-menu {
-          padding-left: 10px;
+      
           cursor: pointer;
         }
 
@@ -320,6 +321,7 @@
         width: 78%;
         display: flex;
         justify-content: space-between;
+        overflow: visible;
 
         .btn-fav{
           border: 1px solid #eee;
@@ -429,6 +431,9 @@
     flex-direction: row;
     justify-content: space-between;
     padding: 10px;
+    .text-align-left{
+      text-align: left;
+    }
   }
 
   .btn {
@@ -609,4 +614,11 @@ ul.pagination {
       display: flex;
     }
   }
+}
+.modal-dialog.safari-modal {
+  max-width:80vw;
+  iframe {
+    height: 80vh;
+    width: 100%;
+}
 }

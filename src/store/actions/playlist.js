@@ -75,13 +75,13 @@ export const deletePlaylistAction = (projectId, id) => async (dispatch) => {
   }
 };
 
-export const loadProjectPlaylistsAction = (projectId) => async (dispatch) => {
+export const loadProjectPlaylistsAction = (projectId, skipContent = false) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.PAGE_LOADING,
     });
 
-    const { playlists } = await playlistService.getAll(projectId);
+    const { playlists } = await playlistService.getAll(projectId, skipContent);
 
     dispatch({
       type: actionTypes.LOAD_PROJECT_PLAYLISTS,

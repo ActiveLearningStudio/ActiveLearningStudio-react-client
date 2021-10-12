@@ -8,6 +8,7 @@ import gifloader from 'assets/images/dotsloader.gif';
 import * as xAPIHelper from 'helpers/xapi';
 import { loadH5pResourceXapi } from 'store/actions/resource';
 import { loadH5pResourceSettings, getSubmissionAction, turnInAction } from 'store/actions/gapi';
+import { saveResultScreenshotAction } from 'store/actions/safelearn';
 import './style.scss';
 
 const Activity = (props) => {
@@ -23,6 +24,7 @@ const Activity = (props) => {
     getSubmission,
     sendStatement,
     turnIn,
+    sendScreenshot,
   } = props;
   const [xAPILoaded, setXAPILoaded] = useState(false);
   const [intervalPointer, setIntervalPointer] = useState(null);
@@ -31,9 +33,14 @@ const Activity = (props) => {
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
-    loadH5pSettings(activityId, student.auth.googleId);
     getSubmission(match.params.classworkId, match.params.courseId, student.auth);
   }, [activityId, student.auth]);
+
+  useEffect(() => {
+    if (submission === null) return;
+
+    loadH5pSettings(activityId, student.auth.googleId, submission.id);
+  }, [submission]);
 
   // Load H5P
   useEffect(() => {
@@ -152,6 +159,9 @@ const Activity = (props) => {
         });
       } else {
         sendStatement(xapiData);
+        if (h5pSettings?.organization?.api_key) {
+          sendScreenshot(h5pSettings.organization, xapiData, h5pSettings.activity.title, student.profile.data.name.fullName);
+        }
       }
     });
     console.log('? AE hooked');
@@ -187,6 +197,7 @@ Activity.propTypes = {
   getSubmission: PropTypes.func.isRequired,
   sendStatement: PropTypes.func.isRequired,
   turnIn: PropTypes.func.isRequired,
+  sendScreenshot: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -196,10 +207,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  loadH5pSettings: (activityId, studentId) => dispatch(loadH5pResourceSettings(activityId, studentId)),
+  loadH5pSettings: (activityId, studentId, submissionId) => dispatch(loadH5pResourceSettings(activityId, studentId, submissionId)),
   getSubmission: (classworkId, courseId, auth) => dispatch(getSubmissionAction(classworkId, courseId, auth)),
   sendStatement: (statement) => dispatch(loadH5pResourceXapi(statement)),
   turnIn: (classworkId, courseId, auth) => dispatch(turnInAction(classworkId, courseId, auth)),
+  sendScreenshot: (org, statement, title, studentName) => dispatch(saveResultScreenshotAction(org, statement, title, studentName)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Activity));

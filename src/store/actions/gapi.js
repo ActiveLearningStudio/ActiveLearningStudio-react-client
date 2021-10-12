@@ -119,8 +119,8 @@ export const getStudentCoursesAction = (token) => async (dispatch) => {
   });
 };
 
-export const loadH5pResourceSettings = (activityId, studentId = null) => async (dispatch) => {
-  const h5pSettings = await gapiService.h5pResourceSettings(activityId, studentId);
+export const loadH5pResourceSettings = (activityId, studentId = null, submissionId = null) => async (dispatch) => {
+  const h5pSettings = await gapiService.h5pResourceSettings(activityId, studentId, submissionId);
   dispatch({
     type: GET_H5P_SETTINGS,
     h5pSettings,

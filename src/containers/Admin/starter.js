@@ -29,19 +29,28 @@ function Starter(props) {
     setSize,
     activeRole,
     setActiveRole,
+    searchQueryActivities,
+    setSearchQueryActivities,
     searchQuery,
+    searchQueryProject,
+    setSearchQueryProject,
+    searchQueryStats,
+    setSearchQueryStats,
     setSearchQuery,
     subTypeState,
+    setAllProjectIndexTab,
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
     searchActivitiesQueryHandler,
     searchUserReportQueryHandler,
     searchAlertToggler,
+    searchAlertTogglerStats,
     setActivePage,
     subType,
     inviteUser,
     setCurrentTab,
     setChangeIndexValue,
+    changeIndexValue,
     permissionRender,
   } = props;
   return (
@@ -62,7 +71,13 @@ function Starter(props) {
         SetJobType={SetJobType}
         logType={logType}
         SetLogType={SetLogType}
+        searchQueryActivities={searchQueryActivities}
+        setSearchQueryActivities={setSearchQueryActivities}
         searchQuery={searchQuery}
+        searchQueryProject={searchQueryProject}
+        setSearchQueryProject={setSearchQueryProject}
+        searchQueryStats={searchQueryStats}
+        setSearchQueryStats={setSearchQueryStats}
         setSearchQuery={setSearchQuery}
         setActivePage={setActivePage}
         searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
@@ -70,16 +85,17 @@ function Starter(props) {
         searchUserReportQueryHandler={searchUserReportQueryHandler}
         searchQueryChangeHandler={searchQueryChangeHandler}
         importUser={importUser}
+        setAllProjectIndexTab={setAllProjectIndexTab}
         filter={filter}
         tableHead={tableHead}
         inviteUser={inviteUser}
         roles={roles}
         subType={subType}
         setChangeIndexValue={setChangeIndexValue}
-        
+
       />
       {subTypeState === 'All settings' && <Settings /> }
-      {roles?.length && subTypeState === "Manage Roles" ? (
+      {subTypeState === "Manage Roles" ? (
         <Userroles permissionRender={permissionRender} />
       ) : (
         <TableData
@@ -87,10 +103,13 @@ function Starter(props) {
           activePage={activePage}
           setActivePage={setActivePage}
           searchAlertToggler={searchAlertToggler}
+          searchAlertTogglerStats={searchAlertTogglerStats}
           type={type}
           jobType={jobType}
           data={data}
           subType={subType}
+          changeIndexValue={changeIndexValue}
+          setAllProjectIndexTab={setAllProjectIndexTab}
           subTypeState={subTypeState}
           setCurrentTab={setCurrentTab}
         />

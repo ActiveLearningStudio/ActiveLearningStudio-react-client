@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   activeScreen: 'intro',
   activePage: 1,
   activeRole: '',
-  size: 25,
+  size: 10,
   backScreen: '',
   roles: [],
   users: [],
@@ -13,7 +13,7 @@ const INITIAL_STATE = {
   allOrganizations: [],
   currentOrganization: null,
   activeOrganization: null,
-  allSuborgList: [],
+  allSuborgList: null,
   newlyCreated: null,
   editOrganization: null,
   logo: '',
@@ -187,12 +187,14 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.DELETE_USER_FROM_ORGANIZATION:
       return {
         ...state,
-        users: action.payload,
+        users: action.payload.users,
+        searchUsers: action.payload.searchUsers,
       };
     case actionTypes.REMOVE_USER_FROM_ORGANIZATION:
       return {
         ...state,
-        users: action.payload,
+        users: action.payload.users,
+        searchUsers: action.payload.searchUsers,
       };
     case actionTypes.SEARCH_USER_IN_ORGANIZATION:
       return {
@@ -231,6 +233,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         users: [],
+      };
+    case actionTypes.UPDATE_PAGE_NUMBER:
+      return {
+        ...state,
+        activePage: action.payload,
+      };
+    case actionTypes.RESET_PAGE_NUMBER:
+      return {
+        ...state,
+        activePage: 1,
       };
     default:
       return state;

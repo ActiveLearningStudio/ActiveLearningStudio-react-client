@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Formik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -8,7 +8,7 @@ import organization from 'services/organizations.services';
 import loader from 'assets/images/dotsloader.gif';
 import Swal from 'sweetalert2';
 import { inviteUserOutside } from 'store/actions/organization';
-import { errorCatcher } from 'services/errors';
+import { alphaNumeric } from 'utils';
 
 export default function AddUser(props) {
   const {
@@ -19,6 +19,7 @@ export default function AddUser(props) {
   } = props;
   const stateOrg = useSelector((state) => state.organization);
   const { activeOrganization } = stateOrg;
+  const resetvalue = useRef();
   const dispatch = useDispatch();
   const [stateOrgUsers, setStateOrgUsers] = useState([]);
   const [loaderImgUser, setLoaderImgUser] = useState(false);
@@ -26,6 +27,7 @@ export default function AddUser(props) {
   return (
     <div className="add-user-organization">
       <Formik
+        enableReinitialize
         initialValues={{
           name: '',
           role_id: '',
@@ -40,7 +42,7 @@ export default function AddUser(props) {
           if (!values.email) {
             errors.email = 'Required';
           } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{1,}$/i.test(values.email)
           ) {
             errors.email = 'Invalid email address';
           }
@@ -49,7 +51,7 @@ export default function AddUser(props) {
           }
           return errors;
         }}
-        onSubmit={(values) => {
+        onSubmit={(values, { resetForm }) => {
           Swal.fire({
             title: 'Please Wait !',
             html: 'Sending Invite ...',
@@ -68,11 +70,14 @@ export default function AddUser(props) {
               if (res) {
                 Swal.fire({
                   icon: 'success',
-                  text: 'Invite Sent',
+                  text: 'Invitation sent',
                 });
               }
-            }).catch((err) => {
-              errorCatcher(err);
+              resetvalue.current.selectedIndex = '0';
+              resetForm();
+            }).catch(() => {
+              resetvalue.current.selectedIndex = '0';
+              resetForm();
             });
         }}
       >
@@ -94,14 +99,19 @@ export default function AddUser(props) {
                 name="name"
                 autoComplete="off"
                 onChange={async (e) => {
-                  setFieldValue('name', e.target.value);
-                  setFieldValue('email', '');
-                  setLoaderImgUser(true);
-                  if (e.target.value) {
+                  if (alphaNumeric(e.target.value)) {
+                    setFieldValue('name', e.target.value);
+                    setFieldValue('email', '');
+                    setLoaderImgUser(true);
+                  }
+                  if (e.target.value && alphaNumeric(e.target.value)) {
                     const result = organization.getAllUsers(stateOrg.activeOrganization?.id, e.target.value, method);
                     result.then((data) => {
                       setLoaderImgUser(false);
                       setStateOrgUsers(data['member-options']);
+                    }).catch(() => {
+                      setLoaderImgUser(false);
+                      setStateOrgUsers([]);
                     });
                   } else if (e.target.value === '') {
                     setLoaderImgUser(false);
@@ -112,7 +122,7 @@ export default function AddUser(props) {
                 value={values.name}
               />
               {loaderImgUser && <img src={loader} alt="" className="loader" />}
-              {stateOrgUsers?.length > 0 && (
+              {stateOrgUsers?.length > 0 && values.name && (
                 <ul className="all-users-list">
                   {stateOrgUsers?.map((user) => (
                     <li
@@ -165,6 +175,7 @@ export default function AddUser(props) {
                 }}
                 onBlur={handleBlur}
                 value={values.role_id.name}
+                ref={resetvalue}
               >
                 <option value="">Select Role</option>
                 {stateOrg.roles.map((role) => (

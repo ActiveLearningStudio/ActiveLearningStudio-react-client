@@ -270,6 +270,10 @@
         background-color: #3A3632;
         color: #fff;
         text-decoration: none;
+
+        button span, button svg {
+          color: #fff !important;
+        }
       }
     }
   }
@@ -486,7 +490,7 @@
     width: -moz-fit-content;
     width: 70px;
     height: 35px;
-    margin: -35px 10px 10px 0;
+    margin: 0 10px 10px 0;
     /* padding: 3px 20px; */
     display: flex;
     justify-content: center;
@@ -2022,7 +2026,7 @@ a:hover {
     padding: 10px 20px 40px 20px;
     display: none;
     background-color: white;
-    overflow: hidden;
+    overflow-x: hidden;
 
     .slick-list {
       overflow: visible;
@@ -2137,11 +2141,8 @@ a:hover {
   }
 
   li {
-    height: 100%;
-    min-height: 180px;
     border: 1px solid #ececec;
     border-radius: 3px;
-    box-shadow: 0 2px 2px #0000000d;
     list-style-type: none;
   }
 
@@ -2495,6 +2496,9 @@ a:hover {
     margin-top: 50px;
     .item-container {
       padding-bottom: 50px;
+      @media screen and (max-width: 1499px) {
+        margin-top: 20px;
+      }
     }
   }
   .slider-scroll-auto {
@@ -2631,6 +2635,9 @@ a:hover {
     top: 40px;
     z-index: 11;
   background-color: #fff;
+  @media screen and (max-width: 1499px) {
+    height: 70px;
+  }
     h3 {
       font-size: 16px;
       font-weight: bold;
@@ -3074,7 +3081,7 @@ a:hover {
 .footer-img-section{
   position: fixed;
   bottom: 0;
-  z-index: 1001;
+  z-index: 999;
   width: 100%;
   height: 65px;
   padding: 10px 30px;
@@ -3736,6 +3743,11 @@ a:hover {
 .text-added-project-dropdown  {
   button {
     width:100%;
+    padding-left: 0px !important;
+    height: 28px;
+    //  border-radius: 0px;
+    //  border: 1px solid #ece9e9 !important;
+    //  width:33%;
     span {
       font-size: 12px;
       line-height: 16px;
@@ -3743,13 +3755,16 @@ a:hover {
       padding-left: 10px !important;
       font-weight: bold;
     }
-
     &:hover {
-      span {
+      background-color: #084892 !important;;
+      span,svg {
         color: #ffffff !important;
       }
     }
+
+
   }
+
 }
 
 @media (max-width: 767px) {
@@ -3823,8 +3838,12 @@ a:hover {
 
 body.collapsed {
   .main-content-wrapper {
+
+    .assign-projects .assign-projects-content {
+      margin-left:100px;
+    }
     .side-wrapper-team {
-      left:110px;
+      padding-left:160px;
       .bread-crumb {
         position: initial;
       }
@@ -3925,4 +3944,57 @@ body.collapsed {
 
     }
   }
+}
+
+
+.iframe-height-resource-shared.defaultcontainer{
+
+  .flex-container.previews {
+  max-width: 65% !important;
+  margin:0 auto;
+  padding: 20px;
+  display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    .main-item-wrapper {
+     width:100%;
+     margin-bottom: 0;
+    }
+
+  @media (max-width:1280px) {
+    padding: 0px;
+
+  }
+  @media (max-width:768px) {
+    max-width: 95% !important;
+  }
+  }
+  @media (orientation: landscape) and (max-width:768px) {
+    max-width: 70% !important;
+    margin:0 auto
+  }
+  .activity-bg.left-vdo {
+    height: auto !important
+  }
+  .item-container,.h5p-iframe-wrapper{
+    padding-bottom: 0 !important;
+  }
+
+}
+
+.coverallareas {
+  display: none;
+@media(max-width: 991px){
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index:1111;
+  background: #f8f9fa;
+  top: 0;
+}
 }

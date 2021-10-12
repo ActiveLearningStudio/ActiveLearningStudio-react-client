@@ -25,7 +25,7 @@ function SearchForm() {
   const activityTypesState = useSelector((state) => state.resource.types);
   const searchState = useSelector((state) => state.search);
   const auth = useSelector((state) => state.auth);
-  const { currentOrganization } = useSelector((state) => state.organization);
+  const { currentOrganization, permission } = useSelector((state) => state.organization);
 
   useEffect(() => {
     if (activityTypesState.length === 0 && auth?.user) {
@@ -76,7 +76,7 @@ function SearchForm() {
                 Swal.fire('Search field is required');
               } else if (simpleSearch.length > 255) {
                 Swal.fire('Character limit should be less than 255 ');
-              } else {
+              } else if (permission?.Search?.includes('search:advance')) {
                 const searchData = {
                   phrase: simpleSearch.trim(),
                   from: 0,
@@ -86,6 +86,17 @@ function SearchForm() {
                 dispatcher(simpleSearchAction(searchData));
                 localStorage.setItem('loading', 'true');
                 history.push(`/org/${currentOrganization?.domain}/search?q=${simpleSearch.trim()}&type=public`);
+                localStorage.setItem('refreshPage', false);
+              } else if (permission?.Search?.includes('search:dashboard')) {
+                const searchData = {
+                  phrase: simpleSearch.trim(),
+                  from: 0,
+                  size: 20,
+                  type: 'private',
+                };
+                dispatcher(simpleSearchAction(searchData));
+                localStorage.setItem('loading', 'true');
+                history.push(`/org/${currentOrganization?.domain}/search?q=${simpleSearch.trim()}&type=private`);
                 localStorage.setItem('refreshPage', false);
               }
             }
@@ -105,6 +116,7 @@ function SearchForm() {
             initialValues={{
               phrase: '',
               subjectArray: [],
+              author: [],
               subject: '',
               grade: '',
               gradeArray: [],
@@ -128,15 +140,20 @@ function SearchForm() {
               if (values.fromDate && values.toDate) {
                 if (values.fromDate > values.toDate) errors.dateError = 'Invalid Date Format';
               }
+              if (values.fromDate) {
+                if (!values.toDate) {
+                  errors.toDate = 'To Date required';
+                }
+              }
               return errors;
             }}
-            onSubmit={(values, { resetForm }) => {
+            onSubmit={(values) => {
               closeModel.current.click();
               const h5pNameArray = [];
               values.standardArray.filter((h5p) => h5pNameArray.push(h5p.value));
               values.standardArray = h5pNameArray;
               // eslint-disable-next-line max-len
-              history.push(`/org/${currentOrganization?.domain}/search?q=${values.phrase}&type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${h5pNameArray}`);
+              history.push(`/org/${currentOrganization?.domain}/search?q=${values.phrase}&type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${h5pNameArray}&fromDate=${values.fromDate}&toDate=${values.toDate}&author=${values.author}`);
               localStorage.setItem('refreshPage', false);
               // const allSubjects = values.subjectArray;
               // values.subjectArray = allSubjects.forEach((subject) => {
@@ -152,24 +169,25 @@ function SearchForm() {
               // });
               Swal.showLoading();
               dispatcher(simpleSearchAction(values));
-              resetForm({
-                phrase: '',
-                subjectArray: [],
-                subject: '',
-                grade: '',
-                gradeArray: [],
-                standard: '',
-                standardArray: [],
-                email: '',
-                words: '',
-                no_words: undefined,
-                type: 'public',
-                toDate: undefined,
-                fromDate: undefined,
-                from: 0,
-                size: 20,
-                model: undefined,
-              });
+              // resetForm({
+              //   phrase: '',
+              //   subjectArray: [],
+              //   author: '',
+              //   subject: '',
+              //   grade: '',
+              //   gradeArray: [],
+              //   standard: '',
+              //   standardArray: [],
+              //   email: '',
+              //   words: '',
+              //   no_words: undefined,
+              //   type: 'public',
+              //   toDate: undefined,
+              //   fromDate: undefined,
+              //   from: 0,
+              //   size: 20,
+              //   model: undefined,
+              // });
             }}
           >
             {({
@@ -183,39 +201,48 @@ function SearchForm() {
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <div className="radio-btns">
-                    <label>
-                      <input
-                        name="type"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value="private"
-                        checked={values.type === 'private'}
-                        type="radio"
-                      />
-                      <span>Search My Projects</span>
-                    </label>
-                    <label>
-                      <input
-                        name="type"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value="public"
-                        checked={values.type === 'public'}
-                        type="radio"
-                      />
-                      <span>Search Project Showcase</span>
-                    </label>
-                    <label>
-                      <input
-                        name="type"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value="orgSearch"
-                        checked={values.type === 'orgSearch'}
-                        type="radio"
-                      />
-                      <span>Search All Projects in Organization</span>
-                    </label>
+                    {permission?.Search?.includes('search:dashboard')
+                      && (
+                        <label>
+                          <input
+                            name="type"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value="private"
+                            checked={values.type === 'private'}
+                            type="radio"
+                          />
+                          <span>Search My Projects</span>
+                        </label>
+                      )}
+                    {permission?.Search?.includes('search:advance')
+                      && (
+                        <label>
+                          <input
+                            name="type"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value="public"
+                            checked={values.type === 'public'}
+                            type="radio"
+                          />
+                          <span>Search Project Showcase</span>
+                        </label>
+                      )}
+                    {permission?.Search?.includes('search:advance')
+                      && (
+                        <label>
+                          <input
+                            name="type"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value="orgSearch"
+                            checked={values.type === 'orgSearch'}
+                            type="radio"
+                          />
+                          <span>Search All Projects in Organization</span>
+                        </label>
+                      )}
                   </div>
                 </div>
 
@@ -391,6 +418,8 @@ function SearchForm() {
                     placeholder="From Date"
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    min="2005-01-01"
+                    max="2050-12-31"
                     value={values.fromDate}
                     onFocus={(e) => {
                       e.target.type = 'date';
@@ -402,13 +431,16 @@ function SearchForm() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.toDate}
+                    min="2005-01-01"
+                    max="2050-12-31"
                     onFocus={(e) => {
                       e.target.type = 'date';
                     }}
                   />
-                  <div className="error">
-                    {errors.dateError}
-                  </div>
+                </div>
+                <div className="error" style={{ color: 'red', marginTop: '-15px' }}>
+                  {errors.toDate && errors.toDate && errors.toDate}
+                  {errors.dateError}
                 </div>
                 {/* <div className="form-group">
                   <input
@@ -428,6 +460,15 @@ function SearchForm() {
                     value={values.words}
                   />
                 </div> */}
+                <div className="form-group" style={{ display: permission?.Organization?.includes('organization:view-user') && values.type !== 'private' ? 'block' : 'none' }}>
+                  <input
+                    name="author"
+                    placeholder="Enter author name"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.author}
+                  />
+                </div>
                 <div className="form-group">
                   <input
                     name="no_words"

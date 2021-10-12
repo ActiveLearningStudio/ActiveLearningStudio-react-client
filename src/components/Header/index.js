@@ -6,15 +6,19 @@ import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import
-{
-// setActiveOrganization,
+import {
+  // setActiveOrganization,
   updateOrganizationScreen,
-//  getOrganizationFirstTime
+  //  getOrganizationFirstTime
 }
   from 'store/actions/organization';
 import logo from 'assets/images/oracle.svg';
-import profile from 'assets/images/Users4.png';
+import Katylogo from 'assets/images/Katy_logo.png';
+import bu from 'assets/images/bu.png';
+import safari from 'assets/images/safari.png';
+import shepherds from 'assets/images/shepherds.svg';
+import sndt from 'assets/images/SNDT-LOGO-blue.png';
+import nevada from 'assets/images/nevada.png';
 import { SHOW_HELP } from 'store/actionTypes';
 import add from 'assets/images/add-icon.png';
 // import profile from 'assets/images/user-profile.png';
@@ -24,6 +28,7 @@ import help from 'assets/images/help.png';
 import edit from 'assets/images/edit1.png';
 import changePassword from 'assets/images/changepassword.png';
 import logoutIcon from 'assets/images/logout.png';
+import openeducation from 'assets/images/openeducation.png';
 // import dashboard from 'assets/images/dashboard.png';
 import { logoutAction } from 'store/actions/auth';
 import { Event } from 'trackers/ga';
@@ -33,6 +38,7 @@ import SearchForm from './searchForm';
 import HeaderNotification from './notification';
 
 import './style.scss';
+// import urllink from 'socket.io-client/lib/url';
 
 function Header(props) {
   const { /* user, */ logout } = props;
@@ -43,12 +49,30 @@ function Header(props) {
   const dispatch = useDispatch();
   const { currentOrganization } = stateHeader;
   const [image, setImage] = useState(null);
+  const [defaultLogo, setdefaultLogo] = useState(logo);
   // useMemo(() => {
   //   dispatch(getOrganizationFirstTime(stateHeader?.currentOrganization?.id));
   // }, [stateHeader?.currentOrganization?.id]);
   useEffect(() => {
     if (currentOrganization?.id === 1) {
       setImage(null);
+      if (window.location.host.includes('katyisd')) {
+        setdefaultLogo(Katylogo);
+      } else if (window.location.host.includes('baylor')) {
+        setdefaultLogo(bu);
+      } else if (window.location.host.includes('scde')) {
+        setdefaultLogo(safari);
+      } else if (window.location.host.includes('shepherds')) {
+        setdefaultLogo(shepherds);
+      } else if (window.location.host.includes('sndt')) {
+        setdefaultLogo(sndt);
+      } else if (window.location.host.includes('nvdoe')) {
+        setdefaultLogo(nevada);
+      } else if (window.location.host.includes('open.curriki')) {
+        setdefaultLogo(openeducation);
+      } else {
+        setdefaultLogo(logo);
+      }
     } else {
       setImage(currentOrganization?.image);
     }
@@ -59,14 +83,37 @@ function Header(props) {
         <div className="group-search-logo">
           <div className="tophd_left">
             <Link to={`/org/${stateHeader?.currentOrganization?.domain}`} className="top_logo">
-              {image ? <img src={global.config.resourceUrl + image} alt="logo" title="" /> : <><img src={logo} style={{ height: '30px' }} alt="logo" title="" /> <span className="logo-text-special">University</span></>}
+              {image ? (
+                <div
+                  className="nav-logo"
+                  style={{
+                    backgroundImage: `url(${global.config.resourceUrl + image})`,
+                    backgroundPosition: 'center',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                  }}
+                />
+              ) : (
+                <div
+                  className="nav-logo"
+                  style={{
+                    backgroundImage: `url(${defaultLogo})`,
+                    backgroundPosition: 'center',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                  }}
+                />
+              )}
             </Link>
           </div>
         </div>
         <div className="tophd_right flexdiv search-div  d-flex flex-wrap ">
-          <div className="search-div">
-            <SearchForm />
-          </div>
+          {(permission?.Search?.includes('search:advance') || permission?.Search?.includes('search:dashboard'))
+            && (
+              <div className="search-div">
+                <SearchForm />
+              </div>
+            )}
           <div className="navbar-link">
             <ul className="top-info flex-div">
               {false && permission?.Organization?.includes('organization:view') && (
@@ -113,7 +160,7 @@ function Header(props) {
                 <li className="align-items-center" style={{ paddingTop: '4px' }}>
                   <Dropdown className="create-project">
                     <Dropdown.Toggle className="align-items-center">
-                    <FontAwesomeIcon icon="plus" />
+                      <FontAwesomeIcon icon="plus" />
                       <p className="header-icon-text">Create</p>
                     </Dropdown.Toggle>
                     <Dropdown.Menu className="user-dropdown">

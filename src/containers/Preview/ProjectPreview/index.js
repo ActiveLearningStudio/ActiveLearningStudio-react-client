@@ -2,12 +2,12 @@ import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import Slider from 'react-slick';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import Switch from 'react-switch';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { deletePlaylistAction, loadProjectPlaylistsAction } from 'store/actions/playlist';
+import { changePlaylistTitleAction, deletePlaylistAction, loadProjectPlaylistsAction } from 'store/actions/playlist';
 import {
   loadMyProjectsActionPreview,
   toggleProjectShareAction,
@@ -23,33 +23,42 @@ import DeletePopup from 'components/DeletePopup';
 import { hideDeletePopupAction, showDeletePopupAction } from 'store/actions/ui';
 
 import './style.scss';
+import { getTeamPermission } from 'store/actions/team';
 
 function ProjectPreview(props) {
-  const { match, history } = props;
+  const { match, history, changePlaylistTitle } = props;
 
   const dispatch = useDispatch();
+  const [editTitle, setEditTitle] = useState(false);
+  const editFieldRef = useRef();
   const organization = useSelector((state) => state.organization);
   const projectState = useSelector((state) => state.project);
   const playlistState = useSelector((state) => state.playlist);
   const ui = useSelector((state) => state.ui);
   const accordion = useRef([]);
   const { permission } = organization;
-
+  const team = useSelector((state) => state.team);
+  const { teamPermission } = team;
   const { showDeletePlaylistPopup } = ui;
   const [currentProject, setCurrentProject] = useState(null);
   const [activeShared, setActiveShared] = useState(true);
   const [collapsed, setCollapsed] = useState([true]);
   const [show, setShow] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(0);
+  const [selectedForEdit, setSelectedForEdit] = useState(null);
 
   useEffect(() => {
     setCurrentProject(projectState.projectSelect);
     setActiveShared(projectState.projectSelect.shared);
   }, [projectState.projectSelect]);
-
+  useEffect(() => {
+    if (Object.keys(teamPermission).length === 0 && currentProject?.team?.id && organization?.currentOrganization?.id) {
+      dispatch(getTeamPermission(organization?.currentOrganization?.id, currentProject.team.id));
+    }
+  }, [teamPermission, organization?.currentOrganization, currentProject]);
   useEffect(() => {
     if (playlistState.playlists.length === 0) {
-      dispatch(loadProjectPlaylistsAction(match.params.projectId));
+      dispatch(loadProjectPlaylistsAction(match.params.projectId, true));
     }
   }, []);
 
@@ -82,6 +91,9 @@ function ProjectPreview(props) {
     setShow(false);
   };
 
+  const handleClickPlaylistTitle = () => {
+    setEditTitle(true);
+  };
   const settings = {
     dots: false,
     arrows: true,
@@ -102,13 +114,17 @@ function ProjectPreview(props) {
       let activities;
       if (playlist.activities && playlist.activities.length > 0) {
         activities = playlist.activities.map((activity) => (
-          <ActivityCard
-            activity={activity}
-            projectId={parseInt(match.params.projectId, 10)}
-            playlistId={playlist.id}
-            key={activity.id}
-            playlist={playlist}
-          />
+          (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-activity') : permission?.Activity?.includes('activity:view'))
+          && (
+            <ActivityCard
+              activity={activity}
+              projectId={parseInt(match.params.projectId, 10)}
+              playlistId={playlist.id}
+              key={activity.id}
+              playlist={playlist}
+              teamPermission={teamPermission || {}}
+            />
+          )
         ));
       } else {
         activities = (
@@ -119,52 +135,82 @@ function ProjectPreview(props) {
           </div>
         );
       }
-
+      console.log(editTitle);
       return (
-        <div className="check-each" key={playlist.id}>
-          {(permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload')) && (
-            <div className="add-btn-activity">
-              <button
-                type="button"
-                className="add-resource-to-playlist-btn"
-                onClick={() => {
-                  // dispatch(clearSearch());
-                  history.push(`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/create`);
-                }}
-              >
-                <FontAwesomeIcon icon="plus-circle" className="mr-2" />
-                Add new activity
-              </button>
-            </div>
-          )}
-          <button
-            type="button"
-            ref={(el) => {
-              accordion.current[counter] = el;
-            }}
-            className={counter === 0 ? 'active accordion' : ' accordion'}
-            onClick={() => {
-              accordion.current[counter].classList.toggle('active');
-              const tempCollapsed = [...collapsed];
-              tempCollapsed[counter] = !tempCollapsed[counter];
-              setCollapsed(tempCollapsed);
-            }}
-          >
-            <FontAwesomeIcon icon={collapsed[counter] ? 'minus' : 'plus'} className="mr-2" />
-            {playlist.title}
-          </button>
+        (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-playlist') : permission?.Playlist?.includes('playlist:view'))
+        && (
+          <div className="check-each" key={playlist.id}>
+            {(Object.keys(teamPermission).length
+            ? teamPermission?.Team?.includes('team:add-activity') : (permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload'))) && (
+              <div className="add-btn-activity">
+                <button
+                  type="button"
+                  className="add-resource-to-playlist-btn"
+                  onClick={() => {
+                    // dispatch(clearSearch());
+                    history.push(`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/create`);
+                  }}
+                >
+                  <FontAwesomeIcon icon="plus-circle" className="mr-2" />
+                  Add new activity
+                </button>
+              </div>
+            )}
+            <button
+              type="button"
+              ref={(el) => {
+                accordion.current[counter] = el;
+              }}
+              className={counter === 0 ? 'active accordion' : ' accordion'}
+              onClick={() => {
+                if (!editTitle) {
+                  accordion.current[counter].classList.toggle('active');
+                  const tempCollapsed = [...collapsed];
+                  tempCollapsed[counter] = !tempCollapsed[counter];
+                  setCollapsed(tempCollapsed);
+                }
+              }}
+            >
+              <FontAwesomeIcon icon={collapsed[counter] ? 'minus' : 'plus'} className="mr-2" />
+              {(editTitle && playlist === selectedForEdit)
+                ? (
+                  <>
+                    <input
+                      name="playlist-title"
+                      defaultValue={playlist.title}
+                      ref={editFieldRef}
+                    />
+                    &nbsp;
+                    <FontAwesomeIcon
+                      icon="edit"
+                      className="mr-4"
+                      onClick={() => {
+                        if (playlist.title !== editFieldRef.current.value && editFieldRef.current.value) {
+                          changePlaylistTitle(projectState?.projectSelect?.id, playlist.id, editFieldRef.current.value);
+                        }
+                        setEditTitle(false);
+                      }}
+                    />
 
-          <div className="panel">
-            <ul>
-              <Slider {...settings}>{activities}</Slider>
-            </ul>
+                  </>
+                ) : playlist.title }
+            </button>
+
+            <div className="panel">
+              <ul>
+                <Slider {...settings}>{activities}</Slider>
+              </ul>
+            </div>
+            <PlaylistCardDropdown
+              playlist={playlist}
+              projectId={playlist.project_id}
+              selectedProject={playlist.project}
+              setSelectedForEdit={setSelectedForEdit}
+              handleClickPlaylistTitle={handleClickPlaylistTitle}
+              teamPermission={teamPermission || {}}
+            />
           </div>
-          <PlaylistCardDropdown
-            playlist={playlist}
-            projectId={playlist.project_id}
-            selectedProject={playlist.project}
-          />
-        </div>
+        )
       );
     });
   } else {
@@ -196,22 +242,27 @@ function ProjectPreview(props) {
               <div className="sce_cont">
                 <ul className="bar_list flex-div check">
                   <li>
+                    <div className="team-name">
+                      {currentProject?.team?.name ? `Team Name: ${currentProject?.team?.name}` : null}
+                    </div>
                     <div className="title_lg check">
                       <div>{currentProject.name}</div>
-
                       <div className="configuration">
-                        <DropdownProject
-                          project={currentProject}
-                          handleShow={handleShow}
-                          setProjectId={setProjectId}
-                          showDeletePopup={showDeletePopup}
-                          previewMode
-                        />
+                        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-project') : permission?.Project?.includes('project:view')) && (
+                          <DropdownProject
+                            project={currentProject}
+                            handleShow={handleShow}
+                            setProjectId={setProjectId}
+                            showDeletePopup={showDeletePopup}
+                            teamPermission={teamPermission || {}}
+                            previewMode
+                          />
+                        )}
                         <Link to={`/org/${organization.currentOrganization?.domain}`} onClick={history.goBack} className="go-back-button-preview">
                           <FontAwesomeIcon icon="undo" className="mr-2" />
                           Exit Preview Mode
                         </Link>
-
+                        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-project') : permission?.Project?.includes('project:share')) && (
                         <div className="share-button">
                           Share Project
                           <Switch
@@ -249,6 +300,7 @@ function ProjectPreview(props) {
                             checkedIcon={false}
                           />
                         </div>
+                        )}
 
                         {activeShared && (
                           <div
@@ -318,6 +370,11 @@ function ProjectPreview(props) {
 ProjectPreview.propTypes = {
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
+  changePlaylistTitle: PropTypes.func.isRequired,
 };
 
-export default withRouter(ProjectPreview);
+const mapDispatchToProps = (dispatch) => ({
+  changePlaylistTitle: (projectId, id, title) => dispatch(changePlaylistTitleAction(projectId, id, title)),
+});
+
+export default withRouter(connect(null, mapDispatchToProps)(ProjectPreview));

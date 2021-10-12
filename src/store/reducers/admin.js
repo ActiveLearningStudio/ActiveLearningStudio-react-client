@@ -3,7 +3,7 @@ import * as actionTypes from '../actionTypes';
 const INITIAL_STATE = {
   activeForm: null,
   loading: true,
-  activeTab: 'Stats',
+  activeTab: 'Organization',
   activityTypes: [],
   activityItems: [],
   usersReport: [],
@@ -14,6 +14,9 @@ const INITIAL_STATE = {
   currentUser: null,
   newUser: null,
   editUser: null,
+  newlyCreated: null,
+  newlyEdit: null,
+  currentProject: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -22,6 +25,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         activeForm: action.payload,
+      };
+    case actionTypes.NEWLY_CREATED_RESOURCE:
+      return {
+        ...state,
+        newlyCreated: action.payload,
+      };
+    case actionTypes.NEWLY_EDIT_RESOURCE:
+      return {
+        ...state,
+        newlyEdit: action.payload,
       };
     case actionTypes.CLEAR_ACTIVE_FORM:
       return {
@@ -92,6 +105,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         specificJob: action.payload,
+      };
+    case actionTypes.SET_CURRENT_PROJECT:
+      return {
+        ...state,
+        currentProject: action.payload,
       };
     default:
       return state;

@@ -61,6 +61,10 @@
         padding: 13px 0 7px 0;
         color: #44ca92;
       }
+      span.editModeName {
+        padding: 13px 0 7px 0;
+        color: #44ca92;
+      }
     }
 
     &.filled.selected {
@@ -113,6 +117,16 @@
     }
 
     span.name {
+      margin-left: 50px;
+      padding-top: 7px;
+      padding-bottom: 10px;
+      display: block;
+      font-family: "rubik", sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      cursor: pointer;
+    }
+    span.editModeName {
       margin-left: 50px;
       padding-top: 7px;
       padding-bottom: 10px;

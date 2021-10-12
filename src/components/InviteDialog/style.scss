@@ -32,6 +32,19 @@ $filled: #44ca92;
     text-align: left;
     z-index: 1;
 
+    select {
+      width: 100%;
+      min-width: 100px;
+      /* padding: 13px 15px 0 5px; */
+      background: #FFFFFF;
+      border: solid 1px #FFFFFF;
+      flex: 1 1;
+      border: 1px solid #ccc;
+      height: 35px;
+      margin-bottom: 12px;
+      padding: 0px 10px;
+    }
+
     button {
       border: solid 1px $selected_color !important;
 
@@ -174,6 +187,8 @@ $filled: #44ca92;
           max-height: 170px;
           background: #fff;
           border: solid 1px #e5e5e5;
+          z-index:1;
+          border: solid 1px #aaa8a8;
 
           .invite-member-item {
             margin: 0;

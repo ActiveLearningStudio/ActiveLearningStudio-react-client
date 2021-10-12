@@ -2,13 +2,13 @@ export const subjects = [
   { subject: 'Arts', value: 'Arts' },
   {
     subject: 'Career & Technical Education',
-    value: 'CareerTechnicalEducation',
+    value: 'Career & Technical Education',
   },
-  { subject: 'Computer Science', value: 'ComputerScience' },
-  { subject: 'Language Arts', value: 'LanguageArts' },
+  { subject: 'Computer Science', value: 'Computer Science' },
+  { subject: 'Language Arts', value: 'Language Arts' },
   { subject: 'Mathematics', value: 'Mathematics' },
   { subject: 'Science', value: 'Science' },
-  { subject: 'Social Studies', value: 'SocialStudies' },
+  { subject: 'Social Studies', value: 'Social Studies' },
 ];
 
 export const educationLevels = [

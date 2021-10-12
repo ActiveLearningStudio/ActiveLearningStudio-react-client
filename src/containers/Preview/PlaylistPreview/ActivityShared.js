@@ -3,24 +3,26 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { useDispatch } from 'react-redux';
+import Swal from 'sweetalert2';
 import TinCan from 'tincanjs';
-
+// import { Alert } from 'react-bootstrap';
 import gifloader from 'assets/images/dotsloader.gif';
 import { loadH5pResourceSettingsShared, loadH5pResourceSettingsEmbed, loadH5pResourceXapi } from 'store/actions/resource';
 import * as xAPIHelper from 'helpers/xapi';
 
 import './style.scss';
 
-let counter = 0;
+let counter = 1;
 let lrs = null;
 
 const ActivityShared = (props) => {
   const { match, embed } = props;
   const lrsEndpoint = new URLSearchParams(window.location.search).get('endpoint');
   const lrsAuth = new URLSearchParams(window.location.search).get('auth');
+  const lrsRegistration = new URLSearchParams(window.location.search).get('registration');
   const [authorized, setAuthorized] = useState(false);
   // const [lrs, setLrs] = useState(null);
-
+  // const { orientation } = useSelector((state) => state.ui);
   const dispatch = useDispatch();
 
   const h5pInsertion = async (data) => {
@@ -102,43 +104,54 @@ const ActivityShared = (props) => {
                   const extendedStatement = xAPIHelper.extendSharedActivityStatement(
                     this,
                     event.data.statement,
-                    { path: match.path },
+                    { path: match.path, activityId: match.params.activityId },
                   );
                   dispatch(loadH5pResourceXapi(JSON.stringify(extendedStatement)));
 
                   if (lrs) {
-                  // If an lrs has been defined, send tincanjs statement
-                    const doceboStatement = new TinCan.Statement({
-                          actor: {
-                            ...extendedStatement.actor,
-                            mbox: 'mailto:info@currikistudio.org',
-                          },
-                          verb: extendedStatement.verb,
-                          context: extendedStatement.context,
-                          object: extendedStatement.object,
-                    });
-
-                    lrs.saveStatement(
-                      doceboStatement,
-                      {
-                        callback: (err, xhr) => {
-                            if (err !== null) {
-                                if (xhr !== null) {
-                                    console.log(`Failed to save statement: ${xhr.responseText} (${xhr.status})`);
-                                    // TODO: do something with error, didn't save statement
-                                    return;
-                                }
-
-                                console.log(`Failed to save statement: ${err}`);
-                                // TODO: do something with error, didn't save statement
-                                return;
-                            }
-
-                            console.log('Statement saved');
-                            // TOOO: do something with success (possibly ignore)
+                    // If completed, check for passing grade. Cancel statement if not passing
+                    if (extendedStatement?.verb?.id === 'http://adlnet.gov/expapi/verbs/completed' && extendedStatement?.result?.score?.scaled !== 1) {
+                      Swal.fire({
+                        title: 'Please complete all the interactions correctly to finish the activity.',
+                        confirmButtonText: 'Continue',
+                      });
+                    } else {
+                      // If an lrs has been defined, send tincanjs statement
+                      const doceboStatement = new TinCan.Statement({
+                        actor: {
+                          ...extendedStatement.actor,
+                          mbox: 'mailto:info@currikistudio.org',
                         },
-                      },
-                    );
+                        verb: extendedStatement.verb,
+                        context: {
+                          ...extendedStatement.context,
+                          registration: lrsRegistration,
+                        },
+                        object: extendedStatement.object,
+                      });
+
+                      lrs.saveStatement(
+                        doceboStatement,
+                        {
+                          callback: (err, xhr) => {
+                              if (err !== null) {
+                                  if (xhr !== null) {
+                                      console.log(`Failed to save statement: ${xhr.responseText} (${xhr.status})`);
+                                      // TODO: do something with error, didn't save statement
+                                      return;
+                                  }
+
+                                  console.log(`Failed to save statement: ${err}`);
+                                  // TODO: do something with error, didn't save statement
+                                  return;
+                              }
+
+                              console.log('Statement saved');
+                              // TOOO: do something with success (possibly ignore)
+                          },
+                        },
+                      );
+                    }
                   }
                 }
                 counter += 1;
@@ -156,7 +169,9 @@ const ActivityShared = (props) => {
 
   return (
     <>
-      <section className={embed ? 'embed main-page-content preview iframe-height-resource-shared ' : 'main-page-content preview iframe-height-resource-shared'}>
+      <section className={embed ? 'embed main-page-content preview iframe-height-resource-shared defaultcontainer'
+      : 'main-page-content preview iframe-height-resource-shared defaultcontainer'}
+      >
         {!!embed && (
           <Helmet>
             <script src="https://dev.currikistudio.org/api/storage/h5p/h5p-core/js/h5p-resizer.js" charset="UTF-8" />
@@ -185,6 +200,12 @@ const ActivityShared = (props) => {
           </div>
         </div>
       </section>
+      {/* {(orientation >= 90)
+      && (
+      <div className="coverallareas">
+        <Alert variant="warning">Please use Portrait mode!</Alert>
+      </div>
+      )} */}
     </>
   );
 };

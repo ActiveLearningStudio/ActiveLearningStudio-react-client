@@ -4,6 +4,7 @@ export function allowedH5PActvityPaths() {
     '/gclass/launch/:userId/:courseId/:activityId/:classworkId',
     '/lti-tools/activity/:activityId',
     '/activity/:activityId/shared',
+    '/genericlms/:lmsName/lmsurl/:lmsUrl/client/:lmsClientId/lmscourse/:lmsCourseId/lmsunit/:lmsUnitId/activity/:activityId',
   ];
 }
 
@@ -14,6 +15,7 @@ export function H5PActvityPathMapToPlatform() {
     { '/activity/:activityId/shared': 'CurrikiStudio' },
     { '/gclass/launch/:userId/:courseId/:activityId/:classworkId': 'Google Classroom' },
     { '/lti-tools/activity/:activityId': 'LTI client' },
+    { '/genericlms/:lmsName/lmsurl/:lmsUrl/client/:lmsClientId/lmscourse/:lmsCourseId/lmsunit/:lmsUnitId/activity/:activityId': 'GenericLMS' },
   ];
 }
 
@@ -33,6 +35,9 @@ export function extendStatement(h5pObj, statement, params, skipped = false) {
     homepage,
     toolPlatform,
     activeCourse,
+    customCourseName,
+    customApiDomainUrl,
+    customCourseCode,
   } = params;
 
   const platform = H5PActvityPathMapToPlatform().find((el) => el[path]);
@@ -62,11 +67,17 @@ export function extendStatement(h5pObj, statement, params, skipped = false) {
     }
   }
 
-  if (platform[path] === 'LTI client') {
+  if (platform[path] === 'LTI client' || 'GenericLMS') {
     other.push({
       objectType: 'Activity',
       id: `${window.location.origin}/lti/${courseId}`,
     });
+
+    if (statementExtended?.object?.definition?.extensions) {
+      statementExtended.object.definition.extensions['http://currikistudio.org/x-api/lms-course-name'] = customCourseName;
+      statementExtended.object.definition.extensions['http://currikistudio.org/x-api/lms-domain-url'] = customApiDomainUrl;
+      statementExtended.object.definition.extensions['http://currikistudio.org/x-api/lms-course-code'] = customCourseCode;
+    }
   }
 
   const actor = {
@@ -137,14 +148,36 @@ export function extendStatement(h5pObj, statement, params, skipped = false) {
 export function extendSharedActivityStatement(h5pObj, statement, params) {
   const {
     path,
+    activityId,
   } = params;
   const statementExtended = { ...statement };
+
+  // We fake these values for reporting features on anonymous routes
+  const fakeSubId = Math.floor(Math.random() * 100000).toString();
+  const fakeAttemptId = Math.floor(Math.random() * 100000).toString();
+  const fakeCourseId = Math.floor(Math.random() * 100000).toString();
+
+  const other = [
+    {
+      objectType: 'Activity',
+      id: `${window.location.origin}/activity/${activityId}/submission/${fakeSubId}/${fakeAttemptId}`,
+    },
+    {
+      objectType: 'Activity',
+      id: `${window.location.origin}/activity/${activityId}/submission/${fakeSubId}`,
+    },
+    {
+      objectType: 'Activity',
+      id: `${window.location.origin}/gclass/${fakeCourseId}`,
+    },
+  ];
 
   const platform = H5PActvityPathMapToPlatform().find((el) => el[path]);
   if (platform === undefined) return;
 
-  if (statementExtended.context) {
+  if (statementExtended?.context?.contextActivities) {
     statementExtended.context.platform = platform[path];
+    statementExtended.context.contextActivities.other = other;
   }
 
   statementExtended.object.definition.extensions['http://id.tincanapi.com/extension/referrer'] = document.referrer ? document.referrer : window.location.origin;

@@ -19,6 +19,7 @@ export default function CreateActivityItem(props) {
   const dispatch = useDispatch();
   const activityTypes = useSelector((state) => state.admin.activityTypes);
   const selectedItem = useSelector((state) => state.resource.selectedItem);
+  const { activePage } = useSelector((state) => state.organization);
   useEffect(() => {
     if (editMode) {
       setImgActive(selectedItem?.image);
@@ -42,8 +43,8 @@ export default function CreateActivityItem(props) {
         }}
         validate={(values) => {
           const errors = {};
-          if (!values.title) {
-            errors.title = 'Required';
+          if (!values.title || values.title.length > 255) {
+            errors.title = values.title.length > 255 ? 'Length must be 255 characters or less ' : 'Required';
           }
           if (!values.description) {
             errors.description = 'Required';
@@ -95,7 +96,7 @@ export default function CreateActivityItem(props) {
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
-                  dispatch(getActivityItems('', 1));
+                  dispatch(getActivityItems('', activePage));
                 }
               });
             }
@@ -121,7 +122,7 @@ export default function CreateActivityItem(props) {
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
-                  dispatch(getActivityItems('', 1));
+                  dispatch(getActivityItems('', activePage));
                 }
               });
             }
@@ -252,7 +253,13 @@ export default function CreateActivityItem(props) {
               <input
                 type="number"
                 name="order"
+                min="0"
                 onChange={handleChange}
+                onKeyDown={(e) => {
+                  if (['-', '+', 'e', 'E', '.'].includes(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
                 onBlur={handleBlur}
                 value={values.order}
               />

@@ -21,6 +21,7 @@ const ProjectCardDropdown = (props) => {
     handleShow,
     setProjectId,
     showDeletePopup,
+    teamPermission,
     previewMode,
     text,
   } = props;
@@ -36,7 +37,7 @@ const ProjectCardDropdown = (props) => {
   return (
     <Dropdown className="project-dropdown check d-flex  align-items-center text-added-project-dropdown">
       <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
-        <FontAwesomeIcon icon="ellipsis-v" style={{ marginLeft: '9px' }} />
+        <FontAwesomeIcon icon="ellipsis-v" style={{ fontSize: '13px', color: '#084892', marginLeft: '5px' }} />
         <span>
           {text}
         </span>
@@ -52,7 +53,7 @@ const ProjectCardDropdown = (props) => {
             Preview
           </Dropdown.Item>
         )}
-        {permission?.Project?.includes('project:edit') && (
+        {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project') : permission?.Project?.includes('project:edit')) && (
           <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/edit`}>
             <FontAwesomeIcon icon="pen" className="mr-2" />
             Edit
@@ -60,20 +61,18 @@ const ProjectCardDropdown = (props) => {
         )}
 
         {permission?.Project?.includes('project:clone') && (
-          !previewMode && (
-            <Dropdown.Item
-              to="#"
-              onClick={() => {
-                Swal.showLoading();
-                cloneProject(project.id);
-              }}
-            >
-              <FontAwesomeIcon icon="clone" className="mr-2" />
-              Duplicate
-            </Dropdown.Item>
-          )
+          <Dropdown.Item
+            to="#"
+            onClick={() => {
+              Swal.showLoading();
+              cloneProject(project.id);
+            }}
+          >
+            <FontAwesomeIcon icon="clone" className="mr-2" />
+            Duplicate
+          </Dropdown.Item>
         )}
-        {permission?.Project?.includes('project:share') && (
+        {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-project') : permission?.Project?.includes('project:share')) && (
           <Dropdown.Item
             to="#"
             onClick={async () => {
@@ -93,7 +92,7 @@ const ProjectCardDropdown = (props) => {
             Share
           </Dropdown.Item>
         )}
-        {permission?.Project?.includes('project:publish') && (
+        {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:publish-project') : permission?.Project?.includes('project:publish')) && (
           <li className="dropdown-submenu send">
             <a tabIndex="-1">
               <FontAwesomeIcon icon="newspaper" className="mr-2" />
@@ -112,6 +111,7 @@ const ProjectCardDropdown = (props) => {
               </li>
 
               {allLms.shareVendors && allLms.shareVendors.map((data) => (
+                data.lms_name !== 'safarimontage' && (
                 <li>
                   <a
                     onClick={async () => {
@@ -132,11 +132,11 @@ const ProjectCardDropdown = (props) => {
                     {data.site_name}
                   </a>
                 </li>
-              ))}
+              )))}
             </ul>
           </li>
         )}
-        {permission?.Project?.includes('project:delete') && (
+        {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:remove-project') : permission?.Project?.includes('project:delete')) && (
           <Dropdown.Item
             to="#"
             onClick={() => showDeletePopup(project.id, project.name, 'Project')}
@@ -155,6 +155,7 @@ ProjectCardDropdown.propTypes = {
   showDeletePopup: PropTypes.func.isRequired,
   handleShow: PropTypes.func.isRequired,
   setProjectId: PropTypes.func.isRequired,
+  teamPermission: PropTypes.object.isRequired,
   previewMode: PropTypes.bool.isRequired,
   text: propTypes.text,
 };

@@ -17,8 +17,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import foldericon from 'assets/images/sidebar/folder-icon.png';
 import teamicon from 'assets/images/sidebar/team-icon.png';
 import toggleButton from 'assets/images/sidebar/toggle-button.png';
-import groupicon from 'assets/images/sidebar/group-icon.png';
-import usersidebaricon from 'assets/images/sidebar/user-sidebar-icon.png';
+// import groupicon from 'assets/images/sidebar/group-icon.png';
+// import usersidebaricon from 'assets/images/sidebar/user-sidebar-icon.png';
 // import dashboardicon from 'assets/images/sidebar/dashboard-icon.png';
 import backgroundimg from 'assets/images/sidebar/background.png';
 import administrate from 'assets/images/sidebar/administrate.png';
@@ -32,7 +32,7 @@ import {
 import { updateOrganizationScreen } from 'store/actions/organization';
 
 import './style.scss';
-import { setActiveAdminForm, setActiveTab } from 'store/actions/admin';
+// import { setActiveAdminForm, setActiveTab } from 'store/actions/admin';
 
 const PROJECTS = 'projects';
 const CHANNEL = 'channel';
@@ -166,7 +166,7 @@ function Sidebar(props) {
                     <div className="row-sidebar">
                       <img src={administrate} alt="" />
                       <div className="sidebar-headings">
-                        Administrate
+                        Admin Panel
                       </div>
                       <FontAwesomeIcon icon="angle-right" className="headings-angle-right" />
                     </div>
@@ -231,7 +231,7 @@ function Sidebar(props) {
                 </Link>
               </>
             )}
-            {permission?.Group?.includes('group:view')
+            {/* {permission?.Group?.includes('group:view')
             && (
               <>
                 <Link to={`/org/${allState.organization.currentOrganization?.domain}/groups`}>
@@ -244,11 +244,18 @@ function Sidebar(props) {
                   </div>
                 </Link>
               </>
-            )}
-            <div className="org-name">
-              Create
-            </div>
-            {permission?.Project?.includes('project:create')
+            )} */}
+            {/* {(permission?.Project?.includes('project:create')
+              || permission?.Team?.includes('team:create')
+              || permission?.Group?.includes('group:create')
+              || permission?.Organization?.includes('organization:add-user'))
+              && (
+              <div className="org-name">
+                Create
+              </div>
+            )} */}
+            {/* <div style={{ overflowX: 'hidden', overflowY: 'auto', height: '250px' }}> */}
+            {/* {permission?.Project?.includes('project:create')
               && (
                 <>
                   <Link to={`/org/${allState.organization?.currentOrganization?.domain}/project/create`}>
@@ -261,8 +268,8 @@ function Sidebar(props) {
                     </div>
                   </Link>
                 </>
-            )}
-            {permission?.Team?.includes('team:create')
+            )} */}
+            {/* {permission?.Team?.includes('team:create')
               && (
                 <>
                   <Link to={`/org/${allState.organization?.currentOrganization?.domain}/teams/create-team`}>
@@ -275,8 +282,8 @@ function Sidebar(props) {
                     </div>
                   </Link>
                 </>
-            )}
-            {permission?.Group?.includes('group:create')
+            )} */}
+            {/* {permission?.Group?.includes('group:create')
               && (
                 <>
                   <Link to={`/org/${allState.organization?.currentOrganization?.domain}/groups/create-group`}>
@@ -289,8 +296,8 @@ function Sidebar(props) {
                     </div>
                   </Link>
                 </>
-            )}
-            {permission?.Organization?.includes('organization:add-user')
+            )} */}
+            {/* {permission?.Organization?.includes('organization:add-user')
               && (
                 <>
                   <Link
@@ -309,7 +316,9 @@ function Sidebar(props) {
                     </div>
                   </Link>
                 </>
-            )}
+            )} */}
+            {/* </div> */}
+            <img src={backgroundimg} alt="" />
             {/* {permission?.Organization?.includes('organization:view-user')
             && (
               <>
@@ -329,19 +338,18 @@ function Sidebar(props) {
                 </Link>
               </>
             )} */}
-            <img src={backgroundimg} alt="" />
           </>
         ) : (
           <>
             <div className="toggleSidebar collapsedown">
               {permission?.Organization?.includes('organization:view') && (
                 <Link
-                  to={`/org/${allState.organization.currentOrganization.domain}/admin`}
+                  to={`/org/${allState.organization.currentOrganization?.domain}/admin`}
                   onClick={() => dispatch(updateOrganizationScreen('intro'))}
                 >
                   <img src={administrateLargeIcom} alt="" />
                   <div className="tagline">
-                    Administrate
+                    Admin Panel
                   </div>
                 </Link>
               )}
@@ -380,6 +388,44 @@ function Sidebar(props) {
                   </div>
                 </Link>
               )}
+              {/* {permission?.Project?.includes('project:create') && (
+                <Link to={`/org/${allState.organization?.currentOrganization?.domain}/project/create`}>
+                  <img src={projectLargeIcon} alt="" />
+                  <div className="tagline">
+                    Create Project
+                  </div>
+                </Link>
+              )}
+              {permission?.Team?.includes('team:create') && (
+                <Link to={`/org/${allState.organization?.currentOrganization?.domain}/teams/create-team`}>
+                  <img src={teamLargeIcon} alt="" />
+                  <div className="tagline">
+                    Create Team
+                  </div>
+                </Link>
+              )}
+              {permission?.Group?.includes('group:create') && (
+                <Link to={`/org/${allState.organization?.currentOrganization?.domain}/groups/create-group`}>
+                  <img src={groupLargeIcon} alt="" />
+                  <div className="tagline">
+                    Create Group
+                  </div>
+                </Link>
+              )}
+              {permission?.Organization?.includes('organization:add-user') && (
+                <Link
+                  to={`/org/${allState.organization?.currentOrganization?.domain}/admin`}
+                  onClick={() => {
+                    dispatch(setActiveTab('Users'));
+                    dispatch(setActiveAdminForm('create_user'));
+                  }}
+                >
+                  <img src={usersidebaricon} alt="" />
+                  <div className="tagline">
+                    Create User
+                  </div>
+                </Link>
+              )} */}
               {/* {permission?.Organization?.includes('organization:view-user') && (
                 <Link
                   to={`/org/${allState.organization.currentOrganization?.domain}/admin`}

@@ -18,8 +18,10 @@ const ResourceCardDropdown = (props) => {
     deleteResource,
     playlist,
     match,
+    teamPermission,
   } = props;
   const organization = useSelector((state) => state.organization);
+  const { permission } = organization;
   const handleDelete = (e) => {
     e.preventDefault();
     Swal.fire({
@@ -42,39 +44,46 @@ const ResourceCardDropdown = (props) => {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item
-          as={Link}
-          to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview`}
-        >
-          <FontAwesomeIcon icon="eye" className="mr-2" />
-          Preview
-        </Dropdown.Item>
+        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-activity') : permission?.Activity?.includes('activity:view')) && (
+          <Dropdown.Item
+            as={Link}
+            to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview`}
+          >
+            <FontAwesomeIcon icon="eye" className="mr-2" />
+            Preview
+          </Dropdown.Item>
+        )}
+        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-activity') : permission?.Activity?.includes('activity:edit')) && (
+          <Dropdown.Item
+            as={Link}
+            to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
+          >
+            <FontAwesomeIcon icon="pen" className="mr-2" />
+            Edit
+          </Dropdown.Item>
+        )}
+        {permission?.Activity?.includes('activity:duplicate') && (
+          <Dropdown.Item
+            to="#"
+            onClick={() => {
+              Swal.showLoading();
+              cloneActivity(playlist.id, resource.id);
+            }}
+          >
+            <FontAwesomeIcon icon="clone" className="mr-2" />
+            Duplicate
+          </Dropdown.Item>
+        )}
+        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-activity') : permission?.Activity?.includes('activity:share')) && (
+          <ResourceCardDropdownShare resource={resource} />
+        )}
+        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:delete-activity') : permission?.Activity?.includes('activity:delete')) && (
+          <Dropdown.Item onClick={handleDelete}>
+            <FontAwesomeIcon icon="times-circle" className="mr-2" />
+            Delete
+          </Dropdown.Item>
+        )}
 
-        <Dropdown.Item
-          as={Link}
-          to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
-        >
-          <FontAwesomeIcon icon="pen" className="mr-2" />
-          Edit
-        </Dropdown.Item>
-
-        <Dropdown.Item
-          to="#"
-          onClick={() => {
-            Swal.showLoading();
-            cloneActivity(playlist.id, resource.id);
-          }}
-        >
-          <FontAwesomeIcon icon="clone" className="mr-2" />
-          Duplicate
-        </Dropdown.Item>
-
-        <ResourceCardDropdownShare resource={resource} />
-
-        <Dropdown.Item onClick={handleDelete}>
-          <FontAwesomeIcon icon="times-circle" className="mr-2" />
-          Delete
-        </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );
@@ -85,6 +94,7 @@ ResourceCardDropdown.propTypes = {
   playlist: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   deleteResource: PropTypes.func.isRequired,
+  teamPermission: PropTypes.object.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

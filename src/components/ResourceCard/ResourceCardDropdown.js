@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown, Modal } from 'react-bootstrap';
 
 // import logo from 'assets/images/logo.svg';
+import config from 'config';
 import { shareActivity, deleteResourceAction } from 'store/actions/resource';
 import { cloneActivity } from 'store/actions/search';
 import { getUserLmsSettingsAction } from 'store/actions/account';
@@ -27,6 +28,8 @@ const ResourceCardDropdown = (props) => {
     closeSafariMontageTool,
     safariMontagePublishTool,
     match,
+    teamPermission,
+    previewPage,
   } = props;
   const organization = useSelector((state) => state.organization);
   const { permission } = organization;
@@ -65,14 +68,17 @@ const ResourceCardDropdown = (props) => {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
+        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-activity') : permission?.Activity?.includes('activity:view')) && (
         <Dropdown.Item
           as={Link}
           to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview`}
+          onClick={() => { if (previewPage === 'projectPreview') { localStorage.setItem('projectPreview', true); } else { localStorage.setItem('projectPreview', false); } }}
         >
           <FontAwesomeIcon icon="eye" className="mr-2" />
           Preview
         </Dropdown.Item>
-        {permission?.Activity?.includes('activity:edit') && (
+        )}
+        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-activity') : permission?.Activity?.includes('activity:edit')) && (
           <Dropdown.Item
             as={Link}
             to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}
@@ -81,7 +87,7 @@ const ResourceCardDropdown = (props) => {
             Edit
           </Dropdown.Item>
         )}
-        {permission?.Activity?.includes('activity:clone') && (
+        {permission?.Activity?.includes('activity:duplicate') && (
           <Dropdown.Item
             to="#"
             onClick={() => {
@@ -93,15 +99,16 @@ const ResourceCardDropdown = (props) => {
             Duplicate
           </Dropdown.Item>
         )}
-        {permission?.Activity?.includes('activity:share') && lmsSettings.length !== 0 && (
+        {(Object.keys(teamPermission).length
+        ? teamPermission?.Team?.includes('team:publish-activity') : permission?.Activity?.includes('activity:share')) && lmsSettings.length !== 0 && (
           <li className="dropdown-submenu send">
-            <a tabIndex="-1">
+            <a tabIndex="-1" className="dropdown-item">
               <FontAwesomeIcon icon="newspaper" className="mr-2" />
               Publish
             </a>
             <ul className="dropdown-menu check">
               {lmsSettings.map((data) => {
-                if (data.site_name !== 'Safari Montage') return false;
+                if (data.lms_name !== 'safarimontage') return false;
 
                 return (
                   <li>
@@ -138,7 +145,7 @@ const ResourceCardDropdown = (props) => {
             </ul>
           </li>
         )}
-        {permission?.Activity?.includes('activity:share') && (
+        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-activity') : permission?.Activity?.includes('activity:share')) && (
           <Dropdown.Item
             onClick={() => {
               shareActivity(resource.id);
@@ -211,6 +218,21 @@ const ResourceCardDropdown = (props) => {
             Share
           </Dropdown.Item>
         )}
+        {permission?.Activity?.includes('activity:share') && (
+          <Dropdown.Item
+            href={`${process.env.REACT_APP_API_URL}/${config.apiVersion}/go/getxapifile/${resource.id}`}
+            onClick={() => shareActivity(resource.id)}
+          >
+            <FontAwesomeIcon icon="download" className="mr-2" />
+            xAPI Download
+          </Dropdown.Item>
+        )}
+        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:delete-activity') : permission?.Activity?.includes('activity:delete')) && (
+          <Dropdown.Item onClick={handleDelete}>
+            <FontAwesomeIcon icon="times-circle" className="mr-2" />
+            Delete
+          </Dropdown.Item>
+        )}
 
         {/* <Dropdown.Item
           href="#"
@@ -228,12 +250,6 @@ const ResourceCardDropdown = (props) => {
           <FontAwesomeIcon icon="times-circle" className="mr-2" />
           Executable
         </Dropdown.Item> */}
-        {permission?.Activity?.includes('activity:delete') && (
-          <Dropdown.Item onClick={handleDelete}>
-            <FontAwesomeIcon icon="times-circle" className="mr-2" />
-            Delete
-          </Dropdown.Item>
-        )}
       </Dropdown.Menu>
     </Dropdown>
   );
@@ -251,6 +267,8 @@ ResourceCardDropdown.propTypes = {
   loadSafariMontagePublishTool: PropTypes.func.isRequired,
   closeSafariMontageTool: PropTypes.func.isRequired,
   safariMontagePublishTool: PropTypes.string.isRequired,
+  teamPermission: PropTypes.object.isRequired,
+  previewPage: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({

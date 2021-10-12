@@ -9,6 +9,10 @@ const INITIAL_STATE = {
   showAssigning: false,
   teams: [],
   selectedTeam: {},
+  roles: null,
+  teamPermission: {},
+  teamProjects: [],
+  selectedForClone: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -36,6 +40,18 @@ export default (state = INITIAL_STATE, action) => {
         showCreation: true,
         showAssigning: false,
         showInviting: false,
+      };
+
+    case actionTypes.ADD_TEAM_PERMISSION:
+      return {
+        ...state,
+        teamPermission: action.payload,
+      };
+
+    case actionTypes.CLEAR_TEAM_PERMISSIONS:
+      return {
+        ...state,
+        teamPermission: {},
       };
 
     case actionTypes.SHOW_INVITE_MEMBER:
@@ -168,6 +184,12 @@ export default (state = INITIAL_STATE, action) => {
         teams: action.payload.teams,
       };
 
+    case actionTypes.ADD_TEAM_ROLES:
+      return {
+        ...state,
+        roles: action.payload,
+      };
+
     case actionTypes.INVITE_MEMBERS_REQUEST:
       return {
         ...state,
@@ -226,7 +248,16 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         isLoading: false,
       };
-
+    case actionTypes.GET_TEAM_PROJECTS:
+      return {
+        ...state,
+        teamProjects: action.payload,
+      };
+    case actionTypes.PROJECT_SELECTED_FOR_CLONE:
+      return {
+        ...state,
+        selectedForClone: action.payload,
+      };
     default:
       return state;
   }

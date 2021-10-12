@@ -2,22 +2,26 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
+import * as actionTypes from 'store/actionTypes';
 import {
   uploadImage,
   createOrganizationNew,
   checkBranding,
   updateOrganization,
   getsubOrgList,
+  getOrganization,
 } from "store/actions/organization";
 import { removeActiveAdminForm } from "store/actions/admin";
 import imgAvatar from "assets/images/img-avatar.png";
 import Swal from "sweetalert2";
 import loader from "assets/images/dotsloader.gif";
 import EditActivity from "containers/EditActivity";
-
+import { alphabetsOnly } from "utils";
+import Switch from 'react-switch';
 export default function CreateOrg(prop) {
   const { editMode } = prop;
   const [imageActive, setImgActive] = useState(null);
+  const { paginations } = useSelector((state) => state.ui);
   const [activityImage, setActivityImage] = useState("");
   const imgUpload = useRef();
   const allListState = useSelector((state) => state.organization);
@@ -42,19 +46,23 @@ export default function CreateOrg(prop) {
           name: editMode ? activeEdit?.name : "",
           description: editMode ? activeEdit?.description : "",
           domain: editMode ? activeEdit?.domain : "",
+          account_id: editMode ? activeEdit?.account_id : undefined,
+          api_key: editMode ? activeEdit?.api_key : undefined,
+          unit_path: editMode ? activeEdit?.unit_path : undefined,
+          self_registration: editMode ? activeEdit?.self_registration : false,
         }}
         validate={(values) => {
           const errors = {};
-          if (!values.name) {
-            errors.name = "Required";
+          if (!values.name || values.name.length > 255) {
+            errors.name = values.name.length > 255 ? 'Length must be 255 characters or less.' : "Required";
           }
-          if (!values.description) {
-            errors.description = "Required";
+          if (!values.description || values.description.length > 255) {
+            errors.description = values.description.length > 255 ? 'Length must be 255 characters or less.' : "Required";
           }
           if (!values.domain) {
             errors.domain = "Required";
-          } else if (values.domain?.length < 2) {
-            errors.domain = "Character limit should be greater then one";
+          } else if (values.domain?.length < 2 || values.domain?.length > 255) {
+            errors.domain = "Character limit should be greater than one and less than 255";
           }
           if (!values.image) {
             errors.image = "Required";
@@ -75,7 +83,7 @@ export default function CreateOrg(prop) {
           });
           if (editMode) {
             const response = await dispatch(
-              updateOrganization(activeEdit.id, values, activeEdit.parent.id)
+              updateOrganization(activeEdit.id, values, (activeEdit.parent ? activeEdit.parent.id: undefined))
             );
             if (response) {
               Swal.fire({
@@ -84,10 +92,22 @@ export default function CreateOrg(prop) {
                 showCancelButton: false,
                 confirmButtonColor: '#084892',
                 confirmButtonText: 'OK',
-              }).then((result) => {
+              }).then(async (result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
-                  dispatch(getsubOrgList(activeOrganization?.id));
+                  // dispatch(getsubOrgList(activeOrganization?.id));
+                  // const responseMessage = await dispatch(getOrganization(activeEdit?.id));
+                  // if (activeEdit?.id === activeOrganization?.id) {
+                  //   const newBreadCrums =paginations?.slice(0, paginations.length - 1)
+                  //   dispatch({
+                  //     type: actionTypes.UPDATE_PAGINATION,
+                  //     payload: newBreadCrums,
+                  //   });
+                  //   dispatch({
+                  //     type: actionTypes.UPDATE_PAGINATION,
+                  //     payload: [...newBreadCrums, responseMessage],
+                  //   });
+                  // }
                 }
               });
             }
@@ -214,7 +234,7 @@ export default function CreateOrg(prop) {
                     />
                     <div
                       className="update-img"
-                      onClick={() => imgUpload.current.click()}
+                      // onClick={() => imgUpload.current.click()}
                     >
                       Update Image
                     </div>
@@ -253,8 +273,9 @@ export default function CreateOrg(prop) {
                 autoComplete="off"
                 disabled={editMode ? true : false}
                 value={values.domain}
-                onChange={(e) => {
-                  setFieldValue("domain", e.target?.value);
+                onChange={async (e) => {
+                  if(alphabetsOnly(e.target.value) && !e.target.value.includes('@')) {
+                    setFieldValue("domain", e.target?.value);
                   if (e.target.value.length > 1) {
 
                     setLoaderImg(true);
@@ -271,22 +292,60 @@ export default function CreateOrg(prop) {
 
                         }
                       });
+                    }
                   }
                 }}
                 onBlur={handleBlur}
                 // value={values.admin}
               />
-              {loaderImg && (
-                <img
-                  src={loader}
-                  style={{ width: "25px" }}
-                  alt=""
-                  className="loader"
-                />
-              )}
+              <img
+                src={loader}
+                style={{ width: "25px",marginTop: '5px',visibility: loaderImg ? 'visible' : 'hidden' }}
+                alt=""
+                className="loader"
+              />
               <div className="error">
                 {errors.domain && touched.domain && errors.domain}
               </div>
+            </div>
+            <div className="form-group-create">
+              <h3>LearnSafe Account ID</h3>
+              <input
+                type="text"
+                name="account_id"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.account_id}
+              />
+            </div>
+            <div className="form-group-create">
+              <h3>LearnSafe API Key</h3>
+              <input
+                type="text"
+                name="api_key"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.api_key}
+              />
+            </div>
+            <div className="form-group-create">
+              <h3>LearnSafe Unit Path </h3>
+              <input
+                type="text"
+                name="unit_path"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.unit_path}
+              />
+            </div>
+            <div className="form-group-create">
+              <h3>Self Registration</h3>
+              <Switch
+                checked={values.self_registration}
+                onChange={() => {
+                  setFieldValue('self_registration', !values.self_registration);
+                }}
+              />
             </div>
             <div className="button-group">
               <button type="submit">

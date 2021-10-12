@@ -20,6 +20,7 @@ export default function CreateActivity(props) {
   const imgUpload = useRef();
   const dispatch = useDispatch();
   const selectedType = useSelector((state) => state.resource.selectedType);
+  const { activePage } = useSelector((state) => state.organization);
   useEffect(() => {
     if (editMode) {
       setImgActive(selectedType?.image);
@@ -37,14 +38,14 @@ export default function CreateActivity(props) {
         }}
         validate={(values) => {
           const errors = {};
-          if (!values.title) {
-            errors.title = 'Required';
+          if (!values.title || values.title.length > 255) {
+            errors.title = values.title.length > 255 ? 'Length must be 255 characters or less' : 'Required';
           }
           if (!values.image) {
             errors.image = 'Required';
           }
-          if (!values.order) {
-            errors.order = 'Required';
+          if (!values.order || (values.order < 0 && values.order !== 0)) {
+            errors.order = values.order < 0 ? 'Negative Order is not allowed' : values.order !== 0 && 'Required';
           }
           return errors;
         }}
@@ -71,7 +72,7 @@ export default function CreateActivity(props) {
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
-                  dispatch(loadResourceTypesAction('', 1));
+                  dispatch(loadResourceTypesAction('', activePage));
                 }
               });
             }
@@ -97,7 +98,7 @@ export default function CreateActivity(props) {
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
-                  dispatch(loadResourceTypesAction('', 1));
+                  dispatch(loadResourceTypesAction('', activePage));
                 }
               });
             }
@@ -215,7 +216,13 @@ export default function CreateActivity(props) {
               <input
                 type="number"
                 name="order"
+                min="0"
                 onChange={handleChange}
+                onKeyDown={(e) => {
+                  if (['-', '+', 'e', 'E', '.'].includes(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
                 onBlur={handleBlur}
                 value={values.order}
               />

@@ -23,13 +23,15 @@ function UserRoles({permissionRender}) {
 
   useEffect(() => {
     dispatch(getAllPermissionId(activeOrganization?.id));
-    if (roles.length !== 0) dispatch(roleDetail(activeOrganization.id, roles[0]?.id));
+    if(!!roles) {
+    if (roles?.length !== 0) dispatch(roleDetail(activeOrganization.id, roles[0]?.id));
+    }
   }, []);
 
   return (
     <div className="user-roles">
       <h2>Roles Permissions</h2>
-      {permissionRender ?
+      {true ?
       <div className="box-group">
         <Formik
           initialValues={{
@@ -57,10 +59,10 @@ function UserRoles({permissionRender}) {
 
               <div className="form-group-create dynamic-roles ">
               {permission?.Organization?.includes('organization:edit-role') && (
-              
+
                 <div className="button-group" style={{ display: 'flex', justifyContent: 'flex-end' }}>
                   <button type="submit" className="curriki-white-button">
-                    update Role
+                    Update Role
                   </button>
 
                 </div>

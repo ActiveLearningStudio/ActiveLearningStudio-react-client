@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import './style.scss';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteTeamAction } from 'store/actions/team';
+import { deleteTeamAction, getTeamPermission } from 'store/actions/team';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function TeamCard(props) {
@@ -21,6 +21,8 @@ function TeamCard(props) {
   const deleteTeam = () => {
     Swal.fire({
       title: 'Are you sure you want to delete this team?',
+      // eslint-disable-next-line max-len
+      html: '<strong>The projects associated with this team will no longer available in Team projects. If you want make a copy for that project then visit Team project page first to make a clone</strong>',
       showDenyButton: true,
       showCancelButton: true,
       confirmButtonText: 'Yes',
@@ -41,14 +43,28 @@ function TeamCard(props) {
   return (
     <div className="team-card-content">
       <div className="team-title">
-        <Link to={`/org/${organization.currentOrganization?.domain}/teams/${id}`} className="title m-0">{name}</Link>
+        <Link
+          onClick={() => {
+            dispatch(getTeamPermission(organization.currentOrganization.id, id));
+          }}
+          to={`/org/${organization.currentOrganization?.domain}/teams/${id}/projects`}
+          className="title m-0"
+        >
+          {name}
+        </Link>
         {permission?.Team?.includes('team:edit') && (
-          <Link className="edit-button" to={`/org/${organization.currentOrganization?.domain}/teams/${id}/edit`}>
+          <Link
+            onClick={() => {
+              dispatch(getTeamPermission(organization.currentOrganization.id, id));
+            }}
+            className="edit-button"
+            to={`/org/${organization.currentOrganization?.domain}/teams/${id}/edit`}
+          >
             <FontAwesomeIcon icon="pen" className="mr-2" />
             Edit
           </Link>
         )}
-        <h2 className="describe">{description}</h2>
+        <h2 className="describe">{description.length > 50 ? `${description?.slice(0, 50)}...` : description}</h2>
       </div>
 
       <div className="team-member-content mid-border">
