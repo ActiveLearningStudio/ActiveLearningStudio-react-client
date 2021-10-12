@@ -14,7 +14,6 @@
     padding: 0 17px;
     flex-direction: column;
   }
-
   .auth-leftpane {
     width: 100%;
     height: 100%;
@@ -29,9 +28,9 @@
     @media (max-width: 767px) {
       width: 100%;
       height: auto;
-      .auth-body-img {
-        display: none;
-      }
+      // .auth-body-img {
+      //   display: none;
+      // }
     }
 
     .auth-body {
@@ -41,7 +40,11 @@
       flex-direction: column;
       max-width: 65%;
       margin: 0 auto;
-
+      .background-img-leftpane {
+        width: 718px;
+        height: 476px;
+        margin-top: 75px;
+      }
       // .auth-body-img{
       //   width: 200px;
 
@@ -76,7 +79,7 @@
     filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.3));
     height: 100%;
     margin: auto;
-    padding: 30px 50px;
+    padding: 30px 80px;
     background: #fff;
     filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.3));
     height: 100%;
@@ -109,6 +112,70 @@
       // height: 200px;
       // background-color: #eadbf0;
       // border-radius: 50%;
+    }
+    nav {
+      margin: 0;
+      width: 100%;
+      margin-top: 25px;
+      border-bottom: 1px solid $fun-blue-1;
+
+      .nav-link {
+        border-radius: 3px 3px 0px 0px;
+        font-size: 16px;
+        line-height: 22px;
+        text-align: center;
+        color: $white;
+        background: $fun-blue-1;
+        font-weight: 400;
+        padding: 5px 30px;
+        margin-right: 10px;
+
+        color: #fff;
+        border-color: $fun-blue-1 !important;
+      }
+
+      .nav-link.active {
+        background: $white;
+        color: $fun-blue-1;
+      }
+    }
+
+    .tab-content {
+      nav {
+        margin: 0;
+        width: 100%;
+        margin-top: 25px;
+        border-bottom: none !important ;
+      }
+      h2 {
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 24px;
+        color: #515151;
+        margin-top: 30px;
+        margin-bottom: 0px;
+      }
+      .nav-link {
+        border-radius: 3px 3px 0px 0px;
+        font-size: 16px;
+        line-height: 22px;
+        text-align: center;
+        color: $white;
+        background: transparent;
+        font-weight: 400;
+        padding: 5px 30px;
+        margin-right: 10px;
+        padding-left: 0;
+        color: $fun-blue-1;
+        border: none !important;
+      }
+
+      .nav-link.active {
+        background: transparent;
+        color: $fun-blue-1;
+        font-weight: bold;
+        border-bottom: 3px solid$fun-blue-1 !important;
+      }
     }
     .google-button {
       min-width: 410.6px;
@@ -259,20 +326,25 @@
       @media (max-width: 767px) {
         margin-bottom: 25px;
       }
-
-      .back-button {
-        height: 30px;
-        background: #084892 0 0 no-repeat padding-box;
-        border-color: #084892;
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 26px;
-        border-radius: 0.25rem;
-        float: right;
-        letter-spacing: 0.76px;
-        color: #ffffff;
-        opacity: 1;
-        padding-bottom: 20px;
+      .bkbtn {
+        display: flex;
+        justify-content: flex-end;
+        .back-button {
+          height: 32px;
+          background: #084892 0 0 no-repeat padding-box;
+          border-color: #084892;
+          text-align: center;
+          border: 0;
+          width: 70px;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 29px;
+          border-radius: 50px;
+          letter-spacing: 0.76px;
+          color: #ffffff;
+          opacity: 1;
+          padding-bottom: 20px;
+        }
       }
       .svg-inline--fa {
         position: absolute;
@@ -329,6 +401,8 @@
         }
       }
       .get-started-btn {
+        width: 100%;
+        height: 32px;
         background: #084892;
         border: 1px solid #084892;
         box-sizing: border-box;

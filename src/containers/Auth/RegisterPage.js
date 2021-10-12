@@ -9,8 +9,11 @@ import QueryString from 'query-string';
 import bg from 'assets/images/loginbg.png';
 import bg1 from 'assets/images/loginbg2.png';
 import loader from 'assets/images/loader.svg';
+import { GoogleLogin } from 'react-google-login';
+import googleIcon from 'assets/images/google.png';
 import { registerAction, loadOrganizationTypesAction } from 'store/actions/auth';
 import { getErrors } from 'utils';
+import { Tabs, Tab } from 'react-bootstrap';
 import Error from './Error';
 import Logo from './Logo';
 
@@ -32,6 +35,7 @@ class RegisterPage extends React.Component {
       jobTitle: '',
       clicked: '',
       error: null,
+      activeTab: 'Signup',
     };
   }
 
@@ -139,7 +143,7 @@ class RegisterPage extends React.Component {
     history.push('/login');
   };
 
-  validatePassword=(pwd) => {
+  validatePassword = (pwd) => {
     // eslint-disable-next-line quotes
     const regex = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$");
     return regex.test(pwd);
@@ -156,238 +160,269 @@ class RegisterPage extends React.Component {
       error,
       organizationType,
       clicked,
+      activeTab,
     } = this.state;
-    const { isLoading, organizationTypes, domain } = this.props;
+    const {
+      isLoading, organizationTypes, domain,
+    } = this.props;
 
     return (
       <>
         {
-        domain?.self_registration === true ? (
-          <div className="auth-page">
-            <Logo />
+          domain?.self_registration === true && (
+            <div className="auth-page">
+              <Logo />
 
-            <div className="auth-container">
-              <div className="d-flex align-items-center justify-content-between">
-                <h1 className="auth-title ">
-                  Welcome
-                  {!clicked ? ' to Curriki' : `, ${firstName}`}
-                </h1>
+              <div className="auth-container">
+                <div className="d-flex align-items-center justify-content-between">
+                  <h1 className="auth-title ">
+                    Welcome
+                    {!clicked ? ' to Curriki' : `, ${firstName}`}
+                  </h1>
 
-                {/* <strong>OR</strong> */}
+                  {/* <strong>OR</strong> */}
 
-                {/* <button
+                  {/* <button
                   type="button"
                   className="btn btn-outline-primary text-uppercase"
                   onClick={this.goToLogin}
                 >
                   Login
                 </button> */}
+                </div>
+
+                <p className="auth-description text-left">
+                  {!clicked
+                    ? 'Sign up and start making a difference in the way learning experiences are created.'
+                    : 'Before start creating awesome content, please let us know the usage your are giving to Curriki. '}
+                </p>
+                <Tabs
+                  defaultActiveKey={activeTab}
+                  activeKey={activeTab}
+                  id="uncontrolled-tab-example"
+                  onSelect={(key) => {
+                    this.setState({ activeTab: key });
+                    if (key === 'Login') this.goToLogin();
+                  }}
+                >
+                  <Tab eventKey="Login" title="Login" />
+                  <Tab eventKey="Signup" title="Signup">
+                    <form
+                      onSubmit={this.onSubmit}
+                      autoComplete="off"
+                      className="auth-form"
+                    >
+                      {!clicked
+                        ? (
+                          <>
+                            <div className="form-group d-flex">
+                              <div className="input-wrapper">
+                                <FontAwesomeIcon icon="user" />
+                                <input
+                                  autoFocus
+                                  className="input-box"
+                                  name="firstName"
+                                  placeholder="First Name*"
+                                  required
+                                  maxLength="250"
+                                  value={firstName}
+                                  onChange={this.onChangeField}
+                                />
+                              </div>
+
+                              <div className="input-wrapper">
+                                <FontAwesomeIcon icon="user" />
+                                <input
+                                  className="input-box"
+                                  name="lastName"
+                                  placeholder="Last Name*"
+                                  required
+                                  maxLength="250"
+                                  value={lastName}
+                                  onChange={this.onChangeField}
+                                />
+                              </div>
+                            </div>
+
+                            <div className="form-group">
+                              <FontAwesomeIcon icon="envelope" />
+                              <input
+                                className="input-box"
+                                // type="email"
+                                name="email"
+                                placeholder="Email*"
+                                required
+                                maxLength="250"
+                                disabled={query?.email && true}
+                                value={email}
+                                onChange={this.onChangeField}
+                              />
+                            </div>
+
+                            <div className="form-group">
+                              <FontAwesomeIcon icon="lock" />
+                              <input
+                                className="password-box"
+                                type="password"
+                                name="password"
+                                placeholder="Password*"
+                                required
+                                maxLength="250"
+                                value={password}
+                                onChange={this.onChangeField}
+                              />
+                              <p>8 characters minimum. Use a number, one uppercase & one lowercase at least</p>
+                            </div>
+                            <Error error={error} />
+                            <div className="form-group mb-0">
+                              <button
+                                type="button"
+                                className="signUp-btn submit"
+                                onClick={() => {
+                                  const passwordValidator = this.validatePassword(password);
+                                  const emailValidator = validator.isEmail(email.trim());
+                                  if (passwordValidator && emailValidator) {
+                                    this.setState({
+                                      clicked: true,
+                                      error: null,
+                                    });
+                                  } else if (!passwordValidator) {
+                                    this.setState({
+                                      error: 'Password must be 8 or more characters long, should contain at-least 1 Uppercase, 1 Lowercase and 1 Numeric character.',
+                                    });
+                                  } else if (!emailValidator) {
+                                    this.setState({
+                                      error: 'Please input valid email.',
+                                    });
+                                  }
+                                }}
+                                disabled={isLoading || this.isDisabledSignUp()}
+                              >
+                                {isLoading ? (
+                                  <img src={loader} alt="" />
+                                ) : (
+                                  'Sign up with Email'
+                                )}
+                              </button>
+                            </div>
+                            <div className="vertical-line">
+                              <div className="line" />
+                              <p className="line-or">or</p>
+                              <div className="line" />
+                            </div>
+                            <div className="form-group text-center mb-0">
+                              <GoogleLogin
+                                clientId={global.config.gapiClientId}
+                                theme="dark"
+                                render={(renderProps) => (
+                                  <button type="button" className="google-button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                                    <img src={googleIcon} alt="googleIcon" style={{ float: 'left' }} />
+                                    Sign up with Google
+                                  </button>
+                                )}
+                                onSuccess={this.onGoogleLoginSuccess}
+                                onFailure={this.onGoogleLoginFailure}
+                                // eslint-disable-next-line max-len
+                                scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
+                                cookiePolicy="single_host_origin"
+                              />
+                            </div>
+                            {/* <p className="auth-description text-center">
+                              Back to Curriki?&nbsp;
+                              <a onClick={this.goToLogin}>
+                                Login
+                              </a>
+                            </p> */}
+
+                            <div className="termsandcondition">
+                              By clicking the &quot;Sign Up&quot; button, you are creating a CurrikiStudio  account, and you agree to Curriki&apos;s
+                              {' '}
+                              <a href="https://www.curriki.org/terms-of-service/">
+                                Terms of Use
+                              </a>
+                              {' '}
+                              and
+                              {' '}
+                              <a href="https://www.curriki.org/privacy-policy/">
+                                Privacy Policy.
+                              </a>
+                            </div>
+
+                          </>
+                        ) : (
+                          <>
+                            <div className="form-group">
+                              <div className="bkbtn">
+                                <button type="button" className="back-button" onClick={() => this.setState({ clicked: false })}>
+                                  Back
+                                </button>
+                              </div>
+                            </div>
+                            <div className="form-group ">
+                              <FontAwesomeIcon icon="building" />
+                              <select
+                                className="input-box organization-type"
+                                name="organizationType"
+                                placeholder="Organization Type*"
+                                value={organizationType}
+                                onChange={this.onChangeField}
+                              >
+                                <option selected value=""> -- Select an Organization Type -- </option>
+
+                                {organizationTypes.map((type) => (
+                                  <option value={type.label}>{type.label}</option>
+                                ))}
+                              </select>
+                            </div>
+
+                            <div className="form-group">
+                              <FontAwesomeIcon icon="building" />
+                              <input
+                                className="input-box"
+                                name="organizationName"
+                                placeholder="Organization Name*"
+                                maxLength="250"
+                                value={organizationName}
+                                onChange={this.onChangeField}
+                              />
+                            </div>
+                            <div className="form-group">
+                              <FontAwesomeIcon icon="briefcase" />
+                              <input
+                                className="input-box"
+                                name="jobTitle"
+                                placeholder="Job Title*"
+                                maxLength="250"
+                                value={jobTitle}
+                                onChange={this.onChangeField}
+                              />
+                            </div>
+                            <div className="form-group mb-0">
+                              <button
+                                type="submit"
+                                className="btn-primary submit get-started-btn"
+                                onClick={() => this.setState({
+                                  clicked: true,
+                                })}
+                                disabled={isLoading || this.isDisabled()}
+                              >
+                                {isLoading ? (
+                                  <img src={loader} alt="" />
+                                ) : (
+                                  'Complete Registration'
+                                )}
+                              </button>
+                            </div>
+                          </>
+                        )}
+                    </form>
+                  </Tab>
+                </Tabs>
               </div>
 
-              <h3 className="auth-description text-left">
-                {!clicked
-                  ? 'Sign up and start making a difference in the way learning experiences are created.'
-                  : 'Before start creating awesome content, please let us know the usage your are giving to Curriki. '}
-              </h3>
-              <form
-                onSubmit={this.onSubmit}
-                autoComplete="off"
-                className="auth-form"
-              >
-                {!clicked
-                ? (
-                  <>
-                    <div className="form-group d-flex">
-                      <div className="input-wrapper">
-                        <FontAwesomeIcon icon="user" />
-                        <input
-                          autoFocus
-                          className="input-box"
-                          name="firstName"
-                          placeholder="First Name*"
-                          required
-                          maxLength="250"
-                          value={firstName}
-                          onChange={this.onChangeField}
-                        />
-                      </div>
-
-                      <div className="input-wrapper">
-                        <FontAwesomeIcon icon="user" />
-                        <input
-                          className="input-box"
-                          name="lastName"
-                          placeholder="Last Name*"
-                          required
-                          maxLength="250"
-                          value={lastName}
-                          onChange={this.onChangeField}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="form-group">
-                      <FontAwesomeIcon icon="envelope" />
-                      <input
-                        className="input-box"
-                        // type="email"
-                        name="email"
-                        placeholder="Email*"
-                        required
-                        maxLength="250"
-                        disabled={query?.email && true}
-                        value={email}
-                        onChange={this.onChangeField}
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <FontAwesomeIcon icon="lock" />
-                      <input
-                        className="password-box"
-                        type="password"
-                        name="password"
-                        placeholder="Password*"
-                        required
-                        maxLength="250"
-                        value={password}
-                        onChange={this.onChangeField}
-                      />
-                      <p>8 characters minimum. Use a number, one uppercase & one lowercase at least</p>
-                    </div>
-                    <Error error={error} />
-                    <div className="form-group mb-0">
-                      <button
-                        type="button"
-                        className="signUp-btn submit"
-                        onClick={() => {
-                          const passwordValidator = this.validatePassword(password);
-                          const emailValidator = validator.isEmail(email.trim());
-                          if (passwordValidator && emailValidator) {
-                            this.setState({
-                              clicked: true,
-                              error: null,
-                            });
-                          } else if (!passwordValidator) {
-                              this.setState({
-                                error: 'Password must be 8 or more characters long, should contain at-least 1 Uppercase, 1 Lowercase and 1 Numeric character.',
-                              });
-                          } else if (!emailValidator) {
-                            this.setState({
-                              error: 'Please input valid email.',
-                            });
-                          }
-                        }}
-                        disabled={isLoading || this.isDisabledSignUp()}
-                      >
-                        {isLoading ? (
-                          <img src={loader} alt="" />
-                        ) : (
-                          'Sign Up'
-                        )}
-                      </button>
-                    </div>
-                    <div className="vertical-line">
-                      <div className="line" />
-                      <p className="line-or">or</p>
-                      <div className="line" />
-                    </div>
-
-                    <p className="auth-description text-center">
-                      Back to Curriki?&nbsp;
-                      <a onClick={this.goToLogin}>
-                        Login
-                      </a>
-                    </p>
-
-                    <div className="termsandcondition">
-                      By clicking the &quot;Sign Up&quot; button, you are creating a CurrikiStudio  account, and you agree to Curriki&apos;s
-                      {' '}
-                      <a href="https://www.curriki.org/terms-of-service/">
-                        Terms of Use
-                      </a>
-                      {' '}
-                      and
-                      {' '}
-                      <a href="https://www.curriki.org/privacy-policy/">
-                        Privacy Policy.
-                      </a>
-                    </div>
-
-                  </>
-                  ) : (
-                    <>
-                      <div className="form-group">
-                        <button type="button" className="back-button" onClick={() => this.setState({ clicked: false })}>
-                          Back
-                        </button>
-                      </div>
-                      <div className="form-group ">
-                        <FontAwesomeIcon icon="building" />
-                        <select
-                          className="input-box organization-type"
-                          name="organizationType"
-                          placeholder="Organization Type*"
-                          value={organizationType}
-                          onChange={this.onChangeField}
-                        >
-                          <option selected value=""> -- Select an Organization Type -- </option>
-
-                          {organizationTypes.map((type) => (
-                            <option value={type.label}>{type.label}</option>
-                          ))}
-                        </select>
-                      </div>
-
-                      <div className="form-group">
-                        <FontAwesomeIcon icon="building" />
-                        <input
-                          className="input-box"
-                          name="organizationName"
-                          placeholder="Organization Name*"
-                          maxLength="250"
-                          value={organizationName}
-                          onChange={this.onChangeField}
-                        />
-                      </div>
-                      <div className="form-group">
-                        <FontAwesomeIcon icon="briefcase" />
-                        <input
-                          className="input-box"
-                          name="jobTitle"
-                          placeholder="Job Title*"
-                          maxLength="250"
-                          value={jobTitle}
-                          onChange={this.onChangeField}
-                        />
-                      </div>
-                      <div className="form-group mb-0">
-                        <button
-                          type="submit"
-                          className="btn btn-primary submit get-started-btn"
-                          onClick={() => this.setState({
-                            clicked: true,
-                          })}
-                          disabled={isLoading || this.isDisabled()}
-                        >
-                          {isLoading ? (
-                            <img src={loader} alt="" />
-                          ) : (
-                            'Let’s get started! '
-                          )}
-                        </button>
-                      </div>
-                    </>
-                  )}
-              </form>
+              <img src={bg} className="bg1" alt="" />
+              <img src={bg1} className="bg2" alt="" />
             </div>
-
-            <img src={bg} className="bg1" alt="" />
-            <img src={bg1} className="bg2" alt="" />
-          </div>
-        )
-        : (
-         this.goToLogin()
           )
         }
       </>
@@ -412,7 +447,7 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
   organizationTypes: state.auth.organizationTypes,
-  domain: state.organization.currentOrganization,
+  domain: state?.organization?.currentOrganization,
 });
 
 export default withRouter(
