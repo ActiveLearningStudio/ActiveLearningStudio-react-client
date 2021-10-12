@@ -53,7 +53,7 @@ const Activity = (props) => {
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
-    loadH5pSettings(match.params.activityId);
+    loadH5pSettings(match.params.activityId, studentId, submissionId);
     activityInit();
   }, [activityId]);
 
@@ -223,7 +223,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  loadH5pSettings: (activityId) => dispatch(loadH5pResourceSettings(activityId)),
+  loadH5pSettings: (activityId, studentId, submissionId) => dispatch(loadH5pResourceSettings(activityId, studentId, submissionId)),
   sendStatement: (statement) => dispatch(loadH5pResourceXapi(statement)),
   gradePassBack: (session, gpb, score, isLearner) => dispatch(gradePassBackAction(session, gpb, score, isLearner)),
   activityInit: () => dispatch(activityInitAction()),
