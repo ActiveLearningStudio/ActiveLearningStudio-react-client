@@ -164,7 +164,7 @@ const H5PEditor = (props) => {
                     onChange={setH5pFileUpload}
                     ref={uploadFile}
                     style={{ cursor: "pointer" }}
-                    // style={{ display: 'none' }}
+                  // style={{ display: 'none' }}
                   />
                   <div className="upload-holder">
                     <FontAwesomeIcon icon="file-upload" className="mr-2" />
@@ -219,7 +219,7 @@ const H5PEditor = (props) => {
           <div className="interactive-btns" style={{ marginTop: "20px" }}>
             <div className="cancel">
               <Buttons
-                text="cancel"
+                text="Cancel"
                 width="151px"
                 secondary
                 onClick={() => {
@@ -229,7 +229,7 @@ const H5PEditor = (props) => {
             </div>
             <div className="save-close">
               <Buttons
-                text="Save & Close"
+                text="Create & Close"
                 width="151px"
                 primary
                 onClick={() => {

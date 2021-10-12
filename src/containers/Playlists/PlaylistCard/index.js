@@ -217,7 +217,7 @@ class PlaylistCard extends React.Component {
                     }}
                   >
                     <FontAwesomeIcon icon="plus" className="mr-2" />
-                    Add new activity
+                    Create or upload activty
                   </button>
                 </div>
               )}

@@ -363,17 +363,17 @@ const AppRouter = (props) => {
                     editMode
                   />
 
-                  <PrivateRoute
+                  {/* <PrivateRoute
                     exact
                     path="/org/:organization/project/:projectId/playlist/create"
                     component={PlaylistsPage}
                     openCreatePopup
-                  />
+                  /> */}
                   <PrivateRoute
                     exact
                     path="/org/:organization/project/:projectId/playlist/:playlistId/activity/create"
                     component={ActivityCreate}
-                    // openCreateResourcePopup
+                  // openCreateResourcePopup
                   />
                   <PrivateRoute
                     exact
