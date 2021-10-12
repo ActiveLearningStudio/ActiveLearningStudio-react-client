@@ -201,7 +201,7 @@
     background: #fff;
     opacity: 1;
     width: 100%;
-    height: 180vh;
+    // height: 180vh;
     padding: 50px;
     .inner-form-content-box {
       max-width: 1200px;
@@ -287,7 +287,7 @@
     margin: 17px 0 17px;
   }
   .activity-layout-detail {
-    margin-top: 10px;
+    margin-top: 25px;
     // margin-right: 100px;
     // width: 970px;
   }
@@ -335,7 +335,7 @@
     .layout-process-btn {
       // flex: 0.7;
       width: 583px;
-      margin-top: 68px;
+      margin-top: 40px;
       .activity-layout-process-box {
         background-color: #f1f1f1;
         display: flex;
@@ -366,7 +366,7 @@
       }
       .activity-layout-btns {
         display: flex;
-        margin-top: 50px;
+        margin-top: 40px;
         .btns-margin {
           margin-left: 16px;
         }
