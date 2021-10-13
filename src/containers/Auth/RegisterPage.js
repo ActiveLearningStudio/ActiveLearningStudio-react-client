@@ -158,7 +158,12 @@ class RegisterPage extends React.Component {
     console.log(organizationName, jobTitle, organizationType);
     const { googleLogin } = this.props;
     if (organizationName && jobTitle && organizationType) {
-      const result = googleLogin(response);
+      const result = googleLogin({
+        ...response,
+        organizationName,
+        jobTitle,
+        organizationType,
+      });
       result.catch((err) => {
         this.setState({
           error: getErrors(err),
