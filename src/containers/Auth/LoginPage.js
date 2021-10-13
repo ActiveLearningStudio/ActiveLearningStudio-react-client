@@ -26,10 +26,10 @@ class LoginPage extends React.Component {
     this.state = {
       email: '',
       password: '',
-      rememberMe: false,
+      // rememberMe: false,
       clicked: true,
       error: null,
-      activeTab: 'Login',
+      activeTab: 'Log in',
     };
   }
 
@@ -105,7 +105,7 @@ class LoginPage extends React.Component {
     const {
       email,
       password,
-      rememberMe,
+      // rememberMe,
       error,
       clicked,
       activeTab,
@@ -213,10 +213,10 @@ class LoginPage extends React.Component {
               id="uncontrolled-tab-example"
               onSelect={(key) => {
                 this.setState({ activeTab: key });
-                if (key === 'Signup') this.goToRegister();
+                if (key === 'Sign up') this.goToRegister();
               }}
             >
-              <Tab eventKey="Login" title="Login">
+              <Tab eventKey="Log in" title="Log in">
                 <div className="module-content">
                   <form
                     onSubmit={this.onSubmit}
@@ -252,7 +252,7 @@ class LoginPage extends React.Component {
                     </div>
 
                     <div className="form-group remember-me">
-                      <label>
+                      {/* <label>
                         <input
                           type="checkbox"
                           name="rememberMe"
@@ -260,7 +260,7 @@ class LoginPage extends React.Component {
                           onChange={this.onChangeField}
                         />
                         Keep me logged in.
-                      </label>
+                      </label> */}
                       <div className="forgot-password-box">
                         <Link to="/forgot-password">Forgot Password ?</Link>
                       </div>
@@ -277,18 +277,18 @@ class LoginPage extends React.Component {
                         {isLoading ? (
                           <img src={loader} alt="" />
                         ) : (
-                          'LOG IN'
+                          'Log in'
                         )}
                       </button>
                     </div>
                     {
                       domain?.self_registration === true ? (
                         <>
-                          <div className="vertical-line">
+                          {/* <div className="vertical-line">
                             <div className="line" />
                             <p className="line-or">or</p>
                             <div className="line" />
-                          </div>
+                          </div> */}
 
                           {/* <p className="auth-description text-center">
                             New to Curriki?&nbsp;
@@ -336,7 +336,7 @@ class LoginPage extends React.Component {
                   </form>
                 </div>
               </Tab>
-              <Tab eventKey="Signup" title="Signup" />
+              <Tab eventKey="Sign up" title="Sign up" />
             </Tabs>
           </div>
         )}

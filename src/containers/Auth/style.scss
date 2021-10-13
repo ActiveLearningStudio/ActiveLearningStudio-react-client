@@ -137,6 +137,7 @@
       .nav-link.active {
         background: $white;
         color: $fun-blue-1;
+        border-bottom: none;
       }
     }
 
@@ -314,14 +315,14 @@
     }
 
     .auth-form {
-      margin-top: 15px;
+      margin-top: 40px;
       // flex: 1;
       // overflow-y: auto;
     }
 
     .form-group {
       position: relative;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
 
       @media (max-width: 767px) {
         margin-bottom: 25px;
@@ -329,6 +330,12 @@
       .bkbtn {
         display: flex;
         justify-content: flex-end;
+        a {
+          color: $curriki-main-blue;
+          text-decoration: underline;
+          cursor: pointer;
+          padding-left: 10px;
+        }
         .back-button {
           height: 32px;
           background: #084892 0 0 no-repeat padding-box;
@@ -373,7 +380,7 @@
         text-align: center;
         color: #ffffff;
         padding: 11.5px 0;
-        margin-bottom: 30px;
+        margin-bottom: 15px;
       }
       .vertical-line {
         display: flex;
@@ -398,6 +405,20 @@
           .line {
             width: 45%;
           }
+        }
+      }
+      .using-curriki {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        .curriki-line {
+          width: 40%;
+        }
+        .line-horizontal {
+          border: 1px solid #dddddd;
+          height: 0.5px;
+          width: 60%;
+          margin-left: 5px;
         }
       }
       .get-started-btn {
@@ -466,7 +487,7 @@
     .remember-me {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-end;
 
       input {
         width: 17px;
@@ -558,7 +579,6 @@
         font-weight: 400;
         font-size: 19px;
         line-height: 26px;
-        text-transform: uppercase;
         letter-spacing: 0.76px;
         color: #ffffff;
         opacity: 1;
