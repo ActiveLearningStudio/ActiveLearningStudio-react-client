@@ -5,10 +5,9 @@ import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import
-{
+import {
 // setActiveOrganization,
-  updateOrganizationScreen,
+updateOrganizationScreen,
 //  getOrganizationFirstTime
 }
   from 'store/actions/organization';
@@ -35,7 +34,7 @@ import { Event } from 'trackers/ga';
 
 import MultitenancyDropdown from './multitenancyDropdown';
 // import SearchForm from './searchForm';
-// import HeaderNotification from './notification';
+import HeaderNotification from './notification';
 
 import './style.scss';
 // import urllink from 'socket.io-client/lib/url';
@@ -87,20 +86,20 @@ function Header(props) {
                 <div
                   className="nav-logo"
                   style={{
-                  backgroundImage: `url(${global.config.resourceUrl + image})`,
-                  backgroundPosition: 'center',
-                  backgroundSize: 'contain',
-                  backgroundRepeat: 'no-repeat',
+                    backgroundImage: `url(${global.config.resourceUrl + image})`,
+                    backgroundPosition: 'center',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
                   }}
                 />
               ) : (
                 <div
                   className="nav-logo"
                   style={{
-                  backgroundImage: `url(${defaultLogo})`,
-                  backgroundPosition: 'center',
-                  backgroundSize: 'contain',
-                  backgroundRepeat: 'no-repeat',
+                    backgroundImage: `url(${defaultLogo})`,
+                    backgroundPosition: 'center',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
                   }}
                 />
               )}
@@ -183,7 +182,7 @@ function Header(props) {
                   </Dropdown>
                 </li>
               )}
-              {/* <HeaderNotification /> */}
+              <HeaderNotification />
               {/* <li className="mobile-links">
                 <Link to="#">
                   <img src={searchImg} alt="search" />

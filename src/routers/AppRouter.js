@@ -39,7 +39,7 @@ const LtiLogin = loadable(() => import('../containers/Auth/LtiLogin'));
 const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
 const ChangePasswordPage = loadable(() => import('../containers/Account/ChangePasswordPage'));
 // const DashboardPage = loadable(() => import('../containers/Dashboard'));
-// const NotificationPage = loadable(() => import('../containers/Notification'));
+const NotificationPage = loadable(() => import('../containers/Notification'));
 
 const ProjectsPage = loadable(() => import('../containers/Projects'));
 const PlaylistsPage = loadable(() => import('../containers/Playlists'));
@@ -197,7 +197,7 @@ const AppRouter = (props) => {
                       <PrivateRoute exact path="/org/:organization/change-password" component={ChangePasswordPage} />
 
                       {/* <PrivateRoute exact path="/org/:organization/dashboard" component={DashboardPage} /> */}
-                      {/* <PrivateRoute exact path="/org/:organization/notification" component={NotificationPage} /> */}
+                      <PrivateRoute exact path="/org/:organization/notification" component={NotificationPage} />
                       <PrivateRoute exact path="/org/:organization/admin" component={AdminPanel} />
                       {/* <PrivateRoute exact path="/org/:organization/teams" component={TeamsPage} overview />
                      <PrivateRoute exact path="/org/:organization/teams/create-team" component={TeamsPage} creation />
