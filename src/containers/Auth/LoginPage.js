@@ -97,8 +97,12 @@ class LoginPage extends React.Component {
   };
 
   goToRegister = () => {
-    const { history } = this.props;
-    history.push('/register');
+    const { history, domain } = this.props;
+    if (domain) {
+      history.push(`/register/${domain?.domain}`);
+    } else {
+      history.push('register');
+    }
   };
 
   render() {

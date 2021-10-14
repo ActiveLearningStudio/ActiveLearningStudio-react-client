@@ -177,8 +177,13 @@ class RegisterPage extends React.Component {
   };
 
   goToLogin = () => {
-    const { history } = this.props;
-    history.push('/login');
+    const { history, domain } = this.props;
+    console.log(domain);
+    if (domain) {
+      history.push(`/login/${domain?.domain}`);
+    } else {
+      history.push('/login');
+    }
   };
 
   validatePassword = (pwd) => {
