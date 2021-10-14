@@ -61,44 +61,47 @@ class RegisterPage extends React.Component {
 
   onSubmit = async (e) => {
     e.preventDefault();
-
+    const { googleResponse } = this.state;
     try {
-      const {
-        firstName,
-        lastName,
-        email,
-        password,
-        organizationName,
-        organizationType,
-        jobTitle,
-      } = this.state;
-      const { history, register } = this.props;
-      const { domain } = this.props;
-      const data = {
-        first_name: firstName.trim(),
-        last_name: lastName.trim(),
-        email: email.trim(),
-        password: password.trim(),
-        organization_name: organizationName.trim(),
-        organization_type: organizationType.trim(),
-        job_title: jobTitle.trim(),
-        domain: domain?.domain,
-      };
+      if (googleResponse) {
+        this.onGoogleLoginSuccess(googleResponse);
+      } else {
+        const {
+          firstName,
+          lastName,
+          email,
+          password,
+          organizationName,
+          organizationType,
+          jobTitle,
+        } = this.state;
+        const { history, register } = this.props;
+        const { domain } = this.props;
+        const data = {
+          first_name: firstName.trim(),
+          last_name: lastName.trim(),
+          email: email.trim(),
+          password: password.trim(),
+          organization_name: organizationName.trim(),
+          organization_type: organizationType.trim(),
+          job_title: jobTitle.trim(),
+          domain: domain?.domain,
+        };
+        const message = await register(data);
 
-      const message = await register(data);
-
-      Swal.fire({
-        icon: 'success',
-        title: 'YOU ARE REGISTERED!',
-        html: message,
-        showConfirmButton: true,
-        confirmButtonText: 'Login to CurrikiStudio',
-      })
-        .then((result) => {
-          if (result.isConfirmed) {
-            history.push(`/login/${domain?.domain}`);
-          }
-        });
+        Swal.fire({
+          icon: 'success',
+          title: 'YOU ARE REGISTERED!',
+          html: message,
+          showConfirmButton: true,
+          confirmButtonText: 'Login to CurrikiStudio',
+        })
+          .then((result) => {
+            if (result.isConfirmed) {
+              history.push(`/login/${domain?.domain}`);
+            }
+          });
+      }
       // history.push('/login');
     } catch (err) {
       this.setState({
@@ -178,7 +181,6 @@ class RegisterPage extends React.Component {
 
   goToLogin = () => {
     const { history, domain } = this.props;
-    console.log(domain);
     if (domain) {
       history.push(`/login/${domain?.domain}`);
     } else {
@@ -464,11 +466,9 @@ class RegisterPage extends React.Component {
                       <button
                         type="submit"
                         className="btn-primary submit get-started-btn"
-                        onClick={() => {
+                        onClick={(e) => {
                           this.setState({ clicked: true });
-                          if (googleResponse) {
-                            this.onGoogleLoginSuccess(googleResponse);
-                          }
+                          this.onSubmit(e);
                         }}
                         disabled={isLoading || (googleResponse ? this.isDisabledGoogle() : this.isDisabled())}
                       >
