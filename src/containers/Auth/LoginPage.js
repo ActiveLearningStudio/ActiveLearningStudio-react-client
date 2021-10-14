@@ -269,9 +269,9 @@ class LoginPage extends React.Component {
                         <Link to="/forgot-password">Forgot Password ?</Link>
                       </div>
                     </div>
-
-                    <Error error={error} />
-
+                    <div className="form-group">
+                      <Error error={error} />
+                    </div>
                     <div className="form-button">
                       <button
                         type="submit"

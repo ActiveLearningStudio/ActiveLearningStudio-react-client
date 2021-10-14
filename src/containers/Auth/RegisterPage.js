@@ -321,7 +321,9 @@ class RegisterPage extends React.Component {
                               />
                               <p>8 characters minimum. Use a number, one uppercase & one lowercase at least</p>
                             </div>
-                            <Error error={error} />
+                            <div className="form-group">
+                              <Error error={error} />
+                            </div>
                             <div className="form-group mb-0">
                               <button
                                 type="button"
@@ -333,19 +335,17 @@ class RegisterPage extends React.Component {
                                     this.setState({
                                       clicked: true,
                                       error: null,
+                                      stepper: true,
                                     });
                                   } else if (!passwordValidator) {
                                     this.setState({
-                                      error: 'Password must be 8 or more characters long, should contain at-least 1 Uppercase, 1 Lowercase and 1 Numeric character.',
+                                      error: 'Password must be 8 or more characters long,should contain at least 1 Uppercase, 1 Lowercase and 1 Numeric character.',
                                     });
                                   } else if (!emailValidator) {
                                     this.setState({
                                       error: 'Please input valid email.',
                                     });
                                   }
-                                  this.setState({
-                                    stepper: true,
-                                  });
                                 }}
                                 disabled={isLoading || this.isDisabledSignUp()}
                               >
