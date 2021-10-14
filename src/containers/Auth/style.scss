@@ -438,6 +438,10 @@
         text-align: center;
         color: #ffffff;
         opacity: 9 !important;
+        &:disabled {
+          background: grey;
+          border-color: grey;
+        }
       }
     }
 
