@@ -381,7 +381,12 @@
         color: #ffffff;
         padding: 11.5px 0;
         margin-bottom: 15px;
+        &:disabled {
+          background: grey;
+          border-color: grey;
+        }
       }
+
       .vertical-line {
         display: flex;
         align-items: center;
