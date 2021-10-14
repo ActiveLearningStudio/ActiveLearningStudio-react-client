@@ -61,44 +61,47 @@ class RegisterPage extends React.Component {
 
   onSubmit = async (e) => {
     e.preventDefault();
-
+    const { googleResponse } = this.state;
     try {
-      const {
-        firstName,
-        lastName,
-        email,
-        password,
-        organizationName,
-        organizationType,
-        jobTitle,
-      } = this.state;
-      const { history, register } = this.props;
-      const { domain } = this.props;
-      const data = {
-        first_name: firstName.trim(),
-        last_name: lastName.trim(),
-        email: email.trim(),
-        password: password.trim(),
-        organization_name: organizationName.trim(),
-        organization_type: organizationType.trim(),
-        job_title: jobTitle.trim(),
-        domain: domain?.domain,
-      };
+      if (googleResponse) {
+        this.onGoogleLoginSuccess(googleResponse);
+      } else {
+        const {
+          firstName,
+          lastName,
+          email,
+          password,
+          organizationName,
+          organizationType,
+          jobTitle,
+        } = this.state;
+        const { history, register } = this.props;
+        const { domain } = this.props;
+        const data = {
+          first_name: firstName.trim(),
+          last_name: lastName.trim(),
+          email: email.trim(),
+          password: password.trim(),
+          organization_name: organizationName.trim(),
+          organization_type: organizationType.trim(),
+          job_title: jobTitle.trim(),
+          domain: domain?.domain,
+        };
+        const message = await register(data);
 
-      const message = await register(data);
-
-      Swal.fire({
-        icon: 'success',
-        title: 'YOU ARE REGISTERED!',
-        html: message,
-        showConfirmButton: true,
-        confirmButtonText: 'Login to CurrikiStudio',
-      })
-        .then((result) => {
-          if (result.isConfirmed) {
-            history.push(`/login/${domain?.domain}`);
-          }
-        });
+        Swal.fire({
+          icon: 'success',
+          title: 'YOU ARE REGISTERED!',
+          html: message,
+          showConfirmButton: true,
+          confirmButtonText: 'Login to CurrikiStudio',
+        })
+          .then((result) => {
+            if (result.isConfirmed) {
+              history.push(`/login/${domain?.domain}`);
+            }
+          });
+      }
       // history.push('/login');
     } catch (err) {
       this.setState({
@@ -177,8 +180,12 @@ class RegisterPage extends React.Component {
   };
 
   goToLogin = () => {
-    const { history } = this.props;
-    history.push('/login');
+    const { history, domain } = this.props;
+    if (domain) {
+      history.push(`/login/${domain?.domain}`);
+    } else {
+      history.push('/login');
+    }
   };
 
   validatePassword = (pwd) => {
@@ -314,7 +321,9 @@ class RegisterPage extends React.Component {
                               />
                               <p>8 characters minimum. Use a number, one uppercase & one lowercase at least</p>
                             </div>
-                            <Error error={error} />
+                            <div className="form-group">
+                              <Error error={error} />
+                            </div>
                             <div className="form-group mb-0">
                               <button
                                 type="button"
@@ -326,19 +335,17 @@ class RegisterPage extends React.Component {
                                     this.setState({
                                       clicked: true,
                                       error: null,
+                                      stepper: true,
                                     });
                                   } else if (!passwordValidator) {
                                     this.setState({
-                                      error: 'Password must be 8 or more characters long, should contain at-least 1 Uppercase, 1 Lowercase and 1 Numeric character.',
+                                      error: 'Password must be 8 or more characters long,should contain at least 1 Uppercase, 1 Lowercase and 1 Numeric character.',
                                     });
                                   } else if (!emailValidator) {
                                     this.setState({
                                       error: 'Please input valid email.',
                                     });
                                   }
-                                  this.setState({
-                                    stepper: true,
-                                  });
                                 }}
                                 disabled={isLoading || this.isDisabledSignUp()}
                               >
@@ -459,11 +466,9 @@ class RegisterPage extends React.Component {
                       <button
                         type="submit"
                         className="btn-primary submit get-started-btn"
-                        onClick={() => {
+                        onClick={(e) => {
                           this.setState({ clicked: true });
-                          if (googleResponse) {
-                            this.onGoogleLoginSuccess(googleResponse);
-                          }
+                          this.onSubmit(e);
                         }}
                         disabled={isLoading || (googleResponse ? this.isDisabledGoogle() : this.isDisabled())}
                       >

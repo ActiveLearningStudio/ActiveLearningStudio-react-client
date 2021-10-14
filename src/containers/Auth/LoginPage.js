@@ -97,8 +97,12 @@ class LoginPage extends React.Component {
   };
 
   goToRegister = () => {
-    const { history } = this.props;
-    history.push('/register');
+    const { history, domain } = this.props;
+    if (domain) {
+      history.push(`/register/${domain?.domain}`);
+    } else {
+      history.push('register');
+    }
   };
 
   render() {
@@ -265,9 +269,9 @@ class LoginPage extends React.Component {
                         <Link to="/forgot-password">Forgot Password ?</Link>
                       </div>
                     </div>
-
-                    <Error error={error} />
-
+                    <div className="form-group">
+                      <Error error={error} />
+                    </div>
                     <div className="form-button">
                       <button
                         type="submit"
