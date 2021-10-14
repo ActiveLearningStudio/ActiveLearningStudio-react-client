@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import Swal from 'sweetalert2';
 import PropTypes from 'prop-types';
@@ -7,11 +8,10 @@ import { toggleProjectShareAction, toggleProjectShareRemovedAction } from 'store
 import './style.scss';
 
 const ProjectSharing = (props) => {
-  const { activeShared, selectedProject } = props;
+  const { activeShared, selectedProject, setActiveShared } = props;
   const dispatch = useDispatch();
   return (
     <div className="share-button">
-      Share Project
       <Switch
         onChange={() => {
           if (activeShared) {
@@ -30,10 +30,12 @@ const ProjectSharing = (props) => {
             }).then((resp) => {
               if (resp.isConfirmed) {
                 dispatch(toggleProjectShareRemovedAction(selectedProject.id, selectedProject.name));
+								setActiveShared(false);
               }
             });
           } else {
             dispatch(toggleProjectShareAction(selectedProject.id, selectedProject.name));
+						setActiveShared(true);
           }
         }}
         checked={activeShared || false}
@@ -46,6 +48,7 @@ const ProjectSharing = (props) => {
         onHandleColor="#e89e21"
         offHandleColor="#666"
       />
+      &nbsp;Enable Link
     </div>
   );
 };
