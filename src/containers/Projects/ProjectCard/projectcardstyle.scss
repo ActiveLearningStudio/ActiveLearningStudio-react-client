@@ -7,6 +7,10 @@
   background: #ffffff;
   box-shadow: 0px 4px 8px 2px rgba(81, 81, 81, 0.16);
   border-radius: 8px;
+	&:hover {
+		box-shadow: 0px 0px 12px 3px #adadad;
+    border-color: transparent;
+	}
   //   padding: 15px;
   .myproject-card-top {
     border-radius: 5px;
@@ -46,6 +50,10 @@
         font-size: 18px;
         line-height: 21px;
         color: #ffffff;
+				&:hover {
+				text-decoration: underline;
+				color:#ffc107
+				}
       }
     }
   }

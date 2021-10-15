@@ -489,7 +489,7 @@ export const createResourceByH5PUploadAction = (
       const createActivityUpload = {
         h5p_content_id: responseUpload.id,
         playlist_id: playlistId,
-        thumb_url: metadata.thumbUrl,
+        thumb_url: metadata.thumb_url,
         action: "create",
         title: metadata.title,
         type: "h5p",
