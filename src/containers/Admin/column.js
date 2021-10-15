@@ -42,9 +42,10 @@ export const columnData = {
 	],
 	projectUser: [
 		'Project Name',
-		'Created',
+		'Created Date',
+		'Expire Date',
 		'Download',
-
+    
 	],
 	projectAll: [
 		'Image',
