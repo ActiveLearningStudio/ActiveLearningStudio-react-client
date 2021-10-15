@@ -123,7 +123,7 @@ const ActivityLayout = (props) => {
                 title={layout.title}
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
+                allow="fullscreen;"
               ></iframe>
             </div>
             <HeadingText text={layout.description} color="#515151" />
