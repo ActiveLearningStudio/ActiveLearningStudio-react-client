@@ -44,7 +44,7 @@ const ProjectCard = (props) => {
                   seteditMode={seteditMode}
                 />
               </div>
-              <Link to={`/org/${organization?.currentOrganization?.domain}/project/${project.id}/preview`}>
+              <Link to={`/org/${organization?.currentOrganization?.domain}/project/${project.id}`}>
                 <div className="myproject-card-title">
                   <h2>{project.name && project.name.length > 50 ? `${project.name.substring(0, 50)}...` : project.name}</h2>
                 </div>
@@ -62,7 +62,7 @@ const ProjectCard = (props) => {
       <div className="myproject-card-add-share">
         <button
           type="button"
-          
+          title="view project"
         >
           <Link to={`/org/${organization?.currentOrganization?.domain}/project/${project.id}/preview`} style={{ textDecoration: 'none', color: '#084892' }}>
 						<img src={viewIcon} alt="" className="mr-3" />
@@ -72,6 +72,7 @@ const ProjectCard = (props) => {
 				{organization?.permission?.Project?.includes('project:edit') && (
            <button
 					 type="button"
+					 title="edit project"
 					 onClick={() => {
 						setCreateProject(true)
 						seteditMode(true)
@@ -84,6 +85,7 @@ const ProjectCard = (props) => {
 				)}
         {project.shared && (
           <button 
+					  title="view shared link"
 					  type="button"
 					  onClick={() => {
 							if (window.gapi && window.gapi.sharetoclassroom) {

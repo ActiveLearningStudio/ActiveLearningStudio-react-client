@@ -400,7 +400,7 @@ function PlaylistsPage(props) {
 											<Dropdown className="d-inline mx-2" autoClose="outside">
 												<Dropdown.Toggle id="dropdown-autoclose-outside">{visibility}</Dropdown.Toggle>
 												<Dropdown.Menu>
-													{projectState.visibilityTypes?.data.map((type) => <Dropdown.Item ><div onClick={() => { 
+													{projectState.visibilityTypes?.data?.map((type) => <Dropdown.Item ><div onClick={() => { 
 														editVisibility(type.id)
 														setVisibility(type.display_name)
 													}} >{type.display_name}</div></Dropdown.Item>)}
@@ -412,25 +412,6 @@ function PlaylistsPage(props) {
 										)}
 							    </div>
 									<hr />
-									<div className="index-text">
-										{indexStatus === 1 && (
-											<Alert variant="warning">
-												Thank you for submitting this project for inclusion in our Showcase! Your project has been queued up! As soon as our review is completed, we will notify you
-												right here.
-											</Alert>
-										)}
-										{indexStatus === 2 && (
-											<Alert variant="danger">
-												Your project was not selected for inclusion in the Showcase. You are welcome to contact our support team, and revise and resubmit your project at any time.
-											</Alert>
-										)}
-										{indexStatus === 3 && (
-											<Alert variant="success">
-												This project has been selected for inclusion in the CurrikiStudio Showcase and is available for other content authors to find, preview, reuse and remix.
-											</Alert>
-										)}
-									</div>
-
 									{!!playlists && playlists.length > 0 ? (
 										<DragDropContext onDragEnd={onDragEnd}>
 											<Droppable droppableId="project-droppable-id" direction="horizontal" type="column">
