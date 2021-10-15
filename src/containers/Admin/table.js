@@ -836,6 +836,7 @@ function Table(props) {
 											<tr className="org-rows">
 												<td>{row.project}</td>
 												<td>{row.created_at}</td>
+												<td>{row.will_expire_on}</td>
 												<td><a href={row.link} target="_blank">Download</a></td>
 											</tr>
 										);
