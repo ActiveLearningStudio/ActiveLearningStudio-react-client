@@ -43,14 +43,6 @@ class RegisterPage extends React.Component {
   }
 
   componentDidMount() {
-    const { domain, history } = this.props;
-    if (!domain?.self_registration) {
-      if (domain) {
-        history.push(`/login/${domain?.domain}`);
-      } else {
-        history.push('/login');
-      }
-    }
     window.scrollTo(0, 0);
 
     const { loadOrganizationTypes } = this.props;
@@ -58,6 +50,17 @@ class RegisterPage extends React.Component {
     if (query?.email) {
       // eslint-disable-next-line no-unused-expressions
       validator.isEmail(query.email) && this.setState({ email: query?.email });
+    }
+  }
+
+  getSnapshotBeforeUpdate() {
+    const { domain, history } = this.props;
+    if (!domain?.self_registration) {
+      if (domain) {
+        history.push(`/login/${domain?.domain}`);
+      } else {
+        history.push('/login');
+      }
     }
   }
 
