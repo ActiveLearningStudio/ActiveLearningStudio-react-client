@@ -1202,6 +1202,7 @@ function Table(props) {
 										<tr key={row}>
 											<td>{row.lms_url}</td>
 											<td>{row.lms_name}</td>
+											<td>{row.organization.name}</td>
 											<td>{row?.site_name}</td>
 											<td>{row.lti_client_id}</td>
 											<td>{row?.description}</td>
