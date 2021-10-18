@@ -57,48 +57,49 @@ const ProjectCard = (props) => {
       <div className="myproject-card-detail">
         <p>{project.description && project.description.length > 130 ? `${project.description.substring(0, 130)} ...` : project.description}</p>
       </div>
-     
+
 
       <div className="myproject-card-add-share">
         <button
           type="button"
-          title="view project"
+        // title="view project"
         >
           <Link to={`/org/${organization?.currentOrganization?.domain}/project/${project.id}/preview`} style={{ textDecoration: 'none', color: '#084892' }}>
-						<img src={viewIcon} alt="" className="mr-3" />
-            
+            <img src={viewIcon} alt="" className="mr-3" />
+            <span className="textinButton">Preview</span>
           </Link>
         </button>
-				{organization?.permission?.Project?.includes('project:edit') && (
-           <button
-					 type="button"
-					 title="edit project"
-					 onClick={() => {
-						setCreateProject(true)
-						seteditMode(true)
-						dispatch(setSelectedProject(project));
-						
-					 }}
-				  >
-						<img src={editIcon} alt="" className="mr-3" />
-	  			</button>
-				)}
+        {organization?.permission?.Project?.includes('project:edit') && (
+          <button
+            type="button"
+            // title="edit project"
+            onClick={() => {
+              setCreateProject(true)
+              seteditMode(true)
+              dispatch(setSelectedProject(project));
+
+            }}
+          >
+            <img src={editIcon} alt="" className="mr-3" />
+            <span className="textinButton">Edit</span>
+          </button>
+        )}
         {project.shared && (
-          <button 
-					  title="view shared link"
-					  type="button"
-					  onClick={() => {
-							if (window.gapi && window.gapi.sharetoclassroom) {
-								window.gapi.sharetoclassroom.go('croom');
-							}
-							const protocol = `${window.location.href.split('/')[0]}//`;
-							const url = `${protocol}${window.location.host}/project/${project.id}/shared`;
-							return SharePreviewPopup(url, project.name);
-						}}	
-					>
-            
-						<img src={linkIcon} alt="" className="mr-3" />
-            
+          <button
+            title="view shared link"
+            type="button"
+            onClick={() => {
+              if (window.gapi && window.gapi.sharetoclassroom) {
+                window.gapi.sharetoclassroom.go('croom');
+              }
+              const protocol = `${window.location.href.split('/')[0]}//`;
+              const url = `${protocol}${window.location.host}/project/${project.id}/shared`;
+              return SharePreviewPopup(url, project.name);
+            }}
+          >
+
+            <img src={linkIcon} alt="" className="mr-3" />
+            <span className="textinButton">Get external link</span>
           </button>
         )}
       </div>
