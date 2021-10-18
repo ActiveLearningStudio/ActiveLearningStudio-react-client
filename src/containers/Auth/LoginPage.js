@@ -340,7 +340,7 @@ class LoginPage extends React.Component {
                   </form>
                 </div>
               </Tab>
-              <Tab eventKey="Sign up" title="Sign up" />
+              {domain?.self_registration === true && <Tab eventKey="Sign up" title="Sign up" />}
             </Tabs>
           </div>
         )}

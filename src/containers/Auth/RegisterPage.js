@@ -53,6 +53,17 @@ class RegisterPage extends React.Component {
     }
   }
 
+  getSnapshotBeforeUpdate() {
+    const { domain, history } = this.props;
+    if (!domain?.self_registration) {
+      if (domain) {
+        history.push(`/login/${domain?.domain}`);
+      } else {
+        history.push('/login');
+      }
+    }
+  }
+
   onChangeField = (e) => {
     this.setState({
       [e.target.name]: e.target.value,

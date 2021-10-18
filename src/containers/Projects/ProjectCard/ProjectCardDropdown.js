@@ -58,7 +58,7 @@ const ProjectCardDropdown = (props) => {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        {!previewMode && (
+        {/* {!previewMode && (
           <Dropdown.Item
             as={Link}
             to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/preview`}
@@ -66,8 +66,8 @@ const ProjectCardDropdown = (props) => {
             <FontAwesomeIcon icon="eye" className="mr-2" />
             Preview
           </Dropdown.Item>
-        )}
-        {(teamPermission && Object.keys(teamPermission).length
+        )} */}
+        {/* {(teamPermission && Object.keys(teamPermission).length
           ? teamPermission?.Team?.includes("team:edit-project")
           : permission?.Project?.includes("project:edit")) && (
           <Dropdown.Item
@@ -82,7 +82,7 @@ const ProjectCardDropdown = (props) => {
             <FontAwesomeIcon icon="pen" className="mr-2" />
             Edit
           </Dropdown.Item>
-        )}
+        )} */}
 
         {permission?.Project?.includes("project:clone") && (
           <Dropdown.Item
@@ -104,7 +104,7 @@ const ProjectCardDropdown = (props) => {
             Duplicate
           </Dropdown.Item>
         )}
-        {(teamPermission && Object.keys(teamPermission).length
+        {/* {(teamPermission && Object.keys(teamPermission).length
           ? teamPermission?.Team?.includes("team:share-project")
           : permission?.Project?.includes("project:share")) && (
           <Dropdown.Item
@@ -136,69 +136,69 @@ const ProjectCardDropdown = (props) => {
             <FontAwesomeIcon icon="share" className="mr-2" />
             Share
           </Dropdown.Item>
-        )}
+        )} */}
         {(teamPermission && Object.keys(teamPermission).length
           ? teamPermission?.Team?.includes("team:publish-project")
           : permission?.Project?.includes("project:publish")) && (
-          <li className="dropdown-submenu send">
-            <a tabIndex="-1">
-              <FontAwesomeIcon icon="newspaper" className="mr-2" />
-              Publish
-            </a>
-            <ul className="dropdown-menu check">
-              <li
-                onClick={() => {
-                  handleShow();
-                  getProjectId(project.id);
-                  setProjectId(props.project.id);
-                  dispatch(googleShare(false));
-                }}
-              >
-                <a>Google Classroom</a>
-              </li>
+            <li className="dropdown-submenu send">
+              <a tabIndex="-1">
+                <FontAwesomeIcon icon="newspaper" className="mr-2" />
+                Publish
+              </a>
+              <ul className="dropdown-menu check">
+                <li
+                  onClick={() => {
+                    handleShow();
+                    getProjectId(project.id);
+                    setProjectId(props.project.id);
+                    dispatch(googleShare(false));
+                  }}
+                >
+                  <a>Google Classroom</a>
+                </li>
 
-              {allLms.shareVendors &&
-                allLms.shareVendors.map(
-                  (data) =>
-                    data.lms_name !== "safarimontage" && (
-                      <li key={data}>
-                        <a
-                          onClick={async () => {
-                            const allPlaylist = await dispatch(
-                              lmsPlaylist(project.id)
-                            );
-                            if (allPlaylist) {
-                              dispatch(
-                                getProjectCourseFromLMS(
-                                  data.lms_name.toLowerCase(),
-                                  data.id,
-                                  project.id,
-                                  allPlaylist.playlists,
-                                  data.lms_url
-                                )
+                {allLms.shareVendors &&
+                  allLms.shareVendors.map(
+                    (data) =>
+                      data.lms_name !== "safarimontage" && (
+                        <li key={data}>
+                          <a
+                            onClick={async () => {
+                              const allPlaylist = await dispatch(
+                                lmsPlaylist(project.id)
                               );
-                            }
-                          }}
-                        >
-                          {data.site_name}
-                        </a>
-                      </li>
-                    )
-                )}
-            </ul>
-          </li>
-        )}
+                              if (allPlaylist) {
+                                dispatch(
+                                  getProjectCourseFromLMS(
+                                    data.lms_name.toLowerCase(),
+                                    data.id,
+                                    project.id,
+                                    allPlaylist.playlists,
+                                    data.lms_url
+                                  )
+                                );
+                              }
+                            }}
+                          >
+                            {data.site_name}
+                          </a>
+                        </li>
+                      )
+                  )}
+              </ul>
+            </li>
+          )}
         {(teamPermission && Object.keys(teamPermission).length
           ? teamPermission?.Team?.includes("team:remove-project")
           : permission?.Project?.includes("project:delete")) && (
-          <Dropdown.Item
-            to="#"
-            onClick={() => showDeletePopup(project.id, project.name, "Project")}
-          >
-            <FontAwesomeIcon icon="times-circle" className="mr-2" />
-            Delete
-          </Dropdown.Item>
-        )}
+            <Dropdown.Item
+              to="#"
+              onClick={() => showDeletePopup(project.id, project.name, "Project")}
+            >
+              <FontAwesomeIcon icon="times-circle" className="mr-2" />
+              Delete
+            </Dropdown.Item>
+          )}
       </Dropdown.Menu>
     </Dropdown>
   );
