@@ -43,6 +43,14 @@ class RegisterPage extends React.Component {
   }
 
   componentDidMount() {
+    const { domain, history } = this.props;
+    if (!domain?.self_registration) {
+      if (domain) {
+        history.push(`/login/${domain?.domain}`);
+      } else {
+        history.push('/login');
+      }
+    }
     window.scrollTo(0, 0);
 
     const { loadOrganizationTypes } = this.props;
