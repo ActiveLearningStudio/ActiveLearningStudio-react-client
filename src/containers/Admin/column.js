@@ -115,6 +115,7 @@ export const columnData = {
 	defaultsso: [
 		'URL',
 		'Type',
+    'Organization',
 		'Site Name',
 		'Client Id',
 		'Description',
