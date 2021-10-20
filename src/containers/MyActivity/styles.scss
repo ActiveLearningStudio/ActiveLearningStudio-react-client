@@ -334,6 +334,35 @@
       .activity-layoutCard-active {
         border-bottom: 5px solid $crusta;
       }
+      .add-card {
+        width: 138px !important;
+        height: 136px !important;
+      }
+      .card-btn {
+        display: flex;
+        margin-bottom: 4px;
+
+        .btn {
+          padding: 4px 0;
+          width: 69px;
+          height: 24px;
+          font-size: 12px;
+          line-height: 16px;
+          text-align: center;
+          color: #515151;
+
+          &:hover {
+            background: #f1f1f1;
+            border-radius: 4px;
+            color: #2e68bf;
+          }
+          .btn:focus,
+          .btn.focus {
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0%);
+          }
+        }
+      }
     }
     .layout-process-btn {
       // flex: 0.7;
