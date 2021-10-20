@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import Headings from 'curriki-design-system/dist/utils/Headings/headings';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 import Tabs from 'utils/Tabs/tabs';
 import Buttons from 'utils/Buttons/buttons';
@@ -74,6 +75,19 @@ const ActivityLayout = (props) => {
           />
           <FontAwesomeIcon icon="search" className="search-icon" />
         </div>
+        <div>
+          <Dropdown>
+            <Dropdown.Toggle variant="success" id="dropdown-basic">
+              Dropdown Button
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+              <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+              <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
 
         {allActivitiesSingle?.length > 10 && <ConfigButtons changeScreenHandler={changeScreenHandler} layout={layout} dispatch={dispatch} />}
       </div>
@@ -84,8 +98,10 @@ const ActivityLayout = (props) => {
               <LayoutCard
                 image={data.image}
                 text={data.title}
-                className={layout?.title == data.title ? 'activity-layoutCard-active mr-3' : 'mr-3'}
+                className={layout?.title == data.title ? 'activity-layoutCard-active mr-3 add-card' : 'mr-3 add-card'}
                 onClick={() => setLayout(data)}
+                btnTextOne="Demo"
+                btnTextTwo="Video"
               />
             );
           })}
