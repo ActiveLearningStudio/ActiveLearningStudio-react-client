@@ -283,7 +283,7 @@ class RegisterPage extends React.Component {
                                   name="firstName"
                                   placeholder="First Name*"
                                   required
-                                  maxLength="250"
+                                  maxLength="50"
                                   value={firstName}
                                   onChange={this.onChangeField}
                                 />
@@ -296,7 +296,7 @@ class RegisterPage extends React.Component {
                                   name="lastName"
                                   placeholder="Last Name*"
                                   required
-                                  maxLength="250"
+                                  maxLength="50"
                                   value={lastName}
                                   onChange={this.onChangeField}
                                 />
