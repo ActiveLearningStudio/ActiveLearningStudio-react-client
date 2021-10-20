@@ -457,7 +457,7 @@ class RegisterPage extends React.Component {
                         className="input-box"
                         name="organizationName"
                         placeholder="Organization Name*"
-                        maxLength="250"
+                        maxLength="50"
                         value={organizationName}
                         onChange={this.onChangeField}
                       />
@@ -468,7 +468,7 @@ class RegisterPage extends React.Component {
                         className="input-box"
                         name="jobTitle"
                         placeholder="Job Title*"
-                        maxLength="250"
+                        maxLength="50"
                         value={jobTitle}
                         onChange={this.onChangeField}
                       />
