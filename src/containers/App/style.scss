@@ -3362,26 +3362,30 @@ a:hover {
 
 .video_activity.modal {
   nav {
-    width: 100%;
+
     margin: 0;
     padding: 0 0 0 0;
+		border:none;
+		margin-bottom: 15px;
+		
 
     a.active {
-      background-color: #4646c4;
-      color: #fff;
-      text-align: center;
+			border-bottom:2px solid #F8AF2C;
+			color:#084892;
+		 	font-weight:500
     }
 
     a {
-      width: 50%;
-      border: none;
-      text-align: center;
-      color: #333;
+     color:#084892;
+		 font-weight:400;
+		 border:none;
+		 padding:0px 45px;
+		 border-bottom:1px solid #084892;
     }
   }
 
   .modal-title img {
-    width: 180px;
+    width: 80px;
   }
 
   iframe {
@@ -3390,7 +3394,7 @@ a:hover {
   }
 
   .modal-body {
-    padding: 0;
+    padding: 20px;
   }
 }
 

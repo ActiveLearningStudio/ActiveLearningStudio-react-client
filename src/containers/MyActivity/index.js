@@ -18,6 +18,7 @@ import SingleActivity from './formik/addSingleActivity';
 import AddActivity from './formik/addactivity';
 import PreviewLayout from './formik/previewlayout';
 import UploadInteractiveVideo from './formik/uploadinteractivevideo';
+import MyVerticallyCenteredModal from 'components/models/activityOptions';
 
 // import H5PEditor from "components/ResourceCard/AddResource/Editors/H5PEditorV2";
 const MyActivity = ({ playlistPreview }) => {
@@ -34,7 +35,9 @@ const MyActivity = ({ playlistPreview }) => {
 	const [showFilter, setShowFilter] = useState(false);
 	const [listView, setListView] = useState(false);
 	const [activtyMethod, setActivityMethod] = useState('create');
-
+	const [activeType, setActiveType] = useState('');
+	const [currentActivity, setCurrentActivity] = useState(null);
+	const [modalShow, setModalShow] = useState(false);
 	const { screenState } = useSelector((state) => state.myactivities);
 	const dispatch = useDispatch();
 	const changeScreenHandler = (payload, method) => {
@@ -70,7 +73,9 @@ const MyActivity = ({ playlistPreview }) => {
 							)}
 							{screenState === 'uploadinteractivevideo' && <UploadInteractiveVideo changeScreenHandler={changeScreenHandler} screenState={screenState} />}
 							{screenState === 'preview' && <PreviewLayout changeScreenHandler={changeScreenHandler} screenState={screenState} />}
-							{screenState === 'singleActivity' && <SingleActivity changeScreenHandler={changeScreenHandler} screenState={screenState} />}
+							{screenState === 'singleActivity' && <SingleActivity setCurrentActivity={setCurrentActivity}
+								setActiveType={setActiveType}
+								setModalShow={setModalShow} changeScreenHandler={changeScreenHandler} screenState={screenState} />}
 						</div>
 					</div>
 				</div>
@@ -120,7 +125,12 @@ const MyActivity = ({ playlistPreview }) => {
 					</div>
 				</div>
 			)}
-			{/* {addActivityPopUp ? <AddActivityPopup /> : <Footer />} */}
+			<MyVerticallyCenteredModal
+				show={modalShow}
+				onHide={() => setModalShow(false)}
+				activity={currentActivity}
+				activeType={activeType}
+			/>
 		</>
 	);
 };

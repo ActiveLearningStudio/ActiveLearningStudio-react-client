@@ -6,7 +6,9 @@ import { toast } from "react-toastify";
 import resourceService from "services/resource.service";
 import socketConnection from "services/http.service";
 import * as actionTypes from "../actionTypes";
-
+import {
+	loadProjectPlaylistsAction,
+} from 'store/actions/playlist';
 // global variable for h5p object
 let h5pid;
 
@@ -536,7 +538,8 @@ export const editResourceAction = (
 	editorType,
 	activityId,
 	metadata,
-	hide
+	hide,
+	projectid
 ) => async (dispatch) => {
 	const h5pdata = {
 		library: window.h5peditorCopy.getLibrary(),
@@ -572,6 +575,7 @@ export const editResourceAction = (
 		dataUpload,
 		playlistId
 	);
+	await dispatch(loadProjectPlaylistsAction(projectid))
 	toast.dismiss();
 	toast.success("Activity Edited", {
 		position: toast.POSITION.BOTTOM_RIGHT,
@@ -647,6 +651,7 @@ export const editResourceMetaDataAction = (
 		dataUpload,
 		activity.playlist.id
 	);
+	await dispatch(loadProjectPlaylistsAction(activity.playlist?.project_id))
 	toast.dismiss();
 	toast.success("Activity Edited", {
 		position: toast.POSITION.BOTTOM_RIGHT,

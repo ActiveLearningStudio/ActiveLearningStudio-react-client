@@ -61,7 +61,8 @@ const H5PEditor = (props) => {
 						h5pLibType,
 						activityId,
 						formData,
-						hide
+						hide,
+						projectId
 					)
 				);
 			} else {
@@ -228,14 +229,14 @@ const H5PEditor = (props) => {
 							/>
 						</div>
 						<div className="save-close">
-							<Buttons
-								text="Save & Close"
-								width="151px"
-								primary
+							<div
+								className="saveclosemodel"
 								onClick={() => {
 									submitResource();
 								}}
-							/>
+							>
+								Save & Close
+							</div>
 							{/* <Buttons
               text="Save"
               width="97px"
