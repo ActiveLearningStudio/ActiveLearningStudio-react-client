@@ -13,6 +13,17 @@
       width: 54px !important;
     }
   }
+  .link-btn {
+    display: flex;
+    background: none;
+    border: none;
+    margin-left: 30px;
+    span {
+      line-height: 32px;
+      color: #084892;
+      text-decoration: underline;
+    }
+  }
   .react-switch-handle {
     width: 26px !important;
     height: 26px !important;
