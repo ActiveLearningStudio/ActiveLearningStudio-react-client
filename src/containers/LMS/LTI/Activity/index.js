@@ -9,7 +9,7 @@ import gifloader from 'assets/images/dotsloader.gif';
 import * as xAPIHelper from 'helpers/xapi';
 import { loadH5pResourceXapi } from 'store/actions/resource';
 import { loadH5pResourceSettings } from 'store/actions/gapi';
-import { gradePassBackAction, activityInitAction } from 'store/actions/canvas';
+import { gradePassBackAction, activityInitAction, passLtiCourseDetails } from 'store/actions/canvas';
 import { saveResultScreenshotAction } from 'store/actions/safelearn';
 import './style.scss';
 
@@ -29,6 +29,7 @@ const Activity = (props) => {
     ltiFinished,
     attemptId,
     loadH5pSettings,
+    passCourseDetails,
     sendStatement,
     gradePassBack,
     activityInit,
@@ -46,6 +47,7 @@ const Activity = (props) => {
   const customCourseName = searchParams.get('custom_course_name');
   const customApiDomainUrl = searchParams.get('custom_api_domain_url');
   const customCourseCode = searchParams.get('custom_course_code');
+  const issuerClient = searchParams.get('issuer_client');
   const [xAPILoaded, setXAPILoaded] = useState(false);
   const [intervalPointer, dispatch] = useReducer(reducer, 0);
   const [xAPIEventHooked, setXAPIEventHooked] = useState(false);
@@ -54,6 +56,7 @@ const Activity = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     loadH5pSettings(match.params.activityId, studentId, submissionId);
+    passCourseDetails({ courseId, issuerClient, customApiDomainUrl });
     activityInit();
   }, [activityId]);
 
@@ -210,6 +213,7 @@ Activity.propTypes = {
   ltiFinished: PropTypes.bool.isRequired,
   attemptId: PropTypes.number,
   loadH5pSettings: PropTypes.func.isRequired,
+  passCourseDetails: PropTypes.func.isRequired,
   sendStatement: PropTypes.func.isRequired,
   gradePassBack: PropTypes.func.isRequired,
   activityInit: PropTypes.func.isRequired,
@@ -224,6 +228,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   loadH5pSettings: (activityId, studentId, submissionId) => dispatch(loadH5pResourceSettings(activityId, studentId, submissionId)),
+  passCourseDetails: (params) => dispatch(passLtiCourseDetails(params)),
   sendStatement: (statement) => dispatch(loadH5pResourceXapi(statement)),
   gradePassBack: (session, gpb, score, isLearner) => dispatch(gradePassBackAction(session, gpb, score, isLearner)),
   activityInit: () => dispatch(activityInitAction()),
