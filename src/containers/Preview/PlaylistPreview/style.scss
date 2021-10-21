@@ -685,6 +685,13 @@ img {
   padding: 0;
   background-color: #fff;
 
+  .flex-container.previews {
+    max-width: 100% !important;
+    height: 100% !important;
+    padding: 0;
+    
+  }
+
   @media (max-width: 991px) {
     padding: 10px;
   }
