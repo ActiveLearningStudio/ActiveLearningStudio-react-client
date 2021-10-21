@@ -140,6 +140,7 @@ export default (state = INITIAL_STATE, action) => {
           }
           return edit;
         }),
+        activeOrganization: action.payload,
       };
     case actionTypes.EDIT_ORGANIZATION:
       return {
