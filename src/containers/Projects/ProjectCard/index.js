@@ -11,6 +11,7 @@ import editIcon from 'assets/images/project-edit.svg';
 import linkIcon from 'assets/images/project-link.svg';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import loader from 'assets/images/loader.svg';
+import { useHistory } from 'react-router';
 import ProjectCardDropdown from './ProjectCardDropdown';
 
 import './style.scss';
@@ -21,7 +22,7 @@ const ProjectCard = (props) => {
   const ImgLoader = () => <img src={loader} alt="" />;
   const organization = useSelector((state) => state.organization);
   const dispatch = useDispatch();
-
+  const history = useHistory();
   return (
     <div className="main-myproject-card">
       <div>
@@ -53,11 +54,11 @@ const ProjectCard = (props) => {
           </>
         )}
       </div>
-
-      <div className="myproject-card-detail">
-        <p>{project.description && project.description.length > 130 ? `${project.description.substring(0, 130)} ...` : project.description}</p>
-      </div>
-
+      <Link className="project-description" to={`/org/${organization?.currentOrganization?.domain}/project/${project.id}`}>
+        <div className="myproject-card-detail">
+          <p>{project.description && project.description.length > 130 ? `${project.description.substring(0, 130)} ...` : project.description}</p>
+        </div>
+      </Link>
 
       <div className="myproject-card-add-share">
         <button
@@ -74,10 +75,10 @@ const ProjectCard = (props) => {
             type="button"
             // title="edit project"
             onClick={() => {
-              setCreateProject(true)
-              seteditMode(true)
+              // setCreateProject(true)
+              // seteditMode(true)
               dispatch(setSelectedProject(project));
-
+              history.push(`/org/${organization?.currentOrganization?.domain}/project/${project.id}`);
             }}
           >
             <img src={editIcon} alt="" className="mr-3" />
