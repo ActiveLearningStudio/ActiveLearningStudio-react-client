@@ -12,68 +12,68 @@ import { useSelector, useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 
 const UploadFile = ({ className, metadata, formRef }) => {
-  const { selectedLayout, playlist, project } = useSelector(
-    (state) => state.myactivities
-  );
+	const { selectedLayout, playlist, project } = useSelector(
+		(state) => state.myactivities
+	);
 	console.log('formRef', formRef)
-  const imgUpload = useRef();
-  const dispatch = useDispatch();
-  const currikiUtility = classNames("curriki-utility-uploadfile", className);
-  return (
-    <>
-      <div className={currikiUtility}>
-       
-        <div className="uploadfile-box">
-          <button onClick={() => {
-						 formRef.current.handleSubmit();
-						 if (formRef.current.values.title) {
+	const imgUpload = useRef();
+	const dispatch = useDispatch();
+	const currikiUtility = classNames("curriki-utility-uploadfile", className);
+	return (
+		<>
+			<div className={currikiUtility}>
+
+				<div className="uploadfile-box">
+					<button onClick={() => {
+						formRef.current.handleSubmit();
+						if (formRef.current.values.title && formRef.current.values.title.length < 255) {
 							imgUpload.current.click()
-						 }
-						  
-						}}>
-            <FontAwesomeIcon icon={faUpload} className="curriki_btn-mr-2" />
-            Select File
-          </button>
-          <div className="uploadfile-option">
-            <img src={UploadImg} alt="" />
-            <p>
-              Drag & Drop File or browse
-              to upload
-            </p>
-            <input
-              ref={imgUpload}
-              style={{ display: "none" }}
-              type="file"
-              onChange={(event) => {
-                const h5pFile = event.target.files[0];
-                const fileArr = h5pFile.name.split(".");
-                const fileExtension =
-                  fileArr.length > 0 ? fileArr[fileArr.length - 1] : "";
-                if (fileExtension !== "h5p") {
-                  Swal.fire("Invalid file selected, kindly select h5p file.");
-                  return true;
-                }
-                const submitAction = "upload";
-                const payload = {
-                  event,
-                  submitAction,
-                  h5pFile,
-                };
-                dispatch(
-                  createResourceByH5PUploadAction(
-                    playlist.id,
-                    selectedLayout?.h5pLib,
-                    'h5p',
-                    payload,
-                    metadata,
-                    project
-                  )
-                );
-              }}
-            />
-          </div>
-        </div>
-        {/* <div className="upload-btn">
+						}
+
+					}}>
+						<FontAwesomeIcon icon={faUpload} className="curriki_btn-mr-2" />
+						Select File
+					</button>
+					<div className="uploadfile-option">
+						<img src={UploadImg} alt="" />
+						<p>
+							Drag & Drop File or browse
+							to upload
+						</p>
+						<input
+							ref={imgUpload}
+							style={{ display: "none" }}
+							type="file"
+							onChange={(event) => {
+								const h5pFile = event.target.files[0];
+								const fileArr = h5pFile.name.split(".");
+								const fileExtension =
+									fileArr.length > 0 ? fileArr[fileArr.length - 1] : "";
+								if (fileExtension !== "h5p") {
+									Swal.fire("Invalid file selected, kindly select h5p file.");
+									return true;
+								}
+								const submitAction = "upload";
+								const payload = {
+									event,
+									submitAction,
+									h5pFile,
+								};
+								dispatch(
+									createResourceByH5PUploadAction(
+										playlist.id,
+										selectedLayout?.h5pLib,
+										'h5p',
+										payload,
+										metadata,
+										project
+									)
+								);
+							}}
+						/>
+					</div>
+				</div>
+				{/* <div className="upload-btn">
           <Buttons
             text="upload"
             primary={true}
@@ -82,13 +82,13 @@ const UploadFile = ({ className, metadata, formRef }) => {
             hover={true}
           />
         </div> */}
-      </div>
-    </>
-  );
+			</div>
+		</>
+	);
 };
 
 UploadFile.propTypes = {
-  className: PropTypes.string,
+	className: PropTypes.string,
 };
 
 export default UploadFile;

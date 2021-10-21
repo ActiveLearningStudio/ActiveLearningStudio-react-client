@@ -125,6 +125,9 @@ const AddActivity = (props) => {
 								if (!values.title) {
 									errors.title = 'Required';
 								}
+								else if (values.title.length > 255) {
+									errors.title = 'Length should be less then 255';
+								}
 
 								return errors;
 							}}
@@ -143,7 +146,10 @@ const AddActivity = (props) => {
 								isSubmitting,
 								/* and other goodies */
 							}) => (
-								<form>
+								<form onSubmit={(e) => {
+									e.preventDefault();
+									handleSubmit();
+								}}>
 									<HeadingThree text="Layout description" color="#084892" />
 
 									<div className="layout-title-formik-textField">
@@ -157,20 +163,21 @@ const AddActivity = (props) => {
 											<HeadingText text="Subject" className="formik-select-title" />
 											<select name="subject_id" onChange={handleChange} onBlur={handleBlur} value={values.subject_id}>
 												<option hidden>Select</option>
-												{educationLevels.map((data) => (
-													<option key={data.value} value={data.name}>
-														{data.name}
+												{subjects.map((data) => (
+													<option key={data.value} value={data.subject}>
+														{data.subject}
 													</option>
 												))}
+
 											</select>
 										</div>
 										<div className="formik-select ">
 											<HeadingText text="Education level" className="formik-select-title" />
 											<select name="education_level_id" onChange={handleChange} onBlur={handleBlur} value={values.education_level_id}>
 												<option hidden>Select</option>
-												{subjects.map((data) => (
-													<option key={data.value} value={data.subject}>
-														{data.subject}
+												{educationLevels.map((data) => (
+													<option key={data.value} value={data.name}>
+														{data.name}
 													</option>
 												))}
 											</select>
@@ -197,7 +204,7 @@ const AddActivity = (props) => {
 										height="35px"
 										onClick={() => {
 											formRef.current.handleSubmit();
-											if (formRef.current.values.title) {
+											if (formRef.current.values.title && formRef.current.values.title.length < 255) {
 												setModalShow(true);
 											}
 										}}
@@ -215,7 +222,7 @@ const AddActivity = (props) => {
 										height="35px"
 										onClick={async () => {
 											await formRef.current.handleSubmit();
-											if (formRef.current.values.title) {
+											if (formRef.current.values.title && formRef.current.values.title.length < 255) {
 
 												dispatch(
 													editResourceMetaDataAction(
