@@ -496,13 +496,16 @@
     }
 
     .inner-form-content {
-      background: #fff;
-      opacity: 1;
-      width: 100%;
-      display: flex;
-      justify-content: left;
-      align-items: flex-start;
-      padding: 50px;
+			background: #fff;
+			opacity: 1;
+			width: calc(100% - 285px);
+			display: flex;
+			justify-content: left;
+			align-items: flex-start;
+			padding: 50px;
+			height: 100%;
+			position: fixed;
+			overflow: auto;
 
       .create-form {
         width: 100%;
