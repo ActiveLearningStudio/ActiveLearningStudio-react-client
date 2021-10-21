@@ -879,7 +879,7 @@
         line-height: 163.85%;
       }
       input {
-        height: 30px !important;
+        height: 35px !important;
         padding: 8px !important;
       }
       .lms-option {
@@ -895,7 +895,7 @@
   .create-form-inputs-group-access {
     display: flex;
     div {
-      width: 252px;
+      width: 266px;
       input {
         height: 30px !important;
         padding: 8px !important;
@@ -943,4 +943,17 @@
   .create-form-inputs-toggles {
     display: flex;
   }
+}
+
+.lms-admin-form {
+  h3 {
+		font-size:12px !important
+	}
+
+	.custom-toggle-button {
+		  h3 {
+				font-size:1opx !important;
+				padding-left:12px
+			}
+	}
 }

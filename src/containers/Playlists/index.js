@@ -116,7 +116,7 @@ function PlaylistsPage(props) {
 			setVisibility('My organization')
 		} else if (projectState.selectedProject.organization_visibility_type_id === 3) {
 			setVisibility('My Org + Parent and Child Org')
-		} 
+		}
 		else if (projectState.selectedProject.organization_visibility_type_id === 1) {
 			setVisibility('Private (only Me)')
 		}
@@ -127,7 +127,7 @@ function PlaylistsPage(props) {
 
 	useMemo(() => {
 		(async () => {
-		  dispatch(visibilityTypes());
+			dispatch(visibilityTypes());
 		})();
 	}, [])
 
@@ -159,9 +159,9 @@ function PlaylistsPage(props) {
 	}, [state]);
 
 	const editVisibility = async (type) => {
-    await dispatch(updateProjectAction(projectState.selectedProject.id,{ ...projectState.selectedProject,organization_visibility_type_id: type}));
+		await dispatch(updateProjectAction(projectState.selectedProject.id, { ...projectState.selectedProject, organization_visibility_type_id: type }));
 		await getIndexedData(projectState.selectedProject.id);
-    await getElasticData(projectState.selectedProject.id);
+		await getElasticData(projectState.selectedProject.id);
 	}
 
 	const handleShowCreatePlaylistModal = async (e) => {
@@ -400,17 +400,17 @@ function PlaylistsPage(props) {
 											<Dropdown className="d-inline mx-2" autoClose="outside">
 												<Dropdown.Toggle id="dropdown-autoclose-outside">{visibility}</Dropdown.Toggle>
 												<Dropdown.Menu>
-													{projectState.visibilityTypes?.data?.map((type) => <Dropdown.Item ><div onClick={() => { 
+													{projectState.visibilityTypes?.data?.map((type) => <Dropdown.Item ><div onClick={() => {
 														editVisibility(type.id)
 														setVisibility(type.display_name)
 													}} >{type.display_name}</div></Dropdown.Item>)}
-													</Dropdown.Menu>
+												</Dropdown.Menu>
 											</Dropdown>
 										</div>
 										{(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-project') : permission?.Project?.includes('project:share')) && (
 											<Projectsharing setActiveShared={setActiveShared} activeShared={activeShared} selectedProject={selectedProject} />
 										)}
-							    </div>
+									</div>
 									<hr />
 									{!!playlists && playlists.length > 0 ? (
 										<DragDropContext onDragEnd={onDragEnd}>
