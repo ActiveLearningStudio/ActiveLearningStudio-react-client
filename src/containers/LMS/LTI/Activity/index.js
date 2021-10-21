@@ -48,6 +48,8 @@ const Activity = (props) => {
   const customApiDomainUrl = searchParams.get('custom_api_domain_url');
   const customCourseCode = searchParams.get('custom_course_code');
   const issuerClient = searchParams.get('issuer_client');
+  const customPersonNameGiven = searchParams.get('custom_person_name_given');
+  const customPersonNameFamily = searchParams.get('custom_person_name_family');
   const [xAPILoaded, setXAPILoaded] = useState(false);
   const [intervalPointer, dispatch] = useReducer(reducer, 0);
   const [xAPIEventHooked, setXAPIEventHooked] = useState(false);
@@ -56,7 +58,9 @@ const Activity = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     loadH5pSettings(match.params.activityId, studentId, submissionId);
-    passCourseDetails({ courseId, issuerClient, customApiDomainUrl });
+    passCourseDetails({
+      courseId, issuerClient, customApiDomainUrl, studentId, customPersonNameGiven, customPersonNameFamily,
+    });
     activityInit();
   }, [activityId]);
 
