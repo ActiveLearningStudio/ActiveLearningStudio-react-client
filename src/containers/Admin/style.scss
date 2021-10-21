@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .admin-panel {
   .main-heading {
@@ -263,6 +263,7 @@
 
           .form-group-create {
             padding-bottom: 15px;
+            width: 252px;
           }
 
           h3 {
@@ -496,16 +497,16 @@
     }
 
     .inner-form-content {
-			background: #fff;
-			opacity: 1;
-			width: calc(100% - 285px);
-			display: flex;
-			justify-content: left;
-			align-items: flex-start;
-			padding: 50px;
-			height: 100%;
-			position: fixed;
-			overflow: auto;
+      background: #fff;
+      opacity: 1;
+      width: calc(100% - 285px);
+      display: flex;
+      justify-content: left;
+      align-items: flex-start;
+      padding: 50px;
+      height: 100%;
+      position: fixed;
+      overflow: auto;
 
       .create-form {
         width: 100%;
@@ -863,45 +864,83 @@
 }
 
 // Create LMS Update Form
-.create-form-inputs-group {
-  display: flex;
-  div {
-    flex: 1;
-    margin-right: 16px;
-  }
-}
-.create-form-inputs-group-access {
-  display: flex;
-  div {
-    width: 50%;
-    padding-right: 16px;
-  }
-}
-.create-form-inputs-toggles {
-  display: flex;
-}
+.lms-form {
+  max-width: 610px;
+  margin: auto;
 
-.custom-toggle-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 14px;
-  margin-top: 10px;
-  // text-transform: uppercase;
-  margin-right: 20px;
+  .create-form-inputs-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    div {
+      width: 252px;
+      &h3 {
+        font-size: 14px;
+        line-height: 163.85%;
+      }
+      input {
+        height: 30px !important;
+        padding: 8px !important;
+      }
+      .lms-option {
+        height: 30px !important;
+        padding: 8px !important;
+      }
+    }
 
-  .react-switch {
-    padding-left: 5px;
-    .react-switch-bg {
-      width: 54px !important;
+    // .form-group-create {
+    //   width: 252px !important;
+    // }
+  }
+  .create-form-inputs-group-access {
+    display: flex;
+    div {
+      width: 252px;
+      input {
+        height: 30px !important;
+        padding: 8px !important;
+      }
     }
   }
-  .react-switch-handle {
-    width: 26px !important;
-    height: 26px !important;
-    top: 2px !important;
+  .toggle-group-button {
+    width: 252px !important;
+
+    .custom-toggle-button {
+      width: 75px !important;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+      margin-top: 10px;
+      // text-transform: uppercase;
+      margin-right: 20px;
+
+      &h3 {
+        font-size: 11px;
+        line-height: 127.85%;
+        margin: 0 0 0 17px;
+        font-weight: 400;
+      }
+
+      .react-switch {
+        padding-left: 5px;
+
+        .react-switch-bg {
+          width: 35px !important;
+          height: 14px !important;
+        }
+      }
+      .react-switch-handle {
+        width: 19px !important;
+        height: 19px !important;
+        top: -1px !important;
+      }
+      .react-switch-handle:checked {
+        transform: translateX(32px) !important;
+      }
+    }
   }
-  .react-switch-handle:checked {
-    transform: translateX(32px) !important;
+  .create-form-inputs-toggles {
+    display: flex;
   }
 }
