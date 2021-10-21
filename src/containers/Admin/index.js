@@ -83,20 +83,23 @@ function AdminPanel() {
 										<Pills modules={["All Organizations"]} type="Organization" subType="All Organizations" />
 									</div>
 								</Tab>
-								<Tab eventKey="Project" title="Projects">
-									<div className="module-content">
-										<Pills
-											modules={[
-												"All Projects",
-												"Indexing Queue",
-												"Exported Projects",
-											]}
-											allProjectTab={allProjectTab}
-											setAllProjectTab={setAllProjectTab}
-											type="Project"
-										/>
-									</div>
-								</Tab>
+								{permission?.Project?.includes('project:view')
+									&& (
+										<Tab eventKey="Project" title="Projects">
+											<div className="module-content">
+												<Pills
+													modules={[
+														"All Projects",
+														"Indexing Queue",
+														"Exported Projects",
+													]}
+													allProjectTab={allProjectTab}
+													setAllProjectTab={setAllProjectTab}
+													type="Project"
+												/>
+											</div>
+										</Tab>
+									)}
 								<Tab eventKey="Activities" title="Activities">
 									<div className="module-content">
 										<Pills
