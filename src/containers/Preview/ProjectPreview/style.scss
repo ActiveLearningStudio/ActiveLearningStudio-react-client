@@ -62,6 +62,21 @@
     padding-top: 10px;
   }
 }
+// shared-preview-custom css
+
+.shared-preview-custom {
+  display: flex;
+  justify-content: start;
+  background: #fff;
+  padding: 16px;
+  .shared-preview-custom-cont {
+    margin-left: 16px;
+  }
+}
+.shared-preview-custom-playlist {
+  background: #fff;
+  padding: 16px;
+}
 
 .check-each {
   position: relative;
