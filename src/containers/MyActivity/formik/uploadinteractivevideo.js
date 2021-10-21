@@ -11,7 +11,7 @@ const UploadInteractiveVideo = (props) => {
     <>
       <div className="interactive-activity-form">
         <div className="interactive-load-save-activity">
-          <UploadFile />
+          <UploadFile {...props} />
         </div>
         <div className="interactive-activity-btns">
           <Buttons
