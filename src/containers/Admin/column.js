@@ -43,9 +43,9 @@ export const columnData = {
 	projectUser: [
 		'Project Name',
 		'Created Date',
-		'Expire Date',
+		'Expired Date',
 		'Download',
-    
+
 	],
 	projectAll: [
 		'Image',
@@ -115,7 +115,7 @@ export const columnData = {
 	defaultsso: [
 		'URL',
 		'Type',
-    'Organization',
+		'Organization',
 		'Site Name',
 		'Client Id',
 		'Description',
