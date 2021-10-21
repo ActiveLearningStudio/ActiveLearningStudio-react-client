@@ -90,8 +90,9 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isLoading: false,
+        selectedProject: action.payload.project,
         projects: [...projects, action.payload.project],
-        // thumbUrl: null,
+        thumbUrl: action.payload.project.thumb_url,
       };
     case actionTypes.UPDATE_PROJECT_FAIL:
       return {
