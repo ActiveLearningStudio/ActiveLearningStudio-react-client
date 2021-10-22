@@ -12,7 +12,7 @@
     box-sizing: border-box;
     max-width: 454px;
     height: 195px;
-    background: #f1f1f1;
+    background: transparent;
     border-radius: 10px;
     margin-top: 5px;
     padding: 10px;
@@ -29,7 +29,7 @@
         letter-spacing: 0px;
         color: #5a5a5a;
         margin-top: 25px;
-        z-index: 0;
+        z-index: -1;
 
         svg {
           color: #084892;

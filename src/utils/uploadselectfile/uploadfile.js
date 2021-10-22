@@ -67,7 +67,12 @@ const UploadFile = ({
               name="h5p_file"
               id="h5p-file"
               className="laravel-h5p-upload form-control"
-              onChange={setH5pFileUpload}
+              onChange={(e) => {
+                formRef.current.handleSubmit();
+                if (formRef.current.values.title && formRef.current.values.title.length < 255) {
+                  setH5pFileUpload(e);
+                }
+              }}
               ref={imgUpload}
               style={{
                 cursor: 'pointer',
