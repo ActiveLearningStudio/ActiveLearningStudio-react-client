@@ -203,7 +203,7 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
     },
   };
   const centralizedState = store.getState();
-  toast.info('uploading image ...', {
+  toast.info('Uploading image...', {
     position: 'top-center',
     hideProgressBar: false,
     icon: '',

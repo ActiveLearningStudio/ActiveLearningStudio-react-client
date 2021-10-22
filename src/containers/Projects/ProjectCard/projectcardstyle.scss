@@ -11,6 +11,9 @@
     box-shadow: 0px 0px 12px 3px #adadad;
     border-color: transparent;
   }
+  a.project-description {
+    text-decoration: none;
+  }
   //   padding: 15px;
   .myproject-card-top {
     border-radius: 5px;
@@ -101,17 +104,24 @@
     button {
       border: none;
       cursor: pointer;
-      background: #ffffff;
+			background: #fff;
       color: $curriki-main-blue;
       // box-shadow: 0px 1px 2px 1px rgba(81, 81, 81, 0.16);
       border-radius: 4px;
+
+			a {
+				display:flex;
+				align-items:center;
+			}
       &:hover {
         opacity: 1;
         transition: 0.3s;
-        background-color: #f1f1f1;
+      
         border-radius: 4px;
         .textinButton {
           display: inline-flex;
+					margin-left: -10px;
+					margin-right: 5px;
           // opacity: 1;
         }
       }

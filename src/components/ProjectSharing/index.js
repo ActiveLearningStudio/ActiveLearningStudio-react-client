@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import Swal from 'sweetalert2';
 import PropTypes from 'prop-types';
@@ -6,6 +5,8 @@ import Switch from 'react-switch';
 import { useDispatch } from 'react-redux';
 import { toggleProjectShareAction, toggleProjectShareRemovedAction } from 'store/actions/project';
 import './style.scss';
+import SharePreviewPopup from 'components/SharePreviewPopup';
+import linkIcon from 'assets/images/project-link.svg';
 
 const ProjectSharing = (props) => {
   const { activeShared, selectedProject, setActiveShared } = props;
@@ -30,12 +31,12 @@ const ProjectSharing = (props) => {
             }).then((resp) => {
               if (resp.isConfirmed) {
                 dispatch(toggleProjectShareRemovedAction(selectedProject.id, selectedProject.name));
-								setActiveShared(false);
+                setActiveShared(false);
               }
             });
           } else {
             dispatch(toggleProjectShareAction(selectedProject.id, selectedProject.name));
-						setActiveShared(true);
+            setActiveShared(true);
           }
         }}
         checked={activeShared || false}
@@ -48,13 +49,33 @@ const ProjectSharing = (props) => {
         onHandleColor="#e89e21"
         offHandleColor="#666"
       />
-      &nbsp;Enable Link
+      &nbsp;
+      {activeShared ? 'Disable external link' : 'Enable Link'}
+      {activeShared && (
+        <button
+          type="button"
+          className="link-btn"
+          onClick={() => {
+            if (window.gapi && window.gapi.sharetoclassroom) {
+              window.gapi.sharetoclassroom.go('croom');
+            }
+            const protocol = `${window.location.href.split('/')[0]}//`;
+            const url = `${protocol}${window.location.host}/project/${selectedProject.id}/shared`;
+            return SharePreviewPopup(url, selectedProject.name);
+          }}
+        >
+
+          <img src={linkIcon} alt="" className="mr-1" />
+          <span className="textinButton">Get link</span>
+        </button>
+      )}
     </div>
   );
 };
 ProjectSharing.propTypes = {
   activeShared: PropTypes.bool.isRequired,
   selectedProject: PropTypes.object.isRequired,
+  setActiveShared: PropTypes.func.isRequired,
 };
 
 export default ProjectSharing;

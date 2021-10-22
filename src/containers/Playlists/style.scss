@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 .inner-content {
   background: $white;
   padding: 30px;
@@ -144,10 +144,24 @@
   }
 }
 .paragraph {
+  display: flex;
   margin: 10px 0px 0px 0px;
   padding: 0 14px 0 0;
+  textarea {
+    flex: auto;
+  }
+  textarea.description {
+    font-size: 14px;
+    padding: 10px;
+		border-color: #ececec;
+   
+		box-shadow: 0px 0px 7px 1px #eceaea;
+    margin-top: 0px;
+    margin-bottom: 0px;
+		border-radius:5px
+  }
   p {
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     line-height: 20px;
     color: #515151;
