@@ -33,6 +33,7 @@ const ResourceCardDropdown = (props) => {
 		previewPage,
 	} = props;
 	const organization = useSelector((state) => state.organization);
+	const { selectedProject } = useSelector((state) => state.project);
 	const { permission } = organization;
 	const dispatch = useDispatch();
 
@@ -83,6 +84,7 @@ const ResourceCardDropdown = (props) => {
 							Preview
 						</Dropdown.Item>
 					)}
+
 				{(Object.keys(teamPermission).length
 					? teamPermission?.Team?.includes("team:edit-activity")
 					: permission?.Activity?.includes("activity:edit")) && (
@@ -156,83 +158,86 @@ const ResourceCardDropdown = (props) => {
 							</ul>
 						</li>
 					)}
-				{(Object.keys(teamPermission).length
-					? teamPermission?.Team?.includes("team:share-activity")
-					: permission?.Activity?.includes("activity:share")) && (
-						<Dropdown.Item
-							onClick={() => {
-								shareActivity(resource.id);
-								const protocol = `${window.location.href.split("/")[0]}//`;
-								confirmAlert({
-									/* eslint-disable react/prop-types */
-									customUI: ({ onClose }) => (
-										<div className="share-project-preview-url project-share-check">
-											<br />
-											<h3>
-												You can now share Activity{" "}
-												<strong>{resource.title}</strong>
-												<br />
-												Anyone with the link below can access your activity:
-											</h3>
+				{selectedProject.shared &&
+					<>
+						{(Object.keys(teamPermission).length
+							? teamPermission?.Team?.includes("team:share-activity")
+							: permission?.Activity?.includes("activity:share")) && (
+								<Dropdown.Item
+									onClick={() => {
+										shareActivity(resource.id);
+										const protocol = `${window.location.href.split("/")[0]}//`;
+										confirmAlert({
+											/* eslint-disable react/prop-types */
+											customUI: ({ onClose }) => (
+												<div className="share-project-preview-url project-share-check">
+													<br />
+													<h3>
+														You can now share Activity{" "}
+														<strong>{resource.title}</strong>
+														<br />
+														Anyone with the link below can access your activity:
+													</h3>
 
-											<a
-												target="_blank"
-												href={`/activity/${resource.id}/shared`}
-												rel="noopener noreferrer"
-											>
-												<input
-													id="urllink_clip"
-													value={`${protocol + window.location.host}/activity/${resource.id
-														}/shared`}
-												/>
-											</a>
+													<a
+														target="_blank"
+														href={`/activity/${resource.id}/shared`}
+														rel="noopener noreferrer"
+													>
+														<input
+															id="urllink_clip"
+															value={`${protocol + window.location.host}/activity/${resource.id
+																}/shared`}
+														/>
+													</a>
 
-											<span
-												title="copy to clipboard"
-												aria-hidden="true"
-												onClick={() => {
-													/* Get the text field */
-													const copyText = document.getElementById(
-														"urllink_clip"
-													);
+													<span
+														title="copy to clipboard"
+														aria-hidden="true"
+														onClick={() => {
+															/* Get the text field */
+															const copyText = document.getElementById(
+																"urllink_clip"
+															);
 
-													/* Select the text field */
-													copyText.focus();
-													copyText.select();
-													// copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+															/* Select the text field */
+															copyText.focus();
+															copyText.select();
+															// copyText.setSelectionRange(0, 99999); /*For mobile devices*/
 
-													/* Copy the text inside the text field */
-													document.execCommand("copy");
+															/* Copy the text inside the text field */
+															document.execCommand("copy");
 
-													/* Alert the copied text */
-													Swal.fire({
-														title: "Link Copied",
-														showCancelButton: false,
-														showConfirmButton: false,
-														timer: 1500,
-														allowOutsideClick: false,
-													});
-												}}
-											>
-												<FontAwesomeIcon icon="clipboard" />
-											</span>
-											<br />
+															/* Alert the copied text */
+															Swal.fire({
+																title: "Link Copied",
+																showCancelButton: false,
+																showConfirmButton: false,
+																timer: 1500,
+																allowOutsideClick: false,
+															});
+														}}
+													>
+														<FontAwesomeIcon icon="clipboard" />
+													</span>
+													<br />
 
-											<div className="close-btn">
-												<button type="button" onClick={onClose}>
-													Ok
-												</button>
-											</div>
-										</div>
-									),
-									/* eslint-enable react/prop-types */
-								});
-							}}
-						>
-							<FontAwesomeIcon icon="share" className="mr-2" />
-							Share
-						</Dropdown.Item>
-					)}
+													<div className="close-btn">
+														<button type="button" onClick={onClose}>
+															Ok
+														</button>
+													</div>
+												</div>
+											),
+											/* eslint-enable react/prop-types */
+										});
+									}}
+								>
+									<FontAwesomeIcon icon="share" className="mr-2" />
+									Share
+								</Dropdown.Item>
+							)}
+					</>}
 				{permission?.Activity?.includes("activity:share") && (
 					<Dropdown.Item
 						href={`${process.env.REACT_APP_API_URL}/${config.apiVersion}/go/getxapifile/${resource.id}`}
