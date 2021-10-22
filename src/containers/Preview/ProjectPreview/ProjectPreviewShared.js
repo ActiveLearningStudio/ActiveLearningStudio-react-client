@@ -28,7 +28,7 @@ function ProjectPreviewShared(props) {
   const [currentProject, setCurrentProject] = useState(null);
 
   useEffect(() => {
-    if (project && Object.keys(project.projectSelect).length > 0) {
+    if (project && Object.keys(project.projectSelect).length > 0 && project.isSharedProject) {
       setCurrentProject(project.projectSelect);
     }
   }, [project]);
@@ -171,7 +171,7 @@ function ProjectPreviewShared(props) {
                 <div className="scene flex-wrap shared-preview-custom">
                   <div className="scene-img">
                     {!!currentProject.thumb_url &&
-                    currentProject.thumb_url.includes("pexels.com") ? (
+                      currentProject.thumb_url.includes("pexels.com") ? (
                       <img src={currentProject.thumb_url} alt="thumbnail" />
                     ) : (
                       <img
