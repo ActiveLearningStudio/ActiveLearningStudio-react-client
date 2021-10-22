@@ -359,10 +359,8 @@ export const SSOLoginAction = (data) => async (dispatch) => {
 export const CanvasSSOLoginAction = (data) => async (dispatch) => {
   try {
     const response = await authService.canvasSsoLogin(data);
-    if (typeof response.access_token !== 'undefined') {
-      storageService.setItem(USER_TOKEN_KEY, response.access_token);
-      storageService.setItem(CURRENT_ORG, response.user.user_organization.domain);
-    }
+    storageService.setItem(USER_TOKEN_KEY, response.access_token);
+    storageService.setItem(CURRENT_ORG, response.user.user_organization.domain);
     await dispatch(getAllOrganizationforSSO());
 
     dispatch({
