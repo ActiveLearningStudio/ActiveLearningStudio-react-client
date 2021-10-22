@@ -1,23 +1,22 @@
-/* eslint-disable */
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { Dropdown } from "react-bootstrap";
-import Swal from "sweetalert2";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Dropdown } from 'react-bootstrap';
+import Swal from 'sweetalert2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
   deleteFavObj,
   toggleProjectShareAction,
   getProjectCourseFromLMS,
-} from "store/actions/project";
-import { cloneProject } from "store/actions/search";
-import ProjectPreviewShared from "containers/Preview/ProjectPreview/ProjectPreviewShared";
-import MyVerticallyCenteredModal from "components/models/activitySample";
-import SharePreviewPopup from "components/SharePreviewPopup";
-import { lmsPlaylist } from "store/actions/playlist";
-import { getProjectId } from "store/actions/gapi";
+} from 'store/actions/project';
+import { cloneProject } from 'store/actions/search';
+import ProjectPreviewShared from 'containers/Preview/ProjectPreview/ProjectPreviewShared';
+import MyVerticallyCenteredModal from 'components/models/activitySample';
+import SharePreviewPopup from 'components/SharePreviewPopup';
+import { lmsPlaylist } from 'store/actions/playlist';
+import { getProjectId } from 'store/actions/gapi';
 
 const SampleProjectCard = (props) => {
   const {
@@ -59,11 +58,17 @@ const SampleProjectCard = (props) => {
                 <div
                   className="program-thumb"
                   onClick={() => {
-                    setSelectId(project.id);
                     setShowSampleSort(false);
-                    setSelectSampleId(project.id);
-                    setSelectFavId(project.id);
-                    setSelectedTeamProjectId(project.id);
+                    if (type === 'fav') {
+                      setSelectFavId(project.id);
+                      setSelectId(project.id);
+                    } else if (type === 'sample') {
+                      setSelectSampleId(project.id);
+                      setSelectId(project.id);
+                    } else if (type === 'team') {
+                      setSelectedTeamProjectId(project.id);
+                      setSelectId(project.id);
+                    }
                   }}
                 >
                   {project.thumb_url && (
@@ -71,7 +76,7 @@ const SampleProjectCard = (props) => {
                       className="project-thumb"
                       style={{
                         backgroundImage: project.thumb_url.includes(
-                          "pexels.com"
+                          'pexels.com',
                         )
                           ? `url(${project.thumb_url})`
                           : `url(${global.config.resourceUrl}${project.thumb_url})`,
@@ -82,14 +87,13 @@ const SampleProjectCard = (props) => {
 
                 <div
                   className="program-content"
-                  style={{ padding: "10px 15px" }}
+                  style={{ padding: '10px 15px' }}
                 >
                   <div>
                     <div className="row">
                       <div className="col-md-10">
                         <h3 className="program-title">
-                          <Link
-                            to=""
+                          <a
                             onClick={() => {
                               setShowSampleSort(false);
                               if (type === 'fav') {
@@ -105,7 +109,7 @@ const SampleProjectCard = (props) => {
                             }}
                           >
                             {project.name}
-                          </Link>
+                          </a>
                         </h3>
                       </div>
 
@@ -119,13 +123,13 @@ const SampleProjectCard = (props) => {
                             <Dropdown.Item
                               as={Link}
                               onClick={() => {
-                                if (type === "fav") {
+                                if (type === 'fav') {
                                   setSelectFavId(project.id);
                                   setSelectId(project.id);
-                                } else if (type === "sample") {
+                                } else if (type === 'sample') {
                                   setSelectSampleId(project.id);
                                   setSelectId(project.id);
-                                } else if (type === "team") {
+                                } else if (type === 'team') {
                                   setSelectedTeamProjectId(project.id);
                                   setSelectId(project.id);
                                 }
@@ -134,24 +138,22 @@ const SampleProjectCard = (props) => {
                               <FontAwesomeIcon icon="eye" className="mr-2" />
                               Preview
                             </Dropdown.Item>
-                            {permission?.Project?.includes("project:share") &&
-                              type === "team" && (
+                            {permission?.Project?.includes('project:share')
+                              && type === 'team' && (
                                 <Dropdown.Item
                                   to="#"
                                   onClick={async () => {
-                                    const protocol = `${
-                                      window.location.href.split("/")[0]
-                                    }//`;
-                                    const url = `${
-                                      protocol + window.location.host
-                                    }/project/${project.id}/shared`;
+                                    const protocol = `${window.location.href.split('/')[0]
+                                      }//`;
+                                    const url = `${protocol + window.location.host
+                                      }/project/${project.id}/shared`;
                                     if (!project.shared) {
                                       Swal.showLoading();
                                       await dispatch(
                                         toggleProjectShareAction(
                                           project.id,
-                                          project.name
-                                        )
+                                          project.name,
+                                        ),
                                       );
                                       Swal.close();
                                       SharePreviewPopup(url, project.name);
@@ -167,8 +169,8 @@ const SampleProjectCard = (props) => {
                                   Share
                                 </Dropdown.Item>
                               )}
-                            {permission?.Project?.includes("project:publish") &&
-                              type === "team" && (
+                            {permission?.Project?.includes('project:publish')
+                              && type === 'team' && (
                                 <li className="dropdown-submenu send">
                                   <a tabIndex="-1">
                                     <FontAwesomeIcon
@@ -188,33 +190,32 @@ const SampleProjectCard = (props) => {
                                       <a>Google Classroom</a>
                                     </li>
 
-                                    {allLms?.shareVendors &&
-                                      allLms.shareVendors.map(
-                                        (data, key) =>
-                                          data.lms_name !== "safarimontage" && (
-                                            <li key={key}>
-                                              <a
-                                                onClick={async () => {
-                                                  const allPlaylist = await dispatch(
-                                                    lmsPlaylist(project.id)
+                                    {allLms?.shareVendors
+                                      && allLms.shareVendors.map(
+                                        (data, key) => data.lms_name !== 'safarimontage' && (
+                                          <li key={key}>
+                                            <a
+                                              onClick={async () => {
+                                                const allPlaylist = await dispatch(
+                                                  lmsPlaylist(project.id),
+                                                );
+                                                if (allPlaylist) {
+                                                  dispatch(
+                                                    getProjectCourseFromLMS(
+                                                      data.lms_name.toLowerCase(),
+                                                      data.id,
+                                                      project.id,
+                                                      allPlaylist.playlists,
+                                                      data.lms_url,
+                                                    ),
                                                   );
-                                                  if (allPlaylist) {
-                                                    dispatch(
-                                                      getProjectCourseFromLMS(
-                                                        data.lms_name.toLowerCase(),
-                                                        data.id,
-                                                        project.id,
-                                                        allPlaylist.playlists,
-                                                        data.lms_url
-                                                      )
-                                                    );
-                                                  }
-                                                }}
-                                              >
-                                                {data.site_name}
-                                              </a>
-                                            </li>
-                                          )
+                                                }
+                                              }}
+                                            >
+                                              {data.site_name}
+                                            </a>
+                                          </li>
+                                        ),
                                       )}
                                   </ul>
                                 </li>
@@ -230,12 +231,10 @@ const SampleProjectCard = (props) => {
                               Duplicate
                             </Dropdown.Item>
 
-                            {type === "fav" && (
+                            {type === 'fav' && (
                               <Dropdown.Item
                                 to="#"
-                                onClick={() =>
-                                  dispatch(deleteFavObj(project.id))
-                                }
+                                onClick={() => dispatch(deleteFavObj(project.id))}
                               >
                                 <FontAwesomeIcon
                                   icon="times-circle"
@@ -253,14 +252,14 @@ const SampleProjectCard = (props) => {
                       <div className="row">
                         <div className="col-md-12">
                           <div>
-                            {type === "team" && (
+                            {type === 'team' && (
                               <div>
                                 Team Name:
                                 <strong>{` ${project?.team?.name}`}</strong>
                               </div>
                             )}
-                            {project.description &&
-                            project.description.length > 130
+                            {project.description
+                              && project.description.length > 130
                               ? `${project.description.substring(0, 130)} ...`
                               : project.description}
                           </div>
@@ -279,27 +278,36 @@ const SampleProjectCard = (props) => {
             className="btn-back"
             onClick={() => {
               setShowSampleSort(true);
-              setSelectId(null);
+              if (type === 'fav') {
+                setSelectFavId(null);
+                setSelectId(null);
+              } else if (type === 'sample') {
+                setSelectSampleId(null);
+                setSelectId(null);
+              } else if (type === 'team') {
+                setSelectedTeamProjectId(null);
+                setSelectId(null);
+              }
             }}
           >
             Back
           </div>
 
-          {type === "fav" && activeTab === "Favorite Projects" && (
+          {type === 'fav' && activeTab === 'Favorite Projects' && (
             <ProjectPreviewShared
               sampleId={selectFavId}
               setModalShow={setModalShow}
               setCurrentActivity={setCurrentActivity}
             />
           )}
-          {type === "sample" && activeTab === "Sample Projects" && (
+          {type === 'sample' && activeTab === 'Sample Projects' && (
             <ProjectPreviewShared
               sampleId={selectSampleId}
               setModalShow={setModalShow}
               setCurrentActivity={setCurrentActivity}
             />
           )}
-          {type === "team" && activeTab === "Team Projects" && (
+          {type === 'team' && activeTab === 'Team Projects' && (
             <ProjectPreviewShared
               sampleId={selectTeamProjectId}
               setModalShow={setModalShow}
@@ -322,8 +330,8 @@ SampleProjectCard.propTypes = {
   type: PropTypes.string.isRequired,
   setShowSampleSort: PropTypes.func.isRequired,
   activeTab: PropTypes.string.isRequired,
-  handleShow: PropTypes.func,
-  setProjectId: PropTypes.func,
+  handleShow: PropTypes.func.isRequired,
+  setProjectId: PropTypes.func.isRequired,
 };
 
 export default SampleProjectCard;
