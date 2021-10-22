@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 import UploadImg from '../../assets/images/upload1.png';
 
 const UploadFile = ({
-  className, metadata, formRef,
+  className, formRef,
 }) => {
   const { selectedLayout, playlist, project } = useSelector(
     (state) => state.myactivities,
@@ -36,12 +36,13 @@ const UploadFile = ({
       submitAction,
       h5pFile,
     };
+    console.log(formRef.current.values, 'upload file');
     dispatch(createResourceByH5PUploadAction(
       playlist.id,
       selectedLayout?.h5pLib,
       'h5p',
       payload,
-      metadata,
+      formRef.current.values,
       project,
     ));
   };
@@ -107,7 +108,6 @@ const UploadFile = ({
 UploadFile.propTypes = {
   className: PropTypes.string.isRequired,
   formRef: PropTypes.func.isRequired,
-  metadata: PropTypes.object.isRequired,
 };
 
 export default UploadFile;

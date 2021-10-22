@@ -394,7 +394,7 @@ function PlaylistsPage(props) {
     <>
       <div className="content-wrapper">
         <div className="inner-content">
-          <div className="content">
+          <div className="content" style={{ minHeight: '500px' }}>
             <PexelsAPI
               show={modalShow}
               project={selectedProject}
