@@ -22,8 +22,8 @@ function CanvasLtiSSO(props) {
 				}).catch((err) => {
                     Swal.fire({
 						icon:'error',
-						title:"please refresh your page with valid key",
-						html:err.errors[0]
+						title:"SSO Login Failed!",
+						html:"Unable to find default LMS setting with your client id."
 					})
 				})
 			}
