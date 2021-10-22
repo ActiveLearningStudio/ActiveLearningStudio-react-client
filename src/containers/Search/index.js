@@ -949,7 +949,7 @@ function SearchInterface(props) {
 																									</a>
 																								</li>
 																								{allLms.shareVendors && allLms.shareVendors.map((data) => (
-																									data.lms_name !== 'safarimontage' && (
+																									data.project_visibility && (
 																										<li>
 																											<a
 																												onClick={async () => {
@@ -1215,7 +1215,7 @@ function SearchInterface(props) {
 																											</a>
 																										</li>
 																										{allLms.shareVendors && allLms.shareVendors.map((data) => (
-																											data.lms_name !== 'safarimontage' && (
+																											data.project_visibility && (
 																												<li>
 																													<a
 																														onClick={async () => {

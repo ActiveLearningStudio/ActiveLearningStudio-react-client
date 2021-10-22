@@ -1886,9 +1886,12 @@ a:hover {
     textarea.title {
       font-size: 30px;
       padding: 10px;
-      border-color: rgb(8, 72, 146);
+     
       margin-top: 0px;
       margin-bottom: 0px;
+			border-color: #ececec;
+      border-radius:5px;
+			box-shadow: 0px 0px 7px 1px #eceaea;
     }
     .project-images {
       .on-hover-project-image {
@@ -3595,8 +3598,8 @@ a:hover {
 }
 
 .menu-user-settings .dropdown-menu.user-dropdown {
-  top: 13px !important;
-  left: 0 !important;
+  top: 10px !important;
+ 
   padding: 15px;
   border-top: 0;
 }

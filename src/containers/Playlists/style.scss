@@ -153,9 +153,12 @@
   textarea.description {
     font-size: 14px;
     padding: 10px;
-    border-color: rgb(8, 72, 146);
+		border-color: #ececec;
+   
+		box-shadow: 0px 0px 7px 1px #eceaea;
     margin-top: 0px;
     margin-bottom: 0px;
+		border-radius:5px
   }
   p {
     font-family: "Open Sans", sans-serif;
