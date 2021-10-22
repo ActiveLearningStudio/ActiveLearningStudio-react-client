@@ -490,25 +490,28 @@ function PlaylistsPage(props) {
                                   }
                                 />
                               </div>
-                              <div className="button-flex-project-images">
-                                <div
-                                  className="gallery"
-                                  onClick={() => {
-                                    openFile.current.click();
-                                  }}
-                                >
-                                  <img src={computer} alt="" />
-                                  <p>My device</p>
-                                </div>
+                              {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project')
+                                : permission?.Project?.includes('project:upload-thumb'))
+                                &&
+                                (<div className="button-flex-project-images">
+                                  <div
+                                    className="gallery"
+                                    onClick={() => {
+                                      openFile.current.click();
+                                    }}
+                                  >
+                                    <img src={computer} alt="" />
+                                    <p>My device</p>
+                                  </div>
 
-                                <div
-                                  className="pexel"
-                                  onClick={() => setModalShow(true)}
-                                >
-                                  <img src={pexel} alt="pexel" />
-                                  <p>Pexels</p>
-                                </div>
-                              </div>
+                                  <div
+                                    className="pexel"
+                                    onClick={() => setModalShow(true)}
+                                  >
+                                    <img src={pexel} alt="pexel" />
+                                    <p>Pexels</p>
+                                  </div>
+                                </div>)}
                             </div>
                           </div>
                           {!editName && <Headings text={selectedProject ? selectedProject.name : ''} headingType="h2" color="#084892" />}
@@ -522,7 +525,8 @@ function PlaylistsPage(props) {
                             style={{ display: editName ? 'block' : 'none' }}
                           />
                           {!editName
-                            && (
+                            && (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project')
+                              : permission?.Project?.includes('project:edit')) && (
                               <FontAwesomeIcon
                                 icon="edit"
                                 className="ml-2"
@@ -563,7 +567,8 @@ function PlaylistsPage(props) {
                       style={{ display: editDescription ? 'block' : 'none' }}
                     />
                     {!editDescription
-                      && (
+                      && (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project')
+                        : permission?.Project?.includes('project:edit')) && (
                         <FontAwesomeIcon
                           icon="edit"
                           className="ml-2"
