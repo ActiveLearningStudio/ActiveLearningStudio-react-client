@@ -22,7 +22,7 @@ function CanvasLtiSSO(props) {
 				}).catch((err) => {
                     Swal.fire({
 						icon:'error',
-						title:"please refresh your page with valid key",
+						title:"Failed to login!",
 						html:err.errors[0]
 					})
 				})
