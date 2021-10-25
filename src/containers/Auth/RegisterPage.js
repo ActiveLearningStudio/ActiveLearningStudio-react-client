@@ -11,7 +11,7 @@ import bg1 from 'assets/images/loginbg2.png';
 import loader from 'assets/images/loader.svg';
 import leftArrow from 'assets/images/left-arrow.svg';
 import { GoogleLogin } from 'react-google-login';
-import googleIcon from 'assets/images/google.png';
+import googleIcon from 'assets/images/google.svg';
 import { registerAction, loadOrganizationTypesAction, googleLoginAction } from 'store/actions/auth';
 import { getErrors } from 'utils';
 import { Tabs, Tab } from 'react-bootstrap';
@@ -378,8 +378,8 @@ class RegisterPage extends React.Component {
                                 theme="dark"
                                 render={(renderProps) => (
                                   <button type="button" className="google-button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                                    <img src={googleIcon} alt="googleIcon" style={{ float: 'left' }} />
-                                    Sign up with Google
+                                    <img src={googleIcon} alt="googleIcon" />
+                                    <div>Sign up with Google</div>
                                   </button>
                                 )}
                                 onSuccess={(response) => {

@@ -9,14 +9,14 @@ import { Tabs, Tab } from 'react-bootstrap';
 // import bg from 'assets/images/loginbg.png';
 // import bg1 from 'assets/images/loginbg2.png';
 import loader from 'assets/images/loader.svg';
-import googleIcon from 'assets/images/google.png';
+import googleIcon from 'assets/images/google.svg';
 import emailIcon from 'assets/images/email.png';
 import stemuliIcon from 'assets/images/stemuli_logo.png';
 import { loginAction, googleLoginAction } from 'store/actions/auth';
 import { getErrors } from 'utils';
+import eye from 'assets/images/eye.svg';
 import Error from './Error';
 import Logo from './Logo';
-
 import './style.scss';
 
 class LoginPage extends React.Component {
@@ -26,10 +26,11 @@ class LoginPage extends React.Component {
     this.state = {
       email: '',
       password: '',
-      // rememberMe: false,
+      rememberMe: false,
       clicked: true,
       error: null,
       activeTab: 'Log in',
+      showPassword: false,
     };
   }
 
@@ -109,10 +110,11 @@ class LoginPage extends React.Component {
     const {
       email,
       password,
-      // rememberMe,
+      rememberMe,
       error,
       clicked,
       activeTab,
+      showPassword,
     } = this.state;
     const { isLoading, domain } = this.props;
 
@@ -244,11 +246,18 @@ class LoginPage extends React.Component {
 
                     <div className="form-group">
                       {/* <FontAwesomeIcon icon="lock" /> */}
-                      <span>Password</span>
+                      <span style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        Password
+                        <div className="show-password" onClick={() => this.setState({ showPassword: !showPassword })}>
+                          <img src={eye} alt="show-password" />
+                          Show
+                        </div>
+                      </span>
                       <input
                         className="password-box"
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         name="password"
+                        placeholder="********"
                         required
                         value={password}
                         onChange={this.onChangeField}
@@ -256,7 +265,7 @@ class LoginPage extends React.Component {
                     </div>
 
                     <div className="form-group remember-me">
-                      {/* <label>
+                      <label>
                         <input
                           type="checkbox"
                           name="rememberMe"
@@ -264,7 +273,7 @@ class LoginPage extends React.Component {
                           onChange={this.onChangeField}
                         />
                         Keep me logged in.
-                      </label> */}
+                      </label>
                       <div className="forgot-password-box">
                         <Link to="/forgot-password">Forgot Password ?</Link>
                       </div>
@@ -307,8 +316,8 @@ class LoginPage extends React.Component {
                               theme="dark"
                               render={(renderProps) => (
                                 <button type="button" className="google-button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                                  <img src={googleIcon} alt="googleIcon" style={{ float: 'left' }} />
-                                  Log in with Google
+                                  <img src={googleIcon} alt="googleIcon" />
+                                  <div>Log in with Google</div>
                                 </button>
                               )}
                               onSuccess={this.onGoogleLoginSuccess}

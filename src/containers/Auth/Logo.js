@@ -9,7 +9,7 @@ import shepherds from 'assets/images/shepherds.svg';
 import sndt from 'assets/images/SNDT-LOGO-blue.png';
 import nevada from 'assets/images/nevada.png';
 import openeducation from 'assets/images/openeducation.png';
-import bodyImg from 'assets/images/login_bglogo_new.svg';
+import bodyImg from 'assets/images/auth-bglogo.png';
 
 export default function Logo() {
   const logoState = useSelector((state) => state.organization.currentOrganization);
