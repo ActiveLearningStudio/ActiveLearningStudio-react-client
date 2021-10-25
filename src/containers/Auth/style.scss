@@ -121,8 +121,8 @@
 
       .nav-link {
         border-radius: 3px 3px 0px 0px;
-        font-size: 16px;
-        line-height: 22px;
+        font-size: 14px;
+        line-height: 20px;
         text-align: center;
         color: $white;
         background: $fun-blue-1;
@@ -180,16 +180,27 @@
     }
     .google-button {
       width: 100%;
-      height: 40px;
+      height: 32px;
       left: 958px;
       top: 370.78px;
       margin-bottom: 0;
-      color: #000000;
-      border: 1px solid #888888 !important;
+      color: #515151;
+      line-height: 20px;
+      font-size: 14px;
+      border: 1px solid #959595!important;
+      box-shadow: 0px 2px 6px 1px rgba(81, 81, 81, 0.16);
+      display: flex;
+      justify-content: center;
       background: #ffffff;
       box-sizing: border-box;
       border-radius: 20px;
       padding: 0px 20px;
+      img {
+        margin: 3px;
+      }
+      div {
+        margin: 6px;
+      }
     }
     .email-button {
       min-width: 410.92px;
@@ -206,15 +217,16 @@
     }
     .auth-title {
       letter-spacing: 0;
-      color: $curriki-main-blue;
+      color: #084892;
       left: 66.53%;
       right: 5%;
       top: 25.88%;
       bottom: 69.7%;
       font-style: normal;
+      font-family: 'Rubic';
       font-weight: 500;
-      font-size: 39px;
-      line-height: 46px;
+      font-size: 36px;
+      line-height: 44px;
       margin-bottom: 24.02px;
     }
     .termsandcondition {
@@ -223,11 +235,11 @@
       height: 32.73px;
       left: 958.91px;
       top: 665.45px;
+      font-family: 'Open Sans', sans-serif;
       font-style: normal;
       font-weight: normal;
-      font-size: 12.8px;
-      line-height: 122.8%;
-      /* or 16px */
+      font-size: 12px;
+      line-height: 26px;
       color: #515151;
     }
     @media (max-width: 767px) {
@@ -261,9 +273,12 @@
 
     .auth-description {
       font-size: 16px;
-      line-height: 22px;
+      line-height: 24px;
       text-align: left;
       color: #515151;
+      font-family: 'Open Sans', sans-serif;
+      font-style: normal;
+      font-weight: normal;
       margin-bottom: 20px;
       letter-spacing: 0;
       a {
@@ -282,8 +297,11 @@
     }
     .auth-Pdescrip {
       font-size: 16px;
-      line-height: 22px;
+      line-height: 24px;
       color: #515151;
+      font-family: 'Open Sans', sans-serif;
+      font-style: normal;
+      font-weight: normal;
       margin-bottom: 15px;
     }
     .auth-p2-descrip {
@@ -373,13 +391,14 @@
         width: 100%;
         background: #084892;
         border: 1px solid #084892;
+        height: 32px;
         box-sizing: border-box;
-        border-radius: 50px;
+        border-radius: 16px;
+        font-family: 'Rubic';
         font-size: 14px;
-        line-height: 17px;
+        line-height: 20px;
         text-align: center;
         color: #ffffff;
-        padding: 11.5px 0;
         margin-bottom: 15px;
         &:disabled {
           background: grey;
@@ -443,6 +462,19 @@
           border-color: grey;
         }
       }
+      .show-password {
+        display: flex;
+        justify-content: space-between;
+        img {
+          margin-right: 5px;
+        }
+      }
+      span {
+        font-size: 14px;
+        line-height: 20px;
+        color: #515151;
+        font-family: 'Rubic';
+      }
     }
 
     .input-box {
@@ -451,7 +483,7 @@
       padding: 18px 18px 18px 40px;
       display: block;
       background-color: #fff;
-      border: 1px solid #888888;
+      border: 1px solid #959595;
       box-sizing: border-box;
       border-radius: 3px;
       font-size: 14px;
@@ -495,9 +527,7 @@
 
     .remember-me {
       display: flex;
-      align-items: center;
-      justify-content: flex-end;
-
+      justify-content: space-between;
       input {
         width: 17px;
         height: 17px;
@@ -568,7 +598,7 @@
       // padding-right: 10px;
 
       a {
-        color: #9b9b9b;
+        color: #285AA5 !important;
         font-family: "$halvetica", sans-serif;
         font-weight: 400;
       }
@@ -580,15 +610,17 @@
 
       .submit {
         width: 100%;
-        height: 40px;
+        height: 32px;
         background: #084892;
         border: 1px solid #084892;
         box-sizing: border-box;
-        border-radius: 50px;
+        font-family: 'Rubic';
+        border-radius: 16px;
         font-weight: 400;
-        font-size: 19px;
-        line-height: 26px;
+        font-size: 14px;
+        line-height: 20px;
         letter-spacing: 0.76px;
+        box-shadow: 0px 2px 6px 1px rgba(8, 72, 146, 0.16);
         color: #ffffff;
         opacity: 1;
 
