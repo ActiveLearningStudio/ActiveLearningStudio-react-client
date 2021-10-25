@@ -330,7 +330,6 @@ export const SSOLoginAction = (data) => async (dispatch) => {
     const response = await authService.loginSSO(data);
     storageService.setItem(USER_TOKEN_KEY, response.access_token);
     storageService.setItem(CURRENT_ORG, response.user.user_organization.domain);
-    await dispatch(getAllOrganizationforSSO());
 
     dispatch({
       type: actionTypes.ADD_ACTIVE_ORG,
@@ -345,6 +344,7 @@ export const SSOLoginAction = (data) => async (dispatch) => {
       type: actionTypes.LOGIN_SUCCESS,
       payload: { user: response.user },
     });
+    await dispatch(getAllOrganizationforSSO());
     console.log('SSOLoginAction success');
   } catch (e) {
     console.log('SSOLoginAction failed');
@@ -361,8 +361,6 @@ export const CanvasSSOLoginAction = (data) => async (dispatch) => {
     const response = await authService.canvasSsoLogin(data);
     storageService.setItem(USER_TOKEN_KEY, response.access_token);
     storageService.setItem(CURRENT_ORG, response.user.user_organization.domain);
-    await dispatch(getAllOrganizationforSSO());
-
     dispatch({
       type: actionTypes.ADD_ACTIVE_ORG,
       payload: response.user.user_organization,
@@ -375,6 +373,8 @@ export const CanvasSSOLoginAction = (data) => async (dispatch) => {
       type: actionTypes.LOGIN_SUCCESS,
       payload: { user: response.user },
     });
+
+    await dispatch(getAllOrganizationforSSO());
     console.log('SSOLoginAction success');
   } catch (e) {
     console.log('SSOLoginAction failed');
