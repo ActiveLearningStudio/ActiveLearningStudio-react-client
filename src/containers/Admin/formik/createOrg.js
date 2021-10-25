@@ -83,7 +83,7 @@ export default function CreateOrg(prop) {
           });
           if (editMode) {
             const response = await dispatch(
-              updateOrganization(activeEdit.id, values, (activeEdit.parent ? activeEdit.parent.id: undefined))
+              updateOrganization(activeEdit.id, values, (activeEdit.parent ? activeEdit.parent.id : undefined))
             );
             if (response) {
               Swal.fire({
@@ -234,7 +234,7 @@ export default function CreateOrg(prop) {
                     />
                     <div
                       className="update-img"
-                      // onClick={() => imgUpload.current.click()}
+                    // onClick={() => imgUpload.current.click()}
                     >
                       Update Image
                     </div>
@@ -274,33 +274,33 @@ export default function CreateOrg(prop) {
                 disabled={editMode ? true : false}
                 value={values.domain}
                 onChange={async (e) => {
-                  if(alphabetsOnly(e.target.value) && !e.target.value.includes('@')) {
+                  if (alphabetsOnly(e.target.value) && !e.target.value.includes('@')) {
                     setFieldValue("domain", e.target?.value);
-                  if (e.target.value.length > 1) {
-
-                    setLoaderImg(true);
-                    const result = dispatch(checkBranding(e.target.value));
-                    result
-                      .then(() => {
-                        setLoaderImg(false);
-                        // setFieldValue("domain", true);
-                        setErrors({ domain: 'domian already used' });
-                      })
-                      .catch((err) => {
-                        if (err.errors) {
-                          setLoaderImg(false);
-
-                        }
-                      });
+                    if (e.target.value.length > 1) {
+                      setLoaderImg(true);
+                      const result = dispatch(checkBranding(e.target.value));
+                      result
+                        .then((res) => {
+                          console.log(res);
+                          if (res.organization) {
+                            setLoaderImg(false);
+                            setErrors({ domain: '*Domian already in use' });
+                          }
+                        })
+                        .catch((err) => {
+                          if (err.errors) {
+                            setLoaderImg(false);
+                          }
+                        });
                     }
                   }
                 }}
                 onBlur={handleBlur}
-                // value={values.admin}
+              // value={values.admin}
               />
               <img
                 src={loader}
-                style={{ width: "25px",marginTop: '5px',visibility: loaderImg ? 'visible' : 'hidden' }}
+                style={{ width: "25px", marginTop: '5px', visibility: loaderImg ? 'visible' : 'hidden' }}
                 alt=""
                 className="loader"
               />
