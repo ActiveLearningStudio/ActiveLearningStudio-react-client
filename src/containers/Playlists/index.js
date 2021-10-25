@@ -280,24 +280,36 @@ function PlaylistsPage(props) {
     if (e.target.name === 'projectname') {
       titleRef.current.blur();
       setEditName(false);
-      if (selectedProject.name !== e.target.value) {
+      if (selectedProject.name !== e.target.value && e.target.value <= 260) {
         dispatch(updateProjectAction(selectedProject?.id, {
           name: e.target.value,
           description: selectedProject.description,
           thumb_url: thumbUrl,
           organization_visibility_type_id: selectedProject.organization_visibility_type_id || 1,
         }));
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Exceeding length',
+          text: 'Cannot enter more than 260 character in project title.',
+        });
       }
     } else if (e.target.name === 'projectdescription') {
       descriptionRef.current.blur();
       setEditDescription(false);
-      if (selectedProject.description !== e.target.value) {
+      if (selectedProject.description !== e.target.value && e.target.value <= 1000) {
         dispatch(updateProjectAction(selectedProject?.id, {
           name: selectedProject.name,
           description: e.target.value,
           thumb_url: thumbUrl,
           organization_visibility_type_id: selectedProject.organization_visibility_type_id || 1,
         }));
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Exceeding length',
+          text: 'Cannot enter more than 1000 character in project description.',
+        });
       }
     }
   };
