@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .resource-modal {
   h1 {
@@ -49,6 +49,7 @@
       font-weight: normal;
       font-size: 14px;
       line-height: 20px;
+      color: #515151;
     }
   }
 
@@ -68,7 +69,7 @@
         height: 36px;
         padding: 8px !important;
         background: #ffffff;
-        border: 1px solid #515151;
+        border: 1px solid #959595;
         border-radius: 4px;
       }
     }
@@ -87,7 +88,7 @@
         // border-left: 3px solid #d9dfe8;
         // border-radius: 0;
         background: #ffffff;
-        border: 1px solid #515151;
+        border: 1px solid #959595;
         border-radius: 4px;
       }
     }
@@ -161,8 +162,7 @@
       .project-template-btn {
         padding: 10px 15px 10px 35px;
         float: right;
-        background: url(../../../assets/images/project-template-icon.png) #fff
-          no-repeat 8px 10px;
+        background: url(../../../assets/images/project-template-icon.png) #fff no-repeat 8px 10px;
         border: 1px solid #d9dfe8;
         border-radius: 5px;
         font-family: $rubik, sans-serif;
@@ -205,7 +205,7 @@
       margin-bottom: 0px;
     }
     &:after {
-      content: url("../../../assets/images/path.png");
+      content: url('../../../assets/images/path.png');
       float: right;
       border-top: none;
     }
