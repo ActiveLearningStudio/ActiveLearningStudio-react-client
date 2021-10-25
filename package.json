@@ -13,7 +13,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "@tinymce/tinymce-react": "^3.5.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.2",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.6.0",
     "bootstrap-switch-button-react": "^1.2.0",
