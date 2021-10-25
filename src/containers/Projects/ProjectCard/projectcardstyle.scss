@@ -21,6 +21,9 @@
     background-size: 100% 100%;
     position: relative;
     height: 156px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     &:before {
       border-top-left-radius: 8px;
       border-top-right-radius: 8px;
