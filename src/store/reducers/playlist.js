@@ -136,11 +136,11 @@ export default (state = INITIAL_STATE, action) => {
 
     // reset playlists to empty when going to playlists dashboard
     // so that when user clicks to new playlist it will load to default empty
-    case actionTypes.LOAD_MY_PROJECTS:
-      return {
-        ...state,
-        playlists: [],
-      };
+    // case actionTypes.LOAD_MY_PROJECTS:
+    //   return {
+    //     ...state,
+    //     playlists: [],
+    //   };
 
     case actionTypes.SHOW_CREATE_PLAYLIST_MODAL:
       return {
