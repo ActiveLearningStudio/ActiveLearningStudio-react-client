@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { ToastContainer } from 'react-toastify';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import logo from 'assets/images/studio_new_logo.png';
@@ -11,8 +12,8 @@ import { updatedActivity } from 'store/actions/resource';
 import { updatedProject } from 'store/actions/project';
 import { updatedPlaylist } from 'store/actions/playlist';
 import AppRouter from 'routers/AppRouter';
-
 import Help from './help';
+
 import './style.scss';
 
 let runOnce = true;
@@ -209,6 +210,7 @@ function App(props) {
         />
       </Helmet>
       <AppRouter />
+      <ToastContainer limit={1} />
       {Object.keys(permission)?.length === 0 && (
         <div className="loader-main-curriki-permission">
           <img src={logo} className="logo" alt="" />

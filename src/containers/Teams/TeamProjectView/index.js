@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
@@ -7,12 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import GoogleModel from 'components/models/GoogleLoginModal';
 // import { zeroFill } from 'utils';
-import {
-  getTeamPermission,
-  loadTeamsAction,
-  removeMemberFromProjectAction,
-  removeProjectAction,
-} from 'store/actions/team';
+import { getTeamPermission, loadTeamsAction, removeMemberFromProjectAction, removeProjectAction } from 'store/actions/team';
 
 import './style.scss';
 import SharePreviewPopup from 'components/SharePreviewPopup';
@@ -58,27 +54,31 @@ function TeamProjectView(props) {
       dispatch(loadTeamsAction());
     }
   }, [notification?.today]);
-  const removeProjectSubmit = useCallback((projectId) => {
-    removeProject(id, projectId)
-      .catch(() => {
+  const removeProjectSubmit = useCallback(
+    (projectId) => {
+      removeProject(id, projectId).catch(() => {
         Swal.fire({
           icon: 'error',
           title: 'Error',
           text: 'Failed to remove project.',
         });
       });
-  }, [id, removeProject]);
+    },
+    [id, removeProject]
+  );
 
-  const removeMemberSubmit = useCallback((projectId, userId) => {
-    removeMember(id, projectId, userId)
-      .catch(() => {
+  const removeMemberSubmit = useCallback(
+    (projectId, userId) => {
+      removeMember(id, projectId, userId).catch(() => {
         Swal.fire({
           icon: 'error',
           title: 'Error',
           text: 'Failed to remove member.',
         });
       });
-  }, [id, removeMember]);
+    },
+    [id, removeMember]
+  );
 
   return (
     <div className="team-information">
@@ -98,9 +98,7 @@ function TeamProjectView(props) {
               <div
                 className="project-img"
                 style={{
-                  backgroundImage: project.thumb_url.includes('pexels.com')
-                    ? `url(${project.thumb_url})`
-                    : `url(${global.config.resourceUrl}${project.thumb_url})`,
+                  backgroundImage: project.thumb_url.includes('pexels.com') ? `url(${project.thumb_url})` : `url(${global.config.resourceUrl}${project.thumb_url})`,
                 }}
               />
 
@@ -143,29 +141,24 @@ function TeamProjectView(props) {
                             <a>Google Classroom</a>
                           </li>
 
-                          {allLms?.shareVendors && allLms.shareVendors.map((data) => (
-                            data.lms_name !== 'safarimontage' && (
-                            <li>
-                              <a
-                                onClick={async () => {
-                                  const allPlaylist = await dispatch(lmsPlaylist(project.id));
-                                  if (allPlaylist) {
-                                    dispatch(
-                                      getProjectCourseFromLMS(
-                                        data.lms_name.toLowerCase(),
-                                        data.id,
-                                        project.id,
-                                        allPlaylist.playlists,
-                                        data.lms_url,
-                                      ),
-                                    );
-                                  }
-                                }}
-                              >
-                                {data.site_name}
-                              </a>
-                            </li>
-                          )))}
+                          {allLms?.shareVendors &&
+                            allLms.shareVendors.map(
+                              (data) =>
+                                data.lms_name !== 'safarimontage' && (
+                                  <li key={data}>
+                                    <a
+                                      onClick={async () => {
+                                        const allPlaylist = await dispatch(lmsPlaylist(project.id));
+                                        if (allPlaylist) {
+                                          dispatch(getProjectCourseFromLMS(data.lms_name.toLowerCase(), data.id, project.id, allPlaylist.playlists, data.lms_url));
+                                        }
+                                      }}
+                                    >
+                                      {data.site_name}
+                                    </a>
+                                  </li>
+                                )
+                            )}
                         </ul>
                       </li>
                     )}
@@ -202,14 +195,12 @@ function TeamProjectView(props) {
                        Add member
                      </Dropdown.Item>
                      )} */}
-                    {(teamPermission?.Team?.includes('team:remove-project')
-                    || teamPermission?.Team?.includes('team:remove-member-project'))
-                      && (
-                        <Dropdown.Item onClick={() => removeProjectSubmit(project.id)}>
-                          <FontAwesomeIcon icon="times-circle" className="mr-2" />
-                          Remove project
-                        </Dropdown.Item>
-                      )}
+                    {(teamPermission?.Team?.includes('team:remove-project') || teamPermission?.Team?.includes('team:remove-member-project')) && (
+                      <Dropdown.Item onClick={() => removeProjectSubmit(project.id)}>
+                        <FontAwesomeIcon icon="times-circle" className="mr-2" />
+                        Remove project
+                      </Dropdown.Item>
+                    )}
                   </Dropdown.Menu>
                 </Dropdown>
               </div>
@@ -222,39 +213,38 @@ function TeamProjectView(props) {
                     </div>
 
                     <div className="member-mark-container">
-                      {false && project.users.map((u, index) => (
-                        <Dropdown key={u.id} className="member-dropdown">
-                          <Dropdown.Toggle className="member-dropdown-btn">
-                            <div className={`member-name-mark${index > 0 ? ' over' : ''}`}>
-                              <span>{`${u.first_name.charAt(0)}${u.last_name.charAt(0)}`}</span>
-                            </div>
-                          </Dropdown.Toggle>
-
-                          {authUser && authUser.id !== u.id && (
-                            <Dropdown.Menu>
-                              <div className="drop-title">
-                                <div className="member-name-mark">
-                                  <span>{`${u.first_name.charAt(0)}${u.last_name.charAt(0)}`}</span>
-                                </div>
-                                <div>
-                                  <span className="username">{`${u.first_name} ${u.last_name}`}</span>
-                                  <span>{u.email}</span>
-                                </div>
+                      {false &&
+                        project.users.map((u, index) => (
+                          <Dropdown key={u.id} className="member-dropdown">
+                            <Dropdown.Toggle className="member-dropdown-btn">
+                              <div className={`member-name-mark${index > 0 ? ' over' : ''}`}>
+                                <span>{`${u.first_name.charAt(0)}${u.last_name.charAt(0)}`}</span>
                               </div>
+                            </Dropdown.Toggle>
 
-                              <div className="dropdown-divider" />
-                              {teamPermission?.Team?.includes('team:remove-project-user')
-                              && (
-                              <Dropdown.Item onClick={() => removeMemberSubmit(project.id, u.id)}>
-                                <FontAwesomeIcon icon="times" className="mr-2" />
-                                Remove from project
-                              </Dropdown.Item>
-                              )}
+                            {authUser && authUser.id !== u.id && (
+                              <Dropdown.Menu>
+                                <div className="drop-title">
+                                  <div className="member-name-mark">
+                                    <span>{`${u.first_name.charAt(0)}${u.last_name.charAt(0)}`}</span>
+                                  </div>
+                                  <div>
+                                    <span className="username">{`${u.first_name} ${u.last_name}`}</span>
+                                    <span>{u.email}</span>
+                                  </div>
+                                </div>
 
-                            </Dropdown.Menu>
-                          )}
-                        </Dropdown>
-                      ))}
+                                <div className="dropdown-divider" />
+                                {teamPermission?.Team?.includes('team:remove-project-user') && (
+                                  <Dropdown.Item onClick={() => removeMemberSubmit(project.id, u.id)}>
+                                    <FontAwesomeIcon icon="times" className="mr-2" />
+                                    Remove from project
+                                  </Dropdown.Item>
+                                )}
+                              </Dropdown.Menu>
+                            )}
+                          </Dropdown>
+                        ))}
                     </div>
                   </div>
                 </>

@@ -1,24 +1,25 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
-import { Tabs, Tab, Alert } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { Tabs, Tab, Alert } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useDispatch, useSelector } from "react-redux";
 
-import { removeActiveAdminForm, setActiveTab } from 'store/actions/admin'
-import CreateActivityItem from './formik/createActivityItem';
-import CreateActivityType from "./formik/createActivity"
-import CreateOrg from "./formik/createOrg"
-import AddRole from './formik/addRole';
-import CreateUser from './formik/createuser'
-import Pills from './pills';
-import Heading from './heading';
-import Breadcrump from 'utils/BreadCrump/breadcrump';
-import * as actionTypes from 'store/actionTypes';
-import CreateLms from './formik/createLms'
-import './style.scss';
-import { getRoles } from 'store/actions/organization';
-import EditProject from './formik/editProject';
-import { useHistory } from 'react-router-dom';
+import { removeActiveAdminForm, setActiveTab } from "store/actions/admin";
+import CreateActivityItem from "./formik/createActivityItem";
+import CreateActivityType from "./formik/createActivity";
+import CreateOrg from "./formik/createOrg";
+import AddRole from "./formik/addRole";
+import CreateUser from "./formik/createuser";
+import Pills from "./pills";
+import Heading from "./heading";
+import Breadcrump from "utils/BreadCrump/breadcrump";
+import * as actionTypes from "store/actionTypes";
+import CreateLms from "./formik/createLms";
+import CreateDefaultSso from "./formik/createDefaultSso";
+import "./style.scss";
+import { getRoles } from "store/actions/organization";
+import EditProject from "./formik/editProject";
+import { useHistory } from "react-router-dom";
 
 function AdminPanel() {
   const history = useHistory();
@@ -26,34 +27,39 @@ function AdminPanel() {
   const [allProjectTab, setAllProjectTab] = useState(null);
   const adminState = useSelector((state) => state.admin);
   const organization = useSelector((state) => state.organization);
-  const { permission, roles, currentOrganization, activeOrganization } = organization;
+  const {
+    permission,
+    roles,
+    currentOrganization,
+    activeOrganization,
+  } = organization;
   const { activeForm, activeTab } = adminState;
   useEffect(() => {
-    if (roles?.length === 0 && activeOrganization?.id || (activeOrganization?.id !== currentOrganization?.id)) {
-      dispatch(getRoles())
+    if (
+      (roles?.length === 0 && activeOrganization?.id) ||
+      activeOrganization?.id !== currentOrganization?.id
+    ) {
+      dispatch(getRoles());
     }
-
-  }, [activeOrganization])
+  }, [activeOrganization]);
+  useEffect(() => {}, [activeTab]);
   useEffect(() => {
-  }, [activeTab])
-  useEffect(()=> {
-    const tab = localStorage.getItem('activeTab');
-    if(tab) {
+    const tab = localStorage.getItem("activeTab");
+    if (tab) {
       dispatch(setActiveTab(tab));
     }
-  },[]);
+  }, []);
   useEffect(() => {
     dispatch({
       type: actionTypes.UPDATE_PAGINATION,
       payload: [currentOrganization || []],
     });
-  }, [currentOrganization])
+  }, [currentOrganization]);
   return (
     <div className="admin-panel">
-      {permission?.Organization?.includes('organization:view') ? (
+      {permission?.Organization?.includes("organization:view") ? (
         <>
           <div className="content-wrapper">
-
             <div className="inner-content">
               <Breadcrump />
               <Heading />
@@ -61,9 +67,9 @@ function AdminPanel() {
                 defaultActiveKey={activeTab}
                 activeKey={activeTab}
                 id="uncontrolled-tab-example"
-                onSelect={(key) =>{
-                   dispatch(setActiveTab(key));
-                   localStorage.setItem('activeTab',key);
+                onSelect={(key) => {
+                  dispatch(setActiveTab(key));
+                  localStorage.setItem("activeTab", key);
                 }}
               >
                 {/* <Tab eventKey="Stats" title="Stats">
@@ -78,24 +84,29 @@ function AdminPanel() {
                 </Tab> */}
                 <Tab eventKey="Organization" title="Organizations">
                   <div className="module-content">
-
-                    <Pills modules={["All Organizations"]} type="Organization" subType="All Organizations"/>
-                  </div>
-                </Tab>
-                <Tab eventKey="Project" title="Projects">
-                  <div className="module-content">
                     <Pills
-                      modules={[
-                        "All Projects",
-                        "Indexing Queue",
-                        // "User Projects",
-                      ]}
-                      allProjectTab={allProjectTab}
-                      setAllProjectTab={setAllProjectTab}
-                      type="Project"
+                      modules={["All Organizations"]}
+                      type="Organization"
+                      subType="All Organizations"
                     />
                   </div>
                 </Tab>
+                {permission?.Project?.includes("project:view") && (
+                  <Tab eventKey="Project" title="Projects">
+                    <div className="module-content">
+                      <Pills
+                        modules={[
+                          "All Projects",
+                          "Indexing Queue",
+                          "Exported Projects",
+                        ]}
+                        allProjectTab={allProjectTab}
+                        setAllProjectTab={setAllProjectTab}
+                        type="Project"
+                      />
+                    </div>
+                  </Tab>
+                )}
                 <Tab eventKey="Activities" title="Activities">
                   <div className="module-content">
                     <Pills
@@ -104,18 +115,29 @@ function AdminPanel() {
                     />
                   </div>
                 </Tab>
-                {permission?.Organization?.includes('organization:view-user')
-                 && (
+                {permission?.Organization?.includes(
+                  "organization:view-user"
+                ) && (
                   <Tab eventKey="Users" title="Users">
                     <div className="module-content">
                       <Pills
-                        modules={["All Users", permission?.Organization?.includes('organization:add-role') || permission?.Organization?.includes('organization:edit-role') ? "Manage Roles" : null]}
+                        modules={[
+                          "All Users",
+                          permission?.Organization?.includes(
+                            "organization:add-role"
+                          ) ||
+                          permission?.Organization?.includes(
+                            "organization:edit-role"
+                          )
+                            ? "Manage Roles"
+                            : null,
+                        ]}
                         type="Users"
                         subType="All Users"
                       />
                     </div>
                   </Tab>
-                 )}
+                )}
                 <Tab eventKey="LMS" title="Integrations">
                   <div className="module-content">
                     <Pills modules={["All Settings"]} type="LMS" />
@@ -127,10 +149,23 @@ function AdminPanel() {
                     <Pills modules={["All settings"]} type="Settings" />
                   </div>
                 </Tab> */}
+                {permission?.Organization?.includes(
+                  "organization:view-default-sso"
+                ) && (
+                  <Tab eventKey="DefaultSso" title="Default SSO Integrations">
+                    <div className="module-content">
+                      <Pills
+                        modules={["All Default SSO Settings"]}
+                        type="DefaultSso"
+                      />
+                    </div>
+                  </Tab>
+                )}
               </Tabs>
             </div>
           </div>
-          {(activeForm === "add_activity_type" || activeForm === "edit_activity_type") && (
+          {(activeForm === "add_activity_type" ||
+            activeForm === "edit_activity_type") && (
             <div className="form-new-popup-admin">
               <FontAwesomeIcon
                 icon="times"
@@ -141,15 +176,15 @@ function AdminPanel() {
               />
               <div className="inner-form-content">
                 {activeForm === "add_activity_type" ? (
-                    <CreateActivityType />
-                )
-                : (
-                  <CreateActivityType editMode/>
+                  <CreateActivityType />
+                ) : (
+                  <CreateActivityType editMode />
                 )}
               </div>
             </div>
           )}
-          {(activeForm === "add_activity_item" || activeForm === "edit_activity_item") && (
+          {(activeForm === "add_activity_item" ||
+            activeForm === "edit_activity_item") && (
             <div className="form-new-popup-admin">
               <FontAwesomeIcon
                 icon="times"
@@ -160,10 +195,9 @@ function AdminPanel() {
               />
               <div className="inner-form-content">
                 {activeForm === "add_activity_item" ? (
-                    <CreateActivityItem />
-                )
-                : (
-                  <CreateActivityItem editMode/>
+                  <CreateActivityItem />
+                ) : (
+                  <CreateActivityItem editMode />
                 )}
               </div>
             </div>
@@ -244,18 +278,19 @@ function AdminPanel() {
           )}
           {activeForm === "edit_project" && (
             <div className="form-new-popup-admin">
-            <FontAwesomeIcon
-              icon="times"
-              className="cross-all-pop"
-              onClick={() => {
-                dispatch(removeActiveAdminForm());
-              }}
-            />
-            <div className="inner-form-content">
-              <EditProject
-                editMode
-                allProjectTab={allProjectTab}
-                setAllProjectTab={setAllProjectTab}/>
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">
+                <EditProject
+                  editMode
+                  allProjectTab={allProjectTab}
+                  setAllProjectTab={setAllProjectTab}
+                />
               </div>
             </div>
           )}
@@ -274,6 +309,34 @@ function AdminPanel() {
                 ) : (
                   <CreateUser editMode />
                 )}
+              </div>
+            </div>
+          )}
+          {activeForm === "add_default_sso" && (
+            <div className="form-new-popup-admin">
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">
+                <CreateDefaultSso method="create" />
+              </div>
+            </div>
+          )}
+          {activeForm === "edit_default_sso" && (
+            <div className="form-new-popup-admin">
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">
+                <CreateDefaultSso editMode />
               </div>
             </div>
           )}

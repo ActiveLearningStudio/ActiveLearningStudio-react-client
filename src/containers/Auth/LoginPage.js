@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -6,7 +5,7 @@ import { Link, withRouter } from 'react-router-dom';
 import validator from 'validator';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { GoogleLogin } from 'react-google-login';
-
+import { Tabs, Tab } from 'react-bootstrap';
 // import bg from 'assets/images/loginbg.png';
 // import bg1 from 'assets/images/loginbg2.png';
 import loader from 'assets/images/loader.svg';
@@ -27,9 +26,10 @@ class LoginPage extends React.Component {
     this.state = {
       email: '',
       password: '',
-      rememberMe: false,
+      // rememberMe: false,
       clicked: true,
       error: null,
+      activeTab: 'Log in',
     };
   }
 
@@ -97,19 +97,24 @@ class LoginPage extends React.Component {
   };
 
   goToRegister = () => {
-    const { history } = this.props;
-    history.push('/register');
+    const { history, domain } = this.props;
+    if (domain) {
+      history.push(`/register/${domain?.domain}`);
+    } else {
+      history.push('register');
+    }
   };
 
   render() {
     const {
       email,
       password,
-      rememberMe,
+      // rememberMe,
       error,
       clicked,
+      activeTab,
     } = this.state;
-    const { isLoading } = this.props;
+    const { isLoading, domain } = this.props;
 
     return (
       <div className="auth-page">
@@ -150,6 +155,7 @@ class LoginPage extends React.Component {
                   )}
                   onSuccess={this.onGoogleLoginSuccess}
                   onFailure={this.onGoogleLoginFailure}
+                  // eslint-disable-next-line max-len
                   scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
                   cookiePolicy="single_host_origin"
                 />
@@ -201,149 +207,141 @@ class LoginPage extends React.Component {
           <div className="auth-container">
             <div className="d-flex align-items-center justify-content-between">
               <h1 className="auth-title mb-2">Welcome to Curriki</h1>
-
-              {/* <strong>OR</strong> */}
-
-              {/* <button
-                type="button"
-                className="btn btn-outline-primary text-uppercase"
-                onClick={this.goToRegister}
-              >
-                Sign Up
-              </button> */}
             </div>
-
-            {/* <h2 className="auth-subtitle">Powering the creation of the world’s Most Immersive Learning Experience</h2> */}
-
             <p className="auth-Pdescrip">
-              Sign Up and start making a difference in the way learning experiences are created.
+              Start making a difference in the way learning experiences are created.
             </p>
-
-            <form
-              onSubmit={this.onSubmit}
-              autoComplete="off"
-              className="auth-form"
+            <Tabs
+              defaultActiveKey={activeTab}
+              activeKey={activeTab}
+              id="uncontrolled-tab-example"
+              onSelect={(key) => {
+                this.setState({ activeTab: key });
+                if (key === 'Sign up') this.goToRegister();
+              }}
             >
-              {/* <div className="form-group">
-                <button type="button" className="back-button" onClick={() => this.setState({ clicked: false })}>
-                  Back
-                </button>
-              </div> */}
-              <div className="form-group">
-                {/* <FontAwesomeIcon icon="envelope" /> */}
-                <span>Email</span>
-                <input
-                  autoFocus
-                  className="input-box"
-                  // type="email"
-                  name="email"
-                  required
-                  value={email}
-                  onChange={this.onChangeField}
-                />
-              </div>
+              <Tab eventKey="Log in" title="Log in">
+                <div className="module-content">
+                  <form
+                    onSubmit={this.onSubmit}
+                    autoComplete="off"
+                    className="auth-form"
+                  >
 
-              <div className="form-group">
-                {/* <FontAwesomeIcon icon="lock" /> */}
-                <span>Password</span>
-                <input
-                  className="password-box"
-                  type="password"
-                  name="password"
-                  required
-                  value={password}
-                  onChange={this.onChangeField}
-                />
-              </div>
+                    <div className="form-group">
+                      {/* <FontAwesomeIcon icon="envelope" /> */}
+                      <span>Email</span>
+                      <input
+                        autoFocus
+                        className="input-box"
+                        // type="email"
+                        name="email"
+                        required
+                        value={email}
+                        onChange={this.onChangeField}
+                      />
+                    </div>
 
-              <div className="form-group remember-me">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="rememberMe"
-                    value={rememberMe}
-                    onChange={this.onChangeField}
-                  />
-                  Keep me logged in.
-                </label>
-                <div className="forgot-password-box">
-                  <Link to="/forgot-password">Forgot Password ?</Link>
+                    <div className="form-group">
+                      {/* <FontAwesomeIcon icon="lock" /> */}
+                      <span>Password</span>
+                      <input
+                        className="password-box"
+                        type="password"
+                        name="password"
+                        required
+                        value={password}
+                        onChange={this.onChangeField}
+                      />
+                    </div>
+
+                    <div className="form-group remember-me">
+                      {/* <label>
+                        <input
+                          type="checkbox"
+                          name="rememberMe"
+                          value={rememberMe}
+                          onChange={this.onChangeField}
+                        />
+                        Keep me logged in.
+                      </label> */}
+                      <div className="forgot-password-box">
+                        <Link to="/forgot-password">Forgot Password ?</Link>
+                      </div>
+                    </div>
+                    <div className="form-group">
+                      <Error error={error} />
+                    </div>
+                    <div className="form-button">
+                      <button
+                        type="submit"
+                        className="btn btn-primary submit"
+                        disabled={isLoading || this.isDisabled()}
+                      >
+                        {isLoading ? (
+                          <img src={loader} alt="" />
+                        ) : (
+                          'Log in'
+                        )}
+                      </button>
+                    </div>
+                    {
+                      domain?.self_registration === true ? (
+                        <>
+                          {/* <div className="vertical-line">
+                            <div className="line" />
+                            <p className="line-or">or</p>
+                            <div className="line" />
+                          </div> */}
+
+                          {/* <p className="auth-description text-center">
+                            New to Curriki?&nbsp;
+                            <a onClick={this.goToRegister}>
+                              Sign up
+                            </a>
+                          </p> */}
+
+                          <div className="form-group text-center mb-0">
+                            <GoogleLogin
+                              clientId={global.config.gapiClientId}
+                              theme="dark"
+                              render={(renderProps) => (
+                                <button type="button" className="google-button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                                  <img src={googleIcon} alt="googleIcon" style={{ float: 'left' }} />
+                                  Log in with Google
+                                </button>
+                              )}
+                              onSuccess={this.onGoogleLoginSuccess}
+                              onFailure={this.onGoogleLoginFailure}
+                              // eslint-disable-next-line max-len
+                              scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
+                              cookiePolicy="single_host_origin"
+                            />
+                          </div>
+                        </>
+                      )
+                        : (
+                          null
+                        )
+                    }
+                    <div className="termsandcondition">
+                      By clicking the &quot;Login&quot; button, you agree to Curriki&apos; s
+                      {' '}
+                      <a href="https://www.curriki.org/terms-of-service/">
+                        Terms of Use
+                      </a>
+                      {' '}
+                      and
+                      {' '}
+                      <a href="https://www.curriki.org/privacy-policy/">
+                        Privacy Policy.
+                      </a>
+                    </div>
+                  </form>
                 </div>
-              </div>
-
-              <Error error={error} />
-
-              <div className="form-button">
-                <button
-                  type="submit"
-                  className="btn btn-primary submit"
-                  disabled={isLoading || this.isDisabled()}
-                >
-                  {isLoading ? (
-                    <img src={loader} alt="" />
-                  ) : (
-                    'LOG IN'
-                  )}
-                </button>
-              </div>
-              <div className="vertical-line">
-                <div className="line" />
-                <p className="line-or">or</p>
-                <div className="line" />
-              </div>
-
-              <p className="auth-description text-center">
-                New to Curriki?&nbsp;
-                <a onClick={this.goToRegister}>
-                  Sign up
-                </a>
-              </p>
-
-              <div className="form-group text-center mb-0">
-                <GoogleLogin
-                  clientId={global.config.gapiClientId}
-                  theme="dark"
-                  render={(renderProps) => (
-                    <button type="button" className="google-button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                      <img src={googleIcon} alt="googleIcon" style={{ float: 'left', paddingRight: '19.23px' }} />
-                      Sign Up with Google
-                    </button>
-                  )}
-                  onSuccess={this.onGoogleLoginSuccess}
-                  onFailure={this.onGoogleLoginFailure}
-                  scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
-                  cookiePolicy="single_host_origin"
-                />
-
-              </div>
-
-              <div className="termsandcondition">
-                By clicking the &quot;Sign Up&quot; button, you are creating a CurrikiStudio  account, and you agree to Curriki&apos; s
-                {' '}
-                <a href="https://www.curriki.org/terms-of-service/">
-                  Terms of Use
-                </a>
-                {' '}
-                and
-                {' '}
-                <a href="https://www.curriki.org/privacy-policy/">
-                  Privacy Policy.
-                </a>
-              </div>
-
-              {/* <div className="form-group text-center mb-0">
-                <GoogleLogin
-                  clientId={global.config.gapiClientId}
-                  theme="dark"
-                  onSuccess={this.onGoogleLoginSuccess}
-                  onFailure={this.onGoogleLoginFailure}
-                  scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
-                  cookiePolicy="single_host_origin"
-                >
-                  <span>Login with Google</span>
-                </GoogleLogin>
-              </div> */}
-            </form>
+              </Tab>
+              {domain?.self_registration === true && <Tab eventKey="Sign up" title="Sign up" />}
+            </Tabs>
           </div>
         )}
 
@@ -369,7 +367,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
-  domain: state.organization.currentOrganization,
+  domain: state?.organization?.currentOrganization,
 });
 
 export default withRouter(

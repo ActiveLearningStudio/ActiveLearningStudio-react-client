@@ -261,7 +261,7 @@ function Controller(props) {
 
               <Dropdown.Menu>
                 {roles?.map((head) => (
-                  <div className="group">
+                  <div key={head} className="group">
                     <Dropdown.Item
                       onClick={() => {
                         setActiveRoleInComponent(head.display_name);
@@ -399,6 +399,19 @@ function Controller(props) {
             className=""
             type="text"
             placeholder="Search by URL or Email"
+            value={searchQuery}
+            onChange={searchQueryChangeHandler}
+          />
+          <img src={searchimg} alt="search" />
+        </div>
+      )}
+
+      {!!search && type === "DefaultSso" && (
+        <div className="search-bar">
+          <input
+            className=""
+            type="text"
+            placeholder="Search by URL or Client Id"
             value={searchQuery}
             onChange={searchQueryChangeHandler}
           />
@@ -688,6 +701,24 @@ function Controller(props) {
           </button>
         </div>
       )}
+      {!!btnText &&
+        type === "DefaultSso" &&
+        permission?.Organization.includes(
+          "organization:create-default-sso"
+        ) && (
+          <div className="btn-text">
+            <button
+              onClick={() => {
+                if (btnAction === "add_default_sso") {
+                  dispatch(setActiveAdminForm("add_default_sso"));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
       {inviteUser &&
         permission?.Organization?.includes("organization:invite-members") && (
           <div className="btn-text">

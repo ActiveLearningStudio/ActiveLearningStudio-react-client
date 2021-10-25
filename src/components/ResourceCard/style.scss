@@ -1,5 +1,15 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
+.playlist-resource-bg {
+  border: none !important;
+}
+.playlist-resource-title {
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
+  color: #515151 !important;
+}
 .resource-drag-gray {
   background-color: lightgray !important;
 }

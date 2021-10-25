@@ -19,6 +19,11 @@ const loginSSO = (body) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const canvasSsoLogin = (body) => httpService
+  .post('/login/lti-sso', body)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const loginWithGoogle = (body) => httpService
   .post('/login/google', body)
   .then(({ data }) => data)
@@ -86,4 +91,5 @@ export default {
   searchUsers,
   loadOrganizationTypes,
   loginSSO,
+  canvasSsoLogin,
 };

@@ -1,11 +1,12 @@
-import React from 'react';
-import Buttons from './buttons';
+/*eslint-disable*/
+import React from "react";
+import Buttons from "./buttons";
 
 export default {
-  title: 'Utilities/Buttons',
+  title: "Utilities/Buttons",
   component: Buttons,
   argTypes: {
-    backgroundColor: { control: 'color' },
+    backgroundColor: { control: "color" },
   },
 };
 
@@ -18,9 +19,10 @@ ButtonProps.args = {
   secondary: false,
   defaultgrey: false,
   defaultwhite: false,
-  icon: '',
-  width: '',
-  height: '',
-  radius: '',
-  text: '',
+  icon: "",
+  width: "",
+  height: "",
+  radius: "",
+  text: "",
+  type: "submit",
 };

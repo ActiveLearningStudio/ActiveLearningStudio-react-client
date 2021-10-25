@@ -34,7 +34,7 @@
     "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
     "react/jsx-props-no-spreading": 0,
     "react/no-array-index-key": 1,
-    "linebreak-style": 0,
+    "linebreak-style": 1,
     "template-curly-spacing" : "off",
     "indent": "off"
   }

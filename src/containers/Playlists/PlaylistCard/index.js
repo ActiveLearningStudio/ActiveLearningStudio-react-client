@@ -1,19 +1,22 @@
 /*eslint-disable */
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { Droppable, Draggable } from 'react-beautiful-dnd';
-import Swal from 'sweetalert2';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { Droppable, Draggable } from "react-beautiful-dnd";
+import Swal from "sweetalert2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import * as actionTypes from "store/actionTypes";
+import {
+  changePlaylistTitleAction,
+  clearFormData,
+} from "store/actions/playlist";
+import { clearSearch } from "store/actions/search";
+import { showDeletePopupAction, hideDeletePopupAction } from "store/actions/ui";
+import ResourceCard from "components/ResourceCard";
+import PlaylistCardDropdown from "./PlaylistCardDropdown";
 
-import { changePlaylistTitleAction, clearFormData } from 'store/actions/playlist';
-import { clearSearch } from 'store/actions/search';
-import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
-import ResourceCard from 'components/ResourceCard';
-import PlaylistCardDropdown from './PlaylistCardDropdown';
-
-import './style.scss';
+import "./style.scss";
 
 // TODO: need to clean up attributes, update to functional component
 // need to refactor template functions
@@ -29,7 +32,7 @@ class PlaylistCard extends React.Component {
     e.preventDefault();
 
     const { playlist, showDeletePopup } = this.props;
-    showDeletePopup(playlist.id, playlist.title, 'Playlist');
+    showDeletePopup(playlist.id, playlist.title, "Playlist");
   };
 
   handleAddNewResourceClick = () => {
@@ -46,23 +49,23 @@ class PlaylistCard extends React.Component {
     const { playlist, organization, teamPermission } = this.props;
 
     if (!playlist.activities || playlist.activities.length === 0) {
-      return (
-        <div className="alert alert-info m-3">No resource yet.</div>
-      );
+      return <div className="alert alert-info m-3">No resource yet.</div>;
     }
 
-    return playlist.activities.map((resource, index) => (
-      (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-activity') : organization?.permission?.Activity?.includes('activity:view'))
-      && (
-      <ResourceCard
-        {...this.props}
-        resource={resource}
-        key={resource.id}
-        index={index}
-        teamPermission={teamPermission || {}}
-      />
-      )
-    ));
+    return playlist.activities.map(
+      (resource, index) =>
+        (Object.keys(teamPermission).length
+          ? teamPermission?.Team?.includes("team:view-activity")
+          : organization?.permission?.Activity?.includes("activity:view")) && (
+          <ResourceCard
+            {...this.props}
+            resource={resource}
+            key={resource.id}
+            index={index}
+            teamPermission={teamPermission || {}}
+          />
+        )
+    );
   };
 
   onEnterPress = (e) => {
@@ -74,7 +77,7 @@ class PlaylistCard extends React.Component {
   onBlur = (e) => {
     const title = e.target.value;
     if (title.length > 50) {
-      Swal.fire('Character limit should be less than 50.');
+      Swal.fire("Character limit should be less than 50.");
       return;
     }
     const { playlist, projectId, changePlaylistTitle } = this.props;
@@ -84,34 +87,41 @@ class PlaylistCard extends React.Component {
     });
 
     if (playlist.title !== title) {
-      changePlaylistTitle(projectId, playlist.id, title)
-        .catch((err) => {
-          if (err.errors) {
-            if (err.errors.title.length > 0) {
-              Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: err.errors.title[0],
-              });
-            }
-          } else {
+      changePlaylistTitle(projectId, playlist.id, title).catch((err) => {
+        if (err.errors) {
+          if (err.errors.title.length > 0) {
             Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: err.message,
+              icon: "error",
+              title: "Error",
+              text: err.errors.title[0],
             });
           }
-        });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: err.message,
+          });
+        }
+      });
     }
   };
 
   handleClickPlaylistTitle = async () => {
-    if (this.props.organization?.permission?.Playlist?.includes('playlist:edit') || this.props.teamPermission?.Team?.includes('team:edit-playlist')) {
-      this.setState({
-        editMode: true,
-      }, () => {
-        this.titleInput.focus();
-      });
+    if (
+      this.props.organization?.permission?.Playlist?.includes(
+        "playlist:edit"
+      ) ||
+      this.props.teamPermission?.Team?.includes("team:edit-playlist")
+    ) {
+      this.setState(
+        {
+          editMode: true,
+        },
+        () => {
+          this.titleInput.focus();
+        }
+      );
     }
   };
 
@@ -120,31 +130,37 @@ class PlaylistCard extends React.Component {
     const {
       index,
       playlist,
+      projectId,
       organization,
       teamPermission,
     } = this.props;
     const { permission } = organization;
     return (
-      <Draggable
-        key={playlist.id}
-        draggableId={`${playlist.id}`}
-        index={index}
-      >
+      <Draggable key={playlist.id} draggableId={`${playlist.id}`} index={index}>
         {(provided) => (
           <div
             className="list-wrapper"
             ref={provided.innerRef}
             {...provided.draggableProps}
           >
-            <div className="list">
+            <div className="list playlist-bg">
               <div className="list-header" {...provided.dragHandleProps}>
                 <h2 className="playlist-header-name d-flex align-items-center">
                   <div
-                    className={`playlist-title-wrapper d-flex align-items-center ${editMode ? 'hide' : 'show'}`}
+                    className={`playlist-title-wrapper d-flex align-items-center ${
+                      editMode ? "hide" : "show"
+                    }`}
                     onClick={this.handleClickPlaylistTitle}
                   >
                     <span>{playlist.title}</span>
-                    {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-playlist') : permission?.Playlist?.includes('playlist:edit')) && <FontAwesomeIcon icon="pencil-alt" className="ml-2 edit-icon" />}
+                    {(Object.keys(teamPermission).length
+                      ? teamPermission?.Team?.includes("team:edit-playlist")
+                      : permission?.Playlist?.includes("playlist:edit")) && (
+                      <FontAwesomeIcon
+                        icon="pencil-alt"
+                        className="ml-2 edit-icon"
+                      />
+                    )}
                   </div>
 
                   <textarea
@@ -152,7 +168,7 @@ class PlaylistCard extends React.Component {
                       this.titleInput = input;
                     }}
                     name="playlist-title"
-                    className={editMode ? 'show' : 'hide'}
+                    className={editMode ? "show" : "hide"}
                     onBlur={this.onBlur}
                     onKeyPress={this.onEnterPress}
                     defaultValue={playlist.title}
@@ -173,7 +189,7 @@ class PlaylistCard extends React.Component {
               >
                 {(provd) => (
                   <div
-                    className="list-body"
+                    className="list-body playlist-body-bg"
                     {...provd.droppableProps}
                     ref={provd.innerRef}
                   >
@@ -184,23 +200,27 @@ class PlaylistCard extends React.Component {
                   </div>
                 )}
               </Droppable>
-              {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:add-activity') : (permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload'))) && (
+              {(Object.keys(teamPermission).length
+                ? teamPermission?.Team?.includes("team:add-activity")
+                : permission?.Activity?.includes("activity:create") ||
+                  permission?.Activity?.includes("activity:upload")) && (
                 <div className="playlist-add-res-button">
                   <button
                     type="button"
                     className="add-resource-to-playlist-btn"
                     onClick={() => {
                       const { clearSearchform } = this.props;
-                      this.handleAddNewResourceClick();
+                      // this.handleAddNewResourceClick();
+                      this.props.clear();
+                      this.props.openActivity(playlist, projectId);
                       clearSearchform();
                     }}
                   >
-                    <FontAwesomeIcon icon="plus-circle" className="mr-2" />
-                    Add new activity
+                    <FontAwesomeIcon icon="plus" className="mr-2" />
+                    Create or upload activty
                   </button>
                 </div>
               )}
-
             </div>
           </div>
         )}
@@ -229,11 +249,21 @@ PlaylistCard.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
+  showDeletePopup: (id, title, deleteType) =>
+    dispatch(showDeletePopupAction(id, title, deleteType)),
   hideDeletePopup: () => dispatch(hideDeletePopupAction()),
-  changePlaylistTitle: (projectId, id, title) => dispatch(changePlaylistTitleAction(projectId, id, title)),
+  changePlaylistTitle: (projectId, id, title) =>
+    dispatch(changePlaylistTitleAction(projectId, id, title)),
   clearForm: () => dispatch(clearFormData()),
   clearSearchform: () => dispatch(clearSearch()),
+  openActivity: (playlist, project) =>
+    dispatch({
+      type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+      payload: "layout",
+      playlist: playlist,
+      project: project,
+    }),
+  clear: () => dispatch({ type: actionTypes.CLEAR_STATE }),
 });
 
 const mapStateToProps = (state) => ({
@@ -242,5 +272,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(PlaylistCard),
+  connect(mapStateToProps, mapDispatchToProps)(PlaylistCard)
 );

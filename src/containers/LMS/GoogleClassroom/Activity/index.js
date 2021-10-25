@@ -1,5 +1,5 @@
 /* eslint-disable react/no-this-in-sfc */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useReducer } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -10,6 +10,15 @@ import { loadH5pResourceXapi } from 'store/actions/resource';
 import { loadH5pResourceSettings, getSubmissionAction, turnInAction } from 'store/actions/gapi';
 import { saveResultScreenshotAction } from 'store/actions/safelearn';
 import './style.scss';
+
+const reducer = (intervalPointer, action) => {
+  if (action.type === 'set') return action.intervalId;
+
+  if (action.type === 'clear') {
+    clearInterval(intervalPointer);
+    return null;
+  }
+};
 
 const Activity = (props) => {
   const {
@@ -26,15 +35,15 @@ const Activity = (props) => {
     turnIn,
     sendScreenshot,
   } = props;
+  const [intervalPointer, dispatch] = useReducer(reducer, 0);
   const [xAPILoaded, setXAPILoaded] = useState(false);
-  const [intervalPointer, setIntervalPointer] = useState(null);
   const [xAPIEventHooked, setXAPIEventHooked] = useState(false);
 
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
     getSubmission(match.params.classworkId, match.params.courseId, student.auth);
-  }, [activityId, student.auth]);
+  }, [activityId]);
 
   useEffect(() => {
     if (submission === null) return;
@@ -44,7 +53,7 @@ const Activity = (props) => {
 
   // Load H5P
   useEffect(() => {
-    if (h5pSettings === null || submission === null) return;
+    if (h5pSettings === null) return;
 
     window.H5PIntegration = h5pSettings.h5p.settings;
     const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
@@ -74,30 +83,29 @@ const Activity = (props) => {
       script.async = false;
       document.body.appendChild(script);
     });
+  }, [h5pSettings]);
 
+  useEffect(() => {
     // Loops until it finds H5P object
-    const checkXapi = setInterval(() => {
-      if (xAPILoaded) {
-        console.log('Loaded hit, returning');
-        return;
-      }
+    const intervalId = setInterval(() => {
+      const x = document.getElementsByClassName('h5p-iframe')[0]?.contentWindow;
+      if (!x?.H5P?.externalDispatcher) return;
 
-      const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
-      if (!x.H5P) return;
-      if (!x.H5P.externalDispatcher) return;
-
-      console.log('AE H5P ready');
-      clearInterval(checkXapi);
-      setIntervalPointer(null);
+      console.log('H5P dispatcher found');
       setXAPILoaded(true);
-    });
-    setIntervalPointer(checkXapi);
-  }, [h5pSettings, submission]);
+      console.log(`Clearing interval ${intervalPointer}`);
+      dispatch({ type: 'clear' });
+    }, 500);
+    dispatch({ type: 'set', intervalId });
+  }, []);
 
   // Patch into xAPI events
   useEffect(() => {
     console.log('AE entered hook');
-    if (!xAPILoaded || !submission || xAPIEventHooked) return;
+    if (!xAPILoaded || !submission || xAPIEventHooked) {
+      console.log('Abort patching into xAPI event dispatcher');
+      return;
+    }
 
     const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
     if (!x.H5P.externalDispatcher || xAPIHelper.isxAPINeeded(match.path) === false) {
@@ -105,9 +113,8 @@ const Activity = (props) => {
       return;
     }
 
-    console.log('AE found dispatcher, trying to hook');
     x.H5P.externalDispatcher.on('xAPI', function (event) {
-      console.log('AE running listener');
+      console.log('Running xAPI listener callback');
       const params = {
         path: match.path,
         activityId,
@@ -124,29 +131,14 @@ const Activity = (props) => {
       const xapiData = JSON.stringify(
         xAPIHelper.extendStatement(this, event.data.statement, params),
       );
+      sendStatement(xapiData);
 
+      if (h5pSettings?.organization?.api_key) {
+        sendScreenshot(h5pSettings.organization, xapiData, h5pSettings.activity.title, student.profile.data.name.fullName);
+      }
+
+      // Ask the user if he wants to turn-in the work to google classroom
       if (event.data.statement.verb.display['en-US'] === 'submitted-curriki') {
-        // Check if all questions/interactions have been accounted for in LRS
-        // If the user skips one of the questions, no xAPI statement is generated.
-        // We need statements for all questions for proper summary accounting.
-        // Fire off an artificial "answered" statement if necessary
-        if (this.parent === undefined && this.interactions) {
-          this.interactions.forEach((interaction) => {
-            if (interaction.getLastXAPIVerb()) return; // Already initialized
-
-            const xAPIData = interaction.getXAPIData();
-            if (!xAPIData) return; // Some interactions have no data to report
-
-            const iXAPIStatement = JSON.stringify(
-              xAPIHelper.extendStatement(this, xAPIData.statement, params, true),
-            );
-            sendStatement(iXAPIStatement);
-          }, this);
-        }
-
-        sendStatement(xapiData);
-
-        // Ask the user if he wants to turn-in the work to google classroom
         Swal.fire({
           title: 'Do you want to turn in your work to Google Classroom?',
           showCancelButton: true,
@@ -157,16 +149,10 @@ const Activity = (props) => {
             Swal.fire('Saved!', '', 'success');
           }
         });
-      } else {
-        sendStatement(xapiData);
-        if (h5pSettings?.organization?.api_key) {
-          sendScreenshot(h5pSettings.organization, xapiData, h5pSettings.activity.title, student.profile.data.name.fullName);
-        }
       }
     });
-    console.log('? AE hooked');
     setXAPIEventHooked(true);
-  }, [xAPILoaded, activityId, student, submission]);
+  }, [xAPILoaded]);
 
   // If the activity has already been submitted to google classroom, redirect to summary page
   useEffect(() => {

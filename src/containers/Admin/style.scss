@@ -1,4 +1,3 @@
-
 @import "assets/css/index";
 
 .admin-panel {
@@ -138,7 +137,6 @@
       margin-right: 8px;
       margin-top: 3px;
       margin-bottom: 3px;
-
     }
 
     .retryandforget {
@@ -366,16 +364,17 @@
   }
 
   .table-data {
-    border:1px solid #e5e5e5;
+    border: 1px solid #e5e5e5;
     .responsive-table {
       overflow-x: auto;
     }
     table {
       width: 100%;
 
-      td,th {
-        border: 1px solid #C4C4C4;
-        padding:16px;
+      td,
+      th {
+        border: 1px solid #c4c4c4;
+        padding: 16px;
         span {
           display: flex;
         }
@@ -499,47 +498,49 @@
     .inner-form-content {
       background: #fff;
       opacity: 1;
-      width: 100%;
-      height: 160vh;
+      width: calc(100% - 285px);
       display: flex;
       justify-content: left;
       align-items: flex-start;
       padding: 50px;
+      height: 100%;
+      position: fixed;
+      overflow: auto;
 
       .create-form {
         width: 100%;
         height: 100%;
 
-      .all-users-list {
-        position: absolute;
-        top: 70px;
-        background: #fff;
-        padding: 10px;
-        width: 90%;
-        max-height: 140px;
-        overflow: auto;
-        border: 1px solid #ccc;
-        z-index:11;
+        .all-users-list {
+          position: absolute;
+          top: 70px;
+          background: #fff;
+          padding: 10px;
+          width: 90%;
+          max-height: 140px;
+          overflow: auto;
+          border: 1px solid #ccc;
+          z-index: 11;
 
-        li {
-         font-size: 14px;
-         padding: 5px 0px;
-         border-bottom: 1px solid #ccc;
-         color: $fun-blue-1;
-         cursor: pointer;
+          li {
+            font-size: 14px;
+            padding: 5px 0px;
+            border-bottom: 1px solid #ccc;
+            color: $fun-blue-1;
+            cursor: pointer;
 
-         &:hover {
-           text-decoration: underline;
-         }
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+
+          p {
+            font-size: 11px;
+            text-decoration: underline;
+            margin-bottom: 0px;
+            color: #ccc;
+          }
         }
-
-        p{
-          font-size: 11px;
-          text-decoration: underline;
-          margin-bottom: 0px;
-          color :#ccc;
-        }
-      }
         h2 {
           font-weight: 500;
           font-size: 31.25px;
@@ -560,6 +561,7 @@
             border: 1px solid #888888;
             box-sizing: border-box;
             border-radius: 3px;
+            padding: 0 10px;
           }
 
           textarea {
@@ -660,7 +662,7 @@
     padding: 0px 20px;
 
     form {
-      width:100%;
+      width: 100%;
       margin-bottom: 20px;
     }
 
@@ -673,7 +675,6 @@
     .box-group {
       display: flex;
       justify-content: space-between;
-
 
       .top-cat {
         width: 15%;
@@ -858,5 +859,54 @@
         width: 11px !important;
       }
     }
+  }
+}
+
+// Create LMS Update Form
+.create-form-inputs-group {
+  display: flex;
+  > div {
+    flex: 1;
+    padding-right: 100px;
+  }
+}
+.create-form-inputs-group-access {
+  display: flex;
+  > div {
+    width: 50%;
+    padding-right: 100px;
+  }
+}
+.create-form-inputs-toggles {
+  display: flex;
+  margin-right: 0 !important;
+}
+
+.custom-toggle-button {
+  display: flex;
+  // justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  margin-top: 10px;
+  // text-transform: uppercase;
+  margin-right: 20px;
+  h3 {
+    margin-left: 12px !important;
+  }
+  .react-switch {
+    max-width: max-content !important;
+    padding-left: 5px;
+    .react-switch-bg {
+      height: 20px !important;
+      width: 54px !important;
+    }
+  }
+  .react-switch-handle {
+    width: 26px !important;
+    height: 26px !important;
+    top: -2px !important;
+  }
+  .react-switch-handle:checked {
+    transform: translateX(32px) !important;
   }
 }

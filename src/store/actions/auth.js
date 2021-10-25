@@ -329,9 +329,48 @@ export const SSOLoginAction = (data) => async (dispatch) => {
   try {
     const response = await authService.loginSSO(data);
     storageService.setItem(USER_TOKEN_KEY, response.access_token);
-    storageService.setItem(CURRENT_ORG, 'currikistudio');
+    storageService.setItem(CURRENT_ORG, response.user.user_organization.domain);
     await dispatch(getAllOrganizationforSSO());
 
+    dispatch({
+      type: actionTypes.ADD_ACTIVE_ORG,
+      payload: response.user.user_organization,
+      });
+    dispatch({
+      type: actionTypes.ADD_CURRENT_ORG,
+      payload: response.user.user_organization,
+      });
+
+    dispatch({
+      type: actionTypes.LOGIN_SUCCESS,
+      payload: { user: response.user },
+    });
+    console.log('SSOLoginAction success');
+  } catch (e) {
+    console.log('SSOLoginAction failed');
+    dispatch({
+      type: actionTypes.LOGIN_FAIL,
+    });
+
+    throw e;
+  }
+};
+
+export const CanvasSSOLoginAction = (data) => async (dispatch) => {
+  try {
+    const response = await authService.canvasSsoLogin(data);
+    storageService.setItem(USER_TOKEN_KEY, response.access_token);
+    storageService.setItem(CURRENT_ORG, response.user.user_organization.domain);
+    await dispatch(getAllOrganizationforSSO());
+
+    dispatch({
+      type: actionTypes.ADD_ACTIVE_ORG,
+      payload: response.user.user_organization,
+      });
+    dispatch({
+      type: actionTypes.ADD_CURRENT_ORG,
+      payload: response.user.user_organization,
+      });
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
       payload: { user: response.user },
