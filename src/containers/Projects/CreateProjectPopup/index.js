@@ -158,7 +158,7 @@ let CreateProjectPopup = (props) => {
           </div>
 
           <div className="project-description">
-            <Field name="What is you project about?" component={TextareaField} validate={[required, maxLength1000]} autoComplete="new-password" label="Project Description" />
+            <Field name="description" component={TextareaField} validate={[required, maxLength1000]} autoComplete="new-password" label="Project Description" />
           </div>
           <div className="upload-thumbnail check">
             <div className="upload_placeholder">
