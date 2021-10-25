@@ -1,15 +1,12 @@
 {
-	"editor.detectIndentation": false,
-	"javascript.preferences.quoteStyle": "single",
-	"prettier.singleQuote": true,
-	"editor.tabSize": 2,
-	"prettier.printWidth": 180,
-	"editor.formatOnSave": true,
-	"editor.codeActionsOnSave": {
-		"source.fixAll.eslint": true
-	},
-	"eslint.validate": [
-		"javascript"
-	],
-	"prettier.enable": false,
+  "editor.detectIndentation": false,
+  "javascript.preferences.quoteStyle": "single",
+  "prettier.singleQuote": true,
+  "editor.tabSize": 2,
+  "prettier.printWidth": 180,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": ["javascript"]
 }

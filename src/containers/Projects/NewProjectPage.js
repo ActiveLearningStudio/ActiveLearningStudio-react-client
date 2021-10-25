@@ -1,12 +1,12 @@
 /*eslint-disable*/
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
-import styled, { keyframes } from "styled-components";
-import { slideInRight } from "react-animations";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import styled, { keyframes } from 'styled-components';
+import { slideInRight } from 'react-animations';
+import close from 'assets/images/close.svg';
 
-import CreateProjectPopup from "./CreateProjectPopup";
+import CreateProjectPopup from './CreateProjectPopup';
 
 const bounceAnimation = keyframes`${slideInRight}`;
 
@@ -30,24 +30,15 @@ function NewProjectPage(props) {
               <div className="row">
                 <div className="col-md-12">
                   <h1 className="mt-4 mb-0">
-                    <span>
-                      {" "}
-                      {`${editMode ? "Update" : "Create a"} Project`}
-                    </span>
+                    <span> {`${editMode ? 'Update' : 'Create a'} Project`}</span>
 
-                    <button
-                      type="button"
-                      className="close-btn"
-                      data-dismiss="modal"
-                      onClick={() => handleCloseProjectModal(false)}
-                    >
-                      <FontAwesomeIcon
-                        icon="times"
+                    <button type="button" className="close-btn" data-dismiss="modal" onClick={() => handleCloseProjectModal(false)}>
+                      <img
                         style={{
-                          WebkitTextStroke: "4px #fff",
-                          color: "#333",
-                          cursor: "pointer",
+                          cursor: 'pointer',
                         }}
+                        src={close}
+                        alt="close"
                       />
                     </button>
                   </h1>
@@ -58,11 +49,7 @@ function NewProjectPage(props) {
             <div className="modal-body">
               <div className="row">
                 <div className="col-md-12">
-                  <CreateProjectPopup
-                    editMode
-                    {...props}
-                    thumbUrl={project.thumbUrl}
-                  />
+                  <CreateProjectPopup editMode {...props} thumbUrl={project.thumbUrl} />
                 </div>
               </div>
             </div>

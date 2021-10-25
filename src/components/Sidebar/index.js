@@ -1,23 +1,19 @@
 /* eslint-disable */
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 
-import PropTypes from "prop-types";
-import { Link, withRouter } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import PropTypes from 'prop-types';
+import { Link, withRouter } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import teamicon from 'assets/images/sidebar/team-icon.png';
+import administrate from 'assets/images/sidebar/administrate.png';
+import foldericon from 'assets/images/svg/projectFolder.svg';
+import { allSidebarProjects } from 'store/actions/project';
 
-import foldericon from "assets/images/sidebar/folder-icon.png";
-import teamicon from "assets/images/sidebar/team-icon.png";
+import './style.scss';
+import { clearTeamPermissions } from 'store/actions/team';
 
-import administrate from "assets/images/sidebar/administrate.png";
-
-import childOrganizationIcon from "assets/images/child-organization-icon.png";
-import { allSidebarProjects } from "store/actions/project";
-
-import "./style.scss";
-import { clearTeamPermissions } from "store/actions/team";
-
-const PROJECTS = "projects";
-const CHANNEL = "channel";
+const PROJECTS = 'projects';
+const CHANNEL = 'channel';
 
 function Sidebar(props) {
   const { location } = props;
@@ -26,15 +22,15 @@ function Sidebar(props) {
 
   const allState = useSelector((state) => state);
   useEffect(() => {
-    document.body.classList.add("collapsed");
+    document.body.classList.add('collapsed');
   }, []);
 
   const organization = useSelector((state) => state.organization);
   const { permission } = organization;
 
   useEffect(() => {
-    if (location.pathname.includes("teams/")) {
-      const teamId = parseInt(location.pathname.split("teams/")[1], 10);
+    if (location.pathname.includes('teams/')) {
+      const teamId = parseInt(location.pathname.split('teams/')[1], 10);
       if (teamId) {
         // setSelectedTeam(teamId);
 
@@ -57,12 +53,9 @@ function Sidebar(props) {
 
   return (
     <aside className="sidebar-all">
-      {permission?.Project?.includes("project:view") && (
+      {permission?.Project?.includes('project:view') && (
         <>
-          <Link
-            to={`/org/${allState.organization.currentOrganization?.domain}`}
-            onClick={() => dispatch(clearTeamPermissions())}
-          >
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}`} onClick={() => dispatch(clearTeamPermissions())}>
             <div className="row-sidebar">
               <img src={foldericon} alt="" />
               <div className="sidebar-headings">My Projects</div>
@@ -70,11 +63,9 @@ function Sidebar(props) {
           </Link>
         </>
       )}
-      {permission?.Team?.includes("team:view") && (
+      {permission?.Team?.includes('team:view') && (
         <>
-          <Link
-            to={`/org/${allState.organization.currentOrganization?.domain}/teams`}
-          >
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
             <div className="row-sidebar">
               <img src={teamicon} alt="" />
               <div className="sidebar-headings">Teams</div>
@@ -82,12 +73,9 @@ function Sidebar(props) {
           </Link>
         </>
       )}
-      {permission?.Organization?.includes("organization:view") && (
+      {permission?.Organization?.includes('organization:view') && (
         <>
-          <Link
-            to={`/org/${allState.organization.currentOrganization?.domain}/admin`}
-            onClick={() => dispatch(clearTeamPermissions())}
-          >
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}/admin`} onClick={() => dispatch(clearTeamPermissions())}>
             <div className="row-sidebar">
               <img src={administrate} alt="" />
               <div className="sidebar-headings">Admin Panel</div>

@@ -1,14 +1,11 @@
-/*eslint-disable*/
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { ProjectPage } from "../../containers/Projects/index.js";
-// import foldericon from "assets/images/sidebar/folder-icon.png";
+import React from 'react';
+import PropTypes from 'prop-types';
 import foldericon from 'assets/images/svg/projectFolder.svg';
 import { useSelector } from 'react-redux';
 import { setCurrentVisibilityType } from 'store/actions/project';
 import Headings from 'curriki-design-system/dist/utils/Headings/headings';
-// import MyProjectsCreate from "./MyProjects";
+import Buttons from 'utils/Buttons/buttons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 export default function Headline({ setCreateProject, seteditMode }) {
   const organization = useSelector((state) => state.organization);
@@ -26,45 +23,30 @@ export default function Headline({ setCreateProject, seteditMode }) {
               <Headings text="My Projects" headingType="h2" color="#084892" />
             </div>
           </div>
-          {/* {(currentOrganization?.organization_role === 'Administrator' || currentOrganization?.organization_role === 'Course Creator') && (
-          <Link to={`/org/${organization.currentOrganization?.domain}/project/create`}>
-            <div className="btn-top-page">
-              <FontAwesomeIcon icon="plus" className="mr-2" />
-              Create a Project
-            </div>
-          </Link>
-        )} */}
-          {/* Update The Code */}
+
           {permission?.Project?.includes('project:create') && (
-            <Link
-              to="#"
+            <Buttons
+              primary
+              text="Create a project"
+              icon={faPlus}
+              width="165px"
+              height="35px"
               onClick={() => {
                 setCurrentVisibilityType(null);
                 seteditMode(false);
                 setCreateProject(true);
               }}
-            >
-              <div className="btn-top-page">
-                <FontAwesomeIcon icon="plus" className="mr-2" />
-                Create a Project
-              </div>
-            </Link>
+              hover
+            />
           )}
         </div>
         <Headings text="Create and organize your activities into projects to create complete courses." headingType="body2" color="#515151" className="top-heading-detail" />
-        {/* <p>
-          In
-          <strong> Projects </strong>
-          you can manage each course or program you create.
-          <strong> Add a playlist </strong>
-          to a<strong> Project </strong>
-          and create interactive
-          <strong> Activities. </strong>
-          <br />
-          Once you finish a<strong> Project, Share </strong>
-          it with your audience.
-        </p> */}
       </div>
     </>
   );
 }
+
+Headline.propTypes = {
+  seteditMode: PropTypes.func.isRequired,
+  setCreateProject: PropTypes.func.isRequired,
+};
