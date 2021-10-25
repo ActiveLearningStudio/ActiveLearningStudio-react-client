@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .main-page-content {
   padding-top: 85px;
@@ -366,8 +366,7 @@
           margin-top: 3px;
           margin-right: 8px;
           display: block;
-          background: url(../../assets/images/program-lesson-icon.png) no-repeat
-            center;
+          background: url(../../assets/images/program-lesson-icon.png) no-repeat center;
           float: left;
         }
       }
@@ -382,8 +381,7 @@
           margin-top: 3px;
           margin-right: 8px;
           display: block;
-          background: url(../../assets/images/program-duration-icon.png)
-            no-repeat center;
+          background: url(../../assets/images/program-duration-icon.png) no-repeat center;
           float: left;
         }
       }
@@ -538,7 +536,7 @@
     color: #fff !important;
 
     &:after {
-      content: "";
+      content: '';
       position: absolute;
       bottom: -8px;
       left: 50%;
@@ -805,7 +803,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: "";
+  content: '';
 }
 
 blockquote,
@@ -974,7 +972,7 @@ body {
   background: #fff;
   align-items: center;
   top: 0;
-  padding: 0 30px;
+  padding: 0 32px;
 }
 
 .closebtn {
@@ -996,7 +994,7 @@ body {
 }
 
 .top-info li {
-  padding: 0 5px;
+  padding-left: 32px;
 }
 
 .top-info > li:first-child > a {
@@ -1074,7 +1072,7 @@ body.menuopen {
 }
 
 body.menuopen:before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -1165,8 +1163,7 @@ nav > ul > li.active a i {
 
 nav > ul > li > a:hover img,
 nav > ul > li.active > a img {
-  filter: invert(70%) sepia(23%) saturate(1975%) hue-rotate(192deg)
-    brightness(108%) contrast(100%);
+  filter: invert(70%) sepia(23%) saturate(1975%) hue-rotate(192deg) brightness(108%) contrast(100%);
 }
 
 .show {
@@ -1242,7 +1239,7 @@ header {
 
 .menuoverlay:before {
   position: absolute;
-  content: "";
+  content: '';
   height: 100%;
   width: 100%;
   top: 0;
@@ -1326,7 +1323,7 @@ header {
 
 .clearfix:before,
 .clearfix:after {
-  content: " ";
+  content: ' ';
   display: table;
 }
 
@@ -1362,7 +1359,7 @@ header {
 
 .togglebtn span::before,
 .togglebtn span::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
 }
@@ -1459,7 +1456,7 @@ header.head_mobile {
           h2 {
             color: rgb(8, 72, 146) !important;
             font-weight: 500;
-            font-family: "rubic";
+            font-family: 'rubic';
             font-size: 32px;
             line-height: 36px;
             font-style: normal;
@@ -1471,7 +1468,7 @@ header.head_mobile {
           margin-top: 16px;
           p {
             color: #515151 !important;
-            font-family: "Open Sans", sans-serif;
+            font-family: 'Open Sans', sans-serif;
             font-size: 16px;
             font-weight: 400;
             line-height: 22px;
@@ -1542,8 +1539,7 @@ a:hover {
     transform: translateX(0%);
     display: block;
     background: #fff;
-    transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1),
-      -webkit-transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1), -webkit-transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .menu_link.active {
@@ -1551,7 +1547,7 @@ a:hover {
   }
 
   html.menuhidden body:before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -1886,12 +1882,12 @@ a:hover {
     textarea.title {
       font-size: 30px;
       padding: 10px;
-     
+
       margin-top: 0px;
       margin-bottom: 0px;
-			border-color: #ececec;
-      border-radius:5px;
-			box-shadow: 0px 0px 7px 1px #eceaea;
+      border-color: #ececec;
+      border-radius: 5px;
+      box-shadow: 0px 0px 7px 1px #eceaea;
     }
     .project-images {
       .on-hover-project-image {
@@ -1938,14 +1934,14 @@ a:hover {
           z-index: 1050;
           background: #fff;
           padding: 32px 24px 32px 24px;
-					border: 1px solid #ccc;
-					box-shadow: 0px 0px 9px 5px #ccc;
+          border: 1px solid #ccc;
+          box-shadow: 0px 0px 9px 5px #ccc;
         }
       }
       .button-flex-project-images {
         display: flex;
         justify-content: space-around;
-				margin-top:10px
+        margin-top: 10px;
       }
       .gallery,
       .pexel {
@@ -2254,7 +2250,7 @@ a:hover {
   }
 
   .accordion.active i::before {
-    content: "\f068";
+    content: '\f068';
   }
 
   .accordion a {
@@ -2272,7 +2268,7 @@ a:hover {
       padding-left: 5px;
 
       &:before {
-        content: "\f054" !important;
+        content: '\f054' !important;
       }
     }
   }
@@ -2477,7 +2473,7 @@ a:hover {
   padding: 0px;
 
   .line::after {
-    content: "";
+    content: '';
   }
 
   .watcher {
@@ -2619,7 +2615,7 @@ a:hover {
 
     button.collapsed {
       .fa:before {
-        content: "\f107";
+        content: '\f107';
       }
     }
 
@@ -3459,25 +3455,23 @@ a:hover {
 
 .video_activity.modal {
   nav {
-
     margin: 0;
     padding: 0 0 0 0;
-		border:none;
-		margin-bottom: 15px;
-		
+    border: none;
+    margin-bottom: 15px;
 
     a.active {
-			border-bottom:2px solid #F8AF2C;
-			color:#084892;
-		 	font-weight:500
+      border-bottom: 2px solid #f8af2c;
+      color: #084892;
+      font-weight: 500;
     }
 
     a {
-     color:#084892;
-		 font-weight:400;
-		 border:none;
-		 padding:0px 45px;
-		 border-bottom:1px solid #084892;
+      color: #084892;
+      font-weight: 400;
+      border: none;
+      padding: 0px 45px;
+      border-bottom: 1px solid #084892;
     }
   }
 
@@ -3599,7 +3593,7 @@ a:hover {
 
 .menu-user-settings .dropdown-menu.user-dropdown {
   top: 10px !important;
- 
+
   padding: 15px;
   border-top: 0;
 }

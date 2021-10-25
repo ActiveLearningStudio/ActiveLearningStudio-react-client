@@ -1,32 +1,22 @@
 /* eslint-disable */
-import React, { useEffect, useMemo, useState } from "react";
-import { Dropdown } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useMemo, useState } from 'react';
+import { Dropdown } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
-import storageService from "services/storage.service";
-import { CURRENT_ORG } from "constants/index";
-import {
-  getAllOrganization,
-  setCurrentOrganization,
-  setActiveOrganization,
-  getAllPermission,
-  getRoles,
-} from "store/actions/organization";
-import menu from "assets/images/menu_square.png";
+import storageService from 'services/storage.service';
+import { CURRENT_ORG } from 'constants/index';
+import { getAllOrganization, setCurrentOrganization, setActiveOrganization, getAllPermission, getRoles } from 'store/actions/organization';
+import menu from 'assets/images/menu.svg';
 
 export default function MultitenancyDropdown() {
   const dispatch = useDispatch();
   const history = useHistory();
   const stateHeader = useSelector((state) => state.organization);
   const auth = useSelector((state) => state.auth);
-  const [selectOrg, setSelectOrg] = useState(
-    stateHeader.currentOrganization?.name || "Select Organization"
-  );
+  const [selectOrg, setSelectOrg] = useState(stateHeader.currentOrganization?.name || 'Select Organization');
   useEffect(() => {
-    setSelectOrg(
-      stateHeader.currentOrganization?.name || "Select Organization"
-    );
+    setSelectOrg(stateHeader.currentOrganization?.name || 'Select Organization');
   }, [stateHeader.currentOrganization]);
   useMemo(() => {
     if (auth?.user) {
@@ -62,11 +52,11 @@ export default function MultitenancyDropdown() {
               </Dropdown.Item>
               <p>
                 Parent: &nbsp;
-                {org?.parent?.name || "NA"}
+                {org?.parent?.name || 'NA'}
               </p>
               <p>
                 Domain: &nbsp;
-                {org?.domain || "NA"}
+                {org?.domain || 'NA'}
               </p>
             </div>
           ))}
