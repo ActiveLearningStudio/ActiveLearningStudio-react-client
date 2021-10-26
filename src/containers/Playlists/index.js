@@ -277,7 +277,6 @@ function PlaylistsPage(props) {
     }
   };
   const onBlur = (e) => {
-    console.log(e.target.value, "value");
     if (e.target.name === 'projectname') {
       titleRef.current.blur();
       setEditName(false);
