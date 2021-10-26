@@ -200,7 +200,7 @@ function ProjectPreview(props) {
                           </Link>
                         </div>
                         {/* {activeShared && ( */}
-                        <div
+                        {permission?.Project?.includes('project:share') && (<div
                           className="shared-link"
                           onClick={() => {
                             if (window.gapi && window.gapi.sharetoclassroom) {
@@ -213,7 +213,7 @@ function ProjectPreview(props) {
                         >
                           <FontAwesomeIcon icon="link" className="mr-2" />
                           Get Shared Link
-                        </div>
+                        </div>)}
                         {/* )} */}
                       </div>
                     </div>
@@ -244,8 +244,8 @@ function ProjectPreview(props) {
               deletePlaylist={deletePlaylist}
               // hideDeletePopup={hideDeletePopup}
               deleteProject={deleteProject}
-              // deleteType="project"
-              // showDeletePopup={showDeletePopup}
+            // deleteType="project"
+            // showDeletePopup={showDeletePopup}
             />
           )}
         </>

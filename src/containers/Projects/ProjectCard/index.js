@@ -85,7 +85,7 @@ const ProjectCard = (props) => {
             <span className="textinButton">Edit</span>
           </button>
         )}
-        {project.shared && (
+        {project.shared && organization?.permission?.Project?.includes('project:share') && (
           <button
             type="button"
             onClick={() => {
