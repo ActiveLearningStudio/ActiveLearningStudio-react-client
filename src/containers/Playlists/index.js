@@ -280,7 +280,7 @@ function PlaylistsPage(props) {
     if (e.target.name === 'projectname') {
       titleRef.current.blur();
       setEditName(false);
-      if (selectedProject.name !== e.target.value && e.target.value <= 260) {
+      if (selectedProject.name !== e.target.value && e.target.value.length <= 260) {
         dispatch(updateProjectAction(selectedProject?.id, {
           name: e.target.value,
           description: selectedProject.description,
@@ -297,7 +297,7 @@ function PlaylistsPage(props) {
     } else if (e.target.name === 'projectdescription') {
       descriptionRef.current.blur();
       setEditDescription(false);
-      if (selectedProject.description !== e.target.value && e.target.value <= 1000) {
+      if (selectedProject.description !== e.target.value && e.target.value.length <= 1000) {
         dispatch(updateProjectAction(selectedProject?.id, {
           name: selectedProject.name,
           description: e.target.value,
