@@ -10,6 +10,7 @@ import {
   deleteFavObj,
   toggleProjectShareAction,
   getProjectCourseFromLMS,
+  clearProjectSelected,
 } from 'store/actions/project';
 import { cloneProject } from 'store/actions/search';
 import ProjectPreviewShared from 'containers/Preview/ProjectPreview/ProjectPreviewShared';
@@ -277,6 +278,7 @@ const SampleProjectCard = (props) => {
           <div
             className="btn-back"
             onClick={() => {
+              dispatch(clearProjectSelected());
               setShowSampleSort(true);
               if (type === 'fav') {
                 setSelectFavId(null);

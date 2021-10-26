@@ -26,12 +26,20 @@ function ProjectPreviewShared(props) {
   const accordion = useRef([]);
 
   const [currentProject, setCurrentProject] = useState(null);
-
   useEffect(() => {
-    if (project && Object.keys(project.projectSelect).length > 0 && project.isSharedProject) {
-      setCurrentProject(project.projectSelect);
+    if (sampleId) {
+      loadMyProjectsPreviewShared(sampleId);
+    } else {
+      loadMyProjectsPreviewShared(match.params.projectId);
     }
-  }, [project]);
+  }, [match.params.projectId, sampleId]);
+  useEffect(() => {
+    if (project && project?.isSharedProject) {
+      setCurrentProject(project?.projectSelect);
+    } else if (project && !project?.isSharedProject) {
+      setCurrentProject(null);
+    }
+  }, [project?.projectSelect, sampleId]);
 
   const settings = {
     dots: false,
@@ -84,13 +92,7 @@ function ProjectPreviewShared(props) {
   //   }
   // }, []);
 
-  useEffect(() => {
-    if (sampleId) {
-      loadMyProjectsPreviewShared(sampleId);
-    } else {
-      loadMyProjectsPreviewShared(match.params.projectId);
-    }
-  }, [match.params.projectId, sampleId]);
+
   useEffect(() => {
     localStorage.setItem("lti_activity", true);
   }, []);
@@ -245,6 +247,6 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(loadMyProjectsPreviewSharedAction(projectId)),
 });
 
-export default React.memo(
+export default (
   withRouter(connect(null, mapDispatchToProps)(ProjectPreviewShared))
 );
