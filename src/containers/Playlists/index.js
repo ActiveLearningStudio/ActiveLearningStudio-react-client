@@ -277,6 +277,7 @@ function PlaylistsPage(props) {
     }
   };
   const onBlur = (e) => {
+    console.log(e.target.value, "value");
     if (e.target.name === 'projectname') {
       titleRef.current.blur();
       setEditName(false);
@@ -287,7 +288,7 @@ function PlaylistsPage(props) {
           thumb_url: thumbUrl,
           organization_visibility_type_id: selectedProject.organization_visibility_type_id || 1,
         }));
-      } else {
+      } else if (e.target.value.length > 260) {
         Swal.fire({
           icon: 'warning',
           title: 'Exceeding length',
@@ -304,7 +305,7 @@ function PlaylistsPage(props) {
           thumb_url: thumbUrl,
           organization_visibility_type_id: selectedProject.organization_visibility_type_id || 1,
         }));
-      } else {
+      } else if (e.target.value.length > 1000) {
         Swal.fire({
           icon: 'warning',
           title: 'Exceeding length',
