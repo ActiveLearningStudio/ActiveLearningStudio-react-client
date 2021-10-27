@@ -9,7 +9,7 @@ import shepherds from 'assets/images/shepherds.svg';
 import sndt from 'assets/images/SNDT-LOGO-blue.png';
 import nevada from 'assets/images/nevada.png';
 import openeducation from 'assets/images/openeducation.png';
-import bodyImg from 'assets/images/login_bglogo_new.svg';
+import bodyImg from 'assets/images/log-in.png';
 
 export default function Logo() {
   const logoState = useSelector((state) => state.organization.currentOrganization);
@@ -44,7 +44,9 @@ export default function Logo() {
     <div className="auth-leftpane">
       {image ? (
         <img className="auth-header-logo" src={global.config.resourceUrl + image} alt="logo" title="" />
-      ) : <img className="auth-header-logo" src={defaultLogo} alt="logo" title="" />}
+      ) : (
+        <img className="auth-header-logo" src={defaultLogo} alt="logo" title="" />
+      )}
       <div className="auth-body">
         <img src={bodyImg} alt="login-background-img" className="background-img-leftpane" />
       </div>

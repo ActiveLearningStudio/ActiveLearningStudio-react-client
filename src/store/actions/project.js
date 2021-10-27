@@ -738,3 +738,9 @@ export const updatedProject = (userId) => async () => {
       }
     });
 };
+
+export const clearProjectSelected = () => (dispatch) => {
+  dispatch({
+    type: actionTypes.CLEAR_PROJECT_SELECT,
+  });
+};

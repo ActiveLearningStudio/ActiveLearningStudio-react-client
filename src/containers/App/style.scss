@@ -3235,15 +3235,17 @@ a:hover {
   a {
     padding-right: 30px;
     color: $fun-blue-1;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     text-decoration: underline;
+    font-family: $sans;
   }
 
   span {
-    font-size: 10px;
+    font-size: 12px;
     color: #515151;
     margin-right: 20px;
+    font-family: $sans;
   }
 }
 

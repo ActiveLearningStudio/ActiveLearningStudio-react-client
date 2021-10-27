@@ -32,7 +32,7 @@
   color: $white !important;
 }
 .main-tabs .nav-item {
-  background-color: $curriki-main-blue !important;
+  background-color: $fun-blue-1 !important;
   color: $white !important;
   width: 160px;
   height: 36px;
@@ -48,7 +48,7 @@
 
 .main-tabs .nav-item.active {
   background-color: $white !important;
-  color: $curriki-main-blue !important;
+  color: $fun-blue-1 !important;
   border-bottom: #fff !important;
 }
 .main-tabs .nav-item.active:after {
@@ -392,6 +392,9 @@
   .top-heading-detail {
     margin-top: 15px;
     margin-bottom: 15px;
+  }
+  button .fa-plus {
+    color: #f8af2c;
   }
 }
 .initial-project-wrapper {

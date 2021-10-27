@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -11,12 +12,13 @@ import bg1 from 'assets/images/loginbg2.png';
 import loader from 'assets/images/loader.svg';
 import leftArrow from 'assets/images/left-arrow.svg';
 import { GoogleLogin } from 'react-google-login';
-import googleIcon from 'assets/images/google.png';
+import googleIcon from 'assets/images/google.svg';
 import { registerAction, loadOrganizationTypesAction, googleLoginAction } from 'store/actions/auth';
 import { getErrors } from 'utils';
 import { Tabs, Tab } from 'react-bootstrap';
 import Error from './Error';
 import Logo from './Logo';
+import eye from 'assets/images/eye.svg';
 
 import './style.scss';
 // eslint-disable-next-line no-restricted-globals
@@ -39,6 +41,7 @@ class RegisterPage extends React.Component {
       googleResponse: null,
       activeTab: 'Sign up',
       stepper: false,
+      showPassword: false,
     };
   }
 
@@ -77,15 +80,7 @@ class RegisterPage extends React.Component {
       if (googleResponse) {
         this.onGoogleLoginSuccess(googleResponse);
       } else {
-        const {
-          firstName,
-          lastName,
-          email,
-          password,
-          organizationName,
-          organizationType,
-          jobTitle,
-        } = this.state;
+        const { firstName, lastName, email, password, organizationName, organizationType, jobTitle } = this.state;
         const { history, register } = this.props;
         const { domain } = this.props;
         const data = {
@@ -106,12 +101,11 @@ class RegisterPage extends React.Component {
           html: message,
           showConfirmButton: true,
           confirmButtonText: 'Login to CurrikiStudio',
-        })
-          .then((result) => {
-            if (result.isConfirmed) {
-              history.push(`/login/${domain?.domain}`);
-            }
-          });
+        }).then((result) => {
+          if (result.isConfirmed) {
+            history.push(`/login/${domain?.domain}`);
+          }
+        });
       }
       // history.push('/login');
     } catch (err) {
@@ -122,49 +116,29 @@ class RegisterPage extends React.Component {
   };
 
   isDisabledSignUp = () => {
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-    } = this.state;
+    const { firstName, lastName, email, password } = this.state;
 
-    return validator.isEmpty(firstName.trim())
-      || validator.isEmpty(lastName.trim())
-      || validator.isEmpty(email.trim())
-      || validator.isEmpty(password.trim());
+    return validator.isEmpty(firstName.trim()) || validator.isEmpty(lastName.trim()) || validator.isEmpty(email.trim()) || validator.isEmpty(password.trim());
   };
 
   isDisabled = () => {
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-      organizationName,
-      jobTitle,
-      organizationType,
-    } = this.state;
+    const { firstName, lastName, email, password, organizationName, jobTitle, organizationType } = this.state;
 
-    return validator.isEmpty(firstName.trim())
-      || validator.isEmpty(lastName.trim())
-      || validator.isEmpty(email.trim())
-      || validator.isEmpty(password.trim())
-      || validator.isEmpty(organizationName.trim())
-      || validator.isEmpty(jobTitle.trim())
-      || validator.isEmpty(organizationType.trim());
+    return (
+      validator.isEmpty(firstName.trim()) ||
+      validator.isEmpty(lastName.trim()) ||
+      validator.isEmpty(email.trim()) ||
+      validator.isEmpty(password.trim()) ||
+      validator.isEmpty(organizationName.trim()) ||
+      validator.isEmpty(jobTitle.trim()) ||
+      validator.isEmpty(organizationType.trim())
+    );
   };
 
   isDisabledGoogle = () => {
-    const {
-      organizationName,
-      jobTitle,
-      organizationType,
-    } = this.state;
+    const { organizationName, jobTitle, organizationType } = this.state;
 
-    return validator.isEmpty(organizationName.trim())
-      || validator.isEmpty(jobTitle.trim())
-      || validator.isEmpty(organizationType.trim());
+    return validator.isEmpty(organizationName.trim()) || validator.isEmpty(jobTitle.trim()) || validator.isEmpty(organizationType.trim());
   };
 
   onGoogleLoginSuccess = (response) => {
@@ -201,59 +175,44 @@ class RegisterPage extends React.Component {
 
   validatePassword = (pwd) => {
     // eslint-disable-next-line quotes
-    const regex = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$");
+    const regex = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$');
     return regex.test(pwd);
   };
 
   render() {
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-      organizationName,
-      jobTitle,
-      error,
-      organizationType,
-      clicked,
-      activeTab,
-      stepper,
-      googleResponse,
-    } = this.state;
-    const {
-      isLoading, organizationTypes, domain,
-    } = this.props;
+    const { firstName, lastName, email, password, organizationName, jobTitle, error, organizationType, clicked, activeTab, stepper, googleResponse, showPassword } = this.state;
+    const { isLoading, organizationTypes, domain } = this.props;
 
     return (
       <>
-        {
-          domain?.self_registration === true && (
-            <div className="auth-page">
-              <Logo />
+        {domain?.self_registration === true && (
+          <div className="auth-page">
+            <Logo />
 
-              <div className="auth-container">
-                <div className="d-flex align-items-center justify-content-between">
-                  <h1 className="auth-title ">
-                    Welcome
-                    {!clicked ? ' to Curriki' : `, ${firstName}`}
-                  </h1>
+            <div className="auth-container">
+              <div className="d-flex align-items-center justify-content-between">
+                <h1 className="auth-title mb2">
+                  Welcome
+                  {!clicked ? ' to Curriki' : `, ${firstName}`}
+                </h1>
 
-                  {/* <strong>OR</strong> */}
+                {/* <strong>OR</strong> */}
 
-                  {/* <button
+                {/* <button
                   type="button"
                   className="btn btn-outline-primary text-uppercase"
                   onClick={this.goToLogin}
                 >
                   Login
                 </button> */}
-                </div>
+              </div>
 
-                <p className="auth-description text-left">
-                  {!clicked
-                    ? 'Sign up and start making a difference in the way learning experiences are created.'
-                    : 'Before start creating awesome content, please let us know the usage your are giving to Curriki. '}
-                </p>
+              <p className="auth-Pdescrip text-left">
+                {!clicked
+                  ? 'Start making a difference in the way learning experiences are created.'
+                  : 'Before start creating awesome content, please let us know the usage your are giving to Curriki. '}
+              </p>
+              <div className="content-section">
                 <Tabs
                   defaultActiveKey={activeTab}
                   activeKey={activeTab}
@@ -266,239 +225,183 @@ class RegisterPage extends React.Component {
                 >
                   <Tab eventKey="Log in" title="Log in" />
                   <Tab eventKey="Sign up" title="Sign up" style={{ display: stepper ? 'none' : 'flex' }}>
-                    <form
-                      onSubmit={this.onSubmit}
-                      autoComplete="off"
-                      className="auth-form"
-                    >
-                      {!clicked
-                        && (
-                          <>
-                            <div className="form-group d-flex">
-                              <div className="input-wrapper">
-                                <FontAwesomeIcon icon="user" />
-                                <input
-                                  autoFocus
-                                  className="input-box"
-                                  name="firstName"
-                                  placeholder="First Name*"
-                                  required
-                                  maxLength="50"
-                                  value={firstName}
-                                  onChange={this.onChangeField}
-                                />
+                    <form onSubmit={this.onSubmit} autoComplete="off" className="auth-form">
+                      {!clicked && (
+                        <>
+                          <div className="form-group d-flex">
+                            <div className="input-wrapper">
+                              <span>Name</span>
+                              <input autoFocus className="input-box" name="firstName" required maxLength="50" value={firstName} onChange={this.onChangeField} />
+                            </div>
+
+                            <div className="input-wrapper">
+                              <span>Last name</span>
+                              <input className="input-box" name="lastName" required maxLength="50" value={lastName} onChange={this.onChangeField} />
+                            </div>
+                          </div>
+
+                          <div className="form-group">
+                            <span>Email</span>
+                            <input
+                              className="input-box"
+                              // type="email"
+                              name="email"
+                              required
+                              maxLength="250"
+                              disabled={query?.email && true}
+                              value={email}
+                              onChange={this.onChangeField}
+                            />
+                          </div>
+
+                          <div className="form-group">
+                            <span style={{ display: 'flex', justifyContent: 'space-between' }}>
+                              Password
+                              <div className="show-password" onClick={() => this.setState({ showPassword: !showPassword })}>
+                                <img src={eye} alt="show-password" />
+                                Show
                               </div>
-
-                              <div className="input-wrapper">
-                                <FontAwesomeIcon icon="user" />
-                                <input
-                                  className="input-box"
-                                  name="lastName"
-                                  placeholder="Last Name*"
-                                  required
-                                  maxLength="50"
-                                  value={lastName}
-                                  onChange={this.onChangeField}
-                                />
-                              </div>
-                            </div>
-
-                            <div className="form-group">
-                              <FontAwesomeIcon icon="envelope" />
-                              <input
-                                className="input-box"
-                                // type="email"
-                                name="email"
-                                placeholder="Email*"
-                                required
-                                maxLength="250"
-                                disabled={query?.email && true}
-                                value={email}
-                                onChange={this.onChangeField}
-                              />
-                            </div>
-
-                            <div className="form-group">
-                              <FontAwesomeIcon icon="lock" />
-                              <input
-                                className="password-box"
-                                type="password"
-                                name="password"
-                                placeholder="Password*"
-                                required
-                                maxLength="250"
-                                value={password}
-                                onChange={this.onChangeField}
-                              />
-                              <p>8 characters minimum. Use a number, one uppercase & one lowercase at least</p>
-                            </div>
-                            <div className="form-group">
-                              <Error error={error} />
-                            </div>
-                            <div className="form-group mb-0">
-                              <button
-                                type="button"
-                                className="signUp-btn submit"
-                                onClick={() => {
-                                  const passwordValidator = this.validatePassword(password);
-                                  const emailValidator = validator.isEmail(email.trim());
-                                  if (passwordValidator && emailValidator) {
-                                    this.setState({
-                                      clicked: true,
-                                      error: null,
-                                      stepper: true,
-                                    });
-                                  } else if (!passwordValidator) {
-                                    this.setState({
-                                      error: 'Password must be 8 or more characters long,should contain at least 1 Uppercase, 1 Lowercase and 1 Numeric character.',
-                                    });
-                                  } else if (!emailValidator) {
-                                    this.setState({
-                                      error: 'Please input valid email.',
-                                    });
-                                  }
-                                }}
-                                disabled={isLoading || this.isDisabledSignUp()}
-                              >
-                                {isLoading ? (
-                                  <img src={loader} alt="" />
-                                ) : (
-                                  'Sign up with Email'
-                                )}
-                              </button>
-                            </div>
-                            {/* <div className="vertical-line">
+                            </span>
+                            <input
+                              className="password-box"
+                              type={showPassword ? 'text' : 'password'}
+                              name="password"
+                              required
+                              maxLength="250"
+                              value={password}
+                              onChange={this.onChangeField}
+                            />
+                          </div>
+                          <div className="form-group">
+                            <Error error={error} />
+                          </div>
+                          <div className="form-group mb-0" style={{ marginTop: '48px' }}>
+                            <button
+                              type="button"
+                              className="signUp-btn submit"
+                              onClick={() => {
+                                const passwordValidator = this.validatePassword(password);
+                                const emailValidator = validator.isEmail(email.trim());
+                                if (passwordValidator && emailValidator) {
+                                  this.setState({
+                                    clicked: true,
+                                    error: null,
+                                    stepper: true,
+                                  });
+                                } else if (!passwordValidator) {
+                                  this.setState({
+                                    error: 'Password must be 8 or more characters long,should contain at least 1 Uppercase, 1 Lowercase and 1 Numeric character.',
+                                  });
+                                } else if (!emailValidator) {
+                                  this.setState({
+                                    error: 'Please input valid email.',
+                                  });
+                                }
+                              }}
+                              disabled={isLoading || this.isDisabledSignUp()}
+                            >
+                              {isLoading ? <img src={loader} alt="" /> : 'Sign up with Email'}
+                            </button>
+                          </div>
+                          {/* <div className="vertical-line">
                               <div className="line" />
                               <p className="line-or">or</p>
                               <div className="line" />
                             </div> */}
-                            <div className="form-group text-center mb-0">
-                              <GoogleLogin
-                                clientId={global.config.gapiClientId}
-                                theme="dark"
-                                render={(renderProps) => (
-                                  <button type="button" className="google-button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                                    <img src={googleIcon} alt="googleIcon" style={{ float: 'left' }} />
-                                    Sign up with Google
-                                  </button>
-                                )}
-                                onSuccess={(response) => {
-                                  this.setState({ stepper: true, googleResponse: response });
-                                  // this.onGoogleLoginSuccess(response);
-                                }}
-                                onFailure={this.onGoogleLoginFailure}
-                                // eslint-disable-next-line max-len
-                                scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
-                                cookiePolicy="single_host_origin"
-                              />
-                            </div>
-                            {/* <p className="auth-description text-center">
+                          <div className="form-group text-center mb-0">
+                            <GoogleLogin
+                              clientId={global.config.gapiClientId}
+                              theme="dark"
+                              render={(renderProps) => (
+                                <button type="button" className="google-button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                                  <img src={googleIcon} alt="googleIcon" />
+                                  <div>Sign up with Google</div>
+                                </button>
+                              )}
+                              onSuccess={(response) => {
+                                this.setState({ stepper: true, googleResponse: response });
+                                // this.onGoogleLoginSuccess(response);
+                              }}
+                              onFailure={this.onGoogleLoginFailure}
+                              // eslint-disable-next-line max-len
+                              scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
+                              cookiePolicy="single_host_origin"
+                            />
+                          </div>
+                          {/* <p className="auth-description text-center">
                               Back to Curriki?&nbsp;
                               <a onClick={this.goToLogin}>
                                 Login
                               </a>
                             </p> */}
 
-                            <div className="termsandcondition">
-                              By clicking the &quot;Sign Up&quot; button, you are creating a CurrikiStudio  account, and you agree to Curriki&apos;s
-                              {' '}
-                              <a href="https://www.curriki.org/terms-of-service/">
-                                Terms of Use
-                              </a>
-                              {' '}
-                              and
-                              {' '}
-                              <a href="https://www.curriki.org/privacy-policy/">
-                                Privacy Policy.
-                              </a>
-                            </div>
-
-                          </>
-                        )}
+                          <div className="termsandcondition">
+                            By clicking the &quot;Sign Up&quot; button, you are creating a CurrikiStudio account, and you agree to Curriki&apos;s{' '}
+                            <a href="https://www.curriki.org/terms-of-service/">Terms of Use</a> and <a href="https://www.curriki.org/privacy-policy/">Privacy Policy.</a>
+                          </div>
+                        </>
+                      )}
                     </form>
                   </Tab>
                 </Tabs>
-                {stepper && (
-                  <>
-                    <div className="form-group">
-                      <div className="bkbtn">
-                        {/* <button type="button" onClick={() => this.setState({ clicked: false, stepper: false })}> */}
-                        <img src={leftArrow} alt="arrow-left" />
-                        <a onClick={() => this.setState({ clicked: false, stepper: false })}> Back </a>
-                        {/* </button> */}
-                      </div>
-                    </div>
-                    <div className="form-group">
-                      <div className="using-curriki">
-                        <div className="curriki-line">You are using Curriki for:</div>
-                        <div className="line-horizontal" />
-                      </div>
-                    </div>
-                    <div className="form-group ">
-                      <FontAwesomeIcon icon="building" />
-                      <select
-                        className="input-box organization-type"
-                        name="organizationType"
-                        placeholder="Organization Type*"
-                        value={organizationType}
-                        onChange={this.onChangeField}
-                      >
-                        <option selected value=""> -- Select an Organization Type -- </option>
-
-                        {organizationTypes.map((type) => (
-                          <option value={type.label}>{type.label}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="form-group">
-                      <FontAwesomeIcon icon="building" />
-                      <input
-                        className="input-box"
-                        name="organizationName"
-                        placeholder="Organization Name*"
-                        maxLength="50"
-                        value={organizationName}
-                        onChange={this.onChangeField}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <FontAwesomeIcon icon="briefcase" />
-                      <input
-                        className="input-box"
-                        name="jobTitle"
-                        placeholder="Job Title*"
-                        maxLength="50"
-                        value={jobTitle}
-                        onChange={this.onChangeField}
-                      />
-                    </div>
-                    <div className="form-group mb-0">
-                      <button
-                        type="submit"
-                        className="btn-primary submit get-started-btn"
-                        onClick={(e) => {
-                          this.setState({ clicked: true });
-                          this.onSubmit(e);
-                        }}
-                        disabled={isLoading || (googleResponse ? this.isDisabledGoogle() : this.isDisabled())}
-                      >
-                        {isLoading ? (
-                          <img src={loader} alt="" />
-                        ) : (
-                          'Complete Registration'
-                        )}
-                      </button>
-                    </div>
-                  </>
-                )}
               </div>
+              {stepper && (
+                <>
+                  <div className="form-group">
+                    <div className="bkbtn">
+                      {/* <button type="button" onClick={() => this.setState({ clicked: false, stepper: false })}> */}
+                      <img src={leftArrow} alt="arrow-left" />
+                      <a onClick={() => this.setState({ clicked: false, stepper: false })}> Back </a>
+                      {/* </button> */}
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <div className="using-curriki">
+                      <div className="curriki-line">You are using Curriki for:</div>
+                      <div className="line-horizontal" />
+                    </div>
+                  </div>
+                  <div className="form-group ">
+                    <select className="input-box organization-type" name="organizationType" placeholder="Organization Type*" value={organizationType} onChange={this.onChangeField}>
+                      <option selected value="">
+                        Select an Organization Type
+                      </option>
 
-              <img src={bg} className="bg1" alt="" />
-              <img src={bg1} className="bg2" alt="" />
+                      {organizationTypes.map((type) => (
+                        <option value={type.label}>{type.label}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <span>Organization name</span>
+                    <input className="input-box" name="organizationName" maxLength="50" value={organizationName} onChange={this.onChangeField} />
+                  </div>
+                  <div className="form-group">
+                    <span>Job title</span>
+                    <input className="input-box" name="jobTitle" maxLength="50" value={jobTitle} onChange={this.onChangeField} />
+                  </div>
+                  <div className="form-group mb-0" style={{ marginTop: '50px' }}>
+                    <button
+                      type="submit"
+                      className="btn-primary submit get-started-btn"
+                      onClick={(e) => {
+                        this.setState({ clicked: true });
+                        this.onSubmit(e);
+                      }}
+                      disabled={isLoading || (googleResponse ? this.isDisabledGoogle() : this.isDisabled())}
+                    >
+                      {isLoading ? <img src={loader} alt="" /> : 'Complete Registration'}
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
-          )
-        }
+
+            <img src={bg} className="bg1" alt="" />
+            <img src={bg1} className="bg2" alt="" />
+          </div>
+        )}
       </>
     );
   }
@@ -518,7 +421,6 @@ const mapDispatchToProps = (dispatch) => ({
   register: (data) => dispatch(registerAction(data)),
   loadOrganizationTypes: () => dispatch(loadOrganizationTypesAction()),
   googleLogin: (data) => dispatch(googleLoginAction(data)),
-
 });
 
 const mapStateToProps = (state) => ({
@@ -527,6 +429,4 @@ const mapStateToProps = (state) => ({
   domain: state?.organization?.currentOrganization,
 });
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(RegisterPage),
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RegisterPage));

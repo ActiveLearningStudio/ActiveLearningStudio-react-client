@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -9,14 +10,14 @@ import { Tabs, Tab } from 'react-bootstrap';
 // import bg from 'assets/images/loginbg.png';
 // import bg1 from 'assets/images/loginbg2.png';
 import loader from 'assets/images/loader.svg';
-import googleIcon from 'assets/images/google.png';
+import googleIcon from 'assets/images/google.svg';
 import emailIcon from 'assets/images/email.png';
 import stemuliIcon from 'assets/images/stemuli_logo.png';
 import { loginAction, googleLoginAction } from 'store/actions/auth';
 import { getErrors } from 'utils';
+import eye from 'assets/images/eye.svg';
 import Error from './Error';
 import Logo from './Logo';
-
 import './style.scss';
 
 class LoginPage extends React.Component {
@@ -26,10 +27,11 @@ class LoginPage extends React.Component {
     this.state = {
       email: '',
       password: '',
-      // rememberMe: false,
+      rememberMe: false,
       clicked: true,
       error: null,
       activeTab: 'Log in',
+      showPassword: false,
     };
   }
 
@@ -106,14 +108,7 @@ class LoginPage extends React.Component {
   };
 
   render() {
-    const {
-      email,
-      password,
-      // rememberMe,
-      error,
-      clicked,
-      activeTab,
-    } = this.state;
+    const { email, password, rememberMe, error, clicked, activeTab, showPassword } = this.state;
     const { isLoading, domain } = this.props;
 
     return (
@@ -135,14 +130,8 @@ class LoginPage extends React.Component {
               </button> */}
             </div>
             {/* <h2 className="auth-subtitle">Powering the creation of the world’s Most Immersive Learning Experience</h2> */}
-            <p className="auth-Pdescrip">
-              Sign Up and start making a difference in the way learning experiences are created.
-            </p>
-            <form
-              onSubmit={this.onSubmit}
-              autoComplete="off"
-              className="auth-form"
-            >
+            <p className="auth-Pdescrip">Sign Up and start making a difference in the way learning experiences are created.</p>
+            <form onSubmit={this.onSubmit} autoComplete="off" className="auth-form">
               <div className="form-group text-center mb-0">
                 <GoogleLogin
                   clientId={global.config.gapiClientId}
@@ -159,14 +148,15 @@ class LoginPage extends React.Component {
                   scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
                   cookiePolicy="single_host_origin"
                 />
-
               </div>
               {process.env.REACT_APP_STEMULI === 'true' && (
                 <div className="form-group text-center mb-4">
                   <button
                     type="button"
                     className="email-button"
-                    onClick={() => { window.location.href = `${process.env.REACT_APP_API_URL}/oauth/stemuli/redirect`; }}
+                    onClick={() => {
+                      window.location.href = `${process.env.REACT_APP_API_URL}/oauth/stemuli/redirect`;
+                    }}
                   >
                     <img src={stemuliIcon} alt="stemuli icon" style={{ float: 'left', paddingRight: '19.23px' }} />
                     <span>Continue with Stemuli</span>
@@ -177,9 +167,11 @@ class LoginPage extends React.Component {
                 <button
                   type="button"
                   className="email-button"
-                  onClick={() => this.setState({
-                    clicked: true,
-                  })}
+                  onClick={() =>
+                    this.setState({
+                      clicked: true,
+                    })
+                  }
                 >
                   <img src={emailIcon} alt="email icon" style={{ float: 'left', paddingRight: '19.23px' }} />
                   <span>Continue with Email</span>
@@ -188,12 +180,10 @@ class LoginPage extends React.Component {
             </form>
             <p className="auth-description">
               New to Curriki?&nbsp;
-              <a onClick={this.goToRegister}>
-                Sign up
-              </a>
+              <a onClick={this.goToRegister}>Sign up</a>
             </p>
             <p className="auth-p2-descrip">
-              By clicking the Sign Up button, you are creating a CurrikiStudio  account, and you agree to Currikis&nbsp;
+              By clicking the Sign Up button, you are creating a CurrikiStudio account, and you agree to Currikis&nbsp;
               <a href="/" target="_blank">
                 Terms of Use&nbsp;
               </a>
@@ -206,87 +196,74 @@ class LoginPage extends React.Component {
         ) : (
           <div className="auth-container">
             <div className="d-flex align-items-center justify-content-between">
-              <h1 className="auth-title mb-2">Welcome to Curriki</h1>
+              <h1 className="auth-title">Welcome to Curriki</h1>
             </div>
-            <p className="auth-Pdescrip">
-              Start making a difference in the way learning experiences are created.
-            </p>
-            <Tabs
-              defaultActiveKey={activeTab}
-              activeKey={activeTab}
-              id="uncontrolled-tab-example"
-              onSelect={(key) => {
-                this.setState({ activeTab: key });
-                if (key === 'Sign up') this.goToRegister();
-              }}
-            >
-              <Tab eventKey="Log in" title="Log in">
-                <div className="module-content">
-                  <form
-                    onSubmit={this.onSubmit}
-                    autoComplete="off"
-                    className="auth-form"
-                  >
-
-                    <div className="form-group">
-                      {/* <FontAwesomeIcon icon="envelope" /> */}
-                      <span>Email</span>
-                      <input
-                        autoFocus
-                        className="input-box"
-                        // type="email"
-                        name="email"
-                        required
-                        value={email}
-                        onChange={this.onChangeField}
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      {/* <FontAwesomeIcon icon="lock" /> */}
-                      <span>Password</span>
-                      <input
-                        className="password-box"
-                        type="password"
-                        name="password"
-                        required
-                        value={password}
-                        onChange={this.onChangeField}
-                      />
-                    </div>
-
-                    <div className="form-group remember-me">
-                      {/* <label>
+            <p className="auth-Pdescrip">Start making a difference in the way learning experiences are created.</p>
+            <div className="content-section">
+              <Tabs
+                defaultActiveKey={activeTab}
+                activeKey={activeTab}
+                id="uncontrolled-tab-example"
+                onSelect={(key) => {
+                  this.setState({ activeTab: key });
+                  if (key === 'Sign up') this.goToRegister();
+                }}
+              >
+                <Tab eventKey="Log in" title="Log in">
+                  <div className="module-content">
+                    <form onSubmit={this.onSubmit} autoComplete="off" className="auth-form">
+                      <div className="form-group">
+                        {/* <FontAwesomeIcon icon="envelope" /> */}
+                        <span>Email</span>
                         <input
-                          type="checkbox"
-                          name="rememberMe"
-                          value={rememberMe}
+                          autoFocus
+                          className="input-box"
+                          // type="email"
+                          name="email"
+                          required
+                          value={email}
                           onChange={this.onChangeField}
                         />
-                        Keep me logged in.
-                      </label> */}
-                      <div className="forgot-password-box">
-                        <Link to="/forgot-password">Forgot Password ?</Link>
                       </div>
-                    </div>
-                    <div className="form-group">
-                      <Error error={error} />
-                    </div>
-                    <div className="form-button">
-                      <button
-                        type="submit"
-                        className="btn btn-primary submit"
-                        disabled={isLoading || this.isDisabled()}
-                      >
-                        {isLoading ? (
-                          <img src={loader} alt="" />
-                        ) : (
-                          'Log in'
-                        )}
-                      </button>
-                    </div>
-                    {
-                      domain?.self_registration === true ? (
+
+                      <div className="form-group">
+                        {/* <FontAwesomeIcon icon="lock" /> */}
+                        <span style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          Password
+                          <div className="show-password" onClick={() => this.setState({ showPassword: !showPassword })}>
+                            <img src={eye} alt="show-password" />
+                            Show
+                          </div>
+                        </span>
+                        <input
+                          className="password-box"
+                          type={showPassword ? 'text' : 'password'}
+                          name="password"
+                          placeholder="********"
+                          required
+                          value={password}
+                          onChange={this.onChangeField}
+                        />
+                      </div>
+
+                      <div className="form-group remember-me">
+                        <label>
+                          <input type="checkbox" name="rememberMe" value={rememberMe} onChange={this.onChangeField} />
+                          Keep me logged in.
+                        </label>
+                        <div className="forgot-password-box">
+                          <Link to="/forgot-password">Forgot Password ?</Link>
+                        </div>
+                      </div>
+                      <div className="form-group">
+                        <Error error={error} />
+                      </div>
+                      <div className="form-button">
+                        <button type="submit" className="btn btn-primary submit" disabled={isLoading || this.isDisabled()}>
+                          {isLoading ? <img src={loader} alt="" /> : 'Log in'}
+                        </button>
+                      </div>
+                      {domain?.self_registration === true ? (
                         <>
                           {/* <div className="vertical-line">
                             <div className="line" />
@@ -307,8 +284,8 @@ class LoginPage extends React.Component {
                               theme="dark"
                               render={(renderProps) => (
                                 <button type="button" className="google-button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                                  <img src={googleIcon} alt="googleIcon" style={{ float: 'left' }} />
-                                  Log in with Google
+                                  <img src={googleIcon} alt="googleIcon" />
+                                  <div>Log in with Google</div>
                                 </button>
                               )}
                               onSuccess={this.onGoogleLoginSuccess}
@@ -319,29 +296,17 @@ class LoginPage extends React.Component {
                             />
                           </div>
                         </>
-                      )
-                        : (
-                          null
-                        )
-                    }
-                    <div className="termsandcondition">
-                      By clicking the &quot;Login&quot; button, you agree to Curriki&apos; s
-                      {' '}
-                      <a href="https://www.curriki.org/terms-of-service/">
-                        Terms of Use
-                      </a>
-                      {' '}
-                      and
-                      {' '}
-                      <a href="https://www.curriki.org/privacy-policy/">
-                        Privacy Policy.
-                      </a>
-                    </div>
-                  </form>
-                </div>
-              </Tab>
-              {domain?.self_registration === true && <Tab eventKey="Sign up" title="Sign up" />}
-            </Tabs>
+                      ) : null}
+                      <div className="termsandcondition">
+                        By clicking the &quot;Login&quot; button, you agree to Curriki&apos; s <a href="https://www.curriki.org/terms-of-service/">Terms of Use</a> and{' '}
+                        <a href="https://www.curriki.org/privacy-policy/">Privacy Policy.</a>
+                      </div>
+                    </form>
+                  </div>
+                </Tab>
+                {domain?.self_registration === true && <Tab eventKey="Sign up" title="Sign up" />}
+              </Tabs>
+            </div>
           </div>
         )}
 
@@ -370,6 +335,4 @@ const mapStateToProps = (state) => ({
   domain: state?.organization?.currentOrganization,
 });
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(LoginPage),
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginPage));
