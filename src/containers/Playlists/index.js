@@ -277,22 +277,21 @@ function PlaylistsPage(props) {
     }
   };
   const onBlur = (e) => {
-    console.log(e.target.value, "value");
     if (e.target.name === 'projectname') {
       titleRef.current.blur();
       setEditName(false);
-      if (selectedProject.name !== e.target.value && e.target.value.length <= 260) {
+      if (selectedProject.name !== e.target.value && e.target.value.length <= 80) {
         dispatch(updateProjectAction(selectedProject?.id, {
           name: e.target.value,
           description: selectedProject.description,
           thumb_url: thumbUrl,
           organization_visibility_type_id: selectedProject.organization_visibility_type_id || 1,
         }));
-      } else if (e.target.value.length > 260) {
+      } else if (e.target.value.length > 80) {
         Swal.fire({
           icon: 'warning',
           title: 'Exceeding length',
-          text: 'Cannot enter more than 260 character in project title.',
+          text: 'Cannot enter more than 80 character in project title.',
         });
       }
     } else if (e.target.name === 'projectdescription') {
