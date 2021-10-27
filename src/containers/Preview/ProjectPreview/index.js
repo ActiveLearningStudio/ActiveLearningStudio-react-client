@@ -194,7 +194,7 @@ function ProjectPreview(props) {
                     <div className="title_lg check">
                       <div className="configuration">
                         <div className="config-content">
-                          <Link to={`/org/${organization.currentOrganization?.domain}`} onClick={history.goBack} className="go-back-button-preview">
+                          <Link to={`/org/${organization.currentOrganization?.domain}`} className="go-back-button-preview">
                             {/* <FontAwesomeIcon icon="undo" className="mr-2" /> */}
                             Close Preview Mode
                           </Link>

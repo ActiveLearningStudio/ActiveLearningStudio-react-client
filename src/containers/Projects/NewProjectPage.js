@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import { slideInRight } from 'react-animations';
-import close from 'assets/images/close.svg';
+import close from 'assets/images/grayclose.png';
 
 import CreateProjectPopup from './CreateProjectPopup';
 
