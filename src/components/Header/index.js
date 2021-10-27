@@ -8,7 +8,7 @@ import { SHOW_HELP } from 'store/actionTypes';
 import { logoutAction } from 'store/actions/auth';
 import { Event } from 'trackers/ga';
 
-import logo from 'assets/images/studio_new_logo.png';
+import logo from 'assets/images/login_logo.svg';
 import Katylogo from 'assets/images/Katy_logo.png';
 import bu from 'assets/images/bu.png';
 import safari from 'assets/images/safari.png';
