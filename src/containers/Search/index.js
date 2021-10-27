@@ -1487,7 +1487,7 @@ function SearchInterface(props) {
 																															</Modal.Title>
 																														</Modal.Header>
 																														<Modal.Body>
-																															<iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariToolHtml}`} />
+																															<iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`} />
 																														</Modal.Body>
 																													</Modal>
 																												</ul>
