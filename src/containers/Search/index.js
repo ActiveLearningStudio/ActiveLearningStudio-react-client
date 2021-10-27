@@ -97,10 +97,6 @@ function SearchInterface(props) {
 	const [activetab, setActiveTab] = useState('total');
 	const [todate, Settodate] = useState(undefined);
 	const [fromdate, Setfromdate] = useState(undefined);
-	const [safariToolHtml, setSafariToolHtml] = useState(null);
-	useEffect(() => {
-		setSafariToolHtml(encodeURI(safariMontagePublishTool));
-	}, [safariMontagePublishTool]);
 	// const [selectedAuthor, setSelectedAuthor] = useState([]);
 	// const [authors, setAuthors] = useState([]);
 	// var activeSubject1;
@@ -1058,7 +1054,7 @@ function SearchInterface(props) {
 																											</Modal.Title>
 																										</Modal.Header>
 																										<Modal.Body>
-																											<iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariToolHtml}`} />
+																											<iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`} />
 																										</Modal.Body>
 																									</Modal>
 																								</ul>
