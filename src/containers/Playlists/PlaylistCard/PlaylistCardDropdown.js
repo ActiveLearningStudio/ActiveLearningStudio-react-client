@@ -46,15 +46,15 @@ class PlaylistCardDropdown extends React.Component {
 
           {(Object.keys(teamPermission).length
             ? teamPermission?.Team?.includes('team:view-playlist') : (permission?.Playlist?.includes('playlist:view') && permission?.Activity?.includes('activity:view'))) && (
-            <Dropdown.Item
-              as={Link}
-              className="hidden"
-              to={`/studio/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/${playlist?.activities[0]?.id}/preview`}
-            >
-              <FontAwesomeIcon icon="eye" className="mr-2" />
-              Preview
-            </Dropdown.Item>
-          )}
+              <Dropdown.Item
+                as={Link}
+                className="hidden"
+                to={`/studio/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/${playlist?.activities[0]?.id}/preview`}
+              >
+                <FontAwesomeIcon icon="eye" className="mr-2" />
+                Preview
+              </Dropdown.Item>
+            )}
           {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-playlist') : permission?.Playlist?.includes('playlist:edit')) && (
             <Dropdown.Item onClick={() => {
               handleClickPlaylistTitle();
@@ -79,7 +79,7 @@ class PlaylistCardDropdown extends React.Component {
               Duplicate
             </Dropdown.Item>
           )}
-          {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-playlist') : permission?.Playlist?.includes('playlist:publish')) && (
+          {/* {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-playlist') : permission?.Playlist?.includes('playlist:publish')) && (
             playlist.activities.length > 0
               ? <ResourceCardDropdownShare resource={playlist.activities[0]} />
               : (
@@ -93,7 +93,7 @@ class PlaylistCardDropdown extends React.Component {
                   Share
                 </Dropdown.Item>
               )
-          )}
+          )} */}
           {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:publish-playlist') : permission?.Playlist?.includes('playlist:publish')) && (
             <ShareLink
               playlistId={playlist.id}

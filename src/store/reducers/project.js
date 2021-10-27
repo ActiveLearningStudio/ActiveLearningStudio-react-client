@@ -140,6 +140,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         isSharedProject: true,
         projectSelect: action.payload.project,
+        selectedProject: action.payload.project,
       };
 
     case actionTypes.UPLOAD_PROJECT_THUMBNAIL:
