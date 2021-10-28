@@ -62,7 +62,7 @@ function SearchForm() {
       <div className="search-block navbtn">
         <input
           className="search-term"
-          placeholder="Search existing content"
+          placeholder="Search Library Contents"
           value={simpleSearch}
           onChange={(e) => {
             setSimpleSearch(e.target.value);
