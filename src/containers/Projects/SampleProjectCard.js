@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown } from 'react-bootstrap';
 import Swal from 'sweetalert2';
@@ -122,7 +122,7 @@ const SampleProjectCard = (props) => {
 
                           <Dropdown.Menu>
                             <Dropdown.Item
-                              as={Link}
+                              // as={Link}
                               onClick={() => {
                                 if (type === 'fav') {
                                   setSelectFavId(project.id);
