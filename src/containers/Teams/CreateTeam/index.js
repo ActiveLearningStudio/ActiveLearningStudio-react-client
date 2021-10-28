@@ -59,7 +59,7 @@ function CreateTeam(props) {
   const organization = useSelector((state) => state.organization);
   const { activeOrganization } = organization;
   const { permission } = organization;
-  useEffect(() => {}, [team.selectedTeam]);
+  useEffect(() => { }, [team.selectedTeam]);
   useEffect(() => {
     if (activeOrganization) {
       loadProjects();
@@ -154,6 +154,7 @@ function CreateTeam(props) {
       setInvitedMembers,
       selectedMembers,
       createTeam,
+      reduxform,
     ]
   );
 
