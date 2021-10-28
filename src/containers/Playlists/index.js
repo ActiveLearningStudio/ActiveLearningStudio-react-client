@@ -1,7 +1,5 @@
 /* eslint-disable */
-import React, {
-  useEffect, useState, useMemo, useRef,
-} from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
 import { connect, useSelector, useDispatch } from 'react-redux';
@@ -281,12 +279,14 @@ function PlaylistsPage(props) {
       titleRef.current.blur();
       setEditName(false);
       if (selectedProject.name !== e.target.value && e.target.value.length <= 80) {
-        dispatch(updateProjectAction(selectedProject?.id, {
-          name: e.target.value,
-          description: selectedProject.description,
-          thumb_url: thumbUrl,
-          organization_visibility_type_id: selectedProject.organization_visibility_type_id || 1,
-        }));
+        dispatch(
+          updateProjectAction(selectedProject?.id, {
+            name: e.target.value,
+            description: selectedProject.description,
+            thumb_url: thumbUrl,
+            organization_visibility_type_id: selectedProject.organization_visibility_type_id || 1,
+          })
+        );
       } else if (e.target.value.length > 80) {
         Swal.fire({
           icon: 'warning',
@@ -298,12 +298,14 @@ function PlaylistsPage(props) {
       descriptionRef.current.blur();
       setEditDescription(false);
       if (selectedProject.description !== e.target.value && e.target.value.length <= 1000) {
-        dispatch(updateProjectAction(selectedProject?.id, {
-          name: selectedProject.name,
-          description: e.target.value,
-          thumb_url: thumbUrl,
-          organization_visibility_type_id: selectedProject.organization_visibility_type_id || 1,
-        }));
+        dispatch(
+          updateProjectAction(selectedProject?.id, {
+            name: selectedProject.name,
+            description: e.target.value,
+            thumb_url: thumbUrl,
+            organization_visibility_type_id: selectedProject.organization_visibility_type_id || 1,
+          })
+        );
       } else if (e.target.value.length > 1000) {
         Swal.fire({
           icon: 'warning',
@@ -394,14 +396,16 @@ function PlaylistsPage(props) {
     }
   }, [playlists]);
   const setUploadImage = (data) => {
-    console.log(data)
-    dispatch(updateProjectAction(selectedProject?.id, {
-      name: selectedProject.name,
-      description: selectedProject.description,
-      thumb_url: data,
-      organization_visibility_type_id: selectedProject.organization_visibility_type_id || 1,
-    }));
-  }
+    console.log(data);
+    dispatch(
+      updateProjectAction(selectedProject?.id, {
+        name: selectedProject.name,
+        description: selectedProject.description,
+        thumb_url: data,
+        organization_visibility_type_id: selectedProject.organization_visibility_type_id || 1,
+      })
+    );
+  };
   return (
     <>
       <div className="content-wrapper">
@@ -439,10 +443,10 @@ function PlaylistsPage(props) {
                                   }
                                   if (
                                     !(
-                                      e.target.files[0].type.includes('png')
-                                      || e.target.files[0].type.includes('jpg')
-                                      || e.target.files[0].type.includes('gif')
-                                      || e.target.files[0].type.includes('jpeg')
+                                      e.target.files[0].type.includes('png') ||
+                                      e.target.files[0].type.includes('jpg') ||
+                                      e.target.files[0].type.includes('gif') ||
+                                      e.target.files[0].type.includes('jpeg')
                                     )
                                   ) {
                                     Swal.fire({
@@ -459,12 +463,14 @@ function PlaylistsPage(props) {
                                   } else {
                                     const thumbImage = uploadThumb(e, permission, teamPermission, projectState?.selectedProject?.id, dispatch, true);
                                     thumbImage.then((data) => {
-                                      dispatch(updateProjectAction(selectedProject?.id, {
-                                        name: selectedProject.name,
-                                        description: selectedProject.description,
-                                        thumb_url: data,
-                                        organization_visibility_type_id: selectedProject.organization_visibility_type_id || 1,
-                                      }));
+                                      dispatch(
+                                        updateProjectAction(selectedProject?.id, {
+                                          name: selectedProject.name,
+                                          description: selectedProject.description,
+                                          thumb_url: data,
+                                          organization_visibility_type_id: selectedProject.organization_visibility_type_id || 1,
+                                        })
+                                      );
                                     });
                                   }
                                 }}
@@ -502,10 +508,10 @@ function PlaylistsPage(props) {
                                   }
                                 />
                               </div>
-                              {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project')
-                                : permission?.Project?.includes('project:upload-thumb'))
-                                &&
-                                (<div className="button-flex-project-images">
+                              {(Object.keys(teamPermission).length
+                                ? teamPermission?.Team?.includes('team:edit-project')
+                                : permission?.Project?.includes('project:upload-thumb')) && (
+                                <div className="button-flex-project-images">
                                   <div
                                     className="gallery"
                                     onClick={() => {
@@ -516,14 +522,12 @@ function PlaylistsPage(props) {
                                     <p>My device</p>
                                   </div>
 
-                                  <div
-                                    className="pexel"
-                                    onClick={() => setModalShow(true)}
-                                  >
+                                  <div className="pexel" onClick={() => setModalShow(true)}>
                                     <img src={pexel} alt="pexel" />
                                     <p>Pexels</p>
                                   </div>
-                                </div>)}
+                                </div>
+                              )}
                             </div>
                           </div>
                           {!editName && <Headings text={selectedProject ? selectedProject.name : ''} headingType="h2" color="#084892" />}
@@ -536,19 +540,17 @@ function PlaylistsPage(props) {
                             onKeyPress={onEnterPress}
                             style={{ display: editName ? 'block' : 'none' }}
                           />
-                          {!editName
-                            && (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project')
-                              : permission?.Project?.includes('project:edit')) && (
-                              <FontAwesomeIcon
-                                icon="edit"
-                                className="ml-2"
-                                onClick={() => {
-                                  setEditName(true);
-                                  console.log(titleRef);
-                                  titleRef.current.focus();
-                                }}
-                              />
-                            )}
+                          {!editName && (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project') : permission?.Project?.includes('project:edit')) && (
+                            <FontAwesomeIcon
+                              icon="edit"
+                              className="ml-2"
+                              onClick={() => {
+                                setEditName(true);
+                                console.log(titleRef);
+                                titleRef.current.focus();
+                              }}
+                            />
+                          )}
                         </div>
                       </div>
                       {/* <div className="edit">
@@ -578,9 +580,8 @@ function PlaylistsPage(props) {
                       onKeyPress={onEnterPress}
                       style={{ display: editDescription ? 'block' : 'none' }}
                     />
-                    {!editDescription
-                      && (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project')
-                        : permission?.Project?.includes('project:edit')) && (
+                    {!editDescription &&
+                      (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project') : permission?.Project?.includes('project:edit')) && (
                         <FontAwesomeIcon
                           icon="edit"
                           className="ml-2"
@@ -599,17 +600,18 @@ function PlaylistsPage(props) {
                       </button>
                     )}
                     <div className="dropdown">
-                      <Headings text="Search preferences:" headingType="body2" color="#515151" />
+                      <Headings text="Library Preferences:" headingType="body2" color="#515151" />
 
                       <Dropdown className="d-inline mx-2" autoClose="outside">
                         <Dropdown.Toggle id="dropdown-autoclose-outside">{visibility}</Dropdown.Toggle>
                         <Dropdown.Menu>
                           {projectState.visibilityTypes?.data?.map((type) => (
                             <Dropdown.Item>
-                              <div onClick={() => {
-                                editVisibility(type.id);
-                                setVisibility(type.display_name);
-                              }}
+                              <div
+                                onClick={() => {
+                                  editVisibility(type.id);
+                                  setVisibility(type.display_name);
+                                }}
                               >
                                 {type.display_name}
                               </div>
@@ -628,8 +630,8 @@ function PlaylistsPage(props) {
                       <Droppable droppableId="project-droppable-id" direction="horizontal" type="column">
                         {(provided) => (
                           <div id="board" className="board-custom" {...provided.droppableProps} ref={provided.innerRef}>
-                            {permission?.Playlist?.includes('playlist:view')
-                              && playlists.map((playlist, index) => (
+                            {permission?.Playlist?.includes('playlist:view') &&
+                              playlists.map((playlist, index) => (
                                 <PlaylistCard
                                   key={playlist.id}
                                   index={index}
