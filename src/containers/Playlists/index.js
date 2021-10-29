@@ -429,7 +429,7 @@ function PlaylistsPage(props) {
                   <Headings text={`${organization?.currentOrganization?.name}`} headingType="body2" color="#084892" className="mb-3" />
                   <div className="col playlist-page-project-title project-each-view">
                     <div className="flex-se project-headline-section">
-                      <div>
+                      <div style={{ width: '100%' }}>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                           <div className="project-images">
                             <label style={{ display: 'none' }}>
