@@ -70,15 +70,15 @@
   user-select: none;
 
   .list-body {
-    max-height: 320px;
-    min-height: 320px;
+    max-height: 260px;
+    min-height: 260px;
   }
 }
 
 .list-wrapper {
-  // width: 350px;
+  margin-right: 8px;
   height: 100%;
-  margin: 0 4px 0 16px;
+
   display: inline-block;
   box-sizing: border-box;
   vertical-align: top;
@@ -107,18 +107,19 @@
   max-height: 400px;
   min-height: 230px;
   padding-top: 10px;
-  padding-bottom: 10px;
+  padding: 16px;
+  padding-top: 10px;
   background: #f4f8fc;
   overflow-y: auto;
 
   .playlist-resource {
-    margin: 15px;
-    padding: 15px;
-    background: #ffffff 0 0 no-repeat padding-box;
+    padding: 9px 4px;
+    background: #fff 0 0 no-repeat padding-box;
     border-left: 2px solid #084892;
-    border-radius: 2px;
+    border-radius: 5px;
     box-shadow: 1px 1px 2px #7e7e7e1a;
     opacity: 1;
+    margin-bottom: 8px;
 
     .timestamp {
       position: absolute;
@@ -128,8 +129,9 @@
     }
 
     .activity-thumb-wrapper {
-      margin-right: 12px;
-      float: left;
+      width: 36px;
+      height: 20px;
+      margin-right: 8px;
     }
 
     .activity-thumb-content {
@@ -158,8 +160,8 @@
     }
 
     .activity-thumb {
-      width: 69px;
-      height: 48px;
+      width: 100%;
+      height: 100%;
       background-size: cover;
       background-repeat: no-repeat;
       background-position: top center;
@@ -1854,230 +1856,6 @@ a:hover {
   margin: 0 5px 0 15px;
 }
 
-.project-each-view {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  h1 {
-    padding-top: 5px;
-    font-size: 24px;
-    line-height: 33px;
-    font-weight: 600;
-    letter-spacing: 0;
-    color: $curriki-main-blue;
-    text-align: left;
-    opacity: 1;
-  }
-
-  .flex-se {
-    width: 100%;
-    margin-right: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    textarea {
-      flex: auto;
-    }
-    textarea.title {
-      font-size: 30px;
-      padding: 10px;
-
-      margin-top: 0px;
-      margin-bottom: 0px;
-      border-color: #ececec;
-      border-radius: 5px;
-      box-shadow: 0px 0px 7px 1px #eceaea;
-    }
-    .project-images {
-      .on-hover-project-image {
-        width: 422px;
-        height: 332px;
-        border-radius: 8px;
-        display: none;
-        position: fixed;
-        .container-image {
-          position: static;
-          width: 374px;
-          height: 200px;
-          left: 0px;
-          top: 24px;
-          border-radius: 10px;
-          flex: none;
-          order: 1;
-          flex-grow: 0;
-          margin: 4px 0px;
-        }
-      }
-      .project-image-playlistpage {
-        width: 50px;
-        height: 50px;
-        border-radius: 5px;
-        margin-right: 10px;
-        position: relative;
-      }
-      &:hover {
-        // position: absolute;
-        // width: 100%;
-        // height: 100%;
-        // z-index: 1051;
-        // left: 0px;
-        // top: 0px;
-        // background: rgba(38, 59, 78, 0.9215686274509803) !important;
-        .project-image-playlistpage {
-          border-color: #f1f1f1;
-          padding: 5px;
-        }
-        .on-hover-project-image {
-          display: block;
-          position: fixed;
-          z-index: 1050;
-          background: #fff;
-          padding: 32px 24px 32px 24px;
-          border: 1px solid #ccc;
-          box-shadow: 0px 0px 9px 5px #ccc;
-        }
-      }
-      .button-flex-project-images {
-        display: flex;
-        justify-content: space-around;
-        margin-top: 10px;
-      }
-      .gallery,
-      .pexel {
-        width: 161px;
-        height: 36px;
-        display: flex;
-        border-radius: 50px;
-        opacity: 1;
-        cursor: pointer;
-        justify-content: center;
-        align-items: center;
-        flex-direction: row;
-        background: #ffffff;
-        border: 1px solid #959595;
-        box-shadow: 0px 2px 6px 1px rgba(81, 81, 81, 0.16);
-        p {
-          padding-left: 10px;
-          margin-bottom: 0 !important;
-          font-family: $rubik;
-          font-style: normal;
-          font-weight: normal;
-          font-size: 14px;
-          line-height: 16px;
-          color: #515151;
-        }
-      }
-    }
-
-    h1 {
-      margin: 0;
-      padding-top: 0;
-      display: flex;
-      flex: 50%;
-    }
-
-    .react-touch {
-      background: #fff 0 0 no-repeat padding-box;
-      border-radius: 30px;
-      width: 201px;
-      height: 40px;
-      letter-spacing: 0;
-      color: #ffffff;
-      opacity: 1;
-      font-weight: 400;
-      font-size: 15px;
-      border: 1px solid #b8b8b8;
-      line-height: 20px;
-      padding: 0;
-      text-transform: unset;
-      margin-right: 20px;
-
-      .publish-btn {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin: 0 15px;
-        height: 100%;
-      }
-
-      span {
-        color: green;
-        font-weight: bold;
-      }
-    }
-
-    .react-touch.indexed {
-      cursor: pointer;
-      background-color: #ce4a4a;
-      border-color: #ce4a4a;
-
-      .publish-btn {
-        justify-content: center;
-        cursor: pointer;
-      }
-
-      span {
-        color: #fff;
-        white-space: nowrap;
-      }
-    }
-
-    .borderline {
-      background: #ddd;
-      height: 1px;
-      display: flex;
-      align-self: center;
-    }
-  }
-
-  button {
-    background: #5952c6 0 0 no-repeat padding-box;
-    border-radius: 30px;
-    width: 201px;
-    height: 40px;
-    letter-spacing: 0;
-    color: #ffffff;
-    opacity: 1;
-    font-weight: 400;
-    font-size: 15px;
-    line-height: 20px;
-    padding: 0;
-    text-transform: unset;
-
-    svg {
-      font-size: 15px;
-      margin-top: -5px;
-      margin-right: 0;
-    }
-
-    &:hover {
-      background: #5952c6 0 0 no-repeat padding-box;
-    }
-  }
-
-  .dropdown-item {
-    background: #ffffff;
-    border: 1px solid #b8b8b8;
-    border-radius: 30px;
-    width: 176px;
-    height: 40px;
-    margin-top: -10px;
-    text-align: left;
-    font-size: 15px;
-    line-height: 20px;
-    letter-spacing: 0;
-    color: $mine-shaft;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    i {
-      padding-right: 8px;
-    }
-  }
-}
-
 .board-custom {
   .list-header-name {
     text-align: left;
@@ -2099,7 +1877,7 @@ a:hover {
   }
 
   .list {
-    width: 365px;
+    width: 249px;
   }
 }
 

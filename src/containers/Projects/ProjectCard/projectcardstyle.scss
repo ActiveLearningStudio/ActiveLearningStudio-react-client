@@ -52,6 +52,7 @@
         font-size: 18px;
         line-height: 21px;
         color: #ffffff;
+        word-break: break-all;
         &:hover {
           text-decoration: underline;
           color: #ffc107;
@@ -69,6 +70,7 @@
       line-height: 20px;
       color: #767676;
       margin-bottom: 0 !important;
+      word-break: break-all;
     }
   }
   .myproject-card-status {

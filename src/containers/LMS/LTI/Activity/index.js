@@ -59,7 +59,7 @@ const Activity = (props) => {
     window.scrollTo(0, 0);
     loadH5pSettings(match.params.activityId, studentId, submissionId);
     passCourseDetails({
-      courseId, issuerClient, customApiDomainUrl, studentId, customPersonNameGiven, customPersonNameFamily,
+      courseId, issuerClient, customApiDomainUrl, studentId, customPersonNameGiven, customPersonNameFamily, isLearner,
     });
     activityInit();
   }, [activityId]);

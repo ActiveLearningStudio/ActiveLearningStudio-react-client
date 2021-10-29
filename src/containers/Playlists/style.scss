@@ -121,44 +121,28 @@
   }
 
   .project-preview {
-    height: 40px;
-    float: right;
-    margin-left: 96px;
-
-    a {
-      margin-top: 0;
-      // margin-right: 32px;
-      // background: #fff;
-      // box-shadow: 1px 1px 8px #ccc;
-      font-size: 16px;
-      // color: #758ba8;
-      color: #ffffff;
-      background: #084892;
-      box-shadow: 0px 2px 6px 1px rgba(8, 72, 146, 0.16);
-      border-radius: 18px;
-
-      .mr-2 {
-        color: #f8af2c;
-      }
-    }
   }
 }
 .paragraph {
   display: flex;
-  margin: 10px 0px 0px 0px;
+  margin: 10px 20px 20px 0px;
   padding: 0 14px 0 0;
+  align-items: center;
   textarea {
     flex: auto;
+  }
+  p {
+    line-height: 20px !important;
   }
   textarea.description {
     font-size: 14px;
     padding: 10px;
-		border-color: #ececec;
-   
-		box-shadow: 0px 0px 7px 1px #eceaea;
+    border-color: #ececec;
+    width: auto;
+    box-shadow: 0px 0px 7px 1px #eceaea;
     margin-top: 0px;
     margin-bottom: 0px;
-		border-radius:5px
+    border-radius: 5px;
   }
   p {
     font-family: "Open Sans", sans-serif;
@@ -167,11 +151,22 @@
     color: #515151;
   }
 }
-.new-playlist {
-  padding: 0 34px 0 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.new-playlister {
+  padding-top: 0px;
+  margin-bottom: 16px;
+
+  button {
+    width: 176px !important;
+    height: 32px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    border: 1px solid #084892;
+    box-shadow: 0px 2px 6px 1px rgba(81, 81, 81, 0.16);
+    font-size: 14px;
+    color: #084892 !important;
+  }
 }
 .react-switch-bg {
   // background: #ffca70 !important;
@@ -215,4 +210,229 @@
 hr {
   width: 100%;
   margin-bottom: 18px;
+}
+
+.project-headline-section {
+  margin-top: -10px;
+  margin-right: 0px !important;
+  align-items: baseline !important;
+  .curriki-utility-headings {
+    text-transform: capitalize;
+    line-height: 32px;
+
+    word-break: break-word;
+  }
+
+  .project-share-previews {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    width: 275px;
+    flex-shrink: 0;
+
+    .share-button {
+      margin: 0;
+      margin-top: 25px;
+      text-transform: capitalize;
+      white-space: nowrap;
+    }
+
+    .dropdown-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 32px;
+      width: 153px;
+      background: #084892;
+      border: 1px solid #084892;
+      box-sizing: border-box;
+      border-radius: 50px;
+      color: #fff;
+      font-size: 14px;
+
+      svg {
+        color: #f8af2c;
+      }
+
+      &:hover {
+        background-color: #1d59b4;
+        color: #fff;
+      }
+    }
+  }
+
+  .project-image-playlistpage {
+    width: 48px !important;
+    height: 27px !important;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .paragraph-two {
+    font-size: 14px;
+    color: $fun-blue-1 !important;
+  }
+  .dropdown-toggle {
+    font-size: 14px;
+    color: #084892;
+    font-weight: normal;
+    border-bottom: 1px solid #084892;
+    padding-bottom: 10px;
+    border-radius: 0px;
+    box-shadow: 0px 0px 0px 0px;
+  }
+}
+
+.project-each-view {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+
+  h1 {
+    padding-top: 5px;
+    font-size: 24px;
+    line-height: 33px;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: $curriki-main-blue;
+    text-align: left;
+    opacity: 1;
+  }
+
+  .flex-se {
+    width: 100%;
+    margin-right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    textarea.title {
+      font-size: 30px;
+      padding: 10px;
+      width: auto;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      border-color: #ececec;
+      border-radius: 5px;
+      box-shadow: 0px 0px 7px 1px #eceaea;
+    }
+    .project-images {
+      .on-hover-project-image {
+        width: 422px;
+        height: 332px;
+        border-radius: 8px;
+        display: none;
+        position: fixed;
+        .container-image {
+          position: static;
+          width: 374px;
+          height: 200px;
+          left: 0px;
+          top: 24px;
+          border-radius: 10px;
+          flex: none;
+          order: 1;
+          flex-grow: 0;
+          margin: 4px 0px;
+        }
+      }
+      .project-image-playlistpage {
+        width: 50px;
+        height: 50px;
+        border-radius: 5px;
+        margin-right: 10px;
+        position: relative;
+      }
+      &:hover {
+        // position: absolute;
+        // width: 100%;
+        // height: 100%;
+        // z-index: 1051;
+        // left: 0px;
+        // top: 0px;
+        // background: rgba(38, 59, 78, 0.9215686274509803) !important;
+        .project-image-playlistpage {
+          border-color: #f1f1f1;
+          padding: 5px;
+        }
+        .on-hover-project-image {
+          display: block;
+          position: fixed;
+          z-index: 1050;
+          background: #fff;
+          padding: 32px 24px 32px 24px;
+          border: 1px solid #ccc;
+          box-shadow: 0px 0px 9px 5px #ccc;
+        }
+      }
+      .button-flex-project-images {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 10px;
+      }
+      .gallery,
+      .pexel {
+        width: 161px;
+        height: 36px;
+        display: flex;
+        border-radius: 50px;
+        opacity: 1;
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        background: #ffffff;
+        border: 1px solid #959595;
+        box-shadow: 0px 2px 6px 1px rgba(81, 81, 81, 0.16);
+        p {
+          padding-left: 10px;
+          margin-bottom: 0 !important;
+          font-family: $rubik;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 14px;
+          line-height: 16px;
+          color: #515151;
+        }
+      }
+    }
+
+    .react-touch.indexed {
+      cursor: pointer;
+      background-color: #ce4a4a;
+      border-color: #ce4a4a;
+
+      .publish-btn {
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      span {
+        color: #fff;
+        white-space: nowrap;
+      }
+    }
+
+    .borderline {
+      background: #ddd;
+      height: 1px;
+      display: flex;
+      align-self: center;
+    }
+  }
+
+  button {
+    svg {
+      font-size: 15px;
+      margin-top: -5px;
+      margin-right: 0;
+    }
+
+    &:hover {
+    }
+  }
+
+  .dropdown-item {
+  }
 }

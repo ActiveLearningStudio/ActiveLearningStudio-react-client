@@ -33,9 +33,9 @@ class RegisterPage extends React.Component {
       lastName: '',
       email: '',
       password: '',
-      organizationName: '',
-      organizationType: '',
-      jobTitle: '',
+      organization_name: '',
+      organization_type: '',
+      job_title: '',
       clicked: '',
       error: null,
       googleResponse: null,
@@ -80,7 +80,7 @@ class RegisterPage extends React.Component {
       if (googleResponse) {
         this.onGoogleLoginSuccess(googleResponse);
       } else {
-        const { firstName, lastName, email, password, organizationName, organizationType, jobTitle } = this.state;
+        const { firstName, lastName, email, password, organization_name, organization_type, job_title } = this.state;
         const { history, register } = this.props;
         const { domain } = this.props;
         const data = {
@@ -88,9 +88,9 @@ class RegisterPage extends React.Component {
           last_name: lastName.trim(),
           email: email.trim(),
           password: password.trim(),
-          organization_name: organizationName.trim(),
-          organization_type: organizationType.trim(),
-          job_title: jobTitle.trim(),
+          organization_name: organization_name.trim(),
+          organization_type: organization_type.trim(),
+          job_title: job_title.trim(),
           domain: domain?.domain,
         };
         const message = await register(data);
@@ -122,35 +122,34 @@ class RegisterPage extends React.Component {
   };
 
   isDisabled = () => {
-    const { firstName, lastName, email, password, organizationName, jobTitle, organizationType } = this.state;
+    const { firstName, lastName, email, password, organization_name, job_title, organization_type } = this.state;
 
     return (
       validator.isEmpty(firstName.trim()) ||
       validator.isEmpty(lastName.trim()) ||
       validator.isEmpty(email.trim()) ||
       validator.isEmpty(password.trim()) ||
-      validator.isEmpty(organizationName.trim()) ||
-      validator.isEmpty(jobTitle.trim()) ||
-      validator.isEmpty(organizationType.trim())
+      validator.isEmpty(organization_name.trim()) ||
+      validator.isEmpty(job_title.trim()) ||
+      validator.isEmpty(organization_type.trim())
     );
   };
 
   isDisabledGoogle = () => {
-    const { organizationName, jobTitle, organizationType } = this.state;
+    const { organization_name, job_title, organization_type } = this.state;
 
-    return validator.isEmpty(organizationName.trim()) || validator.isEmpty(jobTitle.trim()) || validator.isEmpty(organizationType.trim());
+    return validator.isEmpty(organization_name.trim()) || validator.isEmpty(job_title.trim()) || validator.isEmpty(organization_type.trim());
   };
 
   onGoogleLoginSuccess = (response) => {
-    const { organizationName, jobTitle, organizationType } = this.state;
-    console.log(organizationName, jobTitle, organizationType);
+    const { organization_name, job_title, organization_type } = this.state;
     const { googleLogin } = this.props;
-    if (organizationName && jobTitle && organizationType) {
+    if (organization_name && job_title && organization_type) {
       const result = googleLogin({
         ...response,
-        organizationName,
-        jobTitle,
-        organizationType,
+        organization_name,
+        job_title,
+        organization_type,
       });
       result.catch((err) => {
         this.setState({
@@ -180,7 +179,7 @@ class RegisterPage extends React.Component {
   };
 
   render() {
-    const { firstName, lastName, email, password, organizationName, jobTitle, error, organizationType, clicked, activeTab, stepper, googleResponse, showPassword } = this.state;
+    const { firstName, lastName, email, password, organization_name, job_title, error, organization_type, clicked, activeTab, stepper, googleResponse, showPassword } = this.state;
     const { isLoading, organizationTypes, domain } = this.props;
 
     return (
@@ -362,7 +361,7 @@ class RegisterPage extends React.Component {
                     </div>
                   </div>
                   <div className="form-group ">
-                    <select className="input-box organization-type" name="organizationType" placeholder="Organization Type*" value={organizationType} onChange={this.onChangeField}>
+                    <select className="input-box organization-type" name="organization_type" placeholder="Organization Type*" value={organization_type} onChange={this.onChangeField}>
                       <option selected value="">
                         Select an Organization Type
                       </option>
@@ -375,11 +374,11 @@ class RegisterPage extends React.Component {
 
                   <div className="form-group">
                     <span>Organization name</span>
-                    <input className="input-box" name="organizationName" maxLength="50" value={organizationName} onChange={this.onChangeField} />
+                    <input className="input-box" name="organization_name" maxLength="50" value={organization_name} onChange={this.onChangeField} />
                   </div>
                   <div className="form-group">
                     <span>Job title</span>
-                    <input className="input-box" name="jobTitle" maxLength="50" value={jobTitle} onChange={this.onChangeField} />
+                    <input className="input-box" name="job_title" maxLength="50" value={job_title} onChange={this.onChangeField} />
                   </div>
                   <div className="form-group mb-0" style={{ marginTop: '50px' }}>
                     <button

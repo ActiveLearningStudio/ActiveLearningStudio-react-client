@@ -485,7 +485,7 @@ export const ProjectsPage = (props) => {
                       <div className="col-md-12">
                         <div className="flex-smaple">
                           {favProject.length > 0 ? (
-                            <SampleProjectCard projects={favProject} type={type} activeTab={tabToggle} setShowSampleSort={setShowSampleSort} />
+                            <SampleProjectCard projects={favProject} type={type} activeTab={tabToggle} setType={setType} setTabToggle={setTabToggle} setShowSampleSort={setShowSampleSort} />
                           ) : (
                             <Alert variant="warning">No Favorite Project found.</Alert>
                           )}
@@ -544,7 +544,7 @@ export const ProjectsPage = (props) => {
                     <div className="col-md-12">
                       <div className="flex-smaple">
                         {sampleProject.length > 0 ? (
-                          <SampleProjectCard projects={sampleProject} activeTab={tabToggle} type={type} setShowSampleSort={setShowSampleSort} />
+                          <SampleProjectCard projects={sampleProject} activeTab={tabToggle} setType={setType} setTabToggle={setTabToggle} type={type} setShowSampleSort={setShowSampleSort} />
                         ) : (
                           <Alert variant="warning"> No sample project found.</Alert>
                         )}
@@ -571,6 +571,8 @@ export const ProjectsPage = (props) => {
                           <SampleProjectCard
                             projects={teamProjects}
                             type={type}
+                            setType={setType}
+                            setTabToggle={setTabToggle}
                             activeTab={tabToggle}
                             setShowSampleSort={setShowSampleSort}
                             handleShow={handleShow}

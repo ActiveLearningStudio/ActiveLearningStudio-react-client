@@ -32,6 +32,9 @@ const ProjectSharing = (props) => {
               if (resp.isConfirmed) {
                 dispatch(toggleProjectShareRemovedAction(selectedProject.id, selectedProject.name));
                 setActiveShared(false);
+              } else if (resp.isDismissed || resp.dismiss) {
+                setActiveShared(false);
+                setActiveShared(true);
               }
             });
           } else {
@@ -50,7 +53,7 @@ const ProjectSharing = (props) => {
         offHandleColor="#666"
       />
       &nbsp;
-      {activeShared ? 'Disable external link' : 'Enable Link'}
+      {activeShared ? 'Disable Sharing' : 'Enable Sharing'}
       {activeShared && (
         <button
           type="button"
@@ -64,7 +67,6 @@ const ProjectSharing = (props) => {
             return SharePreviewPopup(url, selectedProject.name);
           }}
         >
-
           <img src={linkIcon} alt="" className="mr-1" />
           <span className="textinButton">Get link</span>
         </button>
