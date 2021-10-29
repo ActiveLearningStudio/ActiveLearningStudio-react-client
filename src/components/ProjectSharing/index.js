@@ -32,6 +32,9 @@ const ProjectSharing = (props) => {
               if (resp.isConfirmed) {
                 dispatch(toggleProjectShareRemovedAction(selectedProject.id, selectedProject.name));
                 setActiveShared(false);
+              } else if (resp.isDismissed || resp.dismiss) {
+                setActiveShared(false);
+                setActiveShared(true);
               }
             });
           } else {
