@@ -425,7 +425,7 @@ function PlaylistsPage(props) {
                 <></>
               ) : (
                 <>
-                  <div style={{ marginLeft: '15px' }}>{selectedProject?.team?.name ? `Team Name: ${selectedProject?.team?.name}` : null}</div>
+                  <div>{selectedProject?.team?.name ? `Team Name: ${selectedProject?.team?.name}` : null}</div>
                   <Headings text={`${organization?.currentOrganization?.name}`} headingType="body2" color="#084892" className="mb-3" />
                   <div className="col playlist-page-project-title project-each-view">
                     <div className="flex-se project-headline-section">
@@ -511,23 +511,23 @@ function PlaylistsPage(props) {
                               {(Object.keys(teamPermission).length
                                 ? teamPermission?.Team?.includes('team:edit-project')
                                 : permission?.Project?.includes('project:upload-thumb')) && (
-                                <div className="button-flex-project-images">
-                                  <div
-                                    className="gallery"
-                                    onClick={() => {
-                                      openFile.current.click();
-                                    }}
-                                  >
-                                    <img src={computer} alt="" />
-                                    <p>My device</p>
-                                  </div>
+                                  <div className="button-flex-project-images">
+                                    <div
+                                      className="gallery"
+                                      onClick={() => {
+                                        openFile.current.click();
+                                      }}
+                                    >
+                                      <img src={computer} alt="" />
+                                      <p>My device</p>
+                                    </div>
 
-                                  <div className="pexel" onClick={() => setModalShow(true)}>
-                                    <img src={pexel} alt="pexel" />
-                                    <p>Pexels</p>
+                                    <div className="pexel" onClick={() => setModalShow(true)}>
+                                      <img src={pexel} alt="pexel" />
+                                      <p>Pexels</p>
+                                    </div>
                                   </div>
-                                </div>
-                              )}
+                                )}
                             </div>
                           </div>
                           {!editName && <Headings text={selectedProject ? selectedProject.name : ''} headingType="h2" color="#084892" />}
