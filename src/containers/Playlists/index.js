@@ -479,7 +479,7 @@ function PlaylistsPage(props) {
                             <div
                               title="project-img"
                               style={{
-                                backgroundImage: selectedProject.thumb_url.includes('pexels.com')
+                                backgroundImage: selectedProject.thumb_url?.includes('pexels.com')
                                   ? `url(${selectedProject.thumb_url})`
                                   : `url(${global.config.resourceUrl}${selectedProject.thumb_url})`,
                               }}
@@ -502,7 +502,7 @@ function PlaylistsPage(props) {
                                   alt="project-img"
                                   className="container-image"
                                   src={
-                                    selectedProject.thumb_url && selectedProject.thumb_url.includes('pexels.com')
+                                    selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
                                       ? selectedProject.thumb_url
                                       : global.config.resourceUrl + selectedProject.thumb_url
                                   }

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useCallback, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,30 +8,28 @@ import { FadeDiv } from 'utils';
 import './style.scss';
 
 function AssignProject(props) {
-  const {
-    isSaving,
-    projects,
-    handleSubmit,
-    selectedProjects,
-    setSelectedProjects,
-    search,
-    setSearch,
-  } = props;
+  const { isSaving, projects, handleSubmit, selectedProjects, setSelectedProjects, search, setSearch } = props;
 
-  const onChange = useCallback((e) => {
-    setSearch(e.target.value);
-  }, [setSearch]);
+  const onChange = useCallback(
+    (e) => {
+      setSearch(e.target.value);
+    },
+    [setSearch]
+  );
   const [filteredProjects, setFilteredProjects] = useState([]);
-  const selectProject = useCallback((projectId) => {
-    const newProjects = [...selectedProjects];
-    const projectIndex = newProjects.indexOf(projectId);
-    if (projectIndex === -1) {
-      setSelectedProjects([...newProjects, projectId]);
-    } else {
-      newProjects.splice(projectIndex, 1);
-      setSelectedProjects(newProjects);
-    }
-  }, [selectedProjects]);
+  const selectProject = useCallback(
+    (projectId) => {
+      const newProjects = [...selectedProjects];
+      const projectIndex = newProjects.indexOf(projectId);
+      if (projectIndex === -1) {
+        setSelectedProjects([...newProjects, projectId]);
+      } else {
+        newProjects.splice(projectIndex, 1);
+        setSelectedProjects(newProjects);
+      }
+    },
+    [selectedProjects]
+  );
 
   const onFinish = useCallback(() => {
     handleSubmit(selectedProjects);
@@ -42,17 +41,9 @@ function AssignProject(props) {
   }, [projects, search]);
 
   const finishButton = (
-    <button
-      type="button"
-      className="create-group-submit-btn"
-      disabled={isSaving}
-      onClick={onFinish}
-    >
+    <button type="button" className="create-group-submit-btn" disabled={isSaving} onClick={onFinish}>
       Finish
-
-      {isSaving && (
-        <FontAwesomeIcon icon="spinner" />
-      )}
+      {isSaving && <FontAwesomeIcon icon="spinner" />}
     </button>
   );
 
@@ -67,41 +58,28 @@ function AssignProject(props) {
 
         <div className="assign-project-wrapper">
           <div className="search-box">
-            <input
-              type="text"
-              placeholder="Filter by name"
-              value={search}
-              onChange={onChange}
-            />
+            <input type="text" placeholder="Filter by name" value={search} onChange={onChange} />
           </div>
 
           <div className="assign-projects">
-            {filteredProjects.length > 0 ? filteredProjects.map((project) => (
-              <div
-                key={project.id}
-                className="assign-project-item"
-                onClick={() => selectProject(project.id)}
-              >
-                <div
-                  className="project-img"
-                  style={{
-                    backgroundImage: project.thumb_url.includes('pexels.com')
-                      ? `url(${project.thumb_url})`
-                      : `url(${global.config.resourceUrl}${project.thumb_url})`,
-                  }}
-                />
+            {filteredProjects.length > 0 ? (
+              filteredProjects.map((project) => (
+                <div key={project.id} className="assign-project-item" onClick={() => selectProject(project.id)}>
+                  <div
+                    className="project-img"
+                    style={{
+                      backgroundImage: project?.thumb_url?.includes('pexels.com') ? `url(${project.thumb_url})` : `url(${global.config.resourceUrl}${project.thumb_url})`,
+                    }}
+                  />
 
-                <div className="assign-project-radio">
-                  {selectedProjects.indexOf(project.id) > -1 && (
-                    <span className="checkmark" />
-                  )}
-                </div>
+                  <div className="assign-project-radio">{selectedProjects.indexOf(project.id) > -1 && <span className="checkmark" />}</div>
 
-                <div className="assign-project-title">
-                  {project.name}
+                  <div className="assign-project-title">{project.name}</div>
                 </div>
-              </div>
-            )) : <div> No Project Found. </div> }
+              ))
+            ) : (
+              <div> No Project Found. </div>
+            )}
           </div>
 
           {finishButton}

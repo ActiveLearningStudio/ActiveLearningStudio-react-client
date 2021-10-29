@@ -125,7 +125,7 @@
 }
 .paragraph {
   display: flex;
-  margin: 10px 50px 10px 0px;
+  margin: 10px 20px 20px 0px;
   padding: 0 14px 0 0;
   align-items: center;
   textarea {
@@ -220,13 +220,15 @@ hr {
     text-transform: capitalize;
     line-height: 32px;
 
-    word-break: break-all;
+    word-break: break-word;
   }
 
   .project-share-previews {
     display: flex;
     align-items: flex-end;
     flex-direction: column;
+    width: 275px;
+    flex-shrink: 0;
 
     .share-button {
       margin: 0;
