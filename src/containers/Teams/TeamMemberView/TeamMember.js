@@ -51,7 +51,7 @@ function TeamMember(props) {
     if (reamainingAdmin?.length <= 1 && role.id === 1) {
       Swal.fire({
         icon: 'warning',
-        text: 'There should be atleast one admin',
+        text: 'There should be at least one admin',
       });
     } else {
       removeMember(teamId, id, iEmail)
