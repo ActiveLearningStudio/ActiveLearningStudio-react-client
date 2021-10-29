@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 // import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import QueryString from 'query-string';
 import {
   deleteFavObj,
   toggleProjectShareAction,
@@ -18,6 +18,7 @@ import MyVerticallyCenteredModal from 'components/models/activitySample';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import { lmsPlaylist } from 'store/actions/playlist';
 import { getProjectId } from 'store/actions/gapi';
+import { useLocation } from 'react-router-dom';
 
 const SampleProjectCard = (props) => {
   const {
@@ -27,9 +28,12 @@ const SampleProjectCard = (props) => {
     setShowSampleSort,
     handleShow,
     setProjectId,
+    setTabToggle,
+    setType,
   } = props;
 
   const dispatch = useDispatch();
+  const location = useLocation();
   const [selectId, setSelectId] = useState(null);
   const [selectFavId, setSelectFavId] = useState(null);
   const [selectSampleId, setSelectSampleId] = useState(null);
@@ -40,6 +44,13 @@ const SampleProjectCard = (props) => {
   const { permission } = organization;
   const AllLms = useSelector((state) => state.share);
   const [allLms, setAllLms] = useState([]);
+  useMemo(() => {
+    const query = QueryString.parse(location.search);
+    if (query.active === 'fav') {
+      setTabToggle('Favorite Projects');
+      setType('fav');
+    }
+  }, [location, setTabToggle, setType]);
   useEffect(() => {
     setAllLms(AllLms);
   }, [AllLms, AllLms.shareVendors]);
@@ -334,6 +345,8 @@ SampleProjectCard.propTypes = {
   activeTab: PropTypes.string.isRequired,
   handleShow: PropTypes.func.isRequired,
   setProjectId: PropTypes.func.isRequired,
+  setType: PropTypes.func.isRequired,
+  setTabToggle: PropTypes.func.isRequired,
 };
 
 export default SampleProjectCard;
