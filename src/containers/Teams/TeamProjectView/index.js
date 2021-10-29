@@ -183,7 +183,7 @@ function TeamProjectView(props) {
                       </Dropdown.Item>
                     )}
                     {teamPermission?.Team?.includes('team:edit-project') && (
-                      <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}/edit`}>
+                      <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/project/${project.id}`}>
                         <FontAwesomeIcon icon="pen" className="mr-2" />
                         Edit
                       </Dropdown.Item>
