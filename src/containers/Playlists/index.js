@@ -428,7 +428,7 @@ function PlaylistsPage(props) {
                   <div style={{ marginLeft: '15px' }}>{selectedProject?.team?.name ? `Team Name: ${selectedProject?.team?.name}` : null}</div>
                   <Headings text={`${organization?.currentOrganization?.name}`} headingType="body2" color="#084892" className="mb-3" />
                   <div className="col playlist-page-project-title project-each-view">
-                    <div className="flex-se">
+                    <div className="flex-se project-headline-section">
                       <div>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                           <div className="project-images">
@@ -476,13 +476,13 @@ function PlaylistsPage(props) {
                                 }}
                               />
                             </label>
-                            <img
-                              alt="project-img"
-                              src={
-                                selectedProject.thumb_url && selectedProject.thumb_url.includes('pexels.com')
-                                  ? selectedProject.thumb_url
-                                  : global.config.resourceUrl + selectedProject.thumb_url
-                              }
+                            <div
+                              title="project-img"
+                              style={{
+                                backgroundImage: selectedProject.thumb_url.includes('pexels.com')
+                                  ? `url(${selectedProject.thumb_url})`
+                                  : `url(${global.config.resourceUrl}${selectedProject.thumb_url})`,
+                              }}
                               className="project-image-playlistpage"
                             />
                             <div className="on-hover-project-image">
@@ -552,79 +552,76 @@ function PlaylistsPage(props) {
                             />
                           )}
                         </div>
-                      </div>
-                      {/* <div className="edit">
-                        <FontAwesomeIcon icon="edit" className="mr-2" />
-                        <Link className="edit-link" to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/preview`}>
-                          Edit project settings
-                        </Link>
-                      </div> */}
+                        <div className="paragraph">
+                          {!editDescription && <Headings text={selectedProject.description} headingType="body" color="#515151" />}
+                          <textarea
+                            className="description"
+                            ref={descriptionRef}
+                            name="projectdescription"
+                            defaultValue={selectedProject.description ? selectedProject.description : ''}
+                            onBlur={onBlur}
+                            onKeyPress={onEnterPress}
+                            style={{ display: editDescription ? 'block' : 'none' }}
+                          />
+                          {!editDescription &&
+                            (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project') : permission?.Project?.includes('project:edit')) && (
+                              <FontAwesomeIcon
+                                icon="edit"
+                                className="ml-2"
+                                onClick={() => {
+                                  setEditDescription(true);
+                                  descriptionRef.current.focus();
+                                }}
+                              />
+                            )}
+                        </div>
+                        <div className="new-playlist">
+                          <div className="dropdown">
+                            <Headings text="Library Preferences:" headingType="body2" color="#515151" />
 
-                      {/* <h1>{selectedProject ? selectedProject.name : ""}</h1> */}
-                      <div className="project-preview">
-                        <Link className="dropdown-item" to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/preview`}>
-                          <FontAwesomeIcon icon="eye" className="mr-2" />
-                          Project Preview
-                        </Link>
+                            <Dropdown className="d-inline mx-2" autoClose="outside">
+                              <Dropdown.Toggle id="dropdown-autoclose-outside">{visibility}</Dropdown.Toggle>
+                              <Dropdown.Menu>
+                                {projectState.visibilityTypes?.data?.map((type) => (
+                                  <Dropdown.Item>
+                                    <div
+                                      onClick={() => {
+                                        editVisibility(type.id);
+                                        setVisibility(type.display_name);
+                                      }}
+                                    >
+                                      {type.display_name}
+                                    </div>
+                                  </Dropdown.Item>
+                                ))}
+                              </Dropdown.Menu>
+                            </Dropdown>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="project-share-previews">
+                        <div className="project-preview">
+                          <Link className="dropdown-item" to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/preview`}>
+                            <FontAwesomeIcon icon="eye" className="mr-2" />
+                            Project Preview
+                          </Link>
+                        </div>
+                        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-project') : permission?.Project?.includes('project:share')) && (
+                          <Projectsharing setActiveShared={setActiveShared} activeShared={activeShared} selectedProject={selectedProject} />
+                        )}
                       </div>
                     </div>
                   </div>
-                  <div className="paragraph">
-                    {!editDescription && <Headings text={selectedProject.description} headingType="body" color="#515151" />}
-                    <textarea
-                      className="description"
-                      ref={descriptionRef}
-                      name="projectdescription"
-                      defaultValue={selectedProject.description ? selectedProject.description : ''}
-                      onBlur={onBlur}
-                      onKeyPress={onEnterPress}
-                      style={{ display: editDescription ? 'block' : 'none' }}
-                    />
-                    {!editDescription &&
-                      (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project') : permission?.Project?.includes('project:edit')) && (
-                        <FontAwesomeIcon
-                          icon="edit"
-                          className="ml-2"
-                          onClick={() => {
-                            setEditDescription(true);
-                            descriptionRef.current.focus();
-                          }}
-                        />
-                      )}
-                  </div>
-                  <div className="new-playlist">
+
+                  <hr />
+                  <div className="new-playlister">
                     {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:add-playlist') : permission?.Playlist?.includes('playlist:create')) && (
                       <button style={{ whiteSpace: 'nowrap' }} type="button" className="create-playlist-btn" onClick={handleShowCreatePlaylistModal}>
                         <FontAwesomeIcon icon="plus" className="mr-2" />
-                        New playlist
+                        Create new playlist
                       </button>
                     )}
-                    <div className="dropdown">
-                      <Headings text="Library Preferences:" headingType="body2" color="#515151" />
-
-                      <Dropdown className="d-inline mx-2" autoClose="outside">
-                        <Dropdown.Toggle id="dropdown-autoclose-outside">{visibility}</Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          {projectState.visibilityTypes?.data?.map((type) => (
-                            <Dropdown.Item>
-                              <div
-                                onClick={() => {
-                                  editVisibility(type.id);
-                                  setVisibility(type.display_name);
-                                }}
-                              >
-                                {type.display_name}
-                              </div>
-                            </Dropdown.Item>
-                          ))}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </div>
-                    {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-project') : permission?.Project?.includes('project:share')) && (
-                      <Projectsharing setActiveShared={setActiveShared} activeShared={activeShared} selectedProject={selectedProject} />
-                    )}
                   </div>
-                  <hr />
                   {!!playlists && playlists.length > 0 ? (
                     <DragDropContext onDragEnd={onDragEnd}>
                       <Droppable droppableId="project-droppable-id" direction="horizontal" type="column">
