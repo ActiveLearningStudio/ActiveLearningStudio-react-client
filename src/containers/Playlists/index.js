@@ -48,6 +48,7 @@ import {
   getElastic,
   visibilityTypes,
   updateProjectAction,
+  clearSelectedProject,
 } from 'store/actions/project';
 import { closeSafariMontageToolAction } from 'store/actions/LMS/genericLMS';
 import Footer from 'components/Footer';
@@ -137,6 +138,12 @@ function PlaylistsPage(props) {
       dispatch(visibilityTypes());
     })();
   }, []);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearSelectedProject());
+    }
+  }, [])
 
   useEffect(() => {
     loadLms();

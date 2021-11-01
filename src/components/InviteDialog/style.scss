@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 $selected_color: #084892;
 $filled: #44ca92;
@@ -12,14 +12,14 @@ $filled: #44ca92;
     height: 41px;
     padding: 1px 17px 0;
     background: none;
-    border: solid 1px #44CA92;
+    border: solid 1px #44ca92;
     font-size: 14px;
     letter-spacing: 0.3px;
     text-align: left;
-    color: #44CA92;
+    color: #44ca92;
 
     &:hover {
-      background: #44CA92;
+      background: #44ca92;
       color: #ffffff;
     }
   }
@@ -36,8 +36,8 @@ $filled: #44ca92;
       width: 100%;
       min-width: 100px;
       /* padding: 13px 15px 0 5px; */
-      background: #FFFFFF;
-      border: solid 1px #FFFFFF;
+      background: #ffffff;
+      border: solid 1px #ffffff;
       flex: 1 1;
       border: 1px solid #ccc;
       height: 35px;
@@ -50,19 +50,19 @@ $filled: #44ca92;
 
       &.add-note {
         margin-right: 5px;
-        background: #FFFFFF !important;
+        background: #ffffff !important;
         border: solid 1px #a4a4a4 !important;
         color: #a4a4a4 !important;
 
         &:hover {
-          background: #A4A4A4 !important;
-          color: #FFFFFF !important;
+          background: #a4a4a4 !important;
+          color: #ffffff !important;
         }
       }
 
       &:disabled {
         margin-right: 5px;
-        background: #FFFFFF !important;
+        background: #ffffff !important;
         border: solid 1px #a4a4a4 !important;
         color: #a4a4a4 !important;
       }
@@ -110,8 +110,8 @@ $filled: #44ca92;
         position: relative;
         margin: 10px 0;
         padding: 0 1.5em 0 0.5em;
-        background: #FFFFFF;
-        border: solid 1px #C4C4C4;
+        background: #ffffff;
+        border: solid 1px #c4c4c4;
 
         .input-box {
           padding: 5px 0;
@@ -123,8 +123,8 @@ $filled: #44ca92;
             width: 100%;
             min-width: 100px;
             padding: 0 10px 0 5px;
-            background: #FFFFFF;
-            border: solid 1px #FFFFFF;
+            background: #ffffff;
+            border: solid 1px #ffffff;
             flex: 1;
           }
 
@@ -134,7 +134,10 @@ $filled: #44ca92;
           }
 
           .user-chip {
-            width: max-content;
+            width: 100px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
             height: min-content;
             margin: 2px 1px 0 4px;
             padding: 0 5px;
@@ -187,7 +190,7 @@ $filled: #44ca92;
           max-height: 170px;
           background: #fff;
           border: solid 1px #e5e5e5;
-          z-index:1;
+          z-index: 1;
           border: solid 1px #aaa8a8;
 
           .invite-member-item {
