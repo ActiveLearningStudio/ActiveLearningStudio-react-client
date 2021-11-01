@@ -1,5 +1,45 @@
-@import 'assets/css/index';
+@import "assets/css/index";
+
+.preview-list-update {
+  width: 256px;
+  border: none !important;
+}
 
 .activity-preview-card {
-	width: 14rem;
+  width: 14rem;
+}
+.plydet-update {
+  position: absolute;
+  bottom: 0;
+  color: $white !important;
+  font-family: $rubik;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  color: #ffffff;
+}
+.playimage-update {
+  width: 250px !important;
+  height: 156px !important;
+  border-radius: 8px;
+  &:before {
+    background: linear-gradient(
+      180deg,
+      rgba(81, 81, 81, 0.2) 0%,
+      rgba(0, 0, 0, 0.8) 100%
+    );
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    content: "";
+    display: block;
+    position: absolute;
+    width: 250px !important;
+    height: 156px !important;
+  }
+}
+.resource-dropdown {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
 }

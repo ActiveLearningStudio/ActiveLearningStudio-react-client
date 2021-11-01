@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -11,7 +10,7 @@ import sndt from 'assets/images/SNDT-LOGO-blue.png';
 import nevada from 'assets/images/nevada.png';
 import vivensity from 'assets/images/vivensity.png';
 import openeducation from 'assets/images/openeducation.png';
-import bodyImg from 'assets/images/login_bglogo.svg';
+import bodyImg from 'assets/images/log-in.png';
 
 export default function Logo() {
   const logoState = useSelector((state) => state.organization.currentOrganization);
@@ -48,9 +47,11 @@ export default function Logo() {
     <div className="auth-leftpane">
       {image ? (
         <img className="auth-header-logo" src={global.config.resourceUrl + image} alt="logo" title="" />
-      ) : <img className="auth-header-logo" src={defaultLogo} alt="logo" title="" />}
+      ) : (
+        <img className="auth-header-logo" src={defaultLogo} alt="logo" title="" />
+      )}
       <div className="auth-body">
-        <img src={bodyImg} alt="ff" className="auth-body-img" />
+        <img src={bodyImg} alt="login-background-img" className="background-img-leftpane" />
       </div>
     </div>
   );

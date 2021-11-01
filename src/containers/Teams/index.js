@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
@@ -27,18 +28,7 @@ const breadCrumbData = {
 };
 
 function TeamsPage(props) {
-  const {
-    location,
-    teams,
-    overview,
-    creation,
-    teamShow,
-    editMode,
-    projectShow,
-    channelShow,
-    loadTeams,
-    loadSubOrgTeams,
-  } = props;
+  const { location, teams, overview, creation, teamShow, editMode, projectShow, channelShow, loadTeams, loadSubOrgTeams } = props;
   const organization = useSelector((state) => state.organization);
   const { teamPermission, selectedForClone } = useSelector((state) => state.team);
   const { activeOrganization, currentOrganization, permission } = organization;
@@ -59,26 +49,15 @@ function TeamsPage(props) {
         if (activeOrganization?.id !== currentOrganization?.id) {
           await loadSubOrgTeams();
           setAlertCheck(true);
-        } else if ((activeOrganization?.id === currentOrganization?.id) && permission?.Team) {
+        } else if (activeOrganization?.id === currentOrganization?.id && permission?.Team) {
           await loadTeams();
           setAlertCheck(true);
         }
       }
-    }
-    )();
+    })();
   }, [loadTeams, loadSubOrgTeams, activeOrganization, currentOrganization, permission?.Team, setAlertCheck]);
 
-  const status = creation
-    ? 'creation'
-    : editMode
-      ? 'editMode'
-      : teamShow
-        ? 'teamShow'
-        : projectShow
-          ? 'projectShow'
-          : overview
-            ? 'teamShow'
-            : 'channelShow';
+  const status = creation ? 'creation' : editMode ? 'editMode' : teamShow ? 'teamShow' : projectShow ? 'projectShow' : overview ? 'teamShow' : 'channelShow';
 
   const teamId = parseInt(location.pathname.split('teams/')[1], 10);
   const selectedTeam = teams.find((team) => team.id === teamId);
@@ -92,7 +71,7 @@ function TeamsPage(props) {
   useEffect(() => {
     let crumb = breadCrumbData[status];
     if (teamShow && selectedTeam) {
-      crumb += (`/${selectedTeam.name} Members`);
+      crumb += `/${selectedTeam.name} Members`;
     }
 
     setBreadCrumb(crumb.split('/'));
@@ -123,18 +102,13 @@ function TeamsPage(props) {
           <div className="main-flex-top">
             {breadCrumb.map((node, index, these) => (
               <div key={node}>
-                <span className={index + 1 < these.length ? '' : 'child'}>
-                  {node}
-                </span>
-                {index + 1 < these.length && (
-                  <FontAwesomeIcon icon="angle-right" />
-                )}
+                <span className={index + 1 < these.length ? '' : 'child'}>{node}</span>
+                {index + 1 < these.length && <FontAwesomeIcon icon="angle-right" />}
               </div>
             ))}
           </div>
-          {!overview
-          && (
-            <Link className="back-button-main-page" onClick={goBack}>
+          {!overview && (
+            <Link to="#" className="back-button-main-page" onClick={goBack}>
               <FontAwesomeIcon icon="chevron-left" />
               Back
             </Link>
@@ -145,9 +119,7 @@ function TeamsPage(props) {
         <div className="content-wrapper">
           <div className="content">
             <div className="row" style={{ justifyContent: 'space-between' }}>
-              <h1 className={`title${projectShow ? ' project-title' : ''}${channelShow ? ' channel-title' : ''}`}>
-                {overview ? 'Teams' : (title[status] || 'Teams')}
-              </h1>
+              <h1 className={`title${projectShow ? ' project-title' : ''}${channelShow ? ' channel-title' : ''}`}>{overview ? 'Teams' : title[status] || 'Teams'}</h1>
               <div className="flex-button-top">
                 {teamPermission?.Team?.includes('team:add-project') && projectShow && (
                   <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}/add-projects`}>
@@ -157,16 +129,12 @@ function TeamsPage(props) {
                     </div>
                   </Link>
                 )}
-                {(teamPermission?.Team?.includes('team:add-team-user')
-                || teamPermission?.Team?.includes('team:remove-team-user')) && projectShow && (
+                {(teamPermission?.Team?.includes('team:add-team-user') || teamPermission?.Team?.includes('team:remove-team-user')) && projectShow && (
                   <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}`}>
-                    <div className="btn-top-page">
-                      Add/Remove Members
-                    </div>
+                    <div className="btn-top-page">Add/Remove Members</div>
                   </Link>
                 )}
-                {permission?.Team?.includes('team:create')
-                && overview && (
+                {permission?.Team?.includes('team:create') && overview && (
                   <>
                     <Link to={`/org/${organization?.currentOrganization?.domain}/teams/create-team`}>
                       <div className="btn-top-page">
@@ -176,37 +144,41 @@ function TeamsPage(props) {
                     </Link>
                   </>
                 )}
-                {projectShow && (
-                  <></>
-                )}
+                {projectShow && <></>}
               </div>
             </div>
             <>
               {overview && (
-              <div className="row overview">
-                {permission?.Team?.includes('team:view') ? (
-                  <>
-                    {teams.length > 0 ? teams.map((team) => (
-                      <TeamView key={team.id} team={team} />
-                    )) : !alertCheck
-                      ? <Alert className="alert-space" variant="primary">Loading...</Alert>
-                      : <Alert className="alert-space" variant="warning">No team available. </Alert> }
-                  </>
-                ) : <Alert className="alert-space" variant="danger">You are not authorized to view teams.</Alert> }
-              </div>
+                <div className="row overview">
+                  {permission?.Team?.includes('team:view') ? (
+                    <>
+                      {teams.length > 0 ? (
+                        teams.map((team) => <TeamView key={team.id} team={team} />)
+                      ) : !alertCheck ? (
+                        <Alert className="alert-space" variant="primary">
+                          Loading...
+                        </Alert>
+                      ) : (
+                        <Alert className="alert-space" variant="warning">
+                          No team available.{' '}
+                        </Alert>
+                      )}
+                    </>
+                  ) : (
+                    <Alert className="alert-space" variant="danger">
+                      You are not authorized to view teams.
+                    </Alert>
+                  )}
+                </div>
               )}
               {(creation || editMode) && (
-                <div className="row sub-content"><CreateTeam editMode={editMode} selectedTeam={selectedTeam} /></div>
+                <div className="row sub-content">
+                  <CreateTeam editMode={editMode} selectedTeam={selectedTeam} />
+                </div>
               )}
-              {teamShow && selectedTeam && (
-                <TeamMemberView team={selectedTeam} />
-              )}
-              {projectShow && selectedTeam && (
-                <TeamProjectView team={selectedTeam} />
-              )}
-              {channelShow && selectedTeam && (
-                <ChannelPanel />
-              )}
+              {teamShow && selectedTeam && <TeamMemberView team={selectedTeam} />}
+              {projectShow && selectedTeam && <TeamProjectView team={selectedTeam} />}
+              {channelShow && selectedTeam && <ChannelPanel />}
             </>
           </div>
         </div>

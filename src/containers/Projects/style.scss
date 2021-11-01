@@ -1,5 +1,61 @@
 @import 'assets/css/index';
 
+.project-list-all {
+  // display: flex;
+  // flex-wrap: wrap;
+}
+.inner-content {
+  background: $white;
+  padding: 30px;
+  margin-top: 0px;
+  // margin: 13px 39px 81px 29px;
+  border-radius: 3px;
+  // @media screen and (max-width: 1024px) {
+  //   margin: 13px 20px 81px 20px;
+  // }
+}
+
+// **************************** TAB CSS***********************************
+.nav-tabs .nav-link {
+  border: 1px solid $curriki-main-blue !important;
+  // background-color: $curriki-main-blue !important;
+  // color: $curriki-main-blue !important;
+  font-weight: bold !important;
+
+  // & :hover {
+
+  // }
+}
+
+.nav-tabs .nav-link.hover :hover {
+  background-color: $curriki-main-blue !important;
+  color: $white !important;
+}
+.main-tabs .nav-item {
+  background-color: $fun-blue-1 !important;
+  color: $white !important;
+  width: 160px;
+  height: 36px;
+  padding: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500 !important;
+  margin-right: 8px;
+}
+
+.main-tabs .nav-item.active {
+  background-color: $white !important;
+  color: $fun-blue-1 !important;
+  border-bottom: #fff !important;
+}
+.main-tabs .nav-item.active:after {
+  display: none !important;
+}
+// ***************************************************************
+
 .program-tile {
   height: 100%;
   min-height: 450px;
@@ -51,7 +107,7 @@
         line-height: 120%;
         display: block;
 
-        @media (max-width:1500px) {
+        @media (max-width: 1500px) {
           font-size: 18px;
         }
 
@@ -291,26 +347,31 @@
 }
 
 .project-headline {
-  padding-top: 20px;
-
   .title {
     font-weight: 500;
-    font-size: 31.25px;
+    font-size: 30px;
     color: $fun-blue-1;
     display: flex;
     justify-content: space-between;
     margin-bottom: 15px;
     align-items: center;
+    .heading-image {
+      display: flex;
+    }
 
     img {
-      width:35px;
+      width: 35px;
       margin-right: 5px;
+    }
+
+    button {
+      font-size: 14px;
     }
   }
 
-  p{
+  p {
     font-size: 14px;
-    color: $dove-gray
+    color: $dove-gray;
   }
 
   .btn-top-page {
@@ -327,5 +388,39 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .top-heading-detail {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+  button .fa-plus {
+    color: #f8af2c;
+  }
+}
+.initial-project-wrapper {
+  width: 100%;
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  padding: 54px 20px 54px 20px;
+  .initial-project-content {
+    display: flex;
+    justify-content: space-around;
+    .initial-left-col {
+      display: flex;
+      flex-direction: column;
+      h2 {
+        margin-bottom: 4px;
+      }
+      h3 {
+        margin-bottom: 27px;
+      }
+      p {
+        margin-bottom: 28px;
+      }
+    }
+
+    img {
+      width: 478px;
+    }
   }
 }

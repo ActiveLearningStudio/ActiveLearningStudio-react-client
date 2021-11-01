@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -24,32 +25,38 @@ function ForgotPasswordPage(props) {
   const [email, setEmail] = useState('');
   const [error, setError] = useState(null);
 
-  const onChangeEmail = useCallback((e) => {
-    setEmail(e.target.value.trim());
-  }, [setEmail]);
+  const onChangeEmail = useCallback(
+    (e) => {
+      setEmail(e.target.value.trim());
+    },
+    [setEmail]
+  );
 
-  const onSubmit = useCallback(async (e) => {
-    e.preventDefault();
+  const onSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-    try {
-      if (!validator.isEmail(email)) {
-        setError('Please input valid email.');
-        return;
+      try {
+        if (!validator.isEmail(email)) {
+          setError('Please input valid email.');
+          return;
+        }
+
+        setError(null);
+
+        await forgotPassword({ email });
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Password reset email has been sent. Please follow the instructions.',
+        });
+      } catch (err) {
+        setError(getErrors(err));
       }
-
-      setError(null);
-
-      await forgotPassword({ email });
-
-      Swal.fire({
-        icon: 'success',
-        title: 'Success',
-        text: 'Password reset email has been sent. Please follow the instructions.',
-      });
-    } catch (err) {
-      setError(getErrors(err));
-    }
-  }, [email, forgotPassword]);
+    },
+    [email, forgotPassword]
+  );
 
   const isDisabled = validator.isEmpty(email);
 
@@ -59,24 +66,18 @@ function ForgotPasswordPage(props) {
 
       <div className="auth-container">
         <h1 className="auth-title">Reset Password</h1>
-        <h3 className="auth-description">
-          Please enter your CurrikiStudio account&apos;s email and click the button below,
-          then check your email for instructions on how to reset your password.
+        <h3 className="auth-Pdescrip">
+          Please enter your CurrikiStudio account&apos;s email and click the button below, then check your email for instructions on how to reset your password.
         </h3>
 
-        <form
-          onSubmit={onSubmit}
-          autoComplete="off"
-          className="auth-form"
-        >
+        <form onSubmit={onSubmit} autoComplete="off" className="auth-form">
           <div className="form-group">
-            <FontAwesomeIcon icon="envelope" />
+            <span>Email</span>
             <input
               autoFocus
               className="input-box"
               // type="email"
               name="email"
-              placeholder="Email*"
               required
               value={email}
               onChange={onChangeEmail}
@@ -86,16 +87,8 @@ function ForgotPasswordPage(props) {
           <Error error={error} />
 
           <div className="form-group">
-            <button
-              type="submit"
-              className="signUp-btn submit"
-              disabled={isLoading || isDisabled}
-            >
-              {isLoading ? (
-                <img src={loader} alt="" />
-              ) : (
-                'Send Reset Password Link'
-              )}
+            <button type="submit" className="signUp-btn submit" disabled={isLoading || isDisabled}>
+              {isLoading ? <img src={loader} alt="" /> : 'Send Reset Password Link'}
             </button>
           </div>
 
@@ -124,6 +117,4 @@ const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
 });
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ForgotPasswordPage),
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ForgotPasswordPage));

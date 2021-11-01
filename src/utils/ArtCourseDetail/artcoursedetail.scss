@@ -1,0 +1,38 @@
+@import "../../assets/css/index.scss";
+.curriki-utility-artcourse {
+  display: flex;
+  .artcourse-img {
+    img {
+      width: 300px;
+      height: 200px;
+    }
+  }
+  .artcourse-detail {
+    display: flex;
+    flex-direction: column;
+    margin-left: 50px;
+    .artcourse-description {
+      margin-top: 15px;
+      margin-bottom: 30px;
+    }
+    .artcourse-links-icons {
+      .link-icons {
+        width: 410px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .artcourse_link {
+          color: #084892;
+          font-family: "Open Sans", sans-serif;
+          font-style: normal;
+          font-weight: 600;
+          font-size: 12px;
+          line-height: 16px;
+        }
+        .artcourse-icon {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/* eslint-disable */
 import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -94,12 +94,9 @@ function SearchInterface(props) {
   const [activeEducation, setActiveEducation] = useState([]);
   const [searchType, setSearchType] = useState(null);
   const [authorName, SetAuthor] = useState('');
+  const [activetab, setActiveTab] = useState('total');
   const [todate, Settodate] = useState(undefined);
   const [fromdate, Setfromdate] = useState(undefined);
-  const [safariToolHtml, setSafariToolHtml] = useState(null);
-  useEffect(() => {
-    setSafariToolHtml(encodeURI(safariMontagePublishTool));
-  }, [safariMontagePublishTool]);
   // const [selectedAuthor, setSelectedAuthor] = useState([]);
   // const [authors, setAuthors] = useState([]);
   // var activeSubject1;
@@ -269,7 +266,7 @@ function SearchInterface(props) {
   });
 
   useEffect(() => {
-    if (activityTypesState?.length === 0) {
+    if (activityTypesState.length === 0) {
       dispatch(loadResourceTypesAction());
     }
   }, []);
@@ -290,7 +287,7 @@ function SearchInterface(props) {
 
   useEffect(() => {
     const allItems = [];
-    activityTypesState?.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
+    activityTypesState.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
     setActivityTypes(allItems.sort(compare));
   }, [activityTypesState]);
   // console.log(activeSubject, activeEducation);
@@ -455,7 +452,7 @@ function SearchInterface(props) {
                                               checked={searchType === 'public'}
                                               type="radio"
                                             />
-                                            <span>Search Projects Showcase</span>
+                                            <span>Search All Shared Projects</span>
                                           </label>
                                         )}
                                       {permission?.Search?.includes('search:advance')
@@ -470,7 +467,7 @@ function SearchInterface(props) {
                                               checked={searchType === 'orgSearch'}
                                               type="radio"
                                             />
-                                            <span>Search All Projects in Organization</span>
+                                            <span>Search All Shared Projects In My Org</span>
                                           </label>
                                         )}
                                     </div>
@@ -494,6 +491,7 @@ function SearchInterface(props) {
                                     onClick={async () => {
                                       Setfromdate(undefined);
                                       Settodate(undefined);
+                                      setActiveTab('total');
                                       if (!searchInput.trim() && searchType !== 'orgSearch') {
                                         Swal.fire('Search field is required.');
                                       } else if (searchInput.length > 255) {
@@ -712,91 +710,97 @@ function SearchInterface(props) {
 
                     <div className="right-search">
                       <Tabs
-                        defaultActiveKey="total"
+                        activeKey={activetab}
                         id="uncontrolled-tab-example"
                         onSelect={async (e) => {
-                          if (e === 'total') {
-                            let searchData;
-                            if (searchType === 'orgSearch') {
-                              searchData = {
-                                from: 0,
-                                size: 20,
-                                type: searchType,
-                                author: authorName || undefined,
-                                fromDate: fromdate || undefined,
-                                toDate: todate || undefined,
-                                subjectArray: activeSubject,
-                                gradeArray: activeEducation,
-                                standardArray: activeType,
-                              };
-                            } else {
-                              searchData = {
-                                phrase: searchQueries.trim(),
-                                from: 0,
-                                size: 20,
-                                author: authorName || undefined,
-                                fromDate: fromdate || undefined,
-                                toDate: todate || undefined,
-                                type: searchType,
-                                subjectArray: activeSubject,
-                                gradeArray: activeEducation,
-                                standardArray: activeType,
-                              };
-                            }
-                            Swal.fire({
-                              title: 'Loading...', // add html attribute if you want or remove
-                              allowOutsideClick: false,
-                              onBeforeOpen: () => {
-                                Swal.showLoading();
-                              },
-                            });
-                            const resultModel = await dispatch(simpleSearchAction(searchData));
-                            Swal.close();
-                            setTotalCount(resultModel.meta[e]);
-                            setActiveModel(e);
-                            setActivePage(1);
+                          if (!searchInput && searchType !== 'orgSearch') {
+                            Swal.fire('Search field is required.');
                           } else {
-                            let searchData;
-                            if (searchType === 'orgSearch') {
-                              searchData = {
-                                from: 0,
-                                size: 20,
-                                author: authorName || undefined,
-                                fromDate: fromdate || undefined,
-                                toDate: todate || undefined,
-                                model: e,
-                                type: searchType,
-                                subjectArray: activeSubject,
-                                gradeArray: activeEducation,
-                                standardArray: activeType,
-                              };
+
+                            setActiveTab(e);
+                            if (e === 'total') {
+                              let searchData;
+                              if (searchType === 'orgSearch') {
+                                searchData = {
+                                  from: 0,
+                                  size: 20,
+                                  type: searchType,
+                                  author: authorName || undefined,
+                                  fromDate: fromdate || undefined,
+                                  toDate: todate || undefined,
+                                  subjectArray: activeSubject,
+                                  gradeArray: activeEducation,
+                                  standardArray: activeType,
+                                };
+                              } else {
+                                searchData = {
+                                  phrase: searchQueries.trim() || searchInput,
+                                  from: 0,
+                                  size: 20,
+                                  author: authorName || undefined,
+                                  fromDate: fromdate || undefined,
+                                  toDate: todate || undefined,
+                                  type: searchType,
+                                  subjectArray: activeSubject,
+                                  gradeArray: activeEducation,
+                                  standardArray: activeType,
+                                };
+                              }
+                              Swal.fire({
+                                title: 'Loading...', // add html attribute if you want or remove
+                                allowOutsideClick: false,
+                                onBeforeOpen: () => {
+                                  Swal.showLoading();
+                                },
+                              });
+                              const resultModel = await dispatch(simpleSearchAction(searchData));
+                              Swal.close();
+                              setTotalCount(resultModel.meta[e]);
+                              setActiveModel(e);
+                              setActivePage(1);
                             } else {
-                              searchData = {
-                                phrase: searchQueries.trim(),
-                                from: 0,
-                                size: 20,
-                                model: e,
-                                author: authorName || undefined,
-                                fromDate: fromdate || undefined,
-                                toDate: todate || undefined,
-                                type: searchType,
-                                subjectArray: activeSubject,
-                                gradeArray: activeEducation,
-                                standardArray: activeType,
-                              };
+                              let searchData;
+                              if (searchType === 'orgSearch') {
+                                searchData = {
+                                  from: 0,
+                                  size: 20,
+                                  author: authorName || undefined,
+                                  fromDate: fromdate || undefined,
+                                  toDate: todate || undefined,
+                                  model: e,
+                                  type: searchType,
+                                  subjectArray: activeSubject,
+                                  gradeArray: activeEducation,
+                                  standardArray: activeType,
+                                };
+                              } else {
+                                searchData = {
+                                  phrase: searchQueries.trim() || searchInput,
+                                  from: 0,
+                                  size: 20,
+                                  model: e,
+                                  author: authorName || undefined,
+                                  fromDate: fromdate || undefined,
+                                  toDate: todate || undefined,
+                                  type: searchType,
+                                  subjectArray: activeSubject,
+                                  gradeArray: activeEducation,
+                                  standardArray: activeType,
+                                };
+                              }
+                              Swal.fire({
+                                title: 'Loading...', // add html attribute if you want or remove
+                                allowOutsideClick: false,
+                                onBeforeOpen: () => {
+                                  Swal.showLoading();
+                                },
+                              });
+                              const resultModel = await dispatch(simpleSearchAction(searchData));
+                              Swal.close();
+                              setTotalCount(resultModel.meta[e]);
+                              setActiveModel(e);
+                              setActivePage(1);
                             }
-                            Swal.fire({
-                              title: 'Loading...', // add html attribute if you want or remove
-                              allowOutsideClick: false,
-                              onBeforeOpen: () => {
-                                Swal.showLoading();
-                              },
-                            });
-                            const resultModel = await dispatch(simpleSearchAction(searchData));
-                            Swal.close();
-                            setTotalCount(resultModel.meta[e]);
-                            setActiveModel(e);
-                            setActivePage(1);
                           }
                         }}
                       >
@@ -903,10 +907,18 @@ function SearchInterface(props) {
                                           {permission?.Project?.includes('project:clone') && (
                                             <Dropdown.Item
                                               onClick={() => {
-                                                setShow(true);
-                                                getProjectId(res.id);
-                                                setSelectedProjectId(res.id);
-                                                dispatch(googleShare(false));
+                                                Swal.fire({
+                                                  html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
+                                                  showCancelButton: true,
+                                                  confirmButtonColor: '#3085d6',
+                                                  cancelButtonColor: '#d33',
+                                                  confirmButtonText: 'Ok',
+                                                })
+                                                  .then((result) => {
+                                                    if (result.value) {
+                                                      cloneProject(res.id);
+                                                    }
+                                                  });
                                               }}
                                             >
                                               <FontAwesomeIcon className="mr-2" icon="clone" />
@@ -933,7 +945,7 @@ function SearchInterface(props) {
                                                   </a>
                                                 </li>
                                                 {allLms.shareVendors && allLms.shareVendors.map((data) => (
-                                                  data.lms_name !== 'safarimontage' && (
+                                                  data.project_visibility && (
                                                     <li>
                                                       <a
                                                         onClick={async () => {
@@ -1042,7 +1054,7 @@ function SearchInterface(props) {
                                                       </Modal.Title>
                                                     </Modal.Header>
                                                     <Modal.Body>
-                                                      <iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariToolHtml}`} />
+                                                      <iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`} />
                                                     </Modal.Body>
                                                   </Modal>
                                                 </ul>
@@ -1199,7 +1211,7 @@ function SearchInterface(props) {
                                                       </a>
                                                     </li>
                                                     {allLms.shareVendors && allLms.shareVendors.map((data) => (
-                                                      data.lms_name !== 'safarimontage' && (
+                                                      data.project_visibility && (
                                                         <li>
                                                           <a
                                                             onClick={async () => {
@@ -1475,7 +1487,7 @@ function SearchInterface(props) {
                                                               </Modal.Title>
                                                             </Modal.Header>
                                                             <Modal.Body>
-                                                              <iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariToolHtml}`} />
+                                                              <iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`} />
                                                             </Modal.Body>
                                                           </Modal>
                                                         </ul>

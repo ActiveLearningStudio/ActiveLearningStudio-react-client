@@ -163,6 +163,14 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
         };
       }
 
+      if (action.summary.summary.length === 0) {
+        return {
+          ...state,
+          summary: false,
+          summaryError: 'The outcome data for this summary is still being processed. Please try again later.',
+        };
+      }
+
       return {
         ...state,
         summary: action.summary.summary,

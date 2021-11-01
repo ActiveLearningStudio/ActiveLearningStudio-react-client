@@ -31,6 +31,7 @@
     width:30%;
     background-color: steelblue;
     padding: 1em;
+    white-space: pre-wrap;
 }
 
 .question-spacer {
@@ -79,6 +80,7 @@
 
 .response-container {
     flex-grow: 1;
+    word-break: break-word;
 }
 
 .score-container {

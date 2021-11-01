@@ -4,20 +4,27 @@
   background: #fff;
   padding: 20px;
   border-radius: 5px;
-
   nav {
     width: 100%;
     margin-top: 0 !important;
     margin-bottom: 10px;
-
+    .nav-link {
+      font-size: 18px;
+      font-weight: 500 !important;
+      border: none !important;
+      margin-bottom: 0px !important;
+      color: #084892 !important;
+    }
     a.active {
-      color: #fff;
-      background-color: #3085d6;
+      color: #084892 !important;
+      background-color: #fff !important;
+      border-bottom: 4px solid #084892 !important;
     }
   }
 
   h1 {
     font-size: 1rem;
+    color: #515151 !important;
   }
 
   h3 {
@@ -43,7 +50,7 @@
     flex: auto;
     border: none;
     cursor: pointer;
-    color: #007bff;
+    color: #2e8df5 !important;
   }
 
   i {
@@ -51,7 +58,7 @@
     cursor: pointer;
 
     &:hover {
-      color: #007bff
+      color: #007bff;
     }
   }
 
@@ -67,24 +74,31 @@
       padding-left: 10px;
     }
   }
+  .share-popup-btn {
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+    padding-top: 1rem;
+    .close-btn {
+      text-align: center;
 
-  .close-btn {
-    text-align: center;
-
-    button {
-      border: 0;
-      border-radius: 0.25em;
-      background-color: #3085d6;
-      color: #fff;
-      font-size: 1.0625em;
-      display: inline-block;
-      border-left-color: rgb(48, 133, 214);
-      border-right-color: rgb(48, 133, 214);
-      margin: 0.3125em;
-      padding: 5px 30px;
-      box-shadow: none;
-      font-weight: 500;
-      cursor: pointer;
+      button {
+        border: 0;
+        border-radius: 0.25em;
+        color: #fff;
+        font-size: 1.0625em;
+        display: inline-block;
+        border-left-color: rgb(48, 133, 214);
+        border-right-color: rgb(48, 133, 214);
+        margin: 0.3125em;
+        padding: 5px 30px;
+        box-shadow: none;
+        font-weight: 500;
+        cursor: pointer;
+        background: #084892;
+        box-shadow: 0px 2px 6px 1px rgba(8, 72, 146, 0.16);
+        border-radius: 18px;
+      }
     }
   }
 }

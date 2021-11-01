@@ -1,55 +1,95 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
-.popup {
-  position: relative;
-  z-index: 1050;
-
-  .playlistName {
-    border: 0;
-
-    &:focus {
-      border: 0;
-      box-shadow: none;
+.playlist-modal {
+  right: 0;
+  width: 470px;
+  height: auto;
+  background-color: #e5e5e5;
+  h1 {
+    margin: 0;
+    font-family: $rubik, sans-serif;
+    span {
+      font-style: normal;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 21px;
+      color: $curriki-main-blue;
+      border-bottom: 2px solid #f8af2c;
     }
-  }
 
-  ::placeholder {
-    color: #607a9b;
+    font-size: 2rem;
+    font-weight: 300;
+    // color: #165399;
+    text-transform: capitalize;
   }
-
-  .modal .modal-dialog {
-    max-width: 440px;
-    max-height: 124px;
-    padding-top: 30px !important;
+  .close-playlist-btn {
+    float: right;
+    background: none;
+    border: 0;
   }
 
   .modal-content {
-    border: none;
+    padding: 0px 40px 20px 40px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 470px;
   }
-
+  .modal-body {
+    .modal-title {
+      padding-left: 0%;
+    }
+    .playlistName {
+      padding-top: 36px;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 20px;
+      display: flex;
+      align-items: center;
+      color: #515151;
+      flex: none;
+      order: 0;
+      flex-grow: 0;
+      margin: 4px 0px;
+    }
+  }
   .modal-footer {
-    padding: 10px 27px;
+    padding: 38px 0px;
     display: block;
-    background: #f9f9f9;
+    border-top: none;
     border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px;
-
     .add-playlist-btn {
-      padding: 5px 22px;
-      background: #2ecf43;
-      border-color: #2ecf43;
-      font-weight: 600;
-      color: #fff;
-      text-transform: uppercase;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      width: 170px;
+      height: 40px;
+      border: 0;
+      background: #084892;
+      color: #ffffff;
+      flex: none;
+      order: 0;
+      flex-grow: 0;
+      border-radius: 20px;
+      // .add-playlist-btn-text {
+      //   width: 80px;
+      //   height: 20px;
+      //   font-style: normal;
+      //   font-weight: 500;
+      //   font-size: 14px;
+      //   line-height: 20px;
+      //   color: #ffffff;
+      //   flex: none;
+      //   order: 0;
+      //   flex-grow: 0;
+      //   margin: 0px 10px;
+      // }
     }
-
-    .close-playlist-btn {
-      background: none;
-      border: none;
-      float: right;
-      font-size: 24px;
-      color: #b1b1b1;
-      cursor: pointer;
-    }
+  }
+  .modal {
+    padding: 0 !important;
   }
 }

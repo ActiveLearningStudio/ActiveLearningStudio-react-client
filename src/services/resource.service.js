@@ -11,6 +11,15 @@ const getAll = () => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const getAllLayout = () => httpService
+  .get(`/${apiVersion}/activity-layouts`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const getSingleLayout = () => httpService
+  .get(`/${apiVersion}/get-activity-items?skipPagination=true`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
 const create = (activity, playlistId) => httpService
   .post(`/${apiVersion}/playlists/${playlistId}/activities`, activity)
   .then(({ data }) => data)
@@ -40,9 +49,14 @@ const remove = (id, playlistId) => httpService
   .catch((err) => Promise.reject(err.response.data));
 
 const upload = (formData, conf) => httpService
-  .post(`/${apiVersion}/activities/upload-thumb`, formData, {
-    'Content-Type': 'multipart/form-data',
-  }, conf)
+  .post(
+    `/${apiVersion}/activities/upload-thumb`,
+    formData,
+    {
+      'Content-Type': 'multipart/form-data',
+    },
+    conf,
+  )
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
@@ -103,7 +117,10 @@ const getItems = (activityTypeId) => httpService
   .catch((err) => Promise.reject(err.response.data));
 
 const getActivityItems = (query, page) => httpService
-  .get(`${apiVersion}/get-activity-items${query ? `?query=${encodeURI(query)}` : ''}${page ? `?page=${page}` : ''}`)
+  .get(
+    `${apiVersion}/get-activity-items${query ? `?query=${encodeURI(query.replace(/#/, '%23'))}` : ''
+    }${page ? `?page=${page}` : ''}`,
+  )
   .catch((err) => {
     errorCatcher(err.response.data);
     Promise.reject(err.response.data);
@@ -148,7 +165,10 @@ const h5pResource = (activityId) => httpService
   .catch((err) => Promise.reject(err.response.data));
 
 const h5pSettingsUpdate = (activityId, dataUpload, playlistId) => httpService
-  .put(`/${apiVersion}/playlists/${playlistId}/activities/${activityId}`, dataUpload)
+  .put(
+    `/${apiVersion}/playlists/${playlistId}/activities/${activityId}`,
+    dataUpload,
+  )
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -159,7 +179,9 @@ const h5pResourceSettings = (activityId) => httpService
     Swal.fire({
       title: 'Error',
       icon: 'error',
-      html: err.message || 'Something went wrong! We are unable to load activity.',
+      html:
+        err.message
+        || 'Something went wrong! We are unable to load activity.',
     });
     Promise.reject(err.response.data);
   });
@@ -177,7 +199,9 @@ const h5pResourceSettingsShared = (activityId) => httpService
     Swal.fire({
       title: 'Error',
       icon: 'error',
-      html: err.message || 'Something went wrong! We are unable to load activity.',
+      html:
+        err.message
+        || 'Something went wrong! We are unable to load activity.',
     });
     Promise.reject(err.response.data);
   });
@@ -189,7 +213,9 @@ const h5pResourceSettingsEmbed = (activityId) => httpService
     Swal.fire({
       title: 'Error',
       icon: 'error',
-      html: err.message || 'Something went wrong! We are unable to load activity.',
+      html:
+        err.message
+        || 'Something went wrong! We are unable to load activity.',
     });
     Promise.reject(err.response.data);
   });
@@ -235,10 +261,10 @@ const safeApiCheck = (token, imagData, actualText, time, info, activityName) => 
       image: imagData,
       content: actualText,
     }, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
   .then(({ data }) => data)
   .catch((err) => err.response.data);
 
@@ -275,4 +301,6 @@ export default {
   getXapi,
   safeApiAuth,
   safeApiCheck,
+  getAllLayout,
+  getSingleLayout,
 };

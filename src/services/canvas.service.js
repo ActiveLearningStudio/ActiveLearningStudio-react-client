@@ -52,6 +52,14 @@ const getLtiSummary = (actor, activity) => httpService.post(
   return null;
 });
 
+const passLtiCourseDetails = (params) => httpService
+  .post(
+    `/${apiVersion}/go/passLtiCourseDetails`,
+    { ...params },
+  )
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   browse,
   search,
@@ -59,4 +67,5 @@ export default {
   getH5pSettings,
   tsugiGradePassback,
   getLtiSummary,
+  passLtiCourseDetails,
 };

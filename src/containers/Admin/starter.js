@@ -1,12 +1,12 @@
 /* eslint-disable */
-import React, { useState } from 'react';
-import { Tabs, Tab } from 'react-bootstrap';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import { Tabs, Tab } from "react-bootstrap";
+import PropTypes from "prop-types";
 
-import Controler from './controler';
-import TableData from './table';
-import Userroles from './userroles';
-import Settings from './settings';
+import Controler from "./controler";
+import TableData from "./table";
+import Userroles from "./userroles";
+import Settings from "./settings";
 function Starter(props) {
   const {
     paginationCounter,
@@ -92,9 +92,8 @@ function Starter(props) {
         roles={roles}
         subType={subType}
         setChangeIndexValue={setChangeIndexValue}
-
       />
-      {subTypeState === 'All settings' && <Settings /> }
+      {subTypeState === "All settings" && <Settings />}
       {subTypeState === "Manage Roles" ? (
         <Userroles permissionRender={permissionRender} />
       ) : (
@@ -119,7 +118,7 @@ function Starter(props) {
 }
 
 Starter.propTypes = {
-  manage: PropTypes.object.isRequired,
+  manage: PropTypes.object,
   type: PropTypes.string.isRequired,
 };
 
