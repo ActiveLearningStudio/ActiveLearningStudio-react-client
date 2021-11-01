@@ -1,0 +1,238 @@
+@import "assets/css/index";
+
+.curriki-utility-activitycard-card {
+  margin-right: 30px;
+  width: 250px;
+  // height: 336px;
+  background: $white;
+  box-shadow: 0px 4px 8px 2px rgba(81, 81, 81, 0.16);
+  border-radius: 8px;
+  .activitycard-card-top {
+    border-radius: 5px;
+    // background-image: url("../../assets/images/cardlistimg.png");
+    background-size: 100% 100%;
+    position: relative;
+    height: 156px;
+    &:before {
+      background: linear-gradient(
+        180deg,
+        rgba(81, 81, 81, 0.2) 0%,
+        rgba(0, 0, 0, 0.8) 100%
+      );
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      //   background-color: rgba(113, 117, 119, 0.7);
+      content: "";
+      display: block;
+      height: 100%;
+      position: absolute;
+      width: 100%;
+    }
+
+    .activitycard-card-dropdown {
+      position: absolute;
+      top: 5px;
+      right: 15px;
+    }
+    .activitycard-card-title {
+      position: absolute;
+      bottom: 10px;
+      left: 15px;
+      h2 {
+        font-family: $rubik;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 21px;
+        color: #ffffff;
+      }
+    }
+  }
+  .activitycard-card-detail {
+    padding: 16px;
+    p {
+      font-family: "Open Sans", sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 20px;
+      color: #767676;
+      margin-bottom: 0 !important;
+    }
+  }
+  .activitycard-card-status {
+    padding: 0 20px;
+    p {
+      color: #12b347;
+      align-items: center;
+      display: flex;
+      font-family: $rubik;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 14px;
+      margin-bottom: 0 !important;
+      span {
+        display: inline-block;
+        height: 8px;
+        width: 8px;
+        background-color: #12b347;
+        border-radius: 50px;
+        margin-right: 5px;
+      }
+    }
+  }
+  .activitycard-card-add-share {
+    display: flex;
+    align-items: center;
+    margin-top: 24px;
+    margin-left: 16px;
+    .share-text {
+      span {
+        font-family: "Open Sans", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 16px;
+        color: #767676;
+      }
+    }
+    .btn-box {
+      margin-left: 65px;
+      //   button {
+      //     width: 122px;
+      //     border: none;
+      //     cursor: pointer;
+      //     background: #ffffff;
+      //     color: $curriki-main-blue;
+      //     box-shadow: 0px 1px 2px 1px rgba(81, 81, 81, 0.16);
+      //     border-radius: 4px;
+      //   }
+    }
+  }
+  .activity-selection-box {
+    padding-top: 32px;
+    padding-right: 23px;
+    text-align: right;
+    span {
+      margin-left: 8px;
+      font-family: "Open Sans", sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 19px;
+      color: #515151;
+    }
+  }
+}
+
+// ListView
+.activitycard-top-listView {
+  padding: 12px;
+  width: 100%;
+  height: 108px;
+  background: $white;
+  box-shadow: 0px 4px 8px 2px rgba(81, 81, 81, 0.16);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  .activitycard-header-listView {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .activitycard-text-listView {
+      p {
+        color: green;
+        align-items: center;
+        display: flex;
+        font-family: $rubik;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 14px;
+        margin-bottom: 0 !important;
+        span {
+          display: inline-block;
+          height: 8px;
+          width: 8px;
+          background-color: green;
+          border-radius: 50px;
+          margin-right: 10px;
+        }
+      }
+    }
+    .status-card-listView {
+      margin-right: 10px;
+    }
+  }
+  .activitycard-body-listView {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    .body-image {
+      img {
+        width: 103px;
+        height: 64px;
+        border-radius: 5px;
+      }
+    }
+    .body-title-detail {
+      .title-listView {
+        h2 {
+          font-family: $rubik;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 21px;
+          color: $curriki-main-blue;
+        }
+      }
+      .detail-listView {
+        margin-top: 8px;
+        p {
+          font-family: "Open Sans", sans-serif;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 14px;
+          line-height: 20px;
+          color: #767676;
+          margin-bottom: 0 !important;
+        }
+      }
+    }
+    .body-project-detail {
+      display: flex;
+      align-items: center;
+      .share-text {
+        margin-right: 24px;
+        span {
+          font-family: "Open Sans", sans-serif;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 12px;
+          line-height: 16px;
+          color: #767676;
+        }
+      }
+      .btn-box {
+        // button {
+        //   width: 122px;
+        //   border: none;
+        //   cursor: pointer;
+        //   background: #ffffff;
+        //   color: $curriki-main-blue;
+        //   box-shadow: 0px 1px 2px 1px rgba(81, 81, 81, 0.16);
+        //   border-radius: 4px;
+        // }
+      }
+    }
+  }
+}
+.listproject-dropdown {
+  button {
+    &:focus {
+      box-shadow: none !important;
+    }
+  }
+}

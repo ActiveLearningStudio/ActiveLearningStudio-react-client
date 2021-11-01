@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { prepareLmsCourse } from 'logic/lmsCourse';
 import * as actionTypes from '../actionTypes';
 
@@ -41,6 +42,27 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         isLoading: true,
       };
+    case actionTypes.SET_SELECTED_PROJECT:
+      return {
+        ...state,
+        isLoading: false,
+        selectedProject: action.payload,
+        thumbUrl: action.payload.thumb_url,
+        currentVisibilityType: action.payload.organization_visibility_type_id,
+      };
+    case actionTypes.CLEAR_SELECTED_PROJECT:
+      return {
+        ...state,
+        selectedProject: {},
+        thumbUrl: null,
+        currentVisibilityType: null,
+      };
+    case actionTypes.CLEAR_PROJECT_SELECT:
+      return {
+        ...state,
+        projectSelect: null,
+        isSharedProject: false,
+      }
     case actionTypes.LOAD_PROJECT_SUCCESS:
       return {
         ...state,
@@ -61,22 +83,21 @@ export default (state = INITIAL_STATE, action) => {
         isLoading: true,
       };
     case actionTypes.UPDATE_PROJECT_SUCCESS:
-      const index = projects.findIndex((p) => p.id === action.payload.project.id);
-      if (index > -1) {
-        projects.splice(index, 1, action.payload.project);
-        return {
-          ...state,
-          isLoading: false,
-          projects,
-          thumbUrl: null,
-          currentVisibilityType: null,
-        };
-      }
+      // const index = projects.findIndex((p) => p.id === action.payload.project.id);
+      // if (index > -1) {
+      // 	projects.splice(index, 1, action.payload.project);
+      // 	return {
+      // 		...state,
+      // 		isLoading: false,
+      // 		projects,
+      // 		// thumbUrl: null,
+      // 		// currentVisibilityType: null,
+      // 	};
+      // }
       return {
         ...state,
         isLoading: false,
-        projects: [...projects, action.payload.project],
-        thumbUrl: null,
+        selectedProject: { ...action.payload.project, thumbUrl: action.payload.thumb_url }
       };
     case actionTypes.UPDATE_PROJECT_FAIL:
       return {
@@ -119,6 +140,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         isSharedProject: true,
         projectSelect: action.payload.project,
+        selectedProject: action.payload.project,
       };
 
     case actionTypes.UPLOAD_PROJECT_THUMBNAIL:

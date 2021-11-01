@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import Echo from 'laravel-echo';
+import { toast } from 'react-toastify';
 
 import loaderImg from 'assets/images/loader.svg';
 import SharePreviewPopup from 'components/SharePreviewPopup';
@@ -41,13 +42,32 @@ export const createProjectAction = (data) => async (dispatch) => {
   const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({ type: actionTypes.CREATE_PROJECT_REQUEST });
-    Swal.showLoading();
+    toast.info('creating project ...', {
+      position: 'top-center',
+      hideProgressBar: false,
+      icon: '',
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+    });
     const { project } = await projectService.create(data, activeOrganization.id);
-    Swal.close();
     dispatch({
       type: actionTypes.CREATE_PROJECT_SUCCESS,
       payload: { project },
     });
+    toast.dismiss();
+    if (project) {
+      toast.success('New Project Created', {
+        position: 'top-center',
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return project;
+    }
     dispatch(allSidebarProjects());
   } catch (e) {
     dispatch({ type: actionTypes.CREATE_PROJECT_FAIL });
@@ -57,6 +77,19 @@ export const createProjectAction = (data) => async (dispatch) => {
       text: e.message || 'Something went wrong !',
     });
   }
+};
+
+export const setSelectedProject = (project) => (dispatch) => {
+  dispatch({
+    type: actionTypes.SET_SELECTED_PROJECT,
+    payload: project,
+  });
+};
+
+export const clearSelectedProject = () => (dispatch) => {
+  dispatch({
+    type: actionTypes.CLEAR_SELECTED_PROJECT,
+  });
 };
 
 export const loadProjectAction = (projectId) => async (dispatch) => {
@@ -94,14 +127,32 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
   try {
+    toast.info('Updating Project ...', {
+      position: 'top-center',
+      hideProgressBar: true,
+      icon: '',
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      autoClose: 5000,
+    });
     dispatch({ type: actionTypes.UPDATE_PROJECT_REQUEST });
-    Swal.showLoading();
     const { project } = await projectService.update(projectId, data, activeOrganization.id);
+    toast.dismiss();
+    toast.success('Project Edited', {
+      position: 'top-center',
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      autoClose: 2500,
+    });
     dispatch({
       type: actionTypes.UPDATE_PROJECT_SUCCESS,
       payload: { project },
     });
-    Swal.close();
     dispatch(allSidebarProjects());
     return project;
   } catch (e) {
@@ -111,7 +162,7 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
       title: 'Error',
       text: e.message || 'Something went wrong !',
     });
-    return e;
+    return e.message;
   }
 };
 
@@ -152,9 +203,19 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
     },
   };
   const centralizedState = store.getState();
+  toast.info('Uploading image...', {
+    position: 'top-center',
+    hideProgressBar: false,
+    icon: '',
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    autoClose: 30000,
+  });
   const { organization: { activeOrganization } } = centralizedState;
   const { thumbUrl } = await projectService.upload(formData, config, activeOrganization.id);
-
+  toast.dismiss();
   dispatch({
     type: actionTypes.UPLOAD_PROJECT_THUMBNAIL,
     payload: { thumbUrl },
@@ -484,15 +545,17 @@ export const getProjectCourseFromLMS = (
   playlist,
   lmsUrl,
 ) => async (dispatch, getState) => {
-  Swal.fire({
-    iconHtml: loaderImg,
-    title: 'Fetching Information....',
-    showCancelButton: false,
-    showConfirmButton: false,
-    allowOutsideClick: false,
+  const response = await toast.promise(projectService.fetchLmsDetails(lms, projectId, settingId), {
+    pending: 'Fetching information...',
+    success: 'Information fetched!',
+    error: 'Error fetching information',
+  }, {
+    className: 'project-loading',
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 10000,
+    closeOnClick: false,
+    closeButton: false,
   });
-
-  const response = await projectService.fetchLmsDetails(lms, projectId, settingId);
   const globalStoreClone = getState();
   if (response) {
     dispatch({
@@ -500,7 +563,7 @@ export const getProjectCourseFromLMS = (
       lmsCourse: response.project,
       allstate: globalStoreClone,
     });
-
+    toast.dismiss();
     Swal.fire({
       title: `This Project will be added to ${lms}. If the Project does not exist, it will be created.`,
       text: 'Would you like to proceed?',
@@ -523,8 +586,8 @@ export const getProjectCourseFromLMS = (
           for (let x = 0; x < playlist.length; x += 1) {
             // eslint-disable-next-line no-await-in-loop
             const counter = !!globalStoreCloneUpdated.project.lmsCourse
-            && globalStoreCloneUpdated.project.lmsCourse.playlistsCopyCounter
-              .length > 0
+              && globalStoreCloneUpdated.project.lmsCourse.playlistsCopyCounter
+                .length > 0
               ? globalStoreCloneUpdated.project.lmsCourse
                 .playlistsCopyCounter[x].counter
               : 0;
@@ -674,4 +737,10 @@ export const updatedProject = (userId) => async () => {
         }
       }
     });
+};
+
+export const clearProjectSelected = () => (dispatch) => {
+  dispatch({
+    type: actionTypes.CLEAR_PROJECT_SELECT,
+  });
 };

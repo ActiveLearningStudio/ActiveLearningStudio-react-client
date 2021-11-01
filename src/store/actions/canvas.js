@@ -135,3 +135,11 @@ export const getLtiSummaryActivityInfoAction = (activityId) => async (dispatch) 
     summaryActivityInfo,
   });
 };
+
+export const passLtiCourseDetails = (params) => async (dispatch) => {
+  const ltiCourseDetails = canvasService.passLtiCourseDetails(params);
+  dispatch({
+    type: GET_H5P_SETTINGS,
+    ltiCourseDetails,
+  });
+};

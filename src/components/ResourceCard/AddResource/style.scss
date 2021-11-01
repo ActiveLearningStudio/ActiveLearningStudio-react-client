@@ -828,3 +828,16 @@ input[type="radio"]:checked + .activity-item {
 .option-choose-way {
   display: none;
 }
+
+.saveclosemodel {
+	width:150px;
+	font-size: 16px;
+	color: #ffffff;
+	background: #084892;
+	display:flex;
+	justify-content:center;
+	align-items: center;
+	border-radius: 18px;
+	height:40px;
+	cursor:pointer
+}

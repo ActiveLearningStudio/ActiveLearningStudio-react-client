@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, Link, useHistory } from 'react-router-dom';
@@ -17,7 +18,9 @@ import './style.scss';
 function AddProjectsPage(props) {
   const {
     history,
-    match: { params: { teamId } },
+    match: {
+      params: { teamId },
+    },
     team,
     projects,
     loadProjects,
@@ -44,23 +47,20 @@ function AddProjectsPage(props) {
   const [selectedProjects, setSelectedProjects] = useState([]);
   const [searchProject, setSearchProject] = useState('');
 
-  const filteredProjects = projects.filter(
-    (p) => (team.selectedTeam.projects || []).findIndex((proj) => p.id === proj.id) === -1,
-  );
+  const filteredProjects = projects.filter((p) => (team.selectedTeam.projects || []).findIndex((proj) => p.id === proj.id) === -1);
 
-  const handleSubmit = useCallback((projectIds) => {
-    addProjects(
-      teamId,
-      projectIds,
-    )
-      .then((result) => {
+  const handleSubmit = useCallback(
+    (projectIds) => {
+      addProjects(teamId, projectIds).then((result) => {
         history.push(`/org/${organization.currentOrganization?.domain}/teams/${teamId}/projects`);
         Swal.fire({
           icon: 'success',
           title: result?.message,
         });
       });
-  }, [addProjects, teamId, history]);
+    },
+    [addProjects, teamId, history]
+  );
 
   return (
     <>
@@ -73,7 +73,7 @@ function AddProjectsPage(props) {
               <span>Add Project</span>
             </div>
           </div>
-          <Link className="back-button-main-page" onClick={() => historyback.goBack()}>
+          <Link to="#" className="back-button-main-page" onClick={() => historyback.goBack()}>
             <FontAwesomeIcon icon="chevron-left" />
             Back
           </Link>
@@ -84,20 +84,19 @@ function AddProjectsPage(props) {
         <br />
         <FadeDiv className="assign-projects">
           <div className="assign-projects-content">
-            {teamPermission?.Team?.includes('team:add-project')
-              ? (
-                <AssignProject
-                  isSaving={team.isLoading}
-                  projects={filteredProjects}
-                  handleSubmit={handleSubmit}
-                  selectedProjects={selectedProjects}
-                  setSelectedProjects={setSelectedProjects}
-                  search={searchProject}
-                  setSearch={setSearchProject}
-                />
-              )
-              : <Alert variant="danger"> You are not authorized to add projects.</Alert>}
-
+            {teamPermission?.Team?.includes('team:add-project') ? (
+              <AssignProject
+                isSaving={team.isLoading}
+                projects={filteredProjects}
+                handleSubmit={handleSubmit}
+                selectedProjects={selectedProjects}
+                setSelectedProjects={setSelectedProjects}
+                search={searchProject}
+                setSearch={setSearchProject}
+              />
+            ) : (
+              <Alert variant="danger"> You are not authorized to add projects.</Alert>
+            )}
           </div>
         </FadeDiv>
       </div>
