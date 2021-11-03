@@ -8,7 +8,7 @@
     font-weight: 600;
     font-size: 18px;
     line-height: 24px;
-    font-family: "rubik", sans-serif;
+    font-family: 'rubik', sans-serif;
     letter-spacing: 0;
     text-transform: capitalize;
     opacity: 1;
@@ -53,19 +53,19 @@
     .card-body {
       padding: 0 20px;
 
-      .radio-btns{
+      .radio-btns {
         display: flex;
         flex-direction: column;
 
-        label{
+        label {
           display: flex;
           cursor: pointer;
           align-items: center;
           margin-bottom: 0;
         }
 
-        input{
-          width:13px;
+        input {
+          width: 13px;
           background-color: $mine-shaft;
           margin-right: 10px;
           margin-bottom: 0;
@@ -141,10 +141,10 @@
       padding-left: 20px;
     }
 
-    .list-item-keys{
+    .list-item-keys {
       padding: 5px 10px;
 
-      span{
+      span {
         margin: 0 10px;
         background: #ffffff 0% 0% no-repeat padding-box;
         box-shadow: 0 0 2px #0000000d;
@@ -154,12 +154,12 @@
         cursor: pointer;
       }
 
-      svg.fa-square{
-        color:#fff;
-        border:1px solid #333;
+      svg.fa-square {
+        color: #fff;
+        border: 1px solid #333;
       }
-      svg.fa-check-square{
-        color:$curriki-main-blue;
+      svg.fa-check-square {
+        color: $curriki-main-blue;
       }
     }
 
@@ -235,29 +235,31 @@
           color: $curriki-main-blue;
           text-transform: capitalize;
           opacity: 1;
+          word-break: break-all;
+          margin-right: 10px;
         }
-       .search-content {
-        ul {
-          padding: 2px 0 8px 15px;
-          display: flex;
+        .search-content {
+          ul {
+            padding: 2px 0 8px 15px;
+            display: flex;
 
-          li {
-            margin-right: 30px;
-            text-align: left;
-            font: normal normal normal 14px/26px $rubik;
-            letter-spacing: 0;
-            opacity: 1;
-            list-style-type: disc;
-
-            span {
+            li {
+              margin-right: 30px;
               text-align: left;
               font: normal normal normal 14px/26px $rubik;
               letter-spacing: 0;
-              color: $curriki-main-blue;
+              opacity: 1;
+              list-style-type: disc;
+
+              span {
+                text-align: left;
+                font: normal normal normal 14px/26px $rubik;
+                letter-spacing: 0;
+                color: $curriki-main-blue;
+              }
             }
           }
         }
-      }
 
         p {
           text-align: left;
@@ -269,7 +271,6 @@
           margin-top: auto;
         }
         .dropdown-menu {
-      
           cursor: pointer;
         }
 
@@ -323,7 +324,7 @@
         justify-content: space-between;
         overflow: visible;
 
-        .btn-fav{
+        .btn-fav {
           border: 1px solid #eee;
           height: 35px;
           display: flex;
@@ -333,10 +334,9 @@
           box-shadow: 0 0 7px 2px #eee;
           cursor: pointer;
         }
-        .btn-fav.true{
-
-          svg{
-            color:goldenrod
+        .btn-fav.true {
+          svg {
+            color: goldenrod;
           }
         }
       }
@@ -353,30 +353,30 @@
 
   .modal-body {
     padding: 0;
-    background:#EBEEF3;
+    background: #ebeef3;
   }
 
   .top-box-project {
     max-height: 520px;
     min-height: 300px;
     overflow-y: auto;
-    width:55%;
+    width: 55%;
   }
 
-  .footer-model{
-     display: flex;
-     justify-content: flex-end;
-     margin:20px;
+  .footer-model {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px;
 
-    .button-submit{
-      background: #5952C6 0% 0% no-repeat padding-box;
+    .button-submit {
+      background: #5952c6 0% 0% no-repeat padding-box;
       border-radius: 30px;
       width: 98px;
       height: 40px;
       font: normal normal normal 15px/20px $rubik;
       letter-spacing: 0;
-      color: #FFFFFF;
-      border:none
+      color: #ffffff;
+      border: none;
     }
   }
 }
@@ -385,40 +385,40 @@
   margin: 15px;
   display: flex;
   justify-content: space-between;
-  background:#fff;
+  background: #fff;
 
-  .information-clone{
-    width:40%;
+  .information-clone {
+    width: 40%;
     padding: 25px;
     display: flex;
     justify-content: center;
     flex-direction: column;
 
-    p{
+    p {
       font: normal normal normal 14px/22px $rubik;
       color: $mine-shaft;
     }
 
-    .active-resource{
-      background: #FFFFFF 0% 0% no-repeat padding-box;
+    .active-resource {
+      background: #ffffff 0% 0% no-repeat padding-box;
       box-shadow: 0 3px 6px #00000012;
-      border: 1px solid #E1E1E1;
+      border: 1px solid #e1e1e1;
       border-radius: 2px;
       padding: 10px 20px;
 
-      h2{
+      h2 {
         font: 400 14px/20px $rubik;
         color: #084892;
         padding: 10px 0;
       }
 
-      h3{
+      h3 {
         font: 400 12px/26px $rubik;
         color: $mine-shaft;
-        border-top: 1px solid #E6E6E6;
+        border-top: 1px solid #e6e6e6;
         padding: 10px 0;
 
-        span{
+        span {
           font-weight: 600;
         }
       }
@@ -431,7 +431,7 @@
     flex-direction: row;
     justify-content: space-between;
     padding: 10px;
-    .text-align-left{
+    .text-align-left {
       text-align: left;
     }
   }
@@ -514,7 +514,7 @@ ul.pagination {
     }
   }
 }
-.author{
+.author {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
@@ -563,7 +563,7 @@ ul.pagination {
   margin-top: -16px;
   position: inherit;
   overflow-y: scroll;
-  .author-box{
+  .author-box {
     overflow-y: scroll;
     background: #fff;
     border: 1px solid #e5e5e5;
@@ -616,9 +616,9 @@ ul.pagination {
   }
 }
 .modal-dialog.safari-modal {
-  max-width:80vw;
+  max-width: 80vw;
   iframe {
     height: 80vh;
     width: 100%;
-}
+  }
 }
