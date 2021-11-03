@@ -6,7 +6,7 @@
 
 .content {
   margin-top: 5px;
-  padding: 0 15px;
+  // padding: 0 15px;
   overflow: hidden;
 }
 
@@ -2215,27 +2215,37 @@ a:hover {
 .playlist-dropdown.check,
 .project-dropdown.check {
   .dropdown-menu {
-    min-width: 130px;
+    min-width: 160px;
     margin: 0;
-    padding: 0;
+    padding: 8px;
     border: none;
-    box-shadow: 0 3px 20px #00000029;
+    border-radius: 4px;
+    box-shadow: 0px 2px 6px 1px rgba(81, 81, 81, 0.16);
 
     a {
-      font-weight: 400;
+      font-weight: normal;
       font-size: 14px;
-      line-height: 19px;
+      line-height: 20px;
       letter-spacing: 0;
-      color: $mine-shaft;
-      padding: 12px 12px;
-      border-bottom: 1px solid #eee;
+      // color: $mine-shaft;
+      color: #084892;
+      padding: 4px 6px;
+      // sborder-bottom: 1px solid #eee;
+      display: flex;
+      margin-bottom: 4px;
 
       &:hover {
-        background-color: #d6d6d6;
+        color: #2E68BF;
+        background: rgba(229, 238, 255, 0.32);
+        border-radius: 4px;
       }
-
+      .menue-img{
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+      }
       .fa {
-        padding-right: 5px;
+        padding-right: 4px;
         font-size: 12px;
         color: $mine-shaft;
       }
