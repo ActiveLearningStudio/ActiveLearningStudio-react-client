@@ -4,6 +4,7 @@ import authService from 'services/auth.service';
 import { getAllPermission, getAllOrganizationforSSO } from 'store/actions/organization';
 import storageService from 'services/storage.service';
 import { USER_TOKEN_KEY, CURRENT_ORG } from 'constants/index';
+import { errorCatcher } from 'services/errors';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
 
@@ -169,6 +170,7 @@ export const registerAction = (data) => async (dispatch) => {
 
     return message;
   } catch (e) {
+    errorCatcher(e);
     dispatch({
       type: actionTypes.SIGNUP_FAIL,
     });
