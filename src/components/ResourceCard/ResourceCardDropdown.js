@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import Buttons from 'utils/Buttons/buttons';
 import { confirmAlert } from 'react-confirm-alert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown } from 'react-bootstrap';
@@ -15,6 +14,14 @@ import { shareActivity, deleteResourceAction } from 'store/actions/resource';
 import { cloneActivity } from 'store/actions/search';
 import { getUserLmsSettingsAction } from 'store/actions/account';
 import { loadSafariMontagePublishToolAction } from 'store/actions/LMS/genericLMS';
+
+import Preview from '../../assets/images/menu-pre.svg';
+import Edit from '../../assets/images/menu-edit.svg';
+import Duplicate from '../../assets/images/menu-dupli.svg';
+import Delete from '../../assets/images/menu-dele.svg';
+import Publish from '../../assets/images/menu-publish.svg';
+import Xapi from '../../assets/images/menu-xapi.svg';
+import MenuLogo from '../../assets/images/menu-logo-2.svg';
 import { toast } from 'react-toastify';
 import './style.scss';
 
@@ -50,7 +57,7 @@ const ResourceCardDropdown = (props) => {
   return (
     <Dropdown className="pull-right resource-dropdown check">
       <Dropdown.Toggle className="resource-dropdown-btn">
-        <FontAwesomeIcon icon="ellipsis-v" color="#2f2f2f" />
+        <img src={MenuLogo} alt="logo" />
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
@@ -66,7 +73,7 @@ const ResourceCardDropdown = (props) => {
               }
             }}
           >
-            <FontAwesomeIcon icon="eye" className="mr-2" />
+            <img src={Preview} alt="Preview" className="menue-img" />
             Preview
           </Dropdown.Item>
         )}
@@ -94,7 +101,7 @@ const ResourceCardDropdown = (props) => {
               });
             }}
           >
-            <FontAwesomeIcon icon="pen" className="mr-2" />
+            <img src={Edit} alt="Preview" className="menue-img" />
             Edit
           </Dropdown.Item>
         )}
@@ -106,7 +113,7 @@ const ResourceCardDropdown = (props) => {
               cloneActivity(playlist.id, resource.id);
             }}
           >
-            <FontAwesomeIcon icon="clone" className="mr-2" />
+            <img src={Duplicate} alt="Preview" className="menue-img" />
             Duplicate
           </Dropdown.Item>
         )}
@@ -114,7 +121,7 @@ const ResourceCardDropdown = (props) => {
           lmsSettings.length !== 0 && (
             <li className="dropdown-submenu send">
               <a tabIndex="-1" className="dropdown-item">
-                <FontAwesomeIcon icon="newspaper" className="mr-2" />
+                <img src={Publish} alt="Preview" className="menue-img" />
                 Publish
               </a>
               <ul className="dropdown-menu check">
@@ -189,7 +196,9 @@ const ResourceCardDropdown = (props) => {
                         <br />
 
                         <div className="close-btn">
-                          <Buttons text="ok" primary type="button" onClick={onClose}></Buttons>
+                          <button type="button" onClick={onClose}>
+                            Ok
+                          </button>
                         </div>
                       </div>
                     ),
@@ -205,13 +214,13 @@ const ResourceCardDropdown = (props) => {
         )}
         {permission?.Activity?.includes('activity:share') && (
           <Dropdown.Item href={`${process.env.REACT_APP_API_URL}/${config.apiVersion}/go/getxapifile/${resource.id}`} onClick={() => shareActivity(resource.id)}>
-            <FontAwesomeIcon icon="download" className="mr-2" />
+            <img src={Xapi} alt="Preview" className="menue-img" />
             xAPI Download
           </Dropdown.Item>
         )}
         {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:delete-activity') : permission?.Activity?.includes('activity:delete')) && (
           <Dropdown.Item onClick={handleDelete}>
-            <FontAwesomeIcon icon="times-circle" className="mr-2" />
+            <img src={Delete} alt="Preview" className="menue-img" />
             Delete
           </Dropdown.Item>
         )}
