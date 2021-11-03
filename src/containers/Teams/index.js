@@ -17,6 +17,7 @@ import TeamProjectView from './TeamProjectView';
 import ChannelPanel from './Channel';
 
 import './style.scss';
+import { clearOrganizationState, getOrganization, getRoles } from 'store/actions/organization';
 
 // TODO: need to remove after connect API
 const breadCrumbData = {
@@ -119,7 +120,9 @@ function TeamsPage(props) {
         <div className="content-wrapper">
           <div className="content">
             <div className="row" style={{ justifyContent: 'space-between' }}>
-              <h1 className={`title${projectShow ? ' project-title' : ''}${channelShow ? ' channel-title' : ''}`}>{overview ? 'Teams' : title[status] || 'Teams'}</h1>
+              <h1 className={`title${projectShow ? ' project-title' : ''}${channelShow ? ' channel-title' : ''}`}>
+                {overview ? `${activeOrganization?.name} Teams` : title[status] || 'Teams'}
+              </h1>
               <div className="flex-button-top">
                 {teamPermission?.Team?.includes('team:add-project') && projectShow && (
                   <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}/add-projects`}>
@@ -143,6 +146,19 @@ function TeamsPage(props) {
                       </div>
                     </Link>
                   </>
+                )}
+                {activeOrganization?.name !== currentOrganization?.name && overview && (
+                  <Link to={`/org/${organization?.currentOrganization?.domain}/teams`} onClick={() => {
+                    if (permission?.Organization?.includes('organization:view')) dispatch(getOrganization(currentOrganization?.id));
+                    dispatch(clearOrganizationState());
+                    dispatch(getRoles());
+                  }}
+                  >
+                    <div className="btn-top-page">
+                      <FontAwesomeIcon icon="arrow-left" className="mr-2" />
+                      Show parent org teams
+                    </div>
+                  </Link>
                 )}
                 {projectShow && <></>}
               </div>
