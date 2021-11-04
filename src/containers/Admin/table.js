@@ -828,15 +828,18 @@ function Table(props) {
             {type === 'Project' &&
               subType === 'Exported Projects' &&
               (localStateData ? (
-                localStateData?.exports?.length > 0 ? (
-                  localStateData?.exports.map((row) => {
-
+                localStateData?.length > 0 ? (
+                  localStateData?.map((row) => {
                     return (
                       <tr className="org-rows">
                         <td>{row.project}</td>
                         <td>{row.created_at}</td>
                         <td>{row.will_expire_on}</td>
-                        <td><a href={row.link} target="_blank">Download</a></td>
+                        <td>
+                          <a href={row.link} target="_blank">
+                            Download
+                          </a>
+                        </td>
                       </tr>
                     );
                   })
@@ -1355,16 +1358,17 @@ function Table(props) {
                 }}
               />
             )}
-            {type === 'Project' && subType === 'user' && (
+            {type === 'Project' && subType === 'Exported Projects' && (
               <Pagination
                 activePage={activePage}
                 pageRangeDisplayed={5}
-                itemsCountPerPage={data?.meta?.per_page}
-                totalItemsCount={data?.meta?.total}
+                itemsCountPerPage={localstatePagination?.meta?.per_page}
+                totalItemsCount={localstatePagination?.meta?.total}
                 onChange={(e) => {
                   window.scrollTo(0, 0);
-                  setCurrentTab('user');
+                  setCurrentTab('Exported Projects');
                   setActivePage(e);
+                  dispatch(updatePageNumber(e));
                 }}
               />
             )}
