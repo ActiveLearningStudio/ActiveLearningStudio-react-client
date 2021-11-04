@@ -575,18 +575,18 @@ function PlaylistsPage(props) {
                             style={{ display: editDescription ? 'block' : 'none' }}
                           />
                           {!editDescription &&
-                            (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project') : permission?.Project?.includes('project:edit')) &&
-                            // <img
-                            //   src={Edit}
-                            //   alt="hk"
-                            //   className="ml-4"
-                            //   className="ml-2"
-                            //   onClick={() => {
-                            //     setEditDescription(true);
-                            //     descriptionRef.current.focus();
-                            //   }}
-                            // />
-                            ''}
+                            (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project') : permission?.Project?.includes('project:edit')) && (
+                              <img
+                                src={Edit}
+                                alt="hk"
+                                className="ml-4"
+                                className="ml-2"
+                                onClick={() => {
+                                  setEditDescription(true);
+                                  descriptionRef.current.focus();
+                                }}
+                              />
+                            )}
                         </div>
                         <div className="new-playlist">
                           <div className="dropdown">
