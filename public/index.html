@@ -1,10 +1,10 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
-    <META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 20 Feb 2012 00:00:01 GMT">
+    <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
+    <meta http-equiv="EXPIRES" content="Mon, 20 Feb 2012 00:00:01 GMT" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.png" sizes="32x32" />
     <link rel="icon" href="%PUBLIC_URL%/favicon-large.png" sizes="192x192" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon-apple.png" />
@@ -23,20 +23,28 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>CurrikiSTUDIO</title>
+    <title>CurrikiStudio</title>
+    <meta property="og:image" content="%PUBLIC_URL%/__META_IMAGE__.png" />
+    <meta property="twitter:image" content="%PUBLIC_URL%/__META_IMAGE__.png" />
+    <meta name="thumbnail" content="%PUBLIC_URL%/__META_IMAGE__.png" />
 
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="https://apis.google.com/js/api.js" async defer></script>
     <!-- Hotjar Tracking Code for https://www.currikistudio.org/ -->
     <script>
-      (function(h,o,t,j,a,r){
-          h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-          h._hjSettings={hjid:2202145,hjsv:6};
-          a=o.getElementsByTagName('head')[0];
-          r=o.createElement('script');r.async=1;
-          r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-          a.appendChild(r);
-      })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+      (function (h, o, t, j, a, r) {
+        h.hj =
+          h.hj ||
+          function () {
+            (h.hj.q = h.hj.q || []).push(arguments);
+          };
+        h._hjSettings = { hjid: 2202145, hjsv: 6 };
+        a = o.getElementsByTagName('head')[0];
+        r = o.createElement('script');
+        r.async = 1;
+        r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+        a.appendChild(r);
+      })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
     </script>
   </head>
 

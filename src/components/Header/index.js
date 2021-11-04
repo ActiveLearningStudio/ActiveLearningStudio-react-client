@@ -8,6 +8,7 @@ import { SHOW_HELP } from 'store/actionTypes';
 import { logoutAction } from 'store/actions/auth';
 import { Event } from 'trackers/ga';
 
+import vivensity from 'assets/images/vivensity.png';
 import logo from 'assets/images/login_logo.svg';
 import Katylogo from 'assets/images/Katy_logo.png';
 import bu from 'assets/images/bu.png';
@@ -51,6 +52,8 @@ function Header(props) {
         setdefaultLogo(sndt);
       } else if (window.location.host.includes('nvdoe')) {
         setdefaultLogo(nevada);
+      } else if (window.location.host.includes('imsparked')) {
+        setdefaultLogo(vivensity);
       } else if (window.location.host.includes('open.curriki')) {
         setdefaultLogo(openeducation);
       } else {
