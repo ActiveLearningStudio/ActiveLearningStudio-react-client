@@ -588,17 +588,19 @@ export const ProjectsPage = (props) => {
 
                   <div className="pagination-top-team">
                     <div className="pagination_state">
-                      <Pagination
-                        activePage={activePage}
-                        pageRangeDisplayed={5}
-                        itemsCountPerPage={Number(meta?.per_page)}
-                        totalItemsCount={Number(meta?.total)}
-                        onChange={(e) => {
-                          // setCurrentTab("index");
-                          window.scrollTo(0, 0);
-                          setActivePage(e);
-                        }}
-                      />
+                      {showSampleSort && teamProjects.length > 0 && (
+                        <Pagination
+                          activePage={activePage}
+                          pageRangeDisplayed={5}
+                          itemsCountPerPage={Number(meta?.per_page)}
+                          totalItemsCount={Number(meta?.total)}
+                          onChange={(e) => {
+                            // setCurrentTab("index");
+                            window.scrollTo(0, 0);
+                            setActivePage(e);
+                          }}
+                        />
+                      )}
                     </div>
                   </div>
                 </Tab>
