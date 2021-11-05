@@ -362,8 +362,8 @@ export const clearTeamPermissions = () => (dispatch) => {
 
 export const getTeamProject = (query, page) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
-  const result = await teamService.getTeamProject(activeOrganization?.id, query, page);
+  const { organization: { currentOrganization } } = centralizedState;
+  const result = await teamService.getTeamProject(currentOrganization?.id, query, page);
   dispatch({
     type: actionTypes.GET_TEAM_PROJECTS,
     payload: result.data,

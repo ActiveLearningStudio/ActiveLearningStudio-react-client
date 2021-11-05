@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Swal from "sweetalert2";
 import { setActiveTab } from "store/actions/admin";
@@ -15,12 +15,16 @@ import "./breadcrump.scss";
 
 const Breadcrump = ({ text }) => {
   const { paginations } = useSelector((state) => state.ui);
+  const [breadCrums, setBreadCrums] = useState([]);
+  useEffect(() => {
+    setBreadCrums(paginations);
+  }, [paginations]);
   const dispatch = useDispatch();
   return (
     <div className="utility curriki-Breadcrump">
       {text}
       {paginations &&
-        paginations.map((bread, counter) => (
+        breadCrums?.map((bread, counter) => (
           <a
             href="#"
             className=""
