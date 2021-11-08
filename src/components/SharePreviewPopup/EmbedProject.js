@@ -45,7 +45,7 @@ const EmbedProject = ({ url, projectName, onClose }) => (
     <div className="share-popup-btn">
       <div className="close-btn">
         <button type="button" onClick={onClose}>
-          close
+          Close
         </button>
       </div>
     </div>
