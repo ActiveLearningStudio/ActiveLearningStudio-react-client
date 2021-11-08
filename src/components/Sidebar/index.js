@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import teamicon from 'assets/images/sidebar/team-icon.png';
+import teamicon from 'assets/images/sidebar/users-team.svg';
 import administrate from 'assets/images/sidebar/administrate.png';
 import foldericon from 'assets/images/svg/projectFolder.svg';
 import { allSidebarProjects } from 'store/actions/project';
