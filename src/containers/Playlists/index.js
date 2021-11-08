@@ -508,14 +508,24 @@ function PlaylistsPage(props) {
                                   Upload Image:
                                 </div>
 
-                                <img
-                                  alt="project-img"
+                                <div
+                                  style={{
+                                    backgroundImage: `url(${
+                                      selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
+                                        ? selectedProject.thumb_url
+                                        : global.config.resourceUrl + selectedProject.thumb_url
+                                    })`,
+                                    backgroundPosition: 'center',
+                                    backgroundRepeat: 'no-repeat',
+                                    backgroundSize: 'cover',
+                                  }}
+                                  // alt="project-img"
                                   className="container-image"
-                                  src={
-                                    selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
-                                      ? selectedProject.thumb_url
-                                      : global.config.resourceUrl + selectedProject.thumb_url
-                                  }
+                                  // src={
+                                  //   selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
+                                  //     ? selectedProject.thumb_url
+                                  //     : global.config.resourceUrl + selectedProject.thumb_url
+                                  // }
                                 />
                               </div>
                               {(Object.keys(teamPermission).length
