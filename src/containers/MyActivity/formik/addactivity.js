@@ -193,7 +193,7 @@ const AddActivity = (props) => {
           <div className="add-activity-layout-videoTag">
             <HeadingThree text={activtyMethod === 'upload' ? 'Upload Activities' : activity ? 'Edit Activity' : 'Add Activity'} color="#084892" className="layout-add-activity-title" />
 
-            <HeadingText text={activtyMethod === 'upload' ? "Upload an activity from an existing H5P file." : activity ? 'Start editing activity by opening the editor. Once you finish, hit the Save & close button to see your results.' : "Start adding activity by opening the editor. Once you finish, hit the Save & close button to see your results."} color="#515151" />
+            <HeadingText text={activtyMethod === 'upload' ? "Upload an activity from an existing H5P file." : activity ? 'Start editing activity by opening the editor. Once you finish, hit the Save & Close button to see your results.' : "Start adding activity by opening the editor. Once you finish, hit the Save & Close button to see your results."} color="#515151" />
             <div className="d-flex">
               {activtyMethod !== 'upload' && (
                 <div className="add-activity-btns">
