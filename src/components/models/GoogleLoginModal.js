@@ -13,21 +13,27 @@ import logo from 'assets/images/loginlogo.png';
 import {
   googleClassRoomLoginAction,
   googleClassRoomLoginFailureAction,
+  googleClassRoomCourseTopicAction,
 } from 'store/actions/gapi';
-import { copyProject } from 'store/actions/share';
+import { copyProject, publishPlaylist, publishActivity, publistActivity } from 'store/actions/share';
 
 const GoogleLoginModal = ({
   show,
   onHide,
   googleClassRoomLogin,
   googleClassRoomLoginFailure,
+  googleClassRoomCourseTopics,
   projectId,
+  playlistId,
+  activityId,
 }) => {
   const dataRedux = useSelector((state) => state);
   const [tokenTemp, setTokenTemp] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [courses, setCourses] = useState([]);
+  const [topics, setTopics] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isShowPlaylistSelector, setIsShowPlaylistSelector] = useState(false);
 
   useEffect(() => {
     if (dataRedux.share.googleShare === true) {
@@ -45,6 +51,18 @@ const GoogleLoginModal = ({
       setLoading(false);
     }
   }, [dataRedux.share.courses]);
+  
+  useEffect(() => {
+    if (dataRedux.share.topics) {
+      setTopics(dataRedux.share.topics);
+      setLoading(false);
+    }
+  }, [dataRedux.share.topics]);
+
+  const onCourseChange = (e) => {
+    googleClassRoomCourseTopics(e.target.value);
+    setIsShowPlaylistSelector(true);
+  };
 
   return (
     <Modal
@@ -98,11 +116,21 @@ const GoogleLoginModal = ({
                     }}
                     onSubmit={(values) => {
                       onHide();
-                      if (values.course === 'Create a new class') {
-                        copyProject(projectId, null, tokenTemp);
-                      } else {
-                        copyProject(projectId, values.course, tokenTemp);
+                      if ((typeof playlistId == 'undefined') && (typeof activityId == 'undefined')){
+                        if (values.course === 'Create a new class') {
+                          copyProject(projectId, null, tokenTemp);
+                        } else {
+                          copyProject(projectId, values.course, tokenTemp);
+                        }
                       }
+                      else if (playlistId != 0 && activityId != 0){
+                        publistActivity(projectId, values.course, playlistId, activityId, tokenTemp);
+                      }
+                      else if (playlistId != 0 && activityId == 0)
+                      {
+                        publishPlaylist(projectId, values.course, playlistId, tokenTemp);
+                      }
+                      
                       setLoading(false);
                     }}
                   >
@@ -121,7 +149,10 @@ const GoogleLoginModal = ({
                           className="form-control select-dropdown"
                           name="course"
                           value={values.course}
-                          onChange={handleChange}
+                          onChange={(e)=>{
+                            handleChange(e);
+                            onCourseChange(e);
+                          }}
                           onBlur={handleBlur}
                         >
                           <option>Create a new class</option>
@@ -129,6 +160,21 @@ const GoogleLoginModal = ({
                             <option key={item.id} value={item.id}>{item.name}</option>
                           ))}
                         </select>
+                        {isShowPlaylistSelector && (
+                          <select
+                            className="form-control select-dropdown"
+                            name="playlist"
+                            value={values.playlist}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                          >
+                            <option>Create a new playlist</option>
+                            {!!topics && topics.map((topic) => (
+                              <option key={topic.topicId} value={topic.topicId}>{topic.name}</option>
+                            ))}
+                          </select>
+                        )}
+                        
                         {/* <input
                           type="text"
                           name="course"
@@ -206,7 +252,7 @@ const GoogleLoginModal = ({
             )}
           </div>
         </div>
-      </div>
+      </div> 
     </Modal>
   );
 };
@@ -217,11 +263,13 @@ GoogleLoginModal.propTypes = {
   onHide: PropTypes.func.isRequired,
   googleClassRoomLogin: PropTypes.func.isRequired,
   googleClassRoomLoginFailure: PropTypes.func.isRequired,
+  googleClassRoomCourseTopics: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   googleClassRoomLogin: (data) => dispatch(googleClassRoomLoginAction(data)),
   googleClassRoomLoginFailure: (data) => dispatch(googleClassRoomLoginFailureAction(data)),
+  googleClassRoomCourseTopics: (courseId) => dispatch(googleClassRoomCourseTopicAction(courseId)),
 });
 
 export default withRouter(

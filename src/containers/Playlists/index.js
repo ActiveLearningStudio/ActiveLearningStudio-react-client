@@ -13,6 +13,7 @@ import { Alert, Modal, Dropdown } from 'react-bootstrap';
 import { uploadThumb } from 'containers/Projects/CreateProjectPopup';
 import Headings from 'curriki-design-system/dist/utils/Headings/headings';
 import PexelsAPI from 'components/models/pexels';
+import GoogleModel from 'components/models/GoogleLoginModal';
 import {
   createPlaylistAction,
   deletePlaylistAction,
@@ -87,6 +88,10 @@ function PlaylistsPage(props) {
   const [editDescription, setEditDescription] = useState(false);
   const [visibility, setVisibility] = useState();
   const [modalShow, setModalShow] = useState(false);
+  const [show, setShow] = useState(false);
+  const [selectedProjectId, setSelectedProjectId] = useState(0);
+  const [selectedProjectPlaylistId, setSelectedProjectPlaylistId] = useState(0);
+  const [selectedProjectPlaylistActivityId, setSelectedProjectPlaylistActivityId] = useState(0);
   const {
     match,
     history,
@@ -416,6 +421,26 @@ function PlaylistsPage(props) {
       })
     );
   };
+
+  const handleShow = () => {
+    setShow(true); //! state.show
+  };
+
+  const handleClose = () => {
+    setShow(false);
+  };
+
+  const setProjectId = (projectId) => {
+    setSelectedProjectId(projectId);
+  };
+ 
+  const setProjectPlaylistId = (playlistId) => {
+    setSelectedProjectPlaylistId(playlistId);
+  };
+
+  const setProjectPlaylistActivityId = (playlistActivityId) => {
+    setSelectedProjectPlaylistActivityId(playlistActivityId);
+  };
   return (
     <>
       <div className="content-wrapper">
@@ -649,6 +674,10 @@ function PlaylistsPage(props) {
                                   projectId={parseInt(match.params.projectId, 10)}
                                   handleCreateResource={handleShowCreateResourceModal}
                                   teamPermission={teamPermission || {}}
+                                  handleShow={handleShow}
+                                  setProjectId={setProjectId}
+                                  setProjectPlaylistId={setProjectPlaylistId}
+                                  setProjectPlaylistActivityId={setProjectPlaylistActivityId}
                                 />
                               ))}
                             {provided.placeholder}
@@ -707,6 +736,14 @@ function PlaylistsPage(props) {
         </Modal.Body>
       </Modal>
       <Footer />
+      
+      <GoogleModel
+        projectId={selectedProjectId}
+        playlistId={selectedProjectPlaylistId}
+        activityId={selectedProjectPlaylistActivityId}
+        show={show} // {props.show}
+        onHide={handleClose}
+      />
     </>
   );
 }

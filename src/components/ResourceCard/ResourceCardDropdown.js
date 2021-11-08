@@ -13,6 +13,7 @@ import config from 'config';
 import { shareActivity, deleteResourceAction } from 'store/actions/resource';
 import { cloneActivity } from 'store/actions/search';
 import { getUserLmsSettingsAction } from 'store/actions/account';
+import { getProjectId, googleShare } from "store/actions/gapi";
 import { loadSafariMontagePublishToolAction } from 'store/actions/LMS/genericLMS';
 
 import Preview from '../../assets/images/menu-pre.svg';
@@ -26,7 +27,21 @@ import { toast } from 'react-toastify';
 import './style.scss';
 
 const ResourceCardDropdown = (props) => {
-  const { lmsSettings, lmsSettingsLoaded, getLmsSettings, resource, playlist, deleteResource, loadSafariMontagePublishTool, match, teamPermission, previewPage } = props;
+  const { 
+    lmsSettings, 
+    lmsSettingsLoaded, 
+    getLmsSettings, 
+    resource, playlist, 
+    deleteResource, 
+    loadSafariMontagePublishTool, 
+    match, 
+    teamPermission, 
+    previewPage, 
+    handleShow,
+    setProjectId,
+    setProjectPlaylistId,
+    setProjectPlaylistActivityId,
+   } = props;
   const organization = useSelector((state) => state.organization);
   const { selectedProject } = useSelector((state) => state.project);
   const { permission } = organization;
@@ -125,6 +140,18 @@ const ResourceCardDropdown = (props) => {
                 Publish
               </a>
               <ul className="dropdown-menu check">
+                <li
+                    onClick={() => {
+                      handleShow();
+                      getProjectId(match.params.projectId);
+                      setProjectId(match.params.projectId);
+                      setProjectPlaylistId(playlist.id);
+                      setProjectPlaylistActivityId(resource.id);
+                      dispatch(googleShare(false));
+                    }}
+                  >
+                    <a>Google Classroom</a>
+                  </li>
                 {lmsSettings.map((data) => {
                   return (
                     data.lms_name === 'safarimontage' &&
@@ -258,6 +285,10 @@ ResourceCardDropdown.propTypes = {
   loadSafariMontagePublishTool: PropTypes.func.isRequired,
   teamPermission: PropTypes.object.isRequired,
   previewPage: PropTypes.string.isRequired,
+  handleShow: PropTypes.func.isRequired,
+  setProjectId: PropTypes.func.isRequired,
+  setProjectPlaylistId: PropTypes.func.isRequired,
+  setProjectPlaylistActivityId: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

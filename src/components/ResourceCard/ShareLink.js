@@ -7,11 +7,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Publish from '../../assets/images/menu-publish.svg'
 
 import { getProjectCourseFromLMSPlaylist } from 'store/actions/project';
+import { getProjectId, googleShare } from "store/actions/gapi";
 
 function ShareLink(props) {
 	const dispatch = useDispatch();
 
-	const { projectId, playlistId } = props;
+	const { projectId, playlistId, handleShow, setProjectId, setProjectPlaylistId } = props;
 
 	const AllLms = useSelector((state) => state.share);
 
@@ -41,6 +42,17 @@ function ShareLink(props) {
 			</a>
 
 			<ul className="dropdown-menu check">
+      <li
+          onClick={() => {
+            handleShow();
+            getProjectId(projectId);
+            setProjectId(projectId);
+            setProjectPlaylistId(playlistId);
+            dispatch(googleShare(false));
+          }}
+        >
+          <a>Google Classroom</a>
+        </li>
 				{allLms.shareVendors && allLms.shareVendors.map((data) => (
 					data.playlist_visibility && (
 						<li key={data.id}>
@@ -68,6 +80,8 @@ function ShareLink(props) {
 ShareLink.propTypes = {
 	projectId: PropTypes.number.isRequired,
 	playlistId: PropTypes.number.isRequired,
+  handleShow: PropTypes.func.isRequired,
+  setProjectId: PropTypes.func.isRequired,
 };
 
 export default ShareLink;

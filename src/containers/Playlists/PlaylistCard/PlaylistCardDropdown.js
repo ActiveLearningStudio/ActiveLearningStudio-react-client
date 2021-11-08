@@ -30,7 +30,16 @@ class PlaylistCardDropdown extends React.Component {
   };
 
   render() {
-    const { playlist, handleClickPlaylistTitle, setSelectedForEdit, organization, teamPermission } = this.props;
+    const {
+      playlist,
+      handleClickPlaylistTitle,
+      setSelectedForEdit,
+      organization,
+      teamPermission,
+      handleShow,
+      setProjectId,
+      setProjectPlaylistId
+    } = this.props;
     const { permission } = organization;
     return (
       <Dropdown className="pull-right playlist-dropdown check">
@@ -92,13 +101,19 @@ class PlaylistCardDropdown extends React.Component {
               )
           )} */}
           {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:publish-playlist') : permission?.Playlist?.includes('playlist:publish')) && (
-            <ShareLink playlistId={playlist.id} projectId={playlist.project_id} />
-          )}
-          {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:delete-playlist') : permission?.Playlist?.includes('playlist:delete')) && (
-            <Dropdown.Item onClick={this.handleDelete}>
-              <img src={Delete} alt="Preview" className="menue-img" />
-              Delete
-            </Dropdown.Item>
+            <>
+              <ShareLink
+                playlistId={playlist.id}
+                projectId={playlist.project_id}
+                handleShow={handleShow}
+                setProjectId={setProjectId}
+                setProjectPlaylistId={setProjectPlaylistId}
+              />
+              <Dropdown.Item onClick={this.handleDelete}>
+                <img src={Delete} alt="Preview" className="menue-img" />
+                Delete
+              </Dropdown.Item>
+            </>
           )}
         </Dropdown.Menu>
       </Dropdown>
@@ -113,6 +128,8 @@ PlaylistCardDropdown.propTypes = {
   setSelectedForEdit: PropTypes.func.isRequired,
   organization: PropTypes.string.isRequired,
   teamPermission: PropTypes.object.isRequired,
+  handleShow: PropTypes.func.isRequired,
+  setProjectId: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

@@ -44,7 +44,7 @@ class PlaylistCard extends React.Component {
   };
 
   renderResources = () => {
-    const { playlist, organization, teamPermission } = this.props;
+    const { playlist, organization, teamPermission, handleShow, setProjectId, setProjectPlaylistId, setProjectPlaylistActivityId } = this.props;
 
     if (!playlist.activities || playlist.activities.length === 0) {
       return <div className="alert alert-info m-3">No resource yet.</div>;
@@ -52,8 +52,20 @@ class PlaylistCard extends React.Component {
 
     return playlist.activities.map(
       (resource, index) =>
-        (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-activity') : organization?.permission?.Activity?.includes('activity:view')) && (
-          <ResourceCard {...this.props} resource={resource} key={resource.id} index={index} teamPermission={teamPermission || {}} />
+        (Object.keys(teamPermission).length
+          ? teamPermission?.Team?.includes("team:view-activity")
+          : organization?.permission?.Activity?.includes("activity:view")) && (
+          <ResourceCard
+            {...this.props}
+            resource={resource}
+            key={resource.id}
+            index={index}
+            teamPermission={teamPermission || {}}
+            handleShow={handleShow}
+            setProjectId={setProjectId}
+            setProjectPlaylistId={setProjectPlaylistId}
+            setProjectPlaylistActivityId={setProjectPlaylistActivityId}
+          />
         )
     );
   };
@@ -112,7 +124,16 @@ class PlaylistCard extends React.Component {
 
   render() {
     const { editMode } = this.state;
-    const { index, playlist, projectId, organization, teamPermission } = this.props;
+    const {
+      index,
+      playlist,
+      projectId,
+      organization,
+      teamPermission,
+      handleShow,
+      setProjectId,
+      setProjectPlaylistId,
+    } = this.props;
     const { permission } = organization;
     return (
       <Draggable key={playlist.id} draggableId={`${playlist.id}`} index={index}>
@@ -139,7 +160,14 @@ class PlaylistCard extends React.Component {
                     defaultValue={playlist.title}
                   />
 
-                  <PlaylistCardDropdown playlist={playlist} handleClickPlaylistTitle={this.handleClickPlaylistTitle} teamPermission={teamPermission || {}} />
+                  <PlaylistCardDropdown
+                    playlist={playlist}
+                    handleClickPlaylistTitle={this.handleClickPlaylistTitle}
+                    teamPermission={teamPermission || {}}
+                    handleShow={handleShow}
+                    setProjectId={setProjectId}
+                    setProjectPlaylistId={setProjectPlaylistId}
+                  />
                 </h2>
               </div>
 
