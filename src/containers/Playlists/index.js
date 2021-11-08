@@ -61,6 +61,9 @@ import EditResource from 'components/ResourceCard/EditResource';
 import PlaylistCard from './PlaylistCard';
 import PreviewResourcePage from './PreviewResourcePage';
 import CreatePlaylistPopup from './CreatePlaylistPopup';
+import Edit from '../../assets/images/menu-edit.svg';
+import Preview from '../../assets/images/preview-2.svg';
+import AddBtn from '../../assets/images/add-btn.svg';
 
 import './style.scss';
 
@@ -147,8 +150,8 @@ function PlaylistsPage(props) {
   useEffect(() => {
     return () => {
       dispatch(clearSelectedProject());
-    }
-  }, [])
+    };
+  }, []);
 
   useEffect(() => {
     loadLms();
@@ -458,7 +461,7 @@ function PlaylistsPage(props) {
               ) : (
                 <>
                   <div>{selectedProject?.team?.name ? `Team Name: ${selectedProject?.team?.name}` : null}</div>
-                  <Headings text={`${organization?.currentOrganization?.name}`} headingType="body2" color="#084892" className="mb-3" />
+                  <Headings text={`${organization?.currentOrganization?.name}`} headingType="body2" color="#084892" style={{ lineHeight: '20px' }} className="mb-3" />
                   <div className="col playlist-page-project-title project-each-view">
                     <div className="flex-se project-headline-section">
                       <div style={{ width: '100%' }}>
@@ -543,26 +546,26 @@ function PlaylistsPage(props) {
                               {(Object.keys(teamPermission).length
                                 ? teamPermission?.Team?.includes('team:edit-project')
                                 : permission?.Project?.includes('project:upload-thumb')) && (
-                                  <div className="button-flex-project-images">
-                                    <div
-                                      className="gallery"
-                                      onClick={() => {
-                                        openFile.current.click();
-                                      }}
-                                    >
-                                      <img src={computer} alt="" />
-                                      <p>My device</p>
-                                    </div>
-
-                                    <div className="pexel" onClick={() => setModalShow(true)}>
-                                      <img src={pexel} alt="pexel" />
-                                      <p>Pexels</p>
-                                    </div>
+                                <div className="button-flex-project-images">
+                                  <div
+                                    className="gallery"
+                                    onClick={() => {
+                                      openFile.current.click();
+                                    }}
+                                  >
+                                    <img src={computer} alt="" />
+                                    <p>My device</p>
                                   </div>
-                                )}
+
+                                  <div className="pexel" onClick={() => setModalShow(true)}>
+                                    <img src={pexel} alt="pexel" />
+                                    <p>Pexels</p>
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           </div>
-                          {!editName && <Headings text={selectedProject ? selectedProject.name : ''} headingType="h2" color="#084892" />}
+                          {!editName && <Headings text={selectedProject ? selectedProject.name : ''} headingType="h2" className="main-heading" color="#2E68BF" />}
                           <textarea
                             className="title"
                             name="projectname"
@@ -573,9 +576,10 @@ function PlaylistsPage(props) {
                             style={{ display: editName ? 'block' : 'none' }}
                           />
                           {!editName && (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project') : permission?.Project?.includes('project:edit')) && (
-                            <FontAwesomeIcon
-                              icon="edit"
-                              className="ml-2"
+                            <img
+                              src={Edit}
+                              alt="hk"
+                              className="ml-3"
                               onClick={() => {
                                 setEditName(true);
                                 console.log(titleRef);
@@ -597,8 +601,10 @@ function PlaylistsPage(props) {
                           />
                           {!editDescription &&
                             (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project') : permission?.Project?.includes('project:edit')) && (
-                              <FontAwesomeIcon
-                                icon="edit"
+                              <img
+                                src={Edit}
+                                alt="hk"
+                                className="ml-4"
                                 className="ml-2"
                                 onClick={() => {
                                   setEditDescription(true);
@@ -634,7 +640,7 @@ function PlaylistsPage(props) {
                       <div className="project-share-previews">
                         <div className="project-preview">
                           <Link className="dropdown-item" to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/preview`}>
-                            <FontAwesomeIcon icon="eye" className="mr-2" />
+                            <img src={Preview} alt="img" className="mr-2" />
                             Project Preview
                           </Link>
                         </div>
@@ -645,11 +651,11 @@ function PlaylistsPage(props) {
                     </div>
                   </div>
 
-                  <hr />
+                  <hr style={{ margin: '16px 0 24px' }} />
                   <div className="new-playlister">
                     {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:add-playlist') : permission?.Playlist?.includes('playlist:create')) && (
                       <button style={{ whiteSpace: 'nowrap' }} type="button" className="create-playlist-btn" onClick={handleShowCreatePlaylistModal}>
-                        <FontAwesomeIcon icon="plus" className="mr-2" />
+                        <img src={AddBtn} alt="add" className="mr-2" />
                         Create new playlist
                       </button>
                     )}

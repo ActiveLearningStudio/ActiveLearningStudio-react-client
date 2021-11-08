@@ -62,7 +62,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         projectSelect: null,
         isSharedProject: false,
-      }
+      };
     case actionTypes.LOAD_PROJECT_SUCCESS:
       return {
         ...state,
@@ -97,7 +97,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isLoading: false,
-        selectedProject: { ...action.payload.project, thumbUrl: action.payload.thumb_url }
+        selectedProject: { ...action.payload.project, thumbUrl: action.payload.thumb_url },
       };
     case actionTypes.UPDATE_PROJECT_FAIL:
       return {

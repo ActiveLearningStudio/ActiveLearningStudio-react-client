@@ -1,22 +1,20 @@
 /*eslint-disable */
-import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import { Droppable, Draggable } from "react-beautiful-dnd";
-import Swal from "sweetalert2";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import * as actionTypes from "store/actionTypes";
-import {
-  changePlaylistTitleAction,
-  clearFormData,
-} from "store/actions/playlist";
-import { clearSearch } from "store/actions/search";
-import { showDeletePopupAction, hideDeletePopupAction } from "store/actions/ui";
-import ResourceCard from "components/ResourceCard";
-import PlaylistCardDropdown from "./PlaylistCardDropdown";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
+import Swal from 'sweetalert2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import * as actionTypes from 'store/actionTypes';
+import { changePlaylistTitleAction, clearFormData } from 'store/actions/playlist';
+import { clearSearch } from 'store/actions/search';
+import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
+import ResourceCard from 'components/ResourceCard';
+import PlaylistCardDropdown from './PlaylistCardDropdown';
+import UploadLogo from '../../../assets/images/upload-active.svg';
 
-import "./style.scss";
+import './style.scss';
 
 // TODO: need to clean up attributes, update to functional component
 // need to refactor template functions
@@ -32,7 +30,7 @@ class PlaylistCard extends React.Component {
     e.preventDefault();
 
     const { playlist, showDeletePopup } = this.props;
-    showDeletePopup(playlist.id, playlist.title, "Playlist");
+    showDeletePopup(playlist.id, playlist.title, 'Playlist');
   };
 
   handleAddNewResourceClick = () => {
@@ -81,7 +79,7 @@ class PlaylistCard extends React.Component {
   onBlur = (e) => {
     const title = e.target.value;
     if (title.length > 50) {
-      Swal.fire("Character limit should be less than 50.");
+      Swal.fire('Character limit should be less than 50.');
       return;
     }
     const { playlist, projectId, changePlaylistTitle } = this.props;
@@ -95,15 +93,15 @@ class PlaylistCard extends React.Component {
         if (err.errors) {
           if (err.errors.title.length > 0) {
             Swal.fire({
-              icon: "error",
-              title: "Error",
+              icon: 'error',
+              title: 'Error',
               text: err.errors.title[0],
             });
           }
         } else {
           Swal.fire({
-            icon: "error",
-            title: "Error",
+            icon: 'error',
+            title: 'Error',
             text: err.message,
           });
         }
@@ -112,12 +110,7 @@ class PlaylistCard extends React.Component {
   };
 
   handleClickPlaylistTitle = async () => {
-    if (
-      this.props.organization?.permission?.Playlist?.includes(
-        "playlist:edit"
-      ) ||
-      this.props.teamPermission?.Team?.includes("team:edit-playlist")
-    ) {
+    if (this.props.organization?.permission?.Playlist?.includes('playlist:edit') || this.props.teamPermission?.Team?.includes('team:edit-playlist')) {
       this.setState(
         {
           editMode: true,
@@ -145,28 +138,14 @@ class PlaylistCard extends React.Component {
     return (
       <Draggable key={playlist.id} draggableId={`${playlist.id}`} index={index}>
         {(provided) => (
-          <div
-            className="list-wrapper"
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-          >
+          <div className="list-wrapper" ref={provided.innerRef} {...provided.draggableProps}>
             <div className="list playlist-bg">
               <div className="list-header" {...provided.dragHandleProps}>
                 <h2 className="playlist-header-name d-flex align-items-center">
-                  <div
-                    className={`playlist-title-wrapper d-flex align-items-center ${
-                      editMode ? "hide" : "show"
-                    }`}
-                    onClick={this.handleClickPlaylistTitle}
-                  >
+                  <div className={`playlist-title-wrapper d-flex align-items-center ${editMode ? 'hide' : 'show'}`} onClick={this.handleClickPlaylistTitle}>
                     <span>{playlist.title}</span>
-                    {(Object.keys(teamPermission).length
-                      ? teamPermission?.Team?.includes("team:edit-playlist")
-                      : permission?.Playlist?.includes("playlist:edit")) && (
-                      <FontAwesomeIcon
-                        icon="pencil-alt"
-                        className="ml-2 edit-icon"
-                      />
+                    {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-playlist') : permission?.Playlist?.includes('playlist:edit')) && (
+                      <FontAwesomeIcon icon="pencil-alt" className="ml-2 edit-icon" />
                     )}
                   </div>
 
@@ -175,7 +154,7 @@ class PlaylistCard extends React.Component {
                       this.titleInput = input;
                     }}
                     name="playlist-title"
-                    className={editMode ? "show" : "hide"}
+                    className={editMode ? 'show' : 'hide'}
                     onBlur={this.onBlur}
                     onKeyPress={this.onEnterPress}
                     defaultValue={playlist.title}
@@ -192,17 +171,9 @@ class PlaylistCard extends React.Component {
                 </h2>
               </div>
 
-              <Droppable
-                key={playlist.id}
-                droppableId={`${playlist.id}`}
-                type="resource"
-              >
+              <Droppable key={playlist.id} droppableId={`${playlist.id}`} type="resource">
                 {(provd) => (
-                  <div
-                    className="list-body playlist-body-bg"
-                    {...provd.droppableProps}
-                    ref={provd.innerRef}
-                  >
+                  <div className="list-body playlist-body-bg" {...provd.droppableProps} ref={provd.innerRef}>
                     <div className="playlist-resources">
                       {this.renderResources()}
                       {provd.placeholder}
@@ -211,9 +182,8 @@ class PlaylistCard extends React.Component {
                 )}
               </Droppable>
               {(Object.keys(teamPermission).length
-                ? teamPermission?.Team?.includes("team:add-activity")
-                : permission?.Activity?.includes("activity:create") ||
-                  permission?.Activity?.includes("activity:upload")) && (
+                ? teamPermission?.Team?.includes('team:add-activity')
+                : permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload')) && (
                 <div className="playlist-add-res-button">
                   <button
                     type="button"
@@ -226,7 +196,7 @@ class PlaylistCard extends React.Component {
                       clearSearchform();
                     }}
                   >
-                    <FontAwesomeIcon icon="plus" className="mr-2" />
+                    <img src={UploadLogo} alt="logo" className="mr-2" />
                     Create or upload activty
                   </button>
                 </div>
@@ -259,17 +229,15 @@ PlaylistCard.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  showDeletePopup: (id, title, deleteType) =>
-    dispatch(showDeletePopupAction(id, title, deleteType)),
+  showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
   hideDeletePopup: () => dispatch(hideDeletePopupAction()),
-  changePlaylistTitle: (projectId, id, title) =>
-    dispatch(changePlaylistTitleAction(projectId, id, title)),
+  changePlaylistTitle: (projectId, id, title) => dispatch(changePlaylistTitleAction(projectId, id, title)),
   clearForm: () => dispatch(clearFormData()),
   clearSearchform: () => dispatch(clearSearch()),
   openActivity: (playlist, project) =>
     dispatch({
       type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-      payload: "layout",
+      payload: 'layout',
       playlist: playlist,
       project: project,
     }),
@@ -281,6 +249,4 @@ const mapStateToProps = (state) => ({
   organization: state.organization,
 });
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(PlaylistCard)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PlaylistCard));

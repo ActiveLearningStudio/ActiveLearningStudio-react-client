@@ -1,8 +1,9 @@
-/* eslint-disable react/no-this-in-sfc */
+/* eslint-disable */
 import React, { useEffect, useState, useReducer } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Alert } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import gifloader from 'assets/images/dotsloader.gif';
@@ -23,18 +24,7 @@ const reducer = (intervalPointer, action) => {
 };
 
 const Activity = (props) => {
-  const {
-    match,
-    h5pSettings,
-    ltiFinished,
-    attemptId,
-    loadH5pSettings,
-    passCourseDetails,
-    sendStatement,
-    gradePassBack,
-    activityInit,
-    sendScreenshot,
-  } = props;
+  const { match, h5pSettings, ltiFinished, attemptId, loadH5pSettings, passCourseDetails, sendStatement, gradePassBack, activityInit, sendScreenshot } = props;
   const { activityId } = match.params;
   const searchParams = new URLSearchParams(window.location.search);
   const session = searchParams.get('PHPSESSID');
@@ -59,7 +49,13 @@ const Activity = (props) => {
     window.scrollTo(0, 0);
     loadH5pSettings(match.params.activityId, studentId, submissionId);
     passCourseDetails({
-      courseId, issuerClient, customApiDomainUrl, studentId, customPersonNameGiven, customPersonNameFamily, isLearner,
+      courseId,
+      issuerClient,
+      customApiDomainUrl,
+      studentId,
+      customPersonNameGiven,
+      customPersonNameFamily,
+      isLearner,
     });
     activityInit();
   }, [activityId]);
@@ -71,9 +67,7 @@ const Activity = (props) => {
     window.H5PIntegration = h5pSettings.h5p.settings;
     const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
     h5pWrapper.innerHTML = h5pSettings.h5p.embed_code.trim();
-    const newCss = h5pSettings.h5p.settings.core.styles.concat(
-      h5pSettings.h5p.settings.loadedCss,
-    );
+    const newCss = h5pSettings.h5p.settings.core.styles.concat(h5pSettings.h5p.settings.loadedCss);
 
     Promise.all(
       newCss.map((value) => {
@@ -83,12 +77,10 @@ const Activity = (props) => {
         link.rel = 'stylesheet';
         document.head.appendChild(link);
         return true;
-      }),
+      })
     );
 
-    const newScripts = h5pSettings.h5p.settings.core.scripts.concat(
-      h5pSettings.h5p.settings.loadedJs,
-    );
+    const newScripts = h5pSettings.h5p.settings.core.scripts.concat(h5pSettings.h5p.settings.loadedJs);
 
     newScripts.forEach((value) => {
       const script = document.createElement('script');
@@ -158,9 +150,7 @@ const Activity = (props) => {
             const xAPIData = interaction.getXAPIData();
             if (!xAPIData) return; // Some interactions have no data to report
 
-            const iXAPIStatement = JSON.stringify(
-              xAPIHelper.extendStatement(this, xAPIData.statement, params, true),
-            );
+            const iXAPIStatement = JSON.stringify(xAPIHelper.extendStatement(this, xAPIData.statement, params, true));
             sendStatement(iXAPIStatement);
           }, this);
         }
@@ -196,10 +186,8 @@ const Activity = (props) => {
       )}
 
       {!ltiFinished && (
-        <div id="curriki-h5p-wrapper" className="added-middle-height-width">
-          <div className="loader_gif">
-            <img style={{ width: '50px' }} src={gifloader} alt="" />
-          </div>
+        <div id="curriki-h5p-wrapper" z>
+          <Alert variant="primary">Loading Activity</Alert>
         </div>
       )}
     </div>

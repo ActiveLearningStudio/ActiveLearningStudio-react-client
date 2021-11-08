@@ -8,6 +8,7 @@ import safari from 'assets/images/safari.png';
 import shepherds from 'assets/images/shepherds.svg';
 import sndt from 'assets/images/SNDT-LOGO-blue.png';
 import nevada from 'assets/images/nevada.png';
+import vivensity from 'assets/images/vivensity.png';
 import openeducation from 'assets/images/openeducation.png';
 import bodyImg from 'assets/images/log-in.png';
 
@@ -30,6 +31,8 @@ export default function Logo() {
         setdefaultLogo(sndt);
       } else if (window.location.host.includes('nvdoe')) {
         setdefaultLogo(nevada);
+      } else if (window.location.host.includes('imsparked')) {
+        setdefaultLogo(vivensity);
       } else if (window.location.host.includes('open.curriki')) {
         setdefaultLogo(openeducation);
       } else {

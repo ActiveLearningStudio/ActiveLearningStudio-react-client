@@ -19,6 +19,9 @@ import SharePreviewPopup from "components/SharePreviewPopup";
 import "./style.scss";
 import loader from "assets/images/loader.svg";
 import { propTypes } from "react-bootstrap/esm/Image";
+import Duplicate from '../../../assets/images/menu-dupli.svg'
+import Delete from '../../../assets/images/menu-dele.svg'
+import Publish from '../../../assets/images/menu-publish.svg'
 
 const ProjectCardDropdown = (props) => {
 	const {
@@ -100,7 +103,7 @@ const ProjectCardDropdown = (props) => {
 							toast.dismiss();
 						}}
 					>
-						<FontAwesomeIcon icon="clone" className="mr-2" />
+						 <img src={Duplicate} alt="Preview" className="menue-img" />
 						Duplicate
 					</Dropdown.Item>
 				)}
@@ -142,7 +145,7 @@ const ProjectCardDropdown = (props) => {
 					: permission?.Project?.includes("project:publish")) && (
 						<li className="dropdown-submenu send">
 							<a tabIndex="-1">
-								<FontAwesomeIcon icon="newspaper" className="mr-2" />
+              <img src={Publish} alt="Preview" className="menue-img" />
 								Publish
 							</a>
 							<ul className="dropdown-menu check">
@@ -195,7 +198,7 @@ const ProjectCardDropdown = (props) => {
 							to="#"
 							onClick={() => showDeletePopup(project.id, project.name, "Project")}
 						>
-							<FontAwesomeIcon icon="times-circle" className="mr-2" />
+							 <img src={Delete} alt="Preview" className="menue-img" />
 							Delete
 						</Dropdown.Item>
 					)}

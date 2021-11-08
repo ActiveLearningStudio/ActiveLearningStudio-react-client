@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Publish from '../../assets/images/menu-publish.svg'
 
 import { getProjectCourseFromLMSPlaylist } from 'store/actions/project';
 import { getProjectId, googleShare } from "store/actions/gapi";
@@ -36,7 +37,7 @@ function ShareLink(props) {
 					}
 				}}
 			>
-				<FontAwesomeIcon icon="newspaper" className="mr-2" />
+				<img src={ Publish} alt="Preview" className="menue-img" />
 				Publish
 			</a>
 

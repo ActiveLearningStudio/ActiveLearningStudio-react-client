@@ -200,7 +200,7 @@ function ProjectPreview(props) {
                           </Link>
                         </div>
                         {/* {activeShared && ( */}
-                        {permission?.Project?.includes('project:share') && (<div
+                        {permission?.Project?.includes('project:share') && currentProject?.shared && (<div
                           className="shared-link"
                           onClick={() => {
                             if (window.gapi && window.gapi.sharetoclassroom) {

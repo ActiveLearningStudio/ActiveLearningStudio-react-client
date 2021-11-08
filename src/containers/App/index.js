@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { ToastContainer } from 'react-toastify';
@@ -41,19 +42,23 @@ function App(props) {
             const subDomain = window.location.pathname.split('/org/')[1]?.replace(/\//g, '');
             (async () => {
               const result = dispatch(getBranding(subDomain));
-              result.then((data) => {
-                if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
-                dispatch(getAllPermission(data?.organization?.id));
-              }).catch((err) => err && window.location.replace('/org/currikistudio'));
+              result
+                .then((data) => {
+                  if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
+                  dispatch(getAllPermission(data?.organization?.id));
+                })
+                .catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
           } else {
             const subDomain = window.location.pathname.split('/org/')[1].split('/')[0]?.replace(/\//g, '');
             (async () => {
               const result = dispatch(getBranding(subDomain));
-              result.then((data) => {
-                if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
-                dispatch(getAllPermission(data?.organization?.id));
-              }).catch((err) => err && window.location.replace('/org/currikistudio'));
+              result
+                .then((data) => {
+                  if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
+                  dispatch(getAllPermission(data?.organization?.id));
+                })
+                .catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
           }
         }
@@ -84,8 +89,12 @@ function App(props) {
   // }, []);
 
   useEffect(() => {
-    if ((window.location.href.includes('/login')
-      || window.location.pathname.includes('/register') || window.location.pathname.includes('/forgot-password') || window.location.pathname.includes('/reset-password'))) {
+    if (
+      window.location.href.includes('/login') ||
+      window.location.pathname.includes('/register') ||
+      window.location.pathname.includes('/forgot-password') ||
+      window.location.pathname.includes('/reset-password')
+    ) {
       const subDomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
       if (subDomain?.includes('login') || subDomain?.includes('register') || subDomain?.includes('forgot-password') || window.location.pathname.includes('/reset-password')) {
         dispatch(getBranding('currikistudio'));
@@ -201,13 +210,7 @@ function App(props) {
         <meta name="description" content="CurrikiStudio" />
         <meta name="theme-color" content="#008f68" />
 
-        <script
-          type="text/javascript"
-          id="hs-script-loader"
-          async
-          defer
-          src={`//js.hs-scripts.com/${process.env.REACT_APP_HUBSPOT}.js`}
-        />
+        <script type="text/javascript" id="hs-script-loader" async defer src={`//js.hs-scripts.com/${process.env.REACT_APP_HUBSPOT}.js`} />
       </Helmet>
       <AppRouter />
       <ToastContainer limit={1} />
@@ -224,15 +227,14 @@ function App(props) {
           <h2>CurrikiStudio</h2>
 
           <p>
-            We are changing the way the world creates and interacts with learning content.
-            Currently it is not possible to build the world&apos;s most immersive learning experiences on a mobile phone,
-            tablet or iPad.  We recommend that you use either a desktop or laptop computer.
+            We are changing the way the world creates and interacts with learning content. Currently it is not possible to build the world&apos;s most immersive learning
+            experiences on a mobile phone, tablet or iPad. We recommend that you use either a desktop or laptop computer.
           </p>
-          <p>
-            If you don&apos;t already have a CurrikiStudio account
-          </p>
+          <p>If you don&apos;t already have a CurrikiStudio account</p>
 
-          <a className="reg-btn" href="/register">CLICK HERE TO REGISTER</a>
+          <a className="reg-btn" href="/register">
+            CLICK HERE TO REGISTER
+          </a>
           <br />
 
           <p>
