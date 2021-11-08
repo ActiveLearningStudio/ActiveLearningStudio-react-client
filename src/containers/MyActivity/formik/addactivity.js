@@ -54,8 +54,8 @@ const AddActivity = (props) => {
       />
       <div className="add-activity-form">
         <div className="add-activity-tabs">
-          <Tabs text="1. Select a layout" tabActive={true} />
-          <Tabs text="2.Layout description + activities" className="ml-10" tabActive={true} />
+          <Tabs text="1. Select an activity" tabActive={false} />
+          <Tabs text="2.Activity description + activities" className="ml-10" tabActive={true} />
           {/* <Tabs text="3. Preview Layout" className="ml-10" /> */}
         </div>
         {!activity && (

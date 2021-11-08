@@ -49,8 +49,8 @@ const ActivityLayout = (props) => {
   return (
     <div className="activity-layout-form">
       <div className="activity-layout-tabs">
-        <Tabs text="1. Select a layout" tabActive />
-        <Tabs text="2.Layout description + activities" className="ml-10 " />
+        <Tabs text="1. Select an activity" tabActive />
+        <Tabs text="2.Activity description + activities" className="ml-10 " />
         {/* mt-10 */}
         {/* <Tabs text="3. Preview Layout" className="ml-10" /> */}
       </div>
