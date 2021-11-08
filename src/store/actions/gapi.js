@@ -7,6 +7,7 @@ import {
   GOOGLE_SHARE,
   LOAD_GOOGLE_CLASSROOM_COURSES,
   ALL_COURSES,
+  GET_COURSE_TOPICS,
   GET_STUDENT_COURSES,
   SET_STUDENT_AUTH,
   SET_STUDENT_AUTH_TOKEN,
@@ -54,6 +55,7 @@ export const googleClassRoomLoginAction = (response) => async (dispatch) => {
     // save access token
     await searchService.googleShareToken(JSON.stringify(response.tokenObj));
     const getCourses = await searchService.getCourses();
+    console.log(getCourses);
     dispatch({
       type: ALL_COURSES,
       payload: getCourses.courses,
@@ -160,4 +162,16 @@ export const getOutcomeSummaryAction = (studentId, activityId) => async (dispatc
     type: GET_OUTCOME_SUMMARY,
     outcomeSummary,
   });
+};
+
+export const googleClassRoomCourseTopicAction = (courseId) => async (dispatch) => {
+  try {
+    const getTopics = await searchService.getCourseTopics(courseId);
+    dispatch({
+      type: GET_COURSE_TOPICS,
+      payload: getTopics.topics,
+    });
+  } catch (e) {
+    console.log(e);
+  }
 };

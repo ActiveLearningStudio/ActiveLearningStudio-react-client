@@ -20,6 +20,10 @@ const ResourceCard = (props) => {
     match,
     index,
     teamPermission,
+    handleShow,
+    setProjectId,
+    setProjectPlaylistId,
+    setProjectPlaylistActivityId,
     // wizard,
   } = props;
   const organization = useSelector((state) => state.organization);
@@ -80,6 +84,10 @@ const ResourceCard = (props) => {
                 playlist={playlist}
                 teamPermission={teamPermission || {}}
                 previewPage="buildPreview"
+                handleShow={handleShow}
+                setProjectId={setProjectId}
+                setProjectPlaylistId={setProjectPlaylistId}
+                setProjectPlaylistActivityId={setProjectPlaylistActivityId}
                 // wizard
               />
             </div>
@@ -99,6 +107,10 @@ ResourceCard.propTypes = {
   hideDeletePopup: PropTypes.func.isRequired,
   deleteResource: PropTypes.func.isRequired,
   teamPermission: PropTypes.object.isRequired,
+  handleShow: PropTypes.func.isRequired,
+  setProjectId: PropTypes.func.isRequired,
+  setProjectPlaylistId: PropTypes.func.isRequired,
+  setProjectPlaylistActivityId: PropTypes.func.isRequired,
   // wizard: PropTypes.func.isRequired,
 };
 

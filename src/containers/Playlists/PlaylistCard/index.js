@@ -46,7 +46,7 @@ class PlaylistCard extends React.Component {
   };
 
   renderResources = () => {
-    const { playlist, organization, teamPermission } = this.props;
+    const { playlist, organization, teamPermission, handleShow, setProjectId, setProjectPlaylistId, setProjectPlaylistActivityId } = this.props;
 
     if (!playlist.activities || playlist.activities.length === 0) {
       return <div className="alert alert-info m-3">No resource yet.</div>;
@@ -63,6 +63,10 @@ class PlaylistCard extends React.Component {
             key={resource.id}
             index={index}
             teamPermission={teamPermission || {}}
+            handleShow={handleShow}
+            setProjectId={setProjectId}
+            setProjectPlaylistId={setProjectPlaylistId}
+            setProjectPlaylistActivityId={setProjectPlaylistActivityId}
           />
         )
     );
@@ -133,6 +137,9 @@ class PlaylistCard extends React.Component {
       projectId,
       organization,
       teamPermission,
+      handleShow,
+      setProjectId,
+      setProjectPlaylistId,
     } = this.props;
     const { permission } = organization;
     return (
@@ -178,6 +185,9 @@ class PlaylistCard extends React.Component {
                     playlist={playlist}
                     handleClickPlaylistTitle={this.handleClickPlaylistTitle}
                     teamPermission={teamPermission || {}}
+                    handleShow={handleShow}
+                    setProjectId={setProjectId}
+                    setProjectPlaylistId={setProjectPlaylistId}
                   />
                 </h2>
               </div>

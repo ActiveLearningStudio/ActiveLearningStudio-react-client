@@ -34,6 +34,9 @@ class PlaylistCardDropdown extends React.Component {
       setSelectedForEdit,
       organization,
       teamPermission,
+      handleShow,
+      setProjectId,
+      setProjectPlaylistId
     } = this.props;
     const { permission } = organization;
     return (
@@ -98,6 +101,9 @@ class PlaylistCardDropdown extends React.Component {
             <ShareLink
               playlistId={playlist.id}
               projectId={playlist.project_id}
+              handleShow={handleShow}
+              setProjectId={setProjectId}
+              setProjectPlaylistId={setProjectPlaylistId}
             />
           )}
           {(Object.keys(teamPermission).length
@@ -121,6 +127,8 @@ PlaylistCardDropdown.propTypes = {
   setSelectedForEdit: PropTypes.func.isRequired,
   organization: PropTypes.string.isRequired,
   teamPermission: PropTypes.object.isRequired,
+  handleShow: PropTypes.func.isRequired,
+  setProjectId: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
