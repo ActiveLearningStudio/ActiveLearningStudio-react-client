@@ -13,7 +13,7 @@ import config from 'config';
 import { shareActivity, deleteResourceAction } from 'store/actions/resource';
 import { cloneActivity } from 'store/actions/search';
 import { getUserLmsSettingsAction } from 'store/actions/account';
-import { getProjectId, googleShare } from "store/actions/gapi";
+import { getProjectId, googleShare } from 'store/actions/gapi';
 import { loadSafariMontagePublishToolAction } from 'store/actions/LMS/genericLMS';
 
 import Preview from '../../assets/images/menu-pre.svg';
@@ -27,21 +27,22 @@ import { toast } from 'react-toastify';
 import './style.scss';
 
 const ResourceCardDropdown = (props) => {
-  const { 
-    lmsSettings, 
-    lmsSettingsLoaded, 
-    getLmsSettings, 
-    resource, playlist, 
-    deleteResource, 
-    loadSafariMontagePublishTool, 
-    match, 
-    teamPermission, 
-    previewPage, 
+  const {
+    lmsSettings,
+    lmsSettingsLoaded,
+    getLmsSettings,
+    resource,
+    playlist,
+    deleteResource,
+    loadSafariMontagePublishTool,
+    match,
+    teamPermission,
+    previewPage,
     handleShow,
     setProjectId,
     setProjectPlaylistId,
     setProjectPlaylistActivityId,
-   } = props;
+  } = props;
   const organization = useSelector((state) => state.organization);
   const { selectedProject } = useSelector((state) => state.project);
   const { permission } = organization;
@@ -139,19 +140,19 @@ const ResourceCardDropdown = (props) => {
                 <img src={Publish} alt="Preview" className="menue-img" />
                 Publish
               </a>
-              <ul className="dropdown-menu check">
+              <ul className="dropdown-menu check overflow-enhancment">
                 <li
-                    onClick={() => {
-                      handleShow();
-                      getProjectId(match.params.projectId);
-                      setProjectId(match.params.projectId);
-                      setProjectPlaylistId(playlist.id);
-                      setProjectPlaylistActivityId(resource.id);
-                      dispatch(googleShare(false));
-                    }}
-                  >
-                    <a>Google Classroom</a>
-                  </li>
+                  onClick={() => {
+                    handleShow();
+                    getProjectId(match.params.projectId);
+                    setProjectId(match.params.projectId);
+                    setProjectPlaylistId(playlist.id);
+                    setProjectPlaylistActivityId(resource.id);
+                    dispatch(googleShare(false));
+                  }}
+                >
+                  <a>Google Classroom</a>
+                </li>
                 {lmsSettings.map((data) => {
                   return (
                     data.lms_name === 'safarimontage' &&
@@ -222,8 +223,8 @@ const ResourceCardDropdown = (props) => {
                         </span>
                         <br />
 
-                        <div className="close-btn">
-                          <button type="button" onClick={onClose}>
+                        <div className="close-btn flex-center">
+                          <button className="curriki-btn-extra" type="button" onClick={onClose}>
                             Ok
                           </button>
                         </div>

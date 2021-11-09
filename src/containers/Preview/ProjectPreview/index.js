@@ -43,9 +43,7 @@ function ProjectPreview(props) {
     }
   }, [teamPermission, organization?.currentOrganization, currentProject]);
   useEffect(() => {
-    if (playlistState.playlists.length === 0) {
-      dispatch(loadProjectPlaylistsAction(match.params.projectId, true));
-    }
+    dispatch(loadProjectPlaylistsAction(match.params.projectId, true));
   }, []);
 
   // const handleShow = () => {
