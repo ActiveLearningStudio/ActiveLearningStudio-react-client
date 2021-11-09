@@ -44,13 +44,6 @@ const GoogleLoginModal = ({
     } else if (dataRedux.share.googleShare === 'close') {
       onHide();
     }
-  }, [dataRedux, onHide]);
-
-  useEffect(() => {
-    if (dataRedux.share.courses) {
-      setCourses(dataRedux.share.courses);
-      setLoading(false);
-    }
     if ((typeof playlistId == 'undefined') && (typeof activityId == 'undefined')) {
       setShareType('Project');
     }
@@ -59,6 +52,13 @@ const GoogleLoginModal = ({
     }
     else if (playlistId != 0 && activityId == 0) {
       setShareType('Playlist');
+    }
+  }, [dataRedux, onHide]);
+
+  useEffect(() => {
+    if (dataRedux.share.courses) {
+      setCourses(dataRedux.share.courses);
+      setLoading(false);
     }
   }, [dataRedux.share.courses]);
   
