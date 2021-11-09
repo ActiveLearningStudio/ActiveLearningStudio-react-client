@@ -15,16 +15,12 @@ import "./breadcrump.scss";
 
 const Breadcrump = ({ text }) => {
   const { paginations } = useSelector((state) => state.ui);
-  const [breadCrums, setBreadCrums] = useState([]);
-  useEffect(() => {
-    setBreadCrums(paginations);
-  }, [paginations]);
   const dispatch = useDispatch();
   return (
     <div className="utility curriki-Breadcrump">
       {text}
       {paginations &&
-        breadCrums?.map((bread, counter) => (
+        paginations?.map((bread, counter) => (
           <a
             href="#"
             className=""

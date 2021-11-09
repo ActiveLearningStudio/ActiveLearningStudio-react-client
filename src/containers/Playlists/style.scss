@@ -123,6 +123,11 @@
   .main-heading {
     font-size: 32px;
     line-height: 36px;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+    text-decoration: none !important;
+    font-weight: 500;
+    border-bottom: none;
   }
 
   .project-preview {

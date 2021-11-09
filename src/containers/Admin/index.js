@@ -26,6 +26,7 @@ function AdminPanel() {
   const dispatch = useDispatch();
   const [allProjectTab, setAllProjectTab] = useState(null);
   const adminState = useSelector((state) => state.admin);
+  const { paginations } = useSelector((state) => state.ui);
   const organization = useSelector((state) => state.organization);
   const {
     permission,
@@ -49,12 +50,14 @@ function AdminPanel() {
       dispatch(setActiveTab(tab));
     }
   }, []);
-  // useEffect(() => {
-  //   dispatch({
-  //     type: actionTypes.UPDATE_PAGINATION,
-  //     payload: [currentOrganization || []],
-  //   });
-  // }, [currentOrganization]);
+  useEffect(() => {
+    if (paginations?.length <= 1 || !paginations) {
+      dispatch({
+        type: actionTypes.UPDATE_PAGINATION,
+        payload: [currentOrganization || []],
+      });
+    }
+  }, [currentOrganization]);
   return (
     <div className="admin-panel">
       {permission?.Organization?.includes("organization:view") ? (
