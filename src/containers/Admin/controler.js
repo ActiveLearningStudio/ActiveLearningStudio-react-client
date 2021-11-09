@@ -594,7 +594,7 @@ function Controller(props) {
                 response.then((res) => {
                   Swal.fire({
                     icon: "success",
-                    text: res?.message,
+                    html: res?.message,
                   });
                 });
               }

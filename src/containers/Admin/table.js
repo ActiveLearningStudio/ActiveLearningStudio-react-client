@@ -753,7 +753,7 @@ function Table(props) {
                                 // console.log(data)
                                 Swal.fire({
                                   icon: 'success',
-                                  text: data?.message,
+                                  html: data?.message,
                                 });
                               });
                             }}
