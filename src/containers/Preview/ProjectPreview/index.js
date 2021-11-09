@@ -194,10 +194,18 @@ function ProjectPreview(props) {
                     <div className="title_lg check">
                       <div className="configuration">
                         <div className="config-content">
-                          <Link to={`/org/${organization.currentOrganization?.domain}/project/${currentProject?.id}`} className="go-back-button-preview">
+                          <div
+                            onClick={() => {
+                              if (history?.location?.state?.from?.includes('preview')) {
+                                history.push(`/org/${organization.currentOrganization.domain}`)
+                              } else {
+                                history.push(`/org/${organization.currentOrganization?.domain}/project/${currentProject?.id}`)
+                              }
+                            }}
+                            className="go-back-button-preview">
                             {/* <FontAwesomeIcon icon="undo" className="mr-2" /> */}
                             Close preview mode
-                          </Link>
+                          </div>
                         </div>
                         {/* {activeShared && ( */}
                         {permission?.Project?.includes('project:share') && currentProject?.shared && (
@@ -246,8 +254,8 @@ function ProjectPreview(props) {
               deletePlaylist={deletePlaylist}
               // hideDeletePopup={hideDeletePopup}
               deleteProject={deleteProject}
-              // deleteType="project"
-              // showDeletePopup={showDeletePopup}
+            // deleteType="project"
+            // showDeletePopup={showDeletePopup}
             />
           )}
         </>
