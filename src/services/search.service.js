@@ -116,15 +116,15 @@ const getCourses = () => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
   
-const googleClassPublishPlaylist = (projectId, courseId, playlistId, token) => httpService
+const googleClassPublishPlaylist = (projectId, courseId, topicId, playlistId, token) => httpService
   .post(`/${apiVersion}/google-classroom/projects/${projectId}/playlists/${playlistId}/publish`, 
-  { course_id: courseId, access_token: token })
+  { course_id: courseId, topic_id: topicId, access_token: token })
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const googleClassPublishActivity = (projectId, courseId, playlistId, activityId, token) => httpService
+const googleClassPublishActivity = (projectId, courseId, topicId, playlistId, activityId, token) => httpService
   .post(`/${apiVersion}/google-classroom/projects/${projectId}/playlists/${playlistId}/activities/${activityId}/publish`, 
-  { course_id: courseId, topic_id: activityId, access_token: token })
+  { course_id: courseId, topic_id: topicId, access_token: token })
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
