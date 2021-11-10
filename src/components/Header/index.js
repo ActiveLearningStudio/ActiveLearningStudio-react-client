@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -8,20 +8,11 @@ import { SHOW_HELP } from 'store/actionTypes';
 import { logoutAction } from 'store/actions/auth';
 import { Event } from 'trackers/ga';
 
-import vivensity from 'assets/images/vivensity.png';
-import logo from 'assets/images/login_logo.svg';
-import Katylogo from 'assets/images/Katy_logo.png';
-import bu from 'assets/images/bu.png';
-import safari from 'assets/images/safari.png';
-import shepherds from 'assets/images/shepherds.svg';
-import sndt from 'assets/images/SNDT-LOGO-blue.png';
-import nevada from 'assets/images/nevada.png';
-
 import help from 'assets/images/help.svg';
 import edit from 'assets/images/edit1.png';
 import changePassword from 'assets/images/changepassword.png';
 import logoutIcon from 'assets/images/logout.png';
-import openeducation from 'assets/images/openeducation.png';
+
 import HeaderNotification from './notification';
 import SearchForm from './searchForm';
 import MultitenancyDropdown from './multitenancyDropdown';
@@ -35,61 +26,22 @@ function Header(props) {
   const { user } = useSelector((state) => state.auth);
   const { permission } = stateHeader;
   const { currentOrganization } = stateHeader;
-  const [image, setImage] = useState(null);
-  const [defaultLogo, setdefaultLogo] = useState(logo);
-  useEffect(() => {
-    if (currentOrganization?.id === 1) {
-      setImage(null);
-      if (window.location.host.includes('katyisd')) {
-        setdefaultLogo(Katylogo);
-      } else if (window.location.host.includes('baylor')) {
-        setdefaultLogo(bu);
-      } else if (window.location.host.includes('scde')) {
-        setdefaultLogo(safari);
-      } else if (window.location.host.includes('shepherds')) {
-        setdefaultLogo(shepherds);
-      } else if (window.location.host.includes('sndt')) {
-        setdefaultLogo(sndt);
-      } else if (window.location.host.includes('nvdoe')) {
-        setdefaultLogo(nevada);
-      } else if (window.location.host.includes('imsparked')) {
-        setdefaultLogo(vivensity);
-      } else if (window.location.host.includes('open.curriki')) {
-        setdefaultLogo(openeducation);
-      } else {
-        setdefaultLogo(logo);
-      }
-    } else {
-      setImage(currentOrganization?.image);
-    }
-  }, [currentOrganization]);
+
   return (
     <header>
       <div className="top-header flex-div align-items-center">
         <div className="group-search-logo">
           <div className="tophd_left">
             <Link to={`/org/${stateHeader?.currentOrganization?.domain}`} className="top_logo">
-              {image ? (
-                <div
-                  className="nav-logo"
-                  style={{
-                    backgroundImage: `url(${global.config.resourceUrl + image})`,
-                    backgroundPosition: 'left',
-                    backgroundSize: 'contain',
-                    backgroundRepeat: 'no-repeat',
-                  }}
-                />
-              ) : (
-                <div
-                  className="nav-logo"
-                  style={{
-                    backgroundImage: `url(${defaultLogo})`,
-                    backgroundPosition: 'left',
-                    backgroundSize: 'contain',
-                    backgroundRepeat: 'no-repeat',
-                  }}
-                />
-              )}
+              <div
+                className="nav-logo"
+                style={{
+                  backgroundImage: `url(${global.config.resourceUrl + currentOrganization?.image})`,
+                  backgroundPosition: 'left',
+                  backgroundSize: 'contain',
+                  backgroundRepeat: 'no-repeat',
+                }}
+              />
             </Link>
           </div>
         </div>

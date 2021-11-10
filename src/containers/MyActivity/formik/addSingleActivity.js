@@ -1,26 +1,26 @@
 /* eslint-disable */
 import React, { useState, useEffect } from 'react';
-import HeadingText from 'utils/HeadingText/headingtext';
-import HeadingTwo from 'utils/HeadingTwo/headingtwo';
+
+import HeadingOne from 'utils/HeadingTwo/headingtwo';
 import LayoutCard from 'utils/LayoutCard/layoutcard';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import Headings from 'curriki-design-system/dist/utils/Headings/headings';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Dropdown from 'react-bootstrap/Dropdown';
-
+import searchicon from 'assets/images/nteractiveactionssearch.png';
 import Tabs from 'utils/Tabs/tabs';
 import Buttons from 'utils/Buttons/buttons';
-
 import { useHistory } from 'react-router-dom';
 import { getSingleLayoutActivities } from 'store/actions/resource';
 import * as actionTypes from 'store/actionTypes';
 
 const ActivityLayout = (props) => {
   const [allActivitiesSingle, setAllSingleActivities] = useState(null);
-  const { changeScreenHandler, setActiveType, setModalShow, setCurrentActivity, } = props;
+  const { changeScreenHandler, setActiveType, setModalShow, setCurrentActivity } = props;
   const history = useHistory();
   const [layout, setLayout] = useState({ title: 'Interactive Book' });
+  const [filterData, setFilterData] = useState([]);
+
   const dispatch = useDispatch();
   useEffect(() => {
     toast.dismiss();
@@ -35,6 +35,7 @@ const ActivityLayout = (props) => {
     dispatch(getSingleLayoutActivities());
   }, []);
   const allActivity = useSelector((state) => state.myactivities.singleLayout);
+  const allActivitytypes = useSelector((state) => state.resource.types);
   useEffect(() => {
     setLayout(allActivity?.[0] || null);
     setAllSingleActivities(allActivity);
@@ -42,6 +43,13 @@ const ActivityLayout = (props) => {
       toast.dismiss();
     }
   }, [allActivity]);
+  useEffect(() => {
+    const setData = [];
+    allActivitytypes.forEach((data) => {
+      setData.push(data.id);
+    });
+    setFilterData(setData);
+  }, [allActivitytypes]);
   return (
     <div className="activity-layout-form">
       <div className="activity-layout-tabs">
@@ -49,7 +57,7 @@ const ActivityLayout = (props) => {
         <Tabs text="2.Build activity" className="ml-10 " />
       </div>
       <div className="activity-layout-title">
-        <HeadingTwo text="Add an activity" color="#084892" />
+        <HeadingOne text="Add an activity" color="#084892" />
       </div>
       <div className="activity-layout-paragraph">
         <Headings
@@ -62,7 +70,7 @@ const ActivityLayout = (props) => {
         <div className="input-group">
           <input
             type="text"
-            placeholder="Search Activities"
+            placeholder="Search activity"
             onChange={(e) => {
               if (e.target.value == '') {
                 setAllSingleActivities(allActivity);
@@ -71,21 +79,32 @@ const ActivityLayout = (props) => {
               }
             }}
           />
-          <FontAwesomeIcon icon="search" className="search-icon" />
+          <img src={searchicon} className="search-icon" alt="" />
         </div>
-        {/* <div>
-					<Dropdown>
-						<Dropdown.Toggle variant="success" id="dropdown-basic">
-							Dropdown Button
-						</Dropdown.Toggle>
-
-						<Dropdown.Menu>
-							<Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-							<Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-							<Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-						</Dropdown.Menu>
-					</Dropdown>
-				</div> */}
+        <div class="dropdown-activity-select">
+          <div className="dropdown-title">Filter by activity type</div>
+          <div class="dropdown-content-select">
+            {allActivitytypes?.map((data, counter) => {
+              return (
+                <label>
+                  <input
+                    checked={filterData.includes(data.id)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setFilterData([...filterData, data.id]);
+                      } else {
+                        setFilterData(filterData.filter((ids) => ids !== data.id));
+                      }
+                    }}
+                    type="checkbox"
+                    name={counter}
+                  />
+                  {data.title}
+                </label>
+              );
+            })}
+          </div>
+        </div>
 
         {allActivitiesSingle?.length > 10 && <ConfigButtons changeScreenHandler={changeScreenHandler} layout={layout} dispatch={dispatch} />}
       </div>
@@ -93,18 +112,20 @@ const ActivityLayout = (props) => {
         <div className="activity-layout-cards" style={{ width: '100%' }}>
           {allActivitiesSingle?.map((data) => {
             return (
-              <LayoutCard
-                image={data.image}
-                text={data.title}
-                className={layout?.title == data.title ? 'activity-layoutCard-active mr-3 add-card' : 'mr-3 add-card'}
-                onClick={() => setLayout(data)}
-                btnTextOne="Demo"
-                btnTextTwo="Video"
-                setCurrentActivity={setCurrentActivity}
-                setActiveType={setActiveType}
-                setModalShow={setModalShow}
-                activity={data}
-              />
+              filterData.includes(data.activityType.id) && (
+                <LayoutCard
+                  image={data.image}
+                  text={data.title}
+                  className={layout?.title == data.title ? 'activity-layoutCard-active mr-3 add-card' : 'mr-3 add-card'}
+                  onClick={() => setLayout(data)}
+                  btnTextOne="Demo"
+                  btnTextTwo="Video"
+                  setCurrentActivity={setCurrentActivity}
+                  setActiveType={setActiveType}
+                  setModalShow={setModalShow}
+                  activity={data}
+                />
+              )
             );
           })}
         </div>
