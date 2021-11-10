@@ -18,6 +18,7 @@ import ChannelPanel from './Channel';
 
 import './style.scss';
 import { clearOrganizationState, getOrganization, getRoles } from 'store/actions/organization';
+import { loadLmsAction } from 'store/actions/project';
 
 // TODO: need to remove after connect API
 const breadCrumbData = {
@@ -39,13 +40,7 @@ function TeamsPage(props) {
   const dispatch = useDispatch();
   useEffect(() => {
     (async () => {
-      // if (activeOrganization && overview && !creation && !editMode && permission?.Team?.includes('team:view')) {
-      //   // Swal.showLoading();
-      //   await loadTeams();
-      //   // Swal.close();
-      // } else if (!permission?.Team?.includes('team:view')) {
-      //   await loadTeams();
-      // }
+      dispatch(loadLmsAction());
       if (activeOrganization && currentOrganization) {
         if (activeOrganization?.id !== currentOrganization?.id) {
           await loadSubOrgTeams();

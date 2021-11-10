@@ -289,8 +289,10 @@ export const ProjectsPage = (props) => {
     }
   }, [organization.activeOrganization]);
 
-  useMemo(() => {
+  useEffect(() => {
     loadLms();
+  }, []);
+  useMemo(() => {
 
     // scroll to top
     window.scrollTo(0, 0);
