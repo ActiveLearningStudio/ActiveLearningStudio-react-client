@@ -15,10 +15,10 @@ import { shareActivity, removeShareActivity, loadH5pResourceSettings } from 'sto
 import { collapsedSideBar } from 'store/actions/ui';
 import Unauthorized from 'components/Unauthorized';
 import { getTeamPermission } from 'store/actions/team';
+import MyActivity from 'containers/MyActivity';
 import PreviousLink from './components/PreviousLink';
 import NextLink from './components/NextLink';
 import ActivitiesList from './components/ActivitiesList';
-import MyActivity from 'containers/MyActivity';
 import './style.scss';
 
 const H5PPreview = lazy(() => import('../../H5PPreview'));
@@ -162,8 +162,8 @@ function PlaylistPreview(props) {
             />
           </div>
 
-          <div className="close-btn flex-center">
-            <button className="curriki-btn-extra" type="button" onClick={onClose}>
+          <div className="close-btn">
+            <button type="button" onClick={onClose}>
               Ok
             </button>
           </div>
@@ -201,7 +201,8 @@ function PlaylistPreview(props) {
             <Link
               to={
                 projectPreview === 'true'
-                  ? `/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/preview`
+                  ? // eslint-disable-next-line no-restricted-globals
+                    { pathname: `/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/preview`, state: { from: location.pathname } }
                   : `/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}`
               }
             >

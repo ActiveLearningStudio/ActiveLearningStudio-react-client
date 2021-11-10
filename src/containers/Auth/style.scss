@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .auth-page {
   display: flex;
@@ -52,8 +52,8 @@
   }
   .auth-header-logo {
     // position: absolute;
-    width: 151.56px;
-    height: 70px;
+    width: 175.56px;
+
     // left: 8%;
     // top: 8%;
     // transform: translate(-50%, -50%);
@@ -222,7 +222,7 @@
       top: 25.88%;
       bottom: 69.7%;
       font-style: normal;
-      font-family: "Rubic";
+      font-family: 'Rubic';
       font-weight: 500;
       font-size: 36px;
       line-height: 44px;
@@ -234,7 +234,7 @@
       height: 32.73px;
       left: 958.91px;
       top: 665.45px;
-      font-family: "Open Sans", sans-serif;
+      font-family: 'Open Sans', sans-serif;
       font-style: normal;
       font-weight: normal;
       font-size: 12px;
@@ -275,7 +275,7 @@
       line-height: 24px;
       text-align: left;
       color: #515151;
-      font-family: "Open Sans", sans-serif;
+      font-family: 'Open Sans', sans-serif;
       font-style: normal;
       font-weight: normal;
       margin-bottom: 20px;
@@ -298,7 +298,7 @@
       font-size: 16px;
       line-height: 24px;
       color: #515151;
-      font-family: "Open Sans", sans-serif;
+      font-family: 'Open Sans', sans-serif;
       font-style: normal;
       font-weight: normal;
       margin: 12px 0px 32px;
@@ -397,7 +397,7 @@
         height: 32px;
         box-sizing: border-box;
         border-radius: 16px;
-        font-family: "Rubic";
+        font-family: 'Rubic';
         font-size: 14px;
         line-height: 20px;
         text-align: center;
@@ -477,7 +477,7 @@
         font-size: 14px;
         line-height: 20px;
         color: #515151;
-        font-family: "Rubic";
+        font-family: 'Rubic';
       }
     }
 
@@ -564,7 +564,7 @@
         border-radius: 3px;
       }
 
-      [type="checkbox"]:checked + span {
+      [type='checkbox']:checked + span {
         position: relative;
         display: inline-block;
         width: 18px;
@@ -578,7 +578,7 @@
           height: 8px;
           width: 3px;
           background-color: #fff;
-          content: "";
+          content: '';
           transform: translateX(5px) rotate(-45deg);
           transform-origin: left bottom;
         }
@@ -590,7 +590,7 @@
           height: 3px;
           width: 12px;
           background-color: #fff;
-          content: "";
+          content: '';
           transform: translateX(5px) rotate(-45deg);
           transform-origin: left bottom;
         }
@@ -618,7 +618,7 @@
         background: #084892;
         border: 1px solid #084892;
         box-sizing: border-box;
-        font-family: "Rubic";
+        font-family: 'Rubic';
         border-radius: 16px;
         font-weight: 400;
         font-size: 14px;
@@ -661,7 +661,7 @@
       p {
         font-size: 16px;
         color: #000;
-        font-family: "$halvetica", sans-serif;
+        font-family: '$halvetica', sans-serif;
         font-weight: 400;
 
         a {

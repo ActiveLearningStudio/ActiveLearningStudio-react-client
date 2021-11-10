@@ -28,14 +28,14 @@ export const copyProject = async (projectId, courseId, token) => {
   }
 };
 
-export const publishPlaylist = async (projectId, courseId, playlistId, token) => {
+export const publishPlaylist = async (projectId, courseId, topicId, playlistId, token) => {
   Swal.fire({
     title: 'Publishing....',
     showCancelButton: false,
     showConfirmButton: false,
     allowOutsideClick: false,
   });
-  const result = await searchService.googleClassPublishPlaylist(projectId, courseId, playlistId, token);
+  const result = await searchService.googleClassPublishPlaylist(projectId, courseId, topicId, playlistId, token);
   if (result.course) {
     Swal.fire({
       icon: 'success',
@@ -53,14 +53,14 @@ export const publishPlaylist = async (projectId, courseId, playlistId, token) =>
   }
 };
 
-export const publistActivity = async (projectId, courseId, playlistId, activityId, token) => {
+export const publistActivity = async (projectId, courseId, topicId, playlistId, activityId, token) => {
   Swal.fire({
     title: 'Publishing....',
     showCancelButton: false,
     showConfirmButton: false,
     allowOutsideClick: false,
   });
-  const result = await searchService.googleClassPublishActivity(projectId, courseId, playlistId, activityId, token);
+  const result = await searchService.googleClassPublishActivity(projectId, courseId, topicId, playlistId, activityId, token);
   if (result.course) {
     Swal.fire({
       icon: 'success',
