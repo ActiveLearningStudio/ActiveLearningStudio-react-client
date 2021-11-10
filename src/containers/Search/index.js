@@ -112,7 +112,7 @@ function SearchInterface(props) {
     setActiveType([]);
     // eslint-disable-next-line no-restricted-globals
     const query = QueryString.parse(location.search);
-    console.log(query);
+    // console.log(query);
     if (query.type) {
       if (query.type === 'private') {
         setSearchType('private');
@@ -163,6 +163,7 @@ function SearchInterface(props) {
       let dataSend;
       if (searchType === 'orgSearch') {
         dataSend = {
+          phrase: searchInput.trim(),
           subjectArray: activeSubject,
           gradeArray: activeEducation,
           standardArray: activeType,
@@ -344,7 +345,7 @@ function SearchInterface(props) {
                               <Card.Body>
                                 <div className="body-search">
                                   <input
-                                    style={{ display: searchType === 'orgSearch' ? 'none' : 'block' }}
+                                    // style={{ display: searchType === 'orgSearch' ? 'none' : 'block' }}
                                     value={searchInput}
                                     onChange={(e) => {
                                       setSearchInput(e.target.value);
@@ -367,6 +368,7 @@ function SearchInterface(props) {
                                           let dataSend;
                                           if (searchType === 'orgSearch') {
                                             dataSend = {
+                                              phrase: searchInput.trim(),
                                               subjectArray: activeSubject,
                                               gradeArray: activeEducation,
                                               authors: authorName || undefined,
@@ -510,6 +512,7 @@ function SearchInterface(props) {
                                         let dataSend;
                                         if (searchType === 'orgSearch') {
                                           dataSend = {
+                                            phrase: searchInput.trim(),
                                             subjectArray: activeSubject,
                                             gradeArray: activeEducation,
                                             standardArray: activeType,
@@ -723,6 +726,7 @@ function SearchInterface(props) {
                               let searchData;
                               if (searchType === 'orgSearch') {
                                 searchData = {
+                                  phrase: searchQueries.trim() || searchInput,
                                   from: 0,
                                   size: 20,
                                   type: searchType,
@@ -763,6 +767,7 @@ function SearchInterface(props) {
                               let searchData;
                               if (searchType === 'orgSearch') {
                                 searchData = {
+                                  phrase: searchQueries.trim() || searchInput,
                                   from: 0,
                                   size: 20,
                                   author: authorName || undefined,
