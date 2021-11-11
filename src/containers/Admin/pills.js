@@ -227,7 +227,9 @@ export default function Pills(props) {
       }
     } else if (subTypeRecieved === 'Activity Items') {
       if (query) {
-        await dispatch(getActivityItems(query, ''));
+        const encodeQuery = encodeURI(searchQueryActivities);
+        console.log(encodeQuery);
+        await dispatch(getActivityItems(encodeQuery, ''));
       } else if (query === '') {
         await dispatch(getActivityItems());
       }
