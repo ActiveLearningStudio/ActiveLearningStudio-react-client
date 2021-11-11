@@ -334,11 +334,11 @@ export const SSOLoginAction = (data) => async (dispatch) => {
 
     dispatch({
       type: actionTypes.ADD_ACTIVE_ORG,
-      payload: response.user.user_organization,
+      payload: typeof response.user.user_organization !== 'undefined' ? response.user.user_organization : 'currikistudio',
       });
     dispatch({
       type: actionTypes.ADD_CURRENT_ORG,
-      payload: response.user.user_organization,
+      payload: typeof response.user.user_organization !== 'undefined' ? response.user.user_organization : 'currikistudio',
       });
 
     dispatch({
