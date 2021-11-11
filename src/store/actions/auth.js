@@ -328,8 +328,9 @@ export const handleSsoLoginAction = (params) => async (dispatch) => {
 export const SSOLoginAction = (data) => async (dispatch) => {
   try {
     const response = await authService.loginSSO(data);
+    const userOrganization = typeof response.user.user_organization !== 'undefined' ? response.user.user_organization.domain : 'currikistudio';
     storageService.setItem(USER_TOKEN_KEY, response.access_token);
-    storageService.setItem(CURRENT_ORG, response.user.user_organization.domain);
+    storageService.setItem(CURRENT_ORG, userOrganization);
 
     dispatch({
       type: actionTypes.ADD_ACTIVE_ORG,
