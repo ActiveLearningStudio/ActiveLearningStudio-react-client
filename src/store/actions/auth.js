@@ -337,17 +337,17 @@ export const handleSsoLoginAction = (params) => async (dispatch) => {
 export const SSOLoginAction = (data) => async (dispatch) => {
   try {
     const response = await authService.loginSSO(data);
-    const userOrganization = typeof response.user.user_organization.domain !== 'undefined' ? response.user.user_organization.domain : 'currikistudio';
+    const userOrganization = typeof response.user.user_organization !== 'undefined' ? response.user.user_organization.domain : 'currikistudio';
     storageService.setItem(USER_TOKEN_KEY, response.access_token);
     storageService.setItem(CURRENT_ORG, userOrganization);
 
     dispatch({
       type: actionTypes.ADD_ACTIVE_ORG,
-      payload: response.user.user_organization,
+      payload: typeof response.user.user_organization !== 'undefined' ? response.user.user_organization : 'currikistudio',
     });
     dispatch({
       type: actionTypes.ADD_CURRENT_ORG,
-      payload: response.user.user_organization,
+      payload: typeof response.user.user_organization !== 'undefined' ? response.user.user_organization : 'currikistudio',
     });
 
     dispatch({
