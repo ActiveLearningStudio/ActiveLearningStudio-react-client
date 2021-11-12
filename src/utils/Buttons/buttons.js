@@ -17,10 +17,12 @@ const Buttons = ({
   icon,
   width,
   height,
+  paddingLeft,
+  paddingRight,
   radius,
   disabled,
   hover,
-  onClick = () => {},
+  onClick = () => { },
 }) => {
   const btnCurriki = classNames(
     "curriki-utility",
@@ -35,6 +37,8 @@ const Buttons = ({
   const btnCurrikiStyle = {
     height: height ? height : null,
     width: width ? width : null,
+    paddingLeft: paddingLeft ? paddingLeft : null,
+    paddingRight: paddingRight ? paddingRight : null,
     borderRadius: radius ? radius : null,
   };
 

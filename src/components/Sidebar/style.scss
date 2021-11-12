@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 aside {
   // Toggle CSS styles
@@ -99,7 +99,8 @@ aside {
           margin-top: 20px;
           margin-bottom: 50px;
           padding: 5px 10px 5px 35px;
-          background: #fafafa url(../../assets/images/add-member-icon.png) no-repeat 10px 9px;
+          background: #fafafa url(../../assets/images/add-member-icon.png)
+            no-repeat 10px 9px;
           border: 1px solid #bfbfbf;
           border-radius: 2px;
           color: #607a9b;
@@ -128,7 +129,8 @@ aside {
   }
 
   .recent-resource-icon {
-    background: url(../../assets/images/recent-resource-icon.png) no-repeat 0 7px;
+    background: url(../../assets/images/recent-resource-icon.png) no-repeat 0
+      7px;
   }
 }
 
@@ -192,7 +194,7 @@ aside {
       }
 
       a::before {
-        content: '-';
+        content: "-";
         color: #084892;
         padding-right: 5px;
         margin: 0px;
@@ -233,8 +235,8 @@ aside {
     align-items: center;
     flex-direction: column;
     // padding: 12px 52px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 16px;
+    padding-bottom: 16px;
     // justify-content:flex-end;
     border-top: 1px solid #e8e8e8;
 
