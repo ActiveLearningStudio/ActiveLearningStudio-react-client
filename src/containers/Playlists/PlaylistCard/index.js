@@ -47,14 +47,12 @@ class PlaylistCard extends React.Component {
     const { playlist, organization, teamPermission, handleShow, setProjectId, setProjectPlaylistId, setProjectPlaylistActivityId } = this.props;
 
     if (!playlist.activities || playlist.activities.length === 0) {
-      return <div className="alert alert-info m-3">No resource yet.</div>;
+      return <div className="alert alert-info">No resource yet.</div>;
     }
 
     return playlist.activities.map(
       (resource, index) =>
-        (Object.keys(teamPermission).length
-          ? teamPermission?.Team?.includes("team:view-activity")
-          : organization?.permission?.Activity?.includes("activity:view")) && (
+        (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-activity') : organization?.permission?.Activity?.includes('activity:view')) && (
           <ResourceCard
             {...this.props}
             resource={resource}
@@ -124,16 +122,7 @@ class PlaylistCard extends React.Component {
 
   render() {
     const { editMode } = this.state;
-    const {
-      index,
-      playlist,
-      projectId,
-      organization,
-      teamPermission,
-      handleShow,
-      setProjectId,
-      setProjectPlaylistId,
-    } = this.props;
+    const { index, playlist, projectId, organization, teamPermission, handleShow, setProjectId, setProjectPlaylistId } = this.props;
     const { permission } = organization;
     return (
       <Draggable key={playlist.id} draggableId={`${playlist.id}`} index={index}>

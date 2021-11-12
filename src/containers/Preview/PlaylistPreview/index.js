@@ -162,8 +162,8 @@ function PlaylistPreview(props) {
             />
           </div>
 
-          <div className="close-btn">
-            <button type="button" onClick={onClose}>
+          <div className="close-btn flex-center">
+            <button type="button" className="curriki-btn-extra" onClick={onClose}>
               Ok
             </button>
           </div>

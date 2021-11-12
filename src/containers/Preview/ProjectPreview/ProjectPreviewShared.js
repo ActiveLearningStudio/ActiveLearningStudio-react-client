@@ -1,26 +1,20 @@
 /*eslint-disable */
-import React, { useEffect, useState, useRef } from "react";
-import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
-import { connect, useSelector } from "react-redux";
-import Slider from "react-slick";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Alert } from "react-bootstrap";
+import React, { useEffect, useState, useRef } from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import { connect, useSelector } from 'react-redux';
+import Slider from 'react-slick';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Alert } from 'react-bootstrap';
 
-import { loadMyProjectsPreviewSharedAction } from "store/actions/project";
-import ActivityCard from "components/ActivityCard";
-import Unauthorized from "components/Unauthorized";
+import { loadMyProjectsPreviewSharedAction } from 'store/actions/project';
+import ActivityCard from 'components/ActivityCard';
+import Unauthorized from 'components/Unauthorized';
 
-import "./style.scss";
+import './style.scss';
 
 function ProjectPreviewShared(props) {
-  const {
-    match,
-    sampleId,
-    loadMyProjectsPreviewShared,
-    setModalShow,
-    setCurrentActivity,
-  } = props;
+  const { match, sampleId, loadMyProjectsPreviewShared, setModalShow, setCurrentActivity } = props;
 
   const project = useSelector((state) => state.project);
   const accordion = useRef([]);
@@ -44,57 +38,15 @@ function ProjectPreviewShared(props) {
   const settings = {
     dots: false,
     arrows: true,
-    infinite: false,
+    infinite: true,
     speed: 500,
-    slidesToShow: 5.5,
+
     slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: false,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1.5,
-          slidesToScroll: 1,
-        },
-      },
-    ],
+    variableWidth: true,
   };
 
-  // useEffect(() => {
-  //   try {
-  //     const acc = document.getElementById('custom_accordion');
-  //     const accordions = acc ? acc.getElementsByClassName('accordion') : [];
-  //
-  //     for (let i = 0; i < accordions.length; i += 1) {
-  //       accordions[i].addEventListener('click', function () {
-  //         // eslint-disable-next-line react/no-this-in-sfc
-  //         this.classList.toggle('active');
-  //       });
-  //     }
-  //   } catch (e) {
-  //     throw e
-  //   }
-  // }, []);
-
-
   useEffect(() => {
-    localStorage.setItem("lti_activity", true);
+    localStorage.setItem('lti_activity', true);
   }, []);
 
   let playlists;
@@ -134,9 +86,9 @@ function ProjectPreviewShared(props) {
               ref={(el) => {
                 accordion.current[counter] = el;
               }}
-              className={counter === 0 ? "active accordion" : " accordion"}
+              className={counter === 0 ? 'active accordion' : ' accordion'}
               onClick={() => {
-                accordion.current[counter].classList.toggle("active");
+                accordion.current[counter].classList.toggle('active');
               }}
             >
               <FontAwesomeIcon icon="plus" />
@@ -163,7 +115,7 @@ function ProjectPreviewShared(props) {
 
   return (
     <div className="full-width-share">
-      {currentProject && currentProject.status === "error" ? (
+      {currentProject && currentProject.status === 'error' ? (
         <Unauthorized text="Project is not Public" />
       ) : (
         <>
@@ -172,16 +124,10 @@ function ProjectPreviewShared(props) {
               <div className="container">
                 <div className="scene flex-wrap shared-preview-custom">
                   <div className="scene-img">
-                    {!!currentProject.thumb_url &&
-                      currentProject.thumb_url.includes("pexels.com") ? (
+                    {!!currentProject.thumb_url && currentProject.thumb_url.includes('pexels.com') ? (
                       <img src={currentProject.thumb_url} alt="thumbnail" />
                     ) : (
-                      <img
-                        src={
-                          global.config.resourceUrl + currentProject.thumb_url
-                        }
-                        alt="thumbnail"
-                      />
+                      <img src={global.config.resourceUrl + currentProject.thumb_url} alt="thumbnail" />
                     )}
                   </div>
                   <div className="sce_cont shared-preview-custom-cont">
@@ -213,14 +159,11 @@ function ProjectPreviewShared(props) {
               </div>
             </div>
           ) : project.isSharedProject === false ? (
-            <Alert
-              variant="danger"
-              style={{ margin: "40px", fontSize: "1.5em" }}
-            >
+            <Alert variant="danger" style={{ margin: '40px', fontSize: '1.5em' }}>
               Project is not sharable.
             </Alert>
           ) : (
-            <Alert variant="primary" style={{ margin: "20px" }}>
+            <Alert variant="primary" style={{ margin: '20px' }}>
               Loading ...
             </Alert>
           )}
@@ -243,10 +186,7 @@ ProjectPreviewShared.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  loadMyProjectsPreviewShared: (projectId) =>
-    dispatch(loadMyProjectsPreviewSharedAction(projectId)),
+  loadMyProjectsPreviewShared: (projectId) => dispatch(loadMyProjectsPreviewSharedAction(projectId)),
 });
 
-export default (
-  withRouter(connect(null, mapDispatchToProps)(ProjectPreviewShared))
-);
+export default withRouter(connect(null, mapDispatchToProps)(ProjectPreviewShared));
