@@ -69,6 +69,7 @@ const ResourceCard = (props) => {
                     activity: result.activity,
                   });
                 }}
+                title={resource.metadata && resource.metadata.title !== undefined ? resource.metadata.title : resource.title}
               >
                 {resource.metadata && resource.metadata.title !== undefined ? resource.metadata.title : resource.title}
               </Link>
