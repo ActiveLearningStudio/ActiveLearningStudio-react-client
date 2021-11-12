@@ -23,6 +23,7 @@ import { Alert } from 'react-bootstrap';
 import { forgetSpecificFailedJob, retrySpecificFailedJob, setActiveAdminForm, setActiveTab, setCurrentProject, setCurrentUser } from 'store/actions/admin';
 import { deleteActivityItem, deleteActivityType, getActivityItems, loadResourceTypesAction, selectActivityItem, selectActivityType } from 'store/actions/resource';
 import { headShake } from 'react-animations';
+import AdminDropdown from './adminDropdown';
 
 function Table(props) {
   const {
@@ -425,40 +426,52 @@ function Table(props) {
               (allSuborgList ? (
                 allSuborgList.length > 0 ? (
                   allSuborgList?.map((row) => (
-                    <tr key={row} className="org-rows">
+                    <tr key={row} className="admin-panel-rows">
                       <td>
-                        <img src={global.config.resourceUrl + row.image} alt="" />
-                      </td>
-                      <td>
-                        <Link
-                          to="#"
-                          onClick={async () => {
-                            Swal.fire({
-                              title: 'Please Wait !',
-                              html: 'Updating View ...',
-                              allowOutsideClick: false,
-                              onBeforeOpen: () => {
-                                Swal.showLoading();
-                              },
-                            });
-                            if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
-                            Swal.close();
-                            dispatch({
-                              type: actionTypes.UPDATE_PAGINATION,
-                              payload: [...paginations, row],
-                            });
-                            if (row.projects_count > 0) {
+                        <div className="admin-name-img">
+                          <div
+                            style={{
+                              backgroundImage: `url(${global.config.resourceUrl + row.image})`,
+                              backgroundPosition: 'center',
+                              backgroundRepeat: 'no-repeat',
+                              backgroundSize: 'cover',
+                            }}
+                            className="admin-img"
+                          >
+                            {/* <img src={global.config.resourceUrl + row.image} alt="" /> */}
+                          </div>
+
+                          <Link
+                            className="admin-name"
+                            to="#"
+                            onClick={async () => {
+                              Swal.fire({
+                                title: 'Please Wait !',
+                                html: 'Updating View ...',
+                                allowOutsideClick: false,
+                                onBeforeOpen: () => {
+                                  Swal.showLoading();
+                                },
+                              });
                               if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
-                              dispatch(clearOrganizationState());
-                              dispatch(getRoles());
-                              // dispatch(setActiveTab('Project'));
-                              // dispatch(clearOrganizationState());
-                              // dispatch(getRoles());
-                            }
-                          }}
-                        >
-                          {row.name}
-                        </Link>
+                              Swal.close();
+                              dispatch({
+                                type: actionTypes.UPDATE_PAGINATION,
+                                payload: [...paginations, row],
+                              });
+                              if (row.projects_count > 0) {
+                                if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
+                                dispatch(clearOrganizationState());
+                                dispatch(getRoles());
+                                // dispatch(setActiveTab('Project'));
+                                // dispatch(clearOrganizationState());
+                                // dispatch(getRoles());
+                              }
+                            }}
+                          >
+                            {row.name}
+                          </Link>
+                        </div>
                       </td>
                       <td>{row.domain}</td>
                       <td>
@@ -578,24 +591,29 @@ function Table(props) {
                     ) : 'N/A'}
                   </td> */}
                       <td>
-                        {row.teams_count > 0 ? (
-                          <Link
-                            to={`/org/${allState?.organization?.currentOrganization?.domain}/teams`}
-                            className="view-all"
-                            onClick={async () => {
-                              if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
-                              dispatch(clearOrganizationState());
-                              dispatch(getRoles());
-                            }}
-                          >
-                            {row.teams_count}
-                          </Link>
-                        ) : (
-                          'N/A'
-                        )}
+                        <div className="admin-panel-dropdown">
+                          {row.teams_count > 0 ? (
+                            <Link
+                              to={`/org/${allState?.organization?.currentOrganization?.domain}/teams`}
+                              className="view-all"
+                              onClick={async () => {
+                                if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
+                                dispatch(clearOrganizationState());
+                                dispatch(getRoles());
+                              }}
+                            >
+                              {row.teams_count}
+                            </Link>
+                          ) : (
+                            'N/A'
+                          )}
+                          <div>
+                            <AdminDropdown />
+                          </div>
+                        </div>
                       </td>
 
-                      <td>
+                      {/* <td>
                         <div className="links">
                           {permission?.Organization.includes('organization:edit') && (
                             <Link
@@ -675,8 +693,8 @@ function Table(props) {
                               &nbsp;&nbsp; Delete &nbsp;&nbsp;
                             </Link>
                           )}
-                        </div>
-                      </td>
+                        </div> 
+                      </td> */}
                     </tr>
                   ))
                 ) : (
@@ -701,24 +719,29 @@ function Table(props) {
                     const createNew = new Date(row.created_at);
                     const updateNew = new Date(row.updated_at);
                     return (
-                      <tr className="org-rows">
+                      <tr className="admin-panel-rows">
                         <td>
-                          <div
-                            style={{
-                              backgroundImage: row.thumb_url.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
-                              backgroundSize: 'cover',
-                              height: '100px',
-                              backgroundPosition: 'center',
-                              width: '100px',
-                            }}
-                          ></div>
-                        </td>
-                        <td>
-                          <Link to={`/org/${organization?.currentOrganization?.domain}/project/${row.id}/preview`}>{row.name}</Link>
+                          <div className="admin-name-img">
+                            <div
+                              style={{
+                                backgroundImage: row.thumb_url.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                                backgroundSize: 'cover',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundPosition: 'center',
+                              }}
+                              className="admin-img"
+                            ></div>
+
+                            <Link className="admin-name" to={`/org/${organization?.currentOrganization?.domain}/project/${row.id}/preview`}>
+                              {row.name}
+                            </Link>
+                          </div>
                         </td>
                         <td>{createNew.toDateString()}</td>
 
-                        <td>{row.description}</td>
+                        <td>
+                          <div className="admin-description">{row.description}</div>
+                        </td>
 
                         <td>{row.id}</td>
                         <td>{row.users?.[0]?.email}</td>
@@ -735,9 +758,16 @@ function Table(props) {
                           )}
                         </td>
                         {/* <td>{String(row.starter_project)}</td> */}
-                        <td>{row.status_text}</td>
-                        <td>{updateNew.toDateString()}</td>
+                        {/* <td>{row.status_text}</td> */}
                         <td>
+                          <div className="admin-panel-dropdown">
+                            {updateNew.toDateString()}
+                            <div>
+                              <AdminDropdown />
+                            </div>
+                          </div>
+                        </td>
+                        {/* <td>
                           <Link
                             onClick={() => {
                               Swal.fire({
@@ -806,7 +836,7 @@ function Table(props) {
                           >
                             &nbsp;&nbsp;Delete&nbsp;&nbsp;
                           </Link>
-                        </td>
+                        </td> */}
                       </tr>
                     );
                   })
@@ -866,22 +896,23 @@ function Table(props) {
                     const createNew = new Date(row.created_at);
                     const updateNew = new Date(row.updated_at);
                     return (
-                      <tr className="org-rows">
+                      <tr className="admin-panel-rows">
                         <td>
-                          <div
-                            style={{
-                              backgroundImage: row.thumb_url.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
-                              backgroundSize: 'cover',
-                              height: '100px',
-                              backgroundPosition: 'center',
-                              width: '100px',
-                            }}
-                          ></div>
-                        </td>
-                        <td>
-                          <Link target="_blank" to={`/org/${organization?.currentOrganization?.domain}/project/${row.id}/preview`}>
-                            {row.name}
-                          </Link>
+                          <div className="admin-name-img">
+                            <div
+                              style={{
+                                backgroundImage: row.thumb_url.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                                backgroundPosition: 'center',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundSize: 'cover',
+                              }}
+                              className="admin-img"
+                            ></div>
+
+                            <Link className="admin-name" target="_blank" to={`/org/${organization?.currentOrganization?.domain}/project/${row.id}/preview`}>
+                              {row.name}
+                            </Link>
+                          </div>
                         </td>
                         <td>{createNew.toDateString()}</td>
 
@@ -1060,11 +1091,16 @@ function Table(props) {
                     </td>
                     <td>{type.order}</td>
                     <td>
-                      {type.activityItems.map((item) => (
-                        <div>{item.title}</div>
-                      ))}
+                      <div className="admin-panel-dropdown">
+                        {type.activityItems.map((item) => (
+                          <div>{item.title}</div>
+                        ))}
+                        <div>
+                          <AdminDropdown />
+                        </div>
+                      </div>
                     </td>
-                    <td>
+                    {/* <td>
                       <div className="links">
                         <Link
                           onClick={() => {
@@ -1109,7 +1145,7 @@ function Table(props) {
                           Delete
                         </Link>
                       </div>
-                    </td>
+                    </td> */}
                   </tr>
                 ))
               ) : (
