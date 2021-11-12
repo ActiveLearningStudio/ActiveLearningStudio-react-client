@@ -10,12 +10,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import UploadImg from '../../assets/images/upload1.png';
 
-const UploadFile = ({
-  className, formRef,
-}) => {
-  const { selectedLayout, playlist, project } = useSelector(
-    (state) => state.myactivities,
-  );
+const UploadFile = ({ className, formRef }) => {
+  const { selectedLayout, playlist, project } = useSelector((state) => state.myactivities);
   console.log('formRef', formRef);
   const imgUpload = useRef();
   const dispatch = useDispatch();
@@ -37,14 +33,7 @@ const UploadFile = ({
       h5pFile,
     };
     console.log(formRef.current.values, 'upload file');
-    dispatch(createResourceByH5PUploadAction(
-      playlist.id,
-      selectedLayout?.h5pLib,
-      'h5p',
-      payload,
-      formRef.current.values,
-      project,
-    ));
+    dispatch(createResourceByH5PUploadAction(playlist.id, selectedLayout?.h5pLib, 'h5p', payload, formRef.current.values, project));
   };
   return (
     <>
@@ -81,13 +70,13 @@ const UploadFile = ({
                 padding: '125px 41px 0px 41px',
                 border: '3px dashed #ddd',
               }}
+              onClick={(e) => {
+                e.target.value = '';
+              }}
             />
             <div className="upload-holder">
               <img src={UploadImg} alt="upload" className="mr-2" />
-              <p>
-                Drag & Drop File or click
-                to upload
-              </p>
+              <p>Drag & Drop File or click to upload</p>
             </div>
           </div>
         </div>
