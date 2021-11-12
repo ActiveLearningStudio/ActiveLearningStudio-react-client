@@ -134,10 +134,17 @@ const getItems = (activityTypeId) =>
     .catch((err) => Promise.reject(err.response.data));
 
 const getActivityItems = (query, page) =>
-  httpService.get(`${apiVersion}/get-activity-items${query ? `?query=${encodeURI(query.replace(/#/, '%23'))}` : ''}${page ? `?page=${page}` : ''}`).catch((err) => {
-    errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
-  });
+
+  httpService
+    .get(
+      `${apiVersion}/get-activity-items${query ? `?query=${query.replace(/#/, '%23')}` : ""
+      }${page ? `?page=${page}` : ""}`
+    )
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
 
 const createActivityItem = (body) =>
   httpService

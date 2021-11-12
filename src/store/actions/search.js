@@ -51,7 +51,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
   if (values.standardArray && values.standardArray.length > 0) {
     if (values.type === 'orgSearch') {
       sendData = {
-        query: values.phrase,
+        query: values.phrase || undefined,
         h5pLibraries: values.standardArray,
         from: values.from,
         size: values.size,
@@ -86,7 +86,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
     // eslint-disable-next-line no-lonely-if
     if (values.type === 'orgSearch') {
       sendData = {
-        query: values.phrase,
+        query: values.phrase || undefined,
         h5pLibraries: values.standardArray,
         from: values.from,
         size: values.size,
