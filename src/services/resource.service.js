@@ -136,8 +136,7 @@ const getItems = (activityTypeId) =>
 const getActivityItems = (query, page) =>
   httpService
     .get(
-      `${apiVersion}/get-activity-items${
-        query ? `?query=${encodeURI(query.replace(/#/, "%23"))}` : ""
+      `${apiVersion}/get-activity-items${query ? `?query=${query.replace(/#/, '%23')}` : ""
       }${page ? `?page=${page}` : ""}`
     )
     .catch((err) => {
