@@ -341,20 +341,20 @@ export const SSOLoginAction = (data) => async (dispatch) => {
     storageService.setItem(USER_TOKEN_KEY, response.access_token);
     storageService.setItem(CURRENT_ORG, userOrganization);
 
-    dispatch({
-      type: actionTypes.ADD_ACTIVE_ORG,
-      payload: typeof response.user.user_organization !== 'undefined' ? response.user.user_organization : 'currikistudio',
-    });
-    dispatch({
-      type: actionTypes.ADD_CURRENT_ORG,
-      payload: typeof response.user.user_organization !== 'undefined' ? response.user.user_organization : 'currikistudio',
-    });
-
+    const allOrganizations = await dispatch(getAllOrganizationforSSO());
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
       payload: { user: response.user },
     });
-    await dispatch(getAllOrganizationforSSO());
+    dispatch({
+      type: actionTypes.ADD_ACTIVE_ORG,
+      payload: typeof response.user.user_organization !== 'undefined' ? response.user.user_organization : allOrganizations?.data[0],
+    });
+    dispatch({
+      type: actionTypes.ADD_CURRENT_ORG,
+      payload: typeof response.user.user_organization !== 'undefined' ? response.user.user_organization : allOrganizations?.data[0],
+    });
+
     console.log('SSOLoginAction success');
   } catch (e) {
     console.log('SSOLoginAction failed');
