@@ -186,7 +186,7 @@ class PlaylistCard extends React.Component {
                     }}
                   >
                     <img src={UploadLogo} alt="logo" className="mr-2" />
-                    Create or upload activty
+                    Create or upload activity
                   </button>
                 </div>
               )}
