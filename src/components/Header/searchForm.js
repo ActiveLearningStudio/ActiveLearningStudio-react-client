@@ -220,9 +220,9 @@ function SearchForm() {
 
                 <div
                   className="form-group"
-                  style={{
-                    display: values.type === 'orgSearch' ? 'none' : 'block',
-                  }}
+                // style={{
+                //   display: values.type === 'orgSearch' ? 'none' : 'block',
+                // }}
                 >
                   <input name="phrase" placeholder="Enter search phrase" onChange={handleChange} onBlur={handleBlur} value={values.phrase} />
                   <div className="error">{errors.phrase && touched.phrase && errors.phrase}</div>

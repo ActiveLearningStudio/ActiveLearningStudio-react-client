@@ -1,7 +1,7 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 .inner-content {
   background: $white;
-  padding: 30px;
+  padding: 32px 30px 30px;
   margin-top: 0px;
   // margin: 13px 39px 81px 29px;
   border-radius: 3px;
@@ -120,14 +120,25 @@
     }
   }
 
+  .main-heading {
+    font-size: 32px;
+    line-height: 36px;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+    text-decoration: none !important;
+    font-weight: 500;
+    border-bottom: none;
+  }
+
   .project-preview {
   }
 }
 .paragraph {
   display: flex;
-  margin: 10px 20px 20px 0px;
+  margin: 8px 20px 16px 0px;
   padding: 0 14px 0 0;
   align-items: center;
+  max-width: 800px;
   textarea {
     flex: auto;
   }
@@ -145,12 +156,15 @@
     border-radius: 5px;
   }
   p {
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 14px;
     line-height: 20px;
     color: #515151;
   }
 }
+// .hr-line{
+//   margin: 16px 0 24px;
+// }
 .new-playlister {
   padding-top: 0px;
   margin-bottom: 16px;
@@ -166,8 +180,38 @@
     box-shadow: 0px 2px 6px 1px rgba(81, 81, 81, 0.16);
     font-size: 14px;
     color: #084892 !important;
+    padding: 16px 12px;
   }
 }
+.dropdown {
+  .dropdown {
+    .dropdown-menu.show {
+      padding: 8px;
+      .dropdown-item {
+        color: #084892 !important;
+        padding: 4px;
+        margin-bottom: 4px;
+
+        :hover {
+          background: rgba(229, 238, 255, 0.32);
+          border-radius: 4px;
+        }
+      }
+    }
+  }
+  .show > .btn-primary.dropdown-toggle {
+    background-color: transparent !important;
+    color: #084892 !important;
+    border-color: #084892 !important;
+  }
+  .dropdown-toggle::after {
+    background-image: url('../../assets/images/navigation - down.svg') !important;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+
 .react-switch-bg {
   // background: #ffca70 !important;
   height: 18px !important;
@@ -340,7 +384,7 @@ hr {
       .project-image-playlistpage {
         width: 50px;
         height: 50px;
-        border-radius: 5px;
+        border-radius: 2px;
         margin-right: 10px;
         position: relative;
       }

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
@@ -5,7 +6,7 @@ import { Helmet } from 'react-helmet';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import TinCan from 'tincanjs';
-// import { Alert } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
 import gifloader from 'assets/images/dotsloader.gif';
 import { loadH5pResourceSettingsShared, loadH5pResourceSettingsEmbed, loadH5pResourceXapi } from 'store/actions/resource';
 import * as xAPIHelper from 'helpers/xapi';
@@ -26,29 +27,26 @@ const ActivityShared = (props) => {
   const dispatch = useDispatch();
 
   const h5pInsertion = async (data) => {
-    window.H5PIntegration = data.h5p.settings;
+    if (!data) return;
+    window.H5PIntegration = data?.h5p.settings;
     const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
-    h5pWrapper.innerHTML = data.h5p.embed_code.trim();
-    const newCss = data.h5p.settings.core.styles.concat(
-      data.h5p.settings.loadedCss,
-    );
+    h5pWrapper.innerHTML = data?.h5p.embed_code.trim();
+    const newCss = data?.h5p.settings.core.styles.concat(data?.h5p.settings.loadedCss);
 
     await Promise.all(
-      newCss.map((value) => {
+      newCss?.map((value) => {
         const link = document.createElement('link');
         link.href = value;
         link.type = 'text/css';
         link.rel = 'stylesheet';
         document.head.appendChild(link);
         return true;
-      }),
+      })
     );
 
-    const newScripts = data.h5p.settings.core.scripts.concat(
-      data.h5p.settings.loadedJs,
-    );
+    const newScripts = data?.h5p.settings.core.scripts.concat(data.h5p.settings.loadedJs);
 
-    newScripts.forEach((value) => {
+    newScripts?.forEach((value) => {
       const script = document.createElement('script');
       script.src = value;
       script.async = false;
@@ -84,7 +82,11 @@ const ActivityShared = (props) => {
       } else {
         loadH5pResourceSettingsShared(match.params.activityId)
           .then(async (data) => {
-            h5pInsertion(data);
+            if (data) {
+              h5pInsertion(data);
+            } else {
+              setAuthorized(true);
+            }
           })
           .catch(() => {
             setAuthorized(true);
@@ -101,11 +103,7 @@ const ActivityShared = (props) => {
 
               x.H5P.externalDispatcher.on('xAPI', (event) => {
                 if (counter > 0) {
-                  const extendedStatement = xAPIHelper.extendSharedActivityStatement(
-                    this,
-                    event.data.statement,
-                    { path: match.path, activityId: match.params.activityId },
-                  );
+                  const extendedStatement = xAPIHelper.extendSharedActivityStatement(this, event.data.statement, { path: match.path, activityId: match.params.activityId });
                   dispatch(loadH5pResourceXapi(JSON.stringify(extendedStatement)));
 
                   if (lrs) {
@@ -130,27 +128,24 @@ const ActivityShared = (props) => {
                         object: extendedStatement.object,
                       });
 
-                      lrs.saveStatement(
-                        doceboStatement,
-                        {
-                          callback: (err, xhr) => {
-                              if (err !== null) {
-                                  if (xhr !== null) {
-                                      console.log(`Failed to save statement: ${xhr.responseText} (${xhr.status})`);
-                                      // TODO: do something with error, didn't save statement
-                                      return;
-                                  }
+                      lrs.saveStatement(doceboStatement, {
+                        callback: (err, xhr) => {
+                          if (err !== null) {
+                            if (xhr !== null) {
+                              console.log(`Failed to save statement: ${xhr.responseText} (${xhr.status})`);
+                              // TODO: do something with error, didn't save statement
+                              return;
+                            }
 
-                                  console.log(`Failed to save statement: ${err}`);
-                                  // TODO: do something with error, didn't save statement
-                                  return;
-                              }
+                            console.log(`Failed to save statement: ${err}`);
+                            // TODO: do something with error, didn't save statement
+                            return;
+                          }
 
-                              console.log('Statement saved');
-                              // TOOO: do something with success (possibly ignore)
-                          },
+                          console.log('Statement saved');
+                          // TOOO: do something with success (possibly ignore)
                         },
-                      );
+                      });
                     }
                   }
                 }
@@ -158,9 +153,7 @@ const ActivityShared = (props) => {
               });
             }
           }
-        } catch (e) {
-          console.log(e);
-        }
+        } catch (e) {}
       });
 
       const stopXapi = () => clearInterval(checkXapi);
@@ -169,43 +162,13 @@ const ActivityShared = (props) => {
 
   return (
     <>
-      <section className={embed ? 'embed main-page-content preview iframe-height-resource-shared defaultcontainer'
-      : 'main-page-content preview iframe-height-resource-shared defaultcontainer'}
-      >
-        {!!embed && (
-          <Helmet>
-            <script src="https://dev.currikistudio.org/api/storage/h5p/h5p-core/js/h5p-resizer.js" charset="UTF-8" />
-          </Helmet>
-        )}
-
-        <div className="flex-container previews">
-          <div className="activity-bg left-vdo">
-            <div className="main-item-wrapper desktop-view">
-              <div className="item-container">
-                {authorized ? (
-                  <div id="curriki-h5p-wrapper">
-                    <div className="loader_gif" style={{ color: 'black' }}>
-                      Activity is not sharable
-                    </div>
-                  </div>
-                ) : (
-                  <div id="curriki-h5p-wrapper">
-                    <div className="loader_gif">
-                      <img style={{ width: '50px' }} src={gifloader} alt="" />
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+      {authorized ? (
+        <Alert variant="danger"> Activity not found.</Alert>
+      ) : (
+        <div id="curriki-h5p-wrapper">
+          <Alert variant="primary"> Loading Activity</Alert>
         </div>
-      </section>
-      {/* {(orientation >= 90)
-      && (
-      <div className="coverallareas">
-        <Alert variant="warning">Please use Portrait mode!</Alert>
-      </div>
-      )} */}
+      )}
     </>
   );
 };

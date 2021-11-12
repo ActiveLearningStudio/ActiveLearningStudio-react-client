@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .playlist-resource-bg {
   border: none !important;
@@ -119,4 +119,10 @@
 .safari-modal iframe {
   height: 80vh;
   width: 100%;
+}
+
+.resource-card-wrapper .title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

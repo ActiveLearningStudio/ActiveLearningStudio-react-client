@@ -19,6 +19,9 @@ import SharePreviewPopup from 'components/SharePreviewPopup';
 import { lmsPlaylist } from 'store/actions/playlist';
 import { getProjectId } from 'store/actions/gapi';
 import { useLocation } from 'react-router-dom';
+import Preview from '../../assets/images/menu-pre.svg';
+import Publish from '../../assets/images/menu-publish.svg';
+import Duplicate from '../../assets/images/menu-dupli.svg';
 
 const SampleProjectCard = (props) => {
   const {
@@ -147,7 +150,7 @@ const SampleProjectCard = (props) => {
                                 }
                               }}
                             >
-                              <FontAwesomeIcon icon="eye" className="mr-2" />
+                              <img src={Preview} alt="Preview" className="menue-img" />
                               Preview
                             </Dropdown.Item>
                             {permission?.Project?.includes('project:share')
@@ -185,10 +188,7 @@ const SampleProjectCard = (props) => {
                               && type === 'team' && (
                                 <li className="dropdown-submenu send">
                                   <a tabIndex="-1">
-                                    <FontAwesomeIcon
-                                      icon="newspaper"
-                                      className="mr-2"
-                                    />
+                                    <img src={Publish} alt="Preview" className="menue-img" />
                                     Publish
                                   </a>
                                   <ul className="dropdown-menu check">
@@ -239,7 +239,7 @@ const SampleProjectCard = (props) => {
                                 cloneProject(project.id);
                               }}
                             >
-                              <FontAwesomeIcon icon="clone" className="mr-2" />
+                              <img src={Duplicate} alt="Preview" className="menue-img" />
                               Duplicate
                             </Dropdown.Item>
 

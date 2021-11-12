@@ -1,9 +1,9 @@
 /* eslint-disable */
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2';
 
-import config from "config";
-import httpService from "./http.service";
-import { errorCatcher } from "./errors";
+import config from 'config';
+import httpService from './http.service';
+import { errorCatcher } from './errors';
 
 const { apiVersion } = config;
 
@@ -63,7 +63,7 @@ const upload = (formData, conf) =>
       `/${apiVersion}/activities/upload-thumb`,
       formData,
       {
-        "Content-Type": "multipart/form-data",
+        'Content-Type': 'multipart/form-data',
       },
       conf
     )
@@ -76,7 +76,7 @@ const upload = (formData, conf) =>
 const uploadActivityTypeThumb = (formData) =>
   httpService
     .post(`/${apiVersion}/activity-types/upload-thumb`, formData, {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     })
     .then(({ data }) => data)
     .catch((err) => {
@@ -87,7 +87,7 @@ const uploadActivityTypeThumb = (formData) =>
 const uploadActivityItemThumb = (formData) =>
   httpService
     .post(`/${apiVersion}/activity-items/upload-thumb`, formData, {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     })
     .then(({ data }) => data)
     .catch((err) => {
@@ -134,16 +134,17 @@ const getItems = (activityTypeId) =>
     .catch((err) => Promise.reject(err.response.data));
 
 const getActivityItems = (query, page) =>
+
   httpService
     .get(
-      `${apiVersion}/get-activity-items${
-        query ? `?query=${encodeURI(query.replace(/#/, "%23"))}` : ""
+      `${apiVersion}/get-activity-items${query ? `?query=${query.replace(/#/, '%23')}` : ""
       }${page ? `?page=${page}` : ""}`
     )
     .catch((err) => {
       errorCatcher(err.response.data);
       Promise.reject(err.response.data);
     });
+
 
 const createActivityItem = (body) =>
   httpService
@@ -191,10 +192,7 @@ const h5pResource = (activityId) =>
 
 const h5pSettingsUpdate = (activityId, dataUpload, playlistId) =>
   httpService
-    .put(
-      `/${apiVersion}/playlists/${playlistId}/activities/${activityId}`,
-      dataUpload
-    )
+    .put(`/${apiVersion}/playlists/${playlistId}/activities/${activityId}`, dataUpload)
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
@@ -204,11 +202,9 @@ const h5pResourceSettings = (activityId) =>
     .then(({ data }) => data)
     .catch((err) => {
       Swal.fire({
-        title: "Error",
-        icon: "error",
-        html:
-          err.message ||
-          "Something went wrong! We are unable to load activity.",
+        title: 'Error',
+        icon: 'error',
+        html: err.message || 'Something went wrong! We are unable to load activity.',
       });
       Promise.reject(err.response.data);
     });
@@ -225,13 +221,6 @@ const h5pResourceSettingsShared = (activityId) =>
     .get(`/${apiVersion}/activities/${activityId}/h5p-resource-settings-shared`)
     .then(({ data }) => data)
     .catch((err) => {
-      Swal.fire({
-        title: "Error",
-        icon: "error",
-        html:
-          err.message ||
-          "Something went wrong! We are unable to load activity.",
-      });
       Promise.reject(err.response.data);
     });
 
@@ -241,11 +230,9 @@ const h5pResourceSettingsEmbed = (activityId) =>
     .then(({ data }) => data)
     .catch((err) => {
       Swal.fire({
-        title: "Error",
-        icon: "error",
-        html:
-          err.message ||
-          "Something went wrong! We are unable to load activity.",
+        title: 'Error',
+        icon: 'error',
+        html: err.message || 'Something went wrong! We are unable to load activity.',
       });
       Promise.reject(err.response.data);
     });

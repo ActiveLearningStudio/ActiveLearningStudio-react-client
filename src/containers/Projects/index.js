@@ -105,21 +105,21 @@ export const ProjectsPage = (props) => {
 
   useMemo(() => {
     if (!searchTeamQuery) {
-      if (organization?.activeOrganization) {
+      if (organization?.currentOrganization) {
         getTeamProjects('', activePage).then((data) => {
           setTeamProjects(data.data);
           setMeta(data.meta);
         });
       }
-    } else if (searchTeamQuery && organization?.activeOrganization) {
+    } else if (searchTeamQuery && organization?.currentOrganization) {
       getTeamProjects(searchTeamQuery, activePage).then((data) => {
         setTeamProjects(data.data);
         setMeta(data.meta);
       });
     }
-  }, [getTeamProjects, organization?.activeOrganization, activePage]);
+  }, [getTeamProjects, organization?.currentOrganization, activePage]);
   useEffect(() => {
-    if (!searchTeamQuery) {
+    if (!searchTeamQuery && organization?.currentOrganization) {
       getTeamProjects('', activePage).then((data) => {
         setTeamProjects(data.data);
         setMeta(data.meta);
@@ -127,16 +127,16 @@ export const ProjectsPage = (props) => {
     }
   }, [searchTeamQuery]);
   useEffect(() => {
-    if (organization.activeOrganization) {
+    if (organization?.currentOrganization) {
       sampleProjectsData();
     }
-  }, [sampleProjectsData, organization.activeOrganization]);
+  }, [sampleProjectsData, organization?.currentOrganization]);
 
   useEffect(() => {
-    if (organization.activeOrganization) {
+    if (organization?.currentOrganization) {
       loadMyFavProjectsActionData();
     }
-  }, [loadMyFavProjectsActionData, organization.activeOrganization]);
+  }, [loadMyFavProjectsActionData, organization?.currentOrganization]);
 
   useEffect(() => {
     // if (allState.sidebar.updateProject.length > 0) {
@@ -289,8 +289,10 @@ export const ProjectsPage = (props) => {
     }
   }, [organization.activeOrganization]);
 
-  useMemo(() => {
+  useEffect(() => {
     loadLms();
+  }, []);
+  useMemo(() => {
 
     // scroll to top
     window.scrollTo(0, 0);
@@ -305,9 +307,11 @@ export const ProjectsPage = (props) => {
         autoClose: 10000,
         icon: ImgLoader,
       });
-      loadMyProjects();
+      if (organization?.currentOrganization) {
+        loadMyProjects();
+      }
     }
-  }, [organization.activeOrganization]);
+  }, [organization?.currentOrganization]);
 
   useEffect(() => {
     if (allProjects) {
@@ -588,17 +592,19 @@ export const ProjectsPage = (props) => {
 
                   <div className="pagination-top-team">
                     <div className="pagination_state">
-                      <Pagination
-                        activePage={activePage}
-                        pageRangeDisplayed={5}
-                        itemsCountPerPage={Number(meta?.per_page)}
-                        totalItemsCount={Number(meta?.total)}
-                        onChange={(e) => {
-                          // setCurrentTab("index");
-                          window.scrollTo(0, 0);
-                          setActivePage(e);
-                        }}
-                      />
+                      {showSampleSort && teamProjects.length > 0 && (
+                        <Pagination
+                          activePage={activePage}
+                          pageRangeDisplayed={5}
+                          itemsCountPerPage={Number(meta?.per_page)}
+                          totalItemsCount={Number(meta?.total)}
+                          onChange={(e) => {
+                            // setCurrentTab("index");
+                            window.scrollTo(0, 0);
+                            setActivePage(e);
+                          }}
+                        />
+                      )}
                     </div>
                   </div>
                 </Tab>

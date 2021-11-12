@@ -30,13 +30,13 @@ const PreviewLayout = (props) => {
         </Link>
       </div> */}
       <div className="preview-layout-tabs">
-        <Tabs text="1. Select a layout" tabActive={true} />
+        <Tabs text="1. Select an activity" tabActive={true} />
         <Tabs
           text="2. Add activities to Layout"
           className="ml-10 mt-10"
           tabActive={true}
         />
-        <Tabs text="3. Preview Layout" className="ml-10" tabActive={true} />
+        <Tabs text="3. Preview Activity" className="ml-10" tabActive={true} />
       </div>
       <div className="preview-layout-title-select">
         <div className="preview-layout-title">

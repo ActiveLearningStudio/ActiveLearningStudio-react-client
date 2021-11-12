@@ -16,7 +16,7 @@ import { useHistory } from 'react-router-dom';
 import { getLayoutActivities } from 'store/actions/resource';
 import * as actionTypes from 'store/actionTypes';
 import loader from 'assets/images/loader.svg';
-import * as Taber from 'react-bootstrap'
+import * as Taber from 'react-bootstrap';
 import H5PPreview from '../../H5PPreview';
 
 const ImgLoader = () => <img style={{ width: '100px' }} src={loader} />;
@@ -26,6 +26,7 @@ const ActivityLayout = (props) => {
   const [layout, setLayout] = useState({ title: 'Interactive Book' });
   const dispatch = useDispatch();
   const [activeRadio, setActiveRadio] = useState('create');
+  const [key, setKey] = useState('layout');
 
   useMemo(() => {
     toast.info('Loading Activities ...', {
@@ -48,8 +49,8 @@ const ActivityLayout = (props) => {
   return (
     <div className="activity-layout-form">
       <div className="activity-layout-tabs">
-        <Tabs text="1. Select a layout" tabActive />
-        <Tabs text="2.Layout description + activities" className="ml-10 " />
+        <Tabs text="1. Select an activity" tabActive />
+        <Tabs text="2.Activity description + activities" className="ml-10 " />
         {/* mt-10 */}
         {/* <Tabs text="3. Preview Layout" className="ml-10" /> */}
       </div>
@@ -115,7 +116,22 @@ const ActivityLayout = (props) => {
         </div>
         {!!layout && (
           <div className="layout-process-btn">
-            <Taber.Tabs defaultActiveKey="layout" id="uncontrolled-tab-example">
+            <Taber.Tabs
+              defaultActiveKey="layout"
+              activeKey={key}
+              onSelect={(k) => {
+                setKey(k);
+
+                if (k === 'demo') {
+                  let tempStorage = layout;
+                  setLayout();
+                  setTimeout(() => {
+                    setLayout(tempStorage);
+                  }, 300);
+                }
+              }}
+              id="controlled-tab-example"
+            >
               <Taber.Tab eventKey="layout" title={layout.title}>
                 <div className="activity-layout-process-box">
                   <iframe
@@ -132,18 +148,12 @@ const ActivityLayout = (props) => {
                 <HeadingText text={layout.description} color="#515151" />
               </Taber.Tab>
               <Taber.Tab eventKey="demo" title="Demo">
-
-                {layout.demo_activity_id ?
-                  <H5PPreview
-                    activityId={layout.demo_activity_id.trim()}
-                    tokenrequire={false}
-                    showltipreview
-                  />
-                  : <Taber.Alert variant="warning">Demo is not Available.</Taber.Alert>
-                }
-
+                {layout.demo_activity_id ? (
+                  <H5PPreview activityId={layout.demo_activity_id.trim()} tokenrequire={false} showltipreview />
+                ) : (
+                  <Taber.Alert variant="warning">Demo is not Available.</Taber.Alert>
+                )}
               </Taber.Tab>
-
             </Taber.Tabs>
             <div className="activity-layout-btns">
               <Buttons text="Cancel" secondary={true} width="153px" height="36px" onClick={() => changeScreenHandler('')} hover={true} />

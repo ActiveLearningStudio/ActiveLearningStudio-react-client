@@ -26,6 +26,7 @@ function AdminPanel() {
   const dispatch = useDispatch();
   const [allProjectTab, setAllProjectTab] = useState(null);
   const adminState = useSelector((state) => state.admin);
+  const { paginations } = useSelector((state) => state.ui);
   const organization = useSelector((state) => state.organization);
   const {
     permission,
@@ -42,7 +43,7 @@ function AdminPanel() {
       dispatch(getRoles());
     }
   }, [activeOrganization]);
-  useEffect(() => {}, [activeTab]);
+  useEffect(() => { }, [activeTab]);
   useEffect(() => {
     const tab = localStorage.getItem("activeTab");
     if (tab) {
@@ -50,10 +51,12 @@ function AdminPanel() {
     }
   }, []);
   useEffect(() => {
-    dispatch({
-      type: actionTypes.UPDATE_PAGINATION,
-      payload: [currentOrganization || []],
-    });
+    if (paginations?.length <= 1 || !paginations) {
+      dispatch({
+        type: actionTypes.UPDATE_PAGINATION,
+        payload: [currentOrganization || []],
+      });
+    }
   }, [currentOrganization]);
   return (
     <div className="admin-panel">
@@ -118,26 +121,26 @@ function AdminPanel() {
                 {permission?.Organization?.includes(
                   "organization:view-user"
                 ) && (
-                  <Tab eventKey="Users" title="Users">
-                    <div className="module-content">
-                      <Pills
-                        modules={[
-                          "All Users",
-                          permission?.Organization?.includes(
-                            "organization:add-role"
-                          ) ||
-                          permission?.Organization?.includes(
-                            "organization:edit-role"
-                          )
-                            ? "Manage Roles"
-                            : null,
-                        ]}
-                        type="Users"
-                        subType="All Users"
-                      />
-                    </div>
-                  </Tab>
-                )}
+                    <Tab eventKey="Users" title="Users">
+                      <div className="module-content">
+                        <Pills
+                          modules={[
+                            "All Users",
+                            permission?.Organization?.includes(
+                              "organization:add-role"
+                            ) ||
+                              permission?.Organization?.includes(
+                                "organization:edit-role"
+                              )
+                              ? "Manage Roles"
+                              : null,
+                          ]}
+                          type="Users"
+                          subType="All Users"
+                        />
+                      </div>
+                    </Tab>
+                  )}
                 <Tab eventKey="LMS" title="Integrations">
                   <div className="module-content">
                     <Pills modules={["All Settings"]} type="LMS" />
@@ -152,56 +155,56 @@ function AdminPanel() {
                 {permission?.Organization?.includes(
                   "organization:view-default-sso"
                 ) && (
-                  <Tab eventKey="DefaultSso" title="Default SSO Integrations">
-                    <div className="module-content">
-                      <Pills
-                        modules={["All Default SSO Settings"]}
-                        type="DefaultSso"
-                      />
-                    </div>
-                  </Tab>
-                )}
+                    <Tab eventKey="DefaultSso" title="Default SSO Integrations">
+                      <div className="module-content">
+                        <Pills
+                          modules={["All Default SSO Settings"]}
+                          type="DefaultSso"
+                        />
+                      </div>
+                    </Tab>
+                  )}
               </Tabs>
             </div>
           </div>
           {(activeForm === "add_activity_type" ||
             activeForm === "edit_activity_type") && (
-            <div className="form-new-popup-admin">
-              <FontAwesomeIcon
-                icon="times"
-                className="cross-all-pop"
-                onClick={() => {
-                  dispatch(removeActiveAdminForm());
-                }}
-              />
-              <div className="inner-form-content">
-                {activeForm === "add_activity_type" ? (
-                  <CreateActivityType />
-                ) : (
-                  <CreateActivityType editMode />
-                )}
+              <div className="form-new-popup-admin">
+                <FontAwesomeIcon
+                  icon="times"
+                  className="cross-all-pop"
+                  onClick={() => {
+                    dispatch(removeActiveAdminForm());
+                  }}
+                />
+                <div className="inner-form-content">
+                  {activeForm === "add_activity_type" ? (
+                    <CreateActivityType />
+                  ) : (
+                    <CreateActivityType editMode />
+                  )}
+                </div>
               </div>
-            </div>
-          )}
+            )}
           {(activeForm === "add_activity_item" ||
             activeForm === "edit_activity_item") && (
-            <div className="form-new-popup-admin">
-              <FontAwesomeIcon
-                icon="times"
-                className="cross-all-pop"
-                onClick={() => {
-                  dispatch(removeActiveAdminForm());
-                }}
-              />
-              <div className="inner-form-content">
-                {activeForm === "add_activity_item" ? (
-                  <CreateActivityItem />
-                ) : (
-                  <CreateActivityItem editMode />
-                )}
+              <div className="form-new-popup-admin">
+                <FontAwesomeIcon
+                  icon="times"
+                  className="cross-all-pop"
+                  onClick={() => {
+                    dispatch(removeActiveAdminForm());
+                  }}
+                />
+                <div className="inner-form-content">
+                  {activeForm === "add_activity_item" ? (
+                    <CreateActivityItem />
+                  ) : (
+                    <CreateActivityItem editMode />
+                  )}
+                </div>
               </div>
-            </div>
-          )}
+            )}
           {(activeForm === "add_org" || activeForm === "edit_org") && (
             <div className="form-new-popup-admin">
               <FontAwesomeIcon
