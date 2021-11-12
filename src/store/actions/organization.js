@@ -70,6 +70,8 @@ export const getAllOrganizationforSSO = () => async (dispatch) => {
     type: actionTypes.ALL_ROLES,
     payload: rolesResult?.data,
   });
+
+  return result;
 };
 
 export const clearOrganizationState = () => (dispatch) => {
