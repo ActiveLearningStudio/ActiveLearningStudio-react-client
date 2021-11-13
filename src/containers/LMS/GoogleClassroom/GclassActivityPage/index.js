@@ -6,6 +6,7 @@ import { GoogleLogin } from 'react-google-login';
 import { Alert } from 'react-bootstrap';
 
 import logo from 'assets/images/logo.svg';
+import logoSparked from 'assets/images/logo_sparked_black.png';
 import {
   setStudentAuthAction,
   refreshStudentAuthTokenAction,
@@ -30,6 +31,10 @@ function GclassActivityPage(props) {
   const [authorized, setAuthorized] = useState(null);
   const [isTeacher, setIsTeacher] = useState(null);
   const [activeCourse, setActiveCourse] = useState(null);
+
+  let displayLogo = logo;
+  if (window.location.host.includes('imsparked')) displayLogo = logoSparked;
+
   // Gets student courses
   useEffect(() => {
     if (student === null) return;
@@ -90,7 +95,7 @@ function GclassActivityPage(props) {
                     <div className="container">
                       <div className="row">
                         <div className="col text-center">
-                          <img className="curriki-logo" src={logo} alt="" />
+                          <img className="curriki-logo" src={displayLogo} alt="" />
                         </div>
                       </div>
 
