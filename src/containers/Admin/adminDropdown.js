@@ -1,8 +1,12 @@
+/*eslint-disable*/
 // import React, { useState, useEffect } from 'react';
-import React from 'react';
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-import { Dropdown } from 'react-bootstrap';
+import React from "react";
+import PropTypes from "prop-types";
+import { Dropdown } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import adminService from "services/admin.service";
+import projectService from "services/project.service";
 // import { toast } from 'react-toastify';
 // import { getProjectId, googleShare } from 'store/actions/gapi';
 // import { cloneProject } from 'store/actions/search';
@@ -10,24 +14,49 @@ import { Dropdown } from 'react-bootstrap';
 //   getProjectCourseFromLMS,
 // } from 'store/actions/project';
 // import { lmsPlaylist } from 'store/actions/playlist';
-import './style.scss';
+import "./style.scss";
 // import loader from 'assets/images/loader.svg';
-import Delete from '../../assets/images/menu-dele.svg';
-import Edit from '../../assets/images/menu-edit.svg';
-import MenuLogo from '../../assets/images/menu-logo.svg';
+import Delete from "../../assets/images/menu-dele.svg";
+import Edit from "../../assets/images/menu-edit.svg";
+import MenuLogo from "../../assets/images/menu-logo.svg";
+import {
+  forgetSpecificFailedJob,
+  retrySpecificFailedJob,
+  setActiveAdminForm,
+  setActiveTab,
+  setCurrentProject,
+  setCurrentUser,
+} from "store/actions/admin";
+
+import {
+  deleteUserFromOrganization,
+  deleteOrganization,
+  getOrganization,
+  clearOrganizationState,
+  removeUserFromOrganization,
+  getRoles,
+  updatePageNumber,
+} from "store/actions/organization";
+import * as actionTypes from "store/actionTypes";
 
 const AdminDropdown = (props) => {
   const {
     project,
     showDeletePopup,
     teamPermission,
+    type,
+    user,
+    row,
     // text,
     // iconColor,
   } = props;
+  // console.log("Type:" + type);
   // const ImgLoader = () => <img src={loader} alt="loader" />;
   const organization = useSelector((state) => state.organization);
-  const { permission } = organization;
-  // const dispatch = useDispatch();
+  const { activeOrganization, allSuborgList, permission } = organization;
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+  const { paginations } = useSelector((state) => state.ui);
   // const AllLms = useSelector((state) => state.share);
   // const [allLms, setAllLms] = useState([]);
   // useEffect(() => {
@@ -50,16 +79,367 @@ const AdminDropdown = (props) => {
       </Dropdown.Toggle>
 
       <Dropdown.Menu className="menu">
-        <Dropdown.Item>
+        {type === "Organization" && (
+          <>
+            {" "}
+            {permission?.Organization.includes("organization:edit") && (
+              <Dropdown.Item
+                onClick={() => {
+                  dispatch(setActiveAdminForm("edit_org"));
+                  dispatch({
+                    type: "SET_ACTIVE_EDIT",
+                    payload: row,
+                  });
+                }}
+              >
+                <img src={Edit} alt="Preview" className="menue-img" />
+                Edit
+              </Dropdown.Item>
+            )}
+            {permission?.Organization.includes("organization:edit") && (
+              <>
+                <Dropdown.Item
+                  onClick={async () => {
+                    Swal.fire({
+                      title: "Please Wait !",
+                      html: "Updating View ...",
+                      allowOutsideClick: false,
+                      onBeforeOpen: () => {
+                        Swal.showLoading();
+                      },
+                    });
+                    if (permission?.Organization?.includes("organization:view"))
+                      await dispatch(getOrganization(row.id));
+                    Swal.close();
+                    dispatch({
+                      type: actionTypes.UPDATE_PAGINATION,
+                      payload: [...paginations, row],
+                    });
+                    if (row.projects_count > 0) {
+                      if (
+                        permission?.Organization?.includes("organization:view")
+                      )
+                        await dispatch(getOrganization(row.id));
+                      dispatch(clearOrganizationState());
+                      dispatch(getRoles());
+                    }
+                  }}
+                >
+                  <img src={Edit} alt="Preview" className="menue-img" />
+                  Manage
+                </Dropdown.Item>
+              </>
+            )}
+            {permission?.Organization.includes("organization:delete") && (
+              <>
+                <Dropdown.Item
+                  to="#"
+                  onClick={() => {
+                    Swal.fire({
+                      title: "Are you sure?",
+                      text: "You won't be able to revert this!",
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonColor: "#084892",
+                      cancelButtonColor: "#d33",
+                      confirmButtonText: "Yes, delete it!",
+                    }).then(async (result) => {
+                      if (result.isConfirmed) {
+                        Swal.showLoading();
+                        const resultDel = await dispatch(
+                          deleteOrganization(row)
+                        );
+                        if (resultDel) {
+                          Swal.fire({
+                            text:
+                              "You have successfully deleted the organization",
+                            icon: "success",
+                            showCancelButton: false,
+                            confirmButtonColor: "#084892",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "OK",
+                          });
+                        }
+                      }
+                    });
+                  }}
+                >
+                  <img src={Delete} alt="Preview" className="menue-img" />
+                  Delete
+                </Dropdown.Item>
+              </>
+            )}
+            {/* {(teamPermission && Object.keys(teamPermission).length
+              ? teamPermission?.Team?.includes("team:remove-project")
+              : permission?.Project?.includes("project:delete")) && (
+              <Dropdown.Item
+                to="#"
+                onClick={() =>
+                  showDeletePopup(project.id, project.name, "Project")
+                }
+              >
+                <img src={Delete} alt="Preview" className="menue-img" />
+                Delete
+              </Dropdown.Item>
+            )} */}
+          </>
+        )}
+        {type === "Project" && (
+          <>
+            {" "}
+            <Dropdown.Item
+              onClick={() => {
+                Swal.fire({
+                  title: "Please Wait !",
+                  html: "Exporting  Project ...",
+                  allowOutsideClick: false,
+                  onBeforeOpen: () => {
+                    Swal.showLoading();
+                  },
+                });
+                const result = adminService.exportProject(
+                  activeOrganization.id,
+                  row.id
+                );
+                result.then((data) => {
+                  // console.log(data)
+                  Swal.fire({
+                    icon: "success",
+                    html: data?.message,
+                  });
+                });
+              }}
+            >
+              <img src={Edit} alt="Preview" className="menue-img" />
+              Export
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => {
+                dispatch(setActiveAdminForm("edit_project"));
+                dispatch(setCurrentProject(row));
+              }}
+            >
+              <img src={Edit} alt="Preview" className="menue-img" />
+              Edit
+            </Dropdown.Item>
+            <Dropdown.Item
+              to="#"
+              onClick={() => {
+                Swal.fire({
+                  title: "Are you sure you want to delete this Project?",
+                  text: "This action is Irreversible",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#084892",
+                  cancelButtonColor: "#d33",
+                  confirmButtonText: "Yes, delete it!",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    Swal.fire({
+                      icon: "info",
+                      text: "Deleting Project...",
+                      allowOutsideClick: false,
+                      onBeforeOpen: () => {
+                        Swal.showLoading();
+                      },
+                      button: false,
+                    });
+                    const response = projectService.remove(
+                      row.id,
+                      activeOrganization.id
+                    );
+                    response
+                      .then((res) => {
+                        Swal.fire({
+                          icon: "success",
+                          text: res?.message,
+                        });
+                        const filterProject = localStateData.filter(
+                          (each) => each.id != row.id
+                        );
+                        setLocalStateData(filterProject);
+                      })
+                      .catch((err) => console.log(err));
+                  }
+                });
+              }}
+            >
+              <img src={Delete} alt="Preview" className="menue-img" />
+              Delete
+            </Dropdown.Item>
+          </>
+        )}
+        {type === "Activities" && (
+          <>
+            {" "}
+            <Dropdown.Item
+              onClick={() => {
+                dispatch(selectActivityType(type));
+                dispatch(setActiveAdminForm("edit_activity_type"));
+              }}
+            >
+              <img src={Edit} alt="Preview" className="menue-img" />
+              Edit
+            </Dropdown.Item>
+            <Dropdown.Item
+              to="#"
+              onClick={() => {
+                Swal.fire({
+                  title: "Are you sure?",
+                  text: "You won't be able to revert this!",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#084892",
+                  cancelButtonColor: "#d33",
+                  confirmButtonText: "Yes, delete it!",
+                }).then(async (result) => {
+                  if (result.isConfirmed) {
+                    Swal.showLoading();
+                    const resultDel = await dispatch(
+                      deleteActivityType(type.id)
+                    );
+                    if (resultDel) {
+                      Swal.fire({
+                        text: "You have successfully deleted the activity type",
+                        icon: "success",
+                        showCancelButton: false,
+                        confirmButtonColor: "#084892",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "OK",
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          dispatch(loadResourceTypesAction("", 1));
+                        }
+                      });
+                    }
+                  }
+                });
+              }}
+            >
+              <img src={Delete} alt="Preview" className="menue-img" />
+              Delete
+            </Dropdown.Item>
+          </>
+        )}
+        {type === "Users" && (
+          <>
+            {" "}
+            {permission?.Organization.includes("organization:update-user") && (
+              <Dropdown.Item
+                onClick={() => {
+                  dispatch(setCurrentUser(user));
+                  dispatch(setActiveAdminForm("edit_user"));
+                }}
+              >
+                <img src={Edit} alt="Preview" className="menue-img" />
+                Edit
+              </Dropdown.Item>
+            )}
+            {permission?.Organization.includes("organization:remove-user") &&
+              auth?.user?.id !== user.id && (
+                <Dropdown.Item onClick={() => handleRemoveUser(user)}>
+                  <img src={Edit} alt="Preview" className="menue-img" />
+                  Remove
+                </Dropdown.Item>
+              )}
+            {permission?.Organization.includes("organization:delete-user") &&
+              auth?.user?.id !== user.id && (
+                <Dropdown.Item to="#" onClick={() => handleDeleteUser(user)}>
+                  <img src={Delete} alt="Preview" className="menue-img" />
+                  Delete
+                </Dropdown.Item>
+              )}
+          </>
+        )}
+        {/* {type === "Users"} */}
+
+        {type === "DefaultSso" && (
+          <>
+            {permission?.Organization.includes(
+              "organization:update-default-sso"
+            ) && (
+              <Dropdown.Item
+                onClick={() => {
+                  dispatch({
+                    type: "SET_ACTIVE_EDIT",
+                    payload: row,
+                  });
+                  dispatch(setActiveAdminForm("edit_default_sso"));
+                }}
+              >
+                <img src={Edit} alt="Preview" className="menue-img" />
+                Edit
+              </Dropdown.Item>
+            )}
+            {permission?.Organization.includes(
+              "organization:delete-default-sso"
+            ) && (
+              <>
+                <Dropdown.Item
+                  onClick={() => {
+                    Swal.fire({
+                      title:
+                        "Are you sure you want to delete this SSO Integration?",
+                      text: "This action is Irreversible",
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonColor: "#084892",
+                      cancelButtonColor: "#d33",
+                      confirmButtonText: "Yes, delete it!",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        Swal.fire({
+                          title: "Default SSO Integration",
+                          icon: "info",
+                          text: "Deleting Default SSO Integration...",
+                          allowOutsideClick: false,
+                          onBeforeOpen: () => {
+                            Swal.showLoading();
+                          },
+                          button: false,
+                        });
+                        const response = adminService.deleteDefaultSso(
+                          activeOrganization?.id,
+                          row?.id
+                        );
+                        response
+                          .then((res) => {
+                            Swal.fire({
+                              icon: "success",
+                              text: res?.message,
+                            });
+                            const filterLMS = localStateData.filter(
+                              (each) => each.id != row.id
+                            );
+                            setLocalStateData(filterLMS);
+                          })
+                          .catch((err) => console.log(err));
+                      }
+                    });
+                  }}
+                >
+                  <img src={Edit} alt="Preview" className="menue-img" />
+                  Delete
+                </Dropdown.Item>
+              </>
+            )}
+          </>
+        )}
+        {/* <Dropdown.Item>
           <img src={Edit} alt="Preview" className="menue-img" />
           Edit
         </Dropdown.Item>
-        {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:remove-project') : permission?.Project?.includes('project:delete')) && (
-          <Dropdown.Item to="#" onClick={() => showDeletePopup(project.id, project.name, 'Project')}>
+        {(teamPermission && Object.keys(teamPermission).length
+          ? teamPermission?.Team?.includes("team:remove-project")
+          : permission?.Project?.includes("project:delete")) && (
+          <Dropdown.Item
+            to="#"
+            onClick={() => showDeletePopup(project.id, project.name, "Project")}
+          >
             <img src={Delete} alt="Preview" className="menue-img" />
             Delete
           </Dropdown.Item>
-        )}
+        )} */}
       </Dropdown.Menu>
     </Dropdown>
   );
