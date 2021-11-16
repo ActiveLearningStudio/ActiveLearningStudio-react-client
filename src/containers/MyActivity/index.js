@@ -22,117 +22,124 @@ import MyVerticallyCenteredModal from 'components/models/activityOptions';
 
 // import H5PEditor from "components/ResourceCard/AddResource/Editors/H5PEditorV2";
 const MyActivity = ({ playlistPreview }) => {
-	const [edit, setEdit] = useState(false);
-	const [addActivityPopUp, setAddActivityPopUp] = useState(false);
-	const params = useParams();
-	useEffect(() => {
-		if (params.statusbool) {
-			setEdit(params.statusbool);
-		}
-	}, []);
-	const [cardShow, setCardShow] = useState(true);
-	const [uploadImageStatus, setUploadImageStatus] = useState(false);
-	const [showFilter, setShowFilter] = useState(false);
-	const [listView, setListView] = useState(false);
-	const [activtyMethod, setActivityMethod] = useState('create');
-	const [activeType, setActiveType] = useState('');
-	const [currentActivity, setCurrentActivity] = useState(null);
-	const [modalShow, setModalShow] = useState(false);
-	const { screenState } = useSelector((state) => state.myactivities);
-	const dispatch = useDispatch();
-	const changeScreenHandler = (payload, method) => {
-		dispatch({
-			type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-			payload: payload,
-		});
-		if (method === 'upload') {
-			setActivityMethod('upload');
-		} else {
-			setActivityMethod('create');
-		}
-	};
-	return (
-		<>
-			{screenState && (
-				<div className={uploadImageStatus ? 'form-new-popup-activity z-index' : 'form-new-popup-activity'}>
-					<div className="inner-form-content">
-						<div className="inner-form-content-box">
-							<div className="cross-all-pop-box">
-								<FontAwesomeIcon icon="times" className="cross-all-pop" onClick={() => changeScreenHandler('')} />
-							</div>
+  const [edit, setEdit] = useState(false);
+  const [addActivityPopUp, setAddActivityPopUp] = useState(false);
+  const params = useParams();
+  useEffect(() => {
+    if (params.statusbool) {
+      setEdit(params.statusbool);
+    }
+  }, []);
+  const [cardShow, setCardShow] = useState(true);
+  const [uploadImageStatus, setUploadImageStatus] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
+  const [listView, setListView] = useState(false);
+  const [activtyMethod, setActivityMethod] = useState('create');
+  const [activeType, setActiveType] = useState('');
+  const [currentActivity, setCurrentActivity] = useState(null);
+  const [modalShow, setModalShow] = useState(false);
+  const { screenState } = useSelector((state) => state.myactivities);
+  const dispatch = useDispatch();
+  const changeScreenHandler = (payload, method) => {
+    dispatch({
+      type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+      payload: payload,
+    });
+    if (method === 'upload') {
+      setActivityMethod('upload');
+    } else {
+      setActivityMethod('create');
+    }
+  };
+  return (
+    <>
+      {screenState && (
+        <div className={uploadImageStatus ? 'form-new-popup-activity z-index' : 'form-new-popup-activity'}>
+          <div className="inner-form-content">
+            <div className="inner-form-content-box">
+              <div className="cross-all-pop-box">
+                <FontAwesomeIcon icon="times" className="cross-all-pop" onClick={() => changeScreenHandler('')} />
+              </div>
 
-							{/* {screenState === "newactivity" && (
+              {/* {screenState === "newactivity" && (
               <NewActivity
                 changeScreenHandler={changeScreenHandler}
                 screenState={screenState}
               />
             )} */}
-							{screenState === 'layout' && <ActivityLayout changeScreenHandler={changeScreenHandler} screenState={screenState} />}
-							{screenState === 'addactivity' && (
-								<AddActivity changeScreenHandler={changeScreenHandler} screenState={screenState} activtyMethod={activtyMethod} setUploadImageStatus={setUploadImageStatus} />
-							)}
-							{screenState === 'uploadinteractivevideo' && <UploadInteractiveVideo changeScreenHandler={changeScreenHandler} screenState={screenState} />}
-							{screenState === 'preview' && <PreviewLayout changeScreenHandler={changeScreenHandler} screenState={screenState} />}
-							{screenState === 'singleActivity' && <SingleActivity setCurrentActivity={setCurrentActivity}
-								setActiveType={setActiveType}
-								setModalShow={setModalShow} changeScreenHandler={changeScreenHandler} screenState={screenState} />}
-						</div>
-					</div>
-				</div>
-			)}
-			{!playlistPreview && (
-				<div className="myactivity">
-					<div className="content-wrapper">
-						<div className="inner-content">
-							<div className="topHeadingBtn">
-								<div className="topHeading">
-									<TopHeading description="Nevada Department of Education" image={TopHeadingImage} heading="My Activities" color="#084892" />
-								</div>
-								<div className="topBtn">
-									<Buttons primary={true} text="New Activity" icon={faPlus} width="163px" height="35px" onClick={() => changeScreenHandler('layout')} hover={true} />
-								</div>
-							</div>
-							<div className="topDescription">
-								<HeadingText text="Create new activities, control, manage and organize them in playlists and projects." color="#515151" />
-							</div>
-							<div className="activityTitle">
-								{edit ? <HeadingTwo text="Select Activies to add to a project or create a new one." color="#285AA5" /> : <HeadingTwo text="Activities" color="#285AA5" />}
-							</div>
+              {screenState === 'layout' && <ActivityLayout changeScreenHandler={changeScreenHandler} screenState={screenState} />}
+              {screenState === 'addactivity' && (
+                <AddActivity
+                  setActivityMethod={setActivityMethod}
+                  changeScreenHandler={changeScreenHandler}
+                  screenState={screenState}
+                  activtyMethod={activtyMethod}
+                  setUploadImageStatus={setUploadImageStatus}
+                />
+              )}
+              {screenState === 'uploadinteractivevideo' && <UploadInteractiveVideo changeScreenHandler={changeScreenHandler} screenState={screenState} />}
+              {screenState === 'preview' && <PreviewLayout changeScreenHandler={changeScreenHandler} screenState={screenState} />}
+              {screenState === 'singleActivity' && (
+                <SingleActivity
+                  setCurrentActivity={setCurrentActivity}
+                  setActiveType={setActiveType}
+                  setModalShow={setModalShow}
+                  changeScreenHandler={changeScreenHandler}
+                  screenState={screenState}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+      {!playlistPreview && (
+        <div className="myactivity">
+          <div className="content-wrapper">
+            <div className="inner-content">
+              <div className="topHeadingBtn">
+                <div className="topHeading">
+                  <TopHeading description="Nevada Department of Education" image={TopHeadingImage} heading="My Activities" color="#084892" />
+                </div>
+                <div className="topBtn">
+                  <Buttons primary={true} text="New Activity" icon={faPlus} width="163px" height="35px" onClick={() => changeScreenHandler('layout')} hover={true} />
+                </div>
+              </div>
+              <div className="topDescription">
+                <HeadingText text="Create new activities, control, manage and organize them in playlists and projects." color="#515151" />
+              </div>
+              <div className="activityTitle">
+                {edit ? <HeadingTwo text="Select Activies to add to a project or create a new one." color="#285AA5" /> : <HeadingTwo text="Activities" color="#285AA5" />}
+              </div>
 
-							<div className="activityBlocks">
-								<div className="blockBody">
-									<div className="blockBody-detail">
-										<HeadingThree text="How to create Activities" color="#515151" className="mb-20" />
-										<HeadingText
-											text="Learn how to create awesome 
+              <div className="activityBlocks">
+                <div className="blockBody">
+                  <div className="blockBody-detail">
+                    <HeadingThree text="How to create Activities" color="#515151" className="mb-20" />
+                    <HeadingText
+                      text="Learn how to create awesome 
                     activities using +50 Activty Types
                     like Dialog Cards, Interactive Videos 
                     and more..."
-											color="#515151"
-											className="mb-13"
-										/>
-										<HeadingThree text="Learn" color="#515151" />
-									</div>
-								</div>
+                      color="#515151"
+                      className="mb-13"
+                    />
+                    <HeadingThree text="Learn" color="#515151" />
+                  </div>
+                </div>
 
-								<div className="blockBody ml-54">
-									<div className="blockBody-text">
-										<HeadingText text="How to organize Activities into Projects" color="#515151" className="" />
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			)}
-			<MyVerticallyCenteredModal
-				show={modalShow}
-				onHide={() => setModalShow(false)}
-				activity={currentActivity}
-				activeType={activeType}
-			/>
-		</>
-	);
+                <div className="blockBody ml-54">
+                  <div className="blockBody-text">
+                    <HeadingText text="How to organize Activities into Projects" color="#515151" className="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} activity={currentActivity} activeType={activeType} />
+    </>
+  );
 };
 
 export default MyActivity;
