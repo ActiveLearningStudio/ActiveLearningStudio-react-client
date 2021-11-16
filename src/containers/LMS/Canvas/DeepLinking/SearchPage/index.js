@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Alert } from 'react-bootstrap';
 import Browse from 'containers/LMS/Canvas/DeepLinking/Browse';
 import SearchForm from 'containers/LMS/Canvas/DeepLinking/SearchForm';
 import SearchResults from 'containers/LMS/Canvas/DeepLinking/SearchResults';
@@ -17,10 +16,6 @@ const SearchPage = (props) => {
     searchPreviewActivity,
   } = props;
   const [section, setSection] = useState('browse');
-  const url = new URL(window.location.href);
-  const email = url.searchParams.get('user_email');
-  console.log('over here');
-  console.log(email);
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -46,15 +41,9 @@ const SearchPage = (props) => {
         </div>
       </div>
       <div className="row">
-        <div className="col text-center">
-          {(email === null || email === '') && (
-            <Alert variant="warning">
-              Your LMS is not configured to share the email address with Curriki Studio.
-              Please consult your Administrator to modify your integration.
-            </Alert>
-          )}
-          {email !== null && email !== '' && searchPreviewActivity === null && section === 'browse' && <Browse /> }
-          {email !== null && email !== '' && searchPreviewActivity === null && section === 'search' && (
+        <div className="col">
+          {searchPreviewActivity === null && section === 'browse' && <Browse /> }
+          {searchPreviewActivity === null && section === 'search' && (
             <>
               { currentPage === 'search' && <SearchForm /> }
               { currentPage === 'results' && <SearchResults /> }

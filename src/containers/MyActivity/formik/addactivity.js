@@ -13,13 +13,13 @@ import UploadImageV2 from 'utils/uploadimagev2/uploadimagev2';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import UploadFile from 'utils/uploadselectfile/uploadfile';
 import { useSelector, useDispatch } from 'react-redux';
-import { editResourceMetaDataAction } from 'store/actions/resource';
+import { editResourceMetaDataAction } from 'store/actions/resource'
 import * as actionTypes from 'store/actionTypes';
 import { educationLevels, subjects } from 'components/ResourceCard/AddResource/dropdownData';
 // import { subjects, educationLevels } from 'components/ac /dropdownData';
 
 const AddActivity = (props) => {
-  const { setActivityMethod, changeScreenHandler, setUploadImageStatus, activtyMethod } = props;
+  const { changeScreenHandler, setUploadImageStatus, activtyMethod } = props;
   const { layout, selectedLayout, activity, singleLayout } = useSelector((state) => state.myactivities);
   const [modalShow, setModalShow] = useState(false);
   const [upload, setupload] = useState(false);
@@ -36,11 +36,7 @@ const AddActivity = (props) => {
       setTitle(selectedLayout.title);
     }
   }, [selectedLayout]);
-  useEffect(() => {
-    if (activity && setActivityMethod) {
-      setActivityMethod('create');
-    }
-  }, [activity]);
+
   successMessage &&
     setInterval(() => {
       setSuccessMessage(false);
@@ -90,9 +86,9 @@ const AddActivity = (props) => {
             )}
           </div>
         )}
-        {!activity && (
+        {!activity &&
           <form className="radio-group">
-            <div className={activtyMethod !== 'upload' ? 'radio-button active-radio' : 'radio-button'}>
+            <div className={activtyMethod !== 'upload' ? "radio-button active-radio" : "radio-button"}>
               <input
                 onClick={() => {
                   changeScreenHandler('addactivity', 'create');
@@ -105,21 +101,14 @@ const AddActivity = (props) => {
               />
               <label for="Create new activity">Create new activity</label>
             </div>
-            <div className={activtyMethod === 'upload' ? 'radio-button active-radio' : 'radio-button'}>
-              <input
-                onClick={() => {
-                  changeScreenHandler('addactivity', 'upload');
-                }}
-                name="selecttype"
-                type="radio"
-                className="input"
-                checked={activtyMethod === 'upload' ? true : false}
-                id="Upload activity"
-              />
+            <div className={activtyMethod === 'upload' ? "radio-button active-radio" : "radio-button"}>
+              <input onClick={() => {
+                changeScreenHandler('addactivity', 'upload');
+              }} name="selecttype" type="radio" className="input" checked={activtyMethod === 'upload' ? true : false} id="Upload activity" />
               <label for="Upload activity">Upload activity</label>
             </div>
           </form>
-        )}
+        }
         <div className="add-activity-layout-formik-videoTag">
           <div className="add-activity-layout-formik">
             <Formik
@@ -135,13 +124,15 @@ const AddActivity = (props) => {
                 const errors = {};
                 if (!values.title) {
                   errors.title = 'Required';
-                } else if (values.title.length > 255) {
+                }
+                else if (values.title.length > 255) {
                   errors.title = 'Length should be less then 255';
                 }
 
                 return errors;
               }}
               onSubmit={(values) => {
+
                 setFormData(values);
               }}
             >
@@ -155,12 +146,10 @@ const AddActivity = (props) => {
                 isSubmitting,
                 /* and other goodies */
               }) => (
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    handleSubmit();
-                  }}
-                >
+                <form onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSubmit();
+                }}>
                   <HeadingThree text="Layout description" color="#084892" />
 
                   <div className="layout-title-formik-textField">
@@ -179,6 +168,7 @@ const AddActivity = (props) => {
                             {data.subject}
                           </option>
                         ))}
+
                       </select>
                     </div>
                     <div className="formik-select ">
@@ -201,22 +191,9 @@ const AddActivity = (props) => {
             </Formik>
           </div>
           <div className="add-activity-layout-videoTag">
-            <HeadingThree
-              text={activtyMethod === 'upload' ? 'Upload Activities' : activity ? 'Edit Activity' : 'Add Activity'}
-              color="#084892"
-              className="layout-add-activity-title"
-            />
+            <HeadingThree text={activtyMethod === 'upload' ? 'Upload Activities' : activity ? 'Edit Activity' : 'Add Activity'} color="#084892" className="layout-add-activity-title" />
 
-            <HeadingText
-              text={
-                activtyMethod === 'upload'
-                  ? 'Upload an activity from an existing H5P file.'
-                  : activity
-                  ? 'Start editing activity by opening the editor. Once you finish, hit the Save & Close button to see your results.'
-                  : 'Start adding activity by opening the editor. Once you finish, hit the Save & Close button to see your results.'
-              }
-              color="#515151"
-            />
+            <HeadingText text={activtyMethod === 'upload' ? "Upload an activity from an existing H5P file." : activity ? 'Start editing activity by opening the editor. Once you finish, hit the Save & Close button to see your results.' : "Start adding activity by opening the editor. Once you finish, hit the Save & Close button to see your results."} color="#515151" />
             <div className="d-flex">
               {activtyMethod !== 'upload' && (
                 <div className="add-activity-btns">
@@ -246,8 +223,16 @@ const AddActivity = (props) => {
                     onClick={async () => {
                       await formRef.current.handleSubmit();
                       if (formRef.current.values.title && formRef.current.values.title.length < 255) {
-                        dispatch(editResourceMetaDataAction(activity, formRef.current.values));
+
+                        dispatch(
+                          editResourceMetaDataAction(
+                            activity,
+                            formRef.current.values,
+
+                          )
+                        );
                       }
+
                     }}
                     hover={true}
                     className="ml-3"
