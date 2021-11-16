@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { getOutcomeSummaryAction, loadH5pResourceSettings } from 'store/actions/gapi';
 import SummaryOutcome from 'containers/LMS/GoogleClassroom/ActivitySummary/SummaryOutcome';
 import logo from 'assets/images/studio_new_logo_small.png';
+import imsparkedSummaryLoading from 'assets/images/vivensity_star.png';
 import './style.scss';
 
 const Activity = (props) => {
@@ -18,6 +19,8 @@ const Activity = (props) => {
   } = props;
   const { activityId, submissionId } = match.params;
   const studentId = student.id;
+  let loadingImage = logo;
+  if (window.location.host.includes('imsparked')) loadingImage = imsparkedSummaryLoading;
 
   // Init
   useEffect(() => {
@@ -38,7 +41,7 @@ const Activity = (props) => {
       {outcome === null && (
         <div className="loading">
           <div className="loading_image">
-            <img src={logo} alt="Curriki Studio logo" />
+            <img src={loadingImage} alt="Currently loading" />
           </div>
           <div className="loading-message">Please wait while retrieving your data ...</div>
         </div>
