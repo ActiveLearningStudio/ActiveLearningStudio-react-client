@@ -380,6 +380,9 @@ class RegisterPage extends React.Component {
                     <span>Job title</span>
                     <input className="input-box" name="job_title" maxLength="50" value={job_title} onChange={this.onChangeField} />
                   </div>
+                  <div className="form-group">
+                    <Error error={error} />
+                  </div>
                   <div className="form-group mb-0" style={{ marginTop: '50px' }}>
                     <button
                       type="submit"

@@ -3,6 +3,7 @@ import React, { useEffect, useState, useReducer } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Alert } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import gifloader from 'assets/images/dotsloader.gif';
@@ -185,10 +186,8 @@ const Activity = (props) => {
       )}
 
       {!ltiFinished && (
-        <div id="curriki-h5p-wrapper">
-          <div className="loader_gif">
-            <img style={{ width: '50px' }} src={gifloader} alt="" />
-          </div>
+        <div id="curriki-h5p-wrapper" z>
+          <Alert variant="primary">Loading Activity</Alert>
         </div>
       )}
     </div>

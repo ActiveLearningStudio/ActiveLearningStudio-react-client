@@ -6,7 +6,7 @@
 .myactivity {
   .inner-content {
     background: $white;
-    padding: 30px;
+    padding: 32px 30px 30px;
     margin: 13px 39px 81px 29px;
     border-radius: 3px;
     @media screen and (max-width: 1024px) {
@@ -200,11 +200,11 @@
   .inner-form-content {
     background: #fff;
     opacity: 1;
-		width: calc(100% - 285px);
+    width: calc(100% - 285px);
     padding: 50px;
-		position:fixed;
-		height:100%;
-		overflow: auto;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
     .inner-form-content-box {
       max-width: 1200px;
       margin: 0 auto;
@@ -224,7 +224,55 @@
     border-bottom: 1px solid #515151;
     font-weight: 400;
     font-size: 14px;
+    padding: 7px 8px;
     padding-right: 20px;
+    width: 100%;
+  }
+  .dropdown-activity-select {
+    position: relative;
+    display: inline-block;
+    font-family: $sans;
+    color: #767676;
+    .dropdown-title {
+      font-size: 14px;
+      line-height: 20px;
+      width: 200px;
+      height: 36px;
+      display: flex;
+      border: 1px solid #959595;
+      align-items: center;
+      padding-left: 8px;
+      box-sizing: border-box;
+      border-radius: 4px;
+    }
+  }
+
+  .dropdown-content-select {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 200px;
+    box-shadow: 0px 4px 12px 2px rgba(81, 81, 81, 0.16);
+    border-radius: 4px;
+    padding: 14px;
+    z-index: 1;
+
+    label {
+      font-size: 12px;
+      line-height: 16px;
+      padding-bottom: 9px;
+      margin: 0;
+      width: 100%;
+      cursor: pointer;
+      input {
+        margin-right: 14px;
+        width: auto;
+      }
+    }
+  }
+
+  .dropdown-activity-select:hover .dropdown-content-select {
+    display: block;
   }
 }
 .create-form-activity {
@@ -284,9 +332,13 @@
   .activity-layout-title {
     margin-top: 50px;
     width: 480px;
+    h2 {
+      font-size: 32px;
+      line-height: 36px;
+    }
   }
   .activity-layout-paragraph {
-    margin: 17px 0 17px;
+    margin: 17px 0 50px;
   }
   .activity-layout-detail {
     margin-top: 25px;
@@ -296,7 +348,7 @@
   .input-group {
     display: flex;
     align-items: center;
-    width: 191px;
+    width: 260px;
     .input {
       position: relative;
     }
@@ -310,7 +362,7 @@
   // Update new Task
   .layout-cards-process-btn {
     display: flex;
-		justify-content: center;
+    justify-content: center;
     .activity-layout-cards {
       // @media screen and (max-width: 1024px) {
       //   flex: 0.9;
@@ -320,7 +372,7 @@
       width: 350px;
       margin-top: 40px;
       display: flex;
-      // justify-content: center;
+      justify-content: center;
       flex-wrap: wrap;
 
       cursor: pointer;
@@ -369,26 +421,25 @@
       width: 583px;
       margin-top: 40px;
 
-			.nav {
-      	margin:0;
-				margin-bottom:10px;
-				border:none !important;
+      .nav {
+        margin: 0;
+        margin-bottom: 10px;
+        border: none !important;
 
-				.nav-item {
+        .nav-item {
           font-size: 14px;
-					border:none !important;
-					font-weight:400;
-					padding: 0;
-					margin-right: 25px;
-					color: #084892 !important;;
-			
-				}
-				.nav-item.active {
-					color: #084892 !important;;
-					font-weight:500;
-				  border-bottom: 1px solid #084892 !important;;
-				}
-			}
+          border: none !important;
+          font-weight: 400;
+          padding: 0;
+          margin-right: 25px;
+          color: #084892 !important;
+        }
+        .nav-item.active {
+          color: #084892 !important;
+          font-weight: 500;
+          border-bottom: 1px solid #084892 !important;
+        }
+      }
 
       .activity-layout-process-box {
         background-color: #f1f1f1;

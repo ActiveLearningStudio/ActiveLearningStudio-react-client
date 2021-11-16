@@ -45,7 +45,7 @@ export const getOrganization = (id) => async (dispatch) => {
 
 export const getOrganizationFirstTime = (id) => async (dispatch) => {
   const result = await organization.getOrganization(id);
-  console.log(result);
+
   dispatch({
     type: actionTypes.ADD_ACTIVE_ORG,
     payload: result.suborganization,
@@ -70,7 +70,6 @@ export const getAllOrganizationforSSO = () => async (dispatch) => {
     type: actionTypes.ALL_ROLES,
     payload: rolesResult?.data,
   });
-
   return result;
 };
 
@@ -233,7 +232,9 @@ export const updateFeedbackScreen = (type) => (dispatch) => {
 
 export const getRoles = () => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   const result = await organization.getRoles(activeOrganization?.id);
   dispatch({
     type: actionTypes.ALL_ROLES,
@@ -279,7 +280,9 @@ export const getOrgUsers = (id, page, activeRole) => async (dispatch) => {
 };
 
 export const deleteUserFromOrganization = (id, preserveData) => async (dispatch) => {
-  const { organization: { activeOrganization, users, searchUsers } } = store.getState();
+  const {
+    organization: { activeOrganization, users, searchUsers },
+  } = store.getState();
   const result = await organization.deleteUserFromOrganization(activeOrganization?.id, { user_id: id, preserve_data: preserveData });
   if (result) {
     users.data = users.data?.filter((user) => user.id !== id);
@@ -292,7 +295,9 @@ export const deleteUserFromOrganization = (id, preserveData) => async (dispatch)
 };
 
 export const removeUserFromOrganization = (id, preserveData) => async (dispatch) => {
-  const { organization: { activeOrganization, users, searchUsers } } = store.getState();
+  const {
+    organization: { activeOrganization, users, searchUsers },
+  } = store.getState();
   const result = await organization.removeUserFromOrganization(activeOrganization?.id, { user_id: id, preserve_data: preserveData });
   if (result) {
     users.data = users.data?.filter((user) => user.id !== id);

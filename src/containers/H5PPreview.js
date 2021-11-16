@@ -1,15 +1,11 @@
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import gifLoader from 'assets/images/276.gif';
-import {
-  loadH5pResource,
-  loadH5pResourceSettingsOpen,
-  loadH5pResourceSettingsShared,
-  loadH5pResourceXapi,
-} from 'store/actions/resource';
+import { loadH5pResource, loadH5pResourceSettingsOpen, loadH5pResourceSettingsShared, loadH5pResourceXapi } from 'store/actions/resource';
 import * as xAPIHelper from 'helpers/xapi';
 
 let counter = 0;
@@ -19,12 +15,7 @@ const H5PPreview = (props) => {
 
   const [resourceId, setResourceId] = useState(null);
 
-  const {
-    activityId,
-    loadH5pResourceProp,
-    showLtiPreview,
-    showActivityPreview,
-  } = props;
+  const { activityId, loadH5pResourceProp, showLtiPreview, showActivityPreview } = props;
 
   const dispatch = useDispatch();
 
@@ -32,9 +23,7 @@ const H5PPreview = (props) => {
     window.H5PIntegration = data.h5p.settings;
     const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
     h5pWrapper.innerHTML = data.h5p.embed_code.trim();
-    const newCss = data.h5p.settings.core.styles.concat(
-      data.h5p.settings.loadedCss,
-    );
+    const newCss = data.h5p.settings.core.styles.concat(data.h5p.settings.loadedCss);
 
     await Promise.all(
       newCss.map((value) => {
@@ -44,12 +33,10 @@ const H5PPreview = (props) => {
         link.rel = 'stylesheet';
         document.head.appendChild(link);
         return true;
-      }),
+      })
     );
 
-    const newScripts = data.h5p.settings.core.scripts.concat(
-      data.h5p.settings.loadedJs,
-    );
+    const newScripts = data.h5p.settings.core.scripts.concat(data.h5p.settings.loadedJs);
 
     newScripts.forEach((value) => {
       const script = document.createElement('script');
@@ -110,9 +97,7 @@ const H5PPreview = (props) => {
                 });
               }
             }
-          } catch (e) {
-            console.log(e);
-          }
+          } catch (e) {}
         });
 
         const stopXapi = () => clearInterval(checkXapi);

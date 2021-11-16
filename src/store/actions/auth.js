@@ -3,7 +3,8 @@ import Swal from 'sweetalert2';
 import authService from 'services/auth.service';
 import { getAllPermission, getAllOrganizationforSSO } from 'store/actions/organization';
 import storageService from 'services/storage.service';
-import { USER_TOKEN_KEY, CURRENT_ORG } from 'constants/index';
+import { USER_TOKEN_KEY, CURRENT_ORG, USER_ID } from 'constants/index';
+import { errorCatcher } from 'services/errors';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
 
@@ -56,8 +57,11 @@ export const loginAction = (data) => async (dispatch) => {
       },
     ]);
     storageService.setItem(USER_TOKEN_KEY, response.access_token);
+    storageService.setItem(USER_ID, response.user.id);
     const centralizedState = store.getState();
-    const { organization: { activeOrganization } } = centralizedState;
+    const {
+      organization: { activeOrganization },
+    } = centralizedState;
     storageService.setItem(CURRENT_ORG, activeOrganization?.domain);
     await dispatch(getAllPermission(activeOrganization?.id || 1));
     dispatch({
@@ -79,7 +83,9 @@ export const googleLoginAction = (data) => async (dispatch) => {
     type: actionTypes.LOGIN_REQUEST,
   });
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   // eslint-disable-next-line no-param-reassign
   data.domain = activeOrganization.domain;
   try {
@@ -169,6 +175,7 @@ export const registerAction = (data) => async (dispatch) => {
 
     return message;
   } catch (e) {
+    errorCatcher(e);
     dispatch({
       type: actionTypes.SIGNUP_FAIL,
     });
@@ -205,7 +212,9 @@ export const confirmEmailAction = (data) => async (dispatch) => {
 
 export const logoutAction = () => async () => {
   const centralizedState = store.getState();
-  const { organization: { currentOrganization } } = centralizedState;
+  const {
+    organization: { currentOrganization },
+  } = centralizedState;
   storageService.removeItem(USER_TOKEN_KEY);
   localStorage.removeItem('activeTab');
   window.location.href = `/login/${currentOrganization?.domain}`;
@@ -345,7 +354,7 @@ export const SSOLoginAction = (data) => async (dispatch) => {
       type: actionTypes.ADD_CURRENT_ORG,
       payload: typeof response.user.user_organization !== 'undefined' ? response.user.user_organization : allOrganizations?.data[0],
     });
-    await dispatch(getAllOrganizationforSSO());
+
     console.log('SSOLoginAction success');
   } catch (e) {
     console.log('SSOLoginAction failed');
@@ -365,11 +374,11 @@ export const CanvasSSOLoginAction = (data) => async (dispatch) => {
     dispatch({
       type: actionTypes.ADD_ACTIVE_ORG,
       payload: response.user.user_organization,
-      });
+    });
     dispatch({
       type: actionTypes.ADD_CURRENT_ORG,
       payload: response.user.user_organization,
-      });
+    });
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
       payload: { user: response.user },

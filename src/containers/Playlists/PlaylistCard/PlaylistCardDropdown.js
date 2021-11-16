@@ -1,22 +1,24 @@
 /*eslint-disable */
-import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { withRouter, Link } from "react-router-dom";
-import Swal from "sweetalert2";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Dropdown } from "react-bootstrap";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withRouter, Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Dropdown } from 'react-bootstrap';
 
-import ShareLink from "components/ResourceCard/ShareLink";
-import ResourceCardDropdownShare from "components/ResourceCard/shareResource";
-import {
-  deletePlaylistAction,
-  changePlaylistTitleAction,
-} from "store/actions/playlist";
-import { showDeletePopupAction, hideDeletePopupAction } from "store/actions/ui";
-import { clonePlaylist } from "store/actions/search";
+import ShareLink from 'components/ResourceCard/ShareLink';
+import ResourceCardDropdownShare from 'components/ResourceCard/shareResource';
+import { deletePlaylistAction, changePlaylistTitleAction } from 'store/actions/playlist';
+import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
+import { clonePlaylist } from 'store/actions/search';
+import Preview from '../../../assets/images/menu-pre.svg';
+import Edit from '../../../assets/images/menu-edit.svg';
+import Duplicate from '../../../assets/images/menu-dupli.svg';
+import Delete from '../../../assets/images/menu-dele.svg';
+import MenuLogo from '../../../assets/images/menu-logo.svg';
 
-import "./style.scss";
+import './style.scss';
 
 // TODO: need to clean up attributes, update to functional component
 // need to refactor template functions
@@ -24,7 +26,7 @@ class PlaylistCardDropdown extends React.Component {
   handleDelete = (e) => {
     e.preventDefault();
     const { playlist, showDeletePopup } = this.props;
-    showDeletePopup(playlist.id, playlist.title, "Playlist");
+    showDeletePopup(playlist.id, playlist.title, 'Playlist');
   };
 
   render() {
@@ -34,40 +36,44 @@ class PlaylistCardDropdown extends React.Component {
       setSelectedForEdit,
       organization,
       teamPermission,
+      handleShow,
+      setProjectId,
+      setProjectPlaylistId
     } = this.props;
     const { permission } = organization;
     return (
       <Dropdown className="pull-right playlist-dropdown check">
         <Dropdown.Toggle className="playlist-dropdown-btn">
-          <FontAwesomeIcon icon="ellipsis-v" color="#084892" />
+          <img src={MenuLogo} alt="logo" />
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
-
           {(Object.keys(teamPermission).length
-            ? teamPermission?.Team?.includes('team:view-playlist') : (permission?.Playlist?.includes('playlist:view') && permission?.Activity?.includes('activity:view'))) && (
-              <Dropdown.Item
-                as={Link}
-                className="hidden"
-                to={`/studio/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/${playlist?.activities[0]?.id}/preview`}
-              >
-                <FontAwesomeIcon icon="eye" className="mr-2" />
-                Preview
-              </Dropdown.Item>
-            )}
-          {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-playlist') : permission?.Playlist?.includes('playlist:edit')) && (
-            <Dropdown.Item onClick={() => {
-              handleClickPlaylistTitle();
-              if (setSelectedForEdit) {
-                setSelectedForEdit(playlist);
-              }
-            }}
+            ? teamPermission?.Team?.includes('team:view-playlist')
+            : permission?.Playlist?.includes('playlist:view') && permission?.Activity?.includes('activity:view')) && (
+            <Dropdown.Item
+              as={Link}
+              className="hidden"
+              to={`/studio/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/${playlist?.activities[0]?.id}/preview`}
             >
-              <FontAwesomeIcon icon="edit" className="mr-2" />
+              <img src={Preview} alt="Preview" className="menue-img" />
+              Preview
+            </Dropdown.Item>
+          )}
+          {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-playlist') : permission?.Playlist?.includes('playlist:edit')) && (
+            <Dropdown.Item
+              onClick={() => {
+                handleClickPlaylistTitle();
+                if (setSelectedForEdit) {
+                  setSelectedForEdit(playlist);
+                }
+              }}
+            >
+              <img src={Edit} alt="Preview" className="menue-img" />
               Edit
             </Dropdown.Item>
           )}
-          {permission?.Playlist?.includes("playlist:duplicate") && (
+          {permission?.Playlist?.includes('playlist:duplicate') && (
             <Dropdown.Item
               to="#"
               onClick={() => {
@@ -75,7 +81,7 @@ class PlaylistCardDropdown extends React.Component {
                 clonePlaylist(playlist.project_id, playlist.id);
               }}
             >
-              <FontAwesomeIcon icon="clone" className="mr-2" />
+              <img src={Duplicate} alt="Preview" className="menue-img" />
               Duplicate
             </Dropdown.Item>
           )}
@@ -95,19 +101,20 @@ class PlaylistCardDropdown extends React.Component {
               )
           )} */}
           {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:publish-playlist') : permission?.Playlist?.includes('playlist:publish')) && (
-            <ShareLink
-              playlistId={playlist.id}
-              projectId={playlist.project_id}
-            />
-          )}
-          {(Object.keys(teamPermission).length
-            ? teamPermission?.Team?.includes("team:delete-playlist")
-            : permission?.Playlist?.includes("playlist:delete")) && (
+            <>
+              <ShareLink
+                playlistId={playlist.id}
+                projectId={playlist.project_id}
+                handleShow={handleShow}
+                setProjectId={setProjectId}
+                setProjectPlaylistId={setProjectPlaylistId}
+              />
               <Dropdown.Item onClick={this.handleDelete}>
-                <FontAwesomeIcon icon="times-circle" className="mr-2" />
+                <img src={Delete} alt="Preview" className="menue-img" />
                 Delete
               </Dropdown.Item>
-            )}
+            </>
+          )}
         </Dropdown.Menu>
       </Dropdown>
     );
@@ -121,16 +128,15 @@ PlaylistCardDropdown.propTypes = {
   setSelectedForEdit: PropTypes.func.isRequired,
   organization: PropTypes.string.isRequired,
   teamPermission: PropTypes.object.isRequired,
+  handleShow: PropTypes.func.isRequired,
+  setProjectId: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  deletePlaylist: (projectId, id) =>
-    dispatch(deletePlaylistAction(projectId, id)),
-  showDeletePopup: (id, title, deleteType) =>
-    dispatch(showDeletePopupAction(id, title, deleteType)),
+  deletePlaylist: (projectId, id) => dispatch(deletePlaylistAction(projectId, id)),
+  showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
   hideDeletePopup: () => dispatch(hideDeletePopupAction()),
-  changePlaylistTitle: (projectId, id, title) =>
-    dispatch(changePlaylistTitleAction(projectId, id, title)),
+  changePlaylistTitle: (projectId, id, title) => dispatch(changePlaylistTitleAction(projectId, id, title)),
 });
 
 const mapStateToProps = (state) => ({
@@ -138,6 +144,4 @@ const mapStateToProps = (state) => ({
   organization: state.organization,
 });
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(PlaylistCardDropdown)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PlaylistCardDropdown));

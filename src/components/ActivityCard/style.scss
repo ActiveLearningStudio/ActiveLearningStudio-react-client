@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .preview-list-update {
   width: 256px;
@@ -24,14 +24,9 @@
   height: 156px !important;
   border-radius: 8px;
   &:before {
-    background: linear-gradient(
-      180deg,
-      rgba(81, 81, 81, 0.2) 0%,
-      rgba(0, 0, 0, 0.8) 100%
-    );
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    content: "";
+    background: linear-gradient(180deg, rgba(81, 81, 81, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%);
+    border-radius: 8px;
+    content: '';
     display: block;
     position: absolute;
     width: 250px !important;

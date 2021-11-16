@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Swal from "sweetalert2";
 import { setActiveTab } from "store/actions/admin";
@@ -20,7 +20,7 @@ const Breadcrump = ({ text }) => {
     <div className="utility curriki-Breadcrump">
       {text}
       {paginations &&
-        paginations.map((bread, counter) => (
+        paginations?.map((bread, counter) => (
           <a
             href="#"
             className=""

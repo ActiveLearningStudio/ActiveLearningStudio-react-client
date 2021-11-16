@@ -131,6 +131,7 @@ function TeamProjectView(props) {
                         </a>
                         <ul className="dropdown-menu check">
                           <li
+                            key={`googleclassroom + ${project.id}`}
                             onClick={() => {
                               handleShow();
                               getProjectId(project.id);
@@ -145,7 +146,7 @@ function TeamProjectView(props) {
                             allLms.shareVendors.map(
                               (data) =>
                                 data.lms_name !== 'safarimontage' && (
-                                  <li key={data}>
+                                  <li key={data?.id}>
                                     <a
                                       onClick={async () => {
                                         const allPlaylist = await dispatch(lmsPlaylist(project.id));

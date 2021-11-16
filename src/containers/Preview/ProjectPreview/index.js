@@ -43,9 +43,7 @@ function ProjectPreview(props) {
     }
   }, [teamPermission, organization?.currentOrganization, currentProject]);
   useEffect(() => {
-    if (playlistState.playlists.length === 0) {
-      dispatch(loadProjectPlaylistsAction(match.params.projectId, true));
-    }
+    dispatch(loadProjectPlaylistsAction(match.params.projectId, true));
   }, []);
 
   // const handleShow = () => {
@@ -194,26 +192,36 @@ function ProjectPreview(props) {
                     <div className="title_lg check">
                       <div className="configuration">
                         <div className="config-content">
-                          <Link to={`/org/${organization.currentOrganization?.domain}/project/${currentProject?.id}`} className="go-back-button-preview">
+                          <div
+                            onClick={() => {
+                              if (history?.location?.state?.from?.includes('preview')) {
+                                history.push(`/org/${organization.currentOrganization.domain}`)
+                              } else {
+                                history.push(`/org/${organization.currentOrganization?.domain}/project/${currentProject?.id}`)
+                              }
+                            }}
+                            className="go-back-button-preview">
                             {/* <FontAwesomeIcon icon="undo" className="mr-2" /> */}
-                            Close Preview Mode
-                          </Link>
+                            Close preview mode
+                          </div>
                         </div>
                         {/* {activeShared && ( */}
-                        {permission?.Project?.includes('project:share') && (<div
-                          className="shared-link"
-                          onClick={() => {
-                            if (window.gapi && window.gapi.sharetoclassroom) {
-                              window.gapi.sharetoclassroom.go('croom');
-                            }
-                            const protocol = `${window.location.href.split('/')[0]}//`;
-                            const url = `${protocol}${window.location.host}/project/${match.params.projectId}/shared`;
-                            return SharePreviewPopup(url, currentProject.name);
-                          }}
-                        >
-                          <FontAwesomeIcon icon="link" className="mr-2" />
-                          Get Shared Link
-                        </div>)}
+                        {permission?.Project?.includes('project:share') && currentProject?.shared && (
+                          <div
+                            className="shared-link link-share"
+                            onClick={() => {
+                              if (window.gapi && window.gapi.sharetoclassroom) {
+                                window.gapi.sharetoclassroom.go('croom');
+                              }
+                              const protocol = `${window.location.href.split('/')[0]}//`;
+                              const url = `${protocol}${window.location.host}/project/${match.params.projectId}/shared`;
+                              return SharePreviewPopup(url, currentProject.name);
+                            }}
+                          >
+                            <FontAwesomeIcon icon="link" className="mr-2" />
+                            Get shared link
+                          </div>
+                        )}
                         {/* )} */}
                       </div>
                     </div>
@@ -228,7 +236,7 @@ function ProjectPreview(props) {
           <div className="container">
             <div className="playlist-div">
               <div className="playlist-title-div">
-                <div className="title-md">Playlists</div>
+                <div className="title-md playlist-title-card">Playlists</div>
               </div>
               <div className="all-playlist check-custom">
                 <div className="playlist-accordion" id="custom_accordion">

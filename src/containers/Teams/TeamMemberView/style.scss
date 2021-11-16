@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 .btn-left-page {
   top: 1em;
   right: 0;
@@ -21,7 +21,6 @@
   }
 }
 .member-manage {
-  
   margin-top: 2px;
   padding: 0 0.7em 0 0;
   display: flex;
@@ -43,8 +42,8 @@
         input {
           width: 36%;
           padding: 9px 13px;
-          background: #F3F3F3;
-          border: solid 1px #C4C4C4;
+          background: #f3f3f3;
+          border: solid 1px #c4c4c4;
         }
       }
 
@@ -148,11 +147,11 @@
               height: 100%;
               margin-right: 0.5em;
               background: none;
-              border: solid 1px #44CA92;
+              border: solid 1px #44ca92;
               font-size: 12px;
               letter-spacing: 0.3px;
               text-align: left;
-              color: #44CA92;
+              color: #44ca92;
             }
 
             .eliminate-btn {
@@ -240,7 +239,7 @@
           }
 
           .border-top {
-            border-top: solid 1px #EEEEEE;
+            border-top: solid 1px #eeeeee;
           }
         }
       }
@@ -249,7 +248,7 @@
 
   .team-description {
     width: 380px;
-
+    word-break: break-all;
     .title {
       margin: 2px 0 12px;
       padding: 0 0 0 0;
