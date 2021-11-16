@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .resource-activity {
   // padding-left: 25px;
@@ -123,13 +123,14 @@
     }
   }
 
-   h2 {
+  h2 {
     margin-bottom: 0 !important;
     font: normal normal 600 18px/29px $halvetica !important;
     color: $mine-shaft !important;
   }
 
-  .pexel, .gallery {
+  .pexel,
+  .gallery {
     background-color: #fff !important;
   }
   .shadowbox {
@@ -263,7 +264,8 @@
     border-radius: 3px;
     position: relative;
     text-align: center;
-    background: #ffffff url(../../../assets/images/unselected-radio-icon.png) no-repeat right 15px top 13px;
+    background: #ffffff url(../../../assets/images/unselected-radio-icon.png)
+      no-repeat right 15px top 13px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -627,7 +629,8 @@ input[type="radio"]:checked + .activity-item {
   box-shadow: 0 3px 6px #00000029;
   border: 2px solid #084892;
   border-radius: 4px;
-  background: url(../../../assets/images/resource-tickmark.png) no-repeat right 15px top 13px;
+  background: url(../../../assets/images/resource-tickmark.png) no-repeat right
+    15px top 13px;
 
   .activity-icon {
     display: none;
@@ -698,7 +701,8 @@ input[type="radio"]:checked + .activity-item {
   margin-top: 30px;
   width: 195px;
   height: 56px;
-  background: url(../../../assets/images/btn-arrow.png) #2ecf43 no-repeat right 20px top 21px;
+  background: url(../../../assets/images/btn-arrow.png) #2ecf43 no-repeat right
+    20px top 21px;
   text-align: left;
   padding-left: 20px;
   font-size: 14px;
@@ -830,14 +834,14 @@ input[type="radio"]:checked + .activity-item {
 }
 
 .saveclosemodel {
-	width:150px;
-	font-size: 16px;
-	color: #ffffff;
-	background: #084892;
-	display:flex;
-	justify-content:center;
-	align-items: center;
-	border-radius: 18px;
-	height:40px;
-	cursor:pointer
+  width: 150px;
+  font-size: 16px;
+  color: #ffffff;
+  background: #084892;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 18px;
+  height: 40px;
+  cursor: pointer;
 }
