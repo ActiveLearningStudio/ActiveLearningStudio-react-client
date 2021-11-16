@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -5,19 +6,15 @@ import PropTypes from 'prop-types';
 import { getOutcomeSummaryAction, loadH5pResourceSettings } from 'store/actions/gapi';
 import SummaryOutcome from 'containers/LMS/GoogleClassroom/ActivitySummary/SummaryOutcome';
 import logo from 'assets/images/studio_new_logo_small.png';
+import imsparkedSummaryLoading from 'assets/images/vivensity_star.png';
 import './style.scss';
 
 const Activity = (props) => {
-  const {
-    match,
-    student,
-    outcome,
-    settings,
-    getOutcomeSummary,
-    loadH5pSettings,
-  } = props;
+  const { match, student, outcome, settings, getOutcomeSummary, loadH5pSettings } = props;
   const { activityId, submissionId } = match.params;
   const studentId = student.id;
+  let loadingImage = logo;
+  if (window.location.host.includes('imsparked')) loadingImage = imsparkedSummaryLoading;
 
   // Init
   useEffect(() => {
@@ -38,7 +35,7 @@ const Activity = (props) => {
       {outcome === null && (
         <div className="loading">
           <div className="loading_image">
-            <img src={logo} alt="Curriki Studio logo" />
+            <img src={loadingImage} alt="Currently loading" />
           </div>
           <div className="loading-message">Please wait while retrieving your data ...</div>
         </div>
@@ -50,15 +47,11 @@ const Activity = (props) => {
             <div className="col">
               {settings && (
                 <div className="title-container">
-                  <div className="title-label">
-                    ACTIVITY SUMMARY
-                  </div>
+                  <div className="title-label">ACTIVITY SUMMARY</div>
                   <div className="title-spacer">
                     <div />
                   </div>
-                  <div className="title-content">
-                    {settings.activity.title}
-                  </div>
+                  <div className="title-content">{settings.activity.title}</div>
                 </div>
               )}
             </div>
