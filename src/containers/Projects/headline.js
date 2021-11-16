@@ -30,7 +30,9 @@ export default function Headline({ setCreateProject, seteditMode }) {
               text="Create a project"
               icon={faPlus}
               width="165px"
-              height="35px"
+              height="36px"
+              paddingLeft="16px"
+              paddingRight="16px"
               onClick={() => {
                 setCurrentVisibilityType(null);
                 seteditMode(false);

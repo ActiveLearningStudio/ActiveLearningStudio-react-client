@@ -1,6 +1,6 @@
-@import 'index';
-@import 'react-toastify/dist/ReactToastify.css';
-@import '~bootstrap/scss/bootstrap';
+@import "index";
+@import "react-toastify/dist/ReactToastify.css";
+@import "~bootstrap/scss/bootstrap";
 
 body {
   margin: 0;
@@ -14,7 +14,8 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }
 
 *:focus {
@@ -209,7 +210,7 @@ code {
   .playlist-resource {
     max-width: 20%;
     width: 20%;
-    margin-right: 15px;
+    margin-right: 16px;
 
     &:last-child {
       margin-right: 0;
