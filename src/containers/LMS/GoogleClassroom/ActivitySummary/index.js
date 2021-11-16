@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -9,14 +10,7 @@ import imsparkedSummaryLoading from 'assets/images/vivensity_star.png';
 import './style.scss';
 
 const Activity = (props) => {
-  const {
-    match,
-    student,
-    outcome,
-    settings,
-    getOutcomeSummary,
-    loadH5pSettings,
-  } = props;
+  const { match, student, outcome, settings, getOutcomeSummary, loadH5pSettings } = props;
   const { activityId, submissionId } = match.params;
   const studentId = student.id;
   let loadingImage = logo;
@@ -53,15 +47,11 @@ const Activity = (props) => {
             <div className="col">
               {settings && (
                 <div className="title-container">
-                  <div className="title-label">
-                    ACTIVITY SUMMARY
-                  </div>
+                  <div className="title-label">ACTIVITY SUMMARY</div>
                   <div className="title-spacer">
                     <div />
                   </div>
-                  <div className="title-content">
-                    {settings.activity.title}
-                  </div>
+                  <div className="title-content">{settings.activity.title}</div>
                 </div>
               )}
             </div>
