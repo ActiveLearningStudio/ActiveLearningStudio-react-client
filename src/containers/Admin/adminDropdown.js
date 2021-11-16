@@ -18,6 +18,7 @@ import "./style.scss";
 // import loader from 'assets/images/loader.svg';
 import Delete from "../../assets/images/menu-dele.svg";
 import Edit from "../../assets/images/menu-edit.svg";
+import Export from "../../assets/images/export-img.svg";
 import MenuLogo from "../../assets/images/menu-logo.svg";
 import {
   forgetSpecificFailedJob,
@@ -37,6 +38,14 @@ import {
   getRoles,
   updatePageNumber,
 } from "store/actions/organization";
+import {
+  deleteActivityItem,
+  deleteActivityType,
+  getActivityItems,
+  loadResourceTypesAction,
+  selectActivityItem,
+  selectActivityType,
+} from "store/actions/resource";
 import * as actionTypes from "store/actionTypes";
 
 const AdminDropdown = (props) => {
@@ -47,6 +56,7 @@ const AdminDropdown = (props) => {
     type,
     user,
     row,
+    type1,
     // text,
     // iconColor,
   } = props;
@@ -125,7 +135,7 @@ const AdminDropdown = (props) => {
                     }
                   }}
                 >
-                  <img src={Edit} alt="Preview" className="menue-img" />
+                  <img src={Export} alt="Preview" className="menue-img" />
                   Manage
                 </Dropdown.Item>
               </>
@@ -210,7 +220,7 @@ const AdminDropdown = (props) => {
                 });
               }}
             >
-              <img src={Edit} alt="Preview" className="menue-img" />
+              <img src={Export} alt="Preview" className="menue-img" />
               Export
             </Dropdown.Item>
             <Dropdown.Item
@@ -274,7 +284,7 @@ const AdminDropdown = (props) => {
             {" "}
             <Dropdown.Item
               onClick={() => {
-                dispatch(selectActivityType(type));
+                dispatch(selectActivityType(type1));
                 dispatch(setActiveAdminForm("edit_activity_type"));
               }}
             >
@@ -296,7 +306,7 @@ const AdminDropdown = (props) => {
                   if (result.isConfirmed) {
                     Swal.showLoading();
                     const resultDel = await dispatch(
-                      deleteActivityType(type.id)
+                      deleteActivityType(type1.id)
                     );
                     if (resultDel) {
                       Swal.fire({
@@ -351,7 +361,84 @@ const AdminDropdown = (props) => {
               )}
           </>
         )}
-        {/* {type === "Users"} */}
+        {type === "LMS" && (
+          <>
+            <Dropdown.Item
+              to="#"
+              onClick={() => {
+                dispatch({
+                  type: "SET_ACTIVE_EDIT",
+                  payload: row,
+                });
+                dispatch(setActiveAdminForm("clone_lms"));
+              }}
+            >
+              <img src={Edit} alt="Preview" className="menue-img" />
+              &nbsp;&nbsp;Clone&nbsp;&nbsp;
+            </Dropdown.Item>
+            <Dropdown.Item
+              to="#"
+              onClick={() => {
+                Swal.fire({
+                  title:
+                    "Are you sure you want to delete this User LMS settings?",
+                  text: "This action is Irreversible",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#084892",
+                  cancelButtonColor: "#d33",
+                  confirmButtonText: "Yes, delete it!",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    Swal.fire({
+                      title: "LMS Srttings",
+                      icon: "info",
+                      text: "Deleting User LMS Settings...",
+                      allowOutsideClick: false,
+                      onBeforeOpen: () => {
+                        Swal.showLoading();
+                      },
+                      button: false,
+                    });
+                    const response = adminService.deleteLmsProject(
+                      activeOrganization?.id,
+                      row?.id
+                    );
+                    response
+                      .then((res) => {
+                        Swal.fire({
+                          icon: "success",
+                          text: res?.message,
+                        });
+                        const filterLMS = localStateData.filter(
+                          (each) => each.id != row.id
+                        );
+                        console.log(filterLMS);
+                        setLocalStateData(filterLMS);
+                      })
+                      .catch((err) => console.log(err));
+                  }
+                });
+              }}
+            >
+              <img src={Edit} alt="Preview" className="menue-img" />
+              &nbsp;&nbsp;Delete&nbsp;&nbsp;
+            </Dropdown.Item>
+            <Dropdown.Item
+              to="#"
+              onClick={() => {
+                dispatch({
+                  type: "SET_ACTIVE_EDIT",
+                  payload: row,
+                });
+                dispatch(setActiveAdminForm("edit_lms"));
+              }}
+            >
+              <img src={Edit} alt="Preview" className="menue-img" />
+              &nbsp;&nbsp;Edit&nbsp;&nbsp;
+            </Dropdown.Item>
+          </>
+        )}
 
         {type === "DefaultSso" && (
           <>

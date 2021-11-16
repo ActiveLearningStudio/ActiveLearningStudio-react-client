@@ -328,7 +328,10 @@ function Table(props) {
                       <td>{row?.site_name}</td>
                       <td>{row?.description}</td>
                       <td>
-                        <div className="links">
+                        <div>
+                          <AdminDropdown type={type} row={row} />
+                        </div>
+                        {/* <div className="links">
                           {true && (
                             <Link
                               onClick={() => {
@@ -403,7 +406,7 @@ function Table(props) {
                               &nbsp;&nbsp;Edit&nbsp;&nbsp;
                             </Link>
                           )}
-                        </div>
+                        </div> */}
                       </td>
                     </tr>
                   ))
@@ -1247,24 +1250,24 @@ function Table(props) {
             {type === "Activities" &&
               subType === "Activity Types" &&
               (data ? (
-                data?.map((type) => (
-                  <tr key={type} className="org-rows">
-                    <td>{type.title}</td>
+                data?.map((type1) => (
+                  <tr key={type1} className="org-rows">
+                    <td>{type1.title}</td>
                     <td>
                       <img
                         className="image-size"
-                        src={global.config.resourceUrl + type.image}
+                        src={global.config.resourceUrl + type1.image}
                         alt="activity-type-image"
                       />
                     </td>
-                    <td>{type.order}</td>
+                    <td>{type1.order}</td>
                     <td>
                       <div className="admin-panel-dropdown">
-                        {type.activityItems.map((item) => (
+                        {type1.activityItems.map((item) => (
                           <div>{item.title}</div>
                         ))}
                         <div>
-                          <AdminDropdown type={type} />
+                          <AdminDropdown type={type} type1={type1} />
                         </div>
                       </div>
                     </td>
@@ -1574,6 +1577,8 @@ function Table(props) {
                   window.scrollTo(0, 0);
                   setActivePage(e);
                 }}
+                firstPageText="Previous"
+                lastPageText="Next"
               />
             )}
             {type === "Project" && subType === "all" && (
@@ -1588,6 +1593,9 @@ function Table(props) {
                   setActivePage(e);
                   dispatch(updatePageNumber(e));
                 }}
+                // Editing
+                firstPageText="Previous"
+                lastPageText="Next"
               />
             )}
             {type === "Project" && subType === "Exported Projects" && (
@@ -1602,6 +1610,8 @@ function Table(props) {
                   setActivePage(e);
                   dispatch(updatePageNumber(e));
                 }}
+                firstPageText="Previous"
+                lastPageText="Next"
               />
             )}
             {type === "Project" && subType === "index" && (
@@ -1616,6 +1626,8 @@ function Table(props) {
                   setActivePage(e);
                   dispatch(updatePageNumber(e));
                 }}
+                firstPageText="Previous"
+                lastPageText="Next"
               />
             )}
             {type === "Activities" && subType === "Activity Types" && (
@@ -1629,6 +1641,8 @@ function Table(props) {
                   window.scrollTo(0, 0);
                   setActivePage(e);
                 }}
+                firstPageText="Previous"
+                lastPageText="Next"
               />
             )}
             {type === "Activities" && subType === "Activity Items" && (
@@ -1642,6 +1656,8 @@ function Table(props) {
                   window.scrollTo(0, 0);
                   setActivePage(e);
                 }}
+                firstPageText="Previous"
+                lastPageText="Next"
               />
             )}
             {type === "LMS" && (
@@ -1655,6 +1671,8 @@ function Table(props) {
                   window.scrollTo(0, 0);
                   setActivePage(e);
                 }}
+                firstPageText="Previous"
+                lastPageText="Next"
               />
             )}
             {type === "DefaultSso" && (
@@ -1668,6 +1686,8 @@ function Table(props) {
                   window.scrollTo(0, 0);
                   setActivePage(e);
                 }}
+                firstPageText="Previous"
+                lastPageText="Next"
               />
             )}
           </div>

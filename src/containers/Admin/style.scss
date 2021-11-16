@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .admin-panel {
   .main-heading {
@@ -399,7 +399,7 @@
         font-size: 14px;
         line-height: 20px;
         color: #767676;
-        font-family: 'Open Sans';
+        font-family: "Open Sans";
         span {
           display: flex;
         }
@@ -441,7 +441,7 @@
             flex-shrink: 0;
           }
           .admin-name {
-            font-family: 'Open Sans';
+            font-family: "Open Sans";
             font-size: 14px;
             line-height: 20px;
             color: #084892;
@@ -463,7 +463,7 @@
           margin-top: 5px;
           border-radius: 7px;
           cursor: pointer;
-          font-family: 'Open Sans';
+          font-family: "Open Sans";
           font-weight: normal;
           font-size: 14px;
           line-height: 20px;
@@ -510,6 +510,7 @@
     float: right;
     list-style: none;
     outline: none;
+    // Edit
   }
   .pagination > .active > a {
     background-color: $fun-blue-1;
@@ -517,7 +518,9 @@
     color: #fff;
   }
   .pagination > li > a {
-    border: 1px solid$fun-blue-1;
+    // start Edit
+    // border: 1px solid$fun-blue-1;
+    // End edit
     padding: 5px 10px;
     outline: none;
     cursor: pointer;
@@ -531,6 +534,8 @@
     background-color: $fun-blue-1;
     border-color: $fun-blue-1;
     outline: none;
+    // Edit
+    border-radius: 67%;
   }
   .pagination > li > a,
   .pagination > li > span {
@@ -1009,7 +1014,7 @@
     position: relative;
 
     ::before {
-      content: ' ';
+      content: " ";
       position: absolute;
       top: -11px;
       right: 10px;
@@ -1025,7 +1030,7 @@
 .project-dropdown.check {
   .dropdown-menu {
     min-width: 200px;
-    transform: translate(-161px, 42px) !important;
+    // transform: translate(-161px, 42px) !important;
     background: #fff !important;
   }
 }
