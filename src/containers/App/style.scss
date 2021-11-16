@@ -187,6 +187,8 @@
         opacity: 1;
         text-transform: capitalize;
         word-break: break-word;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
     }
   }
