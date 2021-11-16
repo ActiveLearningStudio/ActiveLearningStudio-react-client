@@ -30,8 +30,8 @@ const ActivityShared = (props) => {
     if (!data) return;
     window.H5PIntegration = data?.h5p.settings;
     const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
-    h5pWrapper.innerHTML = data?.h5p.embed_code.trim();
-    const newCss = data?.h5p.settings.core.styles.concat(data?.h5p.settings.loadedCss);
+    h5pWrapper.innerHTML = data.h5p.embed_code.trim();
+    const newCss = data.h5p.settings.core.styles.concat(data.h5p.settings.loadedCss);
 
     await Promise.all(
       newCss?.map((value) => {
@@ -44,7 +44,7 @@ const ActivityShared = (props) => {
       })
     );
 
-    const newScripts = data?.h5p.settings.core.scripts.concat(data.h5p.settings.loadedJs);
+    const newScripts = data.h5p.settings.core.scripts.concat(data.h5p.settings.loadedJs);
 
     newScripts?.forEach((value) => {
       const script = document.createElement('script');
@@ -153,7 +153,7 @@ const ActivityShared = (props) => {
               });
             }
           }
-        } catch (e) {}
+        } catch (e) { }
       });
 
       const stopXapi = () => clearInterval(checkXapi);
@@ -163,7 +163,7 @@ const ActivityShared = (props) => {
   return (
     <>
       {authorized ? (
-        <Alert variant="danger"> Activity not found.</Alert>
+        <Alert variant="warning"> Activity is not sharable</Alert>
       ) : (
         <div id="curriki-h5p-wrapper">
           <Alert variant="primary"> Loading Activity</Alert>

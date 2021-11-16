@@ -186,8 +186,10 @@ const Activity = (props) => {
       )}
 
       {!ltiFinished && (
-        <div id="curriki-h5p-wrapper" z>
-          <Alert variant="primary">Loading Activity</Alert>
+        <div id="curriki-h5p-wrapper">
+          <div className="loader_gif">
+            <img style={{ width: '50px' }} src={gifloader} alt="" />
+          </div>
         </div>
       )}
     </div>
