@@ -150,6 +150,11 @@ const AppRouter = (props) => {
         />
         <OpenRoute
           exact
+          path="/project/:projectId/shared"
+          component={PreviewPageShared}
+        />
+        <OpenRoute
+          exact
           path="/project/:projectId/secure/shared"
           component={SecureProjectPreview}
         />
@@ -162,6 +167,12 @@ const AppRouter = (props) => {
         <OpenRoute
           exact
           path="/activity/:activityId/preview"
+          component={LtiPreviewPage}
+          previewType="activityShared"
+        />
+        <OpenRoute
+          exact
+          path="/activity/:activityId/shared"
           component={LtiPreviewPage}
           previewType="activityShared"
         />
@@ -202,6 +213,12 @@ const AppRouter = (props) => {
         <OpenRoute
           exact
           path="/playlist/:playlistId/preview"
+          component={LtiPreviewPage}
+          previewType="playlist"
+        />
+        <OpenRoute
+          exact
+          path="/playlist/:playlistId/preview/lti"
           component={LtiPreviewPage}
           previewType="playlist"
         />
