@@ -1,17 +1,13 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import Swal from "sweetalert2";
-import { setActiveTab } from "store/actions/admin";
-import { useDispatch, useSelector } from "react-redux";
-import * as actionTypes from "store/actionTypes";
-import {
-  getOrganization,
-  clearOrganizationState,
-  getRoles,
-} from "store/actions/organization";
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import Swal from 'sweetalert2';
+import { setActiveTab } from 'store/actions/admin';
+import { useDispatch, useSelector } from 'react-redux';
+import * as actionTypes from 'store/actionTypes';
+import { getOrganization, clearOrganizationState, getRoles } from 'store/actions/organization';
 
-import "./breadcrump.scss";
+import './breadcrump.scss';
 
 const Breadcrump = ({ text }) => {
   const { paginations } = useSelector((state) => state.ui);
@@ -27,8 +23,8 @@ const Breadcrump = ({ text }) => {
             key={bread.id}
             onClick={async () => {
               Swal.fire({
-                title: "Please Wait !",
-                html: "Updating View ...",
+                title: 'Please Wait !',
+                html: 'Updating View ...',
                 allowOutsideClick: false,
                 onBeforeOpen: () => {
                   Swal.showLoading();
@@ -46,11 +42,11 @@ const Breadcrump = ({ text }) => {
                 type: actionTypes.UPDATE_PAGINATION,
                 payload: paginations?.slice(0, counter + 1),
               });
-              dispatch(setActiveTab("Organization"));
+              dispatch(setActiveTab('Organization'));
             }}
           >
             {bread.name}
-            &nbsp;&gt;&nbsp;
+            <span>&gt;</span>
           </a>
         ))}
     </div>
