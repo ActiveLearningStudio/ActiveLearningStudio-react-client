@@ -47,20 +47,20 @@ const onSubmit = async (values, dispatch, props) => {
     const result = await dispatch(
       props.project.thumbUrl
         ? createProjectAction({
-            name,
-            description,
-            thumb_url: thumbUrl,
-            is_public: projectShare,
-            organization_visibility_type_id: 1,
-          })
+          name,
+          description,
+          thumb_url: thumbUrl,
+          is_public: projectShare,
+          organization_visibility_type_id: 1,
+        })
         : createProjectAction({
-            name,
-            description,
-            is_public: projectShare,
-            organization_visibility_type_id: 1,
-            // eslint-disable-next-line max-len
-            thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
-          })
+          name,
+          description,
+          is_public: projectShare,
+          organization_visibility_type_id: 1,
+          // eslint-disable-next-line max-len
+          thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+        })
     );
     if (result) {
       history.push('/projects');
@@ -242,8 +242,6 @@ let CreateProjectPopup = (props) => {
                 </div>
               </div>
             </div>
-
-            <br />
 
             <p className="disclaimer">
               Project Image dimension should be <strong>280px width and 200px height. </strong>

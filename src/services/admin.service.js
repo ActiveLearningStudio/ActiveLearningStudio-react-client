@@ -2,6 +2,7 @@
 import config from 'config';
 import httpService from './http.service';
 import { errorCatcher } from './errors';
+import Swal from 'sweetalert2';
 
 const { apiVersion } = config;
 
