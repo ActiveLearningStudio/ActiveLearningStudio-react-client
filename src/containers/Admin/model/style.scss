@@ -1,0 +1,11 @@
+.modal-dialog {
+  @media (min-width: 576px) {
+    max-width: 1200px !important;
+  }
+}
+.modal-content {
+  width: 100%;
+}
+.content-wrapper-model {
+  margin-left: 0 !important;
+}

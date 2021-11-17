@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .admin-panel {
   .main-heading {
@@ -443,7 +443,7 @@
         font-size: 14px;
         line-height: 20px;
         color: #767676;
-        font-family: 'Open Sans';
+        font-family: "Open Sans";
         span {
           display: flex;
         }
@@ -485,7 +485,7 @@
             flex-shrink: 0;
           }
           .admin-name {
-            font-family: 'Open Sans';
+            font-family: "Open Sans";
             font-size: 14px;
             line-height: 20px;
             color: #084892;
@@ -507,7 +507,7 @@
           margin-top: 5px;
           border-radius: 7px;
           cursor: pointer;
-          font-family: 'Open Sans';
+          font-family: "Open Sans";
           font-weight: normal;
           font-size: 14px;
           line-height: 20px;
@@ -564,6 +564,8 @@
   .pagination > li > a {
     // start Edit
     // border: 1px solid$fun-blue-1;
+    // border-radius: 67%;
+    // margin: 0 3px;
     // End edit
     padding: 5px 10px;
     outline: none;
@@ -1058,7 +1060,7 @@
     position: relative;
 
     ::before {
-      content: ' ';
+      content: " ";
       position: absolute;
       top: -11px;
       right: 10px;
@@ -1077,4 +1079,31 @@
     // transform: translate(-161px, 42px) !important;
     background: #fff !important;
   }
+}
+
+.shared-link-enable {
+  padding: 1px 8px;
+  background: #eff6f0;
+  border: 1px solid #12b347;
+  border-radius: 10px;
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  color: #12b347;
+}
+.shared-link-disable {
+  background: #f1f1f1;
+  border: 1px solid #dddddd;
+  border-radius: 10px;
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  color: #959595;
+  padding: 1px 4px;
 }
