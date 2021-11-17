@@ -1,7 +1,9 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .admin-panel {
   .main-heading {
+    margin: 0;
+    padding: 20px 0px 16px;
     p {
       color: #084892;
       font-size: 22px;
@@ -10,16 +12,50 @@
     .secand-heading {
       display: flex;
       align-items: center;
-      margin-top: 7px;
-
-      img {
-        width: 33px;
-        height: 33px;
-      }
 
       h2 {
-        margin: 0 0px 6px 5px;
+        margin: 0px;
         color: #084892;
+        line-height: 28px;
+        font-size: 24px;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .parent-organization-detail {
+    display: flex;
+    justify-content: space-between;
+    padding: 24px 0px 0px;
+    h3 {
+      color: #515151;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 24px;
+      margin: 0;
+    }
+    p {
+      color: #515151;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      margin: 0;
+      padding-top: 4px;
+    }
+    button {
+      width: 167px;
+      height: 32px;
+      border-radius: 16px;
+      box-shadow: 0px 2px 8px 1px #c9c9c9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #515151;
+      font-size: 14px;
+      line-height: 20px;
+      border: 1px solid #959595;
+      img {
+        margin-right: 8px;
       }
     }
   }
@@ -57,25 +93,27 @@
 
   .inner-content {
     background: $white;
-    padding: 32px 30px 30px;
-    margin: 20px 15px 20px 5px;
+    padding: 24px;
   }
   nav {
     margin: 0;
     width: 100%;
-    margin-top: 25px;
+    margin-top: 0px;
     border-bottom: 1px solid $fun-blue-1;
 
     .nav-link {
-      border-radius: 3px 3px 0px 0px;
-      font-size: 16px;
-      line-height: 22px;
+      border-radius: 4px 4px 0px 0px;
+      font-size: 14px;
+      line-height: 20px;
       text-align: center;
       color: $white;
       background: $fun-blue-1;
-      font-weight: 400;
-      padding: 5px 30px;
-      margin-right: 10px;
+      font-weight: 500;
+      padding: 8px 12px;
+      margin-right: 8px;
+      font-weight: 500;
+      text-align: center;
+      min-width: 160px;
 
       color: #fff;
       border-color: $fun-blue-1 !important;
@@ -84,6 +122,7 @@
     .nav-link.active {
       background: $white;
       color: $fun-blue-1;
+      border-bottom: none;
     }
   }
 
@@ -91,8 +130,8 @@
     nav {
       margin: 0;
       width: 100%;
-      margin-top: 25px;
-      border-bottom: none !important ;
+      margin-top: 20px;
+      border-bottom: 0.5px solid #084892;
     }
     h2 {
       font-weight: 500;
@@ -104,24 +143,27 @@
     }
     .nav-link {
       border-radius: 3px 3px 0px 0px;
-      font-size: 16px;
+      font-size: 14px;
       line-height: 22px;
       text-align: center;
       color: $white;
       background: transparent;
       font-weight: 400;
-      padding: 5px 30px;
+      padding-bottom: 2px;
       margin-right: 10px;
       padding-left: 0;
       color: $fun-blue-1;
       border: none !important;
+      text-align: center;
+      font-family: $sans;
     }
 
     .nav-link.active {
       background: transparent;
       color: $fun-blue-1;
       font-weight: bold;
-      border-bottom: 3px solid$fun-blue-1 !important;
+      border-bottom: 4px solid $fun-blue-1 !important;
+      font-family: $rubik;
     }
   }
 
@@ -130,8 +172,10 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px 10px;
-    border: 1px solid #ccc;
+
     flex-wrap: wrap;
+    margin: 16px 0px 22px;
+    background-color: #f7faff;
 
     div {
       margin-right: 8px;
@@ -399,7 +443,7 @@
         font-size: 14px;
         line-height: 20px;
         color: #767676;
-        font-family: "Open Sans";
+        font-family: 'Open Sans';
         span {
           display: flex;
         }
@@ -441,7 +485,7 @@
             flex-shrink: 0;
           }
           .admin-name {
-            font-family: "Open Sans";
+            font-family: 'Open Sans';
             font-size: 14px;
             line-height: 20px;
             color: #084892;
@@ -463,7 +507,7 @@
           margin-top: 5px;
           border-radius: 7px;
           cursor: pointer;
-          font-family: "Open Sans";
+          font-family: 'Open Sans';
           font-weight: normal;
           font-size: 14px;
           line-height: 20px;
@@ -490,22 +534,22 @@
   }
 
   .pagination-top {
-    font-weight: bold;
+    font-weight: 400;
     font-size: 14px;
     line-height: 19px;
     color: #515151;
-    padding: 0px 14px;
+    padding-bottom: 22px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid #c4c4c4;
+
     border-radius: 0;
     margin: 0;
     width: 100%;
     float: none;
   }
   .pagination {
-    margin: 15px auto;
+    margin: 20px auto;
     display: flex;
     float: right;
     list-style: none;
@@ -1014,7 +1058,7 @@
     position: relative;
 
     ::before {
-      content: " ";
+      content: ' ';
       position: absolute;
       top: -11px;
       right: 10px;
