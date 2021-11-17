@@ -167,6 +167,7 @@ function Table(props) {
           activePage={activePage}
           setActivePage={setActivePage}
           updatePageNumber={updatePageNumber}
+          localstatePagination={localstatePagination}
         />
       )}
       <div className="responsive-table">
@@ -950,6 +951,7 @@ function Table(props) {
           activePage={activePage}
           setActivePage={setActivePage}
           updatePageNumber={updatePageNumber}
+          localstatePagination={localstatePagination}
         />
       )}
     </div>
