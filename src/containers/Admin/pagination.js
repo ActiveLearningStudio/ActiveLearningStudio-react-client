@@ -3,7 +3,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import Pagination from 'react-js-pagination';
 
-const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, activePage, setActivePage, updatePageNumber }) => {
+const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, activePage, setActivePage, updatePageNumber, localstatePagination }) => {
   const dispatch = useDispatch();
   return (
     <div className="pagination-top">
