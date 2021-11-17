@@ -41,6 +41,7 @@ export default function Pills(props) {
   const [allProjectIndexTab, setAllProjectIndexTab] = useState(null);
   const [lmsProject, setLmsProject] = useState(null);
   const [defaultSso, setDefaultSso] = useState(null);
+  const [ltiTool, setLtiTool] = useState(null);
   const [jobs, setJobs] = useState(null);
   const [jobType, SetJobType] = useState({ value: 1, display_name: 'Pending' });
   const [logs, setLogs] = useState(null);
@@ -349,6 +350,11 @@ export default function Pills(props) {
       result.then((data) => {
         setLmsProject(data);
       });
+    } if ( type === 'LMS') {
+      const result = adminService.getLtiTools(activeOrganization?.id, activePage || 1);
+      result.then((data) => {
+        setLtiTool(data);
+      });
     }
   }, [type, activePage, activeOrganization?.id]);
 
@@ -379,6 +385,15 @@ export default function Pills(props) {
       setDefaultSso(data);
     });
   };
+  
+  const searchQueryChangeHandlerLtiTool = (search) => {
+    setLtiTool(null);
+    const encodeQuery = encodeURI(search.target.value);
+    const result = adminService.searchLtiTool(activeOrganization?.id, encodeQuery, activePage || 1);
+    result.then((data) => {
+      setLtiTool(data);
+    });
+  };
 
   useEffect(() => {
     if (activeTab === 'Project') {
@@ -394,6 +409,8 @@ export default function Pills(props) {
     // }
     else if (activeTab === 'Organization') {
       setSubTypeState('All Organizations');
+    } else if (activeTab === 'LMS') {
+      setSubTypeState('All Settings');
     }
   }, [activeTab]);
   // console.log(columnData)
@@ -557,9 +574,10 @@ export default function Pills(props) {
               />
             )}
 
-            {type === 'LMS' && (
+            {type === 'LMS' && subTypeState === 'All Settings' && (
               <Starter
                 paginationCounter={false}
+                subType={'All Settings'}
                 search={true}
                 print={false}
                 btnText="Create New LMS"
@@ -678,6 +696,24 @@ export default function Pills(props) {
                 setActivePage={setActivePage}
                 activePage={activePage}
                 searchQueryChangeHandler={searchQueryChangeHandlerDefautSso}
+              />
+            )}
+            {type === 'LMS' && subTypeState === 'LTI Tools' && (
+              <Starter
+                paginationCounter={false}
+                subType={'LTI Tools'}
+                search={true}
+                print={false}
+                btnText="Create New LTI Tool"
+                btnAction="add_lti_tool"
+                importUser={false}
+                filter={false}
+                tableHead={columnData.ltitool}
+                data={ltiTool}
+                type={type}
+                setActivePage={setActivePage}
+                activePage={activePage}
+                searchQueryChangeHandler={searchQueryChangeHandlerLtiTool}
               />
             )}
           </div>

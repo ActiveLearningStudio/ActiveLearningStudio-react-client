@@ -393,12 +393,27 @@ function Controller(props) {
           </div>
         </>
       )}
-      {!!search && type === "LMS" && (
+      {!!search && type === "LMS" 
+      && subType === "All Settings" && (
         <div className="search-bar">
           <input
             className=""
             type="text"
             placeholder="Search by URL or Email"
+            value={searchQuery}
+            onChange={searchQueryChangeHandler}
+          />
+          <img src={searchimg} alt="search" />
+        </div>
+      )}
+     
+      {!!search && type === "LMS" 
+      && subType === "LTI Tools" && (
+        <div className="search-bar">
+          <input
+            className=""
+            type="text"
+            placeholder="Search by URL or User Email"
             value={searchQuery}
             onChange={searchQueryChangeHandler}
           />
@@ -687,7 +702,8 @@ function Controller(props) {
             </button>
           </div>
         )}
-      {!!btnText && type === "LMS" && (
+      {!!btnText && type === "LMS" && 
+        subType === "All Settings" && (
         <div className="btn-text">
           <button
             onClick={() => {
@@ -701,6 +717,23 @@ function Controller(props) {
           </button>
         </div>
       )}
+      
+      {!!btnText && type === "LMS" && 
+        subType === "LTI Tools" && (
+        <div className="btn-text">
+          <button
+            onClick={() => {
+              if (btnAction === "add_lti_tool") {
+                dispatch(setActiveAdminForm("add_lti_tool"));
+              }
+            }}
+          >
+            <FontAwesomeIcon icon="plus" />
+            {btnText}
+          </button>
+        </div>
+      )}
+
       {!!btnText &&
         type === "DefaultSso" &&
         permission?.Organization.includes(

@@ -279,6 +279,7 @@ function Table(props) {
                 </tr>
               ))}
             {type === 'LMS' &&
+              subType === 'All Settings' && 
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
@@ -1273,6 +1274,98 @@ function Table(props) {
                   <tr>
                     <td colSpan="11">
                       <Alert variant="warning">No Default SSO integration found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="11">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              ))}
+              {type === 'LMS' && subType === 'LTI Tools' &&
+              (localStateData ? (
+                localStateData?.length > 0 ? (
+                  localStateData?.map((row) => (
+                    <tr key={row}>
+                      <td>{row.tool_name}</td>
+                      <td>{row.tool_url}</td>
+                      <td>{row.tool_description}</td>
+                      <td>{row.lti_version}</td>
+                      <td>
+                        <div className="links">
+                            <Link
+                              onClick={() => {
+                                Swal.showLoading();
+                                  adminService.cloneLtiTool(activeOrganization?.id, row?.id);
+                              }}
+                            >
+                              &nbsp;&nbsp;Clone&nbsp;&nbsp;
+                            </Link>
+                          {/* {permission?.Organization.includes('organization:update-default-sso') && ( */}
+                            <Link
+                              to="#"
+                              onClick={() => {
+                                dispatch({
+                                  type: 'SET_ACTIVE_EDIT',
+                                  payload: row,
+                                });
+                                dispatch(setActiveAdminForm('edit_lti_tool'));
+                              }}
+                            >
+                              &nbsp;&nbsp;Edit&nbsp;&nbsp;
+                            </Link>
+                          {/* )} */}
+                          {/* {permission?.Organization.includes('organization:delete-default-sso') && ( */}
+                            <Link
+                              onClick={() => {
+                                Swal.fire({
+                                  title: 'Are you sure you want to delete this LTI Tool?',
+                                  text: 'This action is Irreversible',
+                                  icon: 'warning',
+                                  showCancelButton: true,
+                                  confirmButtonColor: '#084892',
+                                  cancelButtonColor: '#d33',
+                                  confirmButtonText: 'Yes, delete it!',
+                                }).then((result) => {
+                                  if (result.isConfirmed) {
+                                    Swal.fire({
+                                      title: 'LTI Tool',
+                                      icon: 'info',
+                                      text: 'Deleting LTI Tool...',
+                                      allowOutsideClick: false,
+                                      onBeforeOpen: () => {
+                                        Swal.showLoading();
+                                      },
+                                      button: false,
+                                    });
+                                    const response = adminService.deleteLtiTool(activeOrganization?.id, row?.id);
+                                    response
+                                      .then((res) => {
+                                        Swal.fire({
+                                          icon: 'success',
+                                          text: res?.message,
+                                        });
+                                        const filterLMS = localStateData.filter((each) => each.id != row.id);
+                                        setLocalStateData(filterLMS);
+                                      })
+                                      .catch((err) => console.log(err));
+                                  }
+                                });
+                              }}
+                            >
+                              &nbsp;&nbsp;Delete&nbsp;&nbsp;
+                            </Link>
+                          {/* )} */}
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No LTI Tool found.</Alert>
                     </td>
                   </tr>
                 )

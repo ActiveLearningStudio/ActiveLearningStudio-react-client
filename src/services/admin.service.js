@@ -235,6 +235,58 @@ const searchDefaultSso = (orgId, search, page) => httpService
 	.catch((err) => {
 		Promise.reject(err.response.data);
 	});
+
+const getLtiTools = (subOrgId, page) => httpService
+	.get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}`)
+	.then(({ data }) => data)
+	.catch((err) => {
+		Promise.reject(err.response.data);
+	});
+
+const createLtiTool = (subOrgId, values) => httpService
+	.post(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings`, values)
+	.then(({ data }) => data)
+	.catch((err) => {
+		errorCatcher(err.response.data);
+		return Promise.reject();
+	});
+
+const updateLtiTool = (subOrgId, id, values) => httpService
+	.put(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings/${id}`, values)
+	.then(({ data }) => data)
+	.catch((err) => {
+		errorCatcher(err.response.data);
+		return Promise.reject();
+	});
+
+const deleteLtiTool = (subOrgId, id) => httpService
+	.remove(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings/${id}`)
+	.then(({ data }) => data)
+	.catch((err) => {
+		errorCatcher(err.response.data);
+		return Promise.reject();
+	});
+
+const searchLtiTool = (subOrgId, search, page) => httpService
+	.get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}&query=${search.replace(/#/, '%23')}`)
+	.then(({ data }) => data)
+	.catch((err) => {
+		Promise.reject(err.response.data);
+	});
+
+const cloneLtiTool = (subOrgId, id) => httpService
+  .post(`/${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings/${id}/clone`)
+   .then((res) => Swal.fire(res.data.message))
+  .catch((err) => {
+    if (err.response.data.errors) {
+      Swal.fire(err.response.data.errors[0]);
+    } else {
+      Swal.fire({
+        icon: 'error',
+        text: 'Something went wrong!',
+      });
+    }
+  });
 export default {
 	addUserInOrganization,
 	editUserInOrganization,
@@ -266,4 +318,10 @@ export default {
 	updateDefaultSso,
 	searchDefaultSso,
 	getAllExportedProject,
+  getLtiTools,
+  createLtiTool,
+  updateLtiTool,
+  deleteLtiTool,
+  searchLtiTool,
+  cloneLtiTool,
 };

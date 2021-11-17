@@ -16,6 +16,7 @@ import Breadcrump from "utils/BreadCrump/breadcrump";
 import * as actionTypes from "store/actionTypes";
 import CreateLms from "./formik/createLms";
 import CreateDefaultSso from "./formik/createDefaultSso";
+import CreateLtiTool from "./formik/createLtiTool";
 import "./style.scss";
 import { getRoles } from "store/actions/organization";
 import EditProject from "./formik/editProject";
@@ -143,7 +144,7 @@ function AdminPanel() {
                   )}
                 <Tab eventKey="LMS" title="Integrations">
                   <div className="module-content">
-                    <Pills modules={["All Settings"]} type="LMS" />
+                    <Pills modules={["All Settings", "LTI Tools"]} type="LMS" />
                   </div>
                 </Tab>
                 {/* <Tab eventKey="Settings" title="Settings">
@@ -343,6 +344,26 @@ function AdminPanel() {
               </div>
             </div>
           )}
+
+          {(activeForm === "add_lti_tool" ||
+            activeForm === "edit_lti_tool") && (
+              <div className="form-new-popup-admin">
+                <FontAwesomeIcon
+                  icon="times"
+                  className="cross-all-pop"
+                  onClick={() => {
+                    dispatch(removeActiveAdminForm());
+                  }}
+                />
+                <div className="inner-form-content">
+                  {activeForm === "add_lti_tool" ? (
+                    <CreateLtiTool />
+                  ) : (
+                    <CreateLtiTool editMode />
+                  )}
+                </div>
+              </div>
+            )}
         </>
       ) : (
         <div className="content-wrapper" style={{ padding: "20px" }}>

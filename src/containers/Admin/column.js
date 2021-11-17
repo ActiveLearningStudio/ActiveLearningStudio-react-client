@@ -121,4 +121,12 @@ export const columnData = {
 		'Description',
 		'Action',
 	],
+
+  ltitool: [
+		'Name',
+		'URL',
+		'Description',
+		'Version',
+		'Action',
+	],
 };
