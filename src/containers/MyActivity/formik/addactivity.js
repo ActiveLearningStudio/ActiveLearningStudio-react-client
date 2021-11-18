@@ -57,11 +57,23 @@ const AddActivity = (props) => {
         setSuccessMessage={setSuccessMessage}
       />
       <div className="add-activity-form">
-        <div className="add-activity-tabs">
-          <Tabs text="1. Select an activity" tabActive={false} />
-          <Tabs text="2.Activity description + activities" className="ml-10" tabActive={true} />
-          {/* <Tabs text="3. Preview Layout" className="ml-10" /> */}
-        </div>
+        {activtyMethod === 'upload' ? (
+          <div className="add-activity-tabs">
+            <Tabs text="1. Describe + Upload activity" tabActive={true} />
+          </div>
+        ) : (
+          <div className="add-activity-tabs">
+            <Tabs text="1. Select  activity" tabActive={true} />
+            <Tabs text="2. Describe +  Create activity" className="ml-10" tabActive={true} />
+            {/* <Tabs text="3. Create activity" className="ml-10 " /> */}
+            {/* {singleLayout?.map((data) => {
+              if (data.id === selectedLayout?.id &&) {
+                return <Tabs text="3. Create activity" className="ml-10 " />;
+              }
+            })} */}
+          </div>
+        )}
+
         {!activity && (
           <div className="add-activity-title-select">
             <div className="add-activity-title">
@@ -95,7 +107,7 @@ const AddActivity = (props) => {
             <div className={activtyMethod !== 'upload' ? 'radio-button active-radio' : 'radio-button'}>
               <input
                 onClick={() => {
-                  changeScreenHandler('addactivity', 'create');
+                  changeScreenHandler('layout', 'create');
                 }}
                 name="selecttype"
                 type="radio"
