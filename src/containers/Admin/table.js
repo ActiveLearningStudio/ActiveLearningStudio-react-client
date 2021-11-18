@@ -38,6 +38,7 @@ import {
 
 import AdminDropdown from "./adminDropdown";
 import AdminPaginaation from "./pagination";
+import { faCheckCircle, faStopCircle } from "@fortawesome/free-solid-svg-icons";
 function Table(props) {
   const {
     tableHead,
@@ -850,7 +851,19 @@ function Table(props) {
 
                         {/* <td>{row.organization_id}</td> */}
 
-                        <td>{String(row.shared)}</td>
+                        {/* <td>{String(row.shared)}</td> */}
+
+                        <td>
+                          {row.shared ? (
+                            <Link className="shared-link-enable">Enabled</Link>
+                          ) : (
+                            <>
+                              <Link className="shared-link-disable">
+                                Disabled
+                              </Link>
+                            </>
+                          )}
+                        </td>
                         {/* <td>{String(row.starter_project)}</td> */}
 
                         {/* <td>{row.status_text}</td> */}
@@ -863,6 +876,8 @@ function Table(props) {
                           <div className="links">
                             {(row.indexing === 1 || row.indexing === 2) && (
                               <Link
+                                style={{ padding: "4px 0" }}
+                                className="approve-label"
                                 onClick={async () => {
                                   Swal.fire({
                                     title: "Please Wait !",
@@ -909,11 +924,17 @@ function Table(props) {
                                   }
                                 }}
                               >
+                                <FontAwesomeIcon
+                                  icon={faCheckCircle}
+                                  style={{ marginRight: "4px" }}
+                                />
                                 Approve&nbsp;&nbsp;
                               </Link>
                             )}
                             {(row.indexing === 1 || row.indexing === 3) && (
                               <Link
+                                style={{ padding: "4px 0" }}
+                                className="reject-label"
                                 onClick={async () => {
                                   Swal.fire({
                                     title: "Please Wait !",
@@ -960,6 +981,10 @@ function Table(props) {
                                   }
                                 }}
                               >
+                                <FontAwesomeIcon
+                                  icon={faStopCircle}
+                                  style={{ marginRight: "4px" }}
+                                />
                                 Reject
                               </Link>
                             )}

@@ -67,8 +67,9 @@ import Edit from "../../..//assets/images/menu-edit.svg";
 import Preview from "../../..//assets/images/preview-2.svg";
 import AddBtn from "../../..//assets/images/add-btn.svg";
 
-import "../../Playlists/style.scss";
+// import "../../Playlists/style.scss";
 import "./style.scss";
+import Buttons from "utils/Buttons/buttons";
 
 const EditProjectModel = (props) => {
   const dispatch = useDispatch();
@@ -235,9 +236,9 @@ const EditProjectModel = (props) => {
   const handleShowCreateResourceModal = (playlist) => {
     try {
       showCreateResourceModal(playlist.id);
-      history.push(
-        `/org/${organization.currentOrganization?.domain}/project/${projectID}/playlist/${playlist.id}/activity/create`
-      );
+      // history.push(
+      //   `/org/${organization.currentOrganization?.domain}/project/${projectID}/playlist/${playlist.id}/activity/create`
+      // );
     } catch (e) {
       // console.log(e.message);
     }
@@ -272,17 +273,17 @@ const EditProjectModel = (props) => {
       }).then(async (resp) => {
         if (resp.isConfirmed) {
           await hideCreateResourceModal();
-          history.push(
-            `/org/${organization.currentOrganization?.domain}/project/${projectID}`
-          );
+          // history.push(
+          //   `/org/${organization.currentOrganization?.domain}/project/${projectID}`
+          // );
         }
       });
     } else {
       try {
         await hideCreateResourceModal();
-        history.push(
-          `/org/${organization.currentOrganization?.domain}/project/${projectID}`
-        );
+        // history.push(
+        //   `/org/${organization.currentOrganization?.domain}/project/${projectID}`
+        // );
       } catch (err) {
         // console.log(err.message);
       }
@@ -417,9 +418,9 @@ const EditProjectModel = (props) => {
         );
       }
 
-      history.push(
-        `/org/${organization.currentOrganization?.domain}/project/${projectID}`
-      );
+      // history.push(
+      //   `/org/${organization.currentOrganization?.domain}/project/${projectID}`
+      // );
     } catch (e) {
       // console.log(e.message);
     }
@@ -441,9 +442,9 @@ const EditProjectModel = (props) => {
         metadata
       );
 
-      history.push(
-        `/org/${organization.currentOrganization?.domain}/project/${projectID}`
-      );
+      // history.push(
+      //   `/org/${organization.currentOrganization?.domain}/project/${projectID}`
+      // );
     } catch (e) {
       // console.log(e);
     }
@@ -573,6 +574,7 @@ const EditProjectModel = (props) => {
                   searchName="abstract"
                   setUploadImage={setUploadImage}
                 />
+
                 <div>
                   {pageLoading !== false ? (
                     <></>
@@ -1029,6 +1031,33 @@ const EditProjectModel = (props) => {
           />
         </>
       </Modal.Body>
+      <Modal.Footer>
+        <div className="model-footer-detail">
+          <div className="detail-auther">
+            <p>
+              Author:<span> /{"basit"}</span>
+            </p>
+            <p>
+              ID:<span> /{projectID}</span>
+            </p>
+          </div>
+          <div className="detail-btn">
+            <Buttons
+              text="Cancel"
+              width="95px"
+              height="32px"
+              secondary={true}
+              className="mr-16"
+            />
+            <Buttons
+              text="Save & Exit"
+              width="124px"
+              height="32px"
+              primary={true}
+            />
+          </div>
+        </div>
+      </Modal.Footer>
     </Modal>
   );
 };

@@ -81,6 +81,7 @@ const AdminDropdown = (props) => {
         show={modalShow}
         onHide={() => {
           setModalShow(false);
+          setProjectID("");
         }}
         projectID={projectID}
       />
@@ -237,6 +238,12 @@ const AdminDropdown = (props) => {
                 <img src={Export} alt="Preview" className="menue-img" />
                 Export
               </Dropdown.Item>
+              {row.shared ? (
+                <Dropdown.Item to={`/project/${row.id}/shared`}>
+                  <img src={Export} alt="Preview" className="menue-img" />
+                  Get shared link
+                </Dropdown.Item>
+              ) : null}
               <Dropdown.Item
                 onClick={() => {
                   // dispatch(setActiveAdminForm("edit_project"));

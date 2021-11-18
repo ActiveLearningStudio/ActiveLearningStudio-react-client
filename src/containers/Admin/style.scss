@@ -1105,5 +1105,31 @@
   line-height: 16px;
   text-align: center;
   color: #959595;
-  padding: 1px 4px;
+  padding: 1px 8px;
+}
+.approve-label {
+  width: 96px;
+  height: 32px;
+  background: #e5eeff;
+  border-radius: 4px;
+  text-align: center;
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  color: #2e68bf;
+}
+.reject-label {
+  width: 96px;
+  height: 32px;
+  background: rgba(255, 64, 59, 0.08);
+  border-radius: 4px;
+  text-align: center;
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  color: #ff403b;
 }
