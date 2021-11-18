@@ -5,22 +5,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveAdminForm } from 'store/actions/admin';
 
-import { removeActiveAdminForm, setActiveTab } from 'store/actions/admin';
-import CreateActivityItem from './formik/createActivityItem';
-import CreateActivityType from './formik/createActivity';
-import CreateOrg from './formik/createOrg';
-import AddRole from './formik/addRole';
-import CreateUser from './formik/createuser';
-import Pills from './pills';
-import Heading from './heading';
-import Breadcrump from 'utils/BreadCrump/breadcrump';
-import * as actionTypes from 'store/actionTypes';
-import CreateLms from './formik/createLms';
-import CreateDefaultSso from './formik/createDefaultSso';
-import './style.scss';
-import { getRoles } from 'store/actions/organization';
-import EditProject from './formik/editProject';
-import { useHistory } from 'react-router-dom';
+import { removeActiveAdminForm, setActiveTab } from "store/actions/admin";
+import CreateActivityItem from "./formik/createActivityItem";
+import CreateActivityType from "./formik/createActivity";
+import CreateOrg from "./formik/createOrg";
+import AddRole from "./formik/addRole";
+import CreateUser from "./formik/createuser";
+import Pills from "./pills";
+import Heading from "./heading";
+import Breadcrump from "utils/BreadCrump/breadcrump";
+import * as actionTypes from "store/actionTypes";
+import CreateLms from "./formik/createLms";
+import CreateDefaultSso from "./formik/createDefaultSso";
+import CreateLtiTool from "./formik/createLtiTool";
+import "./style.scss";
+import { getRoles } from "store/actions/organization";
+import EditProject from "./formik/editProject";
+import { useHistory } from "react-router-dom";
 import editicon from 'assets/images/edit-icon.png';
 
 function AdminPanel() {
@@ -120,7 +121,7 @@ function AdminPanel() {
                 )}
                 <Tab eventKey="LMS" title="Integrations">
                   <div className="module-content">
-                    <Pills modules={['All Settings']} type="LMS" />
+                    <Pills modules={["All Settings", "LTI Tools"]} type="LMS" />
                   </div>
                 </Tab>
                 {/* <Tab eventKey="Settings" title="Settings">
@@ -285,6 +286,26 @@ function AdminPanel() {
               </div>
             </div>
           )}
+
+          {(activeForm === "add_lti_tool" ||
+            activeForm === "edit_lti_tool") && (
+              <div className="form-new-popup-admin">
+                <FontAwesomeIcon
+                  icon="times"
+                  className="cross-all-pop"
+                  onClick={() => {
+                    dispatch(removeActiveAdminForm());
+                  }}
+                />
+                <div className="inner-form-content">
+                  {activeForm === "add_lti_tool" ? (
+                    <CreateLtiTool />
+                  ) : (
+                    <CreateLtiTool editMode />
+                  )}
+                </div>
+              </div>
+            )}
         </>
       ) : (
         <div className="content-wrapper" style={{ padding: '20px' }}>
