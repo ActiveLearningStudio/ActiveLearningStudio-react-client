@@ -1,19 +1,9 @@
 /* eslint-disable */
-import React from "react";
-import { useDispatch } from "react-redux";
-import Pagination from "react-js-pagination";
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import Pagination from 'react-js-pagination';
 
-const PaginationAdmin = ({
-  type,
-  setCurrentTab,
-  subTypeState,
-  subType,
-  data,
-  activePage,
-  setActivePage,
-  updatePageNumber,
-  localstatePagination,
-}) => {
+const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, activePage, setActivePage, updatePageNumber, localstatePagination }) => {
   const dispatch = useDispatch();
   return (
     <div className="pagination-top">
@@ -21,7 +11,7 @@ const PaginationAdmin = ({
         Showing {data?.meta?.from} - {data?.meta?.to} of {data?.meta?.total}
       </div>
       <div className="main-pagination">
-        {type === "Stats" && subTypeState === "Report" && (
+        {type === 'Stats' && subTypeState === 'Report' && (
           <Pagination
             activePage={activePage}
             pageRangeDisplayed={5}
@@ -34,7 +24,7 @@ const PaginationAdmin = ({
             }}
           />
         )}
-        {type === "Stats" && subTypeState === "Queues: Logs" && (
+        {type === 'Stats' && subTypeState === 'Queues: Logs' && (
           <Pagination
             activePage={activePage}
             pageRangeDisplayed={5}
@@ -47,7 +37,7 @@ const PaginationAdmin = ({
             }}
           />
         )}
-        {type === "Stats" && subTypeState === "Queues: Jobs" && (
+        {type === 'Stats' && subTypeState === 'Queues: Jobs' && (
           <Pagination
             activePage={activePage}
             pageRangeDisplayed={5}
@@ -60,7 +50,7 @@ const PaginationAdmin = ({
             }}
           />
         )}
-        {type === "Users" && (
+        {type === 'Users' && (
           <Pagination
             activePage={activePage}
             pageRangeDisplayed={5}
@@ -75,7 +65,7 @@ const PaginationAdmin = ({
             lastPageText="Next"
           />
         )}
-        {type === "Project" && subType === "all" && (
+        {type === 'Project' && subType === 'all' && (
           <Pagination
             activePage={activePage}
             pageRangeDisplayed={5}
@@ -83,7 +73,7 @@ const PaginationAdmin = ({
             totalItemsCount={data?.meta?.total}
             onChange={(e) => {
               window.scrollTo(0, 0);
-              setCurrentTab("all");
+              setCurrentTab('all');
               setActivePage(e);
               dispatch(updatePageNumber(e));
             }}
@@ -92,7 +82,7 @@ const PaginationAdmin = ({
             lastPageText="Next"
           />
         )}
-        {type === "Project" && subType === "Exported Projects" && (
+        {type === 'Project' && subType === 'Exported Projects' && (
           <Pagination
             activePage={activePage}
             pageRangeDisplayed={5}
@@ -100,7 +90,7 @@ const PaginationAdmin = ({
             totalItemsCount={localstatePagination?.meta?.total}
             onChange={(e) => {
               window.scrollTo(0, 0);
-              setCurrentTab("Exported Projects");
+              setCurrentTab('Exported Projects');
               setActivePage(e);
               dispatch(updatePageNumber(e));
             }}
@@ -108,7 +98,7 @@ const PaginationAdmin = ({
             lastPageText="Next"
           />
         )}
-        {type === "Project" && subType === "index" && (
+        {type === 'Project' && subType === 'index' && (
           <Pagination
             activePage={activePage}
             pageRangeDisplayed={5}
@@ -116,7 +106,7 @@ const PaginationAdmin = ({
             totalItemsCount={localstatePagination?.meta?.total}
             onChange={(e) => {
               window.scrollTo(0, 0);
-              setCurrentTab("index");
+              setCurrentTab('index');
               setActivePage(e);
               dispatch(updatePageNumber(e));
             }}
@@ -124,7 +114,7 @@ const PaginationAdmin = ({
             lastPageText="Next"
           />
         )}
-        {type === "Activities" && subType === "Activity Types" && (
+        {type === 'Activities' && subType === 'Activity Types' && (
           <Pagination
             activePage={activePage}
             pageRangeDisplayed={5}
@@ -139,7 +129,7 @@ const PaginationAdmin = ({
             lastPageText="Next"
           />
         )}
-        {type === "Activities" && subType === "Activity Items" && (
+        {type === 'Activities' && subType === 'Activity Items' && (
           <Pagination
             activePage={activePage}
             pageRangeDisplayed={5}
@@ -154,7 +144,7 @@ const PaginationAdmin = ({
             lastPageText="Next"
           />
         )}
-        {type === "LMS" && (
+        {type === 'LMS' && (
           <Pagination
             activePage={activePage}
             pageRangeDisplayed={5}
@@ -169,7 +159,7 @@ const PaginationAdmin = ({
             lastPageText="Next"
           />
         )}
-        {type === "DefaultSso" && (
+        {type === 'DefaultSso' && (
           <Pagination
             activePage={activePage}
             pageRangeDisplayed={5}

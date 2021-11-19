@@ -38,6 +38,7 @@ const AdminDropdown = (props) => {
     user,
     row,
     type1,
+    subType,
     // text,
     // iconColor,
   } = props;

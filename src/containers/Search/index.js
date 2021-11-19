@@ -848,10 +848,10 @@ function SearchInterface(props) {
                                         href={
                                           res.model === 'Activity'
                                             // eslint-disable-next-line max-len
-                                            ? (permission?.activeRole === 'admin' && searchType !== 'public') || (searchType === 'private') ? `/org/${currentOrganization?.domain}/project/${res.project_id}/playlist/${res.playlist_id}/activity/${res.id}/preview` : `/activity/${res.id}/shared`
+                                            ? (permission?.activeRole === 'admin' && searchType !== 'public') || (searchType === 'private') ? `/org/${currentOrganization?.domain}/project/${res.project_id}/playlist/${res.playlist_id}/activity/${res.id}/preview` : `/activity/${res.id}/preview`
                                             : res.model === 'Playlist'
-                                              ? `/playlist/${res.id}/preview/lti`
-                                              : `/project/${res.id}/shared`
+                                              ? `/playlist/${res.id}/preview`
+                                              : `/project/${res.id}/preview`
                                         }
                                         target="_blank"
                                         rel="noreferrer"
@@ -1117,10 +1117,10 @@ function SearchInterface(props) {
                                           <a
                                             href={
                                               res.model === 'Activity'
-                                                ? `/activity/${res.id}/shared`
+                                                ? `/activity/${res.id}/preview`
                                                 : res.model === 'Playlist'
-                                                  ? `/playlist/${res.id}/preview/lti`
-                                                  : `/project/${res.id}/shared`
+                                                  ? `/playlist/${res.id}/preview`
+                                                  : `/project/${res.id}/preview`
                                             }
                                             target="_blank"
                                             rel="noreferrer"
@@ -1296,10 +1296,10 @@ function SearchInterface(props) {
                                             href={
                                               res.model === 'Activity'
                                                 // eslint-disable-next-line max-len
-                                                ? (permission?.activeRole === 'admin' && searchType !== 'public') || (searchType === 'private') ? `/org/${currentOrganization?.domain}/project/${res.project_id}/playlist/${res.playlist_id}/activity/${res.id}/preview` : `/activity/${res.id}/shared`
+                                                ? (permission?.activeRole === 'admin' && searchType !== 'public') || (searchType === 'private') ? `/org/${currentOrganization?.domain}/project/${res.project_id}/playlist/${res.playlist_id}/activity/${res.id}/preview` : `/activity/${res.id}/preview`
                                                 : res.model === 'Playlist'
-                                                  ? `/playlist/${res.id}/preview/lti`
-                                                  : `/project/${res.id}/shared`
+                                                  ? `/playlist/${res.id}/preview`
+                                                  : `/project/${res.id}/preview`
                                             }
                                             target="_blank"
                                             rel="noreferrer"
@@ -1405,10 +1405,10 @@ function SearchInterface(props) {
                                             <a
                                               href={
                                                 res.model === 'Activity'
-                                                  ? `/activity/${res.id}/shared`
+                                                  ? `/activity/${res.id}/preview`
                                                   : res.model === 'Playlist'
-                                                    ? `/playlist/${res.id}/preview/lti`
-                                                    : `/project/${res.id}/shared`
+                                                    ? `/playlist/${res.id}/preview`
+                                                    : `/project/${res.id}/preview`
                                               }
                                               target="_blank"
                                               rel="noreferrer"

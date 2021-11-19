@@ -44,6 +44,7 @@ export default function CreateOrg(prop) {
           api_key: editMode ? activeEdit?.api_key : undefined,
           unit_path: editMode ? activeEdit?.unit_path : undefined,
           self_registration: editMode ? activeEdit?.self_registration : false,
+          noovo_client_id: editMode ? activeEdit?.noovo_client_id : undefined,
         }}
         validate={(values) => {
           const errors = {};
@@ -264,6 +265,10 @@ export default function CreateOrg(prop) {
             <div className="form-group-create">
               <h3>LearnSafe Unit Path </h3>
               <input type="text" name="unit_path" onChange={handleChange} onBlur={handleBlur} value={values.unit_path} />
+            </div>
+            <div className="form-group-create">
+              <h3>Noovo Client ID </h3>
+              <input type="text" name="noovo_client_id" onChange={handleChange} onBlur={handleBlur} value={values.noovo_client_id} />
             </div>
             <div className="form-group-create">
               <h3>Self Registration</h3>

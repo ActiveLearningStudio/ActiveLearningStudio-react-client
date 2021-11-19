@@ -162,6 +162,7 @@ export const createOrganizationNew = (id, data) => async (dispatch) => {
     unit_path: data.unit_path,
     domain: data.domain,
     self_registration: data.self_registration,
+    noovo_client_id: data.noovo_client_id || undefined,
   };
   const result = organization.createOrganization(details);
   result.then((newOrg) => {
@@ -194,7 +195,7 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
     api_key: data.api_key || '',
     unit_path: data.unit_path || '',
     self_registration: data.self_registration,
-
+    noovo_client_id: data.noovo_client_id || undefined,
     // admins: adminUsers,
     // users: usersList,
   };

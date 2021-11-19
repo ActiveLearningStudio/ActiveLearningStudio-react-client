@@ -287,6 +287,7 @@ function Table(props) {
                 </tr>
               ))}
             {type === 'LMS' &&
+              subType === 'All Settings' && 
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
@@ -299,7 +300,7 @@ function Table(props) {
                       <td>{row?.description}</td>
                       <td>
                         <div>
-                          <AdminDropdown type={type} row={row} />
+                          <AdminDropdown type={type} subType='All Settings' row={row} />
                         </div>
                       </td>
                     </tr>
@@ -964,6 +965,36 @@ function Table(props) {
                   <tr>
                     <td colSpan="11">
                       <Alert variant="warning">No Default SSO integration found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="11">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              ))}
+              {type === 'LMS' && subType === 'LTI Tools' &&
+              (localStateData ? (
+                localStateData?.length > 0 ? (
+                  localStateData?.map((row) => (
+                    <tr key={row}>
+                      <td>{row.tool_name}</td>
+                      <td>{row.tool_url}</td>
+                      <td>{row.tool_description}</td>
+                      <td>{row.lti_version}</td>
+                      <td>
+                        <div>
+                          <AdminDropdown type={type} subType='LTI Tools' row={row} />
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No LTI Tool found.</Alert>
                     </td>
                   </tr>
                 )
