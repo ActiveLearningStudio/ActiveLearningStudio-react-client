@@ -40,9 +40,9 @@ export const columnData = {
 
   ActivityItems: ['Name', 'Order', 'Meta'],
 
-  userall: ['Date', 'First Name', 'Last Name', 'Email', 'Organization', 'Org Type', 'Role', 'Action'],
+  userall: ['Date', 'First Name', 'Last Name', 'Email', 'Organization', 'Org Type', 'Role'],
 
-  lmssettings: ['URL', 'Type', 'User', 'Email', 'Site Name', 'Description', 'Action'],
+  lmssettings: ['URL', 'Type', 'User', 'Email', 'Site Name', 'Description'],
 
   organization: [
     // 'Image',
@@ -57,5 +57,5 @@ export const columnData = {
   ],
 
   defaultsso: ['URL', 'Type', 'Organization', 'Site Name', 'Client Id', 'Description', 'Action'],
-  ltitool: ['Name', 'URL', 'Description', 'Version', 'Action'],
+  ltitool: ['Name', 'URL', 'Description', 'Version'],
 };

@@ -11,9 +11,11 @@ import { confirmAlert } from 'react-confirm-alert';
 import './style.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Delete from '../../assets/images/menu-dele.svg';
+import Clone from '../../assets/images/menu-dupli.svg';
 import Edit from '../../assets/images/menu-edit.svg';
 import Export from '../../assets/images/export-img.svg';
 import MenuLogo from '../../assets/images/menu-logo.svg';
+import Remove from '../../assets/images/close.svg';
 import { forgetSpecificFailedJob, retrySpecificFailedJob, setActiveAdminForm, setActiveTab, setCurrentProject, setCurrentUser } from 'store/actions/admin';
 
 import {
@@ -383,7 +385,7 @@ const AdminDropdown = (props) => {
               )}
               {permission?.Organization.includes('organization:remove-user') && auth?.user?.id !== user.id && (
                 <Dropdown.Item onClick={() => handleRemoveUser(user)}>
-                  <img src={Edit} alt="Preview" className="menue-img" />
+                  <img src={Remove} alt="Preview" className="menue-img" />
                   Remove
                 </Dropdown.Item>
               )}
@@ -407,7 +409,7 @@ const AdminDropdown = (props) => {
                   dispatch(setActiveAdminForm('clone_lms'));
                 }}
               >
-                <img src={Edit} alt="Preview" className="menue-img" />
+                <img src={Clone} alt="Preview" className="menue-img" />
                 &nbsp;&nbsp;Clone&nbsp;&nbsp;
               </Dropdown.Item>
               <Dropdown.Item
@@ -449,7 +451,7 @@ const AdminDropdown = (props) => {
                   });
                 }}
               >
-                <img src={Edit} alt="Preview" className="menue-img" />
+                <img src={Delete} alt="Preview" className="menue-img" />
                 &nbsp;&nbsp;Delete&nbsp;&nbsp;
               </Dropdown.Item>
               <Dropdown.Item
@@ -523,7 +525,7 @@ const AdminDropdown = (props) => {
                       });
                     }}
                   >
-                    <img src={Edit} alt="Preview" className="menue-img" />
+                    <img src={Delete} alt="Preview" className="menue-img" />
                     Delete
                   </Dropdown.Item>
                 </>
