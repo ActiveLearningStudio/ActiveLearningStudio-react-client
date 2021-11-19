@@ -1,33 +1,20 @@
 /*eslint-disable*/
-// import React, { useState, useEffect } from 'react';
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { Dropdown } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import Swal from "sweetalert2";
-import adminService from "services/admin.service";
-import projectService from "services/project.service";
-// import { toast } from 'react-toastify';
-// import { getProjectId, googleShare } from 'store/actions/gapi';
-// import { cloneProject } from 'store/actions/search';
-// import {
-//   getProjectCourseFromLMS,
-// } from 'store/actions/project';
-// import { lmsPlaylist } from 'store/actions/playlist';
-import "./style.scss";
-// import loader from 'assets/images/loader.svg';
-import Delete from "../../assets/images/menu-dele.svg";
-import Edit from "../../assets/images/menu-edit.svg";
-import Export from "../../assets/images/export-img.svg";
-import MenuLogo from "../../assets/images/menu-logo.svg";
-import {
-  forgetSpecificFailedJob,
-  retrySpecificFailedJob,
-  setActiveAdminForm,
-  setActiveTab,
-  setCurrentProject,
-  setCurrentUser,
-} from "store/actions/admin";
+
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { Dropdown } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
+import adminService from 'services/admin.service';
+import projectService from 'services/project.service';
+import { confirmAlert } from 'react-confirm-alert';
+import './style.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Delete from '../../assets/images/menu-dele.svg';
+import Edit from '../../assets/images/menu-edit.svg';
+import Export from '../../assets/images/export-img.svg';
+import MenuLogo from '../../assets/images/menu-logo.svg';
+import { forgetSpecificFailedJob, retrySpecificFailedJob, setActiveAdminForm, setActiveTab, setCurrentProject, setCurrentUser } from 'store/actions/admin';
 
 import {
   deleteUserFromOrganization,
@@ -37,17 +24,10 @@ import {
   removeUserFromOrganization,
   getRoles,
   updatePageNumber,
-} from "store/actions/organization";
-import {
-  deleteActivityItem,
-  deleteActivityType,
-  getActivityItems,
-  loadResourceTypesAction,
-  selectActivityItem,
-  selectActivityType,
-} from "store/actions/resource";
-import * as actionTypes from "store/actionTypes";
-import EditProjectModel from "./model/editprojectmodel";
+} from 'store/actions/organization';
+import { deleteActivityItem, deleteActivityType, getActivityItems, loadResourceTypesAction, selectActivityItem, selectActivityType } from 'store/actions/resource';
+import * as actionTypes from 'store/actionTypes';
+import EditProjectModel from './model/editprojectmodel';
 
 const AdminDropdown = (props) => {
   const {
@@ -74,16 +54,15 @@ const AdminDropdown = (props) => {
   //   setAllLms(AllLms);
   // }, [AllLms]);
   const [modalShow, setModalShow] = useState(false);
-  const [projectID, setProjectID] = useState("");
+  const [projectID, setProjectID] = useState('');
   return (
     <>
       <EditProjectModel
         show={modalShow}
         onHide={() => {
           setModalShow(false);
-          setProjectID("");
         }}
-        projectID={projectID}
+        row={row}
       />
       <Dropdown className="project-dropdown check d-flex  align-items-center text-added-project-dropdown">
         <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
@@ -100,15 +79,15 @@ const AdminDropdown = (props) => {
         </Dropdown.Toggle>
 
         <Dropdown.Menu className="menu">
-          {type === "Organization" && (
+          {type === 'Organization' && (
             <>
-              {" "}
-              {permission?.Organization.includes("organization:edit") && (
+              {' '}
+              {permission?.Organization.includes('organization:edit') && (
                 <Dropdown.Item
                   onClick={() => {
-                    dispatch(setActiveAdminForm("edit_org"));
+                    dispatch(setActiveAdminForm('edit_org'));
                     dispatch({
-                      type: "SET_ACTIVE_EDIT",
+                      type: 'SET_ACTIVE_EDIT',
                       payload: row,
                     });
                   }}
@@ -117,34 +96,26 @@ const AdminDropdown = (props) => {
                   Edit
                 </Dropdown.Item>
               )}
-              {permission?.Organization.includes("organization:edit") && (
+              {permission?.Organization.includes('organization:edit') && (
                 <>
                   <Dropdown.Item
                     onClick={async () => {
                       Swal.fire({
-                        title: "Please Wait !",
-                        html: "Updating View ...",
+                        title: 'Please Wait !',
+                        html: 'Updating View ...',
                         allowOutsideClick: false,
                         onBeforeOpen: () => {
                           Swal.showLoading();
                         },
                       });
-                      if (
-                        permission?.Organization?.includes("organization:view")
-                      )
-                        await dispatch(getOrganization(row.id));
+                      if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                       Swal.close();
                       dispatch({
                         type: actionTypes.UPDATE_PAGINATION,
                         payload: [...paginations, row],
                       });
                       if (row.projects_count > 0) {
-                        if (
-                          permission?.Organization?.includes(
-                            "organization:view"
-                          )
-                        )
-                          await dispatch(getOrganization(row.id));
+                        if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                         dispatch(clearOrganizationState());
                         dispatch(getRoles());
                       }
@@ -155,34 +126,31 @@ const AdminDropdown = (props) => {
                   </Dropdown.Item>
                 </>
               )}
-              {permission?.Organization.includes("organization:delete") && (
+              {permission?.Organization.includes('organization:delete') && (
                 <>
                   <Dropdown.Item
                     to="#"
                     onClick={() => {
                       Swal.fire({
-                        title: "Are you sure?",
+                        title: 'Are you sure?',
                         text: "You won't be able to revert this!",
-                        icon: "warning",
+                        icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonColor: "#084892",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes, delete it!",
+                        confirmButtonColor: '#084892',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!',
                       }).then(async (result) => {
                         if (result.isConfirmed) {
                           Swal.showLoading();
-                          const resultDel = await dispatch(
-                            deleteOrganization(row)
-                          );
+                          const resultDel = await dispatch(deleteOrganization(row));
                           if (resultDel) {
                             Swal.fire({
-                              text:
-                                "You have successfully deleted the organization",
-                              icon: "success",
+                              text: 'You have successfully deleted the organization',
+                              icon: 'success',
                               showCancelButton: false,
-                              confirmButtonColor: "#084892",
-                              cancelButtonColor: "#d33",
-                              confirmButtonText: "OK",
+                              confirmButtonColor: '#084892',
+                              cancelButtonColor: '#d33',
+                              confirmButtonText: 'OK',
                             });
                           }
                         }
@@ -209,27 +177,24 @@ const AdminDropdown = (props) => {
             )} */}
             </>
           )}
-          {type === "Project" && (
+          {type === 'Project' && (
             <>
-              {" "}
+              {' '}
               <Dropdown.Item
                 onClick={() => {
                   Swal.fire({
-                    title: "Please Wait !",
-                    html: "Exporting  Project ...",
+                    title: 'Please Wait !',
+                    html: 'Exporting  Project ...',
                     allowOutsideClick: false,
                     onBeforeOpen: () => {
                       Swal.showLoading();
                     },
                   });
-                  const result = adminService.exportProject(
-                    activeOrganization.id,
-                    row.id
-                  );
+                  const result = adminService.exportProject(activeOrganization.id, row.id);
                   result.then((data) => {
                     // console.log(data)
                     Swal.fire({
-                      icon: "success",
+                      icon: 'success',
                       html: data?.message,
                     });
                   });
@@ -239,7 +204,61 @@ const AdminDropdown = (props) => {
                 Export
               </Dropdown.Item>
               {row.shared ? (
-                <Dropdown.Item to={`/project/${row.id}/shared`}>
+                <Dropdown.Item
+                  onClick={() => {
+                    const protocol = `${window.location.href.split('/')[0]}//`;
+
+                    confirmAlert({
+                      customUI: ({ onClose }) => (
+                        <div className="share-project-preview-url project-share-check">
+                          <br />
+                          <h3>
+                            You can now share project <strong>{row.title}</strong>
+                            <br />
+                            Anyone with the link below can access your project:
+                          </h3>
+
+                          <a target="_blank" href={`/${row.id}/shared`} rel="noopener noreferrer">
+                            <input id="urllink_clip" value={`${protocol + window.location.host}/${row.id}/shared`} />
+                          </a>
+
+                          <span
+                            title="copy to clipboard"
+                            aria-hidden="true"
+                            onClick={() => {
+                              /* Get the text field */
+                              const copyText = document.getElementById('urllink_clip');
+
+                              /* Select the text field */
+                              copyText.focus();
+                              copyText.select();
+
+                              document.execCommand('copy');
+
+                              /* Alert the copied text */
+                              Swal.fire({
+                                title: 'Link Copied',
+                                showCancelButton: false,
+                                showConfirmButton: false,
+                                timer: 1500,
+                                allowOutsideClick: false,
+                              });
+                            }}
+                          >
+                            <FontAwesomeIcon icon="clipboard" />
+                          </span>
+                          <br />
+
+                          <div className="close-btn flex-center">
+                            <button className="curriki-btn-extra" type="button" onClick={onClose}>
+                              Ok
+                            </button>
+                          </div>
+                        </div>
+                      ),
+                    });
+                  }}
+                >
                   <img src={Export} alt="Preview" className="menue-img" />
                   Get shared link
                 </Dropdown.Item>
@@ -259,37 +278,32 @@ const AdminDropdown = (props) => {
                 to="#"
                 onClick={() => {
                   Swal.fire({
-                    title: "Are you sure you want to delete this Project?",
-                    text: "This action is Irreversible",
-                    icon: "warning",
+                    title: 'Are you sure you want to delete this Project?',
+                    text: 'This action is Irreversible',
+                    icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: "#084892",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, delete it!",
+                    confirmButtonColor: '#084892',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
                   }).then((result) => {
                     if (result.isConfirmed) {
                       Swal.fire({
-                        icon: "info",
-                        text: "Deleting Project...",
+                        icon: 'info',
+                        text: 'Deleting Project...',
                         allowOutsideClick: false,
                         onBeforeOpen: () => {
                           Swal.showLoading();
                         },
                         button: false,
                       });
-                      const response = projectService.remove(
-                        row.id,
-                        activeOrganization.id
-                      );
+                      const response = projectService.remove(row.id, activeOrganization.id);
                       response
                         .then((res) => {
                           Swal.fire({
-                            icon: "success",
+                            icon: 'success',
                             text: res?.message,
                           });
-                          const filterProject = localStateData.filter(
-                            (each) => each.id != row.id
-                          );
+                          const filterProject = localStateData.filter((each) => each.id != row.id);
                           setLocalStateData(filterProject);
                         })
                         .catch((err) => console.log(err));
@@ -302,13 +316,13 @@ const AdminDropdown = (props) => {
               </Dropdown.Item>
             </>
           )}
-          {type === "Activities" && (
+          {type === 'Activities' && (
             <>
-              {" "}
+              {' '}
               <Dropdown.Item
                 onClick={() => {
                   dispatch(selectActivityType(type1));
-                  dispatch(setActiveAdminForm("edit_activity_type"));
+                  dispatch(setActiveAdminForm('edit_activity_type'));
                 }}
               >
                 <img src={Edit} alt="Preview" className="menue-img" />
@@ -318,31 +332,28 @@ const AdminDropdown = (props) => {
                 to="#"
                 onClick={() => {
                   Swal.fire({
-                    title: "Are you sure?",
+                    title: 'Are you sure?',
                     text: "You won't be able to revert this!",
-                    icon: "warning",
+                    icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: "#084892",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, delete it!",
+                    confirmButtonColor: '#084892',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
                   }).then(async (result) => {
                     if (result.isConfirmed) {
                       Swal.showLoading();
-                      const resultDel = await dispatch(
-                        deleteActivityType(type1.id)
-                      );
+                      const resultDel = await dispatch(deleteActivityType(type1.id));
                       if (resultDel) {
                         Swal.fire({
-                          text:
-                            "You have successfully deleted the activity type",
-                          icon: "success",
+                          text: 'You have successfully deleted the activity type',
+                          icon: 'success',
                           showCancelButton: false,
-                          confirmButtonColor: "#084892",
-                          cancelButtonColor: "#d33",
-                          confirmButtonText: "OK",
+                          confirmButtonColor: '#084892',
+                          cancelButtonColor: '#d33',
+                          confirmButtonText: 'OK',
                         }).then((result) => {
                           if (result.isConfirmed) {
-                            dispatch(loadResourceTypesAction("", 1));
+                            dispatch(loadResourceTypesAction('', 1));
                           }
                         });
                       }
@@ -355,48 +366,44 @@ const AdminDropdown = (props) => {
               </Dropdown.Item>
             </>
           )}
-          {type === "Users" && (
+          {type === 'Users' && (
             <>
-              {" "}
-              {permission?.Organization.includes(
-                "organization:update-user"
-              ) && (
+              {' '}
+              {permission?.Organization.includes('organization:update-user') && (
                 <Dropdown.Item
                   onClick={() => {
                     dispatch(setCurrentUser(user));
-                    dispatch(setActiveAdminForm("edit_user"));
+                    dispatch(setActiveAdminForm('edit_user'));
                   }}
                 >
                   <img src={Edit} alt="Preview" className="menue-img" />
                   Edit
                 </Dropdown.Item>
               )}
-              {permission?.Organization.includes("organization:remove-user") &&
-                auth?.user?.id !== user.id && (
-                  <Dropdown.Item onClick={() => handleRemoveUser(user)}>
-                    <img src={Edit} alt="Preview" className="menue-img" />
-                    Remove
-                  </Dropdown.Item>
-                )}
-              {permission?.Organization.includes("organization:delete-user") &&
-                auth?.user?.id !== user.id && (
-                  <Dropdown.Item to="#" onClick={() => handleDeleteUser(user)}>
-                    <img src={Delete} alt="Preview" className="menue-img" />
-                    Delete
-                  </Dropdown.Item>
-                )}
+              {permission?.Organization.includes('organization:remove-user') && auth?.user?.id !== user.id && (
+                <Dropdown.Item onClick={() => handleRemoveUser(user)}>
+                  <img src={Edit} alt="Preview" className="menue-img" />
+                  Remove
+                </Dropdown.Item>
+              )}
+              {permission?.Organization.includes('organization:delete-user') && auth?.user?.id !== user.id && (
+                <Dropdown.Item to="#" onClick={() => handleDeleteUser(user)}>
+                  <img src={Delete} alt="Preview" className="menue-img" />
+                  Delete
+                </Dropdown.Item>
+              )}
             </>
           )}
-          {type === "LMS" && (
+          {type === 'LMS' && (
             <>
               <Dropdown.Item
                 to="#"
                 onClick={() => {
                   dispatch({
-                    type: "SET_ACTIVE_EDIT",
+                    type: 'SET_ACTIVE_EDIT',
                     payload: row,
                   });
-                  dispatch(setActiveAdminForm("clone_lms"));
+                  dispatch(setActiveAdminForm('clone_lms'));
                 }}
               >
                 <img src={Edit} alt="Preview" className="menue-img" />
@@ -406,39 +413,33 @@ const AdminDropdown = (props) => {
                 to="#"
                 onClick={() => {
                   Swal.fire({
-                    title:
-                      "Are you sure you want to delete this User LMS settings?",
-                    text: "This action is Irreversible",
-                    icon: "warning",
+                    title: 'Are you sure you want to delete this User LMS settings?',
+                    text: 'This action is Irreversible',
+                    icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: "#084892",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, delete it!",
+                    confirmButtonColor: '#084892',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
                   }).then((result) => {
                     if (result.isConfirmed) {
                       Swal.fire({
-                        title: "LMS Srttings",
-                        icon: "info",
-                        text: "Deleting User LMS Settings...",
+                        title: 'LMS Srttings',
+                        icon: 'info',
+                        text: 'Deleting User LMS Settings...',
                         allowOutsideClick: false,
                         onBeforeOpen: () => {
                           Swal.showLoading();
                         },
                         button: false,
                       });
-                      const response = adminService.deleteLmsProject(
-                        activeOrganization?.id,
-                        row?.id
-                      );
+                      const response = adminService.deleteLmsProject(activeOrganization?.id, row?.id);
                       response
                         .then((res) => {
                           Swal.fire({
-                            icon: "success",
+                            icon: 'success',
                             text: res?.message,
                           });
-                          const filterLMS = localStateData.filter(
-                            (each) => each.id != row.id
-                          );
+                          const filterLMS = localStateData.filter((each) => each.id != row.id);
                           console.log(filterLMS);
                           setLocalStateData(filterLMS);
                         })
@@ -454,10 +455,10 @@ const AdminDropdown = (props) => {
                 to="#"
                 onClick={() => {
                   dispatch({
-                    type: "SET_ACTIVE_EDIT",
+                    type: 'SET_ACTIVE_EDIT',
                     payload: row,
                   });
-                  dispatch(setActiveAdminForm("edit_lms"));
+                  dispatch(setActiveAdminForm('edit_lms'));
                 }}
               >
                 <img src={Edit} alt="Preview" className="menue-img" />
@@ -466,64 +467,54 @@ const AdminDropdown = (props) => {
             </>
           )}
 
-          {type === "DefaultSso" && (
+          {type === 'DefaultSso' && (
             <>
-              {permission?.Organization.includes(
-                "organization:update-default-sso"
-              ) && (
+              {permission?.Organization.includes('organization:update-default-sso') && (
                 <Dropdown.Item
                   onClick={() => {
                     dispatch({
-                      type: "SET_ACTIVE_EDIT",
+                      type: 'SET_ACTIVE_EDIT',
                       payload: row,
                     });
-                    dispatch(setActiveAdminForm("edit_default_sso"));
+                    dispatch(setActiveAdminForm('edit_default_sso'));
                   }}
                 >
                   <img src={Edit} alt="Preview" className="menue-img" />
                   Edit
                 </Dropdown.Item>
               )}
-              {permission?.Organization.includes(
-                "organization:delete-default-sso"
-              ) && (
+              {permission?.Organization.includes('organization:delete-default-sso') && (
                 <>
                   <Dropdown.Item
                     onClick={() => {
                       Swal.fire({
-                        title:
-                          "Are you sure you want to delete this SSO Integration?",
-                        text: "This action is Irreversible",
-                        icon: "warning",
+                        title: 'Are you sure you want to delete this SSO Integration?',
+                        text: 'This action is Irreversible',
+                        icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonColor: "#084892",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes, delete it!",
+                        confirmButtonColor: '#084892',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!',
                       }).then((result) => {
                         if (result.isConfirmed) {
                           Swal.fire({
-                            title: "Default SSO Integration",
-                            icon: "info",
-                            text: "Deleting Default SSO Integration...",
+                            title: 'Default SSO Integration',
+                            icon: 'info',
+                            text: 'Deleting Default SSO Integration...',
                             allowOutsideClick: false,
                             onBeforeOpen: () => {
                               Swal.showLoading();
                             },
                             button: false,
                           });
-                          const response = adminService.deleteDefaultSso(
-                            activeOrganization?.id,
-                            row?.id
-                          );
+                          const response = adminService.deleteDefaultSso(activeOrganization?.id, row?.id);
                           response
                             .then((res) => {
                               Swal.fire({
-                                icon: "success",
+                                icon: 'success',
                                 text: res?.message,
                               });
-                              const filterLMS = localStateData.filter(
-                                (each) => each.id != row.id
-                              );
+                              const filterLMS = localStateData.filter((each) => each.id != row.id);
                               setLocalStateData(filterLMS);
                             })
                             .catch((err) => console.log(err));

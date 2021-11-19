@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .admin-panel {
   .main-heading {
@@ -443,7 +443,7 @@
         font-size: 14px;
         line-height: 20px;
         color: #767676;
-        font-family: "Open Sans";
+        font-family: 'Open Sans';
         span {
           display: flex;
         }
@@ -485,7 +485,7 @@
             flex-shrink: 0;
           }
           .admin-name {
-            font-family: "Open Sans";
+            font-family: 'Open Sans';
             font-size: 14px;
             line-height: 20px;
             color: #084892;
@@ -507,7 +507,7 @@
           margin-top: 5px;
           border-radius: 7px;
           cursor: pointer;
-          font-family: "Open Sans";
+          font-family: 'Open Sans';
           font-weight: normal;
           font-size: 14px;
           line-height: 20px;
@@ -555,6 +555,26 @@
     list-style: none;
     outline: none;
     // Edit
+    a {
+      border: 1px solid;
+      border-radius: 50%;
+      margin: 0 2px;
+    }
+    li {
+      &:nth-of-type(1),
+      &:nth-of-type(2) {
+        a {
+          border: none;
+        }
+      }
+
+      &:nth-last-child(1),
+      &:nth-last-child(2) {
+        a {
+          border: none;
+        }
+      }
+    }
   }
   .pagination > .active > a {
     background-color: $fun-blue-1;
@@ -1060,7 +1080,7 @@
     position: relative;
 
     ::before {
-      content: " ";
+      content: ' ';
       position: absolute;
       top: -11px;
       right: 10px;
@@ -1086,7 +1106,7 @@
   background: #eff6f0;
   border: 1px solid #12b347;
   border-radius: 10px;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -1098,7 +1118,7 @@
   background: #f1f1f1;
   border: 1px solid #dddddd;
   border-radius: 10px;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -1113,7 +1133,7 @@
   background: #e5eeff;
   border-radius: 4px;
   text-align: center;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -1126,7 +1146,7 @@
   background: rgba(255, 64, 59, 0.08);
   border-radius: 4px;
   text-align: center;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
