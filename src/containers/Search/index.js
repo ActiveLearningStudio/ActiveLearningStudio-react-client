@@ -938,18 +938,20 @@ function SearchInterface(props) {
                                                 Publish
                                               </a>
                                               <ul className="dropdown-menu check">
-                                                <li
-                                                  onClick={() => {
-                                                    setShow(true);
-                                                    getProjectId(res.id);
-                                                    setSelectedProjectId(res.id);
-                                                    dispatch(googleShare(false));
-                                                  }}
-                                                >
-                                                  <a>
-                                                    Google Classroom
-                                                  </a>
-                                                </li>
+                                                {res.gcr_project_visibility && (
+                                                  <li
+                                                    onClick={() => {
+                                                      setShow(true);
+                                                      getProjectId(res.id);
+                                                      setSelectedProjectId(res.id);
+                                                      dispatch(googleShare(false));
+                                                    }}
+                                                  >
+                                                    <a>
+                                                      Google Classroom
+                                                    </a>
+                                                  </li>
+                                                )}
                                                 {allLms.shareVendors && allLms.shareVendors.map((data) => (
                                                   data.project_visibility && (
                                                     <li>
@@ -1204,18 +1206,20 @@ function SearchInterface(props) {
                                                     Publish
                                                   </a>
                                                   <ul className="dropdown-menu check">
-                                                    <li
-                                                      onClick={() => {
-                                                        setShow(true);
-                                                        getProjectId(res.id);
-                                                        setSelectedProjectId(res.id);
-                                                        dispatch(googleShare(false));
-                                                      }}
-                                                    >
-                                                      <a>
-                                                        Google Classroom
-                                                      </a>
-                                                    </li>
+                                                    {res.gcr_project_visibility && (
+                                                      <li
+                                                        onClick={() => {
+                                                          setShow(true);
+                                                          getProjectId(res.id);
+                                                          setSelectedProjectId(res.id);
+                                                          dispatch(googleShare(false));
+                                                        }}
+                                                      >
+                                                        <a>
+                                                          Google Classroom
+                                                        </a>
+                                                      </li>
+                                                    )}
                                                     {allLms.shareVendors && allLms.shareVendors.map((data) => (
                                                       data.project_visibility && (
                                                         <li>

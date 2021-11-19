@@ -185,6 +185,10 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
   //     role_id: user?.role?.id,
   //   }
   // ));
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   const details = {
     name: data.name,
     description: data.description,
@@ -196,6 +200,9 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
     unit_path: data.unit_path || '',
     self_registration: data.self_registration,
     noovo_client_id: data.noovo_client_id || undefined,
+    gcr_project_visibility: data?.gcr_project_visibility || false,
+    gcr_playlist_visibility: data?.gcr_playlist_visibility || false,
+    gcr_activity_visibility: data?.gcr_activity_visibility || false,
     // admins: adminUsers,
     // users: usersList,
   };
@@ -205,6 +212,12 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
       type: actionTypes.ADD_SUBORG_EDIT,
       payload: newOrg.suborganization,
     });
+    if (newOrg.suborganization.id === activeOrganization.id) {
+      dispatch({
+        type: actionTypes.ADD_ACTIVE_ORG,
+        payload: newOrg.suborganization,
+      });
+    }
     dispatch({
       type: 'CLEAR_ACTIVE_FORM',
     });

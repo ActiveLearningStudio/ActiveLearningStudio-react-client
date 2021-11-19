@@ -24,14 +24,19 @@ export default function CreateOrg(prop) {
   const adminState = useSelector((state) => state.admin);
   const { activeForm, currentUser } = adminState;
   const { activeEdit, activeOrganization } = allListState;
-
+  const [checkedActivity, setCheckedActivty] = useState(false);
+  const [checkedPlaylist, setCheckedPlaylist] = useState(false);
+  const [checkedProject, setCheckedProject] = useState(false);
   useEffect(() => {
     if (editMode) {
       setImgActive(activeEdit?.image);
+      setCheckedActivty(activeEdit?.gcr_activity_visibility);
+      setCheckedPlaylist(activeEdit?.gcr_playlist_visibility);
+      setCheckedProject(activeEdit?.gcr_project_visibility);
     } else {
       setImgActive(null);
     }
-  }, [editMode]);
+  }, [editMode, activeEdit]);
   return (
     <div className="create-form">
       <Formik
@@ -45,6 +50,9 @@ export default function CreateOrg(prop) {
           unit_path: editMode ? activeEdit?.unit_path : undefined,
           self_registration: editMode ? activeEdit?.self_registration : false,
           noovo_client_id: editMode ? activeEdit?.noovo_client_id : undefined,
+          gcr_project_visibility: editMode ? activeEdit?.gcr_project_visibility : false,
+          gcr_playlist_visibility: editMode ? activeEdit?.gcr_playlist_visibility : false,
+          gcr_activity_visibility: editMode ? activeEdit?.gcr_activity_visibility : false,
         }}
         validate={(values) => {
           const errors = {};
@@ -199,7 +207,7 @@ export default function CreateOrg(prop) {
                     />
                     <div
                       className="update-img"
-                      // onClick={() => imgUpload.current.click()}
+                    // onClick={() => imgUpload.current.click()}
                     >
                       Update Image
                     </div>
@@ -249,7 +257,7 @@ export default function CreateOrg(prop) {
                   }
                 }}
                 onBlur={handleBlur}
-                // value={values.admin}
+              // value={values.admin}
               />
               <img src={loader} style={{ width: '25px', marginTop: '5px', visibility: loaderImg ? 'visible' : 'hidden' }} alt="" className="loader" />
               <div className="error">{errors.domain && touched.domain && errors.domain}</div>
@@ -278,6 +286,74 @@ export default function CreateOrg(prop) {
                   setFieldValue('self_registration', !values.self_registration);
                 }}
               />
+            </div>
+            <div className="toggle-group-button">
+              <div className="form-group-create">
+                <h3>Google Classroom Publishing</h3>
+                <div className="create-form-inputs-toggles">
+                  <div className="custom-toggle-button">
+                    <Switch
+                      checked={values.gcr_project_visibility}
+                      onChange={() => {
+                        setCheckedProject(!checkedProject);
+                        setFieldValue('gcr_project_visibility', !checkedProject);
+                      }}
+                      className="react-switch"
+                      handleDiameter={30}
+                      uncheckedIcon={false}
+                      checkedIcon={false}
+                      offColor="#888"
+                      onColor="#ffca70"
+                      onHandleColor="#e89e21"
+                      offHandleColor="#666"
+                    />
+                    <h3>Project</h3>
+                  </div>
+                  {/* <Switch
+                  checked={checked}
+                  onChange={() => {
+                    setChecked(!checked);
+                    setFieldValue("published", !checked);
+                  }}
+                /> */}
+                  <div className="custom-toggle-button">
+                    <Switch
+                      checked={values.gcr_playlist_visibility}
+                      onChange={() => {
+                        setCheckedPlaylist(!checkedPlaylist);
+                        setFieldValue('gcr_playlist_visibility', !checkedPlaylist);
+                      }}
+                      className="react-switch"
+                      handleDiameter={30}
+                      uncheckedIcon={false}
+                      checkedIcon={false}
+                      offColor="#888"
+                      onColor="#ffca70"
+                      onHandleColor="#e89e21"
+                      offHandleColor="#666"
+                    />
+                    <h3>Playlist</h3>
+                  </div>
+                  <div className="custom-toggle-button">
+                    <Switch
+                      checked={values.gcr_activity_visibility}
+                      onChange={() => {
+                        setCheckedActivty(!checkedActivity);
+                        setFieldValue('gcr_activity_visibility', !checkedActivity);
+                      }}
+                      className="react-switch"
+                      handleDiameter={30}
+                      uncheckedIcon={false}
+                      checkedIcon={false}
+                      offColor="#888"
+                      onColor="#ffca70"
+                      onHandleColor="#e89e21"
+                      offHandleColor="#666"
+                    />
+                    <h3>Activity</h3>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="button-group">
               <button type="submit">{editMode ? 'Edit ' : 'Create '} Organization</button>
