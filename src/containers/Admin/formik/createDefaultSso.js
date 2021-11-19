@@ -41,6 +41,7 @@ export default function CreateDefaultSso(prop) {
           name: editMode ? (clone ? '' : activeEdit?.organization?.name) : '',
           lti_client_id: editMode ? activeEdit?.lti_client_id : '',
           published: editMode ? (clone ? false : activeEdit?.published) : false,
+          role_id: editMode ? activeEdit?.role_id : '',
         }}
         validate={(values) => {
           const errors = {};
@@ -66,6 +67,10 @@ export default function CreateDefaultSso(prop) {
 
           if (!values.organization_id) {
             errors.organization_id = 'required';
+          }
+          
+          if (!values.role_id) {
+            errors.role_id = 'required';
           }
           return errors;
         }}
@@ -244,6 +249,18 @@ export default function CreateDefaultSso(prop) {
                 </ul>
               )}
               <div className="error">{errors.organization_id && touched.organization_id && errors.organization_id}</div>
+            </div>
+            <div className="form-group-create">
+              <h3>Select Role</h3>
+              <select name="role_id" onChange={handleChange} onBlur={handleBlur} value={values.role_id}>
+              <option defaultValue="">Nothing selected</option>
+                {organization.roles.length > 0 && (
+                  organization.roles?.map((org) => (
+                    <option value={org.id}>{org.name}</option>
+                  ))
+                )}
+              </select>
+              <div className="error">{errors.lms_name && touched.lms_name && errors.lms_name}</div>
             </div>
             <div className="button-group">
               <button type="submit">{editMode ? (clone ? 'Create ' : 'Edit ') : 'Create '}SSO Integration</button>
