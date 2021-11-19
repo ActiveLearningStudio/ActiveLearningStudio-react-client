@@ -17,6 +17,7 @@ import { deleteActivityItem, deleteActivityType, getActivityItems, loadResourceT
 
 import AdminDropdown from './adminDropdown';
 import AdminPaginaation from './pagination';
+import { faCheckCircle, faStopCircle } from '@fortawesome/free-solid-svg-icons';
 function Table(props) {
   const {
     tableHead,
@@ -581,31 +582,50 @@ function Table(props) {
                             </Link>
                           </div>
                         </td>
-                        <td>{createNew.toDateString()}</td>
+                        <td>{new Date(createNew.toDateString()).toLocaleDateString('en-US')}</td>
 
                         <td>
                           <div className="admin-description">{row.description}</div>
                         </td>
 
                         <td>{row.id}</td>
-                        <td>{row.users?.[0]?.email}</td>
+                        <td>{row.users?.[0]?.name}</td>
                         <td>{row.indexing_text}</td>
                         {/* <td>{row.organization_id}</td> */}
-                        <td>
+                        {/* <td>
                           {row.shared ? (
-                            <Link className="shared-link" target="_blank" to={`/project/${row.id}/shared`}>
-                              <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
+                            <Link
+                              className="shared-link"
+                              target="_blank"
+                              to={`/project/${row.id}/shared`}
+                            >
+                              <FontAwesomeIcon
+                                icon="external-link-alt"
+                                className="mr-2"
+                              />
                               Open Shared Link
                             </Link>
                           ) : (
                             <>{String(row.shared)}</>
+                          )}
+                        </td> */}
+                        <td>
+                          {row.shared ? (
+                            <Link className="shared-link-enable" target="_blank" to={`/project/${row.id}/shared`}>
+                              <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
+                              Enabled
+                            </Link>
+                          ) : (
+                            <>
+                              <div className="shared-link-disable">Disabled</div>
+                            </>
                           )}
                         </td>
                         {/* <td>{String(row.starter_project)}</td> */}
                         {/* <td>{row.status_text}</td> */}
                         <td>
                           <div className="admin-panel-dropdown">
-                            {updateNew.toDateString()}
+                            {new Date(updateNew.toDateString()).toLocaleDateString('en-US')}
                             <div>
                               <AdminDropdown type={type} row={row} />
                             </div>
@@ -688,7 +708,7 @@ function Table(props) {
                             </Link>
                           </div>
                         </td>
-                        <td>{createNew.toDateString()}</td>
+                        <td>{new Date(createNew.toDateString()).toLocaleDateString('en-US')}</td>
 
                         {/* <td>{row.description}</td> */}
 
@@ -698,15 +718,27 @@ function Table(props) {
 
                         {/* <td>{row.organization_id}</td> */}
 
-                        <td>{String(row.shared)}</td>
+                        {/* <td>{String(row.shared)}</td> */}
+
+                        <td>
+                          {row.shared ? (
+                            <Link className="shared-link-enable">Enabled</Link>
+                          ) : (
+                            <>
+                              <Link className="shared-link-disable">Disabled</Link>
+                            </>
+                          )}
+                        </td>
                         {/* <td>{String(row.starter_project)}</td> */}
 
                         {/* <td>{row.status_text}</td> */}
-                        <td>{updateNew.toDateString()}</td>
+                        <td>{new Date(updateNew.toDateString()).toLocaleDateString('en-US')}</td>
                         <td>
                           <div className="links">
                             {(row.indexing === 1 || row.indexing === 2) && (
                               <Link
+                                style={{ padding: '4px 0' }}
+                                className="approve-label"
                                 onClick={async () => {
                                   Swal.fire({
                                     title: 'Please Wait !',
@@ -740,11 +772,14 @@ function Table(props) {
                                   }
                                 }}
                               >
+                                <FontAwesomeIcon icon={faCheckCircle} style={{ marginRight: '4px' }} />
                                 Approve&nbsp;&nbsp;
                               </Link>
                             )}
                             {(row.indexing === 1 || row.indexing === 3) && (
                               <Link
+                                style={{ padding: '4px 0' }}
+                                className="reject-label"
                                 onClick={async () => {
                                   Swal.fire({
                                     title: 'Please Wait !',
@@ -778,6 +813,7 @@ function Table(props) {
                                   }
                                 }}
                               >
+                                <FontAwesomeIcon icon={faStopCircle} style={{ marginRight: '4px' }} />
                                 Reject
                               </Link>
                             )}
