@@ -287,20 +287,22 @@ function Table(props) {
                 </tr>
               ))}
             {type === 'LMS' &&
-              subType === 'All Settings' && 
+              subType === 'All Settings' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
-                    <tr key={row}>
+                    <tr key={row} className="admin-panel-rows">
                       <td>{row.lms_url}</td>
                       <td>{row.lms_name}</td>
                       <td>{row.user?.first_name + ' ' + row.user?.last_name}</td>
                       <td>{row?.user?.email}</td>
                       <td>{row?.site_name}</td>
-                      <td>{row?.description}</td>
                       <td>
-                        <div>
-                          <AdminDropdown type={type} subType='All Settings' row={row} />
+                        <div className="admin-panel-dropdown">
+                          {row?.description}
+                          <div>
+                            <AdminDropdown type={type} subType="All Settings" row={row} />
+                          </div>
                         </div>
                       </td>
                     </tr>
@@ -322,17 +324,19 @@ function Table(props) {
             {type === 'Users' &&
               (data?.data?.length > 0 ? (
                 data?.data.map((user) => (
-                  <tr>
+                  <tr className="admin-panel-rows">
                     <td>{user.organization_joined_at ? user.organization_joined_at : 'NA'}</td>
                     <td>{user.first_name ? user.first_name : 'NA'}</td>
                     <td>{user.last_name ? user.last_name : 'NA'}</td>
                     <td>{user.email ? user.email : 'NA'}</td>
                     <td>{activeOrganization?.name ? activeOrganization?.name : 'NA'}</td>
                     <td>{user.organization_type ? user.organization_type : 'NA'}</td>
-                    <td>{user.organization_role ? user.organization_role : 'NA'}</td>
                     <td>
-                      <div>
-                        <AdminDropdown type={type} user={user} />
+                      <div className="admin-panel-dropdown">
+                        {user.organization_role ? user.organization_role : 'NA'}
+                        <div>
+                          <AdminDropdown type={type} user={user} />
+                        </div>
                       </div>
                     </td>
                   </tr>
@@ -840,17 +844,29 @@ function Table(props) {
               subType === 'Activity Types' &&
               (data ? (
                 data?.map((type1) => (
-                  <tr key={type1} className="org-rows">
-                    <td>{type1.title}</td>
+                  <tr key={type1} className="admin-panel-rows">
                     <td>
-                      <img className="image-size" src={global.config.resourceUrl + type1.image} alt="activity-type-image" />
+                      <div className="admin-name-img">
+                        <div
+                          style={{
+                            backgroundImage: `url(${global.config.resourceUrl + type1.image})`,
+                            backgroundPosition: 'center',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundSize: 'contain',
+                          }}
+                          className="image-size"
+                        ></div>
+                        <Link className="admin-name">{type1.title}</Link>
+                      </div>
                     </td>
                     <td>{type1.order}</td>
                     <td>
                       <div className="admin-panel-dropdown">
-                        {type1.activityItems.map((item) => (
-                          <div>{item.title}</div>
-                        ))}
+                        <div className="admin-description2 ">
+                          {type1.activityItems.map((item) => (
+                            <div>{item.title + ','}</div>
+                          ))}
+                        </div>
                         <div>
                           <AdminDropdown type={type} type1={type1} />
                         </div>
@@ -866,21 +882,46 @@ function Table(props) {
               (data?.data ? (
                 data?.data?.length > 0 ? (
                   data?.data.map((item) => (
-                    <tr key={item}>
-                      <td>{item.title}</td>
+                    <tr key={item} className="admin-panel-rows">
                       <td>
-                        <img className="image-size" src={global.config.resourceUrl + item.image} alt="activity-item-image" />
+                        <div className="admin-name-img">
+                          <div
+                            style={{
+                              backgroundImage: `url(${global.config.resourceUrl + item.image})`,
+                              backgroundPosition: 'center',
+                              backgroundRepeat: 'no-repeat',
+                              backgroundSize: 'contain',
+                            }}
+                            className="image-size"
+                          ></div>
+
+                          <Link className="admin-name"> {item.title}</Link>
+                        </div>
                       </td>
                       <td>{item.order}</td>
                       <td>
-                        <b>Activity Type:</b>
-                        <span>{item?.activityType?.title}</span>
-                        <b>Item Type:</b>
-                        <span>{item.type}</span>
-                        <b>Activity Item Value:</b>
-                        <span>{item.h5pLib}</span>
+                        <div className="admin-panel-dropdown">
+                          <div className="">
+                            <div className="d-flex">
+                              <h6 className="m-0 admin-mata-heading">Activity Type:</h6>
+                              <span>{item?.activityType?.title}</span>
+                            </div>
+                            <div className="d-flex">
+                              <h6 className="m-0 admin-mata-heading">Item Type:</h6>
+                              <span>{item.type}</span>
+                            </div>
+                            <div className="d-flex">
+                              <h6 className="m-0 admin-mata-heading">Activity Item Value:</h6>
+                              <span>{item.h5pLib}</span>
+                            </div>
+                          </div>
+
+                          <div>
+                            <AdminDropdown type={type} item={item} />
+                          </div>
+                        </div>
                       </td>
-                      <td>
+                      {/* <td>
                         <div className="links">
                           <Link
                             onClick={() => {
@@ -925,7 +966,7 @@ function Table(props) {
                             Delete
                           </Link>
                         </div>
-                      </td>
+                      </td> */}
                     </tr>
                   ))
                 ) : (
@@ -947,16 +988,18 @@ function Table(props) {
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
-                    <tr key={row}>
+                    <tr key={row} className="admin-panel-rows">
                       <td>{row.lms_url}</td>
                       <td>{row.lms_name}</td>
                       <td>{row.organization.name}</td>
                       <td>{row?.site_name}</td>
                       <td>{row.lti_client_id}</td>
-                      <td>{row?.description}</td>
                       <td>
-                        <div>
-                          <AdminDropdown type={type} row={row} />
+                        <div className="admin-panel-dropdown">
+                          <div>{row?.description}</div>
+                          <div>
+                            <AdminDropdown type={type} row={row} />
+                          </div>
                         </div>
                       </td>
                     </tr>
@@ -975,18 +1018,21 @@ function Table(props) {
                   </td>
                 </tr>
               ))}
-              {type === 'LMS' && subType === 'LTI Tools' &&
+            {type === 'LMS' &&
+              subType === 'LTI Tools' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
-                    <tr key={row}>
+                    <tr key={row} className="admin-panel-rows">
                       <td>{row.tool_name}</td>
                       <td>{row.tool_url}</td>
                       <td>{row.tool_description}</td>
-                      <td>{row.lti_version}</td>
                       <td>
-                        <div>
-                          <AdminDropdown type={type} subType='LTI Tools' row={row} />
+                        <div className="admin-panel-dropdown">
+                          {row.lti_version}
+                          <div>
+                            <AdminDropdown type={type} subType="LTI Tools" row={row} />
+                          </div>
                         </div>
                       </td>
                     </tr>
