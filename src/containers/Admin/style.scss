@@ -555,6 +555,26 @@
     list-style: none;
     outline: none;
     // Edit
+    a {
+      border: 1px solid;
+      border-radius: 50%;
+      margin: 0 2px;
+    }
+    li {
+      &:nth-of-type(1),
+      &:nth-of-type(2) {
+        a {
+          border: none;
+        }
+      }
+
+      &:nth-last-child(1),
+      &:nth-last-child(2) {
+        a {
+          border: none;
+        }
+      }
+    }
   }
   .pagination > .active > a {
     background-color: $fun-blue-1;
@@ -564,6 +584,8 @@
   .pagination > li > a {
     // start Edit
     // border: 1px solid$fun-blue-1;
+    // border-radius: 67%;
+    // margin: 0 3px;
     // End edit
     padding: 5px 10px;
     outline: none;
@@ -1077,4 +1099,57 @@
     // transform: translate(-161px, 42px) !important;
     background: #fff !important;
   }
+}
+
+.shared-link-enable {
+  padding: 1px 8px;
+  background: #eff6f0;
+  border: 1px solid #12b347;
+  border-radius: 10px;
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  color: #12b347;
+}
+.shared-link-disable {
+  background: #f1f1f1;
+  border: 1px solid #dddddd;
+  border-radius: 10px;
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  color: #959595;
+  padding: 1px 8px;
+}
+.approve-label {
+  width: 96px;
+  height: 32px;
+  background: #e5eeff;
+  border-radius: 4px;
+  text-align: center;
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  color: #2e68bf;
+}
+.reject-label {
+  width: 96px;
+  height: 32px;
+  background: rgba(255, 64, 59, 0.08);
+  border-radius: 4px;
+  text-align: center;
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  color: #ff403b;
 }
