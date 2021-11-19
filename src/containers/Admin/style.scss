@@ -432,6 +432,9 @@
       tbody {
         :hover {
           background: rgba(229, 238, 255, 0.32);
+          .admin-mata-heading {
+            color: #515151;
+          }
         }
       }
 
@@ -457,8 +460,8 @@
         }
       }
       .image-size {
-        height: 75px;
-        width: 75px;
+        width: 32px;
+        height: 32px;
       }
       // th {
       //   font-weight: bold;
@@ -529,6 +532,25 @@
         // .dropdown {
         //   margin: auto;
         // }
+
+        .admin-description2 {
+          width: 655px;
+          overflow: hidden;
+          display: flex;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .admin-mata-heading {
+          font-family: $rubik, sans-serif;
+          font-weight: 500;
+          font-size: 14px;
+          color: #767676;
+          white-space: nowrap;
+          display: flex;
+          align-items: center;
+          padding-right: 4px;
+        }
       }
     }
   }
