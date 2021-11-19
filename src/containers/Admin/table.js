@@ -287,7 +287,7 @@ function Table(props) {
                 </tr>
               ))}
             {type === 'LMS' &&
-              subType === 'All Settings' && 
+              subType === 'All Settings' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
@@ -300,7 +300,7 @@ function Table(props) {
                       <td>{row?.description}</td>
                       <td>
                         <div>
-                          <AdminDropdown type={type} subType='All Settings' row={row} />
+                          <AdminDropdown type={type} subType="All Settings" row={row} />
                         </div>
                       </td>
                     </tr>
@@ -840,17 +840,29 @@ function Table(props) {
               subType === 'Activity Types' &&
               (data ? (
                 data?.map((type1) => (
-                  <tr key={type1} className="org-rows">
-                    <td>{type1.title}</td>
+                  <tr key={type1} className="admin-panel-rows">
                     <td>
-                      <img className="image-size" src={global.config.resourceUrl + type1.image} alt="activity-type-image" />
+                      <div className="admin-name-img">
+                        <div
+                          style={{
+                            backgroundImage: `url(${global.config.resourceUrl + type1.image})`,
+                            backgroundPosition: 'center',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundSize: 'contain',
+                          }}
+                          className="image-size"
+                        ></div>
+                        <Link className="admin-name">{type1.title}</Link>
+                      </div>
                     </td>
                     <td>{type1.order}</td>
                     <td>
                       <div className="admin-panel-dropdown">
-                        {type1.activityItems.map((item) => (
-                          <div>{item.title}</div>
-                        ))}
+                        <div className="admin-description2 ">
+                          {type1.activityItems.map((item) => (
+                            <div>{item.title + ','}</div>
+                          ))}
+                        </div>
                         <div>
                           <AdminDropdown type={type} type1={type1} />
                         </div>
@@ -866,21 +878,46 @@ function Table(props) {
               (data?.data ? (
                 data?.data?.length > 0 ? (
                   data?.data.map((item) => (
-                    <tr key={item}>
-                      <td>{item.title}</td>
+                    <tr key={item} className="admin-panel-rows">
                       <td>
-                        <img className="image-size" src={global.config.resourceUrl + item.image} alt="activity-item-image" />
+                        <div className="admin-name-img">
+                          <div
+                            style={{
+                              backgroundImage: `url(${global.config.resourceUrl + item.image})`,
+                              backgroundPosition: 'center',
+                              backgroundRepeat: 'no-repeat',
+                              backgroundSize: 'contain',
+                            }}
+                            className="image-size"
+                          ></div>
+
+                          <Link className="admin-name"> {item.title}</Link>
+                        </div>
                       </td>
                       <td>{item.order}</td>
                       <td>
-                        <b>Activity Type:</b>
-                        <span>{item?.activityType?.title}</span>
-                        <b>Item Type:</b>
-                        <span>{item.type}</span>
-                        <b>Activity Item Value:</b>
-                        <span>{item.h5pLib}</span>
+                        <div className="admin-panel-dropdown">
+                          <div className="">
+                            <div className="d-flex">
+                              <h6 className="m-0 admin-mata-heading">Activity Type:</h6>
+                              <span>{item?.activityType?.title}</span>
+                            </div>
+                            <div className="d-flex">
+                              <h6 className="m-0 admin-mata-heading">Item Type:</h6>
+                              <span>{item.type}</span>
+                            </div>
+                            <div className="d-flex">
+                              <h6 className="m-0 admin-mata-heading">Activity Item Value:</h6>
+                              <span>{item.h5pLib}</span>
+                            </div>
+                          </div>
+
+                          <div>
+                            <AdminDropdown type={type} item={item} />
+                          </div>
+                        </div>
                       </td>
-                      <td>
+                      {/* <td>
                         <div className="links">
                           <Link
                             onClick={() => {
@@ -925,7 +962,7 @@ function Table(props) {
                             Delete
                           </Link>
                         </div>
-                      </td>
+                      </td> */}
                     </tr>
                   ))
                 ) : (
@@ -975,7 +1012,8 @@ function Table(props) {
                   </td>
                 </tr>
               ))}
-              {type === 'LMS' && subType === 'LTI Tools' &&
+            {type === 'LMS' &&
+              subType === 'LTI Tools' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
@@ -986,7 +1024,7 @@ function Table(props) {
                       <td>{row.lti_version}</td>
                       <td>
                         <div>
-                          <AdminDropdown type={type} subType='LTI Tools' row={row} />
+                          <AdminDropdown type={type} subType="LTI Tools" row={row} />
                         </div>
                       </td>
                     </tr>

@@ -36,9 +36,9 @@ export const columnData = {
     // 'Action',
   ],
 
-  ActivityTypes: ['Title', 'Image', 'Order', 'Items'],
+  ActivityTypes: ['Name', 'Order', 'Items'],
 
-  ActivityItems: ['Title', 'Image', 'Order', 'Meta', 'Action'],
+  ActivityItems: ['Name', 'Order', 'Meta'],
 
   userall: ['Date', 'First Name', 'Last Name', 'Email', 'Organization', 'Org Type', 'Role', 'Action'],
 
