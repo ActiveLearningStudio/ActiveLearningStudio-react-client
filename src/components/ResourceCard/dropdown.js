@@ -10,11 +10,12 @@ import * as actionTypes from "store/actionTypes";
 import MenuLogo from '../../assets/images/menu-logo-2.svg';
 import Duplicate from '../../assets/images/menu-dupli.svg';
 import resourceService from "services/resource.service";
-import { deleteResourceAction } from 'store/actions/resource';
+import { deleteResourceAction, shareActivity } from 'store/actions/resource';
 import { cloneActivity } from 'store/actions/search';
 import ResourceCardDropdownShare from './shareResource';
 import { toast } from "react-toastify";
 import './style.scss';
+import { confirmAlert } from 'react-confirm-alert';
 
 const ResourceCardDropdown = (props) => {
   const {
@@ -102,6 +103,7 @@ const ResourceCardDropdown = (props) => {
             {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-activity') : permission?.Activity?.includes('activity:share')) && (
               <Dropdown.Item
                 onClick={() => {
+                  console.log(resource, "resource");
                   shareActivity(resource.id);
                   const protocol = `${window.location.href.split('/')[0]}//`;
                   confirmAlert({

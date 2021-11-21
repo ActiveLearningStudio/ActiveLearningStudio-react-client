@@ -104,6 +104,7 @@ class PlaylistCardDropdown extends React.Component {
             <>
               <ShareLink
                 playlistId={playlist.id}
+                gcr_playlist_visibility={playlist.gcr_playlist_visibility}
                 projectId={playlist.project_id}
                 handleShow={handleShow}
                 setProjectId={setProjectId}
