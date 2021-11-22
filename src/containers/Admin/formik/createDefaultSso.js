@@ -20,11 +20,19 @@ export default function CreateDefaultSso(prop) {
   const [loaderlmsImgUser, setLoaderlmsImgUser] = useState(false);
   const [stateOrgSearch, setStateOrgSearch] = useState([]);
   const [checked, setChecked] = useState(false);
+  const [organizationRole, setOrganizationRole] = useState([]);
   useEffect(() => {
     if (editMode && !clone) {
       setChecked(activeEdit?.published);
     }
   }, [activeEdit, editMode]);
+
+  const getOrganazationRoles = (orgId) => {
+    const result = organizationsServices.getRoles(orgId);
+    result.then((role) => {
+      setOrganizationRole(role.data);
+    });
+  }
   return (
     <div className="create-form">
       <Formik
@@ -237,7 +245,9 @@ export default function CreateDefaultSso(prop) {
                         setFieldValue('organization_id', org.id);
                         setFieldValue('name', org.name);
                         setStateOrgSearch([]);
+                        getOrganazationRoles(org.id);
                       }}
+                      key={org.id}
                     >
                       {org.name}
                       <p>
@@ -250,18 +260,20 @@ export default function CreateDefaultSso(prop) {
               )}
               <div className="error">{errors.organization_id && touched.organization_id && errors.organization_id}</div>
             </div>
-            <div className="form-group-create">
-              <h3>Select Role</h3>
-              <select name="role_id" onChange={handleChange} onBlur={handleBlur} value={values.role_id}>
-              <option defaultValue="">Nothing selected</option>
-                {organization.roles.length > 0 && (
-                  organization.roles?.map((org) => (
-                    <option value={org.id}>{org.name}</option>
-                  ))
-                )}
-              </select>
-              <div className="error">{errors.lms_name && touched.lms_name && errors.lms_name}</div>
-            </div>
+            {organizationRole.length > 0 && (
+              <div className="form-group-create">
+                <h3>Select Role</h3>
+                <select name="role_id" onChange={handleChange} onBlur={handleBlur} value={values.role_id}>
+                <option defaultValue="">Nothing selected</option>
+                  {organizationRole.length > 0 && (
+                    organizationRole?.map((role) => (
+                      <option value={role.id} key={role.id}>{role.display_name}</option>
+                    ))
+                  )}
+                </select>
+                <div className="error">{errors.lms_name && touched.lms_name && errors.lms_name}</div>
+              </div>
+            )}
             <div className="button-group">
               <button type="submit">{editMode ? (clone ? 'Create ' : 'Edit ') : 'Create '}SSO Integration</button>
               <button
