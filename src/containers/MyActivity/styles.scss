@@ -242,9 +242,11 @@
       display: flex;
       border: 1px solid #959595;
       align-items: center;
-      padding-left: 8px;
+      padding: 0px 8px;
       box-sizing: border-box;
       border-radius: 4px;
+      display: flex;
+      justify-content: space-between;
     }
   }
 
@@ -806,7 +808,7 @@
         }
       }
       .existing-activity-dialog {
-        margin-top: 48px;
+        margin-top: 0px;
       }
     }
   }
