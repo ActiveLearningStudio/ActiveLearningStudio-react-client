@@ -11,8 +11,9 @@ import { useSelector, useDispatch } from 'react-redux';
 const PreviewLayoutModel = (props) => {
   const resource = useSelector((state) => state.resource);
   console.log(props?.formData);
-  const { selectedLayout, playlist, project, activity } = useSelector((state) => state.myactivities);
+  const { selectedLayout, layout, playlist, project, activity } = useSelector((state) => state.myactivities);
   const dispatch = useDispatch();
+  var counter = 0;
   return (
     <Modal {...props} size="xl" aria-labelledby="contained-modal-title-vcenter" centered className="preview-layout-model">
       <Modal.Header closeButton style={{ display: 'block !important' }}>
@@ -23,9 +24,26 @@ const PreviewLayoutModel = (props) => {
         <div className="interactive-video-H5P">
           <div className="add-activity-form">
             <div className="add-activity-tabs">
-              <Tabs text="1. Select  activity" tabActive={true} />
-              <Tabs text="2. Describe activity" className="ml-10" tabActive={true} />
-              <Tabs text="3. Create activity" className="ml-10 " tabActive={true} />
+              <Tabs text="1. Select  layout" tabActive={true} />
+              {
+                ((counter = 0),
+                layout?.map((data) => {
+                  if (data.id === selectedLayout?.id && counter == 0) {
+                    counter++;
+                    return (
+                      <>
+                        <Tabs text="2. Describe and  create layout" className="ml-10" tabActive={true} />
+                      </>
+                    );
+                  }
+                }))
+              }
+              {counter === 0 && (
+                <>
+                  <Tabs text="2. Select activity" className="ml-10" tabActive={true} />
+                  <Tabs text="3. Describe and  create activity" className="ml-10" tabActive={true} />
+                </>
+              )}
             </div>
           </div>
           <H5PEditor

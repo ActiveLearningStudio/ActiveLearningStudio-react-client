@@ -53,12 +53,12 @@ const ActivityLayout = (props) => {
   return (
     <div className="activity-layout-form">
       <div className="activity-layout-tabs">
-        <Tabs text="1. Select activity" tabActive={true} />
-        <Tabs text="2. Describe activity" className="ml-10 " />
-        <Tabs text="3.  Create activity" className="ml-10 " />
+        <Tabs text="1. Select layout" tabActive={true} />
+        <Tabs text="2. Select activity" tabActive={true} className="ml-10 " />
+        <Tabs text="3. Create activity" className="ml-10 " />
       </div>
       <div className="activity-layout-title">
-        <HeadingOne text="Add an activity" color="#084892" />
+        <HeadingOne text="Select activity" color="#084892" />
       </div>
       <div className="activity-layout-paragraph">
         <Headings

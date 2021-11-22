@@ -31,6 +31,7 @@ const AddActivity = (props) => {
   const [existingActivity, setExistingActivity] = useState(false);
   const [formData, setFormData] = useState('');
   const formRef = useRef();
+  var counter;
   useEffect(() => {
     if (selectedLayout) {
       setTitle(selectedLayout.title);
@@ -59,25 +60,37 @@ const AddActivity = (props) => {
       <div className="add-activity-form">
         {activtyMethod === 'upload' ? (
           <div className="add-activity-tabs">
-            <Tabs text="1. Describe + Upload activity" tabActive={true} />
+            <Tabs text="1. Describe and upload activity" tabActive={true} />
           </div>
         ) : (
           <div className="add-activity-tabs">
-            <Tabs text="1. Select  activity" tabActive={true} />
-            <Tabs text="2. Describe +  Create activity" className="ml-10" tabActive={true} />
-            {/* <Tabs text="3. Create activity" className="ml-10 " /> */}
-            {/* {singleLayout?.map((data) => {
-              if (data.id === selectedLayout?.id &&) {
-                return <Tabs text="3. Create activity" className="ml-10 " />;
-              }
-            })} */}
+            <Tabs text="1. Select  layout" tabActive={true} />
+            {
+              ((counter = 0),
+              layout?.map((data) => {
+                if (data.id === selectedLayout?.id && counter == 0) {
+                  counter++;
+                  return (
+                    <>
+                      <Tabs text="2. Describe and  create layout" className="ml-10" tabActive={true} />
+                    </>
+                  );
+                }
+              }))
+            }
+            {counter === 0 && (
+              <>
+                <Tabs text="2. Select activity" className="ml-10" tabActive={true} />
+                <Tabs text="3. Describe and  create activity" className="ml-10" tabActive={true} />
+              </>
+            )}
           </div>
         )}
 
         {!activity && (
           <div className="add-activity-title-select">
             <div className="add-activity-title">
-              <HeadingTwo text={activtyMethod === 'upload' ? 'Upload Activity' : title} color="#084892" />
+              <HeadingTwo text={activtyMethod === 'upload' ? 'Upload activity' : title} color="#084892" />
             </div>
             {activtyMethod !== 'upload' && singleLayout === null && (
               <div className="activity-title-change-layout">
@@ -173,10 +186,10 @@ const AddActivity = (props) => {
                     handleSubmit();
                   }}
                 >
-                  <HeadingThree text="Layout description" color="#084892" />
+                  <HeadingThree text="Describe layout" color="#084892" />
 
                   <div className="layout-title-formik-textField">
-                    <HeadingThree text="Layout Title" color="#515151" className="textField-title" />
+                    <HeadingThree text="Title" color="#515151" className="textField-title" />
                     <HeadingText text="Used for searching, reports and copyright information" color="#515151" className="textField-detailText" />
                     <input type="text" name="title" placeholder="Give your layout a name..." onChange={handleChange} onBlur={handleBlur} value={values.title} />
                     <div style={{ color: 'red' }}>{errors.title && touched.title && errors.title}</div>
@@ -214,7 +227,7 @@ const AddActivity = (props) => {
           </div>
           <div className="add-activity-layout-videoTag">
             <HeadingThree
-              text={activtyMethod === 'upload' ? 'Upload Activities' : activity ? 'Edit Activity' : 'Add Activity'}
+              text={activtyMethod === 'upload' ? 'Upload activity' : activity ? 'Edit layout' : 'Create layout'}
               color="#084892"
               className="layout-add-activity-title"
             />
@@ -222,7 +235,7 @@ const AddActivity = (props) => {
             <HeadingText
               text={
                 activtyMethod === 'upload'
-                  ? 'Upload an activity from an existing H5P file.'
+                  ? ''
                   : activity
                   ? 'Start editing activity by opening the editor. Once you finish, hit the Save & Close button to see your results.'
                   : 'Start adding activity by opening the editor. Once you finish, hit the Save & Close button to see your results.'
@@ -233,7 +246,7 @@ const AddActivity = (props) => {
               {activtyMethod !== 'upload' && (
                 <div className="add-activity-btns">
                   <Buttons
-                    text="Open editor"
+                    text="Create"
                     primary={true}
                     width="142px"
                     height="35px"

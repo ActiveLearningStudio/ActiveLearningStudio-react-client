@@ -49,11 +49,11 @@ const ActivityLayout = (props) => {
   return (
     <div className="activity-layout-form">
       <div className="activity-layout-tabs">
-        <Tabs text="1. Select activity" tabActive />
-        <Tabs text="2. Describe + Create activity" className="ml-10 " />
+        <Tabs text="1. Select layout" tabActive />
+        <Tabs text="2. Describe and create layout" className="ml-10 " />
       </div>
       <div className="activity-layout-title">
-        <HeadingTwo text="Create new activity" color="#084892" />
+        <HeadingTwo text="Select layout" color="#084892" />
       </div>
 
       <form className="radio-group ">
