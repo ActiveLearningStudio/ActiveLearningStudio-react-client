@@ -350,7 +350,7 @@ export default function Pills(props) {
       result.then((data) => {
         setLmsProject(data);
       });
-    } if ( type === 'LMS') {
+    } if (type === 'LMS') {
       const result = adminService.getLtiTools(activeOrganization?.id, activePage || 1);
       result.then((data) => {
         setLtiTool(data);
@@ -385,7 +385,7 @@ export default function Pills(props) {
       setDefaultSso(data);
     });
   };
-  
+
   const searchQueryChangeHandlerLtiTool = (search) => {
     setLtiTool(null);
     const encodeQuery = encodeURI(search.target.value);
@@ -515,18 +515,18 @@ export default function Pills(props) {
             )}
             {type === 'Users' && subTypeState === 'All Users' && (
               <Starter
-                // paginationCounter={true}
+                paginationCounter={true}
                 search={true}
                 print={false}
-                btnText="Create new user"
+                btnText="Add user"
                 btnAction="create_user"
                 importUser={true}
                 filter={false}
                 tableHead={columnData.userall}
                 data={users}
                 activePage={activePage}
-                // size={size}
-                // setSize={setSize}
+                size={size}
+                setSize={setSize}
                 activeRole={activeRole}
                 setActiveRole={setActiveRole}
                 subTypeState={'All Users'}
@@ -561,14 +561,16 @@ export default function Pills(props) {
             )}
             {type === 'Organization' && (
               <Starter
-                paginationCounter={false}
                 search={true}
                 print={false}
-                btnText="Create Organization"
+                btnText="Add Organization"
                 btnAction="add_org"
                 importUser={false}
                 filter={false}
                 tableHead={columnData.organization}
+                paginationCounter={true}
+                size={size}
+                setSize={setSize}
                 data={{}}
                 type={type}
               />
@@ -595,7 +597,9 @@ export default function Pills(props) {
 
             {type === 'Project' && subTypeState === 'All Projects' && (
               <Starter
-                paginationCounter={false}
+                paginationCounter={true}
+                size={size}
+                setSize={setSize}
                 search={true}
                 tableHead={columnData.projectAll}
                 data={allProjectTab}
@@ -678,6 +682,9 @@ export default function Pills(props) {
                 type={type}
                 setActivePage={setActivePage}
                 activePage={activePage}
+                paginationCounter={true}
+                size={size}
+                setSize={setSize}
               />
             )}
             {type === 'Settings' && subTypeState === 'All settings' && <Starter type={type} subType={'All settings'} subTypeState={subTypeState} />}
