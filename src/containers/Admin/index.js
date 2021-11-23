@@ -38,7 +38,7 @@ function AdminPanel() {
       dispatch(getRoles());
     }
   }, [activeOrganization]);
-  useEffect(() => {}, [activeTab]);
+  useEffect(() => { }, [activeTab]);
   useEffect(() => {
     const tab = localStorage.getItem('activeTab');
     if (tab) {
@@ -96,7 +96,7 @@ function AdminPanel() {
                 {permission?.Project?.includes('project:view') && (
                   <Tab eventKey="Project" title="Projects">
                     <div className="module-content">
-                      <Pills modules={['All Projects', 'Indexing Queue', 'Exported Projects']} allProjectTab={allProjectTab} setAllProjectTab={setAllProjectTab} type="Project" />
+                      <Pills modules={['All Projects', 'Library requests', 'Exported Projects']} allProjectTab={allProjectTab} setAllProjectTab={setAllProjectTab} type="Project" />
                     </div>
                   </Tab>
                 )}

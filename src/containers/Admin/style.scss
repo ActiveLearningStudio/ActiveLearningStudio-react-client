@@ -260,6 +260,47 @@
         }
       }
     }
+    .filter-dropdown-activityItems {
+      display: flex;
+      align-items: center;
+      color: $fun-blue-1;
+      margin-right: 33px;
+      button {
+        display: flex;
+        align-items: center;
+        padding: 6px 8px;
+        width: auto;
+        background: none;
+        height: 36px;
+        color: #084892;
+        background-color: none;
+        box-shadow: none;
+        border: 1px solid #084892;
+        box-sizing: border-box;
+        border-radius: 4px;
+        margin-left: 8px;
+        &:focus {
+          color: #084892;
+          box-shadow: none;
+        }
+        &:after {
+          margin-left: auto;
+          background-image: none !important;
+          margin-top: 5px;
+          content: url(../../assets/images/svg/dropdown-icon.svg) !important;
+          border: none;
+        }
+      }
+      .dropdown-menu {
+        min-width: 80px !important;
+      }
+      a {
+        &:hover {
+          color: #2e68bf;
+          background: #f7faff;
+        }
+      }
+    }
     .filter-dropdown-project {
       display: flex;
       align-items: center;

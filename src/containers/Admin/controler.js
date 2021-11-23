@@ -55,6 +55,8 @@ function Controller(props) {
     inviteUser,
     subType,
     setChangeIndexValue,
+    selectedActivityType,
+    setSelectedActivityType,
   } = props;
   const importProject = useRef();
   const dispatch = useDispatch();
@@ -63,6 +65,7 @@ function Controller(props) {
   const [activeRoleInComponent, setActiveRoleInComponent] = useState('');
   const organization = useSelector((state) => state.organization);
   const { permission, activeOrganization, currentOrganization } = organization;
+  const { activityTypes } = useSelector((state) => state.admin);
   const { activeForm } = adminState;
   const [selectedIndexValue, setSelectedIndexValue] = useState('ALL');
   const [selectedIndexValueid, setSelectedIndexValueid] = useState(0);
@@ -306,7 +309,8 @@ function Controller(props) {
             </span>
           </div>
         )}
-        {type === 'Project' && (
+        {/* FILTER FOR PROJECT TABS */}
+        {type === 'Project' && (subType === 'all' || subType === 'Library requests') && (
           <div className="filter-dropdown-project">
             <Dropdown>
               <Dropdown.Toggle id="dropdown-basic">
@@ -380,6 +384,18 @@ function Controller(props) {
                       <input type="radio" />
                       Not Requested
                     </span>
+                    {subType === 'Library requests' && (
+                      <>
+                        <span>
+                          <input type="radio" />
+                          Approved
+                        </span>
+                        <span>
+                          <input type="radio" />
+                          Rejected
+                        </span>
+                      </>
+                    )}
                   </div>
                   <div className="shared-status">
                     <label>Shared status</label>
@@ -401,6 +417,29 @@ function Controller(props) {
             </Dropdown>
           </div>
         )}
+        {/* FILTER FOR ACTIVITY ITEMS */}
+        {subType === 'Activity Items' && (
+          <div className="filter-dropdown-activityItems">
+            Filter by activity type
+            <span>
+              <Dropdown>
+                <Dropdown.Toggle id="dropdown-basic">{selectedActivityType?.title || 'Select'}</Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  {selectedActivityType && (
+                    <Dropdown.Item onClick={() => setSelectedActivityType(null)}>
+                      Select
+                    </Dropdown.Item>
+                  )}
+                  {activityTypes?.map((item) => (
+                    <Dropdown.Item onClick={() => setSelectedActivityType(item)}>
+                      {item.title}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+            </span>
+          </div>)}
         {!!filter && subType === 'index' && (
           <div className="filter-dropdown drop-counter ">
             Index Value:
