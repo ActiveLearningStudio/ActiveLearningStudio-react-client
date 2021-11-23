@@ -26,6 +26,7 @@ export default function Pills(props) {
   const admin = useSelector((state) => state.admin);
   const [activePage, setActivePage] = useState(1);
   const [size, setSize] = useState(10);
+  const [selectedActivityType, setSelectedActivityType] = useState(null);
   const { activeOrganization, roles, permission, searchUsers } = organization;
   const [activeRole, setActiveRole] = useState('');
   const { activeTab, activityType } = admin;
@@ -350,7 +351,7 @@ export default function Pills(props) {
       result.then((data) => {
         setLmsProject(data);
       });
-    } if ( type === 'LMS') {
+    } if (type === 'LMS') {
       const result = adminService.getLtiTools(activeOrganization?.id, activePage || 1);
       result.then((data) => {
         setLtiTool(data);
@@ -385,7 +386,7 @@ export default function Pills(props) {
       setDefaultSso(data);
     });
   };
-  
+
   const searchQueryChangeHandlerLtiTool = (search) => {
     setLtiTool(null);
     const encodeQuery = encodeURI(search.target.value);
@@ -431,7 +432,7 @@ export default function Pills(props) {
           setCurrentTab('all');
         } else if (key === 'Exported Projects') {
           setCurrentTab('Exported Projects');
-        } else if (key === 'Indexing Queue') {
+        } else if (key === 'Library requests') {
           setCurrentTab('index');
           setChangeIndexValue(0);
         }
@@ -515,18 +516,18 @@ export default function Pills(props) {
             )}
             {type === 'Users' && subTypeState === 'All Users' && (
               <Starter
-                // paginationCounter={true}
+                paginationCounter={true}
                 search={true}
                 print={false}
-                btnText="Create new user"
+                btnText="Add user"
                 btnAction="create_user"
                 importUser={true}
                 filter={false}
                 tableHead={columnData.userall}
                 data={users}
                 activePage={activePage}
-                // size={size}
-                // setSize={setSize}
+                size={size}
+                setSize={setSize}
                 activeRole={activeRole}
                 setActiveRole={setActiveRole}
                 subTypeState={'All Users'}
@@ -561,14 +562,16 @@ export default function Pills(props) {
             )}
             {type === 'Organization' && (
               <Starter
-                paginationCounter={false}
                 search={true}
                 print={false}
-                btnText="Create Organization"
+                btnText="Add Organization"
                 btnAction="add_org"
                 importUser={false}
                 filter={false}
                 tableHead={columnData.organization}
+                paginationCounter={true}
+                size={size}
+                setSize={setSize}
                 data={{}}
                 type={type}
               />
@@ -576,7 +579,9 @@ export default function Pills(props) {
 
             {type === 'LMS' && subTypeState === 'All Settings' && (
               <Starter
-                paginationCounter={false}
+                paginationCounter={true}
+                size={size}
+                setSize={setSize}
                 subType={'All Settings'}
                 search={true}
                 print={false}
@@ -595,7 +600,9 @@ export default function Pills(props) {
 
             {type === 'Project' && subTypeState === 'All Projects' && (
               <Starter
-                paginationCounter={false}
+                paginationCounter={true}
+                size={size}
+                setSize={setSize}
                 search={true}
                 tableHead={columnData.projectAll}
                 data={allProjectTab}
@@ -626,9 +633,11 @@ export default function Pills(props) {
                 searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
               />
             )}
-            {type === 'Project' && subTypeState === 'Indexing Queue' && (
+            {type === 'Project' && subTypeState === 'Library requests' && (
               <Starter
-                paginationCounter={false}
+                paginationCounter={true}
+                size={size}
+                setSize={setSize}
                 search={true}
                 tableHead={columnData.projectIndex}
                 data={allProjectIndexTab}
@@ -638,7 +647,7 @@ export default function Pills(props) {
                 searchAlertToggler={searchAlertToggler}
                 setActivePage={setActivePage}
                 activePage={activePage}
-                subType="index"
+                subType="Library requests"
                 setAllProjectIndexTab={setAllProjectIndexTab}
                 setCurrentTab={setCurrentTab}
                 filter={true}
@@ -678,12 +687,19 @@ export default function Pills(props) {
                 type={type}
                 setActivePage={setActivePage}
                 activePage={activePage}
+                paginationCounter={true}
+                size={size}
+                setSize={setSize}
+                selectedActivityType={selectedActivityType}
+                setSelectedActivityType={setSelectedActivityType}
               />
             )}
             {type === 'Settings' && subTypeState === 'All settings' && <Starter type={type} subType={'All settings'} subTypeState={subTypeState} />}
             {type === 'DefaultSso' && (
               <Starter
-                paginationCounter={false}
+                paginationCounter={true}
+                size={size}
+                setSize={setSize}
                 search={true}
                 print={false}
                 btnText="Create New Default SSO"
@@ -700,7 +716,9 @@ export default function Pills(props) {
             )}
             {type === 'LMS' && subTypeState === 'LTI Tools' && (
               <Starter
-                paginationCounter={false}
+                paginationCounter={true}
+                size={size}
+                setSize={setSize}
                 subType={'LTI Tools'}
                 search={true}
                 print={false}

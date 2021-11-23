@@ -687,7 +687,7 @@ function Table(props) {
               ))}
 
             {type === 'Project' &&
-              subType === 'index' &&
+              subType === 'Library requests' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData.map((row) => {
