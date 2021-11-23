@@ -30,6 +30,7 @@ import {
 import { deleteActivityItem, deleteActivityType, getActivityItems, loadResourceTypesAction, selectActivityItem, selectActivityType } from 'store/actions/resource';
 import * as actionTypes from 'store/actionTypes';
 import EditProjectModel from './model/editprojectmodel';
+import { clone } from 'lodash';
 
 const AdminDropdown = (props) => {
   const {
@@ -397,7 +398,7 @@ const AdminDropdown = (props) => {
               )}
             </>
           )}
-          {type === 'LMS' && (
+          {type === 'LMS' && subType === 'All Settings' && (
             <>
               <Dropdown.Item
                 to="#"
@@ -532,6 +533,74 @@ const AdminDropdown = (props) => {
               )}
             </>
           )}
+
+          {type === "LMS" &&  subType === 'LTI Tools' && (
+            <>
+              <Dropdown.Item
+                to="#"
+                onClick={() => {
+                  Swal.showLoading();
+                  adminService.cloneLtiTool(activeOrganization?.id, row?.id);
+                }}
+                >
+                <img src={Clone} alt="Preview" className="menue-img" />
+                Clone
+              </Dropdown.Item>
+              <Dropdown.Item
+              onClick={() => {
+                Swal.fire({
+                    title: 'Are you sure you want to delete this LTI Tool?',
+                    text: 'This action is Irreversible',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#084892',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'LTI Tool',
+                            icon: 'info',
+                            text: 'Deleting LTI Tool...',
+                            allowOutsideClick: false,
+                            onBeforeOpen: () => {
+                                Swal.showLoading();
+                            },
+                            button: false,
+                        });
+                        const response = adminService.deleteLtiTool(activeOrganization?.id, row?.id);
+                        response
+                            .then((res) => {
+                                Swal.fire({
+                                    icon: 'success',
+                                    text: res?.message.message,
+                                });
+                                const filterLMS = localStateData.filter((each) => each.id != row.id);
+                                setLocalStateData(filterLMS);
+                            })
+                            .catch((err) => console.log(err));
+                    }
+                });
+              }}
+              >
+              <img src={Delete} alt="Preview" className="menue-img" />
+                Delete
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => {
+                  dispatch({
+                      type: 'SET_ACTIVE_EDIT',
+                      payload: row,
+                  });
+                  dispatch(setActiveAdminForm('edit_lti_tool'));
+                }}
+                >
+                <img src={Edit} alt="Preview" className="menue-img" />
+                Edit
+              </Dropdown.Item>
+            </>
+          )}
+
           {/* <Dropdown.Item>
           <img src={Edit} alt="Preview" className="menue-img" />
           Edit

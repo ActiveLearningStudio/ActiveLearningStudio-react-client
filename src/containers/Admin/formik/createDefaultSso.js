@@ -21,9 +21,13 @@ export default function CreateDefaultSso(prop) {
   const [stateOrgSearch, setStateOrgSearch] = useState([]);
   const [checked, setChecked] = useState(false);
   const [organizationRole, setOrganizationRole] = useState([]);
+  const [selectedRole, setSelectedRole] = useState('');
   useEffect(() => {
     if (editMode && !clone) {
       setChecked(activeEdit?.published);
+    }
+    if (editMode) {
+      getOrganazationRoles(activeEdit?.organization_id);
     }
   }, [activeEdit, editMode]);
 
@@ -266,8 +270,10 @@ export default function CreateDefaultSso(prop) {
                 <select name="role_id" onChange={handleChange} onBlur={handleBlur} value={values.role_id}>
                 <option defaultValue="">Nothing selected</option>
                   {organizationRole.length > 0 && (
-                    organizationRole?.map((role) => (
-                      <option value={role.id} key={role.id}>{role.display_name}</option>
+                    organizationRole?.map((role) => (<>
+                      { setSelectedRole(typeof values.role_id != 'undefined' && values.role_id == role.id ? 'selected' :'')}
+                      <option value={role.id} key={role.id} selected={selectedRole}>{role.display_name}</option>
+                      </>
                     ))
                   )}
                 </select>
