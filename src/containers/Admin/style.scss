@@ -1152,7 +1152,6 @@
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-top: 40px;
 
           button {
             background: $fun-blue-1;
@@ -1177,7 +1176,7 @@
   }
 
   .user-roles {
-    border: 1px solid #ccc;
+    // border: 1px solid #ccc;
     padding: 0px 20px;
 
     form {
@@ -1535,4 +1534,98 @@
   font-size: 14px;
   line-height: 20px;
   color: #ff403b;
+}
+
+// Role Css Update
+.dynamic-roles-title-btn {
+  padding-bottom: 23px;
+  padding-left: 20px;
+  padding-right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+}
+.roles-permission-tab-row {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+.roles-permission-tab {
+  border: 1px solid #ccc;
+}
+.detail-permission-tab {
+  // background: #f7faff;
+  border-top: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+.checkbox_section {
+  align-items: center;
+  display: flex;
+  input {
+    display: none;
+    &:checked + span {
+      background-image: url(../../assets/images/check.svg);
+      background-color: #2e68bf;
+    }
+  }
+  span {
+    border: 1px solid #cccc;
+    background-repeat: no-repeat;
+    background-size: 17px 9px;
+    background-position: 2px;
+    display: inline-block;
+    margin-right: 10px;
+    height: 23px;
+    width: 23px;
+    border-radius: 3px;
+  }
+  p {
+    margin: 0;
+    padding: 0;
+  }
+}
+#role-permission-tab-id {
+  .nav-link.active {
+    border-bottom: 4px solid transparent !important;
+    background: #f7faff !important;
+    border-radius: 4px !important;
+    font-weight: bold !important;
+    color: #084892 !important;
+
+    .image-tag {
+      position: absolute;
+      right: 5px;
+      top: 10px;
+      content: url("../../assets/images/svg/VectorAngleRight.svg");
+    }
+  }
+}
+
+.role-permission-tab-name {
+  .nav-link {
+    font-family: $rubik !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+    color: #515151 !important;
+    text-align: left !important;
+    margin-top: 3px !important;
+    margin-bottom: 3px !important;
+    padding-left: 10px !important;
+    position: relative;
+  }
+  .image-tag {
+    position: absolute;
+    right: 5px;
+    top: 15px;
+    content: url("../../assets/images/svg/angledown.svg");
+  }
+}
+.checkbox_section_custom {
+  display: flex;
 }
