@@ -327,3 +327,79 @@ export const updatedPlaylist = (userId) => async () => {
     }
   });
 };
+
+export const enablePlaylistShare = (projectId, playlistId) => async (dispatch) => {
+  const { playlist } = await playlistService.enablePlaylistShare(projectId, playlistId);
+  dispatch({
+    type: actionTypes.ENABLE_PLAYLIST_SHARE,
+    isSharedPlaylist: playlist?.shared
+  });
+  return playlist;
+};
+
+export const disablePlaylistShare = (projectId, playlistId) => async (dispatch) => {
+  const { playlist } = await playlistService.disablePlaylistShare(projectId, playlistId);
+  dispatch({
+    type: actionTypes.DISABLE_PLAYLIST_SHARE,
+    isSharedPlaylist: playlist?.shared
+  });
+  return playlist;
+};
+
+export const loadSingleSharedPlaylist = (projectId, playlistId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.LOAD_PLAYLIST_REQUEST,
+    });
+
+    const { playlist } = await playlistService.loadSingleSharedPlaylist(projectId, playlistId);
+
+    dispatch({
+      type: actionTypes.LOAD_PLAYLIST_SUCCESS,
+      payload: { playlist },
+    });
+    dispatch({
+      type: actionTypes.LOAD_SINGLE_SHARED_PLAYLIST,
+      sharedPlaylist: playlist,
+    });
+  } catch (e) {
+    Swal.fire({
+      title: "Error",
+      icon: "error",
+      html:
+        e.message || "Something went wrong! We are unable to load shared playlist.",
+    });
+    dispatch({
+      type: actionTypes.LOAD_PLAYLIST_FAIL,
+    });
+
+    throw e;
+  }
+};
+
+export const loadAllSharedPlaylist = (projectId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: actionTypes.LOAD_PLAYLIST_REQUEST,
+    });
+
+    const { playlists } = await playlistService.loadAllSharedPlaylists(projectId);
+
+    dispatch({
+      type: actionTypes.LOAD_ALL_SHARED_PLAYLIST,
+      sharedPlaylists: playlists,
+    });
+  } catch (e) {
+    Swal.fire({
+      title: "Error",
+      icon: "error",
+      html:
+        e.message || "Something went wrong! We are unable to load shared playlist.",
+    });
+    dispatch({
+      type: actionTypes.LOAD_PLAYLIST_FAIL,
+    });
+
+    throw e;
+  }
+};

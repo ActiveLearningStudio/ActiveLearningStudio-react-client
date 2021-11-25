@@ -30,7 +30,7 @@ export const getAllOrganizationSearch = (id, search) => async (dispatch) => {
   const result = await organization.getOrganizationSearch(id, search);
   dispatch({
     type: actionTypes.ADD_SUBORG_LIST,
-    payload: result?.suborganization,
+    payload: result,
   });
 };
 
@@ -118,11 +118,11 @@ export const checkBranding = (data) => async () => {
   return result;
 };
 
-export const getsubOrgList = (id) => async (dispatch) => {
-  const result = await organization.getSubOrganizationList(id);
+export const getsubOrgList = (id, size = 10, page = 1) => async (dispatch) => {
+  const result = await organization.getSubOrganizationList(id, size, page);
   dispatch({
     type: actionTypes.ADD_SUBORG_LIST,
-    payload: result.suborganization,
+    payload: result,
   });
   return result;
 };

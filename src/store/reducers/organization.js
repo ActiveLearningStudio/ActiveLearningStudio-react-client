@@ -13,7 +13,7 @@ const INITIAL_STATE = {
   allOrganizations: [],
   currentOrganization: null,
   activeOrganization: null,
-  allSuborgList: null,
+  allSuborgList: [],
   newlyCreated: null,
   editOrganization: null,
   logo: '',

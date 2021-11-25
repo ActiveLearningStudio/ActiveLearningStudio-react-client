@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import adminService from 'services/admin.service';
@@ -16,7 +16,7 @@ import { forgetSpecificFailedJob, retrySpecificFailedJob, setActiveAdminForm, se
 import { deleteActivityItem, deleteActivityType, getActivityItems, loadResourceTypesAction, selectActivityItem, selectActivityType } from 'store/actions/resource';
 
 import AdminDropdown from './adminDropdown';
-import AdminPaginaation from './pagination';
+import AdminPagination from './pagination';
 import { faCheckCircle, faStopCircle } from '@fortawesome/free-solid-svg-icons';
 function Table(props) {
   const {
@@ -46,7 +46,13 @@ function Table(props) {
   const allState = useSelector((state) => state);
   const dispatch = useDispatch();
   const [localStateData, setLocalStateData] = useState([]);
+  const [localOrganizationList, setLocalOrganizationList] = useState(null);
   const [localstatePagination, setLocalStatePagination] = useState();
+  useEffect(() => {
+    if (allSuborgList?.data) {
+      setLocalOrganizationList(allSuborgList);
+    }
+  }, [allSuborgList]);
   //update table after crud
   useEffect(() => {
     if (type === 'LMS') {
@@ -159,7 +165,7 @@ function Table(props) {
   return (
     <div className="table-data">
       {data?.data?.length > 0 && data?.meta && (
-        <AdminPaginaation
+        <AdminPagination
           setCurrentTab={setCurrentTab}
           subType={subType}
           subTypeState={subTypeState}
@@ -355,9 +361,9 @@ function Table(props) {
                 </tr>
               ))}
             {type === 'Organization' &&
-              (allSuborgList ? (
-                allSuborgList.length > 0 ? (
-                  allSuborgList?.map((row) => (
+              (localOrganizationList ? (
+                localOrganizationList?.data?.length > 0 ? (
+                  localOrganizationList?.data?.map((row) => (
                     <tr key={row} className="admin-panel-rows">
                       <td>
                         <div className="admin-name-img">
@@ -1055,7 +1061,7 @@ function Table(props) {
         </table>
       </div>
       {data?.data?.length > 0 && data?.meta && (
-        <AdminPaginaation
+        <AdminPagination
           setCurrentTab={setCurrentTab}
           subType={subType}
           subTypeState={subTypeState}

@@ -44,7 +44,7 @@ ActivitiesDropdown.propTypes = {
 
 ActivitiesDropdown.defaultProps = {
   showLti: false,
-  shared: false,
+  shared: PropTypes.bool,
   projectId: null,
   activities: [],
 };

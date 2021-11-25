@@ -4,9 +4,12 @@ import * as actionTypes from "../actionTypes";
 const INITIAL_STATE = {
   isLoading: false,
   playlists: [],
+  sharedPlaylists: [],
+  sharedPlayist: null,
   showCreatePlaylistPopup: false,
   selectedPlaylist: null,
   loadingH5P: "loading...",
+  isSharedPlaylist: null,
   isNonAvailablePlaylist: false,
 };
 
@@ -219,7 +222,26 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         playlists: newReorderedPlaylists,
       };
-
+    case actionTypes.ENABLE_PLAYLIST_SHARE:
+      return {
+        ...state,
+        isSharedPlaylist: action.isSharedPlaylist,
+      };
+    case actionTypes.DISABLE_PLAYLIST_SHARE:
+      return {
+        ...state,
+        isSharedPlaylist: action.isSharedPlaylist,
+      };
+    case actionTypes.LOAD_ALL_SHARED_PLAYLIST:
+      return {
+        ...state,
+        sharedPlaylists: action.sharedPlaylists,
+      };
+    case actionTypes.LOAD_SINGLE_SHARED_PLAYLIST:
+      return {
+        ...state,
+        sharedPlayist: action.sharedPlayist,
+      };
     default:
       return state;
   }
