@@ -27,7 +27,7 @@ export default function Pills(props) {
   const [activePage, setActivePage] = useState(1);
   const [size, setSize] = useState(10);
   const [selectedActivityType, setSelectedActivityType] = useState(null);
-  const { activeOrganization, roles, permission, searchUsers } = organization;
+  const { activeOrganization, roles, permission, searchUsers, allSuborgList } = organization;
   const [activeRole, setActiveRole] = useState('');
   const { activeTab, activityType } = admin;
   const [currentTab, setCurrentTab] = useState('all');
@@ -149,9 +149,9 @@ export default function Pills(props) {
       }
     }
     if (type === 'Organization') {
-      dispatch(getsubOrgList(activeOrganization?.id));
+      dispatch(getsubOrgList(activeOrganization?.id, size, activePage));
     }
-  }, [activeOrganization, activePage, type, subTypeState, activeTab, activeRole, organization?.users?.length]);
+  }, [activeOrganization, activePage, type, subTypeState, activeTab, activeRole, organization?.users?.length, size]);
   // All Users Business Logic End
 
   useMemo(async () => {
@@ -572,8 +572,10 @@ export default function Pills(props) {
                 paginationCounter={true}
                 size={size}
                 setSize={setSize}
-                data={{}}
+                data={allSuborgList}
                 type={type}
+                activePage={activePage}
+                setActivePage={setActivePage}
               />
             )}
 
