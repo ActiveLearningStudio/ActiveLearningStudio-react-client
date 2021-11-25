@@ -232,11 +232,6 @@ function App(props) {
             interactive, immersive learning experience, a full browser is required.
           </p>
 
-          <a className="reg-btn" href="/register">
-            CLICK HERE TO REGISTER
-          </a>
-          <br />
-
           <p>
             To learn more click here
             <a href="https://curriki.org"> Curriki</a>
