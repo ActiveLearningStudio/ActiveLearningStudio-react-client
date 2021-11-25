@@ -7,7 +7,9 @@ import { Tab, Tabs } from 'react-bootstrap';
 
 import { collapsedSideBar } from 'store/actions/ui';
 import projectIcon from 'assets/images/project_icon.svg';
-import { loadLtiPlaylistAction, loadProjectPlaylistsAction } from 'store/actions/playlist';
+import {
+  loadLtiPlaylistAction, loadProjectPlaylistsAction, loadSingleSharedPlaylist,
+} from 'store/actions/playlist';
 import PreviousLink from './components/PreviousLink';
 import NextLink from './components/NextLink';
 import ActivitiesDropdown from './components/ActivitiesDropdown';
@@ -21,8 +23,10 @@ function LtiPlaylistPreview(props) {
     playlist,
     playlistId,
     activityId,
+    projectId,
     showLti,
     loadLtiPlaylist,
+    loadSharedPlaylist,
     loadProjectPlaylists,
     setCollapsed,
     collapsed,
@@ -30,9 +34,12 @@ function LtiPlaylistPreview(props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-
-    loadLtiPlaylist(playlistId);
-  }, [playlistId, activityId, loadLtiPlaylist]);
+    if (window.location.pathname.includes('/shared') && playlistId && projectId) {
+      loadSharedPlaylist(projectId, playlistId);
+    } else if (window.location.pathname.includes('/lti') && playlistId) {
+      loadLtiPlaylist(playlistId);
+    }
+  }, [playlistId, activityId, loadLtiPlaylist, loadSharedPlaylist, projectId]);
 
   let { selectedPlaylist } = playlist;
   useEffect(() => {
@@ -106,10 +113,10 @@ function LtiPlaylistPreview(props) {
             </div>
           </Link>
         </div>
-        { localStorage.getItem('lti_activity') === 'false' && (
-        <Link to={`/project/${selectedPlaylist.project.id}/shared`}>
-          <FontAwesomeIcon icon="times" />
-        </Link>
+        {localStorage.getItem('lti_activity') === 'false' && (
+          <Link to={`/project/${selectedPlaylist.project.id}/shared`}>
+            <FontAwesomeIcon icon="times" />
+          </Link>
         )}
       </div>
       <div className="flex-container previews">
@@ -175,6 +182,7 @@ function LtiPlaylistPreview(props) {
                   showLti
                   playlistId={playlistId}
                   activities={selectedPlaylist.activities}
+                  shared={playlist.shared}
                 />
               </div>
             </Tab>
@@ -198,9 +206,11 @@ function LtiPlaylistPreview(props) {
 LtiPlaylistPreview.propTypes = {
   playlist: PropTypes.object.isRequired,
   playlistId: PropTypes.number.isRequired,
+  projectId: PropTypes.number,
   activityId: PropTypes.number,
   showLti: PropTypes.bool,
   loadLtiPlaylist: PropTypes.func.isRequired,
+  loadSharedPlaylist: PropTypes.func.isRequired,
   loadProjectPlaylists: PropTypes.func.isRequired,
   collapsed: PropTypes.bool.isRequired,
   setCollapsed: PropTypes.func.isRequired,
@@ -209,10 +219,12 @@ LtiPlaylistPreview.propTypes = {
 LtiPlaylistPreview.defaultProps = {
   showLti: false,
   activityId: undefined,
+  projectId: undefined,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   loadLtiPlaylist: (playlistId) => dispatch(loadLtiPlaylistAction(playlistId)),
+  loadSharedPlaylist: (projectId, playlistId) => dispatch(loadSingleSharedPlaylist(projectId, playlistId)),
   loadProjectPlaylists: (projectId) => dispatch(loadProjectPlaylistsAction(projectId)),
   setCollapsed: () => dispatch(collapsedSideBar()),
 });
