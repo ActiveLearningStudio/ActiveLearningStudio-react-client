@@ -1629,3 +1629,68 @@
 .checkbox_section_custom {
   display: flex;
 }
+
+// all-permission
+.all-permission-tab-data {
+  display: flex;
+  flex-direction: column;
+  .permission-tab-title {
+    margin-bottom: 18px;
+  }
+  .permission-tab-data {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+.dynamic-roles {
+  .card-body {
+    .form-grouper label {
+      padding-left: 0 !important;
+    }
+  }
+}
+
+// Admin Panel
+.admin-panel-child-selection {
+  display: flex;
+  // justify-content: space-between;
+  flex-wrap: wrap;
+}
+.admin-tag {
+  p {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    color: #084892;
+  }
+}
+.custom-select-style {
+  width: calc(100% / 4);
+  display: flex;
+  align-items: center;
+  // margin-right: 40px;
+  select {
+    width: 80px;
+    height: 28px;
+    background: #e5eeff;
+    border-radius: 4px;
+    font-family: $rubik;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    color: #084892;
+    border: none;
+  }
+  p {
+    margin-left: 8px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    color: #084892;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+}
