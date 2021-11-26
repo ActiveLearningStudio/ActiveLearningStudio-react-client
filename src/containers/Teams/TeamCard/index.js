@@ -12,7 +12,7 @@ function TeamCard(props) {
     team: {
       id,
       name,
-      description,
+      // description,
       users,
       projects,
     },
@@ -52,7 +52,8 @@ function TeamCard(props) {
         >
           {name}
         </Link>
-        {permission?.Team?.includes('team:edit') && (
+        <FontAwesomeIcon icon="ellipsis-v" className="icon" />
+        {/* {permission?.Team?.includes('team:edit') && (
           <Link
             onClick={() => {
               dispatch(getTeamPermission(organization.currentOrganization.id, id));
@@ -63,8 +64,8 @@ function TeamCard(props) {
             <FontAwesomeIcon icon="pen" className="mr-2" />
             Edit
           </Link>
-        )}
-        <h2 className="describe">{description.length > 50 ? `${description?.slice(0, 50)}...` : description}</h2>
+        )} */}
+        {/* <h2 className="describe">{description.length > 50 ? `${description?.slice(0, 50)}...` : description}</h2> */}
       </div>
 
       <div className="team-member-content mid-border">
