@@ -6,7 +6,7 @@ import { withRouter, Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown } from 'react-bootstrap';
-
+import linkIcon from 'assets/images/project-link.svg';
 import ShareLink from 'components/ResourceCard/ShareLink';
 import ResourceCardDropdownShare from 'components/ResourceCard/shareResource';
 import { deletePlaylistAction, changePlaylistTitleAction, enablePlaylistShare } from 'store/actions/playlist';
@@ -104,8 +104,18 @@ class PlaylistCardDropdown extends React.Component {
                   }
                 }}
               >
-                <FontAwesomeIcon icon="share" className="mr-2" />
-                Share
+                {playlist?.shared ? (
+                  <>
+                    <FontAwesomeIcon icon="link" className="mr-2" />
+                    Get link
+                  </>
+                ) :
+                  (
+                    <>
+                      <FontAwesomeIcon icon="share" className="mr-2" />
+                      Share
+                    </>
+                  )}
               </Dropdown.Item>
             )
           )}
