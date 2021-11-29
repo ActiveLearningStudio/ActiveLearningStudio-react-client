@@ -132,10 +132,10 @@
     border-left: solid 5px #084892;
   }
 
-  .btn {
-    background-color: mediumaquamarine;
-    border-color: mediumaquamarine;
-  }
+  // .btn {
+  //   background-color: mediumaquamarine;
+  //   border-color: mediumaquamarine;
+  // }
 
   label {
     font-weight: bold;
@@ -236,6 +236,9 @@
       }
       .filter {
         color: $fun-blue-1;
+        img {
+          margin-right: 8px;
+        }
       }
     }
   }

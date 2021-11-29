@@ -6,13 +6,18 @@ import './style.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteTeamAction, getTeamPermission } from 'store/actions/team';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Dropdown } from 'react-bootstrap';
+import Delete from 'assets/images/menu-dele.svg';
+import Edit from 'assets/images/menu-edit.svg';
+import teamicon from 'assets/images/sidebar/users-team.svg';
+import foldericon from 'assets/images/svg/projectFolder.svg';
 
 function TeamCard(props) {
   const {
     team: {
       id,
       name,
-      // description,
+      description,
       users,
       projects,
     },
@@ -48,11 +53,37 @@ function TeamCard(props) {
             dispatch(getTeamPermission(organization.currentOrganization.id, id));
           }}
           to={`/org/${organization.currentOrganization?.domain}/teams/${id}/projects`}
-          className="title m-0"
+        // className="title m-0"
         >
           {name}
         </Link>
-        <FontAwesomeIcon icon="ellipsis-v" className="icon" />
+        <Dropdown>
+          <Dropdown.Toggle id="dropdown-basic">
+            <FontAwesomeIcon icon="ellipsis-v" className="icon" />
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            {permission?.Team?.includes('team:edit') && (
+              <Dropdown.Item
+                as={Link}
+                to={`/org/${organization.currentOrganization?.domain}/teams/${id}/edit`}
+                onClick={() => {
+                  dispatch(getTeamPermission(organization.currentOrganization.id, id));
+                }}
+              >
+                <img src={Edit} alt="Edit" />
+                Edit
+              </Dropdown.Item>
+            )}
+            {permission?.Team?.includes('team:delete') && (
+              <Dropdown.Item
+                onClick={() => deleteTeam()}
+              >
+                <img src={Delete} alt="Preview" />
+                Delete
+              </Dropdown.Item>
+            )}
+          </Dropdown.Menu>
+        </Dropdown>
         {/* {permission?.Team?.includes('team:edit') && (
           <Link
             onClick={() => {
@@ -65,13 +96,17 @@ function TeamCard(props) {
             Edit
           </Link>
         )} */}
-        {/* <h2 className="describe">{description.length > 50 ? `${description?.slice(0, 50)}...` : description}</h2> */}
       </div>
-
+      <div className="describe">{description.length > 50 ? `${description?.slice(0, 50)}...` : description}</div>
       <div className="team-member-content mid-border">
         <div className="sub-title">
-          <span>Team Members</span>
-          <span>{`(${users?.length})`}</span>
+          <img src={teamicon} alt="Team" />
+          <span>
+            {`${users?.length}`}
+            {' '}
+            Team Members
+          </span>
+          {/* <span>{`(${users?.length})`}</span> */}
         </div>
 
         <div className="member-mark-container">
@@ -84,16 +119,21 @@ function TeamCard(props) {
       </div>
 
       <div className="sub-title">
-        <span>Projects for the Team</span>
-        <span>{`(${projects?.length})`}</span>
+        <img src={foldericon} alt="Project" />
+        <span>
+          {`${projects?.length}`}
+          {' '}
+          Projects
+        </span>
+        {/* <span>{`(${projects?.length})`}</span> */}
       </div>
-      {permission?.Team?.includes('team:delete') && (
+      {/* {permission?.Team?.includes('team:delete') && (
         <div>
           <button type="button" onClick={() => deleteTeam()} className="back-button" style={{ textAlign: 'center' }}>
             Delete Team
           </button>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
