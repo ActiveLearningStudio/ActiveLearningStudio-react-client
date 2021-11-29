@@ -390,3 +390,11 @@ export const selectedProjectForCloning = (projectName) => (dispatch) => {
     payload: projectName,
   });
 };
+
+export const getWhiteBoardUrl = (orgId, objId, userId, objType) => async (dispatch) => {
+  const result = await teamService.getWhiteBoardUrl(orgId, objId, userId, objType);
+  dispatch({
+    type: actionTypes.WHITE_BOARD_URL,
+    payload: result.data?.url,
+  });
+};
