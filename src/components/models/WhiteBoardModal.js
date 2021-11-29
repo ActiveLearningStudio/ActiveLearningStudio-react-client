@@ -15,7 +15,7 @@ const WhiteBoardModal = ({
       size="lg"
       center
     >
-      <div className="model-box-google model-box-view">
+      <div className="model-box-view">
         <div className="modal-header">
         </div>
         <div className="model-body">
