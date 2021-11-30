@@ -145,3 +145,12 @@ export const setCurrentProject = (project) => (dispatch) => {
     payload: project,
   });
 };
+
+export const getLtiTools = (subOrgId, page) => async (dispatch) => {
+  const result = await adminService.getLtiTools(subOrgId, page);
+  dispatch({
+    type: actionTypes.GET_LTI_TOOLS,
+    payload: result,
+  });
+  return result;
+};

@@ -17,6 +17,7 @@ const INITIAL_STATE = {
   newlyCreated: null,
   newlyEdit: null,
   currentProject: null,
+  ltiTools: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -110,6 +111,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currentProject: action.payload,
+      };
+    case actionTypes.GET_LTI_TOOLS:
+      return {
+        ...state,
+        ltiTools: action.payload,
       };
     default:
       return state;

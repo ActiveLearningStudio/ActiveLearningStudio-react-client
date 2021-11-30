@@ -9,7 +9,7 @@ import { columnData } from './column';
 
 import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization, updatePageNumber, resetPageNumber } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from 'store/actions/resource';
-import { getJobListing, getLogsListing, getUserReport } from 'store/actions/admin';
+import { getJobListing, getLogsListing, getLtiTools, getUserReport } from 'store/actions/admin';
 import { alphaNumeric } from 'utils';
 
 export default function Pills(props) {
@@ -48,6 +48,7 @@ export default function Pills(props) {
   const [logs, setLogs] = useState(null);
   const [logType, SetLogType] = useState({ value: 'all', display_name: 'All' });
   const [changeIndexValue, setChangeIndexValue] = useState('0');
+  const dataRedux = useSelector((state) => state);
   useEffect(() => {
     setKey(modules?.[0]);
   }, [activeTab]);
@@ -352,12 +353,21 @@ export default function Pills(props) {
         setLmsProject(data);
       });
     } if (type === 'LMS') {
-      const result = adminService.getLtiTools(activeOrganization?.id, activePage || 1);
-      result.then((data) => {
-        setLtiTool(data);
-      });
+      // const result = dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
+      // result.then((data) => {
+      //   // console.log('lti-tool: ', data);
+      //   setLtiTool(data);
+      // });
+      dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
+      
     }
   }, [type, activePage, activeOrganization?.id]);
+
+  useEffect(() => {
+    if (dataRedux.admin.ltiTools) {
+      setLtiTool(dataRedux.admin.ltiTools);
+    }
+  }, [dataRedux.admin.ltiTools]);
 
   const searchQueryChangeHandlerLMS = (search) => {
     setLmsProject(null);
