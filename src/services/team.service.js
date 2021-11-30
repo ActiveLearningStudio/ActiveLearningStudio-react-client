@@ -110,6 +110,17 @@ const changeUserRole = (orgId, teamId, body) => httpService
     return Promise.reject(err.response.data);
   });
 
+const getWhiteBoardUrl = (orgId, objId, userId, objType) => httpService
+  .post(`/${apiVersion}/get-whiteboard`,
+  {
+    org_id: orgId, obj_id: objId, usr_id: userId, obj_type: objType,
+  })
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject(err.response.data);
+  });
+
 export default {
   getAll,
   create,
@@ -130,4 +141,5 @@ export default {
   checkUserBeforeAdd,
   getTeamProject,
   changeUserRole,
+  getWhiteBoardUrl,
 };

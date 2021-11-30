@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert } from 'react-bootstrap';
-import { getTeamPermission, loadSubOrganizationTeamsAction, loadTeamsAction } from 'store/actions/team';
+import {
+  getTeamPermission, loadSubOrganizationTeamsAction, loadTeamsAction, getWhiteBoardUrl,
+} from 'store/actions/team';
 // import Header from 'components/Header';
 // import Sidebar from 'components/Sidebar';
 import filterImg from 'assets/images/svg/filter.svg';
@@ -14,6 +16,8 @@ import {
   // useHistory,
 } from 'react-router-dom';
 // import Swal from 'sweetalert2';
+import Buttons from 'utils/Buttons/buttons';
+import WhiteBoardModal from 'components/models/WhiteBoardModal';
 import { clearOrganizationState, getOrganization, getRoles } from 'store/actions/organization';
 import { loadLmsAction } from 'store/actions/project';
 import CreateTeam from './CreateTeam';
@@ -51,6 +55,10 @@ function TeamsPage(props) {
   const { activeOrganization, currentOrganization, permission } = organization;
   const [alertCheck, setAlertCheck] = useState(false);
   // const [breadCrumb, setBreadCrumb] = useState([]);
+  const [whiteBoardUrl, setWhiteBoardUrl] = useState([]);
+  const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const dataRedux = useSelector((state) => state);
   // const history = useHistory();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -73,6 +81,7 @@ function TeamsPage(props) {
   const teamId = parseInt(location.pathname.split('teams/')[1], 10);
   const selectedTeam = teams.find((team) => team.id === teamId);
   const { notification } = useSelector((state) => state.notification);
+  const auth = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (notification?.today[0]?.data.message.indexOf(selectedForClone) !== -1) {
@@ -92,6 +101,12 @@ function TeamsPage(props) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, selectedTeam?.id));
     }
   }, [selectedTeam, teamPermission]);
+  useEffect(() => {
+    if (dataRedux.team.whiteBoardUrl) {
+      setWhiteBoardUrl(dataRedux.team.whiteBoardUrl);
+      setLoading(false);
+    }
+  }, [dataRedux.team.whiteBoardUrl]);
   if (location.pathname.includes('teams/') && !selectedTeam && !creation) {
     return <></>;
   }
@@ -106,6 +121,19 @@ function TeamsPage(props) {
   // const goBack = () => {
   //   history.goBack();
   // };
+
+  const assignWhiteBoardUrl = (orgId, objId, userId, objType) => {
+    dispatch(getWhiteBoardUrl(orgId, objId, userId, objType));
+  };
+
+  const handleShow = () => {
+    setShow(true); //! state.show
+  };
+
+  const handleClose = () => {
+    setShow(false);
+  };
+
   return (
     <>
       {/* <div className="side-wrapper-team">
@@ -160,6 +188,18 @@ function TeamsPage(props) {
                         Filter
                       </div>
                     </div>
+                    <Buttons
+                      secondary
+                      text="Create White Board"
+                      width="163px"
+                      height="35px"
+                      // margin="15px 0 0 10px"
+                      hover
+                      onClick={() => {
+                        assignWhiteBoardUrl(organization.currentOrganization?.id, 1, auth.user?.id, 'team');
+                        handleShow();
+                      }}
+                    />
                     <Link to={`/org/${organization?.currentOrganization?.domain}/teams/create-team`}>
                       <div className="btn-top-page">
                         <FontAwesomeIcon icon="plus" />
@@ -224,6 +264,12 @@ function TeamsPage(props) {
         </div>
       </div>
       <Footer />
+      <WhiteBoardModal
+        url={whiteBoardUrl}
+        show={show} // {props.show}
+        onHide={handleClose}
+        loading={loading}
+      />
     </>
   );
 }
