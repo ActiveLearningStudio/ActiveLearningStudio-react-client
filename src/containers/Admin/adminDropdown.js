@@ -444,10 +444,10 @@ const AdminDropdown = (props) => {
                             icon: 'success',
                             text: res?.message,
                           });
+                          dispatch(getLmsProject(activeOrganization?.id, activePage || 1))
                           const filterLMS = localStateData.filter((each) => each.id != row.id);
                           console.log(filterLMS);
                           setLocalStateData(filterLMS);
-                          dispatch(getLmsProject(activeOrganization?.id, activePage || 1))
                         })
                         .catch((err) => console.log(err));
                     }
