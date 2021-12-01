@@ -88,6 +88,37 @@ function UserRoles({ permissionRender }) {
       return "---";
     }
   };
+
+  console.log("permissionsId:", permissionsId);
+  // Hard Code
+  const Administration = [
+    "Organization",
+    "Project",
+    "Activity",
+    "User",
+    "Team",
+    "Integration",
+  ];
+  const Authoring = [
+    "Project",
+    "Playlist",
+    "Activitie",
+    "Team",
+    "Search",
+    "Export",
+    "Import",
+  ];
+
+  // Administration.map((data) => {
+  //   console.log("Data:", data);
+  // });
+
+  // const AdministrationFilter = permissionsId?.filter((data) => {
+  //   Administration.map((adminData) => {
+  //     return data == adminData;
+  //   });
+  // });
+  // console.log("AdministrationFilter:", AdministrationFilter);
   return (
     <div className="user-roles">
       {/* <h2>Roles Permissions</h2> */}
@@ -186,31 +217,17 @@ function UserRoles({ permissionRender }) {
                             className="role-permission-tab-name"
                             id="role-permission-tab-id"
                           >
-                            <Nav.Item>
-                              <Nav.Link eventKey="manual-1">
-                                All permissions
-                                <img className="image-tag" />
-                              </Nav.Link>
-                            </Nav.Item>
+                            {!!permissionsId && (
+                              <Nav.Item>
+                                <Nav.Link eventKey="manual-1">
+                                  All permissions
+                                  <img className="image-tag" />
+                                </Nav.Link>
+                              </Nav.Item>
+                            )}
                           </div>
-                          <div
-                            className="role-permission-tab-name"
-                            id="role-permission-tab-id"
-                          >
-                            <Nav.Item>
-                              <Nav.Link eventKey="manual-2">
-                                Admin panel
-                                <img className="image-tag" />
-                              </Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                              <Nav.Link eventKey="manual-3">
-                                User
-                                <img className="image-tag" />
-                              </Nav.Link>
-                            </Nav.Item>
-                          </div>
-                          {!!permissionsId &&
+
+                          {/* {!!permissionsId &&
                             Object.keys(permissionsId)?.map((data, counter) => {
                               if (typeof permissionsId[data] === "object") {
                                 return (
@@ -221,17 +238,47 @@ function UserRoles({ permissionRender }) {
                                     <Nav.Item>
                                       <Nav.Link eventKey={String(counter)}>
                                         {data}
-                                        {/* <FontAwesomeIcon
-                                          className="role-permission-icon"
-                                          icon={faAngleRight}
-                                        /> */}
                                         <img className="image-tag" />
                                       </Nav.Link>
                                     </Nav.Item>
                                   </div>
                                 );
                               }
+                            })} */}
+                          {!!permissionsId &&
+                            Object.keys(permissionsId)?.map((data, counter) => {
+                              if (typeof permissionsId[data] === "object") {
+                                if (Administration.includes(data)) {
+                                  return (
+                                    <div
+                                      className="role-permission-tab-name"
+                                      id="role-permission-tab-id"
+                                    >
+                                      <Nav.Item>
+                                        <Nav.Link eventKey={String(counter)}>
+                                          {data}
+                                          <img className="image-tag" />
+                                        </Nav.Link>
+                                      </Nav.Item>
+                                    </div>
+                                  );
+                                }
+                              }
                             })}
+
+                          <div
+                            className="role-permission-tab-name"
+                            id="role-permission-tab-id"
+                          >
+                            {!!permissionsId && (
+                              <Nav.Item>
+                                <Nav.Link eventKey="manual-2">
+                                  Authoring
+                                  <img className="image-tag" />
+                                </Nav.Link>
+                              </Nav.Item>
+                            )}
+                          </div>
                         </Nav>
                       </Col>
                       <Col className="detail-permission-tab" sm={10}>
@@ -242,54 +289,148 @@ function UserRoles({ permissionRender }) {
                               Object.keys(permissionsId)?.map(
                                 (data, counter) => {
                                   if (typeof permissionsId[data] === "object") {
-                                    return (
-                                      <Card.Body
-                                        style={{
-                                          background: "#f7faff",
-                                          margin: "32px",
-                                        }}
-                                      >
-                                        <div className="all-permission-tab-data">
-                                          <div className="permission-tab-title">
-                                            <label className="checkbox_section">
-                                              <input
-                                                type="checkbox"
-                                                name="permissions"
-                                              />
-                                              <span></span>
-                                              <p>{data}</p>
-                                            </label>
-                                            {/* {data} */}
+                                    if (data == "Project") {
+                                      return (
+                                        <Card.Body
+                                          style={{
+                                            background: "#f7faff",
+                                            margin: "32px",
+                                          }}
+                                        >
+                                          <div className="all-permission-tab-data">
+                                            <div className="permission-tab-title">
+                                              <label className="checkbox_section">
+                                                <input
+                                                  type="checkbox"
+                                                  name="permissions"
+                                                />
+                                                <span></span>
+                                                <p>{data}</p>
+                                              </label>
+                                              {/* {data} */}
+                                            </div>
+                                            <div className="permission-tab-data">
+                                              {permissionsId[data]?.map(
+                                                (val) => (
+                                                  <div
+                                                    className="form-grouper"
+                                                    role="group"
+                                                    aria-labelledby="checkbox-group"
+                                                  >
+                                                    <label className="checkbox_section_custom">
+                                                      <Field
+                                                        type="checkbox"
+                                                        name="permissions"
+                                                        value={String(val.id)}
+                                                        component={
+                                                          MySpecialField
+                                                        }
+                                                      />
+                                                      &nbsp;&nbsp;
+                                                      {val.name}
+                                                    </label>
+                                                  </div>
+                                                )
+                                              )}
+                                            </div>
                                           </div>
-                                          <div className="permission-tab-data">
-                                            {permissionsId[data]?.map((val) => (
-                                              <div
-                                                className="form-grouper"
-                                                role="group"
-                                                aria-labelledby="checkbox-group"
-                                              >
-                                                <label className="checkbox_section_custom">
-                                                  <Field
-                                                    type="checkbox"
-                                                    name="permissions"
-                                                    value={String(val.id)}
-                                                    component={MySpecialField}
-                                                  />
-                                                  &nbsp;&nbsp;
-                                                  {val.name}
-                                                </label>
+                                        </Card.Body>
+                                      );
+                                    } else {
+                                      return (
+                                        <Card.Body
+                                          style={{
+                                            background: "#f7faff",
+                                            margin: "32px",
+                                          }}
+                                        >
+                                          <div className="all-permission-tab-data">
+                                            <div className="permission-tab-title">
+                                              <div>
+                                                <div className="form-group custom-select-style">
+                                                  <select
+                                                    name="admin"
+                                                    placeholder="Admin"
+                                                    onChange={(e) => {}}
+                                                    onBlur={handleBlur}
+                                                    value={values.admin}
+                                                  >
+                                                    <option value="---">
+                                                      ---
+                                                    </option>
+                                                    <option value="edit">
+                                                      Edit
+                                                    </option>
+                                                    <option value="view">
+                                                      View
+                                                    </option>
+                                                  </select>
+                                                  <p
+                                                    style={{
+                                                      fontWeight: "bold",
+                                                    }}
+                                                  >
+                                                    {" "}
+                                                    {data}
+                                                  </p>
+                                                </div>
                                               </div>
-                                            ))}
+                                            </div>
+                                            <div className="permission-tab-data">
+                                              {permissionsId[data]?.map(
+                                                (val) => (
+                                                  <div
+                                                    className="form-grouper"
+                                                    role="group"
+                                                    aria-labelledby="checkbox-group"
+                                                  >
+                                                    {/* <label className="checkbox_section_custom">
+                                                      <Field
+                                                        type="checkbox"
+                                                        name="permissions"
+                                                        value={String(val.id)}
+                                                        component={
+                                                          MySpecialField
+                                                        }
+                                                      />
+                                                      &nbsp;&nbsp;
+                                                      {val.name}
+                                                    </label> */}
+                                                    <div>
+                                                      <div className="form-group custom-select-style-for-sub">
+                                                        <select
+                                                          name="admin"
+                                                          placeholder="Admin"
+                                                          onChange={(e) => {}}
+                                                          onBlur={handleBlur}
+                                                          value={values.admin}
+                                                        >
+                                                          <option value="---">
+                                                            ---
+                                                          </option>
+                                                          <option value="edit">
+                                                            Edit
+                                                          </option>
+                                                          <option value="view">
+                                                            View
+                                                          </option>
+                                                        </select>
+                                                        <p> {val.name}</p>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                )
+                                              )}
+                                            </div>
                                           </div>
-                                        </div>
-                                      </Card.Body>
-                                    );
+                                        </Card.Body>
+                                      );
+                                    }
                                   }
                                 }
                               )}
                           </Tab.Pane>
-
-                          {/* For Admin */}
+                          {/* For Authoring */}
                           <Tab.Pane eventKey="manual-2">
                             <Card.Body
                               style={{
@@ -297,339 +438,185 @@ function UserRoles({ permissionRender }) {
                                 margin: "32px",
                               }}
                             >
-                              <div>
-                                <Formik
-                                  initialValues={{
-                                    admin: "edit",
-                                    organization: "edit",
-                                    activities: "edit",
-                                    teams: "edit",
-                                    projects: "edit",
-                                    users: "edit",
-                                    integrations: "edit",
-                                  }}
-                                  // validate={(values) => {
+                              <div className="for-authoring">
+                                <div className="form-group custom-select-style-for-authoring">
+                                  <select
+                                    name="admin"
+                                    placeholder="Admin"
+                                    onChange={(e) => {}}
+                                    onBlur={handleBlur}
+                                    value={values.admin}
+                                  >
+                                    <option value="---">---</option>
+                                    <option value="edit">Edit</option>
+                                    <option value="view">View</option>
+                                  </select>
+                                  <p> Projects</p>
+                                </div>
 
-                                  // }}
-                                  onSubmit={(values) => {
-                                    alert("OnSubmit Call");
-                                  }}
-                                >
-                                  {({
-                                    values,
-                                    errors,
-                                    touched,
-                                    handleChange,
-                                    handleBlur,
-                                    handleSubmit,
-                                  }) => (
-                                    <form onSubmit={handleSubmit}>
-                                      <div>
-                                        <div>
-                                          <div className="form-group custom-select-style">
-                                            <select
-                                              name="admin"
-                                              placeholder="Admin"
-                                              onChange={(e) => {
-                                                handleChange(e);
-                                                let adminValue = e.target.value;
-                                                if (e.target.value == "edit") {
-                                                  alert(e.target.value);
-                                                  values.organization = "edit";
-                                                  values.activities = "edit";
-                                                  values.teams = "edit";
-                                                  values.projects = "edit";
-                                                  values.users = "edit";
-                                                  values.integrations = "edit";
-                                                } else if (
-                                                  e.target.value == "view"
-                                                ) {
-                                                  alert(e.target.value);
-                                                  values.organization = "view";
-                                                  values.activities = "view";
-                                                  values.teams = "view";
-                                                  values.projects = "view";
-                                                  values.users = "view";
-                                                  values.integrations = "view";
-                                                }
-                                              }}
-                                              onBlur={handleBlur}
-                                              value={values.admin}
-                                            >
-                                              <option value="---">---</option>
-                                              <option value="edit">Edit</option>
-                                              <option value="view">View</option>
-                                            </select>
-                                            <p style={{ fontWeight: "bold" }}>
-                                              {" "}
-                                              Admin panel
-                                            </p>
-                                          </div>
-                                        </div>
-                                        <div className="admin-panel-child-selection">
-                                          <div className="form-group custom-select-style">
-                                            <select
-                                              name="organization"
-                                              placeholder="organization"
-                                              onChange={(e) => {
-                                                handleChange(e);
-                                                values.admin = checkingAdminSelectionStatus(
-                                                  e.target.value,
-                                                  values.activities,
-                                                  values.teams,
-                                                  values.projects,
-                                                  values.users,
-                                                  values.integrations
-                                                );
+                                <div className="form-group custom-select-style-for-authoring">
+                                  <select
+                                    name="admin"
+                                    placeholder="Admin"
+                                    onChange={(e) => {}}
+                                    onBlur={handleBlur}
+                                    value={values.admin}
+                                  >
+                                    <option value="---">---</option>
+                                    <option value="edit">Edit</option>
+                                    <option value="view">View</option>
+                                  </select>
+                                  <p> Playlists</p>
+                                </div>
 
-                                                let updatedValue =
-                                                  e.target.value;
-                                              }}
-                                              onBlur={handleBlur}
-                                              value={values.organization}
-                                            >
-                                              <option value="edit">Edit</option>
-                                              <option value="view">View</option>
-                                            </select>
-                                            <p>Organization</p>
-                                          </div>
-                                          <div className="form-group custom-select-style">
-                                            <select
-                                              name="activities"
-                                              placeholder="activities"
-                                              onChange={(e) => {
-                                                values.admin = checkingAdminSelectionStatus(
-                                                  values.organization,
-                                                  e.target.value,
-                                                  values.teams,
-                                                  values.projects,
-                                                  values.users,
-                                                  values.integrations
-                                                );
-                                                handleChange(e);
-                                                let updatedValue =
-                                                  e.target.value;
-                                              }}
-                                              onBlur={handleBlur}
-                                              value={values.activities}
-                                            >
-                                              <option value="edit">Edit</option>
-                                              <option value="view">View</option>
-                                            </select>
-                                            <p>Activities</p>
-                                          </div>
-                                          <div className="form-group custom-select-style">
-                                            <select
-                                              name="teams"
-                                              placeholder="teams"
-                                              onChange={(e) => {
-                                                values.admin = checkingAdminSelectionStatus(
-                                                  values.organization,
-                                                  values.activities,
-                                                  e.target.value,
-                                                  values.projects,
-                                                  values.users,
-                                                  values.integrations
-                                                );
-                                                handleChange(e);
-                                                let updatedValue =
-                                                  e.target.value;
-                                              }}
-                                              onBlur={handleBlur}
-                                              value={values.teams}
-                                            >
-                                              <option value="edit">Edit</option>
-                                              <option value="view">View</option>
-                                            </select>
-                                            <p>Teams</p>
-                                          </div>
-                                          <div className="form-group custom-select-style">
-                                            <select
-                                              name="teams"
-                                              placeholder="teams"
-                                              onChange={(e) => {
-                                                values.admin = checkingAdminSelectionStatus(
-                                                  values.organization,
-                                                  values.activities,
-                                                  e.target.value,
-                                                  values.projects,
-                                                  values.users,
-                                                  values.integrations
-                                                );
-                                                handleChange(e);
-                                                let updatedValue =
-                                                  e.target.value;
-                                              }}
-                                              onBlur={handleBlur}
-                                              value={values.teams}
-                                            >
-                                              <option value="edit">Edit</option>
-                                              <option value="view">View</option>
-                                            </select>
-                                            <p>Teams</p>
-                                          </div>
-                                          <div className="form-group custom-select-style">
-                                            <select
-                                              name="projects"
-                                              placeholder="projects"
-                                              onChange={(e) => {
-                                                values.admin = checkingAdminSelectionStatus(
-                                                  values.organization,
-                                                  values.activities,
-                                                  values.teams,
-                                                  e.target.value,
-                                                  values.users,
-                                                  values.integrations
-                                                );
-                                                handleChange(e);
-                                                let updatedValue =
-                                                  e.target.value;
-                                              }}
-                                              onBlur={handleBlur}
-                                              value={values.projects}
-                                            >
-                                              <option value="edit">Edit</option>
-                                              <option value="view">View</option>
-                                            </select>
-                                            <p>Projects</p>
-                                          </div>
-                                          <div className="form-group custom-select-style">
-                                            <select
-                                              name="users"
-                                              placeholder="users"
-                                              onChange={(e) => {
-                                                values.admin = checkingAdminSelectionStatus(
-                                                  values.organization,
-                                                  values.activities,
-                                                  values.teams,
-                                                  values.projects,
-                                                  e.target.value,
-                                                  values.integrations
-                                                );
-                                                handleChange(e);
-                                                let updatedValue =
-                                                  e.target.value;
-                                              }}
-                                              onBlur={handleBlur}
-                                              value={values.users}
-                                            >
-                                              <option value="edit">Edit</option>
-                                              <option value="view">View</option>
-                                            </select>
-                                            <p>Users</p>
-                                          </div>
-                                          <div className="form-group custom-select-style">
-                                            <select
-                                              name="integrations"
-                                              placeholder="integrations"
-                                              onChange={(e) => {
-                                                values.admin = checkingAdminSelectionStatus(
-                                                  values.organization,
-                                                  values.activities,
-                                                  values.teams,
-                                                  values.projects,
-                                                  values.users,
-                                                  e.target.value
-                                                );
-                                                handleChange(e);
-                                                let updatedValue =
-                                                  e.target.value;
-                                              }}
-                                              onBlur={handleBlur}
-                                              value={values.integrations}
-                                            >
-                                              <option value="edit">Edit</option>
-                                              <option value="view">View</option>
-                                            </select>
-                                            <p>Integrations</p>
-                                          </div>
-                                          <div className="form-group custom-select-style">
-                                            <select
-                                              name="integrations"
-                                              placeholder="integrations"
-                                              onChange={(e) => {
-                                                values.admin = checkingAdminSelectionStatus(
-                                                  values.organization,
-                                                  values.activities,
-                                                  values.teams,
-                                                  values.projects,
-                                                  values.users,
-                                                  e.target.value
-                                                );
-                                                handleChange(e);
-                                                let updatedValue =
-                                                  e.target.value;
-                                              }}
-                                              onBlur={handleBlur}
-                                              value={values.integrations}
-                                            >
-                                              <option value="edit">Edit</option>
-                                              <option value="view">View</option>
-                                            </select>
-                                            <p>Integrations</p>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </form>
-                                  )}
-                                </Formik>
+                                <div className="form-group custom-select-style-for-authoring">
+                                  <select
+                                    name="admin"
+                                    placeholder="Admin"
+                                    onChange={(e) => {}}
+                                    onBlur={handleBlur}
+                                    value={values.admin}
+                                  >
+                                    <option value="---">---</option>
+                                    <option value="edit">Edit</option>
+                                    <option value="view">View</option>
+                                  </select>
+                                  <p> Activities</p>
+                                </div>
+
+                                <div className="form-group custom-select-style-for-authoring">
+                                  <select
+                                    name="admin"
+                                    placeholder="Admin"
+                                    onChange={(e) => {}}
+                                    onBlur={handleBlur}
+                                    value={values.admin}
+                                  >
+                                    <option value="---">---</option>
+                                    <option value="edit">Edit</option>
+                                    <option value="view">View</option>
+                                  </select>
+                                  <p> Teams</p>
+                                </div>
                               </div>
-                            </Card.Body>
-                          </Tab.Pane>
-                          {/* For User */}
-                          <Tab.Pane eventKey="manual-3">
-                            <Card.Body
-                              style={{
-                                background: "#f7faff",
-                                margin: "32px",
-                              }}
-                            >
-                              User
                             </Card.Body>
                           </Tab.Pane>
 
                           {!!permissionsId &&
                             Object.keys(permissionsId)?.map((data, counter) => {
                               if (typeof permissionsId[data] === "object") {
-                                return (
-                                  <Tab.Pane eventKey={String(counter)}>
-                                    <Card.Body
-                                      style={{
-                                        background: "#f7faff",
-                                        margin: "32px",
-                                      }}
-                                    >
-                                      {permissionsId[data]?.map((val) => (
-                                        <div
-                                          className="form-grouper"
-                                          role="group"
-                                          aria-labelledby="checkbox-group"
-                                        >
-                                          {/* <label className="checkbox_section">
-                                            <input
-                                              type="checkbox"
-                                              name="permissions"
-                                              value={String(val.id)}
-                                            />
-                                            <span></span>
-                                            <p>{val.name}</p>
-                                          </label> */}
-
-                                          <label className="checkbox_section_custom">
-                                            <Field
-                                              type="checkbox"
-                                              name="permissions"
-                                              value={String(val.id)}
-                                              component={MySpecialField}
-                                            />
-                                            &nbsp;&nbsp;
-                                            {val.name}
-                                          </label>
-                                        </div>
-                                      ))}
-                                    </Card.Body>
-                                  </Tab.Pane>
-                                );
+                                if (data == "Project") {
+                                  return (
+                                    <Tab.Pane eventKey={String(counter)}>
+                                      <Card.Body
+                                        style={{
+                                          background: "#f7faff",
+                                          margin: "32px",
+                                        }}
+                                      >
+                                        {permissionsId[data]?.map((val) => (
+                                          <div
+                                            className="form-grouper"
+                                            role="group"
+                                            aria-labelledby="checkbox-group"
+                                          >
+                                            <label className="checkbox_section_custom">
+                                              <Field
+                                                type="checkbox"
+                                                name="permissions"
+                                                value={String(val.id)}
+                                                component={MySpecialField}
+                                              />
+                                              &nbsp;&nbsp;
+                                              {val.name}
+                                            </label>
+                                          </div>
+                                        ))}
+                                      </Card.Body>
+                                    </Tab.Pane>
+                                  );
+                                } else {
+                                  return (
+                                    <Tab.Pane eventKey={String(counter)}>
+                                      <Card.Body
+                                        style={{
+                                          background: "#f7faff",
+                                          margin: "32px",
+                                        }}
+                                      >
+                                        {permissionsId[data]?.map((val) => (
+                                          <div
+                                            className="form-grouper"
+                                            role="group"
+                                            aria-labelledby="checkbox-group"
+                                          >
+                                            {/* <label className="checkbox_section_custom">
+                                              <Field
+                                                type="checkbox"
+                                                name="permissions"
+                                                value={String(val.id)}
+                                                component={MySpecialField}
+                                              />
+                                              &nbsp;&nbsp;
+                                              {val.name}
+                                            </label> */}
+                                            <div>
+                                              <div className="form-group custom-select-style-for-sub">
+                                                <select
+                                                  name="admin"
+                                                  placeholder="Admin"
+                                                  onChange={(e) => {}}
+                                                  onBlur={handleBlur}
+                                                  value={values.admin}
+                                                >
+                                                  <option value="---">
+                                                    ---
+                                                  </option>
+                                                  <option value="edit">
+                                                    Edit
+                                                  </option>
+                                                  <option value="view">
+                                                    View
+                                                  </option>
+                                                </select>
+                                                <p> {val.name}</p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        ))}
+                                      </Card.Body>
+                                    </Tab.Pane>
+                                  );
+                                }
+                                // return (
+                                //   <Tab.Pane eventKey={String(counter)}>
+                                //     <Card.Body
+                                //       style={{
+                                //         background: "#f7faff",
+                                //         margin: "32px",
+                                //       }}
+                                //     >
+                                //       {permissionsId[data]?.map((val) => (
+                                //         <div
+                                //           className="form-grouper"
+                                //           role="group"
+                                //           aria-labelledby="checkbox-group"
+                                //         >
+                                //           <label className="checkbox_section_custom">
+                                //             <Field
+                                //               type="checkbox"
+                                //               name="permissions"
+                                //               value={String(val.id)}
+                                //               component={MySpecialField}
+                                //             />
+                                //             &nbsp;&nbsp;
+                                //             {val.name}
+                                //           </label>
+                                //         </div>
+                                //       ))}
+                                //     </Card.Body>
+                                //   </Tab.Pane>
+                                // );
                               }
                             })}
                         </Tab.Content>
