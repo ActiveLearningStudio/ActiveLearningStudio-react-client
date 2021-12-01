@@ -220,7 +220,8 @@
         position: relative;
         input {
           margin-right: 39.17px;
-          width: 358px;
+          max-width: 358px;
+          min-width: 258px;
           border: none;
           background: none;
           border-bottom: 2px solid #084892;
