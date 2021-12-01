@@ -16,7 +16,7 @@ import Edit from '../../assets/images/menu-edit.svg';
 import Export from '../../assets/images/export-img.svg';
 import MenuLogo from '../../assets/images/menu-logo.svg';
 import Remove from '../../assets/images/close.svg';
-import { forgetSpecificFailedJob, getLtiTools, retrySpecificFailedJob, setActiveAdminForm, setActiveTab, setCurrentProject, setCurrentUser } from 'store/actions/admin';
+import { forgetSpecificFailedJob, getDefaultSso, getLtiTools, retrySpecificFailedJob, setActiveAdminForm, setActiveTab, setCurrentProject, setCurrentUser } from 'store/actions/admin';
 
 import {
   deleteUserFromOrganization,
@@ -519,8 +519,7 @@ const AdminDropdown = (props) => {
                                 icon: 'success',
                                 text: res?.message,
                               });
-                              const filterLMS = localStateData.filter((each) => each.id != row.id);
-                              setLocalStateData(filterLMS);
+                              dispatch(getDefaultSso(activeOrganization?.id, activePage || 1))
                             })
                             .catch((err) => console.log(err));
                         }

@@ -9,7 +9,7 @@ import { columnData } from './column';
 
 import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization, updatePageNumber, resetPageNumber } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from 'store/actions/resource';
-import { getJobListing, getLogsListing, getLtiTools, getUserReport } from 'store/actions/admin';
+import { getJobListing, getLogsListing, getLtiTools, getUserReport, getDefaultSso } from 'store/actions/admin';
 import { alphaNumeric } from 'utils';
 
 export default function Pills(props) {
@@ -353,13 +353,7 @@ export default function Pills(props) {
         setLmsProject(data);
       });
     } if (type === 'LMS') {
-      // const result = dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
-      // result.then((data) => {
-      //   // console.log('lti-tool: ', data);
-      //   setLtiTool(data);
-      // });
       dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
-      
     }
   }, [type, activePage, activeOrganization?.id]);
 
@@ -368,6 +362,12 @@ export default function Pills(props) {
       setLtiTool(dataRedux.admin.ltiTools);
     }
   }, [dataRedux.admin.ltiTools]);
+  
+  useEffect(() => {
+    if (dataRedux.admin.defaultSso) {
+      setDefaultSso(dataRedux.admin.defaultSso);
+    }
+  }, [dataRedux.admin.defaultSso]);
 
   const searchQueryChangeHandlerLMS = (search) => {
     setLmsProject(null);
@@ -381,10 +381,7 @@ export default function Pills(props) {
   //Default SSO ***************************************
   useMemo(async () => {
     if (type === 'DefaultSso') {
-      const result = adminService.getDefaultSso(activeOrganization?.id, activePage || 1);
-      result.then((data) => {
-        setDefaultSso(data);
-      });
+      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1))
     }
   }, [type, activePage, activeOrganization?.id]);
 

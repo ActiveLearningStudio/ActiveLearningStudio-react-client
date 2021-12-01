@@ -154,3 +154,12 @@ export const getLtiTools = (subOrgId, page) => async (dispatch) => {
   });
   return result;
 };
+
+export const getDefaultSso = (subOrgId, page) => async (dispatch) => {
+  const result = await adminService.getDefaultSso(subOrgId, page);
+  dispatch({
+    type: actionTypes.GET_DEFAULT_SSO,
+    payload: result,
+  });
+  return result;
+};

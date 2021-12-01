@@ -18,6 +18,7 @@ const INITIAL_STATE = {
   newlyEdit: null,
   currentProject: null,
   ltiTools: [],
+  defaultSso: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -116,6 +117,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         ltiTools: action.payload,
+      };
+    case actionTypes.GET_DEFAULT_SSO:
+      return {
+        ...state,
+        defaultSso: action.payload,
       };
     default:
       return state;
