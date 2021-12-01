@@ -23,6 +23,7 @@ class LtiPreviewPage extends React.Component {
       match, previewType, logActivityView, logPlaylistView,
     } = this.props;
     const { playlistId, activityId } = match.params;
+    console.log(match.params);
 
     if (previewType === 'activityShared') { logActivityView(activityId); } else if (previewType === 'playlistShared') {
       logPlaylistView(playlistId);
@@ -64,13 +65,14 @@ class LtiPreviewPage extends React.Component {
           showLti
           playlistId={plyId}
           activityId={actId}
+          projectId={projId}
         />
       );
     }
 
     return (
       <div>
-        {!previewType && <Header {...this.props} /> }
+        {!previewType && <Header {...this.props} />}
 
         {content}
       </div>

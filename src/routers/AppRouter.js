@@ -211,8 +211,20 @@ const AppRouter = (props) => {
           previewType="playlist"
         />
         <OpenRoute
+          path="/playlist/:playlistId/activity/:activityId/preview"
+          exact
+          component={LtiPreviewPage}
+          previewType="playlist"
+        />
+        <OpenRoute
           exact
           path="/playlist/:playlistId/preview"
+          component={LtiPreviewPage}
+          previewType="playlist"
+        />
+        <OpenRoute
+          exact
+          path="/project/:projectId/playlist/:playlistId/shared"
           component={LtiPreviewPage}
           previewType="playlist"
         />

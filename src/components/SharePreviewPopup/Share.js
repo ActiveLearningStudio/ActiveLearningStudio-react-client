@@ -3,20 +3,19 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
-import { toggleProjectShareAction, toggleProjectShareRemovedAction } from 'store/actions/project';
-const ShareProject = ({ url, projectName, onClose }) => {
+const Share = ({ url, projectName, playlistName = null, onClose }) => {
   // const [activeShared, setActiveShared] = useState(true);
   return (
     <>
       <h1>
-        Your can now share project{' '}
+        Your can now share {playlistName ? 'playlist' : 'project'}{' '}
         <strong>
           &quot;
-          {projectName}
+          {playlistName ? playlistName : projectName}
           &quot;
         </strong>
         <br />
-        Anyone with the link below can access your project:
+        Anyone with the link below can access your {playlistName ? 'playlist' : 'project'}:
         <div className="mt-3 d-flex align-items-center justify-content-between">
           <a target="_blank" href={url} rel="noopener noreferrer">
             <input id="urllink_clip" readOnly value={url} />
@@ -127,11 +126,12 @@ const ShareProject = ({ url, projectName, onClose }) => {
   );
 };
 
-ShareProject.propTypes = {
+Share.propTypes = {
   url: PropTypes.string.isRequired,
   projectName: PropTypes.string.isRequired,
+  playlistName: PropTypes.string.isRequired,
   Project_id: PropTypes.number.isRequired,
   dispatcher: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };
-export default ShareProject;
+export default Share;
