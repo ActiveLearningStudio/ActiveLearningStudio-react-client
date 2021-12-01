@@ -6,8 +6,8 @@ import { toast } from 'react-toastify';
 import loaderImg from 'assets/images/loader.svg';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import projectService from 'services/project.service';
-import groupService from 'services/group.service';
-import teamService from 'services/team.service';
+// import groupService from 'services/group.service';
+// import teamService from 'services/team.service';
 import socketConnection from 'services/http.service';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
@@ -26,17 +26,21 @@ export const setCurrentVisibilityType = (data) => async (dispatch) => {
     payload: data,
   });
 };
-export const allSidebarProjects = () => async (dispatch) => {
-  const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
-  const { projects } = await projectService.getAll(activeOrganization.id);
-  const { teams } = await teamService.getAll(activeOrganization.id);
-  const { groups } = await groupService.getAll(activeOrganization.id);
-  dispatch({
-    type: actionTypes.SIDEBAR_ALL_PROJECT,
-    data: { projects, teams, groups },
-  });
-};
+// export const allSidebarProjects = () => async (dispatch) => {
+//   const centralizedState = store.getState();
+//   const { organization: { activeOrganization } } = centralizedState;
+//   const { projects } = await projectService.getAll(activeOrganization.id);
+//   // const { teams } = await teamService.getAll(activeOrganization.id);
+//   const { groups } = await groupService.getAll(activeOrganization.id);
+//   dispatch({
+//     type: actionTypes.SIDEBAR_ALL_PROJECT,
+//     data: {
+//       projects,
+//       // teams,
+//       groups,
+//     },
+//   });
+// };
 export const createProjectAction = (data) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
@@ -68,7 +72,7 @@ export const createProjectAction = (data) => async (dispatch) => {
       });
       return project;
     }
-    dispatch(allSidebarProjects());
+    // dispatch(allSidebarProjects());
   } catch (e) {
     dispatch({ type: actionTypes.CREATE_PROJECT_FAIL });
     Swal.fire({
@@ -153,7 +157,7 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
       type: actionTypes.UPDATE_PROJECT_SUCCESS,
       payload: { project },
     });
-    dispatch(allSidebarProjects());
+    // dispatch(allSidebarProjects());
     return project;
   } catch (e) {
     dispatch({ type: actionTypes.UPDATE_PROJECT_FAIL });
@@ -178,7 +182,7 @@ export const deleteProjectAction = (projectId) => async (dispatch) => {
       type: actionTypes.DELETE_PROJECT_SUCCESS,
       payload: { projectId },
     });
-    dispatch(allSidebarProjects());
+    // dispatch(allSidebarProjects());
   } catch (e) {
     dispatch({ type: actionTypes.DELETE_PROJECT_FAIL });
   }

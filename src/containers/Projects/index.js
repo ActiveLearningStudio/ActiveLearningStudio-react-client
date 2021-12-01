@@ -25,7 +25,7 @@ import {
   loadLmsAction,
   sampleProjects,
   loadMyFavProjectsAction,
-  allSidebarProjects,
+  // allSidebarProjects,
 } from 'store/actions/project';
 import Footer from 'components/Footer';
 import DeletePopup from 'components/DeletePopup';
@@ -68,7 +68,7 @@ export const ProjectsPage = (props) => {
     showPreview,
     showDeletePopup,
     loadMyReorderProjectsActionMethod,
-    allSidebarProjectsUpdate,
+    // allSidebarProjectsUpdate,
     sampleProjectsData,
     loadMyFavProjectsActionData,
     location,
@@ -225,7 +225,7 @@ export const ProjectsPage = (props) => {
           setValue((v) => v + 1);
           const reorderData = await loadMyReorderProjectsActionMethod(projectDivider);
 
-          allSidebarProjectsUpdate();
+          // allSidebarProjectsUpdate();
           setAllProjects(reorderData.projects);
         }
       });
@@ -265,7 +265,7 @@ export const ProjectsPage = (props) => {
       divideProjects(updateProjectList);
       const reorderData = await loadMyReorderProjectsActionMethod(projectDivider);
 
-      allSidebarProjectsUpdate();
+      // allSidebarProjectsUpdate();
       setAllProjects(reorderData.projects);
     }
   };
@@ -282,12 +282,12 @@ export const ProjectsPage = (props) => {
     // }
   }, [allStateProject]);
 
-  useEffect(() => {
-    const { activeOrganization } = organization;
-    if (activeOrganization) {
-      allSidebarProjectsUpdate();
-    }
-  }, [organization.activeOrganization]);
+  // useEffect(() => {
+  //   const { activeOrganization } = organization;
+  //   if (activeOrganization) {
+  //     allSidebarProjectsUpdate();
+  //   }
+  // }, [organization.activeOrganization]);
 
   useEffect(() => {
     loadLms();
@@ -646,7 +646,7 @@ ProjectsPage.propTypes = {
   shareProject: PropTypes.func.isRequired,
   loadLms: PropTypes.func.isRequired,
   loadMyReorderProjectsActionMethod: PropTypes.func.isRequired,
-  allSidebarProjectsUpdate: PropTypes.func.isRequired,
+  // allSidebarProjectsUpdate: PropTypes.func.isRequired,
   location: PropTypes.object.isRequired,
   sampleProjectsData: PropTypes.func.isRequired,
   loadMyFavProjectsActionData: PropTypes.func.isRequired,
@@ -675,7 +675,7 @@ const mapDispatchToProps = (dispatch) => ({
   shareProject: (id) => dispatch(shareProjectAction(id)),
   loadLms: () => dispatch(loadLmsAction()),
   loadMyReorderProjectsActionMethod: (projectDivider) => dispatch(loadMyReorderProjectsAction(projectDivider)),
-  allSidebarProjectsUpdate: () => dispatch(allSidebarProjects()),
+  // allSidebarProjectsUpdate: () => dispatch(allSidebarProjects()),
   sampleProjectsData: () => dispatch(sampleProjects()),
   loadMyFavProjectsActionData: () => dispatch(loadMyFavProjectsAction()),
   getTeamProjects: (query, page) => dispatch(getTeamProject(query, page)),

@@ -27,6 +27,7 @@ import TeamProjectView from './TeamProjectView';
 import ChannelPanel from './Channel';
 
 import './style.scss';
+import CreateTeamPopup from './CreateTeamPopup';
 
 // TODO: need to remove after connect API
 // const breadCrumbData = {
@@ -56,6 +57,7 @@ function TeamsPage(props) {
   const [alertCheck, setAlertCheck] = useState(false);
   // const [breadCrumb, setBreadCrumb] = useState([]);
   const [whiteBoardUrl, setWhiteBoardUrl] = useState([]);
+  const [showCreateTeamModal, setShowCreateTeamModal] = useState(false);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
   const dataRedux = useSelector((state) => state);
@@ -84,7 +86,7 @@ function TeamsPage(props) {
   const auth = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (notification?.today[0]?.data.message.indexOf(selectedForClone) !== -1) {
+    if (notification?.today[0]?.data.message.indexOf(selectedForClone) !== -1 && activeOrganization?.id) {
       dispatch(loadTeamsAction());
     }
   }, [notification?.today]);
@@ -189,6 +191,7 @@ function TeamsPage(props) {
                       </div>
                     </div>
                     <Buttons
+                      type="button"
                       secondary
                       text="Create White Board"
                       width="163px"
@@ -200,12 +203,16 @@ function TeamsPage(props) {
                         handleShow();
                       }}
                     />
-                    <Link to={`/org/${organization?.currentOrganization?.domain}/teams/create-team`}>
+                    <div
+                      onClick={() => {
+                        setShowCreateTeamModal(true);
+                      }}
+                    >
                       <div className="btn-top-page">
                         <FontAwesomeIcon icon="plus" />
                         Add Team
                       </div>
-                    </Link>
+                    </div>
                   </div>
                 )}
                 {activeOrganization?.name !== currentOrganization?.name && overview && (
@@ -264,6 +271,7 @@ function TeamsPage(props) {
         </div>
       </div>
       <Footer />
+      {showCreateTeamModal && <CreateTeamPopup setShowCreateTeamModal={setShowCreateTeamModal} />}
       <WhiteBoardModal
         url={whiteBoardUrl}
         show={show} // {props.show}

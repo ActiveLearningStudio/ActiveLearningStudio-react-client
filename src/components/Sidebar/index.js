@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import teamicon from 'assets/images/sidebar/users-team.svg';
 import administrate from 'assets/images/sidebar/administrate.png';
 import foldericon from 'assets/images/svg/projectFolder.svg';
-import { allSidebarProjects } from 'store/actions/project';
+// import { allSidebarProjects } from 'store/actions/project';
 
 import './style.scss';
 import { clearTeamPermissions } from 'store/actions/team';
@@ -45,11 +45,11 @@ function Sidebar(props) {
     }
   }, [location.pathname]);
 
-  useEffect(() => {
-    if (!allState.sidebar.isLoaded && organization.activeOrganization) {
-      dispatch(allSidebarProjects());
-    }
-  }, [allState.sidebar.isLoaded, organization.activeOrganization, dispatch]);
+  // useEffect(() => {
+  //   if (!allState.sidebar.isLoaded && organization.activeOrganization) {
+  //     dispatch(allSidebarProjects());
+  //   }
+  // }, [allState.sidebar.isLoaded, organization.activeOrganization, dispatch]);
 
   return (
     <aside className="sidebar-all">
