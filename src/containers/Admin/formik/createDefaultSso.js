@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionTypes from 'store/actionTypes';
 
-import { removeActiveAdminForm } from 'store/actions/admin';
+import { getDefaultSso, removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
 import authapi from '../../../services/auth.service';
 import adminapi from '../../../services/admin.service';
@@ -129,6 +129,7 @@ export default function CreateDefaultSso(prop) {
                 icon: 'success',
                 text: res?.message,
               });
+              dispatch(getDefaultSso(organization?.activeOrganization?.id))
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_CREATED_RESOURCE,

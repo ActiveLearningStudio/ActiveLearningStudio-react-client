@@ -146,18 +146,19 @@ function TeamsPage(props) {
                 {overview ? `${activeOrganization?.name} Teams` : title[status] || 'Teams'}
               </h1>
               <div className="flex-button-top">
+                  {projectShow && (
                   <Buttons
                     secondary={true}
-                    text="Create White Board"
+                    text="Open White Board"
                     width="163px"
                     height="35px"
                     margin="15px 0 0 10px"
                     hover={true}
                     onClick={ () => { 
-                      assignWhiteBoardUrl(organization.currentOrganization?.id, 1, auth.user?.id, 'team')
+                      assignWhiteBoardUrl(organization.currentOrganization?.id, selectedTeam.id, auth.user?.id, 'team')
                       handleShow()
                     }}
-                  />
+                  />)}
                 {teamPermission?.Team?.includes('team:add-project') && projectShow && (
                   <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}/add-projects`}>
                     <div className="btn-top-page">
