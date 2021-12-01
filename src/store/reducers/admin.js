@@ -19,6 +19,7 @@ const INITIAL_STATE = {
   currentProject: null,
   ltiTools: [],
   defaultSso: [],
+  lmsIntegration: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -122,6 +123,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         defaultSso: action.payload,
+      };
+    case actionTypes.GET_LMS_INTEGRATION:
+      return {
+        ...state,
+        lmsIntegration: action.payload,
       };
     default:
       return state;

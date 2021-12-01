@@ -307,7 +307,7 @@ function Table(props) {
                         <div className="admin-panel-dropdown">
                           {row?.description}
                           <div>
-                            <AdminDropdown type={type} subType="All Settings" row={row} />
+                            <AdminDropdown type={type} subType="All Settings" row={row} activePage={activePage}/>
                           </div>
                         </div>
                       </td>

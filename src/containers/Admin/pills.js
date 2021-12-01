@@ -9,7 +9,7 @@ import { columnData } from './column';
 
 import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization, updatePageNumber, resetPageNumber } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from 'store/actions/resource';
-import { getJobListing, getLogsListing, getLtiTools, getUserReport, getDefaultSso } from 'store/actions/admin';
+import { getJobListing, getLogsListing, getLtiTools, getUserReport, getDefaultSso, getLmsProject } from 'store/actions/admin';
 import { alphaNumeric } from 'utils';
 
 export default function Pills(props) {
@@ -348,10 +348,11 @@ export default function Pills(props) {
   useMemo(async () => {
     if (type === 'LMS') {
       // setLmsProject(null);
-      const result = adminService.getLmsProject(activeOrganization?.id, activePage || 1);
-      result.then((data) => {
-        setLmsProject(data);
-      });
+      // const result = adminService.getLmsProject(activeOrganization?.id, activePage || 1);
+      // result.then((data) => {
+      //   setLmsProject(data);
+      // });
+      dispatch(getLmsProject(activeOrganization?.id, activePage || 1))
     } if (type === 'LMS') {
       dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
     }
@@ -368,6 +369,12 @@ export default function Pills(props) {
       setDefaultSso(dataRedux.admin.defaultSso);
     }
   }, [dataRedux.admin.defaultSso]);
+  
+  useEffect(() => {
+    if (dataRedux.admin.lmsIntegration) {
+      setLmsProject(dataRedux.admin.lmsIntegration);
+    }
+  }, [dataRedux.admin.lmsIntegration]);
 
   const searchQueryChangeHandlerLMS = (search) => {
     setLmsProject(null);

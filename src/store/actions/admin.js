@@ -163,3 +163,12 @@ export const getDefaultSso = (subOrgId, page) => async (dispatch) => {
   });
   return result;
 };
+
+export const getLmsProject = (subOrgId, page) => async (dispatch) => {
+  const result = await adminService.getLmsProject(subOrgId, page);
+  dispatch({
+    type: actionTypes.GET_LMS_INTEGRATION,
+    payload: result,
+  });
+  return result;
+};
