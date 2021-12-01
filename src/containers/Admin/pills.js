@@ -347,11 +347,6 @@ export default function Pills(props) {
   //LMS project ***************************************
   useMemo(async () => {
     if (type === 'LMS') {
-      // setLmsProject(null);
-      // const result = adminService.getLmsProject(activeOrganization?.id, activePage || 1);
-      // result.then((data) => {
-      //   setLmsProject(data);
-      // });
       dispatch(getLmsProject(activeOrganization?.id, activePage || 1))
     } if (type === 'LMS') {
       dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
