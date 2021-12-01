@@ -1037,7 +1037,7 @@ function Table(props) {
                         <div className="admin-panel-dropdown">
                           {row.lti_version}
                           <div>
-                            <AdminDropdown type={type} subType="LTI Tools" row={row} />
+                            <AdminDropdown type={type} subType="LTI Tools" row={row} activePage={activePage} />
                           </div>
                         </div>
                       </td>
