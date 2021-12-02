@@ -105,6 +105,7 @@ export default function CreateDefaultSso(prop) {
                 icon: 'success',
                 text: res?.message,
               });
+              dispatch(getDefaultSso(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_EDIT_RESOURCE,
@@ -129,7 +130,7 @@ export default function CreateDefaultSso(prop) {
                 icon: 'success',
                 text: res?.message,
               });
-              dispatch(getDefaultSso(organization?.activeOrganization?.id))
+              dispatch(getDefaultSso(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_CREATED_RESOURCE,
