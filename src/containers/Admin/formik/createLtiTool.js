@@ -75,6 +75,7 @@ export default function CreateLtiTool(prop) {
                 icon: 'success',
                 text: res?.message,
               });
+              dispatch(getLtiTools(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_EDIT_RESOURCE,
@@ -99,7 +100,7 @@ export default function CreateLtiTool(prop) {
                 icon: 'success',
                 text: res?.message,
               });
-              dispatch(getLtiTools(organization?.activeOrganization?.id))
+              dispatch(getLtiTools(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_CREATED_RESOURCE,

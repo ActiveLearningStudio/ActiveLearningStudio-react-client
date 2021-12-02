@@ -115,6 +115,7 @@ export default function CreateUser(prop) {
                 icon: 'success',
                 text: res?.message,
               });
+              dispatch(getLmsProject(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_EDIT_RESOURCE,
@@ -139,7 +140,7 @@ export default function CreateUser(prop) {
                 icon: 'success',
                 text: res?.message,
               });
-              dispatch(getLmsProject(organization?.activeOrganization?.id))
+              dispatch(getLmsProject(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_CREATED_RESOURCE,
