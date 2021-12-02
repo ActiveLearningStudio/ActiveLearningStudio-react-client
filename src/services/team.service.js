@@ -4,8 +4,8 @@ import { errorCatcher } from './errors';
 
 const { apiVersion } = config;
 
-const getAll = (subOrgId) => httpService
-  .get(`/${apiVersion}/suborganization/${subOrgId}/teams`)
+const getAll = (subOrgId, query) => httpService
+  .get(`/${apiVersion}/suborganization/${subOrgId}/teams?query=${query || ''}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -112,9 +112,9 @@ const changeUserRole = (orgId, teamId, body) => httpService
 
 const getWhiteBoardUrl = (orgId, objId, userId, objType) => httpService
   .post(`/${apiVersion}/get-whiteboard`,
-  {
-    org_id: orgId, obj_id: objId, usr_id: userId, obj_type: objType,
-  })
+    {
+      org_id: orgId, obj_id: objId, usr_id: userId, obj_type: objType,
+    })
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);

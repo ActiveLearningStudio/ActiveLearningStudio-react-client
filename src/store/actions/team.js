@@ -34,7 +34,7 @@ export const showAssigningAction = () => async (dispatch) => {
   });
 };
 
-export const loadTeamsAction = () => async (dispatch) => {
+export const loadTeamsAction = (query = '') => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
   try {
@@ -42,7 +42,7 @@ export const loadTeamsAction = () => async (dispatch) => {
       type: actionTypes.PAGE_LOADING,
     });
 
-    const { teams } = await teamService.getAll(activeOrganization?.id);
+    const { teams } = await teamService.getAll(activeOrganization?.id, query);
 
     dispatch({
       type: actionTypes.LOAD_TEAMS,

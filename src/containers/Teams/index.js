@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -60,23 +60,25 @@ function TeamsPage(props) {
   const [showCreateTeamModal, setShowCreateTeamModal] = useState(false);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
   const dataRedux = useSelector((state) => state);
   // const history = useHistory();
   const dispatch = useDispatch();
   useEffect(() => {
     (async () => {
-      dispatch(loadLmsAction());
       if (activeOrganization && currentOrganization) {
         if (activeOrganization?.id !== currentOrganization?.id) {
+          dispatch(loadLmsAction());
           await loadSubOrgTeams();
           setAlertCheck(true);
-        } else if (activeOrganization?.id === currentOrganization?.id && permission?.Team) {
+        } else if (activeOrganization?.id === currentOrganization?.id && permission?.Team && !searchQuery) {
+          dispatch(loadLmsAction());
           await loadTeams();
           setAlertCheck(true);
         }
       }
     })();
-  }, [loadTeams, loadSubOrgTeams, activeOrganization, currentOrganization, permission?.Team, setAlertCheck]);
+  }, [loadTeams, loadSubOrgTeams, activeOrganization, currentOrganization, permission?.Team, setAlertCheck, searchQuery]);
 
   const status = creation ? 'creation' : editMode ? 'editMode' : teamShow ? 'teamShow' : projectShow ? 'projectShow' : overview ? 'teamShow' : 'channelShow';
 
@@ -109,10 +111,14 @@ function TeamsPage(props) {
       setLoading(false);
     }
   }, [dataRedux.team.whiteBoardUrl]);
+  const searchQueryHandler = useCallback(() => {
+    if (searchQuery) {
+      loadTeams(searchQuery);
+    }
+  }, [loadTeams, searchQuery]);
   if (location.pathname.includes('teams/') && !selectedTeam && !creation) {
     return <></>;
   }
-
   const title = {
     creation: 'Create Team',
     editMode: 'Edit Team',
@@ -182,8 +188,19 @@ function TeamsPage(props) {
                   <div className="team-controller">
                     <div className="search-and-filters">
                       <div className="search-bar">
-                        <input type="text" className="search-input" placeholder="Search team" />
-                        <img src={searchimg} alt="search" />
+                        <input
+                          type="text"
+                          className="search-input"
+                          placeholder="Search team"
+                          value={searchQuery}
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                              searchQueryHandler();
+                            }
+                          }}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                        <img src={searchimg} alt="search" onClick={searchQueryHandler} />
                       </div>
                       <div className="filter">
                         <img src={filterImg} alt="filter" />
@@ -309,7 +326,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  loadTeams: () => dispatch(loadTeamsAction()),
+  loadTeams: (query) => dispatch(loadTeamsAction(query)),
   loadSubOrgTeams: () => dispatch(loadSubOrganizationTeamsAction()),
 });
 
