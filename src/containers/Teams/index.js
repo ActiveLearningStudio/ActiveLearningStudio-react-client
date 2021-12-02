@@ -8,7 +8,7 @@ import {
 } from 'store/actions/team';
 // import Header from 'components/Header';
 // import Sidebar from 'components/Sidebar';
-import filterImg from 'assets/images/svg/filter.svg';
+// import filterImg from 'assets/images/svg/filter.svg';
 import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
 import Footer from 'components/Footer';
 import {
@@ -202,10 +202,10 @@ function TeamsPage(props) {
                         />
                         <img src={searchimg} alt="search" onClick={searchQueryHandler} />
                       </div>
-                      <div className="filter">
+                      {/* <div className="filter">
                         <img src={filterImg} alt="filter" />
                         Filter
-                      </div>
+                      </div> */}
                     </div>
                     <Buttons
                       type="button"
