@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 const Embed = ({ url, projectName, playlistName = null, onClose }) => (
   <>
     <h1>
-      Your can now embed below html snippet for{' '}
+      You can now embed below html snippet for{' '}
       <strong>
         &quot;
         {playlistName ? playlistName : projectName}

@@ -3,7 +3,7 @@ import { Tabs, Tab } from 'react-bootstrap';
 import { confirmAlert } from 'react-confirm-alert';
 
 import ShareProject from './Share';
-import EmbedProject from './Embed';
+import Embed from './Embed';
 
 import './style.scss';
 
@@ -13,7 +13,7 @@ function SharePreviewPopup(url, projectName, playlistName = null) {
     customUI: ({ onClose }) => (
       <div className="share-project-preview-url project-share-check">
         <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
-          <Tab eventKey="profile" title={`Share Your ${playlistName ? 'Playlist' : 'Project'}`}>
+          <Tab eventKey="profile" title="Share">
             {playlistName ? (
               <ShareProject
                 url={url}
@@ -24,15 +24,15 @@ function SharePreviewPopup(url, projectName, playlistName = null) {
             ) : (<ShareProject url={url} projectName={projectName} onClose={onClose} />)}
           </Tab>
 
-          <Tab eventKey="home" title={`Embed Your ${playlistName ? 'Playlist' : 'Project'}`}>
+          <Tab eventKey="home" title="Embed">
             {playlistName ? (
-              <EmbedProject
+              <Embed
                 url={url}
                 playlistName={playlistName}
                 onClose={onClose}
               />
             ) : (
-              <EmbedProject
+              <Embed
                 url={url}
                 projectName={projectName}
                 onClose={onClose}
