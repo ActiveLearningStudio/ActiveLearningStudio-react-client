@@ -52,6 +52,24 @@ let Creation = (props) => {
                     validate={[required, maxDescription]}
                   />
                 </div>
+                <h2 className="satelliteteaminfo"> Satellite Team Information (Optional)</h2>
+                <div className="team-name novoo-id">
+                  <Field
+                    name="noovo_group_id"
+                    component={InputField}
+                    label="Noovo Group ID"
+                    validate={[maxName]}
+                  />
+                </div>
+
+                <div className="team-name">
+                  <Field
+                    name="noovo_group_title"
+                    component={InputField}
+                    label="Noovo Group Title"
+                    validate={[maxName]}
+                  />
+                </div>
               </div>
 
               <button
