@@ -19,8 +19,6 @@ const SearchPage = (props) => {
   const [section, setSection] = useState('browse');
   const url = new URL(window.location.href);
   const email = url.searchParams.get('user_email');
-  console.log('over here');
-  console.log(email);
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
