@@ -22,6 +22,7 @@ const Buttons = ({
   radius,
   disabled,
   hover,
+  margin,
   onClick = () => { },
 }) => {
   const btnCurriki = classNames(
@@ -40,6 +41,7 @@ const Buttons = ({
     paddingLeft: paddingLeft ? paddingLeft : null,
     paddingRight: paddingRight ? paddingRight : null,
     borderRadius: radius ? radius : null,
+    margin: margin ? margin : null,
   };
 
   return (
@@ -73,5 +75,6 @@ Buttons.propTypes = {
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
   hover: PropTypes.bool,
+  margin: PropTypes.string,
 };
 export default Buttons;

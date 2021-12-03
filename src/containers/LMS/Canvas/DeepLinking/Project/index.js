@@ -95,6 +95,9 @@ const Project = (props) => {
                   <p className="text-right">
                     <label>Author:</label>
                     {` ${project.user.last_name}, ${project.user.first_name} (${project.user.email})`}
+                    <br />
+                    <label>Organization:</label>
+                    {` ${project.organization.name}`}
                   </p>
                 )}
               </div>

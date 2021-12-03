@@ -78,6 +78,7 @@ function SearchInterface(props) {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(0);
+  const [selectedProjectPlaylistId, setSelectedProjectPlaylistId] = useState(0);
   const [activityTypes, setActivityTypes] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const [search, setSearch] = useState([]);
@@ -103,6 +104,35 @@ function SearchInterface(props) {
 
   // activeSubject1 = activeSubject.map((data1) => data1.replace('and', '&'))
   //   },[activeSubject])
+  const handleShow = () => {
+    setShow(true); //! state.show
+  };
+  const setProjectId = (projectId) => {
+    setSelectedProjectId(projectId);
+  };
+
+  const setProjectPlaylistId = (playlistId) => {
+    setSelectedProjectPlaylistId(playlistId);
+  };
+  const projectVisibilityLMS = allLms?.shareVendors?.map((data) => {
+    if (data.project_visibility === true) {
+      return true;
+    }
+    return false;
+  });
+  // const playlistVisibilityLMS = allLms?.shareVendors?.filter((data) => data.playlist_visibility === true);
+  const activityVisibilityLMS = allLms?.shareVendors?.map((data) => {
+    if (data.activity_visibility === true) {
+      return true;
+    }
+    return false;
+  });
+  const safariMontageActivity = allLms?.shareVendors?.map((data) => {
+    if (data.lms_name === 'safarimontage') {
+      return true;
+    }
+    return false;
+  });
   useMemo(() => {
     dispatch(loadLmsAction());
   }, []);
@@ -850,7 +880,7 @@ function SearchInterface(props) {
                                             // eslint-disable-next-line max-len
                                             ? (permission?.activeRole === 'admin' && searchType !== 'public') || (searchType === 'private') ? `/org/${currentOrganization?.domain}/project/${res.project_id}/playlist/${res.playlist_id}/activity/${res.id}/preview` : `/activity/${res.id}/preview`
                                             : res.model === 'Playlist'
-                                              ? `/playlist/${res.id}/preview`
+                                              ? `/playlist/${res.id}/preview/lti`
                                               : `/project/${res.id}/preview`
                                         }
                                         target="_blank"
@@ -932,28 +962,36 @@ function SearchInterface(props) {
                                             </Dropdown.Item>
                                           )}
                                           {permission?.Project?.includes('project:publish') && (
-                                            <li className="dropdown-submenu send">
+                                            <li
+                                              className="dropdown-submenu send"
+                                              style={{ display: (projectVisibilityLMS[0] || currentOrganization?.gcr_project_visibility) ? 'block' : 'none' }}
+                                            >
                                               <a tabIndex="-1">
                                                 <FontAwesomeIcon icon="newspaper" className="mr-2" />
                                                 Publish
                                               </a>
-                                              <ul className="dropdown-menu check">
-                                                {res.gcr_project_visibility && (
-                                                  <li
-                                                    onClick={() => {
-                                                      setShow(true);
-                                                      getProjectId(res.id);
-                                                      setSelectedProjectId(res.id);
-                                                      dispatch(googleShare(false));
-                                                    }}
-                                                  >
-                                                    <a>
-                                                      Google Classroom
-                                                    </a>
-                                                  </li>
-                                                )}
+                                              <ul
+                                                className="dropdown-menu check"
+                                              >
+                                                {currentOrganization?.gcr_project_visibility
+                                                  && (
+                                                    // eslint-disable-next-line react/jsx-indent
+                                                    <li
+                                                      onClick={() => {
+                                                        setShow(true);
+                                                        getProjectId(res.id);
+                                                        setSelectedProjectId(res.id);
+                                                        dispatch(googleShare(false));
+                                                      }}
+                                                    >
+                                                      <a>
+                                                        Google Classroom
+                                                      </a>
+                                                    </li>
+                                                  )}
                                                 {allLms.shareVendors && allLms.shareVendors.map((data) => (
-                                                  data.project_visibility && (
+                                                  (data?.project_visibility)
+                                                  && (
                                                     <li>
                                                       <a
                                                         onClick={async () => {
@@ -1001,6 +1039,10 @@ function SearchInterface(props) {
                                             <ShareLink
                                               playlistId={res.id}
                                               projectId={res.project_id}
+                                              setProjectId={setProjectId}
+                                              handleShow={handleShow}
+                                              gcr_playlist_visibility={currentOrganization.gcr_playlist_visibility}
+                                              setProjectPlaylistId={setProjectPlaylistId}
                                             />
                                           )}
                                         </Dropdown.Menu>
@@ -1024,32 +1066,41 @@ function SearchInterface(props) {
                                               Duplicate
                                             </Dropdown.Item>
                                             {permission?.Activity?.includes('activity:share') && allLms?.length !== 0 && (
-                                              <li className="dropdown-submenu send">
+                                              <li
+                                                className="dropdown-submenu send"
+                                                style={{ display: (activityVisibilityLMS[0] && safariMontageActivity[0]) ? 'block' : 'none' }}
+                                              >
                                                 <a tabIndex="-1" className="dropdown-item">
                                                   <FontAwesomeIcon icon="newspaper" className="mr-2" />
                                                   Publish
                                                 </a>
-                                                <ul className="dropdown-menu check">
-                                                  {allLms.shareVendors.map((data) => {
-                                                    if (data.lms_name !== 'safarimontage') return false;
-
-                                                    return (
-                                                      <li>
-                                                        <a
-                                                          onClick={() => {
-                                                            dispatch(loadSafariMontagePublishToolAction(
-                                                              res.project_id,
-                                                              res.playlist_id,
-                                                              res.id,
-                                                              data.id,
-                                                            ));
-                                                          }}
-                                                        >
-                                                          {data.site_name}
-                                                        </a>
-                                                      </li>
-                                                    );
-                                                  })}
+                                                <ul
+                                                  className="dropdown-menu check"
+                                                >
+                                                  {allLms.shareVendors.map((data) => (
+                                                    data.lms_name !== 'safarimontage' ? null
+                                                      : (
+                                                        <>
+                                                          {data?.activity_visibility
+                                                            && (
+                                                              <li>
+                                                                <a
+                                                                  onClick={() => {
+                                                                    dispatch(loadSafariMontagePublishToolAction(
+                                                                      res.project_id,
+                                                                      res.playlist_id,
+                                                                      res.id,
+                                                                      data.id,
+                                                                    ));
+                                                                  }}
+                                                                >
+                                                                  {data.site_name}
+                                                                </a>
+                                                              </li>
+                                                            )}
+                                                        </>
+                                                      )
+                                                  ))}
                                                   <Modal
                                                     dialogClassName="safari-modal"
                                                     show={safariMontagePublishTool}
@@ -1121,7 +1172,7 @@ function SearchInterface(props) {
                                               res.model === 'Activity'
                                                 ? `/activity/${res.id}/preview`
                                                 : res.model === 'Playlist'
-                                                  ? `/playlist/${res.id}/preview`
+                                                  ? `/playlist/${res.id}/preview/lti`
                                                   : `/project/${res.id}/preview`
                                             }
                                             target="_blank"
@@ -1200,13 +1251,18 @@ function SearchInterface(props) {
                                                 </Dropdown.Item>
                                               )}
                                               {permission?.Project?.includes('project:publish') && (
-                                                <li className="dropdown-submenu send">
+                                                <li
+                                                  className="dropdown-submenu send"
+                                                  style={{ display: (projectVisibilityLMS[0] || currentOrganization?.gcr_project_visibility) ? 'block' : 'none' }}
+                                                >
                                                   <a tabIndex="-1">
                                                     <FontAwesomeIcon icon="newspaper" className="mr-2" />
                                                     Publish
                                                   </a>
-                                                  <ul className="dropdown-menu check">
-                                                    {res.gcr_project_visibility && (
+                                                  <ul
+                                                    className="dropdown-menu check"
+                                                  >
+                                                    {currentOrganization.gcr_project_visibility && (
                                                       <li
                                                         onClick={() => {
                                                           setShow(true);
@@ -1302,7 +1358,7 @@ function SearchInterface(props) {
                                                 // eslint-disable-next-line max-len
                                                 ? (permission?.activeRole === 'admin' && searchType !== 'public') || (searchType === 'private') ? `/org/${currentOrganization?.domain}/project/${res.project_id}/playlist/${res.playlist_id}/activity/${res.id}/preview` : `/activity/${res.id}/preview`
                                                 : res.model === 'Playlist'
-                                                  ? `/playlist/${res.id}/preview`
+                                                  ? `/playlist/${res.id}/preview/lti`
                                                   : `/project/${res.id}/preview`
                                             }
                                             target="_blank"
@@ -1352,6 +1408,10 @@ function SearchInterface(props) {
                                                   <ShareLink
                                                     playlistId={res.id}
                                                     projectId={res.project_id}
+                                                    setProjectId={setSelectedProjectId}
+                                                    handleShow={handleShow}
+                                                    gcr_playlist_visibility={currentOrganization.gcr_playlist_visibility}
+                                                    setProjectPlaylistId={setSelectedProjectPlaylistId}
                                                   />
                                                 )}
                                               </Dropdown.Menu>
@@ -1411,7 +1471,7 @@ function SearchInterface(props) {
                                                 res.model === 'Activity'
                                                   ? `/activity/${res.id}/preview`
                                                   : res.model === 'Playlist'
-                                                    ? `/playlist/${res.id}/preview`
+                                                    ? `/playlist/${res.id}/preview/lti`
                                                     : `/project/${res.id}/preview`
                                               }
                                               target="_blank"
@@ -1459,31 +1519,37 @@ function SearchInterface(props) {
                                                       Duplicate
                                                     </Dropdown.Item>
                                                     {permission?.Activity?.includes('activity:share') && allLms?.length !== 0 && (
-                                                      <li className="dropdown-submenu send">
+                                                      <li
+                                                        className="dropdown-submenu send"
+                                                        style={{ display: (activityVisibilityLMS[0] && safariMontageActivity[0]) ? 'block' : 'none' }}
+                                                      >
                                                         <a tabIndex="-1" className="dropdown-item">
                                                           <FontAwesomeIcon icon="newspaper" className="mr-2" />
                                                           Publish
                                                         </a>
-                                                        <ul className="dropdown-menu check">
+                                                        <ul
+                                                          className="dropdown-menu check"
+                                                        >
                                                           {allLms.shareVendors.map((data) => {
                                                             if (data.lms_name !== 'safarimontage') return false;
 
                                                             return (
-                                                              <li>
-                                                                <a
-                                                                  onClick={() => {
-                                                                    dispatch(loadSafariMontagePublishToolAction(
-                                                                      res.project_id,
-                                                                      res.playlist_id,
-                                                                      res.id,
-                                                                      data.id,
-                                                                    ));
-                                                                  }}
-                                                                >
-                                                                  {data.site_name}
-                                                                </a>
-                                                              </li>
-                                                            );
+                                                              (data?.activity_visibility) && (
+                                                                <li>
+                                                                  <a
+                                                                    onClick={() => {
+                                                                      dispatch(loadSafariMontagePublishToolAction(
+                                                                        res.project_id,
+                                                                        res.playlist_id,
+                                                                        res.id,
+                                                                        data.id,
+                                                                      ));
+                                                                    }}
+                                                                  >
+                                                                    {data.site_name}
+                                                                  </a>
+                                                                </li>
+                                                              ));
                                                           })}
                                                           <Modal
                                                             dialogClassName="safari-modal"
@@ -1579,6 +1645,8 @@ function SearchInterface(props) {
         </div>
         <GoogleModel
           projectId={selectedProjectId}
+          playlistId={selectedProjectPlaylistId}
+          activityId="0"
           show={show} // {props.show}
           onHide={() => { setShow(false); }}
         />
