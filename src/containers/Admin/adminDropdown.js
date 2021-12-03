@@ -16,7 +16,17 @@ import Edit from '../../assets/images/menu-edit.svg';
 import Export from '../../assets/images/export-img.svg';
 import MenuLogo from '../../assets/images/menu-logo.svg';
 import Remove from '../../assets/images/close.svg';
-import { forgetSpecificFailedJob, getDefaultSso, getLmsProject, getLtiTools, retrySpecificFailedJob, setActiveAdminForm, setActiveTab, setCurrentProject, setCurrentUser } from 'store/actions/admin';
+import {
+  forgetSpecificFailedJob,
+  getDefaultSso,
+  getLmsProject,
+  getLtiTools,
+  retrySpecificFailedJob,
+  setActiveAdminForm,
+  setActiveTab,
+  setCurrentProject,
+  setCurrentUser,
+} from 'store/actions/admin';
 
 import {
   deleteUserFromOrganization,
@@ -47,6 +57,7 @@ const AdminDropdown = (props) => {
     // text,
     // iconColor,
   } = props;
+
   // console.log("Type:" + type);
   // const ImgLoader = () => <img src={loader} alt="loader" />;
   const organization = useSelector((state) => state.organization);
@@ -213,8 +224,7 @@ const AdminDropdown = (props) => {
                 <Dropdown.Item
                   onClick={() => {
                     const protocol = `${window.location.href.split('/')[0]}//`;
-                    const url = `${protocol + window.location.host
-                      }/project/${row.id}/shared`;
+                    const url = `${protocol + window.location.host}/project/${row.id}/shared`;
                     SharePreviewPopup(url, row.name);
                     // confirmAlert({
                     //   customUI: ({ onClose }) => (
@@ -329,8 +339,14 @@ const AdminDropdown = (props) => {
               {' '}
               <Dropdown.Item
                 onClick={() => {
-                  dispatch(selectActivityType(type1));
-                  dispatch(setActiveAdminForm('edit_activity_type'));
+                  if (subType === 'Activity Items') {
+                    selectActivityItem();
+                    dispatch(selectActivityItem(type1));
+                    dispatch(setActiveAdminForm('edit_activity_item'));
+                  } else {
+                    dispatch(selectActivityType(type1));
+                    dispatch(setActiveAdminForm('edit_activity_type'));
+                  }
                 }}
               >
                 <img src={Edit} alt="Preview" className="menue-img" />
@@ -447,7 +463,7 @@ const AdminDropdown = (props) => {
                             icon: 'success',
                             text: res?.message,
                           });
-                          dispatch(getLmsProject(activeOrganization?.id, activePage || 1))
+                          dispatch(getLmsProject(activeOrganization?.id, activePage || 1));
                           const filterLMS = localStateData.filter((each) => each.id != row.id);
                           console.log(filterLMS);
                           setLocalStateData(filterLMS);
@@ -523,7 +539,7 @@ const AdminDropdown = (props) => {
                                 icon: 'success',
                                 text: res?.message,
                               });
-                              dispatch(getDefaultSso(activeOrganization?.id, activePage || 1))
+                              dispatch(getDefaultSso(activeOrganization?.id, activePage || 1));
                             })
                             .catch((err) => console.log(err));
                         }
@@ -538,7 +554,7 @@ const AdminDropdown = (props) => {
             </>
           )}
 
-          {type === "LMS" && subType === 'LTI Tools' && (
+          {type === 'LMS' && subType === 'LTI Tools' && (
             <>
               <Dropdown.Item
                 to="#"
@@ -579,7 +595,7 @@ const AdminDropdown = (props) => {
                             icon: 'success',
                             text: res?.message.message,
                           });
-                          dispatch(getLtiTools(activeOrganization?.id, activePage || 1))
+                          dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
                         })
                         .catch((err) => console.log(err));
                     }
