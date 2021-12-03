@@ -307,7 +307,7 @@ function Table(props) {
                         <div className="admin-panel-dropdown">
                           {row?.description}
                           <div>
-                            <AdminDropdown type={type} subType="All Settings" row={row} activePage={activePage}/>
+                            <AdminDropdown type={type} subType="All Settings" row={row} activePage={activePage} />
                           </div>
                         </div>
                       </td>
@@ -923,7 +923,7 @@ function Table(props) {
                           </div>
 
                           <div>
-                            <AdminDropdown type={type} item={item} />
+                            <AdminDropdown type1={item} type={type} subType={subType} />
                           </div>
                         </div>
                       </td>
@@ -1004,7 +1004,7 @@ function Table(props) {
                         <div className="admin-panel-dropdown">
                           <div>{row?.description}</div>
                           <div>
-                            <AdminDropdown type={type} row={row} activePage={activePage}/>
+                            <AdminDropdown type={type} row={row} activePage={activePage} />
                           </div>
                         </div>
                       </td>
