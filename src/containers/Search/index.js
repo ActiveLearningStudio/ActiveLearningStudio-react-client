@@ -78,6 +78,7 @@ function SearchInterface(props) {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(0);
+  const [selectedProjectPlaylistId, setSelectedProjectPlaylistId] = useState(0);
   const [activityTypes, setActivityTypes] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const [search, setSearch] = useState([]);
@@ -103,6 +104,16 @@ function SearchInterface(props) {
 
   // activeSubject1 = activeSubject.map((data1) => data1.replace('and', '&'))
   //   },[activeSubject])
+  const handleShow = () => {
+    setShow(true); //! state.show
+  };
+  const setProjectId = (projectId) => {
+    setSelectedProjectId(projectId);
+  };
+
+  const setProjectPlaylistId = (playlistId) => {
+    setSelectedProjectPlaylistId(playlistId);
+  };
   const projectVisibilityLMS = allLms?.shareVendors?.map((data) => {
     if (data.project_visibility === true) {
       return true;
@@ -1028,7 +1039,10 @@ function SearchInterface(props) {
                                             <ShareLink
                                               playlistId={res.id}
                                               projectId={res.project_id}
+                                              setProjectId={setProjectId}
+                                              handleShow={handleShow}
                                               gcr_playlist_visibility={currentOrganization.gcr_playlist_visibility}
+                                              setProjectPlaylistId={setProjectPlaylistId}
                                             />
                                           )}
                                         </Dropdown.Menu>
@@ -1394,7 +1408,10 @@ function SearchInterface(props) {
                                                   <ShareLink
                                                     playlistId={res.id}
                                                     projectId={res.project_id}
+                                                    setProjectId={setSelectedProjectId}
+                                                    handleShow={handleShow}
                                                     gcr_playlist_visibility={currentOrganization.gcr_playlist_visibility}
+                                                    setProjectPlaylistId={setSelectedProjectPlaylistId}
                                                   />
                                                 )}
                                               </Dropdown.Menu>
@@ -1628,6 +1645,8 @@ function SearchInterface(props) {
         </div>
         <GoogleModel
           projectId={selectedProjectId}
+          playlistId={selectedProjectPlaylistId}
+          activityId="0"
           show={show} // {props.show}
           onHide={() => { setShow(false); }}
         />
