@@ -8,7 +8,7 @@ const Share = ({ url, projectName, playlistName = null, onClose }) => {
   return (
     <>
       <h1>
-        Your can now share {playlistName ? 'playlist' : 'project'}{' '}
+        You can now share {playlistName ? 'playlist' : 'project'}{' '}
         <strong>
           &quot;
           {playlistName ? playlistName : projectName}
