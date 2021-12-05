@@ -799,3 +799,18 @@
     }
   }
 }
+
+.hr-spacer {
+  text-align: center;
+  border-bottom: solid 1px black;
+  height: 11px;
+  margin-bottom: 2em;
+  margin-top: 2em;
+}
+
+.hr-spacer span {
+  font-size: 15px;
+  background-color: white;
+  padding-left: 1em;
+  padding-right: 1em;
+}
