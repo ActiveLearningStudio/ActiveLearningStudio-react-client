@@ -97,12 +97,12 @@ const AppRouter = (props) => {
         <OpenRoute exact path="/canvas-lti-sso" component={CanvasLtiLogin} />
         <OpenRoute exact path="/sso/dologin/:ssodata" component={SSOLogin} />
         <OpenRoute exact path="/projects/shared" component={ProjectShareTemplate} />
-        <OpenRoute exact path="/project/:projectId/preview" component={PreviewPageShared} />
+        <PrivateRoute exact path="/project/:projectId/preview" component={PreviewPageShared} />
         <OpenRoute exact path="/project/:projectId/shared" component={PreviewPageShared} />
         <OpenRoute exact path="/project/:projectId/secure/shared" component={SecureProjectPreview} />
         <OpenRoute exact path="/opensearch" component={Searchnetlify} />
         <OpenRoute exact path="/lti-tools/activity/:activityId" component={LtiActivity} />
-        <OpenRoute exact path="/activity/:activityId/preview" component={LtiPreviewPage} previewType="activityShared" />
+        <PrivateRoute exact path="/activity/:activityId/preview" component={LtiPreviewPage} previewType="activityShared" />
         <OpenRoute exact path="/activity/:activityId/shared" component={LtiPreviewPage} previewType="activityShared" />
         <OpenRoute exact path="/h5p/embed/:activityId" component={LtiPreviewPage} previewType="activitySharedEmbed" />
         <OpenRoute
@@ -121,7 +121,7 @@ const AppRouter = (props) => {
         <OpenRoute exact path="/lti/summary" component={CanvasSummaryPage} />
         <OpenRoute path="/playlist/:playlistId/activity/:activityId/preview/lti" exact component={LtiPreviewPage} previewType="playlist" />
         <OpenRoute path="/playlist/:playlistId/activity/:activityId/preview" exact component={LtiPreviewPage} previewType="playlist" />
-        <OpenRoute exact path="/playlist/:playlistId/preview" component={LtiPreviewPage} previewType="playlist" />
+        <PrivateRoute exact path="/playlist/:playlistId/preview" component={LtiPreviewPage} previewType="playlist" />
         <OpenRoute exact path="/project/:projectId/playlist/:playlistId/shared" component={LtiPreviewPage} previewType="playlist" />
         <OpenRoute exact path="/playlist/:playlistId/preview/lti" component={LtiPreviewPage} previewType="playlist" />
         <PrivateRoute exact path="/org/:organization/project/:projectId/playlist/:playlistId/activity/:activityId/preview" component={PreviewPage} previewType="playlist" />
@@ -190,7 +190,7 @@ const AppRouter = (props) => {
                     exact
                     path="/org/:organization/project/:projectId/playlist/:playlistId/activity/create"
                     component={ActivityCreate}
-                    // openCreateResourcePopup
+                  // openCreateResourcePopup
                   />
                   <PrivateRoute exact path="/org/:organization/project/:projectId/playlist/:playlistId/activity/:activityId/edit" component={EditActivity} openEditResourcePopup />
 

@@ -11,6 +11,7 @@ const INITIAL_STATE = {
   loadingH5P: "loading...",
   isSharedPlaylist: null,
   isNonAvailablePlaylist: false,
+  searchPreviewPlaylist: null,
 };
 
 let newPlaylists = [];
@@ -241,6 +242,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         sharedPlayist: action.sharedPlayist,
+      };
+    case actionTypes.SEARCH_PREVIEW_PLAYLIST:
+      return {
+        ...state,
+        searchPreviewPlaylist: action.payload,
       };
     default:
       return state;
