@@ -2,7 +2,7 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 import Echo from "laravel-echo";
-
+import store from '../index';
 import socketConnection from "services/http.service";
 import playlistService from "services/playlist.service";
 import * as actionTypes from "../actionTypes";
@@ -402,4 +402,18 @@ export const loadAllSharedPlaylist = (projectId) => async (dispatch) => {
 
     throw e;
   }
+};
+
+export const searchPreviewPlaylistAction = (playlistId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const { playlist } = await playlistService.searchPreviewPlaylist(activeOrganization?.id, playlistId);
+  dispatch({
+    type: actionTypes.LOAD_PLAYLIST_SUCCESS,
+    payload: { playlist },
+  });
+  dispatch({
+    type: actionTypes.SEARCH_PREVIEW_PLAYLIST,
+    payload: playlist,
+  });
 };

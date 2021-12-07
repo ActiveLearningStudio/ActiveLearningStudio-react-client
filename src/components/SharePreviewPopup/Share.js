@@ -8,12 +8,13 @@ const Share = ({ url, projectName, playlistName = null, onClose }) => {
   return (
     <>
       <h1>
-        You can now share {playlistName ? 'playlist' : 'project'}{' '}
+        You can share{' '}
         <strong>
           &quot;
           {playlistName ? playlistName : projectName}
           &quot;
         </strong>
+        {' '}now
         <br />
         Anyone with the link below can access your {playlistName ? 'playlist' : 'project'}:
         <div className="mt-3 d-flex align-items-center justify-content-between">

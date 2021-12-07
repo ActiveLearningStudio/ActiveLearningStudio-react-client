@@ -61,6 +61,17 @@ function App(props) {
                 .catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
           }
+        } else if (window.location.pathname.includes('/preview')) {
+          const subDomain = localStorage.getItem('current_org');
+          (async () => {
+            const result = dispatch(getBranding(subDomain));
+            result
+              .then((data) => {
+                if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
+                dispatch(getAllPermission(data?.organization?.id));
+              })
+              .catch((err) => err && window.location.replace('/org/currikistudio'));
+          })();
         }
       }
     }
