@@ -880,7 +880,7 @@ function SearchInterface(props) {
                                             // eslint-disable-next-line max-len
                                             ? (permission?.activeRole === 'admin' && searchType !== 'public') || (searchType === 'private') ? `/org/${currentOrganization?.domain}/project/${res.project_id}/playlist/${res.playlist_id}/activity/${res.id}/preview` : `/activity/${res.id}/preview`
                                             : res.model === 'Playlist'
-                                              ? `/playlist/${res.id}/preview/lti`
+                                              ? `/playlist/${res.id}/preview`
                                               : `/project/${res.id}/preview`
                                         }
                                         target="_blank"
@@ -1172,7 +1172,7 @@ function SearchInterface(props) {
                                               res.model === 'Activity'
                                                 ? `/activity/${res.id}/preview`
                                                 : res.model === 'Playlist'
-                                                  ? `/playlist/${res.id}/preview/lti`
+                                                  ? `/playlist/${res.id}/preview`
                                                   : `/project/${res.id}/preview`
                                             }
                                             target="_blank"
@@ -1358,7 +1358,7 @@ function SearchInterface(props) {
                                                 // eslint-disable-next-line max-len
                                                 ? (permission?.activeRole === 'admin' && searchType !== 'public') || (searchType === 'private') ? `/org/${currentOrganization?.domain}/project/${res.project_id}/playlist/${res.playlist_id}/activity/${res.id}/preview` : `/activity/${res.id}/preview`
                                                 : res.model === 'Playlist'
-                                                  ? `/playlist/${res.id}/preview/lti`
+                                                  ? `/playlist/${res.id}/preview`
                                                   : `/project/${res.id}/preview`
                                             }
                                             target="_blank"
@@ -1471,7 +1471,7 @@ function SearchInterface(props) {
                                                 res.model === 'Activity'
                                                   ? `/activity/${res.id}/preview`
                                                   : res.model === 'Playlist'
-                                                    ? `/playlist/${res.id}/preview/lti`
+                                                    ? `/playlist/${res.id}/preview`
                                                     : `/project/${res.id}/preview`
                                               }
                                               target="_blank"

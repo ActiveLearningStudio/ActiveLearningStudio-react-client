@@ -91,7 +91,7 @@ const ActivityShared = (props) => {
         }).catch(() => {
           setAuthorized(true);
         });
-      } else {
+      } else if (!window.location.pathname.includes('/preview')) {
         loadH5pResourceSettingsShared(match.params.activityId)
           .then(async (data) => {
             if (data) {
@@ -109,7 +109,7 @@ const ActivityShared = (props) => {
         try {
           const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
           if (x.H5P) {
-            if (x.H5P.externalDispatcher && xAPIHelper.isxAPINeeded(props.match.path)) {
+            if (x.H5P.externalDispatcher && xAPIHelper.isxAPINeeded(match.path)) {
               // eslint-disable-next-line no-use-before-define
               stopXapi();
 
