@@ -131,6 +131,12 @@ const mapStateToProps = (state) => ({
     description: (state.team.selectedTeam && state.team.selectedTeam.description)
       ? state.team.selectedTeam.description
       : '',
+    noovo_group_id: (state.team.selectedTeam && state.team.selectedTeam.noovo_group_id)
+      ? state.team.selectedTeam.noovo_group_id
+      : '',
+    noovo_group_title: (state.team.selectedTeam && state.team.selectedTeam.noovo_group_title)
+      ? state.team.selectedTeam.noovo_group_title
+      : '',
   },
   team: state.team.selectedTeam,
 });
