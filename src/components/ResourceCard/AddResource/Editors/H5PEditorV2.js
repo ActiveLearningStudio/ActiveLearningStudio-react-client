@@ -131,14 +131,16 @@ const H5PEditor = (props) => {
 
           <div className="interactive-btns" style={{ marginTop: '20px' }}>
             <div className="cancel">
-              <Buttons
-                text="Back"
+              <div
+                className="backclosemodel"
                 width="151px"
                 secondary
                 onClick={() => {
                   hide();
                 }}
-              />
+              >
+                Back
+              </div>
             </div>
             <div className="save-close">
               <div
