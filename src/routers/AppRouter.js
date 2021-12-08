@@ -79,6 +79,7 @@ const Searchnetlify = loadable(() =>
 );
 // const LtiModel = loadable(() => import('../containers/LtiModel'));
 const TeamsPage = loadable(() => import("../containers/Teams"));
+const VideoPage = loadable(() => import("../containers/Videos"));
 const AddTeamProjectsPage = loadable(() =>
   import("../containers/Teams/AddProjects")
 );
@@ -299,6 +300,13 @@ const AppRouter = (props) => {
                     path="/org/:organization/admin"
                     component={AdminPanel}
                   />
+                  {/* Interactive Video */}
+                  <PrivateRoute
+                    exact
+                    path="/org/:organization/video"
+                    component={VideoPage}
+                    overview
+                  />
                   <PrivateRoute
                     exact
                     path="/org/:organization/teams"
@@ -390,7 +398,7 @@ const AppRouter = (props) => {
                     exact
                     path="/org/:organization/project/:projectId/playlist/:playlistId/activity/create"
                     component={ActivityCreate}
-                  // openCreateResourcePopup
+                    // openCreateResourcePopup
                   />
                   <PrivateRoute
                     exact
