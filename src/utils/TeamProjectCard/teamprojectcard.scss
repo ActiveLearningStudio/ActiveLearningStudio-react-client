@@ -1,0 +1,86 @@
+@import "assets/css/index";
+.curriki-utility-teamproject-card {
+  width: 290px;
+  height: 158px;
+  background: #ffffff;
+  box-shadow: 0px 4px 8px 2px rgba(81, 81, 81, 0.16);
+  border-radius: 8px;
+  //   padding: 15px;
+  .teamproject-card-top {
+    border-radius: 5px;
+    // background-image: url("../../assets/images/cardlistimg.png");
+    background-size: 100% 100%;
+    position: relative;
+    height: 156px;
+    &:before {
+      border-radius: 8px;
+
+      content: "";
+      display: block;
+      height: 100%;
+      position: absolute;
+      width: 100%;
+    }
+
+    .teamproject-card-title {
+      position: absolute;
+      bottom: 10px;
+      left: 15px;
+      h2 {
+        font-family: $rubik;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 21px;
+        color: #ffffff;
+      }
+    }
+  }
+  .select-project-status {
+    &:before {
+      background: linear-gradient(
+        180deg,
+        rgba(8, 72, 146, 0.8) 0%,
+        rgba(8, 72, 146, 0.8) 100%
+      );
+    }
+  }
+  .noselect-project-status {
+    &:before {
+      background: linear-gradient(
+        180deg,
+        rgba(81, 81, 81, 0.2) 0%,
+        rgba(0, 0, 0, 0.8) 100%
+      );
+    }
+  }
+  .project-checkbox-select {
+    position: absolute;
+    right: 11px;
+    top: 19px;
+    z-index: 999;
+    .checkbox_section {
+      align-items: center;
+      display: flex;
+
+      input {
+        display: none;
+        &:checked + span {
+          background-image: url(../../assets/images/VectorCheck.svg);
+          background-color: $white;
+        }
+      }
+      span {
+        border: 1px solid #cccc;
+        background-repeat: no-repeat;
+        background-size: 13px 9px;
+        background-position: 2px;
+        display: inline-block;
+        margin-right: 10px;
+        height: 18px;
+        width: 18px;
+        border-radius: 3px;
+      }
+    }
+  }
+}

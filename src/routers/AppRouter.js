@@ -79,6 +79,7 @@ const Searchnetlify = loadable(() =>
 );
 // const LtiModel = loadable(() => import('../containers/LtiModel'));
 const TeamsPage = loadable(() => import("../containers/Teams"));
+const TeamsPageAddTeam = loadable(() => import("../containers/Teams/AddTeam"));
 const AddTeamProjectsPage = loadable(() =>
   import("../containers/Teams/AddProjects")
 );
@@ -323,6 +324,13 @@ const AppRouter = (props) => {
                     component={TeamsPage}
                     creation
                   />
+                  {/* On Working Team Start */}
+                  <PrivateRoute
+                    exact
+                    path="/org/:organization/teams/create-team-design"
+                    component={TeamsPageAddTeam}
+                    creation
+                  />
                   <PrivateRoute
                     exact
                     path="/org/:organization/teams/:teamId"
@@ -402,7 +410,7 @@ const AppRouter = (props) => {
                     exact
                     path="/org/:organization/project/:projectId/playlist/:playlistId/activity/create"
                     component={ActivityCreate}
-                  // openCreateResourcePopup
+                    // openCreateResourcePopup
                   />
                   <PrivateRoute
                     exact
