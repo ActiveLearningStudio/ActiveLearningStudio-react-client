@@ -98,7 +98,7 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
             lastPageText="Next"
           />
         )}
-        {type === 'Project' && subType === 'index' && (
+        {type === 'Project' && subType === 'Library requests' && (
           <Pagination
             activePage={activePage}
             pageRangeDisplayed={5}

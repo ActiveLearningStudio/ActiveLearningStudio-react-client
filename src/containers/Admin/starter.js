@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Tabs, Tab } from "react-bootstrap";
 import PropTypes from "prop-types";
 
-import Controler from "./controler";
+import Controller from "./controller";
 import TableData from "./table";
 import Userroles from "./userroles";
 import Settings from "./settings";
@@ -54,10 +54,13 @@ function Starter(props) {
     permissionRender,
     selectedActivityType,
     setSelectedActivityType,
+    libraryReqSelected,
+    setLibraryReqSelected,
+    setSubTypeState,
   } = props;
   return (
     <>
-      <Controler
+      <Controller
         paginationCounter={paginationCounter}
         search={search}
         print={print}
@@ -96,6 +99,9 @@ function Starter(props) {
         setChangeIndexValue={setChangeIndexValue}
         selectedActivityType={selectedActivityType}
         setSelectedActivityType={setSelectedActivityType}
+        libraryReqSelected={libraryReqSelected}
+        setLibraryReqSelected={setLibraryReqSelected}
+        setSubTypeState={setSubTypeState}
       />
       {subTypeState === "All settings" && <Settings />}
       {subTypeState === "Manage Roles" ? (

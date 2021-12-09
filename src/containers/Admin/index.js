@@ -38,7 +38,7 @@ function AdminPanel({ showSSO }) {
       dispatch(getRoles());
     }
   }, [activeOrganization]);
-  useEffect(() => {}, [activeTab]);
+  useEffect(() => { }, [activeTab]);
   useEffect(() => {
     const tab = localStorage.getItem('activeTab');
     if (tab) {
@@ -98,7 +98,7 @@ function AdminPanel({ showSSO }) {
                     <Tab eventKey="Project" title="Projects">
                       <div className="module-content">
                         <Pills
-                          modules={['All Projects', 'Library requests', 'Exported Projects']}
+                          modules={['Projects', 'Exported Projects']}
                           allProjectTab={allProjectTab}
                           setAllProjectTab={setAllProjectTab}
                           type="Project"

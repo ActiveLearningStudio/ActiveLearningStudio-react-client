@@ -40,6 +40,7 @@ export default function Pills(props) {
   const [searchQueryActivities, setSearchQueryActivities] = useState('');
   const [allProjectUserTab, setAllProjectUserTab] = useState(null);
   const [allProjectIndexTab, setAllProjectIndexTab] = useState(null);
+  const [libraryReqSelected, setLibraryReqSelected] = useState(false);
   const [lmsProject, setLmsProject] = useState(null);
   const [defaultSso, setDefaultSso] = useState(null);
   const [ltiTool, setLtiTool] = useState(null);
@@ -80,8 +81,8 @@ export default function Pills(props) {
     }
   };
 
-  const searchProjectQueryChangeHandler = async (query, index, subType) => {
-    if (subType === 'index') {
+  const searchProjectQueryChangeHandler = async (query, index, type) => {
+    if (type === 'Library requests') {
       if (!!query) {
         setAllProjectIndexTab(null);
         const searchapi = adminService.userSerchIndexs(activeOrganization?.id, activePage, index, query);
@@ -97,7 +98,7 @@ export default function Pills(props) {
           setAllProjectIndexTab(data);
         });
       }
-    } else if (subType === 'all') {
+    } else if (type === 'all') {
       if (!!query) {
         setAllProjectTab(null);
         const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, query);
@@ -114,7 +115,7 @@ export default function Pills(props) {
           setAllProjectTab(data);
         });
       }
-    } else if (subType === 'user') {
+    } else if (type === 'user') {
       if (!!query) {
         setAllProjectUserTab(null);
         const userproject = adminService.getUserProjectSearch(activeOrganization?.id, activePage, query);
@@ -159,7 +160,7 @@ export default function Pills(props) {
     setAllProjectTab && setAllProjectTab(null);
     setAllProjectUserTab(null);
     setAllProjectIndexTab(null);
-    if (activeOrganization && type === 'Project' && currentTab == 'all') {
+    if (activeOrganization && type === 'Project' && currentTab == 'Projects') {
       if (searchQueryProject) {
         const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, searchQueryProject);
         allproject
@@ -184,7 +185,7 @@ export default function Pills(props) {
         const result = await adminService.getAllExportedProject(activePage || 1);
         setAllProjectUserTab(result);
       }
-    } else if (activeOrganization && type === 'Project' && currentTab === 'index') {
+    } else if (activeOrganization && type === 'Project' && currentTab === 'Library requests') {
       if (searchQueryProject) {
         const searchapi = adminService.userSerchIndexs(activeOrganization?.id, activePage, changeIndexValue, searchQueryProject);
         searchapi
@@ -358,13 +359,13 @@ export default function Pills(props) {
       setLtiTool(dataRedux.admin.ltiTools);
     }
   }, [dataRedux.admin.ltiTools]);
-  
+
   useEffect(() => {
     if (dataRedux.admin.defaultSso) {
       setDefaultSso(dataRedux.admin.defaultSso);
     }
   }, [dataRedux.admin.defaultSso]);
-  
+
   useEffect(() => {
     if (dataRedux.admin.lmsIntegration) {
       setLmsProject(dataRedux.admin.lmsIntegration);
@@ -404,10 +405,18 @@ export default function Pills(props) {
       setLtiTool(data);
     });
   };
-
+  useEffect(() => {
+    if (subTypeState === 'Library requests') {
+      setCurrentTab('Library requests');
+      setChangeIndexValue(0);
+    } else if (subTypeState === 'Projects') {
+      setCurrentTab('Projects');
+      setKey('Projects')
+    }
+  }, [subTypeState]);
   useEffect(() => {
     if (activeTab === 'Project') {
-      setSubTypeState('All Projects');
+      setSubTypeState('Projects');
       setCurrentTab('all');
     } else if (activeTab === 'Activities') {
       setSubTypeState('Activity Types');
@@ -437,14 +446,15 @@ export default function Pills(props) {
         setSearchAlertTogglerStats(1);
         dispatch(resetPageNumber());
         setSearchQueryStats('');
-        if (key === 'All Projects') {
+        if (key === 'Projects') {
           setCurrentTab('all');
         } else if (key === 'Exported Projects') {
           setCurrentTab('Exported Projects');
-        } else if (key === 'Library requests') {
-          setCurrentTab('index');
-          setChangeIndexValue(0);
         }
+        // else if (key === 'Library requests') {
+        //   setCurrentTab('Library requests');
+        //   setChangeIndexValue(0);
+        // }
       }}
     >
       {modules?.map((asset) => (
@@ -609,7 +619,7 @@ export default function Pills(props) {
               />
             )}
 
-            {type === 'Project' && subTypeState === 'All Projects' && (
+            {type === 'Project' && subTypeState === 'Projects' && !libraryReqSelected && (
               <Starter
                 paginationCounter={true}
                 size={size}
@@ -624,7 +634,10 @@ export default function Pills(props) {
                 setSearchQueryProject={setSearchQueryProject}
                 setActivePage={setActivePage}
                 activePage={activePage}
-                subType="all"
+                subType={'all'}
+                setSubTypeState={setSubTypeState}
+                libraryReqSelected={libraryReqSelected}
+                setLibraryReqSelected={setLibraryReqSelected}
                 setCurrentTab={setCurrentTab}
               />
             )}
@@ -644,7 +657,7 @@ export default function Pills(props) {
                 searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
               />
             )}
-            {type === 'Project' && subTypeState === 'Library requests' && (
+            {type === 'Project' && subTypeState === 'Library requests' && libraryReqSelected && (
               <Starter
                 paginationCounter={true}
                 size={size}
@@ -654,6 +667,7 @@ export default function Pills(props) {
                 data={allProjectIndexTab}
                 type={type}
                 searchQuery={searchQuery}
+                setSubTypeState={setSubTypeState}
                 searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
                 searchAlertToggler={searchAlertToggler}
                 setActivePage={setActivePage}
@@ -666,6 +680,8 @@ export default function Pills(props) {
                 setSearchQueryProject={setSearchQueryProject}
                 changeIndexValue={changeIndexValue}
                 setChangeIndexValue={setChangeIndexValue}
+                libraryReqSelected={libraryReqSelected}
+                setLibraryReqSelected={setLibraryReqSelected}
               />
             )}
             {type === 'Activities' && subTypeState === 'Activity Types' && (

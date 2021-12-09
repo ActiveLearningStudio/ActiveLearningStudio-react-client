@@ -3,6 +3,7 @@
 .admin-panel {
   .main-heading {
     margin: 0;
+    border-bottom: none !important;
     padding: 20px 0px 16px;
     p {
       color: #084892;
@@ -191,7 +192,22 @@
       // margin-top: 3px;
       // margin-bottom: 3px;
     }
-
+    .switch-libreq {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 6px 8px;
+      margin-right: 33px;
+      width: 204px;
+      height: 32px;
+      border: 0;
+      color: $fun-blue-1;
+      background: #e5eeff;
+      border-radius: 4px;
+      img {
+        margin-right: 8px;
+      }
+    }
     .retryandforget {
       .retry {
         color: #fff;
@@ -331,7 +347,7 @@
       }
       .dropdown-menu {
         width: 310px;
-        height: 464px;
+        height: 517px;
         padding: 8px;
         overflow-y: auto;
         display: flex;
