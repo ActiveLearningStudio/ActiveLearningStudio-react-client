@@ -1068,7 +1068,7 @@ function SearchInterface(props) {
                                             {permission?.Activity?.includes('activity:share') && allLms?.length !== 0 && (
                                               <li
                                                 className="dropdown-submenu send"
-                                                style={{ display: (activityVisibilityLMS[0] && safariMontageActivity[0]) ? 'block' : 'none' }}
+                                                style={{ display: (activityVisibilityLMS[0] || safariMontageActivity[0]) ? 'block' : 'none' }}
                                               >
                                                 <a tabIndex="-1" className="dropdown-item">
                                                   <FontAwesomeIcon icon="newspaper" className="mr-2" />
@@ -1521,7 +1521,7 @@ function SearchInterface(props) {
                                                     {permission?.Activity?.includes('activity:share') && allLms?.length !== 0 && (
                                                       <li
                                                         className="dropdown-submenu send"
-                                                        style={{ display: (activityVisibilityLMS[0] && safariMontageActivity[0]) ? 'block' : 'none' }}
+                                                        style={{ display: (activityVisibilityLMS[0] || safariMontageActivity[0]) ? 'block' : 'none' }}
                                                       >
                                                         <a tabIndex="-1" className="dropdown-item">
                                                           <FontAwesomeIcon icon="newspaper" className="mr-2" />
