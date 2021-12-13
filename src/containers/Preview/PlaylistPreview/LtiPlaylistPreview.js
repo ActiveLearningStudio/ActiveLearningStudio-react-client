@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { Tab, Tabs } from 'react-bootstrap';
@@ -8,7 +8,7 @@ import { Tab, Tabs } from 'react-bootstrap';
 import { collapsedSideBar } from 'store/actions/ui';
 import projectIcon from 'assets/images/project_icon.svg';
 import {
-  loadLtiPlaylistAction, loadProjectPlaylistsAction, loadSingleSharedPlaylist,
+  loadLtiPlaylistAction, loadProjectPlaylistsAction, loadSingleSharedPlaylist, searchPreviewPlaylistAction,
 } from 'store/actions/playlist';
 import PreviousLink from './components/PreviousLink';
 import NextLink from './components/NextLink';
@@ -28,18 +28,21 @@ function LtiPlaylistPreview(props) {
     loadLtiPlaylist,
     loadSharedPlaylist,
     loadProjectPlaylists,
+    searchPreviewPlaylist,
     setCollapsed,
     collapsed,
   } = props;
-
+  const { activeOrganization } = useSelector((state) => state.organization);
   useEffect(() => {
     window.scrollTo(0, 0);
     if (window.location.pathname.includes('/shared') && playlistId && projectId) {
       loadSharedPlaylist(projectId, playlistId);
-    } else if (window.location.pathname.includes('/lti') && playlistId) {
+    } else if (window.location.pathname.includes('/preview/lti') && playlistId) {
       loadLtiPlaylist(playlistId);
+    } else if (window.location.pathname.includes('/preview') && playlistId && activeOrganization?.id) {
+      searchPreviewPlaylist(playlistId);
     }
-  }, [playlistId, activityId, loadLtiPlaylist, loadSharedPlaylist, projectId]);
+  }, [playlistId, activityId, loadLtiPlaylist, loadSharedPlaylist, projectId, activeOrganization?.id, searchPreviewPlaylist]);
 
   let { selectedPlaylist } = playlist;
   useEffect(() => {
@@ -212,6 +215,7 @@ LtiPlaylistPreview.propTypes = {
   loadLtiPlaylist: PropTypes.func.isRequired,
   loadSharedPlaylist: PropTypes.func.isRequired,
   loadProjectPlaylists: PropTypes.func.isRequired,
+  searchPreviewPlaylist: PropTypes.func.isRequired,
   collapsed: PropTypes.bool.isRequired,
   setCollapsed: PropTypes.func.isRequired,
 };
@@ -226,6 +230,7 @@ const mapDispatchToProps = (dispatch) => ({
   loadLtiPlaylist: (playlistId) => dispatch(loadLtiPlaylistAction(playlistId)),
   loadSharedPlaylist: (projectId, playlistId) => dispatch(loadSingleSharedPlaylist(projectId, playlistId)),
   loadProjectPlaylists: (projectId) => dispatch(loadProjectPlaylistsAction(projectId)),
+  searchPreviewPlaylist: (playlistId) => dispatch(searchPreviewPlaylistAction(playlistId)),
   setCollapsed: () => dispatch(collapsedSideBar()),
 });
 

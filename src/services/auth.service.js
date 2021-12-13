@@ -73,6 +73,11 @@ const loadOrganizationTypes = () => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const checkEmail = (email) => httpService
+  .get(`/checkemail/${email}`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   me,
   login,
@@ -88,4 +93,5 @@ export default {
   loadOrganizationTypes,
   loginSSO,
   canvasSsoLogin,
+  checkEmail,
 };

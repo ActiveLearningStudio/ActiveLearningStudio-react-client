@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .resource-activity {
   // padding-left: 25px;
@@ -264,8 +264,7 @@
     border-radius: 3px;
     position: relative;
     text-align: center;
-    background: #ffffff url(../../../assets/images/unselected-radio-icon.png)
-      no-repeat right 15px top 13px;
+    background: #ffffff url(../../../assets/images/unselected-radio-icon.png) no-repeat right 15px top 13px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -412,7 +411,7 @@ $filled: #44ca92;
       margin-left: 50px;
       font-size: 16px;
       cursor: pointer;
-      font-family: "rubik", sans-serif;
+      font-family: 'rubik', sans-serif;
       font-weight: 400;
       padding-top: 7px;
       padding-bottom: 10px;
@@ -625,12 +624,11 @@ $filled: #44ca92;
   //}
 }
 
-input[type="radio"]:checked + .activity-item {
+input[type='radio']:checked + .activity-item {
   box-shadow: 0 3px 6px #00000029;
   border: 2px solid #084892;
   border-radius: 4px;
-  background: url(../../../assets/images/resource-tickmark.png) no-repeat right
-    15px top 13px;
+  background: url(../../../assets/images/resource-tickmark.png) no-repeat right 15px top 13px;
 
   .activity-icon {
     display: none;
@@ -645,8 +643,8 @@ input[type="radio"]:checked + .activity-item {
   }
 }
 
-.activity-label [type="radio"],
-.question-label [type="radio"] {
+.activity-label [type='radio'],
+.question-label [type='radio'] {
   display: none;
 }
 
@@ -678,7 +676,7 @@ input[type="radio"]:checked + .activity-item {
   height: 56px;
   background: #2ecf43;
   font-size: 14px;
-  font-family: "rubik", sans-serif;
+  font-family: 'rubik', sans-serif;
   font-weight: 600;
 
   &.top {
@@ -701,12 +699,11 @@ input[type="radio"]:checked + .activity-item {
   margin-top: 30px;
   width: 195px;
   height: 56px;
-  background: url(../../../assets/images/btn-arrow.png) #2ecf43 no-repeat right
-    20px top 21px;
+  background: url(../../../assets/images/btn-arrow.png) #2ecf43 no-repeat right 20px top 21px;
   text-align: left;
   padding-left: 20px;
   font-size: 14px;
-  font-family: "rubik", sans-serif;
+  font-family: 'rubik', sans-serif;
   font-weight: 600;
 }
 
@@ -759,7 +756,7 @@ input[type="radio"]:checked + .activity-item {
     text-transform: capitalize;
     margin: 0;
     font-size: 2rem;
-    font-family: "rubik", sans-serif;
+    font-family: 'rubik', sans-serif;
     font-weight: 300;
   }
 
@@ -767,7 +764,7 @@ input[type="radio"]:checked + .activity-item {
     h2 {
       color: #565656;
       font-size: 18px;
-      font-family: "$halvetica", sans-serif;
+      font-family: '$halvetica', sans-serif;
       font-weight: 400;
       margin-top: 15px;
       margin-bottom: 15px;
@@ -810,7 +807,7 @@ input[type="radio"]:checked + .activity-item {
           text-transform: uppercase;
           text-align: center;
           font-size: 12px;
-          font-family: "rubik", sans-serif;
+          font-family: 'rubik', sans-serif;
           font-weight: 600;
         }
       }
@@ -838,6 +835,19 @@ input[type="radio"]:checked + .activity-item {
   font-size: 16px;
   color: #ffffff;
   background: #084892;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 18px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.backclosemodel {
+  width: 150px;
+  font-size: 16px;
+  color: #333;
+  background: #ccc;
   display: flex;
   justify-content: center;
   align-items: center;

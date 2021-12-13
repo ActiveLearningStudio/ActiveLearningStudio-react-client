@@ -16,7 +16,18 @@ import Edit from '../../assets/images/menu-edit.svg';
 import Export from '../../assets/images/export-img.svg';
 import MenuLogo from '../../assets/images/menu-logo.svg';
 import Remove from '../../assets/images/close.svg';
-import { forgetSpecificFailedJob, getDefaultSso, getLmsProject, getLtiTools, retrySpecificFailedJob, setActiveAdminForm, setActiveTab, setCurrentProject, setCurrentUser } from 'store/actions/admin';
+import {
+  forgetSpecificFailedJob,
+  getDefaultSso,
+  getLmsProject,
+  getLtiTools,
+  retrySpecificFailedJob,
+  setActiveAdminForm,
+  setActiveTab,
+  setCurrentProject,
+  setCurrentUser,
+  showRemoveUser,
+} from 'store/actions/admin';
 
 import {
   deleteUserFromOrganization,
@@ -31,6 +42,7 @@ import { deleteActivityItem, deleteActivityType, getActivityItems, loadResourceT
 import * as actionTypes from 'store/actionTypes';
 import EditProjectModel from './model/editprojectmodel';
 import { clone } from 'lodash';
+import SharePreviewPopup from 'components/SharePreviewPopup';
 
 const AdminDropdown = (props) => {
   const {
@@ -46,6 +58,7 @@ const AdminDropdown = (props) => {
     // text,
     // iconColor,
   } = props;
+
   // console.log("Type:" + type);
   // const ImgLoader = () => <img src={loader} alt="loader" />;
   const organization = useSelector((state) => state.organization);
@@ -212,56 +225,57 @@ const AdminDropdown = (props) => {
                 <Dropdown.Item
                   onClick={() => {
                     const protocol = `${window.location.href.split('/')[0]}//`;
+                    const url = `${protocol + window.location.host}/project/${row.id}/shared`;
+                    SharePreviewPopup(url, row.name);
+                    // confirmAlert({
+                    //   customUI: ({ onClose }) => (
+                    //     <div className="share-project-preview-url project-share-check">
+                    //       <br />
+                    //       <h3>
+                    //         You can now share project <strong>{row.title}</strong>
+                    //         <br />
+                    //         Anyone with the link below can access your project:
+                    //       </h3>
 
-                    confirmAlert({
-                      customUI: ({ onClose }) => (
-                        <div className="share-project-preview-url project-share-check">
-                          <br />
-                          <h3>
-                            You can now share project <strong>{row.title}</strong>
-                            <br />
-                            Anyone with the link below can access your project:
-                          </h3>
+                    //       <a target="_blank" href={`/${row.id}/shared`} rel="noopener noreferrer">
+                    //         <input id="urllink_clip" value={`${protocol + window.location.host}/${row.id}/shared`} />
+                    //       </a>
 
-                          <a target="_blank" href={`/${row.id}/shared`} rel="noopener noreferrer">
-                            <input id="urllink_clip" value={`${protocol + window.location.host}/${row.id}/shared`} />
-                          </a>
+                    //       <span
+                    //         title="copy to clipboard"
+                    //         aria-hidden="true"
+                    //         onClick={() => {
+                    //           /* Get the text field */
+                    //           const copyText = document.getElementById('urllink_clip');
 
-                          <span
-                            title="copy to clipboard"
-                            aria-hidden="true"
-                            onClick={() => {
-                              /* Get the text field */
-                              const copyText = document.getElementById('urllink_clip');
+                    //           /* Select the text field */
+                    //           copyText.focus();
+                    //           copyText.select();
 
-                              /* Select the text field */
-                              copyText.focus();
-                              copyText.select();
+                    //           document.execCommand('copy');
 
-                              document.execCommand('copy');
+                    //           /* Alert the copied text */
+                    //           Swal.fire({
+                    //             title: 'Link Copied',
+                    //             showCancelButton: false,
+                    //             showConfirmButton: false,
+                    //             timer: 1500,
+                    //             allowOutsideClick: false,
+                    //           });
+                    //         }}
+                    //       >
+                    //         <FontAwesomeIcon icon="clipboard" />
+                    //       </span>
+                    //       <br />
 
-                              /* Alert the copied text */
-                              Swal.fire({
-                                title: 'Link Copied',
-                                showCancelButton: false,
-                                showConfirmButton: false,
-                                timer: 1500,
-                                allowOutsideClick: false,
-                              });
-                            }}
-                          >
-                            <FontAwesomeIcon icon="clipboard" />
-                          </span>
-                          <br />
-
-                          <div className="close-btn flex-center">
-                            <button className="curriki-btn-extra" type="button" onClick={onClose}>
-                              Ok
-                            </button>
-                          </div>
-                        </div>
-                      ),
-                    });
+                    //       <div className="close-btn flex-center">
+                    //         <button className="curriki-btn-extra" type="button" onClick={onClose}>
+                    //           Ok
+                    //         </button>
+                    //       </div>
+                    //     </div>
+                    //   ),
+                    // });
                   }}
                 >
                   <img src={Export} alt="Preview" className="menue-img" />
@@ -326,8 +340,14 @@ const AdminDropdown = (props) => {
               {' '}
               <Dropdown.Item
                 onClick={() => {
-                  dispatch(selectActivityType(type1));
-                  dispatch(setActiveAdminForm('edit_activity_type'));
+                  if (subType === 'Activity Items') {
+                    selectActivityItem();
+                    dispatch(selectActivityItem(type1));
+                    dispatch(setActiveAdminForm('edit_activity_item'));
+                  } else {
+                    dispatch(selectActivityType(type1));
+                    dispatch(setActiveAdminForm('edit_activity_type'));
+                  }
                 }}
               >
                 <img src={Edit} alt="Preview" className="menue-img" />
@@ -386,15 +406,9 @@ const AdminDropdown = (props) => {
                 </Dropdown.Item>
               )}
               {permission?.Organization.includes('organization:remove-user') && auth?.user?.id !== user.id && (
-                <Dropdown.Item onClick={() => handleRemoveUser(user)}>
+                <Dropdown.Item onClick={() => dispatch(showRemoveUser(user))}>
                   <img src={Remove} alt="Preview" className="menue-img" />
                   Remove
-                </Dropdown.Item>
-              )}
-              {permission?.Organization.includes('organization:delete-user') && auth?.user?.id !== user.id && (
-                <Dropdown.Item to="#" onClick={() => handleDeleteUser(user)}>
-                  <img src={Delete} alt="Preview" className="menue-img" />
-                  Delete
                 </Dropdown.Item>
               )}
             </>
@@ -444,7 +458,7 @@ const AdminDropdown = (props) => {
                             icon: 'success',
                             text: res?.message,
                           });
-                          dispatch(getLmsProject(activeOrganization?.id, activePage || 1))
+                          dispatch(getLmsProject(activeOrganization?.id, activePage || 1));
                           const filterLMS = localStateData.filter((each) => each.id != row.id);
                           console.log(filterLMS);
                           setLocalStateData(filterLMS);
@@ -520,7 +534,7 @@ const AdminDropdown = (props) => {
                                 icon: 'success',
                                 text: res?.message,
                               });
-                              dispatch(getDefaultSso(activeOrganization?.id, activePage || 1))
+                              dispatch(getDefaultSso(activeOrganization?.id, activePage || 1));
                             })
                             .catch((err) => console.log(err));
                         }
@@ -535,7 +549,7 @@ const AdminDropdown = (props) => {
             </>
           )}
 
-          {type === "LMS" &&  subType === 'LTI Tools' && (
+          {type === 'LMS' && subType === 'LTI Tools' && (
             <>
               <Dropdown.Item
                 to="#"
@@ -543,13 +557,13 @@ const AdminDropdown = (props) => {
                   Swal.showLoading();
                   adminService.cloneLtiTool(activeOrganization?.id, row?.id);
                 }}
-                >
+              >
                 <img src={Clone} alt="Preview" className="menue-img" />
                 Clone
               </Dropdown.Item>
               <Dropdown.Item
-              onClick={() => {
-                Swal.fire({
+                onClick={() => {
+                  Swal.fire({
                     title: 'Are you sure you want to delete this LTI Tool?',
                     text: 'This action is Irreversible',
                     icon: 'warning',
@@ -557,44 +571,44 @@ const AdminDropdown = (props) => {
                     confirmButtonColor: '#084892',
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, delete it!',
-                }).then((result) => {
+                  }).then((result) => {
                     if (result.isConfirmed) {
-                        Swal.fire({
-                            title: 'LTI Tool',
-                            icon: 'info',
-                            text: 'Deleting LTI Tool...',
-                            allowOutsideClick: false,
-                            onBeforeOpen: () => {
-                                Swal.showLoading();
-                            },
-                            button: false,
-                        });
-                        const response = adminService.deleteLtiTool(activeOrganization?.id, row?.id);
-                        response
-                            .then((res) => {
-                                Swal.fire({
-                                    icon: 'success',
-                                    text: res?.message.message,
-                                });
-                                dispatch(getLtiTools(activeOrganization?.id, activePage || 1))
-                            })
-                            .catch((err) => console.log(err));
+                      Swal.fire({
+                        title: 'LTI Tool',
+                        icon: 'info',
+                        text: 'Deleting LTI Tool...',
+                        allowOutsideClick: false,
+                        onBeforeOpen: () => {
+                          Swal.showLoading();
+                        },
+                        button: false,
+                      });
+                      const response = adminService.deleteLtiTool(activeOrganization?.id, row?.id);
+                      response
+                        .then((res) => {
+                          Swal.fire({
+                            icon: 'success',
+                            text: res?.message.message,
+                          });
+                          dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
+                        })
+                        .catch((err) => console.log(err));
                     }
-                });
-              }}
+                  });
+                }}
               >
-              <img src={Delete} alt="Preview" className="menue-img" />
+                <img src={Delete} alt="Preview" className="menue-img" />
                 Delete
               </Dropdown.Item>
               <Dropdown.Item
                 onClick={() => {
                   dispatch({
-                      type: 'SET_ACTIVE_EDIT',
-                      payload: row,
+                    type: 'SET_ACTIVE_EDIT',
+                    payload: row,
                   });
                   dispatch(setActiveAdminForm('edit_lti_tool'));
                 }}
-                >
+              >
                 <img src={Edit} alt="Preview" className="menue-img" />
                 Edit
               </Dropdown.Item>

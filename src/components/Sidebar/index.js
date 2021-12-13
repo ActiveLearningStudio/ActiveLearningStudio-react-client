@@ -6,6 +6,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import teamicon from 'assets/images/sidebar/users-team.svg';
 import administrate from 'assets/images/sidebar/administrate.png';
+import instanceadmin from 'assets/images/Instanceadmin.svg';
 import foldericon from 'assets/images/svg/projectFolder.svg';
 // import { allSidebarProjects } from 'store/actions/project';
 
@@ -79,6 +80,16 @@ function Sidebar(props) {
             <div className="row-sidebar">
               <img src={administrate} alt="" />
               <div className="sidebar-headings">Admin Panel</div>
+            </div>
+          </Link>
+        </>
+      )}
+      {permission?.Organization?.includes('organization:view') && (
+        <>
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}/instant-admin`} onClick={() => dispatch(clearTeamPermissions())}>
+            <div className="row-sidebar">
+              <img src={instanceadmin} alt="" />
+              <div className="sidebar-headings">Instance Admin</div>
             </div>
           </Link>
         </>

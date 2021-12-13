@@ -93,14 +93,40 @@ export const createTeamAction = (data) => async (dispatch) => {
   const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({ type: actionTypes.CREATE_TEAM_REQUEST });
-
-    const { team } = await teamService.create(data, activeOrganization?.id);
-
+    const {
+      name,
+      description,
+      users,
+      projects,
+      // eslint-disable-next-line camelcase
+      organization_id,
+      // eslint-disable-next-line camelcase
+      noovo_group_id,
+      // eslint-disable-next-line camelcase
+      noovo_group_title,
+    } = data;
+    // eslint-disable-next-line camelcase
+    if (noovo_group_id && noovo_group_title) {
+      const { team } = await teamService.create(
+        data, activeOrganization?.id,
+      );
+      dispatch({
+        type: actionTypes.CREATE_TEAM_SUCCESS,
+        payload: { team },
+      });
+      return team;
+    }
+    const { team } = await teamService.create({
+      name,
+      description,
+      users,
+      projects,
+      organization_id,
+    }, activeOrganization?.id);
     dispatch({
       type: actionTypes.CREATE_TEAM_SUCCESS,
       payload: { team },
     });
-
     return team;
   } catch (e) {
     dispatch({ type: actionTypes.CREATE_TEAM_FAIL });

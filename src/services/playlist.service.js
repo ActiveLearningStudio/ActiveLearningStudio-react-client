@@ -63,6 +63,11 @@ const loadAllSharedPlaylists = (projectId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const searchPreviewPlaylist = (subOrgId, playlistId) => httpService
+  .get(`${apiVersion}/suborganization/${subOrgId}/playlists/${playlistId}/search-preview`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -76,4 +81,5 @@ export default {
   disablePlaylistShare,
   loadSingleSharedPlaylist,
   loadAllSharedPlaylists,
+  searchPreviewPlaylist,
 };
