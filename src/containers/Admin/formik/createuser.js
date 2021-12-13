@@ -184,6 +184,7 @@ export default function CreateUser(prop) {
                 autoComplete="nope"
                 onBlur={handleBlur}
                 value={values.email}
+                readOnly={!editMode}
               />
               <div className="error">
                 {errors.email && touched.email && errors.email}
