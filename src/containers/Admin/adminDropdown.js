@@ -26,6 +26,7 @@ import {
   setActiveTab,
   setCurrentProject,
   setCurrentUser,
+  showRemoveUser,
 } from 'store/actions/admin';
 
 import {
@@ -405,15 +406,9 @@ const AdminDropdown = (props) => {
                 </Dropdown.Item>
               )}
               {permission?.Organization.includes('organization:remove-user') && auth?.user?.id !== user.id && (
-                <Dropdown.Item onClick={() => handleRemoveUser(user)}>
+                <Dropdown.Item onClick={() => dispatch(showRemoveUser(user))}>
                   <img src={Remove} alt="Preview" className="menue-img" />
                   Remove
-                </Dropdown.Item>
-              )}
-              {permission?.Organization.includes('organization:delete-user') && auth?.user?.id !== user.id && (
-                <Dropdown.Item to="#" onClick={() => handleDeleteUser(user)}>
-                  <img src={Delete} alt="Preview" className="menue-img" />
-                  Delete
                 </Dropdown.Item>
               )}
             </>

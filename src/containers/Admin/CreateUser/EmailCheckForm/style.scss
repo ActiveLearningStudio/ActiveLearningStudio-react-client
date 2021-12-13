@@ -1,0 +1,35 @@
+.email-check-form label {
+  font-size: 14px;
+}
+
+.email-check-form .error {
+  color: red;
+}
+
+.email-check-form .alert-warning {
+  background-color: rgba(255, 232, 193, 0.16);
+}
+
+.email-check-form h1 {
+  font-size: 18px;
+  color: #704C00;
+}
+
+.email-check-form .fa-exclamation {
+  color: #F8AF2C;
+}
+
+.email-check-form .alert-warning .btn-primary {
+  background-color: #E5EEFF;
+  color:#2E68BF;
+}
+
+.email-check-form .alert-warning .btn-danger {
+  background-color: rgba(255, 64, 59, 0.08);
+  color:#FF403B;
+}
+
+.email-check-form .addButton {
+  background-color: #084892;
+  border-radius: 50px;
+}

@@ -172,3 +172,16 @@ export const getLmsProject = (subOrgId, page) => async (dispatch) => {
   });
   return result;
 };
+
+export const showRemoveUser = (user) => (dispatch) => {
+  dispatch({
+    type: actionTypes.SHOW_REMOVE_USER,
+    payload: user,
+  });
+};
+
+export const cancelRemoveUser = () => (dispatch) => {
+  dispatch({
+    type: actionTypes.CANCEL_REMOVE_USER,
+  });
+};
