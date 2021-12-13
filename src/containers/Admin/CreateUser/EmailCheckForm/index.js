@@ -33,7 +33,7 @@ const EmailCheckForm = (props) => {
 
     if (response?.message) {
       // User does not exist
-      handleEmailChecked('new-user');
+      handleEmailChecked('new-user', email);
     }
   };
 
