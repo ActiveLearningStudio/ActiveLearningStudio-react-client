@@ -10,7 +10,8 @@ import CreateActivityItem from './formik/createActivityItem';
 import CreateActivityType from './formik/createActivity';
 import CreateOrg from './formik/createOrg';
 import AddRole from './formik/addRole';
-import CreateUser from './formik/createuser';
+import CreateUser from './CreateUser';
+import CreateUserForm from 'containers/Admin/formik/createuser';
 import Pills from './pills';
 import Heading from './heading';
 import Breadcrump from 'utils/BreadCrump/breadcrump';
@@ -18,6 +19,7 @@ import * as actionTypes from 'store/actionTypes';
 import CreateLms from './formik/createLms';
 import CreateDefaultSso from './formik/createDefaultSso';
 import CreateLtiTool from './formik/createLtiTool';
+import RemoveUser from './RemoveUser';
 import './style.scss';
 import { getRoles } from 'store/actions/organization';
 import EditProject from './formik/editProject';
@@ -32,7 +34,7 @@ function AdminPanel({ showSSO }) {
   const { paginations } = useSelector((state) => state.ui);
   const organization = useSelector((state) => state.organization);
   const { permission, roles, currentOrganization, activeOrganization } = organization;
-  const { activeForm, activeTab } = adminState;
+  const { activeForm, activeTab, removeUser } = adminState;
   useEffect(() => {
     if ((roles?.length === 0 && activeOrganization?.id) || activeOrganization?.id !== currentOrganization?.id) {
       dispatch(getRoles());
@@ -264,16 +266,14 @@ function AdminPanel({ showSSO }) {
               </div>
             </div>
           )}
-          {(activeForm === 'create_user' || activeForm === 'edit_user') && (
+          {activeForm === 'create_user' && (
+            <CreateUser mode={activeForm} />
+          )}
+          {activeForm === 'edit_user' && (
             <div className="form-new-popup-admin">
-              <FontAwesomeIcon
-                icon="times"
-                className="cross-all-pop"
-                onClick={() => {
-                  dispatch(removeActiveAdminForm());
-                }}
-              />
-              <div className="inner-form-content">{activeForm === 'create_user' ? <CreateUser /> : <CreateUser editMode />}</div>
+              <div className="inner-form-content">
+                <CreateUserForm mode={activeForm} editMode />
+              </div>
             </div>
           )}
           {activeForm === 'add_default_sso' && (
@@ -317,6 +317,7 @@ function AdminPanel({ showSSO }) {
               <div className="inner-form-content">{activeForm === 'add_lti_tool' ? <CreateLtiTool /> : <CreateLtiTool editMode />}</div>
             </div>
           )}
+          {removeUser && <RemoveUser />}
         </>
       ) : (
         <div className="content-wrapper" style={{ padding: '20px' }}>
