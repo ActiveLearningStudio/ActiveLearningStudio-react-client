@@ -1,41 +1,34 @@
-/*eslint-disable*/
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Modal, Button, Alert } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import EmailCheckForm from 'containers/Admin/CreateUser/EmailCheckForm';
 import CreateUserForm from 'containers/Admin/formik/createuser';
 import { removeActiveAdminForm } from 'store/actions/admin';
 import './style.scss';
 
 const CreateUser = (props) => {
-  const {
-    match,
-    mode,
-  } = props;
+  const { mode } = props;
   const dispatch = useDispatch();
   const [step, setStep] = useState('emailCheck');
-  // Init
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [match]);
+  const [checkedEmail, setCheckedEmail] = useState(null);
 
-  const handleEmailChecked = (result) => {
+  const handleEmailChecked = (result, email) => {
     if (result === 'new-user') {
+      setCheckedEmail(email);
       setStep('createUser');
+      return;
     }
 
-    if (result === 'added-to-org') {
-      setStep('done');
-    }
+    if (result === 'added-to-org') setStep('done');
   };
 
   return (
     <>
       {mode === 'create_user' && step === 'emailCheck' && (
-        <Modal className="create-user-modal" show={true} onHide={() => dispatch(removeActiveAdminForm())}>
+        <Modal className="create-user-modal" show onHide={() => dispatch(removeActiveAdminForm())}>
           <Modal.Header className="create-user-modal-header" closeButton>
             <Modal.Title>Add User</Modal.Title>
           </Modal.Header>
@@ -44,17 +37,16 @@ const CreateUser = (props) => {
           </Modal.Body>
         </Modal>
       )}
-      {mode === 'create_user' && step === 'createUser' && (
+      {mode === 'create_user' && step === 'createUser' && checkedEmail && (
         <div className="form-new-popup-admin">
           <div className="inner-form-content">
-            <CreateUserForm />
+            <CreateUserForm checkedEmail={checkedEmail} />
           </div>
         </div>
       )}
       {mode === 'create_user' && step === 'done' && (
-        <Modal className="create-user-done" show={true} onHide={() => dispatch(removeActiveAdminForm())}>
-          <Modal.Header closeButton>
-          </Modal.Header>
+        <Modal className="create-user-done" show onHide={() => dispatch(removeActiveAdminForm())}>
+          <Modal.Header closeButton />
           <Modal.Body className="text-center">
             <FontAwesomeIcon icon="check-circle" className="mr-2" />
             <h1>User added successfully</h1>
@@ -67,7 +59,6 @@ const CreateUser = (props) => {
 };
 
 CreateUser.propTypes = {
-  match: PropTypes.object.isRequired,
   mode: PropTypes.string.isRequired,
 };
 
