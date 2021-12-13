@@ -186,13 +186,6 @@ function AdminPanel({ showSSO }) {
           )}
           {(activeForm === 'add_org' || activeForm === 'edit_org') && (
             <div className="form-new-popup-admin">
-              <FontAwesomeIcon
-                icon="times"
-                className="cross-all-pop"
-                onClick={() => {
-                  dispatch(removeActiveAdminForm());
-                }}
-              />
               <div className="inner-form-content">{activeForm === 'add_org' ? <CreateOrg /> : <CreateOrg editMode />}</div>
             </div>
           )}
