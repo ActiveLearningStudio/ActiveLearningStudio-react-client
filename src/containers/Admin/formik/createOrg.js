@@ -92,7 +92,7 @@ export default function CreateOrg(prop) {
             });
             if (response) {
               Swal.fire({
-                text: 'You have successfully updated the organization',
+                text: 'Organization edited successfully',
                 icon: 'success',
                 showCancelButton: false,
                 confirmButtonColor: '#084892',
@@ -117,7 +117,7 @@ export default function CreateOrg(prop) {
             const response = await dispatch(createOrganizationNew(activeOrganization.id, values));
             if (response) {
               Swal.fire({
-                text: 'You have successfully created the organization',
+                text: 'Organization added successfully',
                 icon: 'success',
                 showCancelButton: false,
                 confirmButtonColor: '#084892',
