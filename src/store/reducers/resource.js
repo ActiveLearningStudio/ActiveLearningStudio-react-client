@@ -39,6 +39,7 @@ const INITIAL_STATE = {
     metaEducationLevels: '',
   },
   saved: false,
+  searchPreviewActivity: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -405,6 +406,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         selectedItem: null,
+      };
+    case actionTypes.SEARCH_PREVIEW_ACTIVITY:
+      return {
+        ...state,
+        searchPreviewActivity: action.payload,
       };
     default:
       return state;

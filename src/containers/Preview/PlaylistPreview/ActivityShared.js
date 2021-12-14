@@ -1,14 +1,16 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import TinCan from 'tincanjs';
 import { Alert } from 'react-bootstrap';
-import gifloader from 'assets/images/dotsloader.gif';
-import { loadH5pResourceSettingsShared, loadH5pResourceSettingsEmbed, loadH5pResourceXapi } from 'store/actions/resource';
+import {
+  loadH5pResourceSettingsShared,
+  loadH5pResourceSettingsEmbed,
+  loadH5pResourceXapi,
+  searchPreviewActivityAction,
+} from 'store/actions/resource';
 import * as xAPIHelper from 'helpers/xapi';
 
 import './style.scss';
@@ -25,7 +27,7 @@ const ActivityShared = (props) => {
   // const [lrs, setLrs] = useState(null);
   // const { orientation } = useSelector((state) => state.ui);
   const dispatch = useDispatch();
-
+  const { activeOrganization } = useSelector((state) => state.organization);
   const h5pInsertion = async (data) => {
     if (!data) return;
     window.H5PIntegration = data?.h5p.settings;
@@ -41,7 +43,7 @@ const ActivityShared = (props) => {
         link.rel = 'stylesheet';
         document.head.appendChild(link);
         return true;
-      })
+      }),
     );
 
     const newScripts = data?.h5p.settings.core.scripts.concat(data.h5p.settings.loadedJs);
@@ -79,7 +81,17 @@ const ActivityShared = (props) => {
           .catch(() => {
             setAuthorized(true);
           });
-      } else {
+      } else if (window.location.pathname.includes('/preview') && activeOrganization?.id) {
+        dispatch(searchPreviewActivityAction(match.params.activityId)).then(async (data) => {
+          if (data) {
+            h5pInsertion(data);
+          } else {
+            setAuthorized(true);
+          }
+        }).catch(() => {
+          setAuthorized(true);
+        });
+      } else if (!window.location.pathname.includes('/preview')) {
         loadH5pResourceSettingsShared(match.params.activityId)
           .then(async (data) => {
             if (data) {
@@ -97,7 +109,7 @@ const ActivityShared = (props) => {
         try {
           const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
           if (x.H5P) {
-            if (x.H5P.externalDispatcher && xAPIHelper.isxAPINeeded(props.match.path)) {
+            if (x.H5P.externalDispatcher && xAPIHelper.isxAPINeeded(match.path)) {
               // eslint-disable-next-line no-use-before-define
               stopXapi();
 
@@ -153,12 +165,14 @@ const ActivityShared = (props) => {
               });
             }
           }
-        } catch (e) {}
+        } catch (e) {
+          console.log(e);
+        }
       });
 
       const stopXapi = () => clearInterval(checkXapi);
     }
-  }, [dispatch, embed, match.params.activityId]);
+  }, [embed, match.params.activityId, activeOrganization?.id, match.path, dispatch, lrsRegistration]);
 
   return (
     <>

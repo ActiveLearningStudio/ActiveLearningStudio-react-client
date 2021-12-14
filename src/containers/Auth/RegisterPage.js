@@ -14,6 +14,7 @@ import leftArrow from 'assets/images/left-arrow.svg';
 import { GoogleLogin } from 'react-google-login';
 import googleIcon from 'assets/images/google.svg';
 import { registerAction, loadOrganizationTypesAction, googleLoginAction } from 'store/actions/auth';
+import authService from 'services/auth.service';
 import { getErrors } from 'utils';
 import { Tabs, Tab } from 'react-bootstrap';
 import Error from './Error';
@@ -227,6 +228,31 @@ class RegisterPage extends React.Component {
                     <form onSubmit={this.onSubmit} autoComplete="off" className="auth-form">
                       {!clicked && (
                         <>
+                          <div className="form-group text-center mb-2">
+                            <GoogleLogin
+                              clientId={global.config.gapiClientId}
+                              theme="dark"
+                              render={(renderProps) => (
+                                <button type="button" className="google-button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                                  <img src={googleIcon} alt="googleIcon" />
+                                  <div>Sign up with Google</div>
+                                </button>
+                              )}
+                              onSuccess={ async (response) => {
+                                const emailCheckResponse = await authService.checkEmail(response.profileObj.email);
+                                if (emailCheckResponse?.exists === true)
+                                  return this.setState({error: emailCheckResponse.message});
+
+                                return this.setState({ stepper: true, googleResponse: response });
+                                // this.onGoogleLoginSuccess(response);
+                              }}
+                              onFailure={this.onGoogleLoginFailure}
+                              cookiePolicy="single_host_origin"
+                            />
+                          </div>
+                          <div className="hr-spacer">
+                            <span>OR</span>
+                          </div>
                           <div className="form-group d-flex">
                             <div className="input-wrapper">
                               <span>Name</span>
@@ -307,26 +333,6 @@ class RegisterPage extends React.Component {
                               <p className="line-or">or</p>
                               <div className="line" />
                             </div> */}
-                          <div className="form-group text-center mb-0">
-                            <GoogleLogin
-                              clientId={global.config.gapiClientId}
-                              theme="dark"
-                              render={(renderProps) => (
-                                <button type="button" className="google-button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                                  <img src={googleIcon} alt="googleIcon" />
-                                  <div>Sign up with Google</div>
-                                </button>
-                              )}
-                              onSuccess={(response) => {
-                                this.setState({ stepper: true, googleResponse: response });
-                                // this.onGoogleLoginSuccess(response);
-                              }}
-                              onFailure={this.onGoogleLoginFailure}
-                              // eslint-disable-next-line max-len
-                              scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
-                              cookiePolicy="single_host_origin"
-                            />
-                          </div>
                           {/* <p className="auth-description text-center">
                               Back to Curriki?&nbsp;
                               <a onClick={this.goToLogin}>

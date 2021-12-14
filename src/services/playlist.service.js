@@ -43,6 +43,31 @@ const loadLti = (id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const enablePlaylistShare = (projectId, playlistId) => httpService
+  .get(`${apiVersion}/projects/${projectId}/playlists/${playlistId}/share`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const disablePlaylistShare = (projectId, playlistId) => httpService
+  .get(`${apiVersion}/projects/${projectId}/playlists/${playlistId}/remove-share`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const loadSingleSharedPlaylist = (projectId, playlistId) => httpService
+  .get(`${apiVersion}/projects/${projectId}/playlists/${playlistId}/load-shared-playlist`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const loadAllSharedPlaylists = (projectId) => httpService
+  .get(`${apiVersion}/projects/${projectId}/shared-playlist`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const searchPreviewPlaylist = (subOrgId, playlistId) => httpService
+  .get(`${apiVersion}/suborganization/${subOrgId}/playlists/${playlistId}/search-preview`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -52,4 +77,9 @@ export default {
   reorder,
   loadShared,
   loadLti,
+  enablePlaylistShare,
+  disablePlaylistShare,
+  loadSingleSharedPlaylist,
+  loadAllSharedPlaylists,
+  searchPreviewPlaylist,
 };

@@ -2,6 +2,7 @@
 import config from 'config';
 import httpService from './http.service';
 import { errorCatcher } from './errors';
+import Swal from 'sweetalert2';
 
 const { apiVersion } = config;
 
@@ -235,6 +236,78 @@ const searchDefaultSso = (orgId, search, page) => httpService
 	.catch((err) => {
 		Promise.reject(err.response.data);
 	});
+
+const getLtiTools = (subOrgId, page) => httpService
+	.get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}`)
+	.then(({ data }) => data)
+	.catch((err) => {
+		Promise.reject(err.response.data);
+	});
+
+const createLtiTool = (subOrgId, values) => httpService
+	.post(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings`, values)
+	.then(({ data }) => data)
+	.catch((err) => {
+		errorCatcher(err.response.data);
+		return Promise.reject();
+	});
+
+const updateLtiTool = (subOrgId, id, values) => httpService
+	.put(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings/${id}`, values)
+	.then(({ data }) => data)
+	.catch((err) => {
+		errorCatcher(err.response.data);
+		return Promise.reject();
+	});
+
+const deleteLtiTool = (subOrgId, id) => httpService
+	.remove(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings/${id}`)
+	.then(({ data }) => data)
+	.catch((err) => {
+		errorCatcher(err.response.data);
+		return Promise.reject();
+	});
+
+const searchLtiTool = (subOrgId, search, page) => httpService
+	.get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}&query=${search.replace(/#/, '%23')}`)
+	.then(({ data }) => data)
+	.catch((err) => {
+		Promise.reject(err.response.data);
+	});
+
+const cloneLtiTool = (subOrgId, id) => httpService
+  .post(`/${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings/${id}/clone`)
+   .then((res) => Swal.fire(res.data.message))
+  .catch((err) => {
+    if (err.response.data.errors) {
+      Swal.fire(err.response.data.errors[0]);
+    } else {
+      Swal.fire({
+        icon: 'error',
+        text: 'Something went wrong!',
+      });
+    }
+  });
+
+const checkUserEmail = (orgId, email) => httpService
+	.get(`${apiVersion}/suborganization/${orgId}/users/check-email?email=${email}`)
+	.then(({ data }) => data);
+
+const addUserToOrg = (subOrgId, userId, role) => httpService
+	.post(`/${apiVersion}/suborganizations/${subOrgId}/add-user`, {user_id: userId, role_id: role})
+	.then(({ data }) => data)
+	.catch((err) => {
+		errorCatcher(err.response.data);
+		Promise.reject(err.response.data);
+	});
+
+const removeUser = (subOrgId, userId, preserve) => httpService
+	.remove(`${apiVersion}/suborganizations/${subOrgId}/remove-user`, {user_id: userId, preserve_data: preserve})
+	.then(({ data }) => data)
+	.catch((err) => {
+		return Promise.reject(err.response.data);
+	});
+
 export default {
 	addUserInOrganization,
 	editUserInOrganization,
@@ -266,4 +339,13 @@ export default {
 	updateDefaultSso,
 	searchDefaultSso,
 	getAllExportedProject,
+  getLtiTools,
+  createLtiTool,
+  updateLtiTool,
+  deleteLtiTool,
+  searchLtiTool,
+  cloneLtiTool,
+  checkUserEmail,
+  addUserToOrg,
+  removeUser,
 };

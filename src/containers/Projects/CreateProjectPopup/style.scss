@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .resource-modal {
   h1 {
@@ -19,7 +19,8 @@
     text-transform: capitalize;
   }
   .close-btn {
-    float: right;
+    margin-left: auto;
+    margin-bottom: 45px;
     background: none;
     border: 0;
   }
@@ -78,7 +79,7 @@
     }
 
     .project-description {
-      margin-top: 20px;
+      margin-top: 16px;
 
       textarea {
         width: 100%;
@@ -134,8 +135,7 @@
     }
 
     .create-project-template-wrapper {
-      margin-top: 25px;
-
+      float: right;
       .create-project-submit-btn {
         padding: 10px 15px;
         // background: #2ecf43;
@@ -151,7 +151,7 @@
         height: 40px;
         left: 50px;
         top: 770px;
-        background: $curriki-main-blue;
+        background: $fun-blue-1;
         border-radius: 20px;
 
         img {
@@ -162,7 +162,8 @@
       .project-template-btn {
         padding: 10px 15px 10px 35px;
         float: right;
-        background: url(../../../assets/images/project-template-icon.png) #fff no-repeat 8px 10px;
+        background: url(../../../assets/images/project-template-icon.png) #fff
+          no-repeat 8px 10px;
         border: 1px solid #d9dfe8;
         border-radius: 5px;
         font-family: $rubik, sans-serif;
@@ -205,7 +206,7 @@
       margin-bottom: 0px;
     }
     &:after {
-      content: url('../../../assets/images/path.png');
+      content: url("../../../assets/images/path.png");
       float: right;
       border-top: none;
     }
@@ -260,4 +261,8 @@
   background-color: transparent;
   right: 0px;
   top: 1px;
+}
+.disclaimer {
+  margin-top: 32px;
+  margin-bottom: 0px !important;
 }

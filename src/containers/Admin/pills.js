@@ -9,7 +9,7 @@ import { columnData } from './column';
 
 import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization, updatePageNumber, resetPageNumber } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from 'store/actions/resource';
-import { getJobListing, getLogsListing, getUserReport } from 'store/actions/admin';
+import { getJobListing, getLogsListing, getLtiTools, getUserReport, getDefaultSso, getLmsProject } from 'store/actions/admin';
 import { alphaNumeric } from 'utils';
 
 export default function Pills(props) {
@@ -26,7 +26,8 @@ export default function Pills(props) {
   const admin = useSelector((state) => state.admin);
   const [activePage, setActivePage] = useState(1);
   const [size, setSize] = useState(10);
-  const { activeOrganization, roles, permission, searchUsers } = organization;
+  const [selectedActivityType, setSelectedActivityType] = useState(null);
+  const { activeOrganization, roles, permission, searchUsers, allSuborgList } = organization;
   const [activeRole, setActiveRole] = useState('');
   const { activeTab, activityType } = admin;
   const [currentTab, setCurrentTab] = useState('all');
@@ -41,11 +42,13 @@ export default function Pills(props) {
   const [allProjectIndexTab, setAllProjectIndexTab] = useState(null);
   const [lmsProject, setLmsProject] = useState(null);
   const [defaultSso, setDefaultSso] = useState(null);
+  const [ltiTool, setLtiTool] = useState(null);
   const [jobs, setJobs] = useState(null);
   const [jobType, SetJobType] = useState({ value: 1, display_name: 'Pending' });
   const [logs, setLogs] = useState(null);
   const [logType, SetLogType] = useState({ value: 'all', display_name: 'All' });
   const [changeIndexValue, setChangeIndexValue] = useState('0');
+  const dataRedux = useSelector((state) => state);
   useEffect(() => {
     setKey(modules?.[0]);
   }, [activeTab]);
@@ -147,9 +150,9 @@ export default function Pills(props) {
       }
     }
     if (type === 'Organization') {
-      dispatch(getsubOrgList(activeOrganization?.id));
+      dispatch(getsubOrgList(activeOrganization?.id, size, activePage));
     }
-  }, [activeOrganization, activePage, type, subTypeState, activeTab, activeRole, organization?.users?.length]);
+  }, [activeOrganization, activePage, type, subTypeState, activeTab, activeRole, organization?.users?.length, size]);
   // All Users Business Logic End
 
   useMemo(async () => {
@@ -344,13 +347,29 @@ export default function Pills(props) {
   //LMS project ***************************************
   useMemo(async () => {
     if (type === 'LMS') {
-      // setLmsProject(null);
-      const result = adminService.getLmsProject(activeOrganization?.id, activePage || 1);
-      result.then((data) => {
-        setLmsProject(data);
-      });
+      dispatch(getLmsProject(activeOrganization?.id, activePage || 1))
+    } if (type === 'LMS') {
+      dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
     }
   }, [type, activePage, activeOrganization?.id]);
+
+  useEffect(() => {
+    if (dataRedux.admin.ltiTools) {
+      setLtiTool(dataRedux.admin.ltiTools);
+    }
+  }, [dataRedux.admin.ltiTools]);
+  
+  useEffect(() => {
+    if (dataRedux.admin.defaultSso) {
+      setDefaultSso(dataRedux.admin.defaultSso);
+    }
+  }, [dataRedux.admin.defaultSso]);
+  
+  useEffect(() => {
+    if (dataRedux.admin.lmsIntegration) {
+      setLmsProject(dataRedux.admin.lmsIntegration);
+    }
+  }, [dataRedux.admin.lmsIntegration]);
 
   const searchQueryChangeHandlerLMS = (search) => {
     setLmsProject(null);
@@ -364,10 +383,7 @@ export default function Pills(props) {
   //Default SSO ***************************************
   useMemo(async () => {
     if (type === 'DefaultSso') {
-      const result = adminService.getDefaultSso(activeOrganization?.id, activePage || 1);
-      result.then((data) => {
-        setDefaultSso(data);
-      });
+      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1))
     }
   }, [type, activePage, activeOrganization?.id]);
 
@@ -377,6 +393,15 @@ export default function Pills(props) {
     const result = adminService.searchDefaultSso(activeOrganization?.id, encodeQuery, activePage || 1);
     result.then((data) => {
       setDefaultSso(data);
+    });
+  };
+
+  const searchQueryChangeHandlerLtiTool = (search) => {
+    setLtiTool(null);
+    const encodeQuery = encodeURI(search.target.value);
+    const result = adminService.searchLtiTool(activeOrganization?.id, encodeQuery, activePage || 1);
+    result.then((data) => {
+      setLtiTool(data);
     });
   };
 
@@ -394,6 +419,8 @@ export default function Pills(props) {
     // }
     else if (activeTab === 'Organization') {
       setSubTypeState('All Organizations');
+    } else if (activeTab === 'LMS') {
+      setSubTypeState('All Settings');
     }
   }, [activeTab]);
   // console.log(columnData)
@@ -414,7 +441,7 @@ export default function Pills(props) {
           setCurrentTab('all');
         } else if (key === 'Exported Projects') {
           setCurrentTab('Exported Projects');
-        } else if (key === 'Indexing Queue') {
+        } else if (key === 'Library requests') {
           setCurrentTab('index');
           setChangeIndexValue(0);
         }
@@ -498,18 +525,18 @@ export default function Pills(props) {
             )}
             {type === 'Users' && subTypeState === 'All Users' && (
               <Starter
-                // paginationCounter={true}
+                paginationCounter={true}
                 search={true}
                 print={false}
-                btnText="Create new user"
+                btnText="Add user"
                 btnAction="create_user"
                 importUser={true}
                 filter={false}
                 tableHead={columnData.userall}
                 data={users}
                 activePage={activePage}
-                // size={size}
-                // setSize={setSize}
+                size={size}
+                setSize={setSize}
                 activeRole={activeRole}
                 setActiveRole={setActiveRole}
                 subTypeState={'All Users'}
@@ -544,22 +571,29 @@ export default function Pills(props) {
             )}
             {type === 'Organization' && (
               <Starter
-                paginationCounter={false}
                 search={true}
                 print={false}
-                btnText="Create Organization"
+                btnText="Add Organization"
                 btnAction="add_org"
                 importUser={false}
                 filter={false}
                 tableHead={columnData.organization}
-                data={{}}
+                paginationCounter={true}
+                size={size}
+                setSize={setSize}
+                data={allSuborgList}
                 type={type}
+                activePage={activePage}
+                setActivePage={setActivePage}
               />
             )}
 
-            {type === 'LMS' && (
+            {type === 'LMS' && subTypeState === 'All Settings' && (
               <Starter
-                paginationCounter={false}
+                paginationCounter={true}
+                size={size}
+                setSize={setSize}
+                subType={'All Settings'}
                 search={true}
                 print={false}
                 btnText="Create New LMS"
@@ -577,7 +611,9 @@ export default function Pills(props) {
 
             {type === 'Project' && subTypeState === 'All Projects' && (
               <Starter
-                paginationCounter={false}
+                paginationCounter={true}
+                size={size}
+                setSize={setSize}
                 search={true}
                 tableHead={columnData.projectAll}
                 data={allProjectTab}
@@ -608,9 +644,11 @@ export default function Pills(props) {
                 searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
               />
             )}
-            {type === 'Project' && subTypeState === 'Indexing Queue' && (
+            {type === 'Project' && subTypeState === 'Library requests' && (
               <Starter
-                paginationCounter={false}
+                paginationCounter={true}
+                size={size}
+                setSize={setSize}
                 search={true}
                 tableHead={columnData.projectIndex}
                 data={allProjectIndexTab}
@@ -620,7 +658,7 @@ export default function Pills(props) {
                 searchAlertToggler={searchAlertToggler}
                 setActivePage={setActivePage}
                 activePage={activePage}
-                subType="index"
+                subType="Library requests"
                 setAllProjectIndexTab={setAllProjectIndexTab}
                 setCurrentTab={setCurrentTab}
                 filter={true}
@@ -660,12 +698,19 @@ export default function Pills(props) {
                 type={type}
                 setActivePage={setActivePage}
                 activePage={activePage}
+                paginationCounter={true}
+                size={size}
+                setSize={setSize}
+                selectedActivityType={selectedActivityType}
+                setSelectedActivityType={setSelectedActivityType}
               />
             )}
             {type === 'Settings' && subTypeState === 'All settings' && <Starter type={type} subType={'All settings'} subTypeState={subTypeState} />}
             {type === 'DefaultSso' && (
               <Starter
-                paginationCounter={false}
+                paginationCounter={true}
+                size={size}
+                setSize={setSize}
                 search={true}
                 print={false}
                 btnText="Create New Default SSO"
@@ -678,6 +723,26 @@ export default function Pills(props) {
                 setActivePage={setActivePage}
                 activePage={activePage}
                 searchQueryChangeHandler={searchQueryChangeHandlerDefautSso}
+              />
+            )}
+            {type === 'LMS' && subTypeState === 'LTI Tools' && (
+              <Starter
+                paginationCounter={true}
+                size={size}
+                setSize={setSize}
+                subType={'LTI Tools'}
+                search={true}
+                print={false}
+                btnText="Create New LTI Tool"
+                btnAction="add_lti_tool"
+                importUser={false}
+                filter={false}
+                tableHead={columnData.ltitool}
+                data={ltiTool}
+                type={type}
+                setActivePage={setActivePage}
+                activePage={activePage}
+                searchQueryChangeHandler={searchQueryChangeHandlerLtiTool}
               />
             )}
           </div>

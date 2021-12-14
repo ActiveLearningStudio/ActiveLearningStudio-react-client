@@ -744,3 +744,13 @@ export const clearProjectSelected = () => (dispatch) => {
     type: actionTypes.CLEAR_PROJECT_SELECT,
   });
 };
+
+export const searchPreviewProjectAction = (projectId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const { project } = await projectService.searchPreviewProject(activeOrganization?.id, projectId);
+  dispatch({
+    type: actionTypes.SEARCH_PREVIEW_PROJECT,
+    payload: project,
+  });
+};

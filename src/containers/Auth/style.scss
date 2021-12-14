@@ -43,6 +43,9 @@
       .background-img-leftpane {
         width: 718px;
         height: 476px;
+        @media (max-width: 991px) {
+          display: none;
+        }
       }
       // .auth-body-img{
       //   width: 200px;
@@ -796,4 +799,19 @@
       opacity: 1;
     }
   }
+}
+
+.hr-spacer {
+  text-align: center;
+  border-bottom: solid 1px black;
+  height: 11px;
+  margin-bottom: 2em;
+  margin-top: 2em;
+}
+
+.hr-spacer span {
+  font-size: 15px;
+  background-color: white;
+  padding-left: 1em;
+  padding-right: 1em;
 }

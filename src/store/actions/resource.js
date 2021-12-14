@@ -7,6 +7,8 @@ import resourceService from 'services/resource.service';
 import socketConnection from 'services/http.service';
 import * as actionTypes from '../actionTypes';
 import { loadProjectPlaylistsAction } from 'store/actions/playlist';
+import store from '../index';
+
 // global variable for h5p object
 let h5pid;
 
@@ -737,4 +739,15 @@ export const getSingleLayoutActivities = () => async (dispatch) => {
       payload: data,
     });
   }
+};
+
+export const searchPreviewActivityAction = (activityId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const result = await resourceService.searchPreviewActivity(activeOrganization?.id, activityId);
+  dispatch({
+    type: actionTypes.SEARCH_PREVIEW_ACTIVITY,
+    payload: result,
+  });
+  return result;
 };

@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionTypes from 'store/actionTypes';
 
-import { removeActiveAdminForm } from 'store/actions/admin';
+import { getDefaultSso, removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
 import authapi from '../../../services/auth.service';
 import adminapi from '../../../services/admin.service';
@@ -20,11 +20,23 @@ export default function CreateDefaultSso(prop) {
   const [loaderlmsImgUser, setLoaderlmsImgUser] = useState(false);
   const [stateOrgSearch, setStateOrgSearch] = useState([]);
   const [checked, setChecked] = useState(false);
+  const [organizationRole, setOrganizationRole] = useState([]);
+  const [selectedRole, setSelectedRole] = useState('');
   useEffect(() => {
     if (editMode && !clone) {
       setChecked(activeEdit?.published);
     }
+    if (editMode) {
+      getOrganazationRoles(activeEdit?.organization_id);
+    }
   }, [activeEdit, editMode]);
+
+  const getOrganazationRoles = (orgId) => {
+    const result = organizationsServices.getRoles(orgId);
+    result.then((role) => {
+      setOrganizationRole(role.data);
+    });
+  }
   return (
     <div className="create-form">
       <Formik
@@ -41,6 +53,7 @@ export default function CreateDefaultSso(prop) {
           name: editMode ? (clone ? '' : activeEdit?.organization?.name) : '',
           lti_client_id: editMode ? activeEdit?.lti_client_id : '',
           published: editMode ? (clone ? false : activeEdit?.published) : false,
+          role_id: editMode ? activeEdit?.role_id : '',
         }}
         validate={(values) => {
           const errors = {};
@@ -67,6 +80,10 @@ export default function CreateDefaultSso(prop) {
           if (!values.organization_id) {
             errors.organization_id = 'required';
           }
+          
+          if (!values.role_id) {
+            errors.role_id = 'required';
+          }
           return errors;
         }}
         onSubmit={async (values) => {
@@ -88,6 +105,7 @@ export default function CreateDefaultSso(prop) {
                 icon: 'success',
                 text: res?.message,
               });
+              dispatch(getDefaultSso(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_EDIT_RESOURCE,
@@ -112,6 +130,7 @@ export default function CreateDefaultSso(prop) {
                 icon: 'success',
                 text: res?.message,
               });
+              dispatch(getDefaultSso(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_CREATED_RESOURCE,
@@ -232,7 +251,9 @@ export default function CreateDefaultSso(prop) {
                         setFieldValue('organization_id', org.id);
                         setFieldValue('name', org.name);
                         setStateOrgSearch([]);
+                        getOrganazationRoles(org.id);
                       }}
+                      key={org.id}
                     >
                       {org.name}
                       <p>
@@ -245,6 +266,22 @@ export default function CreateDefaultSso(prop) {
               )}
               <div className="error">{errors.organization_id && touched.organization_id && errors.organization_id}</div>
             </div>
+            {organizationRole.length > 0 && (
+              <div className="form-group-create">
+                <h3>Select Role</h3>
+                <select name="role_id" onChange={handleChange} onBlur={handleBlur} value={values.role_id}>
+                <option defaultValue="">Nothing selected</option>
+                  {organizationRole.length > 0 && (
+                    organizationRole?.map((role) => (<>
+                      { setSelectedRole(typeof values.role_id != 'undefined' && values.role_id == role.id ? 'selected' :'')}
+                      <option value={role.id} key={role.id} selected={selectedRole}>{role.display_name}</option>
+                      </>
+                    ))
+                  )}
+                </select>
+                <div className="error">{errors.lms_name && touched.lms_name && errors.lms_name}</div>
+              </div>
+            )}
             <div className="button-group">
               <button type="submit">{editMode ? (clone ? 'Create ' : 'Edit ') : 'Create '}SSO Integration</button>
               <button

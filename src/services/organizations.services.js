@@ -47,8 +47,8 @@ const branding = (domain) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const getSubOrganizationList = (id) => httpService
-  .get(`/${apiVersion}/suborganizations/${id}/index`)
+const getSubOrganizationList = (id, size, page) => httpService
+  .get(`/${apiVersion}/suborganizations/${id}/index?size=${size}&page=${page}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 

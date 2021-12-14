@@ -16,6 +16,8 @@ const SearchPage = (props) => {
     searchPreviewActivity,
   } = props;
   const [section, setSection] = useState('browse');
+  // const url = new URL(window.location.href);
+  // const email = url.searchParams.get('user_email');
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);

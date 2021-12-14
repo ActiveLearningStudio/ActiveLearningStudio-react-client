@@ -145,3 +145,43 @@ export const setCurrentProject = (project) => (dispatch) => {
     payload: project,
   });
 };
+
+export const getLtiTools = (subOrgId, page) => async (dispatch) => {
+  const result = await adminService.getLtiTools(subOrgId, page);
+  dispatch({
+    type: actionTypes.GET_LTI_TOOLS,
+    payload: result,
+  });
+  return result;
+};
+
+export const getDefaultSso = (subOrgId, page) => async (dispatch) => {
+  const result = await adminService.getDefaultSso(subOrgId, page);
+  dispatch({
+    type: actionTypes.GET_DEFAULT_SSO,
+    payload: result,
+  });
+  return result;
+};
+
+export const getLmsProject = (subOrgId, page) => async (dispatch) => {
+  const result = await adminService.getLmsProject(subOrgId, page);
+  dispatch({
+    type: actionTypes.GET_LMS_INTEGRATION,
+    payload: result,
+  });
+  return result;
+};
+
+export const showRemoveUser = (user) => (dispatch) => {
+  dispatch({
+    type: actionTypes.SHOW_REMOVE_USER,
+    payload: user,
+  });
+};
+
+export const cancelRemoveUser = () => (dispatch) => {
+  dispatch({
+    type: actionTypes.CANCEL_REMOVE_USER,
+  });
+};

@@ -49,13 +49,11 @@ const ActivityLayout = (props) => {
   return (
     <div className="activity-layout-form">
       <div className="activity-layout-tabs">
-        <Tabs text="1. Select an activity" tabActive />
-        <Tabs text="2.Activity description + activities" className="ml-10 " />
-        {/* mt-10 */}
-        {/* <Tabs text="3. Preview Layout" className="ml-10" /> */}
+        <Tabs text="1. Select layout" tabActive />
+        <Tabs text="2. Describe and create layout" className="ml-10 " />
       </div>
       <div className="activity-layout-title">
-        <HeadingTwo text="Select a layout" color="#084892" />
+        <HeadingTwo text="Select layout" color="#084892" />
       </div>
 
       <form className="radio-group ">
@@ -82,7 +80,7 @@ const ActivityLayout = (props) => {
         </div>
       </form>
       <div className="activity-layout-detail">
-        <HeadingText text="Start creating by selecting a layout and then add activity types." color="#515151" />
+        <HeadingText text="Create multiple activities into a layout or create a single activity." color="#515151" />
       </div>
       <div className="layout-cards-process-btn">
         <div className="activity-layout-cards">
@@ -101,9 +99,9 @@ const ActivityLayout = (props) => {
           {!!allActivity && (
             <LayoutCard
               image={ColoumImage1}
-              text="All Activities"
+              text="Explore All Activities"
               importImg
-              className={layout == 'SingleActivity' ? 'activity-layoutCard-active mr-30' : 'mr-30'}
+              className={layout == 'SingleActivity' ? 'activity-layoutCard-active mr-3' : 'mr-3'}
               onClick={() => {
                 setLayout('SingleActivity');
                 dispatch({

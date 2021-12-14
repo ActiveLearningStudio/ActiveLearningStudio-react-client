@@ -261,7 +261,6 @@ hr {
   margin-right: 0px !important;
   align-items: baseline !important;
   .curriki-utility-headings {
-    text-transform: capitalize;
     line-height: 32px;
 
     word-break: break-word;
@@ -299,7 +298,7 @@ hr {
       }
 
       &:hover {
-        background-color: #1d59b4;
+        background-color: #2e68bf;
         color: #fff;
       }
     }
@@ -322,7 +321,7 @@ hr {
     color: #084892;
     font-weight: normal;
     border-bottom: 1px solid #084892;
-    padding-bottom: 10px;
+    padding: 8px;
     border-radius: 0px;
     box-shadow: 0px 0px 0px 0px;
   }
@@ -478,5 +477,17 @@ hr {
   }
 
   .dropdown-item {
+  }
+}
+
+body.collapsed .editprojectmodal {
+  margin: 0 !important;
+  padding: 0;
+
+  .create-playlist-btn,
+  .playlist-dropdown-btn,
+  .resource-dropdown-btn,
+  .add-resource-to-playlist-btn {
+    display: none;
   }
 }

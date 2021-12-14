@@ -1,5 +1,13 @@
 .utility.curriki-Breadcrump {
   a {
-	color:#8f8787
+    color: #959595;
+    span {
+      padding: 0px 14px;
+    }
+    &:last-child {
+      span {
+        display: none;
+      }
+    }
   }
 }

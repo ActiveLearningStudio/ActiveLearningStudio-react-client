@@ -9,7 +9,8 @@ import { Modal } from 'react-responsive-modal';
 import { Formik } from 'formik';
 import { GoogleLogin } from 'react-google-login';
 
-import logo from 'assets/images/loginlogo.png';
+import logo from 'assets/images/GCLogo.png';
+import btnLogo from 'assets/images/googleBtnLogo.png';
 import {
   googleClassRoomLoginAction,
   googleClassRoomLoginFailureAction,
@@ -108,23 +109,32 @@ const GoogleLoginModal = ({
       open={show}
       onClose={onHide}
       center
+      styles={{borderRadius:"8px", height:"310px", width:"640px"}}
     >
       <div className="model-box-google model-box-view">
-        <div className="modal-header">
+        <div style={{textAlign: "center", margin: "32px 146.38px 0 146.38px"}}>
           <img src={logo} alt="" />
         </div>
         <div className="model-body" style={{ maxWidth: '500px' }}>
           <div className="sign-in-google">
             <br />
             {!showForm ? (
-              <div className="content-authorization">
-                <p>
+              <div className="content-authorization" style={{textAlign:"center"}}>
+                <div className="alert alert-warning" style={{borderRadius:"8px"}}>
                   With CurrikiStudio you can publish your {shareType} as a new Google Classroom course.
-                </p>
+                </div>
                 <p>To start, please log into your Google account.</p>
-                <div>
+                <div style={{marginBottom:"32px"}}>
                   <GoogleLogin
                     clientId={global.config.gapiClientId}
+                    render={renderProps => (
+                      <button onClick={renderProps.onClick} 
+                       style={{width:"240px",height:"32px",borderRadius:"16px",background: "#FFFFFF", border: "1px solid #959595", boxShadow: "0px 2px 8px 1px rgba(81, 81, 81, 0.16)",padding:"6px 0"}}
+                       disabled={renderProps.disabled}>
+                        <img src={btnLogo} alt="" style={{padding: "0px 6px 2px 0px"}}/>
+                        Login with Google
+                      </button>
+                    )}
                     onSuccess={(data) => {
                       googleClassRoomLogin(data);
                       setTokenTemp(JSON.stringify(data.tokenObj));
@@ -133,7 +143,6 @@ const GoogleLoginModal = ({
                     scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
                     cookiePolicy="single_host_origin"
                   >
-                    <span>Login with Google</span>
                   </GoogleLogin>
                 </div>
               </div>

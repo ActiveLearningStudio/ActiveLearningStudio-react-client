@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 
-const EmbedProject = ({ url, projectName, onClose }) => (
+const Embed = ({ url, projectName, playlistName = null, onClose }) => (
   <>
     <h1>
-      Your can now embed below html snippet for{' '}
+      You can embed below html snippet for{' '}
       <strong>
         &quot;
-        {projectName}
+        {playlistName ? playlistName : projectName}
         &quot;
       </strong>
       <br />
@@ -52,10 +52,11 @@ const EmbedProject = ({ url, projectName, onClose }) => (
   </>
 );
 
-EmbedProject.propTypes = {
+Embed.propTypes = {
   url: PropTypes.string.isRequired,
   projectName: PropTypes.string.isRequired,
+  playlistName: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
-export default EmbedProject;
+export default Embed;
