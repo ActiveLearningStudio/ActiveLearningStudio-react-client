@@ -1004,7 +1004,7 @@
     z-index: 1060;
     height: 100%;
     overflow-y: auto;
-    padding-left: 585px;
+    // padding-left: 585px;
 
     .cross-all-pop {
       position: absolute;
@@ -1017,13 +1017,13 @@
     .inner-form-content {
       background: #fff;
       opacity: 1;
-      width: calc(60% + 26px);
       display: flex;
       justify-content: left;
       align-items: flex-start;
-      padding: 96px 80px 0 80px;
+      padding: 96px 64px 0 64px;
       height: 100%;
-      position: fixed;
+      // position: fixed;
+      float: right;
       overflow: auto;
 
       .create-form {

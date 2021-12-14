@@ -162,13 +162,6 @@ function AdminPanel({ showSSO }) {
           </div>
           {(activeForm === 'add_activity_type' || activeForm === 'edit_activity_type') && (
             <div className="form-new-popup-admin">
-              <FontAwesomeIcon
-                icon="times"
-                className="cross-all-pop"
-                onClick={() => {
-                  dispatch(removeActiveAdminForm());
-                }}
-              />
               <div className="inner-form-content">{activeForm === 'add_activity_type' ? <CreateActivityType /> : <CreateActivityType editMode />}</div>
             </div>
           )}
