@@ -67,7 +67,7 @@ const onSubmit = async (values, dispatch, props) => {
     }
   }
 };
-export const uploadThumb = async (e, permission, teamPermission, id, dispatch) => {
+export const uploadThumb = async (e, permission, teamPermission, id, dispatch, editMode) => {
   const formData = new FormData();
   try {
     formData.append('thumb', e.target.files[0]);
