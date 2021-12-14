@@ -187,6 +187,8 @@
         opacity: 1;
         text-transform: capitalize;
         word-break: break-word;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
     }
   }
@@ -3402,7 +3404,7 @@ a:hover {
     color: #333;
     height: 100%;
     width: 100%;
-    z-index: 1111;
+    z-index: 111111111;
     position: fixed;
     top: 0;
     display: flex;
@@ -3410,10 +3412,11 @@ a:hover {
     align-items: center;
     flex-direction: column;
     padding: 0 10px;
+    overflow-y: auto;
 
     img {
-      width: 260px;
-      margin-bottom: 15px;
+      width: 175px;
+      margin-bottom: 10px;
     }
 
     .text-description {
@@ -3442,8 +3445,8 @@ a:hover {
       width: 100%;
       min-width: 150px;
       height: 40px;
-      background: #4646c4 0 0 no-repeat padding-box;
-      border-color: #4646c4;
+      background: $curriki-main-blue 0 0 no-repeat padding-box;
+      border-color: $curriki-main-blue;
       font-weight: 400;
       font-size: 16px;
       line-height: 26px;
@@ -3455,6 +3458,7 @@ a:hover {
       display: flex;
       justify-content: center;
       align-items: center;
+      border-radius: 20px;
     }
   }
 

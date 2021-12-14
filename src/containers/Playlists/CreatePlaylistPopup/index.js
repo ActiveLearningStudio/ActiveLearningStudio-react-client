@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import './style.scss';
 import { slideInRight } from 'react-animations';
 import styled, { keyframes } from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Formik } from 'formik';
+import close from 'assets/images/grayclose.png';
 
 const bounceAnimation = keyframes`${slideInRight}`;
 const BouncyDiv = styled.div`
@@ -45,13 +45,12 @@ function CreatePlaylistPopup(props) {
                     data-dismiss="modal"
                     onClick={handleHideCreatePlaylistModal}
                   >
-                    <FontAwesomeIcon
-                      icon="times"
+                    <img
                       style={{
-                        WebkitTextStroke: '4px #fff',
-                        color: '#333',
                         cursor: 'pointer',
                       }}
+                      src={close}
+                      alt="close"
                     />
                   </button>
                 </h1>

@@ -28,15 +28,15 @@ export default function CreateActivityItem(props) {
     <div className="create-form">
       <Formik
         initialValues={{
-          title: editMode ? selectedItem.title : '',
-          description: editMode ? selectedItem.description : '',
-          activity_type_id: editMode ? selectedItem.activityType?.id : '',
-          type: editMode ? selectedItem.type : '',
-          h5pLib: editMode ? selectedItem.h5pLib : '',
-          demo_activity_id: editMode ? selectedItem.demo_activity_id : '',
-          demo_video_id: editMode ? selectedItem.demo_video_id : '',
-          image: editMode ? selectedItem.image : '',
-          order: editMode ? selectedItem.order : '',
+          title: editMode ? selectedItem?.title : '',
+          description: editMode ? selectedItem?.description : '',
+          activity_type_id: editMode ? selectedItem?.activityType?.id : '',
+          type: editMode ? selectedItem?.type : '',
+          h5pLib: editMode ? selectedItem?.h5pLib : '',
+          demo_activity_id: editMode ? selectedItem?.demo_activity_id : '',
+          demo_video_id: editMode ? selectedItem?.demo_video_id : '',
+          image: editMode ? selectedItem?.image : '',
+          order: editMode ? selectedItem?.order : '',
         }}
         validate={(values) => {
           const errors = {};

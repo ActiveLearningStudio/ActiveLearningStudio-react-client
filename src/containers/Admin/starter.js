@@ -52,6 +52,8 @@ function Starter(props) {
     setChangeIndexValue,
     changeIndexValue,
     permissionRender,
+    selectedActivityType,
+    setSelectedActivityType,
   } = props;
   return (
     <>
@@ -92,6 +94,8 @@ function Starter(props) {
         roles={roles}
         subType={subType}
         setChangeIndexValue={setChangeIndexValue}
+        selectedActivityType={selectedActivityType}
+        setSelectedActivityType={setSelectedActivityType}
       />
       {subTypeState === "All settings" && <Settings />}
       {subTypeState === "Manage Roles" ? (

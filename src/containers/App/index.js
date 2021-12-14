@@ -61,6 +61,17 @@ function App(props) {
                 .catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
           }
+        } else if (window.location.pathname.includes('/preview')) {
+          const subDomain = localStorage.getItem('current_org');
+          (async () => {
+            const result = dispatch(getBranding(subDomain));
+            result
+              .then((data) => {
+                if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
+                dispatch(getAllPermission(data?.organization?.id));
+              })
+              .catch((err) => err && window.location.replace('/org/currikistudio'));
+          })();
         }
       }
     }
@@ -224,18 +235,13 @@ function App(props) {
         <img src={logo} alt="" />
 
         <div className="text-description">
-          <h2>CurrikiStudio</h2>
+          <h2>Please use desktop browser</h2>
 
+          <p>CurrikiStudio doesn’t yet support mobile for authors. To continue, we recommend that you use either a browser on a desktop or laptop computer.</p>
           <p>
-            We are changing the way the world creates and interacts with learning content. Currently it is not possible to build the world&apos;s most immersive learning
-            experiences on a mobile phone, tablet or iPad. We recommend that you use either a desktop or laptop computer.
+            Why no mobile access for authors? All learning courses built with CurrikiStudio are accessible on mobile for learners. However, in order for an author to build a truly
+            interactive, immersive learning experience, a full browser is required.
           </p>
-          <p>If you don&apos;t already have a CurrikiStudio account</p>
-
-          <a className="reg-btn" href="/register">
-            CLICK HERE TO REGISTER
-          </a>
-          <br />
 
           <p>
             To learn more click here

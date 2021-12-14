@@ -4,10 +4,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
 import { showResultsAction, updateParamsAction } from 'store/actions/canvas';
-import {
-  educationLevels as levels,
-  subjects,
-} from 'components/ResourceCard/AddResource/dropdownData';
+import { getAllOrganization } from 'store/actions/organization';
 import './style.scss';
 
 const SearchForm = (props) => {
@@ -15,7 +12,9 @@ const SearchForm = (props) => {
     match,
     showResults,
     params,
+    orgs,
     updateParams,
+    getOrgs,
   } = props;
   const searchParams = new URLSearchParams(window.location.search);
   const userEmail = searchParams.get('user_email'); // LMS user email
@@ -23,6 +22,7 @@ const SearchForm = (props) => {
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
+    getOrgs();
     updateParams({
       ...params,
       ltiClientId: match.params.ltiClientId,
@@ -67,19 +67,9 @@ const SearchForm = (props) => {
           <div className="row">
             <div className="col">
               <div className="form-group">
-                <select className="form-control" name="subject" onChange={fieldChanged} defaultValue="">
-                  <option value="" disabled>Subject Area</option>
-                  {subjects.map((subject) => <option value={subject.value} key={subject.value}>{subject.subject}</option>)}
-                </select>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <div className="form-group">
-                <select className="form-control" name="level" onChange={fieldChanged} defaultValue="">
-                  <option value="" disabled>Education Level</option>
-                  {levels.map((level) => <option value={level.value} key={level.value}>{level.name}</option>)}
+                <select className="form-control" name="org" onChange={fieldChanged} defaultValue="">
+                  <option value="" disabled>Organization</option>
+                  {orgs.map((org) => <option value={org.id} key={org.id}>{org.name}</option>)}
                 </select>
               </div>
             </div>
@@ -128,17 +118,21 @@ const SearchForm = (props) => {
 SearchForm.propTypes = {
   match: PropTypes.object.isRequired,
   params: PropTypes.object.isRequired,
+  orgs: PropTypes.array.isRequired,
   showResults: PropTypes.func.isRequired,
   updateParams: PropTypes.func.isRequired,
+  getOrgs: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   params: state.canvas.searchParams,
+  orgs: state.organization.allOrganizations,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   showResults: () => dispatch(showResultsAction()),
   updateParams: (params) => dispatch(updateParamsAction(params)),
+  getOrgs: () => dispatch(getAllOrganization()),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SearchForm));

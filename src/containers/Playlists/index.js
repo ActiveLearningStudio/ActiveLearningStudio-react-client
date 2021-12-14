@@ -92,6 +92,7 @@ function PlaylistsPage(props) {
   const [selectedProjectId, setSelectedProjectId] = useState(0);
   const [selectedProjectPlaylistId, setSelectedProjectPlaylistId] = useState(0);
   const [selectedProjectPlaylistActivityId, setSelectedProjectPlaylistActivityId] = useState(0);
+
   const {
     match,
     history,
@@ -118,13 +119,16 @@ function PlaylistsPage(props) {
     getTeamPermissions,
     closeSafariMontageTool,
     safariMontagePublishTool,
+    row,
   } = props;
+
+  const projectIdFilter = match?.params?.projectId || row?.id;
   const [thumbUrl, setThumbUrl] = useState(selectedProject.thumbUrl);
   useEffect(() => {
-    if (Object.keys(teamPermission).length === 0 && selectedProject.team_id && organization?.currentOrganization?.id && selectedProject.id === match.params.projectId) {
+    if (Object.keys(teamPermission).length === 0 && selectedProject.team_id && organization?.currentOrganization?.id && selectedProject.id === projectIdFilter) {
       getTeamPermissions(organization?.currentOrganization?.id, selectedProject?.team_id);
     }
-  }, [teamPermission, organization?.currentOrganization, selectedProject, match.params.projectId, getTeamPermissions]);
+  }, [teamPermission, organization?.currentOrganization, selectedProject, projectIdFilter, getTeamPermissions]);
   useEffect(() => {
     setThumbUrl(projectState.thumbUrl);
   }, [projectState.thumbUrl]);
@@ -166,8 +170,8 @@ function PlaylistsPage(props) {
         autoClose: 10000,
         icon: '',
       });
-      loadProject(match.params.projectId);
-      loadProjectPlaylists(match.params.projectId);
+      loadProject(projectIdFilter);
+      loadProjectPlaylists(projectIdFilter);
     }
   }, [loadProject, activeOrganization]);
   useEffect(() => {
@@ -200,7 +204,7 @@ function PlaylistsPage(props) {
   const handleShowCreateResourceModal = (playlist) => {
     try {
       showCreateResourceModal(playlist.id);
-      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/create`);
+      history.push(`/org/${organization.currentOrganization?.domain}/project/${projectIdFilter}/playlist/${playlist.id}/activity/create`);
     } catch (e) {
       // console.log(e.message);
     }
@@ -234,13 +238,13 @@ function PlaylistsPage(props) {
       }).then(async (resp) => {
         if (resp.isConfirmed) {
           await hideCreateResourceModal();
-          history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
+          history.push(`/org/${organization.currentOrganization?.domain}/project/${projectIdFilter}`);
         }
       });
     } else {
       try {
         await hideCreateResourceModal();
-        history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
+        history.push(`/org/${organization.currentOrganization?.domain}/project/${projectIdFilter}`);
       } catch (err) {
         // console.log(err.message);
       }
@@ -256,9 +260,9 @@ function PlaylistsPage(props) {
     // e.preventDefault();
     if (!/^ *$/.test(title) && title) {
       try {
-        await createPlaylist(match.params.projectId, title);
+        await createPlaylist(projectIdFilter, title);
         // history.push(
-        //   `/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`
+        //   `/org/${organization.currentOrganization?.domain}/project/${projectIdFilter}`
         // );
         handleHideCreatePlaylistModal();
       } catch (err) {
@@ -347,7 +351,7 @@ function PlaylistsPage(props) {
         await createResource(currentPlaylistId, editor, editorType, metadata, projectId);
       }
 
-      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
+      history.push(`/org/${organization.currentOrganization?.domain}/project/${projectIdFilter}`);
     } catch (e) {
       // console.log(e.message);
     }
@@ -357,7 +361,7 @@ function PlaylistsPage(props) {
     try {
       await editResource(currentPlaylistId, editor, editorType, activityId, metadata);
 
-      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
+      history.push(`/org/${organization.currentOrganization?.domain}/project/${projectIdFilter}`);
     } catch (e) {
       // console.log(e);
     }
@@ -394,13 +398,13 @@ function PlaylistsPage(props) {
       }
 
       // Previous block caused changes to playlists
-      reorderPlaylists(match.params.projectId, orgPlaylists, playlists);
+      reorderPlaylists(projectIdFilter, orgPlaylists, playlists);
     } else {
       // playlist dropped
       const pLists = Array.from(playlists);
       const [removed] = pLists.splice(e.source.index, 1);
       pLists.splice(e.destination.index, 0, removed);
-      reorderPlaylists(match.params.projectId, orgPlaylists, pLists);
+      reorderPlaylists(projectIdFilter, orgPlaylists, pLists);
     }
   };
 
@@ -433,7 +437,7 @@ function PlaylistsPage(props) {
   const setProjectId = (projectId) => {
     setSelectedProjectId(projectId);
   };
- 
+
   const setProjectPlaylistId = (playlistId) => {
     setSelectedProjectPlaylistId(playlistId);
   };
@@ -443,7 +447,7 @@ function PlaylistsPage(props) {
   };
   return (
     <>
-      <div className="content-wrapper">
+      <div className={row?.id ? 'content-wrapper editprojectmodal' : 'content-wrapper'}>
         <div className="inner-content">
           <div className="content" style={{ minHeight: '500px' }}>
             <PexelsAPI
@@ -649,7 +653,7 @@ function PlaylistsPage(props) {
                       </div>
                       <div className="project-share-previews">
                         <div className="project-preview">
-                          <Link className="dropdown-item" to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/preview`}>
+                          <Link className="dropdown-item" to={`/org/${organization.currentOrganization?.domain}/project/${projectIdFilter}/preview`}>
                             <img src={Preview} alt="img" className="mr-2" />
                             Project Preview
                           </Link>
@@ -681,7 +685,7 @@ function PlaylistsPage(props) {
                                   key={playlist.id}
                                   index={index}
                                   playlist={playlist}
-                                  projectId={parseInt(match.params.projectId, 10)}
+                                  projectId={parseInt(projectIdFilter, 10)}
                                   handleCreateResource={handleShowCreateResourceModal}
                                   teamPermission={teamPermission || {}}
                                   handleShow={handleShow}
@@ -746,7 +750,7 @@ function PlaylistsPage(props) {
         </Modal.Body>
       </Modal>
       <Footer />
-      
+
       <GoogleModel
         projectId={selectedProjectId}
         playlistId={selectedProjectPlaylistId}
