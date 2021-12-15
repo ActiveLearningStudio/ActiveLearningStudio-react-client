@@ -16,8 +16,6 @@ const SearchPage = (props) => {
     searchPreviewActivity,
   } = props;
   const [section, setSection] = useState('browse');
-  // const url = new URL(window.location.href);
-  // const email = url.searchParams.get('user_email');
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -44,14 +42,14 @@ const SearchPage = (props) => {
       </div>
       <div className="row">
         <div className="col">
-          {searchPreviewActivity === null && section === 'browse' && <Browse /> }
+          {searchPreviewActivity === null && section === 'browse' && <Browse />}
           {searchPreviewActivity === null && section === 'search' && (
             <>
-              { currentPage === 'search' && <SearchForm /> }
-              { currentPage === 'results' && <SearchResults /> }
+              {currentPage === 'search' && <SearchForm />}
+              {currentPage === 'results' && <SearchResults />}
             </>
           )}
-          {searchPreviewActivity && <PreviewActivity /> }
+          {searchPreviewActivity && <PreviewActivity />}
         </div>
       </div>
     </div>
