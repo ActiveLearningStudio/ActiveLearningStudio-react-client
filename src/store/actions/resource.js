@@ -305,6 +305,15 @@ export const uploadActivityTypeThumbAction = (formData) => async (dispatch) => {
   return image;
 };
 
+export const uploadActivityTypeFileAction = (formData) => async (dispatch) => {
+  const { file } = await resourceService.uploadActivityTypeFile(formData);
+  dispatch({
+    type: actionTypes.UPLOAD_ACTIVITY_TYPE_THUMBNAIL,
+    payload: { file },
+  });
+  return file;
+};
+
 export const uploadActivityItemThumbAction = (formData) => async (dispatch) => {
   const { image } = await resourceService.uploadActivityItemThumb(formData);
   dispatch({

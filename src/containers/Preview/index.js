@@ -27,7 +27,6 @@ class PreviewPage extends React.Component {
     const { match, project, previewType } = this.props;
 
     const { projectId, playlistId, activityId } = match.params;
-
     let content;
     if (previewType === 'activity') {
       content = (

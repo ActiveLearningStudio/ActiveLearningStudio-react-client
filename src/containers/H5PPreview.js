@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 
 import gifLoader from 'assets/images/276.gif';
 import { loadH5pResource, loadH5pResourceSettingsOpen, loadH5pResourceSettingsShared, loadH5pResourceXapi } from 'store/actions/resource';
+import resourceService from 'services/resource.service';
 import * as xAPIHelper from 'helpers/xapi';
 
 let counter = 0;
@@ -24,7 +25,6 @@ const H5PPreview = (props) => {
     const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
     h5pWrapper.innerHTML = data.h5p.embed_code.trim();
     const newCss = data.h5p.settings.core.styles.concat(data.h5p.settings.loadedCss);
-
     await Promise.all(
       newCss.map((value) => {
         const link = document.createElement('link');
@@ -97,7 +97,7 @@ const H5PPreview = (props) => {
                 });
               }
             }
-          } catch (e) {}
+          } catch (e) { }
         });
 
         const stopXapi = () => clearInterval(checkXapi);

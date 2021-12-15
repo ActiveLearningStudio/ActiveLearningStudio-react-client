@@ -4,22 +4,27 @@ import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import imgAvatar from 'assets/images/img-avatar.png';
+import docAvatar from 'assets/images/document-avatar.png';
 import { removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
-import { createActivityType, editActivityType, loadResourceTypesAction, uploadActivityTypeThumbAction } from 'store/actions/resource';
+import { createActivityType, editActivityType, loadResourceTypesAction, uploadActivityTypeThumbAction, uploadActivityTypeFileAction } from 'store/actions/resource';
 
 export default function CreateActivity(props) {
   const { editMode } = props;
   const [imageActive, setImgActive] = useState(null);
+  const [fileActive, setFileActive] = useState(null);
   const imgUpload = useRef();
+  const fileUpload = useRef();
   const dispatch = useDispatch();
   const selectedType = useSelector((state) => state.resource.selectedType);
   const { activePage } = useSelector((state) => state.organization);
   useEffect(() => {
     if (editMode) {
       setImgActive(selectedType?.image);
+      setFileActive(selectedType?.external_css_path);
     } else {
       setImgActive(null);
+      setFileActive(null);
     }
   }, [editMode]);
   return (
@@ -29,6 +34,7 @@ export default function CreateActivity(props) {
           title: editMode ? selectedType.title : '',
           image: editMode ? selectedType.image : '',
           order: editMode ? selectedType.order : '',
+          file: editMode ? selectedType.external_css_path : '',
         }}
         validate={(values) => {
           const errors = {};
@@ -178,12 +184,79 @@ export default function CreateActivity(props) {
                     </div>
                   </>
                 ) : (
-                  <>
+                  <div onClick={() => imgUpload.current.click()}>
                     <img src={imgAvatar} alt="" />
                     <p>Upload Image</p>
-                  </>
+                  </div>
                 )}
                 <div className="error">{errors.image && touched.image && errors.image}</div>
+              </div>
+            </div>
+            <div className="form-group-create">
+              <h3>CSS File</h3>
+              <div className="img-upload-form">
+                <input
+                  type="file"
+                  name="file"
+                  accept=".css"
+                  onChange={(e) => {
+                    if (
+                      !(
+                        e.target.files[0].type.includes('css') ||
+                        e.target.files[0].type.includes('scss')
+                      )
+                    ) {
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Invalid file selected.',
+                      });
+                    } else if (e.target.files[0].size > 100000000) {
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Selected file size should be less then 100MB.',
+                      });
+                    } else {
+                      const formData = new FormData();
+                      try {
+                        formData.append('file', e.target.files[0]);
+                        formData.append('fileName', e.target.files[0].name);
+                        formData.append('typeName', values.title);
+                        const fileurl = dispatch(uploadActivityTypeFileAction(formData));
+                        fileurl.then((file) => {
+                          setFileActive(file);
+                          setFieldValue('file', file);
+                        });
+                      } catch (err) {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Error',
+                          text: 'File upload failed, kindly try again.',
+                        });
+                      }
+                    }
+                  }}
+                  onBlur={handleBlur}
+                  ref={fileUpload}
+                  style={{ display: 'none' }}
+                />
+                {fileActive ? (
+                  <>
+                    <div>
+                      <img src={docAvatar} alt="" height="85" />
+                      <p className="text-center">{fileActive.replace(/^.*[\\\/]/, '')}</p>
+                    </div>
+                    <div className="update-img" onClick={() => fileUpload.current.click()}>
+                      Update File
+                    </div>
+                  </>
+                ) : (
+                  <div onClick={() => fileUpload.current.click()}>
+                    <img src={docAvatar} alt="" height="85" />
+                    <p>Upload File</p>
+                  </div>
+                )}
               </div>
             </div>
             <div className="form-group-create">

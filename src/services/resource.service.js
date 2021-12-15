@@ -84,6 +84,17 @@ const uploadActivityTypeThumb = (formData) =>
       Promise.reject(err.response.data);
     });
 
+const uploadActivityTypeFile = (formData) =>
+  httpService
+    .post(`/${apiVersion}/activity-types/upload-css`, formData, {
+      'Content-Type': 'multipart/form-data',
+    })
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
 const uploadActivityItemThumb = (formData) =>
   httpService
     .post(`/${apiVersion}/activity-items/upload-thumb`, formData, {
@@ -243,6 +254,12 @@ const activityH5p = (activityId) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
+const getActivityCss = (activityId) =>
+  httpService
+    .get(`/${apiVersion}/get-activity-item/${activityId}/external-css`)
+    .then(({ data }) => data)
+    .catch((err) => Promise.reject(err.response.data));
+
 const shareActivity = (activityId) =>
   httpService
     .get(`/${apiVersion}/activities/${activityId}/share`)
@@ -283,6 +300,7 @@ export default {
   editActivityItem,
   deleteActivityItem,
   uploadActivityTypeThumb,
+  uploadActivityTypeFile,
   uploadActivityItemThumb,
   h5pToken,
   h5pSettings,
@@ -293,6 +311,7 @@ export default {
   h5pResourceSettingsShared,
   h5pResourceSettingsEmbed,
   activityH5p,
+  getActivityCss,
   shareActivity,
   loadH5pShared,
   removeShareActivity,
