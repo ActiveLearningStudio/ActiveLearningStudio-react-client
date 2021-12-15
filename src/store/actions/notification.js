@@ -16,10 +16,16 @@ export const getAllNotifications = () => async (dispatch) => {
 };
 
 export const clearAllNotification = () => async (dispatch) => {
-  await notification.readAllNotifications();
+  const notificationData = await notification.readAllNotifications();
   dispatch({
     type: actionTypes.CLEAR_ALL_NOTIFICATION,
   });
+  if (notificationData) {
+    dispatch({
+      type: actionTypes.ADD_ALL_NOTIFICATIONS,
+      payload: notificationData,
+    });
+  }
 };
 
 export const deleteNotification = (id) => async (dispatch) => {
