@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 .main-myproject-card {
   margin-bottom: 30px;
   position: relative;
@@ -28,12 +28,8 @@
       border-top-left-radius: 8px;
       border-top-right-radius: 8px;
       // background-color: rgba(113, 117, 119, 0.7);
-      background: linear-gradient(
-        180deg,
-        rgba(81, 81, 81, 0.2) 0%,
-        rgba(0, 0, 0, 0.8) 100%
-      );
-      content: "";
+      background: linear-gradient(180deg, rgba(81, 81, 81, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%);
+      content: '';
       display: block;
       height: 100%;
       position: absolute;
@@ -42,14 +38,13 @@
 
     .myproject-card-dropdown {
       position: absolute;
-      top: 16px;
-      right: 16px;
+      top: 17px;
+      right: 23px;
     }
     .myproject-card-title {
       position: absolute;
-      bottom: 8px;
-      left: 16px;
-      right: 16px;
+      bottom: 10px;
+      left: 15px;
       h2 {
         font-family: $rubik;
         font-style: normal;
@@ -68,7 +63,7 @@
   .myproject-card-detail {
     padding: 16px;
     p {
-      font-family: "Open Sans", sans-serif;
+      font-family: 'Open Sans', sans-serif;
       font-style: normal;
       font-weight: normal;
       font-size: 16px;
@@ -106,7 +101,7 @@
     left: 0;
     display: flex;
     width: 100%;
-    padding: 0px 16px 16px 16px;
+    padding: 0px 10px;
     button {
       border: none;
       cursor: pointer;

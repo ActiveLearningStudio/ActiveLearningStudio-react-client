@@ -17,8 +17,6 @@ const Buttons = ({
   icon,
   width,
   height,
-  paddingLeft,
-  paddingRight,
   radius,
   disabled,
   hover,
@@ -38,8 +36,6 @@ const Buttons = ({
   const btnCurrikiStyle = {
     height: height ? height : null,
     width: width ? width : null,
-    paddingLeft: paddingLeft ? paddingLeft : null,
-    paddingRight: paddingRight ? paddingRight : null,
     borderRadius: radius ? radius : null,
     margin: margin ? margin : null,
   };
