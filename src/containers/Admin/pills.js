@@ -162,7 +162,7 @@ export default function Pills(props) {
     setAllProjectIndexTab(null);
     if (activeOrganization && type === 'Project' && currentTab == 'Projects') {
       if (searchQueryProject) {
-        const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, searchQueryProject);
+        const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, searchQueryProject, size);
         allproject
           .then((data) => {
             console.log(data);
@@ -170,7 +170,7 @@ export default function Pills(props) {
           })
           .catch((e) => setAllProjectTab([]));
       } else {
-        const result = await adminService.getAllProject(activeOrganization?.id, activePage || 1);
+        const result = await adminService.getAllProject(activeOrganization?.id, activePage || 1, size);
         setAllProjectTab(result);
       }
     } else if (activeOrganization && type === 'Project' && currentTab === 'Exported Projects') {
@@ -187,18 +187,18 @@ export default function Pills(props) {
       }
     } else if (activeOrganization && type === 'Project' && currentTab === 'Library requests') {
       if (searchQueryProject) {
-        const searchapi = adminService.userSerchIndexs(activeOrganization?.id, activePage, changeIndexValue, searchQueryProject);
+        const searchapi = adminService.userSerchIndexs(activeOrganization?.id, activePage, changeIndexValue, searchQueryProject, size);
         searchapi
           .then((data) => {
             setAllProjectIndexTab(data);
           })
           .catch((e) => setAllProjectIndexTab([]));
       } else {
-        const result = await adminService.getAllProjectIndex(activeOrganization?.id, activePage || 1, changeIndexValue);
+        const result = await adminService.getAllProjectIndex(activeOrganization?.id, activePage || 1, changeIndexValue, size);
         setAllProjectIndexTab(result);
       }
     }
-  }, [activeOrganization?.id, type, activePage, changeIndexValue, currentTab]);
+  }, [activeOrganization?.id, type, activePage, changeIndexValue, currentTab, size]);
   // Activity Tab Business Logic
   useEffect(() => {
     if (type === 'Activities' && subTypeState === 'Activity Items') {
