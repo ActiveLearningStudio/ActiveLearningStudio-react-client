@@ -1,5 +1,5 @@
 import axios from 'axios';
-import socketio from 'socket.io-client';
+// import socketio from 'socket.io-client';
 
 import { USER_TOKEN_KEY } from '../constants';
 
@@ -41,16 +41,16 @@ function remove(url, data, headers = {}) {
   });
 }
 
-function notificationSocket() {
-  return {
-    host: `${window.location.origin}:4003`,
-    auth: {
-      headers: { ...getAuthHeader(), Accept: 'application/json' },
-    },
-    broadcaster: 'socket.io',
-    client: socketio,
-  };
-}
+// function notificationSocket() {
+//   return {
+//     host: `${window.location.origin}:4003`,
+//     auth: {
+//       headers: { ...getAuthHeader(), Accept: 'application/json' },
+//     },
+//     broadcaster: 'socket.io',
+//     client: socketio,
+//   };
+// }
 
 export default {
   http,
@@ -58,5 +58,5 @@ export default {
   post,
   put,
   remove,
-  notificationSocket,
+  // notificationSocket,
 };
