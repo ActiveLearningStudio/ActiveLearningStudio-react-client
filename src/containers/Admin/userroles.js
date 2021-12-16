@@ -29,6 +29,29 @@ function UserRoles({ permissionRender }) {
   console.log("activePermission:", activePermission);
   console.log("permissionsId:", permissionsId);
   const [checkRoles, setCheckRoles] = useState("");
+  const [projectView, setProjectView] = useState([]);
+  const [playlistsView, setPlaylistsView] = useState([]);
+  const [activitiesView, setActivitiesView] = useState([]);
+  const [teamsView, setTeamsView] = useState([]);
+  const projectEditDate = "ALL";
+  const projectViewDate = [
+    "project:edit",
+    "project:delete",
+    "project:create",
+    "project:upload-thumb",
+  ];
+  const activityViewDate = [
+    "activity:edit",
+    "activity:delete",
+    "activity:create",
+    "activity:upload",
+  ];
+  const playlistViewDate = [
+    "playlist:edit",
+    "playlist:delete",
+    "playlist:create",
+  ];
+  const teamViewDate = ["team:create", "team:edit", "team:delete"];
   useEffect(() => {
     const extractPermission = [];
     if (activePermission) {
@@ -36,10 +59,54 @@ function UserRoles({ permissionRender }) {
         extractPermission.push(String(data.id))
       );
     }
-    console.log(extractPermission);
+    console.log("extractPermission:", extractPermission);
     setCheckRoles(extractPermission);
   }, [activePermission]);
 
+  useEffect(() => {
+    {
+      !!permissionsId &&
+        Object.keys(permissionsId)?.map((data, counter) => {
+          if (typeof permissionsId[data] === "object") {
+            if (data == "Project") {
+              permissionsId[data]?.map((val) => {
+                if (projectViewDate.includes(val.name)) {
+                  // console.log("VAL View:", val.id);
+                  setProjectView((prevItems) => [...prevItems, String(val.id)]);
+                }
+              });
+            }
+            if (data == "Activity") {
+              permissionsId[data]?.map((val) => {
+                if (activityViewDate.includes(val.name)) {
+                  setActivitiesView((prevItems) => [
+                    ...prevItems,
+                    String(val.id),
+                  ]);
+                }
+              });
+            }
+            if (data == "Playlist") {
+              permissionsId[data]?.map((val) => {
+                if (playlistViewDate.includes(val.name)) {
+                  setPlaylistsView((prevItems) => [
+                    ...prevItems,
+                    String(val.id),
+                  ]);
+                }
+              });
+            }
+            if (data == "Team") {
+              permissionsId[data]?.map((val) => {
+                if (teamViewDate.includes(val.name)) {
+                  setTeamsView((prevItems) => [...prevItems, String(val.id)]);
+                }
+              });
+            }
+          }
+        });
+    }
+  }, [permissionsId]);
   useEffect(() => {
     dispatch(getAllPermissionId(activeOrganization?.id));
     if (!!roles) {
@@ -128,9 +195,52 @@ function UserRoles({ permissionRender }) {
             initialValues={{
               role_id: activePermission?.[0]?.id,
               permissions: checkRoles,
+              projectStatus: "edit",
+              activityStatus: "edit",
+              playlistStatus: "edit",
+              teamStatus: "edit",
             }}
             enableReinitialize
             onSubmit={async (values) => {
+              // console.log("values-Role-Update before:", values);
+
+              // if (values.projectStatus == "view") {
+              //   values.permissions = values.permissions.filter((data) => {
+              //     return (
+              //       data !=
+              //       projectView.find((permissionData) => permissionData == data)
+              //     );
+              //   });
+              // }
+              // if (values.activityStatus == "view") {
+              //   values.permissions = values.permissions.filter((data) => {
+              //     return (
+              //       data !=
+              //       activitiesView.find(
+              //         (permissionData) => permissionData == data
+              //       )
+              //     );
+              //   });
+              // }
+              // if (values.playlistStatus == "view") {
+              //   values.permissions = values.permissions.filter((data) => {
+              //     return (
+              //       data !=
+              //       playlistsView.find(
+              //         (permissionData) => permissionData == data
+              //       )
+              //     );
+              //   });
+              // }
+              // if (values.teamStatus == "view") {
+              //   values.permissions = values.permissions.filter((data) => {
+              //     return (
+              //       data !=
+              //       teamsView.find((permissionData) => permissionData == data)
+              //     );
+              //   });
+              // }
+              // console.log("values-Role-Update  after:", values);
               dispatch(updateRole(activeOrganization.id, values));
             }}
           >
@@ -355,9 +465,6 @@ function UserRoles({ permissionRender }) {
                                                     onBlur={handleBlur}
                                                     value={values.admin}
                                                   >
-                                                    <option value="---">
-                                                      ---
-                                                    </option>
                                                     <option value="edit">
                                                       Edit
                                                     </option>
@@ -399,11 +506,10 @@ function UserRoles({ permissionRender }) {
                                                     <div>
                                                       <div className="form-group custom-select-style-for-sub">
                                                         <select
-                                                          name="admin"
-                                                          placeholder="Admin"
+                                                          name="permissions"
                                                           onChange={(e) => {}}
                                                           onBlur={handleBlur}
-                                                          value={values.admin}
+                                                          value={String(val.id)}
                                                         >
                                                           <option value="---">
                                                             ---
@@ -441,13 +547,11 @@ function UserRoles({ permissionRender }) {
                               <div className="for-authoring">
                                 <div className="form-group custom-select-style-for-authoring">
                                   <select
-                                    name="admin"
-                                    placeholder="Admin"
-                                    onChange={(e) => {}}
+                                    name="projectStatus"
                                     onBlur={handleBlur}
-                                    value={values.admin}
+                                    onChange={handleChange}
+                                    value={values.projectStatus}
                                   >
-                                    <option value="---">---</option>
                                     <option value="edit">Edit</option>
                                     <option value="view">View</option>
                                   </select>
@@ -456,13 +560,11 @@ function UserRoles({ permissionRender }) {
 
                                 <div className="form-group custom-select-style-for-authoring">
                                   <select
-                                    name="admin"
-                                    placeholder="Admin"
-                                    onChange={(e) => {}}
+                                    name="playlistStatus"
                                     onBlur={handleBlur}
-                                    value={values.admin}
+                                    onChange={handleChange}
+                                    value={values.playlistStatus}
                                   >
-                                    <option value="---">---</option>
                                     <option value="edit">Edit</option>
                                     <option value="view">View</option>
                                   </select>
@@ -471,13 +573,11 @@ function UserRoles({ permissionRender }) {
 
                                 <div className="form-group custom-select-style-for-authoring">
                                   <select
-                                    name="admin"
-                                    placeholder="Admin"
-                                    onChange={(e) => {}}
+                                    name="activityStatus"
                                     onBlur={handleBlur}
-                                    value={values.admin}
+                                    onChange={handleChange}
+                                    value={values.activityStatus}
                                   >
-                                    <option value="---">---</option>
                                     <option value="edit">Edit</option>
                                     <option value="view">View</option>
                                   </select>
@@ -486,13 +586,11 @@ function UserRoles({ permissionRender }) {
 
                                 <div className="form-group custom-select-style-for-authoring">
                                   <select
-                                    name="admin"
-                                    placeholder="Admin"
-                                    onChange={(e) => {}}
+                                    name="teamStatus"
                                     onBlur={handleBlur}
-                                    value={values.admin}
+                                    onChange={handleChange}
+                                    value={values.teamStatus}
                                   >
-                                    <option value="---">---</option>
                                     <option value="edit">Edit</option>
                                     <option value="view">View</option>
                                   </select>
