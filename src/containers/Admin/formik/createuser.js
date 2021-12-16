@@ -9,7 +9,7 @@ import { loadOrganizationTypesAction } from 'store/actions/auth';
 import { getOrgUsers } from 'store/actions/organization';
 
 export default function CreateUser(prop) {
-  const { editMode } = prop;
+  const { editMode, checkedEmail } = prop;
   const [activityImage, setActivityImage] =  useState('')
   const imgref  = useRef();
   const dispatch = useDispatch();
@@ -18,6 +18,7 @@ export default function CreateUser(prop) {
   const { roles } = organization;
   const adminState = useSelector((state) => state.admin);
   const { activeForm, currentUser } = adminState;
+
   useEffect(() => {
     dispatch(loadOrganizationTypesAction());
   }, [])
@@ -36,9 +37,9 @@ export default function CreateUser(prop) {
           user_id: editMode ? currentUser?.id : '',
           organization_type:editMode ? currentUser?.organization_type : '',
           organization_name:editMode ? currentUser?.organization_name :'',
-          job_title:editMode ? currentUser?.job_title :"",
+          job_title:editMode ? currentUser?.job_title : '',
           role_id:editMode ? currentUser?.organization_role_id : '',
-          email:editMode ? currentUser?.email :'',
+          email:editMode ? currentUser?.email : checkedEmail,
           password:'',
         }}
         validate={(values) => {
@@ -183,6 +184,7 @@ export default function CreateUser(prop) {
                 autoComplete="nope"
                 onBlur={handleBlur}
                 value={values.email}
+                readOnly={!editMode}
               />
               <div className="error">
                 {errors.email && touched.email && errors.email}

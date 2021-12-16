@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .project-list-all {
   // display: flex;
@@ -6,7 +6,7 @@
 }
 .inner-content {
   background: $white;
-  padding: 32px;
+  padding: 32px 30px 30px;
   margin-top: 0px;
   // margin: 13px 39px 81px 29px;
   border-radius: 3px;
@@ -17,7 +17,7 @@
 
 // **************************** TAB CSS***********************************
 .nav-tabs .nav-link {
-  border: 1px solid #084892 !important;
+  border: 1px solid $curriki-main-blue !important;
   // background-color: $curriki-main-blue !important;
   // color: $curriki-main-blue !important;
   font-weight: bold !important;
@@ -36,7 +36,7 @@
   color: $white !important;
   width: 160px;
   height: 36px;
-  padding: 8px 0px 8px 0px;
+  padding: 0px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -157,8 +157,7 @@
           margin-right: 8px;
           display: block;
           float: left;
-          background: url(../../assets/images/program-lesson-icon.png) no-repeat
-            center;
+          background: url(../../assets/images/program-lesson-icon.png) no-repeat center;
         }
       }
 
@@ -173,8 +172,7 @@
           margin-right: 8px;
           display: block;
           float: left;
-          background: url(../../assets/images/program-duration-icon.png)
-            no-repeat center;
+          background: url(../../assets/images/program-duration-icon.png) no-repeat center;
         }
       }
     }
@@ -355,7 +353,7 @@
     color: $fun-blue-1;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 8px;
+    margin-bottom: 15px;
     align-items: center;
     .heading-image {
       display: flex;
@@ -392,7 +390,8 @@
     align-items: center;
   }
   .top-heading-detail {
-    margin-bottom: 16px;
+    margin-top: 15px;
+    margin-bottom: 15px;
   }
   button .fa-plus {
     color: #f8af2c;
